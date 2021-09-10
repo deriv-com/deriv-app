@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { useHistory, useLocation, withRouter } from 'react-router';
+import { useHistory, withRouter } from 'react-router';
 import {
     FormSubmitErrorMessage,
     Loading,
@@ -14,7 +14,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
+import { routes, isMobile, isDesktop, platforms, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -115,40 +115,60 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     </div>
 );
 
-const SubmittedPage = () => {
+const SubmittedPage = ({ platform }) => {
     const history = useHistory();
-    const location = useLocation();
-
-    // Passing "custom_button_options" object in "location.state" allows
-    // another app/route to determine which button the user will see after
-    // submitting their financial assessment.
-    const button_text = location.state?.custom_button_options
-        ? location.state.custom_button_options.button_text
-        : localize('Continue');
-    const icon_text = location.state?.custom_button_options
-        ? location.state.custom_button_options.icon_text
-        : localize('Let’s continue with providing proofs of address and identity.');
-    const route_to_path = location.state?.custom_button_options
-        ? location.state.custom_button_options.route_to_path
-        : routes.proof_of_address;
 
     const onClickButton = () => {
-        if (location.state?.custom_button_options?.is_hard_redirect) {
-            window.location.href = window.location.origin + route_to_path;
+        if (platforms[platform].is_hard_redirect) {
+            window.location.href = platforms[platform].url;
         } else {
-            history.push(route_to_path);
+            history.push(platforms[platform].route_to_path);
         }
     };
+
+    const redirectToPOA = () => {
+        history.push(routes.proof_of_address);
+    };
+
+    if (platform && !!platforms[platform])
+        return (
+            <IconMessageContent
+                className='submit-success'
+                message={localize('Financial assessment submitted successfully')}
+                text={platforms[platform].icon_text}
+                icon={<Icon icon='IcSuccess' width={96} height={90} />}
+            >
+                <div className='account-management-flex-wrapper account-management-submit-success'>
+                    <Button
+                        type='button'
+                        has_effect
+                        text={localize('Back to {{platform_name}}', {
+                            platform_name: platforms[platform].platform_name,
+                        })}
+                        onClick={onClickButton}
+                        primary
+                        large
+                    />
+                </div>
+            </IconMessageContent>
+        );
 
     return (
         <IconMessageContent
             className='submit-success'
             message={localize('Financial assessment submitted successfully')}
-            text={icon_text}
+            text={localize('Let’s continue with providing proofs of address and identity.')}
             icon={<Icon icon='IcSuccess' width={96} height={90} />}
         >
             <div className='account-management-flex-wrapper account-management-submit-success'>
-                <Button type='button' has_effect text={button_text} onClick={onClickButton} primary large />
+                <Button
+                    type='button'
+                    has_effect
+                    text={localize('Continue')}
+                    onClick={() => redirectToPOA()}
+                    primary
+                    large
+                />
             </div>
         </IconMessageContent>
     );
@@ -183,8 +203,10 @@ class FinancialAssessment extends React.Component {
 
     componentDidMount() {
         this.is_mounted = true;
+
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
+            this.props.history.push(routes.personal_details);
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
@@ -194,20 +216,11 @@ class FinancialAssessment extends React.Component {
                             (this.props.is_financial_account || this.props.is_trading_experience_incomplete) &&
                             !this.props.is_svg;
 
-                        const needs_financial_assessment =
-                            this.props.is_financial_information_incomplete ||
-                            this.props.is_high_risk ||
-                            has_trading_experience ||
-                            this.props.is_financial_account;
                         this.setState({ has_trading_experience });
 
                         if (data.error) {
                             this.setState({ api_initial_load_error: data.error.message });
                             return;
-                        } else if (!needs_financial_assessment) {
-                            // Additional layer of error handling if non high risk user somehow manages to reach FA page
-                            // need to redirect to default route for account to prevent app crash
-                            this.props.history.push(routes.personal_details);
                         }
                         this.setState({ ...data.get_financial_assessment, is_loading: false });
                     });
@@ -224,14 +237,15 @@ class FinancialAssessment extends React.Component {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
         WS.setFinancialAssessment(values).then(data => {
-            this.setState({ is_btn_loading: false });
             if (data.error) {
+                this.setState({ is_btn_loading: false });
                 setStatus({ msg: data.error.message });
             } else {
                 WS.authorized.storage.getFinancialAssessment().then(res_data => {
                     this.setState({
                         ...res_data.get_financial_assessment,
                         is_submit_success: true,
+                        is_btn_loading: false,
                     });
 
                     if (isDesktop()) {
@@ -310,7 +324,7 @@ class FinancialAssessment extends React.Component {
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
-        if (isMobile() && is_submit_success) return <SubmittedPage />;
+        if (isMobile() && is_submit_success) return <SubmittedPage platform={this.props.platform} />;
 
         return (
             <React.Fragment>
@@ -349,6 +363,7 @@ class FinancialAssessment extends React.Component {
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
+                        setFieldTouched,
                         dirty,
                     }) => (
                         <>
@@ -400,7 +415,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getIncomeSourceList()}
                                                         value={values.income_source}
                                                         error={touched.income_source && errors.income_source}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('income_source', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -425,7 +443,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getEmploymentStatusList()}
                                                         value={values.employment_status}
                                                         error={touched.employment_status && errors.employment_status}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('employment_status', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -454,7 +475,10 @@ class FinancialAssessment extends React.Component {
                                                         error={
                                                             touched.employment_industry && errors.employment_industry
                                                         }
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('employment_industry', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -480,7 +504,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getOccupationList()}
                                                         value={values.occupation}
                                                         error={touched.occupation && errors.occupation}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('occupation', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -505,7 +532,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getSourceOfWealthList()}
                                                         value={values.source_of_wealth}
                                                         error={touched.source_of_wealth && errors.source_of_wealth}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('source_of_wealth', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -530,7 +560,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getEducationLevelList()}
                                                         value={values.education_level}
                                                         error={touched.education_level && errors.education_level}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('education_level', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -555,7 +588,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getNetIncomeList()}
                                                         value={values.net_income}
                                                         error={touched.net_income && errors.net_income}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('net_income', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -581,7 +617,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getEstimatedWorthList()}
                                                         value={values.estimated_worth}
                                                         error={touched.estimated_worth && errors.estimated_worth}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('estimated_worth', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -607,7 +646,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getAccountTurnoverList()}
                                                         value={values.account_turnover}
                                                         error={touched.account_turnover && errors.account_turnover}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('account_turnover', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -650,7 +692,10 @@ class FinancialAssessment extends React.Component {
                                                                     touched.forex_trading_experience &&
                                                                     errors.forex_trading_experience
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched('forex_trading_experience', true);
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -681,7 +726,10 @@ class FinancialAssessment extends React.Component {
                                                                     touched.forex_trading_frequency &&
                                                                     errors.forex_trading_frequency
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched('forex_trading_frequency', true);
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -714,7 +762,13 @@ class FinancialAssessment extends React.Component {
                                                                     touched.binary_options_trading_experience &&
                                                                     errors.binary_options_trading_experience
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched(
+                                                                        'binary_options_trading_experience',
+                                                                        true
+                                                                    );
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -747,7 +801,13 @@ class FinancialAssessment extends React.Component {
                                                                     touched.binary_options_trading_frequency &&
                                                                     errors.binary_options_trading_frequency
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched(
+                                                                        'binary_options_trading_frequency',
+                                                                        true
+                                                                    );
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -778,7 +838,10 @@ class FinancialAssessment extends React.Component {
                                                                     touched.cfd_trading_experience &&
                                                                     errors.cfd_trading_experience
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched('cfd_trading_experience', true);
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -809,7 +872,10 @@ class FinancialAssessment extends React.Component {
                                                                     touched.cfd_trading_frequency &&
                                                                     errors.cfd_trading_frequency
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched('cfd_trading_frequency', true);
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -842,7 +908,13 @@ class FinancialAssessment extends React.Component {
                                                                     touched.other_instruments_trading_experience &&
                                                                     errors.other_instruments_trading_experience
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched(
+                                                                        'other_instruments_trading_experience',
+                                                                        true
+                                                                    );
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -876,7 +948,13 @@ class FinancialAssessment extends React.Component {
                                                                     touched.other_instruments_trading_frequency &&
                                                                     errors.other_instruments_trading_frequency
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched(
+                                                                        'other_instruments_trading_frequency',
+                                                                        true
+                                                                    );
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -901,7 +979,12 @@ class FinancialAssessment extends React.Component {
                                                 'dc-btn--green': is_submit_success,
                                             })}
                                             onClick={() => this.onClickSubmit(handleSubmit)}
-                                            is_disabled={isSubmitting || !dirty || Object.keys(errors).length > 0}
+                                            is_disabled={
+                                                isSubmitting ||
+                                                !dirty ||
+                                                is_btn_loading ||
+                                                Object.keys(errors).length > 0
+                                            }
                                             has_effect
                                             is_loading={is_btn_loading}
                                             is_submit_success={is_submit_success}
@@ -921,7 +1004,7 @@ class FinancialAssessment extends React.Component {
 }
 
 // FinancialAssessment.propTypes = {};
-export default connect(({ client, ui }) => ({
+export default connect(({ client, common, ui }) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,
@@ -929,6 +1012,7 @@ export default connect(({ client, ui }) => ({
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_svg: client.is_svg,
+    platform: common.platform,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(withRouter(FinancialAssessment));

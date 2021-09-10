@@ -57,12 +57,8 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 v => validLength(v, { min: 1, max: 35 }),
                 v => validLetterSymbol(v),
             ],
-            address_state: [v => !!v && !v.match(/^\s*$/), v => !v || validLength(v, { min: 1, max: 35 })],
-            address_postcode: [
-                v => !!v && !v.match(/^\s*$/),
-                v => validLength(v, { min: 1, max: 20 }),
-                v => validPostCode(v),
-            ],
+            address_state: [v => validLength(v, { max: 35 })],
+            address_postcode: [v => validLength(v, { max: 20 }), v => !v || validPostCode(v)],
         };
 
         const validation_errors = {
@@ -82,12 +78,8 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 }),
                 localize('Town/City is not in a proper format.'),
             ],
-            address_state: [
-                localize('State/Province is required.'),
-                localize('State/Province is not in a proper format.'),
-            ],
+            address_state: [localize('State/Province is not in a proper format.')],
             address_postcode: [
-                localize('Postal/ZIP code is required'),
                 localize('This should not exceed {{max_number}} characters.', {
                     max_number: 20,
                 }),
@@ -275,10 +267,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                         is_bypassed={isMobile()}
                                     >
                                         <div className='cfd-proof-of-address__field-area'>
-                                            <FormSubHeader
-                                                subtitle={localize('(All fields are required)')}
-                                                title={localize('Address information')}
-                                            />
+                                            <FormSubHeader title={localize('Address information')} />
                                             <InputField
                                                 name='address_line_1'
                                                 maxLength={255}
@@ -312,7 +301,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                                     {({ field }) => (
                                                                         <Dropdown
                                                                             id='address_state'
-                                                                            required
                                                                             className='address_state-dropdown'
                                                                             is_align_text_left
                                                                             list={states_list}
@@ -323,7 +311,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                                             name='address_state'
                                                                             value={values.address_state}
                                                                             onChange={handleChange}
-                                                                            placeholder={localize('State/Province*')}
+                                                                            placeholder={localize('State/Province')}
                                                                             list_portal_id='modal_root'
                                                                         />
                                                                     )}
@@ -331,7 +319,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                             </DesktopWrapper>
                                                             <MobileWrapper>
                                                                 <SelectNative
-                                                                    label={localize('State/Province*')}
+                                                                    label={localize('State/Province')}
                                                                     value={values.address_state}
                                                                     list_items={states_list}
                                                                     error={
@@ -345,7 +333,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                                             true
                                                                         );
                                                                     }}
-                                                                    required
                                                                 />
                                                             </MobileWrapper>
                                                         </React.Fragment>
@@ -353,10 +340,9 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                         // Fallback to input field when states list is empty / unavailable for country
                                                         <InputField
                                                             name='address_state'
-                                                            label={localize('State/Province*')}
-                                                            placeholder={localize('State/Province*')}
+                                                            label={localize('State/Province')}
+                                                            placeholder={localize('State/Province')}
                                                             value={values.address_state}
-                                                            required
                                                             onBlur={handleBlur}
                                                         />
                                                     )}
@@ -364,10 +350,10 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                 <InputField
                                                     maxLength={255}
                                                     name='address_postcode'
-                                                    label={localize('Postal/ZIP code*')}
-                                                    placeholder={localize('Postal/ZIP code*')}
+                                                    label={localize('Postal/ZIP code')}
+                                                    placeholder={localize('Postal/ZIP code')}
                                                     onBlur={handleBlur}
-                                                    required
+                                                    optional
                                                 />
                                             </div>
                                             <div className='cfd-proof-of-address__file-upload'>

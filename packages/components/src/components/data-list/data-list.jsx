@@ -89,6 +89,7 @@ const DataList = React.memo(
                     row_key={row_key}
                     row={row}
                     rowRenderer={other_props.rowRenderer}
+                    is_dynamic_height={is_dynamic_height}
                 />
             );
 

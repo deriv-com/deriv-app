@@ -8,6 +8,7 @@ const AccountList = ({
     balance,
     currency,
     currency_icon,
+    country_standpoint,
     display_type,
     has_balance,
     has_error,
@@ -45,7 +46,12 @@ const AccountList = ({
                     />
                     <span>
                         {display_type === 'currency' ? (
-                            <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
+                            <CurrencyDisplay
+                                country_standpoint={country_standpoint}
+                                currency={currency}
+                                loginid={loginid}
+                                is_virtual={is_virtual}
+                            />
                         ) : (
                             <AccountDisplay
                                 market_type={market_type}
@@ -102,13 +108,22 @@ const AccountList = ({
     );
 };
 
-const CurrencyDisplay = ({ currency, is_virtual }) => {
+const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) => {
+    const user_is_from_this_country_list = Object.values(country_standpoint).includes(true);
+    const account_type = loginid.replace(/\d/g, '');
+
+    if (user_is_from_this_country_list) {
+        if (account_type === 'MLT' || account_type === 'MX') {
+            return <Localize i18n_default_text='Options' />;
+        } else if (account_type === 'MF') {
+            return <Localize i18n_default_text='Multipliers' />;
+        }
+    }
+
     if (is_virtual) {
         return <Localize i18n_default_text='Demo' />;
     }
-    if (!currency) {
-        return <Localize i18n_default_text='No currency assigned' />;
-    }
+
     return getCurrencyName(currency);
 };
 

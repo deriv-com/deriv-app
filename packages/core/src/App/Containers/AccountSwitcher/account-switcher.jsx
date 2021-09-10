@@ -418,6 +418,7 @@ const AccountSwitcher = props => {
                                 balance={props.accounts[account.loginid].balance}
                                 currency={props.accounts[account.loginid].currency}
                                 currency_icon={`IcCurrency-${account.icon}`}
+                                country_standpoint={props.country_standpoint}
                                 display_type={'currency'}
                                 has_balance={'balance' in props.accounts[account.loginid]}
                                 has_reset_balance={props.accounts[props.account_loginid].is_virtual}
@@ -462,6 +463,7 @@ const AccountSwitcher = props => {
                                                     sub_account_type: account.sub_account_type,
                                                     platform: CFD_PLATFORMS.MT5,
                                                 })}`}
+                                                country_standpoint={props.country_standpoint}
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
@@ -515,6 +517,7 @@ const AccountSwitcher = props => {
                                             market_type: account.market_type,
                                             platform: CFD_PLATFORMS.DXTRADE,
                                         })}`}
+                                        country_standpoint={props.country_standpoint}
                                         has_balance={'balance' in account}
                                         loginid={account.display_login}
                                         redirectAccount={() => redirectToDXTradeDemo(account.market_type)}
@@ -564,11 +567,13 @@ const AccountSwitcher = props => {
                             .map(account => {
                                 return (
                                     <AccountList
+                                        account_type={props.account_type}
                                         is_dark_mode_on={props.is_dark_mode_on}
                                         key={account.loginid}
                                         balance={props.accounts[account.loginid].balance}
                                         currency={props.accounts[account.loginid].currency}
                                         currency_icon={`IcCurrency-${account.icon}`}
+                                        country_standpoint={props.country_standpoint}
                                         display_type={'currency'}
                                         has_balance={'balance' in props.accounts[account.loginid]}
                                         is_disabled={account.is_disabled}
@@ -654,6 +659,7 @@ const AccountSwitcher = props => {
                                                     sub_account_type: account.sub_account_type,
                                                     platform: CFD_PLATFORMS.MT5,
                                                 })}`}
+                                                country_standpoint={props.country_standpoint}
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
@@ -731,6 +737,7 @@ const AccountSwitcher = props => {
                                                     market_type: account.market_type,
                                                     platform: CFD_PLATFORMS.DXTRADE,
                                                 })}`}
+                                                country_standpoint={props.country_standpoint}
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
@@ -858,8 +865,10 @@ AccountSwitcher.propTypes = {
     account_list: PropTypes.array,
     account_loginid: PropTypes.string,
     accounts: PropTypes.object,
+    account_type: PropTypes.string,
     can_change_fiat_currency: PropTypes.bool,
     can_upgrade_to: PropTypes.string,
+    country_standpoint: PropTypes.object,
     has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     has_active_real_account: PropTypes.bool,
@@ -895,6 +904,7 @@ const account_switcher = withRouter(
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,
+        account_type: client.account_type,
         account_settings: client.account_settings,
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,

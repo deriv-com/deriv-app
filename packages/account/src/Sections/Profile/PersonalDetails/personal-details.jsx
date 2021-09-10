@@ -298,11 +298,7 @@ export class PersonalDetailsForm extends React.Component {
             }
         }
 
-        if (Object.keys(errors).length > 0) {
-            this.setState({ errors: true });
-        } else {
-            this.setState({ errors: false });
-        }
+        this.setState({ errors: Object.keys(errors).length > 0 });
 
         return errors;
     };
@@ -324,9 +320,9 @@ export class PersonalDetailsForm extends React.Component {
         if (!active_errors) {
             if (values.tax_identification_number) {
                 if (!valid_country_tin) {
-                    const warning_message =
-                        'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.';
-                    warnings.tax_identification_number = localize(warning_message);
+                    warnings.tax_identification_number = localize(
+                        'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.'
+                    );
                 }
             }
         }

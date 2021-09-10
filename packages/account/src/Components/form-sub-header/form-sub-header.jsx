@@ -7,7 +7,7 @@ export const FormSubHeader = ({ title, subtitle, description }) => {
     return (
         <React.Fragment>
             <div
-                className={classNames(`account-form__header ${title_as_class}`, {
+                className={classNames('account-form__header', title_as_class, {
                     'account-form__header--has-description': !!description,
                 })}
             >

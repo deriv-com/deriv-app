@@ -29,7 +29,7 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        @include mobile { 
+        @include mobile {
             padding: 1.6rem;
         }
         &-body {
@@ -38,7 +38,8 @@
             flex-direction: column;
             @include desktop {
                 min-height: 72vh;
-                .data-list, .data-list__body-wrapper {
+                .data-list,
+                .data-list__body-wrapper {
                     flex: 1;
                 }
             }

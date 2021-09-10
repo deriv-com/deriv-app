@@ -33,7 +33,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
 
     const onClickViewAll = () => {
         setIsCryptoTransactionsVisible(true);
-    }
+    };
 
     return (
         <div className='cashier-recent-transaction-wrapper'>
@@ -108,7 +108,11 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
                         </div>
                     </div>
                 </div>
-                <ButtonLink to='#' className='dc-btn--secondary cashier-recent-transaction__view-all-button' onClick={onClickViewAll}>
+                <ButtonLink
+                    to='#'
+                    className='dc-btn--secondary cashier-recent-transaction__view-all-button'
+                    onClick={onClickViewAll}
+                >
                     <Text weight='bold' as='p' size='xxs'>
                         <Localize i18n_default_text='View all' />
                     </Text>

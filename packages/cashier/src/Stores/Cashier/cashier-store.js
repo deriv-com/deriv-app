@@ -253,7 +253,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsWithdrawConfirmed(value) {
         this.is_withdraw_confirmed = value;
-        if (!value) this.clearVerification();
+        if (!value && this.config[this.active_container].verification) {
+            this.clearVerification();
+        }
     }
 
     @action.bound
@@ -425,8 +427,10 @@ export default class CashierStore extends BaseStore {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
 
-            if (!this.is_crypto_transactions_visible && 
-                window.location.pathname.endsWith(routes.cashier_crypto_transactions)) {
+            if (
+                !this.is_crypto_transactions_visible &&
+                window.location.pathname.endsWith(routes.cashier_crypto_transactions)
+            ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
                 this.transaction_history.setIsCryptoTransactionsVisible(true);
             }

@@ -202,3 +202,64 @@ Blockly.ContextMenu.blockDetachOption = function (block) {
     };
     return detach_option;
 };
+
+/**
+ * Function to check if block enabled or disabled.
+ */
+const checkIsEnabled = block => {
+    let isEnabled = !block.disabled;
+    if (!block?.nextConnection?.targetConnection || isEnabled) return isEnabled;
+    checkIsEnabled(block.nextConnection.targetConnection);
+};
+
+/**
+ * Make a context menu option for disabling stack of blocks.
+ * deriv-bot: Use Blockly’s implementation.
+ * @param {!Blockly.BlockSvg} block The block where the right-click originated.
+ * @return {!Object} A menu option, containing text, enabled, and a callback.
+ * @package
+ */
+Blockly.ContextMenu.blockDisableStack = function (block) {
+    const enabled = checkIsEnabled(block);
+
+    const disableBlocksRecursively = block => {
+        block.setDisabled(true);
+        block.nextConnection?.targetConnection &&
+            disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
+    };
+
+    const disableStack_option = {
+        callback() {
+            disableBlocksRecursively(block);
+        },
+        enabled,
+        text: localize('Disable stack'),
+    };
+    return disableStack_option;
+};
+
+/**
+ * Make a context menu option for enabling stack of blocks.
+ * deriv-bot: Use Blockly’s implementation.
+ * @param {!Blockly.BlockSvg} block The block where the right-click originated.
+ * @return {!Object} A menu option, containing text, enabled, and a callback.
+ * @package
+ */
+Blockly.ContextMenu.blockEnableStack = function (block) {
+    const enabled = !checkIsEnabled(block);
+
+    const enableBlocksRecursively = block => {
+        block.setDisabled(false);
+        block.nextConnection?.targetConnection &&
+            enableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
+    };
+
+    const enableStack_option = {
+        callback() {
+            enableBlocksRecursively(block);
+        },
+        enabled,
+        text: localize('Enable stack'),
+    };
+    return enableStack_option;
+};

@@ -658,10 +658,6 @@
 
     &__verify-button {
         margin: 3.2rem auto;
-
-        @include mobile {
-            width: 100%;
-        }
     }
     &__icon {
         margin-top: 8rem;
@@ -705,6 +701,12 @@
             }
         }
     }
+
+    &__send-email {
+        &--space {
+            margin-bottom: 1rem;
+        }
+    }
 }
 
 .crypto-fiat-converter-form {
@@ -712,9 +714,26 @@
     grid-template-columns: 1fr auto 1fr;
     grid-gap: 0.8rem;
     align-items: center;
-
-    .dc-input {
-        margin-bottom: 0;
+    @include desktop {
+        max-width: 36rem;
+        margin: 0 auto 2.4rem;
+        .dc-input {
+            margin-bottom: unset;
+        }
+    }
+    @include mobile {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 1.4rem;
+        fieldset {
+            width: 100%;
+        }
+        .dc-input {
+            margin-bottom: 1rem;
+        }
+    }
+    &__text {
+        margin-top: 0.6rem;
     }
     .input-group {
         display: flex;
@@ -724,10 +743,16 @@
             color: var(--text-less-prominent);
         }
     }
+    .dc-input__hint {
+        .dc-text {
+            margin-left: 0;
+        }
+    }
     .dc-text {
         grid-column: 3;
         margin-left: 1rem;
         color: var(--text-less-prominent);
+        align-self: start;
     }
 }
 
@@ -988,6 +1013,11 @@
             margin: 3.2rem 0;
         }
     }
+    &__receipt {
+        & .cashier__form-submit {
+            text-align: center;
+        }
+    }
     @include mobile {
         &__accordion {
             & .dc-accordion {
@@ -1138,6 +1168,7 @@
 
         &-wrapper {
             display: flex;
+            margin-bottom: 1.1rem;
         }
     }
 }
@@ -1392,6 +1423,7 @@ div.payment-agent-transfer {
             &__form-submit {
                 flex-flow: row;
                 justify-content: center;
+                text-align: center;
 
                 &-button {
                     margin: 0;

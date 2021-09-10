@@ -124,6 +124,10 @@ const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) 
         return <Localize i18n_default_text='Demo' />;
     }
 
+    if (!currency) {
+        return <Localize i18n_default_text='No currency assigned' />;
+    }
+
     return getCurrencyName(currency);
 };
 

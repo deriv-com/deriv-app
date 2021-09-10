@@ -10,7 +10,6 @@ import { isMultiplierContract } from '@deriv/shared';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
-// import { clientNotifications } from 'Stores/Helpers/client-notifications';
 
 const Contract = ({
     addNotificationMessageByKey,
@@ -65,7 +64,6 @@ Contract.propTypes = {
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func,
     addNotificationMessageByKey: PropTypes.func,
-    removeNotificationByKey: PropTypes.func,
     removeNotificationMessageByKey: PropTypes.func,
 };
 
@@ -78,7 +76,6 @@ export default connect(({ client, common, modules, ui }) => ({
     is_equal: modules.trade.is_equal,
     is_logged_in: client.is_logged_in,
     onChange: modules.trade.onChange,
-    removeNotificationByKey: ui.removeNotificationByKey,
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     symbol: modules.trade.symbol,
 }))(Contract);

@@ -100,7 +100,8 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                         <Button
                                             className='notification__cta-button'
                                             onClick={() => {
-                                                linear_progress_container_ref.current.removeTimeoutSession();
+                                                if (data.timeout)
+                                                    linear_progress_container_ref.current.removeTimeoutSession();
                                                 data.action.onClick({ is_dashboard });
                                             }}
                                             text={data.action.text}

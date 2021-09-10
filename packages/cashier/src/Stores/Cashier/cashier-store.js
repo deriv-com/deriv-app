@@ -253,7 +253,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsWithdrawConfirmed(value) {
         this.is_withdraw_confirmed = value;
-        if (!value) this.clearVerification();
+        if (!value && this.config[this.active_container].verification) {
+            this.clearVerification();
+        }
     }
 
     @action.bound

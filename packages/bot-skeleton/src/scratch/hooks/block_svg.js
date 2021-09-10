@@ -100,7 +100,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     if (this.workspace.options.disable) {
         const restricted_parents = block.restricted_parents || [];
         const is_trade_parameter = this.type.includes('trade_definition_') && !this.isMovable();
-
+        console.log(this);
         const disable_option = {
             text: this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled:
@@ -123,6 +123,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
         };
         menu_options.push(disable_option);
     }
+    menu_options.push(Blockly.ContextMenu.blockDisableStack(block, e));
 
     // Option to download block.
     if (this.isMovable()) {

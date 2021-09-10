@@ -202,3 +202,29 @@ Blockly.ContextMenu.blockDetachOption = function (block) {
     };
     return detach_option;
 };
+
+/**
+ * Make a context menu option for disabling stack of blocks.
+ * deriv-bot: Use Blockly's implementation.
+ * @param {!Blockly.BlockSvg} block The block where the right-click originated.
+ * @return {!Object} A menu option, containing text, enabled, and a callback.
+ * @package
+ */
+Blockly.ContextMenu.blockDisableStack = function (block) {
+    const canDisconnect = block
+        .getConnections_()
+        .some(connection => connection.isConnected() && !connection.targetConnection?.sourceBlock_.isShadow_);
+
+    const enabled = block.parentBlock_;
+    console.log(enabled);
+
+    const detach_option = {
+        callback() {
+            block.unplug(true);
+            block.moveBy(250, 100);
+        },
+        enabled,
+        text: localize('Disable stack'),
+    };
+    return detach_option;
+};

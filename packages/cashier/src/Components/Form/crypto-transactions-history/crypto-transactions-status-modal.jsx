@@ -5,11 +5,11 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const CryptoTransactionsStatusModal = ({
-        hideCryptoTransactionsStatusModal, 
-        is_status_modal_visible, 
-        selected_crypto_status,
-        selected_crypto_status_description,
-    }) => {
+    hideCryptoTransactionsStatusModal,
+    is_status_modal_visible,
+    selected_crypto_status,
+    selected_crypto_status_description,
+}) => {
     return (
         <React.Fragment>
             <Modal
@@ -19,9 +19,7 @@ const CryptoTransactionsStatusModal = ({
                 toggleModal={hideCryptoTransactionsStatusModal}
                 has_close_icon={false}
             >
-                <Modal.Body>
-                    {selected_crypto_status_description}
-                </Modal.Body>
+                <Modal.Body>{selected_crypto_status_description}</Modal.Body>
                 <Modal.Footer>
                     <Button text={localize('OK')} onClick={hideCryptoTransactionsStatusModal} large primary />
                 </Modal.Footer>

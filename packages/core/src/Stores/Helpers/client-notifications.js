@@ -383,15 +383,15 @@ export const clientNotifications = (ui = {}, client = {}) => {
         deriv_go: {
             key: 'deriv_go',
             message: localize('Get a faster mobile trading experience with the Deriv GO app!'),
-            primary_btn: {
+            cta_btn: {
                 text: localize('Learn more'),
                 onClick: () => {
-                    window.open(getStaticUrl('/p2p/v1'), '_blank');
+                    window.open(getStaticUrl('/landing/deriv-go'), '_blank');
                 },
             },
-            img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
+            img_src: getUrlBase('/public/images/common/derivgo_banner.png'),
             img_alt: 'deriv_go',
-            type: 'news',
+            type: 'promotion',
         },
     };
     return notifications;

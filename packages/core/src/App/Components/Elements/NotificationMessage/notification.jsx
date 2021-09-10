@@ -41,7 +41,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     onClose={destroy}
                 />
             );
-        case 'promotion':
+        case 'promotions':
             return (
                 <NotificationPromo
                     cta_btn={data.cta_btn}
@@ -147,7 +147,7 @@ Notification.propTypes = {
             'contract_sold',
             'news',
             'announce',
-            'promotion',
+            'promotions',
         ]).isRequired,
     }),
     removeNotificationMessage: PropTypes.func,

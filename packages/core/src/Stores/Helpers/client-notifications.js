@@ -396,7 +396,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             },
             img_src: getUrlBase('/public/images/common/derivgo_banner.png'),
             img_alt: 'deriv_go',
-            type: 'promotion',
+            type: 'promotions',
         },
     };
     return notifications;

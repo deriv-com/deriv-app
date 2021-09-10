@@ -38,10 +38,6 @@ NotificationBanner.propTypes = {
         text: PropTypes.string,
         onClick: PropTypes.func,
     }),
-    secondary_btn: PropTypes.shape({
-        text: PropTypes.string,
-        onClick: PropTypes.func,
-    }),
 };
 
 export default NotificationBanner;

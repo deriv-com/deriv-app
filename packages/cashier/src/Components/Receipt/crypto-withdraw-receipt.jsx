@@ -128,7 +128,7 @@ const CryptoWithdrawReceipt = ({
                     <Localize
                         i18n_default_text='{{withdraw_amount}} {{currency_symbol}}'
                         values={{
-                            withdraw_amount: withdraw_amount,
+                            withdraw_amount,
                             currency_symbol: currency?.toUpperCase(),
                         }}
                     />

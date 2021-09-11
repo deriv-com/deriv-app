@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
-import { formatMoney, getDecimalPlaces } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const PercentageSelector = ({
@@ -45,6 +45,7 @@ const PercentageSelector = ({
         }
     };
     const format_amount = formatMoney(currency, amount, true);
+    const currency__display_code = getCurrencyDisplayCode(currency);
     return (
         <React.Fragment>
             <div className='percentage-selector'>
@@ -75,8 +76,8 @@ const PercentageSelector = ({
             </div>
             <Text color='less-prominent' size='xxs' line_height='l'>
                 <Localize
-                    i18n_default_text={`{{percente}}% of available balance ({{format_amount}} {{currency}})`}
-                    values={{ percente, format_amount, currency }}
+                    i18n_default_text={`{{percente}}% of available balance ({{format_amount}} {{currency__display_code}})`}
+                    values={{ percente, format_amount, currency__display_code }}
                 />
             </Text>
         </React.Fragment>

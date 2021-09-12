@@ -1915,6 +1915,7 @@ export default class CashierStore extends BaseStore {
                     this.setConverterFromError('');
                     this.setIsTimerVisible(true);
                     this.setAccountTransferAmount(amount);
+                    this.validateCryptoAmount(this.converter_from_amount);
                 }
             }
         } else {

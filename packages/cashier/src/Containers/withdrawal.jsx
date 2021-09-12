@@ -24,7 +24,7 @@ const WithdrawalSideNote = () => {
             i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
             key={0}
         />,
-        <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />,
+        // <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />,
     ];
     const side_note_title =
         notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;

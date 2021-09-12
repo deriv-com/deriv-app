@@ -92,7 +92,7 @@ const CryptoWithdrawForm = ({
                     address: '',
                 }}
             >
-                {({ errors, isSubmitting, touched, setFieldTouched, handleChange }) => (
+                {({ errors, isSubmitting, touched, setFieldTouched, handleChange, values }) => (
                     <div className='withdraw__form'>
                         <Field name='address' validate={validateAddress}>
                             {({ field }) => (
@@ -140,6 +140,7 @@ const CryptoWithdrawForm = ({
                             <Button
                                 className='cashier__form-submit-button'
                                 is_disabled={
+                                    validateAddress(values.address) ||
                                     !!converter_from_error ||
                                     !!converter_to_error ||
                                     isSubmitting ||

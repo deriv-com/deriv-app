@@ -108,7 +108,15 @@ const Withdrawal = ({
     if (is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked is_10K_limit />;
     }
-
+    if (!is_crypto && (verification_code || iframe_url)) {
+        return <Withdraw />;
+    }
+    if (verification_code && is_crypto && !is_withdraw_confirmed) {
+        return <CryptoWithdrawForm />;
+    }
+    if (is_withdraw_confirmed) {
+        return <CryptoWithdrawReceipt />;
+    }
     if (is_virtual) {
         return <Virtual />;
     }
@@ -121,20 +129,11 @@ const Withdrawal = ({
     if (is_withdrawal_locked) {
         return <WithdrawalLocked />;
     }
-    if (error.message) {
+    if (((is_crypto && verification_code) || !is_crypto) && error.message) {
         return <Error error={error} container='withdraw' />;
     }
     if (verify_error.message) {
         return <Error error={verify_error} container='withdraw' />;
-    }
-    if (!is_crypto && (verification_code || iframe_url)) {
-        return <Withdraw />;
-    }
-    if (verification_code && is_crypto && !is_withdraw_confirmed) {
-        return <CryptoWithdrawForm />;
-    }
-    if (is_withdraw_confirmed) {
-        return <CryptoWithdrawReceipt />;
     }
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;

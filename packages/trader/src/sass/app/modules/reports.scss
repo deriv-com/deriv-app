@@ -981,15 +981,3 @@ $side-padding: 1.2em;
         }
     }
 }
-
-.ReactVirtualized__Grid__innerScrollContainer {
-    height: auto !important;
-    max-height: none !important;
-    > div {
-        height: auto !important;
-        position: static !important;
-    }
-    .dc-themed-scrollbars {
-        max-height: none !important;
-    }
-}

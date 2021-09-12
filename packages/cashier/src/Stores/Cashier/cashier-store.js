@@ -1968,8 +1968,28 @@ export default class CashierStore extends BaseStore {
 
             if (+balance < +amount) error_message = localize('Insufficient funds');
         }
+
+        if (error_message === '') {
+            this.WS.cryptoWithdraw({
+                address: this.blockchain_address,
+                amount: this.converter_from_amount,
+                verification_code: this.root_store.client.verification_code.payment_withdraw,
+                dry_run: 1,
+            }).then(response => {
+                if (
+                    [
+                        'CryptoWithdrawalMinimumNotMet',
+                        'CryptoWithdrawalLimitExceeded',
+                        'CryptoWithdrawalMaxReached',
+                        'CryptoInvalidAmount',
+                    ].includes(response?.error?.code)
+                ) {
+                    error_message = response.error.message;
+                    this.setConverterFromError(response.error.message);
+                }
+            });
+        }
         this.setConverterFromError(error_message);
-        return error_message ?? undefined;
     };
 
     @action.bound

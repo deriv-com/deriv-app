@@ -160,7 +160,7 @@ const CryptoWithdrawForm = ({
                 )}
             </Formik>
             <MobileWrapper>
-                {isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
+                {isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
             </MobileWrapper>
         </div>
     );

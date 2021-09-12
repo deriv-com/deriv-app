@@ -10,7 +10,6 @@ import { isMultiplierContract } from '@deriv/shared';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
-import { lowerFirst } from 'lodash';
 
 const Contract = ({
     contract_type,

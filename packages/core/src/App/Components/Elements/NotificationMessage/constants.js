@@ -29,6 +29,7 @@ export const sortNotifications = (() => {
         warning: 4,
         info: 5,
         success: 6,
+        promotion: 7,
     };
 
     return (a, b) => notification_order[a.type] - notification_order[b.type];
@@ -42,6 +43,7 @@ export const sortNotificationsMobile = (() => {
         warning: 4,
         info: 5,
         success: 6,
+        promotion: 7,
     };
 
     return (a, b) => notification_order_mobile[a.type] - notification_order_mobile[b.type];

@@ -36,6 +36,36 @@ const CFDDemoAccountDisplay = ({
         }
     };
 
+    const isSyntheticCardVisible = () => {
+        return (
+            (isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in) &&
+            (can_create_new_account ||
+                Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.synthetic`)))
+        );
+    };
+
+    const isFinancialCardVisible = () => {
+        return (
+            (!is_logged_in ||
+                isLandingCompanyEnabled({
+                    landing_companies,
+                    platform,
+                    type: 'financial',
+                })) &&
+            (can_create_new_account ||
+                Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.financial@`)))
+        );
+    };
+
+    const isFinancialStpCardVisible = () => {
+        return (
+            (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
+            platform === CFD_PLATFORMS.MT5 &&
+            (can_create_new_account ||
+                current_list[Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.financial_stp@`))])
+        );
+    };
+
     const financial_specs = React.useMemo(() => {
         if (residence === 'au') {
             return specifications[platform].au_real_financial_specs;
@@ -52,7 +82,7 @@ const CFDDemoAccountDisplay = ({
         </div>
     ) : (
         <div className='cfd-demo-accounts-display'>
-            {(isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in) && (
+            {isSyntheticCardVisible() && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={localize('Synthetic')}
@@ -96,12 +126,7 @@ const CFDDemoAccountDisplay = ({
                 />
             )}
 
-            {(isLandingCompanyEnabled({
-                landing_companies,
-                platform,
-                type: 'financial',
-            }) ||
-                !is_logged_in) && (
+            {isFinancialCardVisible() && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={localize('Financial')}
@@ -137,52 +162,49 @@ const CFDDemoAccountDisplay = ({
                     has_banner
                 />
             )}
-            {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
-                platform === CFD_PLATFORMS.MT5 && (
-                    <CFDAccountCard
-                        has_cfd_account={has_cfd_account}
-                        title={localize('Financial STP')}
-                        type={{
+            {isFinancialStpCardVisible() && platform === CFD_PLATFORMS.MT5 && (
+                <CFDAccountCard
+                    has_cfd_account={has_cfd_account}
+                    title={localize('Financial STP')}
+                    type={{
+                        category: 'demo',
+                        type: 'financial_stp',
+                        platform,
+                    }}
+                    is_disabled={has_cfd_account_error}
+                    is_logged_in={is_logged_in}
+                    existing_data={
+                        current_list[
+                            Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial_stp@`))
+                        ]
+                    }
+                    commission_message={localize('No commission')}
+                    onSelectAccount={() =>
+                        onSelectAccount({
                             category: 'demo',
                             type: 'financial_stp',
-                            platform,
-                        }}
-                        is_disabled={has_cfd_account_error}
-                        is_logged_in={is_logged_in}
-                        existing_data={
+                        })
+                    }
+                    onPasswordManager={openPasswordManager}
+                    onClickFund={() =>
+                        openAccountTransfer(
                             current_list[
                                 Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial_stp@`))
-                            ]
-                        }
-                        commission_message={localize('No commission')}
-                        onSelectAccount={() =>
-                            onSelectAccount({
+                            ],
+                            {
                                 category: 'demo',
                                 type: 'financial_stp',
-                            })
-                        }
-                        onPasswordManager={openPasswordManager}
-                        onClickFund={() =>
-                            openAccountTransfer(
-                                current_list[
-                                    Object.keys(current_list).find(key =>
-                                        key.startsWith(`${platform}.demo.financial_stp@`)
-                                    )
-                                ],
-                                {
-                                    category: 'demo',
-                                    type: 'financial_stp',
-                                }
-                            )
-                        }
-                        descriptor={localize(
-                            'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
-                        )}
-                        specs={specifications[platform].demo_financial_stp_specs}
-                        platform={platform}
-                        has_banner
-                    />
-                )}
+                            }
+                        )
+                    }
+                    descriptor={localize(
+                        'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
+                    )}
+                    specs={specifications[platform].demo_financial_stp_specs}
+                    platform={platform}
+                    has_banner
+                />
+            )}
         </div>
     );
 };

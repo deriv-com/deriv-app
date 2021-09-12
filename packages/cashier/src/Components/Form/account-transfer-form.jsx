@@ -513,7 +513,7 @@ const AccountTransferForm = ({
                                     </Button>
                                 </div>
                                 <MobileWrapper>
-                                    {is_crypto && crypto_transactions?.length && <RecentTransaction />}
+                                    {is_crypto && crypto_transactions?.length > 0 && <RecentTransaction />}
                                     <AccountTransferNote
                                         transfer_fee={transfer_fee}
                                         currency={selected_from.currency}

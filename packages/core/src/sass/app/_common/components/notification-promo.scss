@@ -1,28 +1,37 @@
 .notification-promo {
     position: relative;
     display: flex;
-    height: 10.8rem;
     background-color: var(--general-main-1);
     box-shadow: 0px 0px 24px var(--shadow-menu), 0px 24px 24px var(--shadow-menu);
     border-radius: 4px;
+    max-width: 40rem;
+    height: 14.4rem;
+    width: 100%;
 
     &__img {
         position: absolute;
         object-fit: contain;
         width: auto;
+        height: 14.4rem;
         right: 0;
         z-index: 12;
         pointer-events: none;
         border-radius: 0 4px 4px 0;
     }
+    &__message {
+        margin-top: 1.8rem;
+    }
     &--container {
-        padding: 16px;
+        padding: 1.6rem;
     }
     &--left {
         max-width: calc(100% - 128px);
     }
     &__btn {
-        margin-top: 16px;
+        margin-top: 1.6rem;
+        @include mobile {
+            margin-top: 2rem;
+        }
     }
     &__close-icon {
         position: absolute;

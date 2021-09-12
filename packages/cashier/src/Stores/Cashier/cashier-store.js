@@ -189,6 +189,7 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
+    @observable withdraw_amount = '';
     @observable converter_from_amount = '';
     @observable converter_to_amount = '';
     @observable converter_from_error = '';
@@ -251,9 +252,19 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setIsWithdrawConfirmed(value) {
-        this.is_withdraw_confirmed = value;
-        if (!value) this.clearVerification();
+    setIsWithdrawConfirmed(is_withdraw_confirmed) {
+        this.is_withdraw_confirmed = is_withdraw_confirmed;
+
+        if (is_withdraw_confirmed) this.setWithdrawAmount(this.converter_from_amount);
+
+        if (!is_withdraw_confirmed && this.config[this.active_container].verification) {
+            this.clearVerification();
+        }
+    }
+
+    @action.bound
+    setWithdrawAmount(amount) {
+        this.withdraw_amount = amount;
     }
 
     @action.bound
@@ -425,8 +436,10 @@ export default class CashierStore extends BaseStore {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
 
-            if (!this.is_crypto_transactions_visible && 
-                window.location.pathname.endsWith(routes.cashier_crypto_transactions)) {
+            if (
+                !this.is_crypto_transactions_visible &&
+                window.location.pathname.endsWith(routes.cashier_crypto_transactions)
+            ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
                 this.transaction_history.setIsCryptoTransactionsVisible(true);
             }

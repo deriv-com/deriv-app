@@ -18,14 +18,19 @@ import USDTSideNote from '../Components/usdt-side-note.jsx';
 import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
 import RecentTransaction from '../Components/recent-transaction.jsx';
 
-const WithdrawalSideNote = () => {
+const WithdrawalSideNote = ({ currency }) => {
     const notes = [
         <Localize
             i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
             key={0}
         />,
-        <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />,
     ];
+
+    if (!isCryptocurrency(currency)) {
+        notes.push(
+            <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />
+        );
+    }
     const side_note_title =
         notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
 
@@ -86,7 +91,7 @@ const Withdrawal = ({
                     side_notes.push(<RecentTransaction key={2} />);
                 }
                 const side_note = [
-                    <WithdrawalSideNote key={0} />,
+                    <WithdrawalSideNote currency={currency} key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];

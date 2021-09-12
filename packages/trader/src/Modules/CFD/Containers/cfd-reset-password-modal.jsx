@@ -3,8 +3,16 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
-import { routes, validLength, validPassword, getErrorMessages, CFD_PLATFORMS, WS } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import {
+    routes,
+    validLength,
+    validPassword,
+    redirectToLogin,
+    getErrorMessages,
+    CFD_PLATFORMS,
+    WS,
+} from '@deriv/shared';
+import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 
@@ -45,6 +53,11 @@ class CFDResetPasswordModal extends React.Component {
         is_finished: false,
         changed_password_type: '',
     };
+
+    componentDidMount() {
+        redirectToLogin(this.props.is_logged_in, getLanguage());
+    }
+
     renderErrorBox = error => {
         this.setState({
             error_code: error.code,
@@ -256,6 +269,7 @@ CFDResetPasswordModal.propTypes = {
 export default withRouter(
     connect(({ modules: { cfd }, client }) => ({
         email: client.email,
+        is_logged_in: client.is_logged_in,
         is_cfd_reset_password_modal_enabled: cfd.is_cfd_reset_password_modal_enabled,
         setCFDPasswordResetModal: cfd.setCFDPasswordResetModal,
         current_list: cfd.current_list,

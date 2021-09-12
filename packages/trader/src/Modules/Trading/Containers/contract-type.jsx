@@ -29,7 +29,7 @@ const Contract = ({
         underlying_name: getMarketNamesMap()[symbol.toUpperCase()],
     });
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         setTimeout(() => {
             if (isMultiplierContract(contract_type) && current_language === 'EN' && is_logged_in) {
                 addNotificationMessageByKey('deriv_go');

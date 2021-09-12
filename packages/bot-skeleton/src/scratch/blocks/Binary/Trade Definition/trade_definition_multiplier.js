@@ -60,14 +60,14 @@ Blockly.Blocks.trade_definition_multiplier = {
             colourTertiary: Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('Define your trade options such as mulitplier and stake.'),
+            tooltip: localize('Define your trade options such as multiplier and stake.'),
             category: Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
         return {
             display_name: localize('Multiplier trade options'),
-            description: localize('Define your trade options such as mulitplier and stake.'),
+            description: localize('Define your trade options such as multiplier and stake.'),
         };
     },
     onchange(event) {

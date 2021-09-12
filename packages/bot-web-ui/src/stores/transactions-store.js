@@ -14,6 +14,7 @@ export default class TransactionsStore {
 
     @observable elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.root_store.core.client.loginid, []);
     @observable active_transaction_id = null;
+    reported_transactions = [];
 
     @computed
     get transactions() {
@@ -113,6 +114,10 @@ export default class TransactionsStore {
 
     @action.bound
     onMount() {
+        this.transactions.forEach(({ data: trx }) => {
+            if (trx.is_completed) return;
+            this.recoverPendingContracts(trx.contract_id);
+        });
         window.addEventListener('click', this.onClickOutsideTransaction);
     }
 
@@ -124,6 +129,7 @@ export default class TransactionsStore {
     @action.bound
     clear() {
         this.elements = this.elements.slice(0, 0);
+        this.reported_transactions = this.reported_transactions.slice(0, 0);
     }
 
     registerReactions() {
@@ -150,7 +156,7 @@ export default class TransactionsStore {
         // and transactions.
         const disposeRecoverContracts = when(
             () => this.elements.length,
-            () => this.recoverPendingContracts()
+            () => this.recoverPendingContracts(null)
         );
 
         return () => {
@@ -160,36 +166,33 @@ export default class TransactionsStore {
         };
     }
 
-    recoverPendingContracts() {
-        const reported_transactions = [];
+    recoverPendingContracts(contract_id) {
+        const { ws } = this.root_store;
 
-        const { contract } = this.root_store.summary_card;
+        ws.authorized.subscribeProposalOpenContract(contract_id, response => {
+            if (!response.error) {
+                const { proposal_open_contract } = response;
 
-        this.transactions.forEach(({ data: trx }) => {
-            if (trx.is_completed) return;
+                const { contract_info } = this.root_store.summary_card;
 
-            if (trx.contract_id === contract?.contract_id) return;
+                if (proposal_open_contract.contract_id === contract_info?.contract_id) return;
 
-            const { ws } = this.root_store;
+                this.onBotContractEvent(proposal_open_contract);
 
-            ws.authorized.subscribeProposalOpenContract(trx.contract_id, response => {
-                if (!response.error) {
-                    const { proposal_open_contract } = response;
+                if (
+                    !this.reported_transactions.includes(proposal_open_contract.contract_id) &&
+                    isEnded(proposal_open_contract)
+                ) {
+                    this.reported_transactions.push(proposal_open_contract.contract_id);
 
-                    this.onBotContractEvent(proposal_open_contract);
+                    const { currency, profit } = proposal_open_contract;
 
-                    if (!reported_transactions.includes(trx.contract_id) && isEnded(proposal_open_contract)) {
-                        reported_transactions.push(trx.contract_id);
-
-                        const { currency, profit } = proposal_open_contract;
-
-                        this.root_store.journal.onLogSuccess({
-                            log_type: profit > 0 ? log_types.PROFIT : log_types.LOST,
-                            extra: { currency, profit },
-                        });
-                    }
+                    this.root_store.journal.onLogSuccess({
+                        log_type: profit > 0 ? log_types.PROFIT : log_types.LOST,
+                        extra: { currency, profit },
+                    });
                 }
-            });
+            }
         });
     }
 }

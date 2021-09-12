@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
-import { CryptoConfig, isCryptocurrency, isMobile } from '@deriv/shared';
+import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Field, Formik } from 'formik';
 import { connect } from 'Stores/connect';
@@ -13,7 +13,8 @@ import '../../Sass/withdraw.scss';
 const MIN_ADDRESS_LENGTH = 25;
 
 const Header = ({ currency }) => {
-    const currency_name = CryptoConfig.get()[currency].name;
+    const currency_name = getCurrencyName(currency);
+    const currency_display_code = CryptoConfig.get()[currency].display_code;
 
     return (
         <Text
@@ -27,7 +28,7 @@ const Header = ({ currency }) => {
                 i18n_default_text='Withdraw {{currency}} ({{currency_symbol}}) to your wallet'
                 values={{
                     currency: currency_name,
-                    currency_symbol: currency?.toUpperCase(),
+                    currency_symbol: currency_display_code,
                 }}
             />
         </Text>
@@ -159,7 +160,7 @@ const CryptoWithdrawForm = ({
                 )}
             </Formik>
             <MobileWrapper>
-                {isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
+                {isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
             </MobileWrapper>
         </div>
     );

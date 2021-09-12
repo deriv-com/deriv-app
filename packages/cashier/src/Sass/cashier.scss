@@ -724,7 +724,7 @@
     @include mobile {
         display: flex;
         flex-direction: column;
-        grid-gap: 1.4rem;
+        margin: 1.4rem;
         fieldset {
             width: 100%;
         }

@@ -17,9 +17,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
         return null;
     }
 
-    let { address_hash, status_code, submit_date, transaction_hash, transaction_type } = crypto_transactions[
-        crypto_transactions.length - 1
-    ];
+    let { address_hash, status_code, submit_date, transaction_hash, transaction_type } = crypto_transactions[0];
 
     status_code = getStatus(transaction_type, status_code).name;
     submit_date = epochToMoment(submit_date).format('MMM D, YYYY');
@@ -29,7 +27,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
         : localize('Pending');
     address_hash = `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`;
 
-    const amount = crypto_transactions[crypto_transactions.length - 1].amount;
+    const amount = crypto_transactions[0].amount;
 
     const onClickViewAll = () => {
         setIsCryptoTransactionsVisible(true);

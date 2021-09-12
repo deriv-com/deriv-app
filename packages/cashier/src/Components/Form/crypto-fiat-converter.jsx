@@ -58,10 +58,8 @@ const CryptoFiatConverter = ({
     validateFromAmount,
     validateToAmount,
 }) => {
-    const { handleBlur, handleChange } = useFormikContext();
+    const { handleChange } = useFormikContext();
     const [arrow_icon_direction, setArrowIconDirection] = React.useState('right');
-    const [has_from_amount_changed, setHasFromAmountChanged] = React.useState(false);
-    const [has_to_amount_changed, setHasToAmountChanged] = React.useState(false);
 
     React.useEffect(() => {
         return () => resetConverter();
@@ -82,20 +80,13 @@ const CryptoFiatConverter = ({
                         onFocus={() => {
                             setArrowIconDirection('right');
                         }}
-                        onBlur={e => {
-                            handleBlur(e);
-                            if (has_from_amount_changed) {
-                                onChangeConverterFromAmount(e, from_currency, to_currency);
-                            }
-                            setHasFromAmountChanged(false);
-                        }}
                         onChange={e => {
-                            setHasFromAmountChanged(true);
+                            handleChange(e);
                             setIsTimerVisible(false);
                             setConverterFromAmount(e.target.value);
-                            handleChange(e);
                             percentageSelectorSelectionStatus(true);
                             calculatePercentage();
+                            onChangeConverterFromAmount(e, from_currency, to_currency);
                         }}
                         type='text'
                         error={converter_from_error}
@@ -121,20 +112,13 @@ const CryptoFiatConverter = ({
                             onFocus={() => {
                                 setArrowIconDirection('left');
                             }}
-                            onBlur={e => {
-                                handleBlur(e);
-                                if (has_to_amount_changed) {
-                                    onChangeConverterToAmount(e, to_currency, from_currency);
-                                }
-                                setHasToAmountChanged(false);
-                            }}
                             onChange={e => {
-                                setHasToAmountChanged(true);
+                                handleChange(e);
                                 setIsTimerVisible(false);
                                 setConverterToAmount(e.target.value);
-                                handleChange(e);
                                 percentageSelectorSelectionStatus(true);
                                 calculatePercentage();
+                                onChangeConverterToAmount(e, to_currency, from_currency);
                             }}
                             type='text'
                             error={converter_to_error}

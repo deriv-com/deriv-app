@@ -269,18 +269,18 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     calculatePercentage(amount = this.converter_from_amount) {
-        if(this.active_container === this.config.account_transfer.container) {
-            this.percentage = ((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
+        if (this.active_container === this.config.account_transfer.container) {
+            this.percentage = +((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
         } else {
-            this.percentage = ((amount / +this.root_store.client.balance) * 100).toFixed(0);
+            this.percentage = +((amount / +this.root_store.client.balance) * 100).toFixed(0);
         }
     }
 
     @action.bound
-    percentageSelectorSelectionStatus(status) {
-        this.should_percentage_reset = status;
+    percentageSelectorSelectionStatus(should_percentage_reset) {
+        this.should_percentage_reset = should_percentage_reset;
 
-        if (status) {
+        if (should_percentage_reset) {
             this.percentage = 0;
         }
     }
@@ -1839,7 +1839,100 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    validateTransferFrom(amount) {
+    async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
+        if (target.value) {
+            if (this.converter_from_error) {
+                this.setConverterFromAmount(target.value);
+                this.setConverterToAmount('');
+                this.setConverterToError('');
+                this.setIsTimerVisible(false);
+                this.setAccountTransferAmount('');
+            } else {
+                const rate = await this.getExchangeRate(from_currency, to_currency);
+                const decimals = getDecimalPlaces(to_currency);
+                const amount = (rate * target.value).toFixed(decimals);
+                this.setConverterFromAmount(target.value);
+                if (+amount || this.converter_from_amount) {
+                    this.setConverterToAmount(amount);
+                } else {
+                    this.setConverterToAmount('');
+                }
+                this.setConverterToError('');
+                this.setIsTimerVisible(true);
+                this.setAccountTransferAmount(target.value);
+            }
+        } else {
+            this.resetConverter();
+        }
+    }
+
+    @action.bound
+    async onChangeConverterToAmount({ target }, from_currency, to_currency) {
+        if (target.value) {
+            if (this.converter_to_error) {
+                this.setConverterToAmount(target.value);
+                this.setConverterFromAmount('');
+                this.setConverterFromError('');
+                this.setIsTimerVisible(false);
+                this.setAccountTransferAmount('');
+            } else {
+                const rate = await this.getExchangeRate(from_currency, to_currency);
+                const decimals = getDecimalPlaces(to_currency);
+                const amount = (rate * target.value).toFixed(decimals);
+                this.setConverterToAmount(target.value);
+                if (+amount || this.converter_to_amount) {
+                    this.setConverterFromAmount(amount);
+                } else {
+                    this.setConverterFromAmount('');
+                }
+                if (this.converter_from_error) {
+                    this.setIsTimerVisible(false);
+                    this.setAccountTransferAmount('');
+                } else {
+                    this.setConverterFromError('');
+                    this.setIsTimerVisible(true);
+                    this.setAccountTransferAmount(amount);
+                }
+            }
+        } else {
+            this.resetConverter();
+        }
+    }
+
+    @action.bound
+    setTransferPercentageSelectorResult(amount) {
+        const selected_from_currency = this.config.account_transfer.selected_from.currency;
+        const selected_to_currency = this.config.account_transfer.selected_to.currency;
+        if (amount > 0) {
+            this.setConverterFromAmount(amount);
+            this.validateTransferFromAmount(amount);
+            this.onChangeConverterFromAmount(
+                { target: { value: amount } },
+                selected_from_currency,
+                selected_to_currency
+            );
+        }
+        this.setIsTimerVisible(false);
+        this.percentageSelectorSelectionStatus(false);
+    }
+
+    @action.bound
+    setWithdrawPercentageSelectorResult(amount) {
+        if (amount > 0) {
+            this.setConverterFromAmount(amount);
+            this.validateWithdrawFromAmount(amount);
+            this.onChangeConverterFromAmount(
+                { target: { value: amount } },
+                this.root_store.client.currency,
+                this.root_store.client.current_fiat_currency
+            );
+        }
+        this.setIsTimerVisible(false);
+        this.percentageSelectorSelectionStatus(false);
+    }
+
+    @action.bound
+    validateTransferFromAmount(amount) {
         if (amount) {
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
@@ -1858,7 +1951,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    validateTransferTo(amount) {
+    validateTransferToAmount(amount) {
         if (amount) {
             const currency = this.config.account_transfer.selected_to.currency;
             const { is_ok, message } = validNumber(amount, {
@@ -1874,101 +1967,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
-        if (target.value) {
-            if (this.converter_from_error) {
-                this.setConverterFromAmount(target.value);
-                this.setConverterToAmount('');
-                this.setConverterToError('');
-                this.setIsTimerVisible(false);
-                this.setAccountTransferAmount('');
-            } else {
-                const rate = await this.getExchangeRate(from_currency, to_currency);
-                const decimals = getDecimalPlaces(to_currency);
-                const amount = (rate * target.value).toFixed(decimals);
-                this.setConverterFromAmount(target.value);
-                this.setConverterToAmount(amount);
-                this.setConverterToError('');
-                this.setIsTimerVisible(true);
-                this.setAccountTransferAmount(target.value);
-            }
-        } else {
-            this.resetConverter();
-        }
-    }
-
-    @action.bound
-    async onChangeConverterToAmount({ target }, from_currency, to_currency) {
-        if (target.value) {
-            if (this.converter_to_error) {
-                this.setConverterFromAmount('');
-                this.setConverterFromError('');
-                this.setIsTimerVisible(false);
-                this.setAccountTransferAmount('');
-            } else {
-                const rate = await this.getExchangeRate(from_currency, to_currency);
-                const decimals = getDecimalPlaces(to_currency);
-                const amount = (rate * target.value).toFixed(decimals);
-                this.validateTransferFrom(amount);
-                if (this.converter_from_error) {
-                    this.setConverterFromAmount(amount);
-                    this.setIsTimerVisible(false);
-                    this.setAccountTransferAmount('');
-                } else {
-                    this.setConverterFromAmount(amount);
-                    this.setConverterFromError('');
-                    this.setIsTimerVisible(true);
-                    this.setAccountTransferAmount(amount);
-                    this.calculatePercentage(amount);
-                }
-            }
-        } else {
-            this.resetConverter();
-        }
-    }
-
-    @action.bound
-    resetConverter() {
-        this.setConverterFromAmount('');
-        this.setConverterToAmount('');
-        this.setConverterFromError('');
-        this.setConverterToError('');
-        this.setIsTimerVisible(false);
-        this.calculatePercentage(0);
-    }
-
-    @action.bound
-    setPercentageSelectorResult(amount) {
-        const selected_from_currency = this.config.account_transfer.selected_from.currency;
-        const selected_to_currency = this.config.account_transfer.selected_to.currency;
-        if (amount > 0) {
-            this.resetConverter();
-            this.validateTransferFrom(amount);
-            this.onChangeConverterFromAmount(
-                { target: { value: amount } },
-                selected_from_currency,
-                selected_to_currency
-            );
-        }
-    }
-
-    @action.bound
-    setWithdrawPercentageSelectorResult(amount) {
-        if (amount > 0) {
-            this.setConverterFromAmount(amount);
-            this.validateCryptoAmount(amount);
-            this.onChangeConverterFromAmount(
-                { target: { value: amount } },
-                this.root_store.client.currency,
-                this.root_store.client.current_fiat_currency
-            );
-        }
-        this.setIsTimerVisible(false);
-        this.percentageSelectorSelectionStatus(false);
-    }
-
-    @action.bound
-    validateCryptoAmount = amount => {
+    validateWithdrawFromAmount = amount => {
         let error_message = '';
         const { balance, currency } = this.root_store.client;
         if (!amount && !this.converter_from_amount) {
@@ -1984,11 +1983,10 @@ export default class CashierStore extends BaseStore {
             if (+balance < +amount) error_message = localize('Insufficient funds');
         }
         this.setConverterFromError(error_message);
-        return error_message ?? undefined;
     };
 
     @action.bound
-    validateFiatAmount = amount => {
+    validateWithdrawtoAmount = amount => {
         let error_message;
         const { current_fiat_currency } = this.root_store.client;
 
@@ -2001,6 +1999,15 @@ export default class CashierStore extends BaseStore {
         }
 
         this.setConverterToError(error_message);
-        return error_message ?? undefined;
     };
+
+    @action.bound
+    resetConverter() {
+        this.setConverterFromAmount('');
+        this.setConverterToAmount('');
+        this.setConverterFromError('');
+        this.setConverterToError('');
+        this.setIsTimerVisible(false);
+        this.percentageSelectorSelectionStatus(true);
+    }
 }

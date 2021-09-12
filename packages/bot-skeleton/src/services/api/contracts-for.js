@@ -440,7 +440,7 @@ export default class ContractsFor {
                 const is_disabled = this.isDisabledOption({
                     market,
                     submarket,
-                    symbol,
+                    symbol: contracts_for_symbol_options.symbol,
                     trade_type_category,
                 });
 

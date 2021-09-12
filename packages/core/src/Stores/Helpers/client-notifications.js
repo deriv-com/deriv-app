@@ -382,7 +382,6 @@ export const clientNotifications = (ui = {}, client = {}) => {
         },
         deriv_go: {
             key: 'deriv_go',
-            header: localize('Deriv go'),
             message: (
                 <Localize
                     i18n_default_text='Get a faster mobile trading experience with the <0>Deriv GO</0> app!'

@@ -10,6 +10,7 @@ import { isMultiplierContract } from '@deriv/shared';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
+import { lowerFirst } from 'lodash';
 
 const Contract = ({
     contract_type,
@@ -29,12 +30,14 @@ const Contract = ({
         underlying_name: getMarketNamesMap()[symbol.toUpperCase()],
     });
 
-    React.useEffect(() => {
-        if (isMultiplierContract(contract_type) && current_language === 'EN' && is_logged_in) {
-            addNotificationMessageByKey('deriv_go');
-        } else {
-            removeNotificationMessageByKey({ key: 'deriv_go' });
-        }
+    React.useLayoutEffect(() => {
+        setTimeout(() => {
+            if (isMultiplierContract(contract_type) && current_language === 'EN' && is_logged_in) {
+                addNotificationMessageByKey('deriv_go');
+            } else {
+                removeNotificationMessageByKey({ key: 'deriv_go' });
+            }
+        });
     }, [contract_type, current_language, is_logged_in, addNotificationMessageByKey, removeNotificationMessageByKey]);
 
     return (

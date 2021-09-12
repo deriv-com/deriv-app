@@ -268,8 +268,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    calculatePercentage() {
-        this.percentage = ((this.converter_from_amount / +this.root_store.client.balance) * 100).toFixed(0);
+    calculatePercentage(amount = this.converter_from_amount) {
+        this.percentage = ((amount / +this.root_store.client.balance) * 100).toFixed(0);
     }
 
     @action.bound
@@ -1916,6 +1916,7 @@ export default class CashierStore extends BaseStore {
                     this.setIsTimerVisible(true);
                     this.setAccountTransferAmount(amount);
                     this.validateCryptoAmount(this.converter_from_amount);
+                    this.calculatePercentage(amount);
                 }
             }
         } else {
@@ -1930,6 +1931,7 @@ export default class CashierStore extends BaseStore {
         this.setConverterFromError('');
         this.setConverterToError('');
         this.setIsTimerVisible(false);
+        this.calculatePercentage(0);
     }
 
     @action.bound

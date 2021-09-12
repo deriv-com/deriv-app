@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, useFormikContext } from 'formik';
 import { DesktopWrapper, Input, Icon, MobileWrapper, Text } from '@deriv/components';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
@@ -98,7 +99,7 @@ const CryptoFiatConverter = ({
                         }}
                         type='text'
                         error={converter_from_error}
-                        label={localize('Amount ({{currency}})', { currency: from_currency })}
+                        label={localize('Amount ({{currency}})', { currency: getCurrencyDisplayCode(from_currency) })}
                         value={converter_from_amount}
                         autoComplete='off'
                         required
@@ -137,7 +138,7 @@ const CryptoFiatConverter = ({
                             }}
                             type='text'
                             error={converter_to_error}
-                            label={localize('Amount ({{currency}})', { currency: to_currency })}
+                            label={localize('Amount ({{currency}})', { currency: getCurrencyDisplayCode(to_currency) })}
                             value={converter_to_amount}
                             autoComplete='off'
                             hint={localize('Approximate value')}

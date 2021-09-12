@@ -97,6 +97,7 @@ const Withdrawal = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);
 
+    // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_withdrawal_locked && current_currency_type === 'crypto')) {
             return <CashierLocked />;
@@ -130,10 +131,10 @@ const Withdrawal = ({
     if (!is_crypto && (verification_code || iframe_url)) {
         return <Withdraw />;
     }
-    if (verification_code && is_crypto && !is_withdraw_confirmed) {
+    if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawForm />;
     }
-    if (is_withdraw_confirmed) {
+    if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawReceipt />;
     }
     if (is_crypto_transactions_visible) {

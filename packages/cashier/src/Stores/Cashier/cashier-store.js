@@ -1964,6 +1964,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     validateCryptoAmount = amount => {
         let error_message = '';
+        const min_withdraw_amount = this.root_store.client.website_status.crypto_config[this.root_store.client.currency]
+            .minimum_withdrawal;
+
         const { balance, currency } = this.root_store.client;
         if (!amount && !this.converter_from_amount) {
             error_message = localize('This field is required.');
@@ -1976,27 +1979,15 @@ export default class CashierStore extends BaseStore {
             if (!is_ok) error_message = message;
 
             if (+balance < +amount) error_message = localize('Insufficient funds');
-        }
 
-        if (error_message === '') {
-            this.WS.cryptoWithdraw({
-                address: this.blockchain_address,
-                amount: this.converter_from_amount,
-                verification_code: this.root_store.client.verification_code.payment_withdraw,
-                dry_run: 1,
-            }).then(response => {
-                if (
-                    [
-                        'CryptoWithdrawalMinimumNotMet',
-                        'CryptoWithdrawalLimitExceeded',
-                        'CryptoWithdrawalMaxReached',
-                        'CryptoInvalidAmount',
-                    ].includes(response?.error?.code)
-                ) {
-                    error_message = response.error.message;
-                    this.setConverterFromError(response.error.message);
-                }
-            });
+            if (+amount < +min_withdraw_amount) {
+                error_message = (
+                    <Localize
+                        i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'
+                        values={{ min_withdraw_amount, currency: this.root_store.client.currency }}
+                    />
+                );
+            }
         }
         this.setConverterFromError(error_message);
     };

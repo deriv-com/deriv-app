@@ -269,7 +269,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     calculatePercentage(amount = this.converter_from_amount) {
-        if(this.active_container === this.config.account_transfer.container) {
+        if (this.active_container === this.config.account_transfer.container) {
             this.percentage = ((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
         } else {
             this.percentage = ((amount / +this.root_store.client.balance) * 100).toFixed(0);
@@ -470,12 +470,19 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountWithdraw(verification_code) {
         this.setLoading(true);
-        const response_cashier = await this.WS.cryptoWithdraw({
-            address: this.blockchain_address,
-            amount: +this.converter_from_amount,
-            verification_code,
-            dry_run: 1,
-        });
+        const strRegExp = /^\w{8,128}$/;
+        let response_cashier;
+
+        if (strRegExp.test(verification_code)) {
+            response_cashier = await this.WS.cryptoWithdraw({
+                address: this.blockchain_address,
+                amount: +this.converter_from_amount,
+                verification_code,
+                dry_run: 1,
+            });
+        } else {
+            response_cashier = { error: { code: 'InvalidToken', message: 'Your token has expired or is invalid.' } };
+        }
 
         if (response_cashier.error.code === 'InvalidToken') {
             this.handleCashierError(response_cashier.error);
@@ -486,7 +493,6 @@ export default class CashierStore extends BaseStore {
                 // clear verification code on error
                 this.clearVerification();
             }
-            this.setErrorMessage(this.config.withdraw.error, this.onMountWithdraw);
         } else {
             this.setLoading(false);
         }

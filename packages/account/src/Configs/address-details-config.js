@@ -12,11 +12,11 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_line_1 ?? '',
             rules: [
                 ['req', localize('First line of address is required')],
-                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
                     localize(
-                        'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
+                        'Only letters, numbers, periods, hyphens, apostrophes, and spaces, please.'
                     ),
                     {
                         regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]\{\}]{1,70}$/,
@@ -29,11 +29,11 @@ const address_details_config = ({ account_settings, is_svg }) => {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
             rules: [
-                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
                     localize(
-                        'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
+                        'Only letters, numbers, periods, hyphens, apostrophes, and spaces, please.'
                     ),
                     {
                         regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]\{\}]{0,70}$/,
@@ -47,10 +47,10 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_city ?? '',
             rules: [
                 ['req', localize('City is required')],
-                ['length', localize('This should not exceed {{max}} characters.', { max: 99 }), { max: 99 }],
+                ['length', localize('Only {{max}} characters, please.', { max: 99 }), { max: 99 }],
                 [
                     'regular',
-                    localize('Only letters, numbers, spaces, periods, hyphens, and apostrophes allowed'),
+                    localize('Only letters, numbers, periods, hyphens, apostrophes, and spaces, please.'),
                     {
                         regex: /^\p{L}[\p{L}\s'.-]{0,99}$/u,
                     },

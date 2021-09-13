@@ -11,6 +11,7 @@ import PercentageSelector from '../percentage-selector';
 import '../../Sass/withdraw.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
+const DEFAULT_FIAT_CURRENCY = 'USD';
 
 const Header = ({ currency }) => {
     const currency_name = getCurrencyName(currency);
@@ -132,7 +133,7 @@ const CryptoWithdrawForm = ({
                         <div className='withdraw__crypto-fiat-converter'>
                             <CryptoFiatConverter
                                 from_currency={crypto_currency}
-                                to_currency={current_fiat_currency}
+                                to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawtoAmount}
                             />

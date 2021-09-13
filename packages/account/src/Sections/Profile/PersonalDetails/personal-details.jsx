@@ -277,10 +277,6 @@ export class PersonalDetailsForm extends React.Component {
             errors.address_city = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
         }
 
-        if (values.address_city.indexOf('Jersey') !== -1) {
-            errors.address_city = localize('fdsfaefaewfawefafasfawe');
-        }
-
         const state_is_input_element = values.address_state && !states_list.length;
         if (state_is_input_element) {
             if (!validLength(values.address_state, { min: 0, max: 35 })) {

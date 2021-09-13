@@ -13,7 +13,9 @@ export const getStatus = (transaction_type, status_code) => {
             },
             error: {
                 name: localize('Unsuccessful'),
-                description: localize('Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.'),
+                description: localize(
+                    'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.'
+                ),
                 renderer: 'unsuccessful',
             },
             pending: {
@@ -43,7 +45,9 @@ export const getStatus = (transaction_type, status_code) => {
             },
             locked: {
                 name: localize('In review'),
-                description: localize("We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel."),
+                description: localize(
+                    "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel."
+                ),
                 renderer: 'in-review',
             },
             performing_blockchain_txn: {
@@ -58,7 +62,9 @@ export const getStatus = (transaction_type, status_code) => {
             },
             rejected: {
                 name: localize('Unsuccessful'),
-                description: localize("Your withdrawal is unsuccessful. We've sent you an email with more information."),
+                description: localize(
+                    "Your withdrawal is unsuccessful. We've sent you an email with more information."
+                ),
                 renderer: 'unsuccessful',
             },
             sent: {
@@ -73,7 +79,6 @@ export const getStatus = (transaction_type, status_code) => {
             },
         },
     };
-
 
     return status_list[transaction_type][formatted_status_code];
 };

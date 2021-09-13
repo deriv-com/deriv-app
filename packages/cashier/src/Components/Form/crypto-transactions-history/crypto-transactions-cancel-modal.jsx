@@ -5,11 +5,11 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const CryptoTransactionsCancelModal = ({
-        cancelCryptoTransaction, 
-        hideCryptoTransactionsCancelModal, 
-        is_cancel_modal_visible, 
-        selected_crypto_transaction_id,
-    }) => {
+    cancelCryptoTransaction,
+    hideCryptoTransactionsCancelModal,
+    is_cancel_modal_visible,
+    selected_crypto_transaction_id,
+}) => {
     return (
         <React.Fragment>
             <Modal

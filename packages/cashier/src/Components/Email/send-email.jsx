@@ -42,7 +42,7 @@ const SendEmail = ({
                         <Localize i18n_default_text='Please help us verify your withdrawal request.' />
                     </Text>
                     <Text as='p' align='center' size={isMobile() ? 'xxs' : 's'} className='withdraw__send-email--space'>
-                        <Localize i18n_default_text="Hit the button bellow and we'll send you an email with a link. Click that link to verify your withdrawal request." />
+                        <Localize i18n_default_text="Hit the button below and we'll send you an email with a link. Click that link to verify your withdrawal request." />
                     </Text>
                     <Text as='p' align='center' size={isMobile() ? 'xxs' : 's'}>
                         <Localize i18n_default_text='This is to protect your account from unauthorised withdrawals.' />
@@ -56,7 +56,7 @@ const SendEmail = ({
                         large
                     />
                     <MobileWrapper>
-                        {isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
+                        {isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
                     </MobileWrapper>
                 </React.Fragment>
             )}

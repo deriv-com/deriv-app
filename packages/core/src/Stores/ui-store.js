@@ -520,7 +520,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     addNotificationMessage(notification) {
         if (!notification) return;
-        if (!this.notification_messages.find(item => item.header === notification.header)) {
+        if (!this.notification_messages.find(item => item.key === notification.key)) {
             // Remove notification messages if it was already closed by user and exists in LocalStore
             const active_loginid = LocalStore.get('active_loginid');
             const messages = LocalStore.getObject('notification_messages');

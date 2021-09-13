@@ -12,7 +12,6 @@ import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
 
 const Contract = ({
-    addNotificationMessageByKey,
     contract_type,
     contract_types_list,
     current_language,
@@ -20,8 +19,9 @@ const Contract = ({
     is_equal,
     is_logged_in,
     onChange,
-    removeNotificationMessageByKey,
     symbol,
+    addNotificationMessageByKey,
+    removeNotificationMessageByKey,
 }) => {
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
 
@@ -30,12 +30,14 @@ const Contract = ({
     });
 
     React.useEffect(() => {
-        if (isMultiplierContract(contract_type) && current_language === 'EN' && is_logged_in) {
-            addNotificationMessageByKey('deriv_go');
-        } else {
-            removeNotificationMessageByKey({ key: 'deriv_go' });
-        }
-    }, [addNotificationMessageByKey, contract_type, current_language, is_logged_in, removeNotificationMessageByKey]);
+        setTimeout(() => {
+            if (isMultiplierContract(contract_type) && current_language === 'EN' && is_logged_in) {
+                addNotificationMessageByKey('deriv_go');
+            } else {
+                removeNotificationMessageByKey({ key: 'deriv_go' });
+            }
+        });
+    }, [contract_type, current_language, is_logged_in, addNotificationMessageByKey, removeNotificationMessageByKey]);
 
     return (
         <React.Fragment>
@@ -63,19 +65,21 @@ Contract.propTypes = {
     is_digit_view: PropTypes.bool,
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func,
+    is_logged_in: PropTypes.bool,
+    current_language: PropTypes.string,
     addNotificationMessageByKey: PropTypes.func,
     removeNotificationMessageByKey: PropTypes.func,
 };
 
-export default connect(({ client, common, modules, ui }) => ({
-    addNotificationMessageByKey: ui.addNotificationMessageByKey,
+export default connect(({ modules, client, common, ui }) => ({
     contract_type: modules.trade.contract_type,
     contract_types_list: modules.trade.contract_types_list,
-    current_language: common.current_language,
     is_digit_view: modules.trade.is_mobile_digit_view_selected,
     is_equal: modules.trade.is_equal,
-    is_logged_in: client.is_logged_in,
     onChange: modules.trade.onChange,
-    removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     symbol: modules.trade.symbol,
+    is_logged_in: client.is_logged_in,
+    current_language: common.current_language,
+    addNotificationMessageByKey: ui.addNotificationMessageByKey,
+    removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
 }))(Contract);

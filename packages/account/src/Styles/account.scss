@@ -1816,8 +1816,10 @@ $MIN_HEIGHT_FLOATING: calc(
         z-index: 4;
     }
     &__footer {
-        position: fixed;
-        bottom: 36px;
+        @media (max-height: 900px) {
+            position: fixed;
+            bottom: 36px;
+        }
 
         @include mobile {
             display: flex;

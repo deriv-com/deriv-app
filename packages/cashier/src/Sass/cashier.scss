@@ -724,12 +724,14 @@
     @include mobile {
         display: flex;
         flex-direction: column;
-        grid-gap: 1.4rem;
         fieldset {
             width: 100%;
         }
         .dc-input {
             margin-bottom: 1rem;
+        }
+        .dc-icon {
+            margin: 1.4rem;
         }
     }
     &__text {

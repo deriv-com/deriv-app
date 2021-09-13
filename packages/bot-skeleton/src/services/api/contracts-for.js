@@ -156,11 +156,8 @@ export default class ContractsFor {
         return trade_type_category || trade_type;
     }
 
-    getTradeTypeCategoryNameByTradeType(trade_type) {
-        const { TRADE_TYPE_CATEGORY_NAMES } = config;
-        const trade_type_category = this.getTradeTypeCategoryByTradeType(trade_type);
-
-        return TRADE_TYPE_CATEGORY_NAMES[trade_type_category];
+    getTradeTypeCategoryNameByTradeType(contract) {
+        return contract.contract_category_display;
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -369,7 +366,7 @@ export default class ContractsFor {
             const market = contracts[i].market;
             const submarket = contracts[i].submarket;
             const trade_type_category = this.getTradeTypeCategoryByTradeType(contracts[i].contract_category);
-            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contracts[i].contract_category);
+            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contracts[i]);
             // eslint-disable-next-line no-await-in-loop
             const trade_types = await this.getTradeTypeByTradeCategory(
                 market,
@@ -428,13 +425,13 @@ export default class ContractsFor {
     }
 
     async getTradeTypeCategories(market, submarket, contracts_for_symbol_options) {
-        const { TRADE_TYPE_CATEGORY_NAMES, NOT_AVAILABLE_DROPDOWN_OPTIONS } = config;
+        const { NOT_AVAILABLE_DROPDOWN_OPTIONS } = config;
         const contracts = await this.getContractsFor(contracts_for_symbol_options);
         const trade_type_categories = [];
 
         contracts.forEach(contract => {
             const trade_type_category = this.getTradeTypeCategoryByTradeType(contract.contract_category);
-            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contract.contract_category);
+            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contract);
 
             if (trade_type_category_name) {
                 const is_disabled = this.isDisabledOption({
@@ -456,13 +453,7 @@ export default class ContractsFor {
         });
 
         if (trade_type_categories.length > 0) {
-            const category_names = Object.keys(TRADE_TYPE_CATEGORY_NAMES);
-
-            return trade_type_categories.sort((a, b) => {
-                const index_a = category_names.findIndex(c => c === a[1]);
-                const index_b = category_names.findIndex(c => c === b[1]);
-                return index_a - index_b;
-            });
+            return trade_type_categories.sort();
         }
 
         return NOT_AVAILABLE_DROPDOWN_OPTIONS;

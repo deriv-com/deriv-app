@@ -1816,6 +1816,9 @@ $MIN_HEIGHT_FLOATING: calc(
         z-index: 4;
     }
     &__footer {
+        position: fixed;
+        bottom: 36px;
+
         @include mobile {
             display: flex;
             flex-direction: row;

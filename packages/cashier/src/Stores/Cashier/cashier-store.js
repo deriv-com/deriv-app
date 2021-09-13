@@ -1967,7 +1967,7 @@ export default class CashierStore extends BaseStore {
             this.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 this.root_store.client.currency,
-                this.root_store.client.current_fiat_currency
+                this.root_store.client.current_fiat_currency || 'USD'
             );
         }
         this.setIsTimerVisible(false);

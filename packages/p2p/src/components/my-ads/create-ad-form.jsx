@@ -96,7 +96,7 @@ const CreateAdForm = () => {
             >
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
-                    const preventMathAttrs = v => ['e', 'E', '+', '-', ','].includes(v.key) && v.preventDefault();
+                    const preventMathAttributes = v => ['e', 'E', '+', '-', ','].includes(v.key) && v.preventDefault();
 
                     return (
                         <div className='p2p-my-ads__form'>
@@ -146,7 +146,7 @@ const CreateAdForm = () => {
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
-                                                        onKeyDown={preventMathAttrs}
+                                                        onKeyDown={preventMathAttributes}
                                                         error={touched.offer_amount && errors.offer_amount}
                                                         label={localize('Total amount')}
                                                         className='p2p-my-ads__form-field'
@@ -186,7 +186,7 @@ const CreateAdForm = () => {
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
-                                                        onKeyDown={preventMathAttrs}
+                                                        onKeyDown={preventMathAttributes}
                                                         error={touched.price_rate && errors.price_rate}
                                                         label={localize('Fixed rate (1 {{currency}})', {
                                                             currency,
@@ -216,7 +216,7 @@ const CreateAdForm = () => {
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
-                                                        onKeyDown={preventMathAttrs}
+                                                        onKeyDown={preventMathAttributes}
                                                         error={touched.min_transaction && errors.min_transaction}
                                                         label={localize('Min order')}
                                                         className='p2p-my-ads__form-field'
@@ -242,7 +242,7 @@ const CreateAdForm = () => {
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
-                                                        onKeyDown={preventMathAttrs}
+                                                        onKeyDown={preventMathAttributes}
                                                         error={touched.max_transaction && errors.max_transaction}
                                                         label={localize('Max order')}
                                                         className='p2p-my-ads__form-field'

@@ -189,6 +189,7 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
+    @observable withdraw_amount = '';
     @observable converter_from_amount = '';
     @observable converter_to_amount = '';
     @observable converter_from_error = '';
@@ -251,16 +252,28 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setIsWithdrawConfirmed(value) {
-        this.is_withdraw_confirmed = value;
-        if (!value && this.config[this.active_container].verification) {
+    setIsWithdrawConfirmed(is_withdraw_confirmed) {
+        this.is_withdraw_confirmed = is_withdraw_confirmed;
+
+        if (is_withdraw_confirmed) this.setWithdrawAmount(this.converter_from_amount);
+
+        if (!is_withdraw_confirmed && this.config[this.active_container].verification) {
             this.clearVerification();
         }
     }
 
     @action.bound
-    calculatePercentage() {
-        this.percentage = ((this.converter_from_amount / +this.root_store.client.balance) * 100).toFixed(0);
+    setWithdrawAmount(amount) {
+        this.withdraw_amount = amount;
+    }
+
+    @action.bound
+    calculatePercentage(amount = this.converter_from_amount) {
+        if(this.active_container === this.config.account_transfer.container) {
+            this.percentage = ((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
+        } else {
+            this.percentage = ((amount / +this.root_store.client.balance) * 100).toFixed(0);
+        }
     }
 
     @action.bound
@@ -1906,6 +1919,7 @@ export default class CashierStore extends BaseStore {
                     this.setConverterFromError('');
                     this.setIsTimerVisible(true);
                     this.setAccountTransferAmount(amount);
+                    this.calculatePercentage(amount);
                 }
             }
         } else {
@@ -1920,6 +1934,7 @@ export default class CashierStore extends BaseStore {
         this.setConverterFromError('');
         this.setConverterToError('');
         this.setIsTimerVisible(false);
+        this.calculatePercentage(0);
     }
 
     @action.bound

@@ -29,7 +29,7 @@ const AcountInformation = ({ account }) => {
                     align='center'
                     className='withdraw__account-info-detail-text'
                 >
-                    {getAccountText(account)}
+                    {account?.currency?.toUpperCase()}
                 </Text>
             </div>
             <Text
@@ -150,7 +150,7 @@ const CryptoWithdrawReceipt = ({
                     id='withdraw_receipt'
                     className='withdraw__receipt-button'
                     has_effect
-                    text={localize('Make a new withdraw')}
+                    text={localize('Make a new withdrawal')}
                     onClick={() => setIsWithdrawConfirmed(false)}
                     primary
                 />

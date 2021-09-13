@@ -7,11 +7,11 @@ import FormFooter from 'Components/form-footer';
 
 const CountrySelector = ({
     handleSelectionNext,
-    has_attempted_idv,
     is_from_external,
     residence_list,
     selected_country,
     setSelectedCountry,
+    show_helper_msg,
 }) => {
     const [country_list, setCountryList] = React.useState([]);
 
@@ -135,7 +135,7 @@ const CountrySelector = ({
                     <FormFooter
                         className={classNames('proof-of-identity__footer', { 'external-footer': is_from_external })}
                     >
-                        {has_attempted_idv && (
+                        {show_helper_msg && (
                             <Text color='red' weight='bold' className='proof-of-identity__footer-alert' size='xs'>
                                 {localize('Try submitting an ID document instead.')}
                             </Text>

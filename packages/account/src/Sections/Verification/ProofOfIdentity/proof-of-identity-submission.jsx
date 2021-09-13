@@ -96,17 +96,19 @@ const POISubmission = ({
     }, []);
 
     switch (submission_status) {
-        case submission_status_code.selecting:
+        case submission_status_code.selecting: {
+            const show_helper_msg = has_attempted_idv && Number(idv.submissions_left) > 0;
             return (
                 <CountrySelector
                     handleSelectionNext={handleSelectionNext}
-                    has_attempted_idv={has_attempted_idv}
+                    show_helper_msg={show_helper_msg}
                     is_from_external={is_from_external}
                     residence_list={residence_list}
                     selected_country={selected_country}
                     setSelectedCountry={setSelectedCountry}
                 />
             );
+        }
         case submission_status_code.submitting: {
             switch (submission_service) {
                 case service_code.idv:

@@ -109,7 +109,7 @@ const CryptoDeposit = ({
                     </Text>
                 </ButtonLink>
             </div>
-            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
+            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
         </div>
     );
 };

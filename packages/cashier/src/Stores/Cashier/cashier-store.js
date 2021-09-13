@@ -269,7 +269,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     calculatePercentage(amount = this.converter_from_amount) {
-        if(this.active_container === this.config.account_transfer.container) {
+        if (this.active_container === this.config.account_transfer.container) {
             this.percentage = ((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
         } else {
             this.percentage = ((amount / +this.root_store.client.balance) * 100).toFixed(0);
@@ -1961,7 +1961,7 @@ export default class CashierStore extends BaseStore {
             this.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 this.root_store.client.currency,
-                this.root_store.client.current_fiat_currency
+                this.root_store.client.current_fiat_currency || 'USD'
             );
         }
         this.setIsTimerVisible(false);

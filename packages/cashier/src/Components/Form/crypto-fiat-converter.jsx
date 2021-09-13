@@ -78,8 +78,6 @@ const CryptoFiatConverter = ({
                             setArrowIconDirection('right');
                         }}
                         onChange={e => {
-                            percentageSelectorSelectionStatus(true);
-                            calculatePercentage();
                             onChangeConverterFromAmount(e, from_currency, to_currency);
                             handleChange(e);
                         }}
@@ -108,8 +106,6 @@ const CryptoFiatConverter = ({
                                 setArrowIconDirection('left');
                             }}
                             onChange={e => {
-                                percentageSelectorSelectionStatus(true);
-                                calculatePercentage();
                                 onChangeConverterToAmount(e, to_currency, from_currency);
                                 handleChange(e);
                             }}

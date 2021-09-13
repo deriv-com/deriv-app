@@ -1840,6 +1840,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
+        this.resetTimer();
         if (target.value) {
             this.setConverterFromAmount(target.value);
             this.validateFromAmount();
@@ -1862,6 +1863,8 @@ export default class CashierStore extends BaseStore {
                 this.setIsTimerVisible(true);
                 this.setAccountTransferAmount(target.value);
             }
+            this.percentageSelectorSelectionStatus(true);
+            this.calculatePercentage();
         } else {
             this.resetConverter();
         }
@@ -1869,6 +1872,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onChangeConverterToAmount({ target }, from_currency, to_currency) {
+        this.resetTimer();
         if (target.value) {
             this.setConverterToAmount(target.value);
             this.validateToAmount();
@@ -1896,6 +1900,8 @@ export default class CashierStore extends BaseStore {
                     this.setAccountTransferAmount(amount);
                 }
             }
+            this.percentageSelectorSelectionStatus(true);
+            this.calculatePercentage();
         } else {
             this.resetConverter();
         }

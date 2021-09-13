@@ -257,7 +257,7 @@ export default class UIStore extends BaseStore {
 
     @computed
     get filtered_notifications() {
-        return this.notifications.filter(message => message.type !== 'news');
+        return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
     }
 
     @action.bound

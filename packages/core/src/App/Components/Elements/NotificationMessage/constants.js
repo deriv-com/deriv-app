@@ -23,13 +23,13 @@ export const types = {
 
 export const sortNotifications = (() => {
     const notification_order = {
-        news: 1,
-        contract_sold: 2,
-        danger: 3,
-        warning: 4,
-        info: 5,
-        success: 6,
-        promotion: 7,
+        promotions: 1,
+        news: 2,
+        contract_sold: 3,
+        danger: 4,
+        warning: 5,
+        info: 6,
+        success: 7,
     };
 
     return (a, b) => notification_order[a.type] - notification_order[b.type];
@@ -39,11 +39,11 @@ export const sortNotificationsMobile = (() => {
     const notification_order_mobile = {
         contract_sold: 1,
         danger: 2,
-        news: 3,
-        warning: 4,
-        info: 5,
-        success: 6,
-        promotion: 7,
+        promotions: 3,
+        news: 4,
+        warning: 5,
+        info: 6,
+        success: 7,
     };
 
     return (a, b) => notification_order_mobile[a.type] - notification_order_mobile[b.type];

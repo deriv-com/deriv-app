@@ -71,14 +71,7 @@ export default class RunPanelStore {
 
     @computed
     get is_stop_button_disabled() {
-        switch (this.contract_stage) {
-            case contract_stages.PURCHASE_SENT:
-                return true;
-            case contract_stages.IS_STOPPING:
-                return true;
-            default:
-                return false;
-        }
+        return [contract_stages.PURCHASE_SENT,contract_stages.IS_STOPPING].includes(this.cotract_stage)
     }
 
     @computed

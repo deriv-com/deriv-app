@@ -39,7 +39,6 @@ const InputGroup = ({ children, className }) => {
 };
 
 const CryptoFiatConverter = ({
-    calculatePercentage,
     converter_from_amount,
     converter_from_error,
     converter_to_error,
@@ -49,7 +48,6 @@ const CryptoFiatConverter = ({
     is_timer_visible,
     onChangeConverterFromAmount,
     onChangeConverterToAmount,
-    percentageSelectorSelectionStatus,
     resetConverter,
     to_currency,
     validateFromAmount,
@@ -139,7 +137,6 @@ const CryptoFiatConverter = ({
 };
 
 CryptoFiatConverter.propTypes = {
-    calculatePercentage: PropTypes.func,
     converter_from_amount: PropTypes.string,
     converter_from_error: PropTypes.string,
     converter_to_error: PropTypes.string,
@@ -148,7 +145,6 @@ CryptoFiatConverter.propTypes = {
     is_timer_visible: PropTypes.bool,
     onChangeConverterFromAmount: PropTypes.func,
     onChangeConverterToAmount: PropTypes.func,
-    percentageSelectorSelectionStatus: PropTypes.func,
     resetConverter: PropTypes.func,
     to_currency: PropTypes.string,
     validateFromAmount: PropTypes.func,
@@ -156,7 +152,6 @@ CryptoFiatConverter.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    calculatePercentage: modules.cashier.calculatePercentage,
     converter_from_amount: modules.cashier.converter_from_amount,
     converter_from_error: modules.cashier.converter_from_error,
     converter_to_error: modules.cashier.converter_to_error,
@@ -164,6 +159,5 @@ export default connect(({ modules }) => ({
     is_timer_visible: modules.cashier.is_timer_visible,
     onChangeConverterFromAmount: modules.cashier.onChangeConverterFromAmount,
     onChangeConverterToAmount: modules.cashier.onChangeConverterToAmount,
-    percentageSelectorSelectionStatus: modules.cashier.percentageSelectorSelectionStatus,
     resetConverter: modules.cashier.resetConverter,
 }))(CryptoFiatConverter);

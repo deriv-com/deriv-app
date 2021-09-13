@@ -289,7 +289,7 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: this.converter_from_amount,
+            amount: +this.converter_from_amount,
             verification_code,
         }).then(response => {
             if (response.error) {
@@ -313,7 +313,7 @@ export default class CashierStore extends BaseStore {
 
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: this.converter_from_amount,
+            amount: +this.converter_from_amount,
             verification_code,
             dry_run: 1,
         }).then(response => {
@@ -1852,14 +1852,14 @@ export default class CashierStore extends BaseStore {
                 const decimals = getDecimalPlaces(to_currency);
                 const amount = (rate * target.value).toFixed(decimals);
                 this.setConverterFromAmount(target.value);
+                this.setConverterToError('');
+                this.setIsTimerVisible(true);
+                this.setAccountTransferAmount(target.value);
                 if (+amount || this.converter_from_amount) {
                     this.setConverterToAmount(amount);
                 } else {
                     this.setConverterToAmount('');
                 }
-                this.setConverterToError('');
-                this.setIsTimerVisible(true);
-                this.setAccountTransferAmount(target.value);
             }
         } else {
             this.resetConverter();
@@ -1880,11 +1880,6 @@ export default class CashierStore extends BaseStore {
                 const decimals = getDecimalPlaces(to_currency);
                 const amount = (rate * target.value).toFixed(decimals);
                 this.setConverterToAmount(target.value);
-                if (+amount || this.converter_to_amount) {
-                    this.setConverterFromAmount(amount);
-                } else {
-                    this.setConverterFromAmount('');
-                }
                 if (this.converter_from_error) {
                     this.setIsTimerVisible(false);
                     this.setAccountTransferAmount('');
@@ -1892,6 +1887,11 @@ export default class CashierStore extends BaseStore {
                     this.setConverterFromError('');
                     this.setIsTimerVisible(true);
                     this.setAccountTransferAmount(amount);
+                }
+                if (+amount || this.converter_to_amount) {
+                    this.setConverterFromAmount(amount);
+                } else {
+                    this.setConverterFromAmount('');
                 }
             }
         } else {
@@ -1969,18 +1969,30 @@ export default class CashierStore extends BaseStore {
     @action.bound
     validateWithdrawFromAmount = amount => {
         let error_message = '';
-        const { balance, currency } = this.root_store.client;
+
+        const { balance, currency, website_status } = this.root_store.client;
+        const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
+
         if (!amount && !this.converter_from_amount) {
             error_message = localize('This field is required.');
         }
         if (amount || this.converter_from_amount) {
-            const { is_ok, message } = validNumber(amount || this.converter_from_amount, {
+            const { is_ok, message } = validNumber(this.converter_from_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
             });
             if (!is_ok) error_message = message;
 
-            if (+balance < +amount) error_message = localize('Insufficient funds');
+            if (+balance < +this.converter_from_amount) error_message = localize('Insufficient funds');
+
+            if (+this.converter_from_amount < +min_withdraw_amount) {
+                error_message = (
+                    <Localize
+                        i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'
+                        values={{ min_withdraw_amount, currency: this.root_store.client.currency }}
+                    />
+                );
+            }
         }
         this.setConverterFromError(error_message);
     };

@@ -13,20 +13,22 @@ export const populateVerificationStatus = account_status => {
 
     const { idv, onfido, manual } = identity.services;
     const identity_last_attempt = attempts.latest;
+    const has_attempted_idv = !!(attempts.history.length && attempts.history.find(h => h.service === 'idv'));
 
     return {
         allow_document_upload,
         allow_poi_resubmission,
+        has_attempted_idv,
         has_poa,
         has_poi,
+        identity_last_attempt,
+        identity_status,
+        idv,
+        is_idv_disallowed,
+        manual,
         needs_poa,
         needs_poi,
         needs_verification,
-        idv,
         onfido,
-        manual,
-        identity_status,
-        identity_last_attempt,
-        is_idv_disallowed,
     };
 };

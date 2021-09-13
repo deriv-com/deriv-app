@@ -75,13 +75,14 @@ const ProofOfIdentityContainer = ({
     const verification_status = populateVerificationStatus(account_status);
     const {
         idv,
-        onfido,
-        manual,
-        identity_status,
-        identity_last_attempt,
-        needs_poa,
-        is_idv_disallowed,
         allow_poi_resubmission,
+        has_attempted_idv,
+        identity_last_attempt,
+        identity_status,
+        is_idv_disallowed,
+        manual,
+        needs_poa,
+        onfido,
     } = verification_status;
 
     const redirect_button = should_show_redirect_btn && (
@@ -94,6 +95,7 @@ const ProofOfIdentityContainer = ({
         return (
             <POISubmission
                 allow_poi_resubmission={allow_poi_resubmission}
+                has_attempted_idv={has_attempted_idv}
                 has_require_submission={has_require_submission}
                 height={height ?? null}
                 identity_last_attempt={identity_last_attempt}

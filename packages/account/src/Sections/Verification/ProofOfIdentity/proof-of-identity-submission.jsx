@@ -10,6 +10,7 @@ import { identity_status_codes, submission_status_code, service_code } from './p
 
 const POISubmission = ({
     allow_poi_resubmission,
+    has_attempted_idv,
     has_require_submission,
     height,
     identity_last_attempt,
@@ -98,11 +99,12 @@ const POISubmission = ({
         case submission_status_code.selecting:
             return (
                 <CountrySelector
+                    handleSelectionNext={handleSelectionNext}
+                    has_attempted_idv={has_attempted_idv}
+                    is_from_external={is_from_external}
                     residence_list={residence_list}
                     selected_country={selected_country}
                     setSelectedCountry={setSelectedCountry}
-                    handleSelectionNext={handleSelectionNext}
-                    is_from_external={is_from_external}
                 />
             );
         case submission_status_code.submitting: {

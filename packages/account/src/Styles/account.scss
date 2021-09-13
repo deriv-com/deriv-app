@@ -1830,6 +1830,9 @@ $MIN_HEIGHT_FLOATING: calc(
             bottom: 0;
         }
     }
+    &__footer-alert {
+        margin-right: auto;
+    }
     &__submit-button {
         @include mobile {
             margin-right: 1.2rem;

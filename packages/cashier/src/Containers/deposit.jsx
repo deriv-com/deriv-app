@@ -64,7 +64,9 @@ const Deposit = ({
     tab_index,
 }) => {
     React.useEffect(() => {
-        recentTransactionOnMount();
+        if(!is_crypto_transactions_visible) {
+            recentTransactionOnMount();
+        }
     }, [is_switching]);
 
     React.useEffect(() => {

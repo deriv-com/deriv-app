@@ -53,6 +53,13 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
+    changeCurrentLanguage(new_language) {
+        if (this.current_language !== new_language) {
+            this.current_language = new_language;
+        }
+    }
+
+    @action.bound
     setPlatform() {
         this.platform = new URL(window.location).searchParams.get('platform');
     }

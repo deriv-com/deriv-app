@@ -6,7 +6,7 @@ import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { localize } from '@deriv/translations';
 import { unsupported_contract_types_list } from 'Stores/Modules/Trading/Constants/contract';
 import { ToastPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
-import { isMultiplierContract } from '@deriv/shared';
+import { isMultiplierContract, useIsMounted } from '@deriv/shared';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
@@ -23,6 +23,7 @@ const Contract = ({
     addNotificationMessageByKey,
     removeNotificationMessageByKey,
 }) => {
+    const isMounted = useIsMounted();
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
 
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
@@ -30,14 +31,21 @@ const Contract = ({
     });
 
     React.useEffect(() => {
-        setTimeout(() => {
+        if (isMounted()) {
             if (isMultiplierContract(contract_type) && current_language === 'EN' && is_logged_in) {
                 addNotificationMessageByKey('deriv_go');
             } else {
                 removeNotificationMessageByKey({ key: 'deriv_go' });
             }
-        });
-    }, [contract_type, current_language, is_logged_in, addNotificationMessageByKey, removeNotificationMessageByKey]);
+        }
+    }, [
+        contract_type,
+        current_language,
+        is_logged_in,
+        addNotificationMessageByKey,
+        removeNotificationMessageByKey,
+        isMounted,
+    ]);
 
     return (
         <React.Fragment>

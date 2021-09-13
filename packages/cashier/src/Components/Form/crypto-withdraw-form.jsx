@@ -11,6 +11,7 @@ import PercentageSelector from '../percentage-selector';
 import '../../Sass/withdraw.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
+const MAX_ADDRESS_LENGTH = 64;
 
 const Header = ({ currency }) => {
     const currency_name = getCurrencyName(currency);
@@ -72,8 +73,8 @@ const CryptoWithdrawForm = ({
     const validateAddress = address => {
         if (!address) return localize('This field is required.');
 
-        if (address.length < MIN_ADDRESS_LENGTH) {
-            return localize('Your wallet address should have 25 characters or more.');
+        if (address.length < MIN_ADDRESS_LENGTH || address.length > MAX_ADDRESS_LENGTH) {
+            return localize('Your wallet address should have 25 to 64 characters.');
         }
 
         return undefined;

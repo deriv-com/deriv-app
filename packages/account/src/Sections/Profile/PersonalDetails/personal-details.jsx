@@ -277,6 +277,10 @@ export class PersonalDetailsForm extends React.Component {
             errors.address_city = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
         }
 
+        if (values.address_city.indexOf('Jersey') !== -1) {
+            errors.address_city = localize('fdsfaefaewfawefafasfawe');
+        }
+
         const state_is_input_element = values.address_state && !states_list.length;
         if (state_is_input_element) {
             if (!validLength(values.address_state, { min: 0, max: 35 })) {
@@ -284,6 +288,13 @@ export class PersonalDetailsForm extends React.Component {
             } else if (!/^[\w\s\W'.-;,]{0,35}$/.test(values.address_state)) {
                 errors.address_state = localize('State is not in a proper format');
             }
+        }
+
+        // Not allowing Jersey postcodes with a UK residence.
+        if (/^(JE[0-9])\s([a-zA-Z0-9]{0,3})$/.test(values.address_postcode) && values.citizen === 'United Kingdom') {
+            errors.address_postcode = localize(
+                'A valid zip code is required. Your residence address does not match the zip code.'
+            );
         }
 
         if (values.address_postcode) {

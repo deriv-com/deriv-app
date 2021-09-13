@@ -51,9 +51,6 @@ const CryptoFiatConverter = ({
     onChangeConverterToAmount,
     percentageSelectorSelectionStatus,
     resetConverter,
-    setConverterFromAmount,
-    setConverterToAmount,
-    setIsTimerVisible,
     to_currency,
     validateFromAmount,
     validateToAmount,
@@ -81,12 +78,10 @@ const CryptoFiatConverter = ({
                             setArrowIconDirection('right');
                         }}
                         onChange={e => {
-                            handleChange(e);
-                            setIsTimerVisible(false);
-                            setConverterFromAmount(e.target.value);
                             percentageSelectorSelectionStatus(true);
                             calculatePercentage();
                             onChangeConverterFromAmount(e, from_currency, to_currency);
+                            handleChange(e);
                         }}
                         type='text'
                         error={converter_from_error}
@@ -113,12 +108,10 @@ const CryptoFiatConverter = ({
                                 setArrowIconDirection('left');
                             }}
                             onChange={e => {
-                                handleChange(e);
-                                setIsTimerVisible(false);
-                                setConverterToAmount(e.target.value);
                                 percentageSelectorSelectionStatus(true);
                                 calculatePercentage();
                                 onChangeConverterToAmount(e, to_currency, from_currency);
+                                handleChange(e);
                             }}
                             type='text'
                             error={converter_to_error}
@@ -161,9 +154,6 @@ CryptoFiatConverter.propTypes = {
     onChangeConverterToAmount: PropTypes.func,
     percentageSelectorSelectionStatus: PropTypes.func,
     resetConverter: PropTypes.func,
-    setConverterFromAmount: PropTypes.func,
-    setConverterToAmount: PropTypes.func,
-    setIsTimerVisible: PropTypes.func,
     to_currency: PropTypes.string,
     validateFromAmount: PropTypes.func,
     validateToAmount: PropTypes.func,
@@ -180,7 +170,4 @@ export default connect(({ modules }) => ({
     onChangeConverterToAmount: modules.cashier.onChangeConverterToAmount,
     percentageSelectorSelectionStatus: modules.cashier.percentageSelectorSelectionStatus,
     resetConverter: modules.cashier.resetConverter,
-    setConverterFromAmount: modules.cashier.setConverterFromAmount,
-    setConverterToAmount: modules.cashier.setConverterToAmount,
-    setIsTimerVisible: modules.cashier.setIsTimerVisible,
 }))(CryptoFiatConverter);

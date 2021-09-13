@@ -1841,8 +1841,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
         if (target.value) {
+            this.setConverterFromAmount(target.value);
+            this.validateFromAmount();
             if (this.converter_from_error) {
-                this.setConverterFromAmount(target.value);
                 this.setConverterToAmount('');
                 this.setConverterToError('');
                 this.setIsTimerVisible(false);
@@ -1851,15 +1852,15 @@ export default class CashierStore extends BaseStore {
                 const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency);
                 const amount = (rate * target.value).toFixed(decimals);
-                this.setConverterFromAmount(target.value);
-                this.setConverterToError('');
-                this.setIsTimerVisible(true);
-                this.setAccountTransferAmount(target.value);
                 if (+amount || this.converter_from_amount) {
                     this.setConverterToAmount(amount);
                 } else {
                     this.setConverterToAmount('');
                 }
+                this.validateToAmount();
+                this.setConverterToError('');
+                this.setIsTimerVisible(true);
+                this.setAccountTransferAmount(target.value);
             }
         } else {
             this.resetConverter();
@@ -1869,8 +1870,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onChangeConverterToAmount({ target }, from_currency, to_currency) {
         if (target.value) {
+            this.setConverterToAmount(target.value);
+            this.validateToAmount();
             if (this.converter_to_error) {
-                this.setConverterToAmount(target.value);
                 this.setConverterFromAmount('');
                 this.setConverterFromError('');
                 this.setIsTimerVisible(false);
@@ -1879,7 +1881,12 @@ export default class CashierStore extends BaseStore {
                 const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency);
                 const amount = (rate * target.value).toFixed(decimals);
-                this.setConverterToAmount(target.value);
+                if (+amount || this.converter_to_amount) {
+                    this.setConverterFromAmount(amount);
+                } else {
+                    this.setConverterFromAmount('');
+                }
+                this.validateFromAmount();
                 if (this.converter_from_error) {
                     this.setIsTimerVisible(false);
                     this.setAccountTransferAmount('');
@@ -1887,11 +1894,6 @@ export default class CashierStore extends BaseStore {
                     this.setConverterFromError('');
                     this.setIsTimerVisible(true);
                     this.setAccountTransferAmount(amount);
-                }
-                if (+amount || this.converter_to_amount) {
-                    this.setConverterFromAmount(amount);
-                } else {
-                    this.setConverterFromAmount('');
                 }
             }
         } else {
@@ -1905,7 +1907,7 @@ export default class CashierStore extends BaseStore {
         const selected_to_currency = this.config.account_transfer.selected_to.currency;
         if (amount > 0) {
             this.setConverterFromAmount(amount);
-            this.validateTransferFromAmount(amount);
+            this.validateTransferFromAmount();
             this.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 selected_from_currency,
@@ -1920,7 +1922,7 @@ export default class CashierStore extends BaseStore {
     setWithdrawPercentageSelectorResult(amount) {
         if (amount > 0) {
             this.setConverterFromAmount(amount);
-            this.validateWithdrawFromAmount(amount);
+            this.validateWithdrawFromAmount();
             this.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 this.root_store.client.currency,
@@ -1932,9 +1934,29 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    validateTransferFromAmount(amount) {
-        if (amount) {
-            const { is_ok, message } = validNumber(amount, {
+    validateFromAmount() {
+        if (this.active_container === this.config.account_transfer.container) {
+            this.validateTransferFromAmount();
+        } else {
+            this.validateWithdrawFromAmount();
+        }
+    }
+
+    @action.bound
+    validateToAmount() {
+        if (this.active_container === this.config.account_transfer.container) {
+            this.validateTransferToAmount();
+        } else {
+            this.validateWithdrawToAmount();
+        }
+    }
+
+    @action.bound
+    validateTransferFromAmount() {
+        if (!this.converter_from_amount) {
+            this.setConverterFromError(localize('This field is required.'));
+        } else {
+            const { is_ok, message } = validNumber(this.converter_from_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(this.config.account_transfer.selected_from.currency),
                 min: this.config.account_transfer.transfer_limit.min,
@@ -1942,7 +1964,7 @@ export default class CashierStore extends BaseStore {
             });
             if (!is_ok) {
                 this.setConverterFromError(message);
-            } else if (+this.config.account_transfer.selected_from.balance < +amount) {
+            } else if (+this.config.account_transfer.selected_from.balance < +this.converter_from_amount) {
                 this.setConverterFromError(localize('Insufficient funds'));
             } else {
                 this.setConverterFromError('');
@@ -1951,10 +1973,10 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    validateTransferToAmount(amount) {
-        if (amount) {
+    validateTransferToAmount() {
+        if (this.converter_to_amount) {
             const currency = this.config.account_transfer.selected_to.currency;
-            const { is_ok, message } = validNumber(amount, {
+            const { is_ok, message } = validNumber(this.converter_to_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
             });
@@ -1967,16 +1989,15 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    validateWithdrawFromAmount = amount => {
+    validateWithdrawFromAmount() {
         let error_message = '';
 
         const { balance, currency, website_status } = this.root_store.client;
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
 
-        if (!amount && !this.converter_from_amount) {
+        if (!this.converter_from_amount) {
             error_message = localize('This field is required.');
-        }
-        if (amount || this.converter_from_amount) {
+        } else {
             const { is_ok, message } = validNumber(this.converter_from_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
@@ -1995,15 +2016,15 @@ export default class CashierStore extends BaseStore {
             }
         }
         this.setConverterFromError(error_message);
-    };
+    }
 
     @action.bound
-    validateWithdrawtoAmount = amount => {
-        let error_message;
+    validateWithdrawToAmount() {
+        let error_message = '';
         const { current_fiat_currency } = this.root_store.client;
 
-        if (amount) {
-            const { is_ok, message } = validNumber(amount, {
+        if (this.converter_to_amount) {
+            const { is_ok, message } = validNumber(this.converter_to_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(current_fiat_currency),
             });
@@ -2011,7 +2032,7 @@ export default class CashierStore extends BaseStore {
         }
 
         this.setConverterToError(error_message);
-    };
+    }
 
     @action.bound
     resetConverter() {

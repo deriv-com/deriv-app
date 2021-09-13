@@ -57,7 +57,7 @@ const CryptoWithdrawForm = ({
     setWithdrawPercentageSelectorResult,
     should_percentage_reset,
     validateWithdrawFromAmount,
-    validateWithdrawtoAmount,
+    validateWithdrawToAmount,
     verification_code,
 }) => {
     React.useEffect(() => {
@@ -135,7 +135,7 @@ const CryptoWithdrawForm = ({
                                 from_currency={crypto_currency}
                                 to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 validateFromAmount={validateWithdrawFromAmount}
-                                validateToAmount={validateWithdrawtoAmount}
+                                validateToAmount={validateWithdrawToAmount}
                             />
                         </div>
                         <div className='withdraw__form-submit'>
@@ -188,7 +188,7 @@ CryptoWithdrawForm.propTypes = {
     setWithdrawPercentageSelectorResult: PropTypes.func,
     should_percentage_reset: PropTypes.bool,
     validateWithdrawFromAmount: PropTypes.func,
-    validateWithdrawtoAmount: PropTypes.func,
+    validateWithdrawToAmount: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
@@ -213,6 +213,6 @@ export default connect(({ client, modules }) => ({
     setWithdrawPercentageSelectorResult: modules.cashier.setWithdrawPercentageSelectorResult,
     should_percentage_reset: modules.cashier.should_percentage_reset,
     validateWithdrawFromAmount: modules.cashier.validateWithdrawFromAmount,
-    validateWithdrawtoAmount: modules.cashier.validateWithdrawtoAmount,
+    validateWithdrawToAmount: modules.cashier.validateWithdrawToAmount,
     verification_code: client.verification_code.payment_withdraw,
 }))(CryptoWithdrawForm);

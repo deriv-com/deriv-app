@@ -97,7 +97,7 @@ const CryptoFiatConverter = ({
                             percentageSelectorSelectionStatus(true);
                             calculatePercentage();
                         }}
-                        type='number'
+                        type='text'
                         error={converter_from_error}
                         label={localize('Amount ({{currency}})', { currency: getCurrencyDisplayCode(from_currency) })}
                         value={converter_from_amount}
@@ -136,7 +136,7 @@ const CryptoFiatConverter = ({
                                 percentageSelectorSelectionStatus(true);
                                 calculatePercentage();
                             }}
-                            type='number'
+                            type='text'
                             error={converter_to_error}
                             label={localize('Amount ({{currency}})', { currency: getCurrencyDisplayCode(to_currency) })}
                             value={converter_to_amount}

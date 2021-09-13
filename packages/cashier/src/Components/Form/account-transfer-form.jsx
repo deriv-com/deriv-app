@@ -141,6 +141,8 @@ const AccountTransferForm = ({
     setPercentageSelectorResult,
     validateTransferFrom,
     validateTransferTo,
+    percentage,
+    should_percentage_reset,
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
@@ -455,6 +457,8 @@ const AccountTransferForm = ({
                                                 getCalculatedAmount={setPercentageSelectorResult}
                                                 from_account={selected_from.value}
                                                 to_account={selected_to.value}
+                                                percentage={percentage}
+                                                should_percentage_reset={should_percentage_reset}
                                             />
                                         </div>
                                         <CryptoFiatConverter
@@ -513,7 +517,7 @@ const AccountTransferForm = ({
                                     </Button>
                                 </div>
                                 <MobileWrapper>
-                                    {is_crypto && crypto_transactions?.length && <RecentTransaction />}
+                                    {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
                                     <AccountTransferNote
                                         transfer_fee={transfer_fee}
                                         currency={selected_from.currency}
@@ -544,6 +548,7 @@ AccountTransferForm.propTypes = {
     onChangeTransferFrom: PropTypes.func,
     onChangeTransferTo: PropTypes.func,
     onMount: PropTypes.func,
+    percentage: PropTypes.number,
     selected_from: PropTypes.object,
     selected_to: PropTypes.object,
     setErrorMessage: PropTypes.func,
@@ -552,6 +557,7 @@ AccountTransferForm.propTypes = {
     transfer_limit: PropTypes.object,
     resetConverter: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
+    should_percentage_reset: PropTypes.bool,
     setPercentageSelectorResult: PropTypes.func,
     validateTransferFrom: PropTypes.func,
     validateTransferTo: PropTypes.func,
@@ -574,6 +580,7 @@ export default connect(({ client, modules, ui }) => ({
     mt5_login_list: client.mt5_login_list,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
     onChangeTransferTo: modules.cashier.onChangeTransferTo,
+    percentage: modules.cashier.percentage,
     selected_from: modules.cashier.config.account_transfer.selected_from,
     selected_to: modules.cashier.config.account_transfer.selected_to,
     setErrorMessage: modules.cashier.setErrorMessage,
@@ -584,6 +591,7 @@ export default connect(({ client, modules, ui }) => ({
     resetConverter: modules.cashier.resetConverter,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setPercentageSelectorResult: modules.cashier.setPercentageSelectorResult,
+    should_percentage_reset: modules.cashier.should_percentage_reset,
     validateTransferFrom: modules.cashier.validateTransferFrom,
     validateTransferTo: modules.cashier.validateTransferTo,
 }))(AccountTransferForm);

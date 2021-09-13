@@ -268,8 +268,12 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    calculatePercentage() {
-        this.percentage = ((this.converter_from_amount / +this.root_store.client.balance) * 100).toFixed(0);
+    calculatePercentage(amount = this.converter_from_amount) {
+        if(this.active_container === this.config.account_transfer.container) {
+            this.percentage = ((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
+        } else {
+            this.percentage = ((amount / +this.root_store.client.balance) * 100).toFixed(0);
+        }
     }
 
     @action.bound
@@ -285,7 +289,7 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: this.converter_from_amount,
+            amount: +this.converter_from_amount,
             verification_code,
         }).then(response => {
             if (response.error) {
@@ -309,7 +313,7 @@ export default class CashierStore extends BaseStore {
 
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: this.converter_from_amount,
+            amount: +this.converter_from_amount,
             verification_code,
             dry_run: 1,
         }).then(response => {
@@ -1915,6 +1919,8 @@ export default class CashierStore extends BaseStore {
                     this.setConverterFromError('');
                     this.setIsTimerVisible(true);
                     this.setAccountTransferAmount(amount);
+                    this.validateCryptoAmount(this.converter_from_amount);
+                    this.calculatePercentage(amount);
                 }
             }
         } else {
@@ -1929,6 +1935,7 @@ export default class CashierStore extends BaseStore {
         this.setConverterFromError('');
         this.setConverterToError('');
         this.setIsTimerVisible(false);
+        this.calculatePercentage(0);
     }
 
     @action.bound
@@ -1964,21 +1971,32 @@ export default class CashierStore extends BaseStore {
     @action.bound
     validateCryptoAmount = amount => {
         let error_message = '';
-        const { balance, currency } = this.root_store.client;
+
+        const { balance, currency, website_status } = this.root_store.client;
+        const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
+
         if (!amount && !this.converter_from_amount) {
             error_message = localize('This field is required.');
         }
         if (amount || this.converter_from_amount) {
-            const { is_ok, message } = validNumber(amount || this.converter_from_amount, {
+            const { is_ok, message } = validNumber(this.converter_from_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
             });
             if (!is_ok) error_message = message;
 
-            if (+balance < +amount) error_message = localize('Insufficient funds');
+            if (+balance < +this.converter_from_amount) error_message = localize('Insufficient funds');
+
+            if (+this.converter_from_amount < +min_withdraw_amount) {
+                error_message = (
+                    <Localize
+                        i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'
+                        values={{ min_withdraw_amount, currency: this.root_store.client.currency }}
+                    />
+                );
+            }
         }
         this.setConverterFromError(error_message);
-        return error_message ?? undefined;
     };
 
     @action.bound

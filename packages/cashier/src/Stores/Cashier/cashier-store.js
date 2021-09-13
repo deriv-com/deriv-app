@@ -285,7 +285,7 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: this.converter_from_amount,
+            amount: +this.converter_from_amount,
             verification_code,
         }).then(response => {
             if (response.error) {
@@ -309,7 +309,7 @@ export default class CashierStore extends BaseStore {
 
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: this.converter_from_amount,
+            amount: +this.converter_from_amount,
             verification_code,
             dry_run: 1,
         }).then(response => {

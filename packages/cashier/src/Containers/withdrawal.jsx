@@ -18,14 +18,19 @@ import USDTSideNote from '../Components/usdt-side-note.jsx';
 import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
 import RecentTransaction from '../Components/recent-transaction.jsx';
 
-const WithdrawalSideNote = () => {
+const WithdrawalSideNote = ({ currency }) => {
     const notes = [
         <Localize
             i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
             key={0}
         />,
-        <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />,
     ];
+
+    if (!isCryptocurrency(currency)) {
+        notes.push(
+            <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />
+        );
+    }
     const side_note_title =
         notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
 
@@ -86,7 +91,7 @@ const Withdrawal = ({
                     side_notes.push(<RecentTransaction key={2} />);
                 }
                 const side_note = [
-                    <WithdrawalSideNote key={0} />,
+                    <WithdrawalSideNote currency={currency} key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
@@ -97,6 +102,7 @@ const Withdrawal = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);
 
+    // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_withdrawal_locked && current_currency_type === 'crypto')) {
             return <CashierLocked />;
@@ -108,15 +114,7 @@ const Withdrawal = ({
     if (is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked is_10K_limit />;
     }
-    if (!is_crypto && (verification_code || iframe_url)) {
-        return <Withdraw />;
-    }
-    if (verification_code && is_crypto && !is_withdraw_confirmed) {
-        return <CryptoWithdrawForm />;
-    }
-    if (is_withdraw_confirmed) {
-        return <CryptoWithdrawReceipt />;
-    }
+
     if (is_virtual) {
         return <Virtual />;
     }
@@ -129,11 +127,20 @@ const Withdrawal = ({
     if (is_withdrawal_locked) {
         return <WithdrawalLocked />;
     }
-    if (((is_crypto && verification_code) || !is_crypto) && error.message) {
+    if (error.message) {
         return <Error error={error} container='withdraw' />;
     }
     if (verify_error.message) {
         return <Error error={verify_error} container='withdraw' />;
+    }
+    if (!is_crypto && (verification_code || iframe_url)) {
+        return <Withdraw />;
+    }
+    if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
+        return <CryptoWithdrawForm />;
+    }
+    if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
+        return <CryptoWithdrawReceipt />;
     }
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;

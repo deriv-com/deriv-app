@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import { CFDAccountCopy } from './cfd-account-copy.jsx';
 import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 
@@ -131,10 +132,11 @@ const CFDAccountCardAction = ({
     );
 };
 
-const CFDAccountCard = ({
+const CFDAccountCardComponent = ({
     button_label,
     commission_message,
     descriptor,
+    dxtrade_tokens,
     is_hovered,
     existing_data,
     has_banner,
@@ -457,7 +459,7 @@ const CFDAccountCard = ({
                                 type='button'
                                 href={
                                     platform === CFD_PLATFORMS.DXTRADE
-                                        ? getDXTradeWebTerminalLink(type.category)
+                                        ? getDXTradeWebTerminalLink(type.category, dxtrade_tokens[type.category])
                                         : getMT5WebTerminalLink({
                                               category: type.category,
                                               loginid: existing_data.display_login,
@@ -527,5 +529,9 @@ const CFDAccountCard = ({
         </div>
     );
 };
+
+const CFDAccountCard = connect(({ modules: { cfd } }) => ({
+    dxtrade_tokens: cfd.dxtrade_tokens,
+}))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

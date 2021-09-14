@@ -9,7 +9,7 @@ import {
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
 
-const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
+const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on, dxtrade_tokens }) => (
     <div className='cfd-dashboard__download-center'>
         <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
@@ -47,7 +47,10 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
                             <div className='cfd-dashboard__download-center-options--desktop-download'>
                                 <a
                                     className='cfd-dashboard__dxtrade-download'
-                                    href={getDXTradeWebTerminalLink(active_index === 0 ? 'real' : 'demo')}
+                                    href={getDXTradeWebTerminalLink(
+                                        active_index === 0 ? 'real' : 'demo',
+                                        dxtrade_tokens[active_index === 0 ? 'real' : 'demo']
+                                    )}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >

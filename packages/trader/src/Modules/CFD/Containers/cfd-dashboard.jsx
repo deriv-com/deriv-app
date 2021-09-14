@@ -144,6 +144,7 @@ class CFDDashboard extends React.Component {
             country,
             createCFDAccount,
             current_list,
+            dxtrade_tokens,
             dxtrade_accounts_list_error,
             isAccountOfTypeDisabled,
             is_accounts_switcher_on,
@@ -354,6 +355,7 @@ class CFDDashboard extends React.Component {
                                     platform={platform}
                                     active_index={this.state.active_index}
                                     is_dark_mode_on={is_dark_mode_on}
+                                    dxtrade_tokens={dxtrade_tokens}
                                 />
                             </DesktopWrapper>
                             <MobileWrapper>
@@ -498,6 +500,7 @@ export default withRouter(
         client_email: client.email_address,
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
+        dxtrade_tokens: modules.cfd.dxtrade_tokens,
         landing_companies: client.landing_companies,
         isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,

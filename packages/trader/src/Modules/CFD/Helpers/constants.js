@@ -1,7 +1,7 @@
 import { OSDetect } from '@deriv/shared';
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
-const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com/';
+const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -46,8 +46,14 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
     }
 };
 
-const getDXTradeWebTerminalLink = category => {
-    return category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+const getDXTradeWebTerminalLink = (category, token) => {
+    let url = category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+
+    if (token) {
+        url += `?token=${token}`;
+    }
+
+    return url;
 };
 
 const getMT5WebTerminalLink = ({ category, loginid, server_name = 'Deriv-Server' }) => {

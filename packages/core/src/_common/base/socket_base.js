@@ -180,12 +180,13 @@ const BinarySocketBase = (() => {
 
     const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
-    const cashierPayments = ({provider, transaction_type}) => 
-        deriv_api.send({cashier_payments: 1, provider, transaction_type});
+    const cashierPayments = ({ provider, transaction_type }) =>
+        deriv_api.send({ cashier_payments: 1, provider, transaction_type });
 
-    const subscribeCashierPayments = cb => subscribe({cashier_payments: 1, provider: 'crypto', transaction_type: 'all'}, cb);
+    const subscribeCashierPayments = cb =>
+        subscribe({ cashier_payments: 1, provider: 'crypto', transaction_type: 'all' }, cb);
 
-    const cancelCryptoTransaction = (transaction_id) =>
+    const cancelCryptoTransaction = transaction_id =>
         deriv_api.send({ cashier_withdrawal_cancel: 1, id: transaction_id });
 
     const newAccountVirtual = (verification_code, client_password, residence, email_consent, device_data) =>
@@ -363,6 +364,13 @@ const BinarySocketBase = (() => {
             name: 'test real labuan financial stp',
         });
 
+    const getServiceToken = (platform, server) =>
+        deriv_api.send({
+            service_token: 1,
+            service: platform,
+            server,
+        });
+
     return {
         init,
         openNewConnection,
@@ -442,6 +450,7 @@ const BinarySocketBase = (() => {
         tradingPlatformAccountsList,
         tradingPlatformNewAccount,
         triggerMt5DryRun,
+        getServiceToken,
     };
 })();
 

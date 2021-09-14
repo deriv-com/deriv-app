@@ -152,7 +152,7 @@ const CFDDemoAccountDisplay = ({
                     has_banner
                 />
             )}
-            {isFinancialStpCardVisible() && platform === CFD_PLATFORMS.MT5 && (
+            {isFinancialStpCardVisible() && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={localize('Financial STP')}

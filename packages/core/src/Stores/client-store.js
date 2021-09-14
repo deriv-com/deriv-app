@@ -661,8 +661,9 @@ export default class ClientStore extends BaseStore {
         if (
             this.landing_company_shortcode === 'malta' &&
             this.mt5_login_list.every(item => item.landing_company_short !== 'malta')
-        )
+        ) {
             return false;
+        }
 
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5

@@ -662,6 +662,9 @@ export default class ClientStore extends BaseStore {
     }
 
     isMT5Allowed = landing_companies => {
+        // Disable MT5 for MLT clients if they have no pre-defined MT5 accounts
+        if (this.landing_company_shortcode === 'malta' && this.mt5_login_list.length === 0) return false;
+
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;

@@ -1994,6 +1994,13 @@ export default class ClientStore extends BaseStore {
                         server,
                     };
                 }
+                // disabling new MT5 account creation for MLT
+                if (this.landing_company_shortcode === 'malta') {
+                    this.setMT5DisabledSignupTypes({
+                        real: true,
+                        demo: true,
+                    });
+                }
                 return {
                     ...account,
                     display_login,

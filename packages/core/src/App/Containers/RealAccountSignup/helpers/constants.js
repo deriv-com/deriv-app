@@ -29,9 +29,7 @@ export const EXPERIAN = {
  */
 export const getAccountTitle = (landing_company_shortcode, { account_residence = '' } = {}, country_standpoint) => {
     // TODO: [deriv-eu] merge if statement and switch together once more residence cases are found.
-    if (account_residence === 'be') {
-        return localize('Real Synthetic');
-    } else if (account_residence === 'im') {
+    if (account_residence === 'im') {
         return localize('Deriv account');
     }
 

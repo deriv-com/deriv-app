@@ -569,6 +569,9 @@ const AccountTransferForm = ({
                                         transfer_fee={transfer_fee}
                                         currency={selected_from.currency}
                                         minimum_fee={minimum_fee}
+                                        is_crypto_to_crypto_transfer={selected_from.is_crypto && selected_to.is_crypto}
+                                        is_dxtrade_allowed={is_dxtrade_allowed}
+                                        is_mt_transfer={selected_from.is_mt || selected_to.is_mt}
                                     />
                                 </MobileWrapper>
                                 <FormError error={error} />

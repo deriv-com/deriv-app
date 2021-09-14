@@ -12,6 +12,7 @@ import TransferLock from '../Components/Error/transfer-locked.jsx';
 import AccountTransferForm from '../Components/Form/account-transfer-form.jsx';
 import AccountTransferReceipt from '../Components/Receipt/account-transfer-receipt.jsx';
 import AccountTransferConfirm from '../Components/Confirm/account-transfer-confirm.jsx';
+import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
 
 const AccountTransfer = ({
     accounts_list,
@@ -20,6 +21,7 @@ const AccountTransfer = ({
     has_no_account,
     has_no_accounts_balance,
     is_cashier_locked,
+    is_crypto_transactions_visible,
     is_loading,
     is_switching,
     is_transfer_confirm,
@@ -27,12 +29,20 @@ const AccountTransfer = ({
     is_transfer_successful,
     is_virtual,
     onMount,
+    recentTransactionOnMount,
     setAccountTransferAmount,
     setActiveTab,
     setIsTransferConfirm,
     setSideNotes,
 }) => {
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
+
+    React.useEffect(() => {
+        if(!is_crypto_transactions_visible) {
+            recentTransactionOnMount();
+        }
+    }, [is_switching]);
+
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
@@ -48,13 +58,10 @@ const AccountTransfer = ({
     }, []);
 
     React.useEffect(() => {
-        if (
-            typeof setSideNotes === 'function' &&
-            (is_transfer_confirm || is_transfer_successful || has_no_accounts_balance)
-        ) {
+        if (typeof setSideNotes === 'function' && (has_no_accounts_balance || is_switching)) {
             setSideNotes(null);
         }
-    }, [setSideNotes, is_transfer_confirm, is_transfer_successful, has_no_accounts_balance]);
+    }, [setSideNotes, has_no_accounts_balance]);
 
     if (is_virtual) {
         return <Virtual />;
@@ -85,6 +92,9 @@ const AccountTransfer = ({
     if (is_transfer_successful) {
         return <AccountTransferReceipt />;
     }
+    if (is_crypto_transactions_visible) {
+        return <CryptoTransactionsHistory />;
+    }
 
     return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
 };
@@ -96,6 +106,7 @@ AccountTransfer.propTypes = {
     has_no_account: PropTypes.bool,
     has_no_accounts_balance: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
+    is_crypto_transactions_visible: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_switching: PropTypes.bool,
     is_transfer_confirm: PropTypes.bool,
@@ -103,6 +114,7 @@ AccountTransfer.propTypes = {
     is_transfer_lock: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
+    recentTransactionOnMount: PropTypes.func,
     setAccountTransferAmount: PropTypes.func,
     setActiveTab: PropTypes.func,
     setIsTransferConfirm: PropTypes.func,
@@ -118,11 +130,13 @@ export default connect(({ client, modules }) => ({
     has_no_account: modules.cashier.config.account_transfer.has_no_account,
     has_no_accounts_balance: modules.cashier.config.account_transfer.has_no_accounts_balance,
     is_cashier_locked: modules.cashier.is_cashier_locked,
+    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_loading: modules.cashier.is_loading,
     is_transfer_confirm: modules.cashier.config.account_transfer.is_transfer_confirm,
     is_transfer_successful: modules.cashier.config.account_transfer.is_transfer_successful,
     is_transfer_lock: modules.cashier.is_transfer_lock,
     onMount: modules.cashier.onMountAccountTransfer,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.setActiveTab,
     setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
     setIsTransferConfirm: modules.cashier.setIsTransferConfirm,

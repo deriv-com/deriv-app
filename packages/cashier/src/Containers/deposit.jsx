@@ -116,7 +116,6 @@ const Deposit = ({
         return <Virtual />;
     }
     if (is_deposit || is_eu) {
-        console.log('is_deposit, is_crypto_transactions_visible', is_deposit, is_crypto_transactions_visible);
         if (is_system_maintenance) {
             if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {
                 return <CashierLocked />;

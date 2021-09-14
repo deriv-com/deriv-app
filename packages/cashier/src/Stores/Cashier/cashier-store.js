@@ -18,8 +18,8 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import OnRampStore from './on-ramp-store';
-import AccountPromptDialog from '../account-prompt-dialog-store';
 import TransactionHistoryStore from './transaction-history-store';
+import AccountPromptDialog from '../account-prompt-dialog-store';
 import ErrorDialog from '../error-dialog-store';
 import BaseStore from '../base-store';
 import CashierNotifications from '../../Containers/cashier-notifications.jsx';

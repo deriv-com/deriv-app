@@ -373,6 +373,8 @@ export default class CashierStore extends BaseStore {
             () => this.root_store.client.is_logged_in,
             async () => {
                 await this.checkP2pStatus();
+                await this.setPaymentAgentList();
+                await this.filterPaymentAgentList();
             }
         );
 

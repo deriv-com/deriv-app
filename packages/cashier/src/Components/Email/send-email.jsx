@@ -56,7 +56,7 @@ const SendEmail = ({
                         large
                     />
                     <MobileWrapper>
-                        {isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
+                        {isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
                     </MobileWrapper>
                 </React.Fragment>
             )}

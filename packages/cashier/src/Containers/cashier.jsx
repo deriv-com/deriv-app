@@ -15,6 +15,7 @@ import { localize } from '@deriv/translations';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from '../Components/account-prompt-dialog.jsx';
+import ErrorDialog from 'Components/error-dialog.jsx';
 import 'Sass/cashier.scss';
 
 const Cashier = ({
@@ -22,6 +23,7 @@ const Cashier = ({
     is_account_transfer_visible,
     is_account_setting_loaded,
     is_cashier_default,
+    is_crypto_transactions_visible,
     is_logged_in,
     is_logging_in,
     is_onramp_tab_visible,
@@ -43,16 +45,19 @@ const Cashier = ({
     React.useEffect(() => {
         toggleCashier();
         // we still need to populate the tabs shown on cashier
-        (async () => {
-            await WS.wait('authorize');
-            onMount();
-            setAccountSwitchListener();
-        })();
-
         return () => {
             toggleCashier();
         };
     }, []);
+    React.useEffect(() => {
+        (async () => {
+            await WS.wait('authorize');
+            if (is_logged_in) {
+                onMount();
+                setAccountSwitchListener();
+            }
+        })();
+    }, [is_logged_in]);
 
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
@@ -73,7 +78,7 @@ const Cashier = ({
                     label: route.getTitle(),
                     value: route.component,
                     path: route.path,
-                    has_side_note: route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                    has_side_note: is_crypto_transactions_visible ? false : route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
                 });
             }
         });
@@ -96,6 +101,7 @@ const Cashier = ({
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <AccountPromptDialog />
+            <ErrorDialog />
             <div className='cashier'>
                 <PageOverlay
                     header={isMobile() && !is_cashier_default ? selected_route.getTitle() : localize('Cashier')}
@@ -165,6 +171,7 @@ Cashier.propTypes = {
     is_account_transfer_visible: PropTypes.bool,
     is_account_setting_loaded: PropTypes.bool,
     is_cashier_default: PropTypes.bool,
+    is_crypto_transactions_visible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
@@ -188,6 +195,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_cashier_default: modules.cashier.is_cashier_default,
     is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
+    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,

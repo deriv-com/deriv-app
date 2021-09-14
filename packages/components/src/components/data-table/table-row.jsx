@@ -18,6 +18,8 @@ const TableRow = ({
     row_obj = {},
     show_preloader = false,
     to,
+    measure,
+    is_dynamic_height,
 }) => {
     const action_columns = getActionColumns && getActionColumns({ row_obj, is_header, is_footer });
 
@@ -63,7 +65,14 @@ const TableRow = ({
         </div>
     ) : (
         <div className={`${className}__row_wrapper`}>
-            <TableRowInfo className={row_class_name} cells={cells} replace={replace} is_footer={is_footer} />
+            <TableRowInfo
+                className={row_class_name}
+                cells={cells}
+                replace={replace}
+                is_footer={is_footer}
+                is_dynamic_height={is_dynamic_height}
+                measure={measure}
+            />
             {action_columns}
         </div>
     );
@@ -83,6 +92,7 @@ TableRow.propTypes = {
     row_obj: PropTypes.object,
     to: PropTypes.string,
     content_loader: PropTypes.elementType,
+    measure: PropTypes.func,
 };
 
 export default TableRow;

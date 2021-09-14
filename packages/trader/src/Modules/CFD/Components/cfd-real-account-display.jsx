@@ -49,7 +49,6 @@ const CFDRealAccountDisplay = ({
     is_logged_in,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
-    can_create_new_account,
     can_have_more_real_synthetic_mt5,
     residence,
     residence_list,
@@ -159,32 +158,23 @@ const CFDRealAccountDisplay = ({
     };
 
     const isSyntheticCardVisible = () => {
-        return (
-            (isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in) &&
-            (can_create_new_account ||
-                Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`)))
-        );
+        return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
     };
 
     const isFinancialCardVisible = () => {
         return (
-            (!is_logged_in ||
-                isLandingCompanyEnabled({
-                    landing_companies,
-                    platform,
-                    type: 'financial',
-                })) &&
-            (can_create_new_account ||
-                Object.keys(current_list).some(key => key.startsWith(`${platform}.real.financial@`)))
+            !is_logged_in ||
+            isLandingCompanyEnabled({
+                landing_companies,
+                platform,
+                type: 'financial',
+            })
         );
     };
 
     const isFinancialStpCardVisible = () => {
         return (
-            (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
-            platform === CFD_PLATFORMS.MT5 &&
-            (can_create_new_account ||
-                current_list[Object.keys(current_list).some(key => key.startsWith(`${platform}.real.financial_stp@`))])
+            (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === CFD_PLATFORMS.MT5
         );
     };
 

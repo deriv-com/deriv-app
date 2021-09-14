@@ -21,7 +21,6 @@ const CFDDemoAccountDisplay = ({
     platform,
     current_list,
     has_cfd_account,
-    can_create_new_account,
     openPasswordManager,
     residence,
 }) => {
@@ -37,32 +36,23 @@ const CFDDemoAccountDisplay = ({
     };
 
     const isSyntheticCardVisible = () => {
-        return (
-            (isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in) &&
-            (can_create_new_account ||
-                Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.synthetic`)))
-        );
+        return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
     };
 
     const isFinancialCardVisible = () => {
         return (
-            (!is_logged_in ||
-                isLandingCompanyEnabled({
-                    landing_companies,
-                    platform,
-                    type: 'financial',
-                })) &&
-            (can_create_new_account ||
-                Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.financial@`)))
+            !is_logged_in ||
+            isLandingCompanyEnabled({
+                landing_companies,
+                platform,
+                type: 'financial',
+            })
         );
     };
 
     const isFinancialStpCardVisible = () => {
         return (
-            (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
-            platform === CFD_PLATFORMS.MT5 &&
-            (can_create_new_account ||
-                current_list[Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.financial_stp@`))])
+            (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === CFD_PLATFORMS.MT5
         );
     };
 

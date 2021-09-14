@@ -177,7 +177,6 @@ class CFDDashboard extends React.Component {
             toggleAccountsDialog,
             toggleShouldShowRealAccountsList,
             can_have_more_real_synthetic_mt5,
-            can_create_new_mt5_account,
             upgradeable_landing_companies,
             is_reset_trading_password_modal_visible,
             toggleResetTradingPasswordModal,
@@ -302,7 +301,6 @@ class CFDDashboard extends React.Component {
                                                     toggleAccountsDialog={toggleAccountsDialog}
                                                     toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                                     can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
-                                                    can_create_new_account={can_create_new_mt5_account}
                                                     residence={residence}
                                                     residence_list={residence_list}
                                                 />
@@ -329,7 +327,6 @@ class CFDDashboard extends React.Component {
                                             landing_companies={landing_companies}
                                             openAccountTransfer={this.openAccountTransfer}
                                             openPasswordManager={this.togglePasswordManagerModal}
-                                            can_create_new_account={can_create_new_mt5_account}
                                             platform={platform}
                                             residence={residence}
                                         />
@@ -502,7 +499,6 @@ export default withRouter(
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
         landing_companies: client.landing_companies,
-        can_create_new_mt5_account: client.can_create_new_mt5_account,
         isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,

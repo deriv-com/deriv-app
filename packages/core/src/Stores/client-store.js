@@ -381,11 +381,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get can_create_new_mt5_account() {
-        return this.landing_company_shortcode !== 'malta';
-    }
-
-    @computed
     get active_accounts() {
         return this.accounts instanceof Object
             ? Object.values(this.accounts).filter(account => !account.is_disabled)
@@ -1977,6 +1972,12 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
+            // disabling new MT5 account creation for MLT
+            const is_mlt = this.landing_company_shortcode === 'malta';
+            this.setMT5DisabledSignupTypes({
+                real: is_mlt,
+                demo: is_mlt,
+            });
             this.mt5_login_list = response.mt5_login_list.map(account => {
                 const display_login = (account.error ? account.error.details.login : account.login).replace(
                     /^(MT[DR]?)/i,
@@ -1993,13 +1994,6 @@ export default class ClientStore extends BaseStore {
                         has_error: true,
                         server,
                     };
-                }
-                // disabling new MT5 account creation for MLT
-                if (this.landing_company_shortcode === 'malta') {
-                    this.setMT5DisabledSignupTypes({
-                        real: true,
-                        demo: true,
-                    });
                 }
                 return {
                     ...account,

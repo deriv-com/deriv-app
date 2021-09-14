@@ -34,4 +34,12 @@
         top: 1.6rem;
         cursor: pointer;
     }
+
+    @include mobile {
+        height: 100%;
+        max-height: 11.8rem;
+        width: calc(100vw - 1.6rem);
+        left: 0.8rem;
+        top: -0.2rem;
+    }
 }

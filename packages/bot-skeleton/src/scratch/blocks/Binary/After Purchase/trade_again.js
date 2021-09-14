@@ -10,6 +10,19 @@ Blockly.Blocks.trade_again = {
     definition() {
         return {
             message0: localize('Trade again'),
+            message1: '%1',
+            message2: '%1',
+            args1: [
+                {
+                    type: 'input_dummy',
+                },
+            ],
+            args2: [
+                {
+                    type: 'input_statement',
+                    name: 'TRADEAGAIN_PARAMS',
+                },
+            ],
             colour: Blockly.Colours.Special1.colour,
             colourSecondary: Blockly.Colours.Special1.colourSecondary,
             colourTertiary: Blockly.Colours.Special1.colourTertiary,
@@ -30,10 +43,21 @@ Blockly.Blocks.trade_again = {
     restricted_parents: ['after_purchase'],
 };
 
-Blockly.JavaScript.trade_again = () => {
+Blockly.JavaScript.trade_again = block => {
+    const blocks_in_tradeagain = block.getBlocksInStatement('TRADEAGAIN_PARAMS');
+    let stop_loss, take_profit;
+    if (blocks_in_tradeagain.length > 0) {
+        stop_loss = block.childValueToCode('multiplier_stop_loss', 'AMOUNT');
+        take_profit = block.childValueToCode('multiplier_take_profit', 'AMOUNT');
+    }
     const code = `
+    if((Bot.getTotalProfit(false) < 0 && Math.abs(Bot.getTotalProfit(false)) >= ${stop_loss}) ||
+    (Bot.getTotalProfit(false) >= 0 && Bot.getTotalProfit(false) >= ${take_profit})){
+        Bot.isTradeAgain(false);\n
+    }else{
         Bot.isTradeAgain(true);\n
-        return true;\n
+    }
+    return true;\n
     `;
 
     return code;

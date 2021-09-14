@@ -52,8 +52,11 @@
                 height: 5px;
                 background-color: var(--status-warning);
 
-                &--green {
+                &-successful {
                     background-color: var(--status-success);
+                }
+                &-unsuccessful {
+                    background-color: var(--status-danger);
                 }
             }
         }

@@ -79,8 +79,8 @@ const Deposit = ({
 
     React.useEffect(() => {
         setActiveTab(container);
-        setIsDeposit(false);
         onMount();
+        return () => setIsDeposit(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setActiveTab, onMount, container]);
 
@@ -110,11 +110,15 @@ const Deposit = ({
     }, [currency, tab_index, crypto_transactions, is_cashier_default]);
 
     if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
-        return <Loading is_fullscreen={false} />;
+        return <Loading is_fullscreen />;
     }
     if (is_virtual) {
         return <Virtual />;
     }
+    if (is_crypto_transactions_visible) {
+        return <CryptoTransactionsHistory />;
+    }
+
     if (is_deposit || is_eu) {
         if (is_system_maintenance) {
             if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {
@@ -135,9 +139,6 @@ const Deposit = ({
         }
         if (error.message) {
             return <Error error={error} />;
-        }
-        if (is_crypto_transactions_visible) {
-            return <CryptoTransactionsHistory />;
         }
         if (isCryptocurrency(currency)) {
             return <CryptoDeposit />;

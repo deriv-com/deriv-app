@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal.jsx';
@@ -22,8 +22,8 @@ const CryptoTransactionsHistory = ({
     crypto_transactions,
     currency,
     is_loading,
-    pollApiForDepositAddress,
     setIsCryptoTransactionsVisible,
+    setIsDeposit,
 }) => {
     React.useEffect(() => {
         return () => setIsCryptoTransactionsVisible(false);
@@ -31,7 +31,9 @@ const CryptoTransactionsHistory = ({
 
     const onClickBack = () => {
         setIsCryptoTransactionsVisible(false);
-        pollApiForDepositAddress(false);
+        if (window.location.pathname.endsWith(routes.cashier_deposit)) {
+            setIsDeposit(true);
+        }
     };
 
     return (
@@ -62,7 +64,7 @@ const CryptoTransactionsHistory = ({
                         )}
                         <Table.Body className='crypto-transactions-history__table-body'>
                             {is_loading ? (
-                                <Loading is_fullscreen={false} />
+                                <Loading is_fullscreen />
                             ) : (
                                 <DataList
                                     data_list_className='crypto-transactions-history__data-list'
@@ -90,7 +92,6 @@ CryptoTransactionsHistory.propTypes = {
     crypto_transactions: PropTypes.array,
     currency: PropTypes.string,
     is_loading: PropTypes.bool,
-    pollApiForDepositAddress: PropTypes.func,
     setIsCryptoTransactionsVisible: PropTypes.func,
 };
 
@@ -98,6 +99,6 @@ export default connect(({ client, modules }) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     is_loading: modules.cashier.transaction_history.is_loading,
-    pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
+    setIsDeposit: modules.cashier.setIsDeposit,
 }))(CryptoTransactionsHistory);

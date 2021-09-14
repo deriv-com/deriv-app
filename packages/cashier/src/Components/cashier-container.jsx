@@ -9,7 +9,7 @@ const CashierContainer = ({ iframe_height, iframe_url, is_crypto, is_loading }) 
     const history = useHistory();
     return (
         <div className='cashier__wrapper'>
-            {is_loading && <Loading is_fullscreen={false} />}
+            {is_loading && <Loading is_fullscreen />}
             {iframe_url && (
                 <iframe
                     className='cashier__content'

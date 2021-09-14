@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { ButtonLink, Text, Icon } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { getStatus } from '../Constants/transaction-status';
@@ -17,23 +17,18 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
         return null;
     }
 
-    let { address_hash, status_code, submit_date, transaction_hash, transaction_type } = crypto_transactions[
-        crypto_transactions.length - 1
-    ];
-
-    status_code = getStatus(transaction_type, status_code).name;
+    let { address_hash, submit_date, transaction_type } = crypto_transactions[0];
+    const { status_code, transaction_hash } = crypto_transactions[0];
+    const status = getStatus(transaction_hash, transaction_type, status_code);
     submit_date = epochToMoment(submit_date).format('MMM D, YYYY');
     transaction_type = transaction_type[0].toUpperCase() + transaction_type.slice(1);
-    transaction_hash = transaction_hash
-        ? `${transaction_hash?.substring(0, 4)}....${transaction_hash?.substring(transaction_hash.length - 4)}`
-        : localize('Pending');
     address_hash = `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`;
 
-    const amount = crypto_transactions[crypto_transactions.length - 1].amount;
+    const amount = crypto_transactions[0].amount;
 
     const onClickViewAll = () => {
         setIsCryptoTransactionsVisible(true);
-    }
+    };
 
     return (
         <div className='cashier-recent-transaction-wrapper'>
@@ -60,18 +55,13 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
                             </Text>
                             <div className='cashier-recent-transaction__status'>
                                 <span
-                                    className={classNames('cashier-recent-transaction__status-indicator', {
-                                        'cashier-recent-transaction__status-indicator--green':
-                                            status_code === 'Successful',
-                                    })}
+                                    className={classNames(
+                                        'cashier-recent-transaction__status-indicator',
+                                        `cashier-recent-transaction__status-indicator-${status.renderer}`
+                                    )}
                                 />
                                 <Text as='p' size='xxxs'>
-                                    <Localize
-                                        i18n_default_text='{{status_code}}'
-                                        values={{
-                                            status_code,
-                                        }}
-                                    />
+                                    {status.name}
                                 </Text>
                             </div>
                         </div>
@@ -102,13 +92,17 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
                                     &nbsp;
                                 </Text>
                                 <Text as='p' size='xxxs' color='red' line_height='s'>
-                                    {transaction_hash}
+                                    {status.transaction_hash}
                                 </Text>
                             </div>
                         </div>
                     </div>
                 </div>
-                <ButtonLink to='#' className='dc-btn--secondary cashier-recent-transaction__view-all-button' onClick={onClickViewAll}>
+                <ButtonLink
+                    to='#'
+                    className='dc-btn--secondary cashier-recent-transaction__view-all-button'
+                    onClick={onClickViewAll}
+                >
                     <Text weight='bold' as='p' size='xxs'>
                         <Localize i18n_default_text='View all' />
                     </Text>

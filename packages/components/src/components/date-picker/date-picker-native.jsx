@@ -124,6 +124,8 @@ const Native = ({
 
                     updateRef(update_value);
                     onSelect(update_value);
+
+                    return true;
                 }}
             />
             {error && (

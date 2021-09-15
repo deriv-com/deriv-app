@@ -11,6 +11,7 @@ import SortDropdown from 'Components/buy-sell/sort-dropdown.jsx';
 import { useStores } from 'Stores';
 import AnimationWrapper from 'Components/misc/animation-wrapper.jsx';
 import 'Components/buy-sell/buy-sell-header.scss';
+import classNames from 'classnames';
 
 const getBuySellFilters = () => [
     {
@@ -46,10 +47,12 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
         []
     );
 
-    const positionStatic = general_store.is_restricted ? 'buy-sell__header-position-static' : '';
-
     return (
-        <div className={`buy-sell__header ${positionStatic}`}>
+        <div
+            className={classNames('buy-sell__header', {
+                'buy-sell__header-position-static': !!general_store.is_restricted,
+            })}
+        >
             <div className='buy-sell__header-container'>
                 <AnimationWrapper is_visible={is_visible}>
                     <ToggleContainer>

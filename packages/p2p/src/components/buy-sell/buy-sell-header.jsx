@@ -3,6 +3,7 @@ import React from 'react';
 import { reaction } from 'mobx';
 import { ButtonToggle, Checkbox, Icon, PopoverMobile } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
+import classNames from 'classnames';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
@@ -11,7 +12,6 @@ import SortDropdown from 'Components/buy-sell/sort-dropdown.jsx';
 import { useStores } from 'Stores';
 import AnimationWrapper from 'Components/misc/animation-wrapper.jsx';
 import 'Components/buy-sell/buy-sell-header.scss';
-import classNames from 'classnames';
 
 const getBuySellFilters = () => [
     {

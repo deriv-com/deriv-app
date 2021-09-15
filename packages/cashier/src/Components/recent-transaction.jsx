@@ -34,7 +34,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
         <div className='cashier-recent-transaction-wrapper'>
             <div className='cashier-recent-transaction'>
                 <Text weight='bold' as='p' line_height='s' size='xs'>
-                    <Localize i18n_default_text='Recent Transactions' />
+                    <Localize i18n_default_text='Pending transaction' />
                 </Text>
                 <div className='cashier-recent-transaction__data-wrapper'>
                     <Icon

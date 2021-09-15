@@ -57,9 +57,7 @@ module.exports = async ({ config, mode }) => {
 
     config.plugins.push(
         new CopyPlugin({
-            patterns: [
-                { from: path.resolve(__dirname, '../lib/icon/sprites'), to: 'public/images/sprite', toType: 'dir' },
-            ],
+            patterns: [{ from: path.resolve(__dirname, '../lib/icon/sprites'), to: 'public/sprites', toType: 'dir' }],
         })
     );
     // Return the altered config

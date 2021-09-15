@@ -40,6 +40,8 @@ const Native = ({
         if (typeof onBlur === 'function') {
             onBlur(e);
         }
+
+        setOldValue(e.target.value);
     };
 
     const updateRef = e => {
@@ -94,9 +96,6 @@ const Native = ({
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 disabled={disabled}
-                onBlur={e => {
-                    setOldValue(e.target.value);
-                }}
                 onChange={e => {
                     let new_value = e.target.value;
                     const moment_value = toMoment(new_value);

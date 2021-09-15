@@ -98,30 +98,32 @@ const Native = ({
                 disabled={disabled}
                 onChange={e => {
                     let new_value = e.target.value;
+                    let update_value = null;
+
                     const moment_value = toMoment(new_value);
 
                     if (new_value === '') {
-                        updateRef(old_value);
-                        onSelect(old_value);
-                        return false;
+                        update_value = old_value;
+                    } else {
+                        if (min_date) {
+                            const moment_mindate = toMoment(min_date);
+                            const days_diff = moment_mindate.diff(moment_value, 'days');
+
+                            new_value = days_diff > 0 ? moment_mindate.format('YYYY-MM-DD') : new_value;
+                        }
+
+                        if (max_date) {
+                            const moment_maxdate = toMoment(max_date);
+                            const days_diff = moment_maxdate.diff(moment_value, 'days');
+
+                            new_value = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : new_value;
+                        }
+
+                        update_value = new_value;
                     }
 
-                    if (min_date) {
-                        const moment_mindate = toMoment(min_date);
-                        const days_diff = moment_mindate.diff(moment_value, 'days');
-
-                        new_value = days_diff > 0 ? moment_mindate.format('YYYY-MM-DD') : new_value;
-                    }
-
-                    if (max_date) {
-                        const moment_maxdate = toMoment(max_date);
-                        const days_diff = moment_maxdate.diff(moment_value, 'days');
-
-                        new_value = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : new_value;
-                    }
-
-                    updateRef(new_value);
-                    onSelect(new_value);
+                    updateRef(update_value);
+                    onSelect(update_value);
                 }}
             />
             {error && (

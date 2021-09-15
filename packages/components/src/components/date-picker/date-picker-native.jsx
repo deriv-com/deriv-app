@@ -20,6 +20,8 @@ const Native = ({
     value,
 }) => {
     const [is_focused, setIsFocused] = React.useState(0);
+    const [old_value, setOldValue] = React.useState('');
+
     const input_ref = React.useRef();
 
     React.useEffect(() => {
@@ -37,6 +39,12 @@ const Native = ({
         setIsFocused(false);
         if (typeof onBlur === 'function') {
             onBlur(e);
+        }
+    };
+
+    const updateRef = e => {
+        if (input_ref.current) {
+            input_ref.current.value = e;
         }
     };
 
@@ -86,9 +94,18 @@ const Native = ({
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 disabled={disabled}
+                onBlur={e => {
+                    setOldValue(e.target.value);
+                }}
                 onChange={e => {
                     let new_value = e.target.value;
                     const moment_value = toMoment(new_value);
+
+                    if (new_value === '') {
+                        updateRef(old_value);
+                        onSelect(old_value);
+                        return false;
+                    }
 
                     if (min_date) {
                         const moment_mindate = toMoment(min_date);
@@ -104,10 +121,7 @@ const Native = ({
                         new_value = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : new_value;
                     }
 
-                    if (input_ref.current) {
-                        input_ref.current.value = new_value;
-                    }
-
+                    updateRef(new_value);
                     onSelect(new_value);
                 }}
             />

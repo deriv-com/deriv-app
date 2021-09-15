@@ -462,8 +462,8 @@ export default class CashierStore extends BaseStore {
 
                 if (this.root_store.client.is_logged_in) {
                     await this.getAdvertizerError();
-                    this.checkP2pStatus();
                     this.account_prompt_dialog.resetLastLocation();
+                    if (!this.root_store.client.switched) this.checkP2pStatus();
                 }
             }
         );

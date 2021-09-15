@@ -468,7 +468,19 @@
             left: 0;
         }
         &-header {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+
+            @include mobile {
+                margin-right: 4rem;
+                margin-left: 4rem;
+            }
+
+            &-learn-more {
+                text-align: center;
+            }
         }
         &-content {
             &::-webkit-scrollbar {

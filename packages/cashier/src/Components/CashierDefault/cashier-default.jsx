@@ -140,10 +140,13 @@ const CashierDefault = ({
                     <Text size={is_mobile ? 's' : 'sm'} line_height='xxl'>
                         <Localize i18n_default_text='Choose a way to fund your account' />
                     </Text>
+                    <Text size={is_mobile ? 'xs' : 's'} line_height={is_mobile ? 'xl' : 'xxl'} align='center'>
+                        <Localize i18n_default_text='Please note that some payment methods might not be available in your country.' />
+                    </Text>
                 </div>
                 {is_mobile && (
                     <div
-                        className='cashier-default-header'
+                        className='cashier-default-header-learn-more'
                         onClick={() => window.open(getStaticUrl('/payment-methods'))}
                     >
                         <Text size='xs' color='red'>

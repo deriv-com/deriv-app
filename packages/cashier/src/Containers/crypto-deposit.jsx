@@ -33,9 +33,15 @@ const CryptoDeposit = ({
 
     const header_note =
         currency === 'USDC' || currency === 'eUSDT' ? (
-            <Localize i18n_default_text='To avoid loss of funds, please do not send ETH, and do not use Binance Chain (BNB) and Binance Smart Chain (BSC) networks.' />
+            <Localize
+                i18n_default_text='To avoid loss of funds, please <0>do not send</0> ETH, and <1>do not use</1> Binance Chain (BNB) and Binance Smart Chain (BSC) networks.'
+                components={[<strong key={0} />, <strong key={1} />]}
+            />
         ) : currency === 'ETH' ? (
-            <Localize i18n_default_text='To avoid loss of funds, please do not send ERC20 tokens, and do not use Binance Chain (BNB) and Binance Smart Chain (BSC) networks.' />
+            <Localize
+                i18n_default_text='To avoid loss of funds, please <0>do not send</0> ERC20 tokens, and <1>do not use</1> Binance Chain (BNB) and Binance Smart Chain (BSC) networks.'
+                components={[<strong key={0} />, <strong key={1} />]}
+            />
         ) : (
             <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
         );

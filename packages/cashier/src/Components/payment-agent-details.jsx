@@ -4,16 +4,21 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 
 const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
+    const children_array = children.split(',');
     return (
         <div className='payment-agent__accordion-content-line'>
             <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
-            <a
-                className='payment-agent__contact cashier__paragraph'
-                href={`${action ? `${action}:` : ''}${children}`}
-                {...rest}
-            >
-                {children}
-            </a>
+            {children_array.map((child, id) => (
+                <a
+                    key={id}
+                    className='payment-agent__contact cashier__paragraph'
+                    href={`${action ? `${action}:` : ''}${child}`}
+                    {...rest}
+                >
+                    {child}
+                    {id === children_array.length - 1 ? '' : ', '}
+                </a>
+            ))}
         </div>
     );
 };

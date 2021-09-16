@@ -31,6 +31,15 @@ const CryptoDeposit = ({
 
     const currency_name = CryptoConfig.get()[currency].name;
 
+    const header_note =
+        currency === 'USDC' ? (
+            <Localize i18n_default_text='To avoid loss of funds, please do not send ETH, and do not use Binance Chain (BNB) and Binance Smart Chain (BSC) networks.' />
+        ) : currency === 'ETH' ? (
+            <Localize i18n_default_text='To avoid loss of funds, please do not send ERC20 tokens, and do not use Binance Chain (BNB) and Binance Smart Chain (BSC) networks.' />
+        ) : (
+            <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
+        );
+
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
             <div className='crypto-deposit__transaction-wrapper'>
@@ -52,7 +61,7 @@ const CryptoDeposit = ({
                     />
                 </Text>
                 <Text as='p' line_height='m' size={isMobile() ? 'xs' : 's'} align='center'>
-                    <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
+                    {header_note}
                 </Text>
 
                 {api_error ? (

@@ -2,13 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import {
-    getAccountTypeFields,
-    getAccountListKey,
-    getCFDAccountKey,
-    CFD_PLATFORMS,
-    isLandingCompanyEnabled,
-} from '@deriv/shared';
+import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
@@ -34,6 +28,9 @@ const CFDRealAccountDisplay = ({
     is_fully_authenticated,
     is_pending_authentication,
     is_virtual,
+    isSyntheticCardVisible,
+    isFinancialCardVisible,
+    isFinancialStpCardVisible,
     landing_companies,
     onSelectAccount,
     openAccountTransfer,
@@ -155,27 +152,6 @@ const CFDRealAccountDisplay = ({
             default:
                 return false;
         }
-    };
-
-    const isSyntheticCardVisible = () => {
-        return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
-    };
-
-    const isFinancialCardVisible = () => {
-        return (
-            !is_logged_in ||
-            isLandingCompanyEnabled({
-                landing_companies,
-                platform,
-                type: 'financial',
-            })
-        );
-    };
-
-    const isFinancialStpCardVisible = () => {
-        return (
-            (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === CFD_PLATFORMS.MT5
-        );
     };
 
     const synthetic_account_items =

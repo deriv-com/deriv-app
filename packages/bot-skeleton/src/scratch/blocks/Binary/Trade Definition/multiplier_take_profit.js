@@ -43,6 +43,7 @@ Blockly.Blocks.multiplier_take_profit = {
             ),
         };
     },
+    restricted_parents: ['after_purchase'],
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;

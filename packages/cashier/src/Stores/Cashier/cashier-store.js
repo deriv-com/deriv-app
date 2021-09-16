@@ -2019,7 +2019,10 @@ export default class CashierStore extends BaseStore {
 
             if (+balance < +this.converter_from_amount) error_message = localize('Insufficient funds');
 
-            if (+this.converter_from_amount < +min_withdraw_amount) {
+            if (
+                +this.converter_from_amount < +min_withdraw_amount ||
+                +this.converter_from_amount > +max_withdraw_amount
+            ) {
                 error_message = (
                     <Localize
                         i18n_default_text='The allowed withdraw amount is {{min_withdraw_amount}} to {{max_withdraw_amount}} {{currency}}'

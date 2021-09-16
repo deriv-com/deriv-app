@@ -32,7 +32,7 @@ const CryptoDeposit = ({
     const currency_name = CryptoConfig.get()[currency].name;
 
     const header_note =
-        currency === 'USDC' ? (
+        currency === 'USDC' || currency === 'eUSDT' ? (
             <Localize i18n_default_text='To avoid loss of funds, please do not send ETH, and do not use Binance Chain (BNB) and Binance Smart Chain (BSC) networks.' />
         ) : currency === 'ETH' ? (
             <Localize i18n_default_text='To avoid loss of funds, please do not send ERC20 tokens, and do not use Binance Chain (BNB) and Binance Smart Chain (BSC) networks.' />

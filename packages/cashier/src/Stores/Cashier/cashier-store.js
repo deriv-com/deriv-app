@@ -2001,11 +2001,12 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    validateWithdrawFromAmount() {
+    async validateWithdrawFromAmount() {
         let error_message = '';
 
         const { balance, currency, website_status } = this.root_store.client;
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
+        const max_withdraw_amount = (await this.root_store.client.getLimits())?.get_limits?.remainder;
 
         if (!this.converter_from_amount) {
             error_message = localize('This field is required.');
@@ -2021,8 +2022,12 @@ export default class CashierStore extends BaseStore {
             if (+this.converter_from_amount < +min_withdraw_amount) {
                 error_message = (
                     <Localize
-                        i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'
-                        values={{ min_withdraw_amount, currency: this.root_store.client.currency }}
+                        i18n_default_text='The allowed withdraw amount is {{min_withdraw_amount}} to {{max_withdraw_amount}} {{currency}}'
+                        values={{
+                            min_withdraw_amount,
+                            max_withdraw_amount,
+                            currency: this.root_store.client.currency,
+                        }}
                     />
                 );
             }

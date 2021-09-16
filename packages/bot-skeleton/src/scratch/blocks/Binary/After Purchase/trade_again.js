@@ -51,8 +51,9 @@ Blockly.JavaScript.trade_again = block => {
         take_profit = block.childValueToCode('multiplier_take_profit', 'AMOUNT');
     }
     const code = `
-    if((Bot.getTotalProfit(false) < 0 && Math.abs(Bot.getTotalProfit(false)) >= ${stop_loss}) ||
-    (Bot.getTotalProfit(false) >= 0 && Bot.getTotalProfit(false) >= ${take_profit})){
+    var profit = Bot.getProfitPerRun(false);
+    if((profit < 0 && Math.abs(profit) >= ${stop_loss}) ||
+    (profit >= 0 && profit >= ${take_profit})){
         Bot.isTradeAgain(false);\n
     }else{
         Bot.isTradeAgain(true);\n

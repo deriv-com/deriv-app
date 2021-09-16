@@ -18,6 +18,7 @@ describe('Misc. tools', () => {
         watch('before')
         result.totalRuns = Bot.getTotalRuns();
         result.totalProfit = Bot.getTotalProfit();
+        result.profitPerRun = Bot.getProfitPerRun();
         result.balance = Bot.getBalance('NUM')
         result.balanceStr = Bot.getBalance('STR')
     `

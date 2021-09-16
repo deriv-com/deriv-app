@@ -89,6 +89,7 @@ export default class RunPanelStore {
     async onRunButtonClick() {
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
+        this.clearProfitPerRun();
 
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
@@ -425,6 +426,10 @@ export default class RunPanelStore {
 
     clear = () => {
         observer.emit('statistics.clear');
+    };
+
+    clearProfitPerRun = () => {
+        observer.emit('statistics.clearProfitPerRun');
     };
 
     @action.bound

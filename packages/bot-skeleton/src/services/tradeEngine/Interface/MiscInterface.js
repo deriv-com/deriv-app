@@ -29,6 +29,8 @@ export default Interface =>
                 getBalance: type => this.tradeEngine.getBalance(type),
                 getTotalProfit: toString =>
                     this.tradeEngine.getTotalProfit(toString, this.tradeEngine.tradeOptions.currency),
+                getProfitPerRun: toString =>
+                    this.tradeEngine.getProfitPerRun(toString, this.tradeEngine.tradeOptions.currency),
             };
         }
     };

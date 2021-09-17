@@ -468,8 +468,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .sc-categorical-display {
             height: calc(100% - 8px) !important;
         }
-        .chartContainer {
-            width: calc(100% - 0.8rem);
+        .ciq-chart {
+            padding: 0 0.8rem;
         }
     }
     .cq-context {

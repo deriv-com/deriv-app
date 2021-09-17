@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction, when, runInAction } from 'mobx';
+import { action, computed, observable, toJS, reaction, when } from 'mobx';
 import {
     formatMoney,
     isEmptyObject,
@@ -13,10 +13,13 @@ import {
     getCFDAccount,
     getPropertyValue,
     routes,
+    validNumber,
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import OnRampStore from './on-ramp-store';
+import TransactionHistoryStore from './transaction-history-store';
+import ErrorDialog from '../error-dialog-store';
 import BaseStore from '../base-store';
 import CashierNotifications from '../../Containers/cashier-notifications.jsx';
 
@@ -134,6 +137,18 @@ class ConfigAccountTransfer {
     }
 }
 
+class ConfigWithdraw {
+    @observable container = 'withdraw';
+    @observable iframe_height = 0;
+    @observable iframe_url = '';
+    @observable error = new ConfigError();
+    @observable verification = new ConfigVerification();
+
+    is_session_timeout = true;
+    onIframeLoaded = '';
+    timeout_session = '';
+}
+
 class ConfigVerification {
     is_button_clicked = false;
     timeout_button = '';
@@ -160,6 +175,10 @@ export default class CashierStore extends BaseStore {
             root_store: this.root_store,
             WS: this.WS,
         });
+
+        this.error_dialog = new ErrorDialog();
+        this.transaction_history = new TransactionHistoryStore(this.WS);
+
         this.init();
     }
 
@@ -170,10 +189,17 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
-    @observable crypto_amount = '';
-    @observable fiat_amount = '';
-    @observable insufficient_fund_error = '';
+    @observable withdraw_amount = '';
+    @observable converter_from_amount = '';
+    @observable converter_to_amount = '';
+    @observable converter_from_error = '';
+    @observable converter_to_error = '';
     @observable is_timer_visible = false;
+    @observable is_crypto_transactions_visible = false;
+    @observable blockchain_address = '';
+    @observable should_percentage_reset = false;
+    @observable percentage = 0;
+    @observable is_withdraw_confirmed = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -183,11 +209,7 @@ export default class CashierStore extends BaseStore {
         },
         payment_agent: new ConfigPaymentAgent(),
         payment_agent_transfer: new ConfigPaymentAgentTransfer(),
-        withdraw: {
-            ...toJS(new Config({ container: 'withdraw' })),
-            error: new ConfigError(),
-            verification: new ConfigVerification(),
-        },
+        withdraw: new ConfigWithdraw(),
     };
 
     active_container = this.config.deposit.container;
@@ -200,6 +222,12 @@ export default class CashierStore extends BaseStore {
         [this.config.withdraw.container]: 'payment_withdraw',
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
+
+    @computed
+    get is_crypto() {
+        const { currency } = this.root_store.client;
+        return !!currency && isCryptocurrency(currency);
+    }
 
     @computed
     get is_payment_agent_visible() {
@@ -224,8 +252,95 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsWithdrawConfirmed(is_withdraw_confirmed) {
+        this.is_withdraw_confirmed = is_withdraw_confirmed;
+
+        if (is_withdraw_confirmed) this.setWithdrawAmount(this.converter_from_amount);
+
+        if (!is_withdraw_confirmed && this.config[this.active_container].verification) {
+            this.clearVerification();
+        }
+    }
+
+    @action.bound
+    setWithdrawAmount(amount) {
+        this.withdraw_amount = amount;
+    }
+
+    @action.bound
+    calculatePercentage(amount = this.converter_from_amount) {
+        if (this.active_container === this.config.account_transfer.container) {
+            this.percentage = +((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
+        } else {
+            this.percentage = +((amount / +this.root_store.client.balance) * 100).toFixed(0);
+        }
+    }
+
+    @action.bound
+    percentageSelectorSelectionStatus(should_percentage_reset) {
+        this.should_percentage_reset = should_percentage_reset;
+
+        if (should_percentage_reset) {
+            this.percentage = 0;
+        }
+    }
+
+    async saveWithdraw(verification_code) {
+        this.setErrorMessage('');
+        await this.WS.cryptoWithdraw({
+            address: this.blockchain_address,
+            amount: +this.converter_from_amount,
+            verification_code,
+        }).then(response => {
+            if (response.error) {
+                this.setErrorMessage(response.error);
+                if (verification_code) {
+                    // clear verification code on error
+                    this.clearVerification();
+                }
+                this.resetWithrawForm();
+            } else {
+                this.setIsWithdrawConfirmed(true);
+            }
+        });
+    }
+
+    @action.bound
+    async requestWithdraw(verification_code) {
+        if (!this.root_store.client.is_logged_in) {
+            return;
+        }
+
+        await this.WS.cryptoWithdraw({
+            address: this.blockchain_address,
+            amount: +this.converter_from_amount,
+            verification_code,
+            dry_run: 1,
+        }).then(response => {
+            if (response.error) {
+                this.error_dialog.setErrorMessage(response.error.message);
+            } else {
+                this.saveWithdraw(verification_code);
+            }
+        });
+    }
+
+    @action.bound
+    resetWithrawForm() {
+        this.setBlockchainAddress('');
+        this.setConverterFromAmount('');
+        this.setConverterToAmount('');
+        this.clearVerification();
+    }
+
+    @action.bound
     setIsDeposit(is_deposit) {
         this.is_deposit = is_deposit;
+    }
+
+    @action.bound
+    setBlockchainAddress(address) {
+        this.blockchain_address = address;
     }
 
     @action.bound
@@ -242,6 +357,15 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
+    @action.bound
+    setActiveTabIndex(index) {
+        this.config.payment_agent.setActiveTabIndex(index);
+
+        if (index === 1) {
+            this.sendVerificationEmail();
+        }
+    }
+
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
@@ -251,6 +375,7 @@ export default class CashierStore extends BaseStore {
                 await this.checkP2pStatus();
             }
         );
+
         reaction(
             () => [
                 this.root_store.client.switched,
@@ -265,6 +390,13 @@ export default class CashierStore extends BaseStore {
                     await this.checkP2pStatus();
                     await this.filterPaymentAgentList();
                 }
+            }
+        );
+
+        reaction(
+            () => [this.root_store.client.currency],
+            () => {
+                this.setIsWithdrawConfirmed(false);
             }
         );
     }
@@ -307,12 +439,66 @@ export default class CashierStore extends BaseStore {
             if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
+
+            if (
+                !this.is_crypto_transactions_visible &&
+                window.location.pathname.endsWith(routes.cashier_crypto_transactions)
+            ) {
+                this.root_store.common.routeTo(routes.cashier_deposit);
+                this.transaction_history.setIsCryptoTransactionsVisible(true);
+            }
         }
+    }
+
+    @action.bound
+    setIsCryptoTransactionsVisible(is_visible) {
+        this.is_crypto_transactions_visible = is_visible;
     }
 
     @action.bound
     setCashierTabIndex(index) {
         this.cashier_route_tab_index = index;
+    }
+
+    @action.bound
+    willMountWithdraw(verification_code) {
+        if (verification_code) {
+            this.clearVerification();
+        }
+    }
+
+    @action.bound
+    async onMountWithdraw(verification_code) {
+        this.setLoading(true);
+        const strRegExp = /^\w{8,128}$/;
+        let response_cashier;
+
+        if (strRegExp.test(verification_code)) {
+            response_cashier = await this.WS.cryptoWithdraw({
+                address: this.blockchain_address,
+                amount: +this.converter_from_amount,
+                verification_code,
+                dry_run: 1,
+            });
+        } else {
+            response_cashier = { error: { code: 'InvalidToken', message: 'Your token has expired or is invalid.' } };
+        }
+
+        if (response_cashier.error.code === 'InvalidToken') {
+            this.handleCashierError(response_cashier.error);
+            this.setLoading(false);
+            this.setSessionTimeout(true);
+            this.clearTimeoutCashierUrl();
+            if (verification_code) {
+                // clear verification code on error
+                this.clearVerification();
+            }
+        } else {
+            this.setLoading(false);
+        }
+        if (this.config.withdraw.error) {
+            this.setErrorMessage(this.config.withdraw.error, this.onMountWithdraw);
+        }
     }
 
     @action.bound
@@ -396,7 +582,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_cashier_locked() {
-        if (!this.root_store.client.account_status.status) return false;
+        if (!this.root_store.client.account_status?.status) return false;
         const { status } = this.root_store.client.account_status;
 
         return status.some(status_name => status_name === 'cashier_locked');
@@ -404,7 +590,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_system_maintenance() {
-        if (!this.root_store.client.account_status.cashier_validation) return false;
+        if (!this.root_store.client.account_status?.cashier_validation) return false;
         const { cashier_validation } = this.root_store.client.account_status;
 
         return cashier_validation.some(validation => validation === 'system_maintenance');
@@ -423,7 +609,7 @@ export default class CashierStore extends BaseStore {
             mt5_login_list,
             is_deposit_lock,
         } = this.root_store.client;
-        if (!account_status.status) return false;
+        if (!account_status?.status) return false;
 
         const need_authentication =
             this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
@@ -448,7 +634,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_withdrawal_locked() {
-        if (!this.root_store.client.account_status.status) return false;
+        if (!this.root_store.client.account_status?.status) return false;
         const { authentication } = this.root_store.client.account_status;
         const need_poi = authentication.needs_verification.includes('identity');
 
@@ -470,7 +656,7 @@ export default class CashierStore extends BaseStore {
             account_status,
         } = this.root_store.client;
 
-        if (!account_status.status) return false;
+        if (!account_status?.status) return false;
 
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
@@ -695,14 +881,18 @@ export default class CashierStore extends BaseStore {
         const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
         if (response_verify_email.error) {
             this.clearVerification();
-            this.setErrorMessage(
-                response_verify_email.error,
-                () => {
-                    this.setErrorMessage('', null, null, true);
-                },
-                null,
-                true
-            );
+            if (response_verify_email.error.code === 'PaymentAgentWithdrawError') {
+                this.setErrorMessage(response_verify_email.error, this.resetPaymentAgent, null, true);
+            } else {
+                this.setErrorMessage(
+                    response_verify_email.error,
+                    () => {
+                        this.setErrorMessage('', null, null, true);
+                    },
+                    null,
+                    true
+                );
+            }
         } else {
             this.setVerificationEmailSent(true);
             this.setTimeoutVerification();
@@ -748,18 +938,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setCryptoAmount(amount) {
-        this.crypto_amount = amount;
-    }
-
-    @action.bound
-    setFiatAmount(amount) {
-        this.fiat_amount = amount;
-    }
-
-    @action.bound
     setIsTimerVisible(is_timer_visible) {
         this.is_timer_visible = is_timer_visible;
+    }
+
+    @action.bound
+    resetTimer() {
+        this.setIsTimerVisible(false);
     }
 
     @action.bound
@@ -769,35 +954,6 @@ export default class CashierStore extends BaseStore {
             base_currency: from_currency,
         });
         return exchange_rates.rates[to_currency];
-    }
-
-    @action.bound
-    async onChangeCryptoAmount({ target }, from_currency, to_currency) {
-        const rate = await this.getExchangeRate(from_currency, to_currency);
-        runInAction(() => {
-            const decimals = getDecimalPlaces(to_currency);
-            const amount = (rate * target.value).toFixed(decimals);
-            this.setFiatAmount(amount);
-            this.setIsTimerVisible(true);
-        });
-    }
-
-    @action.bound
-    async onChangeFiatAmount({ target }, from_currency, to_currency) {
-        const rate = await this.getExchangeRate(from_currency, to_currency);
-        runInAction(() => {
-            const decimals = getDecimalPlaces(to_currency);
-            const amount = (rate * target.value).toFixed(decimals);
-            const balance = this.root_store.client.balance;
-            if (balance < amount) {
-                this.insufficient_fund_error = localize('Insufficient funds');
-                this.setCryptoAmount('');
-            } else {
-                this.insufficient_fund_error = '';
-                this.setCryptoAmount(amount);
-                this.setIsTimerVisible(true);
-            }
-        });
     }
 
     @action.bound
@@ -1051,6 +1207,7 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         this.setIsWithdraw(false);
         this.clearVerification();
+        this.setActiveTabIndex(0);
     };
 
     // possible transfers:
@@ -1656,5 +1813,246 @@ export default class CashierStore extends BaseStore {
         this.onRemount();
 
         return Promise.resolve();
+    }
+
+    @computed
+    get account_platform_icon() {
+        const platform_icon = this.root_store.client.account_list.find(
+            acc => this.root_store.client.loginid === acc.loginid
+        ).icon;
+
+        return platform_icon;
+    }
+
+    @action.bound
+    setConverterFromAmount(amount) {
+        this.converter_from_amount = amount;
+    }
+
+    @action.bound
+    setConverterToAmount(amount) {
+        this.converter_to_amount = amount;
+    }
+
+    @action.bound
+    setConverterFromError(error) {
+        this.converter_from_error = error;
+    }
+
+    @action.bound
+    setConverterToError(error) {
+        this.converter_to_error = error;
+    }
+
+    @action.bound
+    async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
+        this.resetTimer();
+        if (target.value) {
+            this.percentageSelectorSelectionStatus(true);
+            this.calculatePercentage();
+            this.setConverterFromAmount(target.value);
+            this.validateFromAmount();
+            if (this.converter_from_error) {
+                this.setConverterToAmount('');
+                this.setConverterToError('');
+                this.setIsTimerVisible(false);
+                this.setAccountTransferAmount('');
+            } else {
+                const rate = await this.getExchangeRate(from_currency, to_currency);
+                const decimals = getDecimalPlaces(to_currency);
+                const amount = (rate * target.value).toFixed(decimals);
+                if (+amount || this.converter_from_amount) {
+                    this.setConverterToAmount(amount);
+                } else {
+                    this.setConverterToAmount('');
+                }
+                this.validateToAmount();
+                this.setConverterToError('');
+                this.setIsTimerVisible(true);
+                this.setAccountTransferAmount(target.value);
+            }
+        } else {
+            this.resetConverter();
+        }
+    }
+
+    @action.bound
+    async onChangeConverterToAmount({ target }, from_currency, to_currency) {
+        this.resetTimer();
+        if (target.value) {
+            this.percentageSelectorSelectionStatus(true);
+            this.calculatePercentage();
+            this.setConverterToAmount(target.value);
+            this.validateToAmount();
+            if (this.converter_to_error) {
+                this.setConverterFromAmount('');
+                this.setConverterFromError('');
+                this.setIsTimerVisible(false);
+                this.setAccountTransferAmount('');
+            } else {
+                const rate = await this.getExchangeRate(from_currency, to_currency);
+                const decimals = getDecimalPlaces(to_currency);
+                const amount = (rate * target.value).toFixed(decimals);
+                if (+amount || this.converter_to_amount) {
+                    this.setConverterFromAmount(amount);
+                } else {
+                    this.setConverterFromAmount('');
+                }
+                this.validateFromAmount();
+                if (this.converter_from_error) {
+                    this.setIsTimerVisible(false);
+                    this.setAccountTransferAmount('');
+                } else {
+                    this.setConverterFromError('');
+                    this.setIsTimerVisible(true);
+                    this.setAccountTransferAmount(amount);
+                }
+            }
+        } else {
+            this.resetConverter();
+        }
+    }
+
+    @action.bound
+    setTransferPercentageSelectorResult(amount) {
+        const selected_from_currency = this.config.account_transfer.selected_from.currency;
+        const selected_to_currency = this.config.account_transfer.selected_to.currency;
+        if (amount > 0) {
+            this.setConverterFromAmount(amount);
+            this.validateTransferFromAmount();
+            this.onChangeConverterFromAmount(
+                { target: { value: amount } },
+                selected_from_currency,
+                selected_to_currency
+            );
+        }
+        this.setIsTimerVisible(false);
+        this.percentageSelectorSelectionStatus(false);
+    }
+
+    @action.bound
+    setWithdrawPercentageSelectorResult(amount) {
+        if (amount > 0) {
+            this.setConverterFromAmount(amount);
+            this.validateWithdrawFromAmount();
+            this.onChangeConverterFromAmount(
+                { target: { value: amount } },
+                this.root_store.client.currency,
+                this.root_store.client.current_fiat_currency || 'USD'
+            );
+        }
+        this.setIsTimerVisible(false);
+        this.percentageSelectorSelectionStatus(false);
+    }
+
+    @action.bound
+    validateFromAmount() {
+        if (this.active_container === this.config.account_transfer.container) {
+            this.validateTransferFromAmount();
+        } else {
+            this.validateWithdrawFromAmount();
+        }
+    }
+
+    @action.bound
+    validateToAmount() {
+        if (this.active_container === this.config.account_transfer.container) {
+            this.validateTransferToAmount();
+        } else {
+            this.validateWithdrawToAmount();
+        }
+    }
+
+    @action.bound
+    validateTransferFromAmount() {
+        if (!this.converter_from_amount) {
+            this.setConverterFromError(localize('This field is required.'));
+        } else {
+            const { is_ok, message } = validNumber(this.converter_from_amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(this.config.account_transfer.selected_from.currency),
+                min: this.config.account_transfer.transfer_limit.min,
+                max: this.config.account_transfer.transfer_limit.max,
+            });
+            if (!is_ok) {
+                this.setConverterFromError(message);
+            } else if (+this.config.account_transfer.selected_from.balance < +this.converter_from_amount) {
+                this.setConverterFromError(localize('Insufficient funds'));
+            } else {
+                this.setConverterFromError('');
+            }
+        }
+    }
+
+    @action.bound
+    validateTransferToAmount() {
+        if (this.converter_to_amount) {
+            const currency = this.config.account_transfer.selected_to.currency;
+            const { is_ok, message } = validNumber(this.converter_to_amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+            });
+            if (!is_ok) {
+                this.setConverterToError(message);
+            } else {
+                this.setConverterToError('');
+            }
+        }
+    }
+
+    @action.bound
+    validateWithdrawFromAmount() {
+        let error_message = '';
+
+        const { balance, currency, website_status } = this.root_store.client;
+        const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
+
+        if (!this.converter_from_amount) {
+            error_message = localize('This field is required.');
+        } else {
+            const { is_ok, message } = validNumber(this.converter_from_amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+            });
+            if (!is_ok) error_message = message;
+
+            if (+balance < +this.converter_from_amount) error_message = localize('Insufficient funds');
+
+            if (+this.converter_from_amount < +min_withdraw_amount) {
+                error_message = (
+                    <Localize
+                        i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'
+                        values={{ min_withdraw_amount, currency: this.root_store.client.currency }}
+                    />
+                );
+            }
+        }
+        this.setConverterFromError(error_message);
+    }
+
+    @action.bound
+    validateWithdrawToAmount() {
+        let error_message = '';
+        const { current_fiat_currency } = this.root_store.client;
+
+        if (this.converter_to_amount) {
+            const { is_ok, message } = validNumber(this.converter_to_amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(current_fiat_currency),
+            });
+            if (!is_ok) error_message = message;
+        }
+
+        this.setConverterToError(error_message);
+    }
+
+    @action.bound
+    resetConverter() {
+        this.setConverterFromAmount('');
+        this.setConverterToAmount('');
+        this.setConverterFromError('');
+        this.setConverterToError('');
+        this.setIsTimerVisible(false);
+        this.percentageSelectorSelectionStatus(true);
     }
 }

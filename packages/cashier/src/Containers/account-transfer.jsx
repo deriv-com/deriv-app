@@ -38,7 +38,7 @@ const AccountTransfer = ({
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
 
     React.useEffect(() => {
-        if(!is_crypto_transactions_visible) {
+        if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
         }
     }, [is_switching]);

@@ -2007,9 +2007,7 @@ export default class CashierStore extends BaseStore {
         const { balance, currency, website_status } = this.root_store.client;
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
 
-        if (!this.converter_from_amount) {
-            error_message = localize('This field is required.');
-        } else {
+        if (this.converter_from_amount) {
             const { is_ok, message } = validNumber(this.converter_from_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),

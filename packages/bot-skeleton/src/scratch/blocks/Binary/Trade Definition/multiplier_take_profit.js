@@ -54,6 +54,7 @@ Blockly.Blocks.multiplier_take_profit = {
             this.setCurrency();
         }
     },
+    restricted_parents: ['trade_definition_multiplier'],
     setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     getRequiredValueInputs() {
         const field_input = this.getInput('AMOUNT');

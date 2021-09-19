@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
 
@@ -40,7 +41,7 @@ Blockly.Blocks.trade_definition_tradetype = {
         if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPECAT_LIST') {
                 const { currency, landing_company_shortcode } = DBotStore.instance.client;
-                const { contracts_for } = ApiHelpers.instance;
+                const { contracts_for, active_symbols } = ApiHelpers.instance;
                 const top_parent_block = this.getTopParent();
                 const market_block = top_parent_block.getChildByType('trade_definition_market');
                 const market = market_block.getFieldValue('MARKET_LIST');
@@ -55,19 +56,27 @@ Blockly.Blocks.trade_definition_tradetype = {
                 };
 
                 if (event.name === 'SYMBOL_LIST') {
-                    contracts_for
-                        .getTradeTypeCategories(market, submarket, contracts_for_symbol_options)
-                        .then(categories => {
-                            const trade_type_cat_field = this.getField('TRADETYPECAT_LIST');
+                    const trade_type_cat_field = this.getField('TRADETYPECAT_LIST');
 
-                            if (trade_type_cat_field) {
-                                trade_type_cat_field.updateOptions(categories, {
-                                    default_value: trade_type_cat,
-                                    should_pretend_empty: true,
-                                    event_group: event.group,
+                    if (trade_type_cat_field) {
+                        if (active_symbols.isSymbolClosed(symbol)) {
+                            trade_type_cat_field.updateOptions(config.NOT_AVAILABLE_DROPDOWN_OPTIONS, {
+                                default_value: trade_type_cat,
+                                should_pretend_empty: true,
+                                event_group: event.group,
+                            });
+                        } else {
+                            contracts_for
+                                .getTradeTypeCategories(market, submarket, contracts_for_symbol_options)
+                                .then(categories => {
+                                    trade_type_cat_field.updateOptions(categories, {
+                                        default_value: trade_type_cat,
+                                        should_pretend_empty: true,
+                                        event_group: event.group,
+                                    });
                                 });
-                            }
-                        });
+                        }
+                    }
                 } else if (event.name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
                     contracts_for
                         .getTradeTypes(market, submarket, contracts_for_symbol_options, trade_type_cat)

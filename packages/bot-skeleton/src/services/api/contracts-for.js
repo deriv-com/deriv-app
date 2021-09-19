@@ -235,7 +235,11 @@ export default class ContractsFor {
         const contracts = await this.getContractsFor(contracts_for_symbol_options);
         const { NOT_AVAILABLE_DURATIONS, DEFAULT_DURATION_DROPDOWN_OPTIONS } = config;
 
-        if (contracts.length === 0) {
+        const noContractDurations =
+            contracts.every(item => item.max_available_contract === '0') &&
+            contracts.every(item => item.min_available_contract === '0');
+
+        if (contracts.length === 0 || noContractDurations) {
             return NOT_AVAILABLE_DURATIONS;
         }
 

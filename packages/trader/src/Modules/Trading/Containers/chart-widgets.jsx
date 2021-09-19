@@ -4,7 +4,6 @@ import Digits from 'Modules/Contract/Components/Digits';
 import { connect } from 'Stores/connect';
 import BottomWidgets from '../../SmartChart/Components/bottom-widgets.jsx';
 import ControlWidgets from '../../SmartChart/Components/control-widgets.jsx';
-import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
 import { symbolChange } from '../../SmartChart/Helpers/symbol';
 

@@ -1018,10 +1018,10 @@ export default class CashierStore extends BaseStore {
         payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
             this.config.payment_agent.list.push({
                 email: payment_agent.email,
-                phone: payment_agent.telephone,
+                phones: payment_agent.phone_numbers,
                 name: payment_agent.name,
                 supported_banks: payment_agent.supported_banks,
-                url: payment_agent.url,
+                urls: payment_agent.urls,
             });
             if (payment_agent.supported_banks) {
                 payment_agent.supported_banks.split(',').forEach(bank => {

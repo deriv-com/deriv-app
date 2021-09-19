@@ -71,13 +71,6 @@ export const ChartTopWidgets = connect(({ modules, ui }) => ({
     );
 });
 
-export const ChartToolbarWidgets = connect(({ modules }) => ({
-    updateChartType: modules.contract_trade.updateChartType,
-    updateGranularity: modules.contract_trade.updateGranularity,
-}))(({ updateChartType, updateGranularity }) => (
-    <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-));
-
 export const ChartBottomWidgets = ({ digits, tick }) => (
     <BottomWidgets Digits={<DigitsWidget digits={digits} tick={tick} />} />
 );

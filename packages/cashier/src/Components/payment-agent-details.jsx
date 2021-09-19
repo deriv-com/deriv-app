@@ -4,7 +4,7 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 
 const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
-    const detail = Array.isArray(children) ? children : children.split();
+    const detail = Array.isArray(children) ? children : children.split(',');
     return (
         <div className='payment-agent__accordion-content-line'>
             <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
@@ -33,16 +33,19 @@ Detail.propTypes = {
 };
 
 const PaymentAgentDetails = ({ className, payment_agent_phones, payment_agent_urls, payment_agent_email }) => {
+    //  TODO: Once telephone, url removed from paymentagent_list.list we can remove isArray conditions and only use the array
     return (
         <div className={classNames('payment-agent__accordion-content', className)}>
             {payment_agent_phones && (
                 <Detail action='tel' icon='Phone'>
-                    {payment_agent_phones.map(phone => phone.phone_number)}
+                    {Array.isArray(payment_agent_phones)
+                        ? payment_agent_phones.map(phone => phone.phone_number)
+                        : payment_agent_phones}
                 </Detail>
             )}
             {payment_agent_urls && (
                 <Detail icon='Website' target='_blank' rel='noopener noreferrer'>
-                    {payment_agent_urls.map(url => url.url)}
+                    {Array.isArray(payment_agent_urls) ? payment_agent_urls.map(url => url.url) : payment_agent_urls}
                 </Detail>
             )}
             {payment_agent_email && (

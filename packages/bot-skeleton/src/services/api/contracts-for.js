@@ -185,6 +185,7 @@ export default class ContractsFor {
         if (!symbol || symbol === 'na') {
             return [];
         }
+        const { TRADE_TYPE_CATEGORIES } = config;
 
         const getContractsForFromApi = async () => {
             if (this.retrieving_contracts_for[symbol]) {
@@ -203,8 +204,15 @@ export default class ContractsFor {
                 contracts_for: { available: contracts },
             } = response;
 
+            // filter server data with config categories
+            const avaiable_categories = Object.values(TRADE_TYPE_CATEGORIES).reduce((acc, current) => {
+                return [...acc, ...current];
+            }, Object.keys(TRADE_TYPE_CATEGORIES));
+
             // We don't offer forward-starting contracts in bot.
-            const filtered_contracts = contracts.filter(c => c.start_type !== 'forward');
+            const filtered_contracts = contracts.filter(
+                c => c.start_type !== 'forward' && avaiable_categories.includes(c.contract_category)
+            );
 
             this.contracts_for[symbol] = {
                 contracts: filtered_contracts,

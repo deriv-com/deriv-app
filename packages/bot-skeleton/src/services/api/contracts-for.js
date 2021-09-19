@@ -155,7 +155,7 @@ export default class ContractsFor {
 
         return trade_type_category || trade_type;
     }
-
+    // eslint-disable-next-line class-methods-use-this
     getTradeTypeCategoryNameByTradeType(contract) {
         return contract.contract_category_display;
     }

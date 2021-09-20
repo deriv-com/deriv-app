@@ -205,7 +205,6 @@ const Statement = ({
                                     content_loader={ReportsTableRowLoader}
                                     data_source={data}
                                     getRowAction={row => getRowAction(row)}
-                                    getRowSize={() => 63}
                                     onScroll={handleScroll}
                                     passthrough={{
                                         isTopUp: item => is_virtual && item.action === 'Deposit',

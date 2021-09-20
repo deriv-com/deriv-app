@@ -138,6 +138,8 @@ const CFDRealAccountDisplay = ({
     const isMT5AccountCardDisabled = sub_account_type => {
         if (has_cfd_account_error) return true;
 
+        if (sub_account_type === 'synthetic' && standpoint.malta) return true;
+
         if (is_eu) {
             const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
             return isAccountOfTypeDisabled(account?.account_type);

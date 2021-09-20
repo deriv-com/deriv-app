@@ -71,6 +71,16 @@ export default class ClientStore extends BaseStore {
     // mt_gaming_company: {}
     @observable landing_companies = {};
 
+    // All possible landing companies of user between all
+    @observable standpoint = {
+        iom: false,
+        svg: false,
+        malta: false,
+        maltainvest: false,
+        gaming_company: false,
+        financial_company: false,
+    };
+
     @observable upgradeable_landing_companies = [];
     @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable mt5_login_list = [];
@@ -584,35 +594,6 @@ export default class ClientStore extends BaseStore {
 
         result.is_rest_of_eu =
             this.is_eu && !result.is_uk && !result.is_france && !result.is_belgium && !result.is_other_eu;
-
-        return result;
-    }
-
-    // Shows all possible landing companies of user between all
-    @computed
-    get standpoint() {
-        const result = {
-            iom: false,
-            svg: false,
-            malta: false,
-            maltainvest: false,
-            gaming_company: false,
-            financial_company: false,
-        };
-        if (!this.landing_companies) return result;
-        const { gaming_company, financial_company } = this.landing_companies;
-        if (gaming_company?.shortcode) {
-            Object.assign(result, {
-                [gaming_company.shortcode]: !!gaming_company?.shortcode,
-                gaming_company: gaming_company?.shortcode ?? false,
-            });
-        }
-        if (financial_company?.shortcode) {
-            Object.assign(result, {
-                [financial_company.shortcode]: !!financial_company?.shortcode,
-                financial_company: financial_company?.shortcode ?? false,
-            });
-        }
 
         return result;
     }
@@ -1284,7 +1265,28 @@ export default class ClientStore extends BaseStore {
     responseLandingCompany(response) {
         this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
+        this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
+    }
+
+    @action.bound
+    setStandpoint(landing_companies) {
+        if (!landing_companies) return;
+        const { gaming_company, financial_company } = landing_companies;
+        if (gaming_company?.shortcode) {
+            this.standpoint = {
+                ...this.standpoint,
+                [gaming_company.shortcode]: !!gaming_company?.shortcode,
+                gaming_company: gaming_company?.shortcode ?? false,
+            };
+        }
+        if (financial_company?.shortcode) {
+            this.standpoint = {
+                ...this.standpoint,
+                [financial_company.shortcode]: !!financial_company?.shortcode,
+                financial_company: financial_company?.shortcode ?? false,
+            };
+        }
     }
 
     @action.bound

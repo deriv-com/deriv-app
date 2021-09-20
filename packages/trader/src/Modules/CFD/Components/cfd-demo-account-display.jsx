@@ -61,7 +61,7 @@ const CFDDemoAccountDisplay = ({
                         type: 'synthetic',
                         platform,
                     }}
-                    is_disabled={has_cfd_account_error}
+                    is_disabled={has_cfd_account_error || standpoint.malta}
                     is_logged_in={is_logged_in}
                     existing_data={
                         current_list[

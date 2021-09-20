@@ -307,6 +307,7 @@ export default class CFDStore extends BaseStore {
             actions.setStatus({ success: false });
             return true;
         }
+        await this.getAccountStatus(CFD_PLATFORMS.MT5);
         return false;
     }
 

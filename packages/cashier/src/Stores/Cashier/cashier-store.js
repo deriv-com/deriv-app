@@ -446,6 +446,7 @@ export default class CashierStore extends BaseStore {
             ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
                 this.transaction_history.setIsCryptoTransactionsVisible(true);
+                this.transaction_history.onMount();
             }
         }
     }
@@ -980,6 +981,12 @@ export default class CashierStore extends BaseStore {
         // TODO: set residence in client-store from authorize so it's faster
         await this.WS.wait('get_settings');
         return this.WS.authorized.paymentAgentList(this.root_store.client.residence, this.root_store.client.currency);
+    }
+
+    @action.bound
+    async getPaymentAgentDetails() {
+        const { paymentagent_details } = await this.WS.authorized.paymentAgentDetails();
+        return paymentagent_details;
     }
 
     @action.bound
@@ -1682,21 +1689,20 @@ export default class CashierStore extends BaseStore {
         this.setLoading(true);
         this.onRemount = this.onMountPaymentAgentTransfer;
         await this.onMountCommon();
-
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
             const response = await this.getPaymentAgentList();
-            const current_payment_agent = this.getCurrentPaymentAgent(response);
+            const current_payment_agent = await this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);
         }
         this.setLoading(false);
     }
 
-    getCurrentPaymentAgent(response_payment_agent) {
-        return (
-            response_payment_agent.paymentagent_list.list.find(
-                agent => agent.paymentagent_loginid === this.root_store.client.loginid
-            ) || {}
+    async getCurrentPaymentAgent(response_payment_agent) {
+        const payment_agent_listed = response_payment_agent.paymentagent_list.list.find(
+            agent => agent.paymentagent_loginid === this.root_store.client.loginid
         );
+        const current_payment_agent = payment_agent_listed || (await this.getPaymentAgentDetails());
+        return current_payment_agent ?? {};
     }
 
     async checkIsPaymentAgent() {

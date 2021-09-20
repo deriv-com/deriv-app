@@ -64,8 +64,10 @@ const Deposit = ({
     tab_index,
 }) => {
     React.useEffect(() => {
-        recentTransactionOnMount();
-    }, [recentTransactionOnMount]);
+        if (!is_crypto_transactions_visible) {
+            recentTransactionOnMount();
+        }
+    }, [is_switching]);
 
     React.useEffect(() => {
         setActiveTab(container);
@@ -90,7 +92,7 @@ const Deposit = ({
             } else setSideNotes(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, is_switching, crypto_transactions]);
+    }, [currency, tab_index, crypto_transactions]);
 
     if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen={false} />;

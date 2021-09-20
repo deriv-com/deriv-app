@@ -50,6 +50,7 @@ const Withdrawal = ({
     is_cashier_locked,
     is_crypto,
     is_crypto_transactions_visible,
+    is_switching,
     is_system_maintenance,
     is_virtual,
     is_withdraw_confirmed,
@@ -64,8 +65,10 @@ const Withdrawal = ({
     recentTransactionOnMount,
 }) => {
     React.useEffect(() => {
-        recentTransactionOnMount();
-    }, [recentTransactionOnMount]);
+        if (!is_crypto_transactions_visible) {
+            recentTransactionOnMount();
+        }
+    }, [is_switching]);
 
     React.useEffect(() => {
         setActiveTab(container);
@@ -85,7 +88,7 @@ const Withdrawal = ({
 
     React.useEffect(() => {
         if (isDesktop()) {
-            if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
+            if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
                 const side_notes = [];
                 if (crypto_transactions?.length) {
                     side_notes.push(<RecentTransaction key={2} />);
@@ -102,6 +105,7 @@ const Withdrawal = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);
 
+    // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_withdrawal_locked && current_currency_type === 'crypto')) {
             return <CashierLocked />;
@@ -135,10 +139,10 @@ const Withdrawal = ({
     if (!is_crypto && (verification_code || iframe_url)) {
         return <Withdraw />;
     }
-    if (verification_code && is_crypto && !is_withdraw_confirmed) {
+    if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawForm />;
     }
-    if (is_withdraw_confirmed) {
+    if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawReceipt />;
     }
     if (is_crypto_transactions_visible) {
@@ -157,6 +161,7 @@ Withdrawal.propTypes = {
     is_cashier_locked: PropTypes.bool,
     is_crypto: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
+    is_switching: PropTypes.bool,
     is_system_maintenance: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_withdraw_confirmed: PropTypes.bool,
@@ -180,6 +185,7 @@ export default connect(({ client, modules }) => ({
     is_cashier_locked: modules.cashier.is_cashier_locked,
     is_crypto: modules.cashier.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
+    is_switching: client.is_switching,
     is_system_maintenance: modules.cashier.is_system_maintenance,
     is_virtual: client.is_virtual,
     is_withdraw_confirmed: modules.cashier.is_withdraw_confirmed,

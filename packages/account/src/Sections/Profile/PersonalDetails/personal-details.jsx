@@ -288,12 +288,12 @@ export class PersonalDetailsForm extends React.Component {
 
         // Not allowing Jersey postcodes with a UK residence.
         if (
-            /^((JE[0-9])\s([a-zA-Z0-9]{0,3})|(JE[0-9])\s([a-zA-Z0-9]{0,3})\s*)$/.test(values.address_postcode) &&
+            /^(((je|Je|jE|JE)[0-9])\s([a-zA-Z0-9]{0,3})|((je|Je|jE|JE)[0-9])\s([a-zA-Z0-9]{0,3})\s*)$/.test(
+                values.address_postcode
+            ) &&
             values.citizen === 'United Kingdom'
         ) {
-            errors.address_postcode = localize(
-                'A valid zip code is required. Your residence address does not match the zip code.'
-            );
+            errors.address_postcode = localize('A correct zip code and residence address are required.');
         }
 
         if (values.address_postcode) {

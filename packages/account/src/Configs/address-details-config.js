@@ -16,7 +16,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 [
                     'regular',
                     localize(
-                        'Only letters, numbers, periods, hyphens, apostrophes, and spaces, please.'
+                        'Use only the following special characters: . \" , \' ; ( ) @ # / -'
                     ),
                     {
                         regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]\{\}]{1,70}$/,
@@ -50,7 +50,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['length', localize('Only {{max}} characters, please.', { max: 99 }), { max: 99 }],
                 [
                     'regular',
-                    localize('Only letters, numbers, periods, hyphens, apostrophes, and spaces, please.'),
+                    localize('Only letters, periods, hyphens, apostrophes, and spaces, please.'),
                     {
                         regex: /^\p{L}[\p{L}\s'.-]{0,99}$/u,
                     },

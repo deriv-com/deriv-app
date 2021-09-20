@@ -4,10 +4,18 @@ import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const CashierLocked = ({ current_currency_type, is_deposit_lock, is_system_maintenance, is_withdrawal_lock }) => {
+const CashierLocked = ({
+    account_status,
+    current_currency_type,
+    is_deposit_lock,
+    is_system_maintenance,
+    is_withdrawal_lock,
+}) => {
     let title = 'Cashier is locked';
     let message = 'Please check your email for details';
 
+    const { cashier_validation } = account_status;
+    const no_residence = cashier_validation?.includes('no_residence');
     if (is_system_maintenance) {
         if (current_currency_type === 'crypto') {
             if (is_withdrawal_lock) {
@@ -28,6 +36,8 @@ const CashierLocked = ({ current_currency_type, is_deposit_lock, is_system_maint
         }
     }
 
+    const no_residence = cashier_validation?.includes('no_residence');
+
     return (
         <div className='cashier-locked'>
             <Icon icon='IcCashierLocked' className='cashier-locked__icon' />
@@ -42,6 +52,7 @@ const CashierLocked = ({ current_currency_type, is_deposit_lock, is_system_maint
 };
 
 CashierLocked.propTypes = {
+    account_status: PropTypes.object,
     current_currency_type: PropTypes.string,
     is_deposit_lock: PropTypes.bool,
     is_system_maintenance: PropTypes.bool,
@@ -49,6 +60,7 @@ CashierLocked.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
+    account_status: client.account_status,
     current_currency_type: client.current_currency_type,
     is_deposit_lock: client.is_deposit_lock,
     is_system_maintenance: modules.cashier.is_system_maintenance,

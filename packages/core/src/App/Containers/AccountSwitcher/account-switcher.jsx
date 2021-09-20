@@ -348,6 +348,8 @@ const AccountSwitcher = props => {
     };
 
     const isRealMT5AddDisabled = sub_account_type => {
+        // disabling synthetic account creation for MLT/MF users
+        if (props.standpoint.malta && sub_account_type === 'synthetic') return true;
         if (props.is_eu) {
             const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
             return props.isAccountOfTypeDisabled(account?.account_type);
@@ -477,7 +479,10 @@ const AccountSwitcher = props => {
                                         <Button
                                             onClick={() => openMt5DemoAccount(account.type)}
                                             className='acc-switcher__new-account-btn'
-                                            is_disabled={props.mt5_disabled_signup_types.demo}
+                                            is_disabled={
+                                                props.mt5_disabled_signup_types.demo ||
+                                                (account.type === 'synthetic' && props.standpoint.malta)
+                                            }
                                             secondary
                                             small
                                         >

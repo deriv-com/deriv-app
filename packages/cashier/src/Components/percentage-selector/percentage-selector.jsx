@@ -13,7 +13,7 @@ const PercentageSelector = ({
     should_percentage_reset,
     to_account,
 }) => {
-    const [percente, setPercente] = React.useState('0');
+    const [selected_percentage, setSelectedPercentage] = React.useState('0');
 
     React.useEffect(() => {
         if (should_percentage_reset) {
@@ -24,7 +24,7 @@ const PercentageSelector = ({
     }, [should_percentage_reset]);
 
     React.useEffect(() => {
-        setPercente(percentage);
+        setSelectedPercentage(percentage || 0);
     }, [percentage]);
 
     React.useEffect(() => {
@@ -33,7 +33,7 @@ const PercentageSelector = ({
     }, [from_account, to_account]);
 
     const calculateAmount = (e, percent) => {
-        setPercente(percent);
+        setSelectedPercentage(percent || 0);
         getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
 
         for (let i = 1; i <= 4; i++) {
@@ -76,8 +76,8 @@ const PercentageSelector = ({
             </div>
             <Text color='less-prominent' size='xxs' line_height='l'>
                 <Localize
-                    i18n_default_text={`{{percente}}% of available balance ({{format_amount}} {{currency__display_code}})`}
-                    values={{ percente, format_amount, currency__display_code }}
+                    i18n_default_text={`{{selected_percentage}}% of available balance ({{format_amount}} {{currency__display_code}})`}
+                    values={{ selected_percentage, format_amount, currency__display_code }}
                 />
             </Text>
         </React.Fragment>
@@ -88,6 +88,7 @@ PercentageSelector.propTypes = {
     amount: PropTypes.number,
     currency: PropTypes.string,
     getCalculatedAmount: PropTypes.func,
+    percentage: PropTypes.number,
     should_percentage_reset: PropTypes.bool,
 };
 

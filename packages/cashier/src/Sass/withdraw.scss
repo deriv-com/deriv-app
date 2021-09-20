@@ -1,0 +1,178 @@
+.withdraw {
+    &__wrapper .withdraw__input {
+        margin: 2.4rem 0 !important;
+        width: fit-content;
+        min-width: 36rem;
+
+        @include mobile {
+            width: 100%;
+            min-width: auto;
+            margin-bottom: 2.6rem !important;
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 4rem;
+
+        &-submit {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            margin: 2rem auto 0;
+
+            > * {
+                width: auto;
+            }
+            @include desktop {
+                min-width: 36rem;
+                width: fit-content;
+            }
+        }
+
+        &-icon {
+            margin-top: 2.4rem;
+        }
+    }
+
+    &__receipt {
+        &-detail {
+            display: inline-block;
+
+            @include mobile {
+                width: 100%;
+                min-width: auto;
+                margin-bottom: 2.6rem !important;
+            }
+        }
+
+        &-button {
+            margin-top: 3rem;
+            height: 4rem;
+
+            &-left {
+                margin-right: 0.8rem;
+            }
+
+            &-wrapper {
+                @include mobile {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    margin-bottom: 4rem;
+                }
+            }
+        }
+
+        &-icon {
+            margin: 1.6rem;
+        }
+
+        &-status {
+            background-color: var(--general-section-1);
+            border-radius: $BORDER_RADIUS * 2;
+            height: 3.2rem;
+            width: fit-content;
+            min-width: 36rem;
+            margin-bottom: -0.8rem !important;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            &-icon {
+                margin: 0 0.4rem;
+            }
+
+            @include mobile {
+                width: 100%;
+                min-width: auto;
+                margin-bottom: 2.4rem !important;
+            }
+        }
+
+        &-crypto {
+            color: var(--text-profit-success);
+            min-width: 36rem;
+            margin: 1.6rem 0;
+        }
+    }
+
+    &__account-info {
+        padding: 1rem 0;
+        width: fit-content;
+        min-width: 36rem;
+        border: 1px solid var(--border-normal);
+        border-radius: $BORDER_RADIUS * 2;
+
+        @include mobile {
+            width: 100%;
+            min-width: auto;
+        }
+
+        &-detail {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            padding: 0;
+            margin: 0.8rem;
+
+            &-text {
+                margin: 0 0.4rem;
+                word-break: break-word;
+                max-width: 30rem;
+            }
+        }
+
+        &-address {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin: 0.4rem;
+        }
+    }
+
+    &__percentage-selector {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+    }
+
+    &__crypto-fiat-converter {
+        width: fit-content;
+
+        @include desktop {
+            /* To fit the content in Firefox */
+            @-moz-document url-prefix('') {
+                max-width: 57%;
+            }
+        }
+
+        // fix for safari bug with header being truncated
+        @media not all and (min-resolution: 0.001dpcm) {
+            // stylelint-disable-line
+            @supports (-webkit-appearance: none) {
+                /* postcss-bem-linter: ignore */
+                @include desktop {
+                    max-width: 57%;
+                }
+            }
+        }
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+}

@@ -565,6 +565,14 @@ export default class TradeStore extends BaseStore {
                                 type: response.msg_type,
                                 ...response.error,
                             });
+
+                            // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
+                            if (isMobile() && this.root_store.common?.services_error?.type === 'buy') {
+                                setTimeout(() => {
+                                    this.clearPurchaseInfo();
+                                    this.requestProposal();
+                                }, 3500);
+                            }
                         }
                     } else if (response.buy) {
                         if (this.proposal_info[type] && this.proposal_info[type].id !== proposal_id) {
@@ -726,8 +734,8 @@ export default class TradeStore extends BaseStore {
             this.setPreviousSymbol(this.symbol);
             await Symbol.onChangeSymbolAsync(obj_new_values.symbol);
             this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
-            has_only_forward_starting_contracts =
-                ContractType.getContractCategories().has_only_forward_starting_contracts;
+            has_only_forward_starting_contracts = ContractType.getContractCategories()
+                .has_only_forward_starting_contracts;
         }
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented

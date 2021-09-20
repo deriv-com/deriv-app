@@ -164,47 +164,6 @@
     }
 }
 
-/** @define sidebar; weak; */
-.sidebar {
-    &__container {
-        position: relative;
-        margin-left: 1.6em;
-        width: $SIDEBAR_WIDTH;
-        margin-top: 8px;
-        z-index: 1;
-    }
-    &__items {
-        opacity: 1;
-        transform: none;
-        position: relative;
-        min-height: 460px;
-        width: $SIDEBAR_WIDTH;
-
-        &:after {
-            transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
-            opacity: 0;
-            position: absolute;
-            pointer-events: none;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 999;
-            content: '';
-            background-color: var(--overlay-outside-dialog);
-        }
-        &--market-closed {
-            & .dc-tooltip--with-label {
-                display: none;
-            }
-            & .dc-tooltip--with-label:before,
-            .dc-tooltip--with-label:after {
-                display: none;
-            }
-        }
-    }
-}
-
 /** @define popup-root */
 .popup-root {
     position: absolute;

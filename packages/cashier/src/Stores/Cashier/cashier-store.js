@@ -446,6 +446,7 @@ export default class CashierStore extends BaseStore {
             ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
                 this.transaction_history.setIsCryptoTransactionsVisible(true);
+                this.transaction_history.onMount();
             }
         }
     }

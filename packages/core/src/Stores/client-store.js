@@ -643,7 +643,10 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_dbot_allowed() {
-        return this.landing_company_shortcode !== 'maltainvest' && !this.is_options_blocked;
+        return (
+            this.landing_company_shortcode === 'virtual' ||
+            (this.landing_company_shortcode !== 'maltainvest' && !this.is_options_blocked)
+        );
     }
 
     isMT5Allowed = landing_companies => {

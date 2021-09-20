@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, ButtonLink, Clipboard, Loading, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { CryptoConfig, isCryptocurrency, isMobile } from '@deriv/shared';
+import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import QRCode from 'qrcode.react';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
@@ -29,7 +29,8 @@ const CryptoDeposit = ({
         return <Loading is_fullscreen={false} />;
     }
 
-    const currency_name = CryptoConfig.get()[currency].name;
+    const currency_name = getCurrencyName(currency);
+    const currency_display_code = CryptoConfig.get()[currency].display_code;
 
     const header_note =
         currency === 'USDC' || currency === 'eUSDT' ? (
@@ -49,7 +50,7 @@ const CryptoDeposit = ({
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
             <div className='crypto-deposit__transaction-wrapper'>
-                <Icon icon={`IcCurrency${currency}`} size={64} />
+                <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />
                 <Text
                     className='crypto-deposit__transaction-currency'
                     weight='bold'
@@ -62,7 +63,7 @@ const CryptoDeposit = ({
                         i18n_default_text='Send only {{currency}} ({{currency_symbol}}) to this address.'
                         values={{
                             currency: currency_name,
-                            currency_symbol: currency?.toUpperCase(),
+                            currency_symbol: currency_display_code,
                         }}
                     />
                 </Text>

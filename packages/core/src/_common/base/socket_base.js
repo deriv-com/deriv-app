@@ -259,6 +259,9 @@ const BinarySocketBase = (() => {
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
 
+    const paymentAgentDetails = (passthrough, req_id) =>
+        deriv_api.send({ paymentagent_details: 1, passthrough, req_id });
+
     const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code, dry_run = 0 }) =>
         deriv_api.send({
             amount,
@@ -420,6 +423,7 @@ const BinarySocketBase = (() => {
         tradingPlatformInvestorPasswordReset,
         activeSymbols,
         paymentAgentList,
+        paymentAgentDetails,
         paymentAgentWithdraw,
         paymentAgentTransfer,
         setAccountCurrency,

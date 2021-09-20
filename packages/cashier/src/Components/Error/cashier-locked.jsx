@@ -34,9 +34,11 @@ const CashierLocked = ({
             message =
                 'Our cashier is temporarily down due to system maintenance. You can access the cashier as soon as the maintenance is complete.';
         }
+    } else if (no_residence) {
+        message = localize(
+            'You’ve not set your country of residence. To access Cashier, please update your country of residence in the Personal details section in your account settings.'
+        );
     }
-
-    const no_residence = cashier_validation?.includes('no_residence');
 
     return (
         <div className='cashier-locked'>

@@ -1,4 +1,4 @@
-import { getCurrencyName } from '@deriv/shared';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 
 const template = (string, content) => {
     let to_replace = content;
@@ -96,7 +96,7 @@ const getAccountText = account => {
     if (account.is_dxtrade || account.is_mt) {
         account_text = account.text;
     } else {
-        account_text = getCurrencyName(account.text);
+        account_text = getCurrencyDisplayCode(account.text);
     }
 
     return account_text;

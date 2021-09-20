@@ -177,12 +177,7 @@ const CFDDemoAccountDisplay = ({
                         descriptor={localize(
                             'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
                         )}
-                        specs={{
-                            [localize('Leverage')]: localize('Up to 1:100'),
-                            [localize('Margin call')]: localize('100%'),
-                            [localize('Stop out level')]: localize('50%'),
-                            [localize('Number of assets')]: localize('50+'),
-                        }}
+                        specs={specifications[platform].demo_financial_stp_specs}
                         platform={platform}
                         has_banner
                     />

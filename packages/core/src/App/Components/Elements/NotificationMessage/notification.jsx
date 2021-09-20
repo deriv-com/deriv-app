@@ -34,7 +34,6 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     header={data.header}
                     message={data.message}
                     primary_btn={data.primary_btn}
-                    secondary_btn={{ ...data.secondary_btn, ...{ onClick: destroy } }}
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     onClose={destroy}
@@ -89,7 +88,8 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                         <Button
                                             className='notification__cta-button'
                                             onClick={() => {
-                                                linear_progress_container_ref.current.removeTimeoutSession();
+                                                if (data.timeout)
+                                                    linear_progress_container_ref.current.removeTimeoutSession();
                                                 data.action.onClick({ is_dashboard });
                                             }}
                                             text={data.action.text}

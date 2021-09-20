@@ -177,7 +177,7 @@ export default class CashierStore extends BaseStore {
         });
 
         this.error_dialog = new ErrorDialog();
-        this.transaction_history = new TransactionHistoryStore(this.WS);
+        this.transaction_history = new TransactionHistoryStore({ root_store: this.root_store, WS: this.WS });
 
         this.init();
     }

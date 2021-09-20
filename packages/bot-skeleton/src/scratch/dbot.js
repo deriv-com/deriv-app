@@ -319,8 +319,7 @@ class DBot {
                     'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
-        }
-        if (!isAllRequiredBlocksEnabled(this.workspace)) {
+        } else if (!isAllRequiredBlocksEnabled(this.workspace)) {
             error = new Error(
                 localize(
                     'One or more mandatory blocks are disabled in your workspace. Please enable the required block(s) and then try again.'

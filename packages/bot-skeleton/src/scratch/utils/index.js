@@ -319,15 +319,19 @@ export const hasAllRequiredBlocks = workspace => {
 };
 
 export const isAllRequiredBlocksEnabled = workspace => {
-    const disabled_blocks = workspace.getAllBlocks().filter(block => block.disabled);
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
     const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
     const mandatory_tradeoptions_block =
         selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
     const { mandatoryMainBlocks } = config;
     const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
-    const disabled_block_types = disabled_blocks.map(block => block.type);
-    return !disabled_block_types.some(block => required_block_types.includes(block));
+
+    const enabled_blocks_types = workspace
+        .getAllBlocks()
+        .filter(block => !block.disabled)
+        .map(block => block.type);
+
+    return required_block_types.every(required_type => enabled_blocks_types.includes(required_type));
 };
 
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {

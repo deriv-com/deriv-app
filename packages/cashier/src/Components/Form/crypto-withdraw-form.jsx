@@ -147,8 +147,7 @@ const CryptoWithdrawForm = ({
                                     !!converter_from_error ||
                                     !!converter_to_error ||
                                     isSubmitting ||
-                                    !blockchain_address ||
-                                    !converter_from_amount
+                                    !blockchain_address
                                 }
                                 type='submit'
                                 primary

@@ -311,6 +311,11 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
+        if (!this.converter_from_amount) {
+            this.setConverterFromError(localize('This field is required.'));
+            return;
+        }
+
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
             amount: +this.converter_from_amount,

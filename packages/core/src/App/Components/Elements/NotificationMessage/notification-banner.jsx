@@ -3,7 +3,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
 
-const NotificationBanner = ({ header, message, primary_btn, secondary_btn, img_src, img_alt, onClose }) => (
+const NotificationBanner = ({ header, message, primary_btn, img_src, img_alt, onClose }) => (
     <div className='notification-banner'>
         <div className='notification-banner--left'>
             <Text as='h4' size={isMobile() ? 'xs' : 's'} weight='bold' className='notification-banner__title'>
@@ -12,18 +12,11 @@ const NotificationBanner = ({ header, message, primary_btn, secondary_btn, img_s
             <Text as='p' size={isMobile() ? 'xxs' : 'xs'} className='notification-banner__description' line_height='xs'>
                 {message}
             </Text>
-            {(!!primary_btn || !!secondary_btn) && (
+            {!!primary_btn && (
                 <div className='notification-banner__btn-wrapper'>
-                    {!!primary_btn && (
-                        <Button className='notification-banner__btn' primary small onClick={primary_btn.onClick}>
-                            {primary_btn.text}
-                        </Button>
-                    )}
-                    {!!secondary_btn && (
-                        <Button className='notification-banner__btn' tertiary small onClick={secondary_btn.onClick}>
-                            {secondary_btn.text}
-                        </Button>
-                    )}
+                    <Button className='notification-banner__btn' primary small onClick={primary_btn.onClick}>
+                        {primary_btn.text}
+                    </Button>
                 </div>
             )}
         </div>
@@ -42,10 +35,6 @@ NotificationBanner.propTypes = {
     message: PropTypes.string,
     onClose: PropTypes.func,
     primary_btn: PropTypes.shape({
-        text: PropTypes.string,
-        onClick: PropTypes.func,
-    }),
-    secondary_btn: PropTypes.shape({
         text: PropTypes.string,
         onClick: PropTypes.func,
     }),

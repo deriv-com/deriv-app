@@ -29,12 +29,20 @@ const AccountTransfer = ({
     is_transfer_successful,
     is_virtual,
     onMount,
+    recentTransactionOnMount,
     setAccountTransferAmount,
     setActiveTab,
     setIsTransferConfirm,
     setSideNotes,
 }) => {
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
+
+    React.useEffect(() => {
+        if (!is_crypto_transactions_visible) {
+            recentTransactionOnMount();
+        }
+    }, [is_switching]);
+
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
@@ -50,7 +58,7 @@ const AccountTransfer = ({
     }, []);
 
     React.useEffect(() => {
-        if (typeof setSideNotes === 'function' && has_no_accounts_balance) {
+        if (typeof setSideNotes === 'function' && (has_no_accounts_balance || is_switching)) {
             setSideNotes(null);
         }
     }, [setSideNotes, has_no_accounts_balance]);
@@ -106,6 +114,7 @@ AccountTransfer.propTypes = {
     is_transfer_lock: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
+    recentTransactionOnMount: PropTypes.func,
     setAccountTransferAmount: PropTypes.func,
     setActiveTab: PropTypes.func,
     setIsTransferConfirm: PropTypes.func,
@@ -127,6 +136,7 @@ export default connect(({ client, modules }) => ({
     is_transfer_successful: modules.cashier.config.account_transfer.is_transfer_successful,
     is_transfer_lock: modules.cashier.is_transfer_lock,
     onMount: modules.cashier.onMountAccountTransfer,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.setActiveTab,
     setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
     setIsTransferConfirm: modules.cashier.setIsTransferConfirm,

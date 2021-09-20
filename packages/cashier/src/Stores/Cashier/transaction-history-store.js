@@ -44,12 +44,7 @@ export default class TransactionHistoryStore {
         });
     }
     @action.bound
-    onMount() {
-        this.getCryptoTransactions();
-    }
-
-    @action.bound
-    async onMountCryptoTransactionsHistory() {
+    async onMount() {
         this.setLoading(true);
         await this.unsubscribeCryptoTransactions();
         await this.getCryptoTransactions();

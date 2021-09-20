@@ -48,9 +48,7 @@ const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_
                 <div className='cashier-locked'>
                     <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
                     <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
-                        <Localize
-                            i18n_default_text='You have reached the withdrawal limit. Please upload your proof of identity and address to lift your withdrawal limit and proceed with your withdrawal.'
-                        />
+                        <Localize i18n_default_text='You have reached the withdrawal limit. Please upload your proof of identity and address to lift your withdrawal limit and proceed with your withdrawal.' />
                     </Text>
                     <React.Fragment>
                         <Checklist className='cashier-locked__checklist' items={items} />

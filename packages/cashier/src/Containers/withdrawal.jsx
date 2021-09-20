@@ -121,14 +121,14 @@ const Withdrawal = ({
     if (is_virtual) {
         return <Virtual />;
     }
-    if (!is_cashier_locked && !+balance) {
-        return <NoBalance />;
-    }
     if (is_cashier_locked) {
         return <CashierLocked />;
     }
     if (is_withdrawal_locked) {
         return <WithdrawalLocked />;
+    }
+    if (!+balance) {
+        return <NoBalance />;
     }
     if (error.message) {
         return <Error error={error} container='withdraw' />;

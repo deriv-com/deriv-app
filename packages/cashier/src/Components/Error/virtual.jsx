@@ -20,11 +20,13 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                     <div
                         className={classNames(
                             'cashier__account-switch-icon',
-                            is_dark_mode_on ? 'cashier__account-switch-icon--dark' : 'cashier__account-switch-icon--light'
+                            is_dark_mode_on
+                                ? 'cashier__account-switch-icon--dark'
+                                : 'cashier__account-switch-icon--light'
                         )}
                     />
                     <Text as='h2' align='center' weight='bold' color='prominent' className='cashier__virtual-header'>
-                        <Localize i18n_default_text={"You are using a demo account"} />
+                        <Localize i18n_default_text={'You are using a demo account'} />
                     </Text>
                     <Text
                         as='p'
@@ -51,9 +53,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                     <div className='cashier-locked'>
                         <Icon icon='IcCashierLocked' className='cashier-locked__icon' />
                         <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
-                            <Localize
-                                i18n_default_text='Cashier is locked'
-                            />
+                            <Localize i18n_default_text='Cashier is locked' />
                         </Text>
                         <Text as='p' size='xs' align='center' className='cashier-locked__desc'>
                             <Localize
@@ -64,11 +64,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                                         className='cashier__account-switch-text'
                                         onClick={toggleAccountsDialog}
                                     />,
-                                    <span
-                                        key={1}
-                                        className='cashier__account-switch-text'
-                                        onClick={onClickSignup}
-                                    />,
+                                    <span key={1} className='cashier__account-switch-text' onClick={onClickSignup} />,
                                 ]}
                             />
                         </Text>

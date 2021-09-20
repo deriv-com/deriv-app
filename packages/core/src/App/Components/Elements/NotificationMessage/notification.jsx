@@ -34,7 +34,6 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     header={data.header}
                     message={data.message}
                     primary_btn={data.primary_btn}
-                    secondary_btn={{ ...data.secondary_btn, ...{ onClick: destroy } }}
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     onClose={destroy}

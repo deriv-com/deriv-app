@@ -48,10 +48,12 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'danger',
         },
         self_exclusion: excluded_until => {
-            let message, header, action;
-
-            header = localize('Self-exclusion detected');
-            message = (
+            const action = {
+                route: routes.proof_of_identity,
+                text: localize('Authenticate'),
+            };
+            const header = localize('Self-exclusion detected');
+            const message = (
                 <Localize
                     i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
                     values={{

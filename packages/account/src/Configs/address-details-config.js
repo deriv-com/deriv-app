@@ -16,10 +16,10 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 [
                     'regular',
                     localize(
-                        'Use only the following special characters: . \" , \' ; ( ) @ # / -'
+                        'Use only the following special characters: . , \' : ; ( ) @ # / -'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]\{\}]{1,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-]{1,70}$/,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -33,10 +33,10 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 [
                     'regular',
                     localize(
-                        'Only letters, numbers, periods, hyphens, apostrophes, and spaces, please.'
+                        'Use only the following special characters: . , \' : ; ( ) @ # / -'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]\{\}]{0,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-]{0,70}$/,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],

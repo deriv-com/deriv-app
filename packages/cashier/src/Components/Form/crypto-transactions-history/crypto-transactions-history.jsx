@@ -41,7 +41,7 @@ const CryptoTransactionsHistory = ({
                     <div className='crypto-transactions-history__back' onClick={onClickBack}>
                         <Icon icon={isMobile() ? 'IcChevronLeftBold' : 'IcArrowLeftBold'} />
                         <Text as='p' size='xs' weight='bold'>
-                            <Localize i18n_default_text={` ${currency} current transactions`} />
+                            <Localize i18n_default_text={` ${currency} recent transactions`} />
                         </Text>
                     </div>
                 </div>

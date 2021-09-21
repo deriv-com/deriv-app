@@ -7,18 +7,22 @@ const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
     const detail = Array.isArray(children) ? children : children.split(',');
     return (
         <div className='payment-agent__accordion-content-line'>
-            <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
-            {detail.map((child, id) => (
-                <a
-                    key={id}
-                    className='payment-agent__contact cashier__paragraph'
-                    href={`${action ? `${action}:` : ''}${child}`}
-                    {...rest}
-                >
-                    {child}
-                    {id === detail.length - 1 ? '' : ', '}
-                </a>
-            ))}
+            <div>
+                <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
+            </div>
+            <div>
+                {detail.map((child, id) => (
+                    <a
+                        key={id}
+                        className='payment-agent__contact cashier__paragraph'
+                        href={`${action ? `${action}:` : ''}${child}`}
+                        {...rest}
+                    >
+                        {child}
+                        {id === detail.length - 1 ? '' : ', '}
+                    </a>
+                ))}
+            </div>
         </div>
     );
 };

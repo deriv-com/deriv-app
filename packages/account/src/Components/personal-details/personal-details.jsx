@@ -173,16 +173,7 @@ const PersonalDetails = ({
                                         {'salutation' in props.value && (
                                             <div>
                                                 <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                    <Localize
-                                                        i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.'
-                                                        components={[
-                                                            <Link
-                                                                to={routes.personal_details}
-                                                                key={0}
-                                                                className='link'
-                                                            />,
-                                                        ]}
-                                                    />
+                                                    <Localize i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.' />
                                                 </Text>
                                             </div>
                                         )}

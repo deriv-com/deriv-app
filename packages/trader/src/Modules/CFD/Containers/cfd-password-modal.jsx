@@ -505,6 +505,7 @@ const CFDPasswordModal = ({
     error_message,
     error_type,
     form_error,
+    getAccountStatus,
     history,
     is_eu,
     is_eu_country,
@@ -708,6 +709,7 @@ const CFDPasswordModal = ({
                     platform={platform}
                 />
             )}
+            onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
             width={isMobile() && '32.8rem'}
@@ -796,6 +798,7 @@ export default connect(({ client, modules }) => ({
     disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
     error_message: modules.cfd.error_message,
     error_type: modules.cfd.error_type,
+    getAccountStatus: modules.cfd.getAccountStatus,
     has_cfd_error: modules.cfd.has_cfd_error,
     landing_companies: client.landing_companies,
     is_eu: client.is_eu,

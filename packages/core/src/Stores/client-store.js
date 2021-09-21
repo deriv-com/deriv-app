@@ -130,23 +130,6 @@ export default class ClientStore extends BaseStore {
             }
         );
         when(
-            () => this.should_have_real_account,
-            () => {
-                this.root_store.ui.showAccountTypesModalForEuropean();
-                this.onRealAccountSignupEnd(() => {
-                    if (!this.has_any_real_account) {
-                        this.root_store.ui.showAccountTypesModalForEuropean();
-                    }
-
-                    return Promise.resolve();
-                });
-
-                if (!this.root_store.ui.is_real_acc_signup_on) {
-                    this.root_store.ui.toggleAccountTypesModal(true);
-                }
-            }
-        );
-        when(
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()
         );
@@ -595,12 +578,6 @@ export default class ClientStore extends BaseStore {
             this.is_eu && !result.is_uk && !result.is_france && !result.is_belgium && !result.is_other_eu;
 
         return result;
-    }
-
-    // this is true when a user needs to have a active real account for trading
-    @computed
-    get should_have_real_account() {
-        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
     }
 
     // Shows all possible landing companies of user between all
@@ -1879,8 +1856,6 @@ export default class ClientStore extends BaseStore {
                 this.root_store.gtm.pushDataLayer({
                     event: 'virtual_signup',
                 });
-
-                this.root_store.ui.showAccountTypesModalForEuropean();
 
                 if (!this.is_uk) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });

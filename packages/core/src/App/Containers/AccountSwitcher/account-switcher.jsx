@@ -187,11 +187,6 @@ const AccountSwitcher = props => {
         props.toggleSetCurrencyModal();
     };
 
-    const showAccountTypesModal = () => {
-        closeAccountsDialog();
-        props.toggleAccountTypesModal(true);
-    };
-
     // * mt5_login_list returns these:
     // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
     // account_type: "real" | "demo"
@@ -839,16 +834,6 @@ const AccountSwitcher = props => {
             </Text>
             <div className='acc-switcher__separator' />
             <div className='acc-switcher__footer'>
-                {props.is_uk && props.has_any_real_account && (
-                    <Button
-                        className='acc-switcher__compare'
-                        type='button'
-                        has_effect
-                        onClick={showAccountTypesModal}
-                        text={localize('Compare')}
-                        secondary
-                    />
-                )}
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>
                     <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
                         {localize('Log out')}
@@ -870,7 +855,6 @@ AccountSwitcher.propTypes = {
     can_upgrade_to: PropTypes.string,
     country_standpoint: PropTypes.object,
     has_fiat: PropTypes.bool,
-    has_any_real_account: PropTypes.bool,
     has_active_real_account: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_fully_authenticated: PropTypes.bool,
@@ -880,7 +864,6 @@ AccountSwitcher.propTypes = {
     is_mt5_allowed: PropTypes.bool,
     is_pending_authentication: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
-    is_uk: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
@@ -893,7 +876,6 @@ AccountSwitcher.propTypes = {
     switchAccount: PropTypes.func,
     resetVirtualBalance: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
-    toggleAccountTypesModal: PropTypes.func,
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
     updateMt5LoginList: PropTypes.func,
@@ -920,10 +902,8 @@ const account_switcher = withRouter(
         is_dxtrade_allowed: client.is_dxtrade_allowed,
         is_mt5_allowed: client.is_mt5_allowed,
         is_pending_authentication: client.is_pending_authentication,
-        is_uk: client.is_uk,
         is_virtual: client.is_virtual,
         has_fiat: client.has_fiat,
-        has_any_real_account: client.has_any_real_account,
         landing_company_shortcode: client.landing_company_shortcode,
         mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         mt5_login_list: client.mt5_login_list,
@@ -949,7 +929,6 @@ const account_switcher = withRouter(
         openRealAccountSignup: ui.openRealAccountSignup,
         trading_servers: client.trading_servers,
         toggleAccountsDialog: ui.toggleAccountsDialog,
-        toggleAccountTypesModal: ui.toggleAccountTypesModal,
         togglePositionsDrawer: ui.togglePositionsDrawer,
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
         should_show_real_accounts_list: ui.should_show_real_accounts_list,

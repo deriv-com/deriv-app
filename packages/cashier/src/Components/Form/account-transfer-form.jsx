@@ -9,7 +9,6 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
-import { getAccountText } from '../../_common/utility';
 import PercentageSelector from '../percentage-selector';
 import RecentTransaction from '../recent-transaction.jsx';
 import '../../Sass/account-transfer.scss';
@@ -34,7 +33,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 
             <div className='account-transfer__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
-                    {getAccountText(account)}
+                    {account.is_dxtrade || account.is_mt ? account.text : getCurrencyName(account.currency)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}
@@ -111,38 +110,38 @@ let mt_accounts_to = [];
 let dxtrade_accounts_to = [];
 
 const AccountTransferForm = ({
+    account_limits,
+    accounts_list,
     account_transfer_amount,
     converter_from_amount,
     converter_from_error,
     converter_to_amount,
     converter_to_error,
     crypto_transactions,
+    error,
     is_crypto,
-    onMount,
-    transfer_limit,
-    account_limits,
-    selected_from,
-    selected_to,
-    accounts_list,
-    setAccountTransferAmount,
-    setSideNotes,
-    transfer_fee,
     is_dxtrade_allowed,
     is_dark_mode_on,
     minimum_fee,
     mt5_login_list,
     onChangeTransferFrom,
     onChangeTransferTo,
-    setErrorMessage,
-    setIsTransferConfirm,
-    error,
+    onMount,
+    percentage,
     resetConverter,
     recentTransactionOnMount,
-    setPercentageSelectorResult,
-    validateTransferFrom,
-    validateTransferTo,
-    percentage,
+    setErrorMessage,
+    setIsTransferConfirm,
+    setTransferPercentageSelectorResult,
+    selected_from,
+    selected_to,
+    setAccountTransferAmount,
+    setSideNotes,
     should_percentage_reset,
+    transfer_fee,
+    transfer_limit,
+    validateTransferFromAmount,
+    validateTransferToAmount,
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
@@ -454,11 +453,11 @@ const AccountTransferForm = ({
                                             <PercentageSelector
                                                 amount={+selected_from.balance}
                                                 currency={selected_from.currency}
-                                                getCalculatedAmount={setPercentageSelectorResult}
                                                 from_account={selected_from.value}
-                                                to_account={selected_to.value}
+                                                getCalculatedAmount={setTransferPercentageSelectorResult}
                                                 percentage={percentage}
                                                 should_percentage_reset={should_percentage_reset}
+                                                to_account={selected_to.value}
                                             />
                                         </div>
                                         <CryptoFiatConverter
@@ -487,8 +486,8 @@ const AccountTransferForm = ({
                                                     ''
                                                 )
                                             }
-                                            validateFromAmount={validateTransferFrom}
-                                            validateToAmount={validateTransferTo}
+                                            validateFromAmount={validateTransferFromAmount}
+                                            validateToAmount={validateTransferToAmount}
                                         />
                                     </div>
                                 )}
@@ -537,34 +536,36 @@ const AccountTransferForm = ({
 AccountTransferForm.propTypes = {
     account_limits: PropTypes.object,
     accounts_list: PropTypes.array,
+    account_transfer_amount: PropTypes.string,
     converter_from_amount: PropTypes.string,
     converter_from_error: PropTypes.string,
     converter_to_error: PropTypes.string,
     converter_to_amount: PropTypes.string,
     crypto_transactions: PropTypes.array,
-    is_crypto: PropTypes.bool,
     error: PropTypes.object,
+    is_crypto: PropTypes.bool,
     minimum_fee: PropTypes.string,
     onChangeTransferFrom: PropTypes.func,
     onChangeTransferTo: PropTypes.func,
     onMount: PropTypes.func,
     percentage: PropTypes.number,
-    selected_from: PropTypes.object,
-    selected_to: PropTypes.object,
-    setErrorMessage: PropTypes.func,
-    setSideNotes: PropTypes.func,
-    transfer_fee: PropTypes.number,
-    transfer_limit: PropTypes.object,
     resetConverter: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
+    selected_from: PropTypes.object,
+    setErrorMessage: PropTypes.func,
+    selected_to: PropTypes.object,
+    setTransferPercentageSelectorResult: PropTypes.func,
+    setSideNotes: PropTypes.func,
     should_percentage_reset: PropTypes.bool,
-    setPercentageSelectorResult: PropTypes.func,
-    validateTransferFrom: PropTypes.func,
-    validateTransferTo: PropTypes.func,
+    transfer_fee: PropTypes.number,
+    transfer_limit: PropTypes.object,
+    validateTransferFromAmount: PropTypes.func,
+    validateTransferToAmount: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({
     account_limits: client.account_limits,
+    accounts_list: modules.cashier.config.account_transfer.accounts_list,
     account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
     converter_from_amount: modules.cashier.converter_from_amount,
     converter_from_error: modules.cashier.converter_from_error,
@@ -572,26 +573,25 @@ export default connect(({ client, modules, ui }) => ({
     converter_to_error: modules.cashier.converter_to_error,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     is_crypto: modules.cashier.is_crypto,
-    onMount: client.getLimits,
-    accounts_list: modules.cashier.config.account_transfer.accounts_list,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     mt5_login_list: client.mt5_login_list,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
     onChangeTransferTo: modules.cashier.onChangeTransferTo,
+    onMount: client.getLimits,
     percentage: modules.cashier.percentage,
-    selected_from: modules.cashier.config.account_transfer.selected_from,
-    selected_to: modules.cashier.config.account_transfer.selected_to,
-    setErrorMessage: modules.cashier.setErrorMessage,
-    setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
-    setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
-    transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
-    transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
     resetConverter: modules.cashier.resetConverter,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    setPercentageSelectorResult: modules.cashier.setPercentageSelectorResult,
+    setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
+    setErrorMessage: modules.cashier.setErrorMessage,
+    setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
+    selected_from: modules.cashier.config.account_transfer.selected_from,
+    selected_to: modules.cashier.config.account_transfer.selected_to,
+    setTransferPercentageSelectorResult: modules.cashier.setTransferPercentageSelectorResult,
     should_percentage_reset: modules.cashier.should_percentage_reset,
-    validateTransferFrom: modules.cashier.validateTransferFrom,
-    validateTransferTo: modules.cashier.validateTransferTo,
+    transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
+    transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
+    validateTransferFromAmount: modules.cashier.validateTransferFromAmount,
+    validateTransferToAmount: modules.cashier.validateTransferToAmount,
 }))(AccountTransferForm);

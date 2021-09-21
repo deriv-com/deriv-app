@@ -107,11 +107,11 @@ const Deposit = ({
     if (error.is_ask_uk_funds_protection) {
         return <FundsProtection />;
     }
-    if (is_deposit_locked) {
-        return <DepositsLocked />;
-    }
     if (is_cashier_locked) {
         return <CashierLocked />;
+    }
+    if (is_deposit_locked) {
+        return <DepositsLocked />;
     }
     if (error.message) {
         return <Error error={error} />;

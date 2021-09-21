@@ -114,17 +114,13 @@ const Withdrawal = ({
     if (is_10k_withdrawal_limit_reached === undefined) {
         return <Loading is_fullscreen />;
     }
-    if (is_10k_withdrawal_limit_reached) {
-        return <WithdrawalLocked is_10K_limit />;
-    }
-
     if (is_virtual) {
         return <Virtual />;
     }
     if (is_cashier_locked) {
         return <CashierLocked />;
     }
-    if (is_withdrawal_locked) {
+    if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked />;
     }
     if (!+balance) {

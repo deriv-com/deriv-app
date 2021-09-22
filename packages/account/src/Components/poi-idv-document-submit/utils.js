@@ -28,7 +28,7 @@ export const formatInput = (example_format, input_string, separator) => {
     return input_string;
 };
 
-const getCharCount = (target_string, char) => target_string.match(new RegExp(`${char}`, 'g'))?.length || 0;
+const getCharCount = (target_string, char) => target_string.match(new RegExp(char, 'g'))?.length || 0;
 
 const getImageLocation = image_name => getUrlBase(`/public/images/common/${image_name}`);
 

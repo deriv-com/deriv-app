@@ -40,10 +40,10 @@ export const Verified = ({ needs_poa, redirect_button, is_from_external }) => {
             text={localize('To continue trading, you must also submit a proof of address.')}
         >
             {!is_from_external && (
-                <>
+                <React.Fragment>
                     <PoaButton />
                     {redirect_button}
-                </>
+                </React.Fragment>
             )}
         </IconMessageContent>
     );

@@ -33,7 +33,9 @@ const CashierLocked = ({
     const ask_uk_funds_protection = cashier_validation?.includes('ASK_UK_FUNDS_PROTECTION');
     let icon = 'IcCashierLocked';
     let title = localize('Cashier is locked');
-    let message = localize('Please check your email for details');
+    let message = localize(
+        'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
+    );
 
     if (is_system_maintenance) {
         if (current_currency_type === 'crypto') {
@@ -173,10 +175,6 @@ const CashierLocked = ({
                 />
             );
         }
-    } else if (is_deposit_lock && unwelcome_status) {
-        icon = 'IcCashierDepositLock';
-        title = localize('Deposits are locked');
-        message = localize('Please contact us via live chat to enable deposits.');
     } else if (is_deposit_lock && self_exclusion) {
         icon = 'IcCashierDepositLock';
         title = localize('Deposits are locked');
@@ -186,6 +184,10 @@ const CashierLocked = ({
                 exclude_until: formatDate(accounts[loginid].excluded_until, 'DD MMM, YYYY'),
             }
         );
+    } else if (is_deposit_lock && unwelcome_status) {
+        icon = 'IcCashierDepositLock';
+        title = localize('Deposits are locked');
+        message = localize('Please contact us via live chat to enable deposits.');
     } else if (is_withdrawal_lock && no_withdrawal_or_trading_status) {
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');

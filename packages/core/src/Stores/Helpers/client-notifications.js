@@ -561,6 +561,8 @@ const checkAccountStatus = (
             addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
         } else if (ASK_FIX_DETAILS) {
             addNotificationMessage(clientNotifications().required_fields(withdrawal_locked, deposit_locked));
+        } else {
+            addNotificationMessage(clientNotifications().cashier_locked);
         }
     } else {
         if (withdrawal_locked && ASK_AUTHENTICATE) {
@@ -572,10 +574,10 @@ const checkAccountStatus = (
         } else if (withdrawal_locked && ASK_FIX_DETAILS) {
             addNotificationMessage(clientNotifications().required_fields(withdrawal_locked, deposit_locked));
         }
-        if (deposit_locked && unwelcome_status) {
-            addNotificationMessage(clientNotifications().unwelcome);
-        } else if (deposit_locked && SelfExclusion) {
+        if (deposit_locked && SelfExclusion) {
             addNotificationMessage(clientNotifications().self_exclusion(client.excluded_until));
+        } else if (deposit_locked && unwelcome_status) {
+            addNotificationMessage(clientNotifications().unwelcome);
         }
     }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);

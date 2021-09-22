@@ -485,9 +485,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_withdrawal_lock() {
-        return this.account_status?.status?.some(status_name =>
-            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
-        );
+        return this.account_status?.status?.some(status_name => status_name === 'withdrawal_locked');
     }
 
     @computed

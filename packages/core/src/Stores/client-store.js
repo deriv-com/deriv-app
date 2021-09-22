@@ -638,14 +638,6 @@ export default class ClientStore extends BaseStore {
     }
 
     isMT5Allowed = landing_companies => {
-        // Disable MT5 for MLT clients if they have no pre-defined MT5 accounts
-        if (
-            this.landing_company_shortcode === 'malta' &&
-            this.mt5_login_list.every(item => item.landing_company_short !== 'malta')
-        ) {
-            return false;
-        }
-
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;
@@ -1975,12 +1967,6 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            // disabling new MT5 account creation for MLT
-            const is_mlt = this.landing_company_shortcode === 'malta';
-            this.setMT5DisabledSignupTypes({
-                real: is_mlt,
-                demo: is_mlt,
-            });
             this.mt5_login_list = response.mt5_login_list.map(account => {
                 const display_login = (account.error ? account.error.details.login : account.login).replace(
                     /^(MT[DR]?)/i,

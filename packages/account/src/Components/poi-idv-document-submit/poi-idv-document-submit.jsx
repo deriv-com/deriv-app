@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from '@deriv/shared';
+import { formatInput, WS } from '@deriv/shared';
 import FormFooter from 'Components/form-footer';
-import { formatInput, getDocumentData, getRegex } from './utils';
+import { getDocumentData, getRegex } from './utils';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from '../../Assets/ic-document-submit-icon.svg';
 
@@ -276,6 +277,12 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
             )}
         </Formik>
     );
+};
+
+IdvDocumentSubmit.propTypes = {
+    handleBack: PropTypes.func,
+    handleViewComplete: PropTypes.func,
+    selected_country: PropTypes.object,
 };
 
 export default IdvDocumentSubmit;

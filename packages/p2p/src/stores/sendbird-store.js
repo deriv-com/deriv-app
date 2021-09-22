@@ -396,7 +396,7 @@ export default class SendbirdStore extends BaseStore {
     }
 
     terminateChatWsConnection() {
-        if (this.sendbird_api) {
+        if (this.sendbird_api && typeof this.sendbird_api.disconnect === 'function') {
             this.sendbird_api.disconnect();
         }
     }

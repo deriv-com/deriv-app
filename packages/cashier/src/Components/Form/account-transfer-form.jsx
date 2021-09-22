@@ -9,7 +9,6 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
-import { getAccountText } from '../../_common/utility';
 import PercentageSelector from '../percentage-selector';
 import RecentTransaction from '../recent-transaction.jsx';
 import '../../Sass/account-transfer.scss';
@@ -34,7 +33,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 
             <div className='account-transfer__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
-                    {getAccountText(account)}
+                    {account.is_dxtrade || account.is_mt ? account.text : getCurrencyName(account.currency)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}

@@ -210,9 +210,9 @@ export default class ContractsFor {
             }, Object.keys(TRADE_TYPE_CATEGORIES));
 
             // We don't offer forward-starting contracts in bot.
-            const filtered_contracts = contracts.filter(
-                c => c.start_type !== 'forward' && avaiable_categories.includes(c.contract_category)
-            );
+            const filtered_contracts = contracts
+                .filter(c => c.start_type !== 'forward' && avaiable_categories.includes(c.contract_category))
+                .filter(c => !(c.max_contract_duration === '0' && c.min_contract_duration === '0'));
 
             this.contracts_for[symbol] = {
                 contracts: filtered_contracts,

@@ -293,7 +293,7 @@ const SelfExclusion = ({
     const backFromConfirmLimits = () => setState({ is_confirm_page: false, submit_error_message: '' });
 
     const objectValuesToString = object => {
-        Object.keys(object).forEach(item => {
+        Object.keys(object || {}).forEach(item => {
             object[item] = `${object[item]}`;
         });
 

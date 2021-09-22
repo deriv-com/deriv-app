@@ -315,7 +315,7 @@ export default class PortfolioStore extends BaseStore {
     populateContractUpdate({ contract_update }, contract_id) {
         const position = this.getPositionById(contract_id);
         if (position) {
-            Object.assign(position.contract_update, contract_update);
+            Object.assign(position.contract_update || {}, contract_update);
             this.updatePositions();
         }
     }

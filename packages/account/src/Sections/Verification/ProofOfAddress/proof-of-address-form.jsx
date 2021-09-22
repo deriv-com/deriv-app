@@ -96,9 +96,9 @@ const ProofOfAddressForm = ({
         const required_fields = ['address_line_1', 'address_city'];
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        const permitted_characters = "- . ' # ; : ( ) , @ /";
+        const permitted_characters = ". , ' : ; ( ) @ # / -";
         const address_validation_message = localize(
-            'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
+            'Use only the following special characters: {{ permitted_characters }}',
             {
                 permitted_characters,
                 interpolation: { escapeValue: false },

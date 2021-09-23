@@ -97,11 +97,13 @@ const RealAccountSignup = ({
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
+    const [is_risk_warning_visible, setIsRiskWarningVisible] = React.useState(false);
     const [modal_content] = React.useState([
         {
             action: 'signup',
             body: local_props => (
                 <AccountWizard
+                    setIsRiskWarningVisible={setIsRiskWarningVisible}
                     onFinishSuccess={showStatusDialog}
                     onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
                     is_loading={local_props.is_loading}
@@ -329,6 +331,7 @@ const RealAccountSignup = ({
                         ].includes(getActiveModalIndex()),
                     })}
                     is_open={is_real_acc_signup_on}
+                    is_risk_warning_visible={is_risk_warning_visible}
                     has_close_icon={real_account_signup_target !== 'samoa'}
                     is_title_centered={real_account_signup_target === 'samoa'}
                     renderTitle={() => {

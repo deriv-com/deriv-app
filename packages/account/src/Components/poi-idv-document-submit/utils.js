@@ -1,6 +1,4 @@
-import React from 'react';
 import { getUrlBase } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
 
 export const getRegex = target_regex => {
     const output_regex = regex.find(r => r.regex_string === target_regex);
@@ -49,24 +47,24 @@ const idv_document_data = {
     },
     za: {
         national_id: {
-            new_display_name: <Localize i18n_default_text='National ID' />,
+            new_display_name: 'National ID',
             example_format: '123456789012',
             sample_image: getImageLocation('za_national_identity_card.png'),
         },
         national_id_no_photo: {
-            new_display_name: <Localize i18n_default_text='National ID (No Photo)' />,
+            new_display_name: 'National ID (No Photo)',
             example_format: '123456789012',
             sample_image: '',
         },
     },
     ng: {
         bvn: {
-            new_display_name: <Localize i18n_default_text='Bank Verification Number' />,
+            new_display_name: 'Bank Verification Number',
             example_format: '12345678901',
             sample_image: '',
         },
         cac: {
-            new_display_name: <Localize i18n_default_text='Corporate Affairs Commission' />,
+            new_display_name: 'Corporate Affairs Commission',
             example_format: '12345678',
             sample_image: '',
         },
@@ -76,22 +74,22 @@ const idv_document_data = {
             sample_image: getImageLocation('ng_drivers_license.png'),
         },
         nin: {
-            new_display_name: <Localize i18n_default_text='National Identity Number' />,
+            new_display_name: 'National Identity Number',
             example_format: '12345678901',
             sample_image: '',
         },
         nin_slip: {
-            new_display_name: <Localize i18n_default_text='National Identity Number Slip' />,
+            new_display_name: 'National Identity Number Slip',
             example_format: '12345678901',
             sample_image: getImageLocation('ng_nin_slip.png'),
         },
         tin: {
-            new_display_name: <Localize i18n_default_text='Taxpayer identification number' />,
+            new_display_name: 'Taxpayer identification number',
             example_format: '12345678-1234',
             sample_image: '',
         },
         voter_id: {
-            new_display_name: <Localize i18n_default_text='Voter ID' />,
+            new_display_name: 'Voter ID',
             example_format: '1234567890123456789',
             sample_image: getImageLocation('ng_voter_id.png'),
         },
@@ -103,22 +101,22 @@ const idv_document_data = {
             sample_image: '',
         },
         national_id: {
-            new_display_name: <Localize i18n_default_text='National ID' />,
+            new_display_name: 'National ID',
             example_format: 'GHA-123456789-1',
             sample_image: '',
         },
         passport: {
-            new_display_name: <Localize i18n_default_text='Passport' />,
+            new_display_name: 'Passport',
             example_format: 'G1234567',
             sample_image: '',
         },
         ssnit: {
-            new_display_name: <Localize i18n_default_text='Social Security and National Insurance Trust' />,
+            new_display_name: 'Social Security and National Insurance Trust',
             example_format: 'C123456789012',
             sample_image: '',
         },
         voter_id: {
-            new_display_name: <Localize i18n_default_text='Voter ID' />,
+            new_display_name: 'Voter ID',
             example_format: '01234567890',
             sample_image: '',
         },

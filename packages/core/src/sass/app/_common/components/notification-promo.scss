@@ -7,7 +7,17 @@
     box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
     border-radius: 4px;
     margin-bottom: 16px;
+    transition: transform 0.25s ease, opacity 0.25s linear;
 
+    &--enter-done {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    &--enter,
+    &--exit {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
     &__img {
         position: absolute;
         object-fit: contain;

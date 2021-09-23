@@ -23,8 +23,8 @@ export const types = {
 
 export const sortNotifications = (() => {
     const notification_order = {
-        promotions: 1,
-        news: 2,
+        news: 1,
+        promotions: 2,
         contract_sold: 3,
         danger: 4,
         warning: 5,

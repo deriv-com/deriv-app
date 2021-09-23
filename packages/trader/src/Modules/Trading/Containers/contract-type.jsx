@@ -18,6 +18,8 @@ const Contract = ({
     is_digit_view,
     is_equal,
     is_logged_in,
+    is_logging_in,
+    is_switching,
     onChange,
     symbol,
     addNotificationMessageByKey,
@@ -31,7 +33,7 @@ const Contract = ({
     });
 
     React.useEffect(() => {
-        if (isMounted()) {
+        if (!is_logging_in && !is_switching && isMounted()) {
             if (isMultiplierContract(contract_type) && current_language === 'EN' && is_logged_in) {
                 addNotificationMessageByKey('deriv_go');
             } else {
@@ -45,6 +47,8 @@ const Contract = ({
         addNotificationMessageByKey,
         removeNotificationMessageByKey,
         isMounted,
+        is_switching,
+        is_logging_in,
     ]);
 
     return (
@@ -84,6 +88,8 @@ export default connect(({ modules, client, common, ui }) => ({
     contract_types_list: modules.trade.contract_types_list,
     is_digit_view: modules.trade.is_mobile_digit_view_selected,
     is_equal: modules.trade.is_equal,
+    is_logging_in: client.is_logging_in,
+    is_switching: client.is_switching,
     onChange: modules.trade.onChange,
     symbol: modules.trade.symbol,
     is_logged_in: client.is_logged_in,

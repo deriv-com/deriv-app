@@ -245,6 +245,9 @@ Blockly.ContextMenu.blockDisableStack = function (block) {
  */
 Blockly.ContextMenu.blockEnableStack = function (block) {
     const checkAreSomeDisabled = (block_, disabledArr = []) => {
+        if (block_.restricted_parents && !block_.restricted_parents?.includes(block_.getTopParent()?.type)) {
+            return false;
+        }
         disabledArr.push(block_.disabled);
         return block_.nextConnection?.targetConnection
             ? checkAreSomeDisabled(block_.nextConnection?.targetConnection.sourceBlock_, disabledArr)
@@ -253,7 +256,9 @@ Blockly.ContextMenu.blockEnableStack = function (block) {
     const enabled = checkAreSomeDisabled(block);
 
     const enableBlocksRecursively = block_ => {
-        block_.setDisabled(false);
+        if (!block_.restricted_parents || block_.restricted_parents.includes(block_.getTopParent()?.type)) {
+            block_.setDisabled(false);
+        }
         if (block_.nextConnection?.targetConnection) {
             enableBlocksRecursively(block_.nextConnection?.targetConnection.sourceBlock_);
         }

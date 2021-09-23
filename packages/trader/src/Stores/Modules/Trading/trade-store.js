@@ -401,6 +401,7 @@ export default class TradeStore extends BaseStore {
             true
         ); // wait for store to be updated
         this.validateAllProperties(); // then run validation before sending proposal
+        this.root_store.common.setSelectedContractType(this.contract_type);
     }
 
     @action.bound

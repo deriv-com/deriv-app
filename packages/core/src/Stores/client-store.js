@@ -1129,7 +1129,8 @@ export default class ClientStore extends BaseStore {
             client,
             this,
             this.root_store.ui,
-            this.root_store.modules.cashier
+            this.root_store.modules.cashier,
+            this.root_store.common
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -1199,7 +1200,12 @@ export default class ClientStore extends BaseStore {
          * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status, this.root_store.modules?.cashier?.is_p2p_visible],
+            () => [
+                this.account_settings,
+                this.account_status,
+                this.root_store.modules?.cashier?.is_p2p_visible,
+                this.root_store.common?.selected_contract_type,
+            ],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
@@ -1210,7 +1216,8 @@ export default class ClientStore extends BaseStore {
                             client,
                             this,
                             this.root_store.ui,
-                            this.root_store.modules.cashier
+                            this.root_store.modules.cashier,
+                            this.root_store.common
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }

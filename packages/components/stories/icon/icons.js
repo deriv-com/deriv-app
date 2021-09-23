@@ -451,7 +451,7 @@ export const icons = {
         'IcFlagZhTw',
     ],
     mt5: [
-        'IcMt5Cfd',
+        'IcMt5Cfds',
         'IcMt5CfdPlatform',
         'IcMt5DeviceDesktop',
         'IcMt5DeviceLaptop',

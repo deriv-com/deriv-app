@@ -38,8 +38,8 @@ export const sortNotifications = (() => {
 export const sortNotificationsMobile = (() => {
     const notification_order_mobile = {
         contract_sold: 1,
-        danger: 2,
-        promotions: 3,
+        promotions: 2,
+        danger: 3,
         news: 4,
         warning: 5,
         info: 6,

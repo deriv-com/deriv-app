@@ -123,6 +123,10 @@
 }
 
 .currency-selector {
+    &__subheading {
+        margin-top: 0.8rem;
+    }
+
     &__radio-group--with-margin {
         &--is-header {
             font-size: 1.6rem;

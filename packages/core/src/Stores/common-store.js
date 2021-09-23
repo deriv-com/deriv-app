@@ -165,13 +165,13 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setServicesError(error) {
+        this.services_error = error;
         if (isMobile()) {
             this.root_store.ui.addToast({
                 content: error.message,
                 type: 'error',
             });
         } else {
-            this.services_error = error;
             this.root_store.ui.toggleServicesErrorModal(true);
         }
     }

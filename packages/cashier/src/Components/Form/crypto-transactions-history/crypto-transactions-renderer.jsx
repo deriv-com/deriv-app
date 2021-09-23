@@ -29,15 +29,12 @@ const CryptoTransactionsRenderer = ({
     const formatted_address_hash = address_hash
         ? `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`
         : '';
-    const formatted_transaction_hash = transaction_hash
-        ? `${transaction_hash.substring(0, 4)}....${transaction_hash.substring(transaction_hash.length - 4)}`
-        : localize('Pending');
     const formatted_amount = transaction_type === 'withdrawal' ? `-${amount}` : `+${amount}`;
     const formatted_submit_date = isMobile()
         ? epochToMoment(submit_date).format('DD MMM YYYY')
         : epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
     const formatted_submit_time = epochToMoment(submit_date).format('HH:mm:ss [GMT]');
-    const status = getStatus(transaction_type, status_code);
+    const status = getStatus(transaction_hash, transaction_type, status_code);
 
     const [is_transaction_clicked, setTransactionClicked] = React.useState(false);
     const onClickCancel = () => {
@@ -133,7 +130,7 @@ const CryptoTransactionsRenderer = ({
                             target='_blank'
                         >
                             <Text as='p' size='xxs' color='red'>
-                                {formatted_transaction_hash}
+                                {status.transaction_hash}
                             </Text>
                         </a>
                     </Table.Cell>
@@ -224,13 +221,13 @@ const CryptoTransactionsRenderer = ({
                                 target='_blank'
                             >
                                 <Text as='p' size='xs' color='red'>
-                                    {formatted_transaction_hash}
+                                    {status.transaction_hash}
                                 </Text>
                             </a>
                         </Popover>
                     ) : (
                         <Text as='p' size='xs' color='red'>
-                            {formatted_transaction_hash}
+                            {status.transaction_hash}
                         </Text>
                     )}
                 </Table.Cell>

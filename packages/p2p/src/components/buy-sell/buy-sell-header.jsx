@@ -25,7 +25,7 @@ const getBuySellFilters = () => [
 ];
 
 const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
-    const { buy_sell_store, general_store } = useStores();
+    const { buy_sell_store } = useStores();
     const [is_no_match_tooltip_open, setIsNoMatchTooltipOpen] = React.useState(false);
 
     const onChangeTableType = event => setTableType(event.target.value);
@@ -50,7 +50,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     return (
         <div
             className={classNames('buy-sell__header', {
-                'buy-sell__header-position-static': !!general_store.is_restricted,
+                'buy-sell__header-position-static': !!buy_sell_store.api_error_message,
             })}
         >
             <div className='buy-sell__header-container'>

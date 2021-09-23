@@ -15,6 +15,7 @@ const AccountList = ({
     has_reset_balance,
     is_disabled,
     is_virtual,
+    is_eu,
     loginid,
     market_type,
     redirectAccount,
@@ -54,6 +55,7 @@ const AccountList = ({
                             />
                         ) : (
                             <AccountDisplay
+                                is_eu={is_eu}
                                 market_type={market_type}
                                 sub_account_type={sub_account_type}
                                 server={server}
@@ -131,7 +133,7 @@ const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) 
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on, platform }) => {
+const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on, platform, is_eu }) => {
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     if (has_error)
         return (
@@ -149,7 +151,8 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
         );
     return (
         <div>
-            {getCFDAccountDisplay({ market_type, sub_account_type, platform })}
+            {/* TODO: Move EU logic info getCFDAccountDisplay when CFD added to landing_company API */}
+            {is_eu ? 'CFDs' : getCFDAccountDisplay({ market_type, sub_account_type, platform })}
             {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}

@@ -70,7 +70,7 @@ const PasswordModalHeader = ({
         </Text>
     );
 };
-const getSubmitText = (type, category, platform) => {
+const getSubmitText = (type, category, platform, is_eu) => {
     if (!category && !type) return '';
 
     const category_label = category === 'real' ? localize('real') : localize('demo');
@@ -81,7 +81,8 @@ const getSubmitText = (type, category, platform) => {
             <Localize
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
-                    type: type_label,
+                    //TODO: Change this when CFD added to landing_companies API
+                    type: is_eu ? 'CFD' : type_label,
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
@@ -94,7 +95,8 @@ const getSubmitText = (type, category, platform) => {
         <Localize
             i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
             values={{
-                type: type_label,
+                //TODO: Change this when CFD added to landing_companies API
+                type: is_eu ? 'CFD' : type_label,
                 platform: getCFDPlatformLabel(platform),
                 category: category_label,
             }}
@@ -749,7 +751,7 @@ const CFDPasswordModal = ({
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
-                message={getSubmitText(account_type.type, account_type.category, platform)}
+                message={getSubmitText(account_type.type, account_type.category, platform, is_eu)}
                 icon={<IconType platform={platform} type={account_type.type} />}
                 icon_size='xlarge'
                 text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('Continue')}

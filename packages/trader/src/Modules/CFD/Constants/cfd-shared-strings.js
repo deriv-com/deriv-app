@@ -25,7 +25,7 @@ export const general_messages = {
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (is_eu) {
                 return localize(
-                    'Trade major (standard and micro-lots) and minor currency pairs, stocks, stock indices, commodities, and cryptocurrencies.'
+                    'Trade CFDs on forex, stocks, stock indices, synthetic indices, and commodities with leverage.'
                 );
             }
             return localize(

@@ -642,6 +642,8 @@ export default class ClientStore extends BaseStore {
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
+        if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
+
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
 

@@ -194,7 +194,9 @@ class CFDDashboard extends React.Component {
         } = this.props;
 
         const isSyntheticCardVisible = () => {
-            return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
+            return (
+                (!is_eu && isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' })) || !is_logged_in
+            );
         };
 
         const isFinancialCardVisible = () => {

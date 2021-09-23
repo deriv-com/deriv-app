@@ -264,7 +264,7 @@ const CFDRealAccountDisplay = ({
             key='real.financial'
             has_cfd_account={has_cfd_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
-            title={localize('Financial')}
+            title={is_eu ? localize('CFDs') : localize('Financial')}
             type={{
                 category: 'real',
                 type: 'financial',
@@ -280,6 +280,7 @@ const CFDRealAccountDisplay = ({
             platform={platform}
             descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu)}
             specs={financial_specs}
+            is_eu={is_eu}
             is_logged_in={is_logged_in}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}

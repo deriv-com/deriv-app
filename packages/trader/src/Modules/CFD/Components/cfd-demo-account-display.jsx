@@ -99,9 +99,10 @@ const CFDDemoAccountDisplay = ({
             {isFinancialCardVisible() && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
-                    title={localize('Financial')}
+                    title={is_eu ? localize('CFDs') : localize('Financial')}
                     is_disabled={has_cfd_account_error}
                     is_logged_in={is_logged_in}
+                    is_eu={is_eu}
                     type={{
                         category: 'demo',
                         type: 'financial',

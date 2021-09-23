@@ -599,23 +599,27 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         shouldCompleteTax
     );
 
-    if (is_p2p_visible) {
-        addNotificationMessage(clientNotifications().dp2p);
-    } else {
-        removeNotificationMessageByKey({ key: clientNotifications().dp2p.key });
+    let has_missing_required_field;
+
+    if (client && !client.is_virtual) {
+        if (is_p2p_visible) {
+            addNotificationMessage(clientNotifications().dp2p);
+        } else {
+            removeNotificationMessageByKey({ key: clientNotifications().dp2p.key });
+        }
+
+        if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
+
+        has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
+        if (has_missing_required_field) {
+            addNotificationMessage(clientNotifications(ui_store).required_fields);
+        }
     }
 
     if (isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
         addNotificationMessage(clientNotifications().deriv_go);
     } else {
         removeNotificationMessageByKey({ key: clientNotifications().deriv_go.key });
-    }
-
-    if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
-
-    const has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
-    if (has_missing_required_field) {
-        addNotificationMessage(clientNotifications(ui_store).required_fields);
     }
 
     return {

@@ -1211,14 +1211,14 @@ export default class ClientStore extends BaseStore {
                 BinarySocket.wait('landing_company').then(() => {
                     this.root_store.ui.removeNotifications();
                     this.root_store.ui.removeAllNotificationMessages();
+                    const { has_missing_required_field } = handleClientNotifications(
+                        client,
+                        this,
+                        this.root_store.ui,
+                        this.root_store.modules.cashier,
+                        this.root_store.common
+                    );
                     if (client && !client.is_virtual) {
-                        const { has_missing_required_field } = handleClientNotifications(
-                            client,
-                            this,
-                            this.root_store.ui,
-                            this.root_store.modules.cashier,
-                            this.root_store.common
-                        );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }
                 });

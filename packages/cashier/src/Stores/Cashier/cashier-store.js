@@ -373,6 +373,7 @@ export default class CashierStore extends BaseStore {
             () => this.root_store.client.is_logged_in,
             async () => {
                 await this.checkP2pStatus();
+                await this.check10kLimit();
             }
         );
 
@@ -388,6 +389,7 @@ export default class CashierStore extends BaseStore {
 
                 if (this.root_store.client.is_logged_in) {
                     await this.checkP2pStatus();
+                    await this.check10kLimit();
                     await this.filterPaymentAgentList();
                 }
             }

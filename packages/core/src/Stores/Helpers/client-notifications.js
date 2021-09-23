@@ -493,13 +493,14 @@ const checkAccountStatus = (
     loginid,
     getRiskAssessment,
     isAccountOfType,
-    ui_store
+    ui_store,
+    is_10k_withdrawal_limit_reached
 ) => {
     if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
-        authentication: { document, identity },
+        authentication: { document, identity, needs_verification },
         status,
         cashier_validation,
     } = account_status;
@@ -534,6 +535,11 @@ const checkAccountStatus = (
 
     addVerificationNotifications(identity, document, addNotificationMessage);
     const has_risk_assessment = getRiskAssessment(account_status);
+    const needs_poa = is_10k_withdrawal_limit_reached && needs_verification.includes('document');
+    const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+
+    if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
+    if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
     if (system_maintenance) {
         addNotificationMessage(clientNotifications({}, client).system_maintenance(withdrawal_locked, deposit_locked));
     } else if (cashier_locked) {
@@ -610,7 +616,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         isAccountOfType,
     } = client_store;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
-    const { is_p2p_visible } = cashier_store;
+    const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
@@ -621,7 +627,8 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         loginid,
         getRiskAssessment,
         isAccountOfType,
-        ui_store
+        ui_store,
+        is_10k_withdrawal_limit_reached
     );
     if (is_p2p_visible) {
         addNotificationMessage(clientNotifications().dp2p);

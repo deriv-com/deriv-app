@@ -218,7 +218,7 @@ const AccountSwitcher = props => {
             platform
         );
         // Handling CFD for EU
-        //TODO: Move this logic inside getCFDConfig when CFD added to landing_companies API
+        // TODO: Move this logic inside getCFDConfig when CFD added to landing_companies API
         if (is_eu) {
             if (financial_config.length) {
                 Object.assign(financial_config[0], {
@@ -467,7 +467,7 @@ const AccountSwitcher = props => {
                                                 sub_account_type={account.sub_account_type}
                                                 balance={account.balance}
                                                 currency={account.currency}
-                                                //TODO: Move this logic inside getCFDAccount when CFD added to landing_companies API
+                                                // TODO: Move this logic inside getCFDAccount when CFD added to landing_companies API
                                                 currency_icon={`IcMt5-${
                                                     props.is_eu
                                                         ? 'CFDs'
@@ -674,7 +674,7 @@ const AccountSwitcher = props => {
                                                 sub_account_type={account.sub_account_type}
                                                 balance={account.balance}
                                                 currency={account.currency}
-                                                //TODO: Move this logic inside getCFDAccount when CFD added to landing_companies API
+                                                // TODO: Move this logic inside getCFDAccount when CFD added to landing_companies API
                                                 currency_icon={`IcMt5-${
                                                     props.is_eu
                                                         ? 'CFDs'

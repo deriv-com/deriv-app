@@ -69,6 +69,9 @@ const BinarySocketGeneral = (() => {
                     gtm_store.eventHandler(response.get_settings);
                 }
                 break;
+            case 'set_account_currency':
+                WS.forgetAll('balance').then(subscribeBalances);
+                break;
             case 'get_account_status':
                 client_store.setAccountStatus(response.get_account_status);
                 break;

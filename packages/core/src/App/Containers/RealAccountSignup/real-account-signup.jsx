@@ -83,6 +83,7 @@ const RealAccountSignup = ({
     country_standpoint,
     history,
     is_belgium_residence,
+    is_from_restricted_country,
     is_isle_of_man_residence,
     is_eu,
     is_real_acc_signup_on,
@@ -253,6 +254,16 @@ const RealAccountSignup = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error]);
 
+    React.useEffect(() => {
+        if (!is_from_restricted_country) return;
+        setParams({
+            active_modal_index: modal_pages_indices.signup_error,
+            error_message: localize('Sorry, account opening is unavailable in your region.'),
+            error_code: 'InvalidAccount',
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_from_restricted_country, is_real_acc_signup_on]);
+
     const closeModal = e => {
         // Do not close modal on external link and popover click event
         if (
@@ -401,7 +412,7 @@ export default connect(({ ui, client, common }) => ({
     real_account_signup_target: ui.real_account_signup_target,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     setParams: ui.setRealAccountSignupParams,
-    residence: client.residence,
+    is_from_restricted_country: client.is_from_restricted_country,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     state_value: ui.real_account_signup,

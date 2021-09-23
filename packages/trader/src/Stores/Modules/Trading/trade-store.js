@@ -326,6 +326,7 @@ export default class TradeStore extends BaseStore {
                 this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
+        this.root_store.common.setSelectedContractType(this.contract_type);
     }
 
     @action.bound

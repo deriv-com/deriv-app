@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     width: 100%;
-    height: 10.8rem;
+    height: fit-content;
     background-color: var(--general-main-1);
     box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
     border-radius: 4px;
@@ -20,8 +20,9 @@
     }
     &__img {
         position: absolute;
-        object-fit: contain;
-        width: auto;
+        object-fit: fill;
+        width: 128px;
+        height: 100%;
         right: 0;
         z-index: 12;
         pointer-events: none;

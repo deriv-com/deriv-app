@@ -96,9 +96,9 @@ const ProofOfAddressForm = ({
         const required_fields = ['address_line_1', 'address_city'];
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        const permitted_characters = "- . ' # ; : ( ) , @ /";
+        const permitted_characters = ". , ' : ; ( ) @ # / -";
         const address_validation_message = localize(
-            'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
+            'Use only the following special characters: {{ permitted_characters }}',
             {
                 permitted_characters,
                 interpolation: { escapeValue: false },
@@ -148,7 +148,7 @@ const ProofOfAddressForm = ({
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
         setFormState({ ...form_state, ...{ is_btn_loading: true } });
-        let settings_values = values;
+        let settings_values = { ...values };
 
         if (values.address_state && states_list.length) {
             settings_values.address_state = getLocation(states_list, values.address_state, 'value') || '';
@@ -418,12 +418,11 @@ const ProofOfAddressForm = ({
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
                                                     name='address_postcode'
-                                                    label={localize('Postal/ZIP code*')}
+                                                    label={localize('Postal/ZIP code (optional)')}
                                                     value={values.address_postcode}
                                                     error={touched.address_postcode && errors.address_postcode}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    required
                                                 />
                                             </fieldset>
                                         </div>

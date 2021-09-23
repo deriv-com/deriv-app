@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Icon, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import { getAllowedLanguages, changeLanguage, currentLanguage } from 'Utils/Language';
+import { Localize, getAllowedLanguages } from '@deriv/translations';
+import { changeLanguage, currentLanguage } from 'Utils/Language';
 
 const isCurrentLanguage = lang => lang === currentLanguage;
 

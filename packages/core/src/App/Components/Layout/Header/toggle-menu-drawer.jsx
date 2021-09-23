@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import { routes, PlatformContext } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { localize, getAllowedLanguages } from '@deriv/translations';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { getAllowedLanguages, currentLanguage, changeLanguage } from 'Utils/Language';
+import { currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 
 const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink }) => {
@@ -72,8 +72,8 @@ const ToggleMenuDrawer = React.forwardRef(
             is_p2p_enabled,
             is_payment_agent_transfer_visible,
             is_payment_agent_visible,
+            is_virtual,
             logoutClient,
-            needs_financial_assessment,
             platform_header,
             platform_switcher,
             should_allow_authentication,
@@ -204,8 +204,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     /proof-of-address/.test(subroute.path)) ||
                                                 (!should_allow_authentication &&
                                                     /proof-of-identity/.test(subroute.path)) ||
-                                                (!needs_financial_assessment &&
-                                                    /financial-assessment/.test(subroute.path)) ||
+                                                (is_virtual && /financial-assessment/.test(subroute.path)) ||
                                                 subroute.is_disabled
                                             }
                                             link_to={subroute.path}

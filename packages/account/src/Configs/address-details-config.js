@@ -12,14 +12,14 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_line_1 ?? '',
             rules: [
                 ['req', localize('First line of address is required')],
-                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
                     localize(
-                        'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
+                        'Use only the following special characters: . , \' : ; ( ) @ # / -'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]\{\}]{1,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-]{1,70}$/,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -29,14 +29,14 @@ const address_details_config = ({ account_settings, is_svg }) => {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
             rules: [
-                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
                     localize(
-                        'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
+                        'Use only the following special characters: . , \' : ; ( ) @ # / -'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]\{\}]{0,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-]{0,70}$/,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -47,11 +47,12 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_city ?? '',
             rules: [
                 ['req', localize('City is required')],
+                ['length', localize('Only {{max}} characters, please.', { max: 99 }), { max: 99 }],
                 [
                     'regular',
-                    localize('Letters, numbers, spaces, periods, hyphens, apostrophes only'),
+                    localize('Only letters, periods, hyphens, apostrophes, and spaces, please.'),
                     {
-                        regex: /^[A-Za-z0-9\s'.\-]{1,35}$/,
+                        regex: /^\p{L}[\p{L}\s'.-]{0,99}$/u,
                     },
                 ],
             ],

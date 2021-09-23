@@ -46,7 +46,6 @@ const DefaultHeader = ({
     location,
     logoutClient,
     menu_items,
-    needs_financial_assessment,
     notifications_count,
     openRealAccountSignup,
     is_options_blocked,
@@ -81,7 +80,6 @@ const DefaultHeader = ({
             }
             return true;
         });
-
     return (
         <header
             className={classNames('header', {
@@ -112,7 +110,6 @@ const DefaultHeader = ({
                             is_onramp_tab_visible={is_onramp_tab_visible}
                             is_payment_agent_visible={is_payment_agent_visible}
                             is_virtual={is_virtual}
-                            needs_financial_assessment={needs_financial_assessment}
                             toggleTheme={setDarkMode}
                             platform_header={getPlatformInformation(app_routing_history).header}
                             platform_switcher={
@@ -202,7 +199,6 @@ DefaultHeader.propTypes = {
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
-    needs_financial_assessment: PropTypes.bool,
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
@@ -241,7 +237,6 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     menu_items: menu.extensions,
-    needs_financial_assessment: client.needs_financial_assessment,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     is_options_blocked: client.is_options_blocked,

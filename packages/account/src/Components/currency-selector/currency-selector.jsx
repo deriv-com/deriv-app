@@ -32,6 +32,9 @@ const CurrencySelector = ({
     has_wallet_account,
     is_dxtrade_allowed,
     is_mt5_allowed,
+    available_crypto_currencies,
+    has_fiat,
+    accounts,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -39,6 +42,10 @@ const CurrencySelector = ({
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
+
+    const should_disable_fiat = !!Object.values(accounts).filter(
+        item => item.landing_company_shortcode === real_account_signup_target
+    ).length;
 
     const isSubmitDisabled = values => {
         return selected_step_ref?.current?.isSubmitting || !values.currency;
@@ -101,11 +108,19 @@ const CurrencySelector = ({
     };
 
     const description = React.useMemo(() => {
-        if (is_dxtrade_allowed && is_mt5_allowed) {
-            return (
-                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 or Deriv X account.' />
-            );
-        } else if (!is_dxtrade_allowed && is_mt5_allowed) {
+        // TODO: uncomment when real account is launched
+        // if (is_dxtrade_allowed && is_mt5_allowed) {
+        //     return (
+        //         <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 or Deriv X account.' />
+        //     );
+        // } else if (!is_dxtrade_allowed && is_mt5_allowed) {
+        //     return (
+        //         <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 account.' />
+        //     );
+        // }
+
+        // TODO: remove this block when real account is launched
+        if (is_mt5_allowed) {
             return (
                 <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 account.' />
             );
@@ -113,7 +128,7 @@ const CurrencySelector = ({
         return (
             <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
         );
-    }, [is_dxtrade_allowed, is_mt5_allowed]);
+    }, [is_mt5_allowed]);
 
     return (
         <Formik
@@ -149,6 +164,7 @@ const CurrencySelector = ({
                                                 touched={touched.currency}
                                                 item_count={reorderCurrencies(fiat).length}
                                                 description={description}
+                                                has_fiat={should_disable_fiat && has_fiat}
                                             >
                                                 {reorderCurrencies(fiat).map(currency => (
                                                     <Field
@@ -157,6 +173,7 @@ const CurrencySelector = ({
                                                         name='currency'
                                                         id={currency.value}
                                                         label={currency.name}
+                                                        selected={should_disable_fiat && has_fiat}
                                                     />
                                                 ))}
                                             </RadioButtonGroup>
@@ -179,6 +196,11 @@ const CurrencySelector = ({
                                                     <Field
                                                         key={currency.value}
                                                         component={RadioButton}
+                                                        selected={
+                                                            available_crypto_currencies?.filter(
+                                                                ({ value }) => value === currency.value
+                                                            )?.length === 0
+                                                        }
                                                         name='currency'
                                                         id={currency.value}
                                                         label={currency.name}
@@ -197,7 +219,7 @@ const CurrencySelector = ({
                                             : 'currency-selector--deriv-account'
                                     }
                                     is_disabled={isSubmitDisabled(values)}
-                                    is_center={!has_currency}
+                                    is_center={false}
                                     is_absolute={set_currency || is_dashboard}
                                     label={getSubmitLabel()}
                                     {...(has_cancel
@@ -226,6 +248,7 @@ CurrencySelector.propTypes = {
     is_dashboard: PropTypes.bool,
     real_account_signup_target: PropTypes.string,
     is_dxtrade_allowed: PropTypes.bool,
+    has_fiat: PropTypes.bool,
 };
 
 export default CurrencySelector;

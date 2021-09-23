@@ -583,6 +583,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_p2p_visible } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
+    let has_missing_required_field;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
@@ -598,8 +599,6 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         getRiskAssessment,
         shouldCompleteTax
     );
-
-    let has_missing_required_field;
 
     if (client && !client.is_virtual) {
         if (is_p2p_visible) {

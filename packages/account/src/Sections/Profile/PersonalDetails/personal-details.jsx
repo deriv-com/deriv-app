@@ -225,7 +225,9 @@ export class PersonalDetailsForm extends React.Component {
                     max: max_tax_identification_number,
                 })
             ) {
-                errors.tax_identification_number = localize('You should enter 0-25 characters.');
+                errors.tax_identification_number = localize(
+                    "Tax Identification Number can't be longer than 25 characters."
+                );
             }
 
             if (values.tax_identification_number && !/^[a-zA-Z0-9\/.-\s]*$/.test(values.tax_identification_number)) {

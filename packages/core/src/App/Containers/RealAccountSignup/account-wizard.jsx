@@ -249,6 +249,7 @@ const AccountWizard = props => {
             })
             .catch(error => {
                 if (error.code === 'show risk disclaimer') {
+                    props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
                 } else {
                     props.onError(error, state_items);
@@ -263,7 +264,6 @@ const AccountWizard = props => {
 
     if (props.is_loading) return <LoadingModal />;
     if (should_accept_financial_risk) {
-        props.setIsRiskWarningVisible(true);
         return <AcceptRiskForm onSubmit={onAcceptRisk} />;
     }
     if (!mounted) return null;

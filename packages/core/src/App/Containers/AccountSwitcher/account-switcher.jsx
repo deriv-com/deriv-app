@@ -123,8 +123,8 @@ const AccountSwitcher = props => {
             closeAccountsDialog();
             props.openAccountNeededModal(
                 account_type === 'synthetic' ? props.standpoint.gaming_company : props.standpoint.financial_company,
-                account_type === 'synthetic' ? localize('Deriv Synthetic') : localize('Deriv Financial'),
-                account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('DMT5 Financial')
+                account_type === 'synthetic' ? localize('Deriv Synthetic') : localize('Deriv Multipliers'),
+                account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('real CFDs account')
             );
         } else {
             if (should_redirect_fstp_password)

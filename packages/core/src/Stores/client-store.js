@@ -5,7 +5,7 @@ import {
     redirectToLogin,
     getPropertyValue,
     getUrlSmartTrader,
-    isStaging,
+    getUrlBinaryBot,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
@@ -2057,7 +2057,7 @@ export default class ClientStore extends BaseStore {
         smartTrader.iframe = document.getElementById('localstorage-sync');
         binaryBot.iframe = document.getElementById('localstorage-sync__bot');
         smartTrader.origin = getUrlSmartTrader();
-        binaryBot.origin = isStaging() ? deriv_urls.BINARYBOT_STAGING : deriv_urls.BINARYBOT_PRODUCTION;
+        binaryBot.origin = getUrlBinaryBot();
 
         [smartTrader, binaryBot].forEach(platform => {
             if (platform.iframe) {

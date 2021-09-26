@@ -1,8 +1,8 @@
 import React from 'react';
-import { deriv_urls, isStaging } from '@deriv/shared';
+import { getUrlBinaryBot } from '@deriv/shared';
 
 const BinaryBotIFrame = () => {
-    const base_link = isStaging() ? deriv_urls.BINARYBOT_STAGING : deriv_urls.BINARYBOT_PRODUCTION;
+    const base_link = getUrlBinaryBot();
 
     return (
         <iframe

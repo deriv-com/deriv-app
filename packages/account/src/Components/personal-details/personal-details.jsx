@@ -18,8 +18,9 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
+import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, toMoment, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, toMoment, PlatformContext, routes } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 
@@ -79,10 +80,13 @@ const PersonalDetails = ({
     disabled_items,
     is_svg,
     residence_list,
+    is_virtual,
     is_fully_authenticated,
     account_opening_reason_list,
     onSubmitEnabledChange,
     selected_step_ref,
+    closeRealAccountSignup,
+    has_real_account,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -139,6 +143,11 @@ const PersonalDetails = ({
         return is_svg ? localize('Last name*') : localize('Last name');
     };
 
+    const showAccountSettingsLinkOrText = () => {
+        if (is_virtual) return 'account settings';
+        return has_real_account ? '<0>account settings</0>' : 'account settings';
+    };
+
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -172,7 +181,17 @@ const PersonalDetails = ({
                                         {'salutation' in props.value && (
                                             <div>
                                                 <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                    <Localize i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.' />
+                                                    <Localize
+                                                        i18n_default_text={`Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your ${showAccountSettingsLinkOrText()}.`}
+                                                        components={[
+                                                            <Link
+                                                                to={routes.personal_details}
+                                                                key={0}
+                                                                className='link'
+                                                                onClick={closeRealAccountSignup}
+                                                            />,
+                                                        ]}
+                                                    />
                                                 </Text>
                                             </div>
                                         )}

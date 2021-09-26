@@ -5,6 +5,7 @@ import {
     redirectToLogin,
     getPropertyValue,
     getUrlSmartTrader,
+    isStaging,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
@@ -704,7 +705,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
-        this.syncWithSmartTrader(loginid, toJS(this.accounts));
+        this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
     }
 
@@ -911,7 +912,7 @@ export default class ClientStore extends BaseStore {
         this.is_populating_account_list = false;
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.setSwitched(client_id);
-        this.syncWithSmartTrader(client_id, client_accounts);
+        this.syncWithLegacyPlatforms(client_id, client_accounts);
     }
 
     @action.bound
@@ -1601,7 +1602,7 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
         this.root_store.ui.removeAllNotificationMessages(true);
-        this.syncWithSmartTrader(this.loginid, this.accounts);
+        this.syncWithLegacyPlatforms(this.loginid, this.accounts);
         this.cleanupRealityCheck();
     }
 
@@ -1684,7 +1685,7 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
-            this.syncWithSmartTrader(active_loginid, this.accounts);
+            this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
     }
 
@@ -2049,20 +2050,26 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    syncWithSmartTrader(active_loginid, client_accounts) {
-        const iframe_window = document.getElementById('localstorage-sync');
-        if (iframe_window) {
-            const origin = getUrlSmartTrader();
-            if (origin) {
+    syncWithLegacyPlatforms(active_loginid, client_accounts) {
+        const smartTrader = {};
+        const binaryBot = {};
+
+        smartTrader.iframe = document.getElementById('localstorage-sync');
+        binaryBot.iframe = document.getElementById('localstorage-sync__bot');
+        smartTrader.origin = getUrlSmartTrader();
+        binaryBot.origin = isStaging() ? deriv_urls.BINARYBOT_STAGING : deriv_urls.BINARYBOT_PRODUCTION;
+
+        [smartTrader, binaryBot].forEach(platform => {
+            if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
-                iframe_window.contentWindow.postMessage(
+                platform.iframe.contentWindow.postMessage(
                     {
                         key: 'client.accounts',
                         value: JSON.stringify(client_accounts),
                     },
                     origin
                 );
-                iframe_window.contentWindow.postMessage(
+                platform.iframe.contentWindow.postMessage(
                     {
                         key: 'active_loginid',
                         value: active_loginid,
@@ -2070,7 +2077,7 @@ export default class ClientStore extends BaseStore {
                     origin
                 );
             }
-        }
+        });
     }
 
     @computed

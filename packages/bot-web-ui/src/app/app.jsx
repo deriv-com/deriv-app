@@ -22,9 +22,7 @@ const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
     const [is_loading, setIsLoading] = React.useState(true);
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
-
-    const { app, common } = root_store_instance.current;
-
+    const { app, common, core } = root_store_instance.current;
     const { onMount, onUnmount } = app;
     React.useEffect(() => {
         GTM.init(root_store_instance.current);
@@ -33,7 +31,6 @@ const App = ({ passthrough }) => {
 
         ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
-
         setIsLoading(true);
         active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
@@ -44,7 +41,7 @@ const App = ({ passthrough }) => {
             onUnmount();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMount, onUnmount]);
+    }, [onMount, onUnmount, core.client.is_options_blocked]);
 
     return is_loading ? (
         <Loading />

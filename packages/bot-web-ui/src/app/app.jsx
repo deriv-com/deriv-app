@@ -13,6 +13,7 @@ import {
     RoutePromptDialog,
     Toolbar,
 } from 'Components';
+import { showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
@@ -23,9 +24,16 @@ const App = ({ passthrough }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
-    const { onMount, onUnmount } = app;
+    const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
 
-    const retrieveActiveSymbols = () => {
+    React.useEffect(() => {
+        showDigitalOptionsMaltainvestError(core.client, common);
+    }, [core.client.is_options_blocked]);
+
+    React.useEffect(() => {
+        GTM.init(root_store_instance.current);
+        ServerTime.init(common);
+        app.setDBotEngineStores(root_store_instance.current);
         ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
         setIsLoading(true);
@@ -33,17 +41,6 @@ const App = ({ passthrough }) => {
             setIsLoading(false);
             onMount();
         });
-    };
-    React.useEffect(() => {
-        retrieveActiveSymbols();
-    }, [core.client.is_options_blocked]);
-
-    React.useEffect(() => {
-        GTM.init(root_store_instance.current);
-        ServerTime.init(common);
-        app.setDBotEngineStores(root_store_instance.current);
-        retrieveActiveSymbols();
-
         return () => {
             onUnmount();
         };

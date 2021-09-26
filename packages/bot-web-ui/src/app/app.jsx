@@ -24,11 +24,8 @@ const App = ({ passthrough }) => {
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { onMount, onUnmount } = app;
-    React.useEffect(() => {
-        GTM.init(root_store_instance.current);
-        ServerTime.init(common);
-        app.setDBotEngineStores(root_store_instance.current);
 
+    const retrieveActiveSymbols = () => {
         ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
         setIsLoading(true);
@@ -36,12 +33,22 @@ const App = ({ passthrough }) => {
             setIsLoading(false);
             onMount();
         });
+    };
+    React.useEffect(() => {
+        retrieveActiveSymbols();
+    }, [core.client.is_options_blocked]);
+
+    React.useEffect(() => {
+        GTM.init(root_store_instance.current);
+        ServerTime.init(common);
+        app.setDBotEngineStores(root_store_instance.current);
+        retrieveActiveSymbols();
 
         return () => {
             onUnmount();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMount, onUnmount, core.client.is_options_blocked]);
+    }, [onMount, onUnmount]);
 
     return is_loading ? (
         <Loading />

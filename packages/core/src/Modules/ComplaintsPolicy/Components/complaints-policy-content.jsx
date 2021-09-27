@@ -54,22 +54,22 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
     switch (landing_company_shortcode) {
         case 'iom':
         case 'malta': {
-            texts.push(
-                <Localize
-                    key={0}
-                    i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service (IBAS)</0> by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link link--orange'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='https://www.ibas-uk.com/'
-                        />,
-                    ]}
-                />
-            );
             if (landing_company_shortcode === 'iom') {
+                texts.push(
+                    <Localize
+                        key={0}
+                        i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service (IBAS)</0> by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
+                        components={[
+                            <a
+                                key={0}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href='https://www.ibas-uk.com/'
+                            />,
+                        ]}
+                    />
+                );
                 texts.push(
                     <Localize
                         key={texts.length}
@@ -81,12 +81,10 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                 texts.push(
                     <Localize
                         key={texts.length}
-                        i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform. This is not applicable to UK clients."
+                        i18n_default_text="You can send your complaint to the <0>European Commission's Online Dispute Resolution (ODR)</0> platform. This is not applicable to UK clients."
                         components={[
-                            <br key={0} />,
-                            <br key={1} />,
                             <a
-                                key={2}
+                                key={0}
                                 className='link link--orange'
                                 rel='noopener noreferrer'
                                 target='_blank'

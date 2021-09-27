@@ -17,7 +17,7 @@
         }
         .dc-modal-header__title {
             text-transform: none;
-            border-top-left-radius: 1em;
+            border-top-left-radius: 1rem;
         }
         &--error {
             .account-wizard--error {
@@ -33,7 +33,7 @@
                 width: 128px;
                 height: 128px;
                 align-self: center;
-                margin: 2em 0 0;
+                margin: 2rem 0 0;
             }
             h1 {
                 @include typeface(--title-center-bold-black);

@@ -143,10 +143,11 @@ const PersonalDetails = ({
         return is_svg ? localize('Last name*') : localize('Last name');
     };
 
-    const showAccountSettingsLinkOrText = () => {
-        if (is_virtual) return 'account settings';
-        return has_real_account ? '<0>account settings</0>' : 'account settings';
-    };
+    const account_settings_text = is_virtual
+        ? 'account settings'
+        : has_real_account
+        ? '<0>account settings</0>'
+        : 'account settings';
 
     return (
         <Formik
@@ -182,7 +183,7 @@ const PersonalDetails = ({
                                             <div>
                                                 <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                     <Localize
-                                                        i18n_default_text={`Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your ${showAccountSettingsLinkOrText()}.`}
+                                                        i18n_default_text={`Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your ${account_settings_text}.`}
                                                         components={[
                                                             <Link
                                                                 to={routes.personal_details}

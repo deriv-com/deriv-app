@@ -71,9 +71,7 @@ export default class OnRampStore extends BaseStore {
                 if (this.api_error) {
                     return localize('Our server cannot retrieve an address.');
                 }
-                return this.is_deposit_address_loading
-                    ? localize(' ')
-                    : localize("You don't have a crypto address yet.");
+                return !this.is_deposit_address_loading && localize("You don't have a crypto address yet.");
             }
             return ' '; // Empty string to render header + close icon.
         }

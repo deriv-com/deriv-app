@@ -9,12 +9,11 @@ const Icon = React.forwardRef(
         { className, color, custom_color, height, icon, id, onClick, onMouseEnter, onMouseLeave, size = 16, width },
         ref
     ) => {
-        console.log(icon, ' icon');
-        if (!icon) return null;
-
         React.useEffect(() => {
             localStorage.setItem(className, JSON.stringify(icon));
         }, [className, icon]);
+
+        if (!icon) return null;
 
         const iconFromLocalStorage = JSON.parse(localStorage.getItem(className)) || icon;
         let category = 'common';

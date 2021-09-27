@@ -24,15 +24,8 @@ const modal_pages_indices = {
     signup_error: 5,
 };
 
-const WizardHeading = ({
-    real_account_signup_target,
-    currency,
-    is_isle_of_man_residence,
-    is_belgium_residence,
-    country_standpoint,
-}) => {
+const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, country_standpoint }) => {
     const maltainvest_signup = real_account_signup_target === 'maltainvest';
-    const malta_signup = real_account_signup_target === 'malta';
     const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
 
@@ -40,7 +33,7 @@ const WizardHeading = ({
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
-    if ((malta_signup && is_belgium_residence) || deposit_cash_signup) {
+    if (deposit_cash_signup) {
         return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
     }
 

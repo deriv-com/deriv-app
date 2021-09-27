@@ -9,17 +9,25 @@ const Icon = React.forwardRef(
         { className, color, custom_color, height, icon, id, onClick, onMouseEnter, onMouseLeave, size = 16, width },
         ref
     ) => {
+        console.log(icon, ' icon');
         if (!icon) return null;
 
+        React.useEffect(() => {
+            localStorage.setItem(className, JSON.stringify(icon));
+        }, [className, icon]);
+
+        const iconFromLocalStorage = JSON.parse(localStorage.getItem(className)) || icon;
         let category = 'common';
-        const category_match = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')})`, 'gi').exec(icon);
+        const category_match = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')})`, 'gi').exec(
+            iconFromLocalStorage
+        );
         if (category_match?.[1]) {
             category = getKebabCase(category_match[1]);
         }
 
-        const sprite_id = icon.startsWith('IcUnderlying')
-            ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}`
-            : getKebabCase(icon);
+        const sprite_id = iconFromLocalStorage.startsWith('IcUnderlying')
+            ? `ic-underlying-${iconFromLocalStorage.split('IcUnderlying')[1].toUpperCase()}`
+            : getKebabCase(iconFromLocalStorage);
 
         const filename = icons_manifest[category];
 
@@ -30,8 +38,8 @@ const Icon = React.forwardRef(
                 className={classNames('dc-icon', className, {
                     'dc-icon--active': color === 'active',
                     'dc-icon--disabled': color === 'disabled',
-                    'dc-icon--green': color === 'green' || icon === 'IcProfit',
-                    'dc-icon--red': color === 'red' || icon === 'IcLoss',
+                    'dc-icon--green': color === 'green' || iconFromLocalStorage === 'IcProfit',
+                    'dc-icon--red': color === 'red' || iconFromLocalStorage === 'IcLoss',
                     'dc-icon--secondary': color === 'secondary',
                     'dc-icon--brand': color === 'brand',
                     'dc-icon--black': color === 'black',
@@ -52,7 +60,7 @@ const Icon = React.forwardRef(
                         : undefined
                 }
             >
-                <use xlinkHref={`${getUrlBase(`/public/sprites/${filename}.svg`)}#${sprite_id}`} />
+                <use href={`${getUrlBase(`/public/sprites/${filename}.svg`)}#${sprite_id}`} />
             </svg>
         );
     }

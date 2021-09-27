@@ -9,13 +9,14 @@ const Icon = React.forwardRef(
         { className, color, custom_color, height, icon, id, onClick, onMouseEnter, onMouseLeave, size = 16, width },
         ref
     ) => {
+        const iconFromLocalStorage = localStorage.getItem(className) || icon;
+
         React.useEffect(() => {
-            localStorage.setItem(className, JSON.stringify(icon));
+            localStorage.setItem(className, icon);
         }, [className, icon]);
 
         if (!icon) return null;
 
-        const iconFromLocalStorage = JSON.parse(localStorage.getItem(className)) || icon;
         let category = 'common';
         const category_match = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')})`, 'gi').exec(
             iconFromLocalStorage

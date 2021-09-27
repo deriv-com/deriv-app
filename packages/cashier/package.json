@@ -33,7 +33,7 @@
     },
     "dependencies": {
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-api": "^1.0.7",
+        "@deriv/deriv-api": "^1.0.8",
         "@deriv/p2p": "^0.7.3",
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",
@@ -44,6 +44,7 @@
         "mobx-react": "^6.2.2",
         "moment": "^2.24.0",
         "prop-types": "^15.7.2",
+        "qrcode.react": "^1.0.0",
         "react": "^16.13.1",
         "react-content-loader": "^4.3.2",
         "react-dom": "^16.13.1",

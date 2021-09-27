@@ -36,7 +36,7 @@ export default class TransactionHistoryStore {
     }
     @action.bound
     async getCryptoTransactions() {
-        await this.WS.authorized.subscribeCashierPayments(response => {
+        await this.WS.subscribeCashierPayments(response => {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
                 this.updateCryptoTransactions(crypto);
@@ -63,7 +63,7 @@ export default class TransactionHistoryStore {
 
     @action.bound
     async cancelCryptoTransaction(transaction_id) {
-        await this.WS.authorized.cancelCryptoTransaction(transaction_id).then(response => {
+        await this.WS.cancelCryptoTransaction(transaction_id).then(response => {
             if (!response.error) {
                 this.getCryptoTransactions();
                 this.setSelectedCryptoTransactionId('');

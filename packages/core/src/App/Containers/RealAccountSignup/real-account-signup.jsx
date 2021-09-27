@@ -51,6 +51,9 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
             }
             return <Localize i18n_default_text='Add a Deriv Synthetic Indices account' />;
         case 'iom':
+            if (country_standpoint.is_united_kingdom) {
+                return <Localize i18n_default_text='Add a real Deriv Options account' />;
+            }
             return <Localize i18n_default_text='Add a Deriv Synthetic Indices account' />;
         case 'maltainvest':
             if (

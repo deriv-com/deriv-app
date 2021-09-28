@@ -32,6 +32,9 @@ const CurrencySelector = ({
     has_wallet_account,
     is_dxtrade_allowed,
     is_mt5_allowed,
+    available_crypto_currencies,
+    has_fiat,
+    accounts,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -39,6 +42,10 @@ const CurrencySelector = ({
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
+
+    const should_disable_fiat = !!Object.values(accounts).filter(
+        item => item.landing_company_shortcode === real_account_signup_target
+    ).length;
 
     const isSubmitDisabled = values => {
         return selected_step_ref?.current?.isSubmitting || !values.currency;
@@ -157,6 +164,7 @@ const CurrencySelector = ({
                                                 touched={touched.currency}
                                                 item_count={reorderCurrencies(fiat).length}
                                                 description={description}
+                                                has_fiat={should_disable_fiat && has_fiat}
                                             >
                                                 {reorderCurrencies(fiat).map(currency => (
                                                     <Field
@@ -165,6 +173,7 @@ const CurrencySelector = ({
                                                         name='currency'
                                                         id={currency.value}
                                                         label={currency.name}
+                                                        selected={should_disable_fiat && has_fiat}
                                                     />
                                                 ))}
                                             </RadioButtonGroup>
@@ -187,6 +196,11 @@ const CurrencySelector = ({
                                                     <Field
                                                         key={currency.value}
                                                         component={RadioButton}
+                                                        selected={
+                                                            available_crypto_currencies?.filter(
+                                                                ({ value }) => value === currency.value
+                                                            )?.length === 0
+                                                        }
                                                         name='currency'
                                                         id={currency.value}
                                                         label={currency.name}
@@ -234,6 +248,7 @@ CurrencySelector.propTypes = {
     is_dashboard: PropTypes.bool,
     real_account_signup_target: PropTypes.string,
     is_dxtrade_allowed: PropTypes.bool,
+    has_fiat: PropTypes.bool,
 };
 
 export default CurrencySelector;

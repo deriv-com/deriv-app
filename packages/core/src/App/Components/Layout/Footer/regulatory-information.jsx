@@ -11,7 +11,7 @@ const MLTRegulatoryInformation = () => (
         </div>
         <p>
             <Localize
-                i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority (<0>licence no. MGA/B2C/102/2000</0>), by the Gambling Commission for clients in Great Britain under <1>account no. 39495</1>, and by the Revenue Commissioners for clients in Ireland (<2>licence no. 1010285</2>).'
+                i18n_default_text='Synthetic indices in the EU are offered by Deriv (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority (<0>licence no. MGA/B2C/102/2000</0>) and by the Revenue Commissioners for clients in Ireland (<2>licence no. 1010285</2>).'
                 components={[
                     <StaticUrl
                         href='/regulatory/Deriv_(Europe)_Limited.pdf'

@@ -256,9 +256,7 @@ const AccountWizard = props => {
                     props.onError(error, state_items);
                 }
             })
-            .finally(() => {
-                props.setLoading(false);
-            });
+            .finally(() => props.setLoading(false));
     };
 
     const onAcceptRisk = () => {

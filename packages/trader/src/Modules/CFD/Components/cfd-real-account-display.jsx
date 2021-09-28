@@ -101,7 +101,7 @@ const CFDRealAccountDisplay = ({
     };
     const onSelectRealFinancial = () => {
         if (is_eu && !has_maltainvest_account) {
-            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs account'));
+            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });
         }

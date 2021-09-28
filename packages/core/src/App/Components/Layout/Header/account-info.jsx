@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
@@ -83,7 +83,9 @@ const AccountInfo = ({
                                     `${balance} ${getCurrencyDisplayCode(currency)}`
                                 )}
                             </p>
-                            <DisplayAccountType account_type={account_type} />
+                            <Text size='xxxs' line_height='s'>
+                                <DisplayAccountType account_type={account_type} />
+                            </Text>
                         </div>
                     )}
                     {is_disabled ? (

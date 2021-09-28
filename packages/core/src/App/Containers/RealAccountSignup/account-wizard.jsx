@@ -273,7 +273,6 @@ const AccountWizard = props => {
                     onSubmit={updateValue}
                     onCancel={prevStep}
                     onSave={saveFormData}
-                    has_real_account={props.has_real_account}
                     closeRealAccountSignup={props.closeRealAccountSignup}
                     is_virtual={props.is_virtual}
                     has_currency={props.has_currency}

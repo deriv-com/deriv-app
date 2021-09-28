@@ -86,7 +86,6 @@ const PersonalDetails = ({
     onSubmitEnabledChange,
     selected_step_ref,
     closeRealAccountSignup,
-    has_real_account,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -143,12 +142,6 @@ const PersonalDetails = ({
         return is_svg ? localize('Last name*') : localize('Last name');
     };
 
-    const account_settings_text = is_virtual
-        ? 'account settings'
-        : has_real_account
-        ? '<0>account settings</0>'
-        : 'account settings';
-
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -182,17 +175,23 @@ const PersonalDetails = ({
                                         {'salutation' in props.value && (
                                             <div>
                                                 <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                    <Localize
-                                                        i18n_default_text={`Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your ${account_settings_text}.`}
-                                                        components={[
-                                                            <Link
-                                                                to={routes.personal_details}
-                                                                key={0}
-                                                                className='link'
-                                                                onClick={closeRealAccountSignup}
-                                                            />,
-                                                        ]}
-                                                    />
+                                                    {is_virtual ? (
+                                                        localize(
+                                                            'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
+                                                        )
+                                                    ) : (
+                                                        <Localize
+                                                            i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.'
+                                                            components={[
+                                                                <Link
+                                                                    to={routes.personal_details}
+                                                                    key={0}
+                                                                    className='link'
+                                                                    onClick={closeRealAccountSignup}
+                                                                />,
+                                                            ]}
+                                                        />
+                                                    )}
                                                 </Text>
                                             </div>
                                         )}

@@ -239,6 +239,7 @@ const AccountWizard = props => {
         props.setLoading(true);
         submitForm(payload)
             .then(response => {
+                props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
                 } else if (props.real_account_signup_target === 'samoa') {
@@ -255,7 +256,9 @@ const AccountWizard = props => {
                     props.onError(error, state_items);
                 }
             })
-            .finally(() => props.setLoading(false));
+            .finally(() => {
+                props.setLoading(false);
+            });
     };
 
     const onAcceptRisk = () => {

@@ -17,8 +17,6 @@ const Dialog = ({
     is_visible,
     onCancel,
     onConfirm,
-    requestWithdraw,
-    verification_code,
     ...other_props
 }) => {
     const wrapper_ref = React.useRef();
@@ -132,11 +130,7 @@ const Dialog = ({
                                 className='dc-dialog__button'
                                 has_effect
                                 text={confirm_button_text}
-                                onClick={
-                                    className === 'acc-prompt-dialog'
-                                        ? () => requestWithdraw(verification_code)
-                                        : handleConfirm
-                                }
+                                onClick={handleConfirm}
                                 primary
                                 large
                             />

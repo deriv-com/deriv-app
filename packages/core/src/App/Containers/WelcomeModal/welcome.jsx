@@ -39,7 +39,11 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
                     onClick={() => switchPlatform({ route: routes.mt5 })}
                     icon={<CFDs />}
                     mobileIcon={<CFDsMobile />}
-                    options={['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']}
+                    options={
+                        is_eu
+                            ? ['Forex', 'Synthetics', 'Stocks', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']
+                            : ['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']
+                    }
                 />
                 <WelcomeItem
                     description={
@@ -63,10 +67,10 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
                             />
                         }
                         onClick={() => switchPlatform({ route: routes.trade })}
-                        title={localize('Digital Options')}
+                        title={localize('Options')}
                         icon={<DigitalOptions />}
                         mobileIcon={<DigitalOptionsMobile />}
-                        options={['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
+                        options={is_eu ? ['Synthetics'] : ['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
                     />
                 )}
                 {!is_eu && (

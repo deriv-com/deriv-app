@@ -76,6 +76,7 @@
     }
     &__balance {
         @include typeface(--title-center-bold-green, default);
+        line-height: 2.4rem;
         pointer-events: none;
         margin-right: 0.8rem;
     }

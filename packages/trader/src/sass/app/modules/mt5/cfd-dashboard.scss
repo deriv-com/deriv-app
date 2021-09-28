@@ -1292,8 +1292,6 @@
     }
     .dc-modal-body {
         text-align: center;
-        padding-top: 0;
-        padding: 3.2rem;
     }
     .dc-modal-footer {
         justify-content: center;
@@ -1327,7 +1325,7 @@
 .dc-modal__container_cfd-success-dialog {
     .success-change__icon-area {
         width: 128px;
-        margin: 2.4rem auto 0;
+        margin: 0 auto;
         position: relative;
 
         &--large .bottom-right-overlay {

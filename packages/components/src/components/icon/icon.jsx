@@ -12,9 +12,9 @@ const Icon = React.forwardRef(
         const [iconFromLocalStorage, setIcon] = React.useState(icon);
 
         React.useEffect(() => {
-            const icon = localStorage.getItem(className);
-            if (icon) {
-                setIcon(icon);
+            const savedIcon = localStorage.getItem(className);
+            if (savedIcon) {
+                setIcon(savedIcon);
             }
         }, [icon]);
 

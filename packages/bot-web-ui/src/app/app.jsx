@@ -13,7 +13,6 @@ import {
     RoutePromptDialog,
     Toolbar,
 } from 'Components';
-import { showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';

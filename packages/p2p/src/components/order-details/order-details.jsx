@@ -109,7 +109,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock
                                     label={labels.counterparty_nickname_label}
                                     value={
-                                        <Text size='xs' color='prominent' line_height='m'>
+                                        <Text size='xs' line_height='m'>
                                             {other_user_details.name}
                                         </Text>
                                     }

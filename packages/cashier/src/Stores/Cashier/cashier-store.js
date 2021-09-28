@@ -1923,7 +1923,7 @@ export default class CashierStore extends BaseStore {
     setTransferPercentageSelectorResult(amount) {
         const selected_from_currency = this.config.account_transfer.selected_from.currency;
         const selected_to_currency = this.config.account_transfer.selected_to.currency;
-        if (amount > 0) {
+        if (amount >= 0) {
             this.setConverterFromAmount(amount);
             this.validateTransferFromAmount();
             this.onChangeConverterFromAmount(

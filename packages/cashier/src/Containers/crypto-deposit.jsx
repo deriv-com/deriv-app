@@ -22,7 +22,7 @@ const CryptoDeposit = ({
     }, [recentTransactionOnMount]);
 
     React.useEffect(() => {
-        return () => pollApiForDepositAddress(false);
+        pollApiForDepositAddress(false);
     }, [pollApiForDepositAddress]);
 
     if (is_deposit_address_loading) {

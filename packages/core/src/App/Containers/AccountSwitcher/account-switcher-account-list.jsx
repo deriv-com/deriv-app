@@ -151,8 +151,7 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
         );
     return (
         <div>
-            {/* TODO: Move EU logic info getCFDAccountDisplay when CFD added to landing_company API */}
-            {is_eu ? 'CFDs' : getCFDAccountDisplay({ market_type, sub_account_type, platform })}
+            {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu })}
             {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}

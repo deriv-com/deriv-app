@@ -206,7 +206,8 @@ const AccountSwitcher = props => {
                 : props.landing_companies?.dxtrade_gaming_company,
             existing_cfd_accounts,
             props.trading_servers,
-            platform
+            platform,
+            is_eu
         );
         const financial_config = getCFDConfig(
             'financial',
@@ -215,17 +216,12 @@ const AccountSwitcher = props => {
                 : props.landing_companies?.dxtrade_financial_company,
             existing_cfd_accounts,
             props.trading_servers,
-            platform
+            platform,
+            is_eu
         );
         // Handling CFD for EU
         // TODO: Move this logic inside getCFDConfig when CFD added to landing_companies API
         if (is_eu) {
-            if (financial_config.length) {
-                Object.assign(financial_config[0], {
-                    icon: 'CFDs',
-                    title: 'CFDs',
-                });
-            }
             return [...financial_config];
         }
         return [...gaming_config, ...financial_config];
@@ -468,15 +464,12 @@ const AccountSwitcher = props => {
                                                 balance={account.balance}
                                                 currency={account.currency}
                                                 // TODO: Move this logic inside getCFDAccount when CFD added to landing_companies API
-                                                currency_icon={`IcMt5-${
-                                                    props.is_eu
-                                                        ? 'CFDs'
-                                                        : getCFDAccount({
-                                                              market_type: account.market_type,
-                                                              sub_account_type: account.sub_account_type,
-                                                              platform: CFD_PLATFORMS.MT5,
-                                                          })
-                                                }`}
+                                                currency_icon={`IcMt5-${getCFDAccount({
+                                                    market_type: account.market_type,
+                                                    sub_account_type: account.sub_account_type,
+                                                    platform: CFD_PLATFORMS.MT5,
+                                                    is_eu: props.is_eu,
+                                                })}`}
                                                 country_standpoint={props.country_standpoint}
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
@@ -675,15 +668,12 @@ const AccountSwitcher = props => {
                                                 balance={account.balance}
                                                 currency={account.currency}
                                                 // TODO: Move this logic inside getCFDAccount when CFD added to landing_companies API
-                                                currency_icon={`IcMt5-${
-                                                    props.is_eu
-                                                        ? 'CFDs'
-                                                        : getCFDAccount({
-                                                              market_type: account.market_type,
-                                                              sub_account_type: account.sub_account_type,
-                                                              platform: CFD_PLATFORMS.MT5,
-                                                          })
-                                                }`}
+                                                currency_icon={`IcMt5-${getCFDAccount({
+                                                    market_type: account.market_type,
+                                                    sub_account_type: account.sub_account_type,
+                                                    platform: CFD_PLATFORMS.MT5,
+                                                    is_eu: props.is_eu,
+                                                })}`}
                                                 country_standpoint={props.country_standpoint}
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}

@@ -74,7 +74,7 @@ const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
     if (!category && !type) return '';
 
     const category_label = category === 'real' ? localize('real') : localize('demo');
-    const type_label = getMtCompanies()[category][type].short_title;
+    const type_label = getMtCompanies(is_eu)[category][type].short_title;
 
     if (category === 'real') {
         if (needs_poi) {
@@ -86,7 +86,7 @@ const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
                     // TODO: Change this when CFD added to landing_companies API
-                    type: is_eu ? 'CFD' : type_label,
+                    type: type_label,
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
@@ -100,7 +100,7 @@ const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
             i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
             values={{
                 // TODO: Change this when CFD added to landing_companies API
-                type: is_eu ? 'CFD' : type_label,
+                type: type_label,
                 platform: getCFDPlatformLabel(platform),
                 category: category_label,
             }}

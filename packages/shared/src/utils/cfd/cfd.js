@@ -6,6 +6,7 @@ let CFD_text_translated;
 const CFD_text = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
+    cfd: 'CFDs',
     synthetic: 'Synthetic',
     financial: 'Financial',
     financial_stp: 'Financial STP',
@@ -16,7 +17,7 @@ const CFD_text = {
 // sub_account_type: "financial" | "financial_stp" | "swap_free"
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
-export const getCFDAccountKey = ({ market_type, sub_account_type, platform }) => {
+export const getCFDAccountKey = ({ market_type, sub_account_type, platform, is_eu }) => {
     if (market_type === 'gaming' || market_type === 'synthetic') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             return 'synthetic';
@@ -24,7 +25,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform }) =>
     }
     if (market_type === 'financial') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
-            return 'financial';
+            return is_eu ? 'cfd' : 'financial';
         }
         if (sub_account_type === 'financial_stp') {
             return 'financial_stp';
@@ -73,15 +74,15 @@ export const getAccountTypeFields = ({ category, type }) => {
     return map_mode[category][type];
 };
 
-export const getCFDAccountDisplay = ({ market_type, sub_account_type, platform }) => {
-    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
+export const getCFDAccountDisplay = ({ market_type, sub_account_type, platform, is_eu }) => {
+    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, is_eu });
     if (!cfd_account_key) return undefined;
 
     return CFD_text_translated[cfd_account_key]();
 };
 
-export const getCFDAccount = ({ market_type, sub_account_type, platform }) => {
-    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
+export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }) => {
+    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, is_eu });
     if (!cfd_account_key) return undefined;
 
     return CFD_text[cfd_account_key];

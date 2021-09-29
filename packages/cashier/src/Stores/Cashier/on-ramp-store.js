@@ -69,7 +69,9 @@ export default class OnRampStore extends BaseStore {
         } else if (this.selected_provider) {
             if (this.should_show_dialog) {
                 return this.api_error
-                    ? localize('Our server cannot retrieve an address.')
+                    ? localize(
+                          "Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later."
+                      )
                     : localize("You don't have a crypto address yet.");
             }
             return ' '; // Empty string to render header + close icon.

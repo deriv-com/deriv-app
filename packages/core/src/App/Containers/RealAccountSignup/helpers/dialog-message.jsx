@@ -24,7 +24,7 @@ export const DialogMessage = ({
             ];
         } else {
             message = (
-                <Localize i18n_default_text='We need proofs of your identity and address before you can start trading.' />
+                <Localize i18n_default_text='We need proof of your identity and address before you can start trading.' />
             );
         }
     } else if (landing_company_shortcode === 'malta') {

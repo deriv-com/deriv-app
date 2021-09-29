@@ -269,10 +269,6 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     calculatePercentage(amount = this.converter_from_amount) {
-        if (+this.config.account_transfer.selected_from.balance === 0 || +this.root_store.client.balance === 0) {
-            this.percentage = 0;
-            return;
-        }
         if (this.active_container === this.config.account_transfer.container) {
             this.percentage = +((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
         } else {

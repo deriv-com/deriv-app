@@ -22,7 +22,7 @@ const ScreenLarge = ({ is_market_closed, is_trade_enabled }) => (
                 </Fieldset>
                 <TradeParams />
                 <div className='purchase-container'>
-                    <Purchase />
+                    <Purchase is_market_closed={is_market_closed} />
                 </div>
             </React.Fragment>
         )}

@@ -215,11 +215,20 @@ export class PersonalDetailsForm extends React.Component {
         const min_tax_identification_number = 0;
         const max_tax_identification_number = 25;
         if (values.tax_identification_number) {
-            if (!/^[a-zA-Z0-9][a-zA-Z0-9\/.-\s]*$/.test(values.tax_identification_number)) {
+            if (
+                values.tax_identification_number &&
+                !/^(?!^$|\s+)[A-Za-z0-9.\/\s-]{0,25}$/.test(values.tax_identification_number)
+            ) {
+                errors.tax_identification_number = localize(
+                    'Only letters, numbers, space, hyphen, period, and forward slash are allowed.'
+                );
+            }
+            if (!/^[a-zA-Z0-9].*$/.test(values.tax_identification_number.charAt(0))) {
                 errors.tax_identification_number = localize(
                     'Should start with letter or number and may contain a hyphen, period and slash.'
                 );
-            } else if (
+            }
+            if (
                 !validLength(values.tax_identification_number.trim(), {
                     min: min_tax_identification_number,
                     max: max_tax_identification_number,
@@ -227,15 +236,6 @@ export class PersonalDetailsForm extends React.Component {
             ) {
                 errors.tax_identification_number = localize(
                     "Tax Identification Number can't be longer than 25 characters."
-                );
-            }
-
-            if (
-                values.tax_identification_number &&
-                !/^(?!^$|\s+)[A-Za-z0-9.\/\s-]{0,25}$/.test(values.tax_identification_number)
-            ) {
-                errors.tax_identification_number = localize(
-                    'Only letters, numbers, space, hyphen, period, and forward slash are allowed.'
                 );
             }
         }

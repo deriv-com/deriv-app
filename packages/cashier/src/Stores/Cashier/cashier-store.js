@@ -269,6 +269,10 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     calculatePercentage(amount = this.converter_from_amount) {
+        if (+this.config.account_transfer.selected_from.balance === 0 || +this.root_store.client.balance === 0) {
+            this.percentage = 0;
+            return;
+        }
         if (this.active_container === this.config.account_transfer.container) {
             this.percentage = +((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
         } else {
@@ -1855,9 +1859,9 @@ export default class CashierStore extends BaseStore {
         this.resetTimer();
         if (target.value) {
             this.setConverterFromAmount(target.value);
+            this.validateFromAmount();
             this.percentageSelectorSelectionStatus(true);
             this.calculatePercentage();
-            this.validateFromAmount();
             if (this.converter_from_error) {
                 this.setConverterToAmount('');
                 this.setConverterToError('');
@@ -1931,6 +1935,14 @@ export default class CashierStore extends BaseStore {
                 selected_from_currency,
                 selected_to_currency
             );
+        } else {
+            if (+this.config.account_transfer.selected_from.balance === 0) {
+                this.setConverterFromAmount(amount);
+                this.validateTransferFromAmount();
+            } else {
+                this.setConverterFromAmount('');
+            }
+            this.percentageSelectorSelectionStatus(true);
         }
         this.setIsTimerVisible(false);
         this.percentageSelectorSelectionStatus(false);
@@ -1946,6 +1958,9 @@ export default class CashierStore extends BaseStore {
                 this.root_store.client.currency,
                 this.root_store.client.current_fiat_currency || 'USD'
             );
+        } else {
+            this.setConverterFromAmount('');
+            this.percentageSelectorSelectionStatus(true);
         }
         this.setIsTimerVisible(false);
         this.percentageSelectorSelectionStatus(false);

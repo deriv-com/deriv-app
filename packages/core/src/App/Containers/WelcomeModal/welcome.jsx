@@ -41,7 +41,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
                     mobileIcon={<CFDsMobile />}
                     options={
                         is_eu
-                            ? ['Forex', 'Synthetics', 'Stocks', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']
+                            ? ['Forex', 'Synthetics', 'Stocks', 'Stock indices', 'Cryptocurrencies', 'Commodities']
                             : ['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']
                     }
                 />

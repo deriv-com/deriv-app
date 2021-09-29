@@ -38,7 +38,7 @@ export default class CFDStore extends BaseStore {
     @computed
     get account_title() {
         return this.account_type.category
-            ? getMtCompanies()[this.account_type.category][this.account_type.type].title
+            ? getMtCompanies(this.root_store.client.is_eu)[this.account_type.category][this.account_type.type].title
             : '';
     }
 

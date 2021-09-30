@@ -7,7 +7,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
 
-const Timer = props => {
+const Timer = ({ onComplete, percentage, should_percentage_reset }) => {
     const initial_time = 60;
     const [remaining_time, setRemainingTime] = React.useState(initial_time);
 
@@ -18,15 +18,15 @@ const Timer = props => {
     }, 1000);
     React.useEffect(() => {
         if (remaining_time === 0) {
-            props.onComplete();
+            onComplete();
             setRemainingTime(initial_time);
         }
     });
     React.useEffect(() => {
-        if (props.percentage === 0 && !props.should_percentage_reset) {
+        if (percentage === 0 && !should_percentage_reset) {
             setRemainingTime(0);
         }
-    }, [props.percentage]);
+    }, [percentage]);
 
     return (
         <Text as='p' size='xs' className='timer'>

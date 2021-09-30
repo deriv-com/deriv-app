@@ -35,7 +35,7 @@ export const DialogMessage = ({
         ) {
             message = (
                 <Localize
-                    i18n_default_text='You have added a real Options account.<0/>Make deposit now to start trading.'
+                    i18n_default_text='You have added a real Options account.<0/>Make a deposit now to start trading.'
                     components={[<br key={0} />]}
                 />
             );

@@ -123,7 +123,26 @@ const copyConfig = base => {
 
 const generateSWConfig = is_release => ({
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
+    exclude: [
+        /CNAME$/,
+        /index\.html$/,
+        /404\.html$/,
+        /^localstorage-sync\.html$/,
+        /\.map$/,
+        /sitemap\.xml$/,
+        /robots\.txt$/,
+        /manifest\.json$/,
+        /^apple-app-site-association/,
+        /^assetlinks.json/,
+        /^.well-known\//,
+        /^account\//,
+        /^js\/smartcharts\//,
+        /^bot\//,
+        /^media\//,
+        /^trader\//,
+        /^cashier\//,
+        /^js\/core\.[a-z_]*-json\./,
+    ],
     skipWaiting: true,
     clientsClaim: true,
     ...(is_release && {

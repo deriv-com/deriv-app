@@ -67,7 +67,7 @@ export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts
                 }
             }
             if (!has_account) {
-                const type = getCFDAccountKey({ market_type, sub_account_type: company, platform, is_eu });
+                const type = getCFDAccountKey({ market_type, sub_account_type: company, platform });
                 if (type) {
                     cfd_config.push({
                         icon: getCFDAccount({ market_type, sub_account_type: company, platform, is_eu }),

@@ -17,7 +17,7 @@ const CFD_text = {
 // sub_account_type: "financial" | "financial_stp" | "swap_free"
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
-export const getCFDAccountKey = ({ market_type, sub_account_type, platform, is_eu }) => {
+export const getCFDAccountKey = ({ market_type, sub_account_type, platform }) => {
     if (market_type === 'gaming' || market_type === 'synthetic') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             return 'synthetic';
@@ -25,7 +25,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, is_e
     }
     if (market_type === 'financial') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
-            return is_eu ? 'cfd' : 'financial';
+            return 'financial';
         }
         if (sub_account_type === 'financial_stp') {
             return 'financial_stp';
@@ -75,15 +75,23 @@ export const getAccountTypeFields = ({ category, type }) => {
 };
 
 export const getCFDAccountDisplay = ({ market_type, sub_account_type, platform, is_eu }) => {
-    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, is_eu });
+    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
     if (!cfd_account_key) return undefined;
+
+    if (cfd_account_key === 'financial' && is_eu) {
+        cfd_account_key = 'cfd';
+    }
 
     return CFD_text_translated[cfd_account_key]();
 };
 
 export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }) => {
-    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, is_eu });
+    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
     if (!cfd_account_key) return undefined;
+
+    if (cfd_account_key === 'financial' && is_eu) {
+        cfd_account_key = 'cfd';
+    }
 
     return CFD_text[cfd_account_key];
 };

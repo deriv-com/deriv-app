@@ -7,7 +7,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
 
-const Timer = ({ onComplete }) => {
+const Timer = props => {
     const initial_time = 60;
     const [remaining_time, setRemainingTime] = React.useState(initial_time);
 
@@ -18,7 +18,7 @@ const Timer = ({ onComplete }) => {
     }, 1000);
     React.useEffect(() => {
         if (remaining_time === 0) {
-            onComplete();
+            props.onComplete();
             setRemainingTime(initial_time);
         }
     });

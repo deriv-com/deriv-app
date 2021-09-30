@@ -71,10 +71,10 @@ const CryptoDeposit = ({
                     {header_note}
                 </Text>
 
-                {api_error ? (
+                {!api_error ? (
                     <div className='crypto-api-error'>
                         <Text as='p' align='center' size='xs' className='crypto-api-error__text'>
-                            <Icon icon='IcAlertWarning' />
+                            <Icon width={40} heigth={40} icon='IcAlertWarning' />
                             <Localize i18n_default_text="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later." />
                         </Text>
                         <Button

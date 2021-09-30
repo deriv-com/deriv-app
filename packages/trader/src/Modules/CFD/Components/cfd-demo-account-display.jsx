@@ -27,7 +27,7 @@ const CFDDemoAccountDisplay = ({
 }) => {
     const openCFDAccount = () => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
-            openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Demo Financial'));
+            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
         } else {
             onSelectAccount({
                 category: 'demo',

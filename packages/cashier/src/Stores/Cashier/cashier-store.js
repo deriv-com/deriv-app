@@ -1936,9 +1936,8 @@ export default class CashierStore extends BaseStore {
                 this.setConverterFromAmount(amount);
                 this.validateTransferFromAmount();
             } else {
-                this.setConverterFromAmount('');
+                this.resetConverter();
             }
-            this.percentageSelectorSelectionStatus(true);
         }
         this.setIsTimerVisible(false);
         this.percentageSelectorSelectionStatus(false);
@@ -1955,8 +1954,7 @@ export default class CashierStore extends BaseStore {
                 this.root_store.client.current_fiat_currency || 'USD'
             );
         } else {
-            this.setConverterFromAmount('');
-            this.percentageSelectorSelectionStatus(true);
+            this.resetConverter();
         }
         this.setIsTimerVisible(false);
         this.percentageSelectorSelectionStatus(false);

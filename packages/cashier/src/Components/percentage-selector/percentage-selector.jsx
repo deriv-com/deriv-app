@@ -32,12 +32,15 @@ const PercentageSelector = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [from_account, to_account]);
 
-    const calculateAmount = (e, percent, selected = false) => {
+    const calculateAmount = (e, percent) => {
+        const is_percentage_selected = percent > 0 && percent <= selected_percentage;
+        if (is_percentage_selected) percent -= 25;
+
         setSelectedPercentage(percent || 0);
         getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
 
         for (let i = 1; i <= 4; i++) {
-            if (i < e.target.id || (i === +e.target.id && selected)) {
+            if (i < e.target.id || (i === +e.target.id && !is_percentage_selected)) {
                 document.getElementById(i).style.backgroundColor = 'var(--status-success)';
             } else {
                 document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
@@ -53,45 +56,25 @@ const PercentageSelector = ({
                     <Text color='prominent' size='xs'>
                         {'25%'}
                     </Text>
-                    <div
-                        id='1'
-                        className='percentage-selector-block'
-                        onClick={e => calculateAmount(e, 25, true)}
-                        onDoubleClick={e => calculateAmount(e, 0)}
-                    />
+                    <div id='1' className='percentage-selector-block' onClick={e => calculateAmount(e, 25)} />
                 </div>
                 <div className='percentage-selector__block-container'>
                     <Text color='prominent' size='xs'>
                         {'50%'}
                     </Text>
-                    <div
-                        id='2'
-                        className='percentage-selector-block'
-                        onClick={e => calculateAmount(e, 50, true)}
-                        onDoubleClick={e => calculateAmount(e, 25)}
-                    />
+                    <div id='2' className='percentage-selector-block' onClick={e => calculateAmount(e, 50)} />
                 </div>
                 <div className='percentage-selector__block-container'>
                     <Text color='prominent' size='xs'>
                         {'75%'}
                     </Text>
-                    <div
-                        id='3'
-                        className='percentage-selector-block'
-                        onClick={e => calculateAmount(e, 75, true)}
-                        onDoubleClick={e => calculateAmount(e, 50)}
-                    />
+                    <div id='3' className='percentage-selector-block' onClick={e => calculateAmount(e, 75)} />
                 </div>
                 <div className='percentage-selector__block-container'>
                     <Text color='prominent' size='xs'>
                         <Localize i18n_default_text='All' />
                     </Text>
-                    <div
-                        id='4'
-                        className='percentage-selector-block'
-                        onClick={e => calculateAmount(e, 100, true)}
-                        onDoubleClick={e => calculateAmount(e, 75)}
-                    />
+                    <div id='4' className='percentage-selector-block' onClick={e => calculateAmount(e, 100)} />
                 </div>
             </div>
             <Text color='less-prominent' size='xxs' line_height='l'>

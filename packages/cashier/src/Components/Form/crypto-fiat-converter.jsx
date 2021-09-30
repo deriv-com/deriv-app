@@ -7,7 +7,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
 
-const Timer = ({ onComplete, percentage, should_percentage_reset }) => {
+const Timer = ({ onComplete }) => {
     const initial_time = 60;
     const [remaining_time, setRemainingTime] = React.useState(initial_time);
 
@@ -22,11 +22,6 @@ const Timer = ({ onComplete, percentage, should_percentage_reset }) => {
             setRemainingTime(initial_time);
         }
     });
-    React.useEffect(() => {
-        if (percentage === 0 && !should_percentage_reset) {
-            setRemainingTime(0);
-        }
-    }, [percentage]);
 
     return (
         <Text as='p' size='xs' className='timer'>
@@ -53,9 +48,7 @@ const CryptoFiatConverter = ({
     is_timer_visible,
     onChangeConverterFromAmount,
     onChangeConverterToAmount,
-    percentage,
     resetConverter,
-    should_percentage_reset,
     to_currency,
     validateFromAmount,
     validateToAmount,
@@ -134,8 +127,6 @@ const CryptoFiatConverter = ({
                                         to_currency
                                     );
                                 }}
-                                percentage={percentage}
-                                should_percentage_reset={should_percentage_reset}
                             />
                         )}
                     </InputGroup>
@@ -154,9 +145,7 @@ CryptoFiatConverter.propTypes = {
     is_timer_visible: PropTypes.bool,
     onChangeConverterFromAmount: PropTypes.func,
     onChangeConverterToAmount: PropTypes.func,
-    percentage: PropTypes.number,
     resetConverter: PropTypes.func,
-    should_percentage_reset: PropTypes.bool,
     to_currency: PropTypes.string,
     validateFromAmount: PropTypes.func,
     validateToAmount: PropTypes.func,
@@ -170,7 +159,5 @@ export default connect(({ modules }) => ({
     is_timer_visible: modules.cashier.is_timer_visible,
     onChangeConverterFromAmount: modules.cashier.onChangeConverterFromAmount,
     onChangeConverterToAmount: modules.cashier.onChangeConverterToAmount,
-    percentage: modules.cashier.percentage,
     resetConverter: modules.cashier.resetConverter,
-    should_percentage_reset: modules.cashier.should_percentage_reset,
 }))(CryptoFiatConverter);

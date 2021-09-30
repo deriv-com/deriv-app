@@ -157,6 +157,10 @@ const AccountSwitcher = props => {
     // };
 
     const openMt5DemoAccount = account_type => {
+        if (props.is_eu && !props.has_maltainvest_account && props.standpoint.iom) {
+            props.openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
+            return;
+        }
         sessionStorage.setItem('open_cfd_account_type', `demo.${account_type}`);
         redirectToMt5Demo();
     };

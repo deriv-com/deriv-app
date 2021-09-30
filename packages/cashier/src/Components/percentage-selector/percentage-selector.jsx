@@ -33,11 +33,12 @@ const PercentageSelector = ({
     }, [from_account, to_account]);
 
     const calculateAmount = (e, percent) => {
+        let new_percentage = percent;
         const is_percentage_selected = percent > 0 && percent <= selected_percentage;
-        if (is_percentage_selected) percent -= 25;
+        if (is_percentage_selected) new_percentage -= 25;
 
-        setSelectedPercentage(percent || 0);
-        getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
+        setSelectedPercentage(new_percentage || 0);
+        getCalculatedAmount((amount * (new_percentage / 100)).toFixed(getDecimalPlaces(currency)));
 
         for (let i = 1; i <= 4; i++) {
             if (i < e.target.id || (i === +e.target.id && !is_percentage_selected)) {

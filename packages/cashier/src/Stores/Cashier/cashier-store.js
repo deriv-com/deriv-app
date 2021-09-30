@@ -1931,13 +1931,11 @@ export default class CashierStore extends BaseStore {
                 selected_from_currency,
                 selected_to_currency
             );
+        } else if (+this.config.account_transfer.selected_from.balance === 0) {
+            this.setConverterFromAmount(amount);
+            this.validateTransferFromAmount();
         } else {
-            if (+this.config.account_transfer.selected_from.balance === 0) {
-                this.setConverterFromAmount(amount);
-                this.validateTransferFromAmount();
-            } else {
-                this.resetConverter();
-            }
+            this.resetConverter();
         }
         this.setIsTimerVisible(false);
         this.percentageSelectorSelectionStatus(false);

@@ -44,12 +44,7 @@ export default class TransactionHistoryStore {
         });
     }
     @action.bound
-    onMount() {
-        this.getCryptoTransactions();
-    }
-
-    @action.bound
-    async onMountCryptoTransactionsHistory() {
+    async onMount() {
         this.setLoading(true);
         await this.unsubscribeCryptoTransactions();
         await this.getCryptoTransactions();
@@ -58,7 +53,7 @@ export default class TransactionHistoryStore {
 
     @action.bound
     async unsubscribeCryptoTransactions() {
-        await this.WS.cashierPayments({ provider: 'crypto', transaction_type: 'all' }).then(response => {
+        await this.WS.authorized.cashierPayments({ provider: 'crypto', transaction_type: 'all' }).then(response => {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
                 this.setCryptoTransactionsHistory(crypto);

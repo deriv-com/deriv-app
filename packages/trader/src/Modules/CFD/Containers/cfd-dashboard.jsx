@@ -193,10 +193,14 @@ class CFDDashboard extends React.Component {
             dxtrade_verification_code,
         } = this.props;
 
-        const isSyntheticCardVisible = () => {
-            return (
-                (!is_eu && isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' })) || !is_logged_in
+        const isSyntheticCardVisible = account_category => {
+            const has_synthetic_account = Object.keys(current_list).some(key =>
+                key.startsWith(`${platform}.${account_category}.synthetic`)
             );
+
+            if (is_eu && !has_synthetic_account) return false;
+
+            return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
         };
 
         const isFinancialCardVisible = () => {

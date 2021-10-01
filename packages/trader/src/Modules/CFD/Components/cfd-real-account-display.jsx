@@ -157,7 +157,7 @@ const CFDRealAccountDisplay = ({
     };
 
     const synthetic_account_items =
-        isSyntheticCardVisible() &&
+        isSyntheticCardVisible('real') &&
         (Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.synthetic`))

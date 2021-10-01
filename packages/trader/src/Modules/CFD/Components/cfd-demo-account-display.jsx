@@ -52,7 +52,7 @@ const CFDDemoAccountDisplay = ({
         </div>
     ) : (
         <div className='cfd-demo-accounts-display'>
-            {isSyntheticCardVisible() && (
+            {isSyntheticCardVisible('demo') && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={localize('Synthetic')}

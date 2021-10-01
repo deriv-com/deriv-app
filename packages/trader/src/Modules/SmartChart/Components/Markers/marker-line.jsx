@@ -11,7 +11,7 @@ const MarkerLine = ({ label, line_style, marker_config, status }) => {
         <div className={classNames('chart-marker-line__wrapper', `chart-marker-line--${line_style}`)}>
             {label === marker_config.LINE_END.content_config.label && (
                 <Icon
-                    icon='IcContractExitTimeCircle'
+                    icon='IcContractStartTimeCircle'
                     className='chart-marker-line__icon'
                     color={status === 'lost' ? 'red' : 'green'}
                     size={24}
@@ -19,7 +19,7 @@ const MarkerLine = ({ label, line_style, marker_config, status }) => {
             )}
             {label === marker_config.LINE_START.content_config.label && (
                 <Icon
-                    icon='IcContractStartTimeCircle'
+                    icon='IcContractExitTimeCircle'
                     className='chart-marker-line__icon chart-marker-line__icon--time'
                     color='secondary'
                     size={24}

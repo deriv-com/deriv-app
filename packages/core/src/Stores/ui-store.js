@@ -90,9 +90,6 @@ export default class UIStore extends BaseStore {
     @observable real_account_signup_target = undefined;
     @observable has_real_account_signup_ended = false;
 
-    // account types modal
-    @observable is_account_types_modal_visible = false;
-
     // Welcome modal
     @observable is_welcome_modal_visible = false;
 
@@ -720,11 +717,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountTypesModal(is_visible = !this.is_account_types_modal_visible) {
-        this.is_account_types_modal_visible = is_visible;
-    }
-
-    @action.bound
     toggleWelcomeModal({ is_visible = !this.is_welcome_modal_visible, should_persist = false }) {
         if (LocalStore.get('has_viewed_welcome_screen') && !should_persist) return;
         this.is_welcome_modal_visible = is_visible;
@@ -732,11 +724,6 @@ export default class UIStore extends BaseStore {
         if (!is_visible) {
             LocalStore.set('has_viewed_welcome_screen', true);
         }
-    }
-
-    @action.bound
-    showAccountTypesModalForEuropean() {
-        this.toggleAccountTypesModal(this.root_store.client.is_uk);
     }
 
     @action.bound

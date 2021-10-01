@@ -2,13 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import {
-    getAccountTypeFields,
-    getAccountListKey,
-    getCFDAccountKey,
-    CFD_PLATFORMS,
-    isLandingCompanyEnabled,
-} from '@deriv/shared';
+import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
@@ -34,6 +28,9 @@ const CFDRealAccountDisplay = ({
     is_fully_authenticated,
     is_pending_authentication,
     is_virtual,
+    isSyntheticCardVisible,
+    isFinancialCardVisible,
+    isFinancialStpCardVisible,
     landing_companies,
     onSelectAccount,
     openAccountTransfer,
@@ -104,7 +101,7 @@ const CFDRealAccountDisplay = ({
     };
     const onSelectRealFinancial = () => {
         if (is_eu && !has_maltainvest_account) {
-            openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Real Financial'));
+            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });
         }
@@ -141,6 +138,8 @@ const CFDRealAccountDisplay = ({
     const isMT5AccountCardDisabled = sub_account_type => {
         if (has_cfd_account_error) return true;
 
+        if (sub_account_type === 'synthetic' && standpoint.malta) return true;
+
         if (is_eu) {
             const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
             return isAccountOfTypeDisabled(account?.account_type);
@@ -158,7 +157,7 @@ const CFDRealAccountDisplay = ({
     };
 
     const synthetic_account_items =
-        (isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in) &&
+        isSyntheticCardVisible('real') &&
         (Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.synthetic`))
@@ -226,54 +225,46 @@ const CFDRealAccountDisplay = ({
                   />,
               ]);
 
-    const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
-        platform === CFD_PLATFORMS.MT5 && (
-            <CFDAccountCard
-                key='real.financial_stp'
-                has_cfd_account={has_cfd_account}
-                title={localize('Financial STP')}
-                type={{
-                    category: 'real',
-                    type: 'financial_stp',
-                    platform,
-                }}
-                is_logged_in={is_logged_in}
-                existing_data={
-                    current_list[
-                        Object.keys(current_list).find(key => key.startsWith(`${platform}.real.financial_stp@`))
-                    ]
-                }
-                commission_message={localize('No commission')}
-                onSelectAccount={onSelectRealFinancialStp}
-                button_label={button_label}
-                is_button_primary={is_pending_authentication}
-                onPasswordManager={openPasswordManager}
-                onClickFund={onClickFundReal}
-                platform={platform}
-                descriptor={localize(
-                    'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
-                )}
-                specs={specifications[platform].real_financial_stp_specs}
-                is_disabled={isMT5AccountCardDisabled('financial_stp')}
-                is_virtual={is_virtual}
-                has_real_account={has_real_account}
-                toggleAccountsDialog={toggleAccountsDialog}
-                toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-                is_accounts_switcher_on={is_accounts_switcher_on}
-            />
-        );
+    const financial_stp_account = isFinancialStpCardVisible() && (
+        <CFDAccountCard
+            key='real.financial_stp'
+            has_cfd_account={has_cfd_account}
+            title={localize('Financial STP')}
+            type={{
+                category: 'real',
+                type: 'financial_stp',
+                platform,
+            }}
+            is_logged_in={is_logged_in}
+            existing_data={
+                current_list[Object.keys(current_list).find(key => key.startsWith(`${platform}.real.financial_stp@`))]
+            }
+            commission_message={localize('No commission')}
+            onSelectAccount={onSelectRealFinancialStp}
+            button_label={button_label}
+            is_button_primary={is_pending_authentication}
+            onPasswordManager={openPasswordManager}
+            onClickFund={onClickFundReal}
+            platform={platform}
+            descriptor={localize(
+                'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
+            )}
+            specs={specifications[platform].real_financial_stp_specs}
+            is_disabled={isMT5AccountCardDisabled('financial_stp')}
+            is_virtual={is_virtual}
+            has_real_account={has_real_account}
+            toggleAccountsDialog={toggleAccountsDialog}
+            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+            is_accounts_switcher_on={is_accounts_switcher_on}
+        />
+    );
 
-    const financial_account = (isLandingCompanyEnabled({
-        landing_companies,
-        platform,
-        type: 'financial',
-    }) ||
-        !is_logged_in) && (
+    const financial_account = isFinancialCardVisible() && (
         <CFDAccountCard
             key='real.financial'
             has_cfd_account={has_cfd_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
-            title={localize('Financial')}
+            title={is_eu ? localize('CFDs') : localize('Financial')}
             type={{
                 category: 'real',
                 type: 'financial',
@@ -289,6 +280,7 @@ const CFDRealAccountDisplay = ({
             platform={platform}
             descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu)}
             specs={financial_specs}
+            is_eu={is_eu}
             is_logged_in={is_logged_in}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}

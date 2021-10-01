@@ -68,7 +68,7 @@ const AccountTransferBullet = ({ children }) => (
 
 const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_transfer, transfer_fee, minimum_fee }) => {
     // TODO: Check with content team on the latest version of the below side notes for Deriv X when real account is launched
-    const get_transfer_fee_note = () => {
+    const getTransferFeeNote = () => {
         if (transfer_fee === 0) {
             return (
                 <Localize i18n_default_text="We don't charge fees for transfers that involve the same currency between your Deriv fiat and DMT5 accounts." />
@@ -138,7 +138,7 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_tra
                 <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
             </AccountTransferBullet>
             <AccountTransferBullet>
-                {get_transfer_fee_note()}{' '}
+                {getTransferFeeNote()}{' '}
                 <Localize i18n_default_text='Bear in mind some transfers may not be possible.' />
             </AccountTransferBullet>
             <AccountTransferBullet>

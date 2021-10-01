@@ -137,7 +137,10 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_tra
             <AccountTransferBullet>
                 <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
             </AccountTransferBullet>
-            <AccountTransferBullet>{get_transfer_fee_note()}</AccountTransferBullet>
+            <AccountTransferBullet>
+                {get_transfer_fee_note()}{' '}
+                <Localize i18n_default_text='Bear in mind some transfers may not be possible.' />
+            </AccountTransferBullet>
             <AccountTransferBullet>
                 <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />
             </AccountTransferBullet>

@@ -16,7 +16,6 @@ const ModalElement = ({
     onMount,
     onUnmount,
     is_open,
-    is_risk_warning_visible,
     toggleModal,
     id,
     title,
@@ -88,7 +87,6 @@ const ModalElement = ({
             id={id}
             className={classNames('dc-modal__container', {
                 [`dc-modal__container_${className}`]: className,
-                'dc-modal__container--risk-message': is_risk_warning_visible,
                 'dc-modal__container--small': small,
                 'dc-modal__container--is-vertical-centered': is_vertical_centered,
                 'dc-modal__container--is-vertical-bottom': is_vertical_bottom,
@@ -100,7 +98,7 @@ const ModalElement = ({
                 width: width || 'auto',
             }}
         >
-            {!is_risk_warning_visible && (header || title || rendered_title) && (
+            {(header || title || rendered_title) && (
                 <div
                     className={classNames('dc-modal-header', {
                         'dc-modal-header__border-bottom': !should_header_stick_body,
@@ -191,7 +189,6 @@ const Modal = ({
     header,
     id,
     is_open,
-    is_risk_warning_visible,
     has_close_icon,
     header_backgound_color,
     height,
@@ -235,7 +232,6 @@ const Modal = ({
             header_backgound_color={header_backgound_color}
             id={id}
             is_open={is_open}
-            is_risk_warning_visible={is_risk_warning_visible}
             is_confirmation_modal={is_confirmation_modal}
             is_vertical_bottom={is_vertical_bottom}
             is_vertical_centered={is_vertical_centered}

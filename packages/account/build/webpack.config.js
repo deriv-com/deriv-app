@@ -9,7 +9,6 @@ module.exports = function (env, argv) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             account: path.resolve(__dirname, '../src', 'index.js'),
-            'accept-risk-config': 'Configs/accept-risk-config',
             'account-limits': 'Components/account-limits',
             'address-details': 'Components/address-details',
             'address-details-config': 'Configs/address-details-config',

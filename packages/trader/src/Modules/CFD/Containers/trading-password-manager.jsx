@@ -56,9 +56,9 @@ const PasswordReset = ({ email, platform, account_group }) => {
         // if account type is real convert redirect_to from 1 or 2 to 10 or 20
         // and if account type is demo convert redirect_to from 1 or 2 to 11 or 21
         if (account_group === 'real') {
-            redirect_to = Number(redirect_to + '0');
+            redirect_to = Number(`${redirect_to}0`);
         } else if (account_group === 'demo') {
-            redirect_to = Number(redirect_to + '1');
+            redirect_to = Number(`${redirect_to}1`);
         }
 
         const password_reset_code =

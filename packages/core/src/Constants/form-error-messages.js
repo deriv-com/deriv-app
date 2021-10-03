@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 export const FORM_ERROR_MESSAGES = {
     address: () =>
         localize('Use only the following special characters: {{permitted_characters}}', {
-            permitted_characters: ". , \' : ; ( ) @ # / -",
+            permitted_characters: ". , ' : ; ( ) @ # / -",
         }),
     barrier: () =>
         localize('Only numbers and these special characters are allowed: {{permitted_characters}}', {

@@ -600,12 +600,12 @@ const CFDPasswordModal = ({
         closeModal();
         let redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
 
-        if (redirect_to === 1) {
-            if (account_type.category === 'real') {
-                redirect_to = 10;
-            } else if (account_type.category === 'demo') {
-                redirect_to = 11;
-            }
+        // if account type is real convert redirect_to from 1 or 2 to 10 or 20
+        // and if account type is demo convert redirect_to from 1 or 2 to 11 or 21
+        if (account_type.category === 'real') {
+            redirect_to = Number(redirect_to + '0');
+        } else if (account_type.category === 'demo') {
+            redirect_to = Number(redirect_to + '1');
         }
 
         const password_reset_code =

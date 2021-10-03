@@ -62,6 +62,14 @@ const Redirect = ({
                     case '2':
                         pathname = routes.dxtrade;
                         break;
+                    case '20':
+                        pathname = routes.dxtrade;
+                        hash = 'real';
+                        break;
+                    case '21':
+                        pathname = routes.dxtrade;
+                        hash = 'demo';
+                        break;
                     case '3':
                         pathname = routes.passwords;
                         break;

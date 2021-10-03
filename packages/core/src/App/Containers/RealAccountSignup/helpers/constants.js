@@ -39,6 +39,7 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
         case 'svg':
             return localize('Deriv account');
         case 'iom':
+            return localize('Deriv Gaming');
         case 'malta':
             return localize('Deriv Synthetic');
         case 'maltainvest':

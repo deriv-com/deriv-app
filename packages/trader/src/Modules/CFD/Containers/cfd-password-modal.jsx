@@ -153,7 +153,17 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
             validate={validatePassword}
             onSubmit={onSubmit}
         >
-            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
+            {({
+                errors,
+                isSubmitting,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldTouched,
+                touched,
+                values,
+                validateForm,
+            }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'>
                         <Icon
@@ -197,8 +207,10 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
                                         value={values.password}
                                         onBlur={handleBlur}
                                         onChange={e => {
-                                            setFieldTouched('password', true);
                                             handleChange(e);
+                                            validateForm().then(() => {
+                                                setFieldTouched('password', true);
+                                            });
                                         }}
                                     />
                                 )}
@@ -335,7 +347,17 @@ const CFDPasswordForm = props => {
             validate={props.validatePassword}
             onSubmit={props.submitPassword}
         >
-            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
+            {({
+                errors,
+                isSubmitting,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldTouched,
+                touched,
+                values,
+                validateForm,
+            }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!props.should_set_trading_password && (
@@ -363,8 +385,10 @@ const CFDPasswordForm = props => {
                                 value={values.password}
                                 onBlur={handleBlur}
                                 onChange={e => {
-                                    setFieldTouched('password', true);
                                     handleChange(e);
+                                    validateForm().then(() => {
+                                        setFieldTouched('password', true);
+                                    });
                                 }}
                             />
                         </div>

@@ -71,7 +71,7 @@ const CryptoDeposit = ({
                     {header_note}
                 </Text>
 
-                {!api_error ? (
+                {api_error ? (
                     <div className='crypto-api-error'>
                         <Text as='p' align='center' size='xs' className='crypto-api-error__text'>
                             <Icon width={40} heigth={40} icon='IcAlertWarning' />

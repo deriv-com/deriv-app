@@ -46,9 +46,18 @@ const Redirect = ({
 
             if (redirect_to) {
                 let pathname = '';
+                let hash = '';
                 switch (redirect_to) {
                     case '1':
                         pathname = routes.mt5;
+                        break;
+                    case '10':
+                        pathname = routes.mt5;
+                        hash = 'real';
+                        break;
+                    case '11':
+                        pathname = routes.mt5;
+                        hash = 'demo';
                         break;
                     case '2':
                         pathname = routes.dxtrade;
@@ -63,6 +72,7 @@ const Redirect = ({
                 if (pathname) {
                     history.push({
                         pathname,
+                        hash,
                         search: url_query_string,
                     });
                     redirected_to_route = true;

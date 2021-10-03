@@ -598,7 +598,15 @@ const CFDPasswordModal = ({
 
     const handleForgotPassword = () => {
         closeModal();
-        const redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
+        let redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
+
+        if (redirect_to === 1) {
+            if (account_type.category === 'real') {
+                redirect_to = 10;
+            } else if (account_type.category === 'demo') {
+                redirect_to = 11;
+            }
+        }
 
         const password_reset_code =
             platform === CFD_PLATFORMS.MT5

@@ -63,13 +63,13 @@ const getActionButton = ({
                 };
             }
             return {
-                label: localize('Deposit now'),
+                label: localize('Deposit'),
                 action: closeModalAndOpenCashier,
             };
         case 'maltainvest':
             if (is_fully_authenticated) {
                 return {
-                    label: localize('Deposit now'),
+                    label: localize('Deposit'),
                     action: closeModalAndOpenCashier,
                 };
             }
@@ -81,7 +81,7 @@ const getActionButton = ({
         case 'malta':
         default:
             return {
-                label: localize('Deposit now'),
+                label: localize('Deposit'),
                 action: closeModalAndOpenCashier,
             };
     }

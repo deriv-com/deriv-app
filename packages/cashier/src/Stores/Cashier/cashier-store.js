@@ -177,7 +177,7 @@ export default class CashierStore extends BaseStore {
         });
 
         this.error_dialog = new ErrorDialog();
-        this.transaction_history = new TransactionHistoryStore(this.WS);
+        this.transaction_history = new TransactionHistoryStore({ root_store: this.root_store, WS: this.WS });
 
         this.init();
     }
@@ -308,6 +308,11 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async requestWithdraw(verification_code) {
         if (!this.root_store.client.is_logged_in) {
+            return;
+        }
+
+        if (!this.converter_from_amount) {
+            this.setConverterFromError(localize('This field is required.'));
             return;
         }
 
@@ -1447,12 +1452,14 @@ export default class CashierStore extends BaseStore {
                 market_type: account.market_type,
                 sub_account_type: account.sub_account_type,
                 platform: account.account_type,
+                is_eu: this.root_store.client.is_eu,
             })}`;
             const account_text_display = is_cfd
                 ? `${cfd_text_display} ${getCFDAccountDisplay({
                       market_type: account.market_type,
                       sub_account_type: account.sub_account_type,
                       platform: account.account_type,
+                      is_eu: this.root_store.client.is_eu,
                   })}`
                 : getCurrencyDisplayCode(
                       account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
@@ -1472,6 +1479,7 @@ export default class CashierStore extends BaseStore {
                         market_type: account.market_type,
                         sub_account_type: account.sub_account_type,
                         platform: account.account_type,
+                        is_eu: this.root_store.client.is_eu,
                     }),
                 }),
             };
@@ -2014,9 +2022,7 @@ export default class CashierStore extends BaseStore {
         const { balance, currency, website_status } = this.root_store.client;
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
 
-        if (!this.converter_from_amount) {
-            error_message = localize('This field is required.');
-        } else {
+        if (this.converter_from_amount) {
             const { is_ok, message } = validNumber(this.converter_from_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),

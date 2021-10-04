@@ -363,8 +363,8 @@ export default class MyAdsStore extends BaseStore {
             ],
             offer_amount: [
                 v => !!v,
-                v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
                 v => !isNaN(v),
+                v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
@@ -399,7 +399,7 @@ export default class MyAdsStore extends BaseStore {
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
 
-        const getContactInfoMmessages = field_name => [
+        const getContactInfoMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
@@ -418,8 +418,8 @@ export default class MyAdsStore extends BaseStore {
 
         const getOfferAmountMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Max available amount is {{value}}', { value: this.available_balance }),
             localize('Enter a valid amount'),
+            localize('Max available amount is {{value}}', { value: this.available_balance }),
             localize('Enter a valid amount'),
             localize('{{field_name}} should not be below Min limit', { field_name }),
             localize('{{field_name}} should not be below Max limit', { field_name }),
@@ -455,7 +455,7 @@ export default class MyAdsStore extends BaseStore {
                 switch (key) {
                     case 'contact_info':
                     case 'payment_info':
-                        errors[key] = getContactInfoMmessages(mapped_key[key])[error_index];
+                        errors[key] = getContactInfoMessages(mapped_key[key])[error_index];
                         break;
                     case 'default_advert_description':
                         errors[key] = getDefaultAdvertDescriptionMessages(mapped_key[key])[error_index];
@@ -477,6 +477,12 @@ export default class MyAdsStore extends BaseStore {
                 }
             }
         });
+
+        if (Object.values(errors).includes('Enter a valid amount')) {
+            Object.entries(errors).forEach(([key, value]) => {
+                errors[key] = value === 'Enter a valid amount' ? value : undefined;
+            });
+        }
 
         return errors;
     }

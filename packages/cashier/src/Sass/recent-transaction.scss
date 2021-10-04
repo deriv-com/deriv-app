@@ -1,8 +1,4 @@
 .cashier-recent-transaction-wrapper {
-    @include desktop {
-        max-width: 25.6rem;
-    }
-
     .cashier-recent-transaction {
         overflow: auto;
         @include mobile {

@@ -1,4 +1,5 @@
 // Checks if pathname matches route. (Works even with query string /?)
+// TODO: Add test cases for this
 export const matchRoute = (route, pathname) => new RegExp(`${route.path}(/$)?((?!-).)*$`).test(pathname);
 
 export const getSelectedRoute = ({ routes, pathname }) => {

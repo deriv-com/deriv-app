@@ -1,5 +1,6 @@
 import { routes } from '../routes';
 
+// TODO: This should be moved to PlatformContext
 export const platforms = {
     p2p: {
         icon_text: undefined,

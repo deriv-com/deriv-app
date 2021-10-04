@@ -87,8 +87,6 @@ const DefaultHeader = ({
                 'header',
                 {
                     'header--is-disabled': is_app_disabled || is_route_modal_on,
-                },
-                {
                     'header--is-hidden': platforms[platform],
                 }
             )}

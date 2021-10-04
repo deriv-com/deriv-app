@@ -43,7 +43,7 @@ export const getDxCompanies = () => {
     };
 };
 
-export const getMtCompanies = is_eu => {
+export const getMtCompanies = () => {
     const synthetic_config = {
         account_type: '',
         leverage: 500,
@@ -52,7 +52,7 @@ export const getMtCompanies = is_eu => {
     const financial_config = {
         account_type: 'financial',
         leverage: 1000,
-        short_title: is_eu ? localize('CFDs') : localize('Financial'),
+        short_title: localize('Financial'),
     };
     const financial_stp_config = {
         account_type: 'financial_stp',
@@ -71,7 +71,7 @@ export const getMtCompanies = is_eu => {
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('Demo CFDs') : localize('Demo Financial'),
+                title: localize('Demo Financial'),
                 short_title: financial_config.short_title,
             },
             financial_stp: {
@@ -91,7 +91,7 @@ export const getMtCompanies = is_eu => {
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('CFDs') : localize('Financial'),
+                title: localize('Financial'),
                 short_title: financial_config.short_title,
             },
             financial_stp: {

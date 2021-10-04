@@ -122,7 +122,7 @@ const CurrencySelector = ({
         // TODO: remove this block when real account is launched
         if (is_mt5_allowed) {
             return (
-                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs account.' />
+                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 account.' />
             );
         }
         return (

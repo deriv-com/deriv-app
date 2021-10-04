@@ -6,7 +6,7 @@ import { Icon } from '@deriv/components';
 
 const MarkerLine = ({ label, line_style, marker_config, status }) => {
     // TODO: Find a more elegant solution
-    if (!marker_config) return null;
+    // if (!marker_config) return null;
     return (
         <div className={classNames('chart-marker-line__wrapper', `chart-marker-line--${line_style}`)}>
             {label === marker_config.LINE_END.content_config.label && (

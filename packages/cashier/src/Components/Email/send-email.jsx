@@ -76,9 +76,9 @@ SendEmail.propTypes = {
 export default connect(({ client, modules }) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
-    is_email_sent: modules.cashier.config.withdraw.verification.is_email_sent,
-    is_resend_clicked: modules.cashier.config.withdraw.verification.is_resend_clicked,
-    resend_timeout: modules.cashier.config.withdraw.verification.resend_timeout,
+    is_email_sent: modules.cashier.cashier_store.config.withdraw.verification.is_email_sent,
+    is_resend_clicked: modules.cashier.cashier_store.config.withdraw.verification.is_resend_clicked,
+    resend_timeout: modules.cashier.cashier_store.config.withdraw.verification.resend_timeout,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    sendVerificationEmail: modules.cashier.sendVerificationEmail,
+    sendVerificationEmail: modules.cashier.cashier_store.sendVerificationEmail,
 }))(SendEmail);

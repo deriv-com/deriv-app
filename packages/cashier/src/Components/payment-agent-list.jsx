@@ -190,16 +190,16 @@ PaymentAgentList.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    error: modules.cashier.config.payment_agent.verification.error,
-    is_email_sent: modules.cashier.config.payment_agent.verification.is_email_sent,
-    is_loading: modules.cashier.is_loading,
-    is_resend_clicked: modules.cashier.config.payment_agent.verification.is_resend_clicked,
-    onChangePaymentMethod: modules.cashier.onChangePaymentMethod,
-    onMount: modules.cashier.onMountPaymentAgentList,
-    payment_agent_active_tab_index: modules.cashier.config.payment_agent.active_tab_index,
-    payment_agent_list: modules.cashier.config.payment_agent.filtered_list,
-    resend_timeout: modules.cashier.config.payment_agent.verification.resend_timeout,
-    selected_bank: modules.cashier.config.payment_agent.selected_bank,
-    setActiveTabIndex: modules.cashier.setActiveTabIndex,
-    supported_banks: modules.cashier.config.payment_agent.supported_banks,
+    error: modules.cashier.cashier_store.config.payment_agent.verification.error,
+    is_email_sent: modules.cashier.cashier_store.config.payment_agent.verification.is_email_sent,
+    is_loading: modules.cashier.cashier_store.is_loading,
+    is_resend_clicked: modules.cashier.cashier_store.config.payment_agent.verification.is_resend_clicked,
+    onChangePaymentMethod: modules.cashier.cashier_store.onChangePaymentMethod,
+    onMount: modules.cashier.cashier_store.onMountPaymentAgentList,
+    payment_agent_active_tab_index: modules.cashier.cashier_store.config.payment_agent.active_tab_index,
+    payment_agent_list: modules.cashier.cashier_store.config.payment_agent.filtered_list,
+    resend_timeout: modules.cashier.cashier_store.config.payment_agent.verification.resend_timeout,
+    selected_bank: modules.cashier.cashier_store.config.payment_agent.selected_bank,
+    setActiveTabIndex: modules.cashier.cashier_store.setActiveTabIndex,
+    supported_banks: modules.cashier.cashier_store.config.payment_agent.supported_banks,
 }))(PaymentAgentList);

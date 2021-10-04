@@ -17,9 +17,6 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import OnRampStore from './on-ramp-store';
-import TransactionHistoryStore from './transaction-history-store';
-import ErrorDialog from '../error-dialog-store';
 import BaseStore from '../base-store';
 import CashierNotifications from '../../Containers/cashier-notifications.jsx';
 
@@ -163,6 +160,8 @@ export default class CashierStore extends BaseStore {
     constructor({ root_store, WS }) {
         super({ root_store });
         this.WS = WS;
+        this.root_store = root_store;
+
         this.root_store.menu.attach({
             id: 'dt_cashier_tab',
             icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
@@ -170,14 +169,6 @@ export default class CashierStore extends BaseStore {
             link_to: routes.cashier,
             login_only: true,
         });
-
-        this.onramp = new OnRampStore({
-            root_store: this.root_store,
-            WS: this.WS,
-        });
-
-        this.error_dialog = new ErrorDialog();
-        this.transaction_history = new TransactionHistoryStore(this.WS);
 
         this.init();
     }
@@ -318,7 +309,7 @@ export default class CashierStore extends BaseStore {
             dry_run: 1,
         }).then(response => {
             if (response.error) {
-                this.error_dialog.setErrorMessage(response.error.message);
+                this.root_store.modules.cashier.error_dialog.setErrorMessage(response.error.message);
             } else {
                 this.saveWithdraw(verification_code);
             }
@@ -436,7 +427,10 @@ export default class CashierStore extends BaseStore {
                 this.sortAccountsTransfer();
             }
 
-            if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
+            if (
+                !this.root_store.modules.cashier.onramp.is_onramp_tab_visible &&
+                window.location.pathname.endsWith(routes.cashier_onramp)
+            ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
 
@@ -445,8 +439,8 @@ export default class CashierStore extends BaseStore {
                 window.location.pathname.endsWith(routes.cashier_crypto_transactions)
             ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
-                this.transaction_history.setIsCryptoTransactionsVisible(true);
-                this.transaction_history.onMount();
+                this.root_store.modules.cashier.transaction_history.setIsCryptoTransactionsVisible(true);
+                this.root_store.modules.cashier.transaction_history.onMount();
             }
         }
     }

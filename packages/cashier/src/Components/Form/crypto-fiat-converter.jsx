@@ -152,12 +152,12 @@ CryptoFiatConverter.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    converter_from_amount: modules.cashier.converter_from_amount,
-    converter_from_error: modules.cashier.converter_from_error,
-    converter_to_error: modules.cashier.converter_to_error,
-    converter_to_amount: modules.cashier.converter_to_amount,
-    is_timer_visible: modules.cashier.is_timer_visible,
-    onChangeConverterFromAmount: modules.cashier.onChangeConverterFromAmount,
-    onChangeConverterToAmount: modules.cashier.onChangeConverterToAmount,
-    resetConverter: modules.cashier.resetConverter,
+    converter_from_amount: modules.cashier.cashier_store.converter_from_amount,
+    converter_from_error: modules.cashier.cashier_store.converter_from_error,
+    converter_to_error: modules.cashier.cashier_store.converter_to_error,
+    converter_to_amount: modules.cashier.cashier_store.converter_to_amount,
+    is_timer_visible: modules.cashier.cashier_store.is_timer_visible,
+    onChangeConverterFromAmount: modules.cashier.cashier_store.onChangeConverterFromAmount,
+    onChangeConverterToAmount: modules.cashier.cashier_store.onChangeConverterToAmount,
+    resetConverter: modules.cashier.cashier_store.resetConverter,
 }))(CryptoFiatConverter);

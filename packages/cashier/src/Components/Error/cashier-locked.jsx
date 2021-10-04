@@ -51,6 +51,6 @@ CashierLocked.propTypes = {
 export default connect(({ client, modules }) => ({
     current_currency_type: client.current_currency_type,
     is_deposit_lock: client.is_deposit_lock,
-    is_system_maintenance: modules.cashier.is_system_maintenance,
+    is_system_maintenance: modules.cashier.cashier_store.is_system_maintenance,
     is_withdrawal_lock: client.is_withdrawal_lock,
 }))(CashierLocked);

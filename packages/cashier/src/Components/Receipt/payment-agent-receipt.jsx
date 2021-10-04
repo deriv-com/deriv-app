@@ -131,7 +131,7 @@ export default withRouter(
     connect(({ client, modules }) => ({
         currency: client.currency,
         loginid: client.loginid,
-        receipt: modules.cashier.config.payment_agent.receipt,
-        resetPaymentAgent: modules.cashier.resetPaymentAgent,
+        receipt: modules.cashier.cashier_store.config.payment_agent.receipt,
+        resetPaymentAgent: modules.cashier.cashier_store.resetPaymentAgent,
     }))(PaymentAgentReceipt)
 );

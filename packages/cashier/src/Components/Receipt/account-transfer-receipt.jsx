@@ -168,10 +168,10 @@ export default withRouter(
     connect(({ client, modules, ui }) => ({
         loginid: client.loginid,
         switchAccount: client.switchAccount,
-        receipt: modules.cashier.config.account_transfer.receipt,
-        resetAccountTransfer: modules.cashier.resetAccountTransfer,
-        selected_from: modules.cashier.config.account_transfer.selected_from,
-        selected_to: modules.cashier.config.account_transfer.selected_to,
+        receipt: modules.cashier.cashier_store.config.account_transfer.receipt,
+        resetAccountTransfer: modules.cashier.cashier_store.resetAccountTransfer,
+        selected_from: modules.cashier.cashier_store.config.account_transfer.selected_from,
+        selected_to: modules.cashier.cashier_store.config.account_transfer.selected_to,
         disableApp: ui.disableApp,
         enableApp: ui.enableApp,
     }))(AccountTransferReceipt)

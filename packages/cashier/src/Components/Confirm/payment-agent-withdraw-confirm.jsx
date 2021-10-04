@@ -47,11 +47,11 @@ PaymentAgentWithdrawConfirm.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    amount: modules.cashier.config.payment_agent.confirm.amount,
-    currency: modules.cashier.config.payment_agent.confirm.currency,
-    error: modules.cashier.config.payment_agent.error,
-    loginid: modules.cashier.config.payment_agent.confirm.loginid,
-    payment_agent_name: modules.cashier.config.payment_agent.confirm.payment_agent_name,
-    requestPaymentAgentWithdraw: modules.cashier.requestPaymentAgentWithdraw,
-    setIsTryWithdrawSuccessful: modules.cashier.setIsTryWithdrawSuccessful,
+    amount: modules.cashier.cashier_store.config.payment_agent.confirm.amount,
+    currency: modules.cashier.cashier_store.config.payment_agent.confirm.currency,
+    error: modules.cashier.cashier_store.config.payment_agent.error,
+    loginid: modules.cashier.cashier_store.config.payment_agent.confirm.loginid,
+    payment_agent_name: modules.cashier.cashier_store.config.payment_agent.confirm.payment_agent_name,
+    requestPaymentAgentWithdraw: modules.cashier.cashier_store.requestPaymentAgentWithdraw,
+    setIsTryWithdrawSuccessful: modules.cashier.cashier_store.setIsTryWithdrawSuccessful,
 }))(PaymentAgentWithdrawConfirm);

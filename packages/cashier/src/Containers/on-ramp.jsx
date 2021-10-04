@@ -155,5 +155,5 @@ export default connect(({ modules, common }) => ({
     routeTo: common.routeTo,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
-    is_cashier_locked: modules.cashier.is_cashier_locked,
+    is_cashier_locked: modules.cashier.cashier_store.is_cashier_locked,
 }))(OnRamp);

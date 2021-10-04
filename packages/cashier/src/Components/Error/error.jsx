@@ -137,5 +137,5 @@ Error.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    setErrorMessage: modules.cashier.setErrorMessage,
+    setErrorMessage: modules.cashier.cashier_store.setErrorMessage,
 }))(Error);

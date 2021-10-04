@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
@@ -25,18 +25,8 @@ const AccountInfoIcon = ({ is_virtual, currency }) => (
     />
 );
 
-const DisplayAccountType = ({ account_type }) => {
-    if (account_type === 'financial') {
-        return <Localize i18n_default_text='Multipliers' />;
-    } else if (account_type === 'gaming') {
-        return <Localize i18n_default_text='Options' />;
-    }
-    return null;
-};
-
 const AccountInfo = ({
     acc_switcher_disabled_message,
-    account_type,
     balance,
     currency,
     disableApp,
@@ -71,22 +61,17 @@ const AccountInfo = ({
                         </MobileWrapper>
                     </span>
                     {(typeof balance !== 'undefined' || !currency) && (
-                        <div className='acc-info__account-type-and-balance'>
-                            <p
-                                className={classNames('acc-info__balance', {
-                                    'acc-info__balance--no-currency': !currency && !is_virtual,
-                                })}
-                            >
-                                {!currency ? (
-                                    <Localize i18n_default_text='No currency assigned' />
-                                ) : (
-                                    `${balance} ${getCurrencyDisplayCode(currency)}`
-                                )}
-                            </p>
-                            <Text size='xxxs' line_height='s'>
-                                <DisplayAccountType account_type={account_type} />
-                            </Text>
-                        </div>
+                        <p
+                            className={classNames('acc-info__balance', {
+                                'acc-info__balance--no-currency': !currency && !is_virtual,
+                            })}
+                        >
+                            {!currency ? (
+                                <Localize i18n_default_text='No currency assigned' />
+                            ) : (
+                                `${balance} ${getCurrencyDisplayCode(currency)}`
+                            )}
+                        </p>
                     )}
                     {is_disabled ? (
                         <Icon icon='IcLock' />

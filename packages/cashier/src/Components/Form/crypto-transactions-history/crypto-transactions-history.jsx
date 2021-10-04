@@ -18,20 +18,13 @@ const getHeaders = () => [
     { text: localize('Action') },
 ];
 
-const CryptoTransactionsHistory = ({
-    crypto_transactions,
-    currency,
-    is_loading,
-    pollApiForDepositAddress,
-    setIsCryptoTransactionsVisible,
-}) => {
+const CryptoTransactionsHistory = ({ crypto_transactions, currency, is_loading, setIsCryptoTransactionsVisible }) => {
     React.useEffect(() => {
         return () => setIsCryptoTransactionsVisible(false);
     }, [setIsCryptoTransactionsVisible, currency]);
 
     const onClickBack = () => {
         setIsCryptoTransactionsVisible(false);
-        pollApiForDepositAddress(false);
     };
 
     return (
@@ -90,7 +83,6 @@ CryptoTransactionsHistory.propTypes = {
     crypto_transactions: PropTypes.array,
     currency: PropTypes.string,
     is_loading: PropTypes.bool,
-    pollApiForDepositAddress: PropTypes.func,
     setIsCryptoTransactionsVisible: PropTypes.func,
 };
 
@@ -98,6 +90,5 @@ export default connect(({ client, modules }) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     is_loading: modules.cashier.transaction_history.is_loading,
-    pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
 }))(CryptoTransactionsHistory);

@@ -8,14 +8,12 @@ const AccountList = ({
     balance,
     currency,
     currency_icon,
-    country_standpoint,
     display_type,
     has_balance,
     has_error,
     has_reset_balance,
     is_disabled,
     is_virtual,
-    is_eu,
     loginid,
     market_type,
     redirectAccount,
@@ -47,15 +45,9 @@ const AccountList = ({
                     />
                     <span>
                         {display_type === 'currency' ? (
-                            <CurrencyDisplay
-                                country_standpoint={country_standpoint}
-                                currency={currency}
-                                loginid={loginid}
-                                is_virtual={is_virtual}
-                            />
+                            <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         ) : (
                             <AccountDisplay
-                                is_eu={is_eu}
                                 market_type={market_type}
                                 sub_account_type={sub_account_type}
                                 server={server}
@@ -110,30 +102,17 @@ const AccountList = ({
     );
 };
 
-const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) => {
-    const user_is_from_this_country_list = Object.values(country_standpoint).includes(true);
-    const account_type = loginid.replace(/\d/g, '');
-
-    if (user_is_from_this_country_list) {
-        if (account_type === 'MLT' || account_type === 'MX') {
-            return <Localize i18n_default_text='Options' />;
-        } else if (account_type === 'MF') {
-            return <Localize i18n_default_text='Multipliers' />;
-        }
-    }
-
+const CurrencyDisplay = ({ currency, is_virtual }) => {
     if (is_virtual) {
         return <Localize i18n_default_text='Demo' />;
     }
-
     if (!currency) {
         return <Localize i18n_default_text='No currency assigned' />;
     }
-
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on, platform, is_eu }) => {
+const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on, platform }) => {
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     if (has_error)
         return (
@@ -151,7 +130,7 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
         );
     return (
         <div>
-            {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu })}
+            {getCFDAccountDisplay({ market_type, sub_account_type, platform })}
             {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}

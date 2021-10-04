@@ -1458,11 +1458,11 @@ div.payment-agent-transfer {
                     margin-top: 0.4rem;
                 }
                 &__form-submit-button {
-                    max-width: 100%;
-
-                    /* iPhone SE screen width fixes due to UI space restrictions */
-                    @media only screen and (max-width: 340px) {
-                        max-width: 150px;
+                    &:first-child {
+                        margin: 2rem auto;
+                    }
+                    &:last-child {
+                        margin-left: 0 auto;
                     }
                 }
                 &__success {

@@ -311,6 +311,11 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
+        if (!this.converter_from_amount) {
+            this.setConverterFromError(localize('This field is required.'));
+            return;
+        }
+
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
             amount: +this.converter_from_amount,
@@ -2016,9 +2021,7 @@ export default class CashierStore extends BaseStore {
         const { balance, currency, website_status } = this.root_store.client;
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
 
-        if (!this.converter_from_amount) {
-            error_message = localize('This field is required.');
-        } else {
+        if (this.converter_from_amount) {
             const { is_ok, message } = validNumber(this.converter_from_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),

@@ -71,6 +71,16 @@ export default class ClientStore extends BaseStore {
     // mt_gaming_company: {}
     @observable landing_companies = {};
 
+    // All possible landing companies of user between all
+    @observable standpoint = {
+        iom: false,
+        svg: false,
+        malta: false,
+        maltainvest: false,
+        gaming_company: false,
+        financial_company: false,
+    };
+
     @observable upgradeable_landing_companies = [];
     @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable mt5_login_list = [];
@@ -127,23 +137,6 @@ export default class ClientStore extends BaseStore {
             ],
             () => {
                 this.setCookieAccount();
-            }
-        );
-        when(
-            () => this.should_have_real_account,
-            () => {
-                this.root_store.ui.showAccountTypesModalForEuropean();
-                this.onRealAccountSignupEnd(() => {
-                    if (!this.has_any_real_account) {
-                        this.root_store.ui.showAccountTypesModalForEuropean();
-                    }
-
-                    return Promise.resolve();
-                });
-
-                if (!this.root_store.ui.is_real_acc_signup_on) {
-                    this.root_store.ui.toggleAccountTypesModal(true);
-                }
             }
         );
         when(
@@ -245,8 +238,11 @@ export default class ClientStore extends BaseStore {
         if (!this.root_store.ui.real_account_signup_target) {
             return getDefaultAllowedCurrencies();
         }
-        if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
-            return this.current_landing_company?.legal_allowed_currencies;
+        if (
+            ['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target) &&
+            this.current_landing_company
+        ) {
+            return this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 
@@ -436,8 +432,9 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get should_allow_authentication() {
-        const allow_document_upload = this.account_status?.status?.some(status => status === 'allow_document_upload');
-        return allow_document_upload || !!this.is_authentication_needed;
+        return this.account_status?.status?.some(
+            status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
+        );
     }
 
     @computed
@@ -502,6 +499,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get social_identity_provider() {
         return this.account_status?.social_identity_provider;
+    }
+
+    @computed
+    get is_from_restricted_country() {
+        return this.residence_list.find(item => item.value === this.residence)?.disabled === 'DISABLED';
     }
 
     @computed
@@ -576,37 +578,23 @@ export default class ClientStore extends BaseStore {
         return this.residence === 'gb';
     }
 
-    // this is true when a user needs to have a active real account for trading
     @computed
-    get should_have_real_account() {
-        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
-    }
-
-    // Shows all possible landing companies of user between all
-    @computed
-    get standpoint() {
+    get country_standpoint() {
         const result = {
-            iom: false,
-            svg: false,
-            malta: false,
-            maltainvest: false,
-            gaming_company: false,
-            financial_company: false,
+            is_united_kingdom: this.is_uk,
+            is_france: this.residence === 'fr',
+            is_belgium: this.residence === 'be',
+            // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
+            is_other_eu:
+                this.residence === 'de' ||
+                this.residence === 'es' ||
+                this.residence === 'it' ||
+                this.residence === 'lu' ||
+                this.residence === 'gr',
         };
-        if (!this.landing_companies) return result;
-        const { gaming_company, financial_company } = this.landing_companies;
-        if (gaming_company?.shortcode) {
-            Object.assign(result, {
-                [gaming_company.shortcode]: !!gaming_company?.shortcode,
-                gaming_company: gaming_company?.shortcode ?? false,
-            });
-        }
-        if (financial_company?.shortcode) {
-            Object.assign(result, {
-                [financial_company.shortcode]: !!financial_company?.shortcode,
-                financial_company: financial_company?.shortcode ?? false,
-            });
-        }
+
+        result.is_rest_of_eu =
+            this.is_eu && !result.is_uk && !result.is_france && !result.is_belgium && !result.is_other_eu;
 
         return result;
     }
@@ -654,6 +642,8 @@ export default class ClientStore extends BaseStore {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;
+
+        if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
 
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
@@ -1270,7 +1260,28 @@ export default class ClientStore extends BaseStore {
     responseLandingCompany(response) {
         this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
+        this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
+    }
+
+    @action.bound
+    setStandpoint(landing_companies) {
+        if (!landing_companies) return;
+        const { gaming_company, financial_company } = landing_companies;
+        if (gaming_company?.shortcode) {
+            this.standpoint = {
+                ...this.standpoint,
+                [gaming_company.shortcode]: !!gaming_company?.shortcode,
+                gaming_company: gaming_company?.shortcode ?? false,
+            };
+        }
+        if (financial_company?.shortcode) {
+            this.standpoint = {
+                ...this.standpoint,
+                [financial_company.shortcode]: !!financial_company?.shortcode,
+                financial_company: financial_company?.shortcode ?? false,
+            };
+        }
     }
 
     @action.bound
@@ -1586,6 +1597,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = undefined;
         this.accounts = {};
         this.mt5_login_list = [];
+        this.landing_companies = {};
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -1859,9 +1871,7 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                this.root_store.ui.showAccountTypesModalForEuropean();
-
-                if (!this.is_uk) {
+                if (!this.country_standpoint.is_france && !this.country_standpoint.is_belgium) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }

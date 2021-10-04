@@ -27,9 +27,11 @@ export const EXPERIAN = {
  * @param {object} options
  * @return {string} localized title
  */
-export const getAccountTitle = (landing_company_shortcode, { account_residence = '' } = {}, country_standpoint) => {
+export const getAccountTitle = (landing_company_shortcode, { account_residence = '' } = {}) => {
     // TODO: [deriv-eu] merge if statement and switch together once more residence cases are found.
-    if (account_residence === 'im') {
+    if (account_residence === 'be') {
+        return localize('Real Synthetic');
+    } else if (account_residence === 'im') {
         return localize('Deriv account');
     }
 
@@ -38,23 +40,8 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
             return localize('Deriv account');
         case 'iom':
         case 'malta':
-            if (
-                country_standpoint.is_united_kingdom ||
-                country_standpoint.is_rest_of_eu ||
-                country_standpoint.is_belgium
-            ) {
-                return localize('Options');
-            }
             return localize('Deriv Synthetic');
         case 'maltainvest':
-            if (
-                country_standpoint.is_united_kingdom ||
-                country_standpoint.is_france ||
-                country_standpoint.is_other_eu ||
-                country_standpoint.is_rest_of_eu
-            ) {
-                return localize('Multipliers');
-            }
             return localize('Deriv Financial');
         default:
             return localize('Deriv');

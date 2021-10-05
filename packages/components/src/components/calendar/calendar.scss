@@ -161,13 +161,11 @@
             @include typeface(--paragraph-left-bold-black);
             color: var(--text-prominent);
         }
-        &--disabled:hover {
-            cursor: default;
-        }
         &--disabled:not(.dc-calendar__cell--today):not(.dc-calendar__cell--between),
         &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active):not(.dc-calendar__cell--between) {
             color: var(--text-disabled);
             transition: none;
+            cursor: default;
         }
         &--is-hidden {
             display: none;

@@ -23,7 +23,7 @@ const IdvVerified = ({ needs_poa, is_from_external }) => {
                             {localize("Next, we'll need your proof of address.")}
                         </Text>
                     )}
-                    {!is_from_external && <PoaButton custom_text={localize('Submit proof address')} />}
+                    {!is_from_external && <PoaButton custom_text={localize('Submit proof of address')} />}
                 </React.Fragment>
             )}
         </div>

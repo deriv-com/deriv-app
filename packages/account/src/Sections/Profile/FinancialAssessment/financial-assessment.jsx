@@ -319,12 +319,14 @@ class FinancialAssessment extends React.Component {
             is_confirmation_visible,
             has_trading_experience,
         } = this.state;
+        const { is_authentication_needed } = this.props;
         const { is_dashboard } = this.context;
 
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
-        if (isMobile() && is_submit_success) return <SubmittedPage platform={this.props.platform} />;
+        if (isMobile() && is_authentication_needed && is_submit_success)
+            return <SubmittedPage platform={this.props.platform} />;
 
         return (
             <React.Fragment>
@@ -1006,6 +1008,7 @@ class FinancialAssessment extends React.Component {
 // FinancialAssessment.propTypes = {};
 export default connect(({ client, common, ui }) => ({
     account_status: client.account_status,
+    is_authentication_needed: client.is_authentication_needed,
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,
     is_financial_account: client.is_financial_account,

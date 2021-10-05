@@ -1457,9 +1457,17 @@ div.payment-agent-transfer {
                 &__header {
                     margin-top: 0.4rem;
                 }
-                &__form-submit-button {
-                    &:first-child {
-                        margin: 2rem auto;
+                &__form-submit {
+                    padding: 1.6rem;
+                    &-button {
+                        &:first-child {
+                            margin-bottom: 2rem;
+                            margin-right: 0;
+                        }
+                        &:last-child {
+                            margin-bottom: 2rem;
+                            margin-left: 0;
+                        }
                     }
                 }
                 &__success {

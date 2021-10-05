@@ -1,9 +1,10 @@
 import classNames from 'classnames';
+import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 
-const MarkerLine = React.memo(({ label, line_style, marker_config, status }) => {
+const MarkerLine = ({ label, line_style, marker_config, status }) => {
     // TODO: Find a more elegant solution
     // if (!marker_config) return null;
     const icon_name =
@@ -41,13 +42,12 @@ const MarkerLine = React.memo(({ label, line_style, marker_config, status }) => 
             />
         </div>
     );
-});
+};
 
-MarkerLine.displayName = 'MarkerLine';
 MarkerLine.propTypes = {
     label: PropTypes.string,
     line_style: PropTypes.string,
     marker_config: PropTypes.object,
     status: PropTypes.oneOf(['won', 'lost']),
 };
-export default MarkerLine;
+export default observer(MarkerLine);

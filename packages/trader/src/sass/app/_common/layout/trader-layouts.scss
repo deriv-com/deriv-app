@@ -500,7 +500,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             div.stx-marker {
                 z-index: 2;
 
-                &:not(.chart-marker-line) {
+                &:not(.chart-marker-line):not(.chart-marker-line__icon) {
                     animation: fadeIn 0.2s;
                 }
             }

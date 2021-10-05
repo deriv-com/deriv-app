@@ -454,7 +454,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             visibility: hidden;
             pointer-events: none;
 
-            .chart-marker-line__wrapper,
+            // .chart-marker-line__wrapper,
             .cq-chart-controls,
             .cq-symbols-display,
             .cq-bottom-ui-widgets,
@@ -500,9 +500,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
             div.stx-marker {
                 z-index: 2;
 
-                &:not(.chart-marker-line) {
-                    animation: fadeIn 0.2s;
-                }
+                // &:not(.chart-marker-line) {
+                //     animation: fadeIn 0.2s;
+                // }
             }
         }
         div.cq-chart-control-left {

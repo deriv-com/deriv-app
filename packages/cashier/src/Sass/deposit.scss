@@ -2,6 +2,10 @@
     &__wrapper {
         margin: 0 auto;
         max-width: 51rem;
+
+        @include mobile {
+            max-width: none;
+        }
     }
 
     &__transaction-wrapper {

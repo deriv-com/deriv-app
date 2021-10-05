@@ -220,7 +220,7 @@ Popover.propTypes = {
     onBubbleClose: PropTypes.func,
     zIndex: PropTypes.number,
     should_disable_pointer_events: PropTypes.bool,
-    should_show_cursor: PropTypes.string,
+    should_show_cursor: PropTypes.bool,
 };
 
 export default Popover;

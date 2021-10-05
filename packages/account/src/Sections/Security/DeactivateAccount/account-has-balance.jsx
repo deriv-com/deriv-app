@@ -58,7 +58,6 @@ const AccountHasPendingConditions = ({
     dxtrade_accounts_list,
     client_accounts,
     onBackClick,
-    is_eu,
 }) => {
     const deriv_open_positions = [];
     const deriv_balance = [];
@@ -172,14 +171,12 @@ const AccountHasPendingConditions = ({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.MT5,
-                                    is_eu,
                                 })}`}
                                 loginid={account.display_login}
                                 title={getCFDAccountDisplay({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.MT5,
-                                    is_eu,
                                 })}
                                 value={
                                     <Localize
@@ -200,14 +197,12 @@ const AccountHasPendingConditions = ({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.MT5,
-                                    is_eu,
                                 })}`}
                                 loginid={account.display_login}
                                 title={getCFDAccountDisplay({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.MT5,
-                                    is_eu,
                                 })}
                                 value={
                                     <Money
@@ -229,14 +224,12 @@ const AccountHasPendingConditions = ({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.DXTRADE,
-                                    is_eu,
                                 })}`}
                                 loginid={account.display_login}
                                 title={getCFDAccountDisplay({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.DXTRADE,
-                                    is_eu,
                                 })}
                                 value={
                                     <Localize
@@ -257,14 +250,12 @@ const AccountHasPendingConditions = ({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.DXTRADE,
-                                    is_eu,
                                 })}`}
                                 loginid={account.display_login}
                                 title={getCFDAccountDisplay({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.DXTRADE,
-                                    is_eu,
                                 })}
                                 value={
                                     <Money

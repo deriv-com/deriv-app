@@ -174,36 +174,37 @@
             height: 100%;
             width: 3px;
         }
-    }
-    &__icon {
-        position: absolute;
-        bottom: -23px;
-        left: -11px;
-        white-space: nowrap;
+        .chart-marker-line__icon {
+            position: absolute;
+            bottom: -23px;
+            left: -11px;
+            pointer-events: none;
+            white-space: nowrap;
 
-        &--time {
-            /* postcss-bem-linter: ignore */
-            path {
-                fill: var(--text-less-prominent);
+            &--time {
+                /* postcss-bem-linter: ignore */
+                path {
+                    fill: var(--text-less-prominent);
+                }
             }
-        }
-        &--won {
-            /* postcss-bem-linter: ignore */
-            circle {
-                fill: var(--text-profit-success);
+            &--won {
+                /* postcss-bem-linter: ignore */
+                circle {
+                    fill: var(--text-profit-success);
+                }
             }
-        }
-        &--lost {
-            /* postcss-bem-linter: ignore */
-            circle {
-                fill: var(--text-loss-danger);
+            &--lost {
+                /* postcss-bem-linter: ignore */
+                circle {
+                    fill: var(--text-loss-danger);
+                }
             }
-        }
-        @include mobile {
-            bottom: -15px;
-            left: -7px;
-            width: 16px;
-            height: 16px;
+            @include mobile {
+                bottom: -15px;
+                left: -7px;
+                width: 16px;
+                height: 16px;
+            }
         }
     }
     &--solid {

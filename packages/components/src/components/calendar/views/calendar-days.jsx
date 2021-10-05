@@ -127,7 +127,7 @@ const getDays = ({
                         is_bubble_hover_enabled
                         message={message}
                         zIndex={9999}
-                        should_activate_cursor
+                        should_show_cursor
                     />
                 )}
                 {moment_date.date()}
@@ -174,4 +174,4 @@ Days.propTypes = {
     disabled_days: PropTypes.arrayOf(PropTypes.number),
 };
 
-export default React.memo(Days);
+export default Days;

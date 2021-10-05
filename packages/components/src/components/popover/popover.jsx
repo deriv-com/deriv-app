@@ -29,7 +29,7 @@ const Popover = ({
     should_disable_pointer_events,
     window_border,
     zIndex,
-    should_activate_cursor,
+    should_show_cursor,
 }) => {
     const ref = React.useRef();
     const [popover_ref, setPopoverRef] = React.useState(undefined);
@@ -71,7 +71,7 @@ const Popover = ({
                     padding={margin + 8}
                     containerClassName={classNames({
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
-                        'react-tiny-popover-cursor-option': should_activate_cursor,
+                        'react-tiny-popover-cursor-option': should_show_cursor,
                     })}
                     windowBorderPadding={window_border}
                     {...(relative_render
@@ -220,7 +220,7 @@ Popover.propTypes = {
     onBubbleClose: PropTypes.func,
     zIndex: PropTypes.number,
     should_disable_pointer_events: PropTypes.bool,
-    should_activate_cursor: PropTypes.string,
+    should_show_cursor: PropTypes.string,
 };
 
 export default Popover;

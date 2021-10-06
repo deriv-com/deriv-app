@@ -1452,14 +1452,12 @@ export default class CashierStore extends BaseStore {
                 market_type: account.market_type,
                 sub_account_type: account.sub_account_type,
                 platform: account.account_type,
-                is_eu: this.root_store.client.is_eu,
             })}`;
             const account_text_display = is_cfd
                 ? `${cfd_text_display} ${getCFDAccountDisplay({
                       market_type: account.market_type,
                       sub_account_type: account.sub_account_type,
                       platform: account.account_type,
-                      is_eu: this.root_store.client.is_eu,
                   })}`
                 : getCurrencyDisplayCode(
                       account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
@@ -1479,7 +1477,6 @@ export default class CashierStore extends BaseStore {
                         market_type: account.market_type,
                         sub_account_type: account.sub_account_type,
                         platform: account.account_type,
-                        is_eu: this.root_store.client.is_eu,
                     }),
                 }),
             };

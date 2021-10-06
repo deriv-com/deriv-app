@@ -16,7 +16,6 @@ const AccountInfo = React.lazy(() =>
 const AccountActions = React.memo(
     ({
         acc_switcher_disabled_message,
-        account_type,
         balance,
         currency,
         disableApp,
@@ -46,7 +45,6 @@ const AccountActions = React.memo(
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                account_type={account_type}
                                 balance={
                                     typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
@@ -82,7 +80,6 @@ const AccountActions = React.memo(
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                account_type={account_type}
                                 balance={
                                     typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
@@ -130,7 +127,6 @@ AccountActions.displayName = 'AccountActions';
 
 AccountActions.propTypes = {
     acc_switcher_disabled_message: PropTypes.any,
-    account_type: PropTypes.string,
     balance: PropTypes.any,
     currency: PropTypes.any,
     is_acc_switcher_disabled: PropTypes.any,

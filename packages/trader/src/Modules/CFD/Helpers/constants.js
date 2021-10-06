@@ -12,6 +12,7 @@ const getBrokerName = () => 'Deriv Limited';
 
 const getTopUpConfig = () => {
     return {
+        currency: 'USD',
         minimum_amount: 1000,
         additional_amount: 10000,
     };

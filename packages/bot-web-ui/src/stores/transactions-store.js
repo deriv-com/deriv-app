@@ -14,7 +14,8 @@ export default class TransactionsStore {
 
     @observable elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.root_store.core.client.loginid, []);
     @observable active_transaction_id = null;
-    reported_transactions = [];
+    recovered_completed_transactions = [];
+    recovered_transactions = [];
 
     @computed
     get transactions() {
@@ -115,7 +116,7 @@ export default class TransactionsStore {
     @action.bound
     onMount() {
         this.transactions.forEach(({ data: trx }) => {
-            if (trx.is_completed) return;
+            if (trx.is_completed || this.recovered_transactions.includes(trx.contract_id)) return;
             this.recoverPendingContracts(trx.contract_id);
         });
         window.addEventListener('click', this.onClickOutsideTransaction);
@@ -129,7 +130,8 @@ export default class TransactionsStore {
     @action.bound
     clear() {
         this.elements = this.elements.slice(0, 0);
-        this.reported_transactions = this.reported_transactions.slice(0, 0);
+        this.recovered_completed_transactions = this.recovered_completed_transactions.slice(0, 0);
+        this.recovered_transactions = this.recovered_transactions.slice(0, 0);
     }
 
     registerReactions() {
@@ -179,11 +181,15 @@ export default class TransactionsStore {
 
                 this.onBotContractEvent(proposal_open_contract);
 
+                if (!this.recovered_transactions.includes(proposal_open_contract.contract_id)) {
+                    this.recovered_transactions.push(proposal_open_contract.contract_id);
+                }
+
                 if (
-                    !this.reported_transactions.includes(proposal_open_contract.contract_id) &&
+                    !this.recovered_completed_transactions.includes(proposal_open_contract.contract_id) &&
                     isEnded(proposal_open_contract)
                 ) {
-                    this.reported_transactions.push(proposal_open_contract.contract_id);
+                    this.recovered_completed_transactions.push(proposal_open_contract.contract_id);
 
                     const { currency, profit } = proposal_open_contract;
 

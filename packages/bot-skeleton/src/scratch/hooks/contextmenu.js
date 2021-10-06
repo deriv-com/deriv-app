@@ -250,9 +250,8 @@ Blockly.ContextMenu.blockEnableOption = function (block) {
             return block_.nextConnection?.targetConnection
                 ? checkAreSomeDisabled(block_.nextConnection?.targetConnection.sourceBlock_, disabledArr)
                 : disabledArr.includes(true);
-        } else {
-            return false;
         }
+        return false;
     };
     const enabled = checkAreSomeDisabled(block);
 

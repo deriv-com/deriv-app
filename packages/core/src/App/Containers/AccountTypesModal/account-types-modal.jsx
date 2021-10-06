@@ -151,7 +151,7 @@ const FinancialBox = ({ derivOnClick, is_dashboard, mt5OnClick, has_maltainvest_
 const SyntheticBox = ({ derivOnClick, add_account_label, is_dashboard }) => {
     return (
         <Box
-            title={localize('Synthetic')}
+            title={localize('Gaming')}
             description={localize(
                 'Trade synthetic indices that are available 24/7, have constant volatility, and are free of market liquidity risks.'
             )}
@@ -176,7 +176,7 @@ const SyntheticBox = ({ derivOnClick, add_account_label, is_dashboard }) => {
                 <AccountCard
                     key={0}
                     title={localize('Trade Options')}
-                    subtitle={localize('with a Deriv Synthetic account')}
+                    subtitle={localize('with a Deriv Gaming account')}
                     button_text={add_account_label}
                     buttonOnClick={derivOnClick}
                     items={{

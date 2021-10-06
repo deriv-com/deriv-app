@@ -26,11 +26,11 @@ const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_vis
     };
 
     // memoizing the marker components data:
-    const memoized_marker_component = React.useCallback(() => {
+    const getMemoizedComponent = React.useCallback(() => {
         return <ContentComponent {...toJS(marker_content_props)} />;
     }, []);
 
-    return <FastMarker markerRef={onRef}>{memoized_marker_component()}</FastMarker>;
+    return <FastMarker markerRef={onRef}>{getMemoizedComponent()}</FastMarker>;
 };
 
 ChartMarker.propTypes = {

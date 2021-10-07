@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import MyProfileSeparatorContainer from '../my-profile-separator-container';
+import MyProfileSeparatorContainer from '../../my-profile-separator-container';
 
 const MyProfileBalance = () => {
     const { general_store, my_profile_store } = useStores();
@@ -19,13 +19,7 @@ const MyProfileBalance = () => {
                     <Localize i18n_default_text='Available DP2P balance' />
                 </Text>
                 <MyProfileSeparatorContainer.Line is_invisible={isMobile()} />
-                <Text
-                    className='my-profile-balance__amount'
-                    color='prominent'
-                    line_height='m'
-                    size={isMobile() ? 'xs' : 's'}
-                    weight='bold'
-                >
+                <Text className='my-profile-balance__amount' color='prominent' line_height='m' size='xs' weight='bold'>
                     <Money amount={available_balance} currency={general_store.client.currency} show_currency />
                 </Text>
                 <PopoverMobile

@@ -3,7 +3,7 @@ import { Text, ToggleSwitch } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import MyProfileSeparatorContainer from '../my-profile-separator-container';
+import MyProfileSeparatorContainer from '../../my-profile-separator-container';
 
 const MyProfilePrivacy = () => {
     const { general_store, my_profile_store } = useStores();

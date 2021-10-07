@@ -3,8 +3,10 @@ import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
 import BaseStore from 'Stores/base_store';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
 
 export default class MyProfileStore extends BaseStore {
+    @observable active_tab = my_profile_tabs.MY_STATS;
     @observable advertiser_info = {};
     @observable balance_available = null;
     @observable contact_info = '';
@@ -93,6 +95,11 @@ export default class MyProfileStore extends BaseStore {
             }
         });
     };
+
+    @action.bound
+    setActiveTab(active_tab) {
+        this.active_tab = active_tab;
+    }
 
     @action.bound
     setAdvertiserInfo(advertiser_info) {

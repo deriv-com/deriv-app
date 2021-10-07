@@ -1,5 +1,4 @@
 import { configure } from 'mobx';
-
 import NetworkMonitor from 'Services/network-monitor';
 // import OutdatedBrowser      from 'Services/outdated-browser';
 import RootStore from 'Stores';
@@ -36,6 +35,8 @@ const setStorageEvents = root_store => {
 };
 
 const initStore = notification_messages => {
+    // Check Endpoint from URL need to be done before initializing store to avoid
+    // race condition with setting up user session from URL
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     if (url_params.get('action') === 'signup') {
@@ -59,7 +60,6 @@ const initStore = notification_messages => {
     // OutdatedBrowser.init(root_store);!
     root_store.client.init();
     root_store.ui.init(notification_messages);
-    root_store.common.init();
     root_store.pushwoosh.init();
 
     return root_store;

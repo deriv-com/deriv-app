@@ -37,13 +37,8 @@ const PasswordModalHeader = ({
     should_show_server_form,
     account_title,
     is_password_reset_error,
-    has_mt5_account,
     platform,
 }) => {
-    if (should_set_trading_password && has_mt5_account) {
-        return null;
-    }
-
     const element = isMobile() ? 'p' : 'span';
     const alignment = 'center';
     const font_size = 's';
@@ -510,6 +505,7 @@ const CFDPasswordModal = ({
     error_message,
     error_type,
     form_error,
+    getAccountStatus,
     history,
     is_eu,
     is_eu_country,
@@ -628,10 +624,6 @@ const CFDPasswordModal = ({
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
-    const should_show_password_modal = should_show_password && (should_set_trading_password ? true : isDesktop());
-
-    const should_show_password_dialog = should_show_password && !should_set_trading_password && isMobile();
-
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
     const should_show_server_form = React.useMemo(() => {
@@ -646,6 +638,21 @@ const CFDPasswordModal = ({
             platform === CFD_PLATFORMS.MT5
         );
     }, [is_eu, is_eu_country, is_logged_in, is_real_synthetic, server, mt5_login_list, platform]);
+
+    const should_show_password_modal = React.useMemo(() => {
+        if (should_show_password) {
+            if (should_show_server_form) return isDesktop();
+            return should_set_trading_password ? true : isDesktop();
+        }
+        return false;
+    }, [should_set_trading_password, should_show_password, should_show_server_form]);
+
+    const should_show_password_dialog = React.useMemo(() => {
+        if (should_show_password) {
+            if (should_show_server_form || !should_set_trading_password) return isMobile();
+        }
+        return false;
+    }, [should_set_trading_password, should_show_password, should_show_server_form]);
 
     React.useEffect(() => {
         if ((!is_password_error && !is_password_reset && has_cfd_error) || is_cfd_success_dialog_enabled) {
@@ -698,11 +705,11 @@ const CFDPasswordModal = ({
                     should_show_server_form={should_show_server_form}
                     should_set_trading_password={should_set_trading_password}
                     account_title={account_title}
-                    has_mt5_account={has_mt5_account}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
                 />
             )}
+            onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
             width={isMobile() && '32.8rem'}
@@ -791,6 +798,7 @@ export default connect(({ client, modules }) => ({
     disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
     error_message: modules.cfd.error_message,
     error_type: modules.cfd.error_type,
+    getAccountStatus: modules.cfd.getAccountStatus,
     has_cfd_error: modules.cfd.has_cfd_error,
     landing_companies: client.landing_companies,
     is_eu: client.is_eu,

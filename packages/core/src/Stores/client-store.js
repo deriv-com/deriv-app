@@ -245,8 +245,11 @@ export default class ClientStore extends BaseStore {
         if (!this.root_store.ui.real_account_signup_target) {
             return getDefaultAllowedCurrencies();
         }
-        if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
-            return this.current_landing_company?.legal_allowed_currencies;
+        if (
+            ['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target) &&
+            this.current_landing_company
+        ) {
+            return this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 
@@ -436,13 +439,14 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get should_allow_authentication() {
-        const allow_document_upload = this.account_status?.status?.some(status => status === 'allow_document_upload');
-        return allow_document_upload || !!this.is_authentication_needed;
+        return this.account_status?.status?.some(
+            status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
+        );
     }
 
     @computed
     get is_authentication_needed() {
-        return this.account_status?.authentication?.needs_verification?.length;
+        return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }
 
     @computed
@@ -502,6 +506,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get social_identity_provider() {
         return this.account_status?.social_identity_provider;
+    }
+
+    @computed
+    get is_from_restricted_country() {
+        return this.residence_list.find(item => item.value === this.residence)?.disabled === 'DISABLED';
     }
 
     @computed

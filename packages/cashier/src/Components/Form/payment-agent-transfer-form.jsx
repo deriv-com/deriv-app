@@ -62,7 +62,7 @@ const PaymentAgentTransferForm = ({
             amount: values.amount,
             currency,
             description: values.description.replace(/\n/g, ' '),
-            transfer_to: values.loginid,
+            transfer_to: values.loginid.toUpperCase(),
         });
         if (payment_agent_transfer.error) {
             actions.setSubmitting(false);

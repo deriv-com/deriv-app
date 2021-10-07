@@ -41,7 +41,6 @@ const CryptoWithdrawForm = ({
     account_platform_icon,
     balance,
     blockchain_address,
-    converter_from_amount,
     crypto_currency,
     crypto_transactions,
     converter_from_error,
@@ -147,8 +146,7 @@ const CryptoWithdrawForm = ({
                                     !!converter_from_error ||
                                     !!converter_to_error ||
                                     isSubmitting ||
-                                    !blockchain_address ||
-                                    !converter_from_amount
+                                    !blockchain_address
                                 }
                                 type='submit'
                                 primary
@@ -172,7 +170,6 @@ CryptoWithdrawForm.propTypes = {
     account_platform_icon: PropTypes.string,
     balance: PropTypes.number,
     blockchain_address: PropTypes.string,
-    converter_from_amount: PropTypes.string,
     converter_from_error: PropTypes.string,
     converter_to_error: PropTypes.string,
     crypto_currency: PropTypes.string,
@@ -197,7 +194,6 @@ export default connect(({ client, modules }) => ({
     account_platform_icon: modules.cashier.account_platform_icon,
     balance: client.balance,
     blockchain_address: modules.cashier.blockchain_address,
-    converter_from_amount: modules.cashier.converter_from_amount,
     converter_from_error: modules.cashier.converter_from_error,
     converter_to_error: modules.cashier.converter_to_error,
     crypto_currency: client.currency,

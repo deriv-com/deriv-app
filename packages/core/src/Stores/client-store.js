@@ -2067,14 +2067,14 @@ export default class ClientStore extends BaseStore {
                         key: 'client.accounts',
                         value: JSON.stringify(client_accounts),
                     },
-                    origin
+                    platform.origin
                 );
                 platform.iframe.contentWindow.postMessage(
                     {
                         key: 'active_loginid',
                         value: active_loginid,
                     },
-                    origin
+                    platform.origin
                 );
             }
         });

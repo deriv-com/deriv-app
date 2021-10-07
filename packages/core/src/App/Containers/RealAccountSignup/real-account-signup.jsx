@@ -40,6 +40,7 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
     if (iom_signup && is_isle_of_man_residence) {
         return <Localize i18n_default_text='Add a Deriv account' />;
     }
+
     switch (real_account_signup_target) {
         case 'malta':
             if (
@@ -49,12 +50,12 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
             ) {
                 return <Localize i18n_default_text='Add a real Deriv Options account' />;
             }
-            return <Localize i18n_default_text='Add a Deriv Synthetic Indices account' />;
+            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
         case 'iom':
             if (country_standpoint.is_united_kingdom) {
                 return <Localize i18n_default_text='Add a real Deriv Options account' />;
             }
-            return <Localize i18n_default_text='Add a Deriv Synthetic Indices account' />;
+            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
         case 'maltainvest':
             if (
                 country_standpoint.is_united_kingdom ||

@@ -37,6 +37,7 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
         case 'svg':
             return localize('Deriv account');
         case 'iom':
+            return localize('Deriv Gaming');
         case 'malta':
             if (
                 country_standpoint.is_united_kingdom ||

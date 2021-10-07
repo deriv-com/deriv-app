@@ -114,7 +114,7 @@ const ProofOfIdentityContainer = ({
             />
         );
         // Client status modified from BO does not get their latest attempts populated
-    } else if (!identity_last_attempt) {
+    } else if (!identity_last_attempt || identity_last_attempt.status !== identity_status) {
         switch (identity_status) {
             case identity_status_codes.pending:
                 return (

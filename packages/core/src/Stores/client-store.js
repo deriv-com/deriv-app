@@ -1871,7 +1871,11 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                if (!this.country_standpoint.is_france && !this.country_standpoint.is_belgium) {
+                if (
+                    !this.country_standpoint.is_france &&
+                    !this.country_standpoint.is_belgium &&
+                    !this.residence === 'im'
+                ) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }

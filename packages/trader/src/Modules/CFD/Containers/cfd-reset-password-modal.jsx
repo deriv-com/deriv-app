@@ -8,7 +8,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 
-const ResetPasswordIntent = ({ current_list, children, ...props }) => {
+const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
     const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
@@ -18,11 +18,11 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
         login = current_list[`mt5.${group}.${type}@${server}`].login;
-        title = getMtCompanies()[group][type].title;
+        title = getMtCompanies(is_eu)[group][type].title;
     } else if (current_list) {
         [server, group, type] = Object.keys(current_list).pop().split('.');
         login = current_list[`mt5.${group}.${type}@${server}`]?.login ?? '';
-        title = getMtCompanies()?.[group]?.[type]?.title ?? '';
+        title = getMtCompanies(is_eu)?.[group]?.[type]?.title ?? '';
     } else {
         // Set a default intent
         login = '';
@@ -109,7 +109,13 @@ class CFDResetPasswordModal extends React.Component {
         return Object.keys(this.props.current_list).length !== 0;
     }
     render() {
-        const { is_cfd_reset_password_modal_enabled, setCFDPasswordResetModal, current_list, platform } = this.props;
+        const {
+            is_cfd_reset_password_modal_enabled,
+            is_eu,
+            setCFDPasswordResetModal,
+            current_list,
+            platform,
+        } = this.props;
         return (
             <Modal
                 className='cfd-reset-password-modal'
@@ -123,7 +129,7 @@ class CFDResetPasswordModal extends React.Component {
             >
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
                 {this.is_list_fetched && !this.state.has_error && !this.state.is_finished && (
-                    <ResetPasswordIntent current_list={current_list}>
+                    <ResetPasswordIntent current_list={current_list} is_eu={is_eu}>
                         {({ type, login }) => (
                             <Formik
                                 initialValues={{ new_password: '' }}
@@ -248,6 +254,7 @@ class CFDResetPasswordModal extends React.Component {
 
 CFDResetPasswordModal.propTypes = {
     email: PropTypes.string,
+    is_eu: PropTypes.bool,
     is_cfd_reset_password_modal_enabled: PropTypes.any,
     setCFDPasswordResetModal: PropTypes.any,
     current_list: PropTypes.any,
@@ -256,6 +263,7 @@ CFDResetPasswordModal.propTypes = {
 export default withRouter(
     connect(({ modules: { cfd }, client }) => ({
         email: client.email,
+        is_eu: client.is_eu,
         is_cfd_reset_password_modal_enabled: cfd.is_cfd_reset_password_modal_enabled,
         setCFDPasswordResetModal: cfd.setCFDPasswordResetModal,
         current_list: cfd.current_list,

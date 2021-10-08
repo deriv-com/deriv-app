@@ -45,7 +45,7 @@ export const getSortedCFDList = account_list => {
 
 export const isDemo = account => account.account_type === 'demo';
 
-export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts, trading_servers, platform) => {
+export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts, trading_servers, platform, is_eu) => {
     const cfd_config = [];
 
     if (landing_company) {
@@ -70,8 +70,8 @@ export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts
                 const type = getCFDAccountKey({ market_type, sub_account_type: company, platform });
                 if (type) {
                     cfd_config.push({
-                        icon: getCFDAccount({ market_type, sub_account_type: company, platform }),
-                        title: getCFDAccountDisplay({ market_type, sub_account_type: company, platform }),
+                        icon: getCFDAccount({ market_type, sub_account_type: company, platform, is_eu }),
+                        title: getCFDAccountDisplay({ market_type, sub_account_type: company, platform, is_eu }),
                         type,
                     });
                 }

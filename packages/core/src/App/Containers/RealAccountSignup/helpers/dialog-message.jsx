@@ -28,17 +28,23 @@ export const DialogMessage = ({
             );
         }
     } else if (landing_company_shortcode === 'malta') {
+        if (
+            (country_standpoint.is_united_kingdom && is_fully_authenticated) ||
+            country_standpoint.is_rest_of_eu ||
+            country_standpoint.is_belgium
+        ) {
+            message = (
+                <Localize
+                    i18n_default_text='You have added a real Options account.<0/>Make a deposit now to start trading.'
+                    components={[<br key={0} />]}
+                />
+            );
+        }
+    } else if (landing_company_shortcode === 'iom') {
         if (country_standpoint.is_united_kingdom && is_fully_authenticated) {
             message = (
                 <Localize
                     i18n_default_text='You have added a real Gaming account.<0/>Make a deposit now to start trading.'
-                    components={[<br key={0} />]}
-                />
-            );
-        } else if (country_standpoint.is_rest_of_eu || country_standpoint.is_belgium) {
-            message = (
-                <Localize
-                    i18n_default_text='You have added a real Options account.<0/>Make a deposit now to start trading.'
                     components={[<br key={0} />]}
                 />
             );

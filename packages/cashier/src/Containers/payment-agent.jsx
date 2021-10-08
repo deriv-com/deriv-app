@@ -13,12 +13,17 @@ const PaymentAgent = ({
     setActiveTab,
     verification_code,
     setPaymentAgentActiveTabIndex,
+    payment_agent_active_tab_index,
 }) => {
-    const initial_active_index = verification_code || is_payment_agent_withdraw ? 1 : 0;
+    const initial_active_index =
+        verification_code || is_payment_agent_withdraw || payment_agent_active_tab_index ? 1 : 0;
     setPaymentAgentActiveTabIndex(initial_active_index);
 
     React.useEffect(() => {
         setActiveTab(container);
+        return () => {
+            setPaymentAgentActiveTabIndex(0);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -41,6 +46,7 @@ PaymentAgent.propTypes = {
     setActiveTab: PropTypes.func,
     verification_code: PropTypes.string,
     setPaymentAgentActiveTabIndex: PropTypes.func,
+    payment_agent_active_tab_index: PropTypes.number,
 };
 
 export default connect(({ client, modules }) => ({
@@ -51,4 +57,5 @@ export default connect(({ client, modules }) => ({
     is_payment_agent_withdraw: modules.cashier.config.payment_agent.is_withdraw,
     setActiveTab: modules.cashier.setActiveTab,
     setPaymentAgentActiveTabIndex: modules.cashier.config.payment_agent.setActiveTabIndex,
+    payment_agent_active_tab_index: modules.cashier.config.payment_agent.active_tab_index,
 }))(PaymentAgent);

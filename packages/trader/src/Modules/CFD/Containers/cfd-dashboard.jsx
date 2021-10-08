@@ -270,11 +270,7 @@ class CFDDashboard extends React.Component {
         const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
         if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
-        if (platform === CFD_PLATFORMS.MT5 && !is_mt5_allowed) return <Redirect to={routes.trade} />;
-
-        const is_not_enabled = is_logged_in && !this.state.is_demo_enabled && !this.state.is_real_enabled;
-
-        if ((is_logged_in && !landing_companies) || is_loading || is_not_enabled) return <Loading />;
+        if ((is_logged_in && !landing_companies) || is_loading) return <Loading />;
 
         return (
             <React.Fragment>

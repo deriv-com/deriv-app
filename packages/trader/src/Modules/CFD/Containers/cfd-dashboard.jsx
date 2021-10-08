@@ -68,28 +68,27 @@ class CFDDashboard extends React.Component {
         this.props.onUnmount();
     }
 
-    componentDidUpdate(prev_props) {
+    componentDidUpdate() {
         this.updateActiveIndex();
         this.props.checkShouldOpenAccount();
 
         if (this.props.is_logged_in) {
-            if (
-                prev_props.landing_companies !== this.props.landing_companies ||
-                prev_props.current_list !== this.props.current_list
-            ) {
-                ['demo', 'real'].forEach(account_type => {
-                    if (account_type === 'real' && this.props.platform === CFD_PLATFORMS.DXTRADE) return;
+            ['demo', 'real'].forEach(account_type => {
+                if (account_type === 'real' && this.props.platform === CFD_PLATFORMS.DXTRADE) return;
 
-                    const is_tab_enabled =
-                        this.isSyntheticCardVisible(account_type) ||
-                        this.isFinancialCardVisible() ||
-                        this.isFinancialStpCardVisible();
+                const should_enable_tab =
+                    this.isSyntheticCardVisible(account_type) ||
+                    this.isFinancialCardVisible() ||
+                    this.isFinancialStpCardVisible();
 
+                const is_tab_enabled = this.state[`is_${account_type}_enabled`];
+
+                if (is_tab_enabled !== should_enable_tab) {
                     this.setState({
-                        [`is_${account_type}_enabled`]: is_tab_enabled,
+                        [`is_${account_type}_enabled`]: should_enable_tab,
                     });
-                });
-            }
+                }
+            });
         }
         const is_real_disabled = !this.state.is_real_enabled && this.props.platform === CFD_PLATFORMS.MT5;
         const is_demo_disabled = !this.state.is_demo_enabled;

@@ -117,6 +117,22 @@
     }
 }
 
+.dc-modal__container {
+    &_real-account-signup-modal--success .status-dialog {
+        &__close {
+            display: none;
+        }
+        &__footer {
+            margin: 0;
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+    &--risk-message .status-dialog {
+        width: auto;
+    }
+}
+
 .status-dialog {
     display: flex;
     align-items: center;
@@ -260,7 +276,7 @@
     }
 
     @include desktop {
-        width: 38.4rem;
+        width: 44rem;
         min-height: 35.2rem;
     }
     @include mobile {

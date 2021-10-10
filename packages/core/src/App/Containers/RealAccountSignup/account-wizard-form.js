@@ -2,9 +2,9 @@ import {
     currencySelectorConfig,
     personalDetailsConfig,
     addressDetailsConfig,
-    termsOfUseConfig,
     financialDetailsConfig,
     PersonalDetails,
+    termsOfUseConfig,
     TermsOfUse,
 } from '@deriv/account';
 import CurrencySelector from './currency-selector.jsx';

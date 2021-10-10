@@ -24,6 +24,7 @@ const DefaultHeader = ({
     app_routing_history,
     balance,
     currency,
+    country_standpoint,
     disableApp,
     enableApp,
     header_extension,
@@ -150,6 +151,7 @@ const DefaultHeader = ({
                             account_type={account_type}
                             balance={balance}
                             currency={currency}
+                            country_standpoint={country_standpoint}
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_acc_switcher_on={is_acc_switcher_on}
@@ -220,6 +222,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     balance: client.balance,
     is_mf: client.landing_company_shortcode === 'maltainvest',
     currency: client.currency,
+    country_standpoint: client.country_standpoint,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,

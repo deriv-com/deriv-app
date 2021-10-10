@@ -433,6 +433,8 @@ import './flag/ic-flag-uk.svg';
 import './flag/ic-flag-vi.svg';
 import './flag/ic-flag-zh-cn.svg';
 import './flag/ic-flag-zh-tw.svg';
+import './mt5/ic-mt5-cfd-platform.svg';
+import './mt5/ic-mt5-cfds.svg';
 import './mt5/ic-mt5-device-desktop.svg';
 import './mt5/ic-mt5-device-laptop.svg';
 import './mt5/ic-mt5-device-phone.svg';

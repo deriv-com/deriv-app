@@ -161,6 +161,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                                 classNameBubble='help-centre__tooltip'
                                 alignment='top'
                                 message={localize('Live chat')}
+                                zIndex={9999}
                             >
                                 <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
                             </Popover>

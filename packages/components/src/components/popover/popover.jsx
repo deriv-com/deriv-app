@@ -194,7 +194,7 @@ Popover.defaultProps = {
     margin: 0,
     relative_render: false,
     should_disable_pointer_events: false,
-    zIndex: 1000,
+    zIndex: 1,
 };
 
 Popover.propTypes = {

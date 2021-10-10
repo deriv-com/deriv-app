@@ -406,6 +406,19 @@ const AccountSwitcher = props => {
         return localize('Total assets in your Deriv real accounts.');
     };
 
+    const isMT5Allowed = account_type => {
+        if (!props.is_mt5_allowed) return false;
+
+        if (account_type === 'demo') {
+            return !!getDemoMT5().length || !!getRemainingDemoMT5().length;
+        }
+        return !!getRealMT5().length || !!getRemainingRealMT5().length;
+    };
+
+    const isDxtradeAllowed = () => {
+        return props.is_dxtrade_allowed;
+    };
+
     const total_assets_message = isRealAccountTab ? total_assets_message_real() : total_assets_message_demo();
 
     const demo_accounts = (
@@ -441,7 +454,7 @@ const AccountSwitcher = props => {
                         ))}
                 </div>
             </AccountWrapper>
-            {props.is_mt5_allowed && (
+            {isMT5Allowed('demo') && (
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
@@ -510,7 +523,7 @@ const AccountSwitcher = props => {
                     </AccountWrapper>
                 </React.Fragment>
             )}
-            {props.is_dxtrade_allowed && (
+            {isDxtradeAllowed() && (
                 <AccountWrapper
                     header={localize('Deriv X Accounts')}
                     is_visible={is_dxtrade_demo_visible}
@@ -645,7 +658,7 @@ const AccountSwitcher = props => {
                         )}
                 </AccountWrapper>
             </React.Fragment>
-            {props.is_mt5_allowed && (
+            {isMT5Allowed('real') && (
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
@@ -728,7 +741,7 @@ const AccountSwitcher = props => {
                 </React.Fragment>
             )}
             {/* TODO: Uncomment when real account is launched */}
-            {/* {props.is_dxtrade_allowed && (
+            {/* {isDxtradeAllowed() && (
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper

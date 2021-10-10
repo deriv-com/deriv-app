@@ -37,8 +37,11 @@ export default Engine =>
         }
 
         clearProfitPerRun() {
+            if (!this.accountInfo) return;
             const { loginid: accountID } = this.accountInfo;
-            globalStat[accountID].profitPerRun = 0;
+            if (globalStat[accountID]) {
+                globalStat[accountID].profitPerRun = 0;
+            }
         }
 
         updateTotals(contract) {

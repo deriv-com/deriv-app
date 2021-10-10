@@ -249,15 +249,6 @@ class DBot {
 
         return true;
     }
-    /**
-     * Disable blocks and their optional children.
-     */
-    disableBlocksRecursively(block) {
-        block.setDisabled(true);
-        if (block.nextConnection?.targetConnection) {
-            this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
-        }
-    }
 
     /**
      * Disable blocks and their optional children.

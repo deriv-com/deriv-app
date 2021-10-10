@@ -19,6 +19,7 @@ const AccountActions = React.memo(
         account_type,
         balance,
         currency,
+        country_standpoint,
         disableApp,
         enableApp,
         is_acc_switcher_on,
@@ -55,6 +56,7 @@ const AccountActions = React.memo(
                                 enableApp={enableApp}
                                 is_virtual={is_virtual}
                                 currency={currency}
+                                country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />
@@ -89,6 +91,7 @@ const AccountActions = React.memo(
                                 is_disabled={is_acc_switcher_disabled}
                                 is_virtual={is_virtual}
                                 currency={currency}
+                                country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />

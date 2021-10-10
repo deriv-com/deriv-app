@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Loading } from '@deriv/components';
 import { getPlatformRedirect, WS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { useHistory } from 'react-router';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
@@ -29,6 +30,7 @@ const ProofOfIdentityContainer = ({
     routeBackInApp,
     should_allow_authentication,
 }) => {
+    const history = useHistory();
     const [api_error, setAPIError] = React.useState();
     const [has_require_submission, setHasRequireSubmission] = React.useState(false);
     const [residence_list, setResidenceList] = React.useState();

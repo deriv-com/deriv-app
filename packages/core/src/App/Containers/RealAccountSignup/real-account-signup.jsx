@@ -24,26 +24,47 @@ const modal_pages_indices = {
     signup_error: 5,
 };
 
-const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
-    if (!currency && real_account_signup_target !== 'maltainvest') {
+const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, country_standpoint }) => {
+    const maltainvest_signup = real_account_signup_target === 'maltainvest';
+    const iom_signup = real_account_signup_target === 'iom';
+    const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
+
+    if (!maltainvest_signup && !currency) {
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
-    if (
-        (real_account_signup_target === 'malta' && is_belgium_residence) ||
-        real_account_signup_target === 'deposit_cash'
-    ) {
-        return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
+    if (deposit_cash_signup) {
+        return <Localize i18n_default_text='Add a Deriv Gaming account' />;
     }
 
-    if (real_account_signup_target === 'iom' && is_isle_of_man_residence) {
+    if (iom_signup && is_isle_of_man_residence) {
         return <Localize i18n_default_text='Add a Deriv account' />;
     }
+
     switch (real_account_signup_target) {
         case 'malta':
+            if (
+                country_standpoint.is_united_kingdom ||
+                country_standpoint.is_rest_of_eu ||
+                country_standpoint.is_belgium
+            ) {
+                return <Localize i18n_default_text='Add a real Deriv Options account' />;
+            }
+            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
         case 'iom':
-            return <Localize i18n_default_text='Add a Deriv Synthetic Indices account' />;
+            if (country_standpoint.is_united_kingdom) {
+                return <Localize i18n_default_text='Add a real Deriv Gaming account' />;
+            }
+            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
         case 'maltainvest':
+            if (
+                country_standpoint.is_united_kingdom ||
+                country_standpoint.is_france ||
+                country_standpoint.is_other_eu ||
+                country_standpoint.is_rest_of_eu
+            ) {
+                return <Localize i18n_default_text='Add a real Deriv Multipliers account' />;
+            }
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
         case 'samoa':
             return <Localize i18n_default_text='Terms of use' />;
@@ -56,6 +77,7 @@ const RealAccountSignup = ({
     closeRealAccountSignup,
     currency,
     has_real_account,
+    country_standpoint,
     history,
     is_belgium_residence,
     is_from_restricted_country,
@@ -73,11 +95,13 @@ const RealAccountSignup = ({
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
+    const [is_risk_warning_visible, setIsRiskWarningVisible] = React.useState(false);
     const [modal_content] = React.useState([
         {
             action: 'signup',
             body: local_props => (
                 <AccountWizard
+                    setIsRiskWarningVisible={setIsRiskWarningVisible}
                     onFinishSuccess={showStatusDialog}
                     onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
                     is_loading={local_props.is_loading}
@@ -315,6 +339,7 @@ const RealAccountSignup = ({
                         ].includes(getActiveModalIndex()),
                     })}
                     is_open={is_real_acc_signup_on}
+                    is_risk_warning_visible={is_risk_warning_visible}
                     has_close_icon={real_account_signup_target !== 'samoa'}
                     is_title_centered={real_account_signup_target === 'samoa'}
                     renderTitle={() => {
@@ -328,6 +353,7 @@ const RealAccountSignup = ({
                                     is_eu={is_eu}
                                     has_fiat={has_fiat}
                                     available_crypto_currencies={available_crypto_currencies}
+                                    country_standpoint={country_standpoint}
                                 />
                             );
                         }
@@ -358,6 +384,7 @@ const RealAccountSignup = ({
                                     currency={currency}
                                     is_isle_of_man_residence={is_isle_of_man_residence}
                                     is_belgium_residence={is_belgium_residence}
+                                    country_standpoint={country_standpoint}
                                 />
                             );
                         }
@@ -377,6 +404,7 @@ export default connect(({ ui, client, common }) => ({
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_eu: client.is_eu,
+    country_standpoint: client.country_standpoint,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     closeRealAccountSignup: ui.closeRealAccountSignup,

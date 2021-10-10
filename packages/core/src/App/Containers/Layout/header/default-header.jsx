@@ -18,11 +18,13 @@ import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 const DefaultHeader = ({
     acc_switcher_disabled_message,
     account_status,
+    account_type,
     addNotificationMessage,
     should_allow_authentication,
     app_routing_history,
     balance,
     currency,
+    country_standpoint,
     disableApp,
     enableApp,
     header_extension,
@@ -146,8 +148,10 @@ const DefaultHeader = ({
                     <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
                         <AccountActions
                             acc_switcher_disabled_message={acc_switcher_disabled_message}
+                            account_type={account_type}
                             balance={balance}
                             currency={currency}
+                            country_standpoint={country_standpoint}
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_acc_switcher_on={is_acc_switcher_on}
@@ -174,6 +178,7 @@ const DefaultHeader = ({
 
 DefaultHeader.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
+    account_type: PropTypes.string,
     should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
     addNotificationMessage: PropTypes.func,
@@ -210,12 +215,14 @@ DefaultHeader.propTypes = {
 export default connect(({ client, common, ui, menu, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
+    account_type: client.account_type,
     should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: ui.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
     is_mf: client.landing_company_shortcode === 'maltainvest',
     currency: client.currency,
+    country_standpoint: client.country_standpoint,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,

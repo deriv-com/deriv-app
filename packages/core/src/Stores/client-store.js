@@ -1849,9 +1849,6 @@ export default class ClientStore extends BaseStore {
         if (!this.verification_code.signup || !password || !residence) return;
         if (email_consent === undefined) return;
         email_consent = email_consent ? 1 : 0;
-        console.log(residence);
-        // Currently the code doesn't reach here and the console log is needed for debugging.
-        // TODO: remove console log when AccountSignup component and validation are ready
         WS.newAccountVirtual(
             this.verification_code.signup,
             password,

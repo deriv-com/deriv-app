@@ -13,6 +13,7 @@ const skeleton = {
     totalStake: 0,
     totalPayout: 0,
     totalRuns: 0,
+    runs: 0,
 };
 
 const globalStat = {};
@@ -41,6 +42,7 @@ export default Engine =>
             const { loginid: accountID } = this.accountInfo;
             if (globalStat[accountID]) {
                 globalStat[accountID].profitPerRun = 0;
+                globalStat[accountID].runs = 0;
             }
         }
 
@@ -85,7 +87,7 @@ export default Engine =>
         updateAndReturnTotalRuns() {
             this.sessionRuns++;
             const accountStat = this.getAccountStat();
-
+            ++accountStat.runs;
             return ++accountStat.totalRuns;
         }
 
@@ -93,6 +95,10 @@ export default Engine =>
         getTotalRuns() {
             const accountStat = this.getAccountStat();
             return accountStat.totalRuns;
+        }
+        getRuns() {
+            const accountStat = this.getAccountStat();
+            return accountStat.runs;
         }
 
         getTotalProfit(toString, currency) {

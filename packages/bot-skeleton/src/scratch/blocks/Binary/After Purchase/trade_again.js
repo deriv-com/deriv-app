@@ -83,18 +83,24 @@ Blockly.Blocks.trade_again = {
 };
 
 Blockly.JavaScript.trade_again = block => {
-    const is_sl_enabled = block.getFieldValue('SL_ENABALED');
-    const is_tp_enabled = block.getFieldValue('TP_ENABALED');
+    block.error_message = 'ksjdkasjhdkajshd';
+    const is_sl_enabled = block.getFieldValue('SL_ENABALED').toLowerCase();
+    const is_tp_enabled = block.getFieldValue('TP_ENABALED').toLowerCase();
+
     const stop_loss = Blockly.JavaScript.valueToCode(block, 'STOP_LOSS', Blockly.JavaScript.ORDER_ATOMIC);
     const take_profit = Blockly.JavaScript.valueToCode(block, 'TAKE_PROFIT', Blockly.JavaScript.ORDER_ATOMIC);
     const code = `
     var profit = Bot.getProfitPerRun(false);
-    if((${!!is_sl_enabled} && profit < 0 && Math.abs(profit) >= ${stop_loss}) ||
-    (${!!is_tp_enabled} && profit >= 0 && profit >= ${take_profit})){
+    if((${is_sl_enabled} && profit < 0 && Math.abs(profit) >= ${stop_loss}) ||
+    (${is_tp_enabled} && profit >= 0 && profit >= ${take_profit})){
+        var total_run = Bot.getRuns();
+        var message = (profit < 0 ? 'Stop loss' : 'Take profit') + ' is set to ' + (profit < 0 ?  ${stop_loss} : ${take_profit}) + '. PL after ' + total_run + ' runs is ' +  profit + '. Bot has stopped.';
+        Bot.emitError(message);
         Bot.isTradeAgain(false);\n
     }else{
         Bot.isTradeAgain(true);\n
     }
+
     return true;\n
     `;
 

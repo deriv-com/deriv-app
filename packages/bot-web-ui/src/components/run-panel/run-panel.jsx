@@ -65,7 +65,7 @@ const StatisticsSummary = ({
             />
         </div>
         <div className='run-panel__stat--reset-checkbox'>
-            <Checkbox onChange={handleResetCheckbox} label='Reset stats everytime bot runs?'></Checkbox>
+            <Checkbox onChange={handleResetCheckbox} label='Reset stats everytime bot runs?' />
         </div>
     </div>
 );

@@ -119,9 +119,7 @@ export default class RunPanelStore {
         const { client, ui } = core;
         this.clearProfitPerRun();
         if (getSetting('is_reset_checkbox')) {
-            console.log('hello');
             this.clearStat();
-            console.log('bye');
         }
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {

@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -8,6 +8,8 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 export default class MyProfileStore extends BaseStore {
     @observable active_tab = my_profile_tabs.MY_STATS;
     @observable advertiser_info = {};
+    @observable advertiser_payment_methods = {};
+    @observable advertiser_payment_methods_error = '';
     @observable balance_available = null;
     @observable contact_info = '';
     @observable default_advert_description = '';
@@ -19,6 +21,12 @@ export default class MyProfileStore extends BaseStore {
     @observable is_submit_success = false;
     @observable payment_info = '';
     @observable should_hide_my_profile_tab = false;
+    @observable show_add_payment_method_form = false;
+
+    @computed
+    get advertiser_has_payment_methods() {
+        return !!this.advertiser_payment_methods.length;
+    }
 
     @action.bound
     getAdvertiserInfo() {
@@ -42,6 +50,21 @@ export default class MyProfileStore extends BaseStore {
                 this.setErrorMessage(response.error.message);
             }
             this.setIsLoading(false);
+        });
+    }
+
+    @action.bound
+    getAdvertiserPaymentMethods() {
+        // this.setIsLoading(true);
+        requestWS({
+            p2p_advertiser_payment_methods: 1,
+        }).then(response => {
+            console.log(response);
+            if (response.error) {
+                this.setAdvertiserPaymentMethodsError(response.error.message);
+            } else {
+                this.setAdvertiserPaymentMethods(response.p2p_advertiser_payment_methods);
+            }
         });
     }
 
@@ -107,6 +130,16 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setAdvertiserPaymentMethods(advertiser_payment_methods) {
+        this.advertiser_payment_methods = advertiser_payment_methods;
+    }
+
+    @action.bound
+    setAdvertiserPaymentMethodsError(advertiser_payment_methods_error) {
+        this.advertiser_payment_methods_error = advertiser_payment_methods_error;
+    }
+
+    @action.bound
     setBalanceAvailable(balance_available) {
         this.balance_available = balance_available;
     }
@@ -154,6 +187,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setShouldHideMyProfileTab(should_hide_my_profile_tab) {
         this.should_hide_my_profile_tab = should_hide_my_profile_tab;
+    }
+
+    @action.bound
+    setShowAddPaymentMethodForm(show_add_payment_method_form) {
+        this.show_add_payment_method_form = show_add_payment_method_form;
     }
 
     validateForm = values => {

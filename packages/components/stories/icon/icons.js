@@ -288,6 +288,7 @@ export const icons = {
         'IcPauseOutline',
         'IcPause',
         'IcPaymentAgent',
+        'IcPaymentMethodsWallet',
         'IcPc',
         'IcPercentSolid',
         'IcPhone',

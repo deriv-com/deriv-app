@@ -4,6 +4,7 @@ import { error_types, unrecoverable_errors, observer, message_types } from '@der
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
+import { storeSetting, getSetting } from 'Utils/settings';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -21,6 +22,7 @@ export default class RunPanelStore {
     @observable is_drawer_open = true;
     @observable is_dialog_open = false;
     @observable is_sell_requested = false;
+    @observable is_reset_checkbox = false;
 
     run_id = '';
 
@@ -86,11 +88,41 @@ export default class RunPanelStore {
     }
 
     @action.bound
+    async handleResetCheckbox() {
+        this.is_reset_checkbox = !this.is_reset_checkbox;
+        storeSetting('is_reset_checkbox', this.is_reset_checkbox);
+    }
+
+    @action.bound
+    async onCloseQuickstrategyDialog() {
+        this.showResetBotDialog();
+    }
+
+    @action.bound
+    async showResetBotDialog() {
+        this.onOkButtonClick = () => {
+            storeSetting('is_reset_checkbox', true);
+            this.onCloseDialog();
+            this.onRunButtonClick();
+        };
+        this.onCancelButtonClick = this.onCloseDialog;
+        this.dialog_options = {
+            title: localize('Do you want to reset counters?'),
+            message: localize('Do you want to reset your staks every time you run your strategies?'),
+        };
+        this.is_dialog_open = true;
+    }
+
+    @action.bound
     async onRunButtonClick() {
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
         this.clearProfitPerRun();
-
+        if (getSetting('is_reset_checkbox')) {
+            console.log('hello');
+            this.clearStat();
+            console.log('bye');
+        }
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
             this.showLoginDialog();

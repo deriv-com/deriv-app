@@ -76,6 +76,9 @@
                 color: var(--text-loss-danger);
             }
         }
+        &--reset-checkbox {
+            width: 100%;
+        }
         &--mobile {
             width: 100%;
             bottom: 0;

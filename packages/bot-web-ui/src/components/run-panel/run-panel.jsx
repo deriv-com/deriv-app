@@ -1,4 +1,4 @@
-import { Button, Dialog, Drawer, Modal, Money, Tabs, ThemedScrollbars, Text } from '@deriv/components';
+import { Button, Dialog, Drawer, Modal, Money, Tabs, ThemedScrollbars, Text, Checkbox } from '@deriv/components';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
@@ -20,6 +20,7 @@ const StatisticsTile = ({ content, contentClassName, title }) => (
 
 const StatisticsSummary = ({
     currency,
+    handleResetCheckbox,
     is_mobile,
     lost_contracts,
     number_of_runs,
@@ -62,6 +63,9 @@ const StatisticsSummary = ({
                     'run-panel__stat-amount--negative': total_profit < 0,
                 })}
             />
+        </div>
+        <div className='run-panel__stat--reset-checkbox'>
+            <Checkbox onChange={handleResetCheckbox} label='Reset stats everytime bot runs?'></Checkbox>
         </div>
     </div>
 );
@@ -181,6 +185,7 @@ const RunPanel = ({
     active_index,
     currency,
     dialog_options,
+    handleResetCheckbox,
     is_clear_stat_disabled,
     is_dialog_open,
     is_drawer_open,
@@ -212,6 +217,7 @@ const RunPanel = ({
         <DrawerContent
             active_index={active_index}
             currency={currency}
+            handleResetCheckbox={handleResetCheckbox}
             is_drawer_open={is_drawer_open}
             is_mobile={is_mobile}
             lost_contracts={lost_contracts}
@@ -281,6 +287,7 @@ RunPanel.propTypes = {
     active_index: PropTypes.number,
     currency: PropTypes.string,
     dialog_options: PropTypes.object,
+    handleResetCheckbox: PropTypes.func,
     is_clear_stat_disabled: PropTypes.bool,
     is_dialog_open: PropTypes.bool,
     is_drawer_open: PropTypes.bool,
@@ -308,6 +315,7 @@ export default connect(({ run_panel, core, ui }) => ({
     active_index: run_panel.active_index,
     currency: core.client.currency,
     dialog_options: run_panel.dialog_options,
+    handleResetCheckbox: run_panel.handleResetCheckbox,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,

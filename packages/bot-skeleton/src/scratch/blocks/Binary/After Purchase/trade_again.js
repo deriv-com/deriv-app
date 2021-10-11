@@ -23,7 +23,7 @@ Blockly.Blocks.trade_again = {
                 {
                     type: 'field_image_checkbox',
                     name: 'SL_ENABALED',
-                    checked: false,
+                    checked: true,
                 },
                 {
                     type: 'field_label',
@@ -39,7 +39,7 @@ Blockly.Blocks.trade_again = {
                 {
                     type: 'field_image_checkbox',
                     name: 'TP_ENABALED',
-                    checked: false,
+                    checked: true,
                 },
                 {
                     type: 'field_label',

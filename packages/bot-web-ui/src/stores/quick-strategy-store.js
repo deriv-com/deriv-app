@@ -246,10 +246,10 @@ export default class QuickStrategyStore {
                     timeout: 5000,
                 })
                 .then(() => {
-                    if (getSetting('is_reset_checkbox')) {
+                    if (getSetting('remember_me') || (!getSetting('remember_me') && getSetting('is_reset_checkbox'))) {
                         this.root_store.run_panel.onRunButtonClick();
-                    } else {
-                        this.root_store.run_panel.onCloseQuickstrategyDialog();
+                    } else if (!getSetting('is_reset_checkbox')) {
+                        this.root_store.run_panel.showResetBotDialog();
                     }
                 });
         }

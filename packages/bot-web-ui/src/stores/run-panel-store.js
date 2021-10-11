@@ -1,5 +1,7 @@
+import React from 'react';
 import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
+import { Checkbox, Text } from '@deriv/components';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
@@ -23,6 +25,7 @@ export default class RunPanelStore {
     @observable is_dialog_open = false;
     @observable is_sell_requested = false;
     @observable is_reset_checkbox = false;
+    @observable remember_me = false;
 
     run_id = '';
 
@@ -94,21 +97,41 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    async onCloseQuickstrategyDialog() {
-        this.showResetBotDialog();
+    async handleRememberme() {
+        this.remember_me = !this.remember_me;
+        storeSetting('remember_me', this.remember_me);
     }
 
     @action.bound
     async showResetBotDialog() {
         this.onOkButtonClick = () => {
-            storeSetting('is_reset_checkbox', true);
+            this.is_reset_checkbox = true;
+            storeSetting('is_reset_checkbox', this.is_reset_checkbox);
             this.onCloseDialog();
             this.onRunButtonClick();
         };
-        this.onCancelButtonClick = this.onCloseDialog;
+        this.onCancelButtonClick = () => {
+            this.onCloseDialog();
+            this.onRunButtonClick();
+        };
         this.dialog_options = {
             title: localize('Do you want to reset counters?'),
-            message: localize('Do you want to reset your staks every time you run your strategies?'),
+            message: (
+                <div>
+                    <Text size='xs' as='p'>
+                        {localize(
+                            'Do you want to reset your staks every time you run your strategies?\n' +
+                                '(Total stake, Total payout, No. of runs, Contracts won, Contracts lost, Total P/L)'
+                        )}
+                    </Text>
+                    <Checkbox
+                        className='run-panel__stat--remember-me'
+                        value={this.remember_me}
+                        onChange={this.handleRememberme}
+                        label='Remember my choice'
+                    />
+                </div>
+            ),
         };
         this.is_dialog_open = true;
     }

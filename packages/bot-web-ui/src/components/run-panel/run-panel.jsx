@@ -10,6 +10,7 @@ import TradeAnimation from 'Components/trade-animation';
 import SelfExclusion from 'Components/self-exclusion';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
+import { getSetting } from 'Utils/settings';
 
 const StatisticsTile = ({ content, contentClassName, title }) => (
     <div className='run-panel__tile'>
@@ -65,7 +66,11 @@ const StatisticsSummary = ({
             />
         </div>
         <div className='run-panel__stat--reset-checkbox'>
-            <Checkbox onChange={handleResetCheckbox} label='Reset stats everytime bot runs?' />
+            <Checkbox
+                onChange={handleResetCheckbox}
+                value={getSetting('is_reset_checkbox')}
+                label='Reset stats everytime bot runs?'
+            />
         </div>
     </div>
 );

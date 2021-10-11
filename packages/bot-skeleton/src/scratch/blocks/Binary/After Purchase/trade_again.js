@@ -100,7 +100,6 @@ Blockly.JavaScript.trade_again = block => {
     }else{
         Bot.isTradeAgain(true);\n
     }
-
     return true;\n
     `;
 

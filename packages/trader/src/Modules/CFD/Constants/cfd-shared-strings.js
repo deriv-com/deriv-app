@@ -7,7 +7,6 @@ export const general_messages = {
             if (is_logged_in) return localize('Welcome to your Deriv X dashboard');
             return localize('Welcome to Deriv X');
         } else if (platform === CFD_PLATFORMS.MT5) {
-            if (is_logged_in) return localize('Welcome to Deriv MT5 dashboard');
             return localize('Welcome to Deriv MT5 (DMT5) dashboard');
         }
         return localize('');

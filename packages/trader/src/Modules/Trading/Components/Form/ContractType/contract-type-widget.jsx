@@ -12,6 +12,7 @@ class ContractTypeWidget extends React.PureComponent {
         list: this.props.list,
         selected_category: null,
         search_query: '',
+        language: this.props.language,
     };
 
     componentDidMount() {
@@ -23,7 +24,10 @@ class ContractTypeWidget extends React.PureComponent {
     }
 
     componentDidUpdate() {
-        if (this.props.list.length !== this.state.list.length && !this.state.on_input_change) {
+        if (
+            this.props.language !== this.state.language ||
+            (this.props.list.length !== this.state.list.length && !this.state.on_input_change)
+        ) {
             // reset internal list state when contracts list is changed in store (on contracts_for response)
             this.setState({ list: this.props.list });
         }

@@ -10,7 +10,7 @@ import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
 
-const Contract = ({ contract_type, contract_types_list, is_digit_view, is_equal, onChange, symbol }) => {
+const Contract = ({ contract_type, contract_types_list, is_digit_view, is_equal, onChange, symbol, language }) => {
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
 
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
@@ -32,6 +32,7 @@ const Contract = ({ contract_type, contract_types_list, is_digit_view, is_equal,
                 name='contract_type'
                 onChange={onChange}
                 value={contract_type}
+                language={language}
             />
         </React.Fragment>
     );
@@ -45,7 +46,8 @@ Contract.propTypes = {
     onChange: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, common }) => ({
+    language: common.current_language.toLowerCase(),
     contract_type: modules.trade.contract_type,
     contract_types_list: modules.trade.contract_types_list,
     is_digit_view: modules.trade.is_mobile_digit_view_selected,

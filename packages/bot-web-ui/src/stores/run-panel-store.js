@@ -133,6 +133,8 @@ export default class RunPanelStore {
                 </div>
             ),
         };
+        this.dialog_options.cancel_button_text = 'No';
+        this.dialog_options.ok_button_text = 'Yes';
         this.is_dialog_open = true;
     }
 

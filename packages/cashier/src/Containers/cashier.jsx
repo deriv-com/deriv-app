@@ -196,7 +196,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_enabled: modules.cashier.cashier_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.cashier_store.is_payment_agent_transfer_visible,
-    is_payment_agent_visible: modules.cashier.cashier_store.is_payment_agent_visible,
+    is_payment_agent_visible: modules.cashier.payment_agent_store.is_payment_agent_visible,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,
     onMount: modules.cashier.cashier_store.onMountCommon,

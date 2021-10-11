@@ -239,7 +239,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_p2p_enabled: modules.cashier.cashier_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.cashier_store.is_payment_agent_transfer_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_payment_agent_visible: modules.cashier.cashier_store.is_payment_agent_visible,
+    is_payment_agent_visible: modules.cashier.payment_agent_store.is_payment_agent_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,

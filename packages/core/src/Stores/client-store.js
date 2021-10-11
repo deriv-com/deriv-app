@@ -1113,7 +1113,7 @@ export default class ClientStore extends BaseStore {
             client,
             this,
             this.root_store.ui,
-            this.root_store.modules.cashier
+            this.root_store.modules.cashier?.cashier_store
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -1198,7 +1198,7 @@ export default class ClientStore extends BaseStore {
                             client,
                             this,
                             this.root_store.ui,
-                            this.root_store.modules.cashier
+                            this.root_store.modules.cashier?.cashier_store
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }

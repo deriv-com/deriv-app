@@ -47,8 +47,8 @@ export default connect(({ client, modules }) => ({
     is_cashier_locked: modules.cashier.cashier_store.is_cashier_locked,
     is_virtual: client.is_virtual,
     verification_code: client.verification_code.payment_agent_withdraw,
-    container: modules.cashier.cashier_store.config.payment_agent.container,
-    is_payment_agent_withdraw: modules.cashier.cashier_store.config.payment_agent.is_withdraw,
+    container: modules.cashier.payment_agent_store.container,
+    is_payment_agent_withdraw: modules.cashier.payment_agent_store.is_withdraw,
     setActiveTab: modules.cashier.cashier_store.setActiveTab,
-    setPaymentAgentActiveTabIndex: modules.cashier.cashier_store.config.payment_agent.setActiveTabIndex,
+    setPaymentAgentActiveTabIndex: modules.cashier.payment_agent_store.setActiveTabIndex,
 }))(PaymentAgent);

@@ -190,16 +190,16 @@ PaymentAgentList.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    error: modules.cashier.cashier_store.config.payment_agent.verification.error,
-    is_email_sent: modules.cashier.cashier_store.config.payment_agent.verification.is_email_sent,
+    error: modules.cashier.payment_agent_store.verification.error,
+    is_email_sent: modules.cashier.payment_agent_store.verification.is_email_sent,
     is_loading: modules.cashier.cashier_store.is_loading,
-    is_resend_clicked: modules.cashier.cashier_store.config.payment_agent.verification.is_resend_clicked,
-    onChangePaymentMethod: modules.cashier.cashier_store.onChangePaymentMethod,
+    is_resend_clicked: modules.cashier.payment_agent_store.verification.is_resend_clicked,
+    onChangePaymentMethod: modules.cashier.payment_agent_store.onChangePaymentMethod,
     onMount: modules.cashier.cashier_store.onMountPaymentAgentList,
-    payment_agent_active_tab_index: modules.cashier.cashier_store.config.payment_agent.active_tab_index,
-    payment_agent_list: modules.cashier.cashier_store.config.payment_agent.filtered_list,
-    resend_timeout: modules.cashier.cashier_store.config.payment_agent.verification.resend_timeout,
-    selected_bank: modules.cashier.cashier_store.config.payment_agent.selected_bank,
-    setActiveTabIndex: modules.cashier.cashier_store.setActiveTabIndex,
-    supported_banks: modules.cashier.cashier_store.config.payment_agent.supported_banks,
+    payment_agent_active_tab_index: modules.cashier.payment_agent_store.active_tab_index,
+    payment_agent_list: modules.cashier.payment_agent_store.filtered_list,
+    resend_timeout: modules.cashier.payment_agent_store.verification.resend_timeout,
+    selected_bank: modules.cashier.payment_agent_store.selected_bank,
+    setActiveTabIndex: modules.cashier.payment_agent_store.setActiveTabIndex,
+    supported_banks: modules.cashier.payment_agent_store.supported_banks,
 }))(PaymentAgentList);

@@ -56,30 +56,6 @@ class Config {
     }
 }
 
-class ConfigPaymentAgent {
-    list = [];
-
-    @observable agents = [];
-    @observable container = 'payment_agent';
-    @observable error = new ErrorStore();
-    @observable filtered_list = [];
-    @observable is_name_selected = true;
-    @observable is_withdraw = false;
-    @observable is_try_withdraw_successful = false;
-    @observable is_withdraw_successful = false;
-    @observable confirm = {};
-    @observable receipt = {};
-    @observable selected_bank = 0;
-    @observable supported_banks = [];
-    @observable verification = new VerificationStore();
-    @observable active_tab_index = 0;
-
-    @action.bound
-    setActiveTabIndex(index) {
-        this.active_tab_index = index;
-    }
-}
-
 class ConfigPaymentAgentTransfer {
     @observable container = 'payment_agent_transfer';
     @observable error = new ErrorStore();
@@ -178,7 +154,7 @@ export default class CashierStore extends BaseStore {
             ...toJS(new Config({ container: 'deposit' })),
             error: new ErrorStore(),
         },
-        payment_agent: new ConfigPaymentAgent(),
+        payment_agent: this.root_store.modules.cashier?.payment_agent_store,
         payment_agent_transfer: new ConfigPaymentAgentTransfer(),
         withdraw: new ConfigWithdraw(),
     };
@@ -191,18 +167,13 @@ export default class CashierStore extends BaseStore {
 
     map_action = {
         [this.config.withdraw.container]: 'payment_withdraw',
-        [this.config.payment_agent.container]: 'payment_agent_withdraw',
+        [this.root_store.modules.cashier?.payment_agent_store.container]: 'payment_agent_withdraw',
     };
 
     @computed
     get is_crypto() {
         const { currency } = this.root_store.client;
         return !!currency && isCryptocurrency(currency);
-    }
-
-    @computed
-    get is_payment_agent_visible() {
-        return !!(this.config.payment_agent.filtered_list.length || this.config.payment_agent.agents.length);
     }
 
     @computed
@@ -228,7 +199,7 @@ export default class CashierStore extends BaseStore {
 
         if (is_withdraw_confirmed) this.setWithdrawAmount(this.converter_from_amount);
 
-        if (!is_withdraw_confirmed && this.config[this.active_container].verification) {
+        if (!is_withdraw_confirmed && this.config[this.active_container]?.verification) {
             this.clearVerification();
         }
     }
@@ -333,15 +304,6 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
-    @action.bound
-    setActiveTabIndex(index) {
-        this.config.payment_agent.setActiveTabIndex(index);
-
-        if (index === 1) {
-            this.sendVerificationEmail();
-        }
-    }
-
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
@@ -364,7 +326,7 @@ export default class CashierStore extends BaseStore {
 
                 if (this.root_store.client.is_logged_in) {
                     await this.checkP2pStatus();
-                    await this.filterPaymentAgentList();
+                    await this.root_store.modules.cashier?.payment_agent_store.filterPaymentAgentList();
                 }
             }
         );
@@ -400,8 +362,10 @@ export default class CashierStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
-            if (!this.config.payment_agent.list.length) {
-                this.setPaymentAgentList().then(this.filterPaymentAgentList);
+            if (!this.root_store.modules.cashier?.payment_agent_store.list.length) {
+                this.root_store.modules.cashier?.payment_agent_store
+                    .setPaymentAgentList()
+                    .then(this.root_store.modules.cashier?.payment_agent_store.filterPaymentAgentList);
             }
 
             if (!this.config.payment_agent_transfer.is_payment_agent) {
@@ -713,7 +677,7 @@ export default class CashierStore extends BaseStore {
             }),
         };
 
-        if (is_verification_error && this.config[this.active_container].verification) {
+        if (is_verification_error && this.config[this.active_container]?.verification) {
             this.config[this.active_container].verification.error = error_object;
         } else {
             this.config[this.active_container].error = error_object;
@@ -806,7 +770,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setVerificationResendClicked(is_resend_clicked, container = this.active_container) {
-        this.config[container].verification.isetIsResendClicked(is_resend_clicked);
+        this.config[container].verification.setIsResendClicked(is_resend_clicked);
     }
 
     @action.bound
@@ -857,14 +821,19 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         this.setVerificationButtonClicked(true);
         const withdrawal_type = `payment${
-            this.active_container === this.config.payment_agent.container ? 'agent' : ''
+            this.active_container === this.root_store.modules.cashier?.payment_agent_store.container ? 'agent' : ''
         }_withdraw`;
 
         const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
         if (response_verify_email.error) {
             this.clearVerification();
             if (response_verify_email.error.code === 'PaymentAgentWithdrawError') {
-                this.setErrorMessage(response_verify_email.error, this.resetPaymentAgent, null, true);
+                this.setErrorMessage(
+                    response_verify_email.error,
+                    this.root_store.modules.cashier?.payment_agent_store.resetPaymentAgent,
+                    null,
+                    true
+                );
             } else {
                 this.setErrorMessage(
                     response_verify_email.error,
@@ -951,252 +920,6 @@ export default class CashierStore extends BaseStore {
 
         this.setLoading(false);
     }
-
-    @action.bound
-    async getPaymentAgentList() {
-        if (this.config.payment_agent.list.length) {
-            return this.WS.wait('paymentagent_list');
-        }
-
-        // wait for get_settings so residence gets populated in client-store
-        // TODO: set residence in client-store from authorize so it's faster
-        await this.WS.wait('get_settings');
-        return this.WS.authorized.paymentAgentList(this.root_store.client.residence, this.root_store.client.currency);
-    }
-
-    @action.bound
-    async getPaymentAgentDetails() {
-        const { paymentagent_details } = await this.WS.authorized.paymentAgentDetails();
-        return paymentagent_details;
-    }
-
-    @action.bound
-    addSupportedBank(bank) {
-        const supported_bank_exists = this.config.payment_agent.supported_banks.find(
-            supported_bank => supported_bank.value === bank.toLowerCase()
-        );
-        if (!supported_bank_exists) {
-            this.config.payment_agent.supported_banks.push({ text: bank, value: bank.toLowerCase() });
-        }
-    }
-
-    @action.bound
-    sortSupportedBanks() {
-        // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
-        this.config.payment_agent.supported_banks.replace(
-            this.config.payment_agent.supported_banks.slice().sort((a, b) => {
-                if (a.value < b.value) {
-                    return -1;
-                }
-                if (a.value > b.value) {
-                    return 1;
-                }
-                return 0;
-            })
-        );
-    }
-
-    @action.bound
-    async setPaymentAgentList(pa_list) {
-        const payment_agent_list = pa_list || (await this.getPaymentAgentList());
-        if (!payment_agent_list || !payment_agent_list.paymentagent_list) {
-            return;
-        }
-
-        payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
-            this.config.payment_agent.list.push({
-                email: payment_agent.email,
-                phone: payment_agent.telephone,
-                name: payment_agent.name,
-                supported_banks: payment_agent.supported_banks,
-                url: payment_agent.url,
-            });
-            if (payment_agent.supported_banks) {
-                payment_agent.supported_banks.split(',').forEach(bank => {
-                    this.addSupportedBank(bank);
-                });
-            }
-        });
-
-        this.sortSupportedBanks();
-    }
-
-    @action.bound
-    filterPaymentAgentList(bank) {
-        if (bank) {
-            this.config.payment_agent.filtered_list = [];
-            this.config.payment_agent.list.forEach(payment_agent => {
-                if (
-                    payment_agent.supported_banks &&
-                    payment_agent.supported_banks.toLowerCase().split(',').indexOf(bank) !== -1
-                ) {
-                    this.config.payment_agent.filtered_list.push(payment_agent);
-                }
-            });
-        } else {
-            this.config.payment_agent.filtered_list = this.config.payment_agent.list;
-        }
-        if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
-            this.root_store.common.routeTo(routes.cashier_deposit);
-        }
-    }
-
-    @action.bound
-    onChangePaymentMethod({ target }) {
-        const value = target.value === '0' ? parseInt(target.value) : target.value;
-        this.config.payment_agent.selected_bank = value;
-        this.filterPaymentAgentList(value);
-    }
-
-    @action.bound
-    async onMountPaymentAgentWithdraw() {
-        this.setLoading(true);
-        this.onRemount = this.onMountPaymentAgentWithdraw;
-        await this.onMountCommon();
-
-        this.setIsWithdraw(true);
-        this.setIsWithdrawSuccessful(false);
-        this.setReceipt({});
-
-        if (!this.config.payment_agent.agents.length) {
-            const payment_agent_list = await this.getPaymentAgentList();
-            payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
-                this.addPaymentAgent(payment_agent);
-            });
-            if (
-                !payment_agent_list.paymentagent_list.list.length &&
-                window.location.pathname.endsWith(routes.cashier_pa)
-            ) {
-                this.root_store.common.routeTo(routes.cashier_deposit);
-            }
-
-            this.setLoading(false);
-        } else {
-            this.setLoading(false);
-        }
-    }
-
-    @action.bound
-    setIsWithdraw(is_withdraw = !this.config.payment_agent.is_withdraw) {
-        this.config.payment_agent.is_withdraw = is_withdraw;
-    }
-
-    @action.bound
-    setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
-        this.setErrorMessage('');
-        this.config.payment_agent.is_try_withdraw_successful = is_try_withdraw_successful;
-    }
-
-    @action.bound
-    setIsWithdrawSuccessful(is_withdraw_successful) {
-        this.config.payment_agent.is_withdraw_successful = is_withdraw_successful;
-    }
-
-    @action.bound
-    setConfirmation({ amount, currency, loginid, payment_agent_name }) {
-        this.config.payment_agent.confirm = {
-            amount,
-            currency,
-            loginid,
-            payment_agent_name,
-        };
-    }
-
-    @action.bound
-    setReceipt({
-        amount_transferred,
-        payment_agent_email,
-        payment_agent_id,
-        payment_agent_name,
-        payment_agent_phone,
-        payment_agent_url,
-    }) {
-        this.config.payment_agent.receipt = {
-            amount_transferred,
-            payment_agent_email,
-            payment_agent_id,
-            payment_agent_name,
-            payment_agent_phone,
-            payment_agent_url,
-        };
-    }
-
-    @action.bound
-    addPaymentAgent(payment_agent) {
-        this.config.payment_agent.agents.push({
-            text: payment_agent.name,
-            value: payment_agent.paymentagent_loginid,
-            max_withdrawal: payment_agent.max_withdrawal,
-            min_withdrawal: payment_agent.min_withdrawal,
-            email: payment_agent.email,
-            phone: payment_agent.telephone,
-            url: payment_agent.url,
-        });
-    }
-
-    @action.bound
-    async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
-        this.setErrorMessage('');
-        const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
-            loginid,
-            currency,
-            amount,
-            verification_code,
-            dry_run: 1,
-        });
-        if (+payment_agent_withdraw.paymentagent_withdraw === 2) {
-            const selected_agent = this.config.payment_agent.agents.find(agent => agent.value === loginid);
-            this.setConfirmation({
-                amount,
-                currency,
-                loginid,
-                ...(selected_agent && { payment_agent_name: selected_agent.text }),
-            });
-            this.setIsTryWithdrawSuccessful(true);
-        } else {
-            this.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
-        }
-    }
-
-    @action.bound
-    async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
-        this.setErrorMessage('');
-        const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
-            loginid,
-            currency,
-            amount,
-            verification_code,
-        });
-        if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
-            const selected_agent = this.config.payment_agent.agents.find(agent => agent.value === loginid);
-            this.setReceipt({
-                amount_transferred: formatMoney(currency, amount, true),
-                ...(selected_agent && {
-                    payment_agent_email: selected_agent.email,
-                    payment_agent_id: selected_agent.value,
-                    payment_agent_name: selected_agent.text,
-                    payment_agent_phone: selected_agent.phone,
-                    payment_agent_url: selected_agent.url,
-                }),
-                ...(!selected_agent && {
-                    payment_agent_id: loginid,
-                }),
-            });
-            this.setIsWithdrawSuccessful(true);
-            this.setIsTryWithdrawSuccessful(false);
-            this.setConfirmation({});
-        } else {
-            this.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
-        }
-    }
-
-    @action.bound
-    resetPaymentAgent = () => {
-        this.setErrorMessage('');
-        this.setIsWithdraw(false);
-        this.clearVerification();
-        this.setActiveTabIndex(0);
-    };
 
     // possible transfers:
     // 1. fiat to crypto & vice versa
@@ -1674,7 +1397,7 @@ export default class CashierStore extends BaseStore {
         this.onRemount = this.onMountPaymentAgentTransfer;
         await this.onMountCommon();
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
-            const response = await this.getPaymentAgentList();
+            const response = await this.root_store.modules.cashier?.payment_agent_store.getPaymentAgentList();
             const current_payment_agent = await this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);
         }
@@ -1685,7 +1408,9 @@ export default class CashierStore extends BaseStore {
         const payment_agent_listed = response_payment_agent.paymentagent_list.list.find(
             agent => agent.paymentagent_loginid === this.root_store.client.loginid
         );
-        const current_payment_agent = payment_agent_listed || (await this.getPaymentAgentDetails());
+        const current_payment_agent =
+            payment_agent_listed ||
+            (await this.root_store.modules.cashier?.payment_agent_store.getPaymentAgentDetails());
         return current_payment_agent ?? {};
     }
 
@@ -1787,15 +1512,17 @@ export default class CashierStore extends BaseStore {
     };
 
     accountSwitcherListener() {
-        [this.config.withdraw.container, this.config.payment_agent.container].forEach(container => {
-            this.clearVerification(container);
-        });
+        [this.config.withdraw.container, this.root_store.modules.cashier?.payment_agent_store.container].forEach(
+            container => {
+                this.clearVerification(container);
+            }
+        );
         [this.config.deposit.container, this.config.withdraw.container].forEach(container => {
             this.setIframeUrl('', container);
             this.clearTimeoutCashierUrl(container);
             this.setSessionTimeout(true, container);
         });
-        this.config.payment_agent = new ConfigPaymentAgent();
+        this.payment_agent = this.root_store.modules.cashier?.payment_agent_store;
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;

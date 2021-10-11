@@ -151,7 +151,7 @@ export default connect(({ client, modules, ui }) => ({
     is_landing_company_loaded: client.is_landing_company_loaded,
     is_mobile: ui.is_mobile,
     is_p2p_enabled: modules.cashier.cashier_store.is_p2p_enabled,
-    is_payment_agent_visible: modules.cashier.cashier_store.is_payment_agent_visible,
+    is_payment_agent_visible: modules.cashier.payment_agent_store.is_payment_agent_visible,
     is_switching: client.is_switching,
     openRealAccountSignup: ui.openRealAccountSignup,
     setIsCashierDefault: modules.cashier.cashier_store.setIsCashierDefault,

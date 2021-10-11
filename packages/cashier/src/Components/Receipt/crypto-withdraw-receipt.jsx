@@ -180,5 +180,5 @@ export default connect(({ client, modules }) => ({
     resetWithrawForm: modules.cashier.cashier_store.resetWithrawForm,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
-    setIsWithdrawConfirmed: modules.cashier.cashier_store.setIsWithdrawConfirmed,
+    setIsWithdrawConfirmed: modules.cashier.payment_agent_store.setIsWithdrawConfirmed,
 }))(CryptoWithdrawReceipt);

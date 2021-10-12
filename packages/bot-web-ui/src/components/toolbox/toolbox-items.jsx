@@ -128,16 +128,16 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
         <Category id='trade_results' name={localize('Trade again')}>
             <Block type='after_purchase' />
             <Block type='trade_again'>
-                <Field name='SL_ENABALED'>TRUE</Field>
+                <Field name='SL_ENABLED'>FALSE</Field>
                 <Value name='STOP_LOSS'>
                     <Shadow type='math_number'>
-                        <Field name='NUM'>0</Field>
+                        <Field name='NUM' />
                     </Shadow>
                 </Value>
-                <Field name='TP_ENABALED'>TRUE</Field>
+                <Field name='TP_ENABLED'>FALSE</Field>
                 <Value name='TAKE_PROFIT'>
                     <Shadow type='math_number'>
-                        <Field name='NUM'>0</Field>
+                        <Field name='NUM' />
                     </Shadow>
                 </Value>
             </Block>

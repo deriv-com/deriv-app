@@ -69,7 +69,11 @@ const StatisticsSummary = ({
             <Checkbox
                 onChange={handleResetCheckbox}
                 value={getSetting('is_reset_checkbox')}
-                label='Reset stats everytime bot runs?'
+                label={
+                    <Text size='xxs' line_height='s' weight='bold'>
+                        <Localize i18n_default_text='Reset stats everytime bot runs?' />
+                    </Text>
+                }
             />
         </div>
     </div>

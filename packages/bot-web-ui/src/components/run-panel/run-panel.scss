@@ -78,9 +78,11 @@
         }
         &--reset-checkbox {
             width: 100%;
+            font-weight: bold;
+            margin: 1rem 0;
         }
         &--remember-me {
-            margin-top: 20px;
+            margin-top: 2rem;
             margin-left: 0;
         }
         &--mobile {

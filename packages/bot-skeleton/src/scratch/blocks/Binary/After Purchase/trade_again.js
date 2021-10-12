@@ -9,7 +9,7 @@ Blockly.Blocks.trade_again = {
     },
     definition() {
         return {
-            message0: localize('Trade Again {{ checked }} {{ stop_loss_label }} {{ stop_loss }}', {
+            message0: localize('Trade again {{ checked }} {{ stop_loss_label }} {{ stop_loss }}', {
                 checked: '%1',
                 stop_loss_label: '%2',
                 stop_loss: '%3',
@@ -22,8 +22,8 @@ Blockly.Blocks.trade_again = {
             args0: [
                 {
                     type: 'field_image_checkbox',
-                    name: 'SL_ENABALED',
-                    checked: true,
+                    name: 'SL_ENABLED',
+                    checked: false,
                 },
                 {
                     type: 'field_label',
@@ -38,8 +38,8 @@ Blockly.Blocks.trade_again = {
             args1: [
                 {
                     type: 'field_image_checkbox',
-                    name: 'TP_ENABALED',
-                    checked: true,
+                    name: 'TP_ENABLED',
+                    checked: false,
                 },
                 {
                     type: 'field_label',
@@ -70,29 +70,37 @@ Blockly.Blocks.trade_again = {
         };
     },
     restricted_parents: ['after_purchase'],
-    // onchange(event) {
-    //     const trade_again_block = this.workspace.getTradeAgainBlock();
-    //     console.log('this', this);
-    //     console.log('trade again block:', trade_again_block);
-    //     if (event.type === Blockly.Events.BLOCK_CHANGE) {
-    //         const SL_ENABALED = this.getFieldValue('SL_ENABALED');
-    //         let cc = trade_again_block.getDescendants();
-    //         console.log('cccc: ', cc);
-    //     }
-    // },
+    getRequiredValueInputs() {
+        return {
+            STOP_LOSS: input => {
+                const input_number = Number(input);
+                this.error_message = localize('Stop loss must be a positive number.');
+                return this.getFieldValue('SL_ENABLED') === 'TRUE' && !isNaN(input_number) && input_number <= 0;
+            },
+            TAKE_PROFIT: input => {
+                const input_number = Number(input);
+                this.error_message = localize('Take profit must be a positive number.');
+                return this.getFieldValue('TP_ENABLED') === 'TRUE' && !isNaN(input_number) && input_number <= 0;
+            },
+        };
+    },
+    onchange(event) {
+        if (event.type === Blockly.Events.BLOCK_CHANGE) {
+            this.getDescendants()[1].setDisabled(this.getFieldValue('SL_ENABLED') !== 'TRUE');
+            this.getDescendants()[2].setDisabled(this.getFieldValue('TP_ENABLED') !== 'TRUE');
+        }
+    },
 };
 
 Blockly.JavaScript.trade_again = block => {
-    block.error_message = 'ksjdkasjhdkajshd';
-    const is_sl_enabled = block.getFieldValue('SL_ENABALED').toLowerCase();
-    const is_tp_enabled = block.getFieldValue('TP_ENABALED').toLowerCase();
-
-    const stop_loss = Blockly.JavaScript.valueToCode(block, 'STOP_LOSS', Blockly.JavaScript.ORDER_ATOMIC);
-    const take_profit = Blockly.JavaScript.valueToCode(block, 'TAKE_PROFIT', Blockly.JavaScript.ORDER_ATOMIC);
+    const is_sl_enabled = block.getFieldValue('SL_ENABLED');
+    const is_tp_enabled = block.getFieldValue('TP_ENABLED');
+    const stop_loss = Blockly.JavaScript.valueToCode(block, 'STOP_LOSS', Blockly.JavaScript.ORDER_ATOMIC) || 0;
+    const take_profit = Blockly.JavaScript.valueToCode(block, 'TAKE_PROFIT', Blockly.JavaScript.ORDER_ATOMIC) || 0;
     const code = `
     var profit = Bot.getProfitPerRun(false);
-    if((${is_sl_enabled} && profit < 0 && Math.abs(profit) >= ${stop_loss}) ||
-    (${is_tp_enabled} && profit >= 0 && profit >= ${take_profit})){
+    if((${is_sl_enabled === 'TRUE'}  && profit < 0 && Math.abs(profit) >= ${stop_loss}) ||
+    (${is_tp_enabled === 'TRUE'} && profit >= 0 && profit >= ${take_profit})){
         var total_run = Bot.getRuns();
         var message = (profit < 0 ? 'Stop loss' : 'Take profit') + ' is set to ' + (profit < 0 ?  ${stop_loss} : ${take_profit}) + '. PL after ' + total_run + ' runs is ' +  profit + '. Bot has stopped.';
         Bot.emitError(message);

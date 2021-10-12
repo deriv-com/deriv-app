@@ -15,6 +15,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
     const [onfido_service_token, setOnfidoToken] = React.useState();
     const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
     const [is_status_loading, setStatusLoading] = React.useState(true);
+    const [retry_count, setRetryCount] = React.useState(0);
 
     // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
     // Ensures that any form of country code passed here is supported.
@@ -130,24 +131,27 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
         []
     );
 
+    const handleError = error => {
+        switch (error.code) {
+            case 'MissingPersonalDetails':
+                setMissingPersonalDetails('all');
+                break;
+            case 'InvalidPostalCode':
+                setMissingPersonalDetails('postal_code');
+                break;
+            default:
+                setAPIError(error);
+                break;
+        }
+    };
+
     React.useEffect(() => {
+        // retry state will re-run the token fetching
         getOnfidoServiceToken().then(response_token => {
             if (response_token.error) {
-                const code = response_token?.error?.code;
-
-                switch (code) {
-                    case 'MissingPersonalDetails':
-                        setMissingPersonalDetails('all');
-                        break;
-                    case 'InvalidPostalCode':
-                        setMissingPersonalDetails('postal_code');
-                        break;
-                    default:
-                        setAPIError(response_token.error);
-                        break;
-                }
-
+                handleError(response_token.error);
                 setStatusLoading(false);
+                setRetryCount(retry_count + 1);
             } else {
                 setOnfidoToken(response_token);
                 initOnfido().then(() => {
@@ -155,7 +159,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                 });
             }
         });
-    }, [getOnfidoServiceToken, initOnfido]);
+    }, [getOnfidoServiceToken, initOnfido, retry_count]);
 
     let component_to_load;
 
@@ -168,7 +172,8 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                 from='proof_of_identity'
             />
         );
-    } else if (api_error) {
+    } else if (retry_count >= 3 && api_error) {
+        // Error message will only display if retry count exceeds 3
         component_to_load = <ErrorMessage error_message={api_error?.message || api_error} />;
     }
 

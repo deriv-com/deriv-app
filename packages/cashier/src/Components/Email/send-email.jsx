@@ -13,8 +13,10 @@ const SendEmail = ({
     is_email_sent,
     is_resend_clicked,
     resend_timeout,
+    resendVerificationEmail,
     recentTransactionOnMount,
     sendVerificationEmail,
+    setVerificationResendClicked,
 }) => {
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -27,6 +29,9 @@ const SendEmail = ({
                     is_email_sent={is_email_sent}
                     is_resend_clicked={is_resend_clicked}
                     resend_timeout={resend_timeout}
+                    resendVerificationEmail={() => resendVerificationEmail('payment_withdraw')}
+                    sendVerificationEmail={() => sendVerificationEmail('payment_withdraw')}
+                    setVerificationResendClicked={setVerificationResendClicked}
                 />
             ) : (
                 <React.Fragment>
@@ -51,7 +56,7 @@ const SendEmail = ({
                         className='withdraw__verify-button'
                         has_effect
                         text={localize('Send email')}
-                        onClick={sendVerificationEmail}
+                        onClick={() => sendVerificationEmail('payment_withdraw')}
                         primary
                         large
                     />
@@ -70,7 +75,9 @@ SendEmail.propTypes = {
     is_resend_clicked: PropTypes.bool,
     resend_timeout: PropTypes.number,
     recentTransactionOnMount: PropTypes.func,
+    resendVerificationEmail: PropTypes.func,
     sendVerificationEmail: PropTypes.func,
+    setVerificationResendClicked: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
@@ -80,5 +87,8 @@ export default connect(({ client, modules }) => ({
     is_resend_clicked: modules.cashier.cashier_store.config.withdraw.verification.is_resend_clicked,
     resend_timeout: modules.cashier.cashier_store.config.withdraw.verification.resend_timeout,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    sendVerificationEmail: modules.cashier.cashier_store.sendVerificationEmail,
+    resendVerificationEmail: modules.cashier.cashier_store.config.withdraw.verification.resendVerificationEmail,
+    sendVerificationEmail: modules.cashier.cashier_store.config.withdraw.verification.sendVerificationEmail,
+    setVerificationResendClicked:
+        modules.cashier.cashier_store.config.withdraw.verification.setVerificationResendClicked,
 }))(SendEmail);

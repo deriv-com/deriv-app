@@ -130,10 +130,10 @@ const Withdrawal = ({
     if (is_withdrawal_locked) {
         return <WithdrawalLocked />;
     }
-    if (error.message) {
+    if (error?.message) {
         return <Error error={error} container='withdraw' />;
     }
-    if (verify_error.message) {
+    if (verify_error?.message) {
         return <Error error={verify_error} container='withdraw' />;
     }
     if (!is_crypto && (verification_code || iframe_url)) {
@@ -192,9 +192,9 @@ export default connect(({ client, modules }) => ({
     is_withdrawal_locked: modules.cashier.cashier_store.is_withdrawal_locked,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.cashier_store.setActiveTab,
-    setErrorMessage: modules.cashier.cashier_store.setErrorMessage,
+    setErrorMessage: modules.cashier.cashier_store.config.withdraw.error.setErrorMessage,
     tab_index: modules.cashier.cashier_store.cashier_route_tab_index,
     verification_code: client.verification_code.payment_withdraw,
-    verify_error: modules.cashier.cashier_store.config.withdraw.verification.error,
+    verify_error: modules.cashier.cashier_store.config.withdraw?.verification.error,
     willMountWithdraw: modules.cashier.cashier_store.willMountWithdraw,
 }))(Withdrawal);

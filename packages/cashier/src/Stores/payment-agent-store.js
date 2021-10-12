@@ -28,7 +28,7 @@ export default class PaymentAgentStore {
         this.active_tab_index = index;
 
         if (index === 1) {
-            this.root_store.modules.cashier.cashier_store.sendVerificationEmail();
+            this.verification.sendVerificationEmail('payment_agent_withdraw');
         }
     }
 
@@ -83,6 +83,11 @@ export default class PaymentAgentStore {
     }
 
     @action.bound
+    setList(pa_list) {
+        this.list.push(pa_list);
+    }
+
+    @action.bound
     async setPaymentAgentList(pa_list) {
         const payment_agent_list = pa_list || (await this.getPaymentAgentList());
         if (!payment_agent_list || !payment_agent_list.paymentagent_list) {
@@ -90,7 +95,7 @@ export default class PaymentAgentStore {
         }
 
         payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
-            this.list.push({
+            this.setList({
                 email: payment_agent.email,
                 phone: payment_agent.telephone,
                 name: payment_agent.name,
@@ -141,7 +146,7 @@ export default class PaymentAgentStore {
 
     @action.bound
     setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
-        this.root_store.modules.cashier.cashier_store.setErrorMessage('');
+        this.error.setErrorMessage('');
         this.is_try_withdraw_successful = is_try_withdraw_successful;
     }
 
@@ -224,8 +229,7 @@ export default class PaymentAgentStore {
 
     @action.bound
     async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
-        const { setErrorMessage } = this.root_store.modules.cashier.cashier_store;
-        setErrorMessage('');
+        this.error.setErrorMessage('');
         const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
@@ -243,16 +247,15 @@ export default class PaymentAgentStore {
             });
             this.setIsTryWithdrawSuccessful(true);
         } else {
-            setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
+            this.error.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
         }
     }
 
     @action.bound
     resetPaymentAgent = () => {
-        const { clearVerification, setErrorMessage } = this.root_store.modules.cashier.cashier_store;
-        setErrorMessage('');
+        this.error.setErrorMessage('');
         this.setIsWithdraw(false);
-        clearVerification();
+        this.verification.clearVerification('payment_agent_withdraw');
         this.setActiveTabIndex(0);
     };
 }

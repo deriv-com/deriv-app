@@ -55,5 +55,5 @@ export default connect(({ modules }) => ({
     account_transfer_amount: modules.cashier.cashier_store.config.account_transfer.account_transfer_amount,
     requestTransferBetweenAccounts: modules.cashier.cashier_store.requestTransferBetweenAccounts,
     setIsTransferConfirm: modules.cashier.cashier_store.setIsTransferConfirm,
-    transfer_to: modules.cashier.cashier_store.config.payment_agent_transfer.confirm.client_id,
+    transfer_to: modules.cashier.payment_agent_transfer_store.confirm.client_id,
 }))(AccountTransferConfirm);

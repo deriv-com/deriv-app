@@ -5,6 +5,7 @@ import ErrorDialog from './error-dialog-store';
 import VerificationStore from './verification-store';
 import ErrorStore from './error-store';
 import PaymentAgentStore from './payment-agent-store';
+import PaymentAgentTransferStore from './payment-agent-transfer-store';
 
 export default class CashierStore {
     constructor({ root_store, WS }) {
@@ -12,8 +13,9 @@ export default class CashierStore {
         this.onramp = new OnRampStore({ root_store, WS });
         this.error_dialog = new ErrorDialog();
         this.transaction_history = new TransactionHistoryStore({ root_store, WS });
-        this.verification_store = new VerificationStore();
+        this.verification_store = new VerificationStore({ root_store, WS });
         this.error_store = new ErrorStore();
         this.payment_agent_store = new PaymentAgentStore({ root_store, WS });
+        this.payment_agent_transfer_store = new PaymentAgentTransferStore({ root_store, WS });
     }
 }

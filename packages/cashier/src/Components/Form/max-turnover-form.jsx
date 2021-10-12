@@ -9,10 +9,10 @@ import { connect } from 'Stores/connect';
 
 const MaxTurnoverForm = ({
     onMount,
-    setErrorConfig,
     currency,
     removeNotificationByKey,
     removeNotificationMessageByKey,
+    setIsSelfExclusionMaxTurnoverSet,
 }) => {
     const initial_values = {
         max_30day_turnover: '',
@@ -44,7 +44,7 @@ const MaxTurnoverForm = ({
             if (response.error) {
                 setStatus(response.error);
             } else {
-                setErrorConfig('is_self_exclusion_max_turnover_set', false);
+                setIsSelfExclusionMaxTurnoverSet(false);
                 onMount();
 
                 // Clear "max_turnover_limit_not_set" notification.
@@ -117,15 +117,14 @@ const MaxTurnoverForm = ({
 MaxTurnoverForm.propTypes = {
     currency: PropTypes.string,
     onMount: PropTypes.func,
-    setErrorConfig: PropTypes.func,
     removeNotificationByKey: PropTypes.func,
     removeNotificationMessageByKey: PropTypes.func,
+    setIsSelfExclusionMaxTurnoverSet: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({
     currency: client.currency,
     onMount: modules.cashier.cashier_store.onMount,
-    setErrorConfig: modules.cashier.cashier_store.setErrorConfig,
     removeNotificationByKey: ui.removeNotificationByKey,
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
 }))(MaxTurnoverForm);

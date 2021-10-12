@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 
 const EmailSent = ({ is_resend_clicked, resend_timeout, resendVerificationEmail, setVerificationResendClicked }) => (
     <div className='withdraw__email-sent'>
@@ -62,8 +61,4 @@ EmailSent.propTypes = {
     setVerificationResendClicked: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
-    resendVerificationEmail: modules.cashier.cashier_store.resendVerificationEmail,
-    sendVerificationEmail: modules.cashier.cashier_store.sendVerificationEmail,
-    setVerificationResendClicked: modules.cashier.cashier_store.setVerificationResendClicked,
-}))(EmailSent);
+export default EmailSent;

@@ -30,8 +30,11 @@ const PaymentAgentList = ({
     payment_agent_active_tab_index,
     payment_agent_list,
     resend_timeout,
+    resendVerificationEmail,
     selected_bank,
+    sendVerificationEmail,
     setActiveTabIndex,
+    setVerificationResendClicked,
     supported_banks,
     verification_code,
 }) => {
@@ -156,6 +159,13 @@ const PaymentAgentList = ({
                                             is_email_sent={is_email_sent}
                                             is_resend_clicked={is_resend_clicked}
                                             resend_timeout={resend_timeout}
+                                            resendVerificationEmail={() =>
+                                                resendVerificationEmail('payment_agent_withdraw')
+                                            }
+                                            sendVerificationEmail={() =>
+                                                sendVerificationEmail('payment_agent_withdraw')
+                                            }
+                                            setVerificationResendClicked={setVerificationResendClicked}
                                         />
                                     </div>
                                 ) : (
@@ -183,8 +193,11 @@ PaymentAgentList.propTypes = {
     payment_agent_active_tab_index: PropTypes.number,
     payment_agent_list: PropTypes.array,
     resend_timeout: PropTypes.number,
+    resendVerificationEmail: PropTypes.func,
     selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    sendVerificationEmail: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
+    setVerificationResendClicked: PropTypes.func,
     supported_banks: MobxPropTypes.arrayOrObservableArray,
     verification_code: PropTypes.string,
 };
@@ -199,7 +212,10 @@ export default connect(({ modules }) => ({
     payment_agent_active_tab_index: modules.cashier.payment_agent_store.active_tab_index,
     payment_agent_list: modules.cashier.payment_agent_store.filtered_list,
     resend_timeout: modules.cashier.payment_agent_store.verification.resend_timeout,
+    resendVerificationEmail: modules.cashier.payment_agent_store.verification.resendVerificationEmail,
     selected_bank: modules.cashier.payment_agent_store.selected_bank,
+    sendVerificationEmail: modules.cashier.payment_agent_store.verification.sendVerificationEmail,
     setActiveTabIndex: modules.cashier.payment_agent_store.setActiveTabIndex,
+    setVerificationResendClicked: modules.cashier.payment_agent_store.verification.setVerificationResendClicked,
     supported_banks: modules.cashier.payment_agent_store.supported_banks,
 }))(PaymentAgentList);

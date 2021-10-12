@@ -60,6 +60,7 @@ const Deposit = ({
     onMount,
     recentTransactionOnMount,
     setActiveTab,
+    setIsSelfExclusionMaxTurnoverSet,
     setSideNotes,
     tab_index,
 }) => {
@@ -109,7 +110,7 @@ const Deposit = ({
         return <FundsProtection />;
     }
     if (error.is_self_exclusion_max_turnover_set) {
-        return <MaxTurnover />;
+        return <MaxTurnover setIsSelfExclusionMaxTurnoverSet={setIsSelfExclusionMaxTurnoverSet} />;
     }
     if (is_deposit_locked) {
         return <DepositsLocked />;
@@ -147,6 +148,7 @@ Deposit.propTypes = {
     onMount: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setIsSelfExclusionMaxTurnoverSet: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
     tab_index: PropTypes.number,
@@ -170,6 +172,8 @@ export default connect(({ client, modules }) => ({
     onMount: modules.cashier.cashier_store.onMount,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.cashier_store.setActiveTab,
+    setIsSelfExclusionMaxTurnoverSet:
+        modules.cashier.cashier_store.config.deposit.error.setIsSelfExclusionMaxTurnoverSet,
     standpoint: client.standpoint,
     tab_index: modules.cashier.cashier_store.cashier_route_tab_index,
 }))(Deposit);

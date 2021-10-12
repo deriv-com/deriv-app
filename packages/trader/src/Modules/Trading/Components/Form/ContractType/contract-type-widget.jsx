@@ -9,10 +9,8 @@ class ContractTypeWidget extends React.PureComponent {
     state = {
         is_dialog_open: false,
         is_info_dialog_open: false,
-        list: this.props.list,
         selected_category: null,
         search_query: '',
-        language: this.props.language,
     };
 
     componentDidMount() {
@@ -21,16 +19,6 @@ class ContractTypeWidget extends React.PureComponent {
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
-    }
-
-    componentDidUpdate() {
-        if (
-            this.props.language !== this.state.language ||
-            (this.props.list.length !== this.state.list.length && !this.state.on_input_change)
-        ) {
-            // reset internal list state when contracts list is changed in store (on contracts_for response)
-            this.setState({ list: this.props.list });
-        }
     }
 
     handleCategoryClick = ({ label }) => this.setState({ selected_category: label });
@@ -97,7 +85,8 @@ class ContractTypeWidget extends React.PureComponent {
     onChangeInput = search_query => this.setState({ search_query });
 
     get list_with_category() {
-        const { list, search_query } = this.state;
+        const { search_query } = this.state;
+        const { list } = this.props;
         const contract_type_category_icon = getContractTypeCategoryIcons();
         const multipliers_category = list.filter(
             contract_category => contract_category.label === localize('Multipliers')
@@ -169,7 +158,8 @@ class ContractTypeWidget extends React.PureComponent {
 
     render() {
         const { is_equal, name, value } = this.props;
-        const { is_dialog_open, is_info_dialog_open, item, list } = this.state;
+        const { is_dialog_open, is_info_dialog_open, item } = this.state;
+        const { list } = this.props;
 
         return (
             <div

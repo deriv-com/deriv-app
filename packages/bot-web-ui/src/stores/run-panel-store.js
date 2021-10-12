@@ -434,8 +434,9 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    onBotTradeAgain(is_trade_again) {
-        if (!is_trade_again) {
+    onBotTradeAgain(result) {
+        if (!result.is_trade_again) {
+            this.showErrorMessage(result.message);
             this.onStopButtonClick();
         }
     }

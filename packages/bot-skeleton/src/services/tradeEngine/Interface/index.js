@@ -55,7 +55,9 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             sellAtMarket: () => this.tradeEngine.sellAtMarket(),
             getSellPrice: () => this.getSellPrice(),
             isResult: result => getDetail(10) === result,
-            isTradeAgain: result => globalObserver.emit('bot.trade_again', result),
+            isTradeAgain: (is_trade_again, message) => {
+                globalObserver.emit('bot.trade_again', { is_trade_again, message });
+            },
             emitError: message => {
                 const error = new Error(localize(message));
                 globalObserver.emit('Error', error);

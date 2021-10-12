@@ -103,8 +103,7 @@ Blockly.JavaScript.trade_again = block => {
     (${is_tp_enabled === 'TRUE'} && profit >= 0 && profit >= ${take_profit})){
         var total_run = Bot.getRuns();
         var message = (profit < 0 ? 'Stop loss' : 'Take profit') + ' is set to ' + (profit < 0 ?  ${stop_loss} : ${take_profit}) + '. PL after ' + total_run + ' runs is ' +  profit + '. Bot has stopped.';
-        Bot.emitError(message);
-        Bot.isTradeAgain(false);\n
+        Bot.isTradeAgain(false, message);\n
     }else{
         Bot.isTradeAgain(true);\n
     }

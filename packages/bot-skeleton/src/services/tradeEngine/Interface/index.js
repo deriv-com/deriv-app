@@ -1,4 +1,3 @@
-import { localize } from '@deriv/translations';
 import TicksInterface from './TicksInterface';
 import ToolsInterface from './ToolsInterface';
 import TradeEngine from '../trade';
@@ -57,10 +56,6 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             isResult: result => getDetail(10) === result,
             isTradeAgain: (is_trade_again, message) => {
                 globalObserver.emit('bot.trade_again', { is_trade_again, message });
-            },
-            emitError: message => {
-                const error = new Error(localize(message));
-                globalObserver.emit('Error', error);
             },
             readDetails: i => getDetail(i - 1),
         };

@@ -21,7 +21,7 @@ const platform_config = [
         icon: 'IcBrandDmt5',
         title: () => localize('DMT5'),
         name: 'DMT5',
-        description: () => localize('Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'),
+        description: () => localize('Trade on Deriv MT5 (DMT5), the all-in-one FX and CFD trading platform.'),
         link_to: routes.mt5,
     },
     {

@@ -125,9 +125,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_dxtrade_allowed }) => {
             {
                 icon: 'IcBrandDmt5',
                 title: localize('DMT5'),
-                description: localize(
-                    'Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'
-                ),
+                description: localize('Trade on Deriv MT5 (DMT5), the all-in-one FX and CFD trading platform.'),
                 onButtonClick: () => switchPlatform(routes.mt5),
                 button_text: localize('Trade on MT5'),
             },

@@ -66,12 +66,6 @@ export default class CashierStore extends BaseStore {
     @observable is_deposit = false;
     @observable is_cashier_default = true;
     @observable withdraw_amount = '';
-    @observable converter_from_amount = '';
-    @observable converter_to_amount = '';
-    @observable converter_from_error = '';
-    @observable converter_to_error = '';
-    @observable is_timer_visible = false;
-    @observable is_crypto_transactions_visible = false;
     @observable blockchain_address = '';
     @observable should_percentage_reset = false;
     @observable percentage = 0;
@@ -105,13 +99,6 @@ export default class CashierStore extends BaseStore {
     }
 
     @computed
-    get is_account_transfer_visible() {
-        // cashier Transfer account tab is hidden for iom clients
-        // check for residence to hide the tab before creating a real money account
-        return this.root_store.client.residence !== 'im';
-    }
-
-    @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
     }
@@ -120,7 +107,8 @@ export default class CashierStore extends BaseStore {
     setIsWithdrawConfirmed(is_withdraw_confirmed) {
         this.is_withdraw_confirmed = is_withdraw_confirmed;
 
-        if (is_withdraw_confirmed) this.setWithdrawAmount(this.converter_from_amount);
+        if (is_withdraw_confirmed)
+            this.setWithdrawAmount(this.root_store.modules.cashier.account_transfer_store.converter_from_amount);
 
         if (!is_withdraw_confirmed && this.config[this.active_container]?.verification) {
             this.config.withdraw.verification.clearVerification('payment_withdraw');
@@ -133,7 +121,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    calculatePercentage(amount = this.converter_from_amount) {
+    calculatePercentage(amount = this.root_store.modules.cashier.account_transfer_store.converter_from_amount) {
         if (this.active_container === this.root_store.modules.cashier.account_transfer_store.container) {
             this.percentage = +(
                 (amount / +this.root_store.modules.cashier.account_transfer_store.selected_from.balance) *
@@ -157,7 +145,7 @@ export default class CashierStore extends BaseStore {
         this.config.withdraw.error.setErrorMessage('');
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +this.converter_from_amount,
+            amount: +this.root_store.modules.cashier.account_transfer_store.converter_from_amount,
             verification_code,
         }).then(response => {
             if (response.error) {
@@ -179,14 +167,16 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        if (!this.converter_from_amount) {
-            this.setConverterFromError(localize('This field is required.'));
+        if (!this.root_store.modules.cashier.account_transfer_store.converter_from_amount) {
+            this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(
+                localize('This field is required.')
+            );
             return;
         }
 
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +this.converter_from_amount,
+            amount: +this.root_store.modules.cashier.account_transfer_store.converter_from_amount,
             verification_code,
             dry_run: 1,
         }).then(response => {
@@ -201,8 +191,8 @@ export default class CashierStore extends BaseStore {
     @action.bound
     resetWithrawForm() {
         this.setBlockchainAddress('');
-        this.setConverterFromAmount('');
-        this.setConverterToAmount('');
+        this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromAmount('');
+        this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterToAmount('');
         this.config.withdraw.verification.clearVerification('payment_withdraw');
     }
 
@@ -310,7 +300,7 @@ export default class CashierStore extends BaseStore {
             }
 
             if (
-                !this.is_crypto_transactions_visible &&
+                !this.root_store.modules.cashier.transaction_history.is_crypto_transactions_visible &&
                 window.location.pathname.endsWith(routes.cashier_crypto_transactions)
             ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
@@ -318,11 +308,6 @@ export default class CashierStore extends BaseStore {
                 this.root_store.modules.cashier.transaction_history.onMount();
             }
         }
-    }
-
-    @action.bound
-    setIsCryptoTransactionsVisible(is_visible) {
-        this.is_crypto_transactions_visible = is_visible;
     }
 
     @action.bound
@@ -346,7 +331,7 @@ export default class CashierStore extends BaseStore {
         if (strRegExp.test(verification_code)) {
             response_cashier = await this.WS.cryptoWithdraw({
                 address: this.blockchain_address,
-                amount: +this.converter_from_amount,
+                amount: +this.root_store.modules.cashier.account_transfer_store.converter_from_amount,
                 verification_code,
                 dry_run: 1,
             });
@@ -615,36 +600,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setIsTimerVisible(is_timer_visible) {
-        this.is_timer_visible = is_timer_visible;
-    }
-
-    @action.bound
-    resetTimer() {
-        this.setIsTimerVisible(false);
-    }
-
-    @action.bound
-    async getExchangeRate(from_currency, to_currency) {
-        const { exchange_rates } = await this.WS.send({
-            exchange_rates: 1,
-            base_currency: from_currency,
-        });
-        return exchange_rates.rates[to_currency];
-    }
-
-    @action.bound
     setActiveTab(container) {
         this.active_container = container;
-    }
-
-    @action.bound
-    async onMountPaymentAgentList() {
-        this.setLoading(true);
-        this.onRemount = this.onMountPaymentAgentList;
-        await this.onMountCommon();
-
-        this.setLoading(false);
     }
 
     accountSwitcherListener() {
@@ -678,100 +635,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setConverterFromAmount(amount) {
-        this.converter_from_amount = amount;
-    }
-
-    @action.bound
-    setConverterToAmount(amount) {
-        this.converter_to_amount = amount;
-    }
-
-    @action.bound
-    setConverterFromError(error) {
-        this.converter_from_error = error;
-    }
-
-    @action.bound
-    setConverterToError(error) {
-        this.converter_to_error = error;
-    }
-
-    @action.bound
-    async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
-        this.resetTimer();
-        if (target.value) {
-            this.percentageSelectorSelectionStatus(true);
-            this.calculatePercentage();
-            this.setConverterFromAmount(target.value);
-            this.validateFromAmount();
-            if (this.converter_from_error) {
-                this.setConverterToAmount('');
-                this.setConverterToError('');
-                this.setIsTimerVisible(false);
-                this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount('');
-            } else {
-                const rate = await this.getExchangeRate(from_currency, to_currency);
-                const decimals = getDecimalPlaces(to_currency);
-                const amount = (rate * target.value).toFixed(decimals);
-                if (+amount || this.converter_from_amount) {
-                    this.setConverterToAmount(amount);
-                } else {
-                    this.setConverterToAmount('');
-                }
-                this.validateToAmount();
-                this.setConverterToError('');
-                this.setIsTimerVisible(true);
-                this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount(target.value);
-            }
-        } else {
-            this.resetConverter();
-        }
-    }
-
-    @action.bound
-    async onChangeConverterToAmount({ target }, from_currency, to_currency) {
-        this.resetTimer();
-        if (target.value) {
-            this.percentageSelectorSelectionStatus(true);
-            this.calculatePercentage();
-            this.setConverterToAmount(target.value);
-            this.validateToAmount();
-            if (this.converter_to_error) {
-                this.setConverterFromAmount('');
-                this.setConverterFromError('');
-                this.setIsTimerVisible(false);
-                this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount('');
-            } else {
-                const rate = await this.getExchangeRate(from_currency, to_currency);
-                const decimals = getDecimalPlaces(to_currency);
-                const amount = (rate * target.value).toFixed(decimals);
-                if (+amount || this.converter_to_amount) {
-                    this.setConverterFromAmount(amount);
-                } else {
-                    this.setConverterFromAmount('');
-                }
-                this.validateFromAmount();
-                if (this.converter_from_error) {
-                    this.setIsTimerVisible(false);
-                    this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount('');
-                } else {
-                    this.setConverterFromError('');
-                    this.setIsTimerVisible(true);
-                    this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount(amount);
-                }
-            }
-        } else {
-            this.resetConverter();
-        }
-    }
-
-    @action.bound
     setWithdrawPercentageSelectorResult(amount) {
         if (amount > 0) {
-            this.setConverterFromAmount(amount);
+            this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromAmount(amount);
             this.validateWithdrawFromAmount();
-            this.onChangeConverterFromAmount(
+            this.root_store.modules.cashier.crypto_fiat_converter_store.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 this.root_store.client.currency,
                 this.root_store.client.current_fiat_currency || 'USD'
@@ -782,40 +650,26 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    validateFromAmount() {
-        if (this.active_container === this.root_store.modules.cashier.account_transfer_store.container) {
-            this.root_store.modules.cashier.account_transfer_store.validateTransferFromAmount();
-        } else {
-            this.validateWithdrawFromAmount();
-        }
-    }
-
-    @action.bound
-    validateToAmount() {
-        if (this.active_container === this.root_store.modules.cashier.account_transfer_store.container) {
-            this.root_store.modules.cashier.account_transfer_store.validateTransferToAmount();
-        } else {
-            this.validateWithdrawToAmount();
-        }
-    }
-
-    @action.bound
     validateWithdrawFromAmount() {
         let error_message = '';
 
         const { balance, currency, website_status } = this.root_store.client;
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
 
-        if (this.converter_from_amount) {
-            const { is_ok, message } = validNumber(this.converter_from_amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(currency),
-            });
+        if (this.root_store.modules.cashier.account_transfer_store.converter_from_amount) {
+            const { is_ok, message } = validNumber(
+                this.root_store.modules.cashier.account_transfer_store.converter_from_amount,
+                {
+                    type: 'float',
+                    decimals: getDecimalPlaces(currency),
+                }
+            );
             if (!is_ok) error_message = message;
 
-            if (+balance < +this.converter_from_amount) error_message = localize('Insufficient funds');
+            if (+balance < +this.root_store.modules.cashier.account_transfer_store.converter_from_amount)
+                error_message = localize('Insufficient funds');
 
-            if (+this.converter_from_amount < +min_withdraw_amount) {
+            if (+this.root_store.modules.cashier.account_transfer_store.converter_from_amount < +min_withdraw_amount) {
                 error_message = (
                     <Localize
                         i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'
@@ -824,7 +678,7 @@ export default class CashierStore extends BaseStore {
                 );
             }
         }
-        this.setConverterFromError(error_message);
+        this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(error_message);
     }
 
     @action.bound
@@ -832,24 +686,17 @@ export default class CashierStore extends BaseStore {
         let error_message = '';
         const { current_fiat_currency } = this.root_store.client;
 
-        if (this.converter_to_amount) {
-            const { is_ok, message } = validNumber(this.converter_to_amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(current_fiat_currency),
-            });
+        if (this.root_store.modules.cashier.crypto_fiat_converter_store.converter_to_amount) {
+            const { is_ok, message } = validNumber(
+                this.root_store.modules.cashier.crypto_fiat_converter_store.converter_to_amount,
+                {
+                    type: 'float',
+                    decimals: getDecimalPlaces(current_fiat_currency),
+                }
+            );
             if (!is_ok) error_message = message;
         }
 
-        this.setConverterToError(error_message);
-    }
-
-    @action.bound
-    resetConverter() {
-        this.setConverterFromAmount('');
-        this.setConverterToAmount('');
-        this.setConverterFromError('');
-        this.setConverterToError('');
-        this.setIsTimerVisible(false);
-        this.percentageSelectorSelectionStatus(true);
+        this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterToError(error_message);
     }
 }

@@ -258,4 +258,14 @@ export default class PaymentAgentStore {
         this.verification.clearVerification('payment_agent_withdraw');
         this.setActiveTabIndex(0);
     };
+
+    @action.bound
+    async onMountPaymentAgentList() {
+        const { setLoading, onMountCommon } = this.root_store.modules.cashier.cashier_store;
+        setLoading(true);
+        this.onRemount = this.onMountPaymentAgentList;
+        await onMountCommon();
+
+        setLoading(false);
+    }
 }

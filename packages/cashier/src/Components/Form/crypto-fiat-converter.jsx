@@ -152,12 +152,12 @@ CryptoFiatConverter.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    converter_from_amount: modules.cashier.cashier_store.converter_from_amount,
-    converter_from_error: modules.cashier.cashier_store.converter_from_error,
-    converter_to_error: modules.cashier.cashier_store.converter_to_error,
-    converter_to_amount: modules.cashier.cashier_store.converter_to_amount,
-    is_timer_visible: modules.cashier.cashier_store.is_timer_visible,
-    onChangeConverterFromAmount: modules.cashier.cashier_store.onChangeConverterFromAmount,
-    onChangeConverterToAmount: modules.cashier.cashier_store.onChangeConverterToAmount,
-    resetConverter: modules.cashier.cashier_store.resetConverter,
+    converter_from_amount: modules.cashier.crypto_fiat_converter_store.converter_from_amount,
+    converter_from_error: modules.cashier.crypto_fiat_converter_store.converter_from_error,
+    converter_to_error: modules.cashier.crypto_fiat_converter_store.converter_to_error,
+    converter_to_amount: modules.cashier.crypto_fiat_converter_store.converter_to_amount,
+    is_timer_visible: modules.cashier.crypto_fiat_converter_store.is_timer_visible,
+    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter_store.onChangeConverterFromAmount,
+    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter_store.onChangeConverterToAmount,
+    resetConverter: modules.cashier.crypto_fiat_converter_store.resetConverter,
 }))(CryptoFiatConverter);

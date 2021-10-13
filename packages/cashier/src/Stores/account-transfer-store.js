@@ -1,5 +1,5 @@
 import React from 'react';
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import {
     formatMoney,
     isEmptyObject,
@@ -56,6 +56,13 @@ export default class AccountTransferStore {
     @observable account_transfer_amount = '';
     @observable transfer_fee = null;
     @observable transfer_limit = {};
+
+    @computed
+    get is_account_transfer_visible() {
+        // cashier Transfer account tab is hidden for iom clients
+        // check for residence to hide the tab before creating a real money account
+        return this.root_store.client.residence !== 'im';
+    }
 
     @action.bound
     setBalanceByLoginId(loginid, balance) {
@@ -527,25 +534,27 @@ export default class AccountTransferStore {
         const selected_to_currency = this.selected_to.currency;
 
         if (amount > 0 || +this.selected_from.balance === 0) {
-            this.root_store.modules.cashier.cashier_store.setConverterFromAmount(amount);
+            this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromAmount(amount);
             this.validateTransferFromAmount();
-            this.root_store.modules.cashier.cashier_store.onChangeConverterFromAmount(
+            this.root_store.modules.cashier.crypto_fiat_converter_store.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 selected_from_currency,
                 selected_to_currency
             );
         }
-        this.root_store.modules.cashier.cashier_store.setIsTimerVisible(false);
+        this.root_store.modules.cashier.crypto_fiat_converter_store.setIsTimerVisible(false);
         this.root_store.modules.cashier.cashier_store.percentageSelectorSelectionStatus(false);
     }
 
     @action.bound
     validateTransferFromAmount() {
-        if (!this.root_store.modules.cashier.cashier_store.converter_from_amount) {
-            this.root_store.modules.cashier.cashier_store.setConverterFromError(localize('This field is required.'));
+        if (!this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
+            this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(
+                localize('This field is required.')
+            );
         } else {
             const { is_ok, message } = validNumber(
-                this.root_store.modules.cashier.cashier_store.converter_from_amount,
+                this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
                 {
                     type: 'float',
                     decimals: getDecimalPlaces(this.selected_from.currency),
@@ -554,29 +563,35 @@ export default class AccountTransferStore {
                 }
             );
             if (!is_ok) {
-                this.root_store.modules.cashier.cashier_store.setConverterFromError(message);
+                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(message);
             } else if (
-                +this.selected_from.balance < +this.root_store.modules.cashier.cashier_store.converter_from_amount
+                +this.selected_from.balance <
+                +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount
             ) {
-                this.root_store.modules.cashier.cashier_store.setConverterFromError(localize('Insufficient funds'));
+                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(
+                    localize('Insufficient funds')
+                );
             } else {
-                this.root_store.modules.cashier.cashier_store.setConverterFromError('');
+                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError('');
             }
         }
     }
 
     @action.bound
     validateTransferToAmount() {
-        if (this.root_store.modules.cashier.cashier_store.converter_to_amount) {
+        if (this.root_store.modules.cashier.crypto_fiat_converter_store.converter_to_amount) {
             const currency = this.selected_to.currency;
-            const { is_ok, message } = validNumber(this.root_store.modules.cashier.cashier_store.converter_to_amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(currency),
-            });
+            const { is_ok, message } = validNumber(
+                this.root_store.modules.cashier.crypto_fiat_converter_store.converter_to_amount,
+                {
+                    type: 'float',
+                    decimals: getDecimalPlaces(currency),
+                }
+            );
             if (!is_ok) {
-                this.root_store.modules.cashier.cashier_store.setConverterToError(message);
+                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterToError(message);
             } else {
-                this.root_store.modules.cashier.cashier_store.setConverterToError('');
+                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterToError('');
             }
         }
     }

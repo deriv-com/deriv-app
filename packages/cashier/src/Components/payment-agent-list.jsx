@@ -208,7 +208,7 @@ export default connect(({ modules }) => ({
     is_loading: modules.cashier.cashier_store.is_loading,
     is_resend_clicked: modules.cashier.payment_agent_store.verification.is_resend_clicked,
     onChangePaymentMethod: modules.cashier.payment_agent_store.onChangePaymentMethod,
-    onMount: modules.cashier.cashier_store.onMountPaymentAgentList,
+    onMount: modules.cashier.payment_agent_store.onMountPaymentAgentList,
     payment_agent_active_tab_index: modules.cashier.payment_agent_store.active_tab_index,
     payment_agent_list: modules.cashier.payment_agent_store.filtered_list,
     resend_timeout: modules.cashier.payment_agent_store.verification.resend_timeout,

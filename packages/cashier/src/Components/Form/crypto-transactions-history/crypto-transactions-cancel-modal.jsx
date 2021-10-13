@@ -9,7 +9,6 @@ const CryptoTransactionsCancelModal = ({
     hideCryptoTransactionsCancelModal,
     is_cancel_modal_visible,
     selected_crypto_transaction_id,
-    onMount,
 }) => {
     return (
         <React.Fragment>
@@ -29,7 +28,6 @@ const CryptoTransactionsCancelModal = ({
                         text={localize('Yes')}
                         onClick={() => {
                             cancelCryptoTransaction(selected_crypto_transaction_id);
-                            onMount();
                         }}
                         large
                         primary
@@ -45,7 +43,6 @@ CryptoTransactionsCancelModal.propTypes = {
     hideCryptoTransactionsCancelModal: PropTypes.func,
     is_cancel_modal_visible: PropTypes.bool,
     selected_crypto_transaction_id: PropTypes.string,
-    onMount: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
@@ -53,5 +50,4 @@ export default connect(({ modules }) => ({
     hideCryptoTransactionsCancelModal: modules.cashier.transaction_history.hideCryptoTransactionsCancelModal,
     is_cancel_modal_visible: modules.cashier.transaction_history.is_crypto_transactions_cancel_modal_visible,
     selected_crypto_transaction_id: modules.cashier.transaction_history.selected_crypto_transaction_id,
-    onMount: modules.cashier.transaction_history.onMount,
 }))(CryptoTransactionsCancelModal);

@@ -72,7 +72,6 @@ export default class TransactionHistoryStore {
     async cancelCryptoTransaction(transaction_id) {
         await this.WS.cancelCryptoTransaction(transaction_id).then(response => {
             if (!response.error) {
-                this.getCryptoTransactions();
                 this.setSelectedCryptoTransactionId('');
                 this.setIsCryptoTransactionsCancelModalVisible(false);
                 return Promise.resolve(response);

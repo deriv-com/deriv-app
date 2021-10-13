@@ -1,3 +1,4 @@
+import AccountPromptDialogStore from './account-prompt-dialog-store';
 import AccountTransferStore from './account-transfer-store';
 import CashierStoree from './Cashier/cashier-store';
 import CryptoFiatConverterStore from './crypto-fiat-converter-store';
@@ -11,6 +12,7 @@ import VerificationStore from './verification-store';
 
 export default class CashierStore {
     constructor({ root_store, WS }) {
+        this.account_prompt_dialog_store = new AccountPromptDialogStore(root_store);
         this.account_transfer_store = new AccountTransferStore({ root_store, WS });
         this.cashier_store = new CashierStoree({ root_store, WS });
         this.crypto_fiat_converter_store = new CryptoFiatConverterStore({ root_store, WS });

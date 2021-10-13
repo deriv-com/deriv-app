@@ -11,7 +11,6 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CashierNotifications from 'Containers/cashier-notifications.jsx';
-import AccountPromptDialog from '../account-prompt-dialog-store';
 import BaseStore from '../base-store';
 import VerificationStore from '../verification-store';
 import ErrorStore from '../error-store';
@@ -68,8 +67,6 @@ export default class CashierStore extends BaseStore {
             this.changeSetCurrencyModalTitle();
         }
 
-        this.account_prompt_dialog = new AccountPromptDialog(this.root_store);
-
         this.init();
     }
 
@@ -85,7 +82,6 @@ export default class CashierStore extends BaseStore {
     @observable crypto_amount = '';
     @observable fiat_amount = '';
     @observable insufficient_fund_error = '';
-    @observable all_payment_agent_list = [];
     @observable should_set_currency_modal_title_change = false;
     @observable p2p_advertiser_error = undefined;
     @observable has_set_currency = false;
@@ -142,12 +138,15 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountCashierDefault() {
         this.setIsCashierDefault(true);
-        this.account_prompt_dialog.resetIsConfirmed();
+        this.root_store.modules.cashier.account_prompt_dialog_store.resetIsConfirmed();
 
         this.setLoading(true);
-        if (this.all_payment_agent_list?.paymentagent_list?.list === undefined) {
-            const payment_agent_list = await this.getAllPaymentAgentList();
-            this.setAllPaymentAgentList(payment_agent_list);
+        if (
+            this.root_store.modules.cashier.payment_agent_store.all_payment_agent_list?.paymentagent_list?.list ===
+            undefined
+        ) {
+            const agent_list = await this.root_store.modules.cashier.payment_agent_store.getAllPaymentAgentList();
+            this.root_store.modules.cashier.payment_agent_store.setAllPaymentAgentList(agent_list);
         }
         this.setLoading(false);
     }
@@ -311,7 +310,7 @@ export default class CashierStore extends BaseStore {
 
                 if (this.root_store.client.is_logged_in) {
                     await this.getAdvertizerError();
-                    this.account_prompt_dialog.resetLastLocation();
+                    this.root_store.modules.cashier.account_prompt_dialog_store.resetLastLocation();
                     if (!this.root_store.client.switched) this.checkP2pStatus();
                 }
             }
@@ -495,7 +494,9 @@ export default class CashierStore extends BaseStore {
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
-            this.root_store.common.routeTo(this.account_prompt_dialog.last_location ?? routes.cashier_deposit);
+            this.root_store.common.routeTo(
+                this.root_store.modules.cashier.account_prompt_dialog_store.last_location ?? routes.cashier_deposit
+            );
         }
     }
 
@@ -507,7 +508,7 @@ export default class CashierStore extends BaseStore {
         if (
             this.containers.indexOf(this.active_container) === -1 &&
             !this.root_store.client.is_switching &&
-            this.active_container !== this.config.payment_agent.container
+            this.active_container !== this.root_store.modules.cashier.payment_agent_store.container
         ) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }

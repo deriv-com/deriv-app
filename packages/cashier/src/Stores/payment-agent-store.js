@@ -22,6 +22,7 @@ export default class PaymentAgentStore {
     @observable supported_banks = [];
     @observable verification = this.root_store.modules.cashier.verification_store;
     @observable active_tab_index = 0;
+    @observable all_payment_agent_list = [];
 
     @action.bound
     setActiveTabIndex(index) {
@@ -267,5 +268,20 @@ export default class PaymentAgentStore {
         await onMountCommon();
 
         setLoading(false);
+    }
+
+    async getAllPaymentAgentList() {
+        await this.WS.wait('get_settings');
+        return this.WS.allPaymentAgentList(this.root_store.client.residence);
+    }
+
+    @action.bound
+    setAllPaymentAgentList(list) {
+        this.all_payment_agent_list = list;
+    }
+
+    @computed
+    get is_payment_agent_visible_in_onboarding() {
+        return !!this.all_payment_agent_list?.paymentagent_list?.list?.length;
     }
 }

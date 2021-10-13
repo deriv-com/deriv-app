@@ -3,16 +3,16 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import AccountTransferNoAccount from '../Components/Error/account-transfer-no-account.jsx';
-import Error from '../Components/Error/error.jsx';
-import NoBalance from '../Components/Error/no-balance.jsx';
-import Virtual from '../Components/Error/virtual.jsx';
-import CashierLocked from '../Components/Error/cashier-locked.jsx';
-import TransferLock from '../Components/Error/transfer-locked.jsx';
-import AccountTransferForm from '../Components/Form/account-transfer-form.jsx';
-import AccountTransferReceipt from '../Components/Receipt/account-transfer-receipt.jsx';
-import AccountTransferConfirm from '../Components/Confirm/account-transfer-confirm.jsx';
-import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
+import AccountTransferNoAccount from 'Components/Error/account-transfer-no-account.jsx';
+import Error from 'Components/Error/error.jsx';
+import NoBalance from 'Components/Error/no-balance.jsx';
+import Virtual from 'Components/Error/virtual.jsx';
+import CashierLocked from 'Components/Error/cashier-locked.jsx';
+import TransferLock from 'Components/Error/transfer-locked.jsx';
+import AccountTransferForm from 'Components/Form/account-transfer-form.jsx';
+import AccountTransferReceipt from 'Components/Receipt/account-transfer-receipt.jsx';
+import AccountTransferConfirm from 'Components/Confirm/account-transfer-confirm.jsx';
+import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 
 const AccountTransfer = ({
     accounts_list,

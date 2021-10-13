@@ -11,7 +11,7 @@ import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
 import PercentageSelector from '../percentage-selector';
 import RecentTransaction from '../recent-transaction.jsx';
-import '../../Sass/account-transfer.scss';
+import 'Sass/account-transfer.scss';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;

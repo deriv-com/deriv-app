@@ -5,8 +5,8 @@ import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
-import { getAccountText } from '../../_common/utility';
-import '../../Sass/withdraw.scss';
+import { getAccountText } from '_common/utility';
+import 'Sass/withdraw.scss';
 
 const Status = () => {
     return (

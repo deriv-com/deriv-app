@@ -5,7 +5,7 @@ import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getStatus } from '../../../Constants/transaction-status';
+import { getStatus } from 'Constants/transaction-status';
 
 const CryptoTransactionsRenderer = ({
     row: crypto,

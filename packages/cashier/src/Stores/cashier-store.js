@@ -3,10 +3,10 @@ import CashierStoree from './Cashier/cashier-store';
 import CryptoFiatConverterStore from './crypto-fiat-converter-store';
 import ErrorDialog from './error-dialog-store';
 import ErrorStore from './error-store';
-import OnRampStore from './Cashier/on-ramp-store';
+import OnRampStore from './on-ramp-store';
 import PaymentAgentStore from './payment-agent-store';
 import PaymentAgentTransferStore from './payment-agent-transfer-store';
-import TransactionHistoryStore from './Cashier/transaction-history-store';
+import TransactionHistoryStore from './transaction-history-store';
 import VerificationStore from './verification-store';
 
 export default class CashierStore {

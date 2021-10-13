@@ -3,8 +3,8 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import { getAccountText } from '_common/utility';
 import Confirm from '../confirm.jsx';
-import { getAccountText } from '../../_common/utility';
 
 const AccountTransferConfirm = ({
     error,

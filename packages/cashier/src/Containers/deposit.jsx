@@ -7,6 +7,7 @@ import { connect } from 'Stores/connect';
 import CashierContainer from 'Components/cashier-container.jsx';
 import Error from 'Components/Error/error.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
+import CashierDefault from 'Components/CashierDefault/cashier-default.jsx';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
 import DepositsLocked from 'Components/Error/deposit-locked.jsx';
 import FundsProtection from 'Components/Error/funds-protection.jsx';
@@ -49,8 +50,11 @@ const Deposit = ({
     current_currency_type,
     error,
     is_cashier_locked,
-    is_crypto_transactions_visible,
+    is_cashier_default,
+    is_deposit,
     is_deposit_locked,
+    is_eu,
+    is_crypto_transactions_visible,
     iframe_height,
     iframe_url,
     is_loading,
@@ -61,23 +65,34 @@ const Deposit = ({
     recentTransactionOnMount,
     setActiveTab,
     setIsSelfExclusionMaxTurnoverSet,
+    setIsDeposit,
     setSideNotes,
     tab_index,
 }) => {
+    const is_crypto = !!currency && isCryptocurrency(currency);
+
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
+        return () => setIsDeposit(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setActiveTab, onMount, container]);
 
     React.useEffect(() => {
         if (isDesktop()) {
-            if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
+            if (
+                isCryptocurrency(currency) &&
+                typeof setSideNotes === 'function' &&
+                !is_cashier_default &&
+                !is_switching
+            ) {
                 const side_notes = [];
                 if (crypto_transactions.length) {
                     side_notes.push(<RecentTransaction key={2} />);
@@ -93,42 +108,53 @@ const Deposit = ({
             } else setSideNotes(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions]);
+    }, [currency, tab_index, crypto_transactions, is_cashier_default]);
 
     if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
-        return <Loading is_fullscreen={false} />;
+        return <Loading is_fullscreen />;
     }
     if (is_virtual) {
         return <Virtual />;
     }
-    if (is_system_maintenance) {
-        if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {
-            return <CashierLocked />;
-        }
-    }
-    if (error.is_ask_uk_funds_protection) {
-        return <FundsProtection />;
-    }
-    if (error.is_self_exclusion_max_turnover_set) {
-        return <MaxTurnover setIsSelfExclusionMaxTurnoverSet={setIsSelfExclusionMaxTurnoverSet} />;
-    }
-    if (is_deposit_locked) {
-        return <DepositsLocked />;
-    }
-    if (is_cashier_locked) {
-        return <CashierLocked />;
-    }
-    if (error.message) {
-        return <Error error={error} />;
-    }
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
-    if (isCryptocurrency(currency)) {
-        return <CryptoDeposit />;
-    }
 
-    return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
+    if (is_deposit || is_eu) {
+        if (is_system_maintenance) {
+            if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {
+                return <CashierLocked />;
+            }
+        }
+        if (error.is_ask_uk_funds_protection) {
+            return <FundsProtection />;
+        }
+        if (error.is_self_exclusion_max_turnover_set) {
+            return <MaxTurnover setIsSelfExclusionMaxTurnoverSet={setIsSelfExclusionMaxTurnoverSet} />;
+        }
+        if (is_deposit_locked) {
+            return <DepositsLocked />;
+        }
+        if (is_cashier_locked) {
+            return <CashierLocked />;
+        }
+        if (error.message) {
+            return <Error error={error} />;
+        }
+        if (isCryptocurrency(currency)) {
+            return <CryptoDeposit />;
+        }
+
+        return (
+            <CashierContainer
+                iframe_height={iframe_height}
+                iframe_url={iframe_url}
+                is_loading={is_loading}
+                is_crypto={is_crypto}
+            />
+        );
+    }
+    return <CashierDefault />;
 };
 
 Deposit.propTypes = {
@@ -136,9 +162,12 @@ Deposit.propTypes = {
     container: PropTypes.string,
     current_currency_type: PropTypes.string,
     error: PropTypes.object,
+    is_cashier_default: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
+    is_deposit: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
+    is_eu: PropTypes.bool,
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
     is_loading: PropTypes.bool,
@@ -149,6 +178,7 @@ Deposit.propTypes = {
     recentTransactionOnMount: PropTypes.func,
     setActiveTab: PropTypes.func,
     setIsSelfExclusionMaxTurnoverSet: PropTypes.func,
+    setIsDeposit: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
     tab_index: PropTypes.number,
@@ -160,9 +190,12 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     error: modules.cashier.cashier_store.config.deposit.error,
+    is_cashier_default: modules.cashier.is_cashier_default,
     is_cashier_locked: modules.cashier.cashier_store.is_cashier_locked,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
+    is_deposit: modules.cashier.cashier_store.is_deposit,
     is_deposit_locked: modules.cashier.cashier_store.is_deposit_locked,
+    is_eu: client.is_eu,
     iframe_height: modules.cashier.cashier_store.config.deposit.iframe_height,
     iframe_url: modules.cashier.cashier_store.config.deposit.iframe_url,
     is_loading: modules.cashier.cashier_store.is_loading,
@@ -174,6 +207,7 @@ export default connect(({ client, modules }) => ({
     setActiveTab: modules.cashier.cashier_store.setActiveTab,
     setIsSelfExclusionMaxTurnoverSet:
         modules.cashier.cashier_store.config.deposit.error.setIsSelfExclusionMaxTurnoverSet,
+    setIsDeposit: modules.cashier.cashier_store.setIsDeposit,
     standpoint: client.standpoint,
     tab_index: modules.cashier.cashier_store.cashier_route_tab_index,
 }))(Deposit);

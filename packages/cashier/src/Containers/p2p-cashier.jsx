@@ -68,7 +68,7 @@ const P2PCashier = ({
     );
 
     if (is_logging_in) {
-        return <Loading is_fullscreen={false} />;
+        return <Loading is_fullscreen />;
     }
 
     return (

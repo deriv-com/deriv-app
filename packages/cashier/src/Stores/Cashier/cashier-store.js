@@ -11,6 +11,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CashierNotifications from 'Containers/cashier-notifications.jsx';
+import AccountPromptDialog from '../account-prompt-dialog-store';
 import BaseStore from '../base-store';
 import VerificationStore from '../verification-store';
 import ErrorStore from '../error-store';
@@ -47,13 +48,27 @@ export default class CashierStore extends BaseStore {
         this.WS = WS;
         this.root_store = root_store;
 
-        this.root_store.menu.attach({
-            id: 'dt_cashier_tab',
-            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
-            text: () => localize('Cashier'),
-            link_to: routes.cashier,
-            login_only: true,
-        });
+        when(
+            () => this.root_store.client.is_logged_in,
+            () => {
+                this.setHasSetCurrency();
+
+                this.root_store.menu.attach({
+                    id: 'dt_cashier_tab',
+                    icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+                    text: () => localize('Cashier'),
+                    link_to: this.has_set_currency && routes.cashier,
+                    onClick: !this.has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
+                    login_only: true,
+                });
+            }
+        );
+
+        if (!this.has_set_currency) {
+            this.changeSetCurrencyModalTitle();
+        }
+
+        this.account_prompt_dialog = new AccountPromptDialog(this.root_store);
 
         this.init();
     }
@@ -64,7 +79,16 @@ export default class CashierStore extends BaseStore {
     @observable cashier_route_tab_index = 0;
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
+    @observable should_show_all_available_currencies = false;
     @observable is_cashier_default = true;
+    @observable deposit_target = '';
+    @observable crypto_amount = '';
+    @observable fiat_amount = '';
+    @observable insufficient_fund_error = '';
+    @observable all_payment_agent_list = [];
+    @observable should_set_currency_modal_title_change = false;
+    @observable p2p_advertiser_error = undefined;
+    @observable has_set_currency = false;
     @observable withdraw_amount = '';
     @observable blockchain_address = '';
     @observable should_percentage_reset = false;
@@ -101,6 +125,31 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    @action.bound
+    setHasSetCurrency() {
+        this.has_set_currency = this.root_store.client.account_list
+            .filter(account => !account.is_virtual)
+            .some(account => account.title !== 'Real');
+    }
+
+    @action.bound
+    changeSetCurrencyModalTitle() {
+        this.should_set_currency_modal_title_change = true;
+    }
+
+    @action.bound
+    async onMountCashierDefault() {
+        this.setIsCashierDefault(true);
+        this.account_prompt_dialog.resetIsConfirmed();
+
+        this.setLoading(true);
+        if (this.all_payment_agent_list?.paymentagent_list?.list === undefined) {
+            const payment_agent_list = await this.getAllPaymentAgentList();
+            this.setAllPaymentAgentList(payment_agent_list);
+        }
+        this.setLoading(false);
     }
 
     @action.bound
@@ -202,6 +251,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setShouldShowAllAvailableCurrencies(value) {
+        this.should_show_all_available_currencies = value;
+    }
+
+    @action.bound
     setBlockchainAddress(address) {
         this.blockchain_address = address;
     }
@@ -209,6 +263,16 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsCashierDefault(is_cashier_default) {
         this.is_cashier_default = is_cashier_default;
+    }
+
+    @action.bound
+    setDepositTarget(target) {
+        this.deposit_target = target;
+    }
+
+    @action.bound
+    continueRoute() {
+        this.root_store.common.routeTo(this.deposit_target);
     }
 
     @action.bound
@@ -226,8 +290,13 @@ export default class CashierStore extends BaseStore {
         when(
             () => this.root_store.client.is_logged_in,
             async () => {
-                await this.checkP2pStatus();
+                await this.getAdvertizerError();
+                this.checkP2pStatus();
             }
+        );
+        when(
+            () => this.is_payment_agent_visible,
+            () => this.filterPaymentAgentList()
         );
 
         reaction(
@@ -241,8 +310,9 @@ export default class CashierStore extends BaseStore {
                 await this.WS.wait('get_settings');
 
                 if (this.root_store.client.is_logged_in) {
-                    await this.checkP2pStatus();
-                    await this.root_store.modules.cashier?.payment_agent_store.filterPaymentAgentList();
+                    await this.getAdvertizerError();
+                    this.account_prompt_dialog.resetLastLocation();
+                    if (!this.root_store.client.switched) this.checkP2pStatus();
                 }
             }
         );
@@ -256,9 +326,14 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async checkP2pStatus() {
+    async getAdvertizerError() {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
-        const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+        this.p2p_advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+    }
+
+    @action.bound
+    checkP2pStatus() {
+        const advertiser_error = this.p2p_advertiser_error;
         const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
         this.setIsP2pVisible(!(is_p2p_restricted || this.root_store.client.is_virtual));
     }
@@ -399,7 +474,7 @@ export default class CashierStore extends BaseStore {
             }
         } else if (isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
-            this.setContainerHeight('540');
+            this.setContainerHeight('380');
             this.setIframeUrl(response_cashier.cashier);
             // crypto cashier can only be accessed once and the session expires
             // so no need to set timeouts to keep the session alive
@@ -420,7 +495,7 @@ export default class CashierStore extends BaseStore {
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
-            this.root_store.common.routeTo(routes.cashier_deposit);
+            this.root_store.common.routeTo(this.account_prompt_dialog.last_location ?? routes.cashier_deposit);
         }
     }
 
@@ -429,7 +504,11 @@ export default class CashierStore extends BaseStore {
         this.onRemount = this.onMount;
         await this.onMountCommon();
 
-        if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
+        if (
+            this.containers.indexOf(this.active_container) === -1 &&
+            !this.root_store.client.is_switching &&
+            this.active_container !== this.config.payment_agent.container
+        ) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
         this.onMountDeposit(verification_code);

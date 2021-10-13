@@ -432,8 +432,9 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get should_allow_authentication() {
-        const allow_document_upload = this.account_status?.status?.some(status => status === 'allow_document_upload');
-        return allow_document_upload || !!this.is_authentication_needed;
+        return this.account_status?.status?.some(
+            status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
+        );
     }
 
     @computed
@@ -642,7 +643,9 @@ export default class ClientStore extends BaseStore {
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
-        if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
+        if (!this.mt5_login_list.some(acc => acc.market_type === 'synthetic')) {
+            if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
+        }
 
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
@@ -1848,8 +1851,6 @@ export default class ClientStore extends BaseStore {
         if (!this.verification_code.signup || !password || !residence) return;
         if (email_consent === undefined) return;
         email_consent = email_consent ? 1 : 0;
-        // Currently the code doesn't reach here and the console log is needed for debugging.
-        // TODO: remove console log when AccountSignup component and validation are ready
         WS.newAccountVirtual(
             this.verification_code.signup,
             password,
@@ -1870,7 +1871,7 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                if (!this.country_standpoint.is_france && !this.country_standpoint.is_belgium) {
+                if (!this.country_standpoint.is_france && !this.country_standpoint.is_belgium && residence !== 'im') {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }

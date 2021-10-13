@@ -7,8 +7,11 @@ import { routes, isNavigationFromPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
+import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
+import ChooseCurrency from './choose-currency.jsx';
 import SetCurrency from './set-currency.jsx';
+import FinishedAddCurrency from './finished-add-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
@@ -22,6 +25,9 @@ const modal_pages_indices = {
     status_dialog: 3,
     set_currency: 4,
     signup_error: 5,
+    choose_crypto_currency: 6,
+    add_currency: 7,
+    finished_add_currency: 8,
 };
 
 const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, country_standpoint }) => {
@@ -74,8 +80,12 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
 };
 
 const RealAccountSignup = ({
+    available_crypto_currencies,
     closeRealAccountSignup,
+    continueRoute,
     currency,
+    deposit_target,
+    has_fiat,
     has_real_account,
     country_standpoint,
     history,
@@ -86,11 +96,12 @@ const RealAccountSignup = ({
     is_real_acc_signup_on,
     real_account_signup_target,
     routing_history,
+    setIsDeposit,
     setParams,
+    should_show_all_available_currencies,
     state_index,
     state_value,
-    has_fiat,
-    available_crypto_currencies,
+    deposit_real_account_signup_target,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -120,12 +131,24 @@ const RealAccountSignup = ({
                     is_loading={local_props.is_loading}
                     setLoading={setLoading}
                     onError={showErrorModal}
+                    is_add_crypto={local_props.real_account_signup_target === 'add_crypto'}
+                    is_add_fiat={local_props.real_account_signup_target === 'add_fiat'}
+                    is_add_currency={local_props.real_account_signup_target === 'add_currency'}
+                    deposit_target={local_props.deposit_target}
                 />
             ),
-            title: local_props =>
-                local_props.has_fiat && local_props.available_crypto_currencies?.length === 0
-                    ? localize('Manage account')
-                    : localize('Add or manage account'),
+            title: local_props => {
+                if (local_props.real_account_signup_target === 'add_crypto') {
+                    return localize('Create a cryptocurrency account');
+                } else if (local_props.real_account_signup_target === 'add_fiat') {
+                    return localize('Add a Deriv real account');
+                } else if (local_props.real_account_signup_target === 'add_currency') {
+                    return localize('Create a new account');
+                } else if (local_props.has_fiat && local_props.available_crypto_currencies?.length === 0) {
+                    return localize('Manage account');
+                }
+                return localize('Add or manage account');
+            },
         },
         {
             body: local_props => (
@@ -134,6 +157,12 @@ const RealAccountSignup = ({
                     current={local_props.state_value.current_currency}
                     onCancel={closeModal}
                     onSubmit={closeModalThenOpenCashier}
+                    deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
+                    deposit_target={local_props.deposit_target}
+                    closeRealAccountSignup={closeRealAccountSignup}
+                    continueRoute={continueRoute}
+                    setIsDeposit={setIsDeposit}
+                    history={history}
                 />
             ),
             title: local_props =>
@@ -168,6 +197,32 @@ const RealAccountSignup = ({
             ),
             title: () => localize('Add a real account'),
         },
+        {
+            body: () => <ChooseCurrency className='account-wizard__body' onError={showErrorModal} />,
+            title: local_props =>
+                local_props.should_show_all_available_currencies
+                    ? localize('Choose an account')
+                    : localize('Choose a cryptocurrency account'),
+        },
+        {
+            body: () => <AddCurrency className='account-wizard__body' onError={showErrorModal} />,
+            title: () => localize('Create a new account'),
+        },
+        {
+            body: local_props => (
+                <FinishedAddCurrency
+                    prev={local_props.state_value.previous_currency}
+                    current={local_props.state_value.current_currency}
+                    onSubmit={closeModalThenOpenCashier}
+                    deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
+                    deposit_target={local_props.deposit_target}
+                    closeRealAccountSignup={closeRealAccountSignup}
+                    continueRoute={continueRoute}
+                    setIsDeposit={setIsDeposit}
+                    history={history}
+                />
+            ),
+        },
     ]);
 
     const getModalHeight = () => {
@@ -178,7 +233,11 @@ const RealAccountSignup = ({
                 // Manage account
                 return '420px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
-            if (getActiveModalIndex() === modal_pages_indices.finished_set_currency) {
+            if (
+                [modal_pages_indices.finished_set_currency, modal_pages_indices.finished_add_currency].includes(
+                    getActiveModalIndex()
+                )
+            ) {
                 return 'auto';
             }
             return '644px'; // Add or manage account modal
@@ -205,11 +264,13 @@ const RealAccountSignup = ({
         history.push(routes.cashier_deposit);
     };
 
-    const showSetCurrencySuccess = (previous_currency, current_currency) => {
+    const showSetCurrencySuccess = (previous_currency, current_currency, target) => {
         setParams({
             previous_currency,
             current_currency,
-            active_modal_index: modal_pages_indices.finished_set_currency,
+            active_modal_index: target
+                ? modal_pages_indices.finished_add_currency
+                : modal_pages_indices.finished_set_currency,
         });
     };
 
@@ -296,6 +357,14 @@ const RealAccountSignup = ({
 
     const getActiveModalIndex = () => {
         let active_modal_index_no;
+        if (real_account_signup_target === 'choose') {
+            active_modal_index_no = modal_pages_indices.choose_crypto_currency;
+            return active_modal_index_no;
+        }
+        if (['add_crypto', 'add_fiat', 'add_currency'].includes(real_account_signup_target)) {
+            active_modal_index_no = modal_pages_indices.add_or_manage_account;
+            return active_modal_index_no;
+        }
         if (state_value.active_modal_index === -1) {
             if (has_real_account && currency && getIsManageTarget()) {
                 active_modal_index_no = modal_pages_indices.add_or_manage_account;
@@ -353,6 +422,7 @@ const RealAccountSignup = ({
                                     is_eu={is_eu}
                                     has_fiat={has_fiat}
                                     available_crypto_currencies={available_crypto_currencies}
+                                    should_show_all_available_currencies={should_show_all_available_currencies}
                                     country_standpoint={country_standpoint}
                                 />
                             );
@@ -366,7 +436,14 @@ const RealAccountSignup = ({
                     elements_to_ignore={[document.querySelector('.modal-root')]}
                 >
                     {is_real_acc_signup_on && (
-                        <ModalContent state_value={state_value} passthrough={state_index} is_loading={is_loading} />
+                        <ModalContent
+                            state_value={state_value}
+                            passthrough={state_index}
+                            is_loading={is_loading}
+                            real_account_signup_target={real_account_signup_target}
+                            deposit_real_account_signup_target={deposit_real_account_signup_target}
+                            deposit_target={deposit_target}
+                        />
                     )}
                 </Modal>
             </DesktopWrapper>
@@ -384,6 +461,7 @@ const RealAccountSignup = ({
                                     currency={currency}
                                     is_isle_of_man_residence={is_isle_of_man_residence}
                                     is_belgium_residence={is_belgium_residence}
+                                    should_show_all_available_currencies={should_show_all_available_currencies}
                                     country_standpoint={country_standpoint}
                                 />
                             );
@@ -392,7 +470,14 @@ const RealAccountSignup = ({
                     }}
                 >
                     {is_real_acc_signup_on && (
-                        <ModalContent state_value={state_value} passthrough={state_index} is_loading={is_loading} />
+                        <ModalContent
+                            state_value={state_value}
+                            passthrough={state_index}
+                            is_loading={is_loading}
+                            real_account_signup_target={real_account_signup_target}
+                            deposit_real_account_signup_target={deposit_real_account_signup_target}
+                            deposit_target={deposit_target}
+                        />
                     )}
                 </MobileDialog>
             </MobileWrapper>
@@ -400,9 +485,13 @@ const RealAccountSignup = ({
     );
 };
 
-export default connect(({ ui, client, common }) => ({
+export default connect(({ ui, client, common, modules }) => ({
+    available_crypto_currencies: client.available_crypto_currencies,
+    has_fiat: client.has_fiat,
     has_real_account: client.has_active_real_account,
+    continueRoute: modules.cashier.continueRoute,
     currency: client.currency,
+    deposit_target: modules.cashier.deposit_target,
     is_eu: client.is_eu,
     country_standpoint: client.country_standpoint,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
@@ -412,8 +501,9 @@ export default connect(({ ui, client, common }) => ({
     is_from_restricted_country: client.is_from_restricted_country,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
+    setIsDeposit: modules.cashier.setIsDeposit,
+    should_show_all_available_currencies: modules.cashier.should_show_all_available_currencies,
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
-    has_fiat: client.has_fiat,
-    available_crypto_currencies: client.available_crypto_currencies,
+    deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
 }))(withRouter(RealAccountSignup));

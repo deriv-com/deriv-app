@@ -32,6 +32,9 @@ const DisplayAccountType = ({ account_type, country_standpoint }) => {
         if (country_standpoint.is_united_kingdom) {
             return <Localize i18n_default_text='Gaming' />;
         }
+        if (Object.values(country_standpoint).some(Boolean)) {
+            return <Localize i18n_default_text='Options' />;
+        }
         return <Localize i18n_default_text='Synthetic' />;
     }
     return null;

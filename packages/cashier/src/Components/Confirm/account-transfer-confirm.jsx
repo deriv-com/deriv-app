@@ -49,11 +49,11 @@ AccountTransferConfirm.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    error: modules.cashier.cashier_store.config.account_transfer.error,
-    selected_from: modules.cashier.cashier_store.config.account_transfer.selected_from,
-    selected_to: modules.cashier.cashier_store.config.account_transfer.selected_to,
-    account_transfer_amount: modules.cashier.cashier_store.config.account_transfer.account_transfer_amount,
-    requestTransferBetweenAccounts: modules.cashier.cashier_store.requestTransferBetweenAccounts,
-    setIsTransferConfirm: modules.cashier.cashier_store.setIsTransferConfirm,
+    error: modules.cashier.account_transfer_store.error,
+    selected_from: modules.cashier.account_transfer_store.selected_from,
+    selected_to: modules.cashier.account_transfer_store.selected_to,
+    account_transfer_amount: modules.cashier.account_transfer_store.account_transfer_amount,
+    requestTransferBetweenAccounts: modules.cashier.account_transfer_store.requestTransferBetweenAccounts,
+    setIsTransferConfirm: modules.cashier.account_transfer_store.setIsTransferConfirm,
     transfer_to: modules.cashier.payment_agent_transfer_store.confirm.client_id,
 }))(AccountTransferConfirm);

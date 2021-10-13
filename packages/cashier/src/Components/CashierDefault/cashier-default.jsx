@@ -144,7 +144,7 @@ CashierDefault.propTypes = {
 };
 
 export default connect(({ client, modules, ui }) => ({
-    accounts_list: modules.cashier.cashier_store.config.account_transfer.accounts_list,
+    accounts_list: modules.cashier.account_transfer_store.accounts_list,
     currency: client.currency,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_eu: client.is_eu,

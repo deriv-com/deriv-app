@@ -2,45 +2,18 @@
 import React from 'react';
 import { action, computed, observable, toJS, reaction, when } from 'mobx';
 import {
-    formatMoney,
-    isEmptyObject,
     isCryptocurrency,
-    getCurrencies,
-    getCurrencyDisplayCode,
     getDecimalPlaces,
     getMinWithdrawal,
-    getCFDAccountDisplay,
-    getCFDAccount,
     getPropertyValue,
     routes,
     validNumber,
-    CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import BaseStore from '../base-store';
 import CashierNotifications from '../../Containers/cashier-notifications.jsx';
 import VerificationStore from '../verification-store';
 import ErrorStore from '../error-store';
-
-const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
-
-const getSelectedError = (selected_value, is_from_account) => {
-    if (is_from_account) {
-        return (
-            <Localize
-                i18n_default_text='Transfer from {{selected_value}} is not allowed, Please choose another account from dropdown'
-                values={{ selected_value }}
-            />
-        );
-    }
-
-    return (
-        <Localize
-            i18n_default_text='Transfer to {{selected_value}} is not allowed, Please choose another account from dropdown'
-            values={{ selected_value }}
-        />
-    );
-};
 
 class Config {
     container = '';
@@ -53,39 +26,6 @@ class Config {
 
     constructor({ container }) {
         this.container = container;
-    }
-}
-
-class ConfigAccountTransfer {
-    @observable accounts_list = [];
-    @observable container = 'account_transfer';
-    @observable error = new ErrorStore();
-    @observable has_no_account = false;
-    @observable has_no_accounts_balance = false;
-    @observable is_transfer_confirm = false;
-    @observable is_transfer_successful = false;
-    @observable is_mt5_transfer_in_progress = false;
-    @observable minimum_fee = null;
-    @observable receipt = {};
-    @observable selected_from = {};
-    @observable selected_to = {};
-    @observable account_transfer_amount = '';
-    @observable transfer_fee = null;
-    @observable transfer_limit = {};
-
-    @action.bound
-    setBalanceByLoginId(loginid, balance) {
-        this.accounts_list.find(acc => loginid === acc.value).balance = balance;
-    }
-
-    @action.bound
-    setBalanceSelectedFrom(balance) {
-        this.selected_from.balance = balance;
-    }
-
-    @action.bound
-    setBalanceSelectedTo(balance) {
-        this.selected_to.balance = balance;
     }
 }
 
@@ -138,7 +78,7 @@ export default class CashierStore extends BaseStore {
     @observable is_withdraw_confirmed = false;
 
     @observable config = {
-        account_transfer: new ConfigAccountTransfer(),
+        account_transfer: this.root_store.modules.cashier?.account_transfer_store,
         deposit: {
             ...toJS(new Config({ container: 'deposit' })),
             error: new ErrorStore(),
@@ -194,8 +134,11 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     calculatePercentage(amount = this.converter_from_amount) {
-        if (this.active_container === this.config.account_transfer.container) {
-            this.percentage = +((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
+        if (this.active_container === this.root_store.modules.cashier.account_transfer_store.container) {
+            this.percentage = +(
+                (amount / +this.root_store.modules.cashier.account_transfer_store.selected_from.balance) *
+                100
+            ).toFixed(0);
         } else {
             this.percentage = +((amount / +this.root_store.client.balance) * 100).toFixed(0);
         }
@@ -355,8 +298,8 @@ export default class CashierStore extends BaseStore {
                 this.root_store.modules.cashier?.payment_agent_transfer_store.checkIsPaymentAgent();
             }
 
-            if (!this.config.account_transfer.accounts_list.length) {
-                this.sortAccountsTransfer();
+            if (!this.root_store.modules.cashier?.account_transfer_store.accounts_list.length) {
+                this.root_store.modules.cashier?.account_transfer_store.sortAccountsTransfer();
             }
 
             if (
@@ -574,23 +517,6 @@ export default class CashierStore extends BaseStore {
         );
     }
 
-    @computed
-    get is_transfer_locked() {
-        const {
-            is_financial_account,
-            is_financial_information_incomplete,
-            is_trading_experience_incomplete,
-            account_status,
-        } = this.root_store.client;
-
-        if (!account_status?.status) return false;
-
-        const need_financial_assessment =
-            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
-
-        return need_financial_assessment && this.config.account_transfer.error.is_ask_financial_risk_approval;
-    }
-
     @action.bound
     async check10kLimit() {
         const remainder = (await this.root_store.client.getLimits())?.get_limits?.remainder;
@@ -721,473 +647,6 @@ export default class CashierStore extends BaseStore {
         this.setLoading(false);
     }
 
-    // possible transfers:
-    // 1. fiat to crypto & vice versa
-    // 2. fiat to mt & vice versa
-    // 3. crypto to mt & vice versa
-    @action.bound
-    async onMountAccountTransfer() {
-        this.setLoading(true);
-        this.onRemount = this.onMountAccountTransfer;
-        await this.onMountCommon();
-        await this.WS.wait('website_status');
-
-        // check if some balance update has come in since the last mount
-        const has_updated_account_balance =
-            this.config.account_transfer.has_no_accounts_balance &&
-            Object.keys(this.root_store.client.active_accounts).find(
-                account =>
-                    !this.root_store.client.active_accounts[account].is_virtual &&
-                    this.root_store.client.active_accounts[account].balance
-            );
-        if (has_updated_account_balance) {
-            this.setHasNoAccountsBalance(false);
-        }
-
-        // various issues happen when loading from cache
-        // e.g. new account may have been created, transfer may have been done elsewhere, etc
-        // so on load of this page just call it again
-        if (this.root_store.client.is_logged_in) {
-            const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts();
-
-            if (transfer_between_accounts.error) {
-                this.config.account_transfer.error.setErrorMessage(
-                    transfer_between_accounts.error,
-                    this.onMountAccountTransfer
-                );
-                this.setLoading(false);
-                return;
-            }
-
-            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
-                return;
-            }
-
-            await this.sortAccountsTransfer(transfer_between_accounts);
-            this.setTransferFee();
-            this.setMinimumFee();
-            this.setTransferLimit();
-
-            if (this.config.account_transfer.accounts_list?.length > 0) {
-                const cfd_transfer_to_login_id = sessionStorage.getItem('cfd_transfer_to_login_id');
-                sessionStorage.removeItem('cfd_transfer_to_login_id');
-                const obj_values = this.config.account_transfer.accounts_list.find(
-                    account => account.value === cfd_transfer_to_login_id
-                );
-                if (obj_values) {
-                    if (hasTransferNotAllowedLoginid(obj_values.value)) {
-                        // check if selected to is not allowed account
-                        obj_values.error = getSelectedError(obj_values.value);
-                    }
-                    this.setSelectedTo(obj_values);
-                }
-            }
-        }
-        this.setLoading(false);
-    }
-
-    canDoAccountTransfer(accounts) {
-        let can_transfer = true;
-        // should have at least one account with balance
-        if (!accounts.find(account => +account.balance > 0)) {
-            can_transfer = false;
-            this.setHasNoAccountsBalance(true);
-        } else {
-            this.setHasNoAccountsBalance(false);
-        }
-        // should have at least two real-money accounts
-        if (accounts.length <= 1) {
-            can_transfer = false;
-            this.setHasNoAccount(true);
-        } else {
-            this.setHasNoAccount(false);
-        }
-        if (!can_transfer) {
-            this.setLoading(false);
-        }
-        return can_transfer;
-    }
-
-    @action.bound
-    setHasNoAccountsBalance(has_no_accounts_balance) {
-        this.config.account_transfer.has_no_accounts_balance = has_no_accounts_balance;
-    }
-
-    @action.bound
-    setHasNoAccount(has_no_account) {
-        this.config.account_transfer.has_no_account = has_no_account;
-    }
-
-    @action.bound
-    setTransferFee() {
-        const transfer_fee = getPropertyValue(getCurrencies(), [
-            this.config.account_transfer.selected_from.currency,
-            'transfer_between_accounts',
-            'fees',
-            this.config.account_transfer.selected_to.currency,
-        ]);
-        this.config.account_transfer.transfer_fee = typeof transfer_fee === 'undefined' ? 1 : +transfer_fee;
-    }
-
-    @action.bound
-    setMinimumFee() {
-        const decimals = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
-        // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
-        this.config.account_transfer.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
-    }
-
-    @action.bound
-    setTransferLimit() {
-        const is_mt_transfer =
-            this.config.account_transfer.selected_from.is_mt || this.config.account_transfer.selected_to.is_mt;
-        const is_dxtrade_transfer =
-            this.config.account_transfer.selected_from.is_dxtrade ||
-            this.config.account_transfer.selected_to.is_dxtrade;
-
-        let limits_key;
-        if (is_mt_transfer) {
-            limits_key = 'limits_mt5';
-        } else if (is_dxtrade_transfer) {
-            limits_key = 'limits_dxtrade';
-        } else {
-            limits_key = 'limits';
-        }
-
-        const transfer_limit = getPropertyValue(getCurrencies(), [
-            this.config.account_transfer.selected_from.currency,
-            'transfer_between_accounts',
-            limits_key,
-        ]);
-        const balance = this.config.account_transfer.selected_from.balance;
-        const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
-        // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
-        this.config.account_transfer.transfer_limit = {
-            max:
-                !transfer_limit?.max || (+balance >= (transfer_limit?.min || 0) && +balance <= transfer_limit?.max)
-                    ? balance
-                    : transfer_limit?.max.toFixed(decimal_places),
-            min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : null,
-        };
-    }
-
-    @action.bound
-    async sortAccountsTransfer(response_accounts) {
-        const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
-        if (!this.config.account_transfer.accounts_list.length) {
-            if (transfer_between_accounts.error) {
-                return;
-            }
-        }
-
-        const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
-        // TODO: move `tradingPlatformAccountsList` to deriv-api to use storage
-        const dxtrade_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE))
-            ?.trading_platform_accounts;
-
-        // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
-        const accounts = transfer_between_accounts.accounts.map(account => {
-            if (account.account_type === CFD_PLATFORMS.MT5 && Array.isArray(mt5_login_list) && mt5_login_list.length) {
-                // account_type in transfer_between_accounts (mt5|binary)
-                // gets overridden by account_type in mt5_login_list (demo|real)
-                // since in cashier all these are real accounts, the mt5 account type is what we want to keep
-                const found_account = mt5_login_list.find(acc => acc.login === account.loginid);
-
-                if (found_account === undefined) return account;
-
-                return { ...account, ...found_account, account_type: CFD_PLATFORMS.MT5 };
-            }
-            if (
-                account.account_type === CFD_PLATFORMS.DXTRADE &&
-                Array.isArray(dxtrade_accounts_list) &&
-                dxtrade_accounts_list.length
-            ) {
-                // account_type in transfer_between_accounts (mt5|binary)
-                // gets overridden by account_type in dxtrade_accounts_list (demo|real)
-                // since in cashier all these are real accounts, the mt5 account type is what we want to keep
-                const found_account = dxtrade_accounts_list.find(acc => acc.account_id === account.loginid);
-
-                if (found_account === undefined) return account;
-
-                return { ...account, ...found_account, account_type: CFD_PLATFORMS.DXTRADE };
-            }
-            return account;
-        });
-        // sort accounts as follows:
-        // for MT5, synthetic, financial, financial stp
-        // for non-MT5, fiat, crypto (alphabetically by currency)
-        // should have more than one account
-        if (transfer_between_accounts.accounts.length > 1) {
-            accounts.sort((a, b) => {
-                const a_is_mt = a.account_type === CFD_PLATFORMS.MT5;
-                const b_is_mt = b.account_type === CFD_PLATFORMS.MT5;
-                const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
-                const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
-                const a_is_fiat = !a_is_mt && !a_is_crypto;
-                const b_is_fiat = !b_is_mt && !b_is_crypto;
-                if (a_is_mt && b_is_mt) {
-                    if (a.market_type === 'gaming' || a.market_type === 'synthetic') {
-                        return -1;
-                    }
-                    if (a.sub_account_type === 'financial') {
-                        return b.market_type === 'gaming' || b.market_type === 'synthetic' ? 1 : -1;
-                    }
-                    return 1;
-                } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
-                    return a.currency < b.currency ? -1 : 1;
-                } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
-                    return -1;
-                }
-                return a_is_mt ? -1 : 1;
-            });
-        }
-        const arr_accounts = [];
-        this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
-
-        accounts.forEach(account => {
-            const cfd_platforms = {
-                mt5: { name: 'DMT5', icon: 'IcMt5' },
-                dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },
-            };
-            const is_cfd = Object.keys(cfd_platforms).includes(account.account_type);
-            const cfd_text_display = cfd_platforms[account.account_type]?.name;
-            const cfd_icon_display = `${cfd_platforms[account.account_type]?.icon}-${getCFDAccount({
-                market_type: account.market_type,
-                sub_account_type: account.sub_account_type,
-                platform: account.account_type,
-                is_eu: this.root_store.client.is_eu,
-            })}`;
-            const account_text_display = is_cfd
-                ? `${cfd_text_display} ${getCFDAccountDisplay({
-                      market_type: account.market_type,
-                      sub_account_type: account.sub_account_type,
-                      platform: account.account_type,
-                      is_eu: this.root_store.client.is_eu,
-                  })}`
-                : getCurrencyDisplayCode(
-                      account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
-                  );
-
-            const obj_values = {
-                text: account_text_display,
-                value: account.loginid,
-                balance: account.balance,
-                currency: account.currency,
-                is_crypto: isCryptocurrency(account.currency),
-                is_mt: account.account_type === CFD_PLATFORMS.MT5,
-                is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
-                ...(is_cfd && {
-                    platform_icon: cfd_icon_display,
-                    market_type: getCFDAccount({
-                        market_type: account.market_type,
-                        sub_account_type: account.sub_account_type,
-                        platform: account.account_type,
-                        is_eu: this.root_store.client.is_eu,
-                    }),
-                }),
-            };
-            // set current logged in client as the default transfer from account
-            if (account.loginid === this.root_store.client.loginid) {
-                // check if selected from is not allowed account
-                if (hasTransferNotAllowedLoginid(obj_values.value)) {
-                    obj_values.error = getSelectedError(obj_values.value, true);
-                }
-
-                this.setSelectedFrom(obj_values);
-            } else if (isEmptyObject(this.config.account_transfer.selected_to)) {
-                if (hasTransferNotAllowedLoginid(obj_values.value)) {
-                    // check if selected to is not allowed account
-                    obj_values.error = getSelectedError(obj_values.value);
-                }
-                // set the first available account as the default transfer to account
-                this.setSelectedTo(obj_values);
-            }
-            arr_accounts.push(obj_values);
-        });
-        this.setAccounts(arr_accounts);
-    }
-
-    @action.bound
-    setSelectedFrom(obj_values) {
-        this.config.account_transfer.selected_from = obj_values;
-    }
-
-    @action.bound
-    setSelectedTo(obj_values) {
-        this.config.account_transfer.selected_to = obj_values;
-    }
-
-    @action.bound
-    setAccounts(arr_accounts) {
-        this.config.account_transfer.accounts_list = arr_accounts;
-    }
-
-    @action.bound
-    setIsTransferConfirm(is_transfer_confirm) {
-        this.config[this.active_container].is_transfer_confirm = is_transfer_confirm;
-    }
-
-    @action.bound
-    setAccountTransferAmount(amount) {
-        this.config[this.active_container].account_transfer_amount = amount;
-    }
-
-    @action.bound
-    setIsTransferSuccessful(is_transfer_successful) {
-        this.config[this.active_container].setIsTransferSuccessful(is_transfer_successful);
-    }
-
-    @action.bound
-    setIsMT5TransferInProgress(is_mt5_transfer_in_progress) {
-        this.config[this.active_container].is_mt5_transfer_in_progress = is_mt5_transfer_in_progress;
-    }
-
-    @action.bound
-    isMT5TransferInProgress() {
-        return this.config[this.active_container]?.is_mt5_transfer_in_progress;
-    }
-
-    @action.bound
-    setReceiptTransfer({ amount }) {
-        this.config.account_transfer.receipt = {
-            amount_transferred: amount,
-        };
-    }
-
-    @action.bound
-    onChangeTransferFrom({ target }) {
-        this.config.account_transfer.error.setErrorMessage('');
-        this.config.account_transfer.selected_from.error = '';
-
-        const accounts = this.config.account_transfer.accounts_list;
-        const selected_from = accounts.find(account => account.value === target.value);
-
-        // if new value of selected_from is the same as the current selected_to
-        // switch the value of selected_from and selected_to
-        if (selected_from.value === this.config.account_transfer.selected_to.value) {
-            this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
-        } else if (
-            (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) ||
-            (selected_from.is_dxtrade && this.config.account_transfer.selected_to.is_dxtrade) ||
-            (selected_from.is_dxtrade && this.config.account_transfer.selected_to.is_mt) ||
-            (selected_from.is_mt && this.config.account_transfer.selected_to.is_dxtrade)
-        ) {
-            // not allowed to transfer from MT to MT
-            // not allowed to transfer from Dxtrade to Dxtrade
-            // not allowed to transfer between MT and Dxtrade
-            const first_non_cfd = this.config.account_transfer.accounts_list.find(
-                account => !account.is_mt && !account.is_dxtrade
-            );
-            this.onChangeTransferTo({ target: { value: first_non_cfd.value } });
-        } else if (selected_from.is_crypto && this.config.account_transfer.selected_to.is_crypto) {
-            // not allowed to transfer crypto to crypto
-            const first_fiat = this.config.account_transfer.accounts_list.find(account => !account.is_crypto);
-            this.onChangeTransferTo({ target: { value: first_fiat.value } });
-        }
-
-        if (hasTransferNotAllowedLoginid(selected_from.value)) {
-            selected_from.error = getSelectedError(selected_from.value, true);
-        }
-
-        this.config.account_transfer.selected_from = selected_from;
-        this.setTransferFee();
-        this.setMinimumFee();
-        this.setTransferLimit();
-    }
-
-    @action.bound
-    onChangeTransferTo({ target }) {
-        this.config.account_transfer.error.setErrorMessage('');
-        this.config.account_transfer.selected_to.error = '';
-
-        const accounts = this.config.account_transfer.accounts_list;
-        this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
-        if (hasTransferNotAllowedLoginid(this.config.account_transfer.selected_to.value)) {
-            this.config.account_transfer.selected_to.error = getSelectedError(
-                this.config.account_transfer.selected_to.value
-            );
-        }
-        this.setTransferFee();
-        this.setTransferLimit();
-    }
-
-    requestTransferBetweenAccounts = async ({ amount }) => {
-        if (!this.root_store.client.is_logged_in) {
-            return null;
-        }
-
-        this.setLoading(true);
-        this.config.account_transfer.error.setErrorMessage('');
-
-        const is_mt_transfer =
-            this.config.account_transfer.selected_from.is_mt || this.config.account_transfer.selected_to.is_mt;
-
-        if (is_mt_transfer) this.setIsMT5TransferInProgress(true);
-
-        const currency = this.config.account_transfer.selected_from.currency;
-        const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts(
-            this.config.account_transfer.selected_from.value,
-            this.config.account_transfer.selected_to.value,
-            currency,
-            amount
-        );
-
-        if (is_mt_transfer) this.setIsMT5TransferInProgress(false);
-
-        if (transfer_between_accounts.error) {
-            // if there is fiat2crypto transfer limit error, we need to refresh the account_status for authentication
-            if (transfer_between_accounts.error.code === 'Fiat2CryptoTransferOverLimit') {
-                const account_status_response = await this.WS.authorized.getAccountStatus();
-                if (!account_status_response.error) {
-                    this.root_store.client.setAccountStatus(account_status_response.get_account_status);
-                }
-            }
-            this.config.account_transfer.error.setErrorMessage(transfer_between_accounts.error);
-        } else {
-            this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
-            transfer_between_accounts.accounts.forEach(account => {
-                this.config.account_transfer.setBalanceByLoginId(account.loginid, account.balance);
-                if (account.loginid === this.config.account_transfer.selected_from.value) {
-                    this.config.account_transfer.setBalanceSelectedFrom(account.balance);
-                } else if (account.loginid === this.config.account_transfer.selected_to.value) {
-                    this.config.account_transfer.setBalanceSelectedTo(account.balance);
-                }
-                // if one of the accounts was mt5
-                if (account.account_type === CFD_PLATFORMS.MT5) {
-                    Promise.all([this.WS.mt5LoginList(), this.WS.balanceAll()]).then(
-                        ([mt5_login_list_response, balance_response]) => {
-                            // update the balance for account switcher by renewing the mt5_login_list response
-                            this.root_store.client.responseMt5LoginList(mt5_login_list_response);
-                            // update total balance since MT5 total only comes in non-stream balance call
-                            this.root_store.client.setBalanceOtherAccounts(balance_response.balance);
-                        }
-                    );
-                }
-                // if one of the accounts was dxtrade
-                if (account.account_type === CFD_PLATFORMS.DXTRADE) {
-                    Promise.all([
-                        this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE),
-                        this.WS.balanceAll(),
-                    ]).then(([dxtrade_login_list_response, balance_response]) => {
-                        // update the balance for account switcher by renewing the dxtrade_login_list_response
-                        this.root_store.client.responseTradingPlatformAccountsList(dxtrade_login_list_response);
-                        // update total balance since Dxtrade total only comes in non-stream balance call
-                        this.root_store.client.setBalanceOtherAccounts(balance_response.balance);
-                    });
-                }
-            });
-            this.setAccountTransferAmount(null);
-            this.setIsTransferConfirm(false);
-            this.setIsTransferSuccessful(true);
-        }
-        this.setLoading(false);
-        return transfer_between_accounts;
-    };
-
-    @action.bound
-    resetAccountTransfer = async () => {
-        this.setIsTransferSuccessful(false);
-    };
-
     accountSwitcherListener() {
         [this.config.withdraw.container, this.root_store.modules.cashier?.payment_agent_store.container].forEach(
             container => {
@@ -1200,7 +659,7 @@ export default class CashierStore extends BaseStore {
             this.setSessionTimeout(true, container);
         });
         this.payment_agent = this.root_store.modules.cashier?.payment_agent_store;
-        this.config.account_transfer = new ConfigAccountTransfer();
+        this.config.account_transfer = this.root_store.modules.cashier?.account_transfer_store;
         this.config.payment_agent_transfer = this.root_store.modules.cashier?.payment_agent_transfer_store;
         this.is_populating_values = false;
 
@@ -1250,7 +709,7 @@ export default class CashierStore extends BaseStore {
                 this.setConverterToAmount('');
                 this.setConverterToError('');
                 this.setIsTimerVisible(false);
-                this.setAccountTransferAmount('');
+                this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount('');
             } else {
                 const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency);
@@ -1263,7 +722,7 @@ export default class CashierStore extends BaseStore {
                 this.validateToAmount();
                 this.setConverterToError('');
                 this.setIsTimerVisible(true);
-                this.setAccountTransferAmount(target.value);
+                this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount(target.value);
             }
         } else {
             this.resetConverter();
@@ -1282,7 +741,7 @@ export default class CashierStore extends BaseStore {
                 this.setConverterFromAmount('');
                 this.setConverterFromError('');
                 this.setIsTimerVisible(false);
-                this.setAccountTransferAmount('');
+                this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount('');
             } else {
                 const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency);
@@ -1295,34 +754,16 @@ export default class CashierStore extends BaseStore {
                 this.validateFromAmount();
                 if (this.converter_from_error) {
                     this.setIsTimerVisible(false);
-                    this.setAccountTransferAmount('');
+                    this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount('');
                 } else {
                     this.setConverterFromError('');
                     this.setIsTimerVisible(true);
-                    this.setAccountTransferAmount(amount);
+                    this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount(amount);
                 }
             }
         } else {
             this.resetConverter();
         }
-    }
-
-    @action.bound
-    setTransferPercentageSelectorResult(amount) {
-        const selected_from_currency = this.config.account_transfer.selected_from.currency;
-        const selected_to_currency = this.config.account_transfer.selected_to.currency;
-
-        if (amount > 0 || +this.config.account_transfer.selected_from.balance === 0) {
-            this.setConverterFromAmount(amount);
-            this.validateTransferFromAmount();
-            this.onChangeConverterFromAmount(
-                { target: { value: amount } },
-                selected_from_currency,
-                selected_to_currency
-            );
-        }
-        this.setIsTimerVisible(false);
-        this.percentageSelectorSelectionStatus(false);
     }
 
     @action.bound
@@ -1342,8 +783,8 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     validateFromAmount() {
-        if (this.active_container === this.config.account_transfer.container) {
-            this.validateTransferFromAmount();
+        if (this.active_container === this.root_store.modules.cashier.account_transfer_store.container) {
+            this.root_store.modules.cashier.account_transfer_store.validateTransferFromAmount();
         } else {
             this.validateWithdrawFromAmount();
         }
@@ -1351,47 +792,10 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     validateToAmount() {
-        if (this.active_container === this.config.account_transfer.container) {
-            this.validateTransferToAmount();
+        if (this.active_container === this.root_store.modules.cashier.account_transfer_store.container) {
+            this.root_store.modules.cashier.account_transfer_store.validateTransferToAmount();
         } else {
             this.validateWithdrawToAmount();
-        }
-    }
-
-    @action.bound
-    validateTransferFromAmount() {
-        if (!this.converter_from_amount) {
-            this.setConverterFromError(localize('This field is required.'));
-        } else {
-            const { is_ok, message } = validNumber(this.converter_from_amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(this.config.account_transfer.selected_from.currency),
-                min: this.config.account_transfer.transfer_limit.min,
-                max: this.config.account_transfer.transfer_limit.max,
-            });
-            if (!is_ok) {
-                this.setConverterFromError(message);
-            } else if (+this.config.account_transfer.selected_from.balance < +this.converter_from_amount) {
-                this.setConverterFromError(localize('Insufficient funds'));
-            } else {
-                this.setConverterFromError('');
-            }
-        }
-    }
-
-    @action.bound
-    validateTransferToAmount() {
-        if (this.converter_to_amount) {
-            const currency = this.config.account_transfer.selected_to.currency;
-            const { is_ok, message } = validNumber(this.converter_to_amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(currency),
-            });
-            if (!is_ok) {
-                this.setConverterToError(message);
-            } else {
-                this.setConverterToError('');
-            }
         }
     }
 

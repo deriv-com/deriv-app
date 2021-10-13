@@ -172,7 +172,7 @@ CryptoWithdrawReceipt.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    account: modules.cashier.cashier_store.config.account_transfer.selected_from,
+    account: modules.cashier.account_transfer_store.selected_from,
     blockchain_address: modules.cashier.cashier_store.blockchain_address,
     withdraw_amount: modules.cashier.cashier_store.withdraw_amount,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,

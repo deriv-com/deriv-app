@@ -350,7 +350,7 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
                                 {...field}
                                 data-lpignore='true'
                                 className='da-self-exclusion__input'
-                                label={localize('USD')}
+                                label={localize('No. of open position(s)')}
                                 value={values.max_open_bets}
                                 onChange={handleChange}
                                 onBlur={handleBlur}

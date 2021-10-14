@@ -455,6 +455,7 @@ class DeactivateAccountReason extends React.Component {
                             client_accounts={this.props.client_accounts}
                             dxtrade_accounts_list={this.props.dxtrade_accounts_list}
                             onBackClick={this.props.onBackClick}
+                            is_eu={this.props.is_eu}
                         />
                     )}
                     {this.state.which_modal_should_render === 'inaccessible_modal' && (
@@ -470,4 +471,5 @@ export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
     dxtrade_accounts_list: client.dxtrade_accounts_list,
+    is_eu: client.is_eu,
 }))(DeactivateAccountReason);

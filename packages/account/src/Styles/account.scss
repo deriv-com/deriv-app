@@ -1733,6 +1733,7 @@ $MIN_HEIGHT_FLOATING: calc(
 .proof-of-identity {
     width: 100%;
     height: 100%;
+    display: flex;
 
     &__main-container {
         max-width: 67.2rem;

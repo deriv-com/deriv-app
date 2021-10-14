@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
+import PoAArticle from '../../../Components/poa-article/poa-article.jsx';
 
 const ProofOfIdentity = ({
     account_status,
@@ -36,6 +37,7 @@ const ProofOfIdentity = ({
                             is_description_enabled
                         />
                     </div>
+                    <PoAArticle />
                 </div>
             )}
         </AutoHeightWrapper>

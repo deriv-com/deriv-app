@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Modal, SelectNative, ReadMore, Text } from '@deriv/components';
+import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -41,7 +41,10 @@ const OnRampInfo = () => (
 const OnRamp = ({
     filtered_onramp_providers,
     is_cashier_locked,
+    is_cashier_default,
+    is_loading,
     is_onramp_modal_open,
+    is_switching,
     menu_options,
     onMountOnramp,
     onUnmountOnramp,
@@ -51,6 +54,7 @@ const OnRamp = ({
     setIsOnRampModalOpen,
     should_show_dialog,
     setSideNotes,
+    tab_index,
 }) => {
     const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
 
@@ -62,18 +66,21 @@ const OnRamp = ({
 
     React.useEffect(() => {
         onMountOnramp();
-        if (typeof setSideNotes === 'function') {
+        if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
             setSideNotes([<OnRampSideNote key={0} />]);
         }
 
         return () => onUnmountOnramp();
-    }, [onMountOnramp, onUnmountOnramp]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onMountOnramp, onUnmountOnramp, is_cashier_default, is_switching, tab_index]);
 
     const getActivePaths = () =>
         (menu_options ?? []).map(menu_option => ({
             text: menu_option.label,
             value: menu_option.path,
         }));
+
+    if (is_switching || is_loading) return <Loading className='cashier-default__loader' is_fullscreen />;
 
     if (is_cashier_locked) {
         return <CashierLocked />;
@@ -132,7 +139,9 @@ const OnRamp = ({
 
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
+    is_cashier_locked: PropTypes.bool,
     is_onramp_modal_open: PropTypes.bool,
+    is_loading: PropTypes.bool,
     menu_options: PropTypes.array,
     onMountOnramp: PropTypes.func,
     onUnmountOnramp: PropTypes.func,
@@ -142,12 +151,16 @@ OnRamp.propTypes = {
     setIsOnRampModalOpen: PropTypes.func,
     setSideNotes: PropTypes.func,
     should_show_dialog: PropTypes.bool,
-    is_cashier_locked: PropTypes.bool,
+    tab_index: PropTypes.number,
 };
 
-export default connect(({ modules, common }) => ({
+export default connect(({ modules, common, client }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
+    is_cashier_default: modules.cashier.is_cashier_default,
+    is_cashier_locked: modules.cashier.is_cashier_locked,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
+    is_loading: modules.cashier.is_loading,
+    is_switching: client.is_switching,
     onMountOnramp: modules.cashier.onramp.onMountOnramp,
     onUnmountOnramp: modules.cashier.onramp.onUnmountOnramp,
     onramp_popup_modal_title: modules.cashier.onramp.onramp_popup_modal_title,
@@ -155,5 +168,5 @@ export default connect(({ modules, common }) => ({
     routeTo: common.routeTo,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
-    is_cashier_locked: modules.cashier.is_cashier_locked,
+    tab_index: modules.cashier.cashier_route_tab_index,
 }))(OnRamp);

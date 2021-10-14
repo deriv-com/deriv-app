@@ -1956,10 +1956,10 @@ export default class CashierStore extends BaseStore {
     async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
         this.resetTimer();
         if (target.value) {
-            this.percentageSelectorSelectionStatus(true);
-            this.calculatePercentage();
             this.setConverterFromAmount(target.value);
             this.validateFromAmount();
+            this.percentageSelectorSelectionStatus(true);
+            this.calculatePercentage();
             if (this.converter_from_error) {
                 this.setConverterToAmount('');
                 this.setConverterToError('');
@@ -1988,8 +1988,6 @@ export default class CashierStore extends BaseStore {
     async onChangeConverterToAmount({ target }, from_currency, to_currency) {
         this.resetTimer();
         if (target.value) {
-            this.percentageSelectorSelectionStatus(true);
-            this.calculatePercentage();
             this.setConverterToAmount(target.value);
             this.validateToAmount();
             if (this.converter_to_error) {
@@ -2006,6 +2004,8 @@ export default class CashierStore extends BaseStore {
                 } else {
                     this.setConverterFromAmount('');
                 }
+                this.percentageSelectorSelectionStatus(true);
+                this.calculatePercentage();
                 this.validateFromAmount();
                 if (this.converter_from_error) {
                     this.setIsTimerVisible(false);
@@ -2034,6 +2034,11 @@ export default class CashierStore extends BaseStore {
                 selected_from_currency,
                 selected_to_currency
             );
+        } else if (+this.config.account_transfer.selected_from.balance === 0) {
+            this.setConverterFromAmount(amount);
+            this.validateTransferFromAmount();
+        } else {
+            this.resetConverter();
         }
         this.setIsTimerVisible(false);
         this.percentageSelectorSelectionStatus(false);
@@ -2049,6 +2054,8 @@ export default class CashierStore extends BaseStore {
                 this.root_store.client.currency,
                 this.root_store.client.current_fiat_currency || 'USD'
             );
+        } else {
+            this.resetConverter();
         }
         this.setIsTimerVisible(false);
         this.percentageSelectorSelectionStatus(false);

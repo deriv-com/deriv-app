@@ -112,7 +112,6 @@ class ConfigAccountTransfer {
     @observable has_no_account = false;
     @observable has_no_accounts_balance = false;
     @observable is_transfer_confirm = false;
-    @observable is_transfer_successful = false;
     @observable is_mt5_transfer_in_progress = false;
     @observable minimum_fee = null;
     @observable receipt = {};
@@ -1774,8 +1773,7 @@ export default class CashierStore extends BaseStore {
                 }
             });
             this.setAccountTransferAmount(null);
-            this.setIsTransferConfirm(false);
-            this.setIsTransferSuccessful(true);
+            this.setIsTransferConfirm(true);
         }
         this.setLoading(false);
         return transfer_between_accounts;
@@ -1783,7 +1781,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     resetAccountTransfer = async () => {
-        this.setIsTransferSuccessful(false);
+        this.setIsTransferConfirm(false);
     };
 
     @action.bound

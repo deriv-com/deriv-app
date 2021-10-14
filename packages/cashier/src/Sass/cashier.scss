@@ -1322,6 +1322,10 @@
     &__button {
         margin: 4rem auto 0 0.8rem;
 
+        @include mobile {
+            width: 100%;
+        }
+
         &-statement {
             margin-right: 0.8rem;
         }

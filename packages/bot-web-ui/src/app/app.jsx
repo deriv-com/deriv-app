@@ -39,8 +39,9 @@ const App = ({ passthrough }) => {
             setIsLoading(false);
             onMount();
         });
-
+        window.ononline = setIsLoading(false);
         return () => {
+            window.ononline = null;
             onUnmount();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

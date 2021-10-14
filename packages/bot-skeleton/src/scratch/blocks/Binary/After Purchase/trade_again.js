@@ -85,9 +85,13 @@ Blockly.Blocks.trade_again = {
         };
     },
     onchange(event) {
-        if (event.type === Blockly.Events.BLOCK_CHANGE) {
-            this.getDescendants()[1].setDisabled(this.getFieldValue('SL_ENABLED') !== 'TRUE');
-            this.getDescendants()[2].setDisabled(this.getFieldValue('TP_ENABLED') !== 'TRUE');
+        if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.BLOCK_CREATE) {
+            if (this.getDescendants()[1]) {
+                this.getDescendants()[1].setDisabled(this.getFieldValue('SL_ENABLED') !== 'TRUE');
+            }
+            if (this.getDescendants()[2]) {
+                this.getDescendants()[2].setDisabled(this.getFieldValue('TP_ENABLED') !== 'TRUE');
+            }
         }
     },
 };

@@ -7,6 +7,7 @@ import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import NotificationBanner from './notification-banner.jsx';
 import { default_delay, types } from './constants';
+import NotificationPromo from './notification-promo.jsx';
 import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
@@ -36,6 +37,16 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     primary_btn={data.primary_btn}
                     img_src={data.img_src}
                     img_alt={data.img_alt}
+                    onClose={destroy}
+                />
+            );
+        case 'promotions':
+            return (
+                <NotificationPromo
+                    cta_btn={data.cta_btn}
+                    img_alt={data.img_alt}
+                    img_src={data.img_src}
+                    message={data.message}
                     onClose={destroy}
                 />
             );
@@ -127,7 +138,16 @@ Notification.propTypes = {
         message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         should_hide_close_btn: PropTypes.bool,
         size: PropTypes.oneOf(['small']),
-        type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'news', 'announce']).isRequired,
+        type: PropTypes.oneOf([
+            'warning',
+            'info',
+            'success',
+            'danger',
+            'contract_sold',
+            'news',
+            'announce',
+            'promotions',
+        ]).isRequired,
     }),
     removeNotificationMessage: PropTypes.func,
 };

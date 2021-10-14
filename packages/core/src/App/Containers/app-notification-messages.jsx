@@ -60,7 +60,7 @@ const AppNotificationMessages = ({
     const notifications = notification_messages.filter(message => {
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
-            ? ['unwelcome', 'contract_sold', 'dp2p', 'tnc'].includes(message.key)
+            ? ['unwelcome', 'contract_sold', 'dp2p', 'tnc', 'deriv_go'].includes(message.key)
             : true;
         return is_not_marked_notification && is_non_hidden_notification;
     });

@@ -5,11 +5,12 @@ import {
     getUrlBase,
     isEmptyObject,
     isMobile,
+    isMultiplierContract,
     LocalStore,
+    platform_name,
     routes,
     State,
     website_name,
-    platform_name,
 } from '@deriv/shared';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
@@ -379,6 +380,24 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'announce',
             should_hide_close_btn: false,
         },
+        deriv_go: {
+            key: 'deriv_go',
+            message: (
+                <Localize
+                    i18n_default_text='Get a faster mobile trading experience with the <0>Deriv GO</0> app!'
+                    components={[<StaticUrl key={0} className='link dark' href='/landing/deriv-go' />]}
+                />
+            ),
+            cta_btn: {
+                text: localize('Learn more'),
+                onClick: () => {
+                    window.open(getStaticUrl('/landing/deriv-go'), '_blank');
+                },
+            },
+            img_src: getUrlBase('/public/images/common/derivgo_banner.png'),
+            img_alt: 'deriv_go',
+            type: 'promotions',
+        },
     };
     return notifications;
 };
@@ -549,19 +568,22 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
+export const handleClientNotifications = (client, client_store, ui_store, cashier_store, common_store) => {
     const { currency, excluded_until } = client;
     const {
-        loginid,
-        account_status,
         account_settings,
+        account_status,
         getRiskAssessment,
+        is_logged_in,
         is_tnc_needed,
         isAccountOfType,
+        loginid,
         shouldCompleteTax,
     } = client_store;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_p2p_visible } = cashier_store;
+    const { current_language, selected_contract_type } = common_store;
+    let has_missing_required_field;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
@@ -577,17 +599,26 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         getRiskAssessment,
         shouldCompleteTax
     );
-    if (is_p2p_visible) {
-        addNotificationMessage(clientNotifications().dp2p);
-    } else {
-        removeNotificationMessageByKey({ key: clientNotifications().dp2p.key });
+
+    if (client && !client.is_virtual) {
+        if (is_p2p_visible) {
+            addNotificationMessage(clientNotifications().dp2p);
+        } else {
+            removeNotificationMessageByKey({ key: clientNotifications().dp2p.key });
+        }
+
+        if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
+
+        has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
+        if (has_missing_required_field) {
+            addNotificationMessage(clientNotifications(ui_store).required_fields);
+        }
     }
 
-    if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
-
-    const has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
-    if (has_missing_required_field) {
-        addNotificationMessage(clientNotifications(ui_store).required_fields);
+    if (isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
+        addNotificationMessage(clientNotifications().deriv_go);
+    } else {
+        removeNotificationMessageByKey({ key: clientNotifications().deriv_go.key });
     }
 
     return {

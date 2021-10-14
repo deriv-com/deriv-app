@@ -24,6 +24,11 @@ export default class MenuStore extends BaseStore {
         this.extensions.push(menu);
     }
 
+    update(menu, index) {
+        this.extensions[index] = menu;
+        this.extensions.splice(0, 0);
+    }
+
     @action.bound
     detach(menu) {
         this.extensions = this.extensions.filter(extension => extension.id !== menu);

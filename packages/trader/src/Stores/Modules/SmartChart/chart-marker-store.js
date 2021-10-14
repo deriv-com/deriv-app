@@ -4,7 +4,7 @@ export class ChartMarkerStore {
     @observable marker_config = observable.object({});
     @observable content_config = observable.object({});
 
-    //This is a test comment
+    // This is a test comment
 
     constructor(marker_config, content_config) {
         this.marker_config = marker_config;

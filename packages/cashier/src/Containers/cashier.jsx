@@ -41,9 +41,11 @@ const Cashier = ({
     setTabIndex,
     tab_index,
     toggleCashier,
+    setIsCashierDefault,
 }) => {
     React.useEffect(() => {
         toggleCashier();
+        setIsCashierDefault(false);
         // we still need to populate the tabs shown on cashier
         return () => {
             toggleCashier();
@@ -98,6 +100,8 @@ const Cashier = ({
     if ((!is_logged_in && is_logging_in) || !is_account_setting_loaded) {
         return <Loading is_fullscreen />;
     }
+    // eslint-disable-next-line no-console
+    console.log(is_cashier_default);
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <AccountPromptDialog />
@@ -189,6 +193,7 @@ Cashier.propTypes = {
     setTabIndex: PropTypes.func,
     tab_index: PropTypes.number,
     toggleCashier: PropTypes.func,
+    setIsCashierDefault: PropTypes.func,
 };
 
 export default connect(({ client, common, modules, ui }) => ({
@@ -211,4 +216,5 @@ export default connect(({ client, common, modules, ui }) => ({
     setTabIndex: modules.cashier.setCashierTabIndex,
     tab_index: modules.cashier.cashier_route_tab_index,
     toggleCashier: ui.toggleCashier,
+    setIsCashierDefault: modules.cashier.setIsCashierDefault,
 }))(withRouter(Cashier));

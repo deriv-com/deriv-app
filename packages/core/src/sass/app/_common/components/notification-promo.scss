@@ -48,9 +48,12 @@
 
     @include mobile {
         height: 100%;
-        max-height: 11.8rem;
+        max-height: 12.2rem;
         width: calc(100vw - 1.6rem);
         left: 0.8rem;
         top: -0.2rem;
+        &__btn {
+            margin-top: 6px;
+        }
     }
 }

@@ -574,6 +574,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         account_settings,
         account_status,
         getRiskAssessment,
+        is_eu,
         is_logged_in,
         is_tnc_needed,
         isAccountOfType,
@@ -615,7 +616,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         }
     }
 
-    if (isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
+    if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
         addNotificationMessage(clientNotifications().deriv_go);
     } else {
         removeNotificationMessageByKey({ key: clientNotifications().deriv_go.key });

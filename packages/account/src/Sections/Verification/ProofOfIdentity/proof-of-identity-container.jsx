@@ -114,7 +114,7 @@ const ProofOfIdentityContainer = ({
             />
         );
         // Client status modified from BO does not get their latest attempts populated
-    } else if (!identity_last_attempt) {
+    } else if (!identity_last_attempt || identity_last_attempt.status !== identity_status) {
         switch (identity_status) {
             case identity_status_codes.pending:
                 return (
@@ -146,30 +146,6 @@ const ProofOfIdentityContainer = ({
             default:
                 break;
         }
-    } else if (identity_last_attempt.status !== identity_status) {
-        // Get Service with Matching Status
-        if (idv.status === identity_status) {
-            return (
-                <IdvContainer
-                    handleRequireSubmission={handleRequireSubmission}
-                    idv={idv}
-                    is_from_external={!!is_from_external}
-                    needs_poa={needs_poa}
-                    redirect_button={redirect_button}
-                />
-            );
-        } else if (onfido.status === identity_status) {
-            return (
-                <Onfido
-                    handleRequireSubmission={handleRequireSubmission}
-                    is_from_external={!!is_from_external}
-                    needs_poa={needs_poa}
-                    onfido={onfido}
-                    redirect_button={redirect_button}
-                />
-            );
-        }
-        return <Unsupported manual={manual} />;
     }
     switch (identity_last_attempt.service) {
         case service_code.idv:

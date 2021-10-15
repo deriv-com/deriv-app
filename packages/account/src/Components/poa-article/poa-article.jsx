@@ -6,7 +6,7 @@ import AccountArticle from 'Components/article/article.jsx';
 export default function PoAArticle() {
     return (
         <AccountArticle
-            title={localize('Personal details and proof identity')}
+            title={localize('Personal details and proof of identity')}
             descriptions={[
                 <Localize
                     key={0}

@@ -223,6 +223,7 @@ export default class CashierStore extends BaseStore {
     @observable should_percentage_reset = false;
     @observable percentage = 0;
     @observable is_withdraw_confirmed = false;
+    @observable show_p2p_in_cashier_default = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -277,6 +278,21 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    @action.bound
+    showP2pInCashierDefault() {
+        const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
+        const user_fiat_currency = this.config.account_transfer.accounts_list.filter(x => !x.is_crypto);
+        if (
+            is_p2p_restricted ||
+            this.root_store.client.is_virtual ||
+            (user_fiat_currency?.length && user_fiat_currency[0]?.currency !== 'USD')
+        ) {
+            this.show_p2p_in_cashier_default = false;
+        } else {
+            this.show_p2p_in_cashier_default = true;
+        }
     }
 
     @action.bound

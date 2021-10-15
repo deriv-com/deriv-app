@@ -25,8 +25,9 @@ export default class MenuStore extends BaseStore {
     }
 
     update(menu, index) {
-        this.extensions[index] = menu;
-        this.extensions.splice(0, 0);
+        if (this.extensions[index]) {
+            this.extensions[index] = menu;
+        }
     }
 
     @action.bound

@@ -171,13 +171,6 @@ export default class CashierStore extends BaseStore {
             }
         );
 
-        reaction(
-            () => this.has_set_currency,
-            () => {
-                this.replaceCashierMenuOnclick();
-            }
-        );
-
         if (!this.has_set_currency) {
             this.changeSetCurrencyModalTitle();
         }

@@ -283,12 +283,12 @@ export default class CashierStore extends BaseStore {
     @action.bound
     showP2pInCashierDefault() {
         const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
-        const user_fiat_currency = this.config.account_transfer.accounts_list.filter(x => !x.is_crypto);
-        if (
-            is_p2p_restricted ||
-            this.root_store.client.is_virtual ||
-            (user_fiat_currency?.length && user_fiat_currency[0]?.currency !== 'USD')
-        ) {
+        const has_usd_currency = this.root_store.client.account_list.some(account => account.title === 'USD');
+        const has_user_fiat_currency = this.root_store.client.account_list.some(
+            account => !isCryptocurrency(account.title) && account.title !== 'Real'
+        );
+
+        if (is_p2p_restricted || this.root_store.client.is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
             this.show_p2p_in_cashier_default = false;
         } else {
             this.show_p2p_in_cashier_default = true;

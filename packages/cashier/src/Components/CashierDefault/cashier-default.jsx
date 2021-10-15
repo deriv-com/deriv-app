@@ -36,7 +36,6 @@ const CashierDefault = ({
 
     React.useEffect(() => {
         onMountCashierDefault();
-        showP2pInCashierDefault();
         return () => {
             setIsCashierDefault(false);
             if (!has_set_currency && window.location.pathname.includes(routes.cashier)) {
@@ -104,6 +103,7 @@ const CashierDefault = ({
     };
 
     const getDepositOptions = () => {
+        showP2pInCashierDefault();
         const options = [];
         options.push(Providers.createCashProvider(onClickDepositCash));
         options.push(Providers.createCryptoProvider(onClickDepositCrypto));

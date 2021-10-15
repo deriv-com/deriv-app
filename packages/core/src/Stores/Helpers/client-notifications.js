@@ -584,7 +584,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_p2p_visible } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
-    let has_missing_required_field;
+    let has_missing_required_field, has_risk_assessment;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
@@ -592,16 +592,16 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         addNotificationMessage(clientNotifications(ui_store, client_store).self_exclusion(excluded_until));
     }
 
-    const { has_risk_assessment } = checkAccountStatus(
-        account_status,
-        client,
-        addNotificationMessage,
-        loginid,
-        getRiskAssessment,
-        shouldCompleteTax
-    );
-
     if (client && !client.is_virtual) {
+        ({ has_risk_assessment } = checkAccountStatus(
+            account_status,
+            client,
+            addNotificationMessage,
+            loginid,
+            getRiskAssessment,
+            shouldCompleteTax
+        ));
+
         if (is_p2p_visible) {
             addNotificationMessage(clientNotifications().dp2p);
         } else {

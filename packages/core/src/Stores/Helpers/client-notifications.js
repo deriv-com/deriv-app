@@ -569,7 +569,7 @@ export const excluded_notifications = isMobile()
       ];
 
 export const handleClientNotifications = (client, client_store, ui_store, cashier_store, common_store) => {
-    const { currency, excluded_until } = client;
+    const { currency, excluded_until, is_eu } = client;
     const {
         account_settings,
         account_status,
@@ -615,7 +615,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         }
     }
 
-    if (isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
+    if (isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in && !is_eu) {
         addNotificationMessage(clientNotifications().deriv_go);
     } else {
         removeNotificationMessageByKey({ key: clientNotifications().deriv_go.key });

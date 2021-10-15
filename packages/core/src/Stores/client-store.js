@@ -1190,6 +1190,7 @@ export default class ClientStore extends BaseStore {
                 this.account_status,
                 this.root_store.modules?.cashier?.is_p2p_visible,
                 this.root_store.common?.selected_contract_type,
+                this.is_eu,
             ],
             () => {
                 client = this.accounts[this.loginid];

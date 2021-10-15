@@ -1431,6 +1431,7 @@ div.payment-agent-transfer {
     // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__container {
         padding: 0 15.6rem;
+        display: block;
     }
     &__input {
         margin-bottom: 5.1rem;

@@ -291,7 +291,6 @@
     &__dialog {
         display: flex;
         align-items: center;
-        justify-content: center;
         flex-direction: column;
         position: relative;
         flex-grow: 1;
@@ -311,7 +310,12 @@
             border-width: 2px;
 
             @include mobile {
-                margin: 0.4rem 1.4rem;
+                :first-child {
+                    margin: 0.4rem 0 0.4rem 1.4rem;
+                }
+                :last-child {
+                    margin: 0.4rem 1.4rem 0.4rem 0;
+                }
             }
         }
     }

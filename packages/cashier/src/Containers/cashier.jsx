@@ -12,7 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from 'Components/account-prompt-dialog.jsx';
 import ErrorDialog from 'Components/error-dialog.jsx';
@@ -22,7 +22,6 @@ const Cashier = ({
     history,
     is_account_transfer_visible,
     is_account_setting_loaded,
-    is_cashier_default,
     is_crypto_transactions_visible,
     is_logged_in,
     is_logging_in,
@@ -86,7 +85,7 @@ const Cashier = ({
         return options;
     };
 
-    const selected_route = isMobile() ? getSelectedRoute({ routes: routes_config, pathname: location.pathname }) : null;
+    const selected_route = getSelectedRoute({ routes: routes_config, pathname: location.pathname });
     // const should_show_tab_headers_note =
     //     !is_virtual &&
     //     (location.pathname.startsWith(routes.cashier_deposit) ||
@@ -104,7 +103,7 @@ const Cashier = ({
             <ErrorDialog />
             <div className='cashier'>
                 <PageOverlay
-                    header={isMobile() && !is_cashier_default ? selected_route.getTitle() : localize('Cashier')}
+                    header={is_default_route ? localize('Cashier') : selected_route.getTitle()}
                     onClickClose={onClickClose}
                 >
                     <DesktopWrapper>
@@ -170,7 +169,6 @@ Cashier.propTypes = {
     history: PropTypes.object,
     is_account_transfer_visible: PropTypes.bool,
     is_account_setting_loaded: PropTypes.bool,
-    is_cashier_default: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
@@ -192,7 +190,6 @@ Cashier.propTypes = {
 };
 
 export default connect(({ client, common, modules, ui }) => ({
-    is_cashier_default: modules.cashier.is_cashier_default,
     is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,

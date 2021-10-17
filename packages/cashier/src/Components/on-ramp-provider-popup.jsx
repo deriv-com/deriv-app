@@ -40,7 +40,7 @@ const OnRampProviderPopup = ({
     }
 
     if (is_deposit_address_loading || (should_show_widget && is_requesting_widget_html)) {
-        return <Loading is_fullscreen={false} />;
+        return <Loading is_fullscreen />;
     }
 
     if (should_show_widget) {

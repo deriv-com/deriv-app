@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { populateVerificationStatus } from '@deriv/account';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, getPlatformInformation } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -14,7 +15,6 @@ import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
-import { populateVerificationStatus } from '../../../../../../account/src/Sections/Verification/Helpers/verification';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,

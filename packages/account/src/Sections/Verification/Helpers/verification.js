@@ -1,4 +1,4 @@
-export const populateVerificationStatus = account_status => {
+const populateVerificationStatus = account_status => {
     const { attempts, document, identity, needs_verification } = {
         ...account_status.authentication,
         attempts: account_status.attempts || {},
@@ -38,3 +38,4 @@ export const populateVerificationStatus = account_status => {
         onfido,
     };
 };
+export default populateVerificationStatus;

@@ -308,12 +308,13 @@
             margin: 0.4rem;
             height: 4rem;
             border-width: 2px;
+            text-align: center;
 
             @include mobile {
-                :first-child {
+                &:first-child {
                     margin: 0.4rem 0 0.4rem 1.4rem;
                 }
-                :last-child {
+                &:last-child {
                     margin: 0.4rem 1.4rem 0.4rem 0;
                 }
             }

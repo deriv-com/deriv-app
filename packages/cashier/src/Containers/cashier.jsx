@@ -101,7 +101,7 @@ const Cashier = ({
     }
 
     const getHeaderTitle = () => {
-        if (!isMobile || (is_default_route && (is_loading || is_cashier_default))) return localize('Cashier');
+        if (!isMobile() || (is_default_route && (is_loading || is_cashier_default))) return localize('Cashier');
 
         return selected_route.getTitle();
     };

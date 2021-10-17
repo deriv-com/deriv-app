@@ -51,6 +51,7 @@ const DefaultHeader = ({
     menu_items,
     notifications_count,
     openRealAccountSignup,
+    replaceCashierMenuOnclick,
     is_options_blocked,
     removeNotificationMessage,
     setDarkMode,
@@ -128,6 +129,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
+                    {menu_items && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div
@@ -209,6 +211,7 @@ DefaultHeader.propTypes = {
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
+    replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
@@ -249,6 +252,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     menu_items: menu.extensions,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
+    replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
     is_options_blocked: client.is_options_blocked,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,

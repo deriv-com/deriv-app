@@ -101,7 +101,7 @@ const Cashier = ({
     }
 
     const getHeaderTitle = () => {
-        if (is_default_route && (is_loading || is_cashier_default)) return localize('Cashier');
+        if (!isMobile || (is_default_route && (is_loading || is_cashier_default))) return localize('Cashier');
 
         return selected_route.getTitle();
     };
@@ -111,7 +111,7 @@ const Cashier = ({
             <AccountPromptDialog />
             <ErrorDialog />
             <div className='cashier'>
-                <PageOverlay header={isMobile() ? getHeaderTitle() : localize('Cashier')} onClickClose={onClickClose}>
+                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'

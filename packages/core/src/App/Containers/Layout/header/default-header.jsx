@@ -14,6 +14,7 @@ import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
+import { populateVerificationStatus } from '../../../../../../account/src/Sections/Verification/Helpers/verification';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
@@ -56,6 +57,7 @@ const DefaultHeader = ({
     setDarkMode,
     toggleAccountsDialog,
     toggleNotifications,
+    has_any_real_account,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
@@ -70,6 +72,13 @@ const DefaultHeader = ({
     }, [removeUpdateNotification]);
 
     const onClickDeposit = () => history.push(routes.cashier_deposit);
+
+    const verification_status = populateVerificationStatus(account_status);
+    const { has_poa, has_poi } = verification_status;
+    const onClickUpgrade = () => {
+        // TODO: here we should open POA and POI modal
+    };
+
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -78,10 +87,7 @@ const DefaultHeader = ({
             if (config.link_to === routes.dxtrade) {
                 return is_dxtrade_allowed;
             }
-            if ((is_mf || is_options_blocked) && config.href === routes.smarttrader) {
-                return false;
-            }
-            return true;
+            return !((is_mf || is_options_blocked) && config.href === routes.smarttrader);
         });
     return (
         <header
@@ -166,6 +172,10 @@ const DefaultHeader = ({
                             toggleAccountsDialog={toggleAccountsDialog}
                             toggleNotifications={toggleNotifications}
                             openRealAccountSignup={openRealAccountSignup}
+                            has_any_real_account={has_any_real_account}
+                            has_poa={has_poa}
+                            has_poi={has_poi}
+                            onClickUpgrade={onClickUpgrade}
                         />
                     </div>
                 </div>
@@ -217,6 +227,7 @@ DefaultHeader.propTypes = {
 export default connect(({ client, common, ui, menu, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
+    has_any_real_account: client.has_any_real_account,
     account_type: client.account_type,
     should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: ui.addNotificationMessage,

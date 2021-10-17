@@ -101,11 +101,9 @@ const Cashier = ({
     }
 
     const getHeaderTitle = () => {
-        if (is_default_route && (is_loading || is_cashier_default)) {
-            return localize('Cashier');
-        } else {
-            return selected_route.getTitle();
-        }
+        if (is_default_route && (is_loading || is_cashier_default)) return localize('Cashier');
+
+        return selected_route.getTitle();
     };
 
     return (

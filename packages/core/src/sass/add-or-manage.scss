@@ -312,7 +312,7 @@
 
             @include mobile {
                 &:first-child {
-                    margin: 0.4rem 0 0.4rem 1.4rem;
+                    margin: 0.4rem 1.4rem;
                 }
                 &:last-child {
                     margin: 0.4rem 1.4rem 0.4rem 0;

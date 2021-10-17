@@ -167,16 +167,7 @@ export default class CashierStore extends BaseStore {
         when(
             () => this.root_store.client.is_logged_in,
             () => {
-                this.setHasSetCurrency();
-
-                this.root_store.menu.attach({
-                    id: 'dt_cashier_tab',
-                    icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
-                    text: () => localize('Cashier'),
-                    link_to: this.has_set_currency && routes.cashier,
-                    onClick: !this.has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
-                    login_only: true,
-                });
+                this.attachCashierToMenu();
             }
         );
 
@@ -280,6 +271,39 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    attachCashierToMenu() {
+        if (!this.has_set_currency) {
+            this.setHasSetCurrency();
+        }
+
+        this.root_store.menu.attach({
+            id: 'dt_cashier_tab',
+            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+            text: () => localize('Cashier'),
+            link_to: this.has_set_currency && routes.cashier,
+            onClick: !this.has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
+            login_only: true,
+        });
+    }
+
+    @action.bound
+    replaceCashierMenuOnclick() {
+        this.setHasSetCurrency();
+
+        this.root_store.menu.update(
+            {
+                id: 'dt_cashier_tab',
+                icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+                text: () => localize('Cashier'),
+                link_to: this.has_set_currency && routes.cashier,
+                onClick: !this.has_set_currency ? this.root_store.ui.toggleSetCurrencyModal : false,
+                login_only: true,
+            },
+            1
+        );
+    }
+
+    @action.bound
     setHasSetCurrency() {
         this.has_set_currency = this.root_store.client.account_list
             .filter(account => !account.is_virtual)
@@ -293,6 +317,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountCashierDefault() {
+        if (!this.has_set_currency) {
+            this.setHasSetCurrency();
+        }
         this.setIsCashierDefault(true);
         this.account_prompt_dialog.resetIsConfirmed();
 

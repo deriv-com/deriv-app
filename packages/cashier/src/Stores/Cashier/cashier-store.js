@@ -308,7 +308,7 @@ export default class CashierStore extends BaseStore {
         this.has_set_currency =
             this.root_store.client.account_list
                 .filter(account => !account.is_virtual)
-                .some(account => account.title !== 'Real') || !this.root_store.client.has_real_account;
+                .some(account => account.title !== 'Real') || !this.root_store.client.has_active_real_account;
     }
 
     @action.bound

@@ -526,7 +526,12 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async getAdvertizerError() {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
-        this.p2p_advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+        this.setP2pAdvertiserError(getPropertyValue(advertiser_info, ['error', 'code']));
+    }
+
+    @action.bound
+    setP2pAdvertiserError(value) {
+        this.p2p_advertiser_error = value;
     }
 
     @action.bound

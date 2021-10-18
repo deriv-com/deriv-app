@@ -150,6 +150,7 @@ const ProofOfIdentityContainer = ({
                 break;
         }
     }
+
     switch (identity_last_attempt.service) {
         case service_code.idv:
             return (

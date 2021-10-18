@@ -141,6 +141,10 @@ html,
     }
 }
 
+.link.dark {
+    color: var(--brand-red-grey);
+}
+
 /** @define icon */
 .icon--centered {
     top: 0.8em;

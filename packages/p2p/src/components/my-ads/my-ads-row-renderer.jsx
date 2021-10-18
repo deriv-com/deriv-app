@@ -86,7 +86,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 visible_component={
                     <Table.Row
                         className={classNames('p2p-my-ads__table-row', {
-                            'p2p-my-ads__table-row-disabled': !is_advert_active,
+                            'p2p-my-ads__table-row-disabled': !is_advert_active || !general_store.is_listed,
                         })}
                     >
                         <Text color='less-prominent' line_height='m' size='xxs'>
@@ -106,7 +106,11 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                     />
                                 )}
                             </Text>
-                            <AdStatus days_until_archive={days_until_archive_state} is_active={is_advert_active} />
+                            <AdStatus
+                                days_until_archive={days_until_archive_state}
+                                is_active={is_advert_active}
+                                is_listed={general_store.is_listed}
+                            />
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
                             <Text color='profit-success' line_height='m' size='xxs'>
@@ -179,7 +183,11 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 </Table.Cell>
                 <Table.Cell>
                     <div className='p2p-my-ads__table-status'>
-                        <AdStatus days_until_archive={days_until_archive_state} is_active={is_advert_active} />
+                        <AdStatus
+                            days_until_archive={days_until_archive_state}
+                            is_active={is_advert_active}
+                            is_listed={general_store.is_listed}
+                        />
                     </div>
                 </Table.Cell>
                 {is_popover_actions_visible && (

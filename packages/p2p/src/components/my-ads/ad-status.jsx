@@ -5,7 +5,7 @@ import { Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import './ad-status.scss';
 
-const AdStatus = ({ days_until_archive, is_active }) => {
+const AdStatus = ({ days_until_archive, is_active, is_listed }) => {
     if (!is_active) {
         return (
             <Text className='ad-status--inactive' color='loss-danger' line_height='s' size='xs' weight='bold'>
@@ -44,6 +44,12 @@ const AdStatus = ({ days_until_archive, is_active }) => {
                 />
             </Text>
         );
+    } else if (!is_listed) {
+        return (
+            <Text className='ad-status--paused' color='disabled' line_height='s' size='xs' weight='bold'>
+                <Localize i18n_default_text='Paused' />
+            </Text>
+        );
     } else if (!days_until_archive) {
         return (
             <Text className='ad-status--active' color='profit-success' line_height='s' size='xs' weight='bold'>
@@ -58,6 +64,7 @@ const AdStatus = ({ days_until_archive, is_active }) => {
 AdStatus.propTypes = {
     days_until_archive: PropTypes.number,
     is_active: PropTypes.bool,
+    is_listed: PropTypes.bool,
 };
 
 export default observer(AdStatus);

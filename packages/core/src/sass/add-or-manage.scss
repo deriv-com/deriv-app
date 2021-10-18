@@ -291,7 +291,6 @@
     &__dialog {
         display: flex;
         align-items: center;
-        justify-content: center;
         flex-direction: column;
         position: relative;
         flex-grow: 1;
@@ -309,9 +308,15 @@
             margin: 0.4rem;
             height: 4rem;
             border-width: 2px;
+            text-align: center;
 
             @include mobile {
-                margin: 0.4rem 1.4rem;
+                &:first-child {
+                    margin: 0.4rem 1.4rem;
+                }
+                &:last-child {
+                    margin: 0.4rem 1.4rem 0.4rem 0;
+                }
             }
         }
     }

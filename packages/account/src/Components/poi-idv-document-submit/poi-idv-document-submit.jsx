@@ -14,7 +14,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
     const [is_doc_selected, setDocSelected] = React.useState(false);
-
     const document_data = selected_country.identity.services.idv.documents_supported;
     const {
         value: country_code,

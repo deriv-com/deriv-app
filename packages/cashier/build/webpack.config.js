@@ -26,10 +26,10 @@ module.exports = function (env, argv) {
             minimizer: MINIMIZERS,
         },
         output: {
-            filename: 'js/[name].js',
+            filename: 'cashier/js/[name].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
-            chunkFilename: 'js/cashier.[name].[contenthash].js',
+            chunkFilename: 'cashier/js/cashier.[name].[contenthash].js',
             libraryExport: 'default',
             library: '@deriv/cashier',
             libraryTarget: 'umd',

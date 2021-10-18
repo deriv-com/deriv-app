@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getKebabCase, getUrlBase } from '@deriv/shared';
+import * as icons_manifest from './icons-manifest';
 
 const Icon = React.forwardRef(
     (
@@ -10,15 +11,17 @@ const Icon = React.forwardRef(
     ) => {
         if (!icon) return null;
 
-        let filename = 'common';
-        const filenames = /^Ic(Currency|Tradetype|Mt5|Flag|Underlying)/g.exec(icon);
-        if (filenames) {
-            filename = getKebabCase(filenames[1]);
+        let category = 'common';
+        const category_match = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')})`, 'gi').exec(icon);
+        if (category_match?.[1]) {
+            category = getKebabCase(category_match[1]);
         }
 
         const sprite_id = icon.startsWith('IcUnderlying')
             ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}`
             : getKebabCase(icon);
+
+        const filename = icons_manifest[category];
 
         return (
             <svg
@@ -32,6 +35,7 @@ const Icon = React.forwardRef(
                     'dc-icon--secondary': color === 'secondary',
                     'dc-icon--brand': color === 'brand',
                     'dc-icon--black': color === 'black',
+                    'dc-icon--orange': color === 'orange',
                 })}
                 height={height || size}
                 id={id}
@@ -48,7 +52,7 @@ const Icon = React.forwardRef(
                         : undefined
                 }
             >
-                <use xlinkHref={`${getUrlBase(`/public/images/sprite/${filename}.svg`)}#${sprite_id}`} />
+                <use xlinkHref={`${getUrlBase(`/public/sprites/${filename}.svg`)}#${sprite_id}`} />
             </svg>
         );
     }

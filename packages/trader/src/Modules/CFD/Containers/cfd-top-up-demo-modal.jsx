@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getTopUpConfig } from '../Helpers/constants';
@@ -28,11 +28,11 @@ const CFDTopUpDemoModal = ({
         closeSuccessTopUpModal();
     };
 
-    const platform_title = platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5';
+    const platform_title = getCFDPlatformLabel(platform);
 
     if ((!mt5_companies && !dxtrade_companies) || !current_account) return null;
 
-    const { currency, minimum_amount, additional_amount } = getTopUpConfig();
+    const { minimum_amount, additional_amount } = getTopUpConfig();
 
     return (
         <React.Fragment>
@@ -54,8 +54,18 @@ const CFDTopUpDemoModal = ({
                         <Localize
                             i18n_default_text='You can top up your demo account with an additional <0></0> if your balance is <1></1> or less.'
                             components={[
-                                <Money key={0} amount={additional_amount} currency={currency} show_currency />,
-                                <Money key={1} amount={minimum_amount} currency={currency} show_currency />,
+                                <Money
+                                    key={0}
+                                    amount={additional_amount}
+                                    currency={current_account.currency}
+                                    show_currency
+                                />,
+                                <Money
+                                    key={1}
+                                    amount={minimum_amount}
+                                    currency={current_account.currency}
+                                    show_currency
+                                />,
                             ]}
                         />
                     </Text>
@@ -93,7 +103,12 @@ const CFDTopUpDemoModal = ({
                                 <Localize
                                     i18n_default_text='Top up &nbsp;<0></0>'
                                     components={[
-                                        <Money key={0} amount={additional_amount} currency={currency} show_currency />,
+                                        <Money
+                                            key={0}
+                                            amount={additional_amount}
+                                            currency={current_account.currency}
+                                            show_currency
+                                        />,
                                     ]}
                                 />
                             )}
@@ -113,7 +128,12 @@ const CFDTopUpDemoModal = ({
                             i18n_default_text='<0></0> has been credited into your {{platform}} {{title}} account.'
                             values={{ platform: platform_title, title: getAccountTitle() }}
                             components={[
-                                <Money key={0} amount={additional_amount} currency={currency} show_currency />,
+                                <Money
+                                    key={0}
+                                    amount={additional_amount}
+                                    currency={current_account.currency}
+                                    show_currency
+                                />,
                             ]}
                         />
                     </h3>

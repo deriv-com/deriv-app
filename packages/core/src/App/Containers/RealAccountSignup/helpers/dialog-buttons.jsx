@@ -38,6 +38,7 @@ const getDismissButton = ({ status, landing_company_shortcode, closeModal, switc
 const getActionButton = ({
     status,
     landing_company_shortcode,
+    is_fully_authenticated,
     closeModal,
     closeModalAndOpenCashier,
     closeModalAndOpenPOI,
@@ -62,10 +63,16 @@ const getActionButton = ({
                 };
             }
             return {
-                label: localize('Deposit now'),
+                label: localize('Deposit'),
                 action: closeModalAndOpenCashier,
             };
         case 'maltainvest':
+            if (is_fully_authenticated) {
+                return {
+                    label: localize('Deposit'),
+                    action: closeModalAndOpenCashier,
+                };
+            }
             return {
                 label: localize('Submit proof'),
                 action: closeModalAndOpenPOI,
@@ -74,7 +81,7 @@ const getActionButton = ({
         case 'malta':
         default:
             return {
-                label: localize('Deposit now'),
+                label: localize('Deposit'),
                 action: closeModalAndOpenCashier,
             };
     }
@@ -86,12 +93,14 @@ const DialogPrimaryButton = ({
     closeModalAndOpenCashier,
     closeModalAndOpenPOI,
     closeModalAndOpenPOA,
+    is_fully_authenticated,
 }) => {
     // Check if the button is necessary
     // Fetch proper action from store based on status + landing_company_shortcode
     const { label, action } = getActionButton({
         status,
         landing_company_shortcode,
+        is_fully_authenticated,
         closeModal,
         closeModalAndOpenCashier,
         closeModalAndOpenPOI,
@@ -114,6 +123,7 @@ const DialogDismissButton = ({ status, landing_company_shortcode, closeModal, sw
 export const DialogButtons = ({
     status,
     landing_company_shortcode,
+    is_fully_authenticated,
     closeModal,
     closeModalAndOpenCashier,
     closeModalAndOpenPOA,
@@ -136,6 +146,7 @@ export const DialogButtons = ({
                 closeModalAndOpenCashier={closeModalAndOpenCashier}
                 closeModalAndOpenPOI={closeModalAndOpenPOI}
                 closeModalAndOpenPOA={closeModalAndOpenPOA}
+                is_fully_authenticated={is_fully_authenticated}
             />
         </div>
     );
@@ -144,6 +155,7 @@ export const DialogButtons = ({
 DialogButtons.propTypes = {
     status: PropTypes.number,
     landing_company_shortcode: PropTypes.string,
+    is_fully_authenticated: PropTypes.bool,
     closeModal: PropTypes.func,
     closeModalAndOpenCashier: PropTypes.func,
     closeModalAndOpenPOI: PropTypes.func,

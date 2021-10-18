@@ -3,6 +3,7 @@ import { List } from 'react-virtualized/dist/es/List';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
+import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import TableRow from './table-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
 
@@ -12,9 +13,34 @@ import ThemedScrollbars from '../themed-scrollbars';
 */
 
 class DataTable extends React.PureComponent {
+    cache_ref = React.createRef();
+    is_dynamic_height = !this.props.getRowSize;
     state = {
         scrollTop: 0,
+        is_loading: true,
     };
+
+    componentDidMount() {
+        if (this.is_dynamic_height) {
+            this.cache_ref.current = new CellMeasurerCache({
+                fixedWidth: true,
+                keyMapper: row_index => {
+                    if (row_index < this.props.data_source.length)
+                        return this.props.keyMapper?.(this.props.data_source[row_index]) || row_index;
+                    return row_index;
+                },
+            });
+        }
+        this.setState({ is_loading: false });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.data_source !== prevProps.data_source || this.props.getRowSize !== prevProps.getRowSize) {
+            if (this.is_dynamic_height) {
+                this.list_ref.current?.recomputeGridSize(0);
+            }
+        }
+    }
 
     handleScroll = ev => {
         const { scrollTop } = ev.target;
@@ -24,7 +50,7 @@ class DataTable extends React.PureComponent {
         }
     };
 
-    rowRenderer = ({ style, index, key }) => {
+    rowRenderer = ({ style, index, key, parent }) => {
         const {
             className,
             columns,
@@ -43,7 +69,7 @@ class DataTable extends React.PureComponent {
         const row_key = keyMapper?.(item) || key;
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
-        const content = (
+        const getContent = ({ measure } = {}) => (
             <TableRow
                 className={className}
                 columns={columns}
@@ -51,17 +77,23 @@ class DataTable extends React.PureComponent {
                 getActionColumns={getActionColumns}
                 id={contract_id}
                 key={id}
+                measure={measure}
                 passthrough={passthrough}
                 replace={typeof action === 'object' ? action : undefined}
                 row_obj={item}
                 show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : false}
                 to={typeof action === 'string' ? action : undefined}
+                is_dynamic_height={this.is_dynamic_height}
             />
         );
 
-        return (
+        return this.is_dynamic_height ? (
+            <CellMeasurer cache={this.cache_ref.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+                {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
+            </CellMeasurer>
+        ) : (
             <div key={row_key} style={style}>
-                {content}
+                {getContent()}
             </div>
         );
     };
@@ -93,11 +125,12 @@ class DataTable extends React.PureComponent {
                                 <List
                                     autoHeight
                                     className={className}
+                                    deferredMeasurementCache={this.cache_ref.current}
                                     height={height}
                                     overscanRowCount={1}
                                     ref={ref => (this.list_ref = ref)}
                                     rowCount={data_source.length}
-                                    rowHeight={getRowSize}
+                                    rowHeight={this.is_dynamic_height ? this.cache_ref?.current.rowHeight : getRowSize}
                                     rowRenderer={this.rowRenderer}
                                     scrollingResetTimeInterval={0}
                                     scrollTop={this.state.scrollTop}
@@ -110,6 +143,10 @@ class DataTable extends React.PureComponent {
                 </AutoSizer>
             </React.Fragment>
         );
+
+        if (this.state.is_loading) {
+            return <div />;
+        }
 
         return (
             <div

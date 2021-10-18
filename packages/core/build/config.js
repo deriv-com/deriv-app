@@ -5,78 +5,77 @@ const { transformContentUrlBase } = require('./helpers');
 const copyConfig = base => {
     const patterns = [
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css*'),
-            to: 'css/',
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/css/'),
+            to: 'bot/css/',
             flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/media/**'),
-            to: 'js/bot/media',
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/media/**'),
+            to: 'media',
             flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/dashboard/lib/assets/images'),
-            to: 'js/dashboard/assets/images',
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/*.*'),
-            to: 'js/bot/',
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/*.*'),
+            to: 'bot/js/',
             flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/smartcharts/**'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
             to: 'js/smartcharts/',
             flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/smartcharts.css*'),
-            to: 'css/',
-            flatten: true,
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/public/**'),
-            to: 'public',
-            transformPath(context) {
-                return context.split('node_modules/@deriv/trader/dist/')[1];
-            },
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/js/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/**'),
             to: 'account/js',
             flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/css/**'),
-            to: 'account/css/',
+            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/css/**'),
+            to: 'account/css',
             flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/**'),
-            to: 'js',
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/js/**'),
+            to: 'cashier/js',
             flatten: true,
         },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/css/**'), to: 'css', flatten: true },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/*.*'), to: 'js', flatten: true },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/public/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/css/**'),
+            to: 'cashier/css',
+            flatten: true,
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public/**'),
             to: 'public',
             transformPath(context) {
                 return context.split('node_modules/@deriv/cashier/dist/')[1];
             },
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'),
-            to: 'js',
-            flatten: true,
-        },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js', flatten: true },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/translations/src/translations/*.*'),
-            to: 'public/i18n',
-            flatten: true,
+            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/trader'),
+            to: 'trader',
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),
+            to: '.well-known/apple-app-site-association',
+            toType: 'file',
+        },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/assetslinks.json'),
+            to: '.well-known/assetlinks.json',
+            toType: 'file',
+        },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),
+            to: 'apple-app-site-association',
+            toType: 'file',
+        },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/assetslinks.json'),
+            to: 'assetlinks.json',
+            toType: 'file',
+        },
         { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
         {
             from: path.resolve(__dirname, '../src/root_files/localstorage-sync.html'),
@@ -100,8 +99,8 @@ const copyConfig = base => {
         { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
         { from: path.resolve(__dirname, '../src/public/images/app/header/**') },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprite'),
-            to: 'public/images/sprite',
+            from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprites'),
+            to: 'public/sprites',
             toType: 'dir',
         },
         {
@@ -147,8 +146,6 @@ const htmlOutputConfig = is_release => ({
 
 const htmlInjectConfig = () => ({
     links: [
-        'css/smartcharts.css',
-        'css/bot-web-ui.main.css',
         {
             path: 'manifest.json',
             attributes: {
@@ -178,7 +175,10 @@ const htmlPreloadConfig = () => ({
     fileWhitelist: [/\.css$/],
 });
 
-const cssConfig = () => ({ filename: 'css/core[name].main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
+const cssConfig = () => ({
+    filename: 'css/core.[name].[contenthash].main.css',
+    chunkFilename: 'css/core.chunk.[name].[contenthash].css',
+});
 
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),

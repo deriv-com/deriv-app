@@ -19,6 +19,7 @@ const P2PCashier = ({
     local_currency_config,
     location,
     loginid,
+    platform,
     residence,
     setNotificationCount,
 }) => {
@@ -67,7 +68,7 @@ const P2PCashier = ({
     );
 
     if (is_logging_in) {
-        return <Loading is_fullscreen={false} />;
+        return <Loading is_fullscreen />;
     }
 
     return (
@@ -79,6 +80,7 @@ const P2PCashier = ({
             lang={getLanguage()}
             modal_root_id='modal_root'
             order_id={order_id}
+            platform={platform}
             poi_url={routes.proof_of_identity}
             server_time={server_time}
             setNotificationCount={setNotificationCount}
@@ -99,18 +101,20 @@ P2PCashier.propTypes = {
     local_currency_config: PropTypes.object,
     location: PropTypes.object,
     loginid: PropTypes.string,
+    platform: PropTypes.any,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
 };
 
 export default withRouter(
-    connect(({ client, modules, ui }) => ({
+    connect(({ client, common, modules, ui }) => ({
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_logging_in: client.is_logging_in,
         is_virtual: client.is_virtual,
+        platform: common.platform,
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,
         is_mobile: ui.is_mobile,

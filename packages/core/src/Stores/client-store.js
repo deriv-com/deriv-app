@@ -14,13 +14,14 @@ import {
     deriv_urls,
     urlForLanguage,
     CFD_PLATFORMS,
+    routes,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isOptionsBlocked, isSyntheticsUnavailable } from '_common/utility';
+import { isEuCountry, isOptionsBlocked } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -70,6 +71,16 @@ export default class ClientStore extends BaseStore {
     // mt_gaming_company: {}
     @observable landing_companies = {};
 
+    // All possible landing companies of user between all
+    @observable standpoint = {
+        iom: false,
+        svg: false,
+        malta: false,
+        maltainvest: false,
+        gaming_company: false,
+        financial_company: false,
+    };
+
     @observable upgradeable_landing_companies = [];
     @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable mt5_login_list = [];
@@ -90,7 +101,8 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
-        trading_platform_password_reset: '',
+        trading_platform_mt5_password_reset: '',
+        trading_platform_dxtrade_password_reset: '',
     };
     @observable account_limits = {};
 
@@ -125,23 +137,6 @@ export default class ClientStore extends BaseStore {
             ],
             () => {
                 this.setCookieAccount();
-            }
-        );
-        when(
-            () => this.should_have_real_account,
-            () => {
-                this.root_store.ui.showAccountTypesModalForEuropean();
-                this.onRealAccountSignupEnd(() => {
-                    if (!this.has_any_real_account) {
-                        this.root_store.ui.showAccountTypesModalForEuropean();
-                    }
-
-                    return Promise.resolve();
-                });
-
-                if (!this.root_store.ui.is_real_acc_signup_on) {
-                    this.root_store.ui.toggleAccountTypesModal(true);
-                }
             }
         );
         when(
@@ -220,8 +215,8 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get can_change_fiat_currency() {
-        const has_no_mt5 = !this.has_mt5_login;
-        const has_no_dxtrade = !this.has_dxtrade_login;
+        const has_no_mt5 = !this.has_real_mt5_login;
+        const has_no_dxtrade = !this.has_real_dxtrade_login;
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
         const has_account_criteria = has_no_transaction && has_no_mt5 && has_no_dxtrade;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
@@ -229,8 +224,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get legal_allowed_currencies() {
-        if (!this.landing_companies || !this.root_store.ui) return [];
-        if (!this.root_store.ui.real_account_signup_target) {
+        const getDefaultAllowedCurrencies = () => {
             if (this.landing_companies.gaming_company) {
                 return this.landing_companies.gaming_company.legal_allowed_currencies;
             }
@@ -238,12 +232,25 @@ export default class ClientStore extends BaseStore {
                 return this.landing_companies.financial_company.legal_allowed_currencies;
             }
             return [];
+        };
+
+        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.root_store.ui.real_account_signup_target) {
+            return getDefaultAllowedCurrencies();
         }
-        if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
+        if (
+            ['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target) &&
+            this.current_landing_company
+        ) {
             return this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
-        return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+
+        if (this.landing_companies[`${target}_company`]) {
+            return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+        }
+
+        return getDefaultAllowedCurrencies();
     }
 
     @computed
@@ -313,9 +320,11 @@ export default class ClientStore extends BaseStore {
     // note that it will be undefined for logged out and virtual clients
     @computed
     get current_landing_company() {
-        const landing_company = Object.keys(this.landing_companies).find(
-            company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
-        );
+        const landing_company =
+            this.landing_companies &&
+            Object.keys(this.landing_companies).find(
+                company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
+            );
         return landing_company ? this.landing_companies[landing_company] : undefined;
     }
 
@@ -325,19 +334,40 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_mt5_login() {
-        return this.mt5_login_list.length > 0;
+    get has_real_mt5_login() {
+        return this.mt5_login_list.some(account => account.account_type === 'real');
     }
 
     @computed
-    get has_dxtrade_login() {
-        return this.dxtrade_accounts_list.length > 0;
+    get has_real_dxtrade_login() {
+        return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
+    }
+
+    getListOfMT5AccountsWithError = account_type => {
+        if (!this.is_logged_in) return [];
+        return this.mt5_login_list?.filter(
+            account => !!account.has_error && (!account_type || account.account_type === account_type)
+        );
+    };
+
+    @computed
+    get list_of_real_mt5_accounts_with_error() {
+        return this.getListOfMT5AccountsWithError('real');
     }
 
     @computed
-    get has_account_error_in_mt5_list() {
-        if (!this.is_logged_in) return false;
-        return this.mt5_login_list?.some(account => !!account.has_error);
+    get has_account_error_in_mt5_real_list() {
+        return this.list_of_real_mt5_accounts_with_error.length > 0;
+    }
+
+    @computed
+    get list_of_demo_mt5_accounts_with_error() {
+        return this.getListOfMT5AccountsWithError('demo');
+    }
+
+    @computed
+    get has_account_error_in_mt5_demo_list() {
+        return this.list_of_demo_mt5_accounts_with_error.length > 0;
     }
 
     @computed
@@ -402,13 +432,14 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get should_allow_authentication() {
-        const allow_document_upload = this.account_status?.status?.some(status => status === 'allow_document_upload');
-        return allow_document_upload || !!this.is_authentication_needed;
+        return this.account_status?.status?.some(
+            status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
+        );
     }
 
     @computed
     get is_authentication_needed() {
-        return this.account_status?.authentication?.needs_verification?.length;
+        return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }
 
     @computed
@@ -427,13 +458,23 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_trading_password_required() {
-        return this.account_status?.status?.includes('trading_password_required');
+    get is_mt5_password_not_set() {
+        return this.account_status?.status?.includes('mt5_password_not_set');
+    }
+
+    @computed
+    get is_dxtrade_password_not_set() {
+        return this.account_status?.status?.includes('dxtrade_password_not_set');
     }
 
     @computed
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
+    }
+
+    @computed
+    get is_deposit_lock() {
+        return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
     }
 
     @computed
@@ -458,6 +499,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get social_identity_provider() {
         return this.account_status?.social_identity_provider;
+    }
+
+    @computed
+    get is_from_restricted_country() {
+        return this.residence_list.find(item => item.value === this.residence)?.disabled === 'DISABLED';
     }
 
     @computed
@@ -532,37 +578,24 @@ export default class ClientStore extends BaseStore {
         return this.residence === 'gb';
     }
 
-    // this is true when a user needs to have a active real account for trading
     @computed
-    get should_have_real_account() {
-        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
-    }
-
-    // Shows all possible landing companies of user between all
-    @computed
-    get standpoint() {
+    get country_standpoint() {
         const result = {
-            iom: false,
-            svg: false,
-            malta: false,
-            maltainvest: false,
-            gaming_company: false,
-            financial_company: false,
+            is_united_kingdom: this.is_uk,
+            is_isle_of_man: this.residence === 'im',
+            is_france: this.residence === 'fr',
+            is_belgium: this.residence === 'be',
+            // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
+            is_other_eu:
+                this.residence === 'de' ||
+                this.residence === 'es' ||
+                this.residence === 'it' ||
+                this.residence === 'lu' ||
+                this.residence === 'gr',
         };
-        if (!this.landing_companies) return result;
-        const { gaming_company, financial_company } = this.landing_companies;
-        if (gaming_company?.shortcode) {
-            Object.assign(result, {
-                [gaming_company.shortcode]: !!gaming_company?.shortcode,
-                gaming_company: gaming_company?.shortcode ?? false,
-            });
-        }
-        if (financial_company?.shortcode) {
-            Object.assign(result, {
-                [financial_company.shortcode]: !!financial_company?.shortcode,
-                financial_company: financial_company?.shortcode ?? false,
-            });
-        }
+
+        result.is_rest_of_eu =
+            this.is_eu && !result.is_uk && !result.is_france && !result.is_belgium && !result.is_other_eu;
 
         return result;
     }
@@ -603,7 +636,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_dxtrade_allowed() {
-        return this.isDxtradeAllowed();
+        return this.isDxtradeAllowed(this.landing_companies);
     }
 
     isMT5Allowed = landing_companies => {
@@ -611,20 +644,22 @@ export default class ClientStore extends BaseStore {
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
+        if (!this.mt5_login_list.some(acc => acc.market_type === 'synthetic')) {
+            if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
+        }
+
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
 
-    isDxtradeAllowed = () => {
-        if (!this.website_status?.clients_country || !this.landing_companies) return false;
+    isDxtradeAllowed = landing_companies => {
+        if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
+            return true;
 
-        const is_svg =
-            this.landing_companies?.financial_company?.shortcode === 'svg' ||
-            this.landing_companies?.gaming_company?.shortcode === 'svg';
-
-        const is_au = (this.residence || this.website_status.clients_country) === 'au';
-        if (is_au) return false;
-
-        return is_svg || (!this.is_logged_in && !this.is_eu && !this.is_eu_country);
+        return (
+            'dxtrade_financial_company' in landing_companies ||
+            'dxtrade_gaming_company' in landing_companies ||
+            (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
+        );
     };
 
     @computed
@@ -637,13 +672,6 @@ export default class ClientStore extends BaseStore {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
         return false;
-    }
-
-    @computed
-    get is_synthetics_unavailable() {
-        return this.is_logged_in
-            ? isSyntheticsUnavailable(this.residence)
-            : isSyntheticsUnavailable(this.website_status.clients_country);
     }
 
     @computed
@@ -698,7 +726,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setMT5DisabledSignupTypes(disabled_types_obj) {
         const current_list = this.mt5_disabled_signup_types;
-        this.mt5_disabled_signup_types = { current_list, ...disabled_types_obj };
+        this.mt5_disabled_signup_types = { ...current_list, ...disabled_types_obj };
     }
 
     @action.bound
@@ -749,6 +777,7 @@ export default class ClientStore extends BaseStore {
             residence,
             account_settings,
             preferred_language,
+            user_id,
         } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -762,6 +791,7 @@ export default class ClientStore extends BaseStore {
                 last_name,
                 name,
                 preferred_language,
+                user_id,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
@@ -1084,7 +1114,8 @@ export default class ClientStore extends BaseStore {
             client,
             this,
             this.root_store.ui,
-            this.root_store.modules.cashier
+            this.root_store.modules.cashier,
+            this.root_store.common
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -1094,6 +1125,10 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init(login_new_user) {
+        const search = window.location.search;
+        const search_params = new URLSearchParams(search);
+        const redirect_url = search_params?.get('redirect_url');
+
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
         this.setDeviceData();
@@ -1134,6 +1169,9 @@ export default class ClientStore extends BaseStore {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }
+            if (redirect_url) {
+                window.location.replace(routes[redirect_url]);
+            }
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
@@ -1147,19 +1185,26 @@ export default class ClientStore extends BaseStore {
          * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status, this.root_store.modules?.cashier?.is_p2p_visible],
+            () => [
+                this.account_settings,
+                this.account_status,
+                this.root_store.modules?.cashier?.is_p2p_visible,
+                this.root_store.common?.selected_contract_type,
+                this.is_eu,
+            ],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
                     this.root_store.ui.removeNotifications();
                     this.root_store.ui.removeAllNotificationMessages();
+                    const { has_missing_required_field } = handleClientNotifications(
+                        client,
+                        this,
+                        this.root_store.ui,
+                        this.root_store.modules.cashier,
+                        this.root_store.common
+                    );
                     if (client && !client.is_virtual) {
-                        const { has_missing_required_field } = handleClientNotifications(
-                            client,
-                            this,
-                            this.root_store.ui,
-                            this.root_store.modules.cashier
-                        );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }
                 });
@@ -1179,7 +1224,7 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-            this.setPreferredLanguage(account_settings.preferred_language);
+            if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
 
             if (account_settings && !account_settings.residence) {
@@ -1226,7 +1271,28 @@ export default class ClientStore extends BaseStore {
     responseLandingCompany(response) {
         this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
+        this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
+    }
+
+    @action.bound
+    setStandpoint(landing_companies) {
+        if (!landing_companies) return;
+        const { gaming_company, financial_company } = landing_companies;
+        if (gaming_company?.shortcode) {
+            this.standpoint = {
+                ...this.standpoint,
+                [gaming_company.shortcode]: !!gaming_company?.shortcode,
+                gaming_company: gaming_company?.shortcode ?? false,
+            };
+        }
+        if (financial_company?.shortcode) {
+            this.standpoint = {
+                ...this.standpoint,
+                [financial_company.shortcode]: !!financial_company?.shortcode,
+                financial_company: financial_company?.shortcode ?? false,
+            };
+        }
     }
 
     @action.bound
@@ -1352,7 +1418,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async switchAccountHandler() {
-        if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {
+        if (!this.switched || !this.switched.length || !this.getAccount(this.switched)?.token) {
             if (this.isUnableToFindLoginId()) {
                 this.handleNotFoundLoginId();
                 return;
@@ -1542,6 +1608,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = undefined;
         this.accounts = {};
         this.mt5_login_list = [];
+        this.landing_companies = {};
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -1585,6 +1652,10 @@ export default class ClientStore extends BaseStore {
         };
         const client_object = {};
         let active_loginid;
+
+        if (obj_params.selected_acct) {
+            active_loginid = obj_params.selected_acct;
+        }
 
         account_list.forEach(function (account) {
             Object.keys(account).forEach(function (param) {
@@ -1789,8 +1860,6 @@ export default class ClientStore extends BaseStore {
         if (!this.verification_code.signup || !password || !residence) return;
         if (email_consent === undefined) return;
         email_consent = email_consent ? 1 : 0;
-        // Currently the code doesn't reach here and the console log is needed for debugging.
-        // TODO: remove console log when AccountSignup component and validation are ready
         WS.newAccountVirtual(
             this.verification_code.signup,
             password,
@@ -1811,9 +1880,7 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                this.root_store.ui.showAccountTypesModalForEuropean();
-
-                if (!this.is_uk) {
+                if (!this.country_standpoint.is_france && !this.country_standpoint.is_belgium && residence !== 'im') {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }
@@ -1921,8 +1988,7 @@ export default class ClientStore extends BaseStore {
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({
-                        real: account_type === 'real',
-                        demo: account_type === 'demo',
+                        [account_type]: true,
                     });
                     return {
                         account_type,
@@ -2022,17 +2088,6 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         return this.account_status.risk_classification === 'high';
-    }
-
-    @computed
-    get needs_financial_assessment() {
-        if (this.is_virtual) return false;
-        if (this.is_financial_information_incomplete) return true;
-        if (!this.is_svg) {
-            if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
-        }
-
-        return false;
     }
 
     @computed

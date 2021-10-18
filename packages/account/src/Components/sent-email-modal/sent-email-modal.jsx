@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text } from '@deriv/components';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { CFD_PLATFORMS, isMobile, isDesktop } from '@deriv/shared';
 
 const getNoEmailContentStrings = () => {
     return [
@@ -32,8 +32,16 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
     const getSubtitle = () => {
         let subtitle = '';
         switch (identifier_title) {
-            case 'trading_password':
-                subtitle = localize('Please click on the link in the email to reset your trading password.');
+            case CFD_PLATFORMS.DXTRADE:
+                subtitle = (
+                    <Localize
+                        i18n_default_text='Please click on the link in the email to change your <0>Deriv X</0> password.'
+                        components={[<span className='send-email-template__subtitle-platform' key={0} />]}
+                    />
+                );
+                break;
+            case CFD_PLATFORMS.MT5:
+                subtitle = localize('Please click on the link in the email to change your DMT5 password.');
                 break;
             case 'Google':
             case 'Facebook':
@@ -53,6 +61,7 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
         <SendEmailTemplate
             className='sent-email'
             subtitle={getSubtitle()}
+            title={localize('We’ve sent you an email')}
             lbl_no_receive={localize("Didn't receive the email?")}
             txt_resend={localize('Resend email')}
             txt_resend_in={localize('Resend email in')}

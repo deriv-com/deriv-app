@@ -29,14 +29,14 @@ const initRoutesConfig = () => [
                 path: routes.cashier_deposit,
                 component: Deposit,
                 getTitle: () => localize('Deposit'),
-                icon_component: 'IcWalletAdd',
+                icon_component: 'IcCashierAdd',
                 default: true,
             },
             {
                 path: routes.cashier_withdrawal,
                 component: Withdrawal,
                 getTitle: () => localize('Withdrawal'),
-                icon_component: 'IcWalletMinus',
+                icon_component: 'IcCashierMinus',
             },
             {
                 path: routes.cashier_pa,

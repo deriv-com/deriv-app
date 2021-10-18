@@ -34,6 +34,7 @@ const DefaultHeader = ({
     is_acc_switcher_on,
     is_app_disabled,
     is_dark_mode,
+    is_eu,
     is_logged_in,
     is_logging_in,
     is_mt5_allowed,
@@ -50,6 +51,7 @@ const DefaultHeader = ({
     menu_items,
     notifications_count,
     openRealAccountSignup,
+    replaceCashierMenuOnclick,
     is_options_blocked,
     removeNotificationMessage,
     setDarkMode,
@@ -127,6 +129,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
+                    {menu_items && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div
@@ -156,6 +159,7 @@ const DefaultHeader = ({
                             enableApp={enableApp}
                             is_acc_switcher_on={is_acc_switcher_on}
                             is_acc_switcher_disabled={is_acc_switcher_disabled}
+                            is_eu={is_eu}
                             is_notifications_visible={is_notifications_visible}
                             is_logged_in={is_logged_in}
                             is_virtual={is_virtual}
@@ -207,6 +211,7 @@ DefaultHeader.propTypes = {
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
+    replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
@@ -230,6 +235,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
+    is_eu: client.is_eu,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
@@ -246,6 +252,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     menu_items: menu.extensions,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
+    replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
     is_options_blocked: client.is_options_blocked,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,

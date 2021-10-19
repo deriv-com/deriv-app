@@ -60,7 +60,7 @@ export default class CryptoFiatConverterStore {
         ) {
             this.root_store.modules.cashier.account_transfer_store.validateTransferFromAmount();
         } else {
-            this.root_store.modules.cashier.cashier_store.validateWithdrawFromAmount();
+            this.root_store.modules.cashier.withdraw_store.validateWithdrawFromAmount();
         }
     }
 
@@ -72,7 +72,7 @@ export default class CryptoFiatConverterStore {
         ) {
             this.root_store.modules.cashier.account_transfer_store.validateTransferToAmount();
         } else {
-            this.root_store.modules.cashier.cashier_store.validateWithdrawToAmount();
+            this.root_store.modules.cashier.withdraw_store.validateWithdrawToAmount();
         }
     }
 

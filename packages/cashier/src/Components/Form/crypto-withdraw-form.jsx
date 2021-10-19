@@ -191,9 +191,9 @@ CryptoWithdrawForm.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    account_platform_icon: modules.cashier.cashier_store.account_platform_icon,
+    account_platform_icon: modules.cashier.withdraw_store.account_platform_icon,
     balance: client.balance,
-    blockchain_address: modules.cashier.cashier_store.blockchain_address,
+    blockchain_address: modules.cashier.withdraw_store.blockchain_address,
     converter_from_error: modules.cashier.crypto_fiat_converter_store.converter_from_error,
     converter_to_error: modules.cashier.crypto_fiat_converter_store.converter_to_error,
     crypto_currency: client.currency,
@@ -201,15 +201,15 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
     is_loading: modules.cashier.cashier_store.is_loading,
-    onMountWithdraw: modules.cashier.cashier_store.onMountWithdraw,
+    onMountWithdraw: modules.cashier.withdraw_store.onMountWithdraw,
     percentage: modules.cashier.cashier_store.percentage,
     percentageSelectorSelectionStatus: modules.cashier.cashier_store.percentageSelectorSelectionStatus,
-    requestWithdraw: modules.cashier.cashier_store.requestWithdraw,
+    requestWithdraw: modules.cashier.withdraw_store.requestWithdraw,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    setBlockchainAddress: modules.cashier.cashier_store.setBlockchainAddress,
-    setWithdrawPercentageSelectorResult: modules.cashier.cashier_store.setWithdrawPercentageSelectorResult,
+    setBlockchainAddress: modules.cashier.withdraw_store.setBlockchainAddress,
+    setWithdrawPercentageSelectorResult: modules.cashier.withdraw_store.setWithdrawPercentageSelectorResult,
     should_percentage_reset: modules.cashier.cashier_store.should_percentage_reset,
-    validateWithdrawFromAmount: modules.cashier.cashier_store.validateWithdrawFromAmount,
-    validateWithdrawToAmount: modules.cashier.cashier_store.validateWithdrawToAmount,
+    validateWithdrawFromAmount: modules.cashier.withdraw_store.validateWithdrawFromAmount,
+    validateWithdrawToAmount: modules.cashier.withdraw_store.validateWithdrawToAmount,
     verification_code: client.verification_code.payment_withdraw,
 }))(CryptoWithdrawForm);

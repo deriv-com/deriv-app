@@ -9,7 +9,6 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
-import { getAccountText } from '../../_common/utility';
 import PercentageSelector from '../percentage-selector';
 import RecentTransaction from '../recent-transaction.jsx';
 import '../../Sass/account-transfer.scss';
@@ -34,7 +33,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 
             <div className='account-transfer__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
-                    {getAccountText(account)}
+                    {account.is_dxtrade || account.is_mt ? account.text : getCurrencyName(account.currency)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}
@@ -130,8 +129,8 @@ const AccountTransferForm = ({
     percentage,
     resetConverter,
     recentTransactionOnMount,
+    requestTransferBetweenAccounts,
     setErrorMessage,
-    setIsTransferConfirm,
     setTransferPercentageSelectorResult,
     selected_from,
     selected_to,
@@ -330,7 +329,7 @@ const AccountTransferForm = ({
                     converter_to_amount: converter_to_amount || '',
                 }}
                 onSubmit={() => {
-                    setIsTransferConfirm(true);
+                    requestTransferBetweenAccounts({ amount: +account_transfer_amount });
                 }}
                 validateOnBlur={false}
                 enableReinitialize
@@ -552,6 +551,7 @@ AccountTransferForm.propTypes = {
     percentage: PropTypes.number,
     resetConverter: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
+    requestTransferBetweenAccounts: PropTypes.func,
     selected_from: PropTypes.object,
     setErrorMessage: PropTypes.func,
     selected_to: PropTypes.object,
@@ -584,9 +584,9 @@ export default connect(({ client, modules, ui }) => ({
     percentage: modules.cashier.percentage,
     resetConverter: modules.cashier.resetConverter,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
+    requestTransferBetweenAccounts: modules.cashier.requestTransferBetweenAccounts,
     setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
     setErrorMessage: modules.cashier.setErrorMessage,
-    setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
     selected_from: modules.cashier.config.account_transfer.selected_from,
     selected_to: modules.cashier.config.account_transfer.selected_to,
     setTransferPercentageSelectorResult: modules.cashier.setTransferPercentageSelectorResult,

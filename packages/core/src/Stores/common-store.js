@@ -43,6 +43,12 @@ export default class CommonStore extends BaseStore {
     @observable app_router = { history: null };
     @observable app_id = undefined;
     @observable platform = '';
+    @observable selected_contract_type = '';
+
+    @action.bound
+    setSelectedContractType(contract_type) {
+        this.selected_contract_type = contract_type;
+    }
 
     @action.bound
     checkAppId() {
@@ -165,13 +171,13 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setServicesError(error) {
+        this.services_error = error;
         if (isMobile()) {
             this.root_store.ui.addToast({
                 content: error.message,
                 type: 'error',
             });
         } else {
-            this.services_error = error;
             this.root_store.ui.toggleServicesErrorModal(true);
         }
     }

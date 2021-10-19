@@ -124,30 +124,34 @@ const CryptoDeposit = ({
                         <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>
                             {eth_qrcode_header || header_note}
                         </Text>
-                        {eth_option_list_value !== eth_option_list[2].value && (
-                            <Dropdown
-                                className='crypto-deposit__dropdown-menu'
-                                is_align_text_left
-                                list={eth_option_list}
-                                name='eth-dropdown'
-                                onChange={onChangeEthListOption}
-                                placeholder={localize('Choose an option')}
-                                value={eth_option_list_value}
-                            />
+                        {currency === 'ETH' && (
+                            <>
+                                {eth_option_list_value !== eth_option_list[2].value && (
+                                    <Dropdown
+                                        className='crypto-deposit__dropdown-menu'
+                                        is_align_text_left
+                                        list={eth_option_list}
+                                        name='eth-dropdown'
+                                        onChange={onChangeEthListOption}
+                                        placeholder={localize('Choose an option')}
+                                        value={eth_option_list_value}
+                                    />
+                                )}
+                                {eth_option_message && (
+                                    <Text
+                                        align='center'
+                                        as='p'
+                                        color='loss-danger'
+                                        className='crypto-deposit__eth-option-message'
+                                        line_height='m'
+                                        size={isMobile() ? 'xs' : 's'}
+                                    >
+                                        {eth_option_message}
+                                    </Text>
+                                )}
+                            </>
                         )}
-                        {eth_option_message && (
-                            <Text
-                                align='center'
-                                as='p'
-                                color='loss-danger'
-                                className='crypto-deposit__eth-option-message'
-                                line_height='m'
-                                size={isMobile() ? 'xs' : 's'}
-                            >
-                                {eth_option_message}
-                            </Text>
-                        )}
-                        {eth_option_list_value === eth_option_list[2].value && (
+                        {(currency !== 'ETH' || eth_option_list_value === eth_option_list[2].value) && (
                             <>
                                 <QRCode className='qrcode' value={deposit_address} size={160} />
                                 <div className='crypto-deposit__clipboard-wrapper'>

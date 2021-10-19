@@ -733,7 +733,7 @@ const AccountSwitcher = props => {
                     </AccountWrapper>
                 </React.Fragment>
             )}
-            {props.is_dxtrade_allowed && (
+            {isDxtradeAllowed() && (
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper

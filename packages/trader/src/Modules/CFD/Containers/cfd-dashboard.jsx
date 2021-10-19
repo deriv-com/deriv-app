@@ -94,7 +94,7 @@ class CFDDashboard extends React.Component {
         const is_demo_disabled = !this.state.is_demo_enabled;
         if (!this.props.is_logged_in && (is_real_disabled || is_demo_disabled)) {
             this.setState({
-                is_real_enabled: this.props.platform === CFD_PLATFORMS.MT5,
+                is_real_enabled: true,
                 is_demo_enabled: true,
             });
         }

@@ -252,7 +252,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     menu_items: menu.extensions,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
-    replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
+    replaceCashierMenuOnclick: modules.cashier.cashier_store.replaceCashierMenuOnclick,
     is_options_blocked: client.is_options_blocked,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,

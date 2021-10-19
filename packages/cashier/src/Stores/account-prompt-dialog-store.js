@@ -35,21 +35,21 @@ export default class AccountPromptDialogStore {
         this.should_show = false;
         this.is_confirmed = true;
 
-        const has_fiat_account = this.root_store.modules.cashier.config.account_transfer.accounts_list.some(
+        const has_fiat_account = this.root_store.modules.cashier.account_transfer_store.accounts_list.some(
             x => !x.is_crypto
         );
         if (isCryptocurrency(this.root_store.client?.currency) && has_fiat_account) await this.doSwitch();
     }
 
     async doSwitch() {
-        const non_crypto_accounts = this.root_store.modules.cashier.config.account_transfer.accounts_list.filter(
+        const non_crypto_accounts = this.root_store.modules.cashier.account_transfer_store.accounts_list.filter(
             x => !x.is_crypto
         );
         const loginid = non_crypto_accounts.map(x => x.value)[0];
         await this.root_store.client.switchAccount(loginid);
 
         if (this.current_location === 'deposit') {
-            this.root_store.modules.cashier.setIsDeposit(true);
+            this.root_store.modules.cashier.cashier_store.setIsDeposit(true);
         }
     }
 

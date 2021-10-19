@@ -198,7 +198,7 @@ export default connect(({ client, modules, ui }) => ({
     setIsDeposit: modules.cashier.cashier_store.setIsDeposit,
     setDepositTarget: modules.cashier.cashier_store.setDepositTarget,
     setShouldShowAllAvailableCurrencies: modules.cashier.cashier_store.setShouldShowAllAvailableCurrencies,
-    showP2pInCashierDefault: modules.cashier.showP2pInCashierDefault,
-    show_p2p_in_cashier_default: modules.cashier.show_p2p_in_cashier_default,
+    showP2pInCashierDefault: modules.cashier.cashier_store.showP2pInCashierDefault,
+    show_p2p_in_cashier_default: modules.cashier.cashier_store.show_p2p_in_cashier_default,
     toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
 }))(CashierDefault);

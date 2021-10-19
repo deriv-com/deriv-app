@@ -190,7 +190,7 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     error: modules.cashier.cashier_store.config.deposit.error,
-    is_cashier_default: modules.cashier.is_cashier_default,
+    is_cashier_default: modules.cashier.cashier_store.is_cashier_default,
     is_cashier_locked: modules.cashier.cashier_store.is_cashier_locked,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_deposit: modules.cashier.cashier_store.is_deposit,

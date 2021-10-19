@@ -202,7 +202,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_account_transfer_visible: modules.cashier.account_transfer_store.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
-    is_loading: modules.cashier.is_loading,
+    is_loading: modules.cashier.cashier_store.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,

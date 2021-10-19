@@ -416,7 +416,7 @@ export default class UIStore extends BaseStore {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
-        this.signup_modal_real_account_title = callSite;
+        if (callSite) this.signup_modal_real_account_title = callSite;
     }
 
     @action.bound

@@ -22,6 +22,7 @@ const CloseIcon = ({ closeModal }) => (
 
 const StatusDialogContainer = ({
     closeModal,
+    country_standpoint,
     currency,
     history,
     icon_size,
@@ -83,20 +84,21 @@ const StatusDialogContainer = ({
             >
                 <DialogHeading status={getStatus()} landing_company_shortcode={landing_company_shortcode} />
                 <DialogMessage
-                    status={getStatus()}
-                    landing_company_shortcode={landing_company_shortcode}
-                    is_fully_authenticated={is_fully_authenticated}
+                    country_standpoint={country_standpoint}
                     currency={currency}
+                    is_fully_authenticated={is_fully_authenticated}
+                    landing_company_shortcode={landing_company_shortcode}
+                    status={getStatus()}
                 />
             </div>
             <DialogButtons
-                landing_company_shortcode={landing_company_shortcode}
-                is_fully_authenticated={is_fully_authenticated}
-                status={getStatus()}
                 closeModal={closeModal}
                 closeModalAndOpenPOI={closeModalAndOpenPOI}
                 closeModalAndOpenPOA={closeModalAndOpenPOA}
                 closeModalAndOpenCashier={closeModalAndOpenCashier}
+                is_fully_authenticated={is_fully_authenticated}
+                landing_company_shortcode={landing_company_shortcode}
+                status={getStatus()}
                 switchToVirtual={switchToVirtual}
             />
         </Div100vhContainer>
@@ -117,6 +119,7 @@ StatusDialogContainer.propTypes = {
 };
 
 export default connect(({ client }) => ({
+    country_standpoint: client.country_standpoint,
     landing_company_shortcode: client.landing_company_shortcode,
     is_fully_authenticated: client.is_fully_authenticated,
     is_age_verified: client.is_age_verified,

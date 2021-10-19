@@ -75,7 +75,7 @@ const WizardHeading = ({
                 country_standpoint.is_other_eu ||
                 country_standpoint.is_rest_of_eu
             ) {
-                return <Localize i18n_default_text={`Add a real Deriv ${signup_modal_real_account_title} account`} />;
+                return <Localize i18n_default_text={`Add a real ${signup_modal_real_account_title} account`} />;
             }
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
         case 'samoa':

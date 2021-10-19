@@ -631,7 +631,7 @@ const AccountSwitcher = props => {
                                 <Button
                                     id='dt_core_account-switcher_add-new-account'
                                     onClick={() => {
-                                        props.openRealAccountSignup(account, account_title);
+                                        props.openRealAccountSignup(account, `Deriv ${account_title}`);
                                     }}
                                     className='acc-switcher__new-account-btn'
                                     secondary

@@ -72,7 +72,7 @@ const OnRamp = ({
 
         return () => onUnmountOnramp();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMountOnramp, onUnmountOnramp, is_cashier_default, is_switching, tab_index]);
+    }, [onMountOnramp, onUnmountOnramp, is_cashier_default, is_switching, is_loading, tab_index]);
 
     const getActivePaths = () =>
         (menu_options ?? []).map(menu_option => ({

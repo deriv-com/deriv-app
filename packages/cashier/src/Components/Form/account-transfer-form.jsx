@@ -130,8 +130,8 @@ const AccountTransferForm = ({
     percentage,
     resetConverter,
     recentTransactionOnMount,
+    requestTransferBetweenAccounts,
     setErrorMessage,
-    setIsTransferConfirm,
     setTransferPercentageSelectorResult,
     selected_from,
     selected_to,
@@ -330,7 +330,7 @@ const AccountTransferForm = ({
                     converter_to_amount: converter_to_amount || '',
                 }}
                 onSubmit={() => {
-                    setIsTransferConfirm(true);
+                    requestTransferBetweenAccounts({ amount: +account_transfer_amount });
                 }}
                 validateOnBlur={false}
                 enableReinitialize
@@ -551,6 +551,7 @@ AccountTransferForm.propTypes = {
     percentage: PropTypes.number,
     resetConverter: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
+    requestTransferBetweenAccounts: PropTypes.func,
     selected_from: PropTypes.object,
     setErrorMessage: PropTypes.func,
     selected_to: PropTypes.object,
@@ -583,6 +584,7 @@ export default connect(({ client, modules, ui }) => ({
     percentage: modules.cashier.cashier_store.percentage,
     resetConverter: modules.cashier.crypto_fiat_converter_store.resetConverter,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
+    requestTransferBetweenAccounts: modules.cashier.requestTransferBetweenAccounts,
     setAccountTransferAmount: modules.cashier.account_transfer_store.setAccountTransferAmount,
     setErrorMessage: modules.cashier.account_transfer_store.error.setErrorMessage,
     setIsTransferConfirm: modules.cashier.account_transfer_store.setIsTransferConfirm,

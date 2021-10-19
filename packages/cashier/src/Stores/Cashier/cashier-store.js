@@ -50,16 +50,7 @@ export default class CashierStore extends BaseStore {
         when(
             () => this.root_store.client.is_logged_in,
             () => {
-                this.setHasSetCurrency();
-
-                this.root_store.menu.attach({
-                    id: 'dt_cashier_tab',
-                    icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
-                    text: () => localize('Cashier'),
-                    link_to: this.has_set_currency && routes.cashier,
-                    onClick: !this.has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
-                    login_only: true,
-                });
+                this.attachCashierToMenu();
             }
         );
 
@@ -90,6 +81,7 @@ export default class CashierStore extends BaseStore {
     @observable should_percentage_reset = false;
     @observable percentage = 0;
     @observable is_withdraw_confirmed = false;
+    @observable show_p2p_in_cashier_default = false;
 
     @observable config = {
         account_transfer: this.root_store.modules.cashier?.account_transfer_store,
@@ -124,10 +116,59 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    showP2pInCashierDefault() {
+        const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
+        const has_usd_currency = this.root_store.client.account_list.some(account => account.title === 'USD');
+        const has_user_fiat_currency = this.root_store.client.account_list.some(
+            account => !isCryptocurrency(account.title) && account.title !== 'Real'
+        );
+
+        if (is_p2p_restricted || this.root_store.client.is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
+            this.show_p2p_in_cashier_default = false;
+        } else {
+            this.show_p2p_in_cashier_default = true;
+        }
+    }
+
+    @action.bound
+    attachCashierToMenu() {
+        if (!this.has_set_currency) {
+            this.setHasSetCurrency();
+        }
+
+        this.root_store.menu.attach({
+            id: 'dt_cashier_tab',
+            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+            text: () => localize('Cashier'),
+            link_to: this.has_set_currency && routes.cashier,
+            onClick: !this.has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
+            login_only: true,
+        });
+    }
+
+    @action.bound
+    replaceCashierMenuOnclick() {
+        this.setHasSetCurrency();
+
+        this.root_store.menu.update(
+            {
+                id: 'dt_cashier_tab',
+                icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+                text: () => localize('Cashier'),
+                link_to: this.has_set_currency && routes.cashier,
+                onClick: !this.has_set_currency ? this.root_store.ui.toggleSetCurrencyModal : false,
+                login_only: true,
+            },
+            1
+        );
+    }
+
+    @action.bound
     setHasSetCurrency() {
-        this.has_set_currency = this.root_store.client.account_list
-            .filter(account => !account.is_virtual)
-            .some(account => account.title !== 'Real');
+        this.has_set_currency =
+            this.root_store.client.account_list
+                .filter(account => !account.is_virtual)
+                .some(account => account.title !== 'Real') || !this.root_store.client.has_active_real_account;
     }
 
     @action.bound
@@ -137,6 +178,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountCashierDefault() {
+        if (!this.has_set_currency) {
+            this.setHasSetCurrency();
+        }
         this.setIsCashierDefault(true);
         this.root_store.modules.cashier.account_prompt_dialog_store.resetIsConfirmed();
 
@@ -327,7 +371,12 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async getAdvertizerError() {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
-        this.p2p_advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+        this.setP2pAdvertiserError(getPropertyValue(advertiser_info, ['error', 'code']));
+    }
+
+    @action.bound
+    setP2pAdvertiserError(value) {
+        this.p2p_advertiser_error = value;
     }
 
     @action.bound

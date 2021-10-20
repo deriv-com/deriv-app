@@ -33,9 +33,11 @@ const FinishedAddCurrency = ({
 
     return (
         <React.Fragment>
-            <div onClick={onCancel} className='finished-add-currency__close'>
-                <Icon icon='IcCross' />
-            </div>
+            {isDesktop() && (
+                <div onClick={onCancel} className='finished-add-currency__close'>
+                    <Icon icon='IcCross' />
+                </div>
+            )}
             <Div100vhContainer className='finished-add-currency__dialog' is_disabled={isDesktop()} height_offset='40px'>
                 <div
                     className={classNames('status-dialog__header', {

@@ -112,7 +112,6 @@ class ConfigAccountTransfer {
     @observable has_no_account = false;
     @observable has_no_accounts_balance = false;
     @observable is_transfer_confirm = false;
-    @observable is_transfer_successful = false;
     @observable is_mt5_transfer_in_progress = false;
     @observable minimum_fee = null;
     @observable receipt = {};
@@ -168,16 +167,7 @@ export default class CashierStore extends BaseStore {
         when(
             () => this.root_store.client.is_logged_in,
             () => {
-                this.setHasSetCurrency();
-
-                this.root_store.menu.attach({
-                    id: 'dt_cashier_tab',
-                    icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
-                    text: () => localize('Cashier'),
-                    link_to: this.has_set_currency && routes.cashier,
-                    onClick: !this.has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
-                    login_only: true,
-                });
+                this.attachCashierToMenu();
             }
         );
 
@@ -224,6 +214,7 @@ export default class CashierStore extends BaseStore {
     @observable should_percentage_reset = false;
     @observable percentage = 0;
     @observable is_withdraw_confirmed = false;
+    @observable show_p2p_in_cashier_default = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -281,10 +272,59 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    showP2pInCashierDefault() {
+        const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
+        const has_usd_currency = this.root_store.client.account_list.some(account => account.title === 'USD');
+        const has_user_fiat_currency = this.root_store.client.account_list.some(
+            account => !isCryptocurrency(account.title) && account.title !== 'Real'
+        );
+
+        if (is_p2p_restricted || this.root_store.client.is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
+            this.show_p2p_in_cashier_default = false;
+        } else {
+            this.show_p2p_in_cashier_default = true;
+        }
+    }
+
+    @action.bound
+    attachCashierToMenu() {
+        if (!this.has_set_currency) {
+            this.setHasSetCurrency();
+        }
+
+        this.root_store.menu.attach({
+            id: 'dt_cashier_tab',
+            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+            text: () => localize('Cashier'),
+            link_to: this.has_set_currency && routes.cashier,
+            onClick: !this.has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
+            login_only: true,
+        });
+    }
+
+    @action.bound
+    replaceCashierMenuOnclick() {
+        this.setHasSetCurrency();
+
+        this.root_store.menu.update(
+            {
+                id: 'dt_cashier_tab',
+                icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+                text: () => localize('Cashier'),
+                link_to: this.has_set_currency && routes.cashier,
+                onClick: !this.has_set_currency ? this.root_store.ui.toggleSetCurrencyModal : false,
+                login_only: true,
+            },
+            1
+        );
+    }
+
+    @action.bound
     setHasSetCurrency() {
-        this.has_set_currency = this.root_store.client.account_list
-            .filter(account => !account.is_virtual)
-            .some(account => account.title !== 'Real');
+        this.has_set_currency =
+            this.root_store.client.account_list
+                .filter(account => !account.is_virtual)
+                .some(account => account.title !== 'Real') || !this.root_store.client.has_active_real_account;
     }
 
     @action.bound
@@ -294,6 +334,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountCashierDefault() {
+        if (!this.has_set_currency) {
+            this.setHasSetCurrency();
+        }
         this.setIsCashierDefault(true);
         this.account_prompt_dialog.resetIsConfirmed();
 
@@ -484,7 +527,12 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async getAdvertizerError() {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
-        this.p2p_advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+        this.setP2pAdvertiserError(getPropertyValue(advertiser_info, ['error', 'code']));
+    }
+
+    @action.bound
+    setP2pAdvertiserError(value) {
+        this.p2p_advertiser_error = value;
     }
 
     @action.bound
@@ -1774,8 +1822,7 @@ export default class CashierStore extends BaseStore {
                 }
             });
             this.setAccountTransferAmount(null);
-            this.setIsTransferConfirm(false);
-            this.setIsTransferSuccessful(true);
+            this.setIsTransferConfirm(true);
         }
         this.setLoading(false);
         return transfer_between_accounts;
@@ -1783,7 +1830,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     resetAccountTransfer = async () => {
-        this.setIsTransferSuccessful(false);
+        this.setIsTransferConfirm(false);
     };
 
     @action.bound
@@ -1956,10 +2003,10 @@ export default class CashierStore extends BaseStore {
     async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
         this.resetTimer();
         if (target.value) {
-            this.percentageSelectorSelectionStatus(true);
-            this.calculatePercentage();
             this.setConverterFromAmount(target.value);
             this.validateFromAmount();
+            this.percentageSelectorSelectionStatus(true);
+            this.calculatePercentage();
             if (this.converter_from_error) {
                 this.setConverterToAmount('');
                 this.setConverterToError('');
@@ -1988,8 +2035,6 @@ export default class CashierStore extends BaseStore {
     async onChangeConverterToAmount({ target }, from_currency, to_currency) {
         this.resetTimer();
         if (target.value) {
-            this.percentageSelectorSelectionStatus(true);
-            this.calculatePercentage();
             this.setConverterToAmount(target.value);
             this.validateToAmount();
             if (this.converter_to_error) {
@@ -2006,6 +2051,8 @@ export default class CashierStore extends BaseStore {
                 } else {
                     this.setConverterFromAmount('');
                 }
+                this.percentageSelectorSelectionStatus(true);
+                this.calculatePercentage();
                 this.validateFromAmount();
                 if (this.converter_from_error) {
                     this.setIsTimerVisible(false);
@@ -2034,6 +2081,11 @@ export default class CashierStore extends BaseStore {
                 selected_from_currency,
                 selected_to_currency
             );
+        } else if (+this.config.account_transfer.selected_from.balance === 0) {
+            this.setConverterFromAmount(amount);
+            this.validateTransferFromAmount();
+        } else {
+            this.resetConverter();
         }
         this.setIsTimerVisible(false);
         this.percentageSelectorSelectionStatus(false);
@@ -2049,6 +2101,8 @@ export default class CashierStore extends BaseStore {
                 this.root_store.client.currency,
                 this.root_store.client.current_fiat_currency || 'USD'
             );
+        } else {
+            this.resetConverter();
         }
         this.setIsTimerVisible(false);
         this.percentageSelectorSelectionStatus(false);

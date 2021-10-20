@@ -217,7 +217,7 @@ export default class CashierStore extends BaseStore {
             async () => {
                 await this.getAdvertizerError();
                 this.checkP2pStatus();
-                await this.check10kLimit();
+                await this.root_store.modules.cashier.withdraw_store.check10kLimit();
             }
         );
         when(
@@ -239,7 +239,7 @@ export default class CashierStore extends BaseStore {
                     await this.getAdvertizerError();
                     this.root_store.modules.cashier.account_prompt_dialog_store.resetLastLocation();
                     if (!this.root_store.client.switched) this.checkP2pStatus();
-                    await this.check10kLimit();
+                    await this.root_store.modules.cashier.withdraw_store.check10kLimit();
                 }
             }
         );

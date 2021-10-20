@@ -524,13 +524,8 @@ const checkAccountStatus = (
         cashier_validation,
     } = account_status;
 
-    const {
-        cashier_locked,
-        withdrawal_locked,
-        deposit_locked,
-        mt5_withdrawal_locked,
-        document_needs_action,
-    } = getStatusValidations(status);
+    const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
+        getStatusValidations(status);
 
     const {
         system_maintenance,
@@ -637,7 +632,8 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         loginid,
     } = client_store;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
-    const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
+    const { is_p2p_visible } = cashier_store;
+    const { is_10k_withdrawal_limit_reached } = cashier_store.withdraw_store;
     const { current_language, selected_contract_type } = common_store;
     let has_missing_required_field, has_risk_assessment;
 

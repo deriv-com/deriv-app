@@ -68,9 +68,7 @@ export default class OnRampStore extends BaseStore {
             return localize('Payment channel');
         } else if (this.selected_provider) {
             if (this.should_show_dialog) {
-                return this.api_error
-                    ? localize('Our server cannot retrieve an address.')
-                    : localize("You don't have a crypto address yet.");
+                return localize('Our server cannot retrieve an address.');
             }
             return ' '; // Empty string to render header + close icon.
         }
@@ -79,7 +77,7 @@ export default class OnRampStore extends BaseStore {
 
     @computed
     get should_show_dialog() {
-        return this.api_error || !this.deposit_address;
+        return this.api_error;
     }
 
     @action.bound

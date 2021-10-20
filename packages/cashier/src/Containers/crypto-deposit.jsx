@@ -46,19 +46,17 @@ const CryptoDeposit = ({
             setEthOptionMessage(
                 <Localize i18n_default_text='We do not support Binance Smart Chain tokens to deposit, please use only Ethereum (ETH).' />
             );
-            setEthOptionListValue(event.target.value);
         } else if (event.target.value === eth_option_list[1].value) {
             setEthOptionMessage(
                 <Localize i18n_default_text='This is an Ethereum (ETH) only address, please do not use ERC20 tokens.' />
             );
-            setEthOptionListValue(event.target.value);
         } else if (event.target.value === eth_option_list[2].value) {
             setEthOptionMessage('');
             setEthQRCodeHeader(
                 <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
             );
-            setEthOptionListValue(event.target.value);
         }
+        setEthOptionListValue(event.target.value);
     };
 
     if (is_deposit_address_loading) {

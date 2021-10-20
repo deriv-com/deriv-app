@@ -2197,7 +2197,7 @@ export default class CashierStore extends BaseStore {
                         values={{
                             min_withdraw_amount,
                             max_withdraw_amount,
-                            currency: this.root_store.client.currency,
+                            currency,
                         }}
                     />
                 );

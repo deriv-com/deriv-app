@@ -3,17 +3,20 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { Loading, ThemedScrollbars, Text } from '@deriv/components';
+import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
 import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-details.jsx';
+import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-side-note.jsx';
 
 const CashierDefault = ({
     accounts_list,
+    available_crypto_currencies,
     currency,
     has_set_currency,
     is_dark_mode_on,
     is_landing_company_loaded,
+    is_loading,
     is_mobile,
     is_payment_agent_visible_in_onboarding,
     is_switching,
@@ -25,6 +28,7 @@ const CashierDefault = ({
     setIsDeposit,
     setDepositTarget,
     setShouldShowAllAvailableCurrencies,
+    setSideNotes,
     showP2pInCashierDefault,
     show_p2p_in_cashier_default,
     toggleSetCurrencyModal,
@@ -36,6 +40,7 @@ const CashierDefault = ({
 
     React.useEffect(() => {
         onMountCashierDefault();
+
         return () => {
             setIsCashierDefault(false);
             if (!has_set_currency && window.location.pathname.includes(routes.cashier)) {
@@ -123,6 +128,11 @@ const CashierDefault = ({
 
     return (
         <div>
+            {available_crypto_currencies.length > 0 && (
+                <MobileWrapper>
+                    <CashierDefaultSideNote is_crypto={is_crypto} />
+                </MobileWrapper>
+            )}
             <div className='cashier-default'>
                 <div className='cashier-default-header'>
                     <Text size={is_mobile ? 's' : 'sm'} line_height='xxl'>
@@ -164,9 +174,11 @@ const CashierDefault = ({
 
 CashierDefault.propTypes = {
     accounts_list: PropTypes.array,
+    available_crypto_currencies: PropTypes.array,
     currency: PropTypes.string,
     is_dark_mode_on: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
+    is_loading: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_payment_agent_visible_in_onboarding: PropTypes.bool,
     is_switching: PropTypes.bool,
@@ -177,14 +189,17 @@ CashierDefault.propTypes = {
     shouldNavigateAfterPrompt: PropTypes.func,
     setIsCashierDefault: PropTypes.func,
     setIsDeposit: PropTypes.func,
+    setSideNotes: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
+    available_crypto_currencies: client.available_crypto_currencies,
     currency: client.currency,
     has_set_currency: modules.cashier.has_set_currency,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_landing_company_loaded: client.is_landing_company_loaded,
+    //is_loading: modules.cashier.is_loading,
     is_mobile: ui.is_mobile,
     is_payment_agent_visible_in_onboarding: modules.cashier.is_payment_agent_visible_in_onboarding,
     is_switching: client.is_switching,

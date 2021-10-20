@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
-// import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CryptoDeposit from './crypto-deposit.jsx';
@@ -13,10 +12,10 @@ import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import DepositsLocked from '../Components/Error/deposit-locked.jsx';
 import FundsProtection from '../Components/Error/funds-protection.jsx';
 import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
-// import SideNote from '../Components/side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
 import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
 import RecentTransaction from '../Components/recent-transaction.jsx';
+import CashierDefaultSideNote from '../Components/CashierDefault/cashier-default-side-note.jsx';
 
 // const DepositeSideNote = () => {
 //     const notes = [
@@ -44,6 +43,7 @@ import RecentTransaction from '../Components/recent-transaction.jsx';
 // };
 
 const Deposit = ({
+    available_crypto_currencies,
     crypto_transactions,
     container,
     currency,
@@ -85,26 +85,21 @@ const Deposit = ({
     }, [setActiveTab, onMount, container]);
 
     React.useEffect(() => {
-        if (isDesktop()) {
-            if (
-                isCryptocurrency(currency) &&
-                typeof setSideNotes === 'function' &&
-                !is_cashier_default &&
-                !is_switching
-            ) {
-                const side_notes = [];
-                if (crypto_transactions.length) {
-                    side_notes.push(<RecentTransaction key={2} />);
+        if (typeof setSideNotes === 'function') {
+            setSideNotes(null);
+            if (is_cashier_default && !is_switching && !is_loading) {
+                if (!is_crypto || available_crypto_currencies.length > 0) {
+                    setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
                 }
-                const side_note = [
-                    // <DepositeSideNote key={0} />,
+            } else if (isCryptocurrency(currency) && !is_cashier_default && !is_switching) {
+                const side_notes = [
+                    ...(crypto_transactions.length ? [<RecentTransaction key={2} />] : []),
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
 
-                if (side_note.length) side_notes.push(side_note);
-                setSideNotes(side_notes);
-            } else setSideNotes(null);
+                if (side_notes.length) setSideNotes(side_notes);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions, is_cashier_default]);
@@ -153,10 +148,11 @@ const Deposit = ({
             />
         );
     }
-    return <CashierDefault />;
+    return <CashierDefault setSideNotes={setSideNotes} is_loading={is_loading} />;
 };
 
 Deposit.propTypes = {
+    available_crypto_currencies: PropTypes.array,
     crypto_transactions: PropTypes.array,
     container: PropTypes.string,
     current_currency_type: PropTypes.string,
@@ -183,6 +179,7 @@ Deposit.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
+    available_crypto_currencies: client.available_crypto_currencies,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     container: modules.cashier.config.deposit.container,
     currency: client.currency,

@@ -1,57 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal, Text } from '@deriv/components';
+import { Button, ButtonLink, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import Icon from '@deriv/components/src/components/icon';
 import 'Sass/poa-poi-address-modal.scss';
+import { routes } from '@deriv/shared';
+import PoaPoiInform from 'Assets/SvgComponents/settings//poa_poi_inform.svg';
 
 const PoiAndPoaVerificationModal = ({ modal_title, isOpenModal, closeModal }) => {
     return (
         <Modal
             className={'poa-poi-verification'}
             width={'480px'}
+            id='poi_poa_modal'
+            is_open={isOpenModal}
+            has_close_icon={false}
             title={
                 <div className={'title-element'}>
-                    <Icon icon='IcArrowRight' color='active' size={36} />
-                    <Text as='p' color='prominent' line_height='l' weight='bold' align='center'>
+                    <PoaPoiInform />
+                    <Text
+                        className={'modal_text_title'}
+                        as='p'
+                        color='prominent'
+                        line_height='l'
+                        weight='bold'
+                        align='center'
+                    >
                         <Localize i18n_default_text={modal_title} />
                     </Text>
                 </div>
             }
-            id='poi_poa_modal'
-            is_open={isOpenModal}
-            has_close_icon={false}
         >
             <div className='modal-content'>
                 <div className='proof-text-container'>
                     <Text size='xs' as='span' line_height='m'>
                         <Localize i18n_default_text='Upload document to verify your identity' />
                     </Text>
-                    <Button
-                        className='arrow-icon-container'
-                        has_effect
-                        icon={<Icon icon='IcArrowRight' color='active' size={16} />}
-                        onClick={() => {
-                            // eslint-disable-next-line no-console
-                            console.log('POI');
-                        }}
-                        primary
-                    />
+                    <ButtonLink className='arrow-icon-container' to={routes.proof_of_identity} primary>
+                        <Icon icon='IcArrowRight' color='active' size={24} />
+                    </ButtonLink>
                 </div>
                 <div className='proof-text-container'>
                     <Text size='xs' as='span' line_height='m'>
                         <Localize i18n_default_text='Upload document to verify your address' />
                     </Text>
-                    <Button
-                        className='arrow-icon-container'
-                        has_effect
-                        icon={<Icon icon='IcArrowRight' color='active' size={16} />}
-                        onClick={() => {
-                            // eslint-disable-next-line no-console
-                            console.log('POA');
-                        }}
-                        primary
-                    />
+                    <ButtonLink className='arrow-icon-container' to={routes.proof_of_address} primary>
+                        <Icon icon='IcArrowRight' color='active' size={24} />
+                    </ButtonLink>
                 </div>
                 <div className='bottom-button'>
                     <Button

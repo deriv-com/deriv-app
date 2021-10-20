@@ -6,11 +6,14 @@
             padding: 22px;
         }
     }
-
+    .modal_text_title {
+        margin-top: 24px;
+    }
     .arrow-icon-container {
         width: 32px;
         height: 32px;
-
+        padding: 0;
+        min-width: unset;
         .dc-btn__icon {
             padding-right: unset;
         }

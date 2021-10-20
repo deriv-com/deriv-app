@@ -33,6 +33,7 @@ const CFDRealAccountDisplay = ({
     isFinancialStpCardVisible,
     landing_companies,
     onSelectAccount,
+    openRealAccountSignup,
     openAccountTransfer,
     openPasswordModal,
     isAccountOfTypeDisabled,
@@ -101,7 +102,7 @@ const CFDRealAccountDisplay = ({
     };
     const onSelectRealFinancial = () => {
         if (is_eu && !has_maltainvest_account) {
-            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs'));
+            openRealAccountSignup('maltainvest', localize('DMT5 CFDs'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });
         }

@@ -241,6 +241,7 @@ class CFDDashboard extends React.Component {
             NotificationMessages,
             platform,
             openAccountNeededModal,
+            openRealAccountSignup,
             residence,
             residence_list,
             standpoint,
@@ -351,6 +352,7 @@ class CFDDashboard extends React.Component {
                                                               !!dxtrade_accounts_list_error
                                                     }
                                                     openAccountNeededModal={openAccountNeededModal}
+                                                    openRealAccountSignup={openRealAccountSignup}
                                                     current_list={current_list}
                                                     account_status={account_status}
                                                     has_cfd_account={has_cfd_account}
@@ -597,6 +599,7 @@ export default withRouter(
         is_fully_authenticated: client.is_fully_authenticated,
         openPasswordModal: modules.cfd.enableCFDPasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
+        openRealAccountSignup: ui.openRealAccountSignup,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
         residence_list: client.residence_list,

@@ -6,14 +6,15 @@ import Icon from '@deriv/components/src/components/icon';
 import 'Sass/poa-poi-address-modal.scss';
 import { routes } from '@deriv/shared';
 import PoaPoiInform from 'Assets/SvgComponents/settings//poa_poi_inform.svg';
+import { connect } from 'Stores/connect';
 
-const PoiAndPoaVerificationModal = ({ modal_title, isOpenModal, closeModal }) => {
+const PoiAndPoaVerificationModal = ({ modal_title, is_poi_poa_inform_modal_visible, closePoaPoiInformModal }) => {
     return (
         <Modal
             className={'poa-poi-verification'}
             width={'480px'}
             id='poi_poa_modal'
-            is_open={isOpenModal}
+            is_open={is_poi_poa_inform_modal_visible}
             has_close_icon={false}
             title={
                 <div className={'title-element'}>
@@ -36,7 +37,12 @@ const PoiAndPoaVerificationModal = ({ modal_title, isOpenModal, closeModal }) =>
                     <Text size='xs' as='span' line_height='m'>
                         <Localize i18n_default_text='Upload document to verify your identity' />
                     </Text>
-                    <ButtonLink className='arrow-icon-container' to={routes.proof_of_identity} primary>
+                    <ButtonLink
+                        className='arrow-icon-container'
+                        to={routes.proof_of_identity}
+                        onClick={closePoaPoiInformModal}
+                        primary
+                    >
                         <Icon icon='IcArrowRight' color='active' size={24} />
                     </ButtonLink>
                 </div>
@@ -44,7 +50,12 @@ const PoiAndPoaVerificationModal = ({ modal_title, isOpenModal, closeModal }) =>
                     <Text size='xs' as='span' line_height='m'>
                         <Localize i18n_default_text='Upload document to verify your address' />
                     </Text>
-                    <ButtonLink className='arrow-icon-container' to={routes.proof_of_address} primary>
+                    <ButtonLink
+                        className='arrow-icon-container'
+                        to={routes.proof_of_address}
+                        onClick={closePoaPoiInformModal}
+                        primary
+                    >
                         <Icon icon='IcArrowRight' color='active' size={24} />
                     </ButtonLink>
                 </div>
@@ -53,9 +64,7 @@ const PoiAndPoaVerificationModal = ({ modal_title, isOpenModal, closeModal }) =>
                         // className='acc-info__button'
                         has_effect
                         secondary
-                        onClick={() => {
-                            closeModal();
-                        }}
+                        onClick={closePoaPoiInformModal}
                         text={localize('Not now')}
                     />
                 </div>
@@ -63,10 +72,13 @@ const PoiAndPoaVerificationModal = ({ modal_title, isOpenModal, closeModal }) =>
         </Modal>
     );
 };
-export default PoiAndPoaVerificationModal;
 
 PoiAndPoaVerificationModal.propTypes = {
     modal_title: PropTypes.string,
-    isOpenModal: PropTypes.bool,
-    closeModal: PropTypes.func,
+    closePoaPoiInformModal: PropTypes.func,
+    is_poi_poa_inform_modal_visible: PropTypes.bool,
 };
+export default connect(({ ui }) => ({
+    is_poi_poa_inform_modal_visible: ui.is_poi_poa_inform_modal_visible,
+    closePoaPoiInformModal: ui.closePoaPoiInformModal,
+}))(PoiAndPoaVerificationModal);

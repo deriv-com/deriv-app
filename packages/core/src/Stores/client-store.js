@@ -582,6 +582,7 @@ export default class ClientStore extends BaseStore {
     get country_standpoint() {
         const result = {
             is_united_kingdom: this.is_uk,
+            is_isle_of_man: this.residence === 'im',
             is_france: this.residence === 'fr',
             is_belgium: this.residence === 'be',
             // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
@@ -643,7 +644,9 @@ export default class ClientStore extends BaseStore {
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
-        if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
+        if (!this.mt5_login_list.some(acc => acc.market_type === 'synthetic')) {
+            if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
+        }
 
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
@@ -1111,7 +1114,8 @@ export default class ClientStore extends BaseStore {
             client,
             this,
             this.root_store.ui,
-            this.root_store.modules.cashier
+            this.root_store.modules.cashier,
+            this.root_store.common
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -1181,19 +1185,26 @@ export default class ClientStore extends BaseStore {
          * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status, this.root_store.modules?.cashier?.is_p2p_visible],
+            () => [
+                this.account_settings,
+                this.account_status,
+                this.root_store.modules?.cashier?.is_p2p_visible,
+                this.root_store.common?.selected_contract_type,
+                this.is_eu,
+            ],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
                     this.root_store.ui.removeNotifications();
                     this.root_store.ui.removeAllNotificationMessages();
+                    const { has_missing_required_field } = handleClientNotifications(
+                        client,
+                        this,
+                        this.root_store.ui,
+                        this.root_store.modules.cashier,
+                        this.root_store.common
+                    );
                     if (client && !client.is_virtual) {
-                        const { has_missing_required_field } = handleClientNotifications(
-                            client,
-                            this,
-                            this.root_store.ui,
-                            this.root_store.modules.cashier
-                        );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }
                 });
@@ -1407,7 +1418,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async switchAccountHandler() {
-        if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {
+        if (!this.switched || !this.switched.length || !this.getAccount(this.switched)?.token) {
             if (this.isUnableToFindLoginId()) {
                 this.handleNotFoundLoginId();
                 return;
@@ -1849,8 +1860,6 @@ export default class ClientStore extends BaseStore {
         if (!this.verification_code.signup || !password || !residence) return;
         if (email_consent === undefined) return;
         email_consent = email_consent ? 1 : 0;
-        // Currently the code doesn't reach here and the console log is needed for debugging.
-        // TODO: remove console log when AccountSignup component and validation are ready
         WS.newAccountVirtual(
             this.verification_code.signup,
             password,
@@ -1871,7 +1880,7 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                if (!this.country_standpoint.is_france && !this.country_standpoint.is_belgium) {
+                if (!this.country_standpoint.is_france && !this.country_standpoint.is_belgium && residence !== 'im') {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }

@@ -15,4 +15,6 @@ export default connect(({ client, ui }) => ({
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_mt5_allowed: client.is_mt5_allowed,
     has_fiat: client.has_fiat,
+    accounts: client.accounts,
+    is_eu: client.is_eu,
 }))(CurrencySelector);

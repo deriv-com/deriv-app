@@ -8,22 +8,16 @@
 
 .accept-risk {
     &__header {
-        margin-bottom: 0.8rem;
-        padding-top: 4rem;
-
-        @include mobile {
-            padding-top: 1rem;
-        }
+        padding: 2.4rem 0;
     }
     &__container {
-        padding: 0 7.2rem;
+        padding: 0 2.4rem;
 
         @include mobile {
             padding: 0 1.6rem;
         }
     }
     &__form {
-        display: grid;
         height: calc(100% - 57px);
         position: relative;
         width: 100%;
@@ -37,7 +31,12 @@
 
 // Min width of tablet to max size of the modal
 @media (min-width: 768px) and (max-width: 904px) {
-    .dc-modal__container_real-account-signup-modal {
-        width: 768px !important;
+    .dc-modal__container {
+        &_real-account-signup-modal {
+            width: 768px !important;
+        }
+        &--risk-message {
+            width: 440px !important;
+        }
     }
 }

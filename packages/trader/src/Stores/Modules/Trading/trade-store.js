@@ -326,6 +326,7 @@ export default class TradeStore extends BaseStore {
                 this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
+        this.root_store.common.setSelectedContractType(this.contract_type);
     }
 
     @action.bound
@@ -401,6 +402,7 @@ export default class TradeStore extends BaseStore {
             true
         ); // wait for store to be updated
         this.validateAllProperties(); // then run validation before sending proposal
+        this.root_store.common.setSelectedContractType(this.contract_type);
     }
 
     @action.bound
@@ -734,8 +736,8 @@ export default class TradeStore extends BaseStore {
             this.setPreviousSymbol(this.symbol);
             await Symbol.onChangeSymbolAsync(obj_new_values.symbol);
             this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
-            has_only_forward_starting_contracts = ContractType.getContractCategories()
-                .has_only_forward_starting_contracts;
+            has_only_forward_starting_contracts =
+                ContractType.getContractCategories().has_only_forward_starting_contracts;
         }
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented

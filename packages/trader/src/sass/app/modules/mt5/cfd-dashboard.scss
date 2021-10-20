@@ -951,6 +951,13 @@
     position: relative;
     width: 100%;
 
+    .dc-modal-footer {
+        position: fixed;
+        padding: unset;
+        bottom: 1.6rem;
+        right: 1.6rem;
+    }
+
     &__form {
         height: 100%;
         display: flex;
@@ -1208,6 +1215,61 @@
     overflow: auto;
 
     &__fields {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+
+        .proof-of-identity__container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+            @include mobile {
+                width: 95%;
+            }
+
+            .icon {
+                margin: 1.6rem 0 2.4rem 0;
+            }
+            .btm-spacer {
+                margin-bottom: 1.6rem;
+            }
+            .proof-of-identity__header {
+                margin-bottom: 1.6rem;
+            }
+            .proof-of-identity__country-text {
+                text-align: center;
+                margin-bottom: 1.6rem;
+            }
+            .proof-of-identity__inner-container {
+                width: 100%;
+
+                .proof-of-identity__image {
+                    width: 100%;
+                }
+            }
+            .proof-of-identity__fieldset {
+                width: 100%;
+            }
+            .proof-of-identity__footer {
+                width: 100%;
+                margin-bottom: 8.6em;
+
+                .proof-of-identity__submit-button {
+                    margin-left: 0.8rem;
+                }
+            }
+        }
+        .proof-of-identity__footer {
+            display: inline-flex;
+            justify-content: flex-end;
+            width: 45%;
+            @include mobile {
+                width: 95%;
+                margin-top: 8px;
+            }
+        }
         @include mobile {
             position: relative;
         }
@@ -1292,8 +1354,6 @@
     }
     .dc-modal-body {
         text-align: center;
-        padding-top: 0;
-        padding: 3.2rem;
     }
     .dc-modal-footer {
         justify-content: center;
@@ -1327,7 +1387,7 @@
 .dc-modal__container_cfd-success-dialog {
     .success-change__icon-area {
         width: 128px;
-        margin: 2.4rem auto 0;
+        margin: 0 auto;
         position: relative;
 
         &--large .bottom-right-overlay {

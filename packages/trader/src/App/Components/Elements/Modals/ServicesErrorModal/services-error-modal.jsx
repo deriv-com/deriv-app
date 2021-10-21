@@ -5,6 +5,7 @@ import { localize } from '@deriv/translations';
 import { title } from './constants';
 import AuthorizationRequiredModal from './authorization-required-modal.jsx';
 import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
+import PoiAndPoaVerificationModal from './poi-and-poa-verification-modal';
 
 const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, services_error }) => {
     const { code, message } = services_error;
@@ -25,6 +26,9 @@ const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, s
                 toggleModal={onConfirm}
             />
         );
+    }
+    if (code === 'PleaseAuthenticate') {
+        return <PoiAndPoaVerificationModal is_open={is_visible} toggleModal={onConfirm} />;
     }
     return (
         <Modal is_open={is_visible} small title={title[services_error.type]} toggleModal={onConfirm}>

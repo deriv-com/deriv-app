@@ -491,6 +491,7 @@ export default class CashierStore extends BaseStore {
             async () => {
                 await this.getAdvertizerError();
                 this.checkP2pStatus();
+                await this.check10kLimit();
             }
         );
         when(
@@ -512,6 +513,7 @@ export default class CashierStore extends BaseStore {
                     await this.getAdvertizerError();
                     this.account_prompt_dialog.resetLastLocation();
                     if (!this.root_store.client.switched) this.checkP2pStatus();
+                    await this.check10kLimit();
                 }
             }
         );
@@ -898,7 +900,6 @@ export default class CashierStore extends BaseStore {
                     is_ask_authentication: true,
                 };
                 break;
-            case 'FinancialAssessmentRequired':
             case 'ASK_FINANCIAL_RISK_APPROVAL':
                 this.config[this.active_container].error = {
                     is_ask_financial_risk_approval: true,
@@ -928,8 +929,7 @@ export default class CashierStore extends BaseStore {
             if (response.error) {
                 this.setErrorConfig('message', response.error.message);
             } else {
-                this.setErrorConfig('is_ask_uk_funds_protection', false);
-                this.onMount();
+                location.reload();
             }
         });
     }

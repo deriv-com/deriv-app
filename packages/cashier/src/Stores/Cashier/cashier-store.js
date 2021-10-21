@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import React from 'react';
 import { action, computed, observable, reaction, when } from 'mobx';
 import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
@@ -34,9 +33,6 @@ export default class CashierStore extends BaseStore {
     @observable should_show_all_available_currencies = false;
     @observable is_cashier_default = true;
     @observable deposit_target = '';
-    @observable crypto_amount = '';
-    @observable fiat_amount = '';
-    @observable insufficient_fund_error = '';
     @observable should_set_currency_modal_title_change = false;
     @observable p2p_advertiser_error = undefined;
     @observable has_set_currency = false;
@@ -53,10 +49,7 @@ export default class CashierStore extends BaseStore {
     onRemount = () => {};
     is_populating_values = false;
 
-    containers = [
-        this.root_store.modules.cashier?.deposit_store.container,
-        this.root_store.modules.cashier?.withdraw_store.container,
-    ];
+    containers = ['deposit', 'withdraw'];
 
     map_action = {
         [this.root_store.modules.cashier?.withdraw_store.container]: 'payment_withdraw',
@@ -155,7 +148,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    calculatePercentage(amount = this.root_store.modules.cashier.account_transfer_store.converter_from_amount) {
+    calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
         if (this.active_container === this.root_store.modules.cashier.account_transfer_store.container) {
             this.percentage = +(
                 (amount / +this.root_store.modules.cashier.account_transfer_store.selected_from.balance) *

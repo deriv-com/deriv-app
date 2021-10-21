@@ -23,7 +23,7 @@ export default class WithdrawStore {
         this.is_withdraw_confirmed = is_withdraw_confirmed;
 
         if (is_withdraw_confirmed)
-            this.setWithdrawAmount(this.root_store.modules.cashier.account_transfer_store.converter_from_amount);
+            this.setWithdrawAmount(this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount);
 
         if (!is_withdraw_confirmed && this.verification) {
             this.verification.clearVerification('payment_withdraw');
@@ -41,7 +41,7 @@ export default class WithdrawStore {
             return;
         }
 
-        if (!this.root_store.modules.cashier.account_transfer_store.converter_from_amount) {
+        if (!this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
             this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(
                 localize('This field is required.')
             );
@@ -50,7 +50,7 @@ export default class WithdrawStore {
 
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +this.root_store.modules.cashier.account_transfer_store.converter_from_amount,
+            amount: +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
             verification_code,
             dry_run: 1,
         }).then(response => {
@@ -67,7 +67,7 @@ export default class WithdrawStore {
         this.error.setErrorMessage('');
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +this.root_store.modules.cashier.account_transfer_store.converter_from_amount,
+            amount: +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
             verification_code,
         }).then(response => {
             if (response.error) {
@@ -112,7 +112,7 @@ export default class WithdrawStore {
         if (strRegExp.test(verification_code)) {
             response_cashier = await this.WS.cryptoWithdraw({
                 address: this.blockchain_address,
-                amount: +this.root_store.modules.cashier.account_transfer_store.converter_from_amount,
+                amount: +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
                 verification_code,
                 dry_run: 1,
             });
@@ -122,7 +122,7 @@ export default class WithdrawStore {
 
         if (response_cashier.error.code === 'InvalidToken') {
             this.error.handleCashierError(response_cashier.error);
-            this.setLoading(false);
+            this.root_store.modules.cashier.cashier_store.setLoading(false);
             this.iframe.setSessionTimeout(true);
             this.iframe.clearTimeoutCashierUrl();
             if (verification_code) {
@@ -130,7 +130,7 @@ export default class WithdrawStore {
                 this.verification.clearVerification('payment_withdraw');
             }
         } else {
-            this.setLoading(false);
+            this.root_store.modules.cashier.cashier_store.setLoading(false);
         }
         if (this.error) {
             this.error.setErrorMessage(this.error, this.onMountWithdraw);
@@ -187,9 +187,9 @@ export default class WithdrawStore {
         const { balance, currency, website_status } = this.root_store.client;
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
 
-        if (this.root_store.modules.cashier.account_transfer_store.converter_from_amount) {
+        if (this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
             const { is_ok, message } = validNumber(
-                this.root_store.modules.cashier.account_transfer_store.converter_from_amount,
+                this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
                 {
                     type: 'float',
                     decimals: getDecimalPlaces(currency),
@@ -197,10 +197,13 @@ export default class WithdrawStore {
             );
             if (!is_ok) error_message = message;
 
-            if (+balance < +this.root_store.modules.cashier.account_transfer_store.converter_from_amount)
+            if (+balance < +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount)
                 error_message = localize('Insufficient funds');
 
-            if (+this.root_store.modules.cashier.account_transfer_store.converter_from_amount < +min_withdraw_amount) {
+            if (
+                +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount <
+                +min_withdraw_amount
+            ) {
                 error_message = (
                     <Localize
                         i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'

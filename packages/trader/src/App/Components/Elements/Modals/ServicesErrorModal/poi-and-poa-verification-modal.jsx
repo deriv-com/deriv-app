@@ -3,45 +3,48 @@ import PropTypes from 'prop-types';
 import { Button, ButtonLink, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import Icon from '@deriv/components/src/components/icon';
-import 'Sass/poa-poi-address-modal.scss';
+import 'Sass/app/_common/components/poa-poi-address-modal.scss';
 import { routes } from '@deriv/shared';
 import PoaPoiInform from 'Assets/SvgComponents/settings//poa_poi_inform.svg';
 import { connect } from 'Stores/connect';
-import { populateVerificationStatus } from '@deriv/account';
+import populateVerificationStatus from '@deriv/account/src/Sections/Verification/Helpers/verification';
 
-const PoiAndPoaVerificationModal = ({
-    modal_title,
-    is_poi_poa_inform_modal_visible,
-    closePoaPoiInformModal,
-    account_status,
-}) => {
+const PoiAndPoaVerificationModal = ({ account_status, is_open, toggleModal }) => {
     const verification_status = populateVerificationStatus(account_status);
     const { has_poa, has_poi } = verification_status;
+    let title = '';
+    if (has_poi && has_poa) {
+        title = 'Your documents are being reviewed, this can take up to 3 days.';
+    } else if (has_poi && !has_poa) {
+        title = 'Verify your proof of address to trade with real Deriv Multipliers account.';
+    } else {
+        title = 'Verify your proof of identity to trade with real Deriv Multipliers account.';
+    }
     return (
         <Modal
             className={'poa-poi-verification'}
             width={'480px'}
             id='poi_poa_modal'
-            is_open={is_poi_poa_inform_modal_visible}
+            is_open={is_open}
             has_close_icon={false}
             title={
                 <div className={'title-element'}>
                     <PoaPoiInform />
                     <Text
-                        className={'modal_text_title'}
+                        className={'title-text'}
                         as='p'
                         color='prominent'
                         line_height='l'
                         weight='bold'
                         align='center'
                     >
-                        <Localize i18n_default_text={modal_title} />
+                        <Localize i18n_default_text={title} />
                     </Text>
                 </div>
             }
         >
-            <div className='modal-content'>
-                <div className='proof-text-container'>
+            <Modal.Body>
+                <div className='proof-of-identity-text-container'>
                     <Text size='xs' as='span' line_height='m'>
                         <Localize i18n_default_text='Upload document to verify your identity' />
                     </Text>
@@ -51,14 +54,14 @@ const PoiAndPoaVerificationModal = ({
                         <ButtonLink
                             className='arrow-icon-container'
                             to={routes.proof_of_identity}
-                            onClick={closePoaPoiInformModal}
+                            onClick={toggleModal}
                             primary
                         >
                             <Icon icon='IcArrowRight' color='active' size={24} />
                         </ButtonLink>
                     )}
                 </div>
-                <div className='proof-text-container'>
+                <div className='proof-of-address-text-container'>
                     <Text size='xs' as='span' line_height='m'>
                         <Localize i18n_default_text='Upload document to verify your address' />
                     </Text>
@@ -68,35 +71,34 @@ const PoiAndPoaVerificationModal = ({
                         <ButtonLink
                             className='arrow-icon-container'
                             to={routes.proof_of_address}
-                            onClick={closePoaPoiInformModal}
+                            onClick={toggleModal}
                             primary
                         >
                             <Icon icon={'IcArrowRight'} color={'active'} size={24} />
                         </ButtonLink>
                     )}
                 </div>
-                <div className='bottom-button'>
+            </Modal.Body>
+            <Modal.Footer>
+                <div className='footer-container bottom-button'>
                     <Button
                         // className='acc-info__button'
                         has_effect
                         secondary
-                        onClick={closePoaPoiInformModal}
+                        onClick={toggleModal}
                         text={localize('Not now')}
                     />
                 </div>
-            </div>
+            </Modal.Footer>
         </Modal>
     );
 };
 
 PoiAndPoaVerificationModal.propTypes = {
-    modal_title: PropTypes.string,
     closePoaPoiInformModal: PropTypes.func,
     is_poi_poa_inform_modal_visible: PropTypes.bool,
     account_status: PropTypes.object,
 };
-export default connect(({ ui, client }) => ({
+export default connect(({ client }) => ({
     account_status: client.account_status,
-    is_poi_poa_inform_modal_visible: ui.is_poi_poa_inform_modal_visible,
-    closePoaPoiInformModal: ui.closePoaPoiInformModal,
 }))(PoiAndPoaVerificationModal);

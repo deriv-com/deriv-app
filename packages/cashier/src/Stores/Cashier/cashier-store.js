@@ -668,35 +668,30 @@ export default class CashierStore extends BaseStore {
             // if no verification code, we should request again
             return;
         }
+        if (!isCryptocurrency(this.root_store.client.currency)) {
+            const response_cashier = await this.WS.authorized.cashier(this.active_container, { verification_code });
 
-        const response_cashier = await this.WS.authorized.cashier(this.active_container, { verification_code });
-
-        // if tab changed while waiting for response, ignore it
-        if (current_container !== this.active_container) {
-            this.setLoading(false);
-            return;
-        }
-        if (response_cashier.error) {
-            this.handleCashierError(response_cashier.error);
-            this.setLoading(false);
-            this.setSessionTimeout(true);
-            this.clearTimeoutCashierUrl();
-            if (verification_code) {
-                // clear verification code on error
-                this.clearVerification();
+            // if tab changed while waiting for response, ignore it
+            if (current_container !== this.active_container) {
+                this.setLoading(false);
+                return;
             }
-        } else if (isCryptocurrency(this.root_store.client.currency)) {
-            this.setLoading(false);
-            this.setContainerHeight('380');
-            this.setIframeUrl(response_cashier.cashier);
-            // crypto cashier can only be accessed once and the session expires
-            // so no need to set timeouts to keep the session alive
-        } else {
-            await this.checkIframeLoaded();
-            this.setIframeUrl(response_cashier.cashier);
-            this.setSessionTimeout(false);
-            this.setTimeoutCashierUrl();
+            if (response_cashier.error) {
+                this.handleCashierError(response_cashier.error);
+                this.setLoading(false);
+                this.setSessionTimeout(true);
+                this.clearTimeoutCashierUrl();
+                if (verification_code) {
+                    // clear verification code on error
+                    this.clearVerification();
+                }
+            } else {
+                this.setLoading(false);
+                this.setSessionTimeout(false);
+                this.setTimeoutCashierUrl();
+            }
         }
+        this.setLoading(false);
     }
 
     @action.bound

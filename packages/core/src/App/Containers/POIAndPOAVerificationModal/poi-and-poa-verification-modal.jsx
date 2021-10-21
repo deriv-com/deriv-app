@@ -7,8 +7,16 @@ import 'Sass/poa-poi-address-modal.scss';
 import { routes } from '@deriv/shared';
 import PoaPoiInform from 'Assets/SvgComponents/settings//poa_poi_inform.svg';
 import { connect } from 'Stores/connect';
+import { populateVerificationStatus } from '@deriv/account';
 
-const PoiAndPoaVerificationModal = ({ modal_title, is_poi_poa_inform_modal_visible, closePoaPoiInformModal }) => {
+const PoiAndPoaVerificationModal = ({
+    modal_title,
+    is_poi_poa_inform_modal_visible,
+    closePoaPoiInformModal,
+    account_status,
+}) => {
+    const verification_status = populateVerificationStatus(account_status);
+    const { has_poa, has_poi } = verification_status;
     return (
         <Modal
             className={'poa-poi-verification'}
@@ -37,27 +45,35 @@ const PoiAndPoaVerificationModal = ({ modal_title, is_poi_poa_inform_modal_visib
                     <Text size='xs' as='span' line_height='m'>
                         <Localize i18n_default_text='Upload document to verify your identity' />
                     </Text>
-                    <ButtonLink
-                        className='arrow-icon-container'
-                        to={routes.proof_of_identity}
-                        onClick={closePoaPoiInformModal}
-                        primary
-                    >
-                        <Icon icon='IcArrowRight' color='active' size={24} />
-                    </ButtonLink>
+                    {has_poi ? (
+                        <Icon icon={'IcCheckmark'} color={'green'} size={24} />
+                    ) : (
+                        <ButtonLink
+                            className='arrow-icon-container'
+                            to={routes.proof_of_identity}
+                            onClick={closePoaPoiInformModal}
+                            primary
+                        >
+                            <Icon icon='IcArrowRight' color='active' size={24} />
+                        </ButtonLink>
+                    )}
                 </div>
                 <div className='proof-text-container'>
                     <Text size='xs' as='span' line_height='m'>
                         <Localize i18n_default_text='Upload document to verify your address' />
                     </Text>
-                    <ButtonLink
-                        className='arrow-icon-container'
-                        to={routes.proof_of_address}
-                        onClick={closePoaPoiInformModal}
-                        primary
-                    >
-                        <Icon icon='IcArrowRight' color='active' size={24} />
-                    </ButtonLink>
+                    {has_poa ? (
+                        <Icon icon={'IcCheckmark'} color={'green'} size={24} />
+                    ) : (
+                        <ButtonLink
+                            className='arrow-icon-container'
+                            to={routes.proof_of_address}
+                            onClick={closePoaPoiInformModal}
+                            primary
+                        >
+                            <Icon icon={'IcArrowRight'} color={'active'} size={24} />
+                        </ButtonLink>
+                    )}
                 </div>
                 <div className='bottom-button'>
                     <Button
@@ -77,8 +93,10 @@ PoiAndPoaVerificationModal.propTypes = {
     modal_title: PropTypes.string,
     closePoaPoiInformModal: PropTypes.func,
     is_poi_poa_inform_modal_visible: PropTypes.bool,
+    account_status: PropTypes.object,
 };
-export default connect(({ ui }) => ({
+export default connect(({ ui, client }) => ({
+    account_status: client.account_status,
     is_poi_poa_inform_modal_visible: ui.is_poi_poa_inform_modal_visible,
     closePoaPoiInformModal: ui.closePoaPoiInformModal,
 }))(PoiAndPoaVerificationModal);

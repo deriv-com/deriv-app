@@ -43,6 +43,12 @@ export default class CommonStore extends BaseStore {
     @observable app_router = { history: null };
     @observable app_id = undefined;
     @observable platform = '';
+    @observable selected_contract_type = '';
+
+    @action.bound
+    setSelectedContractType(contract_type) {
+        this.selected_contract_type = contract_type;
+    }
 
     @action.bound
     checkAppId() {

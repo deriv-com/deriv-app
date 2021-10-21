@@ -39,7 +39,7 @@ export default class UIStore extends BaseStore {
     @observable is_accounts_switcher_on = false;
     @observable signup_modal_real_account_title = '';
     @observable account_switcher_disabled_message = '';
-    @observable is_poi_poa_inform_modal_visible = true;
+
     @observable has_only_forward_starting_contracts = false;
 
     // Purchase Controls
@@ -203,14 +203,7 @@ export default class UIStore extends BaseStore {
             document.body.classList.add('theme--light');
         }
     };
-    @action.bound
-    openPoaPoiInformModal() {
-        this.is_poi_poa_inform_modal_visible = true;
-    }
-    @action.bound
-    closePoaPoiInformModal() {
-        this.is_poi_poa_inform_modal_visible = false;
-    }
+
     @action.bound
     init(notification_messages) {
         this.notification_messages_ui = notification_messages;
@@ -423,7 +416,6 @@ export default class UIStore extends BaseStore {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
-        this.signup_modal_real_account_title = call_site || this.signup_modal_real_account_title;
     }
 
     @action.bound

@@ -35,6 +35,20 @@ export const clientNotifications = (ui = {}, client = {}) => {
             img_alt: 'DP2P',
             type: 'news',
         },
+        close_mx_account: {
+            key: 'close_mx_account',
+            header: localize('Your Gaming account is scheduled to be closed'),
+            message: localize('Please proceed to withdraw your funds before 30 November 2021.'),
+            secondary_btn: {
+                text: localize('Learn more'),
+                onClick: () => {
+                    ui.showCloseMXAccountPopup(true);
+                },
+            },
+            img_src: getUrlBase('/public/images/common/close_account_banner.png'),
+            img_alt: 'close mx account',
+            type: 'close_mx',
+        },
         is_virtual: {
             key: 'is_virtual',
             header: localize('You are on your demo account'),
@@ -631,17 +645,24 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         account_status,
         getRiskAssessment,
         is_eu,
+        has_iom_account,
         is_logged_in,
         is_tnc_needed,
         isAccountOfType,
         loginid,
     } = client_store;
+    const hidden_close_account_notification =
+        parseInt(localStorage.getItem('hide_close_mx_account_notification')) === 1;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
     let has_missing_required_field, has_risk_assessment;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
+
+    if (has_iom_account && !hidden_close_account_notification) {
+        addNotificationMessage(clientNotifications(ui_store).close_mx_account);
+    }
 
     if (client && !client.is_virtual) {
         ({ has_risk_assessment } = checkAccountStatus(
@@ -654,7 +675,6 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
             ui_store,
             is_10k_withdrawal_limit_reached
         ));
-
         if (is_p2p_visible) {
             addNotificationMessage(clientNotifications().dp2p);
         } else {

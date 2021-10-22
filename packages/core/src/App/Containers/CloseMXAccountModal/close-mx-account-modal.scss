@@ -1,0 +1,94 @@
+.close-mx-account {
+    .dc-dialog__wrapper {
+        z-index: 1001;
+        .dc-dialog__dialog {
+            max-height: unset;
+            max-width: unset;
+            width: 800px;
+            height: 640px;
+            .dc-dialog__content {
+                max-width: unset;
+                height: 100%;
+                margin-bottom: 5rem;
+                overflow-y: auto;
+                .close-mx-account-header {
+                    width: 100%;
+                    height: 214px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #e0f0f0;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    border-top-left-radius: 0.8rem;
+                    border-top-right-radius: 0.8rem;
+                    .dc-icon {
+                        width: 96px;
+                        height: 96px;
+                        margin-bottom: 2.4rem;
+                    }
+                    &__heading {
+                        font-size: 2rem;
+                    }
+                    @include mobile {
+                        .dc-icon {
+                            width: 64px;
+                            height: 64px;
+                        }
+                        h1 {
+                            font-size: 14px;
+                        }
+                    }
+                }
+                .close-mx-account__content {
+                    padding: 21.4rem 0 2.4rem;
+                    .close-mx-bullet {
+                        list-style: disc;
+                        font-size: 1.6rem;
+                        margin-left: 2.5rem;
+                    }
+                    .link {
+                        font-weight: unset;
+                    }
+                }
+            }
+            .close-mx-account.dc-dialog__footer {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                border-bottom-right-radius: 0.8rem;
+                border-bottom-left-radius: 0.8rem;
+                padding: 1.6rem 2.4rem;
+                background-color: var(--general-main-1);
+                border-top: 2px solid var(--general-section-1);
+                .dc-btn--primary {
+                    margin-left: 0.5rem;
+                }
+            }
+            .dc-text {
+                margin: 0.3rem 0;
+            }
+            @include mobile {
+                position: fixed;
+                border-radius: unset;
+                margin-top: unset;
+                height: 100vh;
+                width: 100vw;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+        }
+    }
+}
+
+body.theme--dark {
+    .close-mx-account .close-mx-account-header h1 {
+        color: var(--general-main-1);
+    }
+}

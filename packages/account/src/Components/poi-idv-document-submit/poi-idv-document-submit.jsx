@@ -240,6 +240,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                 </Field>
                             </fieldset>
                         </div>
+                        {is_doc_selected && (
+                            <Text className='proof-of-identity__text btm-spacer' align='center' size='xs'>
+                                <Localize i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.' />
+                            </Text>
+                        )}
                         {document_image && (
                             <div className='proof-of-identity__sample-container'>
                                 <Text size='xxs' weight='bold'>
@@ -255,13 +260,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                             </div>
                         )}
                     </div>
-                    {is_doc_selected && (
-                        <Text className='proof-of-identity__text btm-spacer' align='center' size='xs'>
-                            <Localize
-                                i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.'
-                            />
-                        </Text>
-                    )}
                     <FormFooter className='proof-of-identity__footer'>
                         <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
                             <BackButtonIcon className='back-btn' /> {localize('Go Back')}

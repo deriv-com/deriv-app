@@ -38,7 +38,12 @@ export default class AccountPromptDialogStore {
         const has_fiat_account = this.root_store.modules.cashier.config.account_transfer.accounts_list.some(
             x => !x.is_crypto
         );
-        if (isCryptocurrency(this.root_store.client?.currency) && has_fiat_account) await this.doSwitch();
+        if (isCryptocurrency(this.root_store.client?.currency) && has_fiat_account) {
+            await this.doSwitch();
+        } else if (!isCryptocurrency(this.root_store.client?.currency)) {
+            this.root_store.ui.openRealAccountSignup('choose');
+            this.root_store.ui.shouldNavigateAfterChooseCrypto(this.last_location);
+        }
     }
 
     async doSwitch() {

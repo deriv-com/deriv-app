@@ -1781,7 +1781,6 @@ $MIN_HEIGHT_FLOATING: calc(
     &__text {
         @include mobile {
             width: 94%;
-            margin-bottom: unset;
             text-align: center;
             margin-bottom: 9rem;
         }

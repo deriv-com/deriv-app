@@ -1783,6 +1783,7 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 94%;
             margin-bottom: unset;
             text-align: center;
+            margin-bottom: 9rem;
         }
     }
     &__dropdown-container {
@@ -1875,7 +1876,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
         @include mobile {
             margin-left: unset;
-            min-height: 50vh;
             width: 94%;
         }
     }

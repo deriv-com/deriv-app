@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { isCryptocurrency, isDesktop } from '@deriv/shared';
+import { isCryptocurrency } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CryptoDeposit from './crypto-deposit.jsx';
 import CashierContainer from '../Components/cashier-container.jsx';
@@ -14,7 +14,6 @@ import FundsProtection from '../Components/Error/funds-protection.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
 import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
 import RecentTransaction from '../Components/recent-transaction.jsx';
-import CashierDefaultSideNote from '../Components/CashierDefault/cashier-default-side-note.jsx';
 
 // const DepositeSideNote = () => {
 //     const notes = [
@@ -42,7 +41,6 @@ import CashierDefaultSideNote from '../Components/CashierDefault/cashier-default
 // };
 
 const Deposit = ({
-    available_crypto_currencies,
     crypto_transactions,
     container,
     currency,
@@ -144,7 +142,6 @@ const Deposit = ({
 };
 
 Deposit.propTypes = {
-    available_crypto_currencies: PropTypes.array,
     crypto_transactions: PropTypes.array,
     container: PropTypes.string,
     current_currency_type: PropTypes.string,
@@ -171,7 +168,6 @@ Deposit.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    available_crypto_currencies: client.available_crypto_currencies,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     container: modules.cashier.config.deposit.container,
     currency: client.currency,

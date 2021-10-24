@@ -146,4 +146,38 @@
             margin-bottom: 7rem;
         }
     }
+    &__deposit-warn {
+        width: 78%;
+        margin: 2.8rem auto;
+        padding: 10px;
+    }
+}
+
+.add-currency {
+    &__title {
+        margin-top: 1rem;
+    }
+    &__sub-title {
+        margin-top: 0.8rem;
+    }
+    &__underline {
+        border-bottom: 1px solid var(--general-section-1);
+        width: 55rem;
+        margin: 1.6rem auto 0;
+    }
+    &__note {
+        background-color: var(--general-section-1);
+        width: 55rem;
+        margin: 1.1rem auto 1rem;
+        padding: 0.5rem;
+
+        &-wrapper {
+            width: 100%;
+            display: flex;
+            align-self: flex-end;
+        }
+    }
+    &__wizard-header {
+        margin-top: 1rem;
+    }
 }

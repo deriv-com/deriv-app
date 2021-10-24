@@ -16,7 +16,6 @@ const CashierDefault = ({
     has_set_currency,
     is_dark_mode_on,
     is_landing_company_loaded,
-    is_loading,
     is_mobile,
     is_payment_agent_visible_in_onboarding,
     is_switching,
@@ -50,6 +49,19 @@ const CashierDefault = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (
+            typeof setSideNotes === 'function' &&
+            !is_switching &&
+            accounts_list.length > 0 &&
+            is_landing_company_loaded
+        ) {
+            if (!is_crypto || available_crypto_currencies.length > 0) {
+                setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
+            }
+        }
+    }, [is_switching, accounts_list, is_landing_company_loaded]);
 
     const openRealAccount = target => {
         openRealAccountSignup('choose');
@@ -128,7 +140,7 @@ const CashierDefault = ({
 
     return (
         <div>
-            {available_crypto_currencies.length > 0 && (
+            {(!is_crypto || available_crypto_currencies.length > 0) && (
                 <MobileWrapper>
                     <CashierDefaultSideNote is_crypto={is_crypto} />
                 </MobileWrapper>
@@ -178,7 +190,6 @@ CashierDefault.propTypes = {
     currency: PropTypes.string,
     is_dark_mode_on: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
-    is_loading: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_payment_agent_visible_in_onboarding: PropTypes.bool,
     is_switching: PropTypes.bool,
@@ -199,7 +210,6 @@ export default connect(({ client, modules, ui }) => ({
     has_set_currency: modules.cashier.has_set_currency,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_landing_company_loaded: client.is_landing_company_loaded,
-    //is_loading: modules.cashier.is_loading,
     is_mobile: ui.is_mobile,
     is_payment_agent_visible_in_onboarding: modules.cashier.is_payment_agent_visible_in_onboarding,
     is_switching: client.is_switching,

@@ -36,6 +36,7 @@ const CashierDefault = ({
     const is_crypto = !!currency && isCryptocurrency(currency);
     const has_crypto_account = accounts_list.some(x => x.is_crypto);
     const has_fiat_account = accounts_list.some(x => !x.is_crypto);
+    const is_currency_banner_visible = !is_crypto || available_crypto_currencies.length > 0;
 
     React.useEffect(() => {
         onMountCashierDefault();
@@ -54,11 +55,10 @@ const CashierDefault = ({
             typeof setSideNotes === 'function' &&
             !is_switching &&
             accounts_list.length > 0 &&
-            is_landing_company_loaded
+            is_landing_company_loaded &&
+            is_currency_banner_visible
         ) {
-            if (!is_crypto || available_crypto_currencies.length > 0) {
-                setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
-            }
+            setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
         }
     }, [is_switching, accounts_list, is_landing_company_loaded]);
 
@@ -139,7 +139,7 @@ const CashierDefault = ({
 
     return (
         <div>
-            {(!is_crypto || available_crypto_currencies.length > 0) && (
+            {is_currency_banner_visible && (
                 <MobileWrapper>
                     <CashierDefaultSideNote is_crypto={is_crypto} />
                 </MobileWrapper>

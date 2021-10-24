@@ -84,13 +84,13 @@ const Deposit = ({
     React.useEffect(() => {
         if (typeof setSideNotes === 'function') {
             if (is_switching || is_deposit) setSideNotes(null);
-            if (isCryptocurrency(currency) && !is_cashier_default && !is_switching) {
+            if (isCryptocurrency(currency) && is_deposit && !is_switching) {
                 const side_notes = [
                     ...(crypto_transactions.length ? [<RecentTransaction key={2} />] : []),
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
-                if (side_notes.length) setSideNotes(side_notes);
+                if (side_notes.length > 0) setSideNotes(side_notes);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

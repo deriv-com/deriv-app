@@ -56,19 +56,17 @@ const CashierDefault = ({
         if (is_crypto) {
             openRealAccount(target);
         } else if (has_crypto_account) {
-            accountConditions(target, 'deposit');
+            shouldNavigateAfterPrompt(target, 'deposit');
         } else {
             openRealAccountSignup('add_crypto');
         }
     };
 
-    const accountConditions = (next_location, current_location) => {
-        if (!is_crypto || has_fiat_account) {
+    const fiatAccountConditions = (next_location, current_location) => {
+        if (has_fiat_account) {
             shouldNavigateAfterPrompt(next_location, current_location);
-        } else if (!has_fiat_account) {
-            openRealAccountSignup('add_fiat');
         } else {
-            openRealAccountSignup('add_crypto');
+            openRealAccountSignup('add_fiat');
         }
     };
 
@@ -76,7 +74,7 @@ const CashierDefault = ({
         setDepositTarget(routes.cashier_deposit);
 
         if (is_crypto) {
-            accountConditions(routes.cashier_deposit, 'deposit');
+            fiatAccountConditions(routes.cashier_deposit, 'deposit');
         } else {
             setIsDeposit(true);
         }
@@ -100,7 +98,7 @@ const CashierDefault = ({
         setDepositTarget(routes.cashier_p2p);
 
         if (is_crypto) {
-            accountConditions(routes.cashier_p2p, 'DP2P');
+            fiatAccountConditions(routes.cashier_p2p, 'DP2P');
         } else {
             history.push(routes.cashier_p2p);
         }

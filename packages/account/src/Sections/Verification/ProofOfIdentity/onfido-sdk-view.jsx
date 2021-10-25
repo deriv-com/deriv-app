@@ -185,10 +185,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                         <React.Fragment>
                             <div className='onfido-container__message'>
                                 <Text size='xs'>
-                                    <Localize
-                                        i18n_default_text='Before uploading your document, please ensure that your <0>personal details</0> are updated to match your proof of identity. This will help to avoid delays during the verification process.'
-                                        components={[<Link to={routes.personal_details} key={0} className='link' />]}
-                                    />
+                                    <Localize i18n_default_text='Before uploading your document, please ensure that your personal details are updated to match your proof of identity. This will help to avoid delays during the verification process.' />
                                 </Text>
                             </div>
                         </React.Fragment>

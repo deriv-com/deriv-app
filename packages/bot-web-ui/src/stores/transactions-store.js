@@ -14,6 +14,7 @@ export default class TransactionsStore {
 
     @observable elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.root_store.core.client.loginid, []);
     @observable active_transaction_id = null;
+    @observable elementsPerRun = [];
 
     @computed
     get transactions() {
@@ -72,10 +73,18 @@ export default class TransactionsStore {
                         type: transaction_elements.DIVIDER,
                         data: contract.run_id,
                     });
+                    this.elementsPerRun.unshift({
+                        type: transaction_elements.DIVIDER,
+                        data: contract.run_id,
+                    });
                 }
             }
 
             this.elements.unshift({
+                type: transaction_elements.CONTRACT,
+                data: contract,
+            });
+            this.elementsPerRun.unshift({
                 type: transaction_elements.CONTRACT,
                 data: contract,
             });
@@ -85,9 +94,19 @@ export default class TransactionsStore {
                 type: transaction_elements.CONTRACT,
                 data: contract,
             });
+            this.elementsPerRun.splice(same_contract_index, 1, {
+                type: transaction_elements.CONTRACT,
+                data: contract,
+            });
         }
 
         this.elements = this.elements.slice(); // force array update
+        this.elementsPerRun = this.elementsPerRun.slice(); // force array update
+    }
+
+    @action.bound
+    transactionsPerRun() {
+        return this.elementsPerRun.filter(element => element.type === transaction_elements.CONTRACT);
     }
 
     @action.bound
@@ -124,6 +143,11 @@ export default class TransactionsStore {
     @action.bound
     clear() {
         this.elements = this.elements.slice(0, 0);
+    }
+
+    @action.bound
+    clearTransactionsPerRun() {
+        this.elementsPerRun = this.elementsPerRun.slice(0, 0);
     }
 
     registerReactions() {

@@ -37,8 +37,28 @@ export default class RunPanelStore {
     @computed
     get statistics() {
         let total_runs = 0;
-        const { transactions } = this.root_store.transactions;
-        const statistics = transactions.reduce(
+        let runs = 0;
+        const { transactions } = this.root_store;
+
+        const transactionsPerRun = transactions.transactionsPerRun();
+        let statisticsPerRun;
+        if (transactionsPerRun) {
+            statisticsPerRun = transactionsPerRun.reduce(
+                (stats, { data: trx }) => {
+                    if (trx.is_completed) {
+                        stats.profit_per_run += trx.profit;
+                        runs += 1;
+                    }
+                    return stats;
+                },
+                {
+                    profit_per_run: 0,
+                    runs: 0,
+                }
+            );
+        }
+
+        const statistics = transactions.transactions.reduce(
             (stats, { data: trx }) => {
                 if (trx.is_completed) {
                     if (trx.profit > 0) {
@@ -47,7 +67,6 @@ export default class RunPanelStore {
                     } else {
                         stats.lost_contracts += 1;
                     }
-
                     stats.total_profit += trx.profit;
                     stats.total_stake += trx.buy_price;
                     total_runs += 1;
@@ -66,6 +85,8 @@ export default class RunPanelStore {
         );
 
         statistics.number_of_runs = total_runs;
+        statistics.runs = runs;
+        statistics.profit_per_run = statisticsPerRun ? statisticsPerRun.profit_per_run : 0;
         return statistics;
     }
 
@@ -142,7 +163,7 @@ export default class RunPanelStore {
     async onRunButtonClick() {
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
-        this.clearProfitPerRun();
+        this.clearTransactionsPerRun();
         if (getSetting('is_reset_checkbox')) {
             this.clearStat();
         }
@@ -225,6 +246,12 @@ export default class RunPanelStore {
         summary_card.clear();
         transactions.clear();
         this.setContractStage(contract_stages.NOT_RUNNING);
+    }
+
+    @action.bound
+    clearTransactionsPerRun() {
+        const { transactions } = this.root_store;
+        transactions.clearTransactionsPerRun();
     }
 
     @action.bound

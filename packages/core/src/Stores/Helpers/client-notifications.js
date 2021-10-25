@@ -16,6 +16,7 @@ import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
+import { populateVerificationStatus } from '@deriv/account';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
@@ -129,17 +130,25 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 type: 'warning',
             };
         },
-        authenticate: {
-            key: 'authenticate',
-            header: localize('Your account has not been verified'),
-            message: localize(
-                'Please submit your proof of identity and proof of address to verify your account in your account settings to access the cashier.'
-            ),
+        verify_poi: {
+            key: 'verify_poi',
+            header: localize('Please verify your identity'),
+            message: localize('To continue trading with us, please confirm who you are.'),
             action: {
                 route: routes.proof_of_identity,
-                text: localize('Go to my account settings'),
+                text: localize('Verify identity'),
             },
-            type: 'warning',
+            type: 'danger',
+        },
+        verify_poa: {
+            key: 'verify_poa',
+            header: localize('Please verify your address'),
+            message: localize('To continue trading with us, please confirm where you live.'),
+            action: {
+                route: routes.proof_of_address,
+                text: localize('Verify address'),
+            },
+            type: 'danger',
         },
         withdrawal_locked_review: {
             key: 'withdrawal_locked_review',
@@ -524,13 +533,8 @@ const checkAccountStatus = (
         cashier_validation,
     } = account_status;
 
-    const {
-        cashier_locked,
-        withdrawal_locked,
-        deposit_locked,
-        mt5_withdrawal_locked,
-        document_needs_action,
-    } = getStatusValidations(status);
+    const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
+        getStatusValidations(status);
 
     const {
         system_maintenance,
@@ -573,7 +577,13 @@ const checkAccountStatus = (
         } else if (ASK_CURRENCY) {
             addNotificationMessage(clientNotifications(ui_store).currency);
         } else if (ASK_AUTHENTICATE) {
-            addNotificationMessage(clientNotifications().authenticate);
+            const { has_poi, has_poa } = populateVerificationStatus(account_status);
+            if (!has_poi) {
+                addNotificationMessage(clientNotifications().verify_poi);
+            }
+            if (!has_poa) {
+                addNotificationMessage(clientNotifications().verify_poa);
+            }
         } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
             addNotificationMessage(clientNotifications().ask_financial_risk_approval);
         } else if (FinancialAssessmentRequired) {

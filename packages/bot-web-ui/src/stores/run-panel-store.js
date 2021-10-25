@@ -2,6 +2,7 @@ import React from 'react';
 import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { Checkbox, Text } from '@deriv/components';
+import { getRoundedNumber } from '@deriv/shared';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
@@ -462,8 +463,16 @@ export default class RunPanelStore {
 
     @action.bound
     onBotTradeAgain(result) {
-        if (!result.is_trade_again) {
-            this.showErrorMessage(result.message);
+        const profit = getRoundedNumber(Number(this.statistics.profit_per_run));
+        if (
+            (result.is_sl_enabled && profit < 0 && Math.abs(profit) >= result.stop_loss) ||
+            (result.is_tp_enabled && profit >= 0 && profit >= result.take_profit)
+        ) {
+            const message = `${profit < 0 ? 'Stop loss' : 'Take profit'} is set to ${
+                profit < 0 ? result.stop_loss : result.take_profit
+            } . PL after ${this.statistics.runs} runs is ${profit} . Bot has stopped.`;
+
+            this.showErrorMessage(message);
             this.onStopButtonClick();
         }
     }

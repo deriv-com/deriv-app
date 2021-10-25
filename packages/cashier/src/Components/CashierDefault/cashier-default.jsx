@@ -55,7 +55,7 @@ const CashierDefault = ({
         setDepositTarget(target);
         if (is_crypto) {
             openRealAccount(target);
-        } else if (!is_crypto || has_crypto_account) {
+        } else if (has_crypto_account) {
             accountConditions(target, 'deposit');
         } else {
             openRealAccountSignup('add_crypto');

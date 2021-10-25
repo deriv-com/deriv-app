@@ -49,7 +49,6 @@ export default class TransactionHistoryStore {
         await this.WS.subscribeCashierPayments(response => {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
-                this.setCryptoTransactionsHistory(crypto);
                 this.updateCryptoTransactions(crypto);
             }
         });

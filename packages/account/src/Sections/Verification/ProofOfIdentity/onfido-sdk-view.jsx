@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import countries from 'i18n-iso-countries';
 import * as Cookies from 'js-cookie';
 import { init } from 'onfido-sdk-ui';
 import { Loading, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile, routes, WS } from '@deriv/shared';
+import { isMobile, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
 import getOnfidoPhrases from 'Constants/onfido-phrases';

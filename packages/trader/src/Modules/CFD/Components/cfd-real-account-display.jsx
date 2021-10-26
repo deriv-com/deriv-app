@@ -102,6 +102,7 @@ const CFDRealAccountDisplay = ({
     };
     const onSelectRealFinancial = () => {
         if (is_eu && !has_maltainvest_account) {
+            sessionStorage.setItem('cfd_account_needed', 1);
             openRealAccountSignup('maltainvest', localize('DMT5 CFDs'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });

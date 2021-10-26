@@ -443,6 +443,10 @@ export default class UIStore extends BaseStore {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
         }, 300);
+        if(sessionStorage.getItem('cfd_account_needed')){
+            this.root_store.cfd.createCFDAccount({ type: 'financial', category: 'real' });
+            sessionStorage.removeItem('cfd_account_needed');
+        };
     }
 
     @action.bound

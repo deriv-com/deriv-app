@@ -254,10 +254,14 @@ const RealAccountSignup = ({
     };
 
     const showStatusDialog = curr => {
-        setParams({
-            active_modal_index: modal_pages_indices.status_dialog,
-            currency: curr,
-        });
+        if(!!sessionStorage.getItem('cfd_account_needed')){
+            closeRealAccountSignup();
+        } else {
+            setParams({
+                active_modal_index: modal_pages_indices.status_dialog,
+                currency: curr,
+            });
+        }
     };
 
     const closeModalthenOpenWelcomeModal = curr => {

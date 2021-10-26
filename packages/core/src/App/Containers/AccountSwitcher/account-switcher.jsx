@@ -120,6 +120,7 @@ const AccountSwitcher = props => {
             account_type === 'synthetic' ? props.has_malta_account : props.has_maltainvest_account;
 
         if (props.is_eu && !has_required_account) {
+            sessionStorage.setItem('cfd_account_needed', 1);
             closeAccountsDialog();
             props.openAccountNeededModal(
                 account_type === 'synthetic' ? props.standpoint.gaming_company : props.standpoint.financial_company,

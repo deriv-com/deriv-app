@@ -9,6 +9,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": "^14.17.1"
+  },
   "scripts": {
     "start": "echo \"No start specified\"",
     "serve": "echo \"No serve specified\"",

@@ -25,7 +25,7 @@ export default class RunPanelStore {
     @observable is_drawer_open = true;
     @observable is_dialog_open = false;
     @observable is_sell_requested = false;
-    @observable is_reset_checkbox = false;
+    @observable is_reset_checkbox = getSetting('is_reset_checkbox');
     @observable remember_me = false;
 
     run_id = '';

@@ -107,11 +107,11 @@ class CFDDashboard extends React.Component {
     };
 
     getIndexToSet = () => {
-        if (!this.state.is_real_enabled) {
-            return 1;
-        }
-        if (!this.state.is_demo_enabled) {
+        if (this.state.is_real_enabled) {
             return 0;
+        }
+        if (this.state.is_demo_enabled) {
+            return 1;
         }
 
         const hash = this.props.location.hash;
@@ -132,7 +132,7 @@ class CFDDashboard extends React.Component {
         else if (index === 0) updated_state.is_demo_tab = false;
 
         const index_to_set = this.getIndexToSet();
-        if (this.state.active_index !== index_to_set) {
+        if (index_to_set && this.state.active_index !== index_to_set) {
             updated_state.active_index = index_to_set;
         }
 

@@ -1,5 +1,5 @@
 import { action, observable, reaction } from 'mobx';
-import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId } from '@deriv/shared';
+import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId, getUrlBinaryBot } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';
@@ -43,6 +43,12 @@ export default class CommonStore extends BaseStore {
     @observable app_router = { history: null };
     @observable app_id = undefined;
     @observable platform = '';
+    @observable selected_contract_type = '';
+
+    @action.bound
+    setSelectedContractType(contract_type) {
+        this.selected_contract_type = contract_type;
+    }
 
     @action.bound
     checkAppId() {
@@ -66,6 +72,8 @@ export default class CommonStore extends BaseStore {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH' });
+            } else if (ext_url?.indexOf(getUrlBinaryBot()) === 0) {
+                this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else {
                 this.addRouteHistoryItem({ ...location, action: 'PUSH' });
             }

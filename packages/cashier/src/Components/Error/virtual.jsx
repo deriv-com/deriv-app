@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSignup, toggleAccountsDialog }) => {
@@ -15,19 +15,19 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
 
     return (
         <div className='cashier__wrapper'>
-            {has_real_account && (
-                <div
-                    className={classNames(
-                        'cashier__account-switch-icon',
-                        is_dark_mode_on ? 'cashier__account-switch-icon--dark' : 'cashier__account-switch-icon--light'
-                    )}
-                />
-            )}
-            <Text as='h2' align='center' weight='bold' color='prominent' className='cashier__virtual-header'>
-                <Localize i18n_default_text={"You're currently using a demo account"} />
-            </Text>
             {has_real_account ? (
                 <React.Fragment>
+                    <div
+                        className={classNames(
+                            'cashier__account-switch-icon',
+                            is_dark_mode_on
+                                ? 'cashier__account-switch-icon--dark'
+                                : 'cashier__account-switch-icon--light'
+                        )}
+                    />
+                    <Text as='h2' align='center' weight='bold' color='prominent' className='cashier__virtual-header'>
+                        <Localize i18n_default_text={'You are using a demo account'} />
+                    </Text>
                     <Text
                         as='p'
                         size='xs'
@@ -50,21 +50,25 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                 </React.Fragment>
             ) : (
                 <React.Fragment>
-                    <Text as='p' size='xs' line_height='s' align='center' className='cashier__paragraph cashier__text'>
-                        <Localize
-                            i18n_default_text={
-                                "You need a real money account to use this feature. It's easy to create a real money account and start trading."
-                            }
-                        />
-                    </Text>
-                    <Button
-                        className='cashier-error__button'
-                        has_effect
-                        text={localize('Create my real account')}
-                        onClick={onClickSignup}
-                        primary
-                        large
-                    />
+                    <div className='cashier-locked'>
+                        <Icon icon='IcCashierLocked' className='cashier-locked__icon' />
+                        <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
+                            <Localize i18n_default_text='Cashier is locked' />
+                        </Text>
+                        <Text as='p' size='xs' align='center' className='cashier-locked__desc'>
+                            <Localize
+                                i18n_default_text='You are using a demo account. Please <0>switch</0> to your real account or <1>create</1> one to access Cashier.'
+                                components={[
+                                    <span
+                                        key={0}
+                                        className='cashier__account-switch-text'
+                                        onClick={toggleAccountsDialog}
+                                    />,
+                                    <span key={1} className='cashier__account-switch-text' onClick={onClickSignup} />,
+                                ]}
+                            />
+                        </Text>
+                    </div>
                 </React.Fragment>
             )}
         </div>

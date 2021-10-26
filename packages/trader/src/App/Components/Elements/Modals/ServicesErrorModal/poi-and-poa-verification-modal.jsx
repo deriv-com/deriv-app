@@ -7,18 +7,20 @@ import 'Sass/app/_common/components/poa-poi-address-modal.scss';
 import { routes } from '@deriv/shared';
 import PoaPoiInform from 'Assets/SvgComponents/settings//poa_poi_inform.svg';
 import { connect } from 'Stores/connect';
-import populateVerificationStatus from '@deriv/account/src/Sections/Verification/Helpers/verification';
+import { populateVerificationStatus } from '@deriv/account';
 
-const PoiAndPoaVerificationModal = ({ account_status, is_open, toggleModal }) => {
+const PoiAndPoaVerificationModal = ({ account_status, is_open, toggleModal, active_account_title }) => {
     const verification_status = populateVerificationStatus(account_status);
     const { has_poa, has_poi } = verification_status;
     let title = '';
     if (has_poi && has_poa) {
         title = 'Your documents are being reviewed, this can take up to 3 days.';
     } else if (has_poi && !has_poa) {
-        title = 'Verify your proof of address to trade with real Deriv Multipliers account.';
+        title = `Verify your proof of address to trade with real Deriv ${active_account_title} account.`;
+    } else if (!has_poi && has_poa) {
+        title = `Verify your proof of identity to trade with real Deriv ${active_account_title} account.`;
     } else {
-        title = 'Verify your proof of identity to trade with real Deriv Multipliers account.';
+        title = `Verify your proof of identity and address to trade with real Deriv ${active_account_title} account.`;
     }
     return (
         <Modal
@@ -100,5 +102,6 @@ PoiAndPoaVerificationModal.propTypes = {
     account_status: PropTypes.object,
 };
 export default connect(({ client }) => ({
+    active_account_title: client.active_account_title,
     account_status: client.account_status,
 }))(PoiAndPoaVerificationModal);

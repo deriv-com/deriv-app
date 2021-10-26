@@ -15,6 +15,12 @@ export const getUrlSmartTrader = () => {
     return `${base_link}/${i18n_language.toLowerCase()}/trading.html`;
 };
 
+export const getUrlBinaryBot = () => {
+    const { is_deriv_app } = getPlatformFromUrl();
+
+    return is_deriv_app ? deriv_urls.BINARYBOT_PRODUCTION : deriv_urls.BINARYBOT_STAGING;
+};
+
 export const getPlatformFromUrl = (domain = window.location.hostname) => {
     const resolutions = {
         is_staging_deriv_app: /^staging-app\.deriv\.com$/i.test(domain),

@@ -668,7 +668,7 @@ export default class CashierStore extends BaseStore {
             // if no verification code, we should request again
             return;
         }
-        if (!isCryptocurrency(this.root_store.client.currency)) {
+        if (!this.is_crypto) {
             const response_cashier = await this.WS.authorized.cashier(this.active_container, { verification_code });
 
             // if tab changed while waiting for response, ignore it
@@ -686,7 +686,8 @@ export default class CashierStore extends BaseStore {
                     this.clearVerification();
                 }
             } else {
-                this.setLoading(false);
+                await this.checkIframeLoaded();
+                this.setIframeUrl(response_cashier.cashier);
                 this.setSessionTimeout(false);
                 this.setTimeoutCashierUrl();
             }

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import {
     DesktopWrapper,
@@ -37,40 +37,44 @@ const ConnectedApps = () => {
         }
     };
 
-    const handleToggleModal = (app_id = null) => {
-        if (is_modal_open) {
-            setModalVisibility(false);
-            setAppId(null);
-        } else {
-            setModalVisibility(true);
+    const handleToggleModal = useCallback(
+        (app_id = null) => {
+            setModalVisibility(!is_modal_open);
             setAppId(app_id);
-        }
-    };
-
-    const columns_map = GetConnectedAppsColumnsTemplate(app_id => handleToggleModal(app_id)).reduce((map, item) => {
-        map[item.col_index] = item;
-        return map;
-    }, {});
-
-    const mobileRowRenderer = ({ row }) => (
-        <div className='data-list__row'>
-            <div className='data-list__col'>
-                <DataList.Cell row={row} column={columns_map.name} />
-                <DataList.Cell row={row} column={columns_map.scopes} />
-            </div>
-            <div className={is_dashboard ? 'data-list__col--dashboard' : 'data-list__col--small'}>
-                <DataList.Cell row={row} column={columns_map.last_used} />
-                <DataList.Cell row={row} column={columns_map.app_id} is_footer={!is_dashboard} />
-            </div>
-        </div>
+        },
+        [is_modal_open]
     );
 
-    const handleRevokeAccess = () => {
+    const columns_map = useMemo(
+        () =>
+            GetConnectedAppsColumnsTemplate(app_id => handleToggleModal(app_id)).reduce((map, item) => {
+                map[item.col_index] = item;
+                return map;
+            }, {}),
+        [handleToggleModal]
+    );
+
+    const mobileRowRenderer = useCallback(
+        ({ row }) => (
+            <div className='data-list__row'>
+                <div className='data-list__col'>
+                    <DataList.Cell row={row} column={columns_map.name} />
+                    <DataList.Cell row={row} column={columns_map.scopes} />
+                </div>
+                <div className={is_dashboard ? 'data-list__col--dashboard' : 'data-list__col--small'}>
+                    <DataList.Cell row={row} column={columns_map.last_used} />
+                    <DataList.Cell row={row} column={columns_map.app_id} is_footer={!is_dashboard} />
+                </div>
+            </div>
+        ),
+        [columns_map, is_dashboard]
+    );
+
+    const handleRevokeAccess = useCallback(() => {
         setModalVisibility(false);
         setLoading(false);
-
         revokeConnectedApp(selected_app_id);
-    };
+    }, [selected_app_id]);
 
     const revokeConnectedApp = async app_id => {
         setLoading(true);

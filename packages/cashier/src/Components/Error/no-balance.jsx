@@ -7,7 +7,7 @@ import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const NoBalance = ({ currency, history, setTabIndex }) => {
+const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }) => {
     const onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
         setTabIndex(0);
@@ -23,17 +23,21 @@ const NoBalance = ({ currency, history, setTabIndex }) => {
                     values={{ currency: getCurrencyDisplayCode(currency) }}
                 />
             </Text>
-            <Text as='p' size='xs' line_height='s' align='center' className='cashier__text'>
-                <Localize i18n_default_text='Please make a deposit to use this feature.' />
-            </Text>
-            <Button
-                className='cashier__no-balance-button'
-                has_effect
-                text={localize('Deposit now')}
-                onClick={onClickDeposit}
-                primary
-                large
-            />
+            {!is_deposit_locked && (
+                <>
+                    <Text as='p' size='xs' line_height='s' align='center' className='cashier__text'>
+                        <Localize i18n_default_text='Please make a deposit to use this feature.' />
+                    </Text>
+                    <Button
+                        className='cashier__no-balance-button'
+                        has_effect
+                        text={localize('Deposit now')}
+                        onClick={onClickDeposit}
+                        primary
+                        large
+                    />
+                </>
+            )}
         </div>
     );
 };
@@ -41,10 +45,12 @@ const NoBalance = ({ currency, history, setTabIndex }) => {
 NoBalance.propTypes = {
     currency: PropTypes.string,
     history: PropTypes.object,
+    is_deposit_locked: PropTypes.bool,
     setTabIndex: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
     currency: client.currency,
+    is_deposit_locked: modules.cashier.is_deposit_locked,
     setTabIndex: modules.cashier.setCashierTabIndex,
 }))(withRouter(NoBalance));

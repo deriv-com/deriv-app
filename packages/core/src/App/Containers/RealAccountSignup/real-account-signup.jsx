@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromPlatform } from '@deriv/shared';
+import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
@@ -340,8 +340,12 @@ const RealAccountSignup = ({
         }
         closeRealAccountSignup();
 
-        if (isNavigationFromPlatform(routing_history, routes.smarttrader)) {
+        if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
             window.location = routes.smarttrader;
+        }
+
+        if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
+            window.location = routes.binarybot;
         }
     };
 
@@ -385,14 +389,8 @@ const RealAccountSignup = ({
 
     // set title and body of the modal
     const { title: Title, body: ModalContent } = modal_content[getActiveModalIndex()];
-    const {
-        account_wizard,
-        add_or_manage_account,
-        finished_set_currency,
-        status_dialog,
-        set_currency,
-        signup_error,
-    } = modal_pages_indices;
+    const { account_wizard, add_or_manage_account, finished_set_currency, status_dialog, set_currency, signup_error } =
+        modal_pages_indices;
 
     const has_close_icon = [account_wizard, add_or_manage_account, set_currency, signup_error].includes(
         getActiveModalIndex()

@@ -524,13 +524,8 @@ const checkAccountStatus = (
         cashier_validation,
     } = account_status;
 
-    const {
-        cashier_locked,
-        withdrawal_locked,
-        deposit_locked,
-        mt5_withdrawal_locked,
-        document_needs_action,
-    } = getStatusValidations(status);
+    const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
+        getStatusValidations(status);
 
     const {
         system_maintenance,

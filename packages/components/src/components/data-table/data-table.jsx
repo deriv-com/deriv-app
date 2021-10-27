@@ -99,16 +99,8 @@ class DataTable extends React.PureComponent {
     };
 
     render() {
-        const {
-            children,
-            className,
-            columns,
-            content_loader,
-            data_source,
-            footer,
-            getActionColumns,
-            getRowSize,
-        } = this.props;
+        const { children, className, columns, content_loader, data_source, footer, getActionColumns, getRowSize } =
+            this.props;
 
         const TableData = (
             <React.Fragment>

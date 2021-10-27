@@ -64,14 +64,14 @@ const PopoverContent = ({ contract }) => (
         {contract.transaction_ids && (
             <PopoverItem title={localize('Reference IDs')}>
                 {contract.transaction_ids.buy && (
-                    <div className='transactions__popover-value'>
-                        {`${contract.transaction_ids.buy} ${localize('(Buy)')}`}
-                    </div>
+                    <div className='transactions__popover-value'>{`${contract.transaction_ids.buy} ${localize(
+                        '(Buy)'
+                    )}`}</div>
                 )}
                 {contract.transaction_ids.sell && (
-                    <div className='transactions__popover-value'>
-                        {`${contract.transaction_ids.sell} ${localize('(Sell)')}`}
-                    </div>
+                    <div className='transactions__popover-value'>{`${contract.transaction_ids.sell} ${localize(
+                        '(Sell)'
+                    )}`}</div>
                 )}
             </PopoverItem>
         )}

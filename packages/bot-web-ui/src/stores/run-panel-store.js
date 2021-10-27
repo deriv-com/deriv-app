@@ -470,6 +470,7 @@ export default class RunPanelStore {
 
     @action.bound
     onBotTradeAgain(result) {
+        const { client } = this.root_store.core;
         const profit = getRoundedNumber(Number(this.statistics.profit_per_run));
         if (
             (result.is_sl_enabled && profit < 0 && Math.abs(profit) >= result.stop_loss) ||
@@ -479,7 +480,7 @@ export default class RunPanelStore {
                 profit < 0 ? 'stop loss' : 'take profit'
             } level has been reached and your bot has stopped. Your ${profit < 0 ? 'loss' : 'profit'} after ${
                 this.statistics.runs
-            } ${this.statistics.runs > 1 ? 'runs' : 'run'} is ${profit}
+            } ${this.statistics.runs > 1 ? 'runs' : 'run'} is ${profit} ${client.currency}
             `;
 
             this.showErrorMessage(message);

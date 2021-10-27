@@ -113,8 +113,11 @@ const ProofOfIdentityContainer = ({
                 residence_list={residence_list}
             />
         );
-        // Client status modified from BO does not get their latest attempts populated
-    } else if (!identity_last_attempt) {
+    } else if (
+        !identity_last_attempt ||
+        // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
+        (identity_status === 'verified' && identity_status !== identity_last_attempt.status)
+    ) {
         switch (identity_status) {
             case identity_status_codes.pending:
                 return (

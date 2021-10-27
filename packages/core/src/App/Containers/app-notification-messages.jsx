@@ -12,11 +12,11 @@ import 'Sass/app/_common/components/app-notification-message.scss';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
-const NotificationsContent = ({ 
-    is_notification_loaded, 
-    style, 
-    notifications, 
-    removeNotificationMessage, 
+const NotificationsContent = ({
+    is_notification_loaded,
+    style,
+    notifications,
+    removeNotificationMessage,
     markNotificationMessage,
 }) => {
     // TODO: Remove this useEffect when MX account closure has finished.
@@ -72,8 +72,10 @@ const AppNotificationMessages = ({
             stopNotificationLoading();
         }
         if (notifications_ref && isMobile()) {
-            const bounds = notifications_ref.parentElement.getBoundingClientRect();
-            setStyle({ top: bounds.top + 8 });
+            if (notifications_ref.parentElement !== null) {
+                const bounds = notifications_ref.parentElement.getBoundingClientRect();
+                setStyle({ top: bounds.top + 8 });
+            }
         }
     }, [notifications_ref]);
 

@@ -17,7 +17,13 @@
     npm run bootstrap
     ```
 
-2.  **Configure `.env` file:**
+2.  **Install e2e testing dependencies:**
+
+    ```sh
+    npm run install:qa
+    ```
+
+3.  **Configure `.env` file:**
 
         - Create a `.env` file in the root folder
         - Copy the contents from `.env.example` to it
@@ -25,7 +31,7 @@
 
     <br/>
 
-3.  **Run tests:**
+4.  **Run tests:**
 
     ```sh
     npm run test:qa
@@ -35,13 +41,13 @@
     npm run test:performance
     ```
 
-4.  **Create new test:**
+5.  **Create new test:**
 
     ```sh
     cd e2e_tests && npm run create_test {category_name} {test_name}
     ```
 
-5.  **File Structure**
+6.  **File Structure**
 
     ```
     src
@@ -54,7 +60,7 @@
         ├── bootstrap.js
     ```
 
-6.  **Playwright documents:**
+7.  **Playwright documents:**
     We use [playwright](https://playwright.dev/) to run our tests so it's very useful to take a look at [this](https://playwright.dev/docs/intro) documentation.
 
 ---

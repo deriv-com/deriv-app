@@ -1079,6 +1079,7 @@ export default class TradeStore extends BaseStore {
         const client_notifications = this.root_store.client.client_notifications;
         const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages'));
         const is_iom = this.root_store.client.country_standpoint.is_isle_of_man;
+        this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_account' });
         if (get_notification_messages !== null) {
             const get_notification_messages_array = Object.fromEntries(
                 Object.entries(get_notification_messages).map(([key, name]) => {

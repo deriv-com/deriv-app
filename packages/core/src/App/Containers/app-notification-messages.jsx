@@ -12,16 +12,24 @@ import 'Sass/app/_common/components/app-notification-message.scss';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
-const NotificationsContent = ({ is_notification_loaded, style, notifications, removeNotificationMessage }) => {
+const NotificationsContent = ({ 
+    is_notification_loaded, 
+    style, 
+    notifications, 
+    removeNotificationMessage, 
+    markNotificationMessage,
+}) => {
     // TODO: Remove this useEffect when MX account closure has finished.
     const window_location = window.location;
+    
     React.useEffect(() => {
         const get_close_mx_notification = notifications.find(item => item.key === 'close_mx_account');
         const is_dtrader = getPathname() === 'DTrader';
         if (!is_dtrader && get_close_mx_notification) {
-            removeNotificationMessage({ key: 'close_mx_account' });
+            markNotificationMessage({ key: 'close_mx_account' })
         }
     }, [window_location]);
+
     return (
         <div className='notification-messages' style={style}>
             <TransitionGroup component='div'>
@@ -54,6 +62,7 @@ const AppNotificationMessages = ({
     notification_messages,
     removeNotificationMessage,
     stopNotificationLoading,
+    markNotificationMessage,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
@@ -87,6 +96,7 @@ const AppNotificationMessages = ({
                     is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
+                    markNotificationMessage={markNotificationMessage}
                 />
             </Portal>
         </div>
@@ -122,4 +132,5 @@ export default connect(({ ui }) => ({
     marked_notifications: ui.marked_notifications,
     notification_messages: ui.notification_messages,
     removeNotificationMessage: ui.removeNotificationMessage,
+    markNotificationMessage: ui.markNotificationMessage,
 }))(AppNotificationMessages);

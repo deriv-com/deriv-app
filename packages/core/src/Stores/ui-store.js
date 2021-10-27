@@ -539,6 +539,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    unmarkNotificationMessage({ key }) {
+        this.marked_notifications = this.marked_notifications.filter(item => key !== item);
+    }
+
+    @action.bound
     addNotificationMessage(notification) {
         if (!notification) return;
         if (!this.notification_messages.find(item => item.key === notification.key)) {

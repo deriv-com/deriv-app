@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
@@ -13,11 +13,6 @@ const RadioButtonGroup = ({
     description,
     has_fiat,
 }) => {
-    const [is_currency_selected, setIsCurrencySelected] = useState(false);
-
-    const onCurrencyClicked = () => {
-        setIsCurrencySelected(true);
-    };
     return (
         <div className={className}>
             {is_title_enabled && (
@@ -40,11 +35,10 @@ const RadioButtonGroup = ({
                     'currency-list__items__is-fiat': is_fiat,
                     'currency-list__items__is-crypto': !is_fiat,
                 })}
-                onClick={onCurrencyClicked}
             >
                 {children}
             </div>
-            {is_fiat && is_currency_selected && <p className='currency-selector__description'>{description}</p>}
+            {is_fiat && <p className='currency-selector__description'>{description}</p>}
         </div>
     );
 };

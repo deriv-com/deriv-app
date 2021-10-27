@@ -141,14 +141,10 @@
             margin-right: auto;
             width: 768px;
         }
-
-        @include mobile {
-            margin-bottom: 7rem;
-        }
     }
     &__deposit-warn {
         width: 78%;
-        margin: 2.8rem auto;
+        margin: calc(3% - 1rem) auto;
         padding: 10px;
     }
 }

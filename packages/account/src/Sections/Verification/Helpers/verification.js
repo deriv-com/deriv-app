@@ -1,8 +1,8 @@
 const populateVerificationStatus = account_status => {
     const { attempts, document, identity, needs_verification } = {
-        ...account_status.authentication,
-        attempts: account_status.authentication.attempts || {},
-        needs_verification: account_status.authentication.needs_verification || {},
+        ...account_status?.authentication,
+        attempts: account_status?.authentication?.attempts || {},
+        needs_verification: account_status?.authentication?.needs_verification || {},
     };
     const has_poa = !(document && document.status === 'none');
     const has_poi = !(identity && identity.status === 'none');

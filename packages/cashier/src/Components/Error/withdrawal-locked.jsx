@@ -16,8 +16,8 @@ const WithdrawalLocked = ({
     const { identity, needs_verification } = account_status.authentication;
     const is_poi_needed = is_10K_limit && identity.status !== 'verified';
     const has_poi_submitted = identity.status !== 'none';
-    const is_poa_needed = is_10K_limit && needs_verification.includes('document');
-    const is_poa_authentication_needed = is_10K_limit && is_pending_authentication;
+    const is_poa_needed = is_10K_limit && (needs_verification.includes('document') || is_pending_authentication);
+    const has_poa_submitted = document?.status !== 'none';
     const is_ask_financial_risk_approval_needed = is_10K_limit && is_ask_financial_risk_approval;
     const history = useHistory();
     const items = [
@@ -32,10 +32,10 @@ const WithdrawalLocked = ({
                   },
               ]
             : []),
-        ...(is_poa_needed || is_poa_authentication_needed
+        ...(is_poa_needed
             ? [
                   {
-                      content: is_poa_authentication_needed
+                      content: has_poa_submitted
                           ? localize('Check proof of address document verification status')
                           : localize('Upload a proof of address to verify your address'),
                       status: 'action',

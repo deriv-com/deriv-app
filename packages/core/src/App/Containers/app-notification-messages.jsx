@@ -16,8 +16,9 @@ const NotificationsContent = ({ is_notification_loaded, style, notifications, re
     // TODO: Remove this useEffect when MX account closure has finished.
     const window_location = window.location;
     React.useEffect(() => {
+        const get_close_mx_notification = notifications.find(item => item.key === 'close_mx_account');
         const is_dtrader = getPathname() === 'DTrader';
-        if (!is_dtrader) {
+        if (!is_dtrader && get_close_mx_notification) {
             removeNotificationMessage({ key: 'close_mx_account' });
         }
     }, [window_location]);

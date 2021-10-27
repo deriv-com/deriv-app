@@ -12,7 +12,6 @@ import Virtual from '../Components/Error/virtual.jsx';
 import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import DepositsLocked from '../Components/Error/deposit-locked.jsx';
 import FundsProtection from '../Components/Error/funds-protection.jsx';
-import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
 // import SideNote from '../Components/side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
 import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
@@ -115,28 +114,25 @@ const Deposit = ({
     if (is_virtual) {
         return <Virtual />;
     }
+    if (is_system_maintenance) {
+        if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {
+            return <CashierLocked />;
+        }
+    }
+    if (error.is_ask_uk_funds_protection) {
+        return <FundsProtection />;
+    }
+    if (is_cashier_locked) {
+        return <CashierLocked />;
+    }
+    if (is_deposit_locked) {
+        return <DepositsLocked />;
+    }
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
 
     if (is_deposit || is_eu) {
-        if (is_system_maintenance) {
-            if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {
-                return <CashierLocked />;
-            }
-        }
-        if (error.is_ask_uk_funds_protection) {
-            return <FundsProtection />;
-        }
-        if (error.is_self_exclusion_max_turnover_set) {
-            return <MaxTurnover />;
-        }
-        if (is_deposit_locked) {
-            return <DepositsLocked />;
-        }
-        if (is_cashier_locked) {
-            return <CashierLocked />;
-        }
         if (error.message) {
             return <Error error={error} />;
         }

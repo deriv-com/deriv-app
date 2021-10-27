@@ -254,8 +254,8 @@ const RealAccountSignup = ({
     };
 
     const showStatusDialog = curr => {
-        if(!!sessionStorage.getItem('cfd_account_needed')){
-            closeRealAccountSignup();
+        if(sessionStorage.getItem('cfd_account_needed')){
+            closeModalThenOpenCFD();
         } else {
             setParams({
                 active_modal_index: modal_pages_indices.status_dialog,
@@ -270,6 +270,11 @@ const RealAccountSignup = ({
             currency: curr,
         });
     };
+
+    const closeModalThenOpenCFD = () => {
+        closeRealAccountSignup();
+        history.push(`${routes.mt5}?q=real_financial#real`); // This is used to signal opening password modal from CFD dashboard
+    }
 
     const closeModalThenOpenCashier = () => {
         replaceCashierMenuOnclick();
@@ -346,6 +351,7 @@ const RealAccountSignup = ({
             return;
         }
         if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
+            sessionStorage.removeItem('cfd_account_needed');
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }

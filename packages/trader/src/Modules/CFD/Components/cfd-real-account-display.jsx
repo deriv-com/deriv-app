@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useHistory } from 'react-router';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
+import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS, routes } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
@@ -58,6 +59,20 @@ const CFDRealAccountDisplay = ({
         can_have_more_real_synthetic_mt5 &&
         platform === CFD_PLATFORMS.MT5;
     const [active_hover, setActiveHover] = React.useState(0);
+    const should_open_real_financial = React.useMemo(() => {
+        const serialized_query_string = Object.fromEntries(new URLSearchParams(window.location.search));
+        return serialized_query_string?.q === 'real_financial';
+    }, []);
+    const history = useHistory();
+
+    React.useEffect(() => {
+        if (should_open_real_financial) {
+            onSelectRealFinancial();
+            history.replace(`${routes.mt5}#real`);
+            sessionStorage.removeItem('cfd_account_needed');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [history, should_open_real_financial])
 
     const has_required_credentials = React.useMemo(() => {
         const { citizen, tax_identification_number, tax_residence } = account_settings;

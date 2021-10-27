@@ -13,7 +13,7 @@ const WithdrawalLocked = ({
     is_ask_financial_risk_approval,
     is_pending_authentication,
 }) => {
-    const { identity, needs_verification } = account_status.authentication;
+    const { document, identity, needs_verification } = account_status.authentication;
     const is_poi_needed = is_10K_limit && identity.status !== 'verified';
     const has_poi_submitted = identity.status !== 'none';
     const is_poa_needed = is_10K_limit && (needs_verification.includes('document') || is_pending_authentication);

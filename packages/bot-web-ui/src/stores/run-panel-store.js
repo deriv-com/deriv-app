@@ -475,9 +475,12 @@ export default class RunPanelStore {
             (result.is_sl_enabled && profit < 0 && Math.abs(profit) >= result.stop_loss) ||
             (result.is_tp_enabled && profit >= 0 && profit >= result.take_profit)
         ) {
-            const message = `${profit < 0 ? 'Stop loss' : 'Take profit'} is set to ${
-                profit < 0 ? result.stop_loss : result.take_profit
-            } . PL after ${this.statistics.runs} runs is ${profit} . Bot has stopped.`;
+            const message = `Your ${
+                profit < 0 ? 'stop loss' : 'take profit'
+            } level has been reached and your bot has stopped. Your ${profit < 0 ? 'loss' : 'profit'} after ${
+                this.statistics.runs
+            } ${this.statistics.runs > 1 ? 'runs' : 'run'} is ${profit}
+            `;
 
             this.showErrorMessage(message);
             this.onStopButtonClick();

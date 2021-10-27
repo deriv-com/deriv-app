@@ -71,7 +71,7 @@ const StatisticsSummary = ({
                 value={getSetting('is_reset_checkbox')}
                 label={
                     <Text size='xxs' line_height='s' weight='bold'>
-                        <Localize i18n_default_text='Reset stats everytime bot runs?' />
+                        <Localize i18n_default_text='Reset stats at every run?' />
                     </Text>
                 }
             />

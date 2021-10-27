@@ -82,8 +82,16 @@
             margin: 1rem 0;
         }
         &--remember-me {
-            margin-top: 2rem;
-            margin-left: 0;
+            &-header {
+                font-weight: bold;
+            }
+            &-content {
+                margin-top: 10px;
+            }
+            &-checkbox {
+                margin-top: 2rem;
+                margin-left: 0;
+            }
         }
         &--mobile {
             width: 100%;

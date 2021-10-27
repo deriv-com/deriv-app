@@ -1,6 +1,6 @@
 import React from 'react';
 import { observable, action, reaction, computed, runInAction } from 'mobx';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { Checkbox, Text } from '@deriv/components';
 import { getRoundedNumber } from '@deriv/shared';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
@@ -137,20 +137,27 @@ export default class RunPanelStore {
             this.onRunButtonClick();
         };
         this.dialog_options = {
-            title: localize('Do you want to reset counters?'),
+            title: (
+                <Text size='xs' as='p' className='run-panel__stat--remember-me-header'>
+                    {localize('Reset stats')}
+                </Text>
+            ),
             message: (
                 <div>
                     <Text size='xs' as='p'>
-                        {localize(
-                            'Do you want to reset your staks every time you run your strategies?\n' +
-                                '(Total stake, Total payout, No. of runs, Contracts won, Contracts lost, Total P/L)'
-                        )}
+                        {localize('Do you want to reset your stats every time you run your bot?')}
+                    </Text>
+                    <Text size='xs' as='p' className='run-panel__stat--remember-me-content'>
+                        <Localize
+                            i18n_default_text='<0>Note:</0> Your total stake, payout, profit/loss, number of runs, wins, and losses will be reset to zero.'
+                            components={[<strong key={0} />]}
+                        />
                     </Text>
                     <Checkbox
-                        className='run-panel__stat--remember-me'
+                        className='run-panel__stat--remember-me-checkbox'
                         value={this.remember_me}
                         onChange={this.handleRememberme}
-                        label='Remember my choice'
+                        label='Remember my choice and don’t ask me again'
                     />
                 </div>
             ),

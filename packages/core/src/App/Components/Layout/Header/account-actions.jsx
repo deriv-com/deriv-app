@@ -24,6 +24,7 @@ const AccountActions = React.memo(
         enableApp,
         is_acc_switcher_on,
         is_acc_switcher_disabled,
+        is_eu,
         is_logged_in,
         is_notifications_visible,
         is_virtual,
@@ -54,6 +55,7 @@ const AccountActions = React.memo(
                                 is_disabled={is_acc_switcher_disabled}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
+                                is_eu={is_eu}
                                 is_virtual={is_virtual}
                                 currency={currency}
                                 country_standpoint={country_standpoint}
@@ -89,6 +91,7 @@ const AccountActions = React.memo(
                                     typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
                                 is_disabled={is_acc_switcher_disabled}
+                                is_eu={is_eu}
                                 is_virtual={is_virtual}
                                 currency={currency}
                                 country_standpoint={country_standpoint}

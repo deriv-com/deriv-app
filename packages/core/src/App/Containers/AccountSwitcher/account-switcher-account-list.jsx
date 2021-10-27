@@ -121,6 +121,9 @@ const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) 
             if (country_standpoint.is_united_kingdom) {
                 return <Localize i18n_default_text='Gaming' />;
             }
+            if (country_standpoint.is_isle_of_man) {
+                return getCurrencyName(currency);
+            }
             return <Localize i18n_default_text='Synthetic' />;
         } else if (account_type === 'MF') {
             return <Localize i18n_default_text='Multipliers' />;

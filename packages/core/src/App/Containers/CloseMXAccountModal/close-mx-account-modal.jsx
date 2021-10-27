@@ -30,7 +30,7 @@ const CloseMXAccountModal = ({
                 <div className='close-mx-account-header'>
                     <Icon icon='IcAmplifier' />
                     <Text as='h1' weight='bold' className='close-mx-account-header__heading' align='center'>
-                        { is_iom ? (
+                        {is_iom ? (
                             <Localize i18n_default_text='Your account is scheduled to be closed' />
                         ) : (
                             <Localize i18n_default_text='Your Gaming account is scheduled to be closed' />
@@ -38,18 +38,17 @@ const CloseMXAccountModal = ({
                     </Text>
                 </div>
                 <div className='close-mx-account__content'>
-                        <Text as='p' size='s'>
-                        { is_iom ? (
+                    <Text as='p' size='s'>
+                        {is_iom ? (
                             <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing accounts belonging to our Isle of Man clients.' />
                         ) : (
                             <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Gaming accounts belonging to our UK clients.' />
                         )}
-                        </Text>
+                    </Text>
                     <br />
                     <Text align='left' weight='bold' as='p' size='s'>
                         <Localize i18n_default_text='What this means for you' />
                     </Text>
-                    <br />
                     <Text as='p' size='s'>
                         <Localize i18n_default_text='You can no longer trade digital options on any of our platforms. You also can’t deposit funds into your account.' />
                     </Text>
@@ -61,19 +60,18 @@ const CloseMXAccountModal = ({
                     <Text align='left' weight='bold' as='p' size='s'>
                         <Localize i18n_default_text='What you need to do now' />
                     </Text>
-                    <br />
                     <Text as='p' size='s'>
-                    { is_iom ? (
-                        <Localize
-                            i18n_default_text='Please proceed to withdraw all your funds from your account before <0>30 November 2021.</0>'
-                            components={[<strong key='0' />]}
-                        />
-                    ) : (
-                        <Localize
-                            i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>'
-                            components={[<strong key='0' />]}
-                        />
-                    )}
+                        {is_iom ? (
+                            <Localize
+                                i18n_default_text='Please proceed to withdraw all your funds from your account before <0>30 November 2021.</0>'
+                                components={[<strong key='0' />]}
+                            />
+                        ) : (
+                            <Localize
+                                i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>'
+                                components={[<strong key='0' />]}
+                            />
+                        )}
                     </Text>
                 </div>
                 <div className='close-mx-account dc-dialog__footer'>

@@ -5,24 +5,31 @@ import { Localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import './close-mx-account-modal.scss';
 
-const ModalHeader = () => {
-    return (
-        <div className='close-mx-account-header'>
-            <Icon icon='IcAmplifier' />
-            <Text as='h1' weight='bold' className='close-mx-account-header__heading' align='center'>
-                <Localize i18n_default_text='Your Gaming account is scheduled to be closed' />
-            </Text>
-        </div>
-    );
-};
+// const ModalHeader = (is_iom) => {
+//     console.log(is_iom);
+//     return (
+//         <div className='close-mx-account-header'>
+//             <Icon icon='IcAmplifier' />
+//             <Text as='h1' weight='bold' className='close-mx-account-header__heading' align='center'>
+//                 { is_iom ? (
+//                     <Localize i18n_default_text='Your account is scheduled to be closed' />
+//                 ) : (
+//                     <Localize i18n_default_text='Your Gaming account is scheduled to be closed' />
+//                 )}
+//             </Text>
+//         </div>
+//     );
+// };
 
 const CloseMXAccountModal = ({
     is_logged_in,
     is_loading,
     is_close_mx_account_modal_visible,
     showCloseMXAccountPopup,
+    country_standpoint,
 }) => {
     const [is_visible, setVisible] = React.useState(false);
+    const is_iom = country_standpoint.is_isle_of_man;
 
     React.useEffect(() => {
         if (is_logged_in && is_close_mx_account_modal_visible) {
@@ -35,11 +42,25 @@ const CloseMXAccountModal = ({
     return (
         <div className='close-mx-account'>
             <Dialog is_visible={is_visible} is_loading={is_loading}>
-                <ModalHeader />
-                <div className='close-mx-account__content'>
-                    <Text as='p' size='s'>
-                        <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Gaming accounts belonging to our UK clients.' />
+                {/* <ModalHeader is_iom={is_iom} /> */}
+                <div className='close-mx-account-header'>
+                    <Icon icon='IcAmplifier' />
+                    <Text as='h1' weight='bold' className='close-mx-account-header__heading' align='center'>
+                        { is_iom ? (
+                            <Localize i18n_default_text='Your account is scheduled to be closed' />
+                        ) : (
+                            <Localize i18n_default_text='Your Gaming account is scheduled to be closed' />
+                        )}
                     </Text>
+                </div>
+                <div className='close-mx-account__content'>
+                        <Text as='p' size='s'>
+                        { is_iom ? (
+                            <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing accounts belonging to our Isle of Man clients.' />
+                        ) : (
+                            <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Gaming accounts belonging to our UK clients.' />
+                        )}
+                        </Text>
                     <br />
                     <Text align='left' weight='bold' as='p' size='s'>
                         <Localize i18n_default_text='What this means for you' />
@@ -93,4 +114,5 @@ export default connect(({ client, ui }) => ({
     is_close_mx_account_modal_visible: ui.is_close_mx_account_modal_visible,
     showCloseMXAccountPopup: ui.showCloseMXAccountPopup,
     is_logged_in: client.is_logged_in,
+    country_standpoint: client.country_standpoint,
 }))(CloseMXAccountModal);

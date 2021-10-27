@@ -25,6 +25,7 @@ const CloseMXAccountModal = ({
     is_logged_in,
     is_loading,
     is_close_mx_account_modal_visible,
+    removeNotificationMessageByKey,
     showCloseMXAccountPopup,
     country_standpoint,
 }) => {
@@ -91,6 +92,7 @@ const CloseMXAccountModal = ({
                         onClick={() => {
                             showCloseMXAccountPopup(false);
                             localStorage.setItem('hide_close_mx_account_notification', '1');
+                            removeNotificationMessageByKey({ key: 'close_mx_account' });
                         }}
                         primary
                         large
@@ -110,9 +112,10 @@ CloseMXAccountModal.propTypes = {
 };
 
 export default connect(({ client, ui }) => ({
-    is_loading: ui.is_loading,
-    is_close_mx_account_modal_visible: ui.is_close_mx_account_modal_visible,
-    showCloseMXAccountPopup: ui.showCloseMXAccountPopup,
-    is_logged_in: client.is_logged_in,
     country_standpoint: client.country_standpoint,
+    is_close_mx_account_modal_visible: ui.is_close_mx_account_modal_visible,
+    is_loading: ui.is_loading,
+    is_logged_in: client.is_logged_in,
+    removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
+    showCloseMXAccountPopup: ui.showCloseMXAccountPopup,
 }))(CloseMXAccountModal);

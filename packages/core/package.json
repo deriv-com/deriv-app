@@ -70,7 +70,6 @@
         "postcss-loader": "^6.1.1",
         "postcss-preset-env": "^6.7.0",
         "postcss-scss": "^4.0.0",
-
         "preload-webpack-plugin": "^3.0.0-beta.4",
         "react-svg-loader": "^3.0.3",
         "resolve-url-loader": "^3.1.2",
@@ -132,7 +131,7 @@
         "react-pose": "^4.0.10",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
-        "react-tiny-popover": "^5.1.0",
+        "react-tiny-popover": "^7.0.1",
         "react-transition-group": "^4.3.0",
         "react-window": "^1.8.5"
     }

@@ -8,7 +8,7 @@ import IdvDocumentVerified from '../../Assets/ic-idv-verified.svg';
 const IdvVerified = ({ needs_poa, is_from_external }) => {
     const header_Text = needs_poa
         ? localize('Your ID is verified. You will also need to submit proof of your address.')
-        : localize('ID verification passed hehe');
+        : localize('ID verification passed');
 
     return (
         <div className='proof-of-identity__container'>

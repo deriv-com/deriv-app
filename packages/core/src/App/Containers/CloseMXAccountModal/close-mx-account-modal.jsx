@@ -5,22 +5,6 @@ import { Localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import './close-mx-account-modal.scss';
 
-// const ModalHeader = (is_iom) => {
-//     console.log(is_iom);
-//     return (
-//         <div className='close-mx-account-header'>
-//             <Icon icon='IcAmplifier' />
-//             <Text as='h1' weight='bold' className='close-mx-account-header__heading' align='center'>
-//                 { is_iom ? (
-//                     <Localize i18n_default_text='Your account is scheduled to be closed' />
-//                 ) : (
-//                     <Localize i18n_default_text='Your Gaming account is scheduled to be closed' />
-//                 )}
-//             </Text>
-//         </div>
-//     );
-// };
-
 const CloseMXAccountModal = ({
     is_logged_in,
     is_loading,
@@ -43,7 +27,6 @@ const CloseMXAccountModal = ({
     return (
         <div className='close-mx-account'>
             <Dialog is_visible={is_visible} is_loading={is_loading}>
-                {/* <ModalHeader is_iom={is_iom} /> */}
                 <div className='close-mx-account-header'>
                     <Icon icon='IcAmplifier' />
                     <Text as='h1' weight='bold' className='close-mx-account-header__heading' align='center'>
@@ -80,10 +63,17 @@ const CloseMXAccountModal = ({
                     </Text>
                     <br />
                     <Text as='p' size='s'>
+                    { is_iom ? (
+                        <Localize
+                            i18n_default_text='Please proceed to withdraw all your funds from your account before <0>30 November 2021.</0>'
+                            components={[<strong key='0' />]}
+                        />
+                    ) : (
                         <Localize
                             i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>'
                             components={[<strong key='0' />]}
                         />
+                    )}
                     </Text>
                 </div>
                 <div className='close-mx-account dc-dialog__footer'>

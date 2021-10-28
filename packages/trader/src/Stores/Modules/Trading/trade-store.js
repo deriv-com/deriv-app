@@ -23,6 +23,7 @@ import {
     showUnavailableLocationError,
     isMarketClosed,
     findFirstOpenMarket,
+    showMXUnavailableError,
 } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
@@ -296,7 +297,22 @@ export default class TradeStore extends BaseStore {
             this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return;
         } else if (!active_symbols || !active_symbols.length) {
-            if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
+            if (
+                ['gb', 'im'].includes(this.root_store.client.residence) &&
+                this.root_store.client.is_logged_in &&
+                !localStorage.getItem('hide_close_mx_account_notification')
+            ) {
+                this.root_store.common.setError(true, {
+                    type: 'mx_removal',
+                });
+            } else if (
+                ['gb', 'im'].includes(this.root_store.client.residence) &&
+                this.root_store.client.is_logged_in &&
+                localStorage.getItem('hide_close_mx_account_notification')
+            ) {
+                showMXUnavailableError(this.root_store.common.showError);
+                return;
+            } else if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
                 showUnavailableLocationError(this.root_store.common.showError, this.root_store.client.is_logged_in);
                 return;
             } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {

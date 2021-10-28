@@ -157,7 +157,7 @@ export default class RunPanelStore {
                         className='run-panel__stat--remember-me-checkbox'
                         value={this.remember_me}
                         onChange={this.handleRememberme}
-                        label='Remember my choice and don’t ask me again'
+                        label={localize('Remember my choice and don’t ask me again')}
                     />
                 </div>
             ),

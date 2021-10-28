@@ -72,7 +72,6 @@ const ConnectedApps = () => {
 
     const handleRevokeAccess = useCallback(() => {
         setModalVisibility(false);
-        setLoading(false);
         revokeConnectedApp(selected_app_id);
     }, [selected_app_id]);
 

@@ -18,15 +18,18 @@ const NotificationsContent = ({
     notifications,
     removeNotificationMessage,
     markNotificationMessage,
+    has_iom_account,
+    is_logged_in,
 }) => {
     // TODO: Remove this useEffect when MX account closure has finished.
     const window_location = window.location;
-    
     React.useEffect(() => {
-        const get_close_mx_notification = notifications.find(item => item.key === 'close_mx_account');
-        const is_dtrader = getPathname() === 'DTrader';
-        if (!is_dtrader && get_close_mx_notification) {
-            markNotificationMessage({ key: 'close_mx_account' })
+        if (has_iom_account && is_logged_in) {
+            const get_close_mx_notification = notifications.find(item => item.key === 'close_mx_account');
+            const is_dtrader = getPathname() === 'DTrader';
+            if (!is_dtrader && get_close_mx_notification) {
+                markNotificationMessage({ key: 'close_mx_account' })
+            }
         }
     }, [window_location]);
 
@@ -63,6 +66,8 @@ const AppNotificationMessages = ({
     removeNotificationMessage,
     stopNotificationLoading,
     markNotificationMessage,
+    has_iom_account,
+    is_logged_in,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
@@ -99,6 +104,8 @@ const AppNotificationMessages = ({
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
+                    has_iom_account={has_iom_account}
+                    is_logged_in={is_logged_in}
                 />
             </Portal>
         </div>
@@ -130,9 +137,11 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ ui, client }) => ({
     marked_notifications: ui.marked_notifications,
     notification_messages: ui.notification_messages,
     removeNotificationMessage: ui.removeNotificationMessage,
     markNotificationMessage: ui.markNotificationMessage,
+    has_iom_account: client.has_iom_account,
+    is_logged_in: client.is_logged_in,
 }))(AppNotificationMessages);

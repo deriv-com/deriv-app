@@ -584,7 +584,7 @@ export default connect(({ client, modules, ui }) => ({
     percentage: modules.cashier.general_store.percentage,
     resetConverter: modules.cashier.crypto_fiat_converter_store.resetConverter,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    requestTransferBetweenAccounts: modules.cashier.requestTransferBetweenAccounts,
+    requestTransferBetweenAccounts: modules.cashier.account_transfer_store.requestTransferBetweenAccounts,
     setAccountTransferAmount: modules.cashier.account_transfer_store.setAccountTransferAmount,
     setErrorMessage: modules.cashier.account_transfer_store.error.setErrorMessage,
     setIsTransferConfirm: modules.cashier.account_transfer_store.setIsTransferConfirm,

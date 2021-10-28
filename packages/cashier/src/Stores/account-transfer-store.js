@@ -516,8 +516,7 @@ export default class AccountTransferStore {
                 }
             });
             this.setAccountTransferAmount(null);
-            this.setIsTransferConfirm(false);
-            this.setIsTransferSuccessful(true);
+            this.setIsTransferConfirm(true);
         }
         this.root_store.modules.cashier.general_store.setLoading(false);
         return transfer_between_accounts;

@@ -7,16 +7,11 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from './cashier-locked.jsx';
 
-const WithdrawalLocked = ({
-    account_status,
-    is_10K_limit,
-    is_ask_financial_risk_approval,
-    is_pending_authentication,
-}) => {
+const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_approval }) => {
     const { document, identity, needs_verification } = account_status.authentication;
     const is_poi_needed = is_10K_limit && identity.status !== 'verified';
     const has_poi_submitted = identity.status !== 'none';
-    const is_poa_needed = is_10K_limit && (needs_verification.includes('document') || is_pending_authentication);
+    const is_poa_needed = is_10K_limit && (needs_verification.includes('document') || document.status !== 'verified');
     const has_poa_submitted = document?.status !== 'none';
     const is_ask_financial_risk_approval_needed = is_10K_limit && is_ask_financial_risk_approval;
     const history = useHistory();
@@ -79,12 +74,10 @@ WithdrawalLocked.propTypes = {
     account_status: PropTypes.object,
     is_10K_limit: PropTypes.bool,
     is_ask_financial_risk_approval: PropTypes.bool,
-    is_pending_authentication: PropTypes.bool,
 };
 
 export default connect(({ modules, client }) => ({
     account_status: client.account_status,
     is_10K_limit: modules.cashier.is_10k_withdrawal_limit_reached,
     is_ask_financial_risk_approval: modules.cashier.config.withdraw.error.is_ask_financial_risk_approval,
-    is_pending_authentication: client.is_pending_authentication,
 }))(WithdrawalLocked);

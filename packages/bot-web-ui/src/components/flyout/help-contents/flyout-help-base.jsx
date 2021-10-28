@@ -12,6 +12,7 @@ import FlyoutBlock from '../flyout-block.jsx';
 const HelpBase = ({
     block_node,
     block_type,
+    examples,
     help_string,
     is_search_flyout,
     onBackClick,
@@ -47,8 +48,9 @@ const HelpBase = ({
             <div className='flyout__help-content'>
                 {block_help_component &&
                     block_help_component.map((component, index) => {
-                        const { type, width, url } = component;
+                        const { type, width, url, example_id } = component;
                         const { text } = help_string;
+                        const example_node = examples.find(example => example.id === example_id);
                         switch (type) {
                             case help_content_types.TEXT:
                                 if (text_count < text.length) {
@@ -68,6 +70,17 @@ const HelpBase = ({
                                     />
                                 );
                             }
+                            case help_content_types.EXAMPLE:
+                                if (example_node) {
+                                    return (
+                                        <FlyoutBlock
+                                            key={`${block_type}_${index}`}
+                                            should_center_block={true}
+                                            block_node={example_node.childNodes[0]}
+                                        />
+                                    );
+                                }
+                                return null;
                             default:
                                 return null;
                         }
@@ -114,6 +127,7 @@ const HelpBase = ({
 HelpBase.propTypes = {
     block_node: PropTypes.object,
     block_type: PropTypes.string,
+    examples: PropTypes.array,
     help_string: PropTypes.object,
     is_search_flyout: PropTypes.bool,
     onBackClick: PropTypes.func,
@@ -126,6 +140,7 @@ HelpBase.propTypes = {
 export default connect(({ flyout, flyout_help }) => ({
     block_node: flyout_help.block_node,
     block_type: flyout_help.block_type,
+    examples: flyout_help.examples,
     help_string: flyout_help.help_string,
     is_search_flyout: flyout.is_search_flyout,
     onBackClick: flyout_help.onBackClick,

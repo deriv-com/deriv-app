@@ -91,7 +91,7 @@ commands:
     steps:
       - run:
           name: "Bootstrap for deriv storybook"
-          command: npm run bootstrap
+          command: npm run build:travis
       - run:
           name: "Build all packages for deriv storybook"
           command: npm run build:storybook
@@ -130,8 +130,7 @@ commands:
         type: string
         default: "Dockerfile"
     steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - run:
           name: Building docker image
           command: |
@@ -166,7 +165,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -174,7 +173,7 @@ jobs:
 
   build_dashboard:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -182,7 +181,7 @@ jobs:
 
   release_storybook:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -202,7 +201,7 @@ jobs:
 
   release_staging:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -217,7 +216,7 @@ jobs:
 
   release_staging_dashboard:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -233,7 +232,7 @@ jobs:
 
   release_production:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -250,7 +249,7 @@ jobs:
 
   release_production_dashboard:
     docker:
-      - image: circleci/node:12.18.0-stretch  
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -263,10 +262,10 @@ jobs:
       - notify_slack
     environment:
       NODE_ENV: staging
-  
+
   build_and_test:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache

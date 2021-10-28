@@ -85,6 +85,8 @@ const ResetPasswordModal = ({
                     is_loading={is_loading}
                     dismissable={status.error_msg}
                     onConfirm={() => toggleResetPasswordModal(false)}
+                    has_close_icon
+                    is_closed_on_cancel={false}
                 >
                     <div className='reset-password'>
                         <Form>

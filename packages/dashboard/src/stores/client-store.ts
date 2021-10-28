@@ -45,7 +45,6 @@ class ClientStore extends BaseStore {
     public fetchResidenceList?: () => void;
     public fetchStatesList?: () => void;
     public fetchFinancialAssessment?: () => void;
-    public needs_financial_assessment?: () => boolean;
 
     public is_fully_authenticated?: () => boolean;
     public realAccountSignup?: () => Promise<void>;
@@ -74,7 +73,6 @@ class ClientStore extends BaseStore {
         this.fetchResidenceList = client_props.fetchResidenceList;
         this.fetchStatesList = client_props.fetchStatesList;
         this.fetchFinancialAssessment = client_props.fetchFinancialAssessment;
-        this.needs_financial_assessment = client_props.needs_financial_assessment;
         this.residence_list = client_props.residence_list;
         this.states_list = client_props.states_list;
         this.financial_assessment = client_props.financial_assessment;

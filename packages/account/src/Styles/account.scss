@@ -334,6 +334,13 @@ $MIN_HEIGHT_FLOATING: calc(
             border-width: 1px;
             background-color: var(--general-main-1);
 
+            .back-btn {
+                margin-right: 8px;
+                span {
+                    display: inline-flex;
+                    align-items: center;
+                }
+            }
             &-note {
                 color: var(--text-prominent);
                 font-size: var(--text-size-xxs);
@@ -496,6 +503,11 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-dropdown__display-text {
                 line-height: 1.6rem;
                 text-align: left;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: inline-block;
+                max-width: 40rem;
             }
         }
     }
@@ -506,8 +518,6 @@ $MIN_HEIGHT_FLOATING: calc(
         display: flex;
         flex-direction: column;
         &-wrapper {
-            display: flex;
-            justify-content: space-between;
             margin: 0.8rem 0 4rem;
 
             .passwords-social-buttons {
@@ -521,49 +531,37 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 2.4rem;
             }
         }
-        &-item-left {
-            width: 38.4rem;
-            margin-right: 2.4rem;
-            display: flex;
-            flex-direction: column;
 
-            .passwords-static {
-                &__text {
-                    margin-bottom: 1.6rem;
-                }
-                &__single-icon {
-                    margin-right: 0.4rem;
-                }
-                &__icons {
-                    display: inline-grid;
-                    grid-column-gap: 0.8rem;
-                    grid-template-columns: 3.2rem 3.2rem 3.2rem 3.2rem;
-
-                    @include tablet {
-                        margin-bottom: 2.4rem;
-                    }
-                }
-                &__logo-container {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 0.8rem;
-                }
+        .passwords-platform {
+            &__desc {
+                margin-bottom: 1.6rem;
             }
-
-            @include mobile {
-                width: 100%;
-                margin-right: unset;
+            &__content {
+                display: flex;
+                align-items: center;
+                gap: 1.6rem;
+                margin-top: 1.6rem;
+            }
+            &__single-icon {
+                margin-right: 0.4rem;
+            }
+            &__icons {
+                display: inline-grid;
+                grid-column-gap: 0.8rem;
+                grid-template-columns: 3.2rem 3.2rem 3.2rem 3.2rem;
                 margin-bottom: 2.4rem;
             }
-        }
-        &-item-right {
-            max-width: 48.6rem;
-            flex-grow: 1;
-
-            @include mobile {
-                width: 100%;
+            &__logo-container {
+                display: flex;
+                align-items: center;
                 margin-bottom: 0.8rem;
             }
+        }
+
+        @include mobile {
+            width: 100%;
+            margin-right: unset;
+            margin-bottom: 2.4rem;
         }
         &-fieldset {
             max-width: 48.6rem;
@@ -585,12 +583,12 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: center;
             flex-wrap: wrap;
             gap: 0.8rem;
-            padding: 0.8rem 1.6rem;
+            padding: 0 1.6rem;
             border: 1px solid var(--border-normal);
             border-radius: $BORDER_RADIUS;
             width: fit-content;
             height: 4rem;
-            cursor: default;
+            cursor: pointer;
         }
 
         @include mobile {
@@ -612,10 +610,13 @@ $MIN_HEIGHT_FLOATING: calc(
         color: var(--text-general);
     }
     .account-management {
-        &__container-dashboard {
-            width: calc(100vw - 33rem);
-            @include mobile {
-                width: 100%;
+        &__container {
+            margin: 0 auto;
+            &-dashboard {
+                width: calc(100vw - 33rem);
+                @include mobile {
+                    width: 100%;
+                }
             }
         }
         &__list {
@@ -1340,6 +1341,7 @@ $MIN_HEIGHT_FLOATING: calc(
     .revoke_access {
         padding-left: 8px;
         padding-right: 8px;
+        left: -5%;
     }
 
     &__loading {
@@ -1361,7 +1363,9 @@ $MIN_HEIGHT_FLOATING: calc(
         text-align: left;
 
         .table__cell {
-            height: 56px;
+            min-height: 5.6rem;
+            white-space: pre-wrap;
+            padding: 0;
 
             .name {
                 &__content {
@@ -1390,10 +1394,10 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+    .table__body .table__row {
+        border-bottom: 1px solid var(--general-section-1);
+    }
     @include desktop {
-        .table__body .table__row:last-child {
-            border-bottom: 1px solid var(--general-section-1);
-        }
         &__row {
             padding: 0;
         }
@@ -1408,8 +1412,12 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     @include mobile {
-        overflow: hidden;
+        overflow-x: hidden;
         padding: 0 1.6rem;
+        /* iPhone SE screen height fixes due to UI space restrictions */
+        @media only screen and (max-height: 480px) {
+            padding-bottom: 8.5rem;
+        }
 
         &__title {
             margin: 2.4rem 0;
@@ -1448,6 +1456,10 @@ $MIN_HEIGHT_FLOATING: calc(
                     &--small {
                         max-width: 99px;
 
+                        .data-list__row-content .dc-btn {
+                            left: 50%;
+                            transform: translateX(-53%);
+                        }
                         .last_used__row-title {
                             line-height: 1.5;
                         }
@@ -1557,6 +1569,9 @@ $MIN_HEIGHT_FLOATING: calc(
 .onfido-container {
     margin-top: 24px;
 
+    &__hidden {
+        display: none;
+    }
     &__message {
         padding: 1rem;
         margin: 0 auto 1.4rem;
@@ -1716,12 +1731,178 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /** @define proof-of-identity */
 .proof-of-identity {
-    height: 100%;
     width: 100%;
-    padding: 0 1rem;
+    height: 100%;
 
+    &__main-container {
+        max-width: 67.2rem;
+    }
+    .min-height {
+        min-height: 50vh;
+
+        @include mobile {
+            min-height: unset;
+        }
+    }
+    &__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        @include mobile {
+            min-height: unset;
+            overflow-y: scroll;
+            justify-content: center;
+        }
+
+        .icon {
+            width: 128px;
+            height: 128px;
+            margin-top: 5.2rem;
+            margin-bottom: 2.6rem;
+
+            @include mobile {
+                width: 72px;
+                height: 72px;
+                margin-top: 2.6rem;
+            }
+        }
+
+        .external-dropdown {
+            .dc-dropdown-list {
+                z-index: 5;
+            }
+        }
+    }
+    &__country-text {
+        margin-bottom: 1.6rem;
+    }
+    &__text {
+        @include mobile {
+            width: 94%;
+            margin-bottom: unset;
+            text-align: center;
+        }
+    }
+    &__dropdown-container {
+        margin-top: 1.6rem;
+    }
+    &__inner-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+    &__header {
+        margin: 5.4rem 0 1.6rem;
+
+        @include mobile {
+            margin: 2.4rem 0 0.8rem;
+        }
+    }
+    &__footer.external-footer {
+        padding: unset;
+        position: unset;
+        top: unset;
+        bottom: unset;
+        border: none;
+        height: fit-content;
+        z-index: 4;
+    }
+    &__footer {
+        @media (max-height: 900px) {
+            position: fixed;
+            bottom: 36px;
+        }
+
+        @include mobile {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            position: fixed;
+            bottom: 0;
+        }
+    }
+    &__footer-alert {
+        margin-right: auto;
+    }
+    &__submit-button {
+        @include mobile {
+            margin-right: 1.2rem;
+        }
+    }
+    &__fieldset {
+        width: 39.5rem;
+
+        @include mobile {
+            width: 94%;
+            margin: 0.4rem 0 3.2rem;
+        }
+        .document-dropdown {
+            margin: 0.4rem 0 3.2rem;
+        }
+        .country-dropdown {
+            min-height: 35.2rem;
+        }
+    }
+    &__fieldset-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+    &__fieldset-input {
+        width: 39.5rem;
+
+        @include mobile {
+            width: 94%;
+            margin-top: 0.4rem;
+        }
+    }
+    &__sample-container {
+        margin-left: 1.6rem;
+
+        @include mobile {
+            margin-left: unset;
+            min-height: 50vh;
+            width: 94%;
+        }
+    }
+    &__image-container {
+        width: fit-content;
+        height: fit-content;
+        padding: 8px;
+        border-radius: 4px;
+        background-color: $color-grey-2;
+    }
+    &__image {
+        max-width: 24.5rem;
+        border-radius: 4px;
+        object-fit: contain;
+
+        @include mobile {
+            max-width: calc(95vw - 16px);
+        }
+    }
     &__redirect {
         width: auto !important;
+    }
+    .text {
+        display: block;
+    }
+    .btm-spacer {
+        margin-bottom: 1.6rem;
     }
 }
 

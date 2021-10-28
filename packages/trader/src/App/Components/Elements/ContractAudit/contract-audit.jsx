@@ -10,16 +10,18 @@ const ContractAudit = ({ contract_update_history, has_result, is_multiplier, tog
     const { contract_id, currency } = props.contract_info;
     const [update_history, setUpdateHistory] = React.useState([]);
 
+    const getSortedUpdateHistory = history => history.sort((a, b) => b.order_date - a.order_date);
+
     React.useEffect(() => {
         if (!!contract_update_history.length && contract_update_history.length > update_history.length)
-            setUpdateHistory(contract_update_history);
+            setUpdateHistory(getSortedUpdateHistory(contract_update_history));
     }, [contract_update_history, update_history]);
 
     const onTabItemClick = tab_index => {
         toggleHistoryTab(tab_index);
         if (tab_index) {
             WS.contractUpdateHistory(contract_id).then(response => {
-                setUpdateHistory(response.contract_update_history);
+                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
             });
         }
     };

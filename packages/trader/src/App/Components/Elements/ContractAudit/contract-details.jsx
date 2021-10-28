@@ -6,9 +6,9 @@ import {
     epochToMoment,
     toGMTFormat,
     getCancellationPrice,
-    isEnded,
     isMobile,
     isMultiplierContract,
+    isUserSold,
 } from '@deriv/shared';
 import {
     addCommaToNumber,
@@ -16,7 +16,11 @@ import {
     getBarrierValue,
     isDigitType,
 } from 'App/Components/Elements/PositionsDrawer/helpers';
-import { isCancellationExpired, isUserCancelled } from 'Stores/Modules/Contract/Helpers/logic';
+import {
+    isCancellationExpired,
+    isEndedBeforeCancellationExpired,
+    isUserCancelled,
+} from 'Stores/Modules/Contract/Helpers/logic';
 import ContractAuditItem from './contract-audit-item.jsx';
 
 const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot }) => {
@@ -38,9 +42,10 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
     const cancellation_price = getCancellationPrice(contract_info);
 
     const getLabel = () => {
+        if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))
+            return localize('Deal cancellation');
         if (isUserCancelled(contract_info)) return localize('Deal cancellation (executed)');
         if (isCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
-        if (isEnded(contract_info)) return localize('Deal cancellation');
         return localize('Deal cancellation (active)');
     };
 

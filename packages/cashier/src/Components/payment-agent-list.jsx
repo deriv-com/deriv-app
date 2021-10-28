@@ -24,17 +24,16 @@ const PaymentAgentList = ({
     is_email_sent,
     is_loading,
     is_resend_clicked,
+    is_payment_agent_withdraw,
     onChangePaymentMethod,
     onMount,
+    payment_agent_active_tab_index,
     payment_agent_list,
     resend_timeout,
     selected_bank,
-    sendVerificationEmail,
+    setActiveTabIndex,
     supported_banks,
     verification_code,
-    is_payment_agent_withdraw,
-    payment_agent_active_tab_index,
-    setPaymentAgentActiveTabIndex,
 }) => {
     React.useEffect(() => {
         onMount();
@@ -45,17 +44,9 @@ const PaymentAgentList = ({
         ...supported_banks,
     ];
 
-    const setActiveTabIndex = index => {
-        setPaymentAgentActiveTabIndex(index);
-
-        if (index === 1) {
-            sendVerificationEmail();
-        }
-    };
-
     return (
         <div className='cashier__wrapper--align-left cashier__wrapper-padding'>
-            {error?.code ? (
+            {error?.code && !!error?.onClickButton ? (
                 <Error error={error} />
             ) : (
                 <React.Fragment>
@@ -186,31 +177,29 @@ PaymentAgentList.propTypes = {
     is_email_sent: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_resend_clicked: PropTypes.bool,
+    is_payment_agent_withdraw: PropTypes.bool,
     onChangePaymentMethod: PropTypes.func,
     onMount: PropTypes.func,
+    payment_agent_active_tab_index: PropTypes.number,
     payment_agent_list: PropTypes.array,
     resend_timeout: PropTypes.number,
     selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    sendVerificationEmail: PropTypes.func,
+    setActiveTabIndex: PropTypes.func,
     supported_banks: MobxPropTypes.arrayOrObservableArray,
     verification_code: PropTypes.string,
-    is_payment_agent_withdraw: PropTypes.bool,
-    payment_agent_active_tab_index: PropTypes.number,
-    setPaymentAgentActiveTabIndex: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
     error: modules.cashier.config.payment_agent.verification.error,
     is_email_sent: modules.cashier.config.payment_agent.verification.is_email_sent,
-    is_resend_clicked: modules.cashier.config.payment_agent.verification.is_resend_clicked,
     is_loading: modules.cashier.is_loading,
+    is_resend_clicked: modules.cashier.config.payment_agent.verification.is_resend_clicked,
     onChangePaymentMethod: modules.cashier.onChangePaymentMethod,
     onMount: modules.cashier.onMountPaymentAgentList,
+    payment_agent_active_tab_index: modules.cashier.config.payment_agent.active_tab_index,
     payment_agent_list: modules.cashier.config.payment_agent.filtered_list,
     resend_timeout: modules.cashier.config.payment_agent.verification.resend_timeout,
     selected_bank: modules.cashier.config.payment_agent.selected_bank,
-    sendVerificationEmail: modules.cashier.sendVerificationEmail,
+    setActiveTabIndex: modules.cashier.setActiveTabIndex,
     supported_banks: modules.cashier.config.payment_agent.supported_banks,
-    payment_agent_active_tab_index: modules.cashier.config.payment_agent.active_tab_index,
-    setPaymentAgentActiveTabIndex: modules.cashier.config.payment_agent.setActiveTabIndex,
 }))(PaymentAgentList);

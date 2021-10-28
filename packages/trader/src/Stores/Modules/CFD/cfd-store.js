@@ -38,7 +38,7 @@ export default class CFDStore extends BaseStore {
     @computed
     get account_title() {
         return this.account_type.category
-            ? getMtCompanies()[this.account_type.category][this.account_type.type].title
+            ? getMtCompanies(this.root_store.client.is_eu)[this.account_type.category][this.account_type.type].title
             : '';
     }
 
@@ -65,7 +65,7 @@ export default class CFDStore extends BaseStore {
 
     // eslint-disable-next-line class-methods-use-this
     get mt5_companies() {
-        return getMtCompanies();
+        return getMtCompanies(this.root_store.client.is_eu);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -284,7 +284,39 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
+    async getAccountStatus(platform) {
+        const should_load_account_status =
+            (platform === CFD_PLATFORMS.MT5 && this.root_store.client.is_mt5_password_not_set) ||
+            (platform === CFD_PLATFORMS.DXTRADE && this.root_store.client.is_dxtrade_password_not_set);
+
+        if (should_load_account_status) {
+            await WS.getAccountStatus();
+        }
+    }
+
+    @action.bound
+    async creatMT5Password(values, actions) {
+        const response = await WS.tradingPlatformPasswordChange({
+            new_password: values.password,
+            platform: CFD_PLATFORMS.MT5,
+        });
+        if (response.error) {
+            this.setError(true, response.error);
+            actions.resetForm({});
+            actions.setSubmitting(false);
+            actions.setStatus({ success: false });
+            return true;
+        }
+        return false;
+    }
+
+    @action.bound
     async submitMt5Password(values, actions) {
+        if (this.root_store.client.is_mt5_password_not_set) {
+            const has_error = await this.creatMT5Password(values, actions);
+            if (has_error) return;
+        }
+
         this.resetFormErrors();
         const response = await this.openMT5Account(values);
         if (!response.error) {
@@ -292,18 +324,16 @@ export default class CFDStore extends BaseStore {
             actions.setSubmitting(false);
             this.setError(false);
             this.setCFDSuccessDialog(true);
-            const [mt5_login_list_response, { get_account_status }] = await Promise.all([
-                WS.authorized.storage.mt5LoginList(),
-                WS.getAccountStatus(),
-            ]);
+            await this.getAccountStatus(CFD_PLATFORMS.MT5);
+
+            const mt5_login_list_response = await WS.authorized.mt5LoginList();
             this.root_store.client.responseMt5LoginList(mt5_login_list_response);
-            this.root_store.client.setAccountStatus(get_account_status);
+
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             this.root_store.client.responseTradingServers(await WS.tradingServers());
-            runInAction(() => {
-                this.setCFDNewAccount(response.mt5_new_account);
-            });
+            this.setCFDNewAccount(response.mt5_new_account);
         } else {
+            await this.getAccountStatus(CFD_PLATFORMS.MT5);
             this.setError(true, response.error);
             actions.resetForm({});
             actions.setSubmitting(false);
@@ -312,23 +342,44 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
+    async createCFDPassword(values, actions) {
+        const response = await WS.tradingPlatformPasswordChange({
+            new_password: values.password,
+            platform: CFD_PLATFORMS.DXTRADE,
+        });
+        if (response.error) {
+            this.setError(true, response.error);
+            actions.resetForm({});
+            actions.setSubmitting(false);
+            actions.setStatus({ success: false });
+            return true;
+        }
+
+        return false;
+    }
+
+    @action.bound
     async submitCFDPassword(values, actions) {
+        if (this.root_store.client.is_dxtrade_password_not_set) {
+            const has_error = await this.createCFDPassword(values, actions);
+            if (has_error) return;
+        }
+
         const response = await this.openCFDAccount(values);
         if (!response.error) {
-            WS.tradingPlatformAccountsList(values.platform).then(
-                this.root_store.client.responseTradingPlatformAccountsList
-            );
             actions.setStatus({ success: true });
             actions.setSubmitting(false);
             this.setError(false);
             this.setCFDSuccessDialog(true);
+            await this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
+
+            const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(values.platform);
+            this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
+
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
-            const { get_account_status } = await WS.getAccountStatus();
-            this.root_store.client.setAccountStatus(get_account_status);
-            runInAction(() => {
-                this.setCFDNewAccount(response.trading_platform_new_account);
-            });
+            this.setCFDNewAccount(response.trading_platform_new_account);
         } else {
+            await this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
             this.setError(true, response.error);
             actions.resetForm({});
             actions.setSubmitting(false);

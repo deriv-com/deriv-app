@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper, usePrevious } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -31,12 +31,12 @@ const Trade = ({
     contract_type,
     form_components,
     getFirstOpenMarket,
+    should_show_active_symbols_loading,
     is_chart_loading,
     is_dark_theme,
     is_eu,
     is_market_closed,
     is_market_unavailable_visible,
-    is_synthetics_unavailable,
     is_trade_enabled,
     network_status,
     NotificationMessages,
@@ -49,6 +49,7 @@ const Trade = ({
     show_digits_stats,
     should_show_multipliers_onboarding,
     symbol,
+    is_synthetics_available,
 }) => {
     const [digits, setDigits] = React.useState([]);
     const [tick, setTick] = React.useState({});
@@ -58,9 +59,18 @@ const Trade = ({
     const [subcategory, setSubcategory] = React.useState(null);
     const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
 
+    const open_market = React.useMemo(() => {
+        if (try_synthetic_indices) {
+            return { category: 'synthetic_index' };
+        } else if (try_open_markets && category) {
+            return { category, subcategory };
+        }
+        return null;
+    }, [try_synthetic_indices, try_open_markets, category, subcategory]);
+
     React.useEffect(() => {
         onMount();
-        if (is_eu) {
+        if (!is_synthetics_available) {
             const setMarket = async () => {
                 const markets_to_search = ['forex', 'indices', 'commodities']; // none-synthetic
                 const { category: market_cat, subcategory: market_subcat } =
@@ -90,11 +100,7 @@ const Trade = ({
 
             onChange({ target: { name: 'contract_type', value: 'multiplier' } });
         };
-        if (
-            should_show_multipliers_onboarding &&
-            !is_chart_loading &&
-            (!is_synthetics_unavailable || !is_market_closed)
-        ) {
+        if (should_show_multipliers_onboarding && !is_chart_loading && (is_synthetics_available || !is_market_closed)) {
             selectMultipliers();
         }
     }, [should_show_multipliers_onboarding, is_chart_loading]);
@@ -109,7 +115,7 @@ const Trade = ({
     };
 
     const onTryOtherMarkets = async () => {
-        if (is_eu || is_synthetics_unavailable) {
+        if (!is_synthetics_available) {
             setTryOpenMarkets(true);
             setTimeout(() => setTryOpenMarkets(false));
         } else {
@@ -119,13 +125,6 @@ const Trade = ({
     };
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
-
-    let open_market = null;
-    if (try_synthetic_indices) {
-        open_market = { category: 'synthetic_index' };
-    } else if (try_open_markets && category) {
-        open_market = { category, subcategory };
-    }
 
     return (
         <div id='trade_container' className='trade-container'>
@@ -147,7 +146,7 @@ const Trade = ({
                 >
                     <DesktopWrapper>
                         <div className='chart-container__wrapper'>
-                            <ChartLoader is_visible={is_chart_loading} />
+                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                             <ChartTrade
                                 try_synthetic_indices={try_synthetic_indices}
                                 try_open_markets={try_open_markets}
@@ -156,14 +155,21 @@ const Trade = ({
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ChartLoader is_visible={is_chart_loading || (isDigitTradeType(contract_type) && !digits[0])} />
+                        <ChartLoader
+                            is_visible={
+                                is_chart_loading ||
+                                should_show_active_symbols_loading ||
+                                (isDigitTradeType(contract_type) && !digits[0])
+                            }
+                        />
                         <SwipeableWrapper
                             onChange={onChangeSwipeableIndex}
                             is_disabled={
                                 !show_digits_stats ||
                                 !is_trade_enabled ||
                                 form_components.length === 0 ||
-                                is_chart_loading
+                                is_chart_loading ||
+                                should_show_active_symbols_loading
                             }
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
@@ -185,7 +191,7 @@ const Trade = ({
                 {is_market_closed && !is_market_unavailable_visible && (
                     <MarketIsClosedOverlay
                         is_eu={is_eu}
-                        is_synthetics_unavailable={is_synthetics_unavailable}
+                        is_synthetics_available={is_synthetics_available}
                         {...(is_eu && category && { is_market_available: true })}
                         onClick={onTryOtherMarkets}
                         onMarketOpen={prepareTradeStore}
@@ -206,10 +212,11 @@ const Trade = ({
 export default connect(({ client, common, modules, ui }) => ({
     getFirstOpenMarket: modules.trade.getFirstOpenMarket,
     is_eu: client.is_eu,
-    is_synthetics_unavailable: client.is_synthetics_unavailable,
+    is_synthetics_available: modules.trade.is_synthetics_available,
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
+    should_show_active_symbols_loading: modules.trade.should_show_active_symbols_loading,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
     show_digits_stats: modules.trade.show_digits_stats,
@@ -273,11 +280,9 @@ const Chart = props => {
         is_socket_opened,
         main_barrier,
         refToAddTick,
-        resetRefresh,
         setChartStatus,
         settings,
         show_digits_stats,
-        should_refresh,
         symbol,
         wsForget,
         wsForgetStream,
@@ -289,9 +294,6 @@ const Chart = props => {
     const props_ref = React.useRef();
     props_ref.current = props;
 
-    const prev_should_refresh = usePrevious(should_refresh);
-    if (prev_should_refresh) resetRefresh();
-
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />,
         []
@@ -301,6 +303,7 @@ const Chart = props => {
         // changing reference of topWidgets function by adding dependencies to useCallback results in Smartcharts performance drop.
         // so, using props_ref to get current props value
         const { is_digits_widget_active, try_synthetic_indices, try_open_markets, open_market } = props_ref.current;
+
         return (
             <ChartTopWidgets
                 open_market={open_market}
@@ -339,6 +342,12 @@ const Chart = props => {
     return (
         <SmartChartWithRef
             ref={charts_ref}
+            initialData={{
+                activeSymbols: active_symbols,
+            }}
+            chartData={{
+                activeSymbols: active_symbols,
+            }}
             barriers={barriers}
             bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}
@@ -347,6 +356,15 @@ const Chart = props => {
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
+            initialData={{
+                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
+            }}
+            chartData={{
+                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
+            }}
+            feedCall={{
+                activeSymbols: false,
+            }}
             enabledNavigationWidget={isDesktop()}
             enabledChartFooter={false}
             id='trade'
@@ -367,7 +385,6 @@ const Chart = props => {
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
             shouldFetchTradingTimes={!end_epoch}
-            refreshActiveSymbols={should_refresh}
             hasAlternativeSource={has_alternative_source}
             refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
@@ -435,8 +452,6 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     wsSendRequest: modules.trade.wsSendRequest,
     wsSubscribe: modules.trade.wsSubscribe,
     active_symbols: modules.trade.active_symbols,
-    should_refresh: modules.trade.should_refresh_active_symbols,
-    resetRefresh: modules.trade.resetRefresh,
     has_alternative_source: modules.trade.has_alternative_source,
     refToAddTick: modules.trade.refToAddTick,
 }))(Chart);

@@ -1,5 +1,5 @@
 import { observable, action, runInAction } from 'mobx';
-import { config } from '@deriv/bot-skeleton';
+import { config, help_content_config } from '@deriv/bot-skeleton';
 
 export default class FlyoutHelpStore {
     constructor(root_store) {
@@ -16,6 +16,7 @@ export default class FlyoutHelpStore {
 
     @observable block_node = null;
     @observable block_type = '';
+    @observable examples = [];
     @observable help_string = {};
     @observable title = '';
     @observable should_next_disable = false;
@@ -24,18 +25,18 @@ export default class FlyoutHelpStore {
 
     @action.bound
     setHelpContent = async block_node => {
-        const block_hw = Blockly.Block.getDimensions(block_node);
         const block_type = block_node.getAttribute('type');
         const title = Blockly.Blocks[block_type].meta().display_name;
         if (block_type !== '') {
             this.active_helper = block_type;
         }
         const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
-        const start_scale = config.workspaces.flyoutWorkspacesStartScale;
-        block_node.setAttribute('width', block_hw.width * start_scale);
-        block_node.setAttribute('height', block_hw.height * start_scale);
 
         const { flyout } = this.root_store;
+        this.setExamples(block_type);
+        const example_blocks = this.examples.map(example => example.childNodes[0]);
+        setTimeout(() => flyout.setFlyoutWidth([block_node, ...example_blocks]), 50);
+
         runInAction(() => {
             flyout.is_help_content = true;
             this.block_node = block_node;
@@ -178,5 +179,16 @@ export default class FlyoutHelpStore {
 
             return block_group;
         }, {});
+    }
+
+    @action.bound
+    setExamples(block_type) {
+        const { toolbox } = this.root_store;
+        const all_examples = [...toolbox.toolbox_examples.childNodes];
+        const help_content = help_content_config(__webpack_public_path__)[block_type];
+        const examples_ids = help_content.filter(el => el.type === 'example').map(example => example.example_id);
+        const examples = examples_ids.map(id => all_examples.find(example => example.id === id));
+
+        this.examples = examples;
     }
 }

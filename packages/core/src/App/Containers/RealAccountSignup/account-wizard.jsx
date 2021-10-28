@@ -14,7 +14,8 @@ import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps }) => {
     const step = getCurrentStep() - 1;
-    const step_title = items[step].header.title;
+    const step_title = items[step].header ? items[step].header.title : '';
+
     return (
         <React.Fragment>
             {(!has_real_account || has_target) && (
@@ -55,7 +56,6 @@ const AccountWizard = props => {
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
-    const is_financial_risk_accepted_ref = React.useRef(false);
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -135,7 +135,14 @@ const AccountWizard = props => {
         return state_items
             .map(item => item.form_value)
             .reduce((obj, item) => {
-                const values = fromEntries(new Map(Object.entries(item)));
+                const original_form_values = fromEntries(new Map(Object.entries(item)));
+                const values = Object.keys(original_form_values).reduce((acc, current) => {
+                    acc[current] =
+                        typeof original_form_values[current] === 'string'
+                            ? original_form_values[current].trim()
+                            : original_form_values[current];
+                    return acc;
+                }, {});
                 if (values.date_of_birth) {
                     values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
                 }
@@ -179,12 +186,15 @@ const AccountWizard = props => {
         clearError();
     };
 
-    const submitForm = () => {
-        const clone = { ...form_values() };
+    const submitForm = (payload = undefined) => {
+        let clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
 
-        if (is_financial_risk_accepted_ref.current) {
-            clone.accept_risk = 1;
+        if (payload) {
+            clone = {
+                ...clone,
+                ...payload,
+            };
         }
 
         return props.realAccountSignup(clone);
@@ -225,10 +235,11 @@ const AccountWizard = props => {
         return properties;
     };
 
-    const createRealAccount = () => {
+    const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
-        submitForm()
+        submitForm(payload)
             .then(response => {
+                props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
                 } else if (props.real_account_signup_target === 'samoa') {
@@ -239,6 +250,7 @@ const AccountWizard = props => {
             })
             .catch(error => {
                 if (error.code === 'show risk disclaimer') {
+                    props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
                 } else {
                     props.onError(error, state_items);
@@ -248,12 +260,13 @@ const AccountWizard = props => {
     };
 
     const onAcceptRisk = () => {
-        is_financial_risk_accepted_ref.current = true;
-        createRealAccount();
+        createRealAccount({ accept_risk: 1 });
     };
 
     if (props.is_loading) return <LoadingModal />;
-    if (should_accept_financial_risk) return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={props.onClose} />;
+    if (should_accept_financial_risk) {
+        return <AcceptRiskForm onSubmit={onAcceptRisk} />;
+    }
     if (!mounted) return null;
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
@@ -282,6 +295,7 @@ const AccountWizard = props => {
                     items={state_items}
                     has_currency={props.has_currency}
                     has_target={props.real_account_signup_target !== 'manage'}
+                    setIsRiskWarningVisible={props.setIsRiskWarningVisible}
                 />
             );
         }
@@ -331,6 +345,5 @@ export default connect(({ client, ui }) => ({
     fetchResidenceList: client.fetchResidenceList,
     refreshNotifications: client.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
-    needs_financial_assessment: client.needs_financial_assessment,
     financial_assessment: client.financial_assessment,
 }))(AccountWizard);

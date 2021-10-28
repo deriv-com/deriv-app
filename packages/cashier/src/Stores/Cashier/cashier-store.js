@@ -678,7 +678,6 @@ export default class CashierStore extends BaseStore {
             }
             if (response_cashier.error) {
                 this.handleCashierError(response_cashier.error);
-                this.setLoading(false);
                 this.setSessionTimeout(true);
                 this.clearTimeoutCashierUrl();
                 if (verification_code) {

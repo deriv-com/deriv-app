@@ -7,7 +7,7 @@ import 'Sass/app/_common/components/poa-poi-address-modal.scss';
 import { routes } from '@deriv/shared';
 import PoaPoiInform from 'Assets/SvgComponents/settings//poa_poi_inform.svg';
 import { connect } from 'Stores/connect';
-import populateVerificationStatus from '@deriv/account/src/Sections/Verification/Helpers/verification';
+import { populateVerificationStatus } from '@deriv/account';
 
 const PoiAndPoaVerificationModal = ({ account_status, is_open, toggleModal }) => {
     const verification_status = populateVerificationStatus(account_status);
@@ -16,9 +16,11 @@ const PoiAndPoaVerificationModal = ({ account_status, is_open, toggleModal }) =>
     if (has_poi && has_poa) {
         title = 'Your documents are being reviewed, this can take up to 3 days.';
     } else if (has_poi && !has_poa) {
-        title = 'Verify your proof of address to trade with real Deriv Multipliers account.';
+        title = 'Please verify your proof of address to continue.';
+    } else if (!has_poi && has_poa) {
+        title = 'Please verify your proof of identity to continue.';
     } else {
-        title = 'Verify your proof of identity to trade with real Deriv Multipliers account.';
+        title = 'Please verify your proof of identity and address to continue.';
     }
     return (
         <Modal

@@ -2468,7 +2468,6 @@ export const macd = [
     -0.063,
     -0.071,
     -0.079,
-
 ];
 
 export const signal = [

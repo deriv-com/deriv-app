@@ -12,7 +12,7 @@ import {
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, routes } from '@deriv/shared';
 
 const data = [
     {
@@ -89,7 +89,7 @@ const data = [
     },
 ];
 const Items = ({ items }) =>
-    items.map(({ title, icon, mutliplier_desc, cfd_desc }) => (
+    items.map(({ title, icon }) => (
         <div key={title} className='mul-cfd-compare-table-item'>
             <Icon icon={icon} size='24' />
             <Text as='p' align='center' color='prominent' size='xxxxs' className='mul-cfd-compare-table-item__text'>
@@ -127,7 +127,7 @@ const Row = ({ title, multiplier, cfd, has_icons, mutliplier_desc, cfd_desc }) =
                     </>
                 ) : (
                     <div>
-                        <MultilineRowItems items={multiplier}></MultilineRowItems>
+                        <MultilineRowItems items={multiplier} />
                     </div>
                 )}
             </Table.Cell>
@@ -145,7 +145,7 @@ const Row = ({ title, multiplier, cfd, has_icons, mutliplier_desc, cfd_desc }) =
                     </>
                 ) : (
                     <div>
-                        <MultilineRowItems items={cfd}></MultilineRowItems>
+                        <MultilineRowItems items={cfd} />
                     </div>
                 )}
             </Table.Cell>
@@ -153,7 +153,7 @@ const Row = ({ title, multiplier, cfd, has_icons, mutliplier_desc, cfd_desc }) =
     </>
 );
 
-const ModalContent = ({}) => {
+const ModalContent = () => {
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
             <ThemedScrollbars className='mul-cfd-compare-accounts'>

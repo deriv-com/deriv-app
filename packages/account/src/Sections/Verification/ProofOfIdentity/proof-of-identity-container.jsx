@@ -27,7 +27,6 @@ const ProofOfIdentityContainer = ({
     is_virtual,
     onStateChange,
     refreshNotifications,
-
     routeBackInApp,
     should_allow_authentication,
 }) => {

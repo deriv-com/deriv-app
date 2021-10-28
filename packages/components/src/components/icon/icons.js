@@ -149,6 +149,7 @@ import './common/ic-alert-danger.svg';
 import './common/ic-alert-info.svg';
 import './common/ic-alert-success.svg';
 import './common/ic-alert-warning.svg';
+import './common/ic-amplifier.svg';
 import './common/ic-archive.svg';
 import './common/ic-arrow-down-bold.svg';
 import './common/ic-arrow-down.svg';

@@ -95,6 +95,9 @@ export default class UIStore extends BaseStore {
     // Welcome modal
     @observable is_welcome_modal_visible = false;
 
+    // Remove MX gaming account modal
+    @observable is_close_mx_account_modal_visible = false;
+
     // set currency modal
     @observable is_set_currency_modal_visible = false;
 
@@ -183,7 +186,6 @@ export default class UIStore extends BaseStore {
             this.changeTheme();
         });
     }
-
     changeTheme = () => {
         // TODO: [disable-dark-bot] Delete this condition when Bot is ready
         const new_app_routing_history = this.root_store.common.app_routing_history.slice();
@@ -241,6 +243,11 @@ export default class UIStore extends BaseStore {
     setPromptHandler(condition, cb = () => {}) {
         this.prompt_when = condition;
         this.promptFn = cb;
+    }
+
+    @action.bound
+    showCloseMXAccountPopup(is_open) {
+        this.is_close_mx_account_modal_visible = is_open;
     }
 
     @computed
@@ -529,6 +536,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     markNotificationMessage({ key }) {
         this.marked_notifications.push(key);
+    }
+
+    @action.bound
+    unmarkNotificationMessage({ key }) {
+        this.marked_notifications = this.marked_notifications.filter(item => key !== item);
     }
 
     @action.bound

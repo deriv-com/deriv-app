@@ -235,6 +235,6 @@ export default connect(({ client, modules, ui }) => ({
     has_fiat: client.has_fiat,
     legal_allowed_currencies: client.upgradeable_currencies,
     openRealAccountSignup: ui.openRealAccountSignup,
-    setShouldShowAllAvailableCurrencies: modules.cashier.cashier_store.setShouldShowAllAvailableCurrencies,
-    deposit_target: modules.cashier.cashier_store.deposit_target,
+    setShouldShowAllAvailableCurrencies: modules.cashier.general_store.setShouldShowAllAvailableCurrencies,
+    deposit_target: modules.cashier.general_store.deposit_target,
 }))(AddCurrency);

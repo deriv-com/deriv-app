@@ -55,7 +55,7 @@ export default class CryptoFiatConverterStore {
     @action.bound
     validateFromAmount() {
         if (
-            this.root_store.modules.cashier.cashier_store.active_container ===
+            this.root_store.modules.cashier.general_store.active_container ===
             this.root_store.modules.cashier.account_transfer_store.container
         ) {
             this.root_store.modules.cashier.account_transfer_store.validateTransferFromAmount();
@@ -67,7 +67,7 @@ export default class CryptoFiatConverterStore {
     @action.bound
     validateToAmount() {
         if (
-            this.root_store.modules.cashier.cashier_store.active_container ===
+            this.root_store.modules.cashier.general_store.active_container ===
             this.root_store.modules.cashier.account_transfer_store.container
         ) {
             this.root_store.modules.cashier.account_transfer_store.validateTransferToAmount();
@@ -80,8 +80,8 @@ export default class CryptoFiatConverterStore {
     async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
         this.resetTimer();
         if (target.value) {
-            this.root_store.modules.cashier.cashier_store.percentageSelectorSelectionStatus(true);
-            this.root_store.modules.cashier.cashier_store.calculatePercentage();
+            this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
+            this.root_store.modules.cashier.general_store.calculatePercentage();
             this.setConverterFromAmount(target.value);
             this.validateFromAmount();
             if (this.converter_from_error) {
@@ -112,8 +112,8 @@ export default class CryptoFiatConverterStore {
     async onChangeConverterToAmount({ target }, from_currency, to_currency) {
         this.resetTimer();
         if (target.value) {
-            this.root_store.modules.cashier.cashier_store.percentageSelectorSelectionStatus(true);
-            this.root_store.modules.cashier.cashier_store.calculatePercentage();
+            this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
+            this.root_store.modules.cashier.general_store.calculatePercentage();
             this.setConverterToAmount(target.value);
             this.validateToAmount();
             if (this.converter_to_error) {
@@ -152,6 +152,6 @@ export default class CryptoFiatConverterStore {
         this.setConverterFromError('');
         this.setConverterToError('');
         this.setIsTimerVisible(false);
-        this.root_store.modules.cashier.cashier_store.percentageSelectorSelectionStatus(true);
+        this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
     }
 }

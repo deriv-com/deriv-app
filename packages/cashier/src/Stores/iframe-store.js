@@ -1,4 +1,5 @@
 import { action, observable } from 'mobx';
+import Constants from 'Constants/constants';
 
 export default class IframeStore {
     constructor({ WS, root_store }) {
@@ -26,7 +27,7 @@ export default class IframeStore {
         this.removeOnIframeLoaded();
         this.onIframeLoaded = function (e) {
             if (/cashier|doughflow/.test(e.origin)) {
-                this.root_store.modules.cashier.cashier_store.setLoading(false);
+                this.root_store.modules.cashier.general_store.setLoading(false);
                 // set the height of the container after content loads so that the
                 // loading bar stays vertically centered until the end
                 if (this.root_store.ui.is_mobile) {
@@ -67,10 +68,7 @@ export default class IframeStore {
         if (url) {
             this.iframe_url = `${url}&theme=${this.root_store.ui.is_dark_mode_on ? 'dark' : 'light'}`;
             // after we set iframe url we can clear verification code
-            this.root_store.client.setVerificationCode(
-                '',
-                this.root_store.modules.cashier.cashier_store.map_action[container]
-            );
+            this.root_store.client.setVerificationCode('', Constants.map_action[container]);
         } else {
             this.iframe_url = url;
         }

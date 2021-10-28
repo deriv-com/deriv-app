@@ -105,7 +105,7 @@ export default class WithdrawStore {
 
     @action.bound
     async onMountWithdraw(verification_code) {
-        this.root_store.modules.cashier.cashier_store.setLoading(true);
+        this.root_store.modules.cashier.general_store.setLoading(true);
         const strRegExp = /^\w{8,128}$/;
         let response_cashier;
 
@@ -122,7 +122,7 @@ export default class WithdrawStore {
 
         if (response_cashier.error.code === 'InvalidToken') {
             this.error.handleCashierError(response_cashier.error);
-            this.root_store.modules.cashier.cashier_store.setLoading(false);
+            this.root_store.modules.cashier.general_store.setLoading(false);
             this.iframe.setSessionTimeout(true);
             this.iframe.clearTimeoutCashierUrl();
             if (verification_code) {
@@ -130,7 +130,7 @@ export default class WithdrawStore {
                 this.verification.clearVerification('payment_withdraw');
             }
         } else {
-            this.root_store.modules.cashier.cashier_store.setLoading(false);
+            this.root_store.modules.cashier.general_store.setLoading(false);
         }
         if (this.error) {
             this.error.setErrorMessage(this.error, this.onMountWithdraw);
@@ -177,7 +177,7 @@ export default class WithdrawStore {
             );
         }
         this.root_store.modules.cashier.crypto_fiat_converter_store.setIsTimerVisible(false);
-        this.root_store.modules.cashier.cashier_store.percentageSelectorSelectionStatus(false);
+        this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(false);
     }
 
     @action.bound

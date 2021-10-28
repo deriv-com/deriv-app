@@ -205,7 +205,7 @@ PaymentAgentList.propTypes = {
 export default connect(({ modules }) => ({
     error: modules.cashier.payment_agent_store.verification.error,
     is_email_sent: modules.cashier.payment_agent_store.verification.is_email_sent,
-    is_loading: modules.cashier.cashier_store.is_loading,
+    is_loading: modules.cashier.general_store.is_loading,
     is_resend_clicked: modules.cashier.payment_agent_store.verification.is_resend_clicked,
     onChangePaymentMethod: modules.cashier.payment_agent_store.onChangePaymentMethod,
     onMount: modules.cashier.payment_agent_store.onMountPaymentAgentList,

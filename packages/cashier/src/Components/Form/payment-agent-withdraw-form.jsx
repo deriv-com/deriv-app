@@ -344,7 +344,7 @@ export default connect(({ client, modules }) => ({
     balance: client.balance,
     currency: client.currency,
     error: modules.cashier.payment_agent_store.error,
-    is_loading: modules.cashier.cashier_store.is_loading,
+    is_loading: modules.cashier.general_store.is_loading,
     is_try_withdraw_successful: modules.cashier.payment_agent_store.is_try_withdraw_successful,
     is_withdraw_successful: modules.cashier.payment_agent_store.is_withdraw_successful,
     onMount: modules.cashier.payment_agent_store.onMountPaymentAgentWithdraw,

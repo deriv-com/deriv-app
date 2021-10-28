@@ -100,5 +100,5 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     is_loading: modules.cashier.transaction_history.is_loading,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
-    setIsDeposit: modules.cashier.cashier_store.setIsDeposit,
+    setIsDeposit: modules.cashier.general_store.setIsDeposit,
 }))(CryptoTransactionsHistory);

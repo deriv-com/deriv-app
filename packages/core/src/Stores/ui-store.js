@@ -785,7 +785,7 @@ export default class UIStore extends BaseStore {
         this.root_store.common.routeTo(this.choose_crypto_currency_target);
 
         if (this.choose_crypto_currency_target === routes.cashier_deposit) {
-            this.root_store.modules.cashier.cashier_store.setIsDeposit(true);
+            this.root_store.modules.cashier.general_store.setIsDeposit(true);
         }
     }
 }

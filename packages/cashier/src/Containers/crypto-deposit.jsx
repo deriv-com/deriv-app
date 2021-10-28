@@ -161,5 +161,5 @@ export default connect(({ modules, client }) => ({
     is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
-    setIsDeposit: modules.cashier.cashier_store.setIsDeposit,
+    setIsDeposit: modules.cashier.general_store.setIsDeposit,
 }))(CryptoDeposit);

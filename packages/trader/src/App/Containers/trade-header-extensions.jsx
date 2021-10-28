@@ -122,7 +122,7 @@ export default connect(({ client, modules, ui }) => ({
     onPositionsSell: modules.portfolio.onClickSell,
     onPositionsRemove: modules.portfolio.removePositionById,
     onPositionsCancel: modules.portfolio.onClickCancel,
-    onMountCashier: modules.cashier.cashier_store.onMountCommon,
+    onMountCashier: modules.cashier.general_store.onMountCommon,
     onMountPositions: modules.portfolio.onMount,
     onUnmountPositions: modules.portfolio.onUnmount,
     active_positions_count: modules.portfolio.active_positions_count,
@@ -130,5 +130,5 @@ export default connect(({ client, modules, ui }) => ({
     enableApp: ui.enableApp,
     populateHeaderExtensions: ui.populateHeaderExtensions,
     toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
-    setAccountSwitchListener: modules.cashier.cashier_store.setAccountSwitchListener,
+    setAccountSwitchListener: modules.cashier.general_store.setAccountSwitchListener,
 }))(TradeHeaderExtensions);

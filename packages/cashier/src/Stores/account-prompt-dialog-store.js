@@ -49,7 +49,7 @@ export default class AccountPromptDialogStore {
         await this.root_store.client.switchAccount(loginid);
 
         if (this.current_location === 'deposit') {
-            this.root_store.modules.cashier.cashier_store.setIsDeposit(true);
+            this.root_store.modules.cashier.general_store.setIsDeposit(true);
         }
     }
 

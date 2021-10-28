@@ -85,9 +85,9 @@ export default class AccountTransferStore {
     // 3. crypto to mt & vice versa
     @action.bound
     async onMountAccountTransfer() {
-        this.root_store.modules.cashier.cashier_store.setLoading(true);
+        this.root_store.modules.cashier.general_store.setLoading(true);
         this.onRemount = this.onMountAccountTransfer;
-        await this.root_store.modules.cashier.cashier_store.onMountCommon();
+        await this.root_store.modules.cashier.general_store.onMountCommon();
         await this.WS.wait('website_status');
 
         // check if some balance update has come in since the last mount
@@ -110,7 +110,7 @@ export default class AccountTransferStore {
 
             if (transfer_between_accounts.error) {
                 this.error.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-                this.root_store.modules.cashier.cashier_store.setLoading(false);
+                this.root_store.modules.cashier.general_store.setLoading(false);
                 return;
             }
 
@@ -136,7 +136,7 @@ export default class AccountTransferStore {
                 }
             }
         }
-        this.root_store.modules.cashier.cashier_store.setLoading(false);
+        this.root_store.modules.cashier.general_store.setLoading(false);
     }
 
     canDoAccountTransfer(accounts) {
@@ -156,7 +156,7 @@ export default class AccountTransferStore {
             this.setHasNoAccount(false);
         }
         if (!can_transfer) {
-            this.root_store.modules.cashier.cashier_store.setLoading(false);
+            this.root_store.modules.cashier.general_store.setLoading(false);
         }
         return can_transfer;
     }
@@ -456,7 +456,7 @@ export default class AccountTransferStore {
             return null;
         }
 
-        this.root_store.modules.cashier.cashier_store.setLoading(true);
+        this.root_store.modules.cashier.general_store.setLoading(true);
         this.error.setErrorMessage('');
 
         const is_mt_transfer = this.selected_from.is_mt || this.selected_to.is_mt;
@@ -519,7 +519,7 @@ export default class AccountTransferStore {
             this.setIsTransferConfirm(false);
             this.setIsTransferSuccessful(true);
         }
-        this.root_store.modules.cashier.cashier_store.setLoading(false);
+        this.root_store.modules.cashier.general_store.setLoading(false);
         return transfer_between_accounts;
     };
 
@@ -543,7 +543,7 @@ export default class AccountTransferStore {
             );
         }
         this.root_store.modules.cashier.crypto_fiat_converter_store.setIsTimerVisible(false);
-        this.root_store.modules.cashier.cashier_store.percentageSelectorSelectionStatus(false);
+        this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(false);
     }
 
     @action.bound

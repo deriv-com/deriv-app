@@ -156,10 +156,10 @@ OnRamp.propTypes = {
 
 export default connect(({ modules, common, client }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
-    is_cashier_default: modules.cashier.cashier_store.is_cashier_default,
-    is_cashier_locked: modules.cashier.cashier_store.is_cashier_locked,
+    is_cashier_default: modules.cashier.general_store.is_cashier_default,
+    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
-    is_loading: modules.cashier.cashier_store.is_loading,
+    is_loading: modules.cashier.general_store.is_loading,
     is_switching: client.is_switching,
     onMountOnramp: modules.cashier.onramp.onMountOnramp,
     onUnmountOnramp: modules.cashier.onramp.onUnmountOnramp,
@@ -168,5 +168,5 @@ export default connect(({ modules, common, client }) => ({
     routeTo: common.routeTo,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
-    tab_index: modules.cashier.cashier_store.cashier_route_tab_index,
+    tab_index: modules.cashier.general_store.cashier_route_tab_index,
 }))(OnRamp);

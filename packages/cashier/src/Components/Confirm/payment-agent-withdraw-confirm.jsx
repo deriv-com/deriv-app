@@ -52,6 +52,6 @@ export default connect(({ modules }) => ({
     error: modules.cashier.payment_agent_store.error,
     loginid: modules.cashier.payment_agent_store.confirm.loginid,
     payment_agent_name: modules.cashier.payment_agent_store.confirm.payment_agent_name,
-    requestPaymentAgentWithdraw: modules.cashier.cashier_store.requestPaymentAgentWithdraw,
+    requestPaymentAgentWithdraw: modules.cashier.general_store.requestPaymentAgentWithdraw,
     setIsTryWithdrawSuccessful: modules.cashier.payment_agent_store.setIsTryWithdrawSuccessful,
 }))(PaymentAgentWithdrawConfirm);

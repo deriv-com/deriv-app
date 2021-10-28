@@ -221,5 +221,5 @@ export default connect(({ client, modules, ui }) => ({
     setShouldShowCancel: ui.setShouldShowCancel,
     createCryptoAccount: client.createCryptoAccount,
     resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,
-    setIsDeposit: modules.cashier.cashier_store.setIsDeposit,
+    setIsDeposit: modules.cashier.general_store.setIsDeposit,
 }))(AddOrManageAccounts);

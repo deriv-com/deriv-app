@@ -236,7 +236,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: ui.is_notifications_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_p2p_enabled: modules.cashier.cashier_store.is_p2p_enabled,
+    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer_store.is_payment_agent_transfer_visible,
     is_payment_agent_visible: modules.cashier.payment_agent_store.is_payment_agent_visible,
     is_virtual: client.is_virtual,

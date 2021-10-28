@@ -2,10 +2,11 @@ import React from 'react';
 import { action, computed, observable, reaction, when } from 'mobx';
 import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import Constants from 'Constants/constants';
 import CashierNotifications from 'Containers/cashier-notifications.jsx';
-import BaseStore from '../base-store';
+import BaseStore from './base-store';
 
-export default class CashierStore extends BaseStore {
+export default class GeneralStore extends BaseStore {
     constructor({ root_store, WS }) {
         super({ root_store });
         this.WS = WS;
@@ -40,21 +41,9 @@ export default class CashierStore extends BaseStore {
     @observable percentage = 0;
     @observable show_p2p_in_cashier_default = false;
 
-    @observable config = {
-        account_transfer: this.root_store.modules.cashier?.account_transfer_store,
-        payment_agent: this.root_store.modules.cashier?.payment_agent_store,
-        payment_agent_transfer: this.root_store.modules.cashier?.payment_agent_transfer_store,
-    };
     active_container = this.root_store.modules.cashier?.deposit_store.container;
     onRemount = () => {};
     is_populating_values = false;
-
-    containers = ['deposit', 'withdraw'];
-
-    map_action = {
-        [this.root_store.modules.cashier?.withdraw_store.container]: 'payment_withdraw',
-        [this.root_store.modules.cashier?.payment_agent_store.container]: 'payment_agent_withdraw',
-    };
 
     @computed
     get is_crypto() {
@@ -336,7 +325,7 @@ export default class CashierStore extends BaseStore {
         await this.onMountCommon();
 
         if (
-            this.containers.indexOf(this.active_container) === -1 &&
+            Constants.containers.indexOf(this.active_container) === -1 &&
             !this.root_store.client.is_switching &&
             this.active_container !== this.root_store.modules.cashier.payment_agent_store.container
         ) {
@@ -379,13 +368,11 @@ export default class CashierStore extends BaseStore {
         this.root_store.modules.cashier?.deposit_store.iframe.clearTimeoutCashierUrl();
         this.root_store.modules.cashier?.deposit_store.iframe.setSessionTimeout(true);
 
-        this.root_store.modules.cashier?.withdraw_store.setIframeUrl('');
-        this.root_store.modules.cashier?.withdraw_store.clearTimeoutCashierUrl();
-        this.root_store.modules.cashier?.withdraw_store.setSessionTimeout(true);
+        this.root_store.modules.cashier?.withdraw_store.iframe.setIframeUrl('');
+        this.root_store.modules.cashier?.withdraw_store.iframe.clearTimeoutCashierUrl();
+        this.root_store.modules.cashier?.withdraw_store.iframe.setSessionTimeout(true);
 
         this.payment_agent = this.root_store.modules.cashier?.payment_agent_store;
-        this.config.account_transfer = this.root_store.modules.cashier?.account_transfer_store;
-        this.config.payment_agent_transfer = this.root_store.modules.cashier?.payment_agent_transfer_store;
         this.is_populating_values = false;
 
         this.onRemount();

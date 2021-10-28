@@ -3,6 +3,10 @@
     display: flex;
     flex-direction: column;
 
+    &--button {
+        margin-top: 2.4rem;
+    }
+
     &--icon {
         margin-top: 11.2rem;
     }

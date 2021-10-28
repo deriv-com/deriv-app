@@ -45,7 +45,7 @@ const Autocomplete = React.memo(props => {
         value,
         ...other_props
     } = props;
-
+    console.log(list_items);
     const dropdown_ref = React.useRef();
     const list_wrapper_ref = React.useRef();
     const list_item_ref = React.useRef();
@@ -257,14 +257,18 @@ const Autocomplete = React.memo(props => {
                         typeof onItemSelection === 'function' ? value : input_value
                     }
                     trailing_icon={
-                        <Icon
-                            icon='IcChevronDown'
-                            className={{
-                                'dc-autocomplete__trailing-icon': true,
-                                'dc-autocomplete__trailing-icon--opened': should_show_list,
-                                'dc-autocomplete__trailing-icon--disabled': other_props.disabled,
-                            }}
-                        />
+                        other_props.trailing_icon ? (
+                            other_props.trailing_icon
+                        ) : (
+                            <Icon
+                                icon='IcChevronDown'
+                                className={{
+                                    'dc-autocomplete__trailing-icon': true,
+                                    'dc-autocomplete__trailing-icon--opened': should_show_list,
+                                    'dc-autocomplete__trailing-icon--disabled': other_props.disabled,
+                                }}
+                            />
+                        )
                     }
                 />
             </div>

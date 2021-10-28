@@ -10,6 +10,7 @@ export default class MyProfileStore extends BaseStore {
     @observable advertiser_info = {};
     @observable advertiser_payment_methods = {};
     @observable advertiser_payment_methods_error = '';
+    @observable available_payment_methods = {};
     @observable balance_available = null;
     @observable contact_info = '';
     @observable default_advert_description = '';
@@ -20,12 +21,26 @@ export default class MyProfileStore extends BaseStore {
     @observable is_loading = true;
     @observable is_submit_success = false;
     @observable payment_info = '';
+    // @observable payment_methods_list_items = [];
+    @observable selected_payment_method = 'bank_transfer';
     @observable should_hide_my_profile_tab = false;
-    @observable show_add_payment_method_form = false;
+    @observable should_show_add_payment_method_form = false;
 
     @computed
     get advertiser_has_payment_methods() {
         return !!this.advertiser_payment_methods.length;
+    }
+
+    @computed
+    get payment_methods_list_items() {
+        const list_items = [];
+
+        Object.entries(this.available_payment_methods).forEach(key => {
+            list_items.push({ text: key[1].display_name, value: key[0] });
+        });
+        // this.setPaymentMethodsListItems(list_items);
+        console.log(list_items);
+        return list_items;
     }
 
     @action.bound
@@ -55,7 +70,6 @@ export default class MyProfileStore extends BaseStore {
 
     @action.bound
     getAdvertiserPaymentMethods() {
-        // this.setIsLoading(true);
         requestWS({
             p2p_advertiser_payment_methods: 1,
         }).then(response => {
@@ -66,6 +80,20 @@ export default class MyProfileStore extends BaseStore {
                 this.setAdvertiserPaymentMethods(response.p2p_advertiser_payment_methods);
             }
         });
+    }
+
+    @action.bound
+    getPaymentMethodsList() {
+        requestWS({
+            p2p_payment_methods: 1,
+        }).then(response => {
+            const { p2p_payment_methods } = response;
+            this.setAvailablePaymentMethods(p2p_payment_methods);
+        });
+    }
+
+    getSelectedPaymentMethodFields() {
+        console.log(Object.entries(this.available_payment_methods));
     }
 
     getSettings() {
@@ -120,6 +148,60 @@ export default class MyProfileStore extends BaseStore {
     };
 
     @action.bound
+    hideAddPaymentMethodForm() {
+        this.setShouldShowAddPaymentMethodForm(false);
+    }
+
+    @action.bound
+    showAddPaymentMethodForm() {
+        this.setShouldShowAddPaymentMethodForm(true);
+    }
+
+    validateForm = values => {
+        const validations = {
+            contact_info: [v => textValidator(v)],
+            default_advert_description: [v => textValidator(v)],
+            payment_info: [v => textValidator(v)],
+        };
+
+        const mapped_key = {
+            contact_info: localize('Contact details'),
+            default_advert_description: localize('Instructions'),
+            payment_info: localize('Payment details'),
+        };
+
+        const errors = {};
+
+        const getErrorMessages = field_name => [
+            localize(
+                "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
+                {
+                    field_name,
+                }
+            ),
+        ];
+
+        Object.entries(validations).forEach(([key, rule]) => {
+            const error_index = rule.findIndex(v => !v(values[key]));
+            if (error_index !== -1) {
+                switch (key) {
+                    case 'contact_info':
+                    case 'default_advert_description':
+                    case 'payment_info':
+                        errors[key] = getErrorMessages(mapped_key[key])[error_index];
+                        break;
+                    default: {
+                        errors[key] = getErrorMessages[error_index];
+                        break;
+                    }
+                }
+            }
+        });
+
+        return errors;
+    };
+
+    @action.bound
     setActiveTab(active_tab) {
         this.active_tab = active_tab;
     }
@@ -137,6 +219,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setAdvertiserPaymentMethodsError(advertiser_payment_methods_error) {
         this.advertiser_payment_methods_error = advertiser_payment_methods_error;
+    }
+
+    @action.bound
+    setAvailablePaymentMethods(available_payment_methods) {
+        this.available_payment_methods = available_payment_methods;
     }
 
     @action.bound
@@ -185,56 +272,22 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setPaymentMethodsListItems(payment_methods_list_items) {
+        this.payment_methods_list_items = payment_methods_list_items;
+    }
+
+    @action.bound
+    setSelectedPaymentMethod(selected_payment_method) {
+        this.selected_payment_method = selected_payment_method;
+    }
+
+    @action.bound
     setShouldHideMyProfileTab(should_hide_my_profile_tab) {
         this.should_hide_my_profile_tab = should_hide_my_profile_tab;
     }
 
     @action.bound
-    setShowAddPaymentMethodForm(show_add_payment_method_form) {
-        this.show_add_payment_method_form = show_add_payment_method_form;
+    setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {
+        this.should_show_add_payment_method_form = should_show_add_payment_method_form;
     }
-
-    validateForm = values => {
-        const validations = {
-            contact_info: [v => textValidator(v)],
-            default_advert_description: [v => textValidator(v)],
-            payment_info: [v => textValidator(v)],
-        };
-
-        const mapped_key = {
-            contact_info: localize('Contact details'),
-            default_advert_description: localize('Instructions'),
-            payment_info: localize('Payment details'),
-        };
-
-        const errors = {};
-
-        const getErrorMessages = field_name => [
-            localize(
-                "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
-                {
-                    field_name,
-                }
-            ),
-        ];
-
-        Object.entries(validations).forEach(([key, rule]) => {
-            const error_index = rule.findIndex(v => !v(values[key]));
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'contact_info':
-                    case 'default_advert_description':
-                    case 'payment_info':
-                        errors[key] = getErrorMessages(mapped_key[key])[error_index];
-                        break;
-                    default: {
-                        errors[key] = getErrorMessages[error_index];
-                        break;
-                    }
-                }
-            }
-        });
-
-        return errors;
-    };
 }

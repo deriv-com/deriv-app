@@ -29,12 +29,12 @@ const MyProfile = () => {
     return (
         <AutoSizer>
             {({ height, width }) => (
-                <ThemedScrollbars className='my-profile' height={height} style={{ width }}>
+                <div className='my-profile' height={height} style={{ width }}>
                     <div className='my-profile__content'>
                         <MyProfileHeader />
                         <MyProfileContent />
                     </div>
-                </ThemedScrollbars>
+                </div>
             )}
         </AutoSizer>
     );

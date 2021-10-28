@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Icon, Text, Button } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -16,14 +17,15 @@ const PaymentMethodsEmpty = () => {
                 <Localize i18n_default_text='Hit the button below to add payment methods.' />
             </Text>
             <Button
+                className='payment-methods-empty--button'
                 has_effect
-                medium
+                large
                 primary
-                onClick={() => my_profile_store.setShowAddPaymentMethodForm(true)}
+                onClick={my_profile_store.showAddPaymentMethodForm}
                 text={localize('Add payment methods')}
             />
         </div>
     );
 };
 
-export default PaymentMethodsEmpty;
+export default observer(PaymentMethodsEmpty);

@@ -673,3 +673,107 @@
         }
     }
 }
+
+.dc-modal-header__title {
+    font-size: var(--text-size-m);
+}
+.mul-cfd-compare-accounts {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    background: inherit;
+    position: relative;
+
+    &__table-row {
+        justify-content: center;
+        grid-template-columns: 16% 31% 53%;
+        border-bottom: none;
+    }
+    &__table-head {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        &__text {
+            padding-top: 0.4rem;
+            background-color: var(--brand-red-coral);
+        }
+    }
+
+    .dc-table {
+        padding: 0 30px;
+
+        &__header {
+            border-bottom: 1px solid var(--general-section-1);
+            height: 126px;
+            position: sticky;
+            top: 0;
+            background: var(--general-main-2);
+            z-index: 10;
+        }
+        &__cell,
+        &__head {
+            justify-content: center;
+            margin: 0.6rem;
+            &--fixed {
+                padding-left: 1.6rem;
+            }
+        }
+        &__cell {
+            align-items: center;
+            padding: 0.8rem 0rem;
+            flex-direction: column;
+        }
+
+        &--scrollbar {
+            display: block; // Safari needs this to work properly!
+        }
+    }
+    &-modal {
+        &__wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 2.4rem;
+        }
+    }
+}
+
+.mul-cfd-compare-table-row,
+.mul-cfd-compare-table-row-items {
+    position: relative;
+    justify-content: center;
+    grid-template-columns: 16% 31% 53%;
+
+    .mul-cfd-compare-table-col:first-of-type {
+        position: static;
+    }
+}
+.mul-cfd-compare-table-row-items {
+    grid-template-columns: 16% 31% 53%;
+    justify-content: center;
+}
+
+.mul-cfd-table-cell-icons {
+    display: flex;
+}
+
+.mul-cfd-compare-table-item {
+    padding: 0 0.7rem;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0.9rem;
+    &__text {
+        padding-top: 0.4rem;
+    }
+}
+.mul-cfd-compare-accounts__table-desc {
+    background: (var(--brand-red-coral));
+    color: var(--text-colored-background);
+}
+
+.mul-cfd-compare-accounts__table-footer {
+    width: 100%;
+}

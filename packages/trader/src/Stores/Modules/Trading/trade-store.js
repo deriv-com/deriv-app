@@ -40,6 +40,7 @@ const g_subscribers_map = {}; // blame amin.m
 
 export default class TradeStore extends BaseStore {
     // Control values
+    @observable is_upgrade_modal_visible = false;
     @observable is_trade_component_mounted = false;
     @observable is_purchase_enabled = false;
     @observable is_trade_enabled = false;
@@ -1213,5 +1214,10 @@ export default class TradeStore extends BaseStore {
             return undefined;
         }
         return findFirstOpenMarket(active_symbols, markets_to_search);
+    }
+
+    @action.bound
+    toggleUpgradeModal() {
+        this.is_upgrade_modal_visible = !this.is_upgrade_modal_visible;
     }
 }

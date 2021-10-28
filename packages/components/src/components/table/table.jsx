@@ -5,6 +5,7 @@ import Header from './table-header.jsx';
 import Body from './table-body.jsx';
 import Row from './table-row.jsx';
 import Cell from './table-cell.jsx';
+import Footer from './table-footer.jsx';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
 // TODO: update the <Table /> component to fit with the DataTable in Trader
@@ -35,6 +36,7 @@ Table.Header = Header;
 Table.Body = Body;
 Table.Row = Row;
 Table.Cell = Cell;
+Table.Footer = Footer;
 // TODO add footer
 
 export default Table;

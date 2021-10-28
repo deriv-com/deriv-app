@@ -87,9 +87,5 @@
     },
     "optionalDependencies": {
         "fsevents": "^2.3.2"
-    },
-    "lint-staged": {
-        "./packages/*/{stories,script,src,build}/**/*.{js,jsx,ts,tsx}": "eslint --fix",
-        "./packages/*/{stories,script,src,build}/**/*.{scss}": "stylelint --fix"
     }
 }

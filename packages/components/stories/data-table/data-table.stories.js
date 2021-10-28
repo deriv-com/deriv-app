@@ -33,17 +33,19 @@ const mock_columns = [
 
 const handleRowAction = row_obj => console.log(row_obj);
 
-const handleActionColumns = () => ({ row_obj, is_header, is_footer }) => {
-    if (is_header || is_footer) {
-        return <div className='test__row-action' />;
-    }
-    console.log(row_obj);
-    return (
-        <div className='test__row-action'>
-            <h1>Nither header nor footer!</h1>
-        </div>
-    );
-};
+const handleActionColumns =
+    () =>
+    ({ row_obj, is_header, is_footer }) => {
+        if (is_header || is_footer) {
+            return <div className='test__row-action' />;
+        }
+        console.log(row_obj);
+        return (
+            <div className='test__row-action'>
+                <h1>Nither header nor footer!</h1>
+            </div>
+        );
+    };
 
 const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;

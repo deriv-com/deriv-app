@@ -21,6 +21,8 @@
         "@testing-library/react": "^12.0.0",
         "babel-eslint": "^10.1.0",
         "babel-polyfill": "^6.26.0",
+        "clean-webpack-plugin": "^4.0.0",
+        "css-minimizer-webpack-plugin": "^3.1.1",
         "eslint": "^7.18.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
@@ -35,6 +37,7 @@
         "jest": "^26.4.2",
         "lerna": "^3.22.0",
         "lint-staged": "^10.4.0",
+        "mini-css-extract-plugin": "^2.4.3",
         "postcss": "^8.3.6",
         "prettier": "^2.1.2",
         "react-test-renderer": "^16.13.1",
@@ -86,7 +89,7 @@
         "fsevents": "^2.3.2"
     },
     "lint-staged": {
-        "./packages/*/{stories,script,src,build}/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",
+        "./packages/*/{stories,script,src,build}/**/*.{js,jsx,ts,tsx}": "eslint --fix",
         "./packages/*/{stories,script,src,build}/**/*.{scss}": "stylelint --fix"
     }
 }

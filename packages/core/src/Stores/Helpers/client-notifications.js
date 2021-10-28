@@ -37,9 +37,9 @@ export const clientNotifications = (ui = {}, client = {}, is_iom) => {
         },
         close_mx_account: {
             key: 'close_mx_account',
-            header: is_iom ?
-                localize('Your account is scheduled to be closed') :
-                localize('Your Gaming account is scheduled to be closed'),
+            header: is_iom
+                ? localize('Your account is scheduled to be closed')
+                : localize('Your Gaming account is scheduled to be closed'),
             message: localize('Please proceed to withdraw your funds before 30 November 2021.'),
             secondary_btn: {
                 text: localize('Learn more'),
@@ -540,13 +540,8 @@ const checkAccountStatus = (
         cashier_validation,
     } = account_status;
 
-    const {
-        cashier_locked,
-        withdrawal_locked,
-        deposit_locked,
-        mt5_withdrawal_locked,
-        document_needs_action,
-    } = getStatusValidations(status);
+    const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
+        getStatusValidations(status);
 
     const {
         system_maintenance,

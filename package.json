@@ -31,7 +31,7 @@
         "eslint-plugin-prettier": "^3.3.1",
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
-        "husky": "^4.2.5",
+        "husky": "^7.0.0",
         "jest": "^26.4.2",
         "lerna": "^3.22.0",
         "lint-staged": "^10.4.0",
@@ -75,18 +75,13 @@
         "test:typecheck": "lerna exec --scope=@deriv/dashboard -- npm run test:typecheck",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
-        "stylelint-check": "stylelint-config-prettier-check"
-    },
-    "husky": {
-        "hooks": {
-            "post-merge": "bash ./hooks/post-merge.sh",
-            "pre-commit": "npm run precommit"
-        }
+        "stylelint-check": "stylelint-config-prettier-check",
+        "prepare": "husky install"
     },
     "dependencies": {
+        "dotenv": "^8.2.0",
         "react": "^16.14.0",
-        "react-dom": "^16.14.0",
-        "dotenv": "^8.2.0"
+        "react-dom": "^16.14.0"
     },
     "optionalDependencies": {
         "fsevents": "^2.3.2"

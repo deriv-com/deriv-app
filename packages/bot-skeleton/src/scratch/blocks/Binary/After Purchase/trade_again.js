@@ -75,11 +75,17 @@ Blockly.Blocks.trade_again = {
             STOP_LOSS: input => {
                 const input_number = Number(input);
                 this.error_message = localize('Stop loss must be a positive number.');
+                if (input === '') {
+                    this.error_message = localize('Stop loss must have a value.');
+                }
                 return this.getFieldValue('SL_ENABLED') === 'TRUE' && !isNaN(input_number) && input_number <= 0;
             },
             TAKE_PROFIT: input => {
                 const input_number = Number(input);
                 this.error_message = localize('Take profit must be a positive number.');
+                if (input === '') {
+                    this.error_message = localize('Take profit must have a value.');
+                }
                 return this.getFieldValue('TP_ENABLED') === 'TRUE' && !isNaN(input_number) && input_number <= 0;
             },
         };

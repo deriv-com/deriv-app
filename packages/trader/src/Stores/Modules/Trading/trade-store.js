@@ -297,6 +297,7 @@ export default class TradeStore extends BaseStore {
             this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return;
         } else if (!active_symbols || !active_symbols.length) {
+            await WS.wait('get_settings');
             if (
                 ['gb', 'im'].includes(this.root_store.client.residence) &&
                 this.root_store.client.is_logged_in &&

@@ -1,0 +1,95 @@
+div.payment-agent-transfer {
+    &__wrapper {
+        & .cashier {
+            &__transferred-details-wrapper {
+                & .account-transfer__transfer-details-from {
+                    flex-direction: row-reverse;
+
+                    & > .cashier__transferred-details {
+                        text-align: right;
+                    }
+                }
+                & .dc-icon {
+                    width: 3.2rem;
+                    height: 3.2rem;
+                }
+            }
+            &__form-submit {
+                flex-flow: row;
+                justify-content: center;
+                text-align: center;
+
+                &-button {
+                    margin: 0;
+                    width: 100%;
+                    max-width: 18rem;
+
+                    &:first-child {
+                        margin-right: 0.4rem;
+                    }
+                    &:last-child {
+                        margin-left: 0.4rem;
+                    }
+                }
+            }
+            &__transferred-icon {
+                width: 1.6rem !important;
+                height: 1.6rem !important;
+            }
+            &__success {
+                margin-bottom: 0.8rem;
+            }
+        }
+    }
+    @include mobile {
+        &__wrapper {
+            padding-top: 1.6rem;
+
+            & .cashier {
+                &__header {
+                    margin-top: 0.4rem;
+                }
+                &__form-submit-button {
+                    max-width: 100%;
+
+                    /* iPhone SE screen width fixes due to UI space restrictions */
+                    @media only screen and (max-width: 340px) {
+                        max-width: 150px;
+                    }
+                }
+                &__success {
+                    width: 100%;
+                    background-color: var(--general-main-1);
+                    padding: 0.4rem 0.4rem 0.8rem;
+                    margin-bottom: 1.6rem;
+                }
+                &__transferred-details {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    max-width: 100%;
+                    padding: 0;
+                    margin: 0.8rem 0 0;
+
+                    &-wrapper {
+                        & .cashier__text--bold {
+                            color: var(--text-prominent);
+                        }
+                        & .account-transfer__transfer-details-from {
+                            flex-direction: column;
+                            padding-right: 1.6rem;
+                        }
+                        & .account-transfer__transfer-details-to {
+                            flex-direction: column;
+                            padding-left: 1.6rem;
+                        }
+                    }
+                }
+                &__transferred-icon {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

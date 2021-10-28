@@ -155,43 +155,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get active_account_title() {
-        if (this.residence === 'im') {
-            return localize('Deriv account');
-        }
-        switch (this.landing_company_shortcode) {
-            case 'svg':
-                return localize('Deriv account');
-            case 'iom':
-                if (this.country_standpoint.is_united_kingdom) {
-                    return localize('Deriv Gaming');
-                }
-                return localize('Deriv Synthetic');
-            case 'malta':
-                if (
-                    this.country_standpoint.is_united_kingdom ||
-                    this.country_standpoint.is_rest_of_eu ||
-                    this.country_standpoint.is_belgium
-                ) {
-                    return localize('Options');
-                }
-                return localize('Deriv Synthetic');
-            case 'maltainvest':
-                if (
-                    this.country_standpoint.is_united_kingdom ||
-                    this.country_standpoint.is_france ||
-                    this.country_standpoint.is_other_eu ||
-                    this.country_standpoint.is_rest_of_eu
-                ) {
-                    return localize('Multipliers');
-                }
-                return localize('Deriv Financial');
-            default:
-                return localize('Deriv');
-        }
-    }
-
-    @computed
     get is_reality_check_visible() {
         if (!this.loginid || !this.landing_company) {
             return false;

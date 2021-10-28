@@ -13,7 +13,7 @@ import {
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isDesktop, routes } from '@deriv/shared';
-
+import 'Sass/app/_common/components/mul-cfd-upgrade-modal.scss';
 const data = [
     {
         title: localize('Platforms'),
@@ -238,16 +238,16 @@ const ModalContent = () => {
     );
 };
 
-const UpgradeAccountsModal = ({ is_compare_accounts_visible, toggleCompareAccounts }) => {
+const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts }) => {
     return (
         <div className='cfd-compare-accounts-modal__wrapper'>
             <React.Suspense fallback={<UILoader />}>
                 <DesktopWrapper>
                     <Modal
                         className='mul_cfd_compare-accounts'
-                        is_open={is_compare_accounts_visible}
+                        is_open={is_upgrade_modal_visible}
                         title={localize('Please choose your account')}
-                        toggleModal={toggleCompareAccounts}
+                        toggleModal={toggleUpgradeAccounts}
                         type='button'
                         height='636px'
                         width='739px'
@@ -260,7 +260,7 @@ const UpgradeAccountsModal = ({ is_compare_accounts_visible, toggleCompareAccoun
     );
 };
 
-export default connect(({ modules }) => ({
-    is_upgrade_modal_visible: modules.trade.is_upgrade_modal_visible,
-    toggleUpgradeAccounts: modules.trade.toggleUpgradeModal,
+export default connect(({ ui }) => ({
+    is_upgrade_modal_visible: ui.is_upgrade_modal_visible,
+    toggleUpgradeAccounts: ui.toggleUpgradeModal,
 }))(UpgradeAccountsModal);

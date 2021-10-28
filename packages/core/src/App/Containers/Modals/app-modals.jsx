@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
+import UpgradeAccountsModal from 'App/Components/Elements/Modals/mul-cfd-upgrade-modal.jsx';
 import { connect } from 'Stores/connect';
 
 const AccountSignupModal = React.lazy(() =>
@@ -28,6 +29,7 @@ const AppModals = ({
     is_set_residence_modal_visible,
     is_eu,
     is_logged_in,
+    should_show_upgrade_modal,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -62,6 +64,10 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     }
 
+    if (should_show_upgrade_modal) {
+        ComponentToLoad = <UpgradeAccountsModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} portal_id='popup_root' />
@@ -78,4 +84,5 @@ export default connect(({ client, ui }) => ({
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
+    should_show_upgrade_modal: ui.is_upgrade_modal_visible,
 }))(AppModals);

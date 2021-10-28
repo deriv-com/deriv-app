@@ -57,6 +57,7 @@ const DefaultHeader = ({
     setDarkMode,
     toggleAccountsDialog,
     toggleNotifications,
+    toggleUpgradeModal,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
@@ -70,7 +71,6 @@ const DefaultHeader = ({
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
     }, [removeUpdateNotification]);
 
-    const onClickDeposit = () => history.push(routes.cashier_deposit);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -163,11 +163,11 @@ const DefaultHeader = ({
                             is_notifications_visible={is_notifications_visible}
                             is_logged_in={is_logged_in}
                             is_virtual={is_virtual}
-                            onClickDeposit={onClickDeposit}
                             notifications_count={notifications_count}
                             toggleAccountsDialog={toggleAccountsDialog}
                             toggleNotifications={toggleNotifications}
                             openRealAccountSignup={openRealAccountSignup}
+                            toggleUpgradeModal={toggleUpgradeModal}
                         />
                     </div>
                 </div>
@@ -215,6 +215,7 @@ DefaultHeader.propTypes = {
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
+    toggleUpgradeModal: PropTypes.func,
 };
 
 export default connect(({ client, common, ui, menu, modules }) => ({
@@ -258,4 +259,5 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: ui.toggleNotificationsModal,
+    toggleUpgradeModal: ui.toggleUpgradeModal,
 }))(withRouter(DefaultHeader));

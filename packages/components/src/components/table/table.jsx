@@ -37,6 +37,5 @@ Table.Body = Body;
 Table.Row = Row;
 Table.Cell = Cell;
 Table.Footer = Footer;
-// TODO add footer
 
 export default Table;

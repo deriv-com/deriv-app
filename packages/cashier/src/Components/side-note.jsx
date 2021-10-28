@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Text } from '@deriv/components';
+import '../Sass/side-note.scss';
 
 const SideNoteBullet = ({ children }) => (
     <div className='cashier-side-note__bullet-wrapper'>

@@ -39,9 +39,10 @@ const handleActionColumns =
         if (is_header || is_footer) {
             return <div className='test__row-action' />;
         }
+        console.log(row_obj);
         return (
             <div className='test__row-action'>
-                <h1>Neither header nor footer!</h1>
+                <h1>Nither header nor footer!</h1>
             </div>
         );
     };

@@ -1070,41 +1070,6 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
             this.prepareTradeStore();
         });
-        // TODO: remove this function when the closure of MX accounts is completed.
-        this.manageMXRemovalNotification();
-    }
-
-    @action.bound
-    manageMXRemovalNotification() {
-        const client_notifications = this.root_store.client.client_notifications;
-        const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages'));
-        const is_iom = this.root_store.client.country_standpoint.is_isle_of_man;
-        this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_account' });
-        if (get_notification_messages !== null) {
-            const get_notification_messages_array = Object.fromEntries(
-                Object.entries(get_notification_messages).map(([key, name]) => {
-                    const new_name = name.filter(message => message !== 'close_mx_account');
-                    return [key, new_name];
-                })
-            );
-            localStorage.setItem('notification_messages', JSON.stringify(get_notification_messages_array));
-            this.root_store.ui.addNotificationMessage(
-                client_notifications(this.root_store.ui, {}, is_iom).close_mx_account
-            );
-            reaction(
-                () => this.root_store.ui.notification_messages.length === 0,
-                () => {
-                    const has_iom_account = this.root_store.client.has_iom_account;
-                    const hidden_close_account_notification =
-                        parseInt(localStorage.getItem('hide_close_mx_account_notification')) === 1;
-                    if (has_iom_account && !hidden_close_account_notification) {
-                        this.root_store.ui.addNotificationMessage(
-                            client_notifications(this.root_store.ui, {}, is_iom).close_mx_account
-                        );
-                    }
-                }
-            );
-        }
     }
 
     @action.bound

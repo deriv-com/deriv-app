@@ -155,7 +155,6 @@ export const icons = {
         'IcAlertInfo',
         'IcAlertSuccess',
         'IcAlertWarning',
-        'IcAmplifier',
         'IcArchive',
         'IcArrowDownBold',
         'IcArrowDown',

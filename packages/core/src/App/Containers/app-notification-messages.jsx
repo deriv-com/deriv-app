@@ -28,7 +28,7 @@ const NotificationsContent = ({
             const get_close_mx_notification = notifications.find(item => item.key === 'close_mx_account');
             const is_dtrader = getPathname() === 'DTrader';
             if (!is_dtrader && get_close_mx_notification) {
-                markNotificationMessage({ key: 'close_mx_account' })
+                markNotificationMessage({ key: 'close_mx_account' });
             }
         }
     }, [window_location]);

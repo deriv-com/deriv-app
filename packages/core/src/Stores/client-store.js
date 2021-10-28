@@ -65,7 +65,7 @@ export default class ClientStore extends BaseStore {
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
-    
+
     // TODO: Temporary variable. Remove after MX account closure has finished.
     @observable client_notifications = clientNotifications;
 

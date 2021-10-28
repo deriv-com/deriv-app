@@ -1,7 +1,78 @@
 .close-mx-account {
-    .dc-dialog__wrapper {
+    &--is-fullscreen {
+        max-width: 80vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin: 0 auto;
+
+        @include mobile {
+            max-width: 99vw;
+        }
+        .close-mx-account__content {
+            padding: 14.4rem 0.6rem 2.4rem;
+        }
+    }
+    &-header {
+        width: 100%;
+        height: 214px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #e0f0f0;
+        position: absolute;
+        padding: 0 2rem;
+        top: 0;
+        left: 0;
+        right: 0;
+        border-top-left-radius: 0.8rem;
+        border-top-right-radius: 0.8rem;
+        .dc-icon {
+            width: 96px;
+            height: 96px;
+            margin-bottom: 2.4rem;
+        }
+        &__heading {
+            font-size: 2rem;
+        }
+        @include mobile {
+            height: 132px;
+            .dc-icon {
+                width: 64px;
+                height: 64px;
+                margin-bottom: 0;
+                margin-top: 1.6rem;
+            }
+            .dc-text {
+                margin: 1.6rem 0;
+            }
+            h1 {
+                font-size: 14px;
+            }
+        }
+    }
+    &__content {
+        padding: 21.4rem 0 2.4rem;
+        .close-mx-bullet {
+            list-style: disc;
+            font-size: 1.6rem;
+            margin-left: 2.5rem;
+        }
+        .link {
+            font-weight: unset;
+        }
+        @include mobile {
+            padding: 13.3rem 0 2.4rem;
+        }
+    }
+
+    .dc-dialog__wrapper,
+    &__wrapper {
         z-index: 1001;
-        .dc-dialog__dialog {
+        .dc-dialog__dialog,
+        &__dialog {
             max-height: unset;
             max-width: unset;
             width: 800px;
@@ -14,59 +85,6 @@
                 margin-bottom: 5rem;
                 overflow-y: auto;
                 padding: 0 0.5rem;
-                .close-mx-account-header {
-                    width: 100%;
-                    height: 214px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: #e0f0f0;
-                    position: absolute;
-                    padding: 0 2rem;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    border-top-left-radius: 0.8rem;
-                    border-top-right-radius: 0.8rem;
-                    .dc-icon {
-                        width: 96px;
-                        height: 96px;
-                        margin-bottom: 2.4rem;
-                    }
-                    &__heading {
-                        font-size: 2rem;
-                    }
-                    @include mobile {
-                        height: 132px;
-                        .dc-icon {
-                            width: 64px;
-                            height: 64px;
-                            margin-bottom: 0;
-                            margin-top: 1.6rem;
-                        }
-                        .dc-text {
-                            margin: 1.6rem 0;
-                        }
-                        h1 {
-                            font-size: 14px;
-                        }
-                    }
-                }
-                .close-mx-account__content {
-                    padding: 21.4rem 0 2.4rem;
-                    .close-mx-bullet {
-                        list-style: disc;
-                        font-size: 1.6rem;
-                        margin-left: 2.5rem;
-                    }
-                    .link {
-                        font-weight: unset;
-                    }
-                    @include mobile {
-                        padding: 13.3rem 0 2.4rem;
-                    }
-                }
             }
             .close-mx-account.dc-dialog__footer {
                 position: absolute;

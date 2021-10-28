@@ -7,7 +7,7 @@ import { connect } from 'Stores/connect';
 import { CryptoConfig, isMobile } from '@deriv/shared';
 
 const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto, openRealAccountSignup }) => {
-    currency = CryptoConfig.get()[currency].display_code;
+    const currency_code = CryptoConfig.get()[currency].display_code;
     return (
         <div
             className={classNames({
@@ -21,19 +21,22 @@ const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto,
             >
                 <Text className='cashier-side-note__text' color='prominent' weight='bold' sixe='xs' as='p'>
                     {is_crypto ? (
-                        <Localize i18n_default_text='This is your {{currency}} account.' values={{ currency }} />
+                        <Localize
+                            i18n_default_text='This is your {{currency_code}} account.'
+                            values={{ currency_code }}
+                        />
                     ) : (
                         <Localize
-                            i18n_default_text="Your fiat account's currency is currently set to {{currency}}."
-                            values={{ currency }}
+                            i18n_default_text="Your fiat account's currency is currently set to {{currency_code}}."
+                            values={{ currency_code }}
                         />
                     )}
                 </Text>
                 <Text className='cashier-side-note__text' size='xxs' as='p'>
                     {is_crypto ? (
                         <Localize
-                            i18n_default_text="Don't want to trade in {{currency}}? You can open another cryptocurrency account."
-                            values={{ currency }}
+                            i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
+                            values={{ currency_code }}
                         />
                     ) : can_change_fiat_currency ? (
                         <Localize

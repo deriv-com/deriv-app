@@ -112,7 +112,6 @@ const Row = ({ title, multiplier, cfd, has_icons, mutliplier_desc, cfd_desc }) =
                     {title}
                 </Text>
             </Table.Cell>
-
             <Table.Cell>
                 {has_icons ? (
                     <>
@@ -164,7 +163,6 @@ const ModalContent = () => {
                                 <DesktopWrapper>
                                     <Table.Head />
                                 </DesktopWrapper>
-
                                 <Table.Head>
                                     <div className='mul-cfd-compare-accounts__table-head'>
                                         <Icon icon='IcCrossSolid' size={48} />
@@ -264,6 +262,5 @@ const UpgradeAccountsModal = ({ is_compare_accounts_visible, toggleCompareAccoun
 
 export default connect(({ modules }) => ({
     is_upgrade_modal_visible: modules.trade.is_upgrade_modal_visible,
-
     toggleUpgradeAccounts: modules.trade.toggleUpgradeModal,
 }))(UpgradeAccountsModal);

@@ -1,3 +1,0 @@
-./packages/*/{stories,script,src,build}/**/*.{js,jsx,ts,tsx,scss}:
- - ./node_modules/.bin/prettier --config ./.prettierrc --write "./packages/*/{stories,script,src,build}/**/*.{js,jsx,ts,tsx,scss}"
-

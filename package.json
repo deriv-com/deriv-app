@@ -61,7 +61,6 @@
         "deploy:folder": "f () { export NODE_ENV=staging && npm run build:gh-pages $1 && lerna exec --scope @deriv/core -- npm run deploy:folder $@ && export NODE_ENV= ;}; f",
         "install:qa": "npm --prefix ./e2e_tests ci && echo \"IMPORTANT: copy .env.example to .env and update the values for development.\"",
         "prettify": "./node_modules/.bin/prettier --config ./.prettierrc --write \"./packages/*/{stories,script,src,build}/**/*.{js,jsx,ts,tsx,scss}\"",
-        "precommit": "lint-staged --allow-empty",
         "publish_package": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run publish_package $2 ;}; f",
         "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
         "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
@@ -85,5 +84,9 @@
     },
     "optionalDependencies": {
         "fsevents": "^2.3.2"
+    },
+    "lint-staged": {
+        "./packages/*/{stories,script,src,build}/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",
+        "./packages/*/{stories,script,src,build}/**/*.{scss}": "stylelint --fix"
     }
 }

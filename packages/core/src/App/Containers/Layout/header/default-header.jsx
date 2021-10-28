@@ -28,7 +28,6 @@ const DefaultHeader = ({
     disableApp,
     enableApp,
     header_extension,
-    history,
     is_mf,
     is_acc_switcher_disabled,
     is_acc_switcher_on,

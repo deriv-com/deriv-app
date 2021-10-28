@@ -14,6 +14,7 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isDesktop, routes } from '@deriv/shared';
 import 'Sass/app/_common/components/mul-cfd-upgrade-modal.scss';
+
 const data = [
     {
         title: localize('Platforms'),

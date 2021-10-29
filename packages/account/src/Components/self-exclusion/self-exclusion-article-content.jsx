@@ -65,29 +65,11 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
                 ),
             });
         } else if (!is_app_settings) {
-            eu_items.push(
-                {
-                    component: (
-                        <Localize i18n_default_text='You can also exclude yourself entirely for a specified duration. If, at any time, you decide to trade again, you must then contact our Customer Support to remove this self-exclusion. There will be a 24-hour-cooling-off period before you can resume trading. ' />
-                    ),
-                },
-                {
-                    component: (
-                        <Localize
-                            i18n_default_text='UK clients won’t be able to remove their self-exclusion until the set period has expired. If you wish to continue trading once your self-exclusion period expires, you must contact Customer Support by calling <0>+447723580049</0> to lift this self-exclusion. Requests by chat or email shall not be entertained. There will be a 24-hour cooling-off period before you can resume trading. '
-                            components={[
-                                <a
-                                    key={0}
-                                    className='link'
-                                    rel='noopener noreferrer'
-                                    target='_blank'
-                                    href='tel:+447723580049'
-                                />,
-                            ]}
-                        />
-                    ),
-                }
-            );
+            eu_items.push({
+                component: (
+                    <Localize i18n_default_text='You can also exclude yourself entirely for a specified duration. If, at any time, you decide to trade again, you must then contact our Customer Support to remove this self-exclusion. There will be a 24-hour-cooling-off period before you can resume trading. ' />
+                ),
+            });
         }
 
         return eu_items;

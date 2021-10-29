@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING } from '@deriv/shared/src/utils/constants-storage/CFD';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
@@ -254,7 +255,7 @@ const RealAccountSignup = ({
     };
 
     const showStatusDialog = curr => {
-        if(sessionStorage.getItem('cfd_account_needed')){
+        if (sessionStorage.getItem('cfd_account_needed')) {
             closeModalThenOpenCFD();
         } else {
             setParams({
@@ -273,8 +274,9 @@ const RealAccountSignup = ({
 
     const closeModalThenOpenCFD = () => {
         closeRealAccountSignup();
-        history.push(`${routes.mt5}?q=real_financial#real`); // This is used to signal opening password modal from CFD dashboard
-    }
+        sessionStorage.setItem(CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING, '1');
+        history.push(`${routes.mt5}#real`);
+    };
 
     const closeModalThenOpenCashier = () => {
         replaceCashierMenuOnclick();
@@ -402,14 +404,8 @@ const RealAccountSignup = ({
 
     // set title and body of the modal
     const { title: Title, body: ModalContent } = modal_content[getActiveModalIndex()];
-    const {
-        account_wizard,
-        add_or_manage_account,
-        finished_set_currency,
-        status_dialog,
-        set_currency,
-        signup_error,
-    } = modal_pages_indices;
+    const { account_wizard, add_or_manage_account, finished_set_currency, status_dialog, set_currency, signup_error } =
+        modal_pages_indices;
 
     const has_close_icon = [account_wizard, add_or_manage_account, set_currency, signup_error].includes(
         getActiveModalIndex()

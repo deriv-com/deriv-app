@@ -225,7 +225,7 @@ export const clientNotifications = (ui = {}, client = {}, is_iom) => {
         unwelcome: {
             key: 'unwelcome',
             header: localize('Deposits are locked'),
-            message: localize('Please contact us via live chat to enable deposits.'),
+            message: localize('Please contact us via live chat.'),
             action: {
                 onClick: () => {
                     window.LC_API.open_chat_window();

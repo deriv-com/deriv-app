@@ -4,10 +4,10 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { CryptoConfig, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 
 const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto, openRealAccountSignup }) => {
-    const currency_code = is_crypto ? CryptoConfig.get()[currency].display_code : currency;
+    const currency_code = getCurrencyDisplayCode(currency);
     return (
         <div
             className={classNames({

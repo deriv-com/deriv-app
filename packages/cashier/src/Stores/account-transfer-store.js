@@ -85,18 +85,19 @@ export default class AccountTransferStore {
     // 3. crypto to mt & vice versa
     @action.bound
     async onMountAccountTransfer() {
-        this.root_store.modules.cashier.general_store.setLoading(true);
+        const { onMountCommon, setLoading } = this.root_store.modules.cashier.general_store;
+        const { active_accounts, is_logged_in } = this.root_store.client;
+
+        setLoading(true);
         this.onRemount = this.onMountAccountTransfer;
-        await this.root_store.modules.cashier.general_store.onMountCommon();
+        await onMountCommon();
         await this.WS.wait('website_status');
 
         // check if some balance update has come in since the last mount
         const has_updated_account_balance =
             this.has_no_accounts_balance &&
-            Object.keys(this.root_store.client.active_accounts).find(
-                account =>
-                    !this.root_store.client.active_accounts[account].is_virtual &&
-                    this.root_store.client.active_accounts[account].balance
+            Object.keys(active_accounts).find(
+                account => !active_accounts[account].is_virtual && active_accounts[account].balance
             );
         if (has_updated_account_balance) {
             this.setHasNoAccountsBalance(false);
@@ -105,12 +106,12 @@ export default class AccountTransferStore {
         // various issues happen when loading from cache
         // e.g. new account may have been created, transfer may have been done elsewhere, etc
         // so on load of this page just call it again
-        if (this.root_store.client.is_logged_in) {
+        if (is_logged_in) {
             const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts();
 
             if (transfer_between_accounts.error) {
                 this.error.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-                this.root_store.modules.cashier.general_store.setLoading(false);
+                setLoading(false);
                 return;
             }
 
@@ -136,7 +137,7 @@ export default class AccountTransferStore {
                 }
             }
         }
-        this.root_store.modules.cashier.general_store.setLoading(false);
+        setLoading(false);
     }
 
     canDoAccountTransfer(accounts) {
@@ -452,11 +453,20 @@ export default class AccountTransferStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {
-        if (!this.root_store.client.is_logged_in) {
+        const { setLoading } = this.root_store.modules.cashier.general_store;
+        const {
+            is_logged_in,
+            responseMt5LoginList,
+            responseTradingPlatformAccountsList,
+            setAccountStatus,
+            setBalanceOtherAccounts,
+        } = this.root_store.client;
+
+        if (!is_logged_in) {
             return null;
         }
 
-        this.root_store.modules.cashier.general_store.setLoading(true);
+        setLoading(true);
         this.error.setErrorMessage('');
 
         const is_mt_transfer = this.selected_from.is_mt || this.selected_to.is_mt;
@@ -478,7 +488,7 @@ export default class AccountTransferStore {
             if (transfer_between_accounts.error.code === 'Fiat2CryptoTransferOverLimit') {
                 const account_status_response = await this.WS.authorized.getAccountStatus();
                 if (!account_status_response.error) {
-                    this.root_store.client.setAccountStatus(account_status_response.get_account_status);
+                    setAccountStatus(account_status_response.get_account_status);
                 }
             }
             this.error.setErrorMessage(transfer_between_accounts.error);
@@ -496,9 +506,9 @@ export default class AccountTransferStore {
                     Promise.all([this.WS.mt5LoginList(), this.WS.balanceAll()]).then(
                         ([mt5_login_list_response, balance_response]) => {
                             // update the balance for account switcher by renewing the mt5_login_list response
-                            this.root_store.client.responseMt5LoginList(mt5_login_list_response);
+                            responseMt5LoginList(mt5_login_list_response);
                             // update total balance since MT5 total only comes in non-stream balance call
-                            this.root_store.client.setBalanceOtherAccounts(balance_response.balance);
+                            setBalanceOtherAccounts(balance_response.balance);
                         }
                     );
                 }
@@ -509,16 +519,16 @@ export default class AccountTransferStore {
                         this.WS.balanceAll(),
                     ]).then(([dxtrade_login_list_response, balance_response]) => {
                         // update the balance for account switcher by renewing the dxtrade_login_list_response
-                        this.root_store.client.responseTradingPlatformAccountsList(dxtrade_login_list_response);
+                        responseTradingPlatformAccountsList(dxtrade_login_list_response);
                         // update total balance since Dxtrade total only comes in non-stream balance call
-                        this.root_store.client.setBalanceOtherAccounts(balance_response.balance);
+                        setBalanceOtherAccounts(balance_response.balance);
                     });
                 }
             });
             this.setAccountTransferAmount(null);
             this.setIsTransferConfirm(true);
         }
-        this.root_store.modules.cashier.general_store.setLoading(false);
+        setLoading(false);
         return transfer_between_accounts;
     };
 
@@ -529,68 +539,63 @@ export default class AccountTransferStore {
 
     @action.bound
     setTransferPercentageSelectorResult(amount) {
+        const { crypto_fiat_converter_store, general_store } = this.root_store.modules.cashier;
+
         const selected_from_currency = this.selected_from.currency;
         const selected_to_currency = this.selected_to.currency;
 
         if (amount > 0 || +this.selected_from.balance === 0) {
-            this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromAmount(amount);
+            crypto_fiat_converter_store.setConverterFromAmount(amount);
             this.validateTransferFromAmount();
-            this.root_store.modules.cashier.crypto_fiat_converter_store.onChangeConverterFromAmount(
+            crypto_fiat_converter_store.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 selected_from_currency,
                 selected_to_currency
             );
         }
-        this.root_store.modules.cashier.crypto_fiat_converter_store.setIsTimerVisible(false);
-        this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(false);
+        crypto_fiat_converter_store.setIsTimerVisible(false);
+        general_store.percentageSelectorSelectionStatus(false);
     }
 
     @action.bound
     validateTransferFromAmount() {
-        if (!this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
-            this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(
-                localize('This field is required.')
-            );
+        const { converter_from_amount, setConverterFromError } =
+            this.root_store.modules.cashier.crypto_fiat_converter_store;
+
+        if (!converter_from_amount) {
+            setConverterFromError(localize('This field is required.'));
         } else {
-            const { is_ok, message } = validNumber(
-                this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
-                {
-                    type: 'float',
-                    decimals: getDecimalPlaces(this.selected_from.currency),
-                    min: this.transfer_limit.min,
-                    max: this.transfer_limit.max,
-                }
-            );
+            const { is_ok, message } = validNumber(converter_from_amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(this.selected_from.currency),
+                min: this.transfer_limit.min,
+                max: this.transfer_limit.max,
+            });
             if (!is_ok) {
-                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(message);
-            } else if (
-                +this.selected_from.balance <
-                +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount
-            ) {
-                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(
-                    localize('Insufficient funds')
-                );
+                setConverterFromError(message);
+            } else if (+this.selected_from.balance < +converter_from_amount) {
+                setConverterFromError(localize('Insufficient funds'));
             } else {
-                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError('');
+                setConverterFromError('');
             }
         }
     }
 
     @action.bound
     validateTransferToAmount() {
-        if (this.root_store.modules.cashier.crypto_fiat_converter_store.converter_to_amount) {
+        const { converter_to_amount, setConverterToError } =
+            this.root_store.modules.cashier.crypto_fiat_converter_store;
+
+        if (converter_to_amount) {
             const currency = this.selected_to.currency;
-            const { is_ok, message } = validNumber(
-                this.root_store.modules.cashier.crypto_fiat_converter_store.converter_to_amount,
-                {
-                    type: 'float',
-                    decimals: getDecimalPlaces(currency),
-                }
-            );
+            const { is_ok, message } = validNumber(converter_to_amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+            });
             if (!is_ok) {
-                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterToError(message);
+                setConverterToError(message);
             } else {
-                this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterToError('');
+                setConverterToError('');
             }
         }
     }

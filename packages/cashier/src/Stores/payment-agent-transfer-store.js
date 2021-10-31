@@ -70,7 +70,7 @@ export default class PaymentAgentTransferStore {
         );
         const current_payment_agent =
             payment_agent_listed ||
-            (await this.root_store.modules.cashier?.payment_agent_store.getPaymentAgentDetails());
+            (await this.root_store.modules.cashier.payment_agent_store.getPaymentAgentDetails());
         return current_payment_agent ?? {};
     }
 
@@ -84,15 +84,17 @@ export default class PaymentAgentTransferStore {
 
     @action.bound
     async onMountPaymentAgentTransfer() {
-        this.root_store.modules.cashier.general_store.setLoading(true);
+        const { general_store, payment_agent_store } = this.root_store.modules.cashier;
+
+        general_store.setLoading(true);
         this.onRemount = this.onMountPaymentAgentTransfer;
-        await this.root_store.modules.cashier.general_store.onMountCommon();
+        await general_store.onMountCommon();
         if (!this.transfer_limit.min_withdrawal) {
-            const response = await this.root_store.modules.cashier?.payment_agent_store.getPaymentAgentList();
+            const response = await payment_agent_store.getPaymentAgentList();
             const current_payment_agent = await this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);
         }
-        this.root_store.modules.cashier.general_store.setLoading(false);
+        general_store.setLoading(false);
     }
 
     @action.bound

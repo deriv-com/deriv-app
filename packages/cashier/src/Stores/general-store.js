@@ -41,7 +41,7 @@ export default class GeneralStore extends BaseStore {
     @observable percentage = 0;
     @observable show_p2p_in_cashier_default = false;
 
-    active_container = this.root_store.modules.cashier?.deposit_store.container;
+    active_container = 'deposit';
     onRemount = () => {};
     is_populating_values = false;
 
@@ -119,30 +119,26 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     async onMountCashierDefault() {
+        const { account_prompt_dialog_store, payment_agent_store } = this.root_store.modules.cashier;
         if (!this.has_set_currency) {
             this.setHasSetCurrency();
         }
         this.setIsCashierDefault(true);
-        this.root_store.modules.cashier.account_prompt_dialog_store.resetIsConfirmed();
+        account_prompt_dialog_store.resetIsConfirmed();
 
         this.setLoading(true);
-        if (
-            this.root_store.modules.cashier.payment_agent_store.all_payment_agent_list?.paymentagent_list?.list ===
-            undefined
-        ) {
-            const agent_list = await this.root_store.modules.cashier.payment_agent_store.getAllPaymentAgentList();
-            this.root_store.modules.cashier.payment_agent_store.setAllPaymentAgentList(agent_list);
+        if (payment_agent_store.all_payment_agent_list?.paymentagent_list?.list === undefined) {
+            const agent_list = await payment_agent_store.getAllPaymentAgentList();
+            payment_agent_store.setAllPaymentAgentList(agent_list);
         }
         this.setLoading(false);
     }
 
     @action.bound
     calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
-        if (this.active_container === this.root_store.modules.cashier.account_transfer_store.container) {
-            this.percentage = +(
-                (amount / +this.root_store.modules.cashier.account_transfer_store.selected_from.balance) *
-                100
-            ).toFixed(0);
+        const { account_transfer_store } = this.root_store.modules.cashier;
+        if (this.active_container === account_transfer_store.container) {
+            this.percentage = +((amount / +account_transfer_store.selected_from.balance) * 100).toFixed(0);
         } else {
             this.percentage = +((amount / +this.root_store.client.balance) * 100).toFixed(0);
         }
@@ -194,44 +190,46 @@ export default class GeneralStore extends BaseStore {
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
-        when(
-            () => this.root_store.client.is_logged_in,
-            async () => {
-                await this.getAdvertizerError();
-                this.checkP2pStatus();
-                await this.root_store.modules.cashier.withdraw_store.check10kLimit();
-            }
-        );
-        when(
-            () => this.is_payment_agent_visible,
-            () => this.root_store.modules.cashier?.payment_agent_store.filterPaymentAgentList()
-        );
+        if (this.root_store.modules.cashier) {
+            const { account_prompt_dialog_store, payment_agent_store, withdraw_store } =
+                this.root_store.modules.cashier;
+            const { currency, is_logged_in, switched } = this.root_store.client;
 
-        reaction(
-            () => [
-                this.root_store.client.switched,
-                this.root_store.client.is_logged_in,
-                this.root_store.client.currency,
-            ],
-            async () => {
-                // wait for client settings to be populated in client-store
-                await this.WS.wait('get_settings');
-
-                if (this.root_store.client.is_logged_in) {
+            when(
+                () => is_logged_in,
+                async () => {
                     await this.getAdvertizerError();
-                    this.root_store.modules.cashier.account_prompt_dialog_store.resetLastLocation();
-                    if (!this.root_store.client.switched) this.checkP2pStatus();
-                    await this.root_store.modules.cashier.withdraw_store.check10kLimit();
+                    this.checkP2pStatus();
+                    await withdraw_store.check10kLimit();
                 }
-            }
-        );
+            );
+            when(
+                () => payment_agent_store.is_payment_agent_visible,
+                () => payment_agent_store.filterPaymentAgentList()
+            );
 
-        reaction(
-            () => [this.root_store.client.currency],
-            () => {
-                this.root_store.modules.cashier?.withdraw_store.setIsWithdrawConfirmed(false);
-            }
-        );
+            reaction(
+                () => [switched, is_logged_in, currency],
+                async () => {
+                    // wait for client settings to be populated in client-store
+                    await this.WS.wait('get_settings');
+
+                    if (is_logged_in) {
+                        await this.getAdvertizerError();
+                        account_prompt_dialog_store.resetLastLocation();
+                        if (!switched) this.checkP2pStatus();
+                        await withdraw_store.check10kLimit();
+                    }
+                }
+            );
+
+            reaction(
+                () => [currency],
+                () => {
+                    withdraw_store.setIsWithdrawConfirmed(false);
+                }
+            );
+        }
     }
 
     @action.bound
@@ -254,6 +252,14 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     async onMountCommon(should_remount) {
+        const {
+            account_transfer_store,
+            onramp,
+            payment_agent_store,
+            payment_agent_transfer_store,
+            transaction_history,
+        } = this.root_store.modules.cashier;
+
         if (this.root_store.client.is_logged_in) {
             // avoid calling this again
             if (this.is_populating_values) {
@@ -267,34 +273,29 @@ export default class GeneralStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
-            if (!this.root_store.modules.cashier?.payment_agent_store.list.length) {
-                this.root_store.modules.cashier?.payment_agent_store
-                    .setPaymentAgentList()
-                    .then(this.root_store.modules.cashier?.payment_agent_store.filterPaymentAgentList);
+            if (!payment_agent_store.list.length) {
+                payment_agent_store.setPaymentAgentList().then(payment_agent_store.filterPaymentAgentList);
             }
 
-            if (!this.root_store.modules.cashier?.payment_agent_transfer_store.is_payment_agent) {
-                this.root_store.modules.cashier?.payment_agent_transfer_store.checkIsPaymentAgent();
+            if (!payment_agent_transfer_store.is_payment_agent) {
+                payment_agent_transfer_store.checkIsPaymentAgent();
             }
 
-            if (!this.root_store.modules.cashier?.account_transfer_store.accounts_list.length) {
-                this.root_store.modules.cashier?.account_transfer_store.sortAccountsTransfer();
+            if (!account_transfer_store.accounts_list.length) {
+                account_transfer_store.sortAccountsTransfer();
             }
 
-            if (
-                !this.root_store.modules.cashier.onramp.is_onramp_tab_visible &&
-                window.location.pathname.endsWith(routes.cashier_onramp)
-            ) {
+            if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
 
             if (
-                !this.root_store.modules.cashier.transaction_history.is_crypto_transactions_visible &&
+                !transaction_history.is_crypto_transactions_visible &&
                 window.location.pathname.endsWith(routes.cashier_crypto_transactions)
             ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
-                this.root_store.modules.cashier.transaction_history.setIsCryptoTransactionsVisible(true);
-                this.root_store.modules.cashier.transaction_history.onMount();
+                transaction_history.setIsCryptoTransactionsVisible(true);
+                transaction_history.onMount();
             }
         }
     }
@@ -336,16 +337,18 @@ export default class GeneralStore extends BaseStore {
 
     @computed
     get is_cashier_locked() {
-        if (!this.root_store.client.account_status?.status) return false;
-        const { status } = this.root_store.client.account_status;
+        const { account_status } = this.root_store.client;
+        if (!account_status?.status) return false;
+        const { status } = account_status;
 
         return status.some(status_name => status_name === 'cashier_locked');
     }
 
     @computed
     get is_system_maintenance() {
-        if (!this.root_store.client.account_status?.cashier_validation) return false;
-        const { cashier_validation } = this.root_store.client.account_status;
+        const { account_status } = this.root_store.client;
+        if (!account_status?.cashier_validation) return false;
+        const { cashier_validation } = account_status;
 
         return cashier_validation.some(validation => validation === 'system_maintenance');
     }
@@ -361,18 +364,20 @@ export default class GeneralStore extends BaseStore {
     }
 
     accountSwitcherListener() {
-        this.root_store.modules.cashier?.withdraw_store.verification.clearVerification('payment_withdraw');
-        this.root_store.modules.cashier.payment_agent_store.verification.clearVerification('payment_agent_withdraw');
+        const { deposit_store, payment_agent_store, withdraw_store } = this.root_store.modules.cashier;
 
-        this.root_store.modules.cashier?.deposit_store.iframe.setIframeUrl('');
-        this.root_store.modules.cashier?.deposit_store.iframe.clearTimeoutCashierUrl();
-        this.root_store.modules.cashier?.deposit_store.iframe.setSessionTimeout(true);
+        withdraw_store.verification.clearVerification('payment_withdraw');
+        payment_agent_store.verification.clearVerification('payment_agent_withdraw');
 
-        this.root_store.modules.cashier?.withdraw_store.iframe.setIframeUrl('');
-        this.root_store.modules.cashier?.withdraw_store.iframe.clearTimeoutCashierUrl();
-        this.root_store.modules.cashier?.withdraw_store.iframe.setSessionTimeout(true);
+        deposit_store.iframe.setIframeUrl('');
+        deposit_store.iframe.clearTimeoutCashierUrl();
+        deposit_store.iframe.setSessionTimeout(true);
 
-        this.payment_agent = this.root_store.modules.cashier?.payment_agent_store;
+        withdraw_store.iframe.setIframeUrl('');
+        withdraw_store.iframe.clearTimeoutCashierUrl();
+        withdraw_store.iframe.setSessionTimeout(true);
+
+        this.payment_agent = payment_agent_store;
         this.is_populating_values = false;
 
         this.onRemount();

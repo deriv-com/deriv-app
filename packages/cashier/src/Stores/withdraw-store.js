@@ -11,19 +11,19 @@ export default class WithdrawStore {
 
     @observable blockchain_address = '';
     @observable container = 'withdraw';
-    @observable error = this.root_store.modules.cashier?.error_store;
+    @observable error = this.root_store.modules.cashier.error_store;
     @observable is_10k_withdrawal_limit_reached = undefined;
-    @observable iframe = this.root_store.modules.cashier?.iframe_store;
+    @observable iframe = this.root_store.modules.cashier.iframe_store;
     @observable is_withdraw_confirmed = false;
-    @observable verification = this.root_store.modules.cashier?.verification_store;
+    @observable verification = this.root_store.modules.cashier.verification_store;
     @observable withdraw_amount = '';
 
     @action.bound
     setIsWithdrawConfirmed(is_withdraw_confirmed) {
+        const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter_store;
         this.is_withdraw_confirmed = is_withdraw_confirmed;
 
-        if (is_withdraw_confirmed)
-            this.setWithdrawAmount(this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount);
+        if (is_withdraw_confirmed) this.setWithdrawAmount(converter_from_amount);
 
         if (!is_withdraw_confirmed && this.verification) {
             this.verification.clearVerification('payment_withdraw');
@@ -41,21 +41,21 @@ export default class WithdrawStore {
             return;
         }
 
-        if (!this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
-            this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(
-                localize('This field is required.')
-            );
+        const { crypto_fiat_converter_store, error_dialog } = this.root_store.modules.cashier;
+
+        if (!crypto_fiat_converter_store.converter_from_amount) {
+            crypto_fiat_converter_store.setConverterFromError(localize('This field is required.'));
             return;
         }
 
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
+            amount: +crypto_fiat_converter_store.converter_from_amount,
             verification_code,
             dry_run: 1,
         }).then(response => {
             if (response.error) {
-                this.root_store.modules.cashier.error_dialog.setErrorMessage(response.error.message);
+                error_dialog.setErrorMessage(response.error.message);
             } else {
                 this.saveWithdraw(verification_code);
             }
@@ -64,10 +64,12 @@ export default class WithdrawStore {
 
     @action.bound
     async saveWithdraw(verification_code) {
+        const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter_store;
+
         this.error.setErrorMessage('');
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
+            amount: +converter_from_amount,
             verification_code,
         }).then(response => {
             if (response.error) {
@@ -85,9 +87,11 @@ export default class WithdrawStore {
 
     @action.bound
     resetWithrawForm() {
+        const { setConverterFromAmount, setConverterToAmount } =
+            this.root_store.modules.cashier.crypto_fiat_converter_store;
         this.setBlockchainAddress('');
-        this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromAmount('');
-        this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterToAmount('');
+        setConverterFromAmount('');
+        setConverterToAmount('');
         this.verification.clearVerification('payment_withdraw');
     }
 
@@ -105,14 +109,16 @@ export default class WithdrawStore {
 
     @action.bound
     async onMountWithdraw(verification_code) {
-        this.root_store.modules.cashier.general_store.setLoading(true);
+        const { crypto_fiat_converter_store, general_store } = this.root_store.modules.cashier;
+
+        general_store.setLoading(true);
         const strRegExp = /^\w{8,128}$/;
         let response_cashier;
 
         if (strRegExp.test(verification_code)) {
             response_cashier = await this.WS.cryptoWithdraw({
                 address: this.blockchain_address,
-                amount: +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
+                amount: +crypto_fiat_converter_store.converter_from_amount,
                 verification_code,
                 dry_run: 1,
             });
@@ -122,7 +128,7 @@ export default class WithdrawStore {
 
         if (response_cashier.error.code === 'InvalidToken') {
             this.error.handleCashierError(response_cashier.error);
-            this.root_store.modules.cashier.general_store.setLoading(false);
+            general_store.setLoading(false);
             this.iframe.setSessionTimeout(true);
             this.iframe.clearTimeoutCashierUrl();
             if (verification_code) {
@@ -130,7 +136,7 @@ export default class WithdrawStore {
                 this.verification.clearVerification('payment_withdraw');
             }
         } else {
-            this.root_store.modules.cashier.general_store.setLoading(false);
+            general_store.setLoading(false);
         }
         if (this.error) {
             this.error.setErrorMessage(this.error, this.onMountWithdraw);
@@ -167,17 +173,20 @@ export default class WithdrawStore {
 
     @action.bound
     setWithdrawPercentageSelectorResult(amount) {
+        const { crypto_fiat_converter_store, general_store } = this.root_store.modules.cashier;
+        const { currency, current_fiat_currency } = this.root_store.client;
+
         if (amount > 0) {
-            this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromAmount(amount);
+            crypto_fiat_converter_store.setConverterFromAmount(amount);
             this.validateWithdrawFromAmount();
-            this.root_store.modules.cashier.crypto_fiat_converter_store.onChangeConverterFromAmount(
+            crypto_fiat_converter_store.onChangeConverterFromAmount(
                 { target: { value: amount } },
-                this.root_store.client.currency,
-                this.root_store.client.current_fiat_currency || 'USD'
+                currency,
+                current_fiat_currency || 'USD'
             );
         }
-        this.root_store.modules.cashier.crypto_fiat_converter_store.setIsTimerVisible(false);
-        this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(false);
+        crypto_fiat_converter_store.setIsTimerVisible(false);
+        general_store.percentageSelectorSelectionStatus(false);
     }
 
     @action.bound
@@ -185,25 +194,20 @@ export default class WithdrawStore {
         let error_message = '';
 
         const { balance, currency, website_status } = this.root_store.client;
+        const { converter_from_amount, setConverterFromError } =
+            this.root_store.modules.cashier.crypto_fiat_converter_store;
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
 
-        if (this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
-            const { is_ok, message } = validNumber(
-                this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount,
-                {
-                    type: 'float',
-                    decimals: getDecimalPlaces(currency),
-                }
-            );
+        if (converter_from_amount) {
+            const { is_ok, message } = validNumber(converter_from_amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+            });
             if (!is_ok) error_message = message;
 
-            if (+balance < +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount)
-                error_message = localize('Insufficient funds');
+            if (+balance < +converter_from_amount) error_message = localize('Insufficient funds');
 
-            if (
-                +this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount <
-                +min_withdraw_amount
-            ) {
+            if (+converter_from_amount < +min_withdraw_amount) {
                 error_message = (
                     <Localize
                         i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'
@@ -212,33 +216,31 @@ export default class WithdrawStore {
                 );
             }
         }
-        this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterFromError(error_message);
+        setConverterFromError(error_message);
     }
 
     @action.bound
     validateWithdrawToAmount() {
         let error_message = '';
         const { current_fiat_currency } = this.root_store.client;
+        const { converter_to_amount, setConverterToError } =
+            this.root_store.modules.cashier.crypto_fiat_converter_store;
 
-        if (this.root_store.modules.cashier.crypto_fiat_converter_store.converter_to_amount) {
-            const { is_ok, message } = validNumber(
-                this.root_store.modules.cashier.crypto_fiat_converter_store.converter_to_amount,
-                {
-                    type: 'float',
-                    decimals: getDecimalPlaces(current_fiat_currency),
-                }
-            );
+        if (converter_to_amount) {
+            const { is_ok, message } = validNumber(converter_to_amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(current_fiat_currency),
+            });
             if (!is_ok) error_message = message;
         }
 
-        this.root_store.modules.cashier.crypto_fiat_converter_store.setConverterToError(error_message);
+        setConverterToError(error_message);
     }
 
     @computed
     get account_platform_icon() {
-        const platform_icon = this.root_store.client.account_list.find(
-            acc => this.root_store.client.loginid === acc.loginid
-        ).icon;
+        const { account_list, loginid } = this.root_store.client;
+        const platform_icon = account_list.find(acc => loginid === acc.loginid).icon;
 
         return platform_icon;
     }

@@ -8,7 +8,7 @@ export default class VerificationStore {
 
     @observable is_button_clicked = false;
     @observable timeout_button = '';
-    @observable error = this.root_store?.modules.cashier.error_store;
+    @observable error = this.root_store.modules.cashier.error_store;
     @observable is_email_sent = false;
     @observable is_resend_clicked = false;
     @observable resend_timeout = 60;
@@ -60,6 +60,7 @@ export default class VerificationStore {
             return;
         }
 
+        const { resetPaymentAgent } = this.root_store.modules.cashier.payment_agent_store;
         this.error.setErrorMessage('');
         this.setIsButtonClicked(true);
         const withdrawal_type = container === 'payment_agent_withdraw' ? 'paymentagent_withdraw' : 'payment_withdraw';
@@ -67,11 +68,7 @@ export default class VerificationStore {
         if (response_verify_email.error) {
             this.clearVerification(container);
             if (response_verify_email.error.code === 'PaymentAgentWithdrawError') {
-                this.error.setErrorMessage(
-                    response_verify_email.error,
-                    this.root_store.modules.cashier?.payment_agent_store.resetPaymentAgent,
-                    null
-                );
+                this.error.setErrorMessage(response_verify_email.error, resetPaymentAgent, null);
             } else {
                 this.error.setErrorMessage(
                     response_verify_email.error,

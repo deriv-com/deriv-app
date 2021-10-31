@@ -8,16 +8,19 @@ export default class DepositStore {
     }
 
     @observable container = 'deposit';
-    @observable error = this.root_store.modules.cashier?.error_store;
-    @observable iframe = this.root_store.modules.cashier?.iframe_store;
+    @observable error = this.root_store.modules.cashier.error_store;
+    @observable iframe = this.root_store.modules.cashier.iframe_store;
 
     @action.bound
     async onMountDeposit(verification_code) {
-        const current_container = this.root_store.modules.cashier.general_store.active_container;
+        const { general_store, withdraw_store } = this.root_store.modules.cashier;
+        const { active_container, setLoading } = general_store;
+        const { currency, is_virtual } = this.root_store.client;
+        const current_container = active_container;
 
         this.error.setErrorMessage('');
         this.iframe.setContainerHeight(0);
-        this.root_store.modules.cashier.general_store.setLoading(true);
+        setLoading(true);
 
         if (!this.iframe.is_session_timeout) {
             this.iframe.checkIframeLoaded();
@@ -26,39 +29,33 @@ export default class DepositStore {
 
         // if session has timed out reset everything
         this.iframe.setIframeUrl('');
-        if (
-            (this.root_store.modules.cashier.general_store.active_container ===
-                this.root_store.modules.cashier?.withdraw_store.container &&
-                !verification_code) ||
-            this.root_store.client.is_virtual
-        ) {
-            this.root_store.modules.cashier.general_store.setLoading(false);
+        if ((active_container === withdraw_store.container && !verification_code) || is_virtual) {
+            setLoading(false);
             // if virtual, clear everything and don't proceed further
             // if no verification code, we should request again
             return;
         }
 
-        const response_cashier = await this.WS.authorized.cashier(
-            this.root_store.modules.cashier.general_store.active_container,
-            { verification_code }
-        );
+        const response_cashier = await this.WS.authorized.cashier(active_container, {
+            verification_code,
+        });
 
         // if tab changed while waiting for response, ignore it
-        if (current_container !== this.root_store.modules.cashier.general_store.active_container) {
-            this.root_store.modules.cashier.general_store.setLoading(false);
+        if (current_container !== active_container) {
+            setLoading(false);
             return;
         }
         if (response_cashier.error) {
             this.error.handleCashierError(response_cashier.error);
-            this.root_store.modules.cashier.general_store.setLoading(false);
+            setLoading(false);
             this.iframe.setSessionTimeout(true);
             this.iframe.clearTimeoutCashierUrl();
             if (verification_code) {
                 // clear verification code on error
                 this.verification.clearVerification();
             }
-        } else if (isCryptocurrency(this.root_store.client.currency)) {
-            this.root_store.modules.cashier.general_store.setLoading(false);
+        } else if (isCryptocurrency(currency)) {
+            setLoading(false);
             this.iframe.setContainerHeight('380');
             this.iframe.setIframeUrl(response_cashier.cashier);
             // crypto cashier can only be accessed once and the session expires

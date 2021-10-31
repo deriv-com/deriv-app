@@ -12,7 +12,7 @@ export default class IframeStore {
     @observable is_session_timeout = true;
 
     onIframeLoaded = '';
-    timeout_session = '';
+    @observable timeout_session = '';
 
     @action.bound
     setSessionTimeout(is_session_time_out) {

@@ -108,7 +108,7 @@ Blockly.JavaScript.trade_again = block => {
     const stop_loss = Blockly.JavaScript.valueToCode(block, 'STOP_LOSS', Blockly.JavaScript.ORDER_ATOMIC) || 0;
     const take_profit = Blockly.JavaScript.valueToCode(block, 'TAKE_PROFIT', Blockly.JavaScript.ORDER_ATOMIC) || 0;
     const code = `
-    Bot.isTradeAgain(${is_sl_enabled === 'TRUE'}, ${is_tp_enabled === 'TRUE'}, ${stop_loss}, ${take_profit} );
+    Bot.isTradeAgain(null, ${is_sl_enabled === 'TRUE'}, ${is_tp_enabled === 'TRUE'}, ${stop_loss}, ${take_profit});
     return true;\n
     `;
 

@@ -54,8 +54,14 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             sellAtMarket: () => this.tradeEngine.sellAtMarket(),
             getSellPrice: () => this.getSellPrice(),
             isResult: result => getDetail(10) === result,
-            isTradeAgain: (is_sl_enabled, is_tp_enabled, stop_loss, take_profit) => {
-                globalObserver.emit('bot.trade_again', { is_sl_enabled, is_tp_enabled, stop_loss, take_profit });
+            isTradeAgain: (is_continue, is_sl_enabled, is_tp_enabled, stop_loss, take_profit) => {
+                globalObserver.emit('bot.trade_again', {
+                    is_continue,
+                    is_sl_enabled,
+                    is_tp_enabled,
+                    stop_loss,
+                    take_profit,
+                });
             },
             readDetails: i => getDetail(i - 1),
         };

@@ -470,6 +470,10 @@ export default class RunPanelStore {
 
     @action.bound
     onBotTradeAgain(result) {
+        if (result.is_continue === false) {
+            this.onStopButtonClick();
+            return false;
+        }
         const { client } = this.root_store.core;
         const profit = getRoundedNumber(Number(this.statistics.profit_per_run));
         if (
@@ -485,7 +489,9 @@ export default class RunPanelStore {
 
             this.showErrorMessage(message);
             this.onStopButtonClick();
+            return false;
         }
+        return true;
     }
 
     @action.bound

@@ -74,7 +74,7 @@ const WarningModal = props => {
 };
 
 const GeneralErrorContent = ({ message, onClick }) => (
-    <React.Fragment>
+    <>
         <div className='deactivate-account-error__container deactivate-account-error__container-message'>
             <div className='deactivate-account-error__details deactivate-account-error__details-message'>{message}</div>
         </div>
@@ -83,7 +83,7 @@ const GeneralErrorContent = ({ message, onClick }) => (
                 {localize('OK')}
             </Button>
         </div>
-    </React.Fragment>
+    </>
 );
 
 const character_limit_no = 110;
@@ -204,9 +204,7 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
 
     if (is_account_deactivated) return <Redirect to={routes.account_deactivated} />;
 
-    if (is_loading) {
-        return <Loading is_fullscreen={false} />;
-    }
+    if (is_loading) return <Loading is_fullscreen={false} />;
 
     return (
         <div

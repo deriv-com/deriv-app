@@ -7,7 +7,7 @@ import { connect } from 'Stores/connect';
 import { CryptoConfig, isMobile } from '@deriv/shared';
 
 const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto, openRealAccountSignup }) => {
-    const currency_code = CryptoConfig.get()[currency].display_code;
+    const currency_code = is_crypto ? CryptoConfig.get()[currency].display_code : currency;
     return (
         <div
             className={classNames({

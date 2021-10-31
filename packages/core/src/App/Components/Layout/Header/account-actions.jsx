@@ -29,10 +29,10 @@ const AccountActions = React.memo(
         is_notifications_visible,
         is_virtual,
         notifications_count,
+        onClickDeposit,
         openRealAccountSignup,
         toggleAccountsDialog,
         toggleNotifications,
-        toggleUpgradeModal,
     }) => {
         const { is_dashboard } = React.useContext(PlatformContext);
 
@@ -115,7 +115,7 @@ const AccountActions = React.memo(
                                 className='acc-info__button'
                                 has_effect
                                 text={localize('Deposit')}
-                                onClick={toggleUpgradeModal}
+                                onClick={onClickDeposit}
                                 primary
                             />
                         )}
@@ -147,10 +147,10 @@ AccountActions.propTypes = {
     is_notifications_visible: PropTypes.any,
     is_virtual: PropTypes.any,
     notifications_count: PropTypes.any,
+    onClickDeposit: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
     toggleAccountsDialog: PropTypes.any,
     toggleNotifications: PropTypes.any,
-    toggleUpgradeModal: PropTypes.any,
 };
 
 export { AccountActions };

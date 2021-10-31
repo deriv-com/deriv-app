@@ -100,7 +100,7 @@ const Items = ({ items }) =>
     ));
 const MultilineRowItems = ({ items }) =>
     items.map((item, index) => (
-        <Text key={index} as='p' weight='bold' align='center' color='prominent' size='xxs'>
+        <Text key={index} as='p' weight='bold' align='center' color='prominent' size='xxxs'>
             {item}
         </Text>
     ));
@@ -170,14 +170,8 @@ const ModalContent = () => {
                                         <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
                                             {'Multipliers'}
                                         </Text>
-                                        <div>
-                                            <Text
-                                                as='p'
-                                                align='center'
-                                                color='less-prominent'
-                                                size='xxxs'
-                                                className='mul-cfd-compare-accounts__table-desc'
-                                            >
+                                        <div className='mul-cfd-compare-accounts__table-desc'>
+                                            <Text as='p' align='center' color='var(--general-main-1)' size='xxxs'>
                                                 {'You are currently using this in demo'}
                                             </Text>
                                         </div>
@@ -198,7 +192,7 @@ const ModalContent = () => {
                                 <Row key={row.title} {...row} />
                             ))}
                         </Table.Body>
-                        <Table.Footer>
+                        <Table.Footer className='mul-cfd-compare-accounts__table-footer'>
                             <Table.Row className='mul-cfd-compare-accounts__table-row'>
                                 <DesktopWrapper>
                                     <Table.Cell />

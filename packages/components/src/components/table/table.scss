@@ -48,6 +48,9 @@
             justify-content: flex-end;
         }
     }
+    &__footer {
+        height: 80px;
+    }
     &--scroll {
         .dc-table__header {
             position: sticky;

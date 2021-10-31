@@ -11,6 +11,9 @@
 }
 
 .cashier {
+    &__hint {
+        color: var(--text-general);
+    }
     &__crypto-account-transfer__receipt {
         display: flex;
         flex-direction: column;

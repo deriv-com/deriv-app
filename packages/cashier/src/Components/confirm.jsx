@@ -4,6 +4,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Icon, Text } from '@deriv/components';
 import FormError from './Error/form-error.jsx';
+import '../Sass/confirm.scss';
 
 const Row = ({ item_key, label, value }) => (
     <div className='cashier__confirm-row'>

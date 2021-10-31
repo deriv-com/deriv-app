@@ -6,6 +6,7 @@ import { Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import '../../Sass/virtual.scss';
 
 const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSignup, toggleAccountsDialog }) => {
     const onClickSignup = () => {

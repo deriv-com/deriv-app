@@ -187,7 +187,7 @@ const CashierLocked = ({
     } else if (is_deposit_lock && unwelcome_status) {
         icon = 'IcCashierDepositLock';
         title = localize('Deposits are locked');
-        message = localize('Please contact us via live chat to enable deposits.');
+        message = localize('Please contact us via live chat.');
     } else if (is_withdrawal_lock && no_withdrawal_or_trading_status) {
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');

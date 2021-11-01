@@ -19,7 +19,6 @@
         "@babel/preset-react": "^7.12.10",
         "@jest/globals": "^26.5.3",
         "@testing-library/react": "^12.0.0",
-        "@testing-library/jest-dom": "^5.12.0",
         "babel-eslint": "^10.1.0",
         "babel-polyfill": "^6.26.0",
         "chai": "^4.2.0",
@@ -37,8 +36,6 @@
         "eslint-plugin-testing-library": "^4.2.0",
         "husky": "^4.2.5",
         "jest": "^26.4.2",
-        "jest-chain": "^1.1.5",
-        "jest-extended": "^0.11.5",
         "lerna": "^3.22.0",
         "lint-staged": "^10.4.0",
         "mocha": "^7.1.1",
@@ -93,7 +90,10 @@
     "dependencies": {
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
-        "dotenv": "^8.2.0"
+        "dotenv": "^8.2.0",
+        "@testing-library/jest-dom": "^5.12.0",
+        "jest-extended": "^0.11.5",
+        "jest-chain": "^1.1.5"
     },
     "optionalDependencies": {
         "fsevents": "^2.3.2"

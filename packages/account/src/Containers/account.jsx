@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
-import { routes as shared_routes, isEmptyObject, isMobile, getSelectedRoute, PlatformContext } from '@deriv/shared';
+import { routes as shared_routes, isMobile, getSelectedRoute, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
@@ -28,7 +28,6 @@ const AccountLogout = ({ logout, history }) => {
 };
 
 const Account = ({
-    account_status,
     currency,
     history,
     is_logged_in,
@@ -42,7 +41,6 @@ const Account = ({
     should_allow_authentication,
     toggleAccount,
 }) => {
-    const [is_loading, setIsLoading] = React.useState(true);
     const { is_dashboard } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
@@ -55,19 +53,8 @@ const Account = ({
     const onClickClose = React.useCallback(() => routeBackInApp(history), [routeBackInApp, history]);
 
     React.useEffect(() => {
-        if (should_allow_authentication) {
-            setIsLoading(false);
-        }
         toggleAccount(true);
-    }, [should_allow_authentication, toggleAccount]);
-
-    if (
-        !is_loading &&
-        !isEmptyObject(account_status) &&
-        ((is_virtual && /financial-assessment/.test(selected_content.path)) ||
-            (!should_allow_authentication && /proof-of-identity|proof-of-address/.test(selected_content.path)))
-    )
-        routeBackInApp(history);
+    }, [toggleAccount]);
 
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
@@ -153,7 +140,6 @@ const Account = ({
 };
 
 Account.propTypes = {
-    account_status: PropTypes.object,
     currency: PropTypes.string,
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
@@ -168,7 +154,6 @@ Account.propTypes = {
 };
 
 export default connect(({ client, common, ui }) => ({
-    account_status: client.account_status,
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,

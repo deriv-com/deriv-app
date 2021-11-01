@@ -180,6 +180,15 @@ const BinarySocketBase = (() => {
 
     const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
+    const cashierPayments = ({ provider, transaction_type }) =>
+        deriv_api.send({ cashier_payments: 1, provider, transaction_type });
+
+    const subscribeCashierPayments = cb =>
+        subscribe({ cashier_payments: 1, provider: 'crypto', transaction_type: 'all' }, cb);
+
+    const cancelCryptoTransaction = transaction_id =>
+        deriv_api.send({ cashier_withdrawal_cancel: 1, id: transaction_id });
+
     const newAccountVirtual = (verification_code, client_password, residence, email_consent, device_data) =>
         deriv_api.send({
             new_account_virtual: 1,
@@ -250,6 +259,11 @@ const BinarySocketBase = (() => {
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
 
+    const allPaymentAgentList = country => deriv_api.send({ paymentagent_list: country });
+
+    const paymentAgentDetails = (passthrough, req_id) =>
+        deriv_api.send({ paymentagent_details: 1, passthrough, req_id });
+
     const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code, dry_run = 0 }) =>
         deriv_api.send({
             amount,
@@ -258,6 +272,17 @@ const BinarySocketBase = (() => {
             paymentagent_withdraw: 1,
             dry_run,
             paymentagent_loginid: loginid,
+        });
+
+    const cryptoWithdraw = ({ address, amount, verification_code, dry_run = 0 }) =>
+        deriv_api.send({
+            cashier: 'withdraw',
+            provider: 'crypto',
+            type: 'api',
+            address,
+            amount,
+            verification_code,
+            dry_run,
         });
 
     const paymentAgentTransfer = ({ amount, currency, description, transfer_to, dry_run = 0 }) =>
@@ -376,8 +401,12 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
+        cashierPayments,
+        subscribeCashierPayments,
+        cancelCryptoTransaction,
         cancelContract,
         close,
+        cryptoWithdraw,
         contractUpdate,
         contractUpdateHistory,
         getFinancialAssessment,
@@ -396,6 +425,8 @@ const BinarySocketBase = (() => {
         tradingPlatformInvestorPasswordReset,
         activeSymbols,
         paymentAgentList,
+        allPaymentAgentList,
+        paymentAgentDetails,
         paymentAgentWithdraw,
         paymentAgentTransfer,
         setAccountCurrency,

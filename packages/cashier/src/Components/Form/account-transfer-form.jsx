@@ -3,23 +3,15 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import {
-    Button,
-    Dropdown,
-    Icon,
-    Input,
-    Loading,
-    Money,
-    DesktopWrapper,
-    MobileWrapper,
-    SelectNative,
-    Text,
-} from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
-import { getAccountText } from '../../_common/utility';
+import PercentageSelector from '../percentage-selector';
+import RecentTransaction from '../recent-transaction.jsx';
+import '../../Sass/account-transfer.scss';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;
@@ -41,7 +33,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 
             <div className='account-transfer__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
-                    {getAccountText(account)}
+                    {account.is_dxtrade || account.is_mt ? account.text : getCurrencyName(account.currency)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}
@@ -74,7 +66,7 @@ const AccountTransferBullet = ({ children }) => (
     </div>
 );
 
-const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
+const AccountTransferNote = ({ currency, transfer_fee, minimum_fee, is_dxtrade_allowed }) => (
     <div className='account-transfer__notes'>
         <DesktopWrapper>
             <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
@@ -95,12 +87,11 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
             />
         </AccountTransferBullet>
         <AccountTransferBullet>
-            {/* TODO: Uncomment when real account is launched */}
-            {/* {is_dxtrade_allowed ? (
+            {is_dxtrade_allowed ? (
                 <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account and Deriv X account.' />
-            ) : ( */}
-            <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, or your Deriv account and Deriv MT5 (DMT5) account.' />
-            {/* )} */}
+            ) : (
+                <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, or your Deriv account and Deriv MT5 (DMT5) account.' />
+            )}
         </AccountTransferBullet>
         <AccountTransferBullet>
             <Localize i18n_default_text='Transfers may be unavailable when the market is closed (weekends or holidays), periods of high volatility, or when there are technical issues.' />
@@ -118,29 +109,46 @@ let mt_accounts_to = [];
 let dxtrade_accounts_to = [];
 
 const AccountTransferForm = ({
-    account_transfer_amount,
-    onMount,
-    transfer_limit,
     account_limits,
-    selected_from,
-    selected_to,
     accounts_list,
-    setAccountTransferAmount,
-    setSideNotes,
-    transfer_fee,
+    account_transfer_amount,
+    converter_from_amount,
+    converter_from_error,
+    converter_to_amount,
+    converter_to_error,
+    crypto_transactions,
+    error,
+    is_crypto,
     is_dxtrade_allowed,
     is_dark_mode_on,
     minimum_fee,
     mt5_login_list,
     onChangeTransferFrom,
     onChangeTransferTo,
+    onMount,
+    percentage,
+    resetConverter,
+    recentTransactionOnMount,
+    requestTransferBetweenAccounts,
     setErrorMessage,
-    setIsTransferConfirm,
-    error,
+    setTransferPercentageSelectorResult,
+    selected_from,
+    selected_to,
+    setAccountTransferAmount,
+    setSideNotes,
+    should_percentage_reset,
+    transfer_fee,
+    transfer_limit,
+    validateTransferFromAmount,
+    validateTransferToAmount,
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
     const [transfer_to_hint, setTransferToHint] = React.useState();
+
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [recentTransactionOnMount]);
 
     const validateAmount = amount => {
         if (!amount) return localize('This field is required.');
@@ -153,7 +161,7 @@ const AccountTransferForm = ({
         });
         if (!is_ok) return message;
 
-        if (+selected_from.balance < +amount) return localize('Insufficient balance.');
+        if (+selected_from.balance < +amount) return localize('Insufficient balance');
 
         return undefined;
     };
@@ -258,17 +266,22 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
-            setSideNotes([
+            const side_notes = [];
+            if (is_crypto && crypto_transactions?.length) {
+                side_notes.push(<RecentTransaction key={2} />);
+            }
+            side_notes.push(
                 <AccountTransferNote
                     transfer_fee={transfer_fee}
                     currency={selected_from.currency}
                     minimum_fee={minimum_fee}
                     key={0}
                     is_dxtrade_allowed={is_dxtrade_allowed}
-                />,
-            ]);
+                />
+            );
+            setSideNotes(side_notes);
         }
-    }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed]);
+    }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed, crypto_transactions]);
 
     React.useEffect(() => {
         const { daily_transfers } = account_limits;
@@ -295,6 +308,7 @@ const AccountTransferForm = ({
                 ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
                 : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
         setTransferToHint(hint);
+        resetConverter();
     }, [selected_to, selected_from, account_limits]);
 
     return (
@@ -311,21 +325,16 @@ const AccountTransferForm = ({
             <Formik
                 initialValues={{
                     amount: account_transfer_amount || '',
+                    converter_from_amount: converter_from_amount || '',
+                    converter_to_amount: converter_to_amount || '',
                 }}
                 onSubmit={() => {
-                    setIsTransferConfirm(true);
+                    requestTransferBetweenAccounts({ amount: +account_transfer_amount });
                 }}
+                validateOnBlur={false}
+                enableReinitialize
             >
-                {({
-                    errors,
-                    isSubmitting,
-                    isValid,
-                    touched,
-                    setFieldValue,
-                    setFieldTouched,
-                    setFieldError,
-                    handleChange,
-                }) => (
+                {({ errors, handleChange, isSubmitting, touched, setFieldValue, setFieldTouched, setFieldError }) => (
                     <React.Fragment>
                         {isSubmitting || accounts_list.length === 0 ? (
                             <div className='cashier__loader-wrapper'>
@@ -334,115 +343,125 @@ const AccountTransferForm = ({
                         ) : (
                             <Form>
                                 <div className='cashier__drop-down-wrapper account-transfer__drop-down-wrapper'>
-                                    <DesktopWrapper>
-                                        <Dropdown
-                                            id='transfer_from'
-                                            className='cashier__drop-down account-transfer__drop-down'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
-                                            classNameItems='cashier__drop-down-items'
-                                            classNameLabel='cashier__drop-down-label'
-                                            is_large
-                                            label={localize('From')}
-                                            list={from_accounts}
-                                            list_height='404'
-                                            name='transfer_from'
-                                            value={selected_from.value}
-                                            onChange={e => {
-                                                onChangeTransferFrom(e);
-                                                handleChange(e);
-                                                setFieldValue('amount', '');
-                                                setFieldError('amount', '');
-                                                setFieldTouched('amount', false);
-                                            }}
-                                            error={selected_from.error}
-                                        />
-                                    </DesktopWrapper>
-                                    <MobileWrapper>
-                                        <SelectNative
-                                            placeholder={localize('Please select')}
-                                            className='account-transfer__transfer-from'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            name='transfer_from'
-                                            label={localize('From')}
-                                            value={selected_from.value}
-                                            list_items={from_accounts}
-                                            onChange={e => {
-                                                onChangeTransferFrom(e);
-                                                handleChange(e);
-                                                setFieldValue('amount', '');
-                                                setFieldError('amount', '');
-                                                setFieldTouched('amount', false);
-                                            }}
-                                            error={selected_from.error}
-                                        />
-                                    </MobileWrapper>
-                                    <DesktopWrapper>
-                                        <Dropdown
-                                            id='transfer_to'
-                                            className='cashier__drop-down account-transfer__drop-down account-transfer__drop-down--to-dropdown'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
-                                            classNameItems='cashier__drop-down-items'
-                                            classNameLabel='cashier__drop-down-label'
-                                            classNameHint='cashier__hint'
-                                            is_large
-                                            label={localize('To')}
-                                            list={to_accounts}
-                                            list_height='404'
-                                            name='transfer_to'
-                                            value={selected_to.value}
-                                            onChange={onChangeTransferTo}
-                                            hint={transfer_to_hint}
-                                            error={selected_to.error}
-                                        />
-                                    </DesktopWrapper>
-                                    <MobileWrapper>
-                                        <SelectNative
-                                            placeholder={localize('Please select')}
-                                            className='account-transfer__transfer-to'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameHint='cashier__hint'
-                                            label={localize('To')}
-                                            name='transfer_to'
-                                            value={selected_to.value}
-                                            list_items={to_accounts}
-                                            onChange={onChangeTransferTo}
-                                            hint={transfer_to_hint}
-                                            error={selected_to.error}
-                                        />
-                                    </MobileWrapper>
+                                    <Dropdown
+                                        id='transfer_from'
+                                        className='cashier__drop-down account-transfer__drop-down'
+                                        classNameDisplay='cashier__drop-down-display'
+                                        classNameDisplaySpan='cashier__drop-down-display-span'
+                                        classNameItems='cashier__drop-down-items'
+                                        classNameLabel='cashier__drop-down-label'
+                                        is_large
+                                        label={localize('From')}
+                                        list={from_accounts}
+                                        list_height='404'
+                                        name='transfer_from'
+                                        value={selected_from.value}
+                                        onChange={e => {
+                                            onChangeTransferFrom(e);
+                                            handleChange(e);
+                                            setFieldValue('amount', '');
+                                            setFieldError('amount', '');
+                                            setFieldTouched('amount', false);
+                                        }}
+                                        error={selected_from.error}
+                                    />
+                                    <Dropdown
+                                        id='transfer_to'
+                                        className='cashier__drop-down account-transfer__drop-down account-transfer__drop-down--to-dropdown'
+                                        classNameDisplay='cashier__drop-down-display'
+                                        classNameDisplaySpan='cashier__drop-down-display-span'
+                                        classNameItems='cashier__drop-down-items'
+                                        classNameLabel='cashier__drop-down-label'
+                                        classNameHint='cashier__hint'
+                                        is_large
+                                        label={localize('To')}
+                                        list={to_accounts}
+                                        list_height='404'
+                                        name='transfer_to'
+                                        value={selected_to.value}
+                                        onChange={e => {
+                                            onChangeTransferTo(e);
+                                            setFieldValue('amount', '');
+                                            setFieldError('amount', '');
+                                            setFieldTouched('amount', false);
+                                        }}
+                                        hint={transfer_to_hint}
+                                        error={selected_to.error}
+                                    />
                                 </div>
-                                <Field name='amount' validate={validateAmount}>
-                                    {({ field }) => (
-                                        <Input
-                                            {...field}
-                                            onChange={e => {
-                                                setErrorMessage('');
-                                                handleChange(e);
-                                                setAccountTransferAmount(e.target.value);
-                                                setFieldTouched('amount', true, false);
-                                            }}
-                                            className='cashier__input dc-input--no-placeholder account-transfer__input'
-                                            classNameHint='cashier__hint'
-                                            type='text'
-                                            label={localize('Amount')}
-                                            error={touched.amount && errors.amount ? errors.amount : ''}
-                                            required
-                                            trailing_icon={
-                                                selected_from.currency ? (
-                                                    <span
-                                                        className={classNames(
-                                                            'symbols',
-                                                            `symbols--${selected_from.currency.toLowerCase()}`
-                                                        )}
-                                                    >
-                                                        {getCurrencyDisplayCode(selected_from.currency)}
-                                                    </span>
-                                                ) : undefined
-                                            }
-                                            autoComplete='off'
-                                            maxLength='30'
+                                {selected_from.currency === selected_to.currency ? (
+                                    <Field name='amount' validate={validateAmount}>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                onChange={e => {
+                                                    setErrorMessage('');
+                                                    handleChange(e);
+                                                    setAccountTransferAmount(e.target.value);
+                                                    setFieldTouched('amount', true, false);
+                                                }}
+                                                className='cashier__input dc-input--no-placeholder account-transfer__input'
+                                                classNameHint='cashier__hint'
+                                                type='text'
+                                                label={localize('Amount')}
+                                                error={touched.amount && errors.amount ? errors.amount : ''}
+                                                required
+                                                trailing_icon={
+                                                    selected_from.currency ? (
+                                                        <span
+                                                            className={classNames(
+                                                                'symbols',
+                                                                `symbols--${selected_from.currency.toLowerCase()}`
+                                                            )}
+                                                        >
+                                                            {getCurrencyDisplayCode(selected_from.currency)}
+                                                        </span>
+                                                    ) : undefined
+                                                }
+                                                autoComplete='off'
+                                                maxLength='30'
+                                                hint={
+                                                    transfer_limit.max ? (
+                                                        <Localize
+                                                            i18n_default_text='Transfer limits: <0 /> - <1 />'
+                                                            components={[
+                                                                <Money
+                                                                    key={0}
+                                                                    amount={transfer_limit.min}
+                                                                    currency={selected_from.currency}
+                                                                    show_currency
+                                                                />,
+                                                                <Money
+                                                                    key={1}
+                                                                    amount={transfer_limit.max}
+                                                                    currency={selected_from.currency}
+                                                                    show_currency
+                                                                />,
+                                                            ]}
+                                                        />
+                                                    ) : (
+                                                        ''
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                ) : (
+                                    <div>
+                                        <div className='crypto-account-transfer__percentage-selector'>
+                                            <PercentageSelector
+                                                amount={+selected_from.balance}
+                                                currency={selected_from.currency}
+                                                from_account={selected_from.value}
+                                                getCalculatedAmount={setTransferPercentageSelectorResult}
+                                                percentage={percentage}
+                                                should_percentage_reset={should_percentage_reset}
+                                                to_account={selected_to.value}
+                                            />
+                                        </div>
+                                        <CryptoFiatConverter
+                                            from_currency={selected_from.currency}
+                                            to_currency={selected_to.currency}
                                             hint={
                                                 transfer_limit.max ? (
                                                     <Localize
@@ -466,19 +485,28 @@ const AccountTransferForm = ({
                                                     ''
                                                 )
                                             }
+                                            validateFromAmount={validateTransferFromAmount}
+                                            validateToAmount={validateTransferToAmount}
                                         />
-                                    )}
-                                </Field>
+                                    </div>
+                                )}
                                 <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
                                     <Button
-                                        className='cashier__form-submit-button'
+                                        className={classNames({
+                                            'cashier__form-submit-button':
+                                                selected_from.currency === selected_to.currency,
+                                            'cashier__account-transfer__form-submit-button':
+                                                selected_from.currency !== selected_to.currency,
+                                        })}
                                         type='submit'
                                         is_disabled={
-                                            !isValid ||
                                             isSubmitting ||
                                             !+remaining_transfers ||
                                             !!selected_from.error ||
-                                            !!selected_to.error
+                                            !!selected_to.error ||
+                                            !+selected_from.balance ||
+                                            !!converter_from_error ||
+                                            !!converter_to_error
                                         }
                                         primary
                                         large
@@ -487,10 +515,12 @@ const AccountTransferForm = ({
                                     </Button>
                                 </div>
                                 <MobileWrapper>
+                                    {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
                                     <AccountTransferNote
                                         transfer_fee={transfer_fee}
                                         currency={selected_from.currency}
                                         minimum_fee={minimum_fee}
+                                        is_dxtrade_allowed={is_dxtrade_allowed}
                                     />
                                 </MobileWrapper>
                                 <FormError error={error} />
@@ -506,35 +536,63 @@ const AccountTransferForm = ({
 AccountTransferForm.propTypes = {
     account_limits: PropTypes.object,
     accounts_list: PropTypes.array,
+    account_transfer_amount: PropTypes.string,
+    converter_from_amount: PropTypes.string,
+    converter_from_error: PropTypes.string,
+    converter_to_error: PropTypes.string,
+    converter_to_amount: PropTypes.string,
+    crypto_transactions: PropTypes.array,
     error: PropTypes.object,
+    is_crypto: PropTypes.bool,
     minimum_fee: PropTypes.string,
     onChangeTransferFrom: PropTypes.func,
     onChangeTransferTo: PropTypes.func,
     onMount: PropTypes.func,
+    percentage: PropTypes.number,
+    resetConverter: PropTypes.func,
+    recentTransactionOnMount: PropTypes.func,
+    requestTransferBetweenAccounts: PropTypes.func,
     selected_from: PropTypes.object,
-    selected_to: PropTypes.object,
     setErrorMessage: PropTypes.func,
+    selected_to: PropTypes.object,
+    setTransferPercentageSelectorResult: PropTypes.func,
     setSideNotes: PropTypes.func,
+    should_percentage_reset: PropTypes.bool,
     transfer_fee: PropTypes.number,
     transfer_limit: PropTypes.object,
+    validateTransferFromAmount: PropTypes.func,
+    validateTransferToAmount: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({
     account_limits: client.account_limits,
-    account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
-    onMount: client.getLimits,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
+    account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
+    converter_from_amount: modules.cashier.converter_from_amount,
+    converter_from_error: modules.cashier.converter_from_error,
+    converter_to_amount: modules.cashier.converter_to_amount,
+    converter_to_error: modules.cashier.converter_to_error,
+    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
+    is_crypto: modules.cashier.is_crypto,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     mt5_login_list: client.mt5_login_list,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
     onChangeTransferTo: modules.cashier.onChangeTransferTo,
+    onMount: client.getLimits,
+    percentage: modules.cashier.percentage,
+    resetConverter: modules.cashier.resetConverter,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
+    requestTransferBetweenAccounts: modules.cashier.requestTransferBetweenAccounts,
+    setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
+    setErrorMessage: modules.cashier.setErrorMessage,
     selected_from: modules.cashier.config.account_transfer.selected_from,
     selected_to: modules.cashier.config.account_transfer.selected_to,
-    setErrorMessage: modules.cashier.setErrorMessage,
-    setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
-    setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
+    setTransferPercentageSelectorResult: modules.cashier.setTransferPercentageSelectorResult,
+    should_percentage_reset: modules.cashier.should_percentage_reset,
     transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
+    validateTransferFromAmount: modules.cashier.validateTransferFromAmount,
+    validateTransferToAmount: modules.cashier.validateTransferToAmount,
 }))(AccountTransferForm);

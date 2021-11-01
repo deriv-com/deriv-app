@@ -2,19 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress } from './linear-progress.jsx';
 
-const LinearProgressContainer = ({ timeout, action, render, className }) => {
-    const [timeout_state, setTimeout] = React.useState(timeout / 1000);
-    const [current_tick, setCurrentTick] = React.useState(Math.round(timeout / 1000));
-    const [total_ticks] = React.useState(Math.round(timeout / 1000));
+const LinearProgressContainer = ({
+    timeout,
+    action,
+    render,
+    className,
+    should_store_in_session,
+    session_id,
+    linear_progress_container_ref,
+}) => {
+    const current_progress_timeout = sessionStorage.getItem(`linear_progress_timeout_${session_id}`);
 
-    const getProgress = () => 100 - Math.round((current_tick / total_ticks) * 100);
+    const popup_timeout = !current_progress_timeout ? timeout / 1000 : current_progress_timeout;
+    const [timeout_state, setTimeoutState] = React.useState(popup_timeout);
+    const time_past = 100 - (timeout_state / (timeout / 1000)) * 100;
 
+    const getProgress = () => time_past;
     const getRemaining = () => (timeout_state > 0 ? timeout_state : 0);
-
     const makeProgress = () => {
-        setCurrentTick(current => current - 1);
-        setTimeout(timeout_current => timeout_current - 1);
+        setTimeoutState(timeout_current => timeout_current - 1);
     };
+
+    React.useImperativeHandle(linear_progress_container_ref, () => ({
+        removeTimeoutSession() {
+            if (should_store_in_session) {
+                sessionStorage.removeItem(`linear_progress_timeout_${session_id}`);
+            }
+        },
+    }));
+
+    React.useEffect(() => {
+        if (should_store_in_session) {
+            sessionStorage.setItem(`linear_progress_timeout_${session_id}`, timeout_state);
+        }
+    }, [timeout_state]);
 
     React.useEffect(() => {
         const interval = setInterval(makeProgress, 1000);
@@ -28,6 +49,14 @@ const LinearProgressContainer = ({ timeout, action, render, className }) => {
             action();
         }
     });
+
+    if (current_progress_timeout <= 0) {
+        sessionStorage.removeItem(`linear_progress_timeout_${session_id}`);
+    } else if (current_progress_timeout > 0) {
+        sessionStorage.setItem(`linear_progress_timeout_${session_id}`, timeout_state);
+    } else {
+        return null;
+    }
 
     if (!timeout) return null;
 
@@ -45,4 +74,4 @@ LinearProgressContainer.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
-export default LinearProgressContainer;
+export default React.forwardRef(LinearProgressContainer);

@@ -28,7 +28,12 @@ export default function register() {
                 .register(sw_url)
                 .then(registration => {
                     interval_id = setInterval(() => {
-                        registration.update().then(refreshOnUpdate);
+                        registration
+                            .update()
+                            .then(refreshOnUpdate)
+                            .catch(error => {
+                                console.error('Error during service worker update:', error); // eslint-disable-line no-console
+                            });
                     }, EVERY_HOUR);
 
                     registration.onupdatefound = () => {

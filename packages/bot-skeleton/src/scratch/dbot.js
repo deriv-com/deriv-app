@@ -243,11 +243,21 @@ class DBot {
 
         top_blocks.forEach(block => {
             if (!block.isMainBlock() && !block.isIndependentBlock()) {
-                block.setDisabled(true);
+                this.disableBlocksRecursively(block);
             }
         });
 
         return true;
+    }
+
+    /**
+     * Disable blocks and their optional children.
+     */
+    disableBlocksRecursively(block) {
+        block.setDisabled(true);
+        if (block.nextConnection?.targetConnection) {
+            this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
+        }
     }
 
     /**
@@ -309,8 +319,7 @@ class DBot {
                     'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
-        }
-        if (!isAllRequiredBlocksEnabled(this.workspace)) {
+        } else if (!isAllRequiredBlocksEnabled(this.workspace)) {
             error = new Error(
                 localize(
                     'One or more mandatory blocks are disabled in your workspace. Please enable the required block(s) and then try again.'

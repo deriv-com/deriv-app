@@ -512,8 +512,12 @@ export default class CashierStore extends BaseStore {
                 if (this.root_store.client.is_logged_in) {
                     await this.getAdvertizerError();
                     this.account_prompt_dialog.resetLastLocation();
-                    if (!this.root_store.client.switched) this.checkP2pStatus();
-                    await this.check10kLimit();
+                    if (!this.root_store.client.switched) {
+                        this.checkP2pStatus();
+                        // check if withdrawal limit is reached
+                        // if yes, this will trigger to show a notification
+                        await this.check10kLimit();
+                    }
                 }
             }
         );

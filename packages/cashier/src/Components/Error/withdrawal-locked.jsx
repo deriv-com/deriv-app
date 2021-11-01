@@ -11,7 +11,7 @@ const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_
     const { document, identity, needs_verification } = account_status.authentication;
     const is_poi_needed = is_10K_limit && identity.status !== 'verified';
     const has_poi_submitted = identity.status !== 'none';
-    const is_poa_needed = is_10K_limit && (needs_verification.includes('document') || document.status !== 'verified');
+    const is_poa_needed = is_10K_limit && (needs_verification.includes('document') || document?.status !== 'verified');
     const has_poa_submitted = document?.status !== 'none';
     const is_ask_financial_risk_approval_needed = is_10K_limit && is_ask_financial_risk_approval;
     const history = useHistory();

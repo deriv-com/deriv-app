@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, StaticUrl, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -204,15 +204,7 @@ const CashierLocked = ({
     } else if (is_withdrawal_lock && only_pa_withdrawals_allowed_status) {
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');
-        message = (
-            <Localize
-                i18n_default_text='You can only make deposits. Please <0>contact us</0> via live chat for more information.'
-                values={{
-                    interpolation: { escapeValue: false },
-                }}
-                components={[<StaticUrl key={0} className='link' href='contact-us/?is_livechat_open=true' />]}
-            />
-        );
+        message = localize('You can only make deposits. Please contact us via live chat for more information.');
     }
 
     return (

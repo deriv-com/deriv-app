@@ -16,6 +16,7 @@ import {
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
+import './app.scss';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;

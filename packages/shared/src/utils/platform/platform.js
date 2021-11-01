@@ -10,6 +10,7 @@ export const platform_name = Object.freeze({
     DXtrade: 'Deriv X',
     DMT5: 'DMT5',
     SmartTrader: 'SmartTrader',
+    BinaryBot: 'Binary Bot',
 });
 
 export const CFD_PLATFORMS = Object.freeze({
@@ -58,8 +59,12 @@ export const getPlatformInformation = routing_history => {
         return { header: platform_name.DXtrade, icon: 'IcBrandDxtrade' };
     }
 
-    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) {
+    if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
         return { header: platform_name.SmartTrader, icon: 'IcBrandSmarttrader' };
+    }
+
+    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
+        return { header: platform_name.BinaryBot, icon: 'IcBrandBinarybot' };
     }
     return { header: platform_name.DTrader, icon: 'IcBrandDtrader' };
 };
@@ -68,7 +73,8 @@ export const getActivePlatform = routing_history => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
     if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return 'Deriv X';
-    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
+    if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
+    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) return 'Binary Bot';
     return 'DTrader';
 };
 
@@ -79,9 +85,12 @@ export const getPlatformRedirect = routing_history => {
         return { name: platform_name.DMT5, route: routes.mt5 };
     if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade))
         return { name: platform_name.DXtrade, route: routes.dxtrade };
-    if (isNavigationFromPlatform(routing_history, routes.smarttrader))
+    if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader))
         return { name: platform_name.SmartTrader, route: routes.smarttrader };
     if (isNavigationFromP2P(routing_history, routes.cashier_p2p)) return { name: 'P2P', route: routes.cashier_p2p };
+    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot))
+        return { name: platform_name.BinaryBot, route: routes.binarybot };
+
     return { name: platform_name.DTrader, route: routes.trade };
 };
 
@@ -127,4 +136,8 @@ export const isNavigationFromP2P = (routing_history, platform_route) => {
     const routing_history_index = routing_history.length > 1 ? 1 : 0;
     const history_item = routing_history[routing_history_index];
     return history_item?.pathname === platform_route;
+};
+
+export const isNavigationFromExternalPlatform = (routing_history, platform_route) => {
+    return routing_history.some(history_item => history_item.pathname === platform_route);
 };

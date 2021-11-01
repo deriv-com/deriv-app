@@ -12,10 +12,10 @@ const validRequired = (value /* , options, field */) => {
 };
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
-export const validTaxID = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
+export const validTaxID = value => /(?!^$|\s+)[A-Za-z0-9.\/\s-]$/.test(value);
 export const validPhone = value => /^\+?((-|\s)*[0-9])*$/.test(value);
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
-export const validLength = (value, options) =>
+export const validLength = (value = '', options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 const validBarrier = value => /^[+-]?\d+\.?\d*$/.test(value);
@@ -49,13 +49,6 @@ export const validNumber = (value, opts) => {
     if (!(options.type === 'float' ? /^\d*(\.\d+)?$/ : /^\d+$/).test(value) || isNaN(value)) {
         is_ok = false;
         message = form_error_messages.number();
-    } else if (
-        options.type === 'float' &&
-        options.decimals &&
-        !new RegExp(`^\\d+(\\.\\d{0,${options.decimals}})?$`).test(value)
-    ) {
-        is_ok = false;
-        message = form_error_messages.decimalPlaces(options.decimals);
     } else if ('min' in options && 'max' in options && +options.min === +options.max && +value !== +options.min) {
         is_ok = false;
         message = form_error_messages.value(addComma(options.min));
@@ -69,6 +62,13 @@ export const validNumber = (value, opts) => {
         const min_value = addComma(options.min);
         const max_value = addComma(options.max);
         message = form_error_messages.betweenMinMax(min_value, max_value);
+    } else if (
+        options.type === 'float' &&
+        options.decimals &&
+        !new RegExp(`^\\d+(\\.\\d{0,${options.decimals}})?$`).test(value)
+    ) {
+        is_ok = false;
+        message = form_error_messages.decimalPlaces(options.decimals);
     } else if ('min' in options && +value < +options.min) {
         is_ok = false;
         const min_value = addComma(options.min);

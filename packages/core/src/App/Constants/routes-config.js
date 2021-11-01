@@ -363,6 +363,11 @@ const getModules = ({ is_dashboard }) => {
                     getTitle: () => localize('Fiat onramp'),
                     icon_component: 'IcCashierOnRamp',
                 },
+                {
+                    path: routes.cashier_crypto_transactions,
+                    component: Cashier,
+                    is_invisible: true,
+                },
             ],
         },
         {

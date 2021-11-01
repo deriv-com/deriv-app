@@ -164,10 +164,18 @@ const PersonalDetails = ({
                                             </Text>
                                         </div>
                                     )}
+
                                     <div
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
+                                        {'salutation' in props.value && (
+                                            <div>
+                                                <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
+                                                    <Localize i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.' />
+                                                </Text>
+                                            </div>
+                                        )}
                                         {!is_dashboard && (
                                             <FormSubHeader
                                                 title={

@@ -9,7 +9,6 @@ import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
 import { getContractPath } from 'App/Components/Routes/helpers';
-import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
 import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
@@ -85,8 +84,8 @@ const ProfitTable = ({
     }, {});
 
     const mobileRowRenderer = ({ row, is_footer }) => {
-        const duration_type = getContractDurationType(row.longcode, row.shortcode);
-        const duration_classname = `duration-type__${duration_type.toLowerCase()}`;
+        const duration_type = /^MULTUP|MULTDOWN/.test(row.shortcode) ? '' : row.duration_type;
+        const duration_classname = duration_type ? `duration-type__${duration_type.toLowerCase()}` : '';
 
         if (is_footer) {
             return (

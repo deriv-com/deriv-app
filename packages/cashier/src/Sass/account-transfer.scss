@@ -1,0 +1,112 @@
+.crypto-account-transfer {
+    &__percentage-selector {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2.4rem;
+        & .dc-text {
+            margin-top: 0.4rem;
+        }
+    }
+}
+
+.cashier {
+    &__crypto-account-transfer__receipt {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding-top: 2.4rem;
+    }
+    &__crypto-transferred {
+        &-details {
+            display: flex;
+            &-wrapper {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                width: 100%;
+                padding: 0 1.8rem;
+                @include desktop {
+                    max-width: 40rem;
+                }
+                & .crypto {
+                    &-transferred-icon {
+                        margin: 3.2rem 0;
+                    }
+                    &-transfer {
+                        &-from,
+                        &-to {
+                            border: 1px solid var(--border-normal);
+                            border-radius: $BORDER_RADIUS * 2;
+                            padding: 1.2rem 3.4rem;
+                            width: 100%;
+                            &-details {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin-bottom: 0.8rem;
+                                & .dc-text {
+                                    margin-left: 0.8rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &-amount {
+            margin: 1.8rem 0;
+        }
+    }
+    &__account-transfer__form-submit-button {
+        @include desktop {
+            margin: 3.4rem 0 2.4rem;
+        }
+        @include mobile {
+            margin: 2.4rem 0;
+        }
+    }
+    .account-transfer {
+        &__drop-down-wrapper {
+            @include mobile {
+                margin-top: 1.2rem;
+                .dc-dropdown__display {
+                    min-height: 4rem;
+                }
+            }
+        }
+    }
+    .crypto-transfer__receipt-form-submit {
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0 4rem;
+            .dc-btn {
+                &--primary {
+                    margin: 0 auto;
+                    width: 100%;
+                }
+                &--secondary {
+                    margin: 2rem auto;
+                }
+            }
+        }
+    }
+}
+#account_transfer {
+    @include mobile() {
+        &_switch_modal {
+            .dc-modal {
+                &-header__close {
+                    margin: 2.4rem 1.6rem 0;
+                }
+                &-body {
+                    font-size: 1.4rem;
+                }
+            }
+        }
+    }
+}

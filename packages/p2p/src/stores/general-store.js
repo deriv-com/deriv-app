@@ -251,6 +251,10 @@ export default class GeneralStore extends BaseStore {
                     [this.setP2pOrderList]
                 ),
             };
+
+            if (this.ws_subscriptions) {
+                this.setIsLoading(false);
+            }
         });
     }
 

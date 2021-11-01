@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ThemedScrollbars from '../themed-scrollbars';
 
-const TableRowInfo = ({ replace, is_footer, cells, className }) => {
+const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height, measure }) => {
     const [show_details, setShowDetails] = React.useState(false);
 
     const toggleDetails = () => {
@@ -12,15 +12,25 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
         }
     };
 
+    React.useEffect(() => {
+        if (is_dynamic_height) {
+            measure?.();
+        }
+    }, [show_details]);
+
     return (
         <div
             onClick={is_footer || !replace ? undefined : toggleDetails}
             className={classNames(className, { 'statement__row--detail': show_details })}
         >
             {show_details ? (
-                <ThemedScrollbars height='80px'>
+                is_dynamic_height ? (
                     <div>{replace?.component}</div>
-                </ThemedScrollbars>
+                ) : (
+                    <ThemedScrollbars height='80px'>
+                        <div>{replace?.component}</div>
+                    </ThemedScrollbars>
+                )
             ) : (
                 cells
             )}
@@ -36,6 +46,8 @@ TableRowInfo.propTypes = {
         message: PropTypes.string,
     }),
     is_footer: PropTypes.bool,
+    is_dynamic_height: PropTypes.bool,
+    measure: PropTypes.func,
 };
 
 export default TableRowInfo;

@@ -131,9 +131,8 @@ class CFDDashboard extends React.Component {
         if (index === 1) updated_state.is_demo_tab = true;
         else if (index === 0) updated_state.is_demo_tab = false;
 
-        const index_to_set = this.getIndexToSet();
-        if (index_to_set && this.state.active_index !== index_to_set) {
-            updated_state.active_index = index_to_set;
+        if (index !== undefined && this.state.active_index !== index) {
+            updated_state.active_index = index;
         }
 
         if (!isEmptyObject(updated_state)) {

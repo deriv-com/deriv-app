@@ -214,6 +214,7 @@ export default class CashierStore extends BaseStore {
     @observable should_percentage_reset = false;
     @observable percentage = 0;
     @observable is_withdraw_confirmed = false;
+    @observable show_p2p_in_cashier_default = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -268,6 +269,21 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    @action.bound
+    showP2pInCashierDefault() {
+        const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
+        const has_usd_currency = this.root_store.client.account_list.some(account => account.title === 'USD');
+        const has_user_fiat_currency = this.root_store.client.account_list.some(
+            account => !isCryptocurrency(account.title) && account.title !== 'Real'
+        );
+
+        if (is_p2p_restricted || this.root_store.client.is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
+            this.show_p2p_in_cashier_default = false;
+        } else {
+            this.show_p2p_in_cashier_default = true;
+        }
     }
 
     @action.bound
@@ -475,6 +491,7 @@ export default class CashierStore extends BaseStore {
             async () => {
                 await this.getAdvertizerError();
                 this.checkP2pStatus();
+                await this.check10kLimit();
             }
         );
         when(
@@ -496,6 +513,7 @@ export default class CashierStore extends BaseStore {
                     await this.getAdvertizerError();
                     this.account_prompt_dialog.resetLastLocation();
                     if (!this.root_store.client.switched) this.checkP2pStatus();
+                    await this.check10kLimit();
                 }
             }
         );
@@ -511,7 +529,12 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async getAdvertizerError() {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
-        this.p2p_advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+        this.setP2pAdvertiserError(getPropertyValue(advertiser_info, ['error', 'code']));
+    }
+
+    @action.bound
+    setP2pAdvertiserError(value) {
+        this.p2p_advertiser_error = value;
     }
 
     @action.bound
@@ -882,7 +905,6 @@ export default class CashierStore extends BaseStore {
                     is_ask_authentication: true,
                 };
                 break;
-            case 'FinancialAssessmentRequired':
             case 'ASK_FINANCIAL_RISK_APPROVAL':
                 this.config[this.active_container].error = {
                     is_ask_financial_risk_approval: true,
@@ -912,8 +934,7 @@ export default class CashierStore extends BaseStore {
             if (response.error) {
                 this.setErrorConfig('message', response.error.message);
             } else {
-                this.setErrorConfig('is_ask_uk_funds_protection', false);
-                this.onMount();
+                location.reload();
             }
         });
     }

@@ -1,8 +1,8 @@
-import { Icon, Modal, Popover, StaticUrl } from '@deriv/components';
-import { deriv_urls } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import MGALogo from 'Assets/SvgComponents/footer/mga.svg';
 import React from 'react';
+import { Icon, Modal, Popover, StaticUrl } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
+import { deriv_urls } from '@deriv/shared';
+import MGALogo from 'Assets/SvgComponents/footer/mga.svg';
 
 const MLTRegulatoryInformation = () => (
     <div className='footer-regulatory-information'>

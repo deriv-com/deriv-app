@@ -1,5 +1,7 @@
-import { ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
+import '../public-path'; // Leave this here (at the top)! OK boss!
+import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
+import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
     Audio,
     BlocklyLoading,
@@ -7,16 +9,13 @@ import {
     BotNotificationMessages,
     MainContent,
     QuickStrategy,
-    RoutePromptDialog,
     RunPanel,
+    RoutePromptDialog,
     Toolbar,
 } from 'Components';
-import React from 'react'; // eslint-disable-line import/first
-import RootStore from 'Stores';
 import { MobxContentProvider } from 'Stores/connect';
+import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
-import '../public-path'; // Leave this here (at the top)! OK boss!
-import './app.scss';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;

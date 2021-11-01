@@ -1,11 +1,11 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { Swipeable } from 'react-swipeable';
-import { useInterval } from '../../hooks';
-import Icon from '../icon';
 import Card from './carousel-card.jsx';
 import Nav from './carousel-nav.jsx';
+import Icon from '../icon';
+import { useInterval } from '../../hooks';
 
 const Carousel = ({
     active_bullet_color,

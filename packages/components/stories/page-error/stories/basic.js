@@ -1,6 +1,6 @@
+import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import PageError from 'Components/page-error';
-import React from 'react';
 import Wrapper from '../../shared/wrapper';
 
 const Basic = () => (

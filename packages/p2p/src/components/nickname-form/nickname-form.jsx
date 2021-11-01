@@ -1,11 +1,11 @@
-import { Button, Icon, Input, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import IconClose from 'Assets/icon-close.jsx';
-import { localize } from 'Components/i18next';
-import { Field, Form, Formik, useFormikContext } from 'formik';
-import { observer } from 'mobx-react-lite';
 import * as React from 'react';
+import { useFormikContext, Formik, Field, Form } from 'formik';
+import { Button, Input, Icon, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import { localize } from 'Components/i18next';
+import IconClose from 'Assets/icon-close.jsx';
 import NicknameFormWrapper from './nickname-form-wrapper.jsx';
 import './nickname-form.scss';
 

@@ -1,12 +1,13 @@
-import { Button, Checkbox, FormSubmitButton, Icon, Input, Loading, Modal, Text } from '@deriv/components';
-import { PlatformContext, routes, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import classNames from 'classnames';
-import { Field, Formik } from 'formik';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import classNames from 'classnames';
+import { routes, PlatformContext } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
+import { Formik, Field } from 'formik';
+import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import AccountHasPendingConditions from './account-has-balance.jsx';
+import { WS } from 'Services/ws-methods';
+import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
 
 const initial_form = {
     'I have other financial priorities': false,
@@ -18,21 +19,21 @@ const initial_form = {
     'The platforms lack key features or functionality': false,
     'Customer service was unsatisfactory': false,
     "I'm deactivating my account for other reasons": false,
-    other_trading_platforms: '',
-    do_to_improve: '',
+    otherTradingPlatforms: '',
+    doToImprove: '',
 };
 
 const preparingReason = values => {
     let selected_reasons = selectedReasons(values)
         .map(val => val[0])
         .toString();
-    const is_other_trading_platform__has_value = !!values.other_trading_platforms.length;
-    const is_to_do_improve_has_value = !!values.do_to_improve.length;
+    const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
+    const is_to_do_improve_has_value = !!values.doToImprove.length;
     if (is_other_trading_platform__has_value) {
-        selected_reasons = `${selected_reasons}, ${values.other_trading_platforms}`;
+        selected_reasons = `${selected_reasons}, ${values.otherTradingPlatforms}`;
     }
     if (is_to_do_improve_has_value) {
-        selected_reasons = `${selected_reasons}, ${values.do_to_improve}`;
+        selected_reasons = `${selected_reasons}, ${values.doToImprove}`;
     }
 
     return selected_reasons.replace(/(\r\n|\n|\r)/gm, ' ');
@@ -40,7 +41,7 @@ const preparingReason = values => {
 
 const selectedReasons = values => {
     return Object.entries(values).filter(
-        ([key, value]) => !['other_trading_platforms', 'do_to_improve'].includes(key) && value
+        ([key, value]) => !['otherTradingPlatforms', 'doToImprove'].includes(key) && value
     );
 };
 
@@ -51,21 +52,25 @@ const WarningModal = props => {
             <Text as='p' weight='bold' color='loss-danger' className='account-closure-warning-modal__warning-message'>
                 {localize('Warning!')}
             </Text>
-            <Text size='xs' line_height='x' weight='bold'>
-                {localize('Deactivate account?')}
+            <Text size='xs' line_height='x'>
+                {localize('If you deactivate:')}
             </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <Text as='p' align='center' className='account-closure-warning-modal__content'>
-                    {localize(
-                        'Deactivating your account will automatically log you out. You can reactivate your account by logging in at any time.'
-                    )}
+                <Text as='p' className='account-closure-warning-modal__content'>
+                    {localize('You’ll be logged out automatically.')}
+                </Text>
+                <Text as='p' size='xs' color='prominent'>
+                    <Localize
+                        i18n_default_text='You will <0>NOT</0> be able to log in again.'
+                        components={[<Text size='xs' line_height='s' key={0} color='loss-danger' weight='bold' />]}
+                    />
                 </Text>
             </div>
             <FormSubmitButton
                 is_disabled={false}
                 label={localize('Deactivate')}
                 has_cancel
-                cancel_label={localize('Go back')}
+                cancel_label={localize('Back')}
                 onCancel={() => props.closeModal()}
                 onClick={() => props.startDeactivating()}
             />
@@ -86,12 +91,27 @@ const GeneralErrorContent = ({ message, onClick }) => (
     </React.Fragment>
 );
 
-const character_limit_no = 110;
-const max_allowed_reasons = 3;
+const character_limit_no = 250;
+
+const allowed_keys = new Set([
+    'Alt',
+    'ArrowDown',
+    'ArrowLeft',
+    'ArrowRight',
+    'ArrowUp',
+    'Backspace',
+    'Clear',
+    'Cut',
+    'Copy',
+    'Control',
+    'Delete',
+    'End',
+    'Home',
+    'Shift',
+]);
 
 class DeactivateAccountReason extends React.Component {
     static contextType = PlatformContext;
-
     state = {
         api_error_message: '',
         is_loading: false,
@@ -103,34 +123,36 @@ class DeactivateAccountReason extends React.Component {
         is_checkbox_disabled: false,
         total_checkbox_checked: 0,
         remaining_characters: character_limit_no,
-        total_accumulated_characters: 0,
     };
     validateFields = values => {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
-        const text_inputs_length = (values.other_trading_platforms + values.do_to_improve).length;
-        let remaining_characters = character_limit_no - text_inputs_length;
-
-        if (selected_reason_count) {
+        if (!selected_reason_count) {
+            error.empty_reason = localize('Please select at least one reason');
+        }
+        if ((values.otherTradingPlatforms + values.doToImprove).length > 0 || selected_reason_count) {
+            const max_characters = character_limit_no;
             const final_value = preparingReason(values);
 
-            remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
+            const remaining_characters = max_characters - final_value.length;
+            if (remaining_characters >= 0) {
+                this.setState({ remaining_characters });
+            } else {
+                this.setState({ remaining_characters: 0 });
+            }
 
             if (!/^[ a-zA-Z0-9.,'-\s]*$/.test(final_value)) {
                 error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
+
+            if (final_value.length > max_characters) {
+                error.characters_count_exceed = 'Please enter no more than 250 characters for both fields.';
+            }
         } else {
-            error.empty_reason = localize('Please select at least one reason');
+            this.setState({ remaining_characters: character_limit_no });
         }
-
-        this.setState({
-            total_accumulated_characters: text_inputs_length,
-            remaining_characters,
-        });
-
         return error;
     };
-
     handleSubmitForm = values => {
         const final_reason = preparingReason(values);
         this.setState({
@@ -144,8 +166,7 @@ class DeactivateAccountReason extends React.Component {
         if (!values[name]) {
             this.setState({ total_checkbox_checked: this.state.total_checkbox_checked + 1 }, () => {
                 setFieldValue(name, !values[name]);
-                if (this.state.total_checkbox_checked === max_allowed_reasons)
-                    this.setState({ is_checkbox_disabled: true });
+                if (this.state.total_checkbox_checked === 3) this.setState({ is_checkbox_disabled: true });
             });
         } else {
             this.setState({ total_checkbox_checked: this.state.total_checkbox_checked - 1 }, () => {
@@ -172,8 +193,8 @@ class DeactivateAccountReason extends React.Component {
         } else {
             const { code, message, details } = account_closure_response.error;
             const getModalToRender = () => {
-                if (code === 'AccountHasPendingConditions') {
-                    return 'AccountHasPendingConditions';
+                if (code === 'AccountHasBalanceOrOpenPositions') {
+                    return 'AccountHasBalanceOrOpenPositions';
                 }
                 if (code === 'MT5AccountInaccessible') {
                     return 'inaccessible_modal';
@@ -191,25 +212,14 @@ class DeactivateAccountReason extends React.Component {
         }
     };
 
-    handleChange = (e, old_value, onChange) => {
-        const value = e.target.value;
-
-        const { remaining_characters, total_accumulated_characters } = this.state;
-
-        const is_delete_action = old_value.length > value.length;
-
-        if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !is_delete_action) {
+    handleInputKeyDown = e => {
+        if (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) {
             e.preventDefault();
-        } else {
-            onChange(e);
         }
     };
 
     handleInputPaste = e => {
-        const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
-        const remaining_chars = this.state.remaining_characters;
-
-        if (this.state.remaining_characters <= 0 || clipboardData.length > remaining_chars) {
+        if (this.state.remaining_characters <= 0) {
             e.preventDefault();
         }
     };
@@ -234,9 +244,7 @@ class DeactivateAccountReason extends React.Component {
                 })}
             >
                 <Text weight='bold' size='xs' className='deactivate-account-reasons__title' as='p'>
-                    {localize('Please tell us why you’re leaving. (Select up to {{ allowed_reasons }} reasons.)', {
-                        allowed_reasons: max_allowed_reasons,
-                    })}
+                    {localize('Please tell us why you’re leaving. (Select up to 3 reasons.)')}
                 </Text>
                 <Formik initialValues={initial_form} validate={this.validateFields} onSubmit={this.handleSubmitForm}>
                     {({ values, setFieldValue, errors, handleChange, handleSubmit }) => (
@@ -358,8 +366,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-
-                            <Field name='other_trading_platforms'>
+                            <Field name='otherTradingPlatforms'>
                                 {({ field }) => (
                                     <Input
                                         {...field}
@@ -370,18 +377,15 @@ class DeactivateAccountReason extends React.Component {
                                         placeholder={localize(
                                             'If you don’t mind sharing, which other trading platforms do you use?'
                                         )}
-                                        name='other_trading_platforms'
-                                        value={values.other_trading_platforms}
-                                        max_characters={character_limit_no}
-                                        onChange={e =>
-                                            this.handleChange(e, values.other_trading_platforms, handleChange)
-                                        }
+                                        name='otherTradingPlatforms'
+                                        value={values.otherTradingPlatforms}
+                                        onChange={handleChange}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}
                             </Field>
-                            <Field name='do_to_improve'>
+                            <Field name='doToImprove'>
                                 {({ field }) => (
                                     <Input
                                         {...field}
@@ -390,10 +394,9 @@ class DeactivateAccountReason extends React.Component {
                                         autoComplete='off' // prevent chrome autocomplete
                                         type='textarea'
                                         placeholder={localize('What could we do to improve?')}
-                                        name='do_to_improve'
-                                        value={values.do_to_improve}
-                                        max_characters={character_limit_no}
-                                        onChange={e => this.handleChange(e, values.do_to_improve, handleChange)}
+                                        name='doToImprove'
+                                        value={values.doToImprove}
+                                        onChange={handleChange}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
                                     />
@@ -448,14 +451,13 @@ class DeactivateAccountReason extends React.Component {
                     {this.state.which_modal_should_render === 'warning_modal' && (
                         <WarningModal closeModal={this.closeModal} startDeactivating={this.startDeactivating} />
                     )}
-                    {this.state.which_modal_should_render === 'AccountHasPendingConditions' && (
-                        <AccountHasPendingConditions
+                    {this.state.which_modal_should_render === 'AccountHasBalanceOrOpenPositions' && (
+                        <AccountHasBalanceOrOpenPositions
                             details={this.state.details}
                             mt5_login_list={this.props.mt5_login_list}
                             client_accounts={this.props.client_accounts}
                             dxtrade_accounts_list={this.props.dxtrade_accounts_list}
                             onBackClick={this.props.onBackClick}
-                            is_eu={this.props.is_eu}
                         />
                     )}
                     {this.state.which_modal_should_render === 'inaccessible_modal' && (
@@ -471,5 +473,4 @@ export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
     dxtrade_accounts_list: client.dxtrade_accounts_list,
-    is_eu: client.is_eu,
 }))(DeactivateAccountReason);

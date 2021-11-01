@@ -1,8 +1,8 @@
-import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
-import { localize, Localize } from 'Components/i18next';
-import { action, computed, observable, reaction } from 'mobx';
 import React from 'react';
+import { action, computed, observable, reaction } from 'mobx';
+import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
+import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';

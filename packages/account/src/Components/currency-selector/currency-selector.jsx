@@ -1,13 +1,13 @@
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
-import { isDesktop, isMobile, PlatformContext, reorderCurrencies } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import { Field, Formik } from 'formik';
+import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
+import { isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group.jsx';
 import RadioButton from './radio-button.jsx';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export const Hr = () => <div className='currency-hr' />;
 
@@ -32,10 +32,6 @@ const CurrencySelector = ({
     has_wallet_account,
     is_dxtrade_allowed,
     is_mt5_allowed,
-    available_crypto_currencies,
-    has_fiat,
-    accounts,
-    is_eu,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -43,10 +39,6 @@ const CurrencySelector = ({
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
-
-    const should_disable_fiat = !!Object.values(accounts).filter(
-        item => item.landing_company_shortcode === real_account_signup_target
-    ).length;
 
     const isSubmitDisabled = values => {
         return selected_step_ref?.current?.isSubmitting || !values.currency;
@@ -109,28 +101,19 @@ const CurrencySelector = ({
     };
 
     const description = React.useMemo(() => {
-        const dmt5_label = is_eu ? localize('CFDs') : localize('DMT5');
-
         if (is_dxtrade_allowed && is_mt5_allowed) {
             return (
-                <Localize
-                    i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or Deriv X account.'
-                    values={{ dmt5_label }}
-                />
+                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 or Deriv X account.' />
             );
         } else if (!is_dxtrade_allowed && is_mt5_allowed) {
             return (
-                <Localize
-                    i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} account.'
-                    values={{ dmt5_label }}
-                />
+                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 account.' />
             );
         }
-
         return (
             <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
         );
-    }, [is_eu, is_dxtrade_allowed, is_mt5_allowed]);
+    }, [is_dxtrade_allowed, is_mt5_allowed]);
 
     return (
         <Formik
@@ -153,8 +136,8 @@ const CurrencySelector = ({
                                 height_offset={getHeightOffset()}
                                 is_disabled={isDesktop()}
                             >
-                                <ThemedScrollbars height={height}>
-                                    {!!reorderCurrencies(fiat)?.length && (
+                                <ThemedScrollbars is_bypassed={isMobile()} height={height}>
+                                    {reorderCurrencies(fiat).length > 0 && (
                                         <React.Fragment>
                                             <RadioButtonGroup
                                                 id='currency'
@@ -166,7 +149,6 @@ const CurrencySelector = ({
                                                 touched={touched.currency}
                                                 item_count={reorderCurrencies(fiat).length}
                                                 description={description}
-                                                has_fiat={should_disable_fiat && has_fiat}
                                             >
                                                 {reorderCurrencies(fiat).map(currency => (
                                                     <Field
@@ -175,14 +157,13 @@ const CurrencySelector = ({
                                                         name='currency'
                                                         id={currency.value}
                                                         label={currency.name}
-                                                        selected={should_disable_fiat && has_fiat}
                                                     />
                                                 ))}
                                             </RadioButtonGroup>
-                                            {!!reorderCurrencies(crypto, 'crypto')?.length && <Hr />}
+                                            {reorderCurrencies(crypto, 'crypto').length > 0 && <Hr />}
                                         </React.Fragment>
                                     )}
-                                    {!!reorderCurrencies(crypto, 'crypto')?.length && (
+                                    {reorderCurrencies(crypto, 'crypto').length > 0 && (
                                         <React.Fragment>
                                             <RadioButtonGroup
                                                 id='currency'
@@ -198,11 +179,6 @@ const CurrencySelector = ({
                                                     <Field
                                                         key={currency.value}
                                                         component={RadioButton}
-                                                        selected={
-                                                            available_crypto_currencies?.filter(
-                                                                ({ value }) => value === currency.value
-                                                            )?.length === 0
-                                                        }
                                                         name='currency'
                                                         id={currency.value}
                                                         label={currency.name}
@@ -221,7 +197,7 @@ const CurrencySelector = ({
                                             : 'currency-selector--deriv-account'
                                     }
                                     is_disabled={isSubmitDisabled(values)}
-                                    is_center={false}
+                                    is_center={!has_currency}
                                     is_absolute={set_currency || is_dashboard}
                                     label={getSubmitLabel()}
                                     {...(has_cancel
@@ -250,8 +226,6 @@ CurrencySelector.propTypes = {
     is_dashboard: PropTypes.bool,
     real_account_signup_target: PropTypes.string,
     is_dxtrade_allowed: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    has_fiat: PropTypes.bool,
 };
 
 export default CurrencySelector;

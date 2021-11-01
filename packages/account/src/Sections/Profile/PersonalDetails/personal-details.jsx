@@ -1,51 +1,51 @@
 // import PropTypes        from 'prop-types';
+import React from 'react';
+import { Formik, Field } from 'formik';
+import classNames from 'classnames';
 import {
     Autocomplete,
-    Button,
     Checkbox,
-    DateOfBirthPicker,
-    DesktopWrapper,
+    Button,
     FormSubmitErrorMessage,
     Input,
+    DesktopWrapper,
     Loading,
     MobileWrapper,
     SelectNative,
+    DateOfBirthPicker,
     Text,
 } from '@deriv/components';
 import {
-    filterObjProperties,
-    getLocation,
-    isMobile,
-    PlatformContext,
-    removeObjProperties,
-    routes,
     toMoment,
+    isMobile,
     validAddress,
-    validLength,
-    validLetterSymbol,
-    validPhone,
     validPostCode,
     validTaxID,
-    WS,
+    validPhone,
+    validLetterSymbol,
+    validLength,
+    getLocation,
+    removeObjProperties,
+    filterObjProperties,
+    PlatformContext,
+    routes,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import classNames from 'classnames';
-import FormBody from 'Components/form-body';
-import FormBodySection from 'Components/form-body-section';
-import FormFooter from 'Components/form-footer';
-import FormSubHeader from 'Components/form-sub-header';
+import { withRouter } from 'react-router';
+import { WS } from 'Services/ws-methods';
+import { connect } from 'Stores/connect';
 // import { account_opening_reason_list }         from './constants';
 import LeaveConfirm from 'Components/leave-confirm';
+import FormFooter from 'Components/form-footer';
+import FormBody from 'Components/form-body';
+import FormBodySection from 'Components/form-body-section';
+import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
-import { Field, Formik } from 'formik';
-import React from 'react';
-import { withRouter } from 'react-router';
-import { connect } from 'Stores/connect';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
         const value = values[field];
-        if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && err_msg !== true)) errors[field] = err_msg;
+        if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
     });
 };
 
@@ -124,7 +124,7 @@ export class PersonalDetailsForm extends React.Component {
                 this.setState({ is_submit_success: false }, () => {
                     setSubmitting(false);
                 });
-            }, 10000);
+            }, 3000);
             // redirection back based on 'from' param in query string
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
@@ -214,11 +214,11 @@ export class PersonalDetailsForm extends React.Component {
         validateValues(validateResidence, residence_fields, true);
 
         const min_tax_identification_number = 0;
-        const max_tax_identification_number = 25;
+        const max_tax_identification_number = 20;
         if (values.tax_identification_number) {
             if (!validTaxID(values.tax_identification_number.trim())) {
                 errors.tax_identification_number = localize(
-                    'Should start with letter or number and may contain a hyphen, dot and slash.'
+                    'Should start with letter or number, and may contain hyphen and underscore.'
                 );
             } else if (
                 !validLength(values.tax_identification_number.trim(), {
@@ -226,7 +226,7 @@ export class PersonalDetailsForm extends React.Component {
                     max: max_tax_identification_number,
                 })
             ) {
-                errors.tax_identification_number = localize('You should enter 0-25 characters.');
+                errors.tax_identification_number = localize('You should enter 0-20 characters.');
             }
         }
 
@@ -257,9 +257,9 @@ export class PersonalDetailsForm extends React.Component {
             }
         }
 
-        const permitted_characters = ". , ' : ; ( ) @ # / -";
+        const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
-            'Use only the following special characters: {{ permitted_characters }}',
+            'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
             {
                 permitted_characters,
                 interpolation: { escapeValue: false },

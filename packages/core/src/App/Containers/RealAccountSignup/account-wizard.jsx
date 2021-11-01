@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { getLocation, makeCancellablePromise, toMoment } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import fromEntries from 'object.fromentries';
 import PropTypes from 'prop-types';
+import fromEntries from 'object.fromentries';
 import React from 'react';
-import 'Sass/details-form.scss';
+import { DesktopWrapper, MobileWrapper, FormProgress, Wizard, Text } from '@deriv/components';
+import { toMoment, getLocation, makeCancellablePromise } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import LoadingModal from './real-account-signup-loader.jsx';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import { getItems } from './account-wizard-form';
-import LoadingModal from './real-account-signup-loader.jsx';
+import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps }) => {
     const step = getCurrentStep() - 1;

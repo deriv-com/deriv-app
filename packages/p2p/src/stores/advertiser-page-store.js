@@ -1,8 +1,8 @@
-import { buy_sell } from 'Constants/buy-sell';
 import { action, computed, observable } from 'mobx';
-import BaseStore from 'Stores/base_store';
+import { buy_sell } from 'Constants/buy-sell';
 import { getShortNickname } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
+import BaseStore from 'Stores/base_store';
 
 export default class AdvertiserPageStore extends BaseStore {
     @observable active_index = 0;

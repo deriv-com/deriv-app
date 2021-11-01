@@ -1,7 +1,7 @@
+import * as React from 'react';
 import { Modal } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import * as React from 'react';
 import { useStores } from 'Stores';
 import './nickname-form.scss';
 

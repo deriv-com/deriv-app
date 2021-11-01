@@ -1,14 +1,14 @@
-import { currencySelectorConfig } from '@deriv/account';
-import { Text } from '@deriv/components';
-import { generateValidationFunction, website_name } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import React from 'react';
-import 'Sass/change-account.scss';
-import 'Sass/set-currency.scss';
+import { localize } from '@deriv/translations';
+import { currencySelectorConfig } from '@deriv/account';
+import { website_name, generateValidationFunction } from '@deriv/shared';
+import { Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CurrencySelector from './currency-selector.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
+import 'Sass/set-currency.scss';
+import 'Sass/change-account.scss';
 
 const SetCurrency = ({
     setLoading,

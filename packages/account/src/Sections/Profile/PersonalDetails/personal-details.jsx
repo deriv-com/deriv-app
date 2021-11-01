@@ -257,9 +257,9 @@ export class PersonalDetailsForm extends React.Component {
             }
         }
 
-        const permitted_characters = "- . ' # ; : ( ) , @ /";
+        const permitted_characters = ". , ' : ; ( ) @ # / -";
         const address_validation_message = localize(
-            'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
+            'Use only the following special characters: {{ permitted_characters }}',
             {
                 permitted_characters,
                 interpolation: { escapeValue: false },

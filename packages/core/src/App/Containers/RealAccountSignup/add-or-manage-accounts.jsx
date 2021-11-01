@@ -7,6 +7,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
+import AddCurrency from './add-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/add-or-manage.scss';
@@ -18,14 +19,21 @@ const AddOrManageAccounts = props => {
         can_change_fiat_currency,
         createCryptoAccount,
         current_currency_type,
+        deposit_target,
         has_fiat,
+        is_add_crypto,
+        is_add_currency,
+        is_add_fiat,
         is_eu,
         is_loading,
         manage_real_account_tab_index,
         onError,
         onSuccessSetAccountCurrency,
+        resetRealAccountSignupTarget,
         setCurrency,
         setLoading,
+        setIsDeposit,
+        setShouldShowCancel,
     } = props;
 
     const initial_active_index =
@@ -42,6 +50,7 @@ const AddOrManageAccounts = props => {
             setLoading(false);
         };
         fetchMt5LoginList();
+        return () => setShouldShowCancel(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -58,7 +67,8 @@ const AddOrManageAccounts = props => {
                         setSubmitting(false);
                         onSuccessSetAccountCurrency(
                             response.passthrough.previous_currency,
-                            response.echo_req.set_account_currency
+                            response.echo_req.set_account_currency,
+                            deposit_target
                         );
                     })
                     .catch(error => {
@@ -69,8 +79,10 @@ const AddOrManageAccounts = props => {
                 // Add Crypto Account
                 createCryptoAccount(value)
                     .then(() => {
-                        onSuccessSetAccountCurrency('', value);
+                        onSuccessSetAccountCurrency('', value, deposit_target);
                         setSubmitting(false);
+                        resetRealAccountSignupTarget();
+                        setIsDeposit(true);
                     })
                     .catch(error => {
                         onError(error);
@@ -106,6 +118,21 @@ const AddOrManageAccounts = props => {
             />
         </div>
     );
+
+    if (is_add_currency || is_add_crypto || is_add_fiat) {
+        return (
+            <AddCurrency
+                onSubmit={updateValue}
+                value={form_value}
+                form_error={form_error}
+                should_show_crypto_only
+                hasNoAvailableCrypto={hasNoAvailableCrypto}
+                is_add_crypto={is_add_crypto}
+                is_add_fiat={is_add_fiat}
+                is_add_currency={is_add_currency}
+            />
+        );
+    }
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
@@ -177,10 +204,12 @@ AddOrManageAccounts.propTypes = {
     can_change_fiat_currency: PropTypes.bool,
     current_currency_type: PropTypes.string,
     is_loading: PropTypes.bool,
+    is_add_crypto: PropTypes.bool,
     setLoading: PropTypes.func,
+    setShouldShowCancel: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, modules, ui }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     current_currency_type: client.current_currency_type,
@@ -189,5 +218,8 @@ export default connect(({ client, ui }) => ({
     is_eu: client.is_eu,
     manage_real_account_tab_index: ui.manage_real_account_tab_index,
     setCurrency: client.setAccountCurrency,
+    setShouldShowCancel: ui.setShouldShowCancel,
     createCryptoAccount: client.createCryptoAccount,
+    resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,
+    setIsDeposit: modules.cashier.setIsDeposit,
 }))(AddOrManageAccounts);

@@ -59,7 +59,7 @@ const initRoutesConfig = () => [
             {
                 path: routes.cashier_p2p,
                 component: P2PCashier,
-                getTitle: () => localize('DP2P'),
+                getTitle: () => localize('bbbb'),
                 icon_component: 'IcDp2p',
             },
             {

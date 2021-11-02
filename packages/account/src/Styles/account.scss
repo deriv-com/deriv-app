@@ -182,6 +182,9 @@ $MIN_HEIGHT_FLOATING: calc(
                     text-transform: unset;
                 }
             }
+            & .account-form__header.address {
+                margin-top: 3rem;
+            }
             @include mobile {
                 padding: 0 1.6rem;
                 overflow-x: hidden;
@@ -192,6 +195,9 @@ $MIN_HEIGHT_FLOATING: calc(
                     &:first-child {
                         padding-top: 2.4rem;
                         margin-bottom: 3.2rem;
+                    }
+                    &.address {
+                        margin-top: 3rem;
                     }
                 }
             }
@@ -1781,8 +1787,8 @@ $MIN_HEIGHT_FLOATING: calc(
     &__text {
         @include mobile {
             width: 94%;
-            margin-bottom: unset;
             text-align: center;
+            margin-bottom: 9rem;
         }
     }
     &__dropdown-container {
@@ -1875,7 +1881,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
         @include mobile {
             margin-left: unset;
-            min-height: 50vh;
             width: 94%;
         }
     }

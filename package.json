@@ -21,6 +21,7 @@
         "@testing-library/react": "^12.0.0",
         "babel-eslint": "^10.1.0",
         "babel-polyfill": "^6.26.0",
+        "chai": "^4.2.0",
         "eslint": "^7.18.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
@@ -28,13 +29,16 @@
         "eslint-formatter-pretty": "^4.0.0",
         "eslint-import-resolver-webpack": "^0.13.0",
         "eslint-plugin-import": "^2.23.4",
+        "eslint-plugin-jest-dom": "^3.8.1",
         "eslint-plugin-prettier": "^3.3.1",
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
+        "eslint-plugin-testing-library": "^4.2.0",
         "husky": "^4.2.5",
         "jest": "^26.4.2",
         "lerna": "^3.22.0",
         "lint-staged": "^10.4.0",
+        "mocha": "^7.1.1",
         "postcss": "^8.3.6",
         "prettier": "^2.1.2",
         "react-test-renderer": "^16.13.1",
@@ -46,7 +50,7 @@
         "stylelint-webpack-plugin": "^2.1.1"
     },
     "scripts": {
-        "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis && npm run install:qa ;}; f",
+        "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis ;}; f",
         "build": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build $2 ;}; f",
         "build:publish": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
         "build:dashboard": "export IS_DASHBOARD=true && npm run build && export IS_DASHBOARD=",
@@ -84,9 +88,13 @@
         }
     },
     "dependencies": {
+        "@testing-library/jest-dom": "^5.12.0",
+        "babel-jest": "^27.3.1",
+        "dotenv": "^8.2.0",
+        "jest-chain": "^1.1.5",
+        "jest-extended": "^0.11.5",
         "react": "^16.14.0",
-        "react-dom": "^16.14.0",
-        "dotenv": "^8.2.0"
+        "react-dom": "^16.14.0"
     },
     "optionalDependencies": {
         "fsevents": "^2.3.2"

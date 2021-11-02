@@ -64,9 +64,9 @@ const PasswordBox = ({ platform, onClick }) => (
                 <Text size='xs'>•••••••••••••••</Text>
             </Popover>
         </div>
-        <Button className='cfd-account-card__password-action' tertiary onClick={onClick}>
-            {localize('Change')}
-        </Button>
+        <div className='cfd-account-card__password-action'>
+            <Icon icon='IcEdit' onClick={onClick} size={16}/>
+        </div>
     </div>
 );
 

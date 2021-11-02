@@ -1,3 +1,4 @@
+import CFDStore from '@deriv/trader/src/Stores/Modules/CFD/cfd-store';
 import ClientStore from './client-store';
 import CommonStore from './common-store';
 import GTMStore from './gtm-store';
@@ -17,5 +18,6 @@ export default class RootStore {
         this.rudderstack = new RudderStackStore(this);
         this.menu = new MenuStore(this);
         this.pushwoosh = new PushWooshStore(this);
+        this.cfd = new CFDStore(this);
     }
 }

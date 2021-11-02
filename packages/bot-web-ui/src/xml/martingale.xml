@@ -94,7 +94,20 @@
           </block>
         </value>
         <statement name="DO0">
-          <block type="trade_again" id="(T~B6mBGK5D2unsjU25_"></block>
+          <block type="trade_again" id="(T~B6mBGK5D2unsjU25_">
+            <field name='SL_ENABLED'>FALSE</field>
+            <value name='STOP_LOSS' strategy_value="loss">
+              <shadow type='math_number'>
+                  <field name='NUM'>0</field>
+              </shadow>
+            </value>
+            <field name='TP_ENABLED'>FALSE</field>
+            <value name='TAKE_PROFIT' strategy_value="profit">
+              <shadow type='math_number'>
+                  <field name='NUM'>0</field>
+              </shadow>
+            </value>
+          </block>
         </statement>
       </block>
     </statement>

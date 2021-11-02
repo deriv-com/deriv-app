@@ -177,13 +177,8 @@ const ProofOfAddressForm = ({
                             setAPIInitialLoadError(error.message);
                             return;
                         }
-                        const {
-                            address_line_1,
-                            address_line_2,
-                            address_city,
-                            address_state,
-                            address_postcode,
-                        } = get_settings;
+                        const { address_line_1, address_line_2, address_city, address_state, address_postcode } =
+                            get_settings;
 
                         setFormValues(
                             {
@@ -213,10 +208,8 @@ const ProofOfAddressForm = ({
                                         setFormState(
                                             { ...form_state, ...{ is_submit_success: true, is_btn_loading: false } },
                                             () => {
-                                                const {
-                                                    identity,
-                                                    needs_verification,
-                                                } = get_account_status.authentication;
+                                                const { identity, needs_verification } =
+                                                    get_account_status.authentication;
                                                 const has_poi = !(identity && identity.status === 'none');
                                                 // TODO: clean all of this up by simplifying the manually toggled notifications functions
                                                 const needs_poi =

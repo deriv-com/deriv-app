@@ -15,26 +15,18 @@ const ContractCardHeader = ({
     contract_info,
     display_name,
     getCardLabels,
-    getContractTypeDisplay,
     has_progress_slider,
     id,
     is_mobile,
     is_sell_requested,
     is_valid_to_sell,
+    getContractTypeDisplay,
     onClickSell,
     server_time,
 }) => {
     const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
-    const {
-        underlying,
-        multiplier,
-        contract_type,
-        shortcode,
-        purchase_time,
-        date_expiry,
-        tick_count,
-        is_sold,
-    } = contract_info;
+    const { underlying, multiplier, contract_type, shortcode, purchase_time, date_expiry, tick_count, is_sold } =
+        contract_info;
 
     return (
         <>
@@ -109,13 +101,12 @@ const ContractCardHeader = ({
 
 ContractCardHeader.propTypes = {
     contract_info: PropTypes.object,
-    display_name: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractTypeDisplay: PropTypes.func,
     has_progress_slider: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
-    is_valid_to_sell: PropTypes.bool,
+    is_sold: PropTypes.bool,
     onClickSell: PropTypes.func,
     server_time: PropTypes.object,
 };

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING } from '@deriv/shared/src/utils/constants-storage/CFD';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
@@ -33,6 +34,7 @@ const CFDRealAccountDisplay = ({
     isFinancialStpCardVisible,
     landing_companies,
     onSelectAccount,
+    openRealAccountSignup,
     openAccountTransfer,
     openPasswordModal,
     isAccountOfTypeDisabled,
@@ -57,6 +59,16 @@ const CFDRealAccountDisplay = ({
         can_have_more_real_synthetic_mt5 &&
         platform === CFD_PLATFORMS.MT5;
     const [active_hover, setActiveHover] = React.useState(0);
+
+    const session_storage_open_password_modal = sessionStorage.getItem(CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING);
+
+    React.useEffect(() => {
+        if (session_storage_open_password_modal) {
+            onSelectRealFinancial();
+            sessionStorage.removeItem(CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING);
+            sessionStorage.removeItem('cfd_account_needed');
+        }
+    }, [onSelectRealFinancial, session_storage_open_password_modal]);
 
     const has_required_credentials = React.useMemo(() => {
         const { citizen, tax_identification_number, tax_residence } = account_settings;
@@ -101,7 +113,8 @@ const CFDRealAccountDisplay = ({
     };
     const onSelectRealFinancial = () => {
         if (is_eu && !has_maltainvest_account) {
-            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs'));
+            sessionStorage.setItem('cfd_account_needed', 1);
+            openRealAccountSignup('maltainvest', localize('DMT5 CFDs'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });
         }

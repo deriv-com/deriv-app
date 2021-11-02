@@ -110,11 +110,11 @@ class CFDDashboard extends React.Component {
 
     getIndexToSet = () => {
         // TODO: remove this when real accounts are enabled for Deriv X
-        if (!this.state.is_real_enabled) {
-            return 1;
-        }
-        if (!this.state.is_demo_enabled) {
+        if (this.state.is_real_enabled) {
             return 0;
+        }
+        if (this.state.is_demo_enabled) {
+            return 1;
         }
 
         const hash = this.props.location.hash;
@@ -135,7 +135,7 @@ class CFDDashboard extends React.Component {
         else if (index === 0) updated_state.is_demo_tab = false;
 
         const index_to_set = this.getIndexToSet();
-        if (this.state.active_index !== index_to_set) {
+        if (index_to_set && this.state.active_index !== index_to_set) {
             updated_state.active_index = index_to_set;
         }
 
@@ -241,6 +241,7 @@ class CFDDashboard extends React.Component {
             NotificationMessages,
             platform,
             openAccountNeededModal,
+            openRealAccountSignup,
             residence,
             residence_list,
             standpoint,
@@ -351,6 +352,7 @@ class CFDDashboard extends React.Component {
                                                               !!dxtrade_accounts_list_error
                                                     }
                                                     openAccountNeededModal={openAccountNeededModal}
+                                                    openRealAccountSignup={openRealAccountSignup}
                                                     current_list={current_list}
                                                     account_status={account_status}
                                                     has_cfd_account={has_cfd_account}
@@ -597,6 +599,7 @@ export default withRouter(
         is_fully_authenticated: client.is_fully_authenticated,
         openPasswordModal: modules.cfd.enableCFDPasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
+        openRealAccountSignup: ui.openRealAccountSignup,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
         residence_list: client.residence_list,

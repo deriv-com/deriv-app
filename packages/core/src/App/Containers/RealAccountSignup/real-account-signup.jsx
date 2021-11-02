@@ -3,8 +3,9 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromPlatform } from '@deriv/shared';
+import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING } from '@deriv/shared/src/utils/constants-storage/CFD';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
@@ -254,10 +255,14 @@ const RealAccountSignup = ({
     };
 
     const showStatusDialog = curr => {
-        setParams({
-            active_modal_index: modal_pages_indices.status_dialog,
-            currency: curr,
-        });
+        if (sessionStorage.getItem('cfd_account_needed')) {
+            closeModalThenOpenCFD();
+        } else {
+            setParams({
+                active_modal_index: modal_pages_indices.status_dialog,
+                currency: curr,
+            });
+        }
     };
 
     const closeModalthenOpenWelcomeModal = curr => {
@@ -265,6 +270,12 @@ const RealAccountSignup = ({
         setParams({
             currency: curr,
         });
+    };
+
+    const closeModalThenOpenCFD = () => {
+        closeRealAccountSignup();
+        sessionStorage.setItem(CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING, '1');
+        history.push(`${routes.mt5}#real`);
     };
 
     const closeModalThenOpenCashier = () => {
@@ -342,13 +353,18 @@ const RealAccountSignup = ({
             return;
         }
         if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
+            sessionStorage.removeItem('cfd_account_needed');
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }
         closeRealAccountSignup();
 
-        if (isNavigationFromPlatform(routing_history, routes.smarttrader)) {
+        if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
             window.location = routes.smarttrader;
+        }
+
+        if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
+            window.location = routes.binarybot;
         }
     };
 

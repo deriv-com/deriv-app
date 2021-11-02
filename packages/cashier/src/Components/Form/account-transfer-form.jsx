@@ -66,7 +66,14 @@ const AccountTransferBullet = ({ children }) => (
     </div>
 );
 
-const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_dxtrade_allowed, is_mt_transfer, transfer_fee, minimum_fee }) => {
+const AccountTransferNote = ({
+    currency,
+    is_crypto_to_crypto_transfer,
+    is_dxtrade_allowed,
+    is_mt_transfer,
+    transfer_fee,
+    minimum_fee,
+}) => {
     const getTransferFeeNote = () => {
         if (transfer_fee === 0) {
             return (
@@ -113,7 +120,12 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_dxtrad
     return (
         <div className='account-transfer__notes'>
             <DesktopWrapper>
-                <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
+                <Text
+                    as='h2'
+                    color='prominent'
+                    weight='bold'
+                    className='cashier__header account-transfer__notes-header'
+                >
                     <Localize i18n_default_text='Notes' />
                 </Text>
             </DesktopWrapper>
@@ -131,8 +143,7 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_dxtrad
                 <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
             </AccountTransferBullet>
             <AccountTransferBullet>
-                {getTransferFeeNote()}{' '}
-                <Localize i18n_default_text='Bear in mind some transfers may not be possible.' />
+                {getTransferFeeNote()} <Localize i18n_default_text='Bear in mind some transfers may not be possible.' />
             </AccountTransferBullet>
             <AccountTransferBullet>
                 <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />

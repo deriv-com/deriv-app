@@ -59,6 +59,7 @@ const DefaultHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
     has_any_real_account,
+    toggleUpgradeAccounts,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
@@ -77,7 +78,7 @@ const DefaultHeader = ({
     const verification_status = populateVerificationStatus(account_status);
     const { has_poa, has_poi } = verification_status;
     const onClickUpgrade = () => {
-        // TODO: here we should open POA and POI modal
+        toggleUpgradeAccounts();
     };
 
     const filterPlatformsForClients = payload =>
@@ -225,6 +226,7 @@ DefaultHeader.propTypes = {
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
+    toggleUpgradeAccounts: PropTypes.func,
 };
 
 export default connect(({ client, common, ui, menu, modules }) => ({
@@ -269,4 +271,5 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: ui.toggleNotificationsModal,
+    toggleUpgradeAccounts: ui.toggleUpgradeModal,
 }))(withRouter(DefaultHeader));

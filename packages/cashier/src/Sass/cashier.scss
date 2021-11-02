@@ -681,6 +681,11 @@
     &__desc {
         margin-bottom: 3.2rem;
     }
+    @include mobile {
+        &__desc {
+            padding: 0 1rem;
+        }
+    }
 }
 
 /** @define withdraw */
@@ -946,6 +951,8 @@
     &__accordion-content {
         &-line {
             margin-bottom: 8px;
+            display: flex;
+            flex-direction: row;
 
             &:first-child {
                 & .payment-agent__contact {
@@ -957,7 +964,6 @@
             }
             @include mobile {
                 overflow: hidden;
-                white-space: nowrap;
                 text-overflow: ellipsis;
 
                 &:not(:first-child) {
@@ -1322,6 +1328,10 @@
     &__button {
         margin: 4rem auto 0 0.8rem;
 
+        @include mobile {
+            width: 100%;
+        }
+
         &-statement {
             margin-right: 0.8rem;
         }
@@ -1427,6 +1437,7 @@ div.payment-agent-transfer {
     // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__container {
         padding: 0 15.6rem;
+        display: block;
     }
     &__input {
         margin-bottom: 5.1rem;

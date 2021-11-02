@@ -47,10 +47,10 @@ export default class TransactionHistoryStore {
     }
     @action.bound
     async onMount() {
-        const { currency } = this.root_store.client;
+        const { currency, switched } = this.root_store.client;
         const is_crypto = !!currency && isCryptocurrency(currency);
 
-        if (is_crypto) {
+        if (is_crypto && !switched) {
             this.setLoading(true);
             await this.unsubscribeCryptoTransactions();
             await this.getCryptoTransactions();

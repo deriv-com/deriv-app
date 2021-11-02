@@ -95,6 +95,9 @@ export default class UIStore extends BaseStore {
     // Welcome modal
     @observable is_welcome_modal_visible = false;
 
+    // Remove MX gaming account modal
+    @observable is_close_mx_account_modal_visible = false;
+
     // set currency modal
     @observable is_set_currency_modal_visible = false;
 
@@ -183,7 +186,6 @@ export default class UIStore extends BaseStore {
             this.changeTheme();
         });
     }
-
     changeTheme = () => {
         // TODO: [disable-dark-bot] Delete this condition when Bot is ready
         const new_app_routing_history = this.root_store.common.app_routing_history.slice();
@@ -243,6 +245,11 @@ export default class UIStore extends BaseStore {
         this.promptFn = cb;
     }
 
+    @action.bound
+    showCloseMXAccountPopup(is_open) {
+        this.is_close_mx_account_modal_visible = is_open;
+    }
+
     @computed
     get is_mobile() {
         return this.screen_width <= MAX_MOBILE_WIDTH;
@@ -260,7 +267,7 @@ export default class UIStore extends BaseStore {
 
     @computed
     get filtered_notifications() {
-        return this.notifications.filter(message => message.type !== 'news');
+        return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
     }
 
     @action.bound
@@ -532,9 +539,14 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    unmarkNotificationMessage({ key }) {
+        this.marked_notifications = this.marked_notifications.filter(item => key !== item);
+    }
+
+    @action.bound
     addNotificationMessage(notification) {
         if (!notification) return;
-        if (!this.notification_messages.find(item => item.header === notification.header)) {
+        if (!this.notification_messages.find(item => item.key === notification.key)) {
             // Remove notification messages if it was already closed by user and exists in LocalStore
             const active_loginid = LocalStore.get('active_loginid');
             const messages = LocalStore.getObject('notification_messages');

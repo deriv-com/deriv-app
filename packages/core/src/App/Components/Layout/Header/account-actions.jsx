@@ -33,6 +33,10 @@ const AccountActions = React.memo(
         openRealAccountSignup,
         toggleAccountsDialog,
         toggleNotifications,
+        has_any_real_account,
+        has_poa,
+        has_poi,
+        onClickUpgrade,
     }) => {
         const { is_dashboard } = React.useContext(PlatformContext);
 
@@ -110,7 +114,16 @@ const AccountActions = React.memo(
                                 />
                             </div>
                         )}
-                        {currency && (
+                        {(!has_poa || !has_poi) && !has_any_real_account && (
+                            <Button
+                                className='acc-info__button'
+                                has_effect
+                                text={localize('Upgrade')}
+                                onClick={onClickUpgrade}
+                                primary
+                            />
+                        )}
+                        {currency && has_any_real_account && (
                             <Button
                                 className='acc-info__button'
                                 has_effect
@@ -151,6 +164,10 @@ AccountActions.propTypes = {
     openRealAccountSignup: PropTypes.func,
     toggleAccountsDialog: PropTypes.any,
     toggleNotifications: PropTypes.any,
+    has_poa: PropTypes.bool,
+    has_poi: PropTypes.bool,
+    onClickUpgrade: PropTypes.func,
+    has_any_real_account: PropTypes.bool,
 };
 
 export { AccountActions };

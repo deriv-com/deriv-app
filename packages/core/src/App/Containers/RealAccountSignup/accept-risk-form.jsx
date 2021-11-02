@@ -27,10 +27,7 @@ const AcceptRiskForm = ({ onSubmit }) => {
                                             </Text>
                                         </div>
                                         <Text as='p' size='xs'>
-                                            <Localize
-                                                i18n_default_text="Our products and services may expose you to risks that can be substantial at times, including the risk of losing your entire investment. Please note that by clicking <0>Continue</0>, you'll be accepting these risks."
-                                                components={[<strong key={0} />]}
-                                            />
+                                            <Localize i18n_default_text="Our products and services may expose you to risks that can be substantial at times, including the risk of losing your entire investment. Please note that by clicking Continue, you'll be accepting these risks." />
                                         </Text>
                                     </div>
                                 </ThemedScrollbars>

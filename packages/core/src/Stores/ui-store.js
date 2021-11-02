@@ -37,6 +37,7 @@ export default class UIStore extends BaseStore {
     @observable is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
     @observable is_settings_modal_on = false;
     @observable is_accounts_switcher_on = false;
+    @observable signup_modal_real_account_title = '';
     @observable account_switcher_disabled_message = '';
 
     @observable has_only_forward_starting_contracts = false;
@@ -414,10 +415,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
+    openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0], call_site) {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
+        this.signup_modal_real_account_title = call_site || this.signup_modal_real_account_title;
     }
 
     @action.bound
@@ -444,6 +446,10 @@ export default class UIStore extends BaseStore {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
         }, 300);
+        if(sessionStorage.getItem('cfd_account_needed')){
+            this.root_store.cfd.createCFDAccount({ type: 'financial', category: 'real' });
+            sessionStorage.removeItem('cfd_account_needed');
+        };
     }
 
     @action.bound

@@ -120,6 +120,7 @@ const AccountSwitcher = props => {
             account_type === 'synthetic' ? props.has_malta_account : props.has_maltainvest_account;
 
         if (props.is_eu && !has_required_account) {
+            sessionStorage.setItem('cfd_account_needed', 1);
             closeAccountsDialog();
             props.openAccountNeededModal(
                 account_type === 'synthetic' ? props.standpoint.gaming_company : props.standpoint.financial_company,
@@ -616,29 +617,32 @@ const AccountSwitcher = props => {
                                 );
                             })}
                     </div>
-                    {getRemainingRealAccounts().map((account, index) => (
-                        <div key={index} className='acc-switcher__new-account'>
-                            <Icon icon='IcDeriv' size={24} />
-                            <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                {getAccountTitle(
-                                    account,
-                                    { account_residence: props.client_residence },
-                                    props.country_standpoint
-                                )}
-                            </Text>
-                            <Button
-                                id='dt_core_account-switcher_add-new-account'
-                                onClick={() => {
-                                    props.openRealAccountSignup(account);
-                                }}
-                                className='acc-switcher__new-account-btn'
-                                secondary
-                                small
-                            >
-                                {localize('Add')}
-                            </Button>
-                        </div>
-                    ))}
+                    {getRemainingRealAccounts().map((account, index) => {
+                        const account_title = getAccountTitle(
+                            account,
+                            { account_residence: props.client_residence },
+                            props.country_standpoint
+                        );
+                        return (
+                            <div key={index} className='acc-switcher__new-account'>
+                                <Icon icon='IcDeriv' size={24} />
+                                <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                    {account_title}
+                                </Text>
+                                <Button
+                                    id='dt_core_account-switcher_add-new-account'
+                                    onClick={() => {
+                                        props.openRealAccountSignup(account, `Deriv ${account_title}`);
+                                    }}
+                                    className='acc-switcher__new-account-btn'
+                                    secondary
+                                    small
+                                >
+                                    {localize('Add')}
+                                </Button>
+                            </div>
+                        );
+                    })}
                     {!canUpgrade() &&
                         canOpenMulti() &&
                         (!props.is_eu || (props.is_eu && props.can_change_fiat_currency)) && (

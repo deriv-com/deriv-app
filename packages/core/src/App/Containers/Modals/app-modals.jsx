@@ -29,6 +29,9 @@ const AppModals = ({
     is_set_residence_modal_visible,
     is_eu,
     is_logged_in,
+    account_needed_modal_props: { target },
+    openRealAccountSignup,
+    closeAccountNeededModal,
     should_show_upgrade_modal,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
@@ -84,5 +87,8 @@ export default connect(({ client, ui }) => ({
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
+    account_needed_modal_props: ui.account_needed_modal_props,
+    openRealAccountSignup: ui.openRealAccountSignup,
+    closeAccountNeededModal: ui.closeAccountNeededModal,
     should_show_upgrade_modal: ui.is_upgrade_modal_visible,
 }))(AppModals);

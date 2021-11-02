@@ -138,7 +138,13 @@ const Row = ({ title, multiplier, cfd, has_icons, mutliplier_desc, cfd_desc }) =
                             <Items items={cfd} />
                         </div>
                         {cfd_desc && (
-                            <Text as='p' align='center' color='prominent' size='xxxs'>
+                            <Text
+                                as='p'
+                                align='center'
+                                color='prominent'
+                                size='xxxs'
+                                className='mul-cfd-table-cell-cfd-label'
+                            >
                                 {cfd_desc}
                             </Text>
                         )}
@@ -178,7 +184,7 @@ const ModalContent = () => {
                                     </div>
                                 </Table.Head>
                                 <Table.Head>
-                                    <div>
+                                    <div className='mul-cfd-compare-accounts__table-head'>
                                         <Icon icon='IcPercentSolid' size={48} />
                                         <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
                                             {'CFDs'}

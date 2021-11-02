@@ -10,6 +10,7 @@
         border-bottom: none;
     }
     &__table-head {
+        height: 112px;
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -19,13 +20,12 @@
         padding: 0 2.8rem;
         &__header {
             border-bottom: 1px solid var(--general-section-1);
-            height: 11rem;
+            height: 12rem;
             position: sticky;
             top: 0;
             background: var(--general-main-2);
             z-index: 10;
         }
-        &__cell,
         &__head {
             justify-content: center;
             margin: 0.6rem;
@@ -34,6 +34,8 @@
             }
         }
         &__cell {
+            margin: 0.6rem;
+            justify-content: center;
             align-items: center;
             padding: 0.5rem 0rem;
             flex-direction: column;
@@ -80,12 +82,35 @@
     }
 }
 .mul-cfd-compare-accounts__table-desc {
-    width: 177px;
-    height: 18px;
     background: (var(--brand-red-coral));
     color: var(--text-colored-background);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 2px 8px;
+    position: static;
+    width: 177px;
+    height: 18px;
+    left: 16px;
+    margin: 8px 0px;
+    &__text {
+        width: 161px;
+        height: 14px;
+        left: 8px;
+        top: 2px;
+        font-weight: normal;
+        line-height: 14px;
+        text-align: center;
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0px 10px;
+    }
 }
-
+.mul-cfd-table-cell-cfd-label {
+    width: 300px;
+}
 .mul-cfd-compare-accounts__table-footer {
     width: 100%;
 }

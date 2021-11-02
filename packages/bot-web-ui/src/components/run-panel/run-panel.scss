@@ -76,6 +76,23 @@
                 color: var(--text-loss-danger);
             }
         }
+        &--reset-checkbox {
+            width: 100%;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        &--remember-me {
+            &-header {
+                font-weight: bold;
+            }
+            &-content {
+                margin-top: 10px;
+            }
+            &-checkbox {
+                margin-top: 2rem;
+                margin-left: 0;
+            }
+        }
         &--mobile {
             width: 100%;
             bottom: 0;

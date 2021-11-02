@@ -66,8 +66,7 @@ const AccountTransferBullet = ({ children }) => (
     </div>
 );
 
-const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_transfer, transfer_fee, minimum_fee }) => {
-    // TODO: Check with content team on the latest version of the below side notes for Deriv X when real account is launched
+const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_dxtrade_allowed, is_mt_transfer, transfer_fee, minimum_fee }) => {
     const getTransferFeeNote = () => {
         if (transfer_fee === 0) {
             return (
@@ -114,22 +113,16 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_tra
     return (
         <div className='account-transfer__notes'>
             <DesktopWrapper>
-                <Text
-                    as='h2'
-                    color='prominent'
-                    weight='bold'
-                    className='cashier__header account-transfer__notes-header'
-                >
+                <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
                     <Localize i18n_default_text='Notes' />
                 </Text>
             </DesktopWrapper>
             <AccountTransferBullet>
-                {/* TODO: Uncomment and check with content team on the latest version of the side note when real account is launched */}
-                {/* {is_dxtrade_allowed ? (
+                {is_dxtrade_allowed ? (
                     <Localize i18n_default_text='You may transfer between your fiat and cryptocurrency accounts, between your Deriv and DMT5 accounts, and between your Deriv and Deriv X account.' />
-                ) : ( */}
-                <Localize i18n_default_text='You may transfer between your fiat and cryptocurrency accounts and between your Deriv and DMT5 accounts.' />
-                {/* )} */}
+                ) : (
+                    <Localize i18n_default_text='You may transfer between your fiat and cryptocurrency accounts and between your Deriv and DMT5 accounts.' />
+                )}
             </AccountTransferBullet>
             <AccountTransferBullet>
                 <Localize i18n_default_text='There is a daily transfer limit of 4 transfers between your Deriv accounts and 12 transfers between your Deriv and DMT5 accounts.' />
@@ -178,8 +171,8 @@ const AccountTransferForm = ({
     percentage,
     resetConverter,
     recentTransactionOnMount,
+    requestTransferBetweenAccounts,
     setErrorMessage,
-    setIsTransferConfirm,
     setTransferPercentageSelectorResult,
     selected_from,
     selected_to,
@@ -380,7 +373,7 @@ const AccountTransferForm = ({
                     converter_to_amount: converter_to_amount || '',
                 }}
                 onSubmit={() => {
-                    setIsTransferConfirm(true);
+                    requestTransferBetweenAccounts({ amount: +account_transfer_amount });
                 }}
                 validateOnBlur={false}
                 enableReinitialize
@@ -604,6 +597,7 @@ AccountTransferForm.propTypes = {
     percentage: PropTypes.number,
     resetConverter: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
+    requestTransferBetweenAccounts: PropTypes.func,
     selected_from: PropTypes.object,
     setErrorMessage: PropTypes.func,
     selected_to: PropTypes.object,
@@ -636,9 +630,9 @@ export default connect(({ client, modules, ui }) => ({
     percentage: modules.cashier.percentage,
     resetConverter: modules.cashier.resetConverter,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
+    requestTransferBetweenAccounts: modules.cashier.requestTransferBetweenAccounts,
     setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
     setErrorMessage: modules.cashier.setErrorMessage,
-    setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
     selected_from: modules.cashier.config.account_transfer.selected_from,
     selected_to: modules.cashier.config.account_transfer.selected_to,
     setTransferPercentageSelectorResult: modules.cashier.setTransferPercentageSelectorResult,

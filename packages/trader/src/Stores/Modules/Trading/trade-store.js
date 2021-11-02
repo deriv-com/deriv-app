@@ -23,6 +23,7 @@ import {
     showUnavailableLocationError,
     isMarketClosed,
     findFirstOpenMarket,
+    showMXUnavailableError,
 } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
@@ -296,7 +297,23 @@ export default class TradeStore extends BaseStore {
             this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return;
         } else if (!active_symbols || !active_symbols.length) {
-            if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
+            await WS.wait('get_settings');
+            if (
+                ['gb', 'im'].includes(this.root_store.client.residence) &&
+                this.root_store.client.is_logged_in &&
+                !localStorage.getItem('hide_close_mx_account_notification')
+            ) {
+                this.root_store.common.setError(true, {
+                    type: 'mx_removal',
+                });
+            } else if (
+                ['gb', 'im'].includes(this.root_store.client.residence) &&
+                this.root_store.client.is_logged_in &&
+                localStorage.getItem('hide_close_mx_account_notification')
+            ) {
+                showMXUnavailableError(this.root_store.common.showError);
+                return;
+            } else if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
                 showUnavailableLocationError(this.root_store.common.showError, this.root_store.client.is_logged_in);
                 return;
             } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
@@ -326,6 +343,7 @@ export default class TradeStore extends BaseStore {
                 this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
+        this.root_store.common.setSelectedContractType(this.contract_type);
     }
 
     @action.bound
@@ -401,6 +419,7 @@ export default class TradeStore extends BaseStore {
             true
         ); // wait for store to be updated
         this.validateAllProperties(); // then run validation before sending proposal
+        this.root_store.common.setSelectedContractType(this.contract_type);
     }
 
     @action.bound
@@ -734,8 +753,8 @@ export default class TradeStore extends BaseStore {
             this.setPreviousSymbol(this.symbol);
             await Symbol.onChangeSymbolAsync(obj_new_values.symbol);
             this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
-            has_only_forward_starting_contracts = ContractType.getContractCategories()
-                .has_only_forward_starting_contracts;
+            has_only_forward_starting_contracts =
+                ContractType.getContractCategories().has_only_forward_starting_contracts;
         }
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented
@@ -1068,6 +1087,43 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
             this.prepareTradeStore();
         });
+        // TODO: remove this function when the closure of MX accounts is completed.
+        this.manageMXRemovalNotification();
+    }
+
+    @action.bound
+    manageMXRemovalNotification() {
+        const client_notifications = this.root_store.client.client_notifications;
+        const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages'));
+        const is_iom = this.root_store.client.country_standpoint.is_isle_of_man;
+        const iom_landing_company = this.root_store.client.country_standpoint.has_iom_account;
+        const is_logged_in = this.root_store.client.is_logged_in;
+        this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_account' });
+        if (get_notification_messages !== null && iom_landing_company && is_logged_in) {
+            const get_notification_messages_array = Object.fromEntries(
+                Object.entries(get_notification_messages).map(([key, name]) => {
+                    const new_name = name.filter(message => message !== 'close_mx_account');
+                    return [key, new_name];
+                })
+            );
+            localStorage.setItem('notification_messages', JSON.stringify(get_notification_messages_array));
+            this.root_store.ui.addNotificationMessage(
+                client_notifications(this.root_store.ui, {}, is_iom).close_mx_account
+            );
+            reaction(
+                () => this.root_store.ui.notification_messages.length === 0,
+                () => {
+                    const has_iom_account = this.root_store.client.has_iom_account;
+                    const hidden_close_account_notification =
+                        parseInt(localStorage.getItem('hide_close_mx_account_notification')) === 1;
+                    if (has_iom_account && !hidden_close_account_notification) {
+                        this.root_store.ui.addNotificationMessage(
+                            client_notifications(this.root_store.ui, {}, is_iom).close_mx_account
+                        );
+                    }
+                }
+            );
+        }
     }
 
     @action.bound

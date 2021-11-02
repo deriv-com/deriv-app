@@ -59,7 +59,7 @@ const Tabs = ({
         if (should_update_hash) {
             // if hash is in url, find which tab index correlates to it
             const hash = location.hash.slice(1);
-            const hash_index = children.findIndex(child => child.props && child.props['data-hash'] === hash);
+            const hash_index = children.findIndex(child => child && child.props && child.props['data-hash'] === hash);
             const has_hash = hash_index > -1;
 
             if (has_hash) {

@@ -79,8 +79,9 @@ const AccountSignup = ({
         const residence = values;
         setSelectedResidence(residence);
         if (residence) {
-            const selected_country = residence_list.find(item => item.text.toLowerCase() === residence.toLowerCase())
-                .value;
+            const selected_country = residence_list.find(
+                item => item.text.toLowerCase() === residence.toLowerCase()
+            ).value;
             if (isEuCountrySelected(selected_country)) {
                 setIsEuResident(true);
             } else {

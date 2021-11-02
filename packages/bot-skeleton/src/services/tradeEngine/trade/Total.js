@@ -6,12 +6,14 @@ import { observer as globalObserver } from '../../../utils/observer';
 import { log_types } from '../../../constants/messages';
 
 const skeleton = {
+    profitPerRun: 0,
     totalProfit: 0,
     totalWins: 0,
     totalLosses: 0,
     totalStake: 0,
     totalPayout: 0,
     totalRuns: 0,
+    runs: 0,
 };
 
 const globalStat = {};
@@ -24,6 +26,7 @@ export default Engine =>
             this.sessionProfit = 0;
 
             globalObserver.register('statistics.clear', this.clearStatistics.bind(this));
+            globalObserver.register('statistics.clearProfitPerRun', this.clearProfitPerRun.bind(this));
         }
 
         clearStatistics() {
@@ -32,6 +35,15 @@ export default Engine =>
             if (!this.accountInfo) return;
             const { loginid: accountID } = this.accountInfo;
             globalStat[accountID] = { ...skeleton };
+        }
+
+        clearProfitPerRun() {
+            if (!this.accountInfo) return;
+            const { loginid: accountID } = this.accountInfo;
+            if (globalStat[accountID]) {
+                globalStat[accountID].profitPerRun = 0;
+                globalStat[accountID].runs = 0;
+            }
         }
 
         updateTotals(contract) {
@@ -51,6 +63,8 @@ export default Engine =>
 
             accountStat.totalProfit = getRoundedNumber(Number(accountStat.totalProfit) + Number(profit), currency);
 
+            accountStat.profitPerRun = getRoundedNumber(Number(accountStat.profitPerRun) + Number(profit), currency);
+
             accountStat.totalStake = getRoundedNumber(Number(accountStat.totalStake) + Number(buyPrice), currency);
 
             accountStat.totalPayout = getRoundedNumber(Number(accountStat.totalPayout) + Number(sellPrice), currency);
@@ -60,6 +74,7 @@ export default Engine =>
                 contract,
                 accountID: this.accountInfo.loginid,
                 totalProfit: accountStat.totalProfit,
+                profitPerRun: accountStat.profitPerRun,
                 totalWins: accountStat.totalWins,
                 totalLosses: accountStat.totalLosses,
                 totalStake: accountStat.totalStake,
@@ -72,7 +87,7 @@ export default Engine =>
         updateAndReturnTotalRuns() {
             this.sessionRuns++;
             const accountStat = this.getAccountStat();
-
+            ++accountStat.runs;
             return ++accountStat.totalRuns;
         }
 
@@ -81,6 +96,10 @@ export default Engine =>
             const accountStat = this.getAccountStat();
             return accountStat.totalRuns;
         }
+        getRuns() {
+            const accountStat = this.getAccountStat();
+            return accountStat.runs;
+        }
 
         getTotalProfit(toString, currency) {
             const accountStat = this.getAccountStat();
@@ -88,6 +107,13 @@ export default Engine =>
             return toString && accountStat.totalProfit !== 0
                 ? getRoundedNumber(+accountStat.totalProfit, currency)
                 : +accountStat.totalProfit;
+        }
+
+        getProfitPerRun(toString, currency) {
+            const accountStat = this.getAccountStat();
+            return toString && accountStat.profitPerRun !== 0
+                ? getRoundedNumber(+accountStat.profitPerRun, currency)
+                : +accountStat.profitPerRun;
         }
 
         /* eslint-enable */

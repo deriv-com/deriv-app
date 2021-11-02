@@ -361,6 +361,9 @@
         }
         &__desc {
             margin-bottom: 3.2rem;
+            @include mobile {
+                padding: 0 1rem;
+            }
         }
     }
 }

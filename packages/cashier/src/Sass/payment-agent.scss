@@ -152,6 +152,8 @@
     &__accordion-content {
         &-line {
             margin-bottom: 8px;
+            display: flex;
+            flex-direction: row;
 
             &:first-child {
                 & .payment-agent__contact {
@@ -163,7 +165,6 @@
             }
             @include mobile {
                 overflow: hidden;
-                white-space: nowrap;
                 text-overflow: ellipsis;
 
                 &:not(:first-child) {

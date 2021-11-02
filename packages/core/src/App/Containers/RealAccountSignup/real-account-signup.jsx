@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING } from '@deriv/shared/src/utils/constants-storage/CFD';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
@@ -30,7 +31,13 @@ const modal_pages_indices = {
     finished_add_currency: 8,
 };
 
-const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, country_standpoint }) => {
+const WizardHeading = ({
+    real_account_signup_target,
+    currency,
+    is_isle_of_man_residence,
+    country_standpoint,
+    signup_modal_real_account_title,
+}) => {
     const maltainvest_signup = real_account_signup_target === 'maltainvest';
     const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
@@ -69,7 +76,7 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
                 country_standpoint.is_other_eu ||
                 country_standpoint.is_rest_of_eu
             ) {
-                return <Localize i18n_default_text='Add a real Deriv Multipliers account' />;
+                return <Localize i18n_default_text={`Add a real ${signup_modal_real_account_title} account`} />;
             }
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
         case 'samoa':
@@ -103,6 +110,7 @@ const RealAccountSignup = ({
     state_index,
     state_value,
     deposit_real_account_signup_target,
+    signup_modal_real_account_title,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -247,10 +255,14 @@ const RealAccountSignup = ({
     };
 
     const showStatusDialog = curr => {
-        setParams({
-            active_modal_index: modal_pages_indices.status_dialog,
-            currency: curr,
-        });
+        if (sessionStorage.getItem('cfd_account_needed')) {
+            closeModalThenOpenCFD();
+        } else {
+            setParams({
+                active_modal_index: modal_pages_indices.status_dialog,
+                currency: curr,
+            });
+        }
     };
 
     const closeModalthenOpenWelcomeModal = curr => {
@@ -258,6 +270,12 @@ const RealAccountSignup = ({
         setParams({
             currency: curr,
         });
+    };
+
+    const closeModalThenOpenCFD = () => {
+        closeRealAccountSignup();
+        sessionStorage.setItem(CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING, '1');
+        history.push(`${routes.mt5}#real`);
     };
 
     const closeModalThenOpenCashier = () => {
@@ -335,6 +353,7 @@ const RealAccountSignup = ({
             return;
         }
         if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
+            sessionStorage.removeItem('cfd_account_needed');
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }
@@ -425,6 +444,7 @@ const RealAccountSignup = ({
                                     available_crypto_currencies={available_crypto_currencies}
                                     should_show_all_available_currencies={should_show_all_available_currencies}
                                     country_standpoint={country_standpoint}
+                                    signup_modal_real_account_title={signup_modal_real_account_title}
                                 />
                             );
                         }
@@ -464,6 +484,7 @@ const RealAccountSignup = ({
                                     is_belgium_residence={is_belgium_residence}
                                     should_show_all_available_currencies={should_show_all_available_currencies}
                                     country_standpoint={country_standpoint}
+                                    signup_modal_real_account_title={signup_modal_real_account_title}
                                 />
                             );
                         }
@@ -508,4 +529,5 @@ export default connect(({ ui, client, common, modules }) => ({
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
+    signup_modal_real_account_title: ui.signup_modal_real_account_title,
 }))(withRouter(RealAccountSignup));

@@ -1,0 +1,42 @@
+.dc-modal__container_poa-poi-verification {
+    .title-element {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .dc-modal-body {
+        padding-top: 0;
+        padding-bottom: 1.8rem;
+    }
+    .arrow-icon-container {
+        width: 3.22rem;
+        height: 3.2rem;
+        padding: 0;
+        min-width: unset;
+        .dc-btn__icon {
+            padding-right: unset;
+        }
+    }
+    .proof-of-identity-text-container {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 2.2rem;
+        align-items: center;
+    }
+    .proof-of-address-text-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2.4rem;
+        padding-top: 1.4rem;
+        align-items: center;
+    }
+    .dc-modal-footer {
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2.2rem;
+    }
+    .title-text {
+        margin-top: 3.2rem;
+    }
+}

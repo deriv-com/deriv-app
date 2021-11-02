@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import UpgradeAccountsModal from 'App/Components/Elements/Modals/mul-cfd-upgrade-modal.jsx';
 import { connect } from 'Stores/connect';
+import { localize } from '@deriv/translations';
 
 const AccountSignupModal = React.lazy(() =>
     import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal')
@@ -33,7 +33,6 @@ const AppModals = ({
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
-
     let ComponentToLoad = null;
     switch (url_action_param) {
         case 'redirect_to_login':
@@ -57,7 +56,8 @@ const AppModals = ({
     }
 
     if (is_account_needed_modal_on) {
-        ComponentToLoad = <MT5AccountNeededModal />;
+        openRealAccountSignup(target, localize('DMT5 CFDs'));
+        closeAccountNeededModal();
     }
 
     if (is_reality_check_visible) {

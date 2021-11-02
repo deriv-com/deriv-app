@@ -15,7 +15,7 @@ import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
-import { populateVerificationStatus } from '../Helpers/verification';
+import populateVerificationStatus from '../Helpers/verification';
 
 const ProofOfIdentityContainer = ({
     account_status,

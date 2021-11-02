@@ -9,6 +9,8 @@ import { EXPERIAN, getExperianResult } from './helpers/constants';
 import { DialogHeading } from './helpers/dialog-heading.jsx';
 import { DialogMessage } from './helpers/dialog-message.jsx';
 import { DialogButtons } from './helpers/dialog-buttons.jsx';
+import { populateVerificationStatus } from '@deriv/account';
+import { clientNotifications } from '../../../Stores/Helpers/client-notifications';
 
 const MainIcon = ({ currency }) => <Icon icon={`IcCurrency-${currency.toLowerCase()}`} size={120} />;
 const Checkmark = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' size={24} />;
@@ -32,6 +34,8 @@ const StatusDialogContainer = ({
     is_isle_of_man_residence,
     landing_company_shortcode,
     switchToVirtual,
+    account_status,
+    addNotificationMessage,
 }) => {
     const closeModalAndOpenCashier = () => {
         closeModal();
@@ -46,6 +50,16 @@ const StatusDialogContainer = ({
     const closeModalAndOpenPOA = () => {
         closeModal();
         history.push(routes.proof_of_address);
+    };
+    const closeModalAndAddProofsNotifications = () => {
+        const { has_poa, has_poi } = populateVerificationStatus(account_status);
+        if (!has_poi) {
+            addNotificationMessage(clientNotifications().verify_poi);
+        }
+        if (!has_poa) {
+            addNotificationMessage(clientNotifications().verify_poa);
+        }
+        closeModal();
     };
 
     /**
@@ -92,7 +106,7 @@ const StatusDialogContainer = ({
                 />
             </div>
             <DialogButtons
-                closeModal={closeModal}
+                closeModal={closeModalAndAddProofsNotifications}
                 closeModalAndOpenPOI={closeModalAndOpenPOI}
                 closeModalAndOpenPOA={closeModalAndOpenPOA}
                 closeModalAndOpenCashier={closeModalAndOpenCashier}
@@ -118,7 +132,9 @@ StatusDialogContainer.propTypes = {
     is_belgium_residence: PropTypes.bool,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
+    addNotificationMessage: ui.addNotificationMessage,
+    account_status: client.account_status,
     country_standpoint: client.country_standpoint,
     landing_company_shortcode: client.landing_company_shortcode,
     is_fully_authenticated: client.is_fully_authenticated,

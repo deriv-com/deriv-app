@@ -643,6 +643,9 @@ export default class ClientStore extends BaseStore {
     }
 
     isMT5Allowed = landing_companies => {
+        // Stop showing MT5 for non-logged in EU users
+        if (!this.is_logged_in && this.is_eu_country) return false;
+
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;

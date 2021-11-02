@@ -86,11 +86,6 @@ export default class ContractStore extends BaseStore {
             extendObservable(this.digits_info, getDigitInfo(this.digits_info, this.contract_info));
         }
 
-        // force to sell the expired contract, in order to remove from portfolio
-        if (+contract_info.is_settleable === 1 && !contract_info.is_sold) {
-            WS.send({ sell_expired: 1 });
-        }
-
         const is_multiplier = isMultiplierContract(this.contract_info.contract_type);
 
         if (is_multiplier && contract_info.contract_id && contract_info.limit_order) {

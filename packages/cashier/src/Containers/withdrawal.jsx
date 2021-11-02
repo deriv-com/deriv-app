@@ -24,10 +24,6 @@ const WithdrawalSideNote = ({ currency }) => {
             i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
             key={0}
         />,
-        <Localize
-            i18n_default_text='Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.'
-            key={1}
-        />,
     ];
 
     if (!isCryptocurrency(currency)) {

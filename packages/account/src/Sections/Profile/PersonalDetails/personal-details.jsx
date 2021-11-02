@@ -20,6 +20,7 @@ import {
     isMobile,
     validAddress,
     validPostCode,
+    validTaxID,
     validPhone,
     validLetterSymbol,
     validLength,
@@ -60,7 +61,7 @@ const InputGroup = ({ children, className }) => {
     );
 };
 
-const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeable, residence_list }) => (
+const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values, is_changeable, residence_list }) => (
     <React.Fragment>
         <DesktopWrapper>
             <Autocomplete
@@ -69,7 +70,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
                 autoComplete='new-password' // prevent chrome autocomplete
                 type='text'
                 label={localize('Tax residence*')}
-                error={errors.tax_residence}
+                error={touched.tax_residence && errors.tax_residence}
                 disabled={!is_changeable}
                 id='tax_residence'
                 list_items={residence_list}
@@ -84,7 +85,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
                 value={values.tax_residence}
                 list_items={residence_list}
                 id={'tax_residence_mobile'}
-                error={errors.tax_residence}
+                error={touched.tax_residence && errors.tax_residence}
                 disabled={!is_changeable}
                 use_text={true}
                 onChange={e => setFieldValue('tax_residence', e.target.value, true)}
@@ -97,7 +98,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
 export class PersonalDetailsForm extends React.Component {
     static contextType = PlatformContext;
 
-    state = { is_loading: true, is_state_loading: false, show_form: true, errors: false };
+    state = { is_loading: true, is_state_loading: false, show_form: true };
 
     onSubmit = async (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
@@ -215,28 +216,17 @@ export class PersonalDetailsForm extends React.Component {
         const min_tax_identification_number = 0;
         const max_tax_identification_number = 25;
         if (values.tax_identification_number) {
-            if (
-                values.tax_identification_number &&
-                !/^(?!^$|\s+)[A-Za-z0-9.\/\s-]{0,25}$/.test(values.tax_identification_number)
-            ) {
+            if (!validTaxID(values.tax_identification_number.trim())) {
                 errors.tax_identification_number = localize(
-                    'Only letters, numbers, space, hyphen, period, and forward slash are allowed.'
+                    'Should start with letter or number and may contain a hyphen, dot and slash.'
                 );
-            }
-            if (!/^[a-zA-Z0-9].*$/.test(values.tax_identification_number.charAt(0))) {
-                errors.tax_identification_number = localize(
-                    'Should start with letter or number and may contain a hyphen, period and slash.'
-                );
-            }
-            if (
+            } else if (
                 !validLength(values.tax_identification_number.trim(), {
                     min: min_tax_identification_number,
                     max: max_tax_identification_number,
                 })
             ) {
-                errors.tax_identification_number = localize(
-                    "Tax Identification Number can't be longer than 25 characters."
-                );
+                errors.tax_identification_number = localize('You should enter 0-25 characters.');
             }
         }
 
@@ -308,35 +298,7 @@ export class PersonalDetailsForm extends React.Component {
             }
         }
 
-        this.setState({ errors: Object.keys(errors).length > 0 });
-
         return errors;
-    };
-
-    getWarningMessages = values => {
-        const warnings = {};
-        const active_errors = this.state.errors;
-        const account_object = this.props;
-        const residence_list_array = Object.values(account_object.residence_list);
-
-        const filter_tin_regex = residence_list_array.filter(residence => {
-            return residence.text === values.tax_residence && residence.tin_format;
-        });
-
-        const tin_regex = filter_tin_regex[0]?.tin_format?.[0];
-        const test_tin = new RegExp(tin_regex).test(values.tax_identification_number);
-        const valid_country_tin = tin_regex ? test_tin : true;
-
-        if (!active_errors) {
-            if (values.tax_identification_number) {
-                if (!valid_country_tin) {
-                    warnings.tax_identification_number = localize(
-                        'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.'
-                    );
-                }
-            }
-        }
-        return warnings;
     };
 
     showForm = show_form => this.setState({ show_form });
@@ -536,7 +498,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                         autoComplete='new-password' // prevent chrome autocomplete
                                                                         type='text'
                                                                         label={localize('Title*')}
-                                                                        error={errors.salutation}
+                                                                        error={touched.salutation && errors.salutation}
                                                                         list_items={this.salutation_list}
                                                                         onItemSelection={({ value, text }) =>
                                                                             setFieldValue(
@@ -558,7 +520,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 value={values.salutation}
                                                                 list_items={this.salutation_list}
                                                                 use_text={true}
-                                                                error={errors.salutation}
+                                                                error={touched.salutation && errors.salutation}
                                                                 onChange={e =>
                                                                     setFieldValue('salutation', e.target.value, true)
                                                                 }
@@ -580,7 +542,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             onBlur={handleBlur}
                                                             required
                                                             disabled={!this.isChangeableField('first_name')}
-                                                            error={errors.first_name}
+                                                            error={touched.first_name && errors.first_name}
                                                             id={'first_name'}
                                                         />
                                                         <Input
@@ -594,7 +556,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             onBlur={handleBlur}
                                                             required
                                                             disabled={!this.isChangeableField('last_name')}
-                                                            error={errors.last_name}
+                                                            error={touched.last_name && errors.last_name}
                                                         />
                                                     </InputGroup>
                                                 </DesktopWrapper>
@@ -611,7 +573,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             onBlur={handleBlur}
                                                             required
                                                             disabled={!this.isChangeableField('first_name')}
-                                                            error={errors.first_name}
+                                                            error={touched.first_name && errors.first_name}
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
@@ -626,7 +588,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             onBlur={handleBlur}
                                                             required
                                                             disabled={!this.isChangeableField('last_name')}
-                                                            error={errors.last_name}
+                                                            error={touched.last_name && errors.last_name}
                                                         />
                                                     </fieldset>
                                                 </MobileWrapper>
@@ -644,7 +606,9 @@ export class PersonalDetailsForm extends React.Component {
                                                                             ? localize('Place of birth')
                                                                             : localize('Place of birth*')
                                                                     }
-                                                                    error={errors.place_of_birth}
+                                                                    error={
+                                                                        touched.place_of_birth && errors.place_of_birth
+                                                                    }
                                                                     id='birth_place'
                                                                     required={!is_svg}
                                                                     disabled={!this.isChangeableField('place_of_birth')}
@@ -673,7 +637,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             value={values.place_of_birth}
                                                             list_items={residence_list}
                                                             use_text={true}
-                                                            error={errors.place_of_birth}
+                                                            error={touched.place_of_birth && errors.place_of_birth}
                                                             onChange={e =>
                                                                 setFieldValue('place_of_birth', e.target.value, true)
                                                             }
@@ -686,7 +650,7 @@ export class PersonalDetailsForm extends React.Component {
                                                     <DateOfBirthPicker
                                                         name='date_of_birth'
                                                         label={localize('Date of birth*')}
-                                                        error={errors.date_of_birth}
+                                                        error={touched.date_of_birth && errors.date_of_birth}
                                                         onBlur={() => setTouched({ date_of_birth: true })}
                                                         onChange={({ target }) =>
                                                             setFieldValue(
@@ -716,7 +680,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                             ? localize('Citizenship*')
                                                                             : localize('Citizenship')
                                                                     }
-                                                                    error={errors.citizen}
+                                                                    error={touched.citizen && errors.citizen}
                                                                     disabled={!this.isChangeableField('citizen')}
                                                                     list_items={residence_list}
                                                                     onItemSelection={({ value, text }) =>
@@ -746,7 +710,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 disabled={!this.isChangeableField('citizen')}
                                                                 value={values.citizen}
                                                                 list_items={residence_list}
-                                                                error={errors.citizen}
+                                                                error={touched.citizen && errors.citizen}
                                                                 use_text={true}
                                                                 onChange={e =>
                                                                     setFieldValue('citizen', e.target.value, true)
@@ -770,7 +734,7 @@ export class PersonalDetailsForm extends React.Component {
                                                 value={values.residence}
                                                 required
                                                 disabled={!this.isChangeableField('residence')}
-                                                error={errors.residence}
+                                                error={touched.residence && errors.residence}
                                                 onChange={handleChange}
                                             />
                                         </fieldset>
@@ -784,7 +748,7 @@ export class PersonalDetailsForm extends React.Component {
                                                 value={values.email}
                                                 required
                                                 disabled={!this.isChangeableField('email')}
-                                                error={errors.email}
+                                                error={touched.email && errors.email}
                                                 onChange={handleChange}
                                             />
                                         </fieldset>
@@ -803,7 +767,7 @@ export class PersonalDetailsForm extends React.Component {
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         required
-                                                        error={errors.phone}
+                                                        error={touched.phone && errors.phone}
                                                     />
                                                 </fieldset>
                                             </FormBodySection>
@@ -831,6 +795,7 @@ export class PersonalDetailsForm extends React.Component {
                                         {/*            onChange={handleChange} */}
                                         {/*            handleBlur={handleBlur} */}
                                         {/*            error={ */}
+                                        {/*                touched.account_opening_reason && */}
                                         {/*                errors.account_opening_reason */}
                                         {/*            } */}
                                         {/*        /> */}
@@ -896,11 +861,10 @@ export class PersonalDetailsForm extends React.Component {
                                                                 value={values.tax_identification_number}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
-                                                                warn={
-                                                                    this.getWarningMessages(values)
-                                                                        .tax_identification_number
+                                                                error={
+                                                                    touched.tax_identification_number &&
+                                                                    errors.tax_identification_number
                                                                 }
-                                                                error={errors.tax_identification_number}
                                                                 disabled={
                                                                     !this.isChangeableField('tax_identification_number')
                                                                 }
@@ -928,7 +892,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 value={values.address_line_1}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
-                                                                error={errors.address_line_1}
+                                                                error={touched.address_line_1 && errors.address_line_1}
                                                                 required
                                                                 disabled={!this.isChangeableField('address_line_1')}
                                                             />
@@ -943,7 +907,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 id='address_line_2'
                                                                 label={localize('Second line of address (optional)')}
                                                                 value={values.address_line_2}
-                                                                error={errors.address_line_2}
+                                                                error={touched.address_line_2 && errors.address_line_2}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
                                                                 required
@@ -959,7 +923,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 id='address_city'
                                                                 label={localize('Town/City*')}
                                                                 value={values.address_city}
-                                                                error={errors.address_city}
+                                                                error={touched.address_city && errors.address_city}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
                                                                 required
@@ -981,7 +945,10 @@ export class PersonalDetailsForm extends React.Component {
                                                                                         'State/Province (optional)'
                                                                                     )}
                                                                                     id={'state_province'}
-                                                                                    error={errors.address_state}
+                                                                                    error={
+                                                                                        touched.address_state &&
+                                                                                        errors.address_state
+                                                                                    }
                                                                                     list_items={states_list}
                                                                                     onItemSelection={({
                                                                                         value,
@@ -1011,7 +978,10 @@ export class PersonalDetailsForm extends React.Component {
                                                                             value={values.address_state}
                                                                             list_items={states_list}
                                                                             id={'state_province_mobile'}
-                                                                            error={errors.address_state}
+                                                                            error={
+                                                                                touched.address_state &&
+                                                                                errors.address_state
+                                                                            }
                                                                             use_text={true}
                                                                             onChange={e =>
                                                                                 setFieldValue(
@@ -1035,7 +1005,9 @@ export class PersonalDetailsForm extends React.Component {
                                                                     id='address_state'
                                                                     label={localize('State/Province (optional)')}
                                                                     value={values.address_state}
-                                                                    error={errors.address_state}
+                                                                    error={
+                                                                        touched.address_state && errors.address_state
+                                                                    }
                                                                     onChange={handleChange}
                                                                     onBlur={handleBlur}
                                                                     disabled={!this.isChangeableField('address_state')}
@@ -1051,7 +1023,9 @@ export class PersonalDetailsForm extends React.Component {
                                                                 id='address_postcode'
                                                                 label={localize('Postal/ZIP code')}
                                                                 value={values.address_postcode}
-                                                                error={errors.address_postcode}
+                                                                error={
+                                                                    touched.address_postcode && errors.address_postcode
+                                                                }
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
                                                                 disabled={!this.isChangeableField('address_postcode')}

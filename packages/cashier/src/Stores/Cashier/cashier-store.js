@@ -215,7 +215,6 @@ export default class CashierStore extends BaseStore {
     @observable percentage = 0;
     @observable is_withdraw_confirmed = false;
     @observable show_p2p_in_cashier_default = false;
-    @observable max_withdraw_amount = 0;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -806,14 +805,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setMaxWithdrawAmount(amount) {
-        this.max_withdraw_amount = amount;
-    }
-
-    @action.bound
     async check10kLimit() {
         const remainder = (await this.root_store.client.getLimits())?.get_limits?.remainder;
-        this.setMaxWithdrawAmount(remainder);
         const min_withdrawal = getMinWithdrawal(this.root_store.client.currency);
         const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
         this.set10kLimitation(is_limit_reached);
@@ -1175,21 +1168,17 @@ export default class CashierStore extends BaseStore {
         if (!payment_agent_list || !payment_agent_list.paymentagent_list) {
             return;
         }
-        // TODO: Once telephone, url and supported_banks removed from paymentagent_list.list we can remove them and just use the plural ones
+
         payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
             this.config.payment_agent.list.push({
                 email: payment_agent.email,
-                phones: payment_agent?.phone_numbers || payment_agent?.telephone,
+                phone: payment_agent.telephone,
                 name: payment_agent.name,
-                supported_banks: payment_agent?.supported_payment_methods || payment_agent?.supported_banks,
-                urls: payment_agent?.urls || payment_agent?.url,
+                supported_banks: payment_agent.supported_banks,
+                url: payment_agent.url,
             });
-
             if (payment_agent.supported_banks) {
-                const supported_banks_array = payment_agent?.supported_payment_methods
-                    ? payment_agent.supported_payment_methods.map(bank => bank.payment_method)
-                    : payment_agent.supported_banks.split(',');
-                supported_banks_array.forEach(bank => {
+                payment_agent.supported_banks.split(',').forEach(bank => {
                     this.addSupportedBank(bank);
                 });
             }
@@ -2180,7 +2169,6 @@ export default class CashierStore extends BaseStore {
 
         const { balance, currency, website_status } = this.root_store.client;
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
-        const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
 
         if (this.converter_from_amount) {
             const { is_ok, message } = validNumber(this.converter_from_amount, {
@@ -2191,18 +2179,11 @@ export default class CashierStore extends BaseStore {
 
             if (+balance < +this.converter_from_amount) error_message = localize('Insufficient funds');
 
-            if (
-                +this.converter_from_amount < +min_withdraw_amount ||
-                +this.converter_from_amount > +max_withdraw_amount
-            ) {
+            if (+this.converter_from_amount < +min_withdraw_amount) {
                 error_message = (
                     <Localize
-                        i18n_default_text='The allowed withdraw amount is {{min_withdraw_amount}} to {{max_withdraw_amount}} {{currency}}'
-                        values={{
-                            min_withdraw_amount,
-                            max_withdraw_amount,
-                            currency,
-                        }}
+                        i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'
+                        values={{ min_withdraw_amount, currency: this.root_store.client.currency }}
                     />
                 );
             }

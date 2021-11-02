@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 import { isEmptyObject } from '@deriv/shared';
 
 const Text = ({ children, size, color, align, weight, line_height, as, className, styles, ...props }) => {
-    const class_styles = {
-        '--text-size': `var(--text-size-${size || 's'})`,
-        '--text-color': `var(--text-${color || 'general'})`,
-        '--text-lh': `var(--text-lh-${line_height || 'm'})`,
-        '--text-weight': `var(--text-weight-${weight || 'normal'})`,
-        '--text-align': `var(--text-align-${align || 'left'})`,
-    };
-    const [style, setStyle] = React.useState(class_styles);
+    const [style, setStyle] = React.useState({});
     React.useEffect(() => {
+        const class_styles = {
+            '--text-size': `var(--text-size-${size || 's'})`,
+            '--text-color': `var(--text-${color || 'general'})`,
+            '--text-lh': `var(--text-lh-${line_height || 'm'})`,
+            '--text-weight': `var(--text-weight-${weight || 'normal'})`,
+            '--text-align': `var(--text-align-${align || 'left'})`,
+        };
         if (!isEmptyObject(styles)) {
             const combined_style = { ...class_styles, ...styles };
             setStyle(combined_style);

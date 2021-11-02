@@ -14,6 +14,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
     const [is_doc_selected, setDocSelected] = React.useState(false);
+
     const document_data = selected_country.identity.services.idv.documents_supported;
     const {
         value: country_code,
@@ -140,7 +141,15 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                     <Text className='proof-of-identity__text btm-spacer' size='xs'>
                         {localize('Please select the document type and enter the ID number.')}
                     </Text>
-                    <div className='proof-of-identity__inner-container btm-spacer'>
+                    {is_doc_selected && (
+                        <Text className='proof-of-identity__text btm-spacer' align='center' size='xs'>
+                            <Localize
+                                i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to <0>account settings</0>.'
+                                components={[<a key={0} className='link' href='/account/personal-details' />]}
+                            />
+                        </Text>
+                    )}
+                    <div className='proof-of-identity__inner-container'>
                         <div className='proof-of-identity__fieldset-container'>
                             <fieldset className='proof-of-identity__fieldset'>
                                 <Field name='document'>
@@ -254,11 +263,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                             </div>
                         )}
                     </div>
-                    {is_doc_selected && (
-                        <Text className='proof-of-identity__text' align='center' size='xs'>
-                            <Localize i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.' />
-                        </Text>
-                    )}
                     <FormFooter className='proof-of-identity__footer'>
                         <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
                             <BackButtonIcon className='back-btn' /> {localize('Go Back')}

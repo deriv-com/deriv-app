@@ -4,25 +4,16 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 
 const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
-    const detail = Array.isArray(children) ? children : children.split(',');
     return (
         <div className='payment-agent__accordion-content-line'>
-            <div>
-                <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
-            </div>
-            <div>
-                {detail.map((child, id) => (
-                    <a
-                        key={id}
-                        className='payment-agent__contact cashier__paragraph'
-                        href={`${action ? `${action}:` : ''}${child}`}
-                        {...rest}
-                    >
-                        {child}
-                        {id === detail.length - 1 ? '' : ', '}
-                    </a>
-                ))}
-            </div>
+            <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
+            <a
+                className='payment-agent__contact cashier__paragraph'
+                href={`${action ? `${action}:` : ''}${children}`}
+                {...rest}
+            >
+                {children}
+            </a>
         </div>
     );
 };
@@ -36,20 +27,17 @@ Detail.propTypes = {
     value: PropTypes.string,
 };
 
-const PaymentAgentDetails = ({ className, payment_agent_phones, payment_agent_urls, payment_agent_email }) => {
-    //  TODO: Once telephone, url removed from paymentagent_list.list we can remove isArray conditions and only use the array
+const PaymentAgentDetails = ({ className, payment_agent_phone, payment_agent_url, payment_agent_email }) => {
     return (
         <div className={classNames('payment-agent__accordion-content', className)}>
-            {payment_agent_phones && (
+            {payment_agent_phone && (
                 <Detail action='tel' icon='Phone'>
-                    {Array.isArray(payment_agent_phones)
-                        ? payment_agent_phones.map(phone => phone.phone_number)
-                        : payment_agent_phones}
+                    {payment_agent_phone}
                 </Detail>
             )}
-            {payment_agent_urls && (
+            {payment_agent_url && (
                 <Detail icon='Website' target='_blank' rel='noopener noreferrer'>
-                    {Array.isArray(payment_agent_urls) ? payment_agent_urls.map(url => url.url) : payment_agent_urls}
+                    {payment_agent_url}
                 </Detail>
             )}
             {payment_agent_email && (

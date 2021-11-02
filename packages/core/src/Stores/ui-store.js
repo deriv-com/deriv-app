@@ -152,6 +152,9 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     @observable should_show_cancel = false;
 
+    // mul-cfd upgrade modal
+    @observable is_upgrade_modal_visible = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -793,5 +796,10 @@ export default class UIStore extends BaseStore {
         if (this.choose_crypto_currency_target === routes.cashier_deposit) {
             this.root_store.modules.cashier.setIsDeposit(true);
         }
+    }
+
+    @action.bound
+    toggleUpgradeModal() {
+        this.is_upgrade_modal_visible = !this.is_upgrade_modal_visible;
     }
 }

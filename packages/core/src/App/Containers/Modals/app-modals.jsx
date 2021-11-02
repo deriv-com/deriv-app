@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
+import UpgradeAccountsModal from 'App/Components/Elements/Modals/mul-cfd-upgrade-modal.jsx';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 
@@ -31,6 +32,7 @@ const AppModals = ({
     account_needed_modal_props: { target },
     openRealAccountSignup,
     closeAccountNeededModal,
+    should_show_upgrade_modal,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -65,6 +67,10 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     }
 
+    if (should_show_upgrade_modal) {
+        ComponentToLoad = <UpgradeAccountsModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} portal_id='popup_root' />
@@ -84,4 +90,5 @@ export default connect(({ client, ui }) => ({
     account_needed_modal_props: ui.account_needed_modal_props,
     openRealAccountSignup: ui.openRealAccountSignup,
     closeAccountNeededModal: ui.closeAccountNeededModal,
+    should_show_upgrade_modal: ui.is_upgrade_modal_visible,
 }))(AppModals);

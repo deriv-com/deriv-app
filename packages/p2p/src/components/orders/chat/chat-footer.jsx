@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Input } from '@deriv/components';
+import { Input, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import ChatFooterIcon from 'Components/orders/chat/chat-footer-icon.jsx';
 import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
@@ -78,39 +78,46 @@ const ChatFooter = observer(() => {
     const max_characters = 5000;
 
     return (
-        <div
-            className={classNames('order-chat__footer', {
-                'order-chat__footer--empty': sendbird_store.chat_messages.length === 0,
-            })}
-        >
-            <div className='order-chat__footer-input'>
-                <Input
-                    has_character_counter
-                    initial_character_count={character_count}
-                    max_characters={max_characters}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}
-                    placeholder={localize('Enter message')}
-                    ref={ref => (text_input_ref.current = ref)}
-                    rows={1}
-                    trailing_icon={
-                        <div
-                            className='order-chat__footer-icon-container'
-                            onClick={should_show_attachment_icon ? () => file_input_ref.current.click() : sendMessage}
-                        >
-                            <ChatFooterIcon should_show_attachment_icon={should_show_attachment_icon} />
-                        </div>
-                    }
-                    type='textarea'
-                />
-                <input
-                    onChange={e => sendbird_store.sendFile(e.target.files[0])}
-                    ref={el => (file_input_ref.current = el)}
-                    style={{ display: 'none' }}
-                    type='file'
-                />
+        <React.Fragment>
+            <Text className='order-chat__footer-disclaimer' color='less-prominent' size='xxs'>
+                <Localize i18n_default_text='In case of a dispute, we will only consider the communication through Deriv P2P chat channel.' />
+            </Text>
+            <div
+                className={classNames('order-chat__footer', {
+                    'order-chat__footer--empty': sendbird_store.chat_messages.length === 0,
+                })}
+            >
+                <div className='order-chat__footer-input'>
+                    <Input
+                        has_character_counter
+                        initial_character_count={character_count}
+                        max_characters={max_characters}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                        placeholder={localize('Enter message')}
+                        ref={ref => (text_input_ref.current = ref)}
+                        rows={1}
+                        trailing_icon={
+                            <div
+                                className='order-chat__footer-icon-container'
+                                onClick={
+                                    should_show_attachment_icon ? () => file_input_ref.current.click() : sendMessage
+                                }
+                            >
+                                <ChatFooterIcon should_show_attachment_icon={should_show_attachment_icon} />
+                            </div>
+                        }
+                        type='textarea'
+                    />
+                    <input
+                        onChange={e => sendbird_store.sendFile(e.target.files[0])}
+                        ref={el => (file_input_ref.current = el)}
+                        style={{ display: 'none' }}
+                        type='file'
+                    />
+                </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 });
 

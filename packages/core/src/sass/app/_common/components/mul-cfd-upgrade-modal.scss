@@ -8,6 +8,10 @@
     &__table-row {
         grid-template-columns: 20% 31% 49%;
         border-bottom: none;
+        &--single-column {
+            grid-template-columns: 25% 75%;
+            border-bottom: none;
+        }
     }
     &__table-head {
         height: 112px;
@@ -62,7 +66,9 @@
     position: relative;
     justify-content: center;
     grid-template-columns: 20% 31% 49%;
-
+    &--single-column {
+        grid-template-columns: 25% 75%;
+    }
     .mul-cfd-compare-table-col:first-of-type {
         position: static;
     }

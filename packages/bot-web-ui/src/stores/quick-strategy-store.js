@@ -246,7 +246,11 @@ export default class QuickStrategyStore {
                     timeout: 5000,
                 })
                 .then(() => {
-                    this.root_store.run_panel.onRunButtonClick();
+                    if (getSetting('remember_me') || (!getSetting('remember_me') && getSetting('is_reset_checkbox'))) {
+                        this.root_store.run_panel.onRunButtonClick();
+                    } else if (!getSetting('is_reset_checkbox')) {
+                        this.root_store.run_panel.showResetBotDialog();
+                    }
                 });
         }
 
@@ -327,10 +331,9 @@ export default class QuickStrategyStore {
             trade_types.forEach(trade_type => {
                 const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
                 const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
-                const is_muliplier = ['multiplier'].includes(trade_type.value);
 
-                // TODO: Render extra inputs for barrier + prediction and multiplier types.
-                if (!has_barrier && !has_prediction && !is_muliplier) {
+                // TODO: Render extra inputs for barrier + prediction types.
+                if (!has_barrier && !has_prediction) {
                     trade_type_options.push({
                         text: trade_type.name,
                         value: trade_type.value,

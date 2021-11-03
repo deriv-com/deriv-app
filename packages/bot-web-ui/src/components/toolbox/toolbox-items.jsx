@@ -1,6 +1,6 @@
+import { localize } from '@deriv/translations';
 import React from 'react';
 import ReactDomServer from 'react-dom/server';
-import { localize } from '@deriv/translations';
 
 const Arg = ({ ...props }) => {
     return React.createElement('arg', props);
@@ -116,30 +116,6 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 </Value>
                 <Field name='AMOUNT_LIMITS' />
             </Block>
-            <Block type='trade_definition_multiplier'>
-                <Field name='MULTIPLIERTYPE_LIST' />
-                <Field name='CURRENCY_LIST'>USD</Field>
-                <Value name='AMOUNT'>
-                    <Shadow type='math_number'>
-                        <Field name='NUM'>1</Field>
-                    </Shadow>
-                </Value>
-                <Field name='AMOUNT_LIMITS' />
-            </Block>
-            <Block type='multiplier_take_profit'>
-                <Value name='AMOUNT'>
-                    <Shadow type='math_number'>
-                        <Field name='NUM'>0</Field>
-                    </Shadow>
-                </Value>
-            </Block>
-            <Block type='multiplier_stop_loss'>
-                <Value name='AMOUNT'>
-                    <Shadow type='math_number'>
-                        <Field name='NUM'>0</Field>
-                    </Shadow>
-                </Value>
-            </Block>
         </Category>
         <Category id='purchase_conditions' name={localize('Purchase contract')}>
             <Block type='before_purchase' />
@@ -151,7 +127,20 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
         </Category>
         <Category id='trade_results' name={localize('Trade again')}>
             <Block type='after_purchase' />
-            <Block type='trade_again' />
+            <Block type='trade_again'>
+                <Field name='SL_ENABLED'>FALSE</Field>
+                <Value name='STOP_LOSS'>
+                    <Shadow type='math_number'>
+                        <Field name='NUM' />
+                    </Shadow>
+                </Value>
+                <Field name='TP_ENABLED'>FALSE</Field>
+                <Value name='TAKE_PROFIT'>
+                    <Shadow type='math_number'>
+                        <Field name='NUM' />
+                    </Shadow>
+                </Value>
+            </Block>
         </Category>
 
         <Category id='analysis' name={localize('Analysis')}>
@@ -968,9 +957,8 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                                     <Field name='CHECK_RESULT'>win</Field>
                                 </Block>
                             </Value>
-                            <Statement name='DO0'>
-                                <Block type='trade_again' />
-                            </Statement>
+
+                            <Block type='trade_again' />
                         </Block>
                     </Statement>
                 </Block>

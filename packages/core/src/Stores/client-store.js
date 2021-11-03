@@ -208,12 +208,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get get_demo_mt5_accounts() {
+    get demo_mt5_accounts() {
         return getSortedCFDList(this.mt5_login_list).filter(isDemo);
     }
 
     @computed
-    get get_virtual_accounts() {
+    get virtual_accounts() {
         return getSortedAccountList(this.account_list, this.accounts).filter(account => account.is_virtual);
     }
 

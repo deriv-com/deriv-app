@@ -40,7 +40,7 @@ const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto,
                         />
                     ) : can_change_fiat_currency ? (
                         <Localize
-                            i18n_default_text='You can <0>set a new currency</0> before you deposit for the first time or create a DMT5 or Deriv X account.'
+                            i18n_default_text='You can <0>set a new currency</0> before you deposit for the first time or create a real DMT5 or Deriv X account.'
                             components={[
                                 <a
                                     key={0}
@@ -51,7 +51,7 @@ const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto,
                         />
                     ) : (
                         <Localize
-                            i18n_default_text="You can no longer change your account currency because you've either made a deposit or created a DMT5 or Deriv X account. Please contact us via <0>live chat</0> for clarification."
+                            i18n_default_text="You can no longer change your account currency because you've made a deposit into your Fiat account or created a real DMT5 or Deriv X account. Please contact us via <0>live chat</0> for clarification."
                             components={[
                                 <span
                                     key={0}

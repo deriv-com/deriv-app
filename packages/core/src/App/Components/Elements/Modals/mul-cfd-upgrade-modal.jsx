@@ -279,6 +279,8 @@ UpgradeAccountsModal.propTypes = {
     is_upgrade_modal_visible: PropTypes.bool,
     toggleUpgradeAccounts: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
+    demo_mt5_accounts: PropTypes.array,
+    virtual_accounts: PropTypes.array,
 };
 export default connect(({ ui, client }) => ({
     is_upgrade_modal_visible: ui.is_upgrade_modal_visible,

@@ -25,6 +25,9 @@ const AppContents = ({
     notifyAppInstall,
     pageView,
     pushDataLayer,
+    is_virtual,
+    addNotificationMessageByKey,
+    removeNotificationMessageByKey,
 }) => {
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
@@ -64,6 +67,18 @@ const AppContents = ({
 
         return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
     }, [notifyAppInstall]);
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            if (!is_virtual && is_logged_in) {
+                addNotificationMessageByKey('install_pwa');
+            }
+        }, 10000);
+
+        return () => {
+            removeNotificationMessageByKey({ key: 'install_pwa' });
+        };
+    });
 
     // handle accept/decline cookies
     const onAccept = () => {
@@ -117,6 +132,7 @@ AppContents.propTypes = {
     is_cfd_page: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
+    is_virtual: PropTypes.bool,
 };
 
 export default withRouter(
@@ -135,5 +151,8 @@ export default withRouter(
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on: ui.is_route_modal_on,
         notifyAppInstall: ui.notifyAppInstall,
+        is_virtual: client.is_virtual,
+        addNotificationMessageByKey: ui.addNotificationMessageByKey,
+        removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     }))(AppContents)
 );

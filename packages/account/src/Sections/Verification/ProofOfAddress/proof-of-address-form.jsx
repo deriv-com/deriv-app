@@ -23,7 +23,6 @@ import {
     validLength,
     getLocation,
     PlatformContext,
-    isDesktop,
     WS,
 } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -286,17 +285,20 @@ const ProofOfAddressForm = ({
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
                                 <FormSubHeader
-                                    title={is_dashboard ? localize('1. Address') : localize('Details')}
-                                    subtitle={is_dashboard && '(All fields are required)'}
+                                    title={localize('1. Address')}
+                                    subtitle={'(All fields are required)'}
+                                    //title={is_dashboard ? localize('1. Address') : localize('Details')}
+                                    //subtitle={is_dashboard && '(All fields are required)'}
                                 />
                                 <FormBodySection
-                                    has_side_note={is_dashboard}
+                                    has_side_note={true}
+                                    //has_side_note={is_dashboard}
                                     side_note={localize(
                                         'An accurate and complete address helps to speed up your verification process.'
                                     )}
                                 >
                                     <div className='account-poa__details-section'>
-                                        {!is_dashboard && (
+                                        {/* {!is_dashboard && (
                                             <div className='account-poa__details-description'>
                                                 <Text size={isMobile() ? 'xxs' : 'xs'}>
                                                     {localize(
@@ -304,7 +306,7 @@ const ProofOfAddressForm = ({
                                                     )}
                                                 </Text>
                                             </div>
-                                        )}
+                                        )} */}
                                         <div className='account-poa__details-fields'>
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
@@ -423,14 +425,16 @@ const ProofOfAddressForm = ({
                                 </FormBodySection>
 
                                 <FormSubHeader
-                                    title={
-                                        is_dashboard
-                                            ? localize('2. Please upload one of the following:')
-                                            : localize('Please upload one of the following:')
-                                    }
+                                    title={localize('2. Please upload one of the following:')}
+                                    // title={
+                                    //     is_dashboard
+                                    //         ? localize('2. Please upload one of the following:')
+                                    //         : localize('Please upload one of the following:')
+                                    // }
                                 />
                                 <FormBodySection
-                                    has_side_note={is_dashboard && isDesktop()}
+                                    has_side_note={true}
+                                    //has_side_note={is_dashboard && isDesktop()}
                                     side_note={<UploaderSideNote />}
                                 >
                                     <FileUploaderContainer

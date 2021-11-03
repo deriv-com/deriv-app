@@ -38,6 +38,16 @@ const platform_config = [
         description: () => localize('Trade the world’s markets with our popular user-friendly platform'),
         href: routes.smarttrader,
     },
+    {
+        icon: 'IcBrandBinarybot',
+        title: () => localize('Binary Bot'),
+        name: 'Binary Bot',
+        description: () =>
+            localize(
+                'Our classic “drag-and-drop” tool for creating trading bots, featuring pop-up trading charts, for advanced users.'
+            ),
+        href: routes.binarybot,
+    },
 ];
 
 export default platform_config;

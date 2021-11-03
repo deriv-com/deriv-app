@@ -41,7 +41,7 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
                             {receipt.client_name}
                         </Text>
                         <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
-                            {receipt.client_id}
+                            {receipt.client_id.toUpperCase()}
                         </Text>
                     </span>
                 </span>

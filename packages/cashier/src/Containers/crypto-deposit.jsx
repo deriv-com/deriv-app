@@ -16,17 +16,23 @@ const CryptoDeposit = ({
     is_deposit_address_loading,
     recentTransactionOnMount,
     pollApiForDepositAddress,
+    setIsDeposit,
 }) => {
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
 
     React.useEffect(() => {
+        setIsDeposit(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
         pollApiForDepositAddress(false);
     }, [pollApiForDepositAddress]);
 
     if (is_deposit_address_loading) {
-        return <Loading is_fullscreen={false} />;
+        return <Loading is_fullscreen />;
     }
 
     const currency_name = getCurrencyName(currency);
@@ -144,6 +150,7 @@ CryptoDeposit.propTypes = {
     is_deposit_address_loading: PropTypes.bool,
     recentTransactionOnMount: PropTypes.func,
     pollApiForDepositAddress: PropTypes.func,
+    setIsDeposit: PropTypes.func,
 };
 
 export default connect(({ modules, client }) => ({
@@ -154,4 +161,5 @@ export default connect(({ modules, client }) => ({
     is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
+    setIsDeposit: modules.cashier.setIsDeposit,
 }))(CryptoDeposit);

@@ -3,8 +3,16 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
-import { routes, validLength, validPassword, getErrorMessages, CFD_PLATFORMS, WS } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import {
+    routes,
+    validLength,
+    validPassword,
+    getErrorMessages,
+    CFD_PLATFORMS,
+    WS,
+    redirectToLogin,
+} from '@deriv/shared';
+import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 
@@ -121,6 +129,7 @@ class CFDResetPasswordModal extends React.Component {
                         ? localize('Reset Deriv X investor password')
                         : localize('Reset DMT5 investor password')
                 }
+                onMount={() => redirectToLogin(this.props.is_logged_in, getLanguage(), true)}
             >
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
                 {this.is_list_fetched && !this.state.has_error && !this.state.is_finished && (
@@ -262,5 +271,6 @@ export default withRouter(
         is_cfd_reset_password_modal_enabled: cfd.is_cfd_reset_password_modal_enabled,
         setCFDPasswordResetModal: cfd.setCFDPasswordResetModal,
         current_list: cfd.current_list,
+        is_logged_in: client.is_logged_in,
     }))(CFDResetPasswordModal)
 );

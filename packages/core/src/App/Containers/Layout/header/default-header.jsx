@@ -39,6 +39,7 @@ const DefaultHeader = ({
     is_logging_in,
     is_mt5_allowed,
     is_dxtrade_allowed,
+    is_dbot_allowed,
     is_notifications_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
@@ -81,6 +82,9 @@ const DefaultHeader = ({
             }
             if ((is_mf || is_options_blocked) && config.href === routes.smarttrader) {
                 return false;
+            }
+            if (config.link_to === routes.bot) {
+                return is_dbot_allowed;
             }
             return true;
         });
@@ -201,6 +205,7 @@ DefaultHeader.propTypes = {
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_dxtrade_allowed: PropTypes.bool,
+    is_dbot_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     // is_p2p_enabled: PropTypes.bool,
     // is_payment_agent_transfer_visible: PropTypes.bool,
@@ -241,6 +246,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
+    is_dbot_allowed: client.is_dbot_allowed,
     is_notifications_visible: ui.is_notifications_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,

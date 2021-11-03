@@ -65,24 +65,6 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
         <div className='account-poa__upload-section'>
             {is_description_enabled && (
                 <ul className='account-poa__upload-list'>
-                    {/* {!is_dashboard && (
-                        <li className='account-poa__upload-box'>
-                            <Icon icon='IcUtility' className='account-poa__upload-icon' size={20} />
-                            <div className='account-poa__upload-item'>
-                                <Localize i18n_default_text='A recent utility bill (e.g. electricity, water, gas, phone or internet)' />
-                            </div>
-                        </li>
-                    )} */}
-                    {/* <li className='account-poa__upload-box'>
-                        {is_dashboard ? (
-                            <Icon icon='IcBankDashboard' className='account-poa__upload-icon' size={24} />
-                        ) : (
-                            <Icon icon='IcBank' className='account-poa__upload-icon' size={20} />
-                        )}
-                        <div className='account-poa__upload-item'>
-                            <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address' />
-                        </div>
-                    </li> */}
                     <li className='account-poa__upload-box'>
                         {is_dashboard ? (
                             <Icon icon='IcPoaFileEightMb' className='account-poa__upload-icon' size={24} />

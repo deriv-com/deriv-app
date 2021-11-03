@@ -282,29 +282,14 @@ const ProofOfAddressForm = ({
                     {form_state.should_show_form && (
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
-                                <FormSubHeader
-                                    title={localize('1. Address')}
-                                    subtitle={'(All fields are required)'}
-                                    // title={is_dashboard ? localize('1. Address') : localize('Details')}
-                                    // subtitle={is_dashboard && '(All fields are required)'}
-                                />
+                                <FormSubHeader title={localize('1. Address')} subtitle={'(All fields are required)'} />
                                 <FormBodySection
                                     has_side_note={true}
-                                    // has_side_note={is_dashboard}
                                     side_note={localize(
                                         'An accurate and complete address helps to speed up your verification process.'
                                     )}
                                 >
                                     <div className='account-poa__details-section'>
-                                        {/* {!is_dashboard && (
-                                            <div className='account-poa__details-description'>
-                                                <Text size={isMobile() ? 'xxs' : 'xs'}>
-                                                    {localize(
-                                                        'Please ensure that this address is the same as in your proof of address'
-                                                    )}
-                                                </Text>
-                                            </div>
-                                        )} */}
                                         <div className='account-poa__details-fields'>
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
@@ -422,19 +407,8 @@ const ProofOfAddressForm = ({
                                     </div>
                                 </FormBodySection>
 
-                                <FormSubHeader
-                                    title={localize('2. Please upload one of the following:')}
-                                    // title={
-                                    //     is_dashboard
-                                    //         ? localize('2. Please upload one of the following:')
-                                    //         : localize('Please upload one of the following:')
-                                    // }
-                                />
-                                <FormBodySection
-                                    has_side_note={true}
-                                    // has_side_note={is_dashboard && isDesktop()}
-                                    side_note={<UploaderSideNote />}
-                                >
+                                <FormSubHeader title={localize('2. Please upload one of the following:')} />
+                                <FormBodySection has_side_note={true} side_note={<UploaderSideNote />}>
                                     <FileUploaderContainer
                                         onRef={ref => (file_uploader_ref = ref)}
                                         onFileDrop={df =>

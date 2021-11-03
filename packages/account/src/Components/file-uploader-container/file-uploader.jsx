@@ -6,7 +6,6 @@ import { FileDropzone, Icon, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     isMobile,
-    //PlatformContext,
     compressImageFiles,
     readFiles,
     getSupportedFiles,
@@ -15,7 +14,6 @@ import {
 } from '@deriv/shared';
 
 const UploadMessage = () => {
-    //const { is_dashboard } = React.useContext(PlatformContext);
     return (
         <React.Fragment>
             <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />

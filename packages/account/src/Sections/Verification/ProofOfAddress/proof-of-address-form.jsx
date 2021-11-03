@@ -22,7 +22,6 @@ import {
     validLetterSymbol,
     validLength,
     getLocation,
-    PlatformContext,
     WS,
 } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -70,7 +69,6 @@ const ProofOfAddressForm = ({
     const [form_values, setFormValues] = useStateCallback({});
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
-    const { is_dashboard } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         fetchResidenceList().then(() => {
@@ -287,12 +285,12 @@ const ProofOfAddressForm = ({
                                 <FormSubHeader
                                     title={localize('1. Address')}
                                     subtitle={'(All fields are required)'}
-                                    //title={is_dashboard ? localize('1. Address') : localize('Details')}
-                                    //subtitle={is_dashboard && '(All fields are required)'}
+                                    // title={is_dashboard ? localize('1. Address') : localize('Details')}
+                                    // subtitle={is_dashboard && '(All fields are required)'}
                                 />
                                 <FormBodySection
                                     has_side_note={true}
-                                    //has_side_note={is_dashboard}
+                                    // has_side_note={is_dashboard}
                                     side_note={localize(
                                         'An accurate and complete address helps to speed up your verification process.'
                                     )}
@@ -434,7 +432,7 @@ const ProofOfAddressForm = ({
                                 />
                                 <FormBodySection
                                     has_side_note={true}
-                                    //has_side_note={is_dashboard && isDesktop()}
+                                    // has_side_note={is_dashboard && isDesktop()}
                                     side_note={<UploaderSideNote />}
                                 >
                                     <FileUploaderContainer

@@ -26,9 +26,12 @@ export default Interface =>
                         .catch(onError);
                 },
                 getTotalRuns: () => this.tradeEngine.getTotalRuns(),
+                getRuns: () => this.tradeEngine.getRuns(),
                 getBalance: type => this.tradeEngine.getBalance(type),
                 getTotalProfit: toString =>
                     this.tradeEngine.getTotalProfit(toString, this.tradeEngine.tradeOptions.currency),
+                getProfitPerRun: toString =>
+                    this.tradeEngine.getProfitPerRun(toString, this.tradeEngine.tradeOptions.currency),
             };
         }
     };

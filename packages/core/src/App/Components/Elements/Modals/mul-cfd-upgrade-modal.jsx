@@ -14,6 +14,7 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isDesktop, routes } from '@deriv/shared';
 import 'Sass/app/_common/components/mul-cfd-upgrade-modal.scss';
+import PropTypes from 'prop-types';
 
 const data = [
     {
@@ -159,7 +160,7 @@ const Row = ({ title, multiplier, cfd, has_icons, mutliplier_desc, cfd_desc }) =
     </>
 );
 
-const ModalContent = () => {
+const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts }) => {
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
             <ThemedScrollbars className='mul-cfd-compare-accounts'>
@@ -209,7 +210,8 @@ const ModalContent = () => {
                                         type='button'
                                         secondary
                                         onClick={() => {
-                                            history.push(routes.mt5);
+                                            toggleUpgradeAccounts();
+                                            openRealAccountSignup('maltainvest', `Deriv Multiplier`);
                                         }}
                                     >
                                         {localize('Add real account')}
@@ -239,7 +241,7 @@ const ModalContent = () => {
     );
 };
 
-const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts }) => {
+const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts, openRealAccountSignup }) => {
     return (
         <div className='cfd-compare-accounts-modal__wrapper'>
             <React.Suspense fallback={<UILoader />}>
@@ -253,7 +255,10 @@ const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts 
                         height='636px'
                         width='739px'
                     >
-                        <ModalContent />
+                        <ModalContent
+                            openRealAccountSignup={openRealAccountSignup}
+                            toggleUpgradeAccounts={toggleUpgradeAccounts}
+                        />
                     </Modal>
                 </DesktopWrapper>
             </React.Suspense>
@@ -261,7 +266,13 @@ const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts 
     );
 };
 
+UpgradeAccountsModal.propTypes = {
+    is_upgrade_modal_visible: PropTypes.bool,
+    toggleUpgradeAccounts: PropTypes.func,
+    openRealAccountSignup: PropTypes.func,
+};
 export default connect(({ ui }) => ({
     is_upgrade_modal_visible: ui.is_upgrade_modal_visible,
     toggleUpgradeAccounts: ui.toggleUpgradeModal,
+    openRealAccountSignup: ui.openRealAccountSignup,
 }))(UpgradeAccountsModal);

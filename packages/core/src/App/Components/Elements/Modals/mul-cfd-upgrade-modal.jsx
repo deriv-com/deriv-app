@@ -159,6 +159,14 @@ const Row = ({ title, multiplier, cfd, has_icons, mutliplier_desc, cfd_desc }) =
     </>
 );
 
+const DemoBanner = () => (
+    <div className='mul-cfd-compare-accounts__table-desc'>
+        <Text as='p' align='center' color='var(--general-main-1)' size='xxxs'>
+            {localize('You are currently using this in demo')}
+        </Text>
+    </div>
+);
+
 const ModalContent = () => {
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
@@ -167,28 +175,23 @@ const ModalContent = () => {
                     <Table className='mul-cfd-compare-accounts__table'>
                         <Table.Header>
                             <Table.Row className='mul-cfd-compare-accounts__table-row'>
-                                <DesktopWrapper>
-                                    <Table.Head />
-                                </DesktopWrapper>
+                                <Table.Head />
                                 <Table.Head>
                                     <div className='mul-cfd-compare-accounts__table-head'>
                                         <Icon icon='IcCrossSolid' size={48} />
                                         <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
-                                            {'Multipliers'}
+                                            {localize('Multipliers')}
                                         </Text>
-                                        <div className='mul-cfd-compare-accounts__table-desc'>
-                                            <Text as='p' align='center' color='var(--general-main-1)' size='xxxs'>
-                                                {'You are currently using this in demo'}
-                                            </Text>
-                                        </div>
+                                        <DemoBanner />
                                     </div>
                                 </Table.Head>
                                 <Table.Head>
                                     <div className='mul-cfd-compare-accounts__table-head'>
                                         <Icon icon='IcPercentSolid' size={48} />
                                         <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
-                                            {'CFDs'}
+                                            {localize('CFDs')}
                                         </Text>
+                                        <DemoBanner />
                                     </div>
                                 </Table.Head>
                             </Table.Row>
@@ -200,9 +203,7 @@ const ModalContent = () => {
                         </Table.Body>
                         <Table.Footer className='mul-cfd-compare-accounts__table-footer'>
                             <Table.Row className='mul-cfd-compare-accounts__table-row'>
-                                <DesktopWrapper>
-                                    <Table.Cell />
-                                </DesktopWrapper>
+                                <Table.Cell />
                                 <Table.Cell>
                                     <Button
                                         className='mul-cfd-compare-accounts__table-footer'
@@ -231,7 +232,7 @@ const ModalContent = () => {
                         </Table.Footer>
                     </Table>
                     <Text as='p' size='xxs' color='less-prominent' align='center'>
-                        {'You can add the other account later'}
+                        {localize('You can add the other account later')}
                     </Text>
                 </div>
             </ThemedScrollbars>

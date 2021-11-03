@@ -111,25 +111,14 @@ const CurrencySelector = ({
     const description = React.useMemo(() => {
         const dmt5_label = is_eu ? localize('CFDs') : localize('DMT5');
 
-        // TODO: uncomment when real account is launched
-        // if (is_dxtrade_allowed && is_mt5_allowed) {
-        //     return (
-        //         <Localize
-        //             i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or Deriv X account.'
-        //             values={{ dmt5_label }}
-        //         />
-        //     );
-        // } else if (!is_dxtrade_allowed && is_mt5_allowed) {
-        //     return (
-        //         <Localize
-        //             i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} account.'
-        //             values={{ dmt5_label }}
-        //         />
-        //     );
-        // }
-
-        // TODO: remove this block when real account is launched
-        if (is_mt5_allowed) {
+        if (is_dxtrade_allowed && is_mt5_allowed) {
+            return (
+                <Localize
+                    i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or Deriv X account.'
+                    values={{ dmt5_label }}
+                />
+            );
+        } else if (!is_dxtrade_allowed && is_mt5_allowed) {
             return (
                 <Localize
                     i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} account.'
@@ -137,10 +126,11 @@ const CurrencySelector = ({
                 />
             );
         }
+
         return (
             <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
         );
-    }, [is_eu, is_mt5_allowed]);
+    }, [is_eu, is_dxtrade_allowed, is_mt5_allowed]);
 
     return (
         <Formik
@@ -163,8 +153,8 @@ const CurrencySelector = ({
                                 height_offset={getHeightOffset()}
                                 is_disabled={isDesktop()}
                             >
-                                <ThemedScrollbars is_bypassed={isMobile()} height={height}>
-                                    {reorderCurrencies(fiat).length > 0 && (
+                                <ThemedScrollbars height={height}>
+                                    {!!reorderCurrencies(fiat)?.length && (
                                         <React.Fragment>
                                             <RadioButtonGroup
                                                 id='currency'
@@ -189,10 +179,10 @@ const CurrencySelector = ({
                                                     />
                                                 ))}
                                             </RadioButtonGroup>
-                                            {reorderCurrencies(crypto, 'crypto').length > 0 && <Hr />}
+                                            {!!reorderCurrencies(crypto, 'crypto')?.length && <Hr />}
                                         </React.Fragment>
                                     )}
-                                    {reorderCurrencies(crypto, 'crypto').length > 0 && (
+                                    {!!reorderCurrencies(crypto, 'crypto')?.length && (
                                         <React.Fragment>
                                             <RadioButtonGroup
                                                 id='currency'

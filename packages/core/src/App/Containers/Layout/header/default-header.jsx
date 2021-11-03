@@ -39,6 +39,7 @@ const DefaultHeader = ({
     is_logging_in,
     is_mt5_allowed,
     is_dxtrade_allowed,
+    is_dbot_allowed,
     is_notifications_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
@@ -51,6 +52,7 @@ const DefaultHeader = ({
     menu_items,
     notifications_count,
     openRealAccountSignup,
+    replaceCashierMenuOnclick,
     is_options_blocked,
     removeNotificationMessage,
     setDarkMode,
@@ -80,6 +82,9 @@ const DefaultHeader = ({
             }
             if ((is_mf || is_options_blocked) && config.href === routes.smarttrader) {
                 return false;
+            }
+            if (config.link_to === routes.bot) {
+                return is_dbot_allowed;
             }
             return true;
         });
@@ -128,6 +133,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
+                    {menu_items && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div
@@ -199,6 +205,7 @@ DefaultHeader.propTypes = {
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_dxtrade_allowed: PropTypes.bool,
+    is_dbot_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     // is_p2p_enabled: PropTypes.bool,
     // is_payment_agent_transfer_visible: PropTypes.bool,
@@ -209,6 +216,7 @@ DefaultHeader.propTypes = {
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
+    replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
@@ -238,6 +246,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
+    is_dbot_allowed: client.is_dbot_allowed,
     is_notifications_visible: ui.is_notifications_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
@@ -249,6 +258,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     menu_items: menu.extensions,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
+    replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
     is_options_blocked: client.is_options_blocked,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,

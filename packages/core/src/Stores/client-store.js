@@ -5,6 +5,7 @@ import {
     redirectToLogin,
     getPropertyValue,
     getUrlSmartTrader,
+    getUrlBinaryBot,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
@@ -64,6 +65,10 @@ export default class ClientStore extends BaseStore {
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
+
+    // TODO: Temporary variable. Remove after MX account closure has finished.
+    @observable client_notifications = clientNotifications;
+
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -479,9 +484,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_withdrawal_lock() {
-        return this.account_status?.status?.some(status_name =>
-            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
-        );
+        return this.account_status?.status?.some(status_name => status_name === 'withdrawal_locked');
     }
 
     @computed
@@ -639,6 +642,14 @@ export default class ClientStore extends BaseStore {
         return this.isDxtradeAllowed(this.landing_companies);
     }
 
+    @computed
+    get is_dbot_allowed() {
+        return (
+            this.landing_company_shortcode === 'virtual' ||
+            (this.landing_company_shortcode !== 'maltainvest' && !this.is_options_blocked)
+        );
+    }
+
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
@@ -689,7 +700,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
-        this.syncWithSmartTrader(loginid, toJS(this.accounts));
+        this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
     }
 
@@ -896,7 +907,7 @@ export default class ClientStore extends BaseStore {
         this.is_populating_account_list = false;
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.setSwitched(client_id);
-        this.syncWithSmartTrader(client_id, client_accounts);
+        this.syncWithLegacyPlatforms(client_id, client_accounts);
     }
 
     @action.bound
@@ -1114,7 +1125,8 @@ export default class ClientStore extends BaseStore {
             client,
             this,
             this.root_store.ui,
-            this.root_store.modules.cashier
+            this.root_store.modules.cashier,
+            this.root_store.common
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -1184,19 +1196,26 @@ export default class ClientStore extends BaseStore {
          * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status, this.root_store.modules?.cashier?.is_p2p_visible],
+            () => [
+                this.account_settings,
+                this.account_status,
+                this.root_store.modules?.cashier?.is_p2p_visible,
+                this.root_store.common?.selected_contract_type,
+                this.is_eu,
+            ],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
                     this.root_store.ui.removeNotifications();
                     this.root_store.ui.removeAllNotificationMessages();
+                    const { has_missing_required_field } = handleClientNotifications(
+                        client,
+                        this,
+                        this.root_store.ui,
+                        this.root_store.modules.cashier,
+                        this.root_store.common
+                    );
                     if (client && !client.is_virtual) {
-                        const { has_missing_required_field } = handleClientNotifications(
-                            client,
-                            this,
-                            this.root_store.ui,
-                            this.root_store.modules.cashier
-                        );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }
                 });
@@ -1410,7 +1429,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async switchAccountHandler() {
-        if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {
+        if (!this.switched || !this.switched.length || !this.getAccount(this.switched)?.token) {
             if (this.isUnableToFindLoginId()) {
                 this.handleNotFoundLoginId();
                 return;
@@ -1608,7 +1627,7 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
         this.root_store.ui.removeAllNotificationMessages(true);
-        this.syncWithSmartTrader(this.loginid, this.accounts);
+        this.syncWithLegacyPlatforms(this.loginid, this.accounts);
         this.cleanupRealityCheck();
     }
 
@@ -1691,7 +1710,7 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
-            this.syncWithSmartTrader(active_loginid, this.accounts);
+            this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
     }
 
@@ -2052,28 +2071,34 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    syncWithSmartTrader(active_loginid, client_accounts) {
-        const iframe_window = document.getElementById('localstorage-sync');
-        if (iframe_window) {
-            const origin = getUrlSmartTrader();
-            if (origin) {
+    syncWithLegacyPlatforms(active_loginid, client_accounts) {
+        const smartTrader = {};
+        const binaryBot = {};
+
+        smartTrader.iframe = document.getElementById('localstorage-sync');
+        binaryBot.iframe = document.getElementById('localstorage-sync__bot');
+        smartTrader.origin = getUrlSmartTrader();
+        binaryBot.origin = getUrlBinaryBot();
+
+        [smartTrader, binaryBot].forEach(platform => {
+            if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
-                iframe_window.contentWindow.postMessage(
+                platform.iframe.contentWindow.postMessage(
                     {
                         key: 'client.accounts',
                         value: JSON.stringify(client_accounts),
                     },
-                    origin
+                    platform.origin
                 );
-                iframe_window.contentWindow.postMessage(
+                platform.iframe.contentWindow.postMessage(
                     {
                         key: 'active_loginid',
                         value: active_loginid,
                     },
-                    origin
+                    platform.origin
                 );
             }
-        }
+        });
     }
 
     @computed

@@ -151,10 +151,9 @@ const AccountSwitcher = props => {
         redirectToMt5(`real${market_type ? serverElementName() : ''}`);
     };
 
-    // TODO: Uncomment when real account is launched
-    // const redirectToDXTradeReal = () => {
-    //     redirectToDXTrade('real');
-    // };
+    const redirectToDXTradeReal = () => {
+        redirectToDXTrade('real');
+    };
 
     const openMt5DemoAccount = account_type => {
         if (props.is_eu && !props.has_maltainvest_account && props.standpoint.iom) {
@@ -171,11 +170,10 @@ const AccountSwitcher = props => {
         redirectToDXTradeDemo();
     };
 
-    // TODO: Uncomment when real account is launched
-    // const openDXTradeRealAccount = account_type => {
-    //     sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
-    //     redirectToDXTradeReal();
-    // };
+    const openDXTradeRealAccount = account_type => {
+        sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
+        redirectToDXTradeReal();
+    };
 
     const redirectToMt5Demo = market_type => {
         const hash_id = market_type ? `-${market_type}` : '';
@@ -266,10 +264,9 @@ const AccountSwitcher = props => {
         return getSortedCFDList(props.mt5_login_list).filter(account => !isDemo(account));
     };
 
-    // TODO: Uncomment when real account is launched
-    // const getRealDXTrade = () => {
-    //     return getSortedCFDList(props.dxtrade_accounts_list).filter(account => !isDemo(account));
-    // };
+    const getRealDXTrade = () => {
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(account => !isDemo(account));
+    };
 
     const findServerForAccount = acc => {
         const server_name = acc.error ? acc.error.details.server : acc.server;
@@ -282,10 +279,9 @@ const AccountSwitcher = props => {
         return getRemainingAccounts(getRealMT5(), CFD_PLATFORMS.MT5, props.is_eu);
     };
 
-    // TODO: Uncomment when real account is launched
-    // const getRemainingRealDXTrade = () => {
-    //     return getRemainingAccounts(getRealDXTrade(), CFD_PLATFORMS.DXTRADE, props.is_eu);
-    // };
+    const getRemainingRealDXTrade = () => {
+        return getRemainingAccounts(getRealDXTrade(), CFD_PLATFORMS.DXTRADE, props.is_eu);
+    };
 
     const canOpenMulti = () => {
         if (props.available_crypto_currencies.length < 1 && !props.has_fiat) return true;
@@ -370,15 +366,14 @@ const AccountSwitcher = props => {
         return !props.has_active_real_account;
     };
 
-    // TODO: Uncomment when real account is launched
-    // const isRealDXTradeAddDisabled = sub_account_type => {
-    //     if (props.is_eu) {
-    //         const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
-    //         return props.isAccountOfTypeDisabled(account?.account_type);
-    //     }
+    const isRealDXTradeAddDisabled = sub_account_type => {
+        if (props.is_eu) {
+            const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
+            return props.isAccountOfTypeDisabled(account?.account_type);
+        }
 
-    //     return !props.has_active_real_account;
-    // };
+        return !props.has_active_real_account;
+    };
 
     if (!props.is_logged_in) return false;
 
@@ -395,9 +390,7 @@ const AccountSwitcher = props => {
 
     const total_assets_message_real = () => {
         if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and DMT5 real accounts.');
-            // TODO: uncomment after enabling real accounts
-            // return localize('Total assets in your Deriv, DMT5 and Deriv X real accounts.');
+            return localize('Total assets in your Deriv, DMT5 and Deriv X real accounts.');
         } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
             return localize('Total assets in your Deriv and DMT5 real accounts.');
         } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
@@ -740,8 +733,7 @@ const AccountSwitcher = props => {
                     </AccountWrapper>
                 </React.Fragment>
             )}
-            {/* TODO: Uncomment when real account is launched */}
-            {/* {isDxtradeAllowed() && (
+            {isDxtradeAllowed() && (
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
@@ -774,7 +766,7 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
-                                                redirectAccount={() => redirectToDXTradeReal(account.market_type}
+                                                redirectAccount={() => redirectToDXTradeReal(account.market_type)}
                                                 platform={CFD_PLATFORMS.DXTRADE}
                                             />
                                         ))}
@@ -810,7 +802,7 @@ const AccountSwitcher = props => {
                         )}
                     </AccountWrapper>
                 </React.Fragment>
-            )} */}
+            )}
         </div>
     );
 

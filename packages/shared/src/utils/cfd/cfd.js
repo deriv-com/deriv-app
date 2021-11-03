@@ -6,6 +6,7 @@ let CFD_text_translated;
 const CFD_text = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
+    cfd: 'CFDs',
     synthetic: 'Synthetic',
     financial: 'Financial',
     financial_stp: 'Financial STP',
@@ -73,16 +74,24 @@ export const getAccountTypeFields = ({ category, type }) => {
     return map_mode[category][type];
 };
 
-export const getCFDAccountDisplay = ({ market_type, sub_account_type, platform }) => {
-    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
+export const getCFDAccountDisplay = ({ market_type, sub_account_type, platform, is_eu }) => {
+    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
     if (!cfd_account_key) return undefined;
+
+    if (cfd_account_key === 'financial' && is_eu) {
+        cfd_account_key = 'cfd';
+    }
 
     return CFD_text_translated[cfd_account_key]();
 };
 
-export const getCFDAccount = ({ market_type, sub_account_type, platform }) => {
-    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
+export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }) => {
+    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
     if (!cfd_account_key) return undefined;
+
+    if (cfd_account_key === 'financial' && is_eu) {
+        cfd_account_key = 'cfd';
+    }
 
     return CFD_text[cfd_account_key];
 };

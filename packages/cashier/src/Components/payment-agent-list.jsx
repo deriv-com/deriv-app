@@ -1,4 +1,5 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
+import { toJS } from 'mobx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {

@@ -106,56 +106,64 @@ const MultilineRowItems = ({ items }) =>
         </Text>
     ));
 
-const Row = ({ title, multiplier, cfd, has_icons, mutliplier_desc, cfd_desc }) => (
+const Row = ({ title, multiplier, cfd, has_icons, mutliplier_desc, cfd_desc, show_multiplier, show_cfd }) => (
     <>
-        <Table.Row className={has_icons ? 'mul-cfd-compare-table-row-items' : 'mul-cfd-compare-table-row'}>
+        <Table.Row
+            className={`${has_icons ? 'mul-cfd-compare-table-row-items' : 'mul-cfd-compare-table-row'}${
+                show_multiplier && show_cfd ? '' : '--single-column'
+            }`}
+        >
             <Table.Cell>
                 <Text as='p' weight='bold' align='center' color='prominent' size='xs'>
                     {title}
                 </Text>
             </Table.Cell>
-            <Table.Cell>
-                {has_icons ? (
-                    <>
-                        <div className='mul-cfd-table-cell-icons'>
-                            <Items items={multiplier} />
+            {show_multiplier && (
+                <Table.Cell>
+                    {has_icons ? (
+                        <>
+                            <div className='mul-cfd-table-cell-icons'>
+                                <Items items={multiplier} />
+                            </div>
+                            {mutliplier_desc && (
+                                <Text as='p' align='center' color='prominent' size='xxxs'>
+                                    {mutliplier_desc}
+                                </Text>
+                            )}
+                        </>
+                    ) : (
+                        <div>
+                            <MultilineRowItems items={multiplier} />
                         </div>
-                        {mutliplier_desc && (
-                            <Text as='p' align='center' color='prominent' size='xxxs'>
-                                {mutliplier_desc}
-                            </Text>
-                        )}
-                    </>
-                ) : (
-                    <div>
-                        <MultilineRowItems items={multiplier} />
-                    </div>
-                )}
-            </Table.Cell>
-            <Table.Cell>
-                {has_icons ? (
-                    <>
-                        <div className='mul-cfd-table-cell-icons'>
-                            <Items items={cfd} />
+                    )}
+                </Table.Cell>
+            )}
+            {show_cfd && (
+                <Table.Cell>
+                    {has_icons ? (
+                        <>
+                            <div className='mul-cfd-table-cell-icons'>
+                                <Items items={cfd} />
+                            </div>
+                            {cfd_desc && (
+                                <Text
+                                    as='p'
+                                    align='center'
+                                    color='prominent'
+                                    size='xxxs'
+                                    className='mul-cfd-table-cell-cfd-label'
+                                >
+                                    {cfd_desc}
+                                </Text>
+                            )}
+                        </>
+                    ) : (
+                        <div>
+                            <MultilineRowItems items={cfd} />
                         </div>
-                        {cfd_desc && (
-                            <Text
-                                as='p'
-                                align='center'
-                                color='prominent'
-                                size='xxxs'
-                                className='mul-cfd-table-cell-cfd-label'
-                            >
-                                {cfd_desc}
-                            </Text>
-                        )}
-                    </>
-                ) : (
-                    <div>
-                        <MultilineRowItems items={cfd} />
-                    </div>
-                )}
-            </Table.Cell>
+                    )}
+                </Table.Cell>
+            )}
         </Table.Row>
     </>
 );
@@ -168,74 +176,96 @@ const DemoBanner = () => (
     </div>
 );
 
-const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts }) => {
+const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts, show_multiplier, show_cfd }) => {
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
             <ThemedScrollbars className='mul-cfd-compare-accounts'>
                 <div className='mul-cfd-compare-accounts__table-wrapper'>
                     <Table className='mul-cfd-compare-accounts__table'>
                         <Table.Header>
-                            <Table.Row className='mul-cfd-compare-accounts__table-row'>
+                            <Table.Row
+                                className={
+                                    show_multiplier && show_cfd
+                                        ? 'mul-cfd-compare-accounts__table-row'
+                                        : 'mul-cfd-compare-accounts__table-row--single-column'
+                                }
+                            >
                                 <Table.Head />
-                                <Table.Head>
-                                    <div className='mul-cfd-compare-accounts__table-head'>
-                                        <Icon icon='IcCrossSolid' size={48} />
-                                        <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
-                                            {localize('Multipliers')}
-                                        </Text>
-                                        <DemoBanner />
-                                    </div>
-                                </Table.Head>
-                                <Table.Head>
-                                    <div className='mul-cfd-compare-accounts__table-head'>
-                                        <Icon icon='IcPercentSolid' size={48} />
-                                        <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
-                                            {localize('CFDs')}
-                                        </Text>
-                                        <DemoBanner />
-                                    </div>
-                                </Table.Head>
+                                {show_multiplier && (
+                                    <Table.Head>
+                                        <div className='mul-cfd-compare-accounts__table-head'>
+                                            <Icon icon='IcCrossSolid' size={48} />
+                                            <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
+                                                {localize('Multipliers')}
+                                            </Text>
+                                            <DemoBanner />
+                                        </div>
+                                    </Table.Head>
+                                )}
+                                {show_cfd && (
+                                    <Table.Head>
+                                        <div className='mul-cfd-compare-accounts__table-head'>
+                                            <Icon icon='IcPercentSolid' size={48} />
+                                            <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
+                                                {localize('CFDs')}
+                                            </Text>
+                                            <DemoBanner />
+                                        </div>
+                                    </Table.Head>
+                                )}
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
                             {data.map(row => (
-                                <Row key={row.title} {...row} />
+                                <Row key={row.title} {...row} show_multiplier={show_multiplier} show_cfd={show_cfd} />
                             ))}
                         </Table.Body>
                         <Table.Footer className='mul-cfd-compare-accounts__table-footer'>
-                            <Table.Row className='mul-cfd-compare-accounts__table-row'>
+                            <Table.Row
+                                className={
+                                    show_multiplier && show_cfd
+                                        ? 'mul-cfd-compare-accounts__table-row'
+                                        : 'mul-cfd-compare-accounts__table-row--single-column'
+                                }
+                            >
                                 <Table.Cell />
-                                <Table.Cell>
-                                    <Button
-                                        className='mul-cfd-compare-accounts__table-footer'
-                                        type='button'
-                                        secondary
-                                        onClick={() => {
-                                            toggleUpgradeAccounts();
-                                            openRealAccountSignup('maltainvest', `Deriv Multiplier`);
-                                        }}
-                                    >
-                                        {localize('Add real account')}
-                                    </Button>
-                                </Table.Cell>
-                                <Table.Cell>
-                                    <Button
-                                        className='mul-cfd-compare-accounts__table-footer'
-                                        type='button'
-                                        secondary
-                                        onClick={() => {
-                                            history.push(routes.dxtrade);
-                                        }}
-                                    >
-                                        {localize('Add real account')}
-                                    </Button>
-                                </Table.Cell>
+                                {show_multiplier && (
+                                    <Table.Cell>
+                                        <Button
+                                            className='mul-cfd-compare-accounts__table-footer'
+                                            type='button'
+                                            secondary
+                                            onClick={() => {
+                                                toggleUpgradeAccounts();
+                                                openRealAccountSignup('maltainvest', `Deriv Multiplier`);
+                                            }}
+                                        >
+                                            {localize('Add real account')}
+                                        </Button>
+                                    </Table.Cell>
+                                )}
+                                {show_cfd && (
+                                    <Table.Cell>
+                                        <Button
+                                            className='mul-cfd-compare-accounts__table-footer'
+                                            type='button'
+                                            secondary
+                                            onClick={() => {
+                                                history.push(routes.dxtrade);
+                                            }}
+                                        >
+                                            {localize('Add real account')}
+                                        </Button>
+                                    </Table.Cell>
+                                )}
                             </Table.Row>
                         </Table.Footer>
                     </Table>
-                    <Text as='p' size='xxs' color='less-prominent' align='center'>
-                        {localize('You can add the other account later')}
-                    </Text>
+                    {show_multiplier && show_cfd && (
+                        <Text as='p' size='xxs' color='less-prominent' align='center'>
+                            {localize('You can add the other account later')}
+                        </Text>
+                    )}
                 </div>
             </ThemedScrollbars>
         </Div100vhContainer>
@@ -259,6 +289,8 @@ const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts,
                         <ModalContent
                             openRealAccountSignup={openRealAccountSignup}
                             toggleUpgradeAccounts={toggleUpgradeAccounts}
+                            show_multiplier={true}
+                            show_cfd={true}
                         />
                     </Modal>
                 </DesktopWrapper>

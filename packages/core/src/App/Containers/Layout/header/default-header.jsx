@@ -86,6 +86,9 @@ const DefaultHeader = ({
             if (config.link_to === routes.bot) {
                 return is_dbot_allowed;
             }
+            if (config.href === routes.binarybot) {
+                return is_dbot_allowed;
+            }
             return true;
         });
     return (

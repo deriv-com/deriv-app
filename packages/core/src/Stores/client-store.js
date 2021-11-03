@@ -642,6 +642,14 @@ export default class ClientStore extends BaseStore {
         return this.isDxtradeAllowed(this.landing_companies);
     }
 
+    @computed
+    get is_dbot_allowed() {
+        return (
+            this.landing_company_shortcode === 'virtual' ||
+            (this.landing_company_shortcode !== 'maltainvest' && !this.is_options_blocked)
+        );
+    }
+
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5

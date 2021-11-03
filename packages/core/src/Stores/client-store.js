@@ -1899,12 +1899,14 @@ export default class ClientStore extends BaseStore {
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {
+        this.setPreSwitchAccount(true);
         const new_user_login = {
             acct1: client_id,
             token1: oauth_token,
             curr1: currency,
         };
         await this.init(new_user_login);
+        this.broadcastAccountChange();
     }
 
     @action.bound

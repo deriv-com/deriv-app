@@ -12,10 +12,12 @@ const account_icons = {
         synthetic: 'IcMt5SyntheticPlatform',
         financial: 'IcMt5FinancialPlatform',
         financial_stp: 'IcMt5FinancialStpPlatform',
+        cfd: 'IcMt5CfdPlatform',
     },
     dxtrade: {
         synthetic: 'IcDxtradeSyntheticPlatform',
         financial: 'IcDxtradeFinancialPlatform',
+        cfd: 'IcMt5CfdPlatform',
     },
 };
 
@@ -146,6 +148,7 @@ const CFDAccountCard = ({
     is_disabled,
     is_logged_in,
     is_virtual,
+    is_eu,
     onHover,
     platform,
     specs,
@@ -158,7 +161,7 @@ const CFDAccountCard = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }) => {
-    const icon = type.type ? <Icon icon={account_icons[type.platform][type.type]} size={64} /> : null;
+    const icon = type.type ? <Icon icon={account_icons[type.platform][is_eu ? 'cfd' : type.type]} size={64} /> : null;
     const has_popular_banner =
         type.type === 'synthetic' &&
         type.category === 'real' &&

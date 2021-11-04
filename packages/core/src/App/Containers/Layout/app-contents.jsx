@@ -69,7 +69,13 @@ const AppContents = ({
     }, [notifyAppInstall]);
 
     React.useEffect(() => {
-        setTimeout(() => (!is_virtual && is_logged_in ? addNotificationMessageByKey('install_pwa') : null), 10000);
+        setTimeout(
+            () =>
+                !is_virtual && is_logged_in
+                    ? addNotificationMessageByKey('install_pwa')
+                    : removeNotificationMessageByKey({ key: 'install_pwa' }),
+            10000
+        );
         return () => removeNotificationMessageByKey({ key: 'install_pwa' });
     });
 

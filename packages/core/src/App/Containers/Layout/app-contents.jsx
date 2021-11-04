@@ -69,16 +69,16 @@ const AppContents = ({
     }, [notifyAppInstall]);
 
     React.useEffect(() => {
-        setTimeout(
-            () =>
-                !is_virtual && is_logged_in
-                    ? addNotificationMessageByKey('install_pwa')
-                    : removeNotificationMessageByKey({ key: 'install_pwa' }),
-            10000
-        );
-        return () => removeNotificationMessageByKey({ key: 'install_pwa' });
-    });
+        setTimeout(() => {
+            if (!is_virtual && is_logged_in) {
+                addNotificationMessageByKey('install_pwa');
+            }
+        }, 10000);
 
+        return () => {
+            removeNotificationMessageByKey({ key: 'install_pwa' });
+        };
+    });
     // handle accept/decline cookies
     const onAccept = () => {
         tracking_status_cookie.set(TRACKING_STATUS_KEY, 'accepted', { sameSite: 'none', secure: true });

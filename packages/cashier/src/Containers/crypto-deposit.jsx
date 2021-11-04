@@ -86,8 +86,8 @@ const CryptoDeposit = ({
                 {api_error ? (
                     <div className='crypto-api-error'>
                         <Text as='p' align='center' size='xs' className='crypto-api-error__text'>
-                            <Icon icon='IcAlertWarning' />
-                            <Localize i18n_default_text='Our server cannot retrieve an address' />
+                            <Icon width={30} height={20} icon='IcAlertWarning' />
+                            <Localize i18n_default_text="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later." />
                         </Text>
                         <Button
                             text={localize('Refresh')}

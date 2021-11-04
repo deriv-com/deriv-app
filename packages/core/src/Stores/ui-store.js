@@ -758,9 +758,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     notifyAppInstall(prompt) {
         this.deferred_prompt = prompt;
-        setTimeout(() => {
-            this.addNotificationMessageByKey('install_pwa');
-        }, 10000);
     }
 
     @action.bound

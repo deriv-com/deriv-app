@@ -109,8 +109,7 @@ export default class DepositStore {
             if (response.error) {
                 this.error.setMessage(response.error.message);
             } else {
-                this.error.setIsAskUkFundsProtection(false);
-                this.root_store.modules.cashier.general_store.onMount();
+                location.reload();
             }
         });
     }

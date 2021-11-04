@@ -17,6 +17,7 @@ export default class WithdrawStore {
     @observable is_withdraw_confirmed = false;
     @observable verification = this.root_store.modules.cashier.verification_store;
     @observable withdraw_amount = '';
+    @observable max_withdraw_amount = 0;
 
     @action.bound
     setIsWithdrawConfirmed(is_withdraw_confirmed) {
@@ -159,8 +160,14 @@ export default class WithdrawStore {
     }
 
     @action.bound
+    setMaxWithdrawAmount(amount) {
+        this.max_withdraw_amount = amount;
+    }
+
+    @action.bound
     async check10kLimit() {
         const remainder = (await this.root_store.client.getLimits())?.get_limits?.remainder;
+        this.setMaxWithdrawAmount(remainder);
         const min_withdrawal = getMinWithdrawal(this.root_store.client.currency);
         const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
         this.set10kLimitation(is_limit_reached);
@@ -184,6 +191,8 @@ export default class WithdrawStore {
                 currency,
                 current_fiat_currency || 'USD'
             );
+        } else {
+            this.resetConverter();
         }
         crypto_fiat_converter_store.setIsTimerVisible(false);
         general_store.percentageSelectorSelectionStatus(false);
@@ -196,7 +205,9 @@ export default class WithdrawStore {
         const { balance, currency, website_status } = this.root_store.client;
         const { converter_from_amount, setConverterFromError } =
             this.root_store.modules.cashier.crypto_fiat_converter_store;
+
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
+        const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
 
         if (converter_from_amount) {
             const { is_ok, message } = validNumber(converter_from_amount, {
@@ -207,11 +218,15 @@ export default class WithdrawStore {
 
             if (+balance < +converter_from_amount) error_message = localize('Insufficient funds');
 
-            if (+converter_from_amount < +min_withdraw_amount) {
+            if (+converter_from_amount < +min_withdraw_amount || +converter_from_amount > +max_withdraw_amount) {
                 error_message = (
                     <Localize
-                        i18n_default_text='The minimum withdrawal amount allowed is {{min_withdraw_amount}} {{currency}}'
-                        values={{ min_withdraw_amount, currency: this.root_store.client.currency }}
+                        i18n_default_text='The allowed withdraw amount is {{min_withdraw_amount}} to {{max_withdraw_amount}} {{currency}}'
+                        values={{
+                            min_withdraw_amount,
+                            max_withdraw_amount,
+                            currency,
+                        }}
                     />
                 );
             }

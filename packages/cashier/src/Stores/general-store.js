@@ -15,6 +15,7 @@ export default class GeneralStore extends BaseStore {
         when(
             () => this.root_store.client.is_logged_in,
             () => {
+                this.setHasSetCurrency();
                 this.attachCashierToMenu();
             }
         );
@@ -217,8 +218,12 @@ export default class GeneralStore extends BaseStore {
                     if (is_logged_in) {
                         await this.getAdvertizerError();
                         account_prompt_dialog_store.resetLastLocation();
-                        if (!switched) this.checkP2pStatus();
-                        await withdraw_store.check10kLimit();
+                        if (!switched) {
+                            this.checkP2pStatus();
+                            // check if withdrawal limit is reached
+                            // if yes, this will trigger to show a notification
+                            await this.check10kLimit();
+                        }
                     }
                 }
             );

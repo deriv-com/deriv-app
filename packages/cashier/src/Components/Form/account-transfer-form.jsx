@@ -587,7 +587,6 @@ export default connect(({ client, modules, ui }) => ({
     requestTransferBetweenAccounts: modules.cashier.account_transfer_store.requestTransferBetweenAccounts,
     setAccountTransferAmount: modules.cashier.account_transfer_store.setAccountTransferAmount,
     setErrorMessage: modules.cashier.account_transfer_store.error.setErrorMessage,
-    setIsTransferConfirm: modules.cashier.account_transfer_store.setIsTransferConfirm,
     selected_from: modules.cashier.account_transfer_store.selected_from,
     selected_to: modules.cashier.account_transfer_store.selected_to,
     setTransferPercentageSelectorResult: modules.cashier.account_transfer_store.setTransferPercentageSelectorResult,

@@ -534,7 +534,7 @@ export default class AccountTransferStore {
 
     @action.bound
     resetAccountTransfer = async () => {
-        this.setIsTransferSuccessful(false);
+        this.setIsTransferConfirm(false);
     };
 
     @action.bound
@@ -552,6 +552,11 @@ export default class AccountTransferStore {
                 selected_from_currency,
                 selected_to_currency
             );
+        } else if (+this.selected_from.balance === 0) {
+            crypto_fiat_converter_store.setConverterFromAmount(amount);
+            this.validateTransferFromAmount();
+        } else {
+            crypto_fiat_converter_store.resetConverter();
         }
         crypto_fiat_converter_store.setIsTimerVisible(false);
         general_store.percentageSelectorSelectionStatus(false);

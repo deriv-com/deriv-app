@@ -80,10 +80,10 @@ export default class CryptoFiatConverterStore {
     async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
         this.resetTimer();
         if (target.value) {
-            this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
-            this.root_store.modules.cashier.general_store.calculatePercentage();
             this.setConverterFromAmount(target.value);
             this.validateFromAmount();
+            this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
+            this.root_store.modules.cashier.general_store.calculatePercentage();
             if (this.converter_from_error) {
                 this.setConverterToAmount('');
                 this.setConverterToError('');
@@ -112,8 +112,6 @@ export default class CryptoFiatConverterStore {
     async onChangeConverterToAmount({ target }, from_currency, to_currency) {
         this.resetTimer();
         if (target.value) {
-            this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
-            this.root_store.modules.cashier.general_store.calculatePercentage();
             this.setConverterToAmount(target.value);
             this.validateToAmount();
             if (this.converter_to_error) {
@@ -130,6 +128,8 @@ export default class CryptoFiatConverterStore {
                 } else {
                     this.setConverterFromAmount('');
                 }
+                this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
+                this.root_store.modules.cashier.general_store.calculatePercentage();
                 this.validateFromAmount();
                 if (this.converter_from_error) {
                     this.setIsTimerVisible(false);

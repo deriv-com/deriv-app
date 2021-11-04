@@ -55,7 +55,6 @@ export default class ErrorStore {
             case 'ASK_AGE_VERIFICATION':
                 this.setIsAskAuthentication(true);
                 break;
-            case 'FinancialAssessmentRequired':
             case 'ASK_FINANCIAL_RISK_APPROVAL':
                 this.setIsAskFinancialRiskApproval(true);
                 break;

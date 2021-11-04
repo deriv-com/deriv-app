@@ -176,7 +176,14 @@ const DemoBanner = () => (
     </div>
 );
 
-const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts, show_multiplier, show_cfd }) => {
+const ModalContent = ({
+    openRealAccountSignup,
+    toggleUpgradeAccounts,
+    virtual_accounts,
+    demo_mt5_accounts,
+    show_multiplier,
+    show_cfd,
+}) => {
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
             <ThemedScrollbars className='mul-cfd-compare-accounts'>
@@ -198,7 +205,7 @@ const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts, show_multi
                                             <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
                                                 {localize('Multipliers')}
                                             </Text>
-                                            <DemoBanner />
+                                            {!!virtual_accounts.length && <DemoBanner />}
                                         </div>
                                     </Table.Head>
                                 )}
@@ -209,7 +216,7 @@ const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts, show_multi
                                             <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
                                                 {localize('CFDs')}
                                             </Text>
-                                            <DemoBanner />
+                                            {!!demo_mt5_accounts.length && <DemoBanner />}
                                         </div>
                                     </Table.Head>
                                 )}
@@ -276,6 +283,8 @@ const UpgradeAccountsModal = ({
     is_upgrade_modal_visible,
     toggleUpgradeAccounts,
     openRealAccountSignup,
+    demo_mt5_accounts,
+    virtual_accounts,
     show_multiplier = true,
     show_cfd = true,
 }) => {
@@ -295,6 +304,8 @@ const UpgradeAccountsModal = ({
                         <ModalContent
                             openRealAccountSignup={openRealAccountSignup}
                             toggleUpgradeAccounts={toggleUpgradeAccounts}
+                            demo_mt5_accounts={demo_mt5_accounts}
+                            virtual_accounts={virtual_accounts}
                             show_multiplier={show_multiplier}
                             show_cfd={show_cfd}
                         />
@@ -309,11 +320,15 @@ UpgradeAccountsModal.propTypes = {
     is_upgrade_modal_visible: PropTypes.bool,
     toggleUpgradeAccounts: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
+    demo_mt5_accounts: PropTypes.array,
+    virtual_accounts: PropTypes.array,
     show_multiplier: PropTypes.bool,
     show_cfd: PropTypes.bool,
 };
-export default connect(({ ui }) => ({
+export default connect(({ ui, client }) => ({
     is_upgrade_modal_visible: ui.is_upgrade_modal_visible,
     toggleUpgradeAccounts: ui.toggleUpgradeModal,
     openRealAccountSignup: ui.openRealAccountSignup,
+    demo_mt5_accounts: client.demo_mt5_accounts,
+    virtual_accounts: client.virtual_accounts,
 }))(UpgradeAccountsModal);

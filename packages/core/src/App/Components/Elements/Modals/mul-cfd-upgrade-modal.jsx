@@ -272,7 +272,13 @@ const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts, show_multi
     );
 };
 
-const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts, openRealAccountSignup }) => {
+const UpgradeAccountsModal = ({
+    is_upgrade_modal_visible,
+    toggleUpgradeAccounts,
+    openRealAccountSignup,
+    show_multiplier = true,
+    show_cfd = true,
+}) => {
     return (
         <div className='cfd-compare-accounts-modal__wrapper'>
             <React.Suspense fallback={<UILoader />}>
@@ -289,8 +295,8 @@ const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts,
                         <ModalContent
                             openRealAccountSignup={openRealAccountSignup}
                             toggleUpgradeAccounts={toggleUpgradeAccounts}
-                            show_multiplier={true}
-                            show_cfd={true}
+                            show_multiplier={show_multiplier}
+                            show_cfd={show_cfd}
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -303,6 +309,8 @@ UpgradeAccountsModal.propTypes = {
     is_upgrade_modal_visible: PropTypes.bool,
     toggleUpgradeAccounts: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
+    show_multiplier: PropTypes.bool,
+    show_cfd: PropTypes.bool,
 };
 export default connect(({ ui }) => ({
     is_upgrade_modal_visible: ui.is_upgrade_modal_visible,

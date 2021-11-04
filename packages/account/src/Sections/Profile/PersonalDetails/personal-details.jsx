@@ -301,9 +301,12 @@ export class PersonalDetailsForm extends React.Component {
             /^(((je|Je|jE|JE)\s*)|(\s*(je|Je|jE|JE)\s*)|(((je|Je|jE|JE)[0-9])\s([a-zA-Z0-9])*\s*))|(((je|Je|jE|JE)[0-9])\s([a-zA-Z0-9])*\s*([a-zA-Z0-9]))$/.test(
                 values.address_postcode
             ) &&
-            values.citizen === 'United Kingdom'
+            values.citizen === 'United Kingdom' &&
+            !is_mf
         ) {
-            errors.address_postcode = localize('A correct zip code and residence address are required.');
+            errors.address_postcode = localize(
+                "we don't offer accounts/services for Jersey's residents in the United Kingdom."
+            );
         }
 
         if (values.address_postcode) {

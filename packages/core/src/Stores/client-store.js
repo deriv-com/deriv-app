@@ -28,6 +28,7 @@ import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
+import { getSortedAccountList, getSortedCFDList, isDemo } from '../App/Containers/AccountSwitcher/helpers';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -204,6 +205,16 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_any_real_account() {
         return this.hasAnyRealAccount();
+    }
+
+    @computed
+    get demo_mt5_accounts() {
+        return getSortedCFDList(this.mt5_login_list).filter(isDemo);
+    }
+
+    @computed
+    get virtual_accounts() {
+        return getSortedAccountList(this.account_list, this.accounts).filter(account => account.is_virtual);
     }
 
     @computed

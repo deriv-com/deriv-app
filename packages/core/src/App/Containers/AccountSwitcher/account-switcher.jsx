@@ -247,16 +247,12 @@ const AccountSwitcher = props => {
     // Real accounts is always the first tab index based on design
     const isRealAccountTab = active_tab_index === 0;
 
-    const getDemoMT5 = () => {
-        return getSortedCFDList(props.mt5_login_list).filter(isDemo);
-    };
-
     const getDemoDXTrade = () => {
         return getSortedCFDList(props.dxtrade_accounts_list).filter(isDemo);
     };
 
     const getRemainingDemoMT5 = () => {
-        return getRemainingAccounts(getDemoMT5(), CFD_PLATFORMS.MT5, props.is_eu);
+        return getRemainingAccounts(props.demo_mt5_accounts, CFD_PLATFORMS.MT5, props.is_eu);
     };
 
     const getRemainingDemoDXTrade = () => {
@@ -411,7 +407,7 @@ const AccountSwitcher = props => {
         if (!props.is_mt5_allowed) return false;
 
         if (account_type === 'demo') {
-            return !!getDemoMT5().length || !!getRemainingDemoMT5().length;
+            return !!props.demo_mt5_accounts.length || !!getRemainingDemoMT5().length;
         }
         return !!getRealMT5().length || !!getRemainingRealMT5().length;
     };
@@ -432,27 +428,25 @@ const AccountSwitcher = props => {
                 }}
             >
                 <div className='acc-switcher__accounts'>
-                    {getSortedAccountList(props.account_list, props.accounts)
-                        .filter(account => account.is_virtual)
-                        .map(account => (
-                            <AccountList
-                                is_dark_mode_on={props.is_dark_mode_on}
-                                key={account.loginid}
-                                balance={props.accounts[account.loginid].balance}
-                                currency={props.accounts[account.loginid].currency}
-                                currency_icon={`IcCurrency-${account.icon}`}
-                                country_standpoint={props.country_standpoint}
-                                display_type={'currency'}
-                                has_balance={'balance' in props.accounts[account.loginid]}
-                                has_reset_balance={props.accounts[props.account_loginid].is_virtual}
-                                is_disabled={account.is_disabled}
-                                is_virtual={account.is_virtual}
-                                loginid={account.loginid}
-                                redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
-                                onClickResetVirtualBalance={resetBalance}
-                                selected_loginid={props.account_loginid}
-                            />
-                        ))}
+                    {props.virtual_accounts.map(account => (
+                        <AccountList
+                            is_dark_mode_on={props.is_dark_mode_on}
+                            key={account.loginid}
+                            balance={props.accounts[account.loginid].balance}
+                            currency={props.accounts[account.loginid].currency}
+                            currency_icon={`IcCurrency-${account.icon}`}
+                            country_standpoint={props.country_standpoint}
+                            display_type={'currency'}
+                            has_balance={'balance' in props.accounts[account.loginid]}
+                            has_reset_balance={props.accounts[props.account_loginid].is_virtual}
+                            is_disabled={account.is_disabled}
+                            is_virtual={account.is_virtual}
+                            loginid={account.loginid}
+                            redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
+                            onClickResetVirtualBalance={resetBalance}
+                            selected_loginid={props.account_loginid}
+                        />
+                    ))}
                 </div>
             </AccountWrapper>
             {isMT5Allowed('demo') && (
@@ -471,9 +465,9 @@ const AccountSwitcher = props => {
                             </div>
                         ) : (
                             <React.Fragment>
-                                {!!getDemoMT5().length && (
+                                {!!props.demo_mt5_accounts.length && (
                                     <div className='acc-switcher__accounts'>
-                                        {getDemoMT5().map(account => (
+                                        {props.demo_mt5_accounts.map(account => (
                                             <AccountList
                                                 is_dark_mode_on={props.is_dark_mode_on}
                                                 is_eu={props.is_eu}
@@ -921,6 +915,8 @@ AccountSwitcher.propTypes = {
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
     updateMt5LoginList: PropTypes.func,
+    virtual_accounts: PropTypes.array,
+    demo_mt5_accounts: PropTypes.array,
 };
 
 const account_switcher = withRouter(
@@ -950,6 +946,8 @@ const account_switcher = withRouter(
         mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         mt5_login_list: client.mt5_login_list,
         mt5_login_list_error: client.mt5_login_list_error,
+        virtual_accounts: client.virtual_accounts,
+        demo_mt5_accounts: client.demo_mt5_accounts,
         dxtrade_accounts_list: client.dxtrade_accounts_list,
         dxtrade_accounts_list_error: client.dxtrade_accounts_list_error,
         dxtrade_disabled_signup_types: client.dxtrade_disabled_signup_types,

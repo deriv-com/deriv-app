@@ -168,7 +168,7 @@ const DemoBanner = () => (
     </div>
 );
 
-const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts }) => {
+const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts, virtual_accounts, demo_mt5_accounts }) => {
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
             <ThemedScrollbars className='mul-cfd-compare-accounts'>
@@ -183,7 +183,7 @@ const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts }) => {
                                         <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
                                             {localize('Multipliers')}
                                         </Text>
-                                        <DemoBanner />
+                                        {!!virtual_accounts.length && <DemoBanner />}
                                     </div>
                                 </Table.Head>
                                 <Table.Head>
@@ -192,7 +192,7 @@ const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts }) => {
                                         <Text as='p' align='center' color='prominent' weight='bold' size='sm'>
                                             {localize('CFDs')}
                                         </Text>
-                                        <DemoBanner />
+                                        {!!demo_mt5_accounts.length && <DemoBanner />}
                                     </div>
                                 </Table.Head>
                             </Table.Row>
@@ -242,7 +242,13 @@ const ModalContent = ({ openRealAccountSignup, toggleUpgradeAccounts }) => {
     );
 };
 
-const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts, openRealAccountSignup }) => {
+const UpgradeAccountsModal = ({
+    is_upgrade_modal_visible,
+    toggleUpgradeAccounts,
+    openRealAccountSignup,
+    demo_mt5_accounts,
+    virtual_accounts,
+}) => {
     return (
         <div className='cfd-compare-accounts-modal__wrapper'>
             <React.Suspense fallback={<UILoader />}>
@@ -259,6 +265,8 @@ const UpgradeAccountsModal = ({ is_upgrade_modal_visible, toggleUpgradeAccounts,
                         <ModalContent
                             openRealAccountSignup={openRealAccountSignup}
                             toggleUpgradeAccounts={toggleUpgradeAccounts}
+                            demo_mt5_accounts={demo_mt5_accounts}
+                            virtual_accounts={virtual_accounts}
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -271,9 +279,13 @@ UpgradeAccountsModal.propTypes = {
     is_upgrade_modal_visible: PropTypes.bool,
     toggleUpgradeAccounts: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
+    demo_mt5_accounts: PropTypes.array,
+    virtual_accounts: PropTypes.array,
 };
-export default connect(({ ui }) => ({
+export default connect(({ ui, client }) => ({
     is_upgrade_modal_visible: ui.is_upgrade_modal_visible,
     toggleUpgradeAccounts: ui.toggleUpgradeModal,
     openRealAccountSignup: ui.openRealAccountSignup,
+    demo_mt5_accounts: client.demo_mt5_accounts,
+    virtual_accounts: client.virtual_accounts,
 }))(UpgradeAccountsModal);

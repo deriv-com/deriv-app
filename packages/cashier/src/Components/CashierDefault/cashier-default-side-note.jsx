@@ -55,7 +55,7 @@ const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto,
                             components={[
                                 <span
                                     key={0}
-                                    className='link link--orange'
+                                    className='link link--orange cashier-side-note__text-nowrap'
                                     onClick={() => window.LC_API.open_chat_window()}
                                 />,
                             ]}

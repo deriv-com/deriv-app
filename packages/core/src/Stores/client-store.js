@@ -28,6 +28,7 @@ import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
+import { getSortedAccountList, getSortedCFDList, isDemo } from '../App/Containers/AccountSwitcher/helpers';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -204,6 +205,16 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_any_real_account() {
         return this.hasAnyRealAccount();
+    }
+
+    @computed
+    get demo_mt5_accounts() {
+        return getSortedCFDList(this.mt5_login_list).filter(isDemo);
+    }
+
+    @computed
+    get virtual_accounts() {
+        return getSortedAccountList(this.account_list, this.accounts).filter(account => account.is_virtual);
     }
 
     @computed
@@ -735,6 +746,52 @@ export default class ClientStore extends BaseStore {
             this.dxtrade_disabled_signup_types = { current_list, ...disabled_types_obj };
         }
     }
+
+    @action.bound
+    redirectToMt5Real = (market_type, server, redirectToMt5) => {
+        const synthetic_server_region = server ? server.server_info?.geolocation?.region : '';
+        const synthetic_server_environment = server ? (server.server_info?.environment).toLowerCase() : '';
+
+        const serverElementName = () => {
+            let filter_server_number = '';
+            let synthetic_region_string = '';
+            if (market_type === 'synthetic') {
+                filter_server_number = synthetic_server_environment.split('server')[1];
+                synthetic_region_string = `-${synthetic_server_region.toLowerCase()}`;
+            }
+            return `-${market_type}${synthetic_region_string}${filter_server_number}`;
+        };
+        redirectToMt5(`real${market_type ? serverElementName() : ''}`)
+    };
+
+    @action.bound
+    openMt5RealAccount(account_type, redirectToMt5) {
+        const hasRequiredCredentials = () => {
+            // for MT5 Real Financial STP, if true, users can instantly create a new account by setting password
+            if (!this.account_settings) return false;
+            const { citizen, tax_identification_number, tax_residence } = this.account_settings;
+            return !!(citizen && tax_identification_number && tax_residence);
+        };
+
+        const has_required_account = account_type === 'synthetic' ? this.has_malta_account : this.has_maltainvest_account;
+        const should_redirect_fstp_password = this.is_fully_authenticated && hasRequiredCredentials();
+
+        if (this.is_eu && !has_required_account) {
+            sessionStorage.setItem('cfd_account_needed', 1);
+            this.root_store.ui.toggleAccountsDialog(false);
+            // TO DO remove account needed modal logic
+            this.root_store.ui.openAccountNeededModal(
+                account_type === 'synthetic' ? this.standpoint.gaming_company : this.standpoint.financial_company,
+                account_type === 'synthetic' ? localize('Deriv Synthetic') : localize('Deriv Multipliers'),
+                account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('real CFDs')
+            );
+        } else {
+            if (should_redirect_fstp_password)
+                sessionStorage.setItem('open_cfd_account_type', `real.${account_type}.set_password`);
+            else sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
+            this.redirectToMt5Real('', '', redirectToMt5);
+        }
+    };
 
     @action.bound
     getLimits() {

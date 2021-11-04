@@ -106,52 +106,6 @@ const AccountSwitcher = props => {
         window.location.hash = account_type;
     };
 
-    const hasRequiredCredentials = () => {
-        // for MT5 Real Financial STP, if true, users can instantly create a new account by setting password
-        if (!props.account_settings) return false;
-        const { citizen, tax_identification_number, tax_residence } = props.account_settings;
-        return !!(citizen && tax_identification_number && tax_residence);
-    };
-
-    const should_redirect_fstp_password = props.is_fully_authenticated && hasRequiredCredentials();
-
-    const openMt5RealAccount = account_type => {
-        const has_required_account =
-            account_type === 'synthetic' ? props.has_malta_account : props.has_maltainvest_account;
-
-        if (props.is_eu && !has_required_account) {
-            sessionStorage.setItem('cfd_account_needed', 1);
-            closeAccountsDialog();
-            props.openAccountNeededModal(
-                account_type === 'synthetic' ? props.standpoint.gaming_company : props.standpoint.financial_company,
-                account_type === 'synthetic' ? localize('Deriv Synthetic') : localize('Deriv Multipliers'),
-                account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('real CFDs')
-            );
-        } else {
-            if (should_redirect_fstp_password)
-                sessionStorage.setItem('open_cfd_account_type', `real.${account_type}.set_password`);
-            else sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
-            redirectToMt5Real();
-        }
-    };
-
-    const redirectToMt5Real = (market_type, server) => {
-        const synthetic_server_region = server ? server.server_info?.geolocation.region : '';
-        const synthetic_server_environment = server ? (server.server_info?.environment).toLowerCase() : '';
-
-        const serverElementName = () => {
-            let filter_server_number = '';
-            let synthetic_region_string = '';
-            if (market_type === 'synthetic') {
-                filter_server_number = synthetic_server_environment.split('server')[1];
-                synthetic_region_string = `-${synthetic_server_region.toLowerCase()}`;
-            }
-            return `-${market_type}${synthetic_region_string}${filter_server_number}`;
-        };
-
-        redirectToMt5(`real${market_type ? serverElementName() : ''}`);
-    };
-
     // TODO: Uncomment when real account is launched
     // const redirectToDXTradeReal = () => {
     //     redirectToDXTrade('real');
@@ -701,9 +655,10 @@ const AccountSwitcher = props => {
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 redirectAccount={() => {
-                                                    redirectToMt5Real(
+                                                    props.redirectToMt5Real(
                                                         account.market_type,
-                                                        findServerForAccount(account)
+                                                        findServerForAccount(account),
+                                                        redirectToMt5
                                                     );
                                                 }}
                                                 server={findServerForAccount(account)}
@@ -724,7 +679,7 @@ const AccountSwitcher = props => {
                                             {account.title}
                                         </Text>
                                         <Button
-                                            onClick={() => openMt5RealAccount(account.type)}
+                                            onClick={() => props.openMt5RealAccount(account.type, redirectToMt5)}
                                             className='acc-switcher__new-account-btn'
                                             secondary
                                             small
@@ -921,6 +876,10 @@ AccountSwitcher.propTypes = {
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
     updateMt5LoginList: PropTypes.func,
+    openMt5RealAccount: PropTypes.func,
+    redirectToMt5Real: PropTypes.func,
+    virtual_accounts: PropTypes.array,
+    demo_mt5_accounts: PropTypes.array,
 };
 
 const account_switcher = withRouter(
@@ -950,6 +909,8 @@ const account_switcher = withRouter(
         mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         mt5_login_list: client.mt5_login_list,
         mt5_login_list_error: client.mt5_login_list_error,
+        virtual_accounts: client.virtual_accounts,
+        demo_mt5_accounts: client.demo_mt5_accounts,
         dxtrade_accounts_list: client.dxtrade_accounts_list,
         dxtrade_accounts_list_error: client.dxtrade_accounts_list_error,
         dxtrade_disabled_signup_types: client.dxtrade_disabled_signup_types,
@@ -965,6 +926,8 @@ const account_switcher = withRouter(
         landing_companies: client.landing_companies,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
         updateMt5LoginList: client.updateMt5LoginList,
+        openMt5RealAccount: client.openMt5RealAccount,
+        redirectToMt5Real: client.redirectToMt5Real,
         routeBackInApp: common.routeBackInApp,
         standpoint: client.standpoint,
         is_positions_drawer_on: ui.is_positions_drawer_on,

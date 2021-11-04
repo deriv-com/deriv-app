@@ -1,7 +1,9 @@
 import { action, observable } from 'mobx';
+import { isCryptocurrency } from '@deriv/shared';
 
 export default class TransactionHistoryStore {
-    constructor(WS) {
+    constructor({ WS, root_store }) {
+        this.root_store = root_store;
         this.WS = WS;
     }
     @observable crypto_transactions = [];
@@ -45,10 +47,15 @@ export default class TransactionHistoryStore {
     }
     @action.bound
     async onMount() {
-        this.setLoading(true);
-        await this.unsubscribeCryptoTransactions();
-        await this.getCryptoTransactions();
-        this.setLoading(false);
+        const { currency, switched } = this.root_store.client;
+        const is_crypto = !!currency && isCryptocurrency(currency);
+
+        if (is_crypto && !switched) {
+            this.setLoading(true);
+            await this.unsubscribeCryptoTransactions();
+            await this.getCryptoTransactions();
+            this.setLoading(false);
+        }
     }
 
     @action.bound
@@ -65,7 +72,6 @@ export default class TransactionHistoryStore {
     async cancelCryptoTransaction(transaction_id) {
         await this.WS.cancelCryptoTransaction(transaction_id).then(response => {
             if (!response.error) {
-                this.getCryptoTransactions();
                 this.setSelectedCryptoTransactionId('');
                 this.setIsCryptoTransactionsCancelModalVisible(false);
                 return Promise.resolve(response);

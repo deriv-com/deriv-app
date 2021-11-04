@@ -6,15 +6,18 @@ import { isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const BriefModal = ({
+    country_standpoint,
     disableApp,
     enableApp,
     IntervalField,
     is_visible,
+    is_mx,
     logout,
     onSubmit,
     openStatement,
     validateForm,
 }) => {
+    const is_uk_mx = country_standpoint.is_united_kingdom && is_mx;
     return (
         <Modal
             className='reality-check'
@@ -47,7 +50,11 @@ const BriefModal = ({
                                     line_height='m'
                                     className='reality-check__text reality-check__text--description'
                                 >
-                                    <Localize i18n_default_text='Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis.' />
+                                    {is_uk_mx ? (
+                                        <Localize i18n_default_text='Gaming trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis.' />
+                                    ) : (
+                                        <Localize i18n_default_text='Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis.' />
+                                    )}
                                 </Text>
                                 <Text
                                     as='p'

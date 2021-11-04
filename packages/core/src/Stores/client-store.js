@@ -779,7 +779,6 @@ export default class ClientStore extends BaseStore {
         if (this.is_eu && !has_required_account) {
             sessionStorage.setItem('cfd_account_needed', 1);
             this.root_store.ui.toggleAccountsDialog(false);
-            // TO DO remove account needed modal logic
             this.root_store.ui.openAccountNeededModal(
                 account_type === 'synthetic' ? this.standpoint.gaming_company : this.standpoint.financial_company,
                 account_type === 'synthetic' ? localize('Deriv Synthetic') : localize('Deriv Multipliers'),

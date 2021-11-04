@@ -284,10 +284,16 @@ const ModalContent = ({
 const UpgradeAccountsModal = ({
     is_upgrade_modal_visible,
     toggleUpgradeAccounts,
+<<<<<<< HEAD
     openMt5RealAccount,
     openRealAccountSignup,
     demo_mt5_accounts,
     virtual_accounts,
+=======
+    openRealAccountSignup,
+    show_multiplier = true,
+    show_cfd = true,
+>>>>>>> 15fd933cd (setting props for columns)
 }) => {
     return (
         <div className='cfd-compare-accounts-modal__wrapper'>
@@ -306,10 +312,15 @@ const UpgradeAccountsModal = ({
                             openRealAccountSignup={openRealAccountSignup}
                             openMt5RealAccount={openMt5RealAccount}
                             toggleUpgradeAccounts={toggleUpgradeAccounts}
+<<<<<<< HEAD
                             demo_mt5_accounts={demo_mt5_accounts}
                             virtual_accounts={virtual_accounts}
                             show_multiplier={true}
                             show_cfd={true}
+=======
+                            show_multiplier={show_multiplier}
+                            show_cfd={show_cfd}
+>>>>>>> 15fd933cd (setting props for columns)
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -322,9 +333,12 @@ UpgradeAccountsModal.propTypes = {
     is_upgrade_modal_visible: PropTypes.bool,
     toggleUpgradeAccounts: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
+<<<<<<< HEAD
     openMt5RealAccount: PropTypes.func,
     demo_mt5_accounts: PropTypes.array,
     virtual_accounts: PropTypes.array,
+=======
+>>>>>>> 15fd933cd (setting props for columns)
     show_multiplier: PropTypes.bool,
     show_cfd: PropTypes.bool,
 };

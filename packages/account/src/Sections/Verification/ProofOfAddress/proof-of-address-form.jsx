@@ -284,7 +284,7 @@ const ProofOfAddressForm = ({
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
                                 <FormSubHeader title={localize('1. Address')} subtitle={'(All fields are required)'} />
                                 <FormBodySection
-                                    has_side_note={true}
+                                    has_side_note
                                     side_note={localize(
                                         'An accurate and complete address helps to speed up your verification process.'
                                     )}
@@ -408,7 +408,7 @@ const ProofOfAddressForm = ({
                                 </FormBodySection>
 
                                 <FormSubHeader title={localize('2. Please upload one of the following:')} />
-                                <FormBodySection has_side_note={true} side_note={<UploaderSideNote />}>
+                                <FormBodySection has_side_note side_note={<UploaderSideNote />}>
                                     <FileUploaderContainer
                                         onRef={ref => (file_uploader_ref = ref)}
                                         onFileDrop={df =>

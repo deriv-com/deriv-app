@@ -78,7 +78,11 @@ const DefaultHeader = ({
     const verification_status = populateVerificationStatus(account_status);
     const { has_poa, has_poi } = verification_status;
     const onClickUpgrade = () => {
-        toggleUpgradeAccounts();
+        if (country_standpoint.is_france){
+            openRealAccountSignup('maltainvest', `Deriv Multipliers`);
+        } else {
+            toggleUpgradeAccounts();
+        }
     };
 
     const filterPlatformsForClients = payload =>

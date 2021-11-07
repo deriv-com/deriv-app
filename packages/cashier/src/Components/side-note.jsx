@@ -4,17 +4,17 @@ import { DesktopWrapper, Text } from '@deriv/components';
 import '../Sass/side-note.scss';
 
 const SideNoteBullet = ({ children }) => (
-    <div className='cashier-side-note__bullet-wrapper'>
-        <div className='cashier-side-note__bullet' />
+    <div className='side-note__bullet-wrapper'>
+        <div className='side-note__bullet' />
         <span>{children}</span>
     </div>
 );
 
 const SideNote = ({ notes, title, has_bullets }) => (
-    <div className='cashier-side-note'>
+    <div className='side-note'>
         {title && (
             <DesktopWrapper>
-                <Text className='cashier-side-note__text' weight='bold' as='p'>
+                <Text className='side-note__text' weight='bold' as='p'>
                     {title}
                 </Text>
             </DesktopWrapper>
@@ -24,7 +24,7 @@ const SideNote = ({ notes, title, has_bullets }) => (
             has_bullets ? (
                 <SideNoteBullet key={i}>{note}</SideNoteBullet>
             ) : (
-                <Text key={i} className='cashier-side-note__text' size='xxs' as='p'>
+                <Text key={i} className='side-note__text' size='xxs' as='p'>
                     {note}
                 </Text>
             )

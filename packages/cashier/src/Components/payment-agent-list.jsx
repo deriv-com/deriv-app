@@ -19,7 +19,7 @@ import PaymentAgentDetails from './payment-agent-details.jsx';
 import Error from './Error/error.jsx';
 import EmailSent from './Email/email-sent.jsx';
 import PaymentAgentWithdrawForm from './Form/payment-agent-withdraw-form.jsx';
-import '../Sass/payment-agent.scss';
+import '../Sass/payment-agent-list.scss';
 
 const PaymentAgentList = ({
     error,
@@ -58,7 +58,7 @@ const PaymentAgentList = ({
                             values={{ website_name }}
                         />
                     </Text>
-                    <div className='payment-agent__instructions'>
+                    <div className='payment-agent-list__instructions'>
                         <Tabs
                             active_index={payment_agent_active_tab_index}
                             className='tabs--desktop'
@@ -76,12 +76,12 @@ const PaymentAgentList = ({
                                             size='xs'
                                             weight='bold'
                                             color='prominent'
-                                            className='cashier__header payment-agent__list-header'
+                                            className='cashier__header payment-agent-list__list-header'
                                         >
                                             <Localize i18n_default_text='Payment agents' />
                                         </Text>
-                                        <div className='payment-agent__list-line' />
-                                        <div className='payment-agent__list-selector'>
+                                        <div className='payment-agent-list__list-line' />
+                                        <div className='payment-agent-list__list-selector'>
                                             <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
                                                 <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
                                             </Text>
@@ -90,8 +90,8 @@ const PaymentAgentList = ({
                                                     <DesktopWrapper>
                                                         <Dropdown
                                                             id='payment_methods'
-                                                            className='payment-agent__drop-down payment-agent__filter'
-                                                            classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
+                                                            className='payment-agent-list__drop-down payment-agent-list__filter'
+                                                            classNameDisplay='cashier__drop-down-display payment-agent-list__filter-display'
                                                             classNameDisplaySpan='cashier__drop-down-display-span'
                                                             classNameItems='cashier__drop-down-items'
                                                             list={list_with_default}
@@ -140,7 +140,7 @@ const PaymentAgentList = ({
                                         />
                                     </React.Fragment>
                                 )}
-                                <div className='payment-agent__disclaimer'>
+                                <div className='payment-agent-list__disclaimer'>
                                     <Text size='xs' line_height='xs' weight='bold' className='cashier__text'>
                                         <Localize i18n_default_text='DISCLAIMER' />
                                     </Text>

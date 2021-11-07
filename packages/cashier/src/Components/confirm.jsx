@@ -7,7 +7,7 @@ import FormError from './Error/form-error.jsx';
 import '../Sass/confirm.scss';
 
 const Row = ({ item_key, label, value }) => (
-    <div className='cashier__confirm-row'>
+    <div className='confirm__row'>
         <span>{label}</span>
         {Array.isArray(value) ? (
             <span>
@@ -32,23 +32,17 @@ const Row = ({ item_key, label, value }) => (
 const Confirm = ({ data, error, header, onClickBack, onClickConfirm }) => (
     <div className='cashier__wrapper cashier__wrapper--confirm'>
         <Icon icon='IcConfirmDetails' width='128' height='128' />
-        <Text
-            as='h2'
-            color='prominent'
-            align='center'
-            weight='bold'
-            className='cashier__header cashier__confirm-header'
-        >
+        <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header confirm__header'>
             {header}
         </Text>
-        <div className='cashier__confirm-column-wrapper'>
-            <div className='cashier__confirm-column'>
+        <div className='confirm__column-wrapper'>
+            <div className='confirm__column'>
                 {data.map((d, key) => (
                     <Row item_key={key} label={d.label} value={d.value} key={key} />
                 ))}
             </div>
         </div>
-        <div className='cashier__confirm-submit'>
+        <div className='confirm__submit'>
             <Button large text={localize('Back')} onClick={onClickBack} secondary />
             <Button large text={localize('Confirm')} onClick={onClickConfirm} primary />
         </div>

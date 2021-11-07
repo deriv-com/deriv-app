@@ -31,7 +31,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
     };
 
     return (
-        <div className='cashier-recent-transaction-wrapper'>
+        <div className='recent-transaction__wrapper'>
             <div className='cashier-recent-transaction'>
                 <Text weight='bold' as='p' line_height='s' size='xs'>
                     <Localize i18n_default_text='Recent transactions' />

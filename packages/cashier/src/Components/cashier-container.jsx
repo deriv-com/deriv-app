@@ -21,15 +21,15 @@ const CashierContainer = ({ iframe_height, iframe_url, is_crypto, is_loading }) 
                 />
             )}
             {is_crypto && (
-                <div className='cashier__transfer-onramp'>
-                    <div className='cashier__transfer-onramp__header'>
+                <div className='cashier-container__transfer-onramp'>
+                    <div className='cashier-container__transfer-onramp__header'>
                         <Text line_height='xxl'>
                             <Localize i18n_default_text='Looking for a way to buy cryptocurrency?' />
                         </Text>
                     </div>
                     <div>
                         <Button
-                            className='cashier__transfer-onramp__button'
+                            className='cashier-container__transfer-onramp__button'
                             has_effect
                             text={localize('Try our Fiat onramp')}
                             onClick={() => history.push(routes.cashier_onramp)}

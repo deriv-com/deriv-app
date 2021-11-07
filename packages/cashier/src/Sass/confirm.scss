@@ -1,52 +1,49 @@
-.cashier {
-    &__confirm {
-        &-header {
-            margin-top: 1.4rem;
-            margin-bottom: 2.4rem;
-        }
-        &-column {
-            &-wrapper {
-                display: flex;
-                justify-content: center;
-
-                @include mobile {
-                    flex-direction: column;
-                }
-            }
-        }
-        &-row {
-            width: 40rem;
+.confirm {
+    &__header {
+        margin-top: 1.4rem;
+        margin-bottom: 2.4rem;
+    }
+    &__column {
+        &-wrapper {
             display: flex;
-            padding: 0.8rem 0;
-            font-size: 1.4rem;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--general-section-1);
-
-            > :last-child {
-                text-align: right;
-                max-width: 50%;
-
-                &.description {
-                    word-wrap: break-word;
-                }
+            justify-content: center;
+            @include mobile {
+                flex-direction: column;
             }
         }
-        &-submit {
-            margin: 2.4rem auto;
-            width: 40rem;
-            display: flex;
-            justify-content: flex-end;
+    }
+    &__row {
+        width: 40rem;
+        display: flex;
+        padding: 0.8rem 0;
+        font-size: 1.4rem;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--general-section-1);
 
-            > :not(:first-child) {
-                margin-left: 0.8rem;
+        > :last-child {
+            text-align: right;
+            max-width: 50%;
+
+            &.description {
+                word-wrap: break-word;
             }
         }
+    }
+    &__submit {
+        margin: 2.4rem auto;
+        width: 40rem;
+        display: flex;
+        justify-content: flex-end;
 
-        @include mobile {
-            &-row,
-            &-submit {
-                width: 100%;
-            }
+        > :not(:first-child) {
+            margin-left: 0.8rem;
+        }
+    }
+
+    @include mobile {
+        &__row,
+        &__submit {
+            width: 100%;
         }
     }
 }

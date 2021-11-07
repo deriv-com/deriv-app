@@ -68,7 +68,7 @@ const CryptoFiatConverter = ({
     }, [from_currency]);
 
     return (
-        <div className='crypto-fiat-converter-form'>
+        <div className='crypto-fiat-converter'>
             <Field name='converter_from_amount' validate={validateFromAmount}>
                 {({ field }) => (
                     <Input

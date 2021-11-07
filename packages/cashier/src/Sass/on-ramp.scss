@@ -10,6 +10,7 @@
         padding: 1.6rem 1.6rem 0.8rem;
         border-radius: 0.8rem;
         margin-top: 1.6rem;
+
         &-header {
             margin-bottom: 1.6rem;
         }
@@ -28,6 +29,12 @@
         grid-template-areas: (
             'logo name name' 'logo description buy' 'logo description buy' 'logo payment-icons payment-icons'
         );
+        @include mobile {
+            grid-template-areas: (
+                'logo name name name' 'logo description description description'
+                    'logo description description description' 'payment-icons payment-icons payment-icons buy'
+            );
+        }
 
         & + & {
             margin: 1.6rem 0rem;
@@ -83,12 +90,6 @@
             grid-area: buy;
             justify-self: flex-end;
         }
-        @include mobile {
-            grid-template-areas: (
-                'logo name name name' 'logo description description description'
-                    'logo description description description' 'payment-icons payment-icons payment-icons buy'
-            );
-        }
     }
     &__popup {
         color: var(--text-general);
@@ -96,6 +97,7 @@
         &-deposit {
             display: flex;
             flex-direction: column;
+
             &-address {
                 display: inline-flex;
                 border-radius: $BORDER_RADIUS;
@@ -104,33 +106,36 @@
                 padding: 1.2rem;
                 margin: 1.6rem;
                 background-color: var(--general-section-2);
+                @include mobile {
+                    margin: 1.6rem 0.8rem;
+                    width: calc(100% - 1.6rem);
+                    display: flex;
+                    justify-content: space-around;
+                }
 
                 &-hint {
                     align-self: center;
                 }
-
                 & > div {
                     width: 100%;
                 }
-
                 &-text {
                     cursor: pointer;
                     width: 26.5rem;
                     background: unset;
-
-                    &--dark {
-                        color: var(--text-general);
-                    }
-                    &:disabled {
-                        opacity: 1;
-                    }
-
                     @include mobile {
                         width: calc(100% - 2rem);
                         overflow-x: scroll !important;
                         &::-webkit-scrollbar {
                             display: none;
                         }
+                    }
+
+                    &--dark {
+                        color: var(--text-general);
+                    }
+                    &:disabled {
+                        opacity: 1;
                     }
                 }
                 &-icon {
@@ -141,12 +146,6 @@
                     margin-top: 0.1rem;
                     display: flex;
                     align-items: center;
-                }
-                @include mobile {
-                    margin: 1.6rem 0.8rem;
-                    width: calc(100% - 1.6rem);
-                    display: flex;
-                    justify-content: space-around;
                 }
             }
         }
@@ -170,6 +169,7 @@
             display: flex;
             justify-content: flex-end;
             margin-top: 2.4rem;
+
             @include mobile {
                 margin-bottom: 4rem;
             }
@@ -216,9 +216,13 @@
         }
     }
 }
-
 .dc-modal__container {
     &_on-ramp__modal {
+        @include mobile {
+            max-width: calc(100vw - 6rem) !important;
+            max-height: calc(100vh - 6rem) !important;
+        }
+
         > .dc-modal-header {
             &__title {
                 padding-top: 2.4rem !important;
@@ -228,10 +232,6 @@
             @include mobile {
                 overflow: scroll;
             }
-        }
-        @include mobile {
-            max-width: calc(100vw - 6rem) !important;
-            max-height: calc(100vh - 6rem) !important;
         }
     }
 }

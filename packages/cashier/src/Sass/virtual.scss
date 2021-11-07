@@ -1,4 +1,12 @@
-.cashier {
+.virtual {
+    &__header {
+        margin-top: 0;
+        margin-bottom: 1.6rem;
+
+        @include mobile {
+            padding-top: 2.4rem;
+        }
+    }
     &__account-switch-icon {
         box-sizing: border-box;
         width: 33.6rem;
@@ -6,6 +14,10 @@
         background-repeat: no-repeat;
         background-size: 100%;
         margin: 0 auto 1rem;
+        @include mobile {
+            width: 100%;
+            margin: 2.4rem 0 0;
+        }
 
         &--light {
             background-image: url('~Images/cashier-demo-light.svg');
@@ -13,25 +25,10 @@
         &--dark {
             background-image: url('~Images/cashier-demo-dark.svg');
         }
-
-        @include mobile {
-            width: 100%;
-            margin: 2.4rem 0 0;
-        }
     }
     &__account-switch-text {
         color: var(--text-loss-danger);
         cursor: pointer;
         font-weight: bold;
-    }
-    &__virtual {
-        &-header {
-            margin-top: 0;
-            margin-bottom: 1.6rem;
-
-            @include mobile {
-                padding-top: 2.4rem;
-            }
-        }
     }
 }

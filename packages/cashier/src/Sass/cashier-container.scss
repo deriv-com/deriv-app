@@ -1,4 +1,4 @@
-.cashier {
+.cashier-container {
     &__transfer-onramp {
         border-top: 2px solid var(--general-section-1);
         width: 51rem;
@@ -6,15 +6,14 @@
         &__header {
             margin-top: 1.6rem;
         }
-
         &__button {
             margin: 1.6em 1rem 0 !important;
+            @include mobile {
+                height: 2.8rem !important;
+            }
 
             &:not(:last-child) {
                 margin-right: 1em;
-            }
-            @include mobile {
-                height: 2.8rem !important;
             }
         }
     }

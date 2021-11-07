@@ -1,12 +1,52 @@
-div.payment-agent-transfer {
+.payment-agent-transfer-receipt {
     &__wrapper {
         & .cashier {
             &__transferred-details-wrapper {
-                & .account-transfer__transfer-details-from {
-                    flex-direction: row-reverse;
+                & .account-transfer__transfer {
+                    &-details {
+                        &-from,
+                        &-to {
+                            display: flex;
+                            align-items: center;
+                        }
+                        &-from {
+                            flex-direction: row-reverse;
 
-                    & > .cashier__transferred-details {
-                        text-align: right;
+                            & > .cashier__transferred-details {
+                                text-align: right;
+                            }
+                        }
+                    }
+                    &-from,
+                    &-to {
+                        text-align: left;
+                    }
+                    &-from {
+                        margin-bottom: 3.5rem;
+                        margin-top: 2.5rem;
+                        @include mobile {
+                            margin-bottom: 4rem;
+                        }
+                    }
+                    &-to {
+                        margin-bottom: 1.7rem;
+                        @include mobile {
+                            margin-bottom: 5rem;
+
+                            &:not(.dc-select-native--error) {
+                                margin-bottom: 2.2rem;
+                            }
+                        }
+                    }
+                }
+                & .account-transfer__receipt {
+                    & .cashier {
+                        &__text--bold {
+                            color: var(--text-prominent);
+                        }
+                        &__transferred-amount {
+                            color: var(--text-profit-success);
+                        }
                     }
                 }
                 & .dc-icon {
@@ -51,7 +91,6 @@ div.payment-agent-transfer {
                 }
                 &__form-submit-button {
                     max-width: 100%;
-
                     /* iPhone SE screen width fixes due to UI space restrictions */
                     @media only screen and (max-width: 340px) {
                         max-width: 150px;
@@ -73,16 +112,62 @@ div.payment-agent-transfer {
                     margin: 0.8rem 0 0;
 
                     &-wrapper {
+                        & .account-transfer__transfer {
+                            &-details-from {
+                                flex-flow: column-reverse;
+                                flex-direction: column;
+                                padding-right: 1.6rem;
+                            }
+                            &-details-to {
+                                flex-flow: column;
+                                flex-direction: column;
+                                padding-left: 1.6rem;
+
+                                & .cashier {
+                                    &__transferred-details {
+                                        text-align: center;
+                                    }
+                                }
+                            }
+                        }
+                        & .account-transfer__receipt {
+                            & .cashier {
+                                &__header {
+                                    padding-top: 1.6rem;
+                                    margin-top: 0;
+                                }
+                                &__transferred-details {
+                                    margin-top: 0.8rem;
+                                }
+                                &__transferred-amount {
+                                    margin-bottom: 1.6rem;
+                                    margin-top: 0;
+                                }
+                                &__text--right {
+                                    text-align: center;
+                                }
+                            }
+                            &-form-submit {
+                                display: flex;
+                                flex-flow: row;
+                                justify-content: center;
+                                @include mobile {
+                                    flex-direction: column;
+                                }
+
+                                .account-transfer__button {
+                                    margin: 1.6rem 0.4rem 0;
+                                    width: 100%;
+                                    @media only screen and (max-width: 340px) {
+                                        & .dc-btn__text {
+                                            font-size: 1.2rem;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         & .cashier__text--bold {
                             color: var(--text-prominent);
-                        }
-                        & .account-transfer__transfer-details-from {
-                            flex-direction: column;
-                            padding-right: 1.6rem;
-                        }
-                        & .account-transfer__transfer-details-to {
-                            flex-direction: column;
-                            padding-left: 1.6rem;
                         }
                     }
                 }

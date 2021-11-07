@@ -71,7 +71,7 @@ const PaymentAgentTransferForm = ({
     };
 
     return (
-        <div className='cashier__wrapper payment-agent-transfer__container'>
+        <div className='cashier__wrapper payment-agent-transfer-form__container'>
             <DesktopWrapper>
                 <Text
                     as='h2'
@@ -103,7 +103,7 @@ const PaymentAgentTransferForm = ({
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
-                                    className='payment-agent-transfer__input'
+                                    className='payment-agent-transfer-form__input'
                                     type='text'
                                     label={localize('Client login ID')}
                                     error={touched.loginid && errors.loginid}
@@ -121,7 +121,7 @@ const PaymentAgentTransferForm = ({
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
-                                    className='payment-agent-transfer__input dc-input--no-placeholder'
+                                    className='payment-agent-transfer-form__input dc-input--no-placeholder'
                                     type='text'
                                     label={localize('Amount')}
                                     error={touched.amount && errors.amount}
@@ -149,7 +149,7 @@ const PaymentAgentTransferForm = ({
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
-                                    className='payment-agent-transfer__input-area'
+                                    className='payment-agent-transfer-form__input-area'
                                     type='textarea'
                                     label={localize('Description')}
                                     error={errors.description}

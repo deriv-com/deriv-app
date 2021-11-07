@@ -66,6 +66,10 @@ export default class ClientStore extends BaseStore {
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
+
+    // TODO: Temporary variable. Remove after MX account closure has finished.
+    @observable client_notifications = clientNotifications;
+
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -649,6 +653,14 @@ export default class ClientStore extends BaseStore {
         return this.isDxtradeAllowed(this.landing_companies);
     }
 
+    @computed
+    get is_dbot_allowed() {
+        return (
+            this.landing_company_shortcode === 'virtual' ||
+            (this.landing_company_shortcode !== 'maltainvest' && !this.is_options_blocked)
+        );
+    }
+
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
@@ -761,7 +773,7 @@ export default class ClientStore extends BaseStore {
             }
             return `-${market_type}${synthetic_region_string}${filter_server_number}`;
         };
-        redirectToMt5(`real${market_type ? serverElementName() : ''}`)
+        redirectToMt5(`real${market_type ? serverElementName() : ''}`);
     };
 
     @action.bound
@@ -773,7 +785,8 @@ export default class ClientStore extends BaseStore {
             return !!(citizen && tax_identification_number && tax_residence);
         };
 
-        const has_required_account = account_type === 'synthetic' ? this.has_malta_account : this.has_maltainvest_account;
+        const has_required_account =
+            account_type === 'synthetic' ? this.has_malta_account : this.has_maltainvest_account;
         const should_redirect_fstp_password = this.is_fully_authenticated && hasRequiredCredentials();
 
         if (this.is_eu && !has_required_account) {
@@ -790,7 +803,7 @@ export default class ClientStore extends BaseStore {
             else sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
             this.redirectToMt5Real('', '', redirectToMt5);
         }
-    };
+    }
 
     @action.bound
     getLimits() {
@@ -1943,12 +1956,14 @@ export default class ClientStore extends BaseStore {
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {
+        this.setPreSwitchAccount(true);
         const new_user_login = {
             acct1: client_id,
             token1: oauth_token,
             curr1: currency,
         };
         await this.init(new_user_login);
+        this.broadcastAccountChange();
     }
 
     @action.bound

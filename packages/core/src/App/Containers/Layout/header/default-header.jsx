@@ -40,6 +40,7 @@ const DefaultHeader = ({
     is_logging_in,
     is_mt5_allowed,
     is_dxtrade_allowed,
+    is_dbot_allowed,
     is_notifications_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
@@ -78,7 +79,7 @@ const DefaultHeader = ({
     const verification_status = populateVerificationStatus(account_status);
     const { has_poa, has_poi } = verification_status;
     const onClickUpgrade = () => {
-        if (country_standpoint.is_france){
+        if (country_standpoint.is_france) {
             openRealAccountSignup('maltainvest', `Deriv Multipliers`);
         } else {
             toggleUpgradeAccounts();
@@ -93,7 +94,13 @@ const DefaultHeader = ({
             if (config.link_to === routes.dxtrade) {
                 return is_dxtrade_allowed;
             }
-            return !((is_mf || is_options_blocked) && config.href === routes.smarttrader);
+            if ((is_mf || is_options_blocked) && config.href === routes.smarttrader) {
+                return false;
+            }
+            if (config.link_to === routes.bot) {
+                return is_dbot_allowed;
+            }
+            return true;
         });
     return (
         <header
@@ -216,6 +223,7 @@ DefaultHeader.propTypes = {
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_dxtrade_allowed: PropTypes.bool,
+    is_dbot_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     // is_p2p_enabled: PropTypes.bool,
     // is_payment_agent_transfer_visible: PropTypes.bool,
@@ -258,6 +266,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
+    is_dbot_allowed: client.is_dbot_allowed,
     is_notifications_visible: ui.is_notifications_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,

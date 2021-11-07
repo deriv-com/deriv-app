@@ -8,6 +8,9 @@ import { localize } from '@deriv/translations';
 const AccountSignupModal = React.lazy(() =>
     import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal')
 );
+const CloseMXAccountModal = React.lazy(() =>
+    import(/* webpackChunkName: "close-mx-account-modal" */ '../CloseMXAccountModal')
+);
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
     import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal')
 );
@@ -27,6 +30,7 @@ const AppModals = ({
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
+    is_close_mx_account_modal_visible,
     is_eu,
     is_logged_in,
     account_needed_modal_props: { target },
@@ -52,6 +56,9 @@ const AppModals = ({
                 ComponentToLoad = <SetResidenceModal />;
             }
             break;
+    }
+    if (is_close_mx_account_modal_visible) {
+        ComponentToLoad = <CloseMXAccountModal />;
     }
 
     if (is_welcome_modal_visible) {
@@ -82,6 +89,7 @@ const AppModals = ({
 export default connect(({ client, ui }) => ({
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
+    is_close_mx_account_modal_visible: ui.is_close_mx_account_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_eu: client.is_eu,

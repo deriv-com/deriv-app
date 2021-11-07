@@ -110,6 +110,59 @@ export default class WithdrawStore {
 
     @action.bound
     async onMountWithdraw(verification_code) {
+        const { active_container, is_crypto, setLoading } = this.root_store.modules.cashier.general_store;
+        const { is_virtual } = this.root_store.client;
+        const current_container = active_container;
+
+        this.error.setErrorMessage('');
+        this.iframe.setContainerHeight(0);
+        setLoading(true);
+
+        if (!this.iframe.is_session_timeout) {
+            this.iframe.checkIframeLoaded();
+            return;
+        }
+
+        // if session has timed out reset everything
+        this.iframe.setIframeUrl('');
+        if (!verification_code || is_virtual) {
+            setLoading(false);
+            // if virtual, clear everything and don't proceed further
+            // if no verification code, we should request again
+            return;
+        }
+
+        const response_cashier = await this.WS.authorized.cashier(active_container, {
+            verification_code,
+        });
+
+        // if tab changed while waiting for response, ignore it
+        if (current_container !== active_container) {
+            setLoading(false);
+            return;
+        }
+        if (response_cashier.error) {
+            this.error.handleCashierError(response_cashier.error);
+            setLoading(false);
+            this.iframe.setSessionTimeout(true);
+            this.iframe.clearTimeoutCashierUrl();
+            if (verification_code) {
+                // clear verification code on error
+                this.verification.clearVerification();
+            }
+        } else if (is_crypto) {
+            setLoading(false);
+        } else {
+            await this.iframe.checkIframeLoaded();
+            setLoading(false);
+            this.iframe.setIframeUrl(response_cashier.cashier);
+            this.iframe.setSessionTimeout(false);
+            this.iframe.setTimeoutCashierUrl();
+        }
+    }
+
+    @action.bound
+    async onMountCryptoWithdraw(verification_code) {
         const { crypto_fiat_converter_store, general_store } = this.root_store.modules.cashier;
 
         general_store.setLoading(true);
@@ -140,7 +193,7 @@ export default class WithdrawStore {
             general_store.setLoading(false);
         }
         if (this.error) {
-            this.error.setErrorMessage(this.error, this.onMountWithdraw);
+            this.error.setErrorMessage(this.error, this.onMountCryptoWithdraw);
         }
     }
 
@@ -192,7 +245,7 @@ export default class WithdrawStore {
                 current_fiat_currency || 'USD'
             );
         } else {
-            this.resetConverter();
+            crypto_fiat_converter_store.resetConverter();
         }
         crypto_fiat_converter_store.setIsTimerVisible(false);
         general_store.percentageSelectorSelectionStatus(false);

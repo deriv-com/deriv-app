@@ -1,5 +1,4 @@
 import { action, computed, observable } from 'mobx';
-import { isCryptocurrency } from '@deriv/shared';
 
 export default class DepositStore {
     constructor({ WS, root_store }) {
@@ -12,10 +11,9 @@ export default class DepositStore {
     @observable iframe = this.root_store.modules.cashier.iframe_store;
 
     @action.bound
-    async onMountDeposit(verification_code) {
-        const { general_store, withdraw_store } = this.root_store.modules.cashier;
-        const { active_container, setLoading } = general_store;
-        const { currency, is_virtual } = this.root_store.client;
+    async onMountDeposit() {
+        const { active_container, is_crypto, setLoading } = this.root_store.modules.cashier.general_store;
+        const { is_virtual } = this.root_store.client;
         const current_container = active_container;
 
         this.error.setErrorMessage('');
@@ -29,7 +27,7 @@ export default class DepositStore {
 
         // if session has timed out reset everything
         this.iframe.setIframeUrl('');
-        if ((active_container === withdraw_store.container && !verification_code) || is_virtual) {
+        if (is_virtual) {
             setLoading(false);
             // if virtual, clear everything and don't proceed further
             // if no verification code, we should request again
@@ -37,7 +35,7 @@ export default class DepositStore {
         }
 
         const response_cashier = await this.WS.authorized.cashier(active_container, {
-            verification_code,
+            verification_code: 'undefined',
         });
 
         // if tab changed while waiting for response, ignore it
@@ -50,18 +48,11 @@ export default class DepositStore {
             setLoading(false);
             this.iframe.setSessionTimeout(true);
             this.iframe.clearTimeoutCashierUrl();
-            if (verification_code) {
-                // clear verification code on error
-                this.verification.clearVerification();
-            }
-        } else if (isCryptocurrency(currency)) {
+        } else if (is_crypto) {
             setLoading(false);
-            this.iframe.setContainerHeight('380');
-            this.iframe.setIframeUrl(response_cashier.cashier);
-            // crypto cashier can only be accessed once and the session expires
-            // so no need to set timeouts to keep the session alive
         } else {
             await this.iframe.checkIframeLoaded();
+            setLoading(false);
             this.iframe.setIframeUrl(response_cashier.cashier);
             this.iframe.setSessionTimeout(false);
             this.iframe.setTimeoutCashierUrl();

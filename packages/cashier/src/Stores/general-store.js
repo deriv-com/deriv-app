@@ -335,7 +335,9 @@ export default class GeneralStore extends BaseStore {
         ) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
-        this.root_store.modules.cashier.deposit_store.onMountDeposit(verification_code);
+        if (this.active_container === 'deposit') this.root_store.modules.cashier.deposit_store.onMountDeposit();
+        if (this.active_container === 'withdraw')
+            this.root_store.modules.cashier.withdraw_store.onMountWithdraw(verification_code);
     }
 
     @computed

@@ -63,6 +63,7 @@ const Deposit = ({
     onMount,
     recentTransactionOnMount,
     setActiveTab,
+    setErrorMessage,
     setIsDeposit,
     setSideNotes,
     tab_index,
@@ -79,9 +80,12 @@ const Deposit = ({
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
-        return () => setIsDeposit(false);
+        return () => {
+            setIsDeposit(false);
+            setErrorMessage('');
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setActiveTab, onMount, container]);
+    }, [setActiveTab, onMount, container, setErrorMessage]);
 
     React.useEffect(() => {
         if (isDesktop()) {
@@ -199,6 +203,7 @@ export default connect(({ client, modules }) => ({
     onMount: modules.cashier.general_store.onMount,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.general_store.setActiveTab,
+    setErrorMessage: modules.cashier.deposit_store.error.setErrorMessage,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,
     standpoint: client.standpoint,
     tab_index: modules.cashier.general_store.cashier_route_tab_index,

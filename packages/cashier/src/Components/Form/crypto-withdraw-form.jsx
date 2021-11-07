@@ -201,7 +201,7 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
     is_loading: modules.cashier.general_store.is_loading,
-    onMountWithdraw: modules.cashier.withdraw_store.onMountWithdraw,
+    onMountWithdraw: modules.cashier.withdraw_store.onMountCryptoWithdraw,
     percentage: modules.cashier.general_store.percentage,
     percentageSelectorSelectionStatus: modules.cashier.general_store.percentageSelectorSelectionStatus,
     requestWithdraw: modules.cashier.withdraw_store.requestWithdraw,

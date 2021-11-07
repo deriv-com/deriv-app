@@ -128,7 +128,7 @@ const AccountTransferReceipt = ({
                 enableApp={enableApp}
                 disableApp={disableApp}
                 has_close_icon={isMobile()}
-                id='account_transfer_switch_modal'
+                className='account_transfer_switch_modal'
                 small
                 title={localize(`Switch to ${switch_to.currency} account?`)}
             >

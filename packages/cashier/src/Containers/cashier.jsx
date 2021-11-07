@@ -27,6 +27,7 @@ const Cashier = ({
     is_loading,
     is_logged_in,
     is_logging_in,
+    init,
     is_onramp_tab_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
@@ -108,6 +109,7 @@ const Cashier = ({
 
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
+            {init()}
             <AccountPromptDialog />
             <ErrorDialog />
             <div className='cashier'>
@@ -205,6 +207,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_loading: modules.cashier.general_store.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    init: modules.cashier.general_store.init,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer_store.is_payment_agent_transfer_visible,

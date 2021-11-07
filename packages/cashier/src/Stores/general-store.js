@@ -23,8 +23,6 @@ export default class GeneralStore extends BaseStore {
         if (!this.has_set_currency) {
             this.changeSetCurrencyModalTitle();
         }
-
-        this.init();
     }
 
     @observable is_loading = false;

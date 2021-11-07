@@ -12,7 +12,7 @@ import {
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isDesktop, routes } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import 'Sass/app/_common/components/mul-cfd-upgrade-modal.scss';
 import PropTypes from 'prop-types';
 
@@ -178,6 +178,7 @@ const DemoBanner = () => (
 
 const ModalContent = ({
     openRealAccountSignup,
+    openMt5RealAccount,
     toggleUpgradeAccounts,
     virtual_accounts,
     demo_mt5_accounts,
@@ -258,7 +259,8 @@ const ModalContent = ({
                                             type='button'
                                             secondary
                                             onClick={() => {
-                                                history.push(routes.dxtrade);
+                                                toggleUpgradeAccounts();
+                                                openMt5RealAccount('real');
                                             }}
                                         >
                                             {localize('Add real account')}
@@ -282,6 +284,7 @@ const ModalContent = ({
 const UpgradeAccountsModal = ({
     is_upgrade_modal_visible,
     toggleUpgradeAccounts,
+    openMt5RealAccount,
     openRealAccountSignup,
     demo_mt5_accounts,
     virtual_accounts,
@@ -303,6 +306,7 @@ const UpgradeAccountsModal = ({
                     >
                         <ModalContent
                             openRealAccountSignup={openRealAccountSignup}
+                            openMt5RealAccount={openMt5RealAccount}
                             toggleUpgradeAccounts={toggleUpgradeAccounts}
                             demo_mt5_accounts={demo_mt5_accounts}
                             virtual_accounts={virtual_accounts}
@@ -320,6 +324,7 @@ UpgradeAccountsModal.propTypes = {
     is_upgrade_modal_visible: PropTypes.bool,
     toggleUpgradeAccounts: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
+    openMt5RealAccount: PropTypes.func,
     demo_mt5_accounts: PropTypes.array,
     virtual_accounts: PropTypes.array,
     show_multiplier: PropTypes.bool,
@@ -328,6 +333,7 @@ UpgradeAccountsModal.propTypes = {
 export default connect(({ ui, client }) => ({
     is_upgrade_modal_visible: ui.is_upgrade_modal_visible,
     toggleUpgradeAccounts: ui.toggleUpgradeModal,
+    openMt5RealAccount: client.openMt5RealAccount,
     openRealAccountSignup: ui.openRealAccountSignup,
     demo_mt5_accounts: client.demo_mt5_accounts,
     virtual_accounts: client.virtual_accounts,

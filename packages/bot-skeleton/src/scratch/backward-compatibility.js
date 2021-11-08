@@ -204,6 +204,20 @@ export default class BlockConversion {
 
             return { block_to_attach: block };
         };
+        const tradeAgain = () => {
+            const block = this.workspace.newBlock('trade_again');
+            const shadow_sl = this.workspace.newBlock('math_number');
+            const shadow_tp = this.workspace.newBlock('math_number');
+
+            shadow_sl.setShadow(true);
+            shadow_tp.setShadow(true);
+            block.getInput('STOP_LOSS').connection.connect(shadow_sl.outputConnection);
+            block.getInput('TAKE_PROFIT').connection.connect(shadow_tp.outputConnection);
+            block.getField('SL_ENABLED').setValue('FALSE');
+            block.getField('TP_ENABLED').setValue('FALSE');
+
+            return { block_to_attach: block };
+        };
         const conversions = {
             bb: block_node => generateIndicatorBlock(block_node, 'bb_statement', 'bb'),
             bba: block_node => generateIndicatorBlock(block_node, 'bba_statement', 'bba'),
@@ -249,6 +263,7 @@ export default class BlockConversion {
                 return { block_to_attach: block };
             },
             tradeOptions,
+            trade_again: tradeAgain,
         };
 
         return conversions;
@@ -386,10 +401,16 @@ export default class BlockConversion {
         // We only want to update renamed fields for modern strategies.
         const xml = this.updateRenamedFields(strategy_node);
 
-        // Don't convert already compatible strategies.
+        // Don't convert already compatible strategies if they contain SL/TP trade_again block
         if (strategy_node.hasAttribute('is_dbot') && strategy_node.getAttribute('is_dbot') === 'true') {
-            Blockly.Events.enable();
-            return xml;
+            const has_sl_tp_trade_again = [...xml.getElementsByTagName('block')]
+                .filter(el => el.getAttribute('type') === 'trade_again')
+                .every(el => el.children.length);
+
+            if (has_sl_tp_trade_again) {
+                Blockly.Events.enable();
+                return xml;
+            }
         }
 
         const has_illegal_block = this.getIllegalBlocks().some(

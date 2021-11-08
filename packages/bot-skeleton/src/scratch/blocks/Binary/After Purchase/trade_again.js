@@ -92,11 +92,26 @@ Blockly.Blocks.trade_again = {
     },
     onchange(event) {
         if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.BLOCK_CREATE) {
-            if (this.getDescendants()[1]) {
-                this.getDescendants()[1].setDisabled(this.getFieldValue('SL_ENABLED') !== 'TRUE');
+            if (event.type === Blockly.Events.BLOCK_CREATE) {
+                if (this.getDescendants()[1]) {
+                    this.getDescendants()[1].setDisabled(this.getFieldValue('SL_ENABLED') !== 'TRUE');
+                }
+                if (this.getDescendants()[2]) {
+                    this.getDescendants()[2].setDisabled(this.getFieldValue('TP_ENABLED') !== 'TRUE');
+                }
             }
-            if (this.getDescendants()[2]) {
-                this.getDescendants()[2].setDisabled(this.getFieldValue('TP_ENABLED') !== 'TRUE');
+            if (event.type === Blockly.Events.BLOCK_CHANGE) {
+                switch (event.name) {
+                    case 'SL_ENABLED':
+                        this.getDescendants()[1].setDisabled(event.newValue === 'FALSE');
+                        break;
+
+                    case 'TP_ENABLED':
+                        this.getDescendants()[2].setDisabled(event.newValue === 'FALSE');
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     },

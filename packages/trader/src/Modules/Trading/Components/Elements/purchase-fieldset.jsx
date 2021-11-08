@@ -34,7 +34,7 @@ const PurchaseFieldset = ({
     setPurchaseState,
     type,
 }) => {
-    const [shouldFade, setShouldFade] = React.useState(false);
+    const [should_fade, setShouldFade] = React.useState(false);
 
     React.useEffect(() => {
         setShouldFade(true);
@@ -56,7 +56,7 @@ const PurchaseFieldset = ({
                 purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
                 setPurchaseState={setPurchaseState}
-                should_fade={shouldFade}
+                should_fade={should_fade}
                 type={type}
                 basis={basis} // mobile-only
             />
@@ -91,7 +91,7 @@ const PurchaseFieldset = ({
                             has_increased={info.has_increased}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
-                            should_fade={shouldFade}
+                            should_fade={should_fade}
                             type={type}
                         />
                     )}

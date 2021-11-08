@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Div100vhContainer, Icon } from '@deriv/components';
+import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
 import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
 
 import { BinaryLink } from 'App/Components/Routes';
@@ -19,17 +19,16 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
     </>
 );
 
-// eslint-disable-next-line react/display-name
-const PlatformDropdown = React.memo(({ app_routing_history, closeDrawer, platform_config }) => {
+const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config }) => {
     React.useEffect(() => {
         window.addEventListener('popstate', closeDrawer);
-        if (isDesktop()) document.addEventListener('click', handleClickOutside);
 
         return () => {
             window.removeEventListener('popstate', closeDrawer);
-            if (isDesktop()) document.removeEventListener('click', handleClickOutside);
         };
     }, []);
+
+    const ref = React.useRef();
 
     const handleClickOutside = event => {
         if (!event.target.closest('.platform-dropdown__list') && !event.target.closest('.platform-switcher')) {
@@ -37,11 +36,13 @@ const PlatformDropdown = React.memo(({ app_routing_history, closeDrawer, platfor
         }
     };
 
+    useOnClickOutside(ref, handleClickOutside, () => isDesktop());
+
     const platform_dropdown = (
         <div className='platform-dropdown'>
             <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
                 {platform_config.map((platform, idx) => (
-                    <div key={idx} onClick={closeDrawer}>
+                    <div key={idx} onClick={closeDrawer} ref={ref}>
                         {platform.link_to !== undefined ? (
                             <BinaryLink
                                 to={platform.link_to}
@@ -68,7 +69,7 @@ const PlatformDropdown = React.memo(({ app_routing_history, closeDrawer, platfor
     }
 
     return ReactDOM.createPortal(platform_dropdown, document.getElementById('deriv_app'));
-});
+};
 
 PlatformDropdown.propTypes = {
     platform_configs: PropTypes.array,

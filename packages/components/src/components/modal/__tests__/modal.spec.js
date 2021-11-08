@@ -18,7 +18,7 @@ describe('<Modal />', () => {
             </Modal>
         );
         // Assert
-        expect(screen.getByText('test')).toBeTruthy();
+        expect(screen.getByText('test')).toBeInTheDocument();
     });
 
     test('calls toggleModal on close', () => {

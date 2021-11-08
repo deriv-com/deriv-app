@@ -8,7 +8,7 @@ const oauth_apps_list = [
         app_markup_percentage: 0,
         app_id: 9999,
         scopes: ['read', 'admin', 'trade', 'payments'],
-        last_used: '2021-10-31 06:49:52.054529',
+        last_used: '2021-10-31 06:49:52',
     },
 ];
 
@@ -43,36 +43,17 @@ describe('Connected Apps', () => {
         Object.defineProperty(HTMLElement.prototype, 'offsetWidth', originalOffsetWidth);
     });
 
-    test('renders correctly', () => {
-        render(<ConnectedApps />);
-    });
-
-    test('shows the title correctly', () => {
-        render(<ConnectedApps />);
-        expect(screen.getByText(/Authorised applications/i)).toBeInTheDocument();
-    });
-
-    test('loads and render the list', async () => {
+    test('renders correctly', async () => {
         const { container } = render(<ConnectedApps />);
+
+        expect(screen.getByText(/Authorised applications/i)).toBeInTheDocument();
 
         await waitForElementToBeRemoved(() => container.querySelector('.initial-loader'));
 
         await waitFor(() => {
             expect(screen.getByText('Local')).toBeInTheDocument();
-            expect(screen.getByText('2021-10-31 06:49:52')).toBeInTheDocument;
+            expect(screen.getByText(oauth_apps_list[0].last_used)).toBeInTheDocument;
             expect(screen.getByText('Revoke access')).toBeInTheDocument();
-        });
-    });
-
-    test('opens confirm modal on revoke access click', async () => {
-        const { container } = render(<ConnectedApps />);
-
-        await waitForElementToBeRemoved(() => container.querySelector('.initial-loader'));
-        fireEvent.click(screen.getByText('Revoke access'));
-
-        await waitFor(() => {
-            expect(screen.getByText('Confirm')).toBeInTheDocument();
-            expect(screen.getByText('Back')).toBeInTheDocument();
         });
     });
 

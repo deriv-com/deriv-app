@@ -140,12 +140,6 @@
     }
     &__drop-down,
     &__drop-down-wrapper .cashier__drop-down {
-        display: inline-block;
-        min-width: 20.3rem;
-        min-height: 4rem;
-        margin: 0 0 16px;
-        line-height: 1.43;
-
         &-wrapper {
             display: flex;
             flex-direction: column;
@@ -364,6 +358,21 @@
             margin-bottom: 3.2rem;
             @include mobile {
                 padding: 0 1rem;
+            }
+        }
+    }
+    &__withdraw {
+        &-header {
+            margin-bottom: 8px;
+        }
+        &-wrapper .withdraw__input {
+            margin: 2.4rem 0 !important;
+            width: fit-content;
+            min-width: 36rem;
+            @include mobile {
+                width: 100%;
+                min-width: auto;
+                margin-bottom: 2.6rem !important;
             }
         }
     }

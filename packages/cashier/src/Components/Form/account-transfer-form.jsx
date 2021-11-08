@@ -350,7 +350,7 @@ const AccountTransferForm = ({
                                 <div className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'>
                                     <Dropdown
                                         id='transfer_from'
-                                        className='cashier__drop-down account-transfer-form__drop-down'
+                                        className='account-transfer-form__drop-down'
                                         classNameDisplay='cashier__drop-down-display'
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
@@ -372,7 +372,7 @@ const AccountTransferForm = ({
                                     />
                                     <Dropdown
                                         id='transfer_to'
-                                        className='cashier__drop-down account-transfer-form__drop-down account-transfer-form__drop-down--to-dropdown'
+                                        className='account-transfer-form__drop-down account-transfer-form__drop-down--to-dropdown'
                                         classNameDisplay='cashier__drop-down-display'
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'

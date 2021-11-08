@@ -17,7 +17,7 @@ const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }) => {
     return (
         <div className='cashier__wrapper cashier__no-balance'>
             <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
-            <Text as='h2' weight='bold' align='center' className='withdraw__header'>
+            <Text as='h2' weight='bold' align='center' className='cashier__withdraw-header'>
                 <Localize
                     i18n_default_text='You have no funds in your {{currency}} account'
                     values={{ currency: getCurrencyDisplayCode(currency) }}

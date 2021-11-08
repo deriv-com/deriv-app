@@ -1,7 +1,9 @@
 .payment-agent-withdraw-form {
     &__drop-down {
+        display: inline-block;
+        margin: 0;
+        line-height: 1.43;
         padding-left: 1.6rem !important;
-        margin-bottom: 0 !important;
         flex: 1;
         @include mobile {
             max-width: 72vw;
@@ -69,7 +71,7 @@
                 align-items: center;
                 justify-content: center;
             }
-            .payment-agent__radio {
+            .payment-agent-withdraw-form__radio {
                 &-wrapper {
                     width: 100%;
                     position: relative;

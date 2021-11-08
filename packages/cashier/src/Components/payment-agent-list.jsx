@@ -126,7 +126,7 @@ const PaymentAgentList = ({
                                             )}
                                         </div>
                                         <Accordion
-                                            className='payment-agent__accordion'
+                                            className='payment-agent-list__accordion'
                                             list={payment_agent_list.map(payment_agent => ({
                                                 header: payment_agent.name,
                                                 content: (

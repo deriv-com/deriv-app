@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import PercentageSelector from '../percentage-selector';
-import '../../Sass/withdraw.scss';
+import '../../Sass/crypto-withdraw-form.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
 const MAX_ADDRESS_LENGTH = 64;
@@ -83,9 +83,9 @@ const CryptoWithdrawForm = ({
     if (is_loading) return <Loading />;
 
     return (
-        <div className='cashier__wrapper withdraw__wrapper'>
+        <div className='cashier__wrapper cashier__withdraw-wrapper'>
             {!isMobile() && <Header currency={currency} />}
-            <div className='withdraw__form-icon'>
+            <div className='crypto-withdraw-form-icon'>
                 <Icon icon={`IcCurrency-${account_platform_icon.toLowerCase()}`} size={isMobile() ? 64 : 128} />
             </div>
             {isMobile() && <Header currency={currency} />}
@@ -95,7 +95,7 @@ const CryptoWithdrawForm = ({
                 }}
             >
                 {({ errors, isSubmitting, touched, setFieldTouched, handleChange, values }) => (
-                    <div className='withdraw__form'>
+                    <div className='crypto-withdraw-form'>
                         <Field name='address' validate={validateAddress}>
                             {({ field }) => (
                                 <Input
@@ -121,7 +121,7 @@ const CryptoWithdrawForm = ({
                                 />
                             )}
                         </Field>
-                        <div className='withdraw__percentage-selector'>
+                        <div className='crypto-withdraw-form__percentage-selector'>
                             <PercentageSelector
                                 amount={+balance}
                                 currency={currency}
@@ -130,7 +130,7 @@ const CryptoWithdrawForm = ({
                                 should_percentage_reset={should_percentage_reset}
                             />
                         </div>
-                        <div className='withdraw__crypto-fiat-converter'>
+                        <div className='crypto-withdraw-form__crypto-fiat-converter'>
                             <CryptoFiatConverter
                                 from_currency={crypto_currency}
                                 to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
@@ -138,7 +138,7 @@ const CryptoWithdrawForm = ({
                                 validateToAmount={validateWithdrawToAmount}
                             />
                         </div>
-                        <div className='withdraw__form-submit'>
+                        <div className='crypto-withdraw-form-submit'>
                             <Button
                                 className='cashier__form-submit-button'
                                 is_disabled={

@@ -27,11 +27,15 @@
             margin-top: 1.2rem;
 
             .dc-dropdown__display {
-                min-height: 4rem;
+                min-height: 4rem !important;
             }
         }
     }
     &__drop-down {
+        display: inline-block;
+        min-width: 20.3rem;
+        min-height: 4rem;
+        line-height: 1.43;
         text-align: left;
         max-width: 36rem;
         margin: 0 auto 5.1rem;
@@ -42,9 +46,13 @@
         }
 
         &--to-dropdown {
-            margin: 0 auto 3.3rem;
+            @include desktop {
+                margin: 0 auto 3.3rem;
+            }
+            @include mobile {
+                margin-bottom: 2.4rem;
+            }
         }
-
         & .dc-dropdown__display-text {
             width: 100%;
             align-items: center;

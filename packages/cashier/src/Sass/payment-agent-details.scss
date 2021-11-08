@@ -15,7 +15,7 @@
             flex-direction: row;
 
             &:first-child {
-                & .payment-agent__contact {
+                & .payment-agent-details__contact {
                     color: var(--text-prominent);
                 }
             }

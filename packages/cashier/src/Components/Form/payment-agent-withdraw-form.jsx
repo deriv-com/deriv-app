@@ -91,7 +91,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                         <Dropdown
                             placeholder={localize('Choose an agent')}
                             is_align_text_left
-                            className='cashier__drop-down payment-agent-withdraw-form__drop-down'
+                            className='payment-agent-withdraw-form__drop-down'
                             classNameDisplay='cashier__drop-down-display'
                             classNameDisplaySpan='cashier__drop-down-display-span'
                             classNameItems='cashier__drop-down-items'

@@ -6,6 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import EmailSent from './email-sent.jsx';
+import '../../Sass/send-email.scss';
 
 const SendEmail = ({
     crypto_transactions,
@@ -30,25 +31,25 @@ const SendEmail = ({
                 />
             ) : (
                 <React.Fragment>
-                    <Icon icon='IcCashierAuthenticate' className='withdraw__icon' size={128} />
+                    <Icon icon='IcCashierAuthenticate' className='send-email__icon' size={128} />
                     <Text
                         line_height='xxl'
                         size={isMobile() ? 'xs' : 's'}
                         weight='bold'
                         as='p'
                         align='center'
-                        className='withdraw__header'
+                        className='cashier__withdraw-header'
                     >
                         <Localize i18n_default_text='Please help us verify your withdrawal request.' />
                     </Text>
-                    <Text as='p' align='center' size={isMobile() ? 'xxs' : 's'} className='withdraw__send-email--space'>
+                    <Text as='p' align='center' size={isMobile() ? 'xxs' : 's'} className='send-email__space'>
                         <Localize i18n_default_text="Hit the button below and we'll send you an email with a link. Click that link to verify your withdrawal request." />
                     </Text>
                     <Text as='p' align='center' size={isMobile() ? 'xxs' : 's'}>
                         <Localize i18n_default_text='This is to protect your account from unauthorised withdrawals.' />
                     </Text>
                     <Button
-                        className='withdraw__verify-button'
+                        className='send-email__verify-button'
                         has_effect
                         text={localize('Send email')}
                         onClick={sendVerificationEmail}

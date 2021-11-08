@@ -61,7 +61,6 @@
 
                 &-button {
                     margin: 0;
-                    width: 100%;
                     max-width: 18rem;
 
                     &:first-child {
@@ -90,10 +89,11 @@
                     margin-top: 0.4rem;
                 }
                 &__form-submit-button {
-                    max-width: 100%;
-                    /* iPhone SE screen width fixes due to UI space restrictions */
-                    @media only screen and (max-width: 340px) {
-                        max-width: 150px;
+                    &:first-child {
+                        margin: 2rem auto;
+                    }
+                    &:last-child {
+                        margin: 0 auto;
                     }
                 }
                 &__success {

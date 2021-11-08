@@ -18,58 +18,57 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
         </div>
     </>
 );
-class PlatformDropdown extends React.PureComponent {
-    handleClickOutside = event => {
+
+// eslint-disable-next-line react/display-name
+const PlatformDropdown = React.memo(({ app_routing_history, closeDrawer, platform_config }) => {
+    React.useEffect(() => {
+        window.addEventListener('popstate', closeDrawer);
+        if (isDesktop()) document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            window.removeEventListener('popstate', closeDrawer);
+            if (isDesktop()) document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
+    const handleClickOutside = event => {
         if (!event.target.closest('.platform-dropdown__list') && !event.target.closest('.platform-switcher')) {
-            this.props.closeDrawer();
+            closeDrawer();
         }
     };
 
-    componentDidMount() {
-        window.addEventListener('popstate', this.props.closeDrawer);
-        if (isDesktop()) document.addEventListener('click', this.handleClickOutside);
+    const platform_dropdown = (
+        <div className='platform-dropdown'>
+            <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
+                {platform_config.map((platform, idx) => (
+                    <div key={idx} onClick={closeDrawer}>
+                        {platform.link_to !== undefined ? (
+                            <BinaryLink
+                                to={platform.link_to}
+                                // This is here because in routes-config it needs to have children, but not in menu
+                                exact={platform.link_to === routes.trade}
+                                className='platform-dropdown__list-platform'
+                                isActive={() => getActivePlatform(app_routing_history) === platform.name}
+                            >
+                                <PlatformBox platform={platform} />
+                            </BinaryLink>
+                        ) : (
+                            <a href={platform.href} className='platform-dropdown__list-platform'>
+                                <PlatformBox platform={platform} />
+                            </a>
+                        )}
+                    </div>
+                ))}
+            </Div100vhContainer>
+        </div>
+    );
+
+    if (isMobile()) {
+        return ReactDOM.createPortal(platform_dropdown, document.getElementById('mobile_platform_switcher'));
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('popstate', this.props.closeDrawer);
-        if (isDesktop()) document.removeEventListener('click', this.handleClickOutside);
-    }
-
-    render() {
-        const { platform_config, closeDrawer, app_routing_history } = this.props;
-
-        const platform_dropdown = (
-            <div className='platform-dropdown'>
-                <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
-                    {platform_config.map((platform, idx) => (
-                        <div key={idx} onClick={closeDrawer}>
-                            {platform.link_to !== undefined ? (
-                                <BinaryLink
-                                    to={platform.link_to}
-                                    // This is here because in routes-config it needs to have children, but not in menu
-                                    exact={platform.link_to === routes.trade}
-                                    className='platform-dropdown__list-platform'
-                                    isActive={() => getActivePlatform(app_routing_history) === platform.name}
-                                >
-                                    <PlatformBox platform={platform} />
-                                </BinaryLink>
-                            ) : (
-                                <a href={platform.href} className='platform-dropdown__list-platform'>
-                                    <PlatformBox platform={platform} />
-                                </a>
-                            )}
-                        </div>
-                    ))}
-                </Div100vhContainer>
-            </div>
-        );
-
-        if (isMobile()) {
-            return ReactDOM.createPortal(platform_dropdown, document.getElementById('mobile_platform_switcher'));
-        }
-        return ReactDOM.createPortal(platform_dropdown, document.getElementById('deriv_app'));
-    }
-}
+    return ReactDOM.createPortal(platform_dropdown, document.getElementById('deriv_app'));
+});
 
 PlatformDropdown.propTypes = {
     platform_configs: PropTypes.array,

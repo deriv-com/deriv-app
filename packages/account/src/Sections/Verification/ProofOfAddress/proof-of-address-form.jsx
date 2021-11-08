@@ -282,7 +282,10 @@ const ProofOfAddressForm = ({
                     {form_state.should_show_form && (
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
-                                <FormSubHeader title={localize('1. Address')} subtitle={'(All fields are required)'} />
+                                <FormSubHeader
+                                    title={localize('1. Address')}
+                                    subtitle={localize('(All fields are required)')}
+                                />
                                 <FormBodySection
                                     has_side_note
                                     side_note={localize(

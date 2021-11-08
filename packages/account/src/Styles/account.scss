@@ -1213,7 +1213,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 @include mobile {
-                    border: 1px dashed var(--general-section-1);
+                    border: 1px dashed var(--border-normal);
                 }
             }
 

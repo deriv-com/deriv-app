@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor, waitForElementToBeRemoved, fireEvent } from '@testing-library/react';
 import ConnectedApps from '../connected-apps';
+import { act } from 'react-dom/test-utils';
 
 const oauth_apps_list = [
     {
@@ -68,8 +69,9 @@ describe('Connected Apps', () => {
             expect(screen.getByText('Back')).toBeInTheDocument();
         });
 
-        fireEvent.click(screen.getByText('Confirm'));
-
+        act(() => {
+            fireEvent.click(screen.getByText('Confirm'));
+        });
         expect(screen.queryByText('Local')).not.toBeInTheDocument();
     });
 });

@@ -1169,7 +1169,7 @@ $MIN_HEIGHT_FLOATING: calc(
             display: flex;
             flex-wrap: wrap;
             .account-poa__upload-box {
-                border: 1px solid var(--general-section-1);
+                border: 1px solid var(--icon-grey-background);
                 border-radius: $BORDER_RADIUS * 2;
                 margin: 0 0.8rem 1.6rem;
                 padding: 0.8rem;
@@ -1213,7 +1213,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 @include mobile {
-                    border: 1px dashed var(--border-normal);
+                    border: 1px dashed var(--icon-grey-background);
                 }
             }
 

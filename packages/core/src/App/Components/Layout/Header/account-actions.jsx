@@ -39,7 +39,9 @@ const AccountActions = React.memo(
         onClickUpgrade,
     }) => {
         const { is_dashboard } = React.useContext(PlatformContext);
-
+        const should_show_upgrade_button = (!has_poa || !has_poi) && !has_any_real_account;
+        const should_show_deposit_button = currency && has_any_real_account;
+        const should_show_set_currency_button = !is_virtual && !currency;
         if (is_logged_in) {
             return (
                 <React.Fragment>
@@ -103,7 +105,7 @@ const AccountActions = React.memo(
                                 toggleDialog={toggleAccountsDialog}
                             />
                         </React.Suspense>
-                        {!is_virtual && !currency && (
+                        {should_show_set_currency_button && (
                             <div className='set-currency'>
                                 <Button
                                     onClick={() => openRealAccountSignup('set_currency')}
@@ -114,7 +116,7 @@ const AccountActions = React.memo(
                                 />
                             </div>
                         )}
-                        {(!has_poa || !has_poi) && !has_any_real_account && (
+                        {should_show_upgrade_button && (
                             <Button
                                 className='acc-info__button'
                                 has_effect
@@ -123,7 +125,7 @@ const AccountActions = React.memo(
                                 primary
                             />
                         )}
-                        {currency && has_any_real_account && (
+                        {should_show_deposit_button && (
                             <Button
                                 className='acc-info__button'
                                 has_effect

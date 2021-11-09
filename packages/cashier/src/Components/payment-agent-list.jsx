@@ -19,7 +19,7 @@ import PaymentAgentDetails from './payment-agent-details.jsx';
 import Error from './Error/error.jsx';
 import EmailSent from './Email/email-sent.jsx';
 import PaymentAgentWithdrawForm from './Form/payment-agent-withdraw-form.jsx';
-import '../Sass/payment-agent-list.scss';
+import 'Sass/payment-agent-list.scss';
 
 const PaymentAgentList = ({
     error,

@@ -124,6 +124,13 @@
         > * {
             width: auto;
         }
+        &--align-end {
+            align-items: flex-end;
+
+            .cashier__form-submit-button {
+                width: unset;
+            }
+        }
     }
     &__loader {
         &-wrapper {

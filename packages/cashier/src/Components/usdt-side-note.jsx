@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import '../Sass/usdt-side-note.scss';
+import 'Sass/usdt-side-note.scss';
 
 const USDTSideNote = ({ type }) => {
     const [is_modal_open, setModalOpen] = React.useState(false);

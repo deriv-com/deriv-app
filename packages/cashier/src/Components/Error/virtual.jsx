@@ -6,7 +6,7 @@ import { Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import '../../Sass/virtual.scss';
+import 'Sass/virtual.scss';
 
 const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSignup, toggleAccountsDialog }) => {
     const onClickSignup = () => {
@@ -29,13 +29,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                     <Text as='h2' align='center' weight='bold' color='prominent' className='virtual__header'>
                         <Localize i18n_default_text={'You are using a demo account'} />
                     </Text>
-                    <Text
-                        as='p'
-                        size='xs'
-                        line_height='s'
-                        align='center'
-                        className='cashier__paragraph cashier__text cashier__text--full-width'
-                    >
+                    <Text as='p' size='xs' line_height='s' align='center' className='cashier__paragraph cashier__text'>
                         <Localize
                             i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the <1>Account Switcher.</1>'
                             components={[

@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { getStatus } from '../Constants/transaction-status';
-import '../Sass/recent-transaction.scss';
+import 'Sass/recent-transaction.scss';
 
 const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCryptoTransactionsVisible }) => {
     React.useEffect(() => {

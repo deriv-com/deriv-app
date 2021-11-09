@@ -6,7 +6,7 @@ import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
-import '../../Sass/crypto-fiat-converter.scss';
+import 'Sass/crypto-fiat-converter.scss';
 
 const Timer = props => {
     const initial_time = 60;

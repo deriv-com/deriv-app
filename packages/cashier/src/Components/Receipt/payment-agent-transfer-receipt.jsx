@@ -5,7 +5,7 @@ import { Button, Icon, Text } from '@deriv/components';
 import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import '../../Sass/payment-agent-transfer-receipt.scss';
+import 'Sass/payment-agent-transfer-receipt.scss';
 
 const openStatement = (history, resetPaymentAgentTransfer) => {
     history.push(routes.statement);
@@ -28,7 +28,7 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
                         <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
                             {getCurrencyName(currency)}
                         </Text>
-                        <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
+                        <Text size='xs' line_height='xs' color='less-prominent'>
                             {loginid}
                         </Text>
                     </span>
@@ -40,7 +40,7 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
                         <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
                             {receipt.client_name}
                         </Text>
-                        <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
+                        <Text size='xs' line_height='xs' color='less-prominent'>
                             {receipt.client_id.toUpperCase()}
                         </Text>
                     </span>

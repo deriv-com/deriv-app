@@ -6,7 +6,7 @@ import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/sh
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details.jsx';
-import '../../Sass/payment-agent-receipt.scss';
+import 'Sass/payment-agent-receipt.scss';
 
 const openStatement = (history, resetPaymentAgent) => {
     history.push(routes.statement);

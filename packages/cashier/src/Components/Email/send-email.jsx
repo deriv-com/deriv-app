@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import EmailSent from './email-sent.jsx';
-import '../../Sass/send-email.scss';
+import 'Sass/send-email.scss';
 
 const SendEmail = ({
     crypto_transactions,

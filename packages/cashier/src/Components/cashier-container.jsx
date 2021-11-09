@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { Button, Loading, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import '../Sass/cashier-container.scss';
+import 'Sass/cashier-container.scss';
 
 const CashierContainer = ({ iframe_height, iframe_url, is_crypto, is_loading }) => {
     const history = useHistory();

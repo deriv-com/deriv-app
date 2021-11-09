@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, NewsTicker, Text } from '@deriv/components';
-import '../../Sass/cashier-default.scss';
+import 'Sass/cashier-default.scss';
 
 const CashierDefaultDetails = ({
     detail_click,

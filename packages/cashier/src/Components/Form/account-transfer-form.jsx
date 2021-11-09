@@ -11,7 +11,7 @@ import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
 import PercentageSelector from '../percentage-selector';
 import RecentTransaction from '../recent-transaction.jsx';
-import '../../Sass/account-transfer-form.scss';
+import 'Sass/account-transfer-form.scss';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;
@@ -495,7 +495,7 @@ const AccountTransferForm = ({
                                         />
                                     </div>
                                 )}
-                                <div className='cashier__form-submit cashier__form-submit--align-end account-transfer-form__form-submit'>
+                                <div className='cashier__form-submit account-transfer-form__form-submit'>
                                     <Button
                                         className={classNames({
                                             'cashier__form-submit-button':

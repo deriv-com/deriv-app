@@ -19,7 +19,7 @@ import { connect } from 'Stores/connect';
 import PaymentAgentWithdrawConfirm from '../Confirm/payment-agent-withdraw-confirm.jsx';
 import FormError from '../Error/form-error.jsx';
 import PaymentAgentReceipt from '../Receipt/payment-agent-receipt.jsx';
-import '../../Sass/payment-agent-withdraw-form.scss';
+import 'Sass/payment-agent-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     const errors = {};

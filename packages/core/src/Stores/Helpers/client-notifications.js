@@ -19,7 +19,7 @@ import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}, client = {}) => {
+export const clientNotifications = (ui = {}, client = {}, is_iom) => {
     const notifications = {
         dp2p: {
             key: 'dp2p',
@@ -34,6 +34,22 @@ export const clientNotifications = (ui = {}, client = {}) => {
             img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
             img_alt: 'DP2P',
             type: 'news',
+        },
+        close_mx_account: {
+            key: 'close_mx_account',
+            header: is_iom
+                ? localize('Your account is scheduled to be closed')
+                : localize('Your Gaming account is scheduled to be closed'),
+            message: localize('Please proceed to withdraw your funds before 30 November 2021.'),
+            secondary_btn: {
+                text: localize('Learn more'),
+                onClick: () => {
+                    ui.showCloseMXAccountPopup(true);
+                },
+            },
+            img_src: getUrlBase('/public/images/common/close_account_banner.png'),
+            img_alt: 'close mx account',
+            type: 'close_mx',
         },
         is_virtual: {
             key: 'is_virtual',
@@ -209,7 +225,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
         unwelcome: {
             key: 'unwelcome',
             header: localize('Deposits are locked'),
-            message: localize('Please contact us via live chat to enable deposits.'),
+            message: localize('Please contact us via live chat.'),
             action: {
                 onClick: () => {
                     window.LC_API.open_chat_window();
@@ -524,13 +540,8 @@ const checkAccountStatus = (
         cashier_validation,
     } = account_status;
 
-    const {
-        cashier_locked,
-        withdrawal_locked,
-        deposit_locked,
-        mt5_withdrawal_locked,
-        document_needs_action,
-    } = getStatusValidations(status);
+    const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
+        getStatusValidations(status);
 
     const {
         system_maintenance,
@@ -554,7 +565,8 @@ const checkAccountStatus = (
 
     addVerificationNotifications(identity, document, addNotificationMessage);
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa = is_10k_withdrawal_limit_reached && needs_verification.includes('document');
+    const needs_poa =
+        is_10k_withdrawal_limit_reached && (needs_verification.includes('document') || document?.status !== 'verified');
     const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
 
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
@@ -631,17 +643,26 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         account_status,
         getRiskAssessment,
         is_eu,
+        has_iom_account,
+        country_standpoint,
         is_logged_in,
         is_tnc_needed,
         isAccountOfType,
         loginid,
     } = client_store;
+    const hidden_close_account_notification =
+        parseInt(localStorage.getItem('hide_close_mx_account_notification')) === 1;
+    const is_iom = country_standpoint.is_isle_of_man;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
     let has_missing_required_field, has_risk_assessment;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
+
+    if (has_iom_account && !hidden_close_account_notification) {
+        addNotificationMessage(clientNotifications(ui_store, {}, is_iom).close_mx_account);
+    }
 
     if (client && !client.is_virtual) {
         ({ has_risk_assessment } = checkAccountStatus(
@@ -654,7 +675,6 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
             ui_store,
             is_10k_withdrawal_limit_reached
         ));
-
         if (is_p2p_visible) {
             addNotificationMessage(clientNotifications().dp2p);
         } else {

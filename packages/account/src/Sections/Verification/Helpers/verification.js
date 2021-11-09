@@ -10,6 +10,7 @@ export const populateVerificationStatus = account_status => {
     const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
 
     const identity_status = identity.status;
+    const document_status = document.status;
 
     const { idv, onfido, manual } = identity.services;
     const identity_last_attempt = attempts.latest;
@@ -23,6 +24,7 @@ export const populateVerificationStatus = account_status => {
         has_poi,
         identity_last_attempt,
         identity_status,
+        document_status,
         idv,
         is_idv_disallowed,
         manual,

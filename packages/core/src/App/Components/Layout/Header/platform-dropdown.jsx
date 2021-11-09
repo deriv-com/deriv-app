@@ -75,4 +75,4 @@ PlatformDropdown.propTypes = {
     platform_configs: PropTypes.array,
 };
 
-export { PlatformDropdown };
+export { PlatformDropdown, PlatformBox };

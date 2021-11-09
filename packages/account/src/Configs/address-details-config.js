@@ -4,7 +4,6 @@ import { generateValidationFunction, getDefaultFields, getErrorMessages, regex_c
 const address_details_config = ({ account_settings, is_svg }) => {
     const is_gb = account_settings.country_code === 'gb';
     const jersey_not_allowed = is_gb && regex_checks.address_details.jersey_postcode;
-    console.log(account_settings);
     if (!account_settings) {
         return {};
     }

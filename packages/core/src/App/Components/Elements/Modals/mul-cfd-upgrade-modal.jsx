@@ -90,7 +90,7 @@ const data = [
         has_icons: false,
     },
 ];
-const Items = ({ items }) =>
+const Items = ({ items = [] }) =>
     items.map(({ title, icon }) => (
         <div key={title} className='mul-cfd-compare-table-item'>
             <Icon icon={icon} size='24' />
@@ -99,7 +99,7 @@ const Items = ({ items }) =>
             </Text>
         </div>
     ));
-const MultilineRowItems = ({ items }) =>
+const MultilineRowItems = ({ items = [] }) =>
     items.map((item, index) => (
         <Text key={index} as='p' weight='bold' align='center' color='prominent' size='xxxs'>
             {item}

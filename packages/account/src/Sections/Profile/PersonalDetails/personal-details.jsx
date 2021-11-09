@@ -27,6 +27,7 @@ import {
     removeObjProperties,
     filterObjProperties,
     PlatformContext,
+    regex_checks,
     routes,
     WS,
 } from '@deriv/shared';
@@ -181,7 +182,7 @@ export class PersonalDetailsForm extends React.Component {
 
     // TODO: standardize validations and refactor this
     validateFields = values => {
-        const { is_eu, is_mf, residence_list, states_list, is_virtual } = this.props;
+        const { is_eu, is_mf, residence_list, states_list, is_virtual, is_uk } = this.props;
         this.setState({ is_submit_success: false });
         const errors = {};
         const validateValues = validate(errors, values);
@@ -291,22 +292,17 @@ export class PersonalDetailsForm extends React.Component {
         if (state_is_input_element) {
             if (!validLength(values.address_state, { min: 0, max: 35 })) {
                 errors.address_state = localize('You should enter 0-35 characters.');
-            } else if (!/^[\w\s\W'.-;,]{0,35}$/.test(values.address_state)) {
+            } else if (!regex_checks.address_details.address_state.test(values.address_state)) {
                 errors.address_state = localize('State is not in a proper format');
             }
         }
 
         // Not allowing Jersey postcodes with a UK residence.
         if (
-            /^(((je|Je|jE|JE)\s*)|(\s*(je|Je|jE|JE)\s*)|(((je|Je|jE|JE)[0-9])\s([a-zA-Z0-9])*\s*))|(((je|Je|jE|JE)[0-9])\s([a-zA-Z0-9])*\s*([a-zA-Z0-9]))$/.test(
-                values.address_postcode
-            ) &&
-            values.citizen === 'United Kingdom' &&
-            !is_mf
+            !regex_checks.address_details.jersey_postcode.test(values.address_postcode) &&
+            (is_uk || values.citizen === 'United Kingdom')
         ) {
-            errors.address_postcode = localize(
-                "we don't offer accounts/services for Jersey's residents in the United Kingdom."
-            );
+            errors.address_postcode = localize("We don't offer accounts/services for Jersey's residents.");
         }
 
         if (values.address_postcode) {
@@ -1167,6 +1163,7 @@ export default connect(({ client }) => ({
     is_eu: client.is_eu,
     is_mf: client.landing_company_shortcode === 'maltainvest',
     is_svg: client.is_svg,
+    is_uk: client.is_uk,
     is_virtual: client.is_virtual,
     residence_list: client.residence_list,
     states_list: client.states_list,

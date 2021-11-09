@@ -27,7 +27,7 @@ const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto,
                         />
                     ) : (
                         <Localize
-                            i18n_default_text="Your fiat account's currency is currently set to {{currency_code}}."
+                            i18n_default_text='Your fiat account currency is set to {{currency_code}}.'
                             values={{ currency_code }}
                         />
                     )}

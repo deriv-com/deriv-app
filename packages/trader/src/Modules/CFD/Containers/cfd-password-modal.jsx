@@ -85,7 +85,6 @@ const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
             <Localize
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
-                    // TODO: Change this when CFD added to landing_companies API
                     type: type_label,
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
@@ -99,7 +98,6 @@ const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
         <Localize
             i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
             values={{
-                // TODO: Change this when CFD added to landing_companies API
                 type: type_label,
                 platform: getCFDPlatformLabel(platform),
                 category: category_label,

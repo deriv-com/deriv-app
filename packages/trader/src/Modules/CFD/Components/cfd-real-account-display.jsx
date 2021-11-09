@@ -3,7 +3,10 @@ import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
-import { CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING } from '@deriv/shared/src/utils/constants-storage/CFD';
+import {
+    CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING,
+    CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING,
+} from '@deriv/shared/src/utils/constants-storage/CFD';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
@@ -66,7 +69,7 @@ const CFDRealAccountDisplay = ({
         if (session_storage_open_password_modal) {
             onSelectRealFinancial();
             sessionStorage.removeItem(CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING);
-            sessionStorage.removeItem('cfd_account_needed');
+            sessionStorage.removeItem(CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING);
         }
     }, [onSelectRealFinancial, session_storage_open_password_modal]);
 
@@ -113,7 +116,7 @@ const CFDRealAccountDisplay = ({
     };
     const onSelectRealFinancial = () => {
         if (is_eu && !has_maltainvest_account) {
-            sessionStorage.setItem('cfd_account_needed', 1);
+            sessionStorage.setItem(CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING, '1');
             openRealAccountSignup('maltainvest', localize('DMT5 CFDs'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });

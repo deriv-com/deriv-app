@@ -65,7 +65,7 @@ const PasswordBox = ({ platform, onClick }) => (
             </Popover>
         </div>
         <div className='cfd-account-card__password-action'>
-            <Icon icon='IcEdit' onClick={onClick} size={16}/>
+            <Icon icon='IcEdit' onClick={onClick} size={16} />
         </div>
     </div>
 );

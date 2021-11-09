@@ -5,7 +5,10 @@ import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING } from '@deriv/shared/src/utils/constants-storage/CFD';
+import {
+    CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING,
+    CFD_PASSWORD_MODAL_SESSION_STORAGE_STRING,
+} from '@deriv/shared/src/utils/constants-storage/CFD';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
@@ -262,7 +265,7 @@ const RealAccountSignup = ({
     };
 
     const showStatusDialog = curr => {
-        if (sessionStorage.getItem('cfd_account_needed')) {
+        if (sessionStorage.getItem(CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING)) {
             closeModalThenOpenCFD();
         } else {
             setParams({
@@ -360,7 +363,7 @@ const RealAccountSignup = ({
             return;
         }
         if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
-            sessionStorage.removeItem('cfd_account_needed');
+            sessionStorage.removeItem(CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING);
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }

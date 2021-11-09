@@ -13,6 +13,7 @@ import { sortNotifications, sortNotificationsMobile } from 'App/Components/Eleme
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
+import { CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING } from '@deriv/shared/src/utils/constants-storage/CFD';
 
 const store_name = 'ui_store';
 
@@ -453,9 +454,9 @@ export default class UIStore extends BaseStore {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
         }, 300);
-        if (sessionStorage.getItem('cfd_account_needed')) {
+        if (sessionStorage.getItem(CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING)) {
             this.root_store.cfd.createCFDAccount({ type: 'financial', category: 'real' });
-            sessionStorage.removeItem('cfd_account_needed');
+            sessionStorage.removeItem(CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING);
         }
     }
 

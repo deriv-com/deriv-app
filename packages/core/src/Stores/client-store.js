@@ -29,6 +29,7 @@ import { setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import { getSortedAccountList, getSortedCFDList, isDemo } from '../App/Containers/AccountSwitcher/helpers';
+import { CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING } from '@deriv/shared/src/utils/constants-storage/CFD';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -790,7 +791,7 @@ export default class ClientStore extends BaseStore {
         const should_redirect_fstp_password = this.is_fully_authenticated && hasRequiredCredentials();
 
         if (this.is_eu && !has_required_account) {
-            sessionStorage.setItem('cfd_account_needed', 1);
+            sessionStorage.setItem(CFD_ACCOUNT_NEEDED_SESSION_STORAGE_STRING, '1');
             this.root_store.ui.toggleAccountsDialog(false);
             this.root_store.ui.openAccountNeededModal(
                 account_type === 'synthetic' ? this.standpoint.gaming_company : this.standpoint.financial_company,

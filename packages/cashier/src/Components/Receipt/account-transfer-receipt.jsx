@@ -63,7 +63,7 @@ const AccountTransferReceipt = ({
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
             </Text>
-            <div className='account-transfer-receipt__crypto--amount cashier__text--bold'>
+            <div className='account-transfer-receipt__crypto--amount'>
                 <Text as='p' size='l' weight='bold' color='profit-success'>
                     <Localize
                         i18n_default_text='{{amount}} {{currency}}'

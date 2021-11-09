@@ -21,7 +21,7 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
     const currency_display_code = getCurrencyDisplayCode(currency);
 
     return (
-        <div className='cashier__wrapper--align-left payment-agent-receipt '>
+        <div className='cashier__wrapper--align-left payment-agent-receipt'>
             <div className='cashier__success'>
                 <Text
                     as='h1'
@@ -33,12 +33,12 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
                 >
                     <Localize i18n_default_text='Your funds have been transferred' />
                 </Text>
-                <div className='cashier__transferred-amount cashier__text--bold'>
+                <div className='cashier__transferred-amount'>
                     {formatMoney(currency, receipt.amount_transferred, true)} {currency_display_code}
                 </div>
                 <div className='cashier__transferred-details-wrapper'>
                     <span className='cashier__transferred-details'>
-                        <Text as='span' size='xs' weight='bold' className='cashier__text--end'>
+                        <Text as='span' size='xs' weight='bold' className='payment-agent-receipt__text--end'>
                             {currency_display_code}
                         </Text>
                         <Text as='span' size='xs' color='less-prominent'>

@@ -18,14 +18,14 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
             </Text>
-            <div className='cashier__transferred-amount cashier__text--bold'>
+            <div className='cashier__transferred-amount'>
                 {formatMoney(currency, receipt.amount_transferred, true)} {getCurrencyDisplayCode(currency)}
             </div>
             <div className='cashier__transferred-details-wrapper'>
                 <span className='account-transfer__transfer-details-from'>
                     <Icon icon={`IcCurrency-${currency.toLowerCase()}`} />
                     <span className='cashier__transferred-details'>
-                        <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
+                        <Text size='xs' line_height='xs' weight='bold'>
                             {getCurrencyName(currency)}
                         </Text>
                         <Text size='xs' line_height='xs' color='less-prominent'>
@@ -37,7 +37,7 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
                 <span className='account-transfer__transfer-details-to'>
                     <Icon icon='IcClient' />
                     <span className='cashier__transferred-details'>
-                        <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
+                        <Text size='xs' line_height='xs' weight='bold'>
                             {receipt.client_name}
                         </Text>
                         <Text size='xs' line_height='xs' color='less-prominent'>

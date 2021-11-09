@@ -32,14 +32,7 @@ const SendEmail = ({
             ) : (
                 <React.Fragment>
                     <Icon icon='IcCashierAuthenticate' className='send-email__icon' size={128} />
-                    <Text
-                        line_height='xxl'
-                        size={isMobile() ? 'xs' : 's'}
-                        weight='bold'
-                        as='p'
-                        align='center'
-                        className='cashier__withdraw-header'
-                    >
+                    <Text line_height='xxl' size={isMobile() ? 'xs' : 's'} weight='bold' as='p' align='center'>
                         <Localize i18n_default_text='Please help us verify your withdrawal request.' />
                     </Text>
                     <Text as='p' align='center' size={isMobile() ? 'xxs' : 's'} className='send-email__space'>

@@ -78,6 +78,16 @@
                 }
             }
         }
+        .withdraw__input {
+            margin: 2.4rem 0 !important;
+            width: fit-content;
+            min-width: 36rem;
+            @include mobile {
+                width: 100%;
+                min-width: auto;
+                margin-bottom: 2.6rem !important;
+            }
+        }
     }
     &__loader {
         font-size: 1rem;
@@ -217,13 +227,6 @@
             padding: 0;
             text-align: left;
         }
-
-        &--bold {
-            font-weight: bold;
-        }
-        &--end {
-            align-self: flex-end;
-        }
     }
     &__tab-header-note {
         max-width: 256px;
@@ -243,6 +246,10 @@
     &__no-balance {
         &-icon {
             margin-bottom: 1.6rem;
+
+            + .dc-text {
+                margin-bottom: 8px;
+            }
         }
         &-button {
             margin: 3.2rem auto;
@@ -315,21 +322,6 @@
             margin-bottom: 3.2rem;
             @include mobile {
                 padding: 0 1rem;
-            }
-        }
-    }
-    &__withdraw {
-        &-header {
-            margin-bottom: 8px;
-        }
-        &-wrapper .withdraw__input {
-            margin: 2.4rem 0 !important;
-            width: fit-content;
-            min-width: 36rem;
-            @include mobile {
-                width: 100%;
-                min-width: auto;
-                margin-bottom: 2.6rem !important;
             }
         }
     }

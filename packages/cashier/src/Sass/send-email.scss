@@ -5,6 +5,10 @@
     &__icon {
         margin-top: 8rem;
         margin-bottom: 1.6rem;
+
+        + .dc-text {
+            margin-bottom: 8px;
+        }
     }
     &__verify-button {
         margin: 3.2rem auto;

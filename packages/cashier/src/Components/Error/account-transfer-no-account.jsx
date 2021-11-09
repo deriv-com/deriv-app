@@ -7,7 +7,7 @@ import 'Sass/account-transfer-no-account.scss';
 const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }) => (
     <div className='cashier__wrapper cashier__no-balance'>
         <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
-        <Text as='h2' weight='bold' align='center' className='cashier__withdraw-header'>
+        <Text as='h2' weight='bold' align='center'>
             <Localize i18n_default_text='You need at least two accounts' />
         </Text>
         <Text as='p' size='xs' line_height='s' align='center' className='cashier__text'>

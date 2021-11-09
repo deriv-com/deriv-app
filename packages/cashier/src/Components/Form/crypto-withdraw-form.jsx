@@ -83,7 +83,7 @@ const CryptoWithdrawForm = ({
     if (is_loading) return <Loading />;
 
     return (
-        <div className='cashier__wrapper cashier__withdraw-wrapper'>
+        <div className='cashier__wrapper'>
             {!isMobile() && <Header currency={currency} />}
             <div className='crypto-withdraw-form-icon'>
                 <Icon icon={`IcCurrency-${account_platform_icon.toLowerCase()}`} size={isMobile() ? 64 : 128} />

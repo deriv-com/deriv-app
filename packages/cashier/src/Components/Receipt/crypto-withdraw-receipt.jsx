@@ -115,7 +115,7 @@ const CryptoWithdrawReceipt = ({
     }, []);
 
     return (
-        <div className='cashier__wrapper cashier__withdraw-wrapper'>
+        <div className='cashier__wrapper'>
             <Text
                 as='h2'
                 color='prominent'

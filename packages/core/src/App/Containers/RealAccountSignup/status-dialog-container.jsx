@@ -10,7 +10,7 @@ import { DialogHeading } from './helpers/dialog-heading.jsx';
 import { DialogMessage } from './helpers/dialog-message.jsx';
 import { DialogButtons } from './helpers/dialog-buttons.jsx';
 import { populateVerificationStatus } from '@deriv/account';
-import { clientNotifications } from '../../../Stores/Helpers/client-notifications';
+import { clientNotifications } from 'Stores/Helpers/client-notifications';
 
 const MainIcon = ({ currency }) => <Icon icon={`IcCurrency-${currency.toLowerCase()}`} size={120} />;
 const Checkmark = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' size={24} />;

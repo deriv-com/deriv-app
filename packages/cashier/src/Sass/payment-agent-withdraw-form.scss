@@ -84,6 +84,9 @@
                     width: 16px;
                     height: 16px;
                 }
+                &-label:first-child {
+                    flex: 1;
+                }
             }
             .cashier {
                 &__header {

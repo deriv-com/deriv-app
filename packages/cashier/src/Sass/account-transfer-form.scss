@@ -125,6 +125,15 @@
             width: auto;
         }
     }
+    &__loader {
+        &-wrapper {
+            display: flex;
+            height: 100%;
+            @include mobile {
+                height: initial;
+            }
+        }
+    }
     @include desktop {
         &__form-submit {
             min-width: 36rem;

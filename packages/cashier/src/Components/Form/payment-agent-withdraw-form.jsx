@@ -76,12 +76,7 @@ const Radio = ({ children, field, props }) => (
 
 const RadioDropDown = ({ field, values, ...props }) => (
     <Radio field={field} props={props}>
-        <Text
-            as='p'
-            size='xxs'
-            line_height='s'
-            className='payment-agent-withdraw-form__radio-label cashier__paragraph cashier__paragraph-by-name'
-        >
+        <Text as='p' size='xxs' line_height='s' className='payment-agent-withdraw-form__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By name' />
         </Text>
         <Field name='payment_agents'>

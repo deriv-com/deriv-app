@@ -81,14 +81,6 @@
     }
     &__loader {
         font-size: 1rem;
-
-        &-wrapper {
-            display: flex;
-            height: 100%;
-            @include mobile {
-                height: initial;
-            }
-        }
     }
     &__header {
         @include mobile {
@@ -228,10 +220,6 @@
         align-self: center;
         @include mobile {
             font-size: var(--text-size-xxs);
-
-            &-by-name {
-                flex: 1;
-            }
         }
     }
     &__text {
@@ -260,9 +248,6 @@
         &--full-width {
             max-width: unset;
             min-width: 44.5rem;
-        }
-        &--right {
-            text-align: right;
         }
     }
     &__tab-header-note {
@@ -301,10 +286,7 @@
             }
         }
     }
-    &__button {
-        margin-top: 3.2rem;
-    }
-    &-page-wrapper {
+    &__page-wrapper {
         @include mobile {
             /* postcss-bem-linter: ignore */
             & .dc-page-overlay__header {
@@ -315,7 +297,7 @@
             }
         }
 
-        &__button {
+        &-button {
             min-width: 25.8rem;
             padding: 6px 16px;
             margin-right: 0.1rem;

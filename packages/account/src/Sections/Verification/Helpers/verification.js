@@ -8,8 +8,8 @@ const populateVerificationStatus = account_status => {
     const has_poi = !(identity && identity.status === 'none');
     const needs_poa = needs_verification.length && needs_verification.includes('document');
     const needs_poi = needs_verification.length && needs_verification.includes('identity');
-    const accountStatusChecker = valueToCheck => {
-        return account_status?.status?.some(status => status === valueToCheck);
+    const accountStatusChecker = value_to_check => {
+        return account_status?.status?.some(status => status === value_to_check);
     };
     const allow_document_upload = accountStatusChecker('allow_document_upload');
     const allow_poi_resubmission = accountStatusChecker('allow_poi_resubmission');

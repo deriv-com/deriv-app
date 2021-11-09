@@ -15,54 +15,45 @@ const IconDrawer = ({ className }) => (
     </svg>
 );
 
-class Drawer extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = { is_open: props.is_open };
-    }
+const Drawer = ({
+    anchor = 'left',
+    children,
+    className,
+    is_open,
+    toggleDrawer,
+    contentClassName,
+    footer,
+    header,
+    width = 250,
+    zIndex = 4,
+}) => {
+    const [will_open, set_is_open] = React.useState(is_open);
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            is_open: nextProps.is_open,
-        });
-    }
+    React.useEffect(() => {
+        set_is_open(is_open);
+    }, [is_open]);
 
-    toggleDrawer = () => {
-        this.setState(
-            prev_state => ({
-                is_open: !prev_state.is_open,
-            }),
-            () => {
-                if (this.props.toggleDrawer) {
-                    this.props.toggleDrawer(this.state.is_open);
-                }
+    const toggle_drawer = () => {
+        set_is_open(!will_open);
+            return () => {
+                if (toggleDrawer) {
+                    toggleDrawer(will_open);
+                } 
             }
-        );
     };
-
-    render() {
-        const {
-            anchor = 'left',
-            children,
-            className,
-            contentClassName,
-            footer,
-            header,
-            width = 250,
-            zIndex = 4,
-        } = this.props;
+    
         const is_mobile = isMobile();
 
         return (
             <div
                 className={classNames('dc-drawer', className, {
                     [`dc-drawer--${anchor}`]: !is_mobile,
-                    'dc-drawer--open': this.state.is_open,
+                    'dc-drawer--open': will_open,
                 })}
                 style={{
                     zIndex,
                     transform:
-                        this.state.is_open &&
+                    will_open &&
                         !is_mobile &&
                         (anchor === 'left'
                             ? `translateX(calc(${width}px - 16px))`
@@ -71,9 +62,9 @@ class Drawer extends React.PureComponent {
             >
                 <div
                     className={classNames('dc-drawer__toggle', {
-                        'dc-drawer__toggle--open': this.state.is_open,
+                        'dc-drawer__toggle--open': will_open,
                     })}
-                    onClick={this.toggleDrawer}
+                    onClick={toggle_drawer}
                 >
                     {is_mobile ? (
                         <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon' />
@@ -95,7 +86,7 @@ class Drawer extends React.PureComponent {
             </div>
         );
     }
-}
+
 
 Drawer.propTypes = {
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),

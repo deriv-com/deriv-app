@@ -1,7 +1,10 @@
 import { localize } from '@deriv/translations';
-import { generateValidationFunction, getDefaultFields, getErrorMessages } from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields, getErrorMessages, regex_checks } from '@deriv/shared';
 
 const address_details_config = ({ account_settings, is_svg }) => {
+    const is_gb = account_settings.country_code === 'gb';
+    const jersey_not_allowed = is_gb && regex_checks.address_details.jersey_postcode;
+    console.log(account_settings);
     if (!account_settings) {
         return {};
     }
@@ -17,7 +20,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-]{1,70}$/,
+                        regex: regex_checks.address_details.address_line,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -32,7 +35,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-]{0,70}$/,
+                        regex: regex_checks.address_details.address_line,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -48,7 +51,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('Only letters, periods, hyphens, apostrophes, and spaces, please.'),
                     {
-                        regex: /^\p{L}[\p{L}\s'.-]{0,99}$/u,
+                        regex: regex_checks.address_details.address_city,
                     },
                 ],
             ],
@@ -62,7 +65,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('State is not in a proper format'),
                     {
-                        regex: /^[\w\s\W'.;,\-]{0,60}$/,
+                        regex: regex_checks.address_details.address_state,
                     },
                 ],
             ],
@@ -84,7 +87,14 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('Letters, numbers, spaces, hyphens only'),
                     {
-                        regex: /^[a-zA-Z0-9\s\-]{0,20}$/,
+                        regex: regex_checks.address_details.address_postcode,
+                    },
+                ],
+                [
+                    'regular',
+                    localize('Our accounts and services are unavailable for the Jersey postal code.'),
+                    {
+                        regex: jersey_not_allowed,
                     },
                 ],
             ],
@@ -134,7 +144,6 @@ const transformForResidence = (rules, residence) => {
     if (/^(im|gb)$/.test(residence)) {
         rules.address_postcode.rules.splice(0, 0, ['req', localize('Postal/ZIP code is required')]);
     }
-
     return rules;
 };
 

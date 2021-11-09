@@ -1,4 +1,5 @@
 import { action, observable } from 'mobx';
+import ErrorStore from './error-store';
 
 export default class VerificationStore {
     constructor({ WS, root_store }) {
@@ -8,7 +9,7 @@ export default class VerificationStore {
 
     @observable is_button_clicked = false;
     @observable timeout_button = '';
-    @observable error = this.root_store.modules.cashier.error_store;
+    @observable error = new ErrorStore();
     @observable is_email_sent = false;
     @observable is_resend_clicked = false;
     @observable resend_timeout = 60;

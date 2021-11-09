@@ -1,5 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import { routes } from '@deriv/shared';
+import ErrorStore from './error-store';
+import VerificationStore from './verification-store';
 
 export default class PaymentAgentStore {
     constructor({ WS, root_store }) {
@@ -10,7 +12,7 @@ export default class PaymentAgentStore {
     @observable list = [];
     @observable agents = [];
     @observable container = 'payment_agent';
-    @observable error = this.root_store.modules.cashier.error_store;
+    @observable error = new ErrorStore();
     @observable filtered_list = [];
     @observable is_name_selected = true;
     @observable is_withdraw = false;
@@ -20,7 +22,7 @@ export default class PaymentAgentStore {
     @observable receipt = {};
     @observable selected_bank = 0;
     @observable supported_banks = [];
-    @observable verification = this.root_store.modules.cashier.verification_store;
+    @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     @observable active_tab_index = 0;
     @observable all_payment_agent_list = [];
 

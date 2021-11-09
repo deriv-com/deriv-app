@@ -1,4 +1,6 @@
 import { action, computed, observable } from 'mobx';
+import ErrorStore from './error-store';
+import IframeStore from './iframe-store';
 
 export default class DepositStore {
     constructor({ WS, root_store }) {
@@ -7,8 +9,8 @@ export default class DepositStore {
     }
 
     @observable container = 'deposit';
-    @observable error = this.root_store.modules.cashier.error_store;
-    @observable iframe = this.root_store.modules.cashier.iframe_store;
+    @observable error = new ErrorStore();
+    @observable iframe = new IframeStore({ root_store: this.root_store, WS: this.WS });
 
     @action.bound
     async onMountDeposit() {

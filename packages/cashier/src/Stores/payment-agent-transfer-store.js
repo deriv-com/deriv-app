@@ -1,5 +1,6 @@
 import { action, computed, observable } from 'mobx';
 import { routes } from '@deriv/shared';
+import ErrorStore from './error-store';
 
 export default class PaymentAgentTransferStore {
     constructor({ WS, root_store }) {
@@ -8,7 +9,7 @@ export default class PaymentAgentTransferStore {
     }
 
     @observable container = 'payment_agent_transfer';
-    @observable error = this.root_store.modules.cashier.error_store;
+    @observable error = new ErrorStore();
     @observable is_payment_agent = false;
     @observable is_try_transfer_successful = false;
     @observable is_transfer_successful = false;

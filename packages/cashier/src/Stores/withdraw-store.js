@@ -2,6 +2,9 @@ import React from 'react';
 import { action, computed, observable } from 'mobx';
 import { localize, Localize } from '@deriv/translations';
 import { getDecimalPlaces, getMinWithdrawal, validNumber } from '@deriv/shared';
+import ErrorStore from './error-store';
+import IframeStore from './iframe-store';
+import VerificationStore from './verification-store';
 
 export default class WithdrawStore {
     constructor({ WS, root_store }) {
@@ -11,11 +14,11 @@ export default class WithdrawStore {
 
     @observable blockchain_address = '';
     @observable container = 'withdraw';
-    @observable error = this.root_store.modules.cashier.error_store;
+    @observable error = new ErrorStore();
     @observable is_10k_withdrawal_limit_reached = undefined;
-    @observable iframe = this.root_store.modules.cashier.iframe_store;
+    @observable iframe = new IframeStore({ root_store: this.root_store, WS: this.WS });
     @observable is_withdraw_confirmed = false;
-    @observable verification = this.root_store.modules.cashier.verification_store;
+    @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     @observable withdraw_amount = '';
     @observable max_withdraw_amount = 0;
 
@@ -152,7 +155,7 @@ export default class WithdrawStore {
             this.iframe.clearTimeoutCashierUrl();
             if (verification_code) {
                 // clear verification code on error
-                this.verification.clearVerification('payment_withdraw');
+                this.verification.clearVerification();
             }
         } else if (is_crypto) {
             setLoading(false);

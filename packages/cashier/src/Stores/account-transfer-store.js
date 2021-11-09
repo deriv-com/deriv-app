@@ -14,6 +14,7 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import ErrorStore from './error-store';
 
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
@@ -43,7 +44,7 @@ export default class AccountTransferStore {
 
     @observable accounts_list = [];
     @observable container = 'account_transfer';
-    @observable error = this.root_store.modules.cashier.error_store;
+    @observable error = new ErrorStore();
     @observable has_no_account = false;
     @observable has_no_accounts_balance = false;
     @observable is_transfer_confirm = false;

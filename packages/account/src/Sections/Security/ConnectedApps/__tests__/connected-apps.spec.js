@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor, waitForElementToBeRemoved, fireEvent } from '@testing-library/react';
 import ConnectedApps from '../connected-apps';
-import { act } from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
 
 const oauth_apps_list = [
     {
@@ -53,7 +53,7 @@ describe('Connected Apps', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Local')).toBeInTheDocument();
-            expect(screen.getByText(oauth_apps_list[0].last_used)).toBeInTheDocument;
+            expect(screen.getByText(oauth_apps_list[0].last_used)).toBeInTheDocument();
             expect(screen.getByText('Revoke access')).toBeInTheDocument();
         });
     });

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useMemo } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import {
     DesktopWrapper,
@@ -17,12 +17,12 @@ import ErrorComponent from 'Components/error-component';
 import GetConnectedAppsColumnsTemplate from './data-table-template.jsx';
 
 const ConnectedApps = () => {
-    const { is_dashboard } = useContext(PlatformContext);
-    const [connected_apps, setConnectedApps] = useState([]);
-    const [is_modal_open, setModalVisibility] = useState(false);
-    const [selected_app_id, setAppId] = useState(null);
-    const [is_loading, setLoading] = useState(true);
-    const [is_error, setError] = useState(false);
+    const { is_dashboard } = React.useContext(PlatformContext);
+    const [connected_apps, setConnectedApps] = React.useState([]);
+    const [is_modal_open, setModalVisibility] = React.useState(false);
+    const [selected_app_id, setAppId] = React.useState(null);
+    const [is_loading, setLoading] = React.useState(true);
+    const [is_error, setError] = React.useState(false);
 
     React.useEffect(() => {
         fetchConnectedApps();
@@ -37,7 +37,7 @@ const ConnectedApps = () => {
         }
     };
 
-    const handleToggleModal = useCallback(
+    const handleToggleModal = React.useCallback(
         (app_id = null) => {
             setModalVisibility(!is_modal_open);
             setAppId(app_id);
@@ -45,7 +45,7 @@ const ConnectedApps = () => {
         [is_modal_open]
     );
 
-    const columns_map = useMemo(
+    const columns_map = React.useMemo(
         () =>
             GetConnectedAppsColumnsTemplate(app_id => handleToggleModal(app_id)).reduce((map, item) => {
                 map[item.col_index] = item;
@@ -54,7 +54,7 @@ const ConnectedApps = () => {
         [handleToggleModal]
     );
 
-    const mobileRowRenderer = useCallback(
+    const mobileRowRenderer = React.useCallback(
         ({ row }) => (
             <div className='data-list__row'>
                 <div className='data-list__col'>
@@ -70,7 +70,7 @@ const ConnectedApps = () => {
         [columns_map, is_dashboard]
     );
 
-    const handleRevokeAccess = useCallback(() => {
+    const handleRevokeAccess = React.useCallback(() => {
         setModalVisibility(false);
         revokeConnectedApp(selected_app_id);
     }, [selected_app_id]);

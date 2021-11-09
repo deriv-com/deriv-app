@@ -1,7 +1,6 @@
 import React from 'react';
-import { render, screen, waitFor, waitForElementToBeRemoved, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, waitForElementToBeRemoved, fireEvent, act } from '@testing-library/react';
 import ConnectedApps from '../connected-apps';
-import { act } from '@testing-library/react';
 
 const oauth_apps_list = [
     {
@@ -26,10 +25,6 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     },
 }));
 
-const modalRoot = document.createElement('div');
-modalRoot.setAttribute('id', 'modal_root');
-document.body.appendChild(modalRoot);
-
 describe('Connected Apps', () => {
     const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
     const originalOffsetWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth');
@@ -37,11 +32,16 @@ describe('Connected Apps', () => {
     beforeAll(() => {
         Object.defineProperty(HTMLElement.prototype, 'offsetHeight', { configurable: true, value: 50 });
         Object.defineProperty(HTMLElement.prototype, 'offsetWidth', { configurable: true, value: 50 });
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
     });
 
     afterAll(() => {
         Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalOffsetHeight);
         Object.defineProperty(HTMLElement.prototype, 'offsetWidth', originalOffsetWidth);
+        let modal_root_el = document.getElementById('modal_root');
+        document.body.removeChild(modal_root_el);
     });
 
     test('renders correctly', async () => {

@@ -120,6 +120,7 @@ export default class PaymentAgentStore {
 
     @action.bound
     filterPaymentAgentList(bank) {
+        const { common } = this.root_store;
         if (bank) {
             this.filtered_list = [];
             this.list.forEach(payment_agent => {
@@ -134,7 +135,7 @@ export default class PaymentAgentStore {
             this.filtered_list = this.list;
         }
         if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
-            this.root_store.common.routeTo(routes.cashier_deposit);
+            common.routeTo(routes.cashier_deposit);
         }
     }
 
@@ -205,7 +206,8 @@ export default class PaymentAgentStore {
 
     @action.bound
     async onMountPaymentAgentWithdraw() {
-        const { setLoading, onMountCommon } = this.root_store.modules.cashier.general_store;
+        const { common, modules } = this.root_store;
+        const { setLoading, onMountCommon } = modules.cashier.general_store;
 
         setLoading(true);
         this.onRemount = this.onMountPaymentAgentWithdraw;
@@ -224,7 +226,7 @@ export default class PaymentAgentStore {
                 !payment_agent_list.paymentagent_list.list.length &&
                 window.location.pathname.endsWith(routes.cashier_pa)
             ) {
-                this.root_store.common.routeTo(routes.cashier_deposit);
+                common.routeTo(routes.cashier_deposit);
             }
 
             setLoading(false);
@@ -268,6 +270,7 @@ export default class PaymentAgentStore {
     @action.bound
     async onMountPaymentAgentList() {
         const { setLoading, onMountCommon } = this.root_store.modules.cashier.general_store;
+
         setLoading(true);
         this.onRemount = this.onMountPaymentAgentList;
         await onMountCommon();

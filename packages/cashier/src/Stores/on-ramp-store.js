@@ -187,28 +187,26 @@ export default class OnRampStore extends BaseStore {
 
         const deposit_address_interval = setInterval(() => getDepositAddressFromApi, 3000);
         const getDepositAddressFromApi = () => {
-            this.root_store.modules.cashier.general_store.WS.authorized
-                .cashier('deposit', { provider: 'crypto', type: 'api' })
-                .then(response => {
-                    let should_clear_interval = false;
+            this.WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
+                let should_clear_interval = false;
 
-                    if (response.error) {
-                        this.setApiError(response.error);
+                if (response.error) {
+                    this.setApiError(response.error);
+                    should_clear_interval = true;
+                } else {
+                    const { address } = response.cashier.deposit;
+
+                    if (address || should_allow_empty_address) {
+                        this.setDepositAddress(address);
                         should_clear_interval = true;
-                    } else {
-                        const { address } = response.cashier.deposit;
-
-                        if (address || should_allow_empty_address) {
-                            this.setDepositAddress(address);
-                            should_clear_interval = true;
-                        }
                     }
+                }
 
-                    if (should_clear_interval) {
-                        clearInterval(deposit_address_interval);
-                        this.setIsDepositAddressLoading(false);
-                    }
-                });
+                if (should_clear_interval) {
+                    clearInterval(deposit_address_interval);
+                    this.setIsDepositAddressLoading(false);
+                }
+            });
         };
 
         getDepositAddressFromApi();

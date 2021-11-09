@@ -32,19 +32,23 @@ export default class AccountPromptDialogStore {
 
     @action.bound
     async onConfirm() {
-        const { accounts_list } = this.root_store.modules.cashier.account_transfer_store;
+        const { client, modules } = this.root_store;
+        const { accounts_list } = modules.cashier.account_transfer_store;
+
         this.should_show = false;
         this.is_confirmed = true;
 
         const has_fiat_account = accounts_list.some(x => !x.is_crypto);
-        if (isCryptocurrency(this.root_store.client?.currency) && has_fiat_account) await this.doSwitch();
+        if (isCryptocurrency(client?.currency) && has_fiat_account) await this.doSwitch();
     }
 
     async doSwitch() {
-        const { account_transfer_store, general_store } = this.root_store.modules.cashier;
+        const { client, modules } = this.root_store;
+        const { account_transfer_store, general_store } = modules.cashier;
+
         const non_crypto_accounts = account_transfer_store.accounts_list.filter(x => !x.is_crypto);
         const loginid = non_crypto_accounts.map(x => x.value)[0];
-        await this.root_store.client.switchAccount(loginid);
+        await client.switchAccount(loginid);
 
         if (this.current_location === 'deposit') {
             general_store.setIsDeposit(true);

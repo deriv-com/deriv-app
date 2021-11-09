@@ -61,13 +61,15 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     showP2pInCashierDefault() {
+        const { account_list, is_virtual } = this.root_store.client;
+
         const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
-        const has_usd_currency = this.root_store.client.account_list.some(account => account.title === 'USD');
-        const has_user_fiat_currency = this.root_store.client.account_list.some(
+        const has_usd_currency = account_list.some(account => account.title === 'USD');
+        const has_user_fiat_currency = account_list.some(
             account => !isCryptocurrency(account.title) && account.title !== 'Real'
         );
 
-        if (is_p2p_restricted || this.root_store.client.is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
+        if (is_p2p_restricted || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
             this.show_p2p_in_cashier_default = false;
         } else {
             this.show_p2p_in_cashier_default = true;
@@ -76,31 +78,35 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     attachCashierToMenu() {
+        const { menu, ui } = this.root_store;
+
         if (!this.has_set_currency) {
             this.setHasSetCurrency();
         }
 
-        this.root_store.menu.attach({
+        menu.attach({
             id: 'dt_cashier_tab',
             icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
             text: () => localize('Cashier'),
             link_to: this.has_set_currency && routes.cashier,
-            onClick: !this.has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
+            onClick: !this.has_set_currency && ui.toggleSetCurrencyModal,
             login_only: true,
         });
     }
 
     @action.bound
     replaceCashierMenuOnclick() {
+        const { menu, ui } = this.root_store;
+
         this.setHasSetCurrency();
 
-        this.root_store.menu.update(
+        menu.update(
             {
                 id: 'dt_cashier_tab',
                 icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
                 text: () => localize('Cashier'),
                 link_to: this.has_set_currency && routes.cashier,
-                onClick: !this.has_set_currency ? this.root_store.ui.toggleSetCurrencyModal : false,
+                onClick: !this.has_set_currency ? ui.toggleSetCurrencyModal : false,
                 login_only: true,
             },
             1
@@ -109,10 +115,11 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     setHasSetCurrency() {
+        const { account_list, has_active_real_account } = this.root_store.client;
+
         this.has_set_currency =
-            this.root_store.client.account_list
-                .filter(account => !account.is_virtual)
-                .some(account => account.title !== 'Real') || !this.root_store.client.has_active_real_account;
+            account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real') ||
+            !has_active_real_account;
     }
 
     @action.bound
@@ -123,6 +130,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     async onMountCashierDefault() {
         const { account_prompt_dialog_store, payment_agent_store } = this.root_store.modules.cashier;
+
         if (!this.has_set_currency) {
             this.setHasSetCurrency();
         }
@@ -139,11 +147,13 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
-        const { account_transfer_store } = this.root_store.modules.cashier;
+        const { client, modules } = this.root_store;
+        const { account_transfer_store } = modules.cashier;
+
         if (this.active_container === account_transfer_store.container) {
             this.percentage = +((amount / +account_transfer_store.selected_from.balance) * 100).toFixed(0);
         } else {
-            this.percentage = +((amount / +this.root_store.client.balance) * 100).toFixed(0);
+            this.percentage = +((amount / +client.balance) * 100).toFixed(0);
         }
     }
 
@@ -194,9 +204,9 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     init() {
         if (this.root_store.modules.cashier) {
-            const { account_prompt_dialog_store, payment_agent_store, withdraw_store } =
-                this.root_store.modules.cashier;
-            const { currency, is_logged_in, switched } = this.root_store.client;
+            const { client, modules } = this.root_store;
+            const { account_prompt_dialog_store, payment_agent_store, withdraw_store } = modules.cashier;
+            const { currency, is_logged_in, switched } = client;
 
             when(
                 () => is_logged_in,
@@ -259,15 +269,16 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     async onMountCommon(should_remount) {
+        const { client, common, modules } = this.root_store;
         const {
             account_transfer_store,
             onramp,
             payment_agent_store,
             payment_agent_transfer_store,
             transaction_history,
-        } = this.root_store.modules.cashier;
+        } = modules.cashier;
 
-        if (this.root_store.client.is_logged_in) {
+        if (client.is_logged_in) {
             // avoid calling this again
             if (this.is_populating_values) {
                 return;
@@ -293,14 +304,14 @@ export default class GeneralStore extends BaseStore {
             }
 
             if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
-                this.root_store.common.routeTo(routes.cashier_deposit);
+                common.routeTo(routes.cashier_deposit);
             }
 
             if (
                 !transaction_history.is_crypto_transactions_visible &&
                 window.location.pathname.endsWith(routes.cashier_crypto_transactions)
             ) {
-                this.root_store.common.routeTo(routes.cashier_deposit);
+                common.routeTo(routes.cashier_deposit);
                 transaction_history.setIsCryptoTransactionsVisible(true);
                 transaction_history.onMount();
             }
@@ -330,19 +341,17 @@ export default class GeneralStore extends BaseStore {
     @computed
     get is_cashier_locked() {
         const { account_status } = this.root_store.client;
-        if (!account_status?.status) return false;
-        const { status } = account_status;
 
-        return status.some(status_name => status_name === 'cashier_locked');
+        if (!account_status?.status) return false;
+        return account_status.status.some(status_name => status_name === 'cashier_locked');
     }
 
     @computed
     get is_system_maintenance() {
         const { account_status } = this.root_store.client;
-        if (!account_status?.cashier_validation) return false;
-        const { cashier_validation } = account_status;
 
-        return cashier_validation.some(validation => validation === 'system_maintenance');
+        if (!account_status?.cashier_validation) return false;
+        return account_status.cashier_validation.some(validation => validation === 'system_maintenance');
     }
 
     @action.bound

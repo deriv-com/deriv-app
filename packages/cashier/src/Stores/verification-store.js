@@ -57,15 +57,17 @@ export default class VerificationStore {
 
     @action.bound
     async sendVerificationEmail(container = '') {
-        if (this.is_button_clicked || !this.root_store.client.email) {
+        const { client, modules } = this.root_store;
+        const { resetPaymentAgent } = modules.cashier.payment_agent_store;
+
+        if (this.is_button_clicked || !client.email) {
             return;
         }
 
-        const { resetPaymentAgent } = this.root_store.modules.cashier.payment_agent_store;
         this.error.setErrorMessage('');
         this.setIsButtonClicked(true);
         const withdrawal_type = container === 'payment_agent_withdraw' ? 'paymentagent_withdraw' : 'payment_withdraw';
-        const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
+        const response_verify_email = await this.WS.verifyEmail(client.email, withdrawal_type);
         if (response_verify_email.error) {
             this.clearVerification(container);
             if (response_verify_email.error.code === 'PaymentAgentWithdrawError') {

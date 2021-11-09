@@ -66,12 +66,12 @@ export default class PaymentAgentTransferStore {
     }
 
     async getCurrentPaymentAgent(response_payment_agent) {
+        const { client, modules } = this.root_store;
         const payment_agent_listed = response_payment_agent.paymentagent_list.list.find(
-            agent => agent.paymentagent_loginid === this.root_store.client.loginid
+            agent => agent.paymentagent_loginid === client.loginid
         );
         const current_payment_agent =
-            payment_agent_listed ||
-            (await this.root_store.modules.cashier.payment_agent_store.getPaymentAgentDetails());
+            payment_agent_listed || (await modules.cashier.payment_agent_store.getPaymentAgentDetails());
         return current_payment_agent ?? {};
     }
 

@@ -14,9 +14,9 @@ export default class DepositStore {
 
     @action.bound
     async onMountDeposit() {
-        const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } =
-            this.root_store.modules.cashier.general_store;
-        const { is_virtual } = this.root_store.client;
+        const { client, modules } = this.root_store;
+        const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
+        const { is_virtual } = client;
         const current_container = active_container;
 
         setOnRemount(this.onMountDeposit);

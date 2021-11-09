@@ -24,13 +24,15 @@ export default class IframeStore {
 
     @action.bound
     async checkIframeLoaded() {
+        const { modules, ui } = this.root_store;
+
         this.removeOnIframeLoaded();
         this.onIframeLoaded = function (e) {
             if (/cashier|doughflow/.test(e.origin)) {
-                this.root_store.modules.cashier.general_store.setLoading(false);
+                modules.cashier.general_store.setLoading(false);
                 // set the height of the container after content loads so that the
                 // loading bar stays vertically centered until the end
-                if (this.root_store.ui.is_mobile) {
+                if (ui.is_mobile) {
                     this.setContainerHeight(window.innerHeight - 100);
                 } else {
                     this.setContainerHeight(window.innerHeight - 190);
@@ -65,10 +67,12 @@ export default class IframeStore {
 
     @action.bound
     setIframeUrl(url, container = this.active_container) {
+        const { client, ui } = this.root_store;
+
         if (url) {
-            this.iframe_url = `${url}&theme=${this.root_store.ui.is_dark_mode_on ? 'dark' : 'light'}`;
+            this.iframe_url = `${url}&theme=${ui.is_dark_mode_on ? 'dark' : 'light'}`;
             // after we set iframe url we can clear verification code
-            this.root_store.client.setVerificationCode('', Constants.map_action[container]);
+            client.setVerificationCode('', Constants.map_action[container]);
         } else {
             this.iframe_url = url;
         }

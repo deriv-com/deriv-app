@@ -54,41 +54,41 @@ export default class CryptoFiatConverterStore {
 
     @action.bound
     validateFromAmount() {
-        if (
-            this.root_store.modules.cashier.general_store.active_container ===
-            this.root_store.modules.cashier.account_transfer_store.container
-        ) {
-            this.root_store.modules.cashier.account_transfer_store.validateTransferFromAmount();
+        const { account_transfer_store, general_store, withdraw_store } = this.root_store.modules.cashier;
+
+        if (general_store.active_container === account_transfer_store.container) {
+            account_transfer_store.validateTransferFromAmount();
         } else {
-            this.root_store.modules.cashier.withdraw_store.validateWithdrawFromAmount();
+            withdraw_store.validateWithdrawFromAmount();
         }
     }
 
     @action.bound
     validateToAmount() {
-        if (
-            this.root_store.modules.cashier.general_store.active_container ===
-            this.root_store.modules.cashier.account_transfer_store.container
-        ) {
-            this.root_store.modules.cashier.account_transfer_store.validateTransferToAmount();
+        const { account_transfer_store, general_store, withdraw_store } = this.root_store.modules.cashier;
+
+        if (general_store.active_container === account_transfer_store.container) {
+            account_transfer_store.validateTransferToAmount();
         } else {
-            this.root_store.modules.cashier.withdraw_store.validateWithdrawToAmount();
+            withdraw_store.validateWithdrawToAmount();
         }
     }
 
     @action.bound
     async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
+        const { account_transfer_store, general_store } = this.root_store.modules.cashier;
+
         this.resetTimer();
         if (target.value) {
             this.setConverterFromAmount(target.value);
             this.validateFromAmount();
-            this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
-            this.root_store.modules.cashier.general_store.calculatePercentage();
+            general_store.percentageSelectorSelectionStatus(true);
+            general_store.calculatePercentage();
             if (this.converter_from_error) {
                 this.setConverterToAmount('');
                 this.setConverterToError('');
                 this.setIsTimerVisible(false);
-                this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount('');
+                account_transfer_store.setAccountTransferAmount('');
             } else {
                 const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency);
@@ -101,7 +101,7 @@ export default class CryptoFiatConverterStore {
                 this.validateToAmount();
                 this.setConverterToError('');
                 this.setIsTimerVisible(true);
-                this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount(target.value);
+                account_transfer_store.setAccountTransferAmount(target.value);
             }
         } else {
             this.resetConverter();
@@ -110,6 +110,8 @@ export default class CryptoFiatConverterStore {
 
     @action.bound
     async onChangeConverterToAmount({ target }, from_currency, to_currency) {
+        const { account_transfer_store, general_store } = this.root_store.modules.cashier;
+
         this.resetTimer();
         if (target.value) {
             this.setConverterToAmount(target.value);
@@ -118,7 +120,7 @@ export default class CryptoFiatConverterStore {
                 this.setConverterFromAmount('');
                 this.setConverterFromError('');
                 this.setIsTimerVisible(false);
-                this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount('');
+                account_transfer_store.setAccountTransferAmount('');
             } else {
                 const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency);
@@ -128,16 +130,16 @@ export default class CryptoFiatConverterStore {
                 } else {
                     this.setConverterFromAmount('');
                 }
-                this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
-                this.root_store.modules.cashier.general_store.calculatePercentage();
+                general_store.percentageSelectorSelectionStatus(true);
+                general_store.calculatePercentage();
                 this.validateFromAmount();
                 if (this.converter_from_error) {
                     this.setIsTimerVisible(false);
-                    this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount('');
+                    account_transfer_store.setAccountTransferAmount('');
                 } else {
                     this.setConverterFromError('');
                     this.setIsTimerVisible(true);
-                    this.root_store.modules.cashier.account_transfer_store.setAccountTransferAmount(amount);
+                    account_transfer_store.setAccountTransferAmount(amount);
                 }
             }
         } else {

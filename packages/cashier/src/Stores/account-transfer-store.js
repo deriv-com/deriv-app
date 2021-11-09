@@ -86,8 +86,9 @@ export default class AccountTransferStore {
     // 3. crypto to mt & vice versa
     @action.bound
     async onMountAccountTransfer() {
-        const { onMountCommon, setLoading } = this.root_store.modules.cashier.general_store;
-        const { active_accounts, is_logged_in } = this.root_store.client;
+        const { client, modules } = this.root_store;
+        const { onMountCommon, setLoading } = modules.cashier.general_store;
+        const { active_accounts, is_logged_in } = client;
 
         setLoading(true);
         this.onRemount = this.onMountAccountTransfer;
@@ -454,14 +455,15 @@ export default class AccountTransferStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {
-        const { setLoading } = this.root_store.modules.cashier.general_store;
+        const { client, modules } = this.root_store;
+        const { setLoading } = modules.cashier.general_store;
         const {
             is_logged_in,
             responseMt5LoginList,
             responseTradingPlatformAccountsList,
             setAccountStatus,
             setBalanceOtherAccounts,
-        } = this.root_store.client;
+        } = client;
 
         if (!is_logged_in) {
             return null;

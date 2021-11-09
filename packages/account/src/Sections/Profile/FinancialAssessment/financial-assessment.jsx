@@ -326,7 +326,7 @@ class FinancialAssessment extends React.Component {
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
         if (isMobile() && is_authentication_needed && is_submit_success)
-            return <SubmittedPage platform={this.props.platform} />;
+            return <SubmittedPage platform={this.props.platform} routeBackInApp={this.props.routeBackInApp} />;
 
         return (
             <React.Fragment>

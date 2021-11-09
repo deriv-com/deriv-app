@@ -565,7 +565,8 @@ const checkAccountStatus = (
 
     addVerificationNotifications(identity, document, addNotificationMessage);
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa = is_10k_withdrawal_limit_reached && needs_verification.includes('document');
+    const needs_poa =
+        is_10k_withdrawal_limit_reached && (needs_verification.includes('document') || document?.status !== 'verified');
     const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
 
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);

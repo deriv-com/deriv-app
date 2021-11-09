@@ -12,9 +12,13 @@ export default class DepositStore {
 
     @action.bound
     async onMountDeposit() {
-        const { active_container, is_crypto, setLoading } = this.root_store.modules.cashier.general_store;
+        const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } =
+            this.root_store.modules.cashier.general_store;
         const { is_virtual } = this.root_store.client;
         const current_container = active_container;
+
+        setOnRemount(this.onMountDeposit);
+        await onMountCommon();
 
         this.error.setErrorMessage('');
         this.iframe.setContainerHeight(0);

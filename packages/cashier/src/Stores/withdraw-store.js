@@ -110,9 +110,13 @@ export default class WithdrawStore {
 
     @action.bound
     async onMountWithdraw(verification_code) {
-        const { active_container, is_crypto, setLoading } = this.root_store.modules.cashier.general_store;
+        const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } =
+            this.root_store.modules.cashier.general_store;
         const { is_virtual } = this.root_store.client;
         const current_container = active_container;
+
+        setOnRemount(this.onMountWithdraw);
+        await onMountCommon();
 
         this.error.setErrorMessage('');
         this.iframe.setContainerHeight(0);
@@ -148,7 +152,7 @@ export default class WithdrawStore {
             this.iframe.clearTimeoutCashierUrl();
             if (verification_code) {
                 // clear verification code on error
-                this.verification.clearVerification();
+                this.verification.clearVerification('payment_withdraw');
             }
         } else if (is_crypto) {
             setLoading(false);

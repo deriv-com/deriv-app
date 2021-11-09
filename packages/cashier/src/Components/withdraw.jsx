@@ -28,7 +28,7 @@ export default connect(({ client, modules }) => ({
     iframe_height: modules.cashier.withdraw_store.iframe.iframe_height,
     iframe_url: modules.cashier.withdraw_store.iframe.iframe_url,
     is_loading: modules.cashier.general_store.is_loading,
-    onMount: modules.cashier.general_store.onMount,
+    onMount: modules.cashier.withdraw_store.onMountWithdraw,
     setActiveTab: modules.cashier.general_store.setActiveTab,
     verification_code: client.verification_code.payment_withdraw,
 }))(Withdraw);

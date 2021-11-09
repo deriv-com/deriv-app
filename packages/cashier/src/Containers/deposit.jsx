@@ -200,7 +200,7 @@ export default connect(({ client, modules }) => ({
     is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
-    onMount: modules.cashier.general_store.onMount,
+    onMount: modules.cashier.deposit_store.onMountDeposit,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.general_store.setActiveTab,
     setErrorMessage: modules.cashier.deposit_store.error.setErrorMessage,

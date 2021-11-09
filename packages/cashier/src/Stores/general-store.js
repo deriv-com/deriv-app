@@ -2,7 +2,6 @@ import React from 'react';
 import { action, computed, observable, reaction, when } from 'mobx';
 import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import Constants from 'Constants/constants';
 import CashierNotifications from 'Containers/cashier-notifications.jsx';
 import BaseStore from './base-store';
 
@@ -39,10 +38,15 @@ export default class GeneralStore extends BaseStore {
     @observable should_percentage_reset = false;
     @observable percentage = 0;
     @observable show_p2p_in_cashier_default = false;
+    @observable onRemount = () => {};
 
     active_container = 'deposit';
-    onRemount = () => {};
     is_populating_values = false;
+
+    @action.bound
+    setOnRemount(func) {
+        this.onRemount = func;
+    }
 
     @computed
     get is_crypto() {
@@ -272,7 +276,7 @@ export default class GeneralStore extends BaseStore {
             this.is_populating_values = true;
 
             if (should_remount) {
-                this.onRemount = this.onMountCommon;
+                this.setOnRemount(this.onMountCommon);
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
@@ -321,23 +325,6 @@ export default class GeneralStore extends BaseStore {
                 this.root_store.modules.cashier.account_prompt_dialog_store.last_location ?? routes.cashier_deposit
             );
         }
-    }
-
-    @action.bound
-    async onMount(verification_code) {
-        this.onRemount = this.onMount;
-        await this.onMountCommon();
-
-        if (
-            Constants.containers.indexOf(this.active_container) === -1 &&
-            !this.root_store.client.is_switching &&
-            this.active_container !== this.root_store.modules.cashier.payment_agent_store.container
-        ) {
-            throw new Error('Cashier Store onMount requires a valid container name.');
-        }
-        if (this.active_container === 'deposit') this.root_store.modules.cashier.deposit_store.onMountDeposit();
-        if (this.active_container === 'withdraw')
-            this.root_store.modules.cashier.withdraw_store.onMountWithdraw(verification_code);
     }
 
     @computed

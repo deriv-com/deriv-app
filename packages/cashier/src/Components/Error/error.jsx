@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
     <div className='cashier__wrapper cashier__wrapper-error'>
@@ -33,7 +32,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
-const Error = ({ error, setErrorMessage }) => {
+const Error = ({ error }) => {
     const error_fields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),
@@ -52,7 +51,7 @@ const Error = ({ error, setErrorMessage }) => {
     };
 
     const clearErrorMessage = () => {
-        setErrorMessage('');
+        error.setErrorMessage('');
     };
 
     let AccountError;
@@ -133,9 +132,6 @@ const Error = ({ error, setErrorMessage }) => {
 
 Error.propTypes = {
     error: PropTypes.object,
-    setErrorMessage: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
-    setErrorMessage: modules.cashier.error_store.setErrorMessage,
-}))(Error);
+export default Error;

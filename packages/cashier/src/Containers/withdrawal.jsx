@@ -133,7 +133,7 @@ const Withdrawal = ({
     if (error.message) {
         return <Error error={error} container='withdraw' />;
     }
-    if (verify_error?.message) {
+    if (verify_error.message) {
         return <Error error={verify_error} container='withdraw' />;
     }
     if (!is_crypto && (verification_code || iframe_url)) {

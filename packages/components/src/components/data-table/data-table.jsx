@@ -12,57 +12,53 @@ import ThemedScrollbars from '../themed-scrollbars';
       2. implement filtering per column
 */
 
-class DataTable extends React.PureComponent {
-    cache_ref = React.createRef();
-    is_dynamic_height = !this.props.getRowSize;
-    state = {
-        scrollTop: 0,
-        is_loading: true,
-    };
+const DataTable = ({
+    children,
+    className,
+    columns,
+    content_loader,
+    data_source,
+    footer,
+    getActionColumns,
+    getRowSize,
+    keyMapper,
+    onScroll,
+    ...other_props
+}) => {
+    const cache_ref = React.useRef();
+    const list_ref = React.useRef();
+    const is_dynamic_height = !getRowSize;
+    const [scrollTop, setScrollTop] = React.useState(0);
+    const [is_loading, setLoading] = React.useState(true);
 
-    componentDidMount() {
-        if (this.is_dynamic_height) {
-            this.cache_ref.current = new CellMeasurerCache({
+    React.useEffect(() => {
+        if (is_dynamic_height) {
+            cache_ref.current = new CellMeasurerCache({
                 fixedWidth: true,
                 keyMapper: row_index => {
-                    if (row_index < this.props.data_source.length)
-                        return this.props.keyMapper?.(this.props.data_source[row_index]) || row_index;
+                    if (row_index < data_source.length) return keyMapper?.(data_source[row_index]) || row_index;
                     return row_index;
                 },
             });
         }
-        this.setState({ is_loading: false });
-    }
+        setLoading(false);
+    }, []);
 
-    componentDidUpdate(prevProps) {
-        if (this.props.data_source !== prevProps.data_source || this.props.getRowSize !== prevProps.getRowSize) {
-            if (this.is_dynamic_height) {
-                this.list_ref.current?.recomputeGridSize(0);
-            }
+    React.useEffect(() => {
+        if (is_dynamic_height) {
+            list_ref.current?.recomputeGridSize(0);
         }
-    }
+    }, [data_source, is_dynamic_height]);
 
-    handleScroll = ev => {
-        const { scrollTop } = ev.target;
-        this.setState({ scrollTop });
-        if (typeof this.props.onScroll === 'function') {
-            this.props.onScroll(ev);
+    const handleScroll = ev => {
+        setScrollTop(ev.target.scrollTop);
+        if (typeof onScroll === 'function') {
+            onScroll(ev);
         }
     };
 
-    rowRenderer = ({ style, index, key, parent }) => {
-        const {
-            className,
-            columns,
-            content_loader,
-            data_source,
-            getActionColumns,
-            getRowAction,
-            id,
-            keyMapper,
-            passthrough,
-            preloaderCheck,
-        } = this.props;
+    const rowRenderer = ({ style, index, key, parent }) => {
+        const { getRowAction, id, passthrough, preloaderCheck } = other_props;
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
         const contract_id = item.contract_id || item.id;
@@ -83,12 +79,12 @@ class DataTable extends React.PureComponent {
                 row_obj={item}
                 show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : false}
                 to={typeof action === 'string' ? action : undefined}
-                is_dynamic_height={this.is_dynamic_height}
+                is_dynamic_height={is_dynamic_height}
             />
         );
 
-        return this.is_dynamic_height ? (
-            <CellMeasurer cache={this.cache_ref.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+        return is_dynamic_height ? (
+            <CellMeasurer cache={cache_ref.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
                 {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
             </CellMeasurer>
         ) : (
@@ -98,12 +94,27 @@ class DataTable extends React.PureComponent {
         );
     };
 
-    render() {
-        const { children, className, columns, content_loader, data_source, footer, getActionColumns, getRowSize } =
-            this.props;
-
-        const TableData = (
-            <React.Fragment>
+    if (is_loading) {
+        return <div />;
+    }
+    return (
+        <div
+            className={classNames('table', {
+                [`${className}`]: className,
+                [`${className}__table`]: className,
+                [`${className}__content`]: className,
+            })}
+        >
+            <div className='table__head'>
+                <TableRow
+                    className={className}
+                    columns={columns}
+                    content_loader={content_loader}
+                    getActionColumns={getActionColumns}
+                    is_header
+                />
+            </div>
+            <div className='table__body'>
                 <AutoSizer>
                     {({ width, height }) => (
                         <div
@@ -113,19 +124,19 @@ class DataTable extends React.PureComponent {
                                 width,
                             }}
                         >
-                            <ThemedScrollbars autoHide onScroll={this.handleScroll}>
+                            <ThemedScrollbars autoHide onScroll={handleScroll}>
                                 <List
                                     autoHeight
                                     className={className}
-                                    deferredMeasurementCache={this.cache_ref.current}
+                                    deferredMeasurementCache={cache_ref.current}
                                     height={height}
                                     overscanRowCount={1}
-                                    ref={ref => (this.list_ref = ref)}
+                                    ref={ref => (list_ref.current = ref)}
                                     rowCount={data_source.length}
-                                    rowHeight={this.is_dynamic_height ? this.cache_ref?.current.rowHeight : getRowSize}
-                                    rowRenderer={this.rowRenderer}
+                                    rowHeight={is_dynamic_height ? cache_ref?.current.rowHeight : getRowSize}
+                                    rowRenderer={rowRenderer}
                                     scrollingResetTimeInterval={0}
-                                    scrollTop={this.state.scrollTop}
+                                    scrollTop={scrollTop}
                                     width={width}
                                 />
                             </ThemedScrollbars>
@@ -133,60 +144,23 @@ class DataTable extends React.PureComponent {
                         </div>
                     )}
                 </AutoSizer>
-            </React.Fragment>
-        );
+            </div>
 
-        if (this.state.is_loading) {
-            return <div />;
-        }
-
-        return (
-            <div
-                className={classNames('table', {
-                    [`${className}`]: className,
-                    [`${className}__table`]: className,
-                    [`${className}__content`]: className,
-                })}
-            >
-                <div
-                    className='table__head'
-                    ref={el => {
-                        this.el_table_head = el;
-                    }}
-                >
+            {footer && (
+                <div className='table__foot'>
                     <TableRow
                         className={className}
                         columns={columns}
                         content_loader={content_loader}
                         getActionColumns={getActionColumns}
-                        is_header
+                        is_footer
+                        row_obj={footer}
                     />
                 </div>
-                <div
-                    className='table__body'
-                    ref={el => {
-                        this.el_table_body = el;
-                    }}
-                >
-                    {TableData}
-                </div>
-
-                {footer && (
-                    <div className='table__foot'>
-                        <TableRow
-                            className={className}
-                            columns={columns}
-                            content_loader={content_loader}
-                            getActionColumns={getActionColumns}
-                            is_footer
-                            row_obj={footer}
-                        />
-                    </div>
-                )}
-            </div>
-        );
-    }
-}
+            )}
+        </div>
+    );
+};
 
 DataTable.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),

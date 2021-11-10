@@ -51,6 +51,7 @@ export default class IframeStore {
         }
     }
 
+    @action.bound
     clearTimeoutCashierUrl() {
         if (this.timeout_session) {
             clearTimeout(this.timeout_session);
@@ -81,5 +82,12 @@ export default class IframeStore {
     @action.bound
     setContainerHeight(height) {
         this.iframe_height = height;
+    }
+
+    @action.bound
+    iframeWillMount() {
+        this.setIframeUrl('');
+        this.clearTimeoutCashierUrl();
+        this.setSessionTimeout(true);
     }
 }

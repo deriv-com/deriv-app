@@ -56,6 +56,7 @@ const Deposit = ({
     is_crypto_transactions_visible,
     iframe_height,
     iframe_url,
+    iframeWillMount,
     is_loading,
     is_switching,
     is_system_maintenance,
@@ -150,6 +151,7 @@ const Deposit = ({
                 iframe_url={iframe_url}
                 is_loading={is_loading}
                 is_crypto={is_crypto}
+                iframeWillMount={iframeWillMount}
             />
         );
     }
@@ -194,8 +196,9 @@ export default connect(({ client, modules }) => ({
     is_deposit: modules.cashier.general_store.is_deposit,
     is_deposit_locked: modules.cashier.deposit_store.is_deposit_locked,
     is_eu: client.is_eu,
-    iframe_height: modules.cashier.deposit_store.iframe.iframe_height,
-    iframe_url: modules.cashier.deposit_store.iframe.iframe_url,
+    iframe_height: modules.cashier.iframe_store.iframe_height,
+    iframe_url: modules.cashier.iframe_store.iframe_url,
+    iframeWillMount: modules.cashier.iframe_store.iframeWillMount,
     is_loading: modules.cashier.general_store.is_loading,
     is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_switching: client.is_switching,

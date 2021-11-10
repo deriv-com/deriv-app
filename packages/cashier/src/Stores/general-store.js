@@ -365,18 +365,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     accountSwitcherListener() {
-        const { deposit_store, payment_agent_store, withdraw_store } = this.root_store.modules.cashier;
+        const { iframe_store, payment_agent_store, withdraw_store } = this.root_store.modules.cashier;
 
         withdraw_store.verification.clearVerification('payment_withdraw');
         payment_agent_store.verification.clearVerification('payment_agent_withdraw');
-
-        deposit_store.iframe.setIframeUrl('');
-        deposit_store.iframe.clearTimeoutCashierUrl();
-        deposit_store.iframe.setSessionTimeout(true);
-
-        withdraw_store.iframe.setIframeUrl('');
-        withdraw_store.iframe.clearTimeoutCashierUrl();
-        withdraw_store.iframe.setSessionTimeout(true);
+        iframe_store.iframeWillMount();
 
         this.payment_agent = payment_agent_store;
         this.is_populating_values = false;

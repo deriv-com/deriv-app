@@ -5,8 +5,15 @@ import { routes } from '@deriv/shared';
 import { Button, Loading, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
-const CashierContainer = ({ iframe_height, iframe_url, is_crypto, is_loading }) => {
+const CashierContainer = ({ iframe_height, iframe_url, iframeWillMount, is_crypto, is_loading }) => {
     const history = useHistory();
+
+    React.useEffect(() => {
+        return () => {
+            iframeWillMount();
+        };
+    }, [iframeWillMount]);
+
     return (
         <div className='cashier__wrapper'>
             {is_loading && <Loading is_fullscreen />}

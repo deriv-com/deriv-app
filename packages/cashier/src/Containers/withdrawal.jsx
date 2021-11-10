@@ -180,7 +180,7 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     error: modules.cashier.withdraw_store.error,
-    iframe_url: modules.cashier.withdraw_store.iframe.iframe_url,
+    iframe_url: modules.cashier.iframe_store.iframe_url,
     is_10k_withdrawal_limit_reached: modules.cashier.withdraw_store.is_10k_withdrawal_limit_reached,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_crypto: modules.cashier.general_store.is_crypto,

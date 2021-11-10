@@ -1,6 +1,5 @@
 import { action, computed, observable } from 'mobx';
 import ErrorStore from './error-store';
-import IframeStore from './iframe-store';
 
 export default class DepositStore {
     constructor({ WS, root_store }) {
@@ -10,12 +9,20 @@ export default class DepositStore {
 
     @observable container = 'deposit';
     @observable error = new ErrorStore();
-    @observable iframe = new IframeStore({ root_store: this.root_store, WS: this.WS });
 
     @action.bound
     async onMountDeposit() {
         const { client, modules } = this.root_store;
         const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
+        const {
+            checkIframeLoaded,
+            clearTimeoutCashierUrl,
+            is_session_timeout,
+            setContainerHeight,
+            setIframeUrl,
+            setSessionTimeout,
+            setTimeoutCashierUrl,
+        } = modules.cashier.iframe_store;
         const { is_virtual } = client;
         const current_container = active_container;
 
@@ -23,16 +30,16 @@ export default class DepositStore {
         await onMountCommon();
 
         this.error.setErrorMessage('');
-        this.iframe.setContainerHeight(0);
+        setContainerHeight(0);
         setLoading(true);
 
-        if (!this.iframe.is_session_timeout) {
-            this.iframe.checkIframeLoaded();
+        if (!is_session_timeout) {
+            checkIframeLoaded();
             return;
         }
 
         // if session has timed out reset everything
-        this.iframe.setIframeUrl('');
+        setIframeUrl('');
         if (is_virtual) {
             setLoading(false);
             // if virtual, clear everything and don't proceed further
@@ -52,16 +59,16 @@ export default class DepositStore {
         if (response_cashier.error) {
             this.error.handleCashierError(response_cashier.error);
             setLoading(false);
-            this.iframe.setSessionTimeout(true);
-            this.iframe.clearTimeoutCashierUrl();
+            setSessionTimeout(true);
+            clearTimeoutCashierUrl();
         } else if (is_crypto) {
             setLoading(false);
         } else {
-            await this.iframe.checkIframeLoaded();
+            await checkIframeLoaded();
             setLoading(false);
-            this.iframe.setIframeUrl(response_cashier.cashier);
-            this.iframe.setSessionTimeout(false);
-            this.iframe.setTimeoutCashierUrl();
+            setIframeUrl(response_cashier.cashier);
+            setSessionTimeout(false);
+            setTimeoutCashierUrl();
         }
     }
 

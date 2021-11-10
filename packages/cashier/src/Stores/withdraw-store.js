@@ -3,7 +3,6 @@ import { action, computed, observable } from 'mobx';
 import { localize, Localize } from '@deriv/translations';
 import { getDecimalPlaces, getMinWithdrawal, validNumber } from '@deriv/shared';
 import ErrorStore from './error-store';
-import IframeStore from './iframe-store';
 import VerificationStore from './verification-store';
 
 export default class WithdrawStore {
@@ -16,7 +15,6 @@ export default class WithdrawStore {
     @observable container = 'withdraw';
     @observable error = new ErrorStore();
     @observable is_10k_withdrawal_limit_reached = undefined;
-    @observable iframe = new IframeStore({ root_store: this.root_store, WS: this.WS });
     @observable is_withdraw_confirmed = false;
     @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     @observable withdraw_amount = '';
@@ -116,6 +114,15 @@ export default class WithdrawStore {
     async onMountWithdraw(verification_code) {
         const { client, modules } = this.root_store;
         const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
+        const {
+            checkIframeLoaded,
+            clearTimeoutCashierUrl,
+            is_session_timeout,
+            setContainerHeight,
+            setIframeUrl,
+            setSessionTimeout,
+            setTimeoutCashierUrl,
+        } = modules.cashier.iframe_store;
         const { is_virtual } = client;
         const current_container = active_container;
 
@@ -123,16 +130,16 @@ export default class WithdrawStore {
         await onMountCommon();
 
         this.error.setErrorMessage('');
-        this.iframe.setContainerHeight(0);
+        setContainerHeight(0);
         setLoading(true);
 
-        if (!this.iframe.is_session_timeout) {
-            this.iframe.checkIframeLoaded();
+        if (!is_session_timeout) {
+            checkIframeLoaded();
             return;
         }
 
         // if session has timed out reset everything
-        this.iframe.setIframeUrl('');
+        setIframeUrl('');
         if (!verification_code || is_virtual) {
             setLoading(false);
             // if virtual, clear everything and don't proceed further
@@ -152,8 +159,8 @@ export default class WithdrawStore {
         if (response_cashier.error) {
             this.error.handleCashierError(response_cashier.error);
             setLoading(false);
-            this.iframe.setSessionTimeout(true);
-            this.iframe.clearTimeoutCashierUrl();
+            setSessionTimeout(true);
+            clearTimeoutCashierUrl();
             if (verification_code) {
                 // clear verification code on error
                 this.verification.clearVerification('payment_withdraw');
@@ -161,17 +168,17 @@ export default class WithdrawStore {
         } else if (is_crypto) {
             setLoading(false);
         } else {
-            await this.iframe.checkIframeLoaded();
+            await checkIframeLoaded();
             setLoading(false);
-            this.iframe.setIframeUrl(response_cashier.cashier);
-            this.iframe.setSessionTimeout(false);
-            this.iframe.setTimeoutCashierUrl();
+            setIframeUrl(response_cashier.cashier);
+            setSessionTimeout(false);
+            setTimeoutCashierUrl();
         }
     }
 
     @action.bound
     async onMountCryptoWithdraw(verification_code) {
-        const { crypto_fiat_converter_store, general_store } = this.root_store.modules.cashier;
+        const { crypto_fiat_converter_store, general_store, iframe_store } = this.root_store.modules.cashier;
 
         general_store.setLoading(true);
         const strRegExp = /^\w{8,128}$/;
@@ -191,8 +198,8 @@ export default class WithdrawStore {
         if (response_cashier.error.code === 'InvalidToken') {
             this.error.handleCashierError(response_cashier.error);
             general_store.setLoading(false);
-            this.iframe.setSessionTimeout(true);
-            this.iframe.clearTimeoutCashierUrl();
+            iframe_store.setSessionTimeout(true);
+            iframe_store.clearTimeoutCashierUrl();
             if (verification_code) {
                 // clear verification code on error
                 this.verification.clearVerification('payment_withdraw');

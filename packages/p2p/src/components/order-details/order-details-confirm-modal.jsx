@@ -13,14 +13,8 @@ const OrderDetailsConfirmModal = ({
     hideConfirmOrderModal,
     should_show_confirm_modal,
 }) => {
-    const {
-        account_currency,
-        amount_display,
-        id,
-        local_currency,
-        other_user_details,
-        price_display,
-    } = order_information;
+    const { account_currency, amount_display, id, local_currency, other_user_details, price_display } =
+        order_information;
 
     const isMounted = useIsMounted();
     const [error_message, setErrorMessage] = React.useState('');

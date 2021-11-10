@@ -43,7 +43,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
             <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
                 {platform_config.map((platform, idx) => (
                     <div key={idx} onClick={closeDrawer} ref={ref}>
-                        {platform.link_to !== undefined ? (
+                        {platform.link_to ? (
                             <BinaryLink
                                 to={platform.link_to}
                                 // This is here because in routes-config it needs to have children, but not in menu

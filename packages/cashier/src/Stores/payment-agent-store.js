@@ -30,9 +30,14 @@ export default class PaymentAgentStore {
     @action.bound
     setActiveTabIndex(index) {
         this.active_tab_index = index;
+    }
+
+    @action.bound
+    setActiveTab(index) {
+        this.setActiveTabIndex(index);
 
         if (index === 1) {
-            this.verification.sendVerificationEmail('payment_agent_withdraw');
+            this.verification.sendVerificationEmail();
         }
     }
 
@@ -264,7 +269,7 @@ export default class PaymentAgentStore {
     resetPaymentAgent = () => {
         this.error.setErrorMessage('');
         this.setIsWithdraw(false);
-        this.verification.clearVerification('payment_agent_withdraw');
+        this.verification.clearVerification();
         this.setActiveTabIndex(0);
     };
 

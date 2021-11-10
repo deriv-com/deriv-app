@@ -160,12 +160,8 @@ const PaymentAgentList = ({
                                             is_email_sent={is_email_sent}
                                             is_resend_clicked={is_resend_clicked}
                                             resend_timeout={resend_timeout}
-                                            resendVerificationEmail={() =>
-                                                resendVerificationEmail('payment_agent_withdraw')
-                                            }
-                                            sendVerificationEmail={() =>
-                                                sendVerificationEmail('payment_agent_withdraw')
-                                            }
+                                            resendVerificationEmail={resendVerificationEmail}
+                                            sendVerificationEmail={sendVerificationEmail}
                                             setVerificationResendClicked={setVerificationResendClicked}
                                         />
                                     </div>
@@ -216,7 +212,7 @@ export default connect(({ modules }) => ({
     resendVerificationEmail: modules.cashier.payment_agent_store.verification.resendVerificationEmail,
     selected_bank: modules.cashier.payment_agent_store.selected_bank,
     sendVerificationEmail: modules.cashier.payment_agent_store.verification.sendVerificationEmail,
-    setActiveTabIndex: modules.cashier.payment_agent_store.setActiveTabIndex,
+    setActiveTabIndex: modules.cashier.payment_agent_store.setActiveTab,
     setVerificationResendClicked: modules.cashier.payment_agent_store.verification.setVerificationResendClicked,
     supported_banks: modules.cashier.payment_agent_store.supported_banks,
 }))(PaymentAgentList);

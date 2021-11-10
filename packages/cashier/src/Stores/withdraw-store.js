@@ -29,7 +29,7 @@ export default class WithdrawStore {
         if (is_withdraw_confirmed) this.setWithdrawAmount(converter_from_amount);
 
         if (!is_withdraw_confirmed && this.verification) {
-            this.verification.clearVerification('payment_withdraw');
+            this.verification.clearVerification();
         }
     }
 
@@ -80,7 +80,7 @@ export default class WithdrawStore {
                 this.error.setErrorMessage(response.error);
                 if (verification_code) {
                     // clear verification code on error
-                    this.verification.clearVerification('payment_withdraw');
+                    this.verification.clearVerification();
                 }
                 this.resetWithrawForm();
             } else {
@@ -96,7 +96,7 @@ export default class WithdrawStore {
         this.setBlockchainAddress('');
         setConverterFromAmount('');
         setConverterToAmount('');
-        this.verification.clearVerification('payment_withdraw');
+        this.verification.clearVerification();
     }
 
     @action.bound
@@ -107,7 +107,7 @@ export default class WithdrawStore {
     @action.bound
     willMountWithdraw(verification_code) {
         if (verification_code) {
-            this.verification.clearVerification('payment_withdraw');
+            this.verification.clearVerification();
         }
     }
 
@@ -164,7 +164,7 @@ export default class WithdrawStore {
             clearTimeoutCashierUrl();
             if (verification_code) {
                 // clear verification code on error
-                this.verification.clearVerification('payment_withdraw');
+                this.verification.clearVerification();
             }
         } else if (is_crypto) {
             setLoading(false);
@@ -203,7 +203,7 @@ export default class WithdrawStore {
             iframe_store.clearTimeoutCashierUrl();
             if (verification_code) {
                 // clear verification code on error
-                this.verification.clearVerification('payment_withdraw');
+                this.verification.clearVerification();
             }
         } else {
             general_store.setLoading(false);

@@ -1,4 +1,5 @@
 import { action, observable } from 'mobx';
+import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 
 export default class VerificationStore {
@@ -46,19 +47,21 @@ export default class VerificationStore {
     }
 
     @action.bound
-    setTimeoutVerification(container = '') {
+    setTimeoutVerification() {
         this.clearTimeoutVerification();
         this.setTimeoutButton(
             setTimeout(() => {
-                this.clearVerification(container);
+                this.clearVerification();
             }, 3600000)
         );
     }
 
     @action.bound
-    async sendVerificationEmail(container = '') {
+    async sendVerificationEmail() {
         const { client, modules } = this.root_store;
         const { resetPaymentAgent } = modules.cashier.payment_agent_store;
+        const { active_container } = modules.cashier.general_store;
+        const container = Constants.map_action[active_container];
 
         if (this.is_button_clicked || !client.email) {
             return;
@@ -68,8 +71,9 @@ export default class VerificationStore {
         this.setIsButtonClicked(true);
         const withdrawal_type = container === 'payment_agent_withdraw' ? 'paymentagent_withdraw' : 'payment_withdraw';
         const response_verify_email = await this.WS.verifyEmail(client.email, withdrawal_type);
+
         if (response_verify_email.error) {
-            this.clearVerification(container);
+            this.clearVerification();
             if (response_verify_email.error.code === 'PaymentAgentWithdrawError') {
                 this.error.setErrorMessage(response_verify_email.error, resetPaymentAgent, null);
             } else {
@@ -83,19 +87,19 @@ export default class VerificationStore {
             }
         } else {
             this.setIsEmailSent(true);
-            this.setTimeoutVerification(container);
+            this.setTimeoutVerification();
         }
     }
 
     @action.bound
-    resendVerificationEmail(container = '') {
+    resendVerificationEmail() {
         // don't allow clicking while ongoing timeout
         if (this.resend_timeout < 60) {
             return;
         }
         this.setIsButtonClicked(false);
         this.setCountDownResendVerification();
-        this.sendVerificationEmail(container);
+        this.sendVerificationEmail();
     }
 
     setCountDownResendVerification() {
@@ -110,13 +114,17 @@ export default class VerificationStore {
         }, 1000);
     }
 
-    clearVerification(container = '') {
+    clearVerification() {
+        const { client, modules } = this.root_store;
+        const { active_container } = modules.cashier.general_store;
+        const container = Constants.map_action[active_container];
+
         this.clearTimeoutVerification();
         this.setIsButtonClicked(false);
         this.setIsEmailSent(false);
         this.setIsResendClicked(false);
         this.setResendTimeout(60);
         this.error.setErrorMessage('', null, null);
-        this.root_store.client.setVerificationCode('', container);
+        client.setVerificationCode('', container);
     }
 }

@@ -29,8 +29,8 @@ const SendEmail = ({
                     is_email_sent={is_email_sent}
                     is_resend_clicked={is_resend_clicked}
                     resend_timeout={resend_timeout}
-                    resendVerificationEmail={() => resendVerificationEmail('payment_withdraw')}
-                    sendVerificationEmail={() => sendVerificationEmail('payment_withdraw')}
+                    resendVerificationEmail={resendVerificationEmail}
+                    sendVerificationEmail={sendVerificationEmail}
                     setVerificationResendClicked={setVerificationResendClicked}
                 />
             ) : (
@@ -56,7 +56,7 @@ const SendEmail = ({
                         className='withdraw__verify-button'
                         has_effect
                         text={localize('Send email')}
-                        onClick={() => sendVerificationEmail('payment_withdraw')}
+                        onClick={sendVerificationEmail}
                         primary
                         large
                     />

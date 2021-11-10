@@ -25,7 +25,6 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
         document_status: null,
     });
 
-    // componentDidMount hook
     React.useEffect(() => {
         if (!is_switching) {
             WS.authorized.getAccountStatus().then(response => {
@@ -100,6 +99,7 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
 
 ProofOfAddressContainer.propTypes = {
     is_mx_mlt: PropTypes.bool,
+    is_switching: PropTypes.bool,
     refreshNotifications: PropTypes.func,
 };
 

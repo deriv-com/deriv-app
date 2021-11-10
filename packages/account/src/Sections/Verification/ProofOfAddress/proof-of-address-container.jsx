@@ -30,16 +30,16 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
         if (!is_switching) {
             WS.authorized.getAccountStatus().then(response => {
                 const { get_account_status } = response;
-                const { allow_document_upload, allow_poi_resubmission, needs_poi, needs_poa, document_status } =
+                const { allow_document_upload, allow_poa_resubmission, needs_poi, needs_poa, document_status } =
                     populateVerificationStatus(get_account_status);
-                const has_submitted_poa = document_status === PoaStatusCodes.pending && !allow_poi_resubmission;
+                const has_submitted_poa = document_status === PoaStatusCodes.pending && !allow_poa_resubmission;
 
                 setAuthenticationStatus(
                     {
                         ...authentication_status,
                         ...{
                             allow_document_upload,
-                            allow_poi_resubmission,
+                            allow_poa_resubmission,
                             needs_poi,
                             needs_poa,
                             document_status,

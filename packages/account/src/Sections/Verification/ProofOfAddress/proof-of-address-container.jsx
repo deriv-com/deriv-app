@@ -65,7 +65,7 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
 
     const {
         allow_document_upload,
-        allow_poi_resubmission,
+        allow_poa_resubmission,
         document_status,
         needs_poi,
         resubmit_poa,
@@ -73,10 +73,10 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
     } = authentication_status;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (!allow_document_upload || (!allow_poi_resubmission && document_status === 'none' && is_mx_mlt))
+    if (!allow_document_upload || (!allow_poa_resubmission && document_status === 'none' && is_mx_mlt))
         return <NotRequired />;
     if (has_submitted_poa) return <Submitted needs_poi={needs_poi} />;
-    if (resubmit_poa || allow_poi_resubmission) {
+    if (resubmit_poa || allow_poa_resubmission) {
         return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
     }
 

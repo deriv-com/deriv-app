@@ -1,4 +1,5 @@
 import { action, computed, observable } from 'mobx';
+import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 
 export default class DepositStore {
@@ -7,7 +8,7 @@ export default class DepositStore {
         this.WS = WS;
     }
 
-    @observable container = 'deposit';
+    @observable container = Constants.containers.deposit;
     @observable error = new ErrorStore();
 
     @action.bound

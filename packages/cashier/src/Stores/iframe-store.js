@@ -67,7 +67,7 @@ export default class IframeStore {
     }
 
     @action.bound
-    setIframeUrl(url, container = this.active_container) {
+    setIframeUrl(url, container = this.root_store.modules.cashier.general_store.active_container) {
         const { client, ui } = this.root_store;
 
         if (url) {

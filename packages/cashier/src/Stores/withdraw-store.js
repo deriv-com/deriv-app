@@ -2,6 +2,7 @@ import React from 'react';
 import { action, computed, observable } from 'mobx';
 import { localize, Localize } from '@deriv/translations';
 import { getDecimalPlaces, getMinWithdrawal, validNumber } from '@deriv/shared';
+import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
 
@@ -12,7 +13,7 @@ export default class WithdrawStore {
     }
 
     @observable blockchain_address = '';
-    @observable container = 'withdraw';
+    @observable container = Constants.containers.withdraw;
     @observable error = new ErrorStore();
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_withdraw_confirmed = false;

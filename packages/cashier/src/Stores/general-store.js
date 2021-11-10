@@ -2,6 +2,7 @@ import React from 'react';
 import { action, computed, observable, reaction, when } from 'mobx';
 import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import Constants from 'Constants/constants';
 import CashierNotifications from 'Containers/cashier-notifications.jsx';
 import BaseStore from './base-store';
 
@@ -40,7 +41,7 @@ export default class GeneralStore extends BaseStore {
     @observable show_p2p_in_cashier_default = false;
     @observable onRemount = () => {};
 
-    active_container = 'deposit';
+    active_container = Constants.containers.deposit;
     is_populating_values = false;
 
     @action.bound

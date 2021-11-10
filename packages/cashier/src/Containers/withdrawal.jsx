@@ -131,10 +131,10 @@ const Withdrawal = ({
         return <NoBalance />;
     }
     if (error.message) {
-        return <Error error={error} container='withdraw' />;
+        return <Error error={error} />;
     }
     if (verify_error.message) {
-        return <Error error={verify_error} container='withdraw' />;
+        return <Error error={verify_error} />;
     }
     if (!is_crypto && (verification_code || iframe_url)) {
         return <Withdraw />;

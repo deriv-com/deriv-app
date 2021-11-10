@@ -1,5 +1,6 @@
 import { action, computed, observable } from 'mobx';
 import { routes } from '@deriv/shared';
+import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
 
@@ -11,7 +12,7 @@ export default class PaymentAgentStore {
 
     @observable list = [];
     @observable agents = [];
-    @observable container = 'payment_agent';
+    @observable container = Constants.containers.payment_agent;
     @observable error = new ErrorStore();
     @observable filtered_list = [];
     @observable is_name_selected = true;

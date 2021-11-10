@@ -1,4 +1,10 @@
-const containers = ['deposit', 'withdraw'];
+const containers = {
+    account_transfer: 'account_transfer',
+    deposit: 'deposit',
+    payment_agent: 'payment_agent',
+    payment_agent_transfer: 'payment_agent_transfer',
+    withdraw: 'withdraw',
+};
 
 const map_action = {
     withdraw: 'payment_withdraw',

@@ -85,7 +85,6 @@ const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
             <Localize
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
-                    // TODO: Change this when CFD added to landing_companies API
                     type: type_label,
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
@@ -99,7 +98,6 @@ const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
         <Localize
             i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
             values={{
-                // TODO: Change this when CFD added to landing_companies API
                 type: type_label,
                 platform: getCFDPlatformLabel(platform),
                 category: category_label,
@@ -153,7 +151,17 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
             validate={validatePassword}
             onSubmit={onSubmit}
         >
-            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
+            {({
+                errors,
+                isSubmitting,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldTouched,
+                touched,
+                values,
+                validateForm,
+            }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'>
                         <Icon
@@ -197,8 +205,10 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
                                         value={values.password}
                                         onBlur={handleBlur}
                                         onChange={e => {
-                                            setFieldTouched('password', true);
                                             handleChange(e);
+                                            validateForm().then(() => {
+                                                setFieldTouched('password', true);
+                                            });
                                         }}
                                     />
                                 )}
@@ -335,7 +345,17 @@ const CFDPasswordForm = props => {
             validate={props.validatePassword}
             onSubmit={props.submitPassword}
         >
-            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
+            {({
+                errors,
+                isSubmitting,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldTouched,
+                touched,
+                values,
+                validateForm,
+            }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!props.should_set_trading_password && (
@@ -363,8 +383,10 @@ const CFDPasswordForm = props => {
                                 value={values.password}
                                 onBlur={handleBlur}
                                 onChange={e => {
-                                    setFieldTouched('password', true);
                                     handleChange(e);
+                                    validateForm().then(() => {
+                                        setFieldTouched('password', true);
+                                    });
                                 }}
                             />
                         </div>

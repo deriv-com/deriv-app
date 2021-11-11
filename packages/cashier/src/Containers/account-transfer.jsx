@@ -11,7 +11,6 @@ import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import TransferLock from '../Components/Error/transfer-locked.jsx';
 import AccountTransferForm from '../Components/Form/account-transfer-form.jsx';
 import AccountTransferReceipt from '../Components/Receipt/account-transfer-receipt.jsx';
-import AccountTransferConfirm from '../Components/Confirm/account-transfer-confirm.jsx';
 import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
 
 const AccountTransfer = ({
@@ -26,7 +25,6 @@ const AccountTransfer = ({
     is_switching,
     is_transfer_confirm,
     is_transfer_lock,
-    is_transfer_successful,
     is_virtual,
     onMount,
     recentTransactionOnMount,
@@ -41,6 +39,7 @@ const AccountTransfer = ({
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
     React.useEffect(() => {
@@ -55,12 +54,14 @@ const AccountTransfer = ({
             setAccountTransferAmount('');
             setIsTransferConfirm(false);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         if (typeof setSideNotes === 'function' && (has_no_accounts_balance || is_switching)) {
             setSideNotes(null);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setSideNotes, has_no_accounts_balance]);
 
     if (is_virtual) {
@@ -87,9 +88,6 @@ const AccountTransfer = ({
         return <NoBalance />;
     }
     if (is_transfer_confirm) {
-        return <AccountTransferConfirm />;
-    }
-    if (is_transfer_successful) {
         return <AccountTransferReceipt />;
     }
     if (is_crypto_transactions_visible) {
@@ -110,7 +108,6 @@ AccountTransfer.propTypes = {
     is_loading: PropTypes.bool,
     is_switching: PropTypes.bool,
     is_transfer_confirm: PropTypes.bool,
-    is_transfer_successful: PropTypes.bool,
     is_transfer_lock: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
@@ -133,7 +130,6 @@ export default connect(({ client, modules }) => ({
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_loading: modules.cashier.is_loading,
     is_transfer_confirm: modules.cashier.config.account_transfer.is_transfer_confirm,
-    is_transfer_successful: modules.cashier.config.account_transfer.is_transfer_successful,
     is_transfer_lock: modules.cashier.is_transfer_lock,
     onMount: modules.cashier.onMountAccountTransfer,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,

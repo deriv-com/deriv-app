@@ -5,7 +5,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
 import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
-import { requestWS } from 'Utils/websocket';
+import { requestWS, subscribeWS } from 'Utils/websocket';
 
 export default class MyAdsStore extends BaseStore {
     @observable activate_deactivate_error_message = '';
@@ -21,6 +21,7 @@ export default class MyAdsStore extends BaseStore {
     @observable error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_ad_created_modal_visible = false;
+    @observable is_ad_not_listed_modal_visible = false;
     @observable is_api_error_modal_visible = false;
     @observable is_delete_modal_open = false;
     @observable is_form_loading = false;
@@ -30,6 +31,8 @@ export default class MyAdsStore extends BaseStore {
     @observable payment_info = '';
     @observable selected_ad_id = '';
     @observable show_ad_form = false;
+
+    advert_info_subscription = {};
 
     @action.bound
     getAccountStatus() {
@@ -129,7 +132,11 @@ export default class MyAdsStore extends BaseStore {
                         }
                     }, 200);
                 } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
+                    console.log(response.p2p_advert_create);
                     this.setShowAdForm(false);
+                    if (!response.p2p_advert_create.is_visible) {
+                        this.setIsAdNotListedModalVisible(true);
+                    }
                 }
             });
         };
@@ -228,6 +235,14 @@ export default class MyAdsStore extends BaseStore {
     };
 
     @action.bound
+    subscribeAds() {
+        this.advert_info_subscription = subscribeWS({
+            p2p_advert_info: 1,
+            subscribe: 1,
+        });
+    }
+
+    @action.bound
     setActivateDeactivateErrorMessage(activate_deactivate_error_message) {
         this.activate_deactivate_error_message = activate_deactivate_error_message;
     }
@@ -290,6 +305,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
+    }
+
+    @action.bound
+    setIsAdNotListedModalVisible(is_ad_not_listed_modal_visible) {
+        this.is_ad_not_listed_modal_visible = is_ad_not_listed_modal_visible;
     }
 
     @action.bound

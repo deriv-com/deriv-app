@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, InfiniteDataList, Loading, Modal, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -89,10 +89,34 @@ const MyAdsTable = () => {
                 )}
                 <MyAdsDeleteModal />
                 <Modal
+                    has_close_icon={false}
+                    is_open={my_ads_store.is_ad_not_listed_modal_visible}
+                    small
+                    title={localize('Your ad exceeds the daily limit')}
+                >
+                    <Modal.Body>
+                        <Text>
+                            <Localize
+                                i18n_default_text='Your ad is not listed on Buy/Sell because the amount exceeds your daily limit of [limit] [currency].
+You can still see your ad on My ads. If you’d like to increase your daily limit, please contact us via live chat.'
+                            />
+                        </Text>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            has_effect
+                            large
+                            onClick={() => my_ads_store.setIsAdNotListedModalVisible(false)}
+                            primary
+                            text={localize('Ok')}
+                        />
+                    </Modal.Footer>
+                </Modal>
+                <Modal
                     className='p2p-my-ads__modal-error'
+                    has_close_icon={false}
                     is_open={my_ads_store.activate_deactivate_error_message}
                     small
-                    has_close_icon={false}
                     title={localize('Something’s not right')}
                 >
                     <Modal.Body>
@@ -103,10 +127,10 @@ const MyAdsTable = () => {
                     <Modal.Footer>
                         <Button
                             has_effect
-                            text={localize('Ok')}
+                            large
                             onClick={() => my_ads_store.setActivateDeactivateErrorMessage('')}
                             primary
-                            large
+                            text={localize('Ok')}
                         />
                     </Modal.Footer>
                 </Modal>

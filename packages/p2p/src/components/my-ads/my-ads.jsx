@@ -22,6 +22,7 @@ const MyAds = () => {
     React.useEffect(() => {
         my_ads_store.setIsLoading(true);
         my_ads_store.getAccountStatus();
+        my_ads_store.subscribeAds();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

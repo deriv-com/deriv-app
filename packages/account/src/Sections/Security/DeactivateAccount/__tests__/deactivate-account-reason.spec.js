@@ -1,6 +1,12 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { DeactivateAccountReason } from '../deactivate-account-reason-old';
+import DeactivateAccountReason from '../deactivate-account-reason';
+
+jest.mock('Stores/connect', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => Component,
+}));
 
 describe('<DeactivateAccountReason />', () => {
     it('Should render properly', async () => {
@@ -9,11 +15,6 @@ describe('<DeactivateAccountReason />', () => {
             screen.getAllByText(/Please tell us why you’re leaving/i);
         });
     });
-
-    // it('Should be disable when no reason has been selected', async () => {
-    //     render(<DeactivateAccountReason />);
-    //     expect(screen.getByText(/Continue/i)).toHaveAttribute('disabled');
-    // });
 
     test.todo('Should check at least one checkbox');
     test.todo('Should check at most three checkbox');

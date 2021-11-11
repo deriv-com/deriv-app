@@ -55,7 +55,7 @@ const Popover = ({
     return (
         <div ref={hover_ref} className={classNames({ 'dc-popover__wrapper': relative_render })}>
             {relative_render && (
-                <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
+                <div className='dc-popover__container' style={{ zIndex }}>
                     <div ref={ref} className='dc-popover__container-relative' />
                 </div>
             )}
@@ -130,7 +130,7 @@ const Popover = ({
                                   };
                               },
                           }
-                        : { containerStyle: { zIndex: zIndex || 1 } })}
+                        : { containerStyle: { zIndex } })}
                     content={({ position, targetRect, popoverRect }) => {
                         return (
                             <ArrowContainer
@@ -196,6 +196,7 @@ Popover.defaultProps = {
     margin: 0,
     relative_render: false,
     should_disable_pointer_events: false,
+    zIndex: 1,
 };
 
 Popover.propTypes = {

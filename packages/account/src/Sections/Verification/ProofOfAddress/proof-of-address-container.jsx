@@ -10,7 +10,7 @@ import Verified from 'Components/poa-verified';
 import NotRequired from 'Components/poa-not-required';
 import PoaStatusCodes from 'Components/poa-status-codes';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
-import { populateVerificationStatus } from '../Helpers/verification';
+import populateVerificationStatus from '../Helpers/verification';
 
 const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications }) => {
     const [is_loading, setIsLoading] = React.useState(true);

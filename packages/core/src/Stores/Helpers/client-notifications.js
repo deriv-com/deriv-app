@@ -16,7 +16,7 @@ import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
-import { populateVerificationStatus } from '@deriv/account';
+import { populateVerificationStatus, proofUtils } from '@deriv/account';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
@@ -163,6 +163,26 @@ export const clientNotifications = (ui = {}, client = {}, is_iom) => {
             action: {
                 route: routes.proof_of_address,
                 text: localize('Verify address'),
+            },
+            type: 'danger',
+        },
+        poi_rejected: {
+            key: 'poi_rejected',
+            header: localize('Proof of address verification failed'),
+            message: localize('Find out why your verification failed and what to do next.'),
+            action: {
+                route: routes.proof_of_identity,
+                text: localize('Verify identity'),
+            },
+            type: 'danger',
+        },
+        poa_rejected: {
+            key: 'poa_rejected',
+            header: localize('Proof of identity verification failed'),
+            message: localize('Find out why your verification failed and what to do next.'),
+            action: {
+                route: routes.proof_of_identity,
+                text: localize('Verify identity'),
             },
             type: 'danger',
         },
@@ -524,10 +544,16 @@ const getCashierValidations = cashier_arr => {
     }, {});
 };
 
-const addVerificationNotifications = (identity, document, addNotificationMessage) => {
-    if (identity.status === 'expired') addNotificationMessage(clientNotifications().poi_expired);
+const addVerificationNotifications = (identity_status, document_status, addNotificationMessage) => {
+    if (identity_status === 'expired') addNotificationMessage(clientNotifications().poi_expired);
 
-    if (document.status === 'expired') addNotificationMessage(clientNotifications().poa_expired);
+    if (document_status === 'expired') addNotificationMessage(clientNotifications().poa_expired);
+    if (document_status === proofUtils.identity_status_codes.rejected) {
+        addNotificationMessage(clientNotifications().poa_rejected);
+    }
+    if (identity_status === proofUtils.identity_status_codes.rejected) {
+        addNotificationMessage(clientNotifications().poi_rejected);
+    }
 };
 
 const checkAccountStatus = (
@@ -543,11 +569,7 @@ const checkAccountStatus = (
     if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
-    const {
-        authentication: { document, identity, needs_verification },
-        status,
-        cashier_validation,
-    } = account_status;
+    const { status, cashier_validation } = account_status;
 
     const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
         getStatusValidations(status);
@@ -571,12 +593,13 @@ const checkAccountStatus = (
         ASK_FIX_DETAILS,
         ASK_UK_FUNDS_PROTECTION,
     } = cashier_validation ? getCashierValidations(cashier_validation) : {};
-
-    addVerificationNotifications(identity, document, addNotificationMessage);
+    const { has_poi, has_poa, allow_poi_resubmission, identity_status, document_status, needs_verification } =
+        populateVerificationStatus(account_status);
+    addVerificationNotifications(identity_status, document_status, addNotificationMessage);
     const has_risk_assessment = getRiskAssessment(account_status);
     const needs_poa =
         is_10k_withdrawal_limit_reached && (needs_verification.includes('document') || document?.status !== 'verified');
-    const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+    const needs_poi = is_10k_withdrawal_limit_reached && identity_status !== 'verified';
 
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
@@ -594,11 +617,9 @@ const checkAccountStatus = (
         } else if (ASK_CURRENCY) {
             addNotificationMessage(clientNotifications(ui_store).currency);
         } else if (ASK_AUTHENTICATE) {
-            const { has_poi, has_poa } = populateVerificationStatus(account_status);
-            if (!has_poi) {
+            if ((!has_poi && needs_poi) || allow_poi_resubmission) {
                 addNotificationMessage(clientNotifications().verify_poi);
-            }
-            if (!has_poa) {
+            } else if (!has_poa && needs_poa) {
                 addNotificationMessage(clientNotifications().verify_poa);
             }
         } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {

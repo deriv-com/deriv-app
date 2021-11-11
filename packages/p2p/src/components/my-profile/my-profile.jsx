@@ -24,7 +24,7 @@ const MyProfile = () => {
     if (my_profile_store.error_message) {
         return (
             <div className='my-profile__error'>
-                <Text size='xs' font='loss-danger'>
+                <Text align='center' as='p' className='dp2p-table-error' color='loss-danger' size='xs'>
                     {my_profile_store.error_message}
                 </Text>
             </div>

@@ -9,7 +9,7 @@ const SelectPaymentMethod = () => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
-        my_profile_store.getPaymentMethodsList();
+        // my_profile_store.getPaymentMethodsList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

@@ -22,7 +22,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_submit_success = false;
     @observable payment_info = '';
     // @observable payment_methods_list_items = [];
-    @observable selected_payment_method = 'bank_transfer';
+    @observable selected_payment_method = '';
     @observable should_hide_my_profile_tab = false;
     @observable should_show_add_payment_method_form = false;
 

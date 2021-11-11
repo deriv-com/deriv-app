@@ -29,7 +29,7 @@ class PurchaseFieldset extends React.PureComponent {
             is_disabled,
             is_high_low,
             is_loading,
-            is_market_close,
+            is_market_closed,
             is_multiplier,
             is_proposal_empty,
             is_proposal_error,
@@ -114,12 +114,12 @@ class PurchaseFieldset extends React.PureComponent {
                             }}
                         >
                             <div className='btn-purchase__box-shadow' />
-                            {is_proposal_error && !is_market_close ? (
+                            {is_proposal_error && !is_market_closed ? (
                                 <Popover
                                     has_error
                                     alignment='left'
                                     message={info.message}
-                                    is_open={is_proposal_error && !is_market_close}
+                                    is_open={is_proposal_error && !is_market_closed}
                                     relative_render
                                     margin={6}
                                 >
@@ -177,7 +177,7 @@ PurchaseFieldset.propTypes = {
     is_disabled: PropTypes.bool,
     is_high_low: PropTypes.bool,
     is_loading: PropTypes.bool,
-    is_market_close: PropTypes.bool,
+    is_market_closed: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_proposal_empty: PropTypes.bool,
     is_proposal_error: PropTypes.bool,

@@ -5,6 +5,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const MT5AccountNeededModal = ({
+    is_eu,
     is_open,
     account_needed_modal_props: { target, target_label, target_dmt5_label },
     onClose,
@@ -12,6 +13,9 @@ const MT5AccountNeededModal = ({
     enableApp,
     openRealAccountSignup,
 }) => {
+    const dmt5_label = is_eu ? localize('CFDs') : localize('DMT5');
+    const deriv_label = is_eu ? localize('Deriv Multipliers') : localize('Deriv');
+
     const createAccount = () => {
         onClose();
         openRealAccountSignup(target);
@@ -35,10 +39,12 @@ const MT5AccountNeededModal = ({
             is_visible={is_open}
         >
             <Localize
-                i18n_default_text='Please add a {{deriv_account}} account first before adding a {{dmt5_account}} account. Deposits and withdrawals for your DMT5 account are done by transferring funds to and from your Deriv account.'
+                i18n_default_text='Please add a {{deriv_account}} account first before adding a {{dmt5_account}} account. Deposits and withdrawals for your {{dmt5_label}} account are done by transferring funds to and from your {{deriv_label}} account.'
                 values={{
                     deriv_account: target_label,
                     dmt5_account: target_dmt5_label,
+                    dmt5_label,
+                    deriv_label,
                 }}
             />
         </Dialog>
@@ -51,11 +57,12 @@ MT5AccountNeededModal.propTypes = {
     onClose: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ client, ui }) => ({
     is_open: ui.is_account_needed_modal_on,
     account_needed_modal_props: ui.account_needed_modal_props,
     onClose: ui.closeAccountNeededModal,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     openRealAccountSignup: ui.openRealAccountSignup,
+    is_eu: client.is_eu,
 }))(MT5AccountNeededModal);

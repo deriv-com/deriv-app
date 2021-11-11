@@ -138,7 +138,7 @@
         color: var(--text-general);
         box-sizing: border-box;
 
-        &:hover:not(.dc-calendar__cell--disabled) {
+        &--hover {
             color: var(--text-general);
             background: var(--state-hover);
         }
@@ -161,13 +161,11 @@
             @include typeface(--paragraph-left-bold-black);
             color: var(--text-prominent);
         }
-        &--disabled:hover {
-            cursor: default;
-        }
         &--disabled:not(.dc-calendar__cell--today):not(.dc-calendar__cell--between),
         &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active):not(.dc-calendar__cell--between) {
             color: var(--text-disabled);
             transition: none;
+            cursor: default;
         }
         &--is-hidden {
             display: none;
@@ -237,7 +235,7 @@
         &-tooltip {
             position: absolute;
             display: inline-grid;
-            cursor: default;
+            cursor: pointer;
             height: 0;
             top: 0;
             left: 0;

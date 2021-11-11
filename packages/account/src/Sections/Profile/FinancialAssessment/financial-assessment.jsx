@@ -115,14 +115,14 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     </div>
 );
 
-const SubmittedPage = ({ platform }) => {
+const SubmittedPage = ({ platform, routeBackInApp }) => {
     const history = useHistory();
 
     const onClickButton = () => {
         if (platforms[platform].is_hard_redirect) {
             window.location.href = platforms[platform].url;
         } else {
-            history.push(platforms[platform].route_to_path);
+            routeBackInApp(history);
         }
     };
 
@@ -326,7 +326,7 @@ class FinancialAssessment extends React.Component {
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
         if (isMobile() && is_authentication_needed && is_submit_success)
-            return <SubmittedPage platform={this.props.platform} />;
+            return <SubmittedPage platform={this.props.platform} routeBackInApp={this.props.routeBackInApp} />;
 
         return (
             <React.Fragment>
@@ -1016,6 +1016,7 @@ export default connect(({ client, common, ui }) => ({
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_svg: client.is_svg,
     platform: common.platform,
+    routeBackInApp: common.routeBackInApp,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(withRouter(FinancialAssessment));

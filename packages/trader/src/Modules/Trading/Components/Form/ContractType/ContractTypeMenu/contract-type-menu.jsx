@@ -24,8 +24,8 @@ const Dialog = ({
     const [input_value, setInputValue] = React.useState('');
 
     const contract_category = getContractCategoryLabel(categories, item);
-    const selectedItem = selected ? { label: selected } : contract_category;
-    const selected_category_contract = !categories?.find(category => category.label === selectedItem.label)
+    const selected_item = selected ? { label: selected } : contract_category;
+    const selected_category_contract = !categories?.find(category => category.label === selected_item.label)
         ?.contract_categories.length;
 
     const onChange = e => {
@@ -79,7 +79,7 @@ const Dialog = ({
                         <VerticalTab.Headers
                             header_title={localize('Trade types')}
                             items={categories}
-                            selected={selectedItem}
+                            selected={selected_item}
                             onChange={onChange}
                         />
                         <div className='dc-vertical-tab__content'>

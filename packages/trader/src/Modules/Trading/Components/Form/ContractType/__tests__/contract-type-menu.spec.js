@@ -285,14 +285,14 @@ describe('ContractTypeMenu', () => {
     });
 
     it('should search in the input', () => {
-        const searcchMock = jest.fn();
+        const searchMock = jest.fn();
         render(
             <ContractTypeMenu
                 item={item}
                 list={list}
                 categories={categories}
                 is_open={true}
-                onChangeInput={searcchMock}
+                onChangeInput={searchMock}
             />
         );
         const input = screen.getByPlaceholderText('Search');

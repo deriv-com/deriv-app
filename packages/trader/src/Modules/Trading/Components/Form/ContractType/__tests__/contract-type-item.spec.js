@@ -16,7 +16,7 @@ describe('ContractTypeItem', () => {
         expect(wrapper).to.have.length(2);
     });
 
-    it('should has --selected class when cliceked', () => {
+    it('should has --selected class when clicked', () => {
         const clickMock = jest.fn();
         const contracts = [
             { value: 'rise_fall', text: 'Rise/Fall' },

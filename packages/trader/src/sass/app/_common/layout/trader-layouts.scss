@@ -468,6 +468,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .sc-categorical-display {
             height: calc(100% - 8px) !important;
         }
+        .ciq-chart {
+            padding: 0 0.8rem;
+        }
     }
     .cq-context {
         top: 0;
@@ -630,7 +633,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         position: relative;
         margin: 0.8rem 0 0.8rem 1.6rem;
         width: $SIDEBAR_WIDTH;
-        z-index: 1;
+        z-index: 5;
     }
     &__items {
         opacity: 1;

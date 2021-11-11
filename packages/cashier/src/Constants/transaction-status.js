@@ -2,14 +2,18 @@ import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
-export const getStatus = (transaction_type, status_code) => {
+export const getStatus = (transaction_hash, transaction_type, status_code) => {
     const formatted_status_code = status_code.toLowerCase();
+    const formatted_transaction_hash = transaction_hash
+        ? `${transaction_hash.substring(0, 4)}....${transaction_hash.substring(transaction_hash.length - 4)}`
+        : localize('Pending');
     const status_list = {
         deposit: {
             confirmed: {
                 name: localize('Successful'),
                 description: localize('Your deposit is successful.'),
                 renderer: 'successful',
+                transaction_hash: formatted_transaction_hash,
             },
             error: {
                 name: localize('Unsuccessful'),
@@ -17,11 +21,13 @@ export const getStatus = (transaction_type, status_code) => {
                     'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.'
                 ),
                 renderer: 'unsuccessful',
+                transaction_hash: localize('NA'),
             },
             pending: {
                 name: localize('In process'),
                 description: localize('We’ve received your request and are waiting for more blockchain confirmations.'),
                 renderer: 'in-process',
+                transaction_hash: formatted_transaction_hash,
             },
         },
         withdrawal: {
@@ -29,6 +35,7 @@ export const getStatus = (transaction_type, status_code) => {
                 name: localize('Cancelled'),
                 description: localize('You’ve cancelled your withdrawal request.'),
                 renderer: 'unsuccessful',
+                transaction_hash: localize('NA'),
             },
             error: {
                 name: localize('Unsuccessful'),
@@ -42,6 +49,7 @@ export const getStatus = (transaction_type, status_code) => {
                     />
                 ),
                 renderer: 'unsuccessful',
+                transaction_hash: localize('NA'),
             },
             locked: {
                 name: localize('In review'),
@@ -49,16 +57,19 @@ export const getStatus = (transaction_type, status_code) => {
                     "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel."
                 ),
                 renderer: 'in-review',
+                transaction_hash: formatted_transaction_hash,
             },
             performing_blockchain_txn: {
                 name: localize('In process'),
                 description: localize('We’re sending your request to the blockchain.'),
                 renderer: 'in-process',
+                transaction_hash: formatted_transaction_hash,
             },
             processing: {
                 name: localize('In process'),
                 description: localize('We’re awaiting confirmation from the blockchain.'),
                 renderer: 'in-process',
+                transaction_hash: formatted_transaction_hash,
             },
             rejected: {
                 name: localize('Unsuccessful'),
@@ -66,16 +77,19 @@ export const getStatus = (transaction_type, status_code) => {
                     "Your withdrawal is unsuccessful. We've sent you an email with more information."
                 ),
                 renderer: 'unsuccessful',
+                transaction_hash: localize('NA'),
             },
             sent: {
                 name: localize('Successful'),
                 description: localize('Your withdrawal is successful.'),
                 renderer: 'successful',
+                transaction_hash: formatted_transaction_hash,
             },
             verified: {
                 name: localize('In process'),
                 description: localize('We’re processing your withdrawal.'),
                 renderer: 'in-process',
+                transaction_hash: formatted_transaction_hash,
             },
         },
     };

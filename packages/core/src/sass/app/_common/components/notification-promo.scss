@@ -1,0 +1,59 @@
+.notification-promo {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    background-color: var(--general-main-1);
+    box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    transition: transform 0.25s ease, opacity 0.25s linear;
+
+    &--enter-done {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    &--enter,
+    &--exit {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
+    &__img {
+        position: absolute;
+        object-fit: fill;
+        width: 128px;
+        height: 100%;
+        right: 0;
+        z-index: 12;
+        pointer-events: none;
+        border-radius: 0 4px 4px 0;
+    }
+    &--container {
+        width: 100%;
+        padding: 16px;
+    }
+    &--left {
+        max-width: calc(100% - 128px);
+    }
+    &__btn {
+        margin-top: 16px;
+    }
+    &__close-icon {
+        position: absolute;
+        z-index: 12;
+        right: 1.6rem;
+        top: 1.6rem;
+        cursor: pointer;
+    }
+
+    @include mobile {
+        height: 100%;
+        max-height: 12.2rem;
+        width: calc(100vw - 1.6rem);
+        left: 0.8rem;
+        top: -0.2rem;
+        &__btn {
+            margin-top: 6px;
+        }
+    }
+}

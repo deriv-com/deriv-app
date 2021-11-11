@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
-import { CryptoConfig, isCryptocurrency, isMobile } from '@deriv/shared';
+import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Field, Formik } from 'formik';
 import { connect } from 'Stores/connect';
@@ -11,9 +11,12 @@ import PercentageSelector from '../percentage-selector';
 import '../../Sass/withdraw.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
+const MAX_ADDRESS_LENGTH = 64;
+const DEFAULT_FIAT_CURRENCY = 'USD';
 
 const Header = ({ currency }) => {
-    const currency_name = CryptoConfig.get()[currency].name;
+    const currency_name = getCurrencyName(currency);
+    const currency_display_code = CryptoConfig.get()[currency].display_code;
 
     return (
         <Text
@@ -27,7 +30,7 @@ const Header = ({ currency }) => {
                 i18n_default_text='Withdraw {{currency}} ({{currency_symbol}}) to your wallet'
                 values={{
                     currency: currency_name,
-                    currency_symbol: currency?.toUpperCase(),
+                    currency_symbol: currency_display_code,
                 }}
             />
         </Text>
@@ -38,7 +41,6 @@ const CryptoWithdrawForm = ({
     account_platform_icon,
     balance,
     blockchain_address,
-    converter_from_amount,
     crypto_currency,
     crypto_transactions,
     converter_from_error,
@@ -46,16 +48,16 @@ const CryptoWithdrawForm = ({
     currency,
     current_fiat_currency,
     is_loading,
-    requestWithdraw,
     onMountWithdraw,
     percentage,
     percentageSelectorSelectionStatus,
     recentTransactionOnMount,
+    requestWithdraw,
     setBlockchainAddress,
     setWithdrawPercentageSelectorResult,
     should_percentage_reset,
-    validateCryptoAmount,
-    validateFiatAmount,
+    validateWithdrawFromAmount,
+    validateWithdrawToAmount,
     verification_code,
 }) => {
     React.useEffect(() => {
@@ -71,8 +73,8 @@ const CryptoWithdrawForm = ({
     const validateAddress = address => {
         if (!address) return localize('This field is required.');
 
-        if (address.length < MIN_ADDRESS_LENGTH) {
-            return localize('Your wallet address should have 25 characters or more.');
+        if (address.length < MIN_ADDRESS_LENGTH || address.length > MAX_ADDRESS_LENGTH) {
+            return localize('Your wallet address should have 25 to 64 characters.');
         }
 
         return undefined;
@@ -92,7 +94,7 @@ const CryptoWithdrawForm = ({
                     address: '',
                 }}
             >
-                {({ errors, isSubmitting, touched, setFieldTouched, handleChange }) => (
+                {({ errors, isSubmitting, touched, setFieldTouched, handleChange, values }) => (
                     <div className='withdraw__form'>
                         <Field name='address' validate={validateAddress}>
                             {({ field }) => (
@@ -131,20 +133,20 @@ const CryptoWithdrawForm = ({
                         <div className='withdraw__crypto-fiat-converter'>
                             <CryptoFiatConverter
                                 from_currency={crypto_currency}
-                                to_currency={current_fiat_currency}
-                                validateFromAmount={validateCryptoAmount}
-                                validateToAmount={validateFiatAmount}
+                                to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
+                                validateFromAmount={validateWithdrawFromAmount}
+                                validateToAmount={validateWithdrawToAmount}
                             />
                         </div>
                         <div className='withdraw__form-submit'>
                             <Button
                                 className='cashier__form-submit-button'
                                 is_disabled={
+                                    validateAddress(values.address) ||
                                     !!converter_from_error ||
                                     !!converter_to_error ||
                                     isSubmitting ||
-                                    !blockchain_address ||
-                                    !converter_from_amount
+                                    !blockchain_address
                                 }
                                 type='submit'
                                 primary
@@ -158,7 +160,7 @@ const CryptoWithdrawForm = ({
                 )}
             </Formik>
             <MobileWrapper>
-                {isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
+                {isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
             </MobileWrapper>
         </div>
     );
@@ -168,11 +170,10 @@ CryptoWithdrawForm.propTypes = {
     account_platform_icon: PropTypes.string,
     balance: PropTypes.number,
     blockchain_address: PropTypes.string,
-    converter_from_amount: PropTypes.string,
-    crypto_currency: PropTypes.string,
-    crypto_transactions: PropTypes.array,
     converter_from_error: PropTypes.string,
     converter_to_error: PropTypes.string,
+    crypto_currency: PropTypes.string,
+    crypto_transactions: PropTypes.array,
     currency: PropTypes.string,
     current_fiat_currency: PropTypes.string,
     is_loading: PropTypes.bool,
@@ -184,6 +185,8 @@ CryptoWithdrawForm.propTypes = {
     setBlockchainAddress: PropTypes.func,
     setWithdrawPercentageSelectorResult: PropTypes.func,
     should_percentage_reset: PropTypes.bool,
+    validateWithdrawFromAmount: PropTypes.func,
+    validateWithdrawToAmount: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
@@ -191,7 +194,6 @@ export default connect(({ client, modules }) => ({
     account_platform_icon: modules.cashier.account_platform_icon,
     balance: client.balance,
     blockchain_address: modules.cashier.blockchain_address,
-    converter_from_amount: modules.cashier.converter_from_amount,
     converter_from_error: modules.cashier.converter_from_error,
     converter_to_error: modules.cashier.converter_to_error,
     crypto_currency: client.currency,
@@ -207,7 +209,7 @@ export default connect(({ client, modules }) => ({
     setBlockchainAddress: modules.cashier.setBlockchainAddress,
     setWithdrawPercentageSelectorResult: modules.cashier.setWithdrawPercentageSelectorResult,
     should_percentage_reset: modules.cashier.should_percentage_reset,
-    validateCryptoAmount: modules.cashier.validateCryptoAmount,
-    validateFiatAmount: modules.cashier.validateFiatAmount,
+    validateWithdrawFromAmount: modules.cashier.validateWithdrawFromAmount,
+    validateWithdrawToAmount: modules.cashier.validateWithdrawToAmount,
     verification_code: client.verification_code.payment_withdraw,
 }))(CryptoWithdrawForm);

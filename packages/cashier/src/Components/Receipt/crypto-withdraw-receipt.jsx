@@ -29,7 +29,7 @@ const AcountInformation = ({ account }) => {
                     align='center'
                     className='withdraw__account-info-detail-text'
                 >
-                    {getAccountText(account)}
+                    {account?.currency?.toUpperCase()}
                 </Text>
             </div>
             <Text
@@ -84,7 +84,7 @@ const WalletInformation = ({ account, blockchain_address }) => {
 const CryptoWithdrawReceipt = ({
     account,
     blockchain_address,
-    crypto_amount,
+    withdraw_amount,
     crypto_transactions,
     currency,
     resetWithrawForm,
@@ -128,7 +128,7 @@ const CryptoWithdrawReceipt = ({
                     <Localize
                         i18n_default_text='{{withdraw_amount}} {{currency_symbol}}'
                         values={{
-                            withdraw_amount: crypto_amount,
+                            withdraw_amount,
                             currency_symbol: currency?.toUpperCase(),
                         }}
                     />
@@ -150,12 +150,12 @@ const CryptoWithdrawReceipt = ({
                     id='withdraw_receipt'
                     className='withdraw__receipt-button'
                     has_effect
-                    text={localize('Make a new withdraw')}
+                    text={localize('Make a new withdrawal')}
                     onClick={() => setIsWithdrawConfirmed(false)}
                     primary
                 />
             </div>
-            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
+            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
         </div>
     );
 };
@@ -174,7 +174,7 @@ CryptoWithdrawReceipt.propTypes = {
 export default connect(({ client, modules }) => ({
     account: modules.cashier.config.account_transfer.selected_from,
     blockchain_address: modules.cashier.blockchain_address,
-    crypto_amount: modules.cashier.crypto_amount,
+    withdraw_amount: modules.cashier.withdraw_amount,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     resetWithrawForm: modules.cashier.resetWithrawForm,

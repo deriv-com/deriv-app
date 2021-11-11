@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal.jsx';
@@ -22,18 +22,18 @@ const CryptoTransactionsHistory = ({
     crypto_transactions,
     currency,
     is_loading,
-    onMount,
-    pollApiForDepositAddress,
     setIsCryptoTransactionsVisible,
+    setIsDeposit,
 }) => {
     React.useEffect(() => {
-        onMount();
         return () => setIsCryptoTransactionsVisible(false);
-    }, [onMount, setIsCryptoTransactionsVisible, currency]);
+    }, [setIsCryptoTransactionsVisible, currency]);
 
     const onClickBack = () => {
         setIsCryptoTransactionsVisible(false);
-        pollApiForDepositAddress(false);
+        if (window.location.pathname.endsWith(routes.cashier_deposit)) {
+            setIsDeposit(true);
+        }
     };
 
     return (
@@ -43,7 +43,7 @@ const CryptoTransactionsHistory = ({
                     <div className='crypto-transactions-history__back' onClick={onClickBack}>
                         <Icon icon={isMobile() ? 'IcChevronLeftBold' : 'IcArrowLeftBold'} />
                         <Text as='p' size='xs' weight='bold'>
-                            <Localize i18n_default_text={` ${currency} current transactions`} />
+                            <Localize i18n_default_text={` ${currency} recent transactions`} />
                         </Text>
                     </div>
                 </div>
@@ -64,7 +64,7 @@ const CryptoTransactionsHistory = ({
                         )}
                         <Table.Body className='crypto-transactions-history__table-body'>
                             {is_loading ? (
-                                <Loading is_fullscreen={false} />
+                                <Loading is_fullscreen />
                             ) : (
                                 <DataList
                                     data_list_className='crypto-transactions-history__data-list'
@@ -92,8 +92,6 @@ CryptoTransactionsHistory.propTypes = {
     crypto_transactions: PropTypes.array,
     currency: PropTypes.string,
     is_loading: PropTypes.bool,
-    onMount: PropTypes.func,
-    pollApiForDepositAddress: PropTypes.func,
     setIsCryptoTransactionsVisible: PropTypes.func,
 };
 
@@ -101,7 +99,6 @@ export default connect(({ client, modules }) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     is_loading: modules.cashier.transaction_history.is_loading,
-    onMount: modules.cashier.transaction_history.onMountCryptoTransactionsHistory,
-    pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
+    setIsDeposit: modules.cashier.setIsDeposit,
 }))(CryptoTransactionsHistory);

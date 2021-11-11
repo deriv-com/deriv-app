@@ -1506,12 +1506,17 @@ div.payment-agent-transfer {
                 &__header {
                     margin-top: 0.4rem;
                 }
-                &__form-submit-button {
-                    max-width: 100%;
-
-                    /* iPhone SE screen width fixes due to UI space restrictions */
-                    @media only screen and (max-width: 340px) {
-                        max-width: 150px;
+                &__form-submit {
+                    padding: 1.6rem;
+                    &-button {
+                        &:first-child {
+                            margin-bottom: 2rem;
+                            margin-right: 0;
+                        }
+                        &:last-child {
+                            margin-bottom: 2rem;
+                            margin-left: 0;
+                        }
                     }
                 }
                 &__success {

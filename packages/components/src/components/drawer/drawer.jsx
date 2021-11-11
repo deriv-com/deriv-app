@@ -29,12 +29,12 @@ const Drawer = ({
 }) => {
     const [will_open, set_is_open] = React.useState(is_open);
 
-    React.useEffect(() => {
-        set_is_open(is_open);
-    }, [is_open]);
+    const update_is_open = (value) => {
+        set_is_open(value)
+    }
 
     const toggle_drawer = () => {
-        set_is_open(!will_open);
+        update_is_open(!will_open)
             return () => {
                 if (toggleDrawer) {
                     toggleDrawer(will_open);

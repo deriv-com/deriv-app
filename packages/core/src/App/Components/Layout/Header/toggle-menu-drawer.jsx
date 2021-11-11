@@ -334,7 +334,8 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         classNameButton={classNames(
                                                             'header__menu-mobile-link-toggler-button',
                                                             {
-                                                                'header__menu-mobile-link-toggler-button--active': is_dark_mode,
+                                                                'header__menu-mobile-link-toggler-button--active':
+                                                                    is_dark_mode,
                                                             }
                                                         )}
                                                         handleToggle={() => toggleTheme(!is_dark_mode)}

@@ -5,6 +5,7 @@ import {
     redirectToLogin,
     getPropertyValue,
     getUrlSmartTrader,
+    getUrlBinaryBot,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
@@ -21,7 +22,7 @@ import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isOptionsBlocked } from '_common/utility';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -64,6 +65,10 @@ export default class ClientStore extends BaseStore {
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
+
+    // TODO: Temporary variable. Remove after MX account closure has finished.
+    @observable client_notifications = clientNotifications;
+
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -479,9 +484,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_withdrawal_lock() {
-        return this.account_status?.status?.some(status_name =>
-            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
-        );
+        return this.account_status?.status?.some(status_name => status_name === 'withdrawal_locked');
     }
 
     @computed
@@ -582,6 +585,7 @@ export default class ClientStore extends BaseStore {
     get country_standpoint() {
         const result = {
             is_united_kingdom: this.is_uk,
+            is_isle_of_man: this.residence === 'im',
             is_france: this.residence === 'fr',
             is_belgium: this.residence === 'be',
             // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
@@ -678,6 +682,11 @@ export default class ClientStore extends BaseStore {
         return isOptionsBlocked(this.residence);
     }
 
+    @computed
+    get is_multipliers_only() {
+        return isMultipliersOnly(this.residence);
+    }
+
     /**
      * Store Values relevant to the loginid to local storage.
      *
@@ -688,7 +697,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
-        this.syncWithSmartTrader(loginid, toJS(this.accounts));
+        this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
     }
 
@@ -895,7 +904,7 @@ export default class ClientStore extends BaseStore {
         this.is_populating_account_list = false;
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.setSwitched(client_id);
-        this.syncWithSmartTrader(client_id, client_accounts);
+        this.syncWithLegacyPlatforms(client_id, client_accounts);
     }
 
     @action.bound
@@ -1113,7 +1122,8 @@ export default class ClientStore extends BaseStore {
             client,
             this,
             this.root_store.ui,
-            this.root_store.modules.cashier
+            this.root_store.modules.cashier,
+            this.root_store.common
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -1183,19 +1193,26 @@ export default class ClientStore extends BaseStore {
          * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status, this.root_store.modules?.cashier?.is_p2p_visible],
+            () => [
+                this.account_settings,
+                this.account_status,
+                this.root_store.modules?.cashier?.is_p2p_visible,
+                this.root_store.common?.selected_contract_type,
+                this.is_eu,
+            ],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
                     this.root_store.ui.removeNotifications();
                     this.root_store.ui.removeAllNotificationMessages();
+                    const { has_missing_required_field } = handleClientNotifications(
+                        client,
+                        this,
+                        this.root_store.ui,
+                        this.root_store.modules.cashier,
+                        this.root_store.common
+                    );
                     if (client && !client.is_virtual) {
-                        const { has_missing_required_field } = handleClientNotifications(
-                            client,
-                            this,
-                            this.root_store.ui,
-                            this.root_store.modules.cashier
-                        );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }
                 });
@@ -1409,7 +1426,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async switchAccountHandler() {
-        if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {
+        if (!this.switched || !this.switched.length || !this.getAccount(this.switched)?.token) {
             if (this.isUnableToFindLoginId()) {
                 this.handleNotFoundLoginId();
                 return;
@@ -1607,7 +1624,7 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
         this.root_store.ui.removeAllNotificationMessages(true);
-        this.syncWithSmartTrader(this.loginid, this.accounts);
+        this.syncWithLegacyPlatforms(this.loginid, this.accounts);
         this.cleanupRealityCheck();
     }
 
@@ -1690,7 +1707,7 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
-            this.syncWithSmartTrader(active_loginid, this.accounts);
+            this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
     }
 
@@ -1879,12 +1896,14 @@ export default class ClientStore extends BaseStore {
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {
+        this.setPreSwitchAccount(true);
         const new_user_login = {
             acct1: client_id,
             token1: oauth_token,
             curr1: currency,
         };
         await this.init(new_user_login);
+        this.broadcastAccountChange();
     }
 
     @action.bound
@@ -2051,28 +2070,34 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    syncWithSmartTrader(active_loginid, client_accounts) {
-        const iframe_window = document.getElementById('localstorage-sync');
-        if (iframe_window) {
-            const origin = getUrlSmartTrader();
-            if (origin) {
+    syncWithLegacyPlatforms(active_loginid, client_accounts) {
+        const smartTrader = {};
+        const binaryBot = {};
+
+        smartTrader.iframe = document.getElementById('localstorage-sync');
+        binaryBot.iframe = document.getElementById('localstorage-sync__bot');
+        smartTrader.origin = getUrlSmartTrader();
+        binaryBot.origin = getUrlBinaryBot();
+
+        [smartTrader, binaryBot].forEach(platform => {
+            if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
-                iframe_window.contentWindow.postMessage(
+                platform.iframe.contentWindow.postMessage(
                     {
                         key: 'client.accounts',
                         value: JSON.stringify(client_accounts),
                     },
-                    origin
+                    platform.origin
                 );
-                iframe_window.contentWindow.postMessage(
+                platform.iframe.contentWindow.postMessage(
                     {
                         key: 'active_loginid',
                         value: active_loginid,
                     },
-                    origin
+                    platform.origin
                 );
             }
-        }
+        });
     }
 
     @computed

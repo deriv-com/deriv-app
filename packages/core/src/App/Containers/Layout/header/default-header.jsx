@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -20,7 +20,6 @@ const DefaultHeader = ({
     account_status,
     account_type,
     addNotificationMessage,
-    should_allow_authentication,
     app_routing_history,
     balance,
     currency,
@@ -29,19 +28,22 @@ const DefaultHeader = ({
     enableApp,
     header_extension,
     history,
-    is_mf,
     is_acc_switcher_disabled,
     is_acc_switcher_on,
     is_app_disabled,
     is_dark_mode,
+    is_dxtrade_allowed,
+    is_eu,
     is_logged_in,
     is_logging_in,
+    is_mf,
     is_mt5_allowed,
-    is_dxtrade_allowed,
+    is_multipliers_only,
     is_notifications_visible,
+    is_onramp_tab_visible,
+    is_options_blocked,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
-    is_onramp_tab_visible,
     is_payment_agent_visible,
     is_route_modal_on,
     is_virtual,
@@ -50,9 +52,11 @@ const DefaultHeader = ({
     menu_items,
     notifications_count,
     openRealAccountSignup,
-    is_options_blocked,
+    platform,
+    replaceCashierMenuOnclick,
     removeNotificationMessage,
     setDarkMode,
+    should_allow_authentication,
     toggleAccountsDialog,
     toggleNotifications,
 }) => {
@@ -77,8 +81,12 @@ const DefaultHeader = ({
             if (config.link_to === routes.dxtrade) {
                 return is_dxtrade_allowed;
             }
-            if ((is_mf || is_options_blocked) && config.href === routes.smarttrader) {
-                return false;
+            if (
+                config.link_to === routes.bot ||
+                config.href === routes.binarybot ||
+                config.href === routes.smarttrader
+            ) {
+                return is_virtual ? !is_multipliers_only : !is_mf && !is_options_blocked;
             }
             return true;
         });
@@ -86,6 +94,7 @@ const DefaultHeader = ({
         <header
             className={classNames('header', {
                 'header--is-disabled': is_app_disabled || is_route_modal_on,
+                'header--is-hidden': platforms[platform],
             })}
         >
             <div className='header__menu-items'>
@@ -127,6 +136,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
+                    {menu_items && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div
@@ -156,6 +166,7 @@ const DefaultHeader = ({
                             enableApp={enableApp}
                             is_acc_switcher_on={is_acc_switcher_on}
                             is_acc_switcher_disabled={is_acc_switcher_disabled}
+                            is_eu={is_eu}
                             is_notifications_visible={is_notifications_visible}
                             is_logged_in={is_logged_in}
                             is_virtual={is_virtual}
@@ -197,6 +208,7 @@ DefaultHeader.propTypes = {
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_dxtrade_allowed: PropTypes.bool,
+    is_multipliers_only: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     // is_p2p_enabled: PropTypes.bool,
     // is_payment_agent_transfer_visible: PropTypes.bool,
@@ -206,7 +218,9 @@ DefaultHeader.propTypes = {
     logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
+    platform: PropTypes.string,
     removeNotificationMessage: PropTypes.func,
+    replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
@@ -230,11 +244,13 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
+    is_eu: client.is_eu,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
+    is_multipliers_only: client.is_multipliers_only,
     is_notifications_visible: ui.is_notifications_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
@@ -246,7 +262,9 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     menu_items: menu.extensions,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
+    replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
     is_options_blocked: client.is_options_blocked,
+    platform: common.platform,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,

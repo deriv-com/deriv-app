@@ -65,7 +65,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @ashkanx @matin-binary @nijil-binary @reza-fs @mehrzad-fs @balakrishna-binary 
+*                                                               @matin-binary @nijil-binary @reza-fs @mehrzad-fs @balakrishna-binary 
 
 
 

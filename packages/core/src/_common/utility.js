@@ -94,6 +94,9 @@ const isSyntheticsUnavailable = country => countries_without_synthetics.includes
 // countries where binary options are blocked
 const blocked_options_countries = ['au', 'fr'];
 const isOptionsBlocked = country => blocked_options_countries.includes(country);
+// countries where only multipliers are offered
+const multipliers_only_countries = ['de', 'es', 'it', 'lu', 'gr', 'au', 'fr'];
+const isMultipliersOnly = country => multipliers_only_countries.includes(country);
 
 module.exports = {
     template,
@@ -103,5 +106,6 @@ module.exports = {
     isEuCountry,
     isOptionsBlocked,
     isSyntheticsUnavailable,
+    isMultipliersOnly,
     copyToClipboard,
 };

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { matchRoute } from '@deriv/shared';
 import VerticalTabContentContainer from './vertical-tab-content-container.jsx';
 import VerticalTabHeader from './vertical-tab-header.jsx';
 import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
@@ -16,7 +17,7 @@ const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCu
     if (typeof selected_index === 'undefined') {
         index = is_routed
             ? Math.max(
-                  list.indexOf(list.find(item => item.path === current_path) || list.find(item => item.default)),
+                  list.indexOf(list.find(item => matchRoute(item, current_path)) || list.find(item => item.default)),
                   0
               )
             : 0;

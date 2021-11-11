@@ -14,8 +14,8 @@ const PaymentAgent = ({
     is_virtual,
     payment_agent_active_tab_index,
     setActiveTab,
-    verification_code,
     setPaymentAgentActiveTabIndex,
+    verification_code,
 }) => {
     const initial_active_index =
         verification_code || is_payment_agent_withdraw || payment_agent_active_tab_index ? 1 : 0;
@@ -51,18 +51,18 @@ PaymentAgent.propTypes = {
     is_virtual: PropTypes.bool,
     payment_agent_active_tab_index: PropTypes.number,
     setActiveTab: PropTypes.func,
-    verification_code: PropTypes.string,
     setPaymentAgentActiveTabIndex: PropTypes.func,
+    verification_code: PropTypes.string,
 };
 
 export default connect(({ client, modules }) => ({
+    container: modules.cashier.payment_agent_store.container,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
-    verification_code: client.verification_code.payment_agent_withdraw,
-    container: modules.cashier.payment_agent_store.container,
     is_payment_agent_withdraw: modules.cashier.payment_agent_store.is_withdraw,
     payment_agent_active_tab_index: modules.cashier.payment_agent_store.active_tab_index,
     setActiveTab: modules.cashier.general_store.setActiveTab,
     setPaymentAgentActiveTabIndex: modules.cashier.payment_agent_store.setActiveTabIndex,
+    verification_code: client.verification_code.payment_agent_withdraw,
 }))(PaymentAgent);

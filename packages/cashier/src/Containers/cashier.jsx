@@ -12,7 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, isMobile, routes, WS, platforms } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from 'Components/account-prompt-dialog.jsx';
 import ErrorDialog from 'Components/error-dialog.jsx';
@@ -37,6 +37,7 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
+    platform,
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
@@ -113,7 +114,11 @@ const Cashier = ({
             <AccountPromptDialog />
             <ErrorDialog />
             <div className='cashier'>
-                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose}>
+                <PageOverlay
+                    header={getHeaderTitle()}
+                    onClickClose={onClickClose}
+                    is_close_disabled={!!platforms[platform]}
+                >
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
@@ -191,6 +196,7 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
+    platform: PropTypes.string,
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
@@ -216,6 +222,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_visible: ui.is_cashier_visible,
     onMount: modules.cashier.general_store.onMountCommon,
     p2p_notification_count: modules.cashier.general_store.p2p_notification_count,
+    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.general_store.setAccountSwitchListener,
     setTabIndex: modules.cashier.general_store.setCashierTabIndex,

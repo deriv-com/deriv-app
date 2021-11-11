@@ -57,6 +57,7 @@ module.exports = function (env, argv) {
             'terms-of-use': 'Components/terms-of-use',
             'terms-of-use-config': 'Configs/terms-of-use-config',
             'populate-verification-status': 'Sections/Verification/Helpers/verification',
+            'proof-utils': 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

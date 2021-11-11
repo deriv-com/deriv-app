@@ -18,3 +18,5 @@ export const service_code = {
     onfido: 'onfido',
     manual: 'manual',
 };
+const proofUtils = { identity_status_codes, submission_status_code, service_code };
+export default proofUtils;

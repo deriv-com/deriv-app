@@ -13,8 +13,12 @@ const populateVerificationStatus = account_status => {
     };
     const allow_document_upload = accountStatusChecker('allow_document_upload');
     const allow_poi_resubmission = accountStatusChecker('allow_poi_resubmission');
+    const allow_poa_resubmission = accountStatusChecker('allow_poa_resubmission');
     const is_idv_disallowed = accountStatusChecker('idv_disallowed');
+
     const identity_status = identity?.status;
+    const document_status = document?.status;
+
 
     const idv = identity?.services?.idv;
     const onfido = identity?.services?.onfido;
@@ -24,12 +28,14 @@ const populateVerificationStatus = account_status => {
 
     return {
         allow_document_upload,
+        allow_poa_resubmission,
         allow_poi_resubmission,
         has_attempted_idv,
         has_poa,
         has_poi,
         identity_last_attempt,
         identity_status,
+        document_status,
         idv,
         is_idv_disallowed,
         manual,

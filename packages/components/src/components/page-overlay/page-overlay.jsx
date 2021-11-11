@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Icon from '../icon/icon.jsx';
 import { useOnClickOutside } from '../../hooks';
 
-const PageOverlay = ({ children, header, id, is_open, onClickClose, portal_id }) => {
+const PageOverlay = ({ children, header, id, is_close_disabled = false, is_open, onClickClose, portal_id }) => {
     const page_overlay_ref = React.useRef();
 
     useOnClickOutside(page_overlay_ref, onClickClose, () => is_open && portal_id);
@@ -23,9 +23,14 @@ const PageOverlay = ({ children, header, id, is_open, onClickClose, portal_id })
                 <div className='dc-page-overlay__header'>
                     <div className='dc-page-overlay__header-wrapper'>
                         <div className='dc-page-overlay__header-title'>{header}</div>
-                        <div className='dc-page-overlay__header-close' onClick={onClickClose || window.history.back}>
-                            <Icon icon='IcCross' />
-                        </div>
+                        {!is_close_disabled && (
+                            <div
+                                className='dc-page-overlay__header-close'
+                                onClick={onClickClose || window.history.back}
+                            >
+                                <Icon icon='IcCross' />
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
@@ -60,6 +65,7 @@ PageOverlay.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    is_close_disabled: PropTypes.bool,
     is_open: PropTypes.bool,
     onClickClose: PropTypes.func,
     portal_id: PropTypes.string,

@@ -18,6 +18,13 @@
             border-color: var(--brand-secondary);
         }
     }
+    &--bottom-label-active {
+        margin-bottom: unset;
+    }
+    &__bottom-label {
+        margin-left: 1.2rem;
+        margin-bottom: calc(3.2rem - 12px);
+    }
     &--disabled {
         border-color: var(--general-disabled);
         color: var(--text-disabled);
@@ -44,7 +51,7 @@
             }
         }
         &--placeholder-visible::placeholder {
-            opacity: 0.2;
+            opacity: 0.4;
         }
         /* Not empty fields */
         &:focus,

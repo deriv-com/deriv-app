@@ -41,7 +41,7 @@ const MXRegulatoryInformation = () => (
     <div className='footer-regulatory-information'>
         <p>
             <Localize
-                i18n_default_text='Synthetic indices in the UK and the Isle of Man are offered by Deriv (MX) Ltd, Millennium House, Level 1, Victoria Road, Douglas IM2 4RW, Isle of Man, licensed and regulated in Great Britain by the Gambling Commission under <0>account no. 39172</0> and by the Gambling Supervision Commission in the Isle of Man (<1>view licence</1>).'
+                i18n_default_text='Virtual events based bets in the UK and the Isle of Man are offered by Deriv (MX) Ltd, Millennium House, Level 1, Victoria Road, Douglas IM2 4RW, Isle of Man, licensed and regulated in Great Britain by the Gambling Commission under <0>account no. 39172</0> and by the Gambling Supervision Commission in the Isle of Man (<1>view licence</1>).'
                 components={[
                     <a
                         href='https://www.gamblingcommission.gov.uk/public-register/business/detail/39172'

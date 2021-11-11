@@ -1,7 +1,7 @@
 /** @define notification-messages; */
 .notification-messages {
     width: 40rem;
-    z-index: 4;
+    z-index: 6;
     position: absolute;
     right: 0;
 
@@ -49,7 +49,7 @@
         margin-top: 1.6rem;
         height: 24px;
         width: fit-content;
-        max-width: 150px;
+        max-width: 190px;
         align-self: flex-end;
     }
     &__text-container {

@@ -79,20 +79,20 @@ const AccountTransferNote = ({
     const getTransferFeeNote = () => {
         if (transfer_fee === 0) {
             return is_dxtrade_allowed ? (
-                <Localize i18n_default_text="We don't charge fees for transfers that involve the same currency between your Deriv fiat and DMT5 accounts or between your Deriv fiat and Deriv X accounts." />
+                <Localize i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts and between your Deriv fiat and Deriv X accounts.' />
             ) : (
-                <Localize i18n_default_text="We don't charge fees for transfers that involve the same currency between your Deriv fiat and DMT5 accounts." />
+                <Localize i18n_default_text="You'll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts." />
             );
         } else if (transfer_fee === 1) {
             return is_dxtrade_allowed ? (
-                <Localize i18n_default_text='We charge a 1% transfer fee for transfers that involve different currencies between your Deriv fiat and DMT5 accounts or between your Deriv fiat and Deriv X accounts.' />
+                <Localize i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and DMT5 accounts and between your Deriv fiat and Deriv X accounts.' />
             ) : (
-                <Localize i18n_default_text='We charge a 1% transfer fee for transfers that involve different currencies between your Deriv fiat and DMT5 accounts.' />
+                <Localize i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and DMT5 accounts.' />
             );
         } else if (transfer_fee === 2 && is_crypto_to_crypto_transfer) {
             return (
                 <Localize
-                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your cryptocurrency accounts.'
+                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
@@ -102,7 +102,7 @@ const AccountTransferNote = ({
         } else if (transfer_fee === 2 && (is_mt_transfer || is_dxtrade_transfer)) {
             return is_dxtrade_allowed ? (
                 <Localize
-                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts or between your Deriv cryptocurrency and Deriv X accounts.'
+                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts and between your Deriv cryptocurrency and Deriv X accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
@@ -110,7 +110,7 @@ const AccountTransferNote = ({
                 />
             ) : (
                 <Localize
-                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts.'
+                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
@@ -120,7 +120,7 @@ const AccountTransferNote = ({
         } else if (transfer_fee === 2 && !is_mt_transfer && !is_dxtrade_transfer) {
             return (
                 <Localize
-                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv fiat and cryptocurrency accounts.'
+                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv fiat and Deriv cryptocurrency accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
@@ -145,15 +145,15 @@ const AccountTransferNote = ({
             </DesktopWrapper>
             <AccountTransferBullet>
                 {is_dxtrade_allowed ? (
-                    <Localize i18n_default_text='You may transfer between your fiat and cryptocurrency accounts, between your Deriv and DMT5 accounts, and between your Deriv and Deriv X account.' />
+                    <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, DMT5, and Deriv X accounts.' />
                 ) : (
-                    <Localize i18n_default_text='You may transfer between your fiat and cryptocurrency accounts and between your Deriv and DMT5 accounts.' />
+                    <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and DMT5 accounts.' />
                 )}
             </AccountTransferBullet>
             <AccountTransferBullet>
                 {is_dxtrade_allowed ? (
                     <Localize
-                        i18n_default_text='There is a daily transfer limit of {{ allowed_internal }} transfers between your Deriv accounts, {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts, and {{ allowed_dxtrade }} transfers between your Deriv and Deriv X accounts.'
+                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and Deriv X accounts.'
                         values={{
                             allowed_internal: allowed_transfers_count.internal,
                             allowed_mt5: allowed_transfers_count.mt5,
@@ -162,7 +162,7 @@ const AccountTransferNote = ({
                     />
                 ) : (
                     <Localize
-                        i18n_default_text='There is a daily transfer limit of {{ allowed_internal }} transfers between your Deriv accounts and {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts.'
+                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts and up to {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts.'
                         values={{
                             allowed_internal: allowed_transfers_count.internal,
                             allowed_mt5: allowed_transfers_count.mt5,
@@ -174,7 +174,8 @@ const AccountTransferNote = ({
                 <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
             </AccountTransferBullet>
             <AccountTransferBullet>
-                {getTransferFeeNote()} <Localize i18n_default_text='Bear in mind some transfers may not be possible.' />
+                {getTransferFeeNote()}{' '}
+                <Localize i18n_default_text='Please bear in mind that some transfers may not be possible.' />
             </AccountTransferBullet>
             <AccountTransferBullet>
                 <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
 import Icon from '../icon';
+import {useStateCallback} from '../../hooks/use-state-callback';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
 const IconDrawer = ({ className }) => (
@@ -27,7 +28,7 @@ const Drawer = ({
     width = 250,
     zIndex = 4,
 }) => {
-    const [will_open, set_is_open] = React.useState(is_open);
+    const [will_open, set_is_open] = useStateCallback(is_open);
 
     const update_is_open = (value) => {
         set_is_open(value)

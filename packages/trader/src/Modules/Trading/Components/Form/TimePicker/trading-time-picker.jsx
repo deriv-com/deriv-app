@@ -12,6 +12,7 @@ const TradingTimePicker = ({
     market_open_times,
     onChange,
     server_time,
+    is_market_closed,
 }) => {
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -30,12 +31,12 @@ const TradingTimePicker = ({
     );
 
     React.useEffect(() => {
-        if (expiry_time !== selected_time) {
+        if (expiry_time !== selected_time && !is_market_closed) {
             onChange({
                 target: { name: 'expiry_time', value: selected_time },
             });
         }
-    }, [expiry_time, selected_time, onChange]);
+    }, [expiry_time, selected_time, onChange, is_market_closed]);
 
     return (
         <TimePicker
@@ -66,4 +67,5 @@ export default connect(({ modules, common }) => ({
     market_open_times: modules.trade.market_open_times,
     onChange: modules.trade.onChange,
     server_time: common.server_time,
+    is_market_closed: modules.trade.is_market_closed,
 }))(TradingTimePicker);

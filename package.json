@@ -34,7 +34,7 @@
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "eslint-plugin-testing-library": "^4.2.0",
-        "husky": "^4.2.5",
+        "husky": "^7.0.0",
         "jest": "^26.4.2",
         "lerna": "^3.22.0",
         "lint-staged": "^10.4.0",
@@ -65,7 +65,6 @@
         "deploy:folder": "f () { export NODE_ENV=staging && npm run build:gh-pages $1 && lerna exec --scope @deriv/core -- npm run deploy:folder $@ && export NODE_ENV= ;}; f",
         "install:qa": "npm --prefix ./e2e_tests ci && echo \"IMPORTANT: copy .env.example to .env and update the values for development.\"",
         "prettify": "./node_modules/.bin/prettier --config ./.prettierrc --write \"./packages/*/{stories,script,src,build}/**/*.{js,jsx,ts,tsx,scss}\"",
-        "precommit": "lint-staged --allow-empty",
         "publish_package": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run publish_package $2 ;}; f",
         "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
         "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
@@ -79,13 +78,8 @@
         "test:typecheck": "lerna exec --scope=@deriv/dashboard -- npm run test:typecheck",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
-        "stylelint-check": "stylelint-config-prettier-check"
-    },
-    "husky": {
-        "hooks": {
-            "post-merge": "bash ./hooks/post-merge.sh",
-            "pre-commit": "npm run precommit"
-        }
+        "stylelint-check": "stylelint-config-prettier-check",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@testing-library/jest-dom": "^5.12.0",

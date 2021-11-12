@@ -63,7 +63,8 @@ const TermsOfUse = ({
                                         <BrokerSpecificMessage target={real_account_signup_target} />
                                         <Hr />
                                         <SharedMessage />
-                                        <Hr /><Hr />
+                                        <Hr />
+                                        <Hr />
                                         <Field
                                             component={CheckboxField}
                                             className='terms-of-use__checkbox'
@@ -82,12 +83,7 @@ const TermsOfUse = ({
                                             label={
                                                 <Localize
                                                     i18n_default_text='I agree to the <0>terms and conditions</0>.'
-                                                    components={[
-                                                        <StaticUrl
-                                                            key={0}
-                                                            href='/terms-and-conditions'
-                                                        />,
-                                                    ]}
+                                                    components={[<StaticUrl key={0} href='/terms-and-conditions' />]}
                                                 />
                                             }
                                         />

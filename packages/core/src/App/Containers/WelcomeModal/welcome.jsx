@@ -14,9 +14,15 @@ import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
 const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
-    const should_show_options = is_eu
-        ? country_standpoint.is_rest_of_eu || !country_standpoint.is_united_kingdom
-        : true;
+    const shouldShowOptions = () => {
+        const is_uk = country_standpoint.is_united_kingdom;
+        let show_options = true;
+        
+        if (is_eu || is_uk) {
+            show_options = false;
+        }
+        return show_options
+    }
     return (
         <>
             <DesktopWrapper>
@@ -60,7 +66,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
                     mobileIcon={<MultipliersMobile />}
                     options={['Forex', 'Synthetics']}
                 />
-                {should_show_options && (
+                {shouldShowOptions() && (
                     <WelcomeItem
                         description={
                             <Localize

@@ -19,6 +19,7 @@ const ErrorComponent = ({
     removeNotificationMessageByKey,
     type,
     is_iom,
+    is_eu,
     redirect_to = routes.trade,
     should_show_refresh = true,
 }) => {
@@ -42,6 +43,7 @@ const ErrorComponent = ({
                     <div className='close-mx-account__content'>
                         <CloseMXAccountContent
                             is_iom={is_iom}
+                            is_eu={is_eu}
                             is_fullscreen={true}
                             showNotificationMessageByKey={showNotificationMessageByKey}
                             showCloseMXAccountPopup={showCloseMXAccountPopup}
@@ -92,4 +94,5 @@ export default connect(({ client, ui }) => ({
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     showCloseMXAccountPopup: ui.showCloseMXAccountPopup,
     is_iom: client.residence === 'im',
+    is_eu: client.is_eu,
 }))(ErrorComponent);

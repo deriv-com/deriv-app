@@ -39,7 +39,7 @@
             height: 96px;
             margin-bottom: 2.4rem;
         }
-        &__heading {
+        &__heading.dc-text {
             font-size: 2rem;
         }
         @include mobile {
@@ -51,10 +51,8 @@
                 margin-top: 1.6rem;
             }
             .dc-text {
-                margin: 1.6rem 0;
-            }
-            h1 {
-                font-size: 14px;
+                margin: 1.6rem 0 !important;
+                font-size: 1.4rem;
             }
         }
     }

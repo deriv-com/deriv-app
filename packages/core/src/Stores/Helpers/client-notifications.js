@@ -19,7 +19,25 @@ import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}, client = {}, is_iom) => {
+export const clientNotifications = (ui = {}, client = {}, is_uk, is_eu) => {
+    const MxMltNotificationHeader = () => {
+        if (is_eu) {
+            return localize('Your Options account is scheduled to be closed');
+        } else if (is_uk) {
+            return localize('Your Gaming account is scheduled to be closed');
+        }
+        return localize('Your account is scheduled to be closed');
+    };
+
+    const MxMltNotificationText = () => {
+        if (is_eu) {
+            return localize('Close any open positions and withdraw funds from your Options account.');
+        } else if (is_uk) {
+            return localize('Close any open positions and withdraw funds from your Gaming account.');
+        }
+        return localize('Close any open positions and withdraw funds from your account.');
+    };
+
     const notifications = {
         dp2p: {
             key: 'dp2p',
@@ -37,10 +55,8 @@ export const clientNotifications = (ui = {}, client = {}, is_iom) => {
         },
         close_mx_account: {
             key: 'close_mx_account',
-            header: is_iom
-                ? localize('Your account is scheduled to be closed')
-                : localize('Your Gaming account is scheduled to be closed'),
-            message: localize('Please proceed to withdraw your funds before 30 November 2021.'),
+            header: MxMltNotificationHeader(),
+            message: MxMltNotificationText(),
             secondary_btn: {
                 text: localize('Learn more'),
                 onClick: () => {
@@ -643,25 +659,26 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         account_status,
         getRiskAssessment,
         is_eu,
+        is_uk,
+        has_malta_account,
         has_iom_account,
-        country_standpoint,
         is_logged_in,
         is_tnc_needed,
         isAccountOfType,
         loginid,
     } = client_store;
-    const hidden_close_account_notification =
-        parseInt(localStorage.getItem('hide_close_mx_account_notification')) === 1;
-    const is_iom = country_standpoint.is_isle_of_man;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
     let has_missing_required_field, has_risk_assessment;
 
+    const hidden_close_account_notification =
+        parseInt(localStorage.getItem('hide_close_mx_account_notification')) === 1;
+
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
-    if (has_iom_account && !hidden_close_account_notification) {
-        addNotificationMessage(clientNotifications(ui_store, {}, is_iom).close_mx_account);
+    if ((has_iom_account || has_malta_account) && !hidden_close_account_notification) {
+        addNotificationMessage(clientNotifications(ui_store, {}, is_uk, is_eu).close_mx_account);
     }
 
     if (client && !client.is_virtual) {

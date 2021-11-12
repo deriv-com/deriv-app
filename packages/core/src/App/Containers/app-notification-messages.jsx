@@ -19,12 +19,13 @@ const NotificationsContent = ({
     removeNotificationMessage,
     markNotificationMessage,
     has_iom_account,
+    has_malta_account,
     is_logged_in,
 }) => {
     // TODO: Remove this useEffect when MX account closure has finished.
     const window_location = window.location;
     React.useEffect(() => {
-        if (has_iom_account && is_logged_in) {
+        if ((has_iom_account || has_malta_account) && is_logged_in) {
             const get_close_mx_notification = notifications.find(item => item.key === 'close_mx_account');
             const is_dtrader = getPathname() === 'DTrader';
             if (!is_dtrader && get_close_mx_notification) {
@@ -67,6 +68,7 @@ const AppNotificationMessages = ({
     stopNotificationLoading,
     markNotificationMessage,
     has_iom_account,
+    has_malta_account,
     is_logged_in,
 }) => {
     const [style, setStyle] = React.useState({});
@@ -105,6 +107,7 @@ const AppNotificationMessages = ({
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
                     has_iom_account={has_iom_account}
+                    has_malta_account={has_malta_account}
                     is_logged_in={is_logged_in}
                 />
             </Portal>
@@ -143,5 +146,6 @@ export default connect(({ ui, client }) => ({
     removeNotificationMessage: ui.removeNotificationMessage,
     markNotificationMessage: ui.markNotificationMessage,
     has_iom_account: client.has_iom_account,
+    has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,
 }))(AppNotificationMessages);

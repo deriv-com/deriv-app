@@ -31,11 +31,11 @@ export const clientNotifications = (ui = {}, client = {}, is_uk, is_eu) => {
 
     const MxMltNotificationText = () => {
         if (is_eu) {
-            return localize('Close any open positions and withdraw funds from your Options account.');
+            return localize('Withdraw all funds from your Options account.');
         } else if (is_uk) {
-            return localize('Close any open positions and withdraw funds from your Gaming account.');
+            return localize('Withdraw all funds from your Gaming account.');
         }
-        return localize('Close any open positions and withdraw funds from your account.');
+        return localize('Withdraw all funds from your account.');
     };
 
     const notifications = {

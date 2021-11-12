@@ -63,6 +63,7 @@ const TermsOfUse = ({
                                         <BrokerSpecificMessage target={real_account_signup_target} />
                                         <Hr />
                                         <SharedMessage />
+                                        <Hr /><Hr />
                                         <Field
                                             component={CheckboxField}
                                             className='terms-of-use__checkbox'
@@ -84,7 +85,6 @@ const TermsOfUse = ({
                                                     components={[
                                                         <StaticUrl
                                                             key={0}
-                                                            className='link'
                                                             href='/terms-and-conditions'
                                                         />,
                                                     ]}

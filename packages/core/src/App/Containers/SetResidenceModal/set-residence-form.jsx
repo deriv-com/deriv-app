@@ -40,6 +40,7 @@ const SetResidenceForm = ({
                                 autoComplete='off'
                                 input_id='dt_core_set-residence-form_signup-residence-select'
                                 className={`${class_prefix}__residence-field`}
+                                input_class_name='bug'
                                 type='text'
                                 label={localize('Choose country')}
                                 error={touched.residence && errors.residence}

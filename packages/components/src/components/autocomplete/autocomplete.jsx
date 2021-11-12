@@ -35,6 +35,7 @@ const Autocomplete = React.memo(props => {
         dropdown_offset,
         error,
         input_id,
+        input_class_name,
         is_alignment_top,
         list_items,
         list_portal_id,
@@ -240,7 +241,7 @@ const Autocomplete = React.memo(props => {
             <div ref={input_wrapper_ref} className='dc-autocomplete__input-field'>
                 <Input
                     {...other_props}
-                    className='dc-autocomplete__field'
+                    className={classNames('dc-autocomplete__field', input_class_name)}
                     error={error}
                     autoComplete={autoComplete}
                     onKeyDown={onKeyPressed}

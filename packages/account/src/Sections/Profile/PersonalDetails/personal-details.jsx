@@ -584,7 +584,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             data-lpignore='true'
                                                             type='text'
                                                             name='first_name'
-                                                            label={localize('First name*')}
+                                                            label={localize('First name')}
                                                             value={values.first_name}
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
@@ -615,7 +615,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             type='text'
                                                             name='first_name'
                                                             id='first_name_mobile'
-                                                            label={localize('First name*')}
+                                                            label={localize('First name')}
                                                             value={values.first_name}
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}

@@ -83,13 +83,13 @@ const WorkspaceGroup = ({
             popover_message={localize('Zoom in')}
             icon='IcZoomIn'
             icon_id='db-toolbar__zoom-in-button'
-            iconOnClick={() => onZoomInOutClick(/* in */ true)}
+            iconOnClick={() => onZoomInOutClick(/* in */ false)}
         />
         <IconButton
             popover_message={localize('Zoom out')}
             icon='IcZoomOut'
             icon_id='db-toolbar__zoom-out'
-            iconOnClick={() => onZoomInOutClick(/* in */ false)}
+            iconOnClick={() => onZoomInOutClick(/* in */ true)}
         />
     </div>
 );

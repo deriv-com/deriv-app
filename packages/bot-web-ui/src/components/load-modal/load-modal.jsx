@@ -38,6 +38,9 @@ const LoadModal = ({
                     <div label='Google Drive'>
                         <GoogleDrive />
                     </div>
+                    <div label='Dropbox'>
+                        <div>Yashim wuz here</div>
+                    </div>
                 </Tabs>
             </MobileFullPageModal>
         );

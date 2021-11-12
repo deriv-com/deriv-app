@@ -399,18 +399,32 @@ const QuickStrategyForm = ({
                     >
                         <Button.Group>
                             {!is_mobile && (
-                                <Button
-                                    type='button'
-                                    id='db-quick-strategy__button-edit'
-                                    text={localize('Create and edit')}
-                                    is_disabled={!is_submit_enabled}
-                                    secondary
-                                    large
-                                    onClick={() => {
-                                        setFieldValue('button', 'edit');
-                                        submitForm();
-                                    }}
-                                />
+                                <React.Fragment>
+                                    <Button
+                                        type='button'
+                                        id='db-quick-strategy__button-edit'
+                                        text={localize('Back')}
+                                        is_disabled={!is_submit_enabled}
+                                        secondary
+                                        large
+                                        onClick={() => {
+                                            setFieldValue('button', 'edit');
+                                            submitForm();
+                                        }}
+                                    />
+                                    <Button
+                                        type='button'
+                                        id='db-quick-strategy__button-edit'
+                                        text={localize('Create and edit')}
+                                        is_disabled={!is_submit_enabled}
+                                        secondary
+                                        large
+                                        onClick={() => {
+                                            setFieldValue('button', 'edit');
+                                            submitForm();
+                                        }}
+                                    />
+                                </React.Fragment>
                             )}
                             <Button
                                 type='button'

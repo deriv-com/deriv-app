@@ -152,7 +152,7 @@ const AccountSignup = ({
                         <Form>
                             {!selected_residence ? (
                                 <ResidenceForm
-                                    header_text={localize('Thanks for verifying your email')}
+                                    header_text={localize('Thanks you for verifying your email')}
                                     class_prefix='account-signup'
                                     errors={errors}
                                     touched={touched}
@@ -176,7 +176,7 @@ const AccountSignup = ({
                                 </ResidenceForm>
                             ) : (
                                 <div className='account-signup__password-selection'>
-                                    <Text as='p' weight='bold' className='account-signup__heading' align='center'>
+                                    <Text as='p' className='account-signup__heading' align='center'>
                                         <Localize i18n_default_text='Keep your account secure with a password' />
                                     </Text>
                                     <Field name='password'>
@@ -207,7 +207,7 @@ const AccountSignup = ({
                                     </Field>
 
                                     <Text as='p' size='xxs' className='account-signup__subtext' align='center'>
-                                        <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                        <Localize i18n_default_text='Strong password can contain as many characters, combine uppercase and lowercase,unicorn symbols and numbers.' />
                                     </Text>
                                     <Field name='email_consent'>
                                         {({ field }) => (

@@ -212,7 +212,7 @@ const PersonalDetails = ({
                                                 required={is_svg || is_dashboard}
                                                 label={
                                                     is_svg || is_dashboard
-                                                        ? localize('First name*')
+                                                        ? localize('First name')
                                                         : localize('First name')
                                                 }
                                                 disabled={disabled_items.includes('first_name')}
@@ -235,7 +235,7 @@ const PersonalDetails = ({
                                                 required={is_svg || is_dashboard}
                                                 label={
                                                     is_svg || is_dashboard
-                                                        ? localize('Date of birth*')
+                                                        ? localize('Date of birth')
                                                         : localize('Date of birth')
                                                 }
                                                 disabled={disabled_items.includes('date_of_birth')}

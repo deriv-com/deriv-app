@@ -47,16 +47,28 @@ const SaveModalForm = ({
                             <div className='modal__content-row'>
                                 <Field name='bot_name'>
                                     {({ field }) => (
-                                        <Input
-                                            {...field}
-                                            className='save-type__input'
-                                            type='text'
-                                            placeholder={localize('Untitled Strategy')}
-                                            error={touched[field.name] && errors[field.name]}
-                                            label={localize('Strategy name')}
-                                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                            onBlur={() => setCurrentFocus(null)}
-                                        />
+                                        <React.Fragment>
+                                            <Input
+                                                {...field}
+                                                className='save-type__input'
+                                                type='text'
+                                                placeholder={localize('Untitled Strategy')}
+                                                error={touched[field.name] && errors[field.name]}
+                                                label={localize('Strategy name')}
+                                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                onBlur={() => setCurrentFocus(null)}
+                                            />
+                                            <Input
+                                                {...field}
+                                                className='save-type__input'
+                                                type='text'
+                                                placeholder={localize('Untitled Strategy')}
+                                                error={touched[field.name] && errors[field.name]}
+                                                label={localize('Strategy name')}
+                                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                onBlur={() => setCurrentFocus(null)}
+                                            />
+                                        </React.Fragment>
                                     )}
                                 </Field>
                             </div>

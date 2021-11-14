@@ -91,7 +91,7 @@ export const RegulatoryInformation = ({ landing_company, is_eu }) => {
 
     return (
         <div className='footer__link'>
-            <Popover alignment='top' message={localize('Regulatory Information')}>
+            <Popover alignment='top' message={localize('Regulatory Information')} zIndex={9999}>
                 <a onClick={() => showModal(true)}>
                     <Icon icon='IcRegulatoryInformation' className='footer__icon ic-deriv__icon' />
                 </a>

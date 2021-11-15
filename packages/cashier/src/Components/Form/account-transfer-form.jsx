@@ -81,7 +81,7 @@ const AccountTransferNote = ({
             return is_dxtrade_allowed ? (
                 <Localize i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts and between your Deriv fiat and Deriv X accounts.' />
             ) : (
-                <Localize i18n_default_text="You'll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts." />
+                <Localize i18n_default_text='You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts.' />
             );
         } else if (transfer_fee === 1) {
             return is_dxtrade_allowed ? (

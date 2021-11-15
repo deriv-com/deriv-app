@@ -301,15 +301,15 @@ export default class TradeStore extends BaseStore {
             if (
                 ['gb', 'im'].includes(this.root_store.client.residence) &&
                 this.root_store.client.is_logged_in &&
-                !localStorage.getItem('hide_close_mx_account_notification')
+                !localStorage.getItem('hide_close_mx_mlt_account_notification')
             ) {
                 this.root_store.common.setError(true, {
-                    type: 'mx_removal',
+                    type: 'mx_mlt_removal',
                 });
             } else if (
                 ['gb', 'im'].includes(this.root_store.client.residence) &&
                 this.root_store.client.is_logged_in &&
-                localStorage.getItem('hide_close_mx_account_notification')
+                localStorage.getItem('hide_close_mx_mlt_account_notification')
             ) {
                 showMXUnavailableError(this.root_store.common.showError);
                 return;
@@ -1087,31 +1087,31 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
             this.prepareTradeStore();
         });
-        // TODO: remove this function when the closure of MX accounts is completed.
-        this.manageMXRemovalNotification();
+        // TODO: remove this function when the closure of MX and MLT accounts is completed.
+        this.manageMxMltRemovalNotification();
     }
 
     @action.bound
-    manageMXRemovalNotification() {
+    manageMxMltRemovalNotification() {
         const client_notifications = this.root_store.client.client_notifications;
         const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages'));
-        const is_uk = this.root_store.client.is_uk;
-        const is_eu = this.root_store.client.is_eu;
-        const is_iom = this.root_store.client.country_standpoint.has_iom_account;
         const is_logged_in = this.root_store.client.is_logged_in;
+        const is_uk = this.root_store.client.is_uk;
+        const has_iom_account = this.root_store.client.has_iom_account;
+        const has_malta_account = this.root_store.client.has_malta_account;
 
-        this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_account' });
+        this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
 
-        if (get_notification_messages !== null && is_logged_in && (is_iom || is_eu || is_uk)) {
+        if (get_notification_messages !== null && is_logged_in && (has_iom_account || has_malta_account)) {
             const get_notification_messages_array = Object.fromEntries(
                 Object.entries(get_notification_messages).map(([key, name]) => {
-                    const new_name = name.filter(message => message !== 'close_mx_account');
+                    const new_name = name.filter(message => message !== 'close_mx_mlt_account');
                     return [key, new_name];
                 })
             );
             localStorage.setItem('notification_messages', JSON.stringify(get_notification_messages_array));
             this.root_store.ui.addNotificationMessage(
-                client_notifications(this.root_store.ui, {}, is_uk, is_eu).close_mx_account
+                client_notifications(this.root_store.ui, {}, is_uk, has_malta_account).close_mx_mlt_account
             );
             reaction(
                 () => this.root_store.ui.notification_messages.length === 0,
@@ -1119,10 +1119,10 @@ export default class TradeStore extends BaseStore {
                     const has_iom_account = this.root_store.client.has_iom_account;
                     const has_malta_account = this.root_store.client.has_malta_account;
                     const hidden_close_account_notification =
-                        parseInt(localStorage.getItem('hide_close_mx_account_notification')) === 1;
+                        parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
                     if ((has_iom_account || has_malta_account) && !hidden_close_account_notification) {
                         this.root_store.ui.addNotificationMessage(
-                            client_notifications(this.root_store.ui, {}, is_uk, is_eu).close_mx_account
+                            client_notifications(this.root_store.ui, {}, is_uk, has_malta_account).close_mx_mlt_account
                         );
                     }
                 }

@@ -3,19 +3,19 @@ import { connect } from 'Stores/connect';
 import { Dialog, Text, Button, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
-import './close-mx-account-modal.scss';
+import './close-mx-mlt-account-modal.scss';
 
-export const CloseMXAccountContent = ({
+export const CloseMxMltAccountContent = ({
     is_uk,
-    is_eu,
     is_fullscreen = false,
-    showCloseMXAccountPopup,
+    showCloseMxMltAccountPopup,
     removeNotificationMessageByKey,
+    standpoint,
 }) => {
     const HeaderText = () => {
         if (is_uk) {
             return <Localize i18n_default_text='Your Gaming account is scheduled to be closed' />;
-        } else if (is_eu) {
+        } else if (standpoint.malta) {
             return <Localize i18n_default_text='Your Options account is scheduled to be closed' />;
         }
         return <Localize i18n_default_text='Your account is scheduled to be closed' />;
@@ -25,7 +25,7 @@ export const CloseMXAccountContent = ({
             return (
                 <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Gaming accounts belonging to our UK clients.' />
             );
-        } else if (is_eu) {
+        } else if (standpoint.malta) {
             return (
                 <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Options accounts belonging to our clients in Europe.' />
             );
@@ -39,7 +39,7 @@ export const CloseMXAccountContent = ({
             return (
                 <Localize i18n_default_text='You are no longer able to trade digital options on any of our platforms. Also, you can’t make deposits into your Gaming account.' />
             );
-        } else if (is_eu) {
+        } else if (standpoint.malta) {
             return (
                 <Localize i18n_default_text='You are no longer able to trade digital options on any of our platforms. Also, you can’t make deposits into your Options account.' />
             );
@@ -53,7 +53,7 @@ export const CloseMXAccountContent = ({
             return (
                 <Localize i18n_default_text='You will lose access to your Gaming account when it gets closed, so be sure to withdraw all your funds. (If you have a CFDs account, you can also transfer the funds from your Gaming account to your CFDs account.)' />
             );
-        } else if (is_eu) {
+        } else if (standpoint.malta) {
             return (
                 <Localize i18n_default_text='You will lose access to your Options account when it gets closed, so be sure to withdraw all your funds. (If you have a CFDs account, you can also transfer the funds from your Options account to your CFDs account.)' />
             );
@@ -65,13 +65,13 @@ export const CloseMXAccountContent = ({
 
     return (
         <>
-            <div className='close-mx-account-header'>
+            <div className='close-mx-mlt-account-header'>
                 <Icon icon='IcAmplifier' />
-                <Text as='h1' weight='bold' className='close-mx-account-header__heading' align='center'>
+                <Text as='h1' weight='bold' className='close-mx-mlt-account-header__heading' align='center'>
                     <HeaderText />
                 </Text>
             </div>
-            <div className='close-mx-account__content'>
+            <div className='close-mx-mlt-account__content'>
                 <Text as='p' size='s'>
                     <ProductLineupText />
                 </Text>
@@ -90,13 +90,13 @@ export const CloseMXAccountContent = ({
                     <OptionsAccountClosedText />
                 </Text>
             </div>
-            <div className='close-mx-account dc-dialog__footer'>
+            <div className='close-mx-mlt-account dc-dialog__footer'>
                 <Button
                     className='continue-button'
                     onClick={() => {
-                        showCloseMXAccountPopup(false);
-                        localStorage.setItem('hide_close_mx_account_notification', '1');
-                        removeNotificationMessageByKey({ key: 'close_mx_account' });
+                        showCloseMxMltAccountPopup(false);
+                        localStorage.setItem('hide_close_mx_mlt_account_notification', '1');
+                        removeNotificationMessageByKey({ key: 'close_mx_mlt_account' });
                         if (is_fullscreen) {
                             window.location.reload();
                         }
@@ -111,32 +111,32 @@ export const CloseMXAccountContent = ({
     );
 };
 
-const CloseMXAccountModal = ({
+const CloseMxMltAccountModal = ({
     is_logged_in,
     is_loading,
     is_uk,
-    is_eu,
-    is_close_mx_account_modal_visible,
+    standpoint,
+    is_close_mx_mlt_account_modal_visible,
     removeNotificationMessageByKey,
-    showCloseMXAccountPopup,
+    showCloseMxMltAccountPopup,
 }) => {
     const [is_visible, setVisible] = React.useState(false);
 
     React.useEffect(() => {
-        if (is_logged_in && is_close_mx_account_modal_visible) {
+        if (is_logged_in && is_close_mx_mlt_account_modal_visible) {
             setVisible(true);
         } else {
             setVisible(false);
         }
-    }, [is_logged_in, is_close_mx_account_modal_visible]);
+    }, [is_logged_in, is_close_mx_mlt_account_modal_visible]);
 
     return (
-        <div className='close-mx-account'>
-            <Dialog is_visible={is_visible} is_loading={is_loading} is_uk={is_uk} is_eu={is_eu}>
-                <CloseMXAccountContent
+        <div className='close-mx-mlt-account'>
+            <Dialog is_visible={is_visible} is_loading={is_loading} is_uk={is_uk} standpoint={standpoint}>
+                <CloseMxMltAccountContent
                     is_uk={is_uk}
-                    is_eu={is_eu}
-                    showCloseMXAccountPopup={showCloseMXAccountPopup}
+                    standpoint={standpoint}
+                    showCloseMxMltAccountPopup={showCloseMxMltAccountPopup}
                     removeNotificationMessageByKey={removeNotificationMessageByKey}
                 />
             </Dialog>
@@ -144,18 +144,18 @@ const CloseMXAccountModal = ({
     );
 };
 
-CloseMXAccountModal.propTypes = {
+CloseMxMltAccountModal.propTypes = {
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
-    is_close_mx_account_modal_visible: PropTypes.bool,
+    is_close_mx_mlt_account_modal_visible: PropTypes.bool,
 };
 
 export default connect(({ client, ui }) => ({
-    is_close_mx_account_modal_visible: ui.is_close_mx_account_modal_visible,
+    is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_uk: client.is_uk,
-    is_eu: client.is_eu,
+    standpoint: client.standpoint,
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
-    showCloseMXAccountPopup: ui.showCloseMXAccountPopup,
-}))(CloseMXAccountModal);
+    showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
+}))(CloseMxMltAccountModal);

@@ -19,9 +19,9 @@ import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}, client = {}, is_uk, is_eu) => {
+export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_account) => {
     const MxMltNotificationHeader = () => {
-        if (is_eu) {
+        if (has_malta_account) {
             return localize('Your Options account is scheduled to be closed');
         } else if (is_uk) {
             return localize('Your Gaming account is scheduled to be closed');
@@ -30,7 +30,7 @@ export const clientNotifications = (ui = {}, client = {}, is_uk, is_eu) => {
     };
 
     const MxMltNotificationText = () => {
-        if (is_eu) {
+        if (has_malta_account) {
             return localize('Withdraw all funds from your Options account.');
         } else if (is_uk) {
             return localize('Withdraw all funds from your Gaming account.');
@@ -53,19 +53,19 @@ export const clientNotifications = (ui = {}, client = {}, is_uk, is_eu) => {
             img_alt: 'DP2P',
             type: 'news',
         },
-        close_mx_account: {
-            key: 'close_mx_account',
+        close_mx_mlt_account: {
+            key: 'close_mx_mlt_account',
             header: MxMltNotificationHeader(),
             message: MxMltNotificationText(),
             secondary_btn: {
                 text: localize('Learn more'),
                 onClick: () => {
-                    ui.showCloseMXAccountPopup(true);
+                    ui.showCloseMxMltAccountPopup(true);
                 },
             },
             img_src: getUrlBase('/public/images/common/close_account_banner.png'),
-            img_alt: 'close mx account',
-            type: 'close_mx',
+            img_alt: 'close mx mlt account',
+            type: 'close_mx_mlt',
         },
         is_virtual: {
             key: 'is_virtual',
@@ -653,7 +653,7 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (client, client_store, ui_store, cashier_store, common_store) => {
+export const handleClientNotifications = async (client, client_store, ui_store, cashier_store, common_store) => {
     const {
         account_settings,
         account_status,
@@ -673,12 +673,12 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
     let has_missing_required_field, has_risk_assessment;
 
     const hidden_close_account_notification =
-        parseInt(localStorage.getItem('hide_close_mx_account_notification')) === 1;
+        parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     if ((has_iom_account || has_malta_account) && !hidden_close_account_notification) {
-        addNotificationMessage(clientNotifications(ui_store, {}, is_uk, is_eu).close_mx_account);
+        addNotificationMessage(clientNotifications(ui_store, {}, is_uk, has_malta_account).close_mx_mlt_account);
     }
 
     if (client && !client.is_virtual) {

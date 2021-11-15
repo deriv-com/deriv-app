@@ -22,14 +22,14 @@ const NotificationsContent = ({
     has_malta_account,
     is_logged_in,
 }) => {
-    // TODO: Remove this useEffect when MX account closure has finished.
+    // TODO: Remove this useEffect when MX and MLT account closure has finished.
     const window_location = window.location;
     React.useEffect(() => {
         if ((has_iom_account || has_malta_account) && is_logged_in) {
-            const get_close_mx_notification = notifications.find(item => item.key === 'close_mx_account');
+            const get_close_mx_mlt_notification = notifications.find(item => item.key === 'close_mx_mlt_account');
             const is_dtrader = getPathname() === 'DTrader';
-            if (!is_dtrader && get_close_mx_notification) {
-                markNotificationMessage({ key: 'close_mx_account' });
+            if (!is_dtrader && get_close_mx_mlt_notification) {
+                markNotificationMessage({ key: 'close_mx_mlt_account' });
             }
         }
     }, [window_location]);
@@ -89,7 +89,7 @@ const AppNotificationMessages = ({
     const notifications = notification_messages.filter(message => {
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
-            ? ['unwelcome', 'contract_sold', 'dp2p', 'tnc', 'deriv_go', 'close_mx_account'].includes(message.key)
+            ? ['unwelcome', 'contract_sold', 'dp2p', 'tnc', 'deriv_go', 'close_mx_mlt_account'].includes(message.key)
             : true;
         return is_not_marked_notification && is_non_hidden_notification;
     });
@@ -133,7 +133,7 @@ AppNotificationMessages.propTypes = {
                 'contract_sold',
                 'news',
                 'announce',
-                'close_mx',
+                'close_mx_mlt',
             ]),
         })
     ),

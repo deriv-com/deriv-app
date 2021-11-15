@@ -5,7 +5,7 @@ import { PageError } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { CloseMXAccountContent } from 'App/Containers/CloseMXAccountModal/close-mx-account-modal.jsx';
+import { CloseMxMltAccountContent } from 'App/Containers/CloseMxMltAccountModal/close-mx-mlt-account-modal.jsx';
 
 const ErrorComponent = ({
     header,
@@ -15,11 +15,10 @@ const ErrorComponent = ({
     should_clear_error_on_click,
     setError,
     showNotificationMessageByKey,
-    showCloseMXAccountPopup,
+    showCloseMxMltAccountPopup,
     removeNotificationMessageByKey,
     type,
     is_iom,
-    is_eu,
     redirect_to = routes.trade,
     should_show_refresh = true,
 }) => {
@@ -36,17 +35,16 @@ const ErrorComponent = ({
 
     const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 
-    if (type === 'mx_removal') {
+    if (type === 'mx_mlt_removal') {
         return (
-            <div className='close-mx-account--is-fullscreen'>
-                <div className='close-mx-account'>
-                    <div className='close-mx-account__content'>
-                        <CloseMXAccountContent
+            <div className='close-mx-mlt-account--is-fullscreen'>
+                <div className='close-mx-mlt-account'>
+                    <div className='close-mx-mlt-account__content'>
+                        <CloseMxMltAccountContent
                             is_iom={is_iom}
-                            is_eu={is_eu}
                             is_fullscreen={true}
                             showNotificationMessageByKey={showNotificationMessageByKey}
-                            showCloseMXAccountPopup={showCloseMXAccountPopup}
+                            showCloseMxMltAccountPopup={showCloseMxMltAccountPopup}
                             removeNotificationMessageByKey={removeNotificationMessageByKey}
                         />
                     </div>
@@ -55,7 +53,7 @@ const ErrorComponent = ({
         );
     }
 
-    if (localStorage.getItem('hide_close_mx_account_notification')) {
+    if (localStorage.getItem('hide_close_mx_mlt_account_notification')) {
         return (
             <PageError
                 header={header || localize('Something’s not right')}
@@ -92,7 +90,6 @@ ErrorComponent.propTypes = {
 
 export default connect(({ client, ui }) => ({
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
-    showCloseMXAccountPopup: ui.showCloseMXAccountPopup,
+    showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
     is_iom: client.residence === 'im',
-    is_eu: client.is_eu,
 }))(ErrorComponent);

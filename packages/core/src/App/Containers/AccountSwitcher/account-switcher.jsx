@@ -76,14 +76,13 @@ const AccountSwitcher = props => {
         return props?.account_list?.length > 4;
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         closeAccountsDialog();
         if (props.is_positions_drawer_on) {
             props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        props.logoutClient().then(() => {
-            props.routeBackInApp(props.history);
-        });
+        props.routeBackInApp(props.history);
+        await props.logoutClient();
     };
 
     const closeAccountsDialog = () => {

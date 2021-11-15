@@ -23,14 +23,21 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
         resubmit_poa: false,
         has_submitted_poa: false,
         document_status: null,
+        is_age_verified: false,
     });
 
     React.useEffect(() => {
         if (!is_switching) {
             WS.authorized.getAccountStatus().then(response => {
                 const { get_account_status } = response;
-                const { allow_document_upload, allow_poa_resubmission, needs_poi, needs_poa, document_status } =
-                    populateVerificationStatus(get_account_status);
+                const {
+                    allow_document_upload,
+                    allow_poa_resubmission,
+                    needs_poi,
+                    needs_poa,
+                    document_status,
+                    is_age_verified,
+                } = populateVerificationStatus(get_account_status);
                 const has_submitted_poa = document_status === PoaStatusCodes.pending && !allow_poa_resubmission;
 
                 setAuthenticationStatus(
@@ -43,6 +50,7 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
                             needs_poa,
                             document_status,
                             has_submitted_poa,
+                            is_age_verified,
                         },
                     },
                     () => {
@@ -69,10 +77,14 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
         needs_poi,
         resubmit_poa,
         has_submitted_poa,
+        is_age_verified,
     } = authentication_status;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (!allow_document_upload || (!allow_poa_resubmission && document_status === 'none' && is_mx_mlt))
+    if (
+        (!allow_document_upload && is_age_verified) ||
+        (!allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
+    )
         return <NotRequired />;
     if (has_submitted_poa) return <Submitted needs_poi={needs_poi} />;
     if (resubmit_poa || allow_poa_resubmission) {

@@ -16,36 +16,48 @@ const CryptoDeposit = ({
     is_deposit_address_loading,
     recentTransactionOnMount,
     pollApiForDepositAddress,
+    setIsDeposit,
 }) => {
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
 
     React.useEffect(() => {
-        return () => pollApiForDepositAddress(false);
+        setIsDeposit(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        pollApiForDepositAddress(false);
     }, [pollApiForDepositAddress]);
 
     if (is_deposit_address_loading) {
-        return <Loading is_fullscreen={false} />;
+        return <Loading is_fullscreen />;
     }
 
     const currency_name = getCurrencyName(currency);
     const currency_display_code = CryptoConfig.get()[currency].display_code;
 
-    const header_note =
-        currency === 'USDC' || currency === 'eUSDT' ? (
+    let header_note;
+    if (['USDC', 'eUSDT'].includes(currency)) {
+        header_note = (
             <Localize
                 i18n_default_text='To avoid loss of funds, please <0>do not send</0> ETH, and <1>do not use</1> Binance Chain (BNB) and Binance Smart Chain (BSC) networks.'
                 components={[<strong key={0} />, <strong key={1} />]}
             />
-        ) : currency === 'ETH' ? (
+        );
+    } else if (currency === 'ETH') {
+        header_note = (
             <Localize
                 i18n_default_text='To avoid loss of funds, please <0>do not send</0> ERC20 tokens, and <1>do not use</1> Binance Chain (BNB) and Binance Smart Chain (BSC) networks.'
                 components={[<strong key={0} />, <strong key={1} />]}
             />
-        ) : (
+        );
+    } else {
+        header_note = (
             <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
         );
+    }
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
@@ -74,8 +86,8 @@ const CryptoDeposit = ({
                 {api_error ? (
                     <div className='crypto-api-error'>
                         <Text as='p' align='center' size='xs' className='crypto-api-error__text'>
-                            <Icon icon='IcAlertWarning' />
-                            <Localize i18n_default_text='Our server cannot retrieve an address' />
+                            <Icon width={30} height={20} icon='IcAlertWarning' />
+                            <Localize i18n_default_text="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later." />
                         </Text>
                         <Button
                             text={localize('Refresh')}
@@ -138,6 +150,7 @@ CryptoDeposit.propTypes = {
     is_deposit_address_loading: PropTypes.bool,
     recentTransactionOnMount: PropTypes.func,
     pollApiForDepositAddress: PropTypes.func,
+    setIsDeposit: PropTypes.func,
 };
 
 export default connect(({ modules, client }) => ({
@@ -148,4 +161,5 @@ export default connect(({ modules, client }) => ({
     is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
+    setIsDeposit: modules.cashier.setIsDeposit,
 }))(CryptoDeposit);

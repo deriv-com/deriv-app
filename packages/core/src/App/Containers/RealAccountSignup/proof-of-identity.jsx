@@ -1,11 +1,10 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
-import { ProofOfIdentityContainer } from '@deriv/account';
-import { isDesktop, isMobile } from '@deriv/shared';
+import ProofOfIdentityContainer from '@deriv/account';
+import { AutoHeightWrapper, FormSubmitButton } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import WS from 'Services/ws-methods';
 
 class ProofOfIdentityForm extends React.PureComponent {
     state = {
@@ -41,22 +40,11 @@ class ProofOfIdentityForm extends React.PureComponent {
                             <form ref={setRef} className='cfd-proof-of-identity' onSubmit={handleSubmit}>
                                 <div className='details-form'>
                                     <input type='hidden' name='poi_state' value={this.state.poi_state} readOnly />
-                                    <Div100vhContainer
-                                        className='cfd-proof-of-identity__fields'
-                                        height_offset='180px'
-                                        is_disabled={isDesktop()}
-                                    >
-                                        <ProofOfIdentityContainer
-                                            {...this.props}
-                                            serviceToken={WS.serviceToken}
-                                            notificationEvent={WS.notificationEvent}
-                                            getAccountStatus={WS.authorized.getAccountStatus}
-                                            height={height}
-                                            onStateChange={this.onStateChange}
-                                            is_trading_button_enabled={false}
-                                            is_description_enabled={false}
-                                        />
-                                    </Div100vhContainer>
+                                    <ProofOfIdentityContainer
+                                        height={height}
+                                        onStateChange={this.onStateChange}
+                                        is_from_external={true}
+                                    />
                                     <FormSubmitButton
                                         has_cancel
                                         cancel_label={localize('Previous')}

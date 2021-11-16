@@ -77,7 +77,7 @@ const SaveModalForm = ({
                                         id='local'
                                         label={
                                             <IconRadio
-                                                text={localize('Local')}
+                                                text={localize('Locallllll')}
                                                 icon={<Icon icon={is_mobile ? 'IcMobile' : 'IcDesktop'} size={48} />}
                                             />
                                         }

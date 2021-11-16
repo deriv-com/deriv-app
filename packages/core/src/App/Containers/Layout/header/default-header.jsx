@@ -33,7 +33,6 @@ const DefaultHeader = ({
     is_acc_switcher_disabled,
     is_acc_switcher_on,
     is_app_disabled,
-    is_belgium,
     is_dark_mode,
     is_eu,
     is_logged_in,
@@ -164,7 +163,7 @@ const DefaultHeader = ({
                             enableApp={enableApp}
                             is_acc_switcher_on={is_acc_switcher_on}
                             is_acc_switcher_disabled={is_acc_switcher_disabled}
-                            is_belgium={is_belgium}
+                            country_standpoint={country_standpoint}
                             is_eu={is_eu}
                             is_notifications_visible={is_notifications_visible}
                             is_logged_in={is_logged_in}
@@ -242,7 +241,6 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
-    is_belgium: client.is_belgium,
     is_eu: client.is_eu,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,

@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parser: 'babel-eslint',
-  plugins: ['prettier'],
+  plugins: ['prettier', 'testing-library'],
   env: {
     es6: true,
     browser: true,
@@ -54,14 +54,15 @@ module.exports = {
 
     'import/no-useless-path-segments': 'error',
     'import/order': [
-      'error',
+      0, // TODO: we should turn this to error after we sorted our import orders.
       {
         groups: [['builtin', 'external'], 'internal', 'sibling', 'parent'],
         'newlines-between': 'ignore',
       },
     ],
     'import/prefer-default-export': 0,
-    'import/extensions': ['error', 'never', { jsx: 'always', json: 'always' }],
+    'import/extensions': ['warn', 'never', { jsx: 'always', json: 'always' }],
+    'no-sequences': ['warn'],
     'import/no-unresolved': [
       2,
       { ignore: ['@deriv/components', '@deriv/shared'] },
@@ -87,6 +88,7 @@ module.exports = {
     'binary',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:jest-dom/recommended',
   ],
   parserOptions: {
     ecmaVersion: 6,
@@ -99,4 +101,10 @@ module.exports = {
       version: '16',
     },
   },
+  overrides: [
+    {
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+      extends: ['plugin:testing-library/react'],
+    },
+  ],
 };

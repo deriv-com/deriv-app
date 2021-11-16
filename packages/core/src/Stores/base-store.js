@@ -57,13 +57,8 @@ export default class BaseStore {
      *     @property {String}   store_name - Explicit store name for browser application storage (to bypass minification)
      */
     constructor(options = {}) {
-        const {
-            root_store,
-            local_storage_properties,
-            session_storage_properties,
-            validation_rules,
-            store_name,
-        } = options;
+        const { root_store, local_storage_properties, session_storage_properties, validation_rules, store_name } =
+            options;
 
         Object.defineProperty(this, 'root_store', {
             enumerable: false,

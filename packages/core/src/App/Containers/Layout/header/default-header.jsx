@@ -163,7 +163,6 @@ const DefaultHeader = ({
                             enableApp={enableApp}
                             is_acc_switcher_on={is_acc_switcher_on}
                             is_acc_switcher_disabled={is_acc_switcher_disabled}
-                            country_standpoint={country_standpoint}
                             is_eu={is_eu}
                             is_notifications_visible={is_notifications_visible}
                             is_logged_in={is_logged_in}

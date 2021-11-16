@@ -1,13 +1,9 @@
-import React from 'react';
 import { observable, action, reaction, computed, runInAction } from 'mobx';
-import { localize, Localize } from '@deriv/translations';
-import { Checkbox, Text } from '@deriv/components';
-import { getRoundedNumber } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
-import { storeSetting, getSetting } from 'Utils/settings';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -25,8 +21,6 @@ export default class RunPanelStore {
     @observable is_drawer_open = true;
     @observable is_dialog_open = false;
     @observable is_sell_requested = false;
-    @observable is_reset_checkbox = getSetting('is_reset_checkbox');
-    @observable remember_me = false;
 
     run_id = '';
 
@@ -38,28 +32,8 @@ export default class RunPanelStore {
     @computed
     get statistics() {
         let total_runs = 0;
-        let runs = 0;
-        const { transactions } = this.root_store;
-
-        const transactionsPerRun = transactions.transactionsPerRun();
-        let statisticsPerRun;
-        if (transactionsPerRun) {
-            statisticsPerRun = transactionsPerRun.reduce(
-                (stats, { data: trx }) => {
-                    if (trx.is_completed) {
-                        stats.profit_per_run += trx.profit;
-                        runs += 1;
-                    }
-                    return stats;
-                },
-                {
-                    profit_per_run: 0,
-                    runs: 0,
-                }
-            );
-        }
-
-        const statistics = transactions.transactions.reduce(
+        const { transactions } = this.root_store.transactions;
+        const statistics = transactions.reduce(
             (stats, { data: trx }) => {
                 if (trx.is_completed) {
                     if (trx.profit > 0) {
@@ -68,6 +42,7 @@ export default class RunPanelStore {
                     } else {
                         stats.lost_contracts += 1;
                     }
+
                     stats.total_profit += trx.profit;
                     stats.total_stake += trx.buy_price;
                     total_runs += 1;
@@ -86,8 +61,6 @@ export default class RunPanelStore {
         );
 
         statistics.number_of_runs = total_runs;
-        statistics.runs = runs;
-        statistics.profit_per_run = statisticsPerRun ? statisticsPerRun.profit_per_run : 0;
         return statistics;
     }
 
@@ -113,68 +86,10 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    async handleResetCheckbox() {
-        this.is_reset_checkbox = !this.is_reset_checkbox;
-        storeSetting('is_reset_checkbox', this.is_reset_checkbox);
-    }
-
-    @action.bound
-    async handleRememberme() {
-        this.remember_me = !this.remember_me;
-        storeSetting('remember_me', this.remember_me);
-    }
-
-    @action.bound
-    async showResetBotDialog() {
-        this.onOkButtonClick = () => {
-            this.is_reset_checkbox = true;
-            storeSetting('is_reset_checkbox', this.is_reset_checkbox);
-            this.onCloseDialog();
-            this.onRunButtonClick();
-        };
-        this.onCancelButtonClick = () => {
-            this.onCloseDialog();
-            this.onRunButtonClick();
-        };
-        this.dialog_options = {
-            title: (
-                <Text size='xs' as='p' className='run-panel__stat--remember-me-header'>
-                    {localize('Reset stats')}
-                </Text>
-            ),
-            message: (
-                <div>
-                    <Text size='xs' as='p'>
-                        {localize('Do you want to reset your stats every time you run your bot?')}
-                    </Text>
-                    <Text size='xs' as='p' className='run-panel__stat--remember-me-content'>
-                        <Localize
-                            i18n_default_text='<0>Note:</0> Your total stake, payout, profit/loss, number of runs, wins, and losses will be reset to zero.'
-                            components={[<strong key={0} />]}
-                        />
-                    </Text>
-                    <Checkbox
-                        className='run-panel__stat--remember-me-checkbox'
-                        value={this.remember_me}
-                        onChange={this.handleRememberme}
-                        label={localize('Remember my choice and don’t ask me again')}
-                    />
-                </div>
-            ),
-        };
-        this.dialog_options.cancel_button_text = 'No';
-        this.dialog_options.ok_button_text = 'Yes';
-        this.is_dialog_open = true;
-    }
-
-    @action.bound
     async onRunButtonClick() {
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
-        this.clearTransactionsPerRun();
-        if (getSetting('is_reset_checkbox')) {
-            this.clearStat();
-        }
+
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -254,12 +169,6 @@ export default class RunPanelStore {
         summary_card.clear();
         transactions.clear();
         this.setContractStage(contract_stages.NOT_RUNNING);
-    }
-
-    @action.bound
-    clearTransactionsPerRun() {
-        const { transactions } = this.root_store;
-        transactions.clearTransactionsPerRun();
     }
 
     @action.bound
@@ -469,29 +378,10 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    onBotTradeAgain(result) {
-        if (result.is_continue === false) {
+    onBotTradeAgain(is_trade_again) {
+        if (!is_trade_again) {
             this.onStopButtonClick();
-            return false;
         }
-        const { client } = this.root_store.core;
-        const profit = getRoundedNumber(Number(this.statistics.profit_per_run));
-        if (
-            (result.is_sl_enabled && profit < 0 && Math.abs(profit) >= result.stop_loss) ||
-            (result.is_tp_enabled && profit >= 0 && profit >= result.take_profit)
-        ) {
-            const message = `Your ${
-                profit < 0 ? 'stop loss' : 'take profit'
-            } level has been reached and your bot has stopped. Your ${profit < 0 ? 'loss' : 'profit'} after ${
-                this.statistics.runs
-            } ${this.statistics.runs > 1 ? 'runs' : 'run'} is ${profit} ${client.currency}
-            `;
-
-            this.showErrorMessage(message);
-            this.onStopButtonClick();
-            return false;
-        }
-        return true;
     }
 
     @action.bound
@@ -535,10 +425,6 @@ export default class RunPanelStore {
 
     clear = () => {
         observer.emit('statistics.clear');
-    };
-
-    clearProfitPerRun = () => {
-        observer.emit('statistics.clearProfitPerRun');
     };
 
     @action.bound

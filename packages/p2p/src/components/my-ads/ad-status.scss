@@ -11,11 +11,6 @@
         }
     }
 
-    &--days_until_archive {
-        display: block;
-        max-width: 80%;
-    }
-
     &--inactive {
         border: 1px solid var(--status-danger);
         border-radius: 0.2rem;

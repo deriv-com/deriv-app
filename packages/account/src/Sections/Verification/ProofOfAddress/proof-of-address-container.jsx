@@ -82,8 +82,8 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (
-        (!allow_document_upload && !is_age_verified) ||
-        (!allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
+        !allow_document_upload ||
+        (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
     )
         return <NotRequired />;
     if (has_submitted_poa) return <Submitted needs_poi={needs_poi} />;

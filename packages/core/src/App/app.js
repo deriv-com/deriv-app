@@ -61,7 +61,6 @@ const initStore = notification_messages => {
     root_store.client.init();
     root_store.ui.init(notification_messages);
     root_store.common.init();
-    root_store.pushwoosh.init();
 
     return root_store;
 };

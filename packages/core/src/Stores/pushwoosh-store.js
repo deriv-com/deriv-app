@@ -1,4 +1,4 @@
-import { action } from 'mobx';
+import { action, observable, when } from 'mobx';
 import { Pushwoosh } from '@deriv/web-push-notifications';
 import { getAppId, urlForCurrentDomain } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -12,15 +12,26 @@ export default class PushwooshStore extends BaseStore {
 
     constructor(root_store) {
         super({ root_store });
+        const onUserInteraction = e => {
+            this.approveUserInteracted();
+            e.currentTarget.removeEventListener('click', onUserInteraction);
+            e.currentTarget.removeEventListener('touchend', onUserInteraction);
+        };
+        document.addEventListener('click', onUserInteraction);
+        document.addEventListener('touchend', onUserInteraction);
+        when(() => this.user_interacted, this.init);
     }
-
+    @observable user_interacted = false;
+    @action.bound
+    approveUserInteracted = () => {
+        this.user_interacted = true;
+    };
     /**
      * Pushes initialize event to pushwoosh
      */
     @action.bound
     init = () => {
         if (!this.is_applicable && this.has_initialized) return;
-
         this.push_woosh.push([
             'init',
             {

@@ -293,32 +293,24 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async setActiveSymbols() {
         const has_malta_account = this.root_store.client.has_malta_account;
-        const is_maltainvest    = this.root_store.client.landing_company_shortcode === 'maltainvest';
-        const is_logged_in      = this.root_store.client.is_logged_in;
-        const is_gb_or_im       =  ['gb', 'im'].includes(this.root_store.client.residence);
-        const is_virtual        = this.root_store.client.landing_company_shortcode === 'virtual'
-        const is_malta          = this.root_store.client.landing_company_shortcode === 'malta';
-        const showError         = this.root_store.common.showError;
-        const setError          = this.root_store.common.setError;
+        const is_maltainvest = this.root_store.client.landing_company_shortcode === 'maltainvest';
+        const is_logged_in = this.root_store.client.is_logged_in;
+        const is_gb_or_im = ['gb', 'im'].includes(this.root_store.client.residence);
+        const is_virtual = this.root_store.client.landing_company_shortcode === 'virtual';
+        const is_malta = this.root_store.client.landing_company_shortcode === 'malta';
+        const showError = this.root_store.common.showError;
+        const setError = this.root_store.common.setError;
         const { active_symbols, error } = await WS.authorized.activeSymbols();
         if (error) {
             showError({ message: localize('Trading is unavailable at this time.') });
             return;
         } else if (!active_symbols || !active_symbols.length) {
             await WS.wait('get_settings');
-            if (
-                is_gb_or_im &&
-                is_logged_in &&
-                !localStorage.getItem('hide_close_mx_account_notification')
-            ) {
+            if (is_gb_or_im && is_logged_in && !localStorage.getItem('hide_close_mx_account_notification')) {
                 setError(true, {
                     type: 'mx_removal',
                 });
-            } else if (
-                is_gb_or_im && 
-                is_logged_in &&
-                localStorage.getItem('hide_close_mx_account_notification')
-            ) {
+            } else if (is_gb_or_im && is_logged_in && localStorage.getItem('hide_close_mx_account_notification')) {
                 showMxMltUnavailableError(showError);
                 return;
             } else if (is_malta && is_logged_in) {

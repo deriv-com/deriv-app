@@ -45,7 +45,7 @@ export const showMxMltUnavailableError = flow(function* (showError, has_malta_ac
             clients_country: clients_country_text,
         });
     } else {
-        header = localize("Sorry, trading is unavailable in your current location.");
+        header = localize('Sorry, trading is unavailable in your current location.');
     }
 
     showError({

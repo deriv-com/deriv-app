@@ -43,6 +43,7 @@ Contract.propTypes = {
     is_digit_view: PropTypes.bool,
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func,
+    symbol: PropTypes.string,
 };
 
 export default connect(({ modules }) => ({

@@ -36,11 +36,11 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
                 <span className='account-transfer__transfer-details-to'>
                     <Icon icon='IcClient' />
                     <span className='cashier__transferred-details'>
-                        <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
+                        <Text size='xs' line_height='xs' weight='bold' align='center' className='cashier__text--bold'>
                             {receipt.client_name}
                         </Text>
                         <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
-                            {receipt.client_id}
+                            {receipt.client_id.toUpperCase()}
                         </Text>
                     </span>
                 </span>

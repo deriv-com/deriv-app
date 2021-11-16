@@ -12,19 +12,19 @@ export default class PushwooshStore extends BaseStore {
 
     constructor(root_store) {
         super({ root_store });
-        const onUserInteraction = e => {
-            this.approveUserInteracted();
-            e.currentTarget.removeEventListener('click', onUserInteraction);
-            e.currentTarget.removeEventListener('touchend', onUserInteraction);
-        };
-        document.addEventListener('click', onUserInteraction);
-        document.addEventListener('touchend', onUserInteraction);
+        document.addEventListener('click', this.onUserInteraction);
+        document.addEventListener('touchend', this.onUserInteraction);
         when(() => this.user_interacted, this.init);
     }
     @observable user_interacted = false;
     @action.bound
     approveUserInteracted = () => {
         this.user_interacted = true;
+    };
+    onUserInteraction = e => {
+        this.approveUserInteracted();
+        e.currentTarget.removeEventListener('click', this.onUserInteraction);
+        e.currentTarget.removeEventListener('touchend', this.onUserInteraction);
     };
     /**
      * Pushes initialize event to pushwoosh

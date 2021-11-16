@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 
 export const HelpCentre = () => (
     <StaticUrl href='/help-centre/' id='dt_help_centre' aria-label={localize('Help centre')} className='footer__link'>
-        <Popover classNameBubble='help-centre__tooltip' alignment='top' message={localize('Help centre')}>
+        <Popover classNameBubble='help-centre__tooltip' alignment='top' message={localize('Help centre')} zIndex={9999}>
             <Icon icon='IcHelpCentre' className='footer__icon' />
         </Popover>
     </StaticUrl>

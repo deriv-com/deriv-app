@@ -78,6 +78,8 @@ const CFDRealAccountDisplay = ({
         has_required_credentials
     );
 
+    const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+
     const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
 
     const financial_specs = React.useMemo(() => {
@@ -264,7 +266,7 @@ const CFDRealAccountDisplay = ({
             key='real.financial'
             has_cfd_account={has_cfd_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
-            title={is_eu ? localize('CFDs') : localize('Financial')}
+            title={is_eu_user ? localize('CFDs') : localize('Financial')}
             type={{
                 category: 'real',
                 type: 'financial',
@@ -278,9 +280,9 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu)}
+            descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
             specs={financial_specs}
-            is_eu={is_eu}
+            is_eu={is_eu_user}
             is_logged_in={is_logged_in}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}

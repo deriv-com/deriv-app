@@ -674,6 +674,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
 
     const hidden_close_account_notification =
         parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
+    const { withdrawal_locked, deposit_locked } = getStatusValidations(account_status.status);
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
@@ -702,7 +703,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
 
         has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
         if (has_missing_required_field) {
-            addNotificationMessage(clientNotifications(ui_store).required_fields);
+            addNotificationMessage(clientNotifications(ui_store).required_fields(withdrawal_locked, deposit_locked));
         }
     }
 

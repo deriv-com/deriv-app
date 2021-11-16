@@ -360,7 +360,7 @@ const CreateAdForm = () => {
                 is_open={my_ads_store.is_api_error_modal_visible}
                 small
                 has_close_icon={false}
-                title={localize('Something’s not right')}
+                title={my_ads_store.create_ad_error_message_title}
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>

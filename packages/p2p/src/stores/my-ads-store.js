@@ -16,6 +16,7 @@ export default class MyAdsStore extends BaseStore {
     @observable api_table_error_message = '';
     @observable available_balance = null;
     @observable contact_info = '';
+    @observable create_ad_error_message_title = '';
     @observable default_advert_description = '';
     @observable delete_error_message = '';
     @observable error_message = '';
@@ -120,6 +121,25 @@ export default class MyAdsStore extends BaseStore {
             requestWS(create_advert).then(response => {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads
                 if (response.error) {
+                    if (response.error.code === 'DuplicateAdvert') {
+                        this.setCreateAdErrorMessageTitle(localize('You already have an ad with this rate'));
+                        this.setApiErrorMessage(
+                            localize(
+                                'You already have an ad with the same exchange rate for this currency pair and order type. Please set a different rate for your ad.'
+                            )
+                        );
+
+                        return;
+                    } else if (response.error.code === 'AdvertSameLimits') {
+                        this.setCreateAdErrorMessageTitle(localize('You already have an ad with this range'));
+                        this.setApiErrorMessage(
+                            localize(
+                                'Please set a different minimum and/or maximum order limit. The range of your ad should not overlap with any of your active ads.'
+                            )
+                        );
+                        return;
+                    }
+                    this.setCreateAdErrorMessageTitle(localize("Something's not right"));
                     this.setApiErrorMessage(response.error.message);
                     setSubmitting(false);
                 } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
@@ -265,6 +285,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setContactInfo(contact_info) {
         this.contact_info = contact_info;
+    }
+
+    @action.bound
+    setCreateAdErrorMessageTitle(create_ad_error_message_title) {
+        this.create_ad_error_message_title = create_ad_error_message_title;
     }
 
     @action.bound

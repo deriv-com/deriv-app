@@ -8,6 +8,7 @@ import { connect } from 'Stores/connect';
 import { CloseMXAccountContent } from 'App/Containers/CloseMXAccountModal/close-mx-account-modal.jsx';
 
 const ErrorComponent = ({
+    has_malta_account,
     header,
     message,
     redirect_label,
@@ -79,6 +80,7 @@ const ErrorComponent = ({
             buttonOnClick={redirectOnClick || (() => location.reload())}
             should_clear_error_on_click={should_clear_error_on_click}
             setError={setError}
+            has_malta_account={has_malta_account}
         />
     );
 };
@@ -92,4 +94,5 @@ export default connect(({ client, ui }) => ({
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     showCloseMXAccountPopup: ui.showCloseMXAccountPopup,
     is_iom: client.residence === 'im',
+    has_malta_account: client.has_malta_account,
 }))(ErrorComponent);

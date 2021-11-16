@@ -23,7 +23,7 @@ import {
     showUnavailableLocationError,
     isMarketClosed,
     findFirstOpenMarket,
-    showMXUnavailableError,
+    showMxMltUnavailableError,
 } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
@@ -292,32 +292,43 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async setActiveSymbols() {
+        const has_malta_account = this.root_store.client.has_malta_account;
+        const is_maltainvest    = this.root_store.client.landing_company_shortcode === 'maltainvest';
+        const is_logged_in      = this.root_store.client.is_logged_in;
+        const is_gb_or_im       =  ['gb', 'im'].includes(this.root_store.client.residence);
+        const is_virtual        = this.root_store.client.landing_company_shortcode === 'virtual'
+        const is_malta          = this.root_store.client.landing_company_shortcode === 'malta';
+        const showError         = this.root_store.common.showError;
+        const setError          = this.root_store.common.setError;
         const { active_symbols, error } = await WS.authorized.activeSymbols();
         if (error) {
-            this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
+            showError({ message: localize('Trading is unavailable at this time.') });
             return;
         } else if (!active_symbols || !active_symbols.length) {
             await WS.wait('get_settings');
             if (
-                ['gb', 'im'].includes(this.root_store.client.residence) &&
-                this.root_store.client.is_logged_in &&
+                is_gb_or_im &&
+                is_logged_in &&
                 !localStorage.getItem('hide_close_mx_account_notification')
             ) {
-                this.root_store.common.setError(true, {
+                setError(true, {
                     type: 'mx_removal',
                 });
             } else if (
-                ['gb', 'im'].includes(this.root_store.client.residence) &&
-                this.root_store.client.is_logged_in &&
+                is_gb_or_im && 
+                is_logged_in &&
                 localStorage.getItem('hide_close_mx_account_notification')
             ) {
-                showMXUnavailableError(this.root_store.common.showError);
+                showMxMltUnavailableError(showError);
                 return;
-            } else if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
-                showUnavailableLocationError(this.root_store.common.showError, this.root_store.client.is_logged_in);
+            } else if (is_malta && is_logged_in) {
+                showMxMltUnavailableError(showError, has_malta_account);
                 return;
-            } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
-                showDigitalOptionsUnavailableError(this.root_store.common.showError, {
+            } else if (!is_maltainvest && !is_virtual) {
+                showUnavailableLocationError(showError, is_logged_in);
+                return;
+            } else if (is_maltainvest) {
+                showDigitalOptionsUnavailableError(showError, {
                     text: localize(
                         'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
                     ),

@@ -47,7 +47,7 @@ const AccountSwitcher = props => {
         if (scroll_ref.current && (is_dmt5_real_visible || is_dxtrade_real_visible)) {
             scroll_ref.current.scrollIntoView({
                 behavior: 'smooth',
-                block: getMaxAccountsDisplayed() ? 'end' : 'start',
+                block: getMaxAccountsDisplayed() && 'start',
                 inline: 'nearest',
             });
         }

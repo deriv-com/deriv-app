@@ -582,6 +582,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_belgium() {
+        return this.residence === 'be';
+    }
+
+    @computed
     get country_standpoint() {
         const result = {
             is_united_kingdom: this.is_uk,

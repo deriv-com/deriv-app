@@ -171,10 +171,13 @@ class CFDDashboard extends React.Component {
     };
 
     isSyntheticCardVisible = account_category => {
-        const { current_list, platform, is_eu, landing_companies, is_logged_in } = this.props;
+        const { current_list, platform, is_eu, is_eu_country, landing_companies, is_logged_in } = this.props;
         const has_synthetic_account = Object.keys(current_list).some(key =>
             key.startsWith(`${platform}.${account_category}.synthetic`)
         );
+
+        // Hiding card for logged out EU users
+        if (!is_logged_in && is_eu_country) return false;
 
         if (is_eu && !has_synthetic_account) return false;
 
@@ -195,7 +198,10 @@ class CFDDashboard extends React.Component {
     };
 
     isFinancialStpCardVisible = () => {
-        const { platform, landing_companies, is_logged_in } = this.props;
+        const { platform, landing_companies, is_logged_in, is_eu_country } = this.props;
+
+        // Hiding card for logged out EU users
+        if (!is_logged_in && is_eu_country) return false;
 
         return (
             (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === CFD_PLATFORMS.MT5
@@ -379,6 +385,7 @@ class CFDDashboard extends React.Component {
                                         <div label={localize('Demo account')} data-hash='demo'>
                                             <CFDDemoAccountDisplay
                                                 is_eu={is_eu}
+                                                is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}
                                                 has_cfd_account_error={

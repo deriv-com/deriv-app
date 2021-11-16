@@ -10,12 +10,12 @@ export const CloseMxMltAccountContent = ({
     is_fullscreen = false,
     showCloseMxMltAccountPopup,
     removeNotificationMessageByKey,
-    standpoint,
+    has_malta_account,
 }) => {
     const HeaderText = () => {
         if (is_uk) {
             return <Localize i18n_default_text='Your Gaming account is scheduled to be closed' />;
-        } else if (standpoint.malta) {
+        } else if (has_malta_account) {
             return <Localize i18n_default_text='Your Options account is scheduled to be closed' />;
         }
         return <Localize i18n_default_text='Your account is scheduled to be closed' />;
@@ -25,7 +25,7 @@ export const CloseMxMltAccountContent = ({
             return (
                 <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Gaming accounts belonging to our UK clients.' />
             );
-        } else if (standpoint.malta) {
+        } else if (has_malta_account) {
             return (
                 <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Options accounts belonging to our clients in Europe.' />
             );
@@ -39,7 +39,7 @@ export const CloseMxMltAccountContent = ({
             return (
                 <Localize i18n_default_text='You are no longer able to trade digital options on any of our platforms. Also, you can’t make deposits into your Gaming account.' />
             );
-        } else if (standpoint.malta) {
+        } else if (has_malta_account) {
             return (
                 <Localize i18n_default_text='You are no longer able to trade digital options on any of our platforms. Also, you can’t make deposits into your Options account.' />
             );
@@ -53,7 +53,7 @@ export const CloseMxMltAccountContent = ({
             return (
                 <Localize i18n_default_text='You will lose access to your Gaming account when it gets closed, so be sure to withdraw all your funds. (If you have a CFDs account, you can also transfer the funds from your Gaming account to your CFDs account.)' />
             );
-        } else if (standpoint.malta) {
+        } else if (has_malta_account) {
             return (
                 <Localize i18n_default_text='You will lose access to your Options account when it gets closed, so be sure to withdraw all your funds. (If you have a CFDs account, you can also transfer the funds from your Options account to your CFDs account.)' />
             );
@@ -115,7 +115,7 @@ const CloseMxMltAccountModal = ({
     is_logged_in,
     is_loading,
     is_uk,
-    standpoint,
+    has_malta_account,
     is_close_mx_mlt_account_modal_visible,
     removeNotificationMessageByKey,
     showCloseMxMltAccountPopup,
@@ -132,10 +132,10 @@ const CloseMxMltAccountModal = ({
 
     return (
         <div className='close-mx-mlt-account'>
-            <Dialog is_visible={is_visible} is_loading={is_loading} is_uk={is_uk} standpoint={standpoint}>
+            <Dialog is_visible={is_visible} is_loading={is_loading} is_uk={is_uk} has_malta_account={has_malta_account}>
                 <CloseMxMltAccountContent
                     is_uk={is_uk}
-                    standpoint={standpoint}
+                    has_malta_account={has_malta_account}
                     showCloseMxMltAccountPopup={showCloseMxMltAccountPopup}
                     removeNotificationMessageByKey={removeNotificationMessageByKey}
                 />
@@ -155,7 +155,7 @@ export default connect(({ client, ui }) => ({
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_uk: client.is_uk,
-    standpoint: client.standpoint,
+    has_malta_account: client.has_malta_account,
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
 }))(CloseMxMltAccountModal);

@@ -42,6 +42,7 @@ const ErrorComponent = ({
                 <div className='close-mx-mlt-account'>
                     <div className='close-mx-mlt-account__content'>
                         <CloseMxMltAccountContent
+                            has_malta_account={has_malta_account}
                             is_iom={is_iom}
                             is_fullscreen={true}
                             showNotificationMessageByKey={showNotificationMessageByKey}

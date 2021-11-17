@@ -306,7 +306,7 @@ export default class TradeStore extends BaseStore {
             return;
         } else if (!active_symbols || !active_symbols.length) {
             await WS.wait('get_settings');
-            if (is_gb_or_im && is_logged_in && !localStorage.getItem('hide_close_mx_account_notification')) {
+            if ((is_gb_or_im || has_malta_account) && is_logged_in && !localStorage.getItem('hide_close_mx_account_notification')) {
                 setError(true, {
                     type: 'mx_mlt_removal',
                 });

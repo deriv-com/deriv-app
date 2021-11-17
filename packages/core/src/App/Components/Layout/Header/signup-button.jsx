@@ -9,7 +9,7 @@ const SignupButton = ({ className, is_dashboard }) => (
         id='dt_signup_button'
         className={className}
         has_effect
-        text={localize('Sign up')}
+        text={localize('Sign up on DTrader')}
         onClick={() => redirectToSignUp({ is_dashboard })}
         primary
     />

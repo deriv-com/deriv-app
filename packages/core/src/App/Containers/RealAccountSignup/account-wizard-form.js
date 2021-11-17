@@ -26,5 +26,6 @@ export const getItems = props => {
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
         ...(shouldShowFinancialDetails(props) ? [financialDetailsConfig(props, FinancialDetails)] : []),
         termsOfUseConfig(props, TermsOfUse),
+        termsOfUseConfig(props, TermsOfUse),
     ];
 };

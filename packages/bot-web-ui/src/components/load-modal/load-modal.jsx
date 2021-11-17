@@ -62,6 +62,9 @@ const LoadModal = ({
                     <div label={localize('Local')}>
                         <Local />
                     </div>
+                    <div label='Dropbox'>
+                        <GoogleDrive />
+                    </div>
                     <div label='Google Drive'>
                         <GoogleDrive />
                     </div>

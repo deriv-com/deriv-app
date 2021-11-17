@@ -12,9 +12,9 @@ const PasswordInput = ({
 }) => {
     const [should_show_password, setShouldShowPassword] = React.useState(false);
 
-    const togglePasswordVisibility = () => {
-        setShouldShowPassword(!should_show_password);
-    };
+    //const togglePasswordVisibility = () => {
+    //   setShouldShowPassword(!should_show_password);
+    //};
 
     return (
         <div className='dc-password-input'>
@@ -28,7 +28,7 @@ const PasswordInput = ({
                     <Icon
                         icon={should_show_password ? 'IcPasswordEyeVisible' : 'IcPasswordEyeHide'}
                         className='dc-password-input__visibility-icon'
-                        onClick={togglePasswordVisibility}
+                        //onClick={togglePasswordVisibility}
                         color='secondary'
                         width={18}
                     />

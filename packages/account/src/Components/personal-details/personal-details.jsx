@@ -212,7 +212,7 @@ const PersonalDetails = ({
                                                 required={is_svg || is_dashboard}
                                                 label={
                                                     is_svg || is_dashboard
-                                                        ? localize('First name*')
+                                                        ? localize('First name')
                                                         : localize('First name')
                                                 }
                                                 disabled={disabled_items.includes('first_name')}
@@ -233,11 +233,7 @@ const PersonalDetails = ({
                                             <DateOfBirthField
                                                 name='date_of_birth'
                                                 required={is_svg || is_dashboard}
-                                                label={
-                                                    is_svg || is_dashboard
-                                                        ? localize('Date of birth*')
-                                                        : localize('Date of birth')
-                                                }
+                                                label={is_svg || is_dashboard ? localize('DOB') : localize('DOB')}
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_dashboard ? '' : 'modal_root'}

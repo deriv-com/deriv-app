@@ -95,6 +95,49 @@ const CFDDemoAccountDisplay = ({
                     has_banner
                 />
             )}
+            {isSyntheticCardVisible('demo') && (
+                <CFDAccountCard
+                    has_cfd_account={has_cfd_account}
+                    title={localize('Synthetic')}
+                    type={{
+                        category: 'demo',
+                        type: 'synthetic',
+                        platform,
+                    }}
+                    is_disabled={has_cfd_account_error || standpoint.malta}
+                    is_logged_in={is_logged_in}
+                    existing_data={
+                        current_list[
+                            Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.synthetic`))
+                        ]
+                    }
+                    commission_message={localize('No commission')}
+                    onSelectAccount={() =>
+                        onSelectAccount({
+                            category: 'demo',
+                            type: 'synthetic',
+                        })
+                    }
+                    onPasswordManager={openPasswordManager}
+                    onClickFund={() =>
+                        openAccountTransfer(
+                            current_list[
+                                Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.synthetic`))
+                            ],
+                            {
+                                category: 'demo',
+                                type: 'synthetic',
+                            }
+                        )
+                    }
+                    platform={platform}
+                    descriptor={localize(
+                        'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
+                    )}
+                    specs={specifications[platform].real_synthetic_specs}
+                    has_banner
+                />
+            )}
 
             {isFinancialCardVisible() && (
                 <CFDAccountCard

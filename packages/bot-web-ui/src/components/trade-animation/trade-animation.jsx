@@ -56,15 +56,15 @@ const ContractStageText = ({ contract_stage }) => {
     switch (contract_stage) {
         case contract_stages.NOT_RUNNING:
         default:
-            return <Localize i18n_default_text='Bot is not running' />;
+            return <Localize i18n_default_text='Bot isnt not running' />;
         case contract_stages.STARTING:
-            return <Localize i18n_default_text='Bot is starting' />;
+            return <Localize i18n_default_text='Bot is starting starting' />;
         case contract_stages.PURCHASE_SENT:
             return <Localize i18n_default_text='Buying contract' />;
         case contract_stages.PURCHASE_RECEIVED:
             return <Localize i18n_default_text='Contract bought' />;
         case contract_stages.IS_STOPPING:
-            return <Localize i18n_default_text='Bot is stopping' />;
+            return <Localize i18n_default_text='Bot is stopping stopping' />;
         case contract_stages.CONTRACT_CLOSED:
             return <Localize i18n_default_text='Contract closed' />;
     }

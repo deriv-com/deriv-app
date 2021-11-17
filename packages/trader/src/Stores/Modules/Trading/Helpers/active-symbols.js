@@ -35,7 +35,6 @@ export const showMxMltUnavailableError = flow(function* (showError, has_malta_ac
         residence_list.residence_list.find(obj_country => obj_country.value === clients_country_code) || {}
     ).text;
 
-    const message = has_malta_account ? ' ' : null;
     let header;
 
     if (has_malta_account) {
@@ -49,7 +48,7 @@ export const showMxMltUnavailableError = flow(function* (showError, has_malta_ac
     }
 
     showError({
-        message,
+        message: ' ',
         header,
         redirect_label: null,
         redirectOnClick: () => ({}),

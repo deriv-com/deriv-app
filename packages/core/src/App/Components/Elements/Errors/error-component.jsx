@@ -19,7 +19,6 @@ const ErrorComponent = ({
     showCloseMxMltAccountPopup,
     removeNotificationMessageByKey,
     type,
-    is_iom,
     redirect_to = routes.trade,
     should_show_refresh = true,
 }) => {
@@ -43,7 +42,6 @@ const ErrorComponent = ({
                     <div className='close-mx-mlt-account__content'>
                         <CloseMxMltAccountContent
                             has_malta_account={has_malta_account}
-                            is_iom={is_iom}
                             is_fullscreen={true}
                             showNotificationMessageByKey={showNotificationMessageByKey}
                             showCloseMxMltAccountPopup={showCloseMxMltAccountPopup}
@@ -94,6 +92,5 @@ ErrorComponent.propTypes = {
 export default connect(({ client, ui }) => ({
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
-    is_iom: client.residence === 'im',
     has_malta_account: client.has_malta_account,
 }))(ErrorComponent);

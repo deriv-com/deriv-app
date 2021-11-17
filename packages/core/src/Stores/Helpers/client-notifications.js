@@ -678,7 +678,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
-    if ((has_iom_account || has_malta_account) && !hidden_close_account_notification) {
+    if ((has_iom_account || has_malta_account) && is_logged_in && !hidden_close_account_notification) {
         addNotificationMessage(clientNotifications(ui_store, {}, is_uk, has_malta_account).close_mx_mlt_account);
     }
 

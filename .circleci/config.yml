@@ -270,7 +270,6 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: "Run tests"
           command: npm test

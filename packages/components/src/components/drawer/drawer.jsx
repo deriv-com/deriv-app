@@ -28,12 +28,12 @@ const Drawer = ({
     width = 250,
     zIndex = 4,
 }) => {
-    const [has_is_open, setIsOpen] = useStateCallback(is_open);
+    const [has_open, setHasOpen] = useStateCallback(is_open);
 
     const toggle_drawer = () => {
-        setIsOpen(!has_is_open, () => {
+        setHasOpen(!has_open, () => {
             if (toggleDrawer) {
-                toggleDrawer(has_is_open);
+                toggleDrawer(has_open);
             }
         });
     };
@@ -43,12 +43,12 @@ const Drawer = ({
         <div
             className={classNames('dc-drawer', className, {
                 [`dc-drawer--${anchor}`]: !is_mobile,
-                'dc-drawer--open': has_is_open,
+                'dc-drawer--open': has_open,
             })}
             style={{
                 zIndex,
                 transform:
-                    has_is_open &&
+                has_open &&
                     !is_mobile &&
                     (anchor === 'left'
                         ? `translateX(calc(${width}px - 16px))`
@@ -57,7 +57,7 @@ const Drawer = ({
         >
             <div
                 className={classNames('dc-drawer__toggle', {
-                    'dc-drawer__toggle--open': has_is_open,
+                    'dc-drawer__toggle--open': has_open,
                 })}
                 onClick={toggle_drawer}
             >

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Icon, Text } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/virtual.scss';
@@ -29,7 +29,13 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                     <Text as='h2' align='center' weight='bold' color='prominent' className='virtual__header'>
                         <Localize i18n_default_text={'You are using a demo account'} />
                     </Text>
-                    <Text as='p' size='xs' line_height='s' align='center' className='cashier__paragraph cashier__text'>
+                    <Text
+                        as='p'
+                        size={isMobile() ? 'xxs' : 'xs'}
+                        line_height='s'
+                        align='center'
+                        className='cashier__paragraph cashier__text'
+                    >
                         <Localize
                             i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the <1>Account Switcher.</1>'
                             components={[

@@ -16,12 +16,6 @@
             margin-top: 1.6rem;
         }
 
-        &-text {
-            color: var(--brand-red-coral);
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-        }
         &-button {
             margin: 4rem auto 0;
             @include mobile {

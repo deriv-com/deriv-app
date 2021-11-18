@@ -21,6 +21,7 @@ const Row = ({ item_key, label, value }) => (
             <Text
                 size='xs'
                 weight='bold'
+                align='right'
                 className={classNames({
                     description: item_key === 'description',
                 })}

@@ -18,9 +18,17 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
             </Text>
-            <div className='cashier__transferred-amount'>
+            <Text
+                as='p'
+                size='l'
+                weight='bold'
+                lh='xs'
+                color='profit-success'
+                align='center'
+                className='cashier__transferred-amount'
+            >
                 {formatMoney(currency, receipt.amount_transferred, true)} {getCurrencyDisplayCode(currency)}
-            </div>
+            </Text>
             <div className='cashier__transferred-details-wrapper'>
                 <span className='account-transfer__transfer-details-from'>
                     <Icon icon={`IcCurrency-${currency.toLowerCase()}`} />

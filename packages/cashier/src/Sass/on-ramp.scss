@@ -59,11 +59,6 @@
                 height: auto;
             }
         }
-        &-website {
-            grid-area: website;
-            font-size: var(--text-size-xs);
-            line-height: 2rem;
-        }
         &-payment-icons {
             position: relative;
             white-space: nowrap;
@@ -178,14 +173,7 @@
             display: flex;
             flex-direction: column;
 
-            &-title {
-                font-size: var(--text-size-s);
-                font-weight: bold;
-                line-height: 2.4rem;
-            }
             &-text {
-                font-size: var(--text-size-xs);
-                line-height: 2rem;
                 margin-bottom: 2.4rem;
             }
             &-buttons {

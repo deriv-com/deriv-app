@@ -38,16 +38,6 @@
                     }
                 }
             }
-            & .account-transfer__receipt {
-                & .cashier {
-                    &__text--bold {
-                        color: var(--text-prominent);
-                    }
-                    &__transferred-amount {
-                        color: var(--text-profit-success);
-                    }
-                }
-            }
             & .dc-icon {
                 width: 3.2rem;
                 height: 3.2rem;
@@ -152,20 +142,7 @@
                                 @include mobile {
                                     flex-direction: column;
                                 }
-
-                                .account-transfer__button {
-                                    margin: 1.6rem 0.4rem 0;
-                                    width: 100%;
-                                    @media only screen and (max-width: 340px) {
-                                        & .dc-btn__text {
-                                            font-size: 1.2rem;
-                                        }
-                                    }
-                                }
                             }
-                        }
-                        & .cashier__text--bold {
-                            color: var(--text-prominent);
                         }
                     }
                 }

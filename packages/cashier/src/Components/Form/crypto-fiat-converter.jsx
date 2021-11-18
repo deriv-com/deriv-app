@@ -25,7 +25,7 @@ const Timer = props => {
     });
 
     return (
-        <Text as='p' size='xs' className='timer'>
+        <Text as='p' size='xs' color='less-prominent' className='timer'>
             <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time }} />
         </Text>
     );

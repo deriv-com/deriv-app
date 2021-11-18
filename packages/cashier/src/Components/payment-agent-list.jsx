@@ -13,7 +13,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, website_name } from '@deriv/shared';
+import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from './payment-agent-details.jsx';
 import Error from './Error/error.jsx';
@@ -52,7 +52,7 @@ const PaymentAgentList = ({
                 <Error error={error} />
             ) : (
                 <React.Fragment>
-                    <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
+                    <Text as='p' line_height='s' size={isMobile() ? 'xxs' : 'xs'} className='cashier__paragraph'>
                         <Localize
                             i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.'
                             values={{ website_name }}
@@ -76,13 +76,18 @@ const PaymentAgentList = ({
                                             size='xs'
                                             weight='bold'
                                             color='prominent'
-                                            className='cashier__header payment-agent-list__list-header'
+                                            className='payment-agent-list__list-header'
                                         >
                                             <Localize i18n_default_text='Payment agents' />
                                         </Text>
                                         <div className='payment-agent-list__list-line' />
                                         <div className='payment-agent-list__list-selector'>
-                                            <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
+                                            <Text
+                                                as='p'
+                                                size={isMobile() ? 'xxs' : 'xs'}
+                                                line_height='s'
+                                                className='cashier__paragraph'
+                                            >
                                                 <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
                                             </Text>
                                             {supported_banks.length > 1 && (
@@ -141,14 +146,16 @@ const PaymentAgentList = ({
                                     </React.Fragment>
                                 )}
                                 <div className='payment-agent-list__disclaimer'>
-                                    <Text size='xs' line_height='xs' weight='bold' className='cashier__text'>
+                                    <Text size='xs' lh='s' weight='bold' className='cashier__text'>
                                         <Localize i18n_default_text='DISCLAIMER' />
                                     </Text>
                                     :&nbsp;
-                                    <Localize
-                                        i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
-                                        values={{ website_name }}
-                                    />
+                                    <Text size='xxs' lh='m'>
+                                        <Localize
+                                            i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
+                                            values={{ website_name }}
+                                        />
+                                    </Text>
                                 </div>
                             </div>
                             <div label={localize('Withdrawal')}>

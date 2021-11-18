@@ -173,12 +173,8 @@
     }
     &__transferred {
         &-amount {
-            color: var(--text-profit-success);
-            font-size: 3.2rem;
-            font-weight: bold;
-            line-height: 1.25;
-            margin-top: 2.4rem;
-            margin-bottom: 2.8rem;
+            margin-top: 2rem;
+            margin-bottom: 2.4rem;
 
             & .symbols {
                 padding-left: 0.8rem;
@@ -188,9 +184,6 @@
             margin-left: 0.8rem;
             margin-right: 0.8rem;
             vertical-align: super;
-            font-size: 1.4rem;
-            text-align: left;
-            line-height: 1.43;
             max-width: 20rem;
             display: flex;
             flex-direction: column;
@@ -210,13 +203,8 @@
     }
     &__paragraph {
         align-self: center;
-        @include mobile {
-            font-size: var(--text-size-xxs);
-        }
     }
     &__text {
-        font-size: 1.4rem;
-        line-height: 1.43;
         max-width: 70%;
         margin-left: auto;
         margin-right: auto;

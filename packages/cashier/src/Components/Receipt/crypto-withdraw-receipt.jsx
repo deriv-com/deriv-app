@@ -129,7 +129,7 @@ const CryptoWithdrawReceipt = ({
                 {!isMobile() && <Status />}
                 <Text
                     as='p'
-                    color='prominent'
+                    color='profit-success'
                     weight='bold'
                     align='center'
                     size={isMobile() ? 'm' : 'l'}

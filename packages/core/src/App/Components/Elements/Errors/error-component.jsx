@@ -8,6 +8,8 @@ import { connect } from 'Stores/connect';
 import { CloseMxMltAccountContent } from 'App/Containers/CloseMxMltAccountModal/close-mx-mlt-account-modal.jsx';
 
 const ErrorComponent = ({
+    can_have_mlt_account,
+    is_uk,
     has_malta_account,
     header,
     message,
@@ -42,6 +44,8 @@ const ErrorComponent = ({
                 <div className='close-mx-mlt-account'>
                     <div className='close-mx-mlt-account__content'>
                         <CloseMxMltAccountContent
+                            can_have_mlt_account={can_have_mlt_account}
+                            is_uk={is_uk}
                             has_malta_account={has_malta_account}
                             is_fullscreen={true}
                             showNotificationMessageByKey={showNotificationMessageByKey}
@@ -94,5 +98,6 @@ export default connect(({ client, ui }) => ({
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
     has_malta_account: client.has_malta_account,
-    landing_company: client.landing_company,
+    can_have_mlt_account: client.can_have_mlt_account,
+    is_uk: client.is_uk,
 }))(ErrorComponent);

@@ -11,21 +11,23 @@ export const CloseMxMltAccountContent = ({
     showCloseMxMltAccountPopup,
     removeNotificationMessageByKey,
     has_malta_account,
+    can_have_mlt_account,
 }) => {
     const HeaderText = () => {
         if (is_uk) {
             return <Localize i18n_default_text='Your Gaming account is scheduled to be closed' />;
-        } else if (has_malta_account) {
+        } else if (has_malta_account || can_have_mlt_account) {
             return <Localize i18n_default_text='Your Options account is scheduled to be closed' />;
         }
         return <Localize i18n_default_text='Your account is scheduled to be closed' />;
     };
+
     const ProductLineupText = () => {
         if (is_uk) {
             return (
                 <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Gaming accounts belonging to our UK clients.' />
             );
-        } else if (has_malta_account) {
+        } else if (has_malta_account || can_have_mlt_account) {
             return (
                 <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Options accounts belonging to our clients in Europe.' />
             );
@@ -130,6 +132,7 @@ const CloseMxMltAccountModal = ({
     is_loading,
     is_uk,
     has_malta_account,
+    can_have_mlt_account,
     is_close_mx_mlt_account_modal_visible,
     removeNotificationMessageByKey,
     showCloseMxMltAccountPopup,
@@ -146,10 +149,17 @@ const CloseMxMltAccountModal = ({
 
     return (
         <div className='close-mx-mlt-account'>
-            <Dialog is_visible={is_visible} is_loading={is_loading} is_uk={is_uk} has_malta_account={has_malta_account}>
+            <Dialog
+                is_visible={is_visible}
+                is_loading={is_loading}
+                is_uk={is_uk}
+                has_malta_account={has_malta_account}
+                can_have_mlt_account={can_have_mlt_account}
+            >
                 <CloseMxMltAccountContent
                     is_uk={is_uk}
                     has_malta_account={has_malta_account}
+                    can_have_mlt_account={can_have_mlt_account}
                     showCloseMxMltAccountPopup={showCloseMxMltAccountPopup}
                     removeNotificationMessageByKey={removeNotificationMessageByKey}
                 />
@@ -169,6 +179,7 @@ export default connect(({ client, ui }) => ({
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_uk: client.is_uk,
+    can_have_mlt_account: client.can_have_mlt_account,
     has_malta_account: client.has_malta_account,
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,

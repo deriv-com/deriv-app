@@ -321,7 +321,13 @@ export default class TradeStore extends BaseStore {
                 showMxMltUnavailableError(showError, has_malta_account);
                 return;
             } else if (!is_maltainvest) {
-                showUnavailableLocationError(showError, is_logged_in);
+                if (!localStorage.getItem('hide_close_mx_mlt_account_notification')) {
+                    setError(true, {
+                        type: 'mx_mlt_removal',
+                    });
+                } else {
+                    showUnavailableLocationError(showError, is_logged_in);
+                }
                 return;
             } else if (is_maltainvest) {
                 showDigitalOptionsUnavailableError(showError, {

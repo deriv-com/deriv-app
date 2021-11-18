@@ -94,7 +94,7 @@ export const CloseMxMltAccountContent = ({
                 <Button
                     className='continue-button'
                     onClick={() => {
-                        localStorage.setItem('hide_close_mx_mlt_account_notification', true);
+                        localStorage.setItem('hide_close_mx_mlt_account_notification', '1');
                         showCloseMxMltAccountPopup(false);
                         removeNotificationMessageByKey({ key: 'close_mx_mlt_account' });
                         if (is_fullscreen) {

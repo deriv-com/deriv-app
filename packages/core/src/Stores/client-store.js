@@ -633,10 +633,7 @@ export default class ClientStore extends BaseStore {
 
     //TODO: Remove closed_mlt_accounts variable after the MLT and MX account closure has concluded.
     get can_have_mx_account() {
-        const countries = [
-            'gb',
-            'im',
-        ].includes(this.residence);
+        const countries = ['gb', 'im'].includes(this.residence);
         return countries;
     }
 

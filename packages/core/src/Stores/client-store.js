@@ -22,7 +22,7 @@ import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isOptionsBlocked } from '_common/utility';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -655,6 +655,9 @@ export default class ClientStore extends BaseStore {
     };
 
     isDxtradeAllowed = landing_companies => {
+        // Stop showing DerivX for non-logged in EU users
+        if (!this.is_logged_in && this.is_eu_country) return false;
+
         if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
             return true;
 
@@ -680,6 +683,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_options_blocked() {
         return isOptionsBlocked(this.residence);
+    }
+
+    @computed
+    get is_multipliers_only() {
+        return isMultipliersOnly(this.residence);
     }
 
     /**
@@ -1891,12 +1899,14 @@ export default class ClientStore extends BaseStore {
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {
+        this.setPreSwitchAccount(true);
         const new_user_login = {
             acct1: client_id,
             token1: oauth_token,
             curr1: currency,
         };
         await this.init(new_user_login);
+        this.broadcastAccountChange();
     }
 
     @action.bound

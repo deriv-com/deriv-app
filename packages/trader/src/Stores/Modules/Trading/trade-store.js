@@ -301,6 +301,7 @@ export default class TradeStore extends BaseStore {
         const showError = this.root_store.common.showError;
         const setError = this.root_store.common.setError;
         const { active_symbols, error } = await WS.authorized.activeSymbols();
+
         if (error) {
             showError({ message: localize('Trading is unavailable at this time.') });
             return;
@@ -320,7 +321,7 @@ export default class TradeStore extends BaseStore {
             } else if (is_malta && is_logged_in) {
                 showMxMltUnavailableError(showError, has_malta_account);
                 return;
-            } else if (!is_maltainvest && !is_virtual) {
+            } else if (!is_maltainvest) {
                 showUnavailableLocationError(showError, is_logged_in);
                 return;
             } else if (is_maltainvest) {

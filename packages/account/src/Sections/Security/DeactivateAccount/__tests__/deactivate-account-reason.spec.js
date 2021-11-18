@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor, fireEvent, userEvent } from '@testing-library/react';
 import DeactivateAccountReason from '../deactivate-account-reason';
 
 jest.mock('Stores/connect', () => ({
@@ -9,14 +9,61 @@ jest.mock('Stores/connect', () => ({
 }));
 
 describe('<DeactivateAccountReason />', () => {
-    it('Should render properly', async () => {
+    beforeAll(() => {
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        let modal_root_el = document.getElementById('modal_root');
+        document.body.removeChild(modal_root_el);
+    });
+
+    test('Should render properly', async () => {
         render(<DeactivateAccountReason />);
         await waitFor(() => {
             screen.getAllByText(/Please tell us why you’re leaving/i);
         });
     });
 
-    test.todo('Should check at least one checkbox');
-    test.todo('Should check at most three checkbox');
-    test.todo('Should check at most 110 chars');
+    test('Should be disabled when no reason has been selected', async () => {
+        render(<DeactivateAccountReason />);
+
+        // first time "Continue" button will be active since the cta shouldn't be disabled
+        // after clicking when no reason is selected it should show error and the button should be disabled
+
+        act(() => {
+            fireEvent.click(screen.getByText(/Continue/i));
+        });
+        await waitFor(() => {
+            expect(screen.getByText(/Please select at least one reason/i)).toBeInTheDocument();
+            const continueButton = screen.getAllByRole('button')[1];
+            expect(continueButton).toHaveAttribute('disabled');
+        });
+    });
+
+    test('should reduce remaining chars', async () => {
+        render(<DeactivateAccountReason />);
+
+        expect(screen.getByText(/Remaining characters: 110/i)).toBeInTheDocument();
+
+        act(() => {
+            fireEvent.change(screen.getByLabelText(/I want to stop myself from trading/i), {
+                target: { value: 'true' },
+            });
+        });
+
+        expect(screen.getByText(/Remaining characters: 110/i)).toBeInTheDocument();
+
+        act(() => {
+            fireEvent.change(screen.getByPlaceholderText(/What could we do to improve/i), {
+                target: { value: 'do_to_improve' },
+            });
+        });
+
+        expect(screen.getByText(/Remaining characters: 97/i)).toBeInTheDocument();
+
+        screen.debug();
+    });
 });

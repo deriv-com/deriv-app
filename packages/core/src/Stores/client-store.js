@@ -603,6 +603,43 @@ export default class ClientStore extends BaseStore {
         return result;
     }
 
+    //TODO: Remove closed_mlt_accounts variable after the MLT and MX account closure has concluded.
+    @computed
+    get can_have_mlt_account() {
+        const countries = [
+            'nl',
+            'cy',
+            'ie',
+            'ro',
+            'be',
+            'lt',
+            'bg',
+            'cz',
+            'dk',
+            'se',
+            'pl',
+            'ee',
+            'hr',
+            'at',
+            'hu',
+            'sl',
+            'fi',
+            'sk',
+            'pt',
+            'lv',
+        ].includes(this.residence);
+        return countries;
+    }
+
+    //TODO: Remove closed_mlt_accounts variable after the MLT and MX account closure has concluded.
+    get can_have_mx_account() {
+        const countries = [
+            'gb',
+            'im',
+        ].includes(this.residence);
+        return countries;
+    }
+
     @computed
     get can_upgrade() {
         return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);

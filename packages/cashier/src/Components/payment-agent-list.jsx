@@ -150,7 +150,7 @@ const PaymentAgentList = ({
                                         <Localize i18n_default_text='DISCLAIMER' />
                                     </Text>
                                     :&nbsp;
-                                    <Text size='xxs' lh='m'>
+                                    <Text size='xxs'>
                                         <Localize
                                             i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
                                             values={{ website_name }}

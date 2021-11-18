@@ -63,7 +63,7 @@ const OnRampProviderPopup = ({
     if (should_show_dialog) {
         return (
             <div className='on-ramp__popup-no-deposit-address'>
-                <Text size='xs' lh='m' className='on-ramp__popup-no-deposit-address-text'>
+                <Text size='xs' className='on-ramp__popup-no-deposit-address-text'>
                     {api_error ? (
                         <Localize i18n_default_text='Please go to the Deposit page to get an address.' />
                     ) : (

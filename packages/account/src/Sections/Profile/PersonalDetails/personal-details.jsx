@@ -296,6 +296,16 @@ export class PersonalDetailsForm extends React.Component {
             }
         }
 
+        // Not allowing Jersey postcodes with a UK residence.
+        if (
+            /^(((je|Je|jE|JE)\s*)|(\s*(je|Je|jE|JE)\s*)|(((je|Je|jE|JE)[0-9])\s([a-zA-Z0-9])*\s*))|(((je|Je|jE|JE)[0-9])\s([a-zA-Z0-9])*\s*([a-zA-Z0-9]))$/.test(
+                values.address_postcode
+            ) &&
+            values.citizen === 'United Kingdom'
+        ) {
+            errors.address_postcode = localize('A correct zip code and residence address are required.');
+        }
+
         if (values.address_postcode) {
             if (!validLength(values.address_postcode, { min: 0, max: 20 })) {
                 errors.address_postcode = localize('Please enter a {{field_name}} under {{max_number}} characters.', {
@@ -1081,7 +1091,7 @@ export class PersonalDetailsForm extends React.Component {
                                                 id='email_consent'
                                                 defaultChecked={!!values.email_consent}
                                                 disabled={!this.isChangeableField('email_consent') && !is_virtual}
-                                                className={is_dashboard && 'dc-checkbox-blue'}
+                                                className={classNames({ 'dc-checkbox-blue': is_dashboard })}
                                             />
                                         </fieldset>
                                     </FormBodySection>

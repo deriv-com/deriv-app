@@ -25,6 +25,8 @@ const CFDDemoAccountDisplay = ({
     openPasswordManager,
     residence,
 }) => {
+    const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+
     const openCFDAccount = () => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
@@ -99,10 +101,10 @@ const CFDDemoAccountDisplay = ({
             {isFinancialCardVisible() && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
-                    title={is_eu ? localize('CFDs') : localize('Financial')}
+                    title={is_eu_user ? localize('CFDs') : localize('Financial')}
                     is_disabled={has_cfd_account_error}
                     is_logged_in={is_logged_in}
-                    is_eu={is_eu}
+                    is_eu={is_eu_user}
                     type={{
                         category: 'demo',
                         type: 'financial',
@@ -128,7 +130,7 @@ const CFDDemoAccountDisplay = ({
                         )
                     }
                     platform={platform}
-                    descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu)}
+                    descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
                     specs={financial_specs}
                     has_banner
                 />

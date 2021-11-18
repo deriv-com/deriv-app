@@ -565,7 +565,8 @@ const checkAccountStatus = (
 
     addVerificationNotifications(identity, document, addNotificationMessage);
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa = is_10k_withdrawal_limit_reached && needs_verification.includes('document');
+    const needs_poa =
+        is_10k_withdrawal_limit_reached && (needs_verification.includes('document') || document?.status !== 'verified');
     const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
 
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
@@ -657,6 +658,8 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
     const { current_language, selected_contract_type } = common_store;
     let has_missing_required_field, has_risk_assessment;
 
+    const { withdrawal_locked, deposit_locked } = getStatusValidations(account_status.status);
+
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     if (has_iom_account && !hidden_close_account_notification) {
@@ -684,7 +687,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
 
         has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
         if (has_missing_required_field) {
-            addNotificationMessage(clientNotifications(ui_store).required_fields);
+            addNotificationMessage(clientNotifications(ui_store).required_fields(withdrawal_locked, deposit_locked));
         }
     }
 

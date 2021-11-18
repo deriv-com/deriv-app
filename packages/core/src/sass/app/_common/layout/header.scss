@@ -15,6 +15,9 @@
         opacity: 1;
         pointer-events: auto;
     }
+    &--is-hidden {
+        display: none;
+    }
     &__menu-mobile-body-wrapper {
         position: relative;
         height: calc(100% - 4rem);

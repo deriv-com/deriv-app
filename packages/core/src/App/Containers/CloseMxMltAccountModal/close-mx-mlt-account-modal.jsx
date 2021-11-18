@@ -37,37 +37,29 @@ export const CloseMxMltAccountContent = ({
         );
     };
     const NoDigitalOptionsText = () => {
-        if (is_uk) {
-            return (
-                <Localize
-                    i18n_default_text='You can no longer trade digital options on any of our platforms. You also can’t deposit funds into your account.<0/><1/>Any open positions on digital options have been closed with full payout.'
-                    components={[<br key={0} />, <br key={1} />]}
-                />
-            );
-        } else if (has_malta_account) {
+        if (has_malta_account) {
             return (
                 <Localize i18n_default_text='You are no longer able to trade digital options on any of our platforms. Also, you can’t make deposits into your Options account.' />
             );
         }
         return (
-            <Localize i18n_default_text='You are no longer able to trade digital options on any of our platforms. Also, you can’t make deposits into your account.' />
+            <Localize
+                i18n_default_text='You can no longer trade digital options on any of our platforms. You also can’t deposit funds into your account.<0/><1/>Any open positions on digital options have been closed with full payout.'
+                components={[<br key={0} />, <br key={1} />]}
+            />
         );
     };
     const OptionsAccountClosedText = () => {
-        if (is_uk) {
-            return (
-                <Localize
-                    i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>'
-                    components={[<strong key={0} />]}
-                />
-            );
-        } else if (has_malta_account) {
+        if (has_malta_account) {
             return (
                 <Localize i18n_default_text='You will lose access to your Options account when it gets closed, so be sure to withdraw all your funds. (If you have a CFDs account, you can also transfer the funds from your Options account to your CFDs account.)' />
             );
         }
         return (
-            <Localize i18n_default_text='You will lose access to your account when it gets closed, so be sure to withdraw all your funds.' />
+            <Localize
+                i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>'
+                components={[<strong key={0} />]}
+            />
         );
     };
 

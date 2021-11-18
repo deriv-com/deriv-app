@@ -1114,6 +1114,7 @@ export default class TradeStore extends BaseStore {
         const is_uk = this.root_store.client.is_uk;
         const has_iom_account = this.root_store.client.has_iom_account;
         const has_malta_account = this.root_store.client.has_malta_account;
+        const can_have_mlt_account = this.root_store.client.can_have_mlt_account;
 
         this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
 
@@ -1126,7 +1127,13 @@ export default class TradeStore extends BaseStore {
             );
             localStorage.setItem('notification_messages', JSON.stringify(get_notification_messages_array));
             this.root_store.ui.addNotificationMessage(
-                client_notifications(this.root_store.ui, {}, is_uk, has_malta_account).close_mx_mlt_account
+                client_notifications(
+                    this.root_store.ui,
+                    {},
+                    is_uk,
+                    has_malta_account,
+                    can_have_mlt_account
+                ).close_mx_mlt_account
             );
             reaction(
                 () => this.root_store.ui.notification_messages.length === 0,
@@ -1135,7 +1142,13 @@ export default class TradeStore extends BaseStore {
                         parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
                     if ((has_iom_account || has_malta_account) && !hidden_close_account_notification) {
                         this.root_store.ui.addNotificationMessage(
-                            client_notifications(this.root_store.ui, {}, is_uk, has_malta_account).close_mx_mlt_account
+                            client_notifications(
+                                this.root_store.ui,
+                                {},
+                                is_uk,
+                                has_malta_account,
+                                can_have_mlt_account
+                            ).close_mx_mlt_account
                         );
                     }
                 }

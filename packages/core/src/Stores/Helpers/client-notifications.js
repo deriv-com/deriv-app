@@ -19,9 +19,9 @@ import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_account) => {
+export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_account, can_have_mlt_account) => {
     const MxMltNotificationHeader = () => {
-        if (has_malta_account) {
+        if (has_malta_account || can_have_mlt_account) {
             return localize('Your Options account is scheduled to be closed');
         } else if (is_uk) {
             return localize('Your Gaming account is scheduled to be closed');
@@ -30,12 +30,10 @@ export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_accou
     };
 
     const MxMltNotificationText = () => {
-        if (has_malta_account) {
+        if (has_malta_account || can_have_mlt_account) {
             return localize('Withdraw all funds from your Options account.');
-        } else if (is_uk) {
-            return localize('Please proceed to withdraw your funds before 30 November 2021.');
         }
-        return localize('Withdraw all funds from your account.');
+        return localize('Please proceed to withdraw your funds before 30 November 2021.');
     };
 
     const notifications = {
@@ -661,6 +659,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
         is_eu,
         is_uk,
         has_malta_account,
+        can_have_mlt_account,
         has_iom_account,
         is_logged_in,
         is_tnc_needed,
@@ -679,7 +678,13 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     if ((has_iom_account || has_malta_account) && is_logged_in && !hidden_close_account_notification) {
-        addNotificationMessage(clientNotifications(ui_store, {}, is_uk, has_malta_account).close_mx_mlt_account);
+        addNotificationMessage(clientNotifications(
+            ui_store,
+            {},
+            is_uk,
+            has_malta_account,
+            can_have_mlt_account
+        ).close_mx_mlt_account);
     }
 
     if (client && !client.is_virtual) {

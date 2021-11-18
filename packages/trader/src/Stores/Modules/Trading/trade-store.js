@@ -300,7 +300,7 @@ export default class TradeStore extends BaseStore {
 
         const can_have_mx_account = this.root_store.client.can_have_mx_account;
         const can_have_mlt_account = this.root_store.client.can_have_mlt_account;
-        const can_have_mlt_or_mx_account = (can_have_mlt_account === true || can_have_mx_account === true);
+        const can_have_mlt_or_mx_account = can_have_mlt_account === true || can_have_mx_account === true;
 
         if (error) {
             showError({ message: localize('Trading is unavailable at this time.') });
@@ -317,7 +317,7 @@ export default class TradeStore extends BaseStore {
                 });
             } else if (
                 can_have_mlt_or_mx_account &&
-                is_logged_in && 
+                is_logged_in &&
                 localStorage.getItem('hide_close_mx_mlt_account_notification')
             ) {
                 showMxMltUnavailableError(showError, can_have_mlt_or_mx_account);

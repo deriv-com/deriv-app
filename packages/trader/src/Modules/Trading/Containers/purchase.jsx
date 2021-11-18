@@ -13,6 +13,7 @@ const Purchase = ({
     is_multiplier,
     is_mobile,
     is_purchase_enabled,
+    is_market_closed,
     // is_purchase_confirm_on,
     purchased_states_arr,
     // is_purchase_locked,
@@ -43,8 +44,6 @@ const Purchase = ({
         const info = proposal_info[type] || {};
         const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
         const is_proposal_error = is_multiplier ? info.has_error && !info.has_error_details : info.has_error;
-        const is_market_close =
-            is_proposal_error && info.error_code === 'ContractBuyValidationError' && info.error_field === 'symbol';
         const purchase_fieldset = (
             <PurchaseFieldset
                 basis={basis}
@@ -57,7 +56,7 @@ const Purchase = ({
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
-                is_market_close={is_market_close}
+                is_market_closed={is_market_closed}
                 is_mobile={is_mobile}
                 is_multiplier={is_multiplier}
                 // is_purchase_confirm_on={is_purchase_confirm_on}

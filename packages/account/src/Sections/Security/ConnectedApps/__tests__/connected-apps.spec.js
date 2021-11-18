@@ -48,7 +48,7 @@ describe('Connected Apps', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    test.skip('renders correctly', async () => {
+    test('renders correctly', async () => {
         const { container } = render(<ConnectedApps />);
 
         expect(screen.getByText(/Authorised applications/i)).toBeInTheDocument();

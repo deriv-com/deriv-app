@@ -309,12 +309,12 @@ export default class TradeStore extends BaseStore {
             if (
                 (is_gb_or_im || has_malta_account) &&
                 is_logged_in &&
-                !localStorage.getItem('hide_close_mx_account_notification')
+                !localStorage.getItem('hide_close_mx_mlt_account_notification')
             ) {
                 setError(true, {
                     type: 'mx_mlt_removal',
                 });
-            } else if (is_gb_or_im && is_logged_in && localStorage.getItem('hide_close_mx_account_notification')) {
+            } else if (is_gb_or_im && is_logged_in && localStorage.getItem('hide_close_mx_mlt_account_notification')) {
                 showMxMltUnavailableError(showError);
                 return;
             } else if (is_malta && is_logged_in) {

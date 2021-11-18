@@ -22,7 +22,7 @@ import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isOptionsBlocked } from '_common/utility';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -642,14 +642,6 @@ export default class ClientStore extends BaseStore {
         return this.isDxtradeAllowed(this.landing_companies);
     }
 
-    @computed
-    get is_dbot_allowed() {
-        return (
-            this.landing_company_shortcode === 'virtual' ||
-            (this.landing_company_shortcode !== 'maltainvest' && !this.is_options_blocked)
-        );
-    }
-
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
@@ -663,6 +655,9 @@ export default class ClientStore extends BaseStore {
     };
 
     isDxtradeAllowed = landing_companies => {
+        // Stop showing DerivX for non-logged in EU users
+        if (!this.is_logged_in && this.is_eu_country) return false;
+
         if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
             return true;
 
@@ -688,6 +683,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_options_blocked() {
         return isOptionsBlocked(this.residence);
+    }
+
+    @computed
+    get is_multipliers_only() {
+        return isMultipliersOnly(this.residence);
     }
 
     /**

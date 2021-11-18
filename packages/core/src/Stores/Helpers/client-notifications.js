@@ -33,7 +33,7 @@ export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_accou
         if (has_malta_account) {
             return localize('Withdraw all funds from your Options account.');
         } else if (is_uk) {
-            return localize('Withdraw all funds from your Gaming account.');
+            return localize('Please proceed to withdraw your funds before 30 November 2021.');
         }
         return localize('Withdraw all funds from your account.');
     };

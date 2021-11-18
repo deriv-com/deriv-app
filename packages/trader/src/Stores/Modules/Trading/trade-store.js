@@ -296,11 +296,11 @@ export default class TradeStore extends BaseStore {
         const is_maltainvest = this.root_store.client.landing_company_shortcode === 'maltainvest';
         const is_logged_in = this.root_store.client.is_logged_in;
         const is_gb_or_im = ['gb', 'im'].includes(this.root_store.client.residence);
-        const is_virtual = this.root_store.client.landing_company_shortcode === 'virtual';
         const is_malta = this.root_store.client.landing_company_shortcode === 'malta';
         const showError = this.root_store.common.showError;
         const setError = this.root_store.common.setError;
         const { active_symbols, error } = await WS.authorized.activeSymbols();
+
         if (error) {
             showError({ message: localize('Trading is unavailable at this time.') });
             return;
@@ -309,19 +309,25 @@ export default class TradeStore extends BaseStore {
             if (
                 (is_gb_or_im || has_malta_account) &&
                 is_logged_in &&
-                !localStorage.getItem('hide_close_mx_account_notification')
+                !localStorage.getItem('hide_close_mx_mlt_account_notification')
             ) {
                 setError(true, {
                     type: 'mx_mlt_removal',
                 });
-            } else if (is_gb_or_im && is_logged_in && localStorage.getItem('hide_close_mx_account_notification')) {
+            } else if (is_gb_or_im && is_logged_in && localStorage.getItem('hide_close_mx_mlt_account_notification')) {
                 showMxMltUnavailableError(showError);
                 return;
             } else if (is_malta && is_logged_in) {
                 showMxMltUnavailableError(showError, has_malta_account);
                 return;
-            } else if (!is_maltainvest && !is_virtual) {
-                showUnavailableLocationError(showError, is_logged_in);
+            } else if (!is_maltainvest) {
+                if (!localStorage.getItem('hide_close_mx_mlt_account_notification')) {
+                    setError(true, {
+                        type: 'mx_mlt_removal',
+                    });
+                } else {
+                    showUnavailableLocationError(showError, is_logged_in);
+                }
                 return;
             } else if (is_maltainvest) {
                 showDigitalOptionsUnavailableError(showError, {

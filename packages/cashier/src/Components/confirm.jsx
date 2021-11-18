@@ -8,23 +8,25 @@ import 'Sass/confirm.scss';
 
 const Row = ({ item_key, label, value }) => (
     <div className='confirm__row'>
-        <span>{label}</span>
+        <Text size='xs'>{label}</Text>
         {Array.isArray(value) ? (
-            <span>
+            <div>
                 {value.map((v, idx) => (
-                    <div key={idx}>
-                        <strong>{v}</strong>
-                    </div>
+                    <Text as='div' key={idx} size='xs' weight='bold' align='right'>
+                        {v}
+                    </Text>
                 ))}
-            </span>
+            </div>
         ) : (
-            <strong
+            <Text
+                size='xs'
+                weight='bold'
                 className={classNames({
                     description: item_key === 'description',
                 })}
             >
                 {value}
-            </strong>
+            </Text>
         )}
     </div>
 );

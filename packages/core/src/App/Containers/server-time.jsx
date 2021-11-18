@@ -15,6 +15,7 @@ const ServerTime = ({ is_mobile, server_time }) => {
             className={classNames('server-time', {
                 'server-time--is-mobile': is_mobile,
             })}
+            zIndex={9999}
         >
             {gmt_time}
         </Popover>

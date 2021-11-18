@@ -34,8 +34,9 @@ const ErrorComponent = ({
     }, [history, setError]);
 
     const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
+    const hide_notification = localStorage.getItem('hide_close_mx_mlt_account_notification');
 
-    if (type === 'mx_mlt_removal') {
+    if (type === 'mx_mlt_removal' && !hide_notification) {
         return (
             <div className='close-mx-mlt-account--is-fullscreen'>
                 <div className='close-mx-mlt-account'>
@@ -93,4 +94,5 @@ export default connect(({ client, ui }) => ({
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
     showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
     has_malta_account: client.has_malta_account,
+    landing_company: client.landing_company,
 }))(ErrorComponent);

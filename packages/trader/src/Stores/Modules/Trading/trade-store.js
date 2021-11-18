@@ -296,7 +296,6 @@ export default class TradeStore extends BaseStore {
         const is_maltainvest = this.root_store.client.landing_company_shortcode === 'maltainvest';
         const is_logged_in = this.root_store.client.is_logged_in;
         const is_gb_or_im = ['gb', 'im'].includes(this.root_store.client.residence);
-        const is_virtual = this.root_store.client.landing_company_shortcode === 'virtual';
         const is_malta = this.root_store.client.landing_company_shortcode === 'malta';
         const showError = this.root_store.common.showError;
         const setError = this.root_store.common.setError;

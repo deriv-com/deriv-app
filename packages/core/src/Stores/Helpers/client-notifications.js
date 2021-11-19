@@ -21,6 +21,18 @@ import { WS } from 'Services';
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}, client = {}, is_iom) => {
     const notifications = {
+        two_f_a: {
+            key: 'two_f_a',
+            header: localize('Stronger security for your Deriv account'),
+            message: localize(
+                'With two-factor authentication, you’ll protect your account with both your password and your phone - so only you can access your account, even if someone knows your password.'
+            ),
+            action: {
+                route: routes.two_factor_authentication,
+                text: localize('Secure my account'),
+            },
+            type: 'warning',
+        },
         dp2p: {
             key: 'dp2p',
             header: localize('Payment problems?'),
@@ -654,11 +666,15 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         parseInt(localStorage.getItem('hide_close_mx_account_notification')) === 1;
     const is_iom = country_standpoint.is_isle_of_man;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
-    const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
+    const { is_10k_withdrawal_limit_reached, is_p2p_visible, fiat_amount, crypto_amount } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
     let has_missing_required_field, has_risk_assessment;
 
     const { withdrawal_locked, deposit_locked } = getStatusValidations(account_status.status);
+
+    if (crypto_amount !== '' || fiat_amount !== '') {
+        addNotificationMessage(clientNotifications().two_f_a);
+    }
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 

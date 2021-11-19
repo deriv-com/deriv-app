@@ -246,7 +246,7 @@ export default class ClientStore extends BaseStore {
 
         const { available_currencies, landing_company_name } = State.getResponse('authorize');
         if (available_currencies) {
-            if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)){
+            if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
                 return available_currencies[landing_company_name];
             }
             return available_currencies[this.root_store.ui.real_account_signup_target];

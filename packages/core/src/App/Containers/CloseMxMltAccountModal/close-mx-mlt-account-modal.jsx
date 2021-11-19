@@ -50,14 +50,18 @@ export const CloseMxMltAccountContent = ({
         );
     };
     const OptionsAccountClosedText = () => {
-        if (has_malta_account || can_have_mlt_account) {
+        if (is_uk) {
+            return (
+                <Localize i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>' />
+            );
+        } else if (has_malta_account || can_have_mlt_account) {
             return (
                 <Localize i18n_default_text='You will lose access to your Options account when it gets closed, so be sure to withdraw all your funds. (If you have a CFDs account, you can also transfer the funds from your Options account to your CFDs account.)' />
             );
         }
         return (
             <Localize
-                i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>'
+                i18n_default_text='Please proceed to withdraw all your funds from your account before <0>30 November 2021.</0>'
                 components={[<strong key={0} />]}
             />
         );

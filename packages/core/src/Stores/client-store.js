@@ -229,8 +229,6 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get legal_allowed_currencies() {
-        const authorize_res_data = State.getResponse('authorize');
-        const  landing_company_name = authorize_res_data?.landing_company_name;
         const getDefaultAllowedCurrencies = () => {
             if (this.landing_companies.gaming_company) {
                 return this.landing_companies.gaming_company.legal_allowed_currencies;
@@ -245,10 +243,15 @@ export default class ClientStore extends BaseStore {
         if (!this.root_store.ui.real_account_signup_target) {
             return getDefaultAllowedCurrencies();
         }
-        if (authorize_res_data && (authorize_res_data.available_currencies[landing_company_name].length ||
-            ['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target))) {
-            return authorize_res_data.available_currencies[landing_company_name];
+
+        const { available_currencies, landing_company_name } = State.getResponse('authorize');
+        if (available_currencies) {
+            if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)){
+                return available_currencies[landing_company_name];
+            }
+            return available_currencies[this.root_store.ui.real_account_signup_target];
         }
+
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 
         if (this.landing_companies[`${target}_company`]) {

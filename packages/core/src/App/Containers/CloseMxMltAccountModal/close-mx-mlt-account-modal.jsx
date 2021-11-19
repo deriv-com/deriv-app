@@ -37,7 +37,7 @@ export const CloseMxMltAccountContent = ({
         );
     };
     const NoDigitalOptionsText = () => {
-        if (has_malta_account) {
+        if (has_malta_account || can_have_mlt_account) {
             return (
                 <Localize i18n_default_text='You are no longer able to trade digital options on any of our platforms. Also, you can’t make deposits into your Options account.' />
             );
@@ -50,7 +50,7 @@ export const CloseMxMltAccountContent = ({
         );
     };
     const OptionsAccountClosedText = () => {
-        if (has_malta_account) {
+        if (has_malta_account || can_have_mlt_account) {
             return (
                 <Localize i18n_default_text='You will lose access to your Options account when it gets closed, so be sure to withdraw all your funds. (If you have a CFDs account, you can also transfer the funds from your Options account to your CFDs account.)' />
             );

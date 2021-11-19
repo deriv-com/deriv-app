@@ -293,37 +293,38 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async setActiveSymbols() {
         const is_on_mf_account = this.root_store.client.landing_company_shortcode === 'maltainvest';
+        const hide_close_mx_mlt_storage_flag = !!parseInt(
+            localStorage.getItem('hide_close_mx_mlt_account_notification')
+        );
         const is_logged_in = this.root_store.client.is_logged_in;
         const showError = this.root_store.common.showError;
         const setError = this.root_store.common.setError;
-        const can_have_mx_account = this.root_store.client.can_have_mx_account;
-        const can_have_mlt_account = this.root_store.client.can_have_mlt_account;
-        const can_have_mlt_or_mx_account = can_have_mlt_account === true || can_have_mx_account === true;
+        
         const { active_symbols, error } = await WS.authorized.activeSymbols();
 
         if (error) {
             showError({ message: localize('Trading is unavailable at this time.') });
             return;
-        } else if (!active_symbols || !active_symbols.length) {
+        } 
+
+        if (!active_symbols || !active_symbols.length) {
             await WS.wait('get_settings');
-            if (
-                can_have_mlt_or_mx_account &&
-                is_logged_in &&
-                !localStorage.getItem('hide_close_mx_mlt_account_notification')
-            ) {
+            /*
+             * This logic is related to EU country checks
+             * Avoid moving this upward in the scope since mobx will lose reactivity
+             */
+            const can_have_mx_account = this.root_store.client.can_have_mx_account;
+            const can_have_mlt_account = this.root_store.client.can_have_mlt_account;
+            const can_have_mlt_or_mx_account = can_have_mlt_account || can_have_mx_account;
+
+            if (can_have_mlt_or_mx_account && is_logged_in && !hide_close_mx_mlt_storage_flag) {
                 setError(true, {
                     type: 'mx_mlt_removal',
                 });
-            } else if (is_logged_in && localStorage.getItem('hide_close_mx_mlt_account_notification')) {
-                if (can_have_mlt_account) {
-                    showMxMltUnavailableError(showError, can_have_mlt_account);
-                    return;
-                } else if (can_have_mx_account) {
-                    showMxMltUnavailableError(showError, false, can_have_mx_account);
-                    return;
-                }
+            } else if (is_logged_in && hide_close_mx_mlt_storage_flag) {
+                showMxMltUnavailableError(showError, can_have_mlt_account, can_have_mx_account);
             } else if (!is_on_mf_account) {
-                if (!localStorage.getItem('hide_close_mx_mlt_account_notification')) {
+                if (!hide_close_mx_mlt_storage_flag) {
                     setError(true, {
                         type: 'mx_mlt_removal',
                     });

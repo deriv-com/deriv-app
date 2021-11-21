@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import './close-mx-mlt-account-modal.scss';
 
 export const CloseMxMltAccountContent = ({
-    is_uk,
+    country_standpoint,
     is_fullscreen = false,
     showCloseMxMltAccountPopup,
     removeNotificationMessageByKey,
@@ -14,7 +14,7 @@ export const CloseMxMltAccountContent = ({
     can_have_mlt_account,
 }) => {
     const HeaderText = () => {
-        if (is_uk) {
+        if (country_standpoint.is_united_kingdom) {
             return <Localize i18n_default_text='Your Gaming account is scheduled to be closed' />;
         } else if (has_malta_account || can_have_mlt_account) {
             return <Localize i18n_default_text='Your Options account is scheduled to be closed' />;
@@ -23,13 +23,13 @@ export const CloseMxMltAccountContent = ({
     };
 
     const ProductLineupText = () => {
-        if (is_uk) {
+        if (country_standpoint.is_united_kingdom) {
             return (
                 <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Gaming accounts belonging to our UK clients.' />
             );
         } else if (has_malta_account || can_have_mlt_account) {
             return (
-                <Localize i18n_default_text='As part of the changes in our product line-up, we will be closing Options accounts belonging to our clients in Europe.' />
+                <Localize i18n_default_text='As part of the changes in our product line-up, we are closing Options accounts belonging to our clients in Europe.' />
             );
         }
         return (
@@ -50,9 +50,12 @@ export const CloseMxMltAccountContent = ({
         );
     };
     const OptionsAccountClosedText = () => {
-        if (is_uk) {
+        if (country_standpoint.is_united_kingdom) {
             return (
-                <Localize i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>' />
+                <Localize
+                    i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>'
+                    components={[<strong key={0} />]}
+                />
             );
         } else if (has_malta_account || can_have_mlt_account) {
             return (
@@ -68,11 +71,10 @@ export const CloseMxMltAccountContent = ({
     };
 
     const OptionsAccountHeaderText = () => {
-        return is_uk ? (
-            <Localize i18n_default_text='What you need to do now' />
-        ) : (
-            <Localize i18n_default_text='Withdraw all your funds' />
-        );
+        if (country_standpoint.is_united_kingdom || country_standpoint.is_isle_of_man) {
+            return <Localize i18n_default_text='What you need to do now' />;
+        }
+        return <Localize i18n_default_text='Withdraw all your funds' />;
     };
 
     return (
@@ -126,7 +128,7 @@ export const CloseMxMltAccountContent = ({
 const CloseMxMltAccountModal = ({
     is_logged_in,
     is_loading,
-    is_uk,
+    country_standpoint,
     has_malta_account,
     can_have_mlt_account,
     is_close_mx_mlt_account_modal_visible,
@@ -148,12 +150,12 @@ const CloseMxMltAccountModal = ({
             <Dialog
                 is_visible={is_visible}
                 is_loading={is_loading}
-                is_uk={is_uk}
+                country_standpoint={country_standpoint}
                 has_malta_account={has_malta_account}
                 can_have_mlt_account={can_have_mlt_account}
             >
                 <CloseMxMltAccountContent
-                    is_uk={is_uk}
+                    country_standpoint={country_standpoint}
                     has_malta_account={has_malta_account}
                     can_have_mlt_account={can_have_mlt_account}
                     showCloseMxMltAccountPopup={showCloseMxMltAccountPopup}
@@ -174,7 +176,7 @@ export default connect(({ client, ui }) => ({
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
-    is_uk: client.is_uk,
+    country_standpoint: client.country_standpoint,
     can_have_mlt_account: client.can_have_mlt_account,
     has_malta_account: client.has_malta_account,
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,

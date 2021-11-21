@@ -11,6 +11,7 @@ import {
     checkAndSetEndpointFromUrl,
     setUrlLanguage,
     isMobile,
+    isTablet,
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
@@ -65,7 +66,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, []);
 
     const handleResize = React.useCallback(() => {
-        if (isTouchDevice() && isMobile()) {
+        if (isTouchDevice() && (isMobile() || isTablet())) {
             const is_android_device = mobileOSDetect() === 'Android';
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;

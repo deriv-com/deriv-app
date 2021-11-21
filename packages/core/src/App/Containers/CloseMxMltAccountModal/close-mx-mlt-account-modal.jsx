@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import { Dialog, Text, Button, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared';
 import PropTypes from 'prop-types';
 import './close-mx-mlt-account-modal.scss';
 import classNames from 'classnames';

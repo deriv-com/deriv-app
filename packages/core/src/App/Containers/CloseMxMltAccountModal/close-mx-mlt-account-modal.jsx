@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import { Dialog, Text, Button, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { isDesktop } from '@deriv/shared';
 import PropTypes from 'prop-types';
 import './close-mx-mlt-account-modal.scss';
+import classNames from 'classnames';
 
 export const CloseMxMltAccountContent = ({
     country_standpoint,
@@ -104,7 +106,10 @@ export const CloseMxMltAccountContent = ({
                     <OptionsAccountClosedText />
                 </Text>
             </div>
-            <div className='close-mx-mlt-account dc-dialog__footer'>
+            <div className={classNames({
+                'dc-dialog__footer': !is_fullscreen,
+                'close-mx-mlt-account': true,
+            })}>
                 <Button
                     className='continue-button'
                     onClick={() => {

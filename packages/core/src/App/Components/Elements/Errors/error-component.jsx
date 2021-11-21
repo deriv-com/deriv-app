@@ -40,20 +40,16 @@ const ErrorComponent = ({
 
     if (type === 'mx_mlt_removal' && !hide_notification) {
         return (
-            <div className='close-mx-mlt-account--is-fullscreen'>
-                <div className='close-mx-mlt-account'>
-                    <div className='close-mx-mlt-account__content'>
-                        <CloseMxMltAccountContent
-                            can_have_mlt_account={can_have_mlt_account}
-                            country_standpoint={country_standpoint}
-                            has_malta_account={has_malta_account}
-                            is_fullscreen={true}
-                            showNotificationMessageByKey={showNotificationMessageByKey}
-                            showCloseMxMltAccountPopup={showCloseMxMltAccountPopup}
-                            removeNotificationMessageByKey={removeNotificationMessageByKey}
-                        />
-                    </div>
-                </div>
+            <div className='close-mx-mlt-account close-mx-mlt-account--is-fullscreen'>
+                <CloseMxMltAccountContent
+                    can_have_mlt_account={can_have_mlt_account}
+                    country_standpoint={country_standpoint}
+                    has_malta_account={has_malta_account}
+                    is_fullscreen={true}
+                    showNotificationMessageByKey={showNotificationMessageByKey}
+                    showCloseMxMltAccountPopup={showCloseMxMltAccountPopup}
+                    removeNotificationMessageByKey={removeNotificationMessageByKey}
+                />
             </div>
         );
     }

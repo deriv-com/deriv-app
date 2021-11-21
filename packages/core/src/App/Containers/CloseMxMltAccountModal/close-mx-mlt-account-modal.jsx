@@ -106,10 +106,12 @@ export const CloseMxMltAccountContent = ({
                     <OptionsAccountClosedText />
                 </Text>
             </div>
-            <div className={classNames({
-                'dc-dialog__footer': !is_fullscreen,
-                'close-mx-mlt-account': true,
-            })}>
+            <div
+                className={classNames({
+                    'dc-dialog__footer': !is_fullscreen,
+                    'close-mx-mlt-account': true,
+                })}
+            >
                 <Button
                     className='continue-button'
                     onClick={() => {

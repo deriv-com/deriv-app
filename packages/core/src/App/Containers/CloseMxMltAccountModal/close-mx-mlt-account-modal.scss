@@ -13,6 +13,7 @@
 
         @include mobile {
             max-width: 99vw;
+            max-height: 99%;
 
             .close-mx-mlt-account__content {
                 padding: 0 0.6rem;

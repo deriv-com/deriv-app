@@ -752,10 +752,10 @@
 }
 
 .crypto-fiat-converter-form {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    grid-gap: 0.8rem;
+    display: flex;
     align-items: center;
+    gap: 3%;
+
     @include desktop {
         max-width: 36rem;
         margin: 0 auto 2.4rem;

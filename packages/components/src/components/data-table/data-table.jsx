@@ -28,7 +28,7 @@ const DataTable = ({
     const cache_ref = React.useRef();
     const list_ref = React.useRef();
     const is_dynamic_height = !getRowSize;
-    const [scrollTop, setScrollTop] = React.useState(0);
+    const [scroll_top, setScrollTop] = React.useState(0);
     const [is_loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
@@ -42,19 +42,16 @@ const DataTable = ({
             });
         }
         setLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        if (is_dynamic_height) {
-            list_ref.current?.recomputeGridSize(0);
-        }
+        if (is_dynamic_height) list_ref.current?.recomputeGridSize(0);
     }, [data_source, is_dynamic_height]);
 
     const handleScroll = ev => {
         setScrollTop(ev.target.scrollTop);
-        if (typeof onScroll === 'function') {
-            onScroll(ev);
-        }
+        if (typeof onScroll === 'function') onScroll(ev);
     };
 
     const rowRenderer = ({ style, index, key, parent }) => {
@@ -136,7 +133,7 @@ const DataTable = ({
                                     rowHeight={is_dynamic_height ? cache_ref?.current.rowHeight : getRowSize}
                                     rowRenderer={rowRenderer}
                                     scrollingResetTimeInterval={0}
-                                    scrollTop={scrollTop}
+                                    scrollTop={scroll_top}
                                     width={width}
                                 />
                             </ThemedScrollbars>

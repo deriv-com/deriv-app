@@ -1132,11 +1132,13 @@ export default class TradeStore extends BaseStore {
                     .close_mx_mlt_account
             );
             reaction(
-                () => this.root_store.ui.notification_messages.length === 0,
+                () => this.root_store.client.is_logged_in && this.root_store.ui.notification_messages.length === 0,
                 () => {
                     const hidden_close_account_notification =
                         parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
-                    if ((has_iom_account || has_malta_account) && !hidden_close_account_notification) {
+                    const should_retain_notification =
+                        (has_iom_account || has_malta_account) && !hidden_close_account_notification;
+                    if (should_retain_notification) {
                         this.root_store.ui.addNotificationMessage(
                             client_notifications(this.root_store.ui, {}, is_uk, has_malta_account, can_have_mlt_account)
                                 .close_mx_mlt_account

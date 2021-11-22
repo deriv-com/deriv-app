@@ -8,6 +8,15 @@ export default class AppStore {
         this.root_store = root_store;
         this.dbot_store = null;
         this.api_helpers_store = null;
+
+        reaction(
+            () => this.root_store.common.current_language,
+            () => {
+                // temporarily added this to refresh just dbot in case of changing language,
+                // otherwise it should change language without refresh.
+                window.location.reload();
+            }
+        );
     }
 
     @action.bound

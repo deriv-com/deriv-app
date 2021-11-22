@@ -22,9 +22,11 @@ export default class PushwooshStore extends BaseStore {
         this.user_interacted = true;
     };
     onUserInteraction = e => {
-        this.approveUserInteracted();
-        e.currentTarget.removeEventListener('click', this.onUserInteraction);
-        e.currentTarget.removeEventListener('touchend', this.onUserInteraction);
+        setTimeout(() => {
+            this.approveUserInteracted();
+            e.currentTarget.removeEventListener('click', this.onUserInteraction);
+            e.currentTarget.removeEventListener('touchend', this.onUserInteraction);
+        }, 500);
     };
     /**
      * Pushes initialize event to pushwoosh

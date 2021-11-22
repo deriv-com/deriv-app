@@ -20,10 +20,13 @@ const DataTable = ({
     data_source,
     footer,
     getActionColumns,
+    getRowAction,
     getRowSize,
+    id,
     keyMapper,
     onScroll,
-    ...other_props
+    passthrough,
+    preloaderCheck,
 }) => {
     const cache_ref = React.useRef();
     const list_ref = React.useRef();
@@ -55,7 +58,6 @@ const DataTable = ({
     };
 
     const rowRenderer = ({ style, index, key, parent }) => {
-        const { getRowAction, id, passthrough, preloaderCheck } = other_props;
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
         const contract_id = item.contract_id || item.id;

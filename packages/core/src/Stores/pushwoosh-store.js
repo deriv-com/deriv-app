@@ -12,7 +12,7 @@ export default class PushwooshStore extends BaseStore {
 
     constructor(root_store) {
         super({ root_store });
-        document.addEventListener('click', this.onUserInteraction);
+        document.addEventListener('mousedown', this.onUserInteraction);
         document.addEventListener('touchend', this.onUserInteraction);
         when(() => this.user_interacted, this.init);
     }
@@ -21,12 +21,10 @@ export default class PushwooshStore extends BaseStore {
     approveUserInteracted = () => {
         this.user_interacted = true;
     };
-    onUserInteraction = e => {
-        setTimeout(() => {
-            this.approveUserInteracted();
-            e.currentTarget.removeEventListener('click', this.onUserInteraction);
-            e.currentTarget.removeEventListener('touchend', this.onUserInteraction);
-        }, 500);
+    onUserInteraction = () => {
+        this.approveUserInteracted();
+        document.removeEventListener('mousedown', this.onUserInteraction);
+        document.removeEventListener('touchend', this.onUserInteraction);
     };
     /**
      * Pushes initialize event to pushwoosh

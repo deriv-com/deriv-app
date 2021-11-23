@@ -23,6 +23,7 @@ commands:
             then
               git fetch origin --tags
             fi
+            echo ${CIRCLE_BRANCH}
       - checkout
       - run:
           name: "Compress git objects"
@@ -246,6 +247,7 @@ jobs:
           k8s_namespace: "deriv-app-production"
       - notify_slack
     environment:
+      CURRENT_RELEASE_TAG: ${CIRCLE_BRANCH}
       NODE_ENV: staging
 
   release_production_dashboard:

@@ -493,6 +493,8 @@ export default class CashierStore extends BaseStore {
                 await this.getAdvertizerError();
                 this.checkP2pStatus();
                 await this.check10kLimit();
+                await this.setPaymentAgentList();
+                await this.filterPaymentAgentList();
             }
         );
         when(
@@ -647,7 +649,6 @@ export default class CashierStore extends BaseStore {
         const current_container = this.active_container;
 
         this.setErrorMessage('');
-        this.setContainerHeight(0);
         this.setLoading(true);
 
         if (!this.config[this.active_container].is_session_timeout) {
@@ -675,6 +676,7 @@ export default class CashierStore extends BaseStore {
             return;
         }
         if (response_cashier.error) {
+            this.setContainerHeight(0);
             this.handleCashierError(response_cashier.error);
             this.setLoading(false);
             this.setSessionTimeout(true);

@@ -23,6 +23,7 @@ commands:
             then
               git fetch origin --tags
             fi
+            echo "___________________branch name should render here_____________________: "
             echo ${CIRCLE_BRANCH}
       - checkout
       - run:
@@ -214,6 +215,7 @@ jobs:
       - k8s_deploy
       - notify_slack
     environment:
+      CURRENT_RELEASE_TAG: ${CIRCLE_BRANCH}
       NODE_ENV: staging
 
   release_staging_dashboard:
@@ -247,7 +249,6 @@ jobs:
           k8s_namespace: "deriv-app-production"
       - notify_slack
     environment:
-      CURRENT_RELEASE_TAG: ${CIRCLE_BRANCH}
       NODE_ENV: staging
 
   release_production_dashboard:

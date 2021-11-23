@@ -26,6 +26,36 @@ export const showUnavailableLocationError = flow(function* (showError, is_logged
     });
 });
 
+export const showMxMltUnavailableError = flow(function* (showError, can_have_mlt_account, can_have_mx_account) {
+    const website_status = yield WS.wait('website_status');
+    const residence_list = yield WS.residenceList();
+
+    const clients_country_code = website_status.website_status.clients_country;
+    const clients_country_text = (
+        residence_list.residence_list.find(obj_country => obj_country.value === clients_country_code) || {}
+    ).text;
+
+    let header;
+
+    if (can_have_mlt_account) {
+        header = localize("Unfortunately, trading options isn't possible in your country");
+    } else if (clients_country_text || can_have_mx_account) {
+        header = localize('Sorry, trading is unavailable in {{clients_country}}.', {
+            clients_country: clients_country_text,
+        });
+    } else {
+        header = localize('Sorry, trading is unavailable in your current location.');
+    }
+
+    showError({
+        message: ' ',
+        header,
+        redirect_label: null,
+        redirectOnClick: () => ({}),
+        should_show_refresh: false,
+    });
+});
+
 export const isMarketClosed = (active_symbols = [], symbol) => {
     if (!active_symbols.length) return false;
     return active_symbols.filter(x => x.symbol === symbol)[0]

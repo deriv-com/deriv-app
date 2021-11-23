@@ -5,6 +5,7 @@ import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from '../Components/Error/cashier-locked.jsx';
+import DepositsLocked from '../Components/Error/deposit-locked.jsx';
 import OnRampProviderCard from '../Components/on-ramp-provider-card.jsx';
 import OnRampProviderPopup from '../Components/on-ramp-provider-popup.jsx';
 import SideNote from '../Components/side-note.jsx';
@@ -42,6 +43,7 @@ const OnRamp = ({
     filtered_onramp_providers,
     is_cashier_locked,
     is_cashier_default,
+    is_deposit_locked,
     is_loading,
     is_onramp_modal_open,
     is_switching,
@@ -84,6 +86,10 @@ const OnRamp = ({
 
     if (is_cashier_locked) {
         return <CashierLocked />;
+    }
+
+    if (is_deposit_locked) {
+        return <DepositsLocked />;
     }
 
     return (
@@ -140,6 +146,7 @@ const OnRamp = ({
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
     is_cashier_locked: PropTypes.bool,
+    is_deposit_locked: PropTypes.bool,
     is_onramp_modal_open: PropTypes.bool,
     is_loading: PropTypes.bool,
     menu_options: PropTypes.array,
@@ -158,6 +165,7 @@ export default connect(({ modules, common, client }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
     is_cashier_default: modules.cashier.is_cashier_default,
     is_cashier_locked: modules.cashier.is_cashier_locked,
+    is_deposit_locked: modules.cashier.is_deposit_locked,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
     is_loading: modules.cashier.is_loading,
     is_switching: client.is_switching,

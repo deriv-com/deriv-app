@@ -79,4 +79,6 @@ PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
 };
 
+export {PlatformSwitcher as TestedPlatformSwitcher}
+
 export default withRouter(PlatformSwitcher);

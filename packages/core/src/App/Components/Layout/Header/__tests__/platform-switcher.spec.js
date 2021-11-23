@@ -2,48 +2,27 @@ import React from 'react';
 import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import PlatformSwitcher from '../platform-switcher';
-import { BrowserRouter } from 'react-router-dom';
+import { TestedPlatformSwitcher } from '../platform-switcher';
 import { CSSTransition } from 'react-transition-group';
 
 configure({ adapter: new Adapter() });
 
-describe('PlatformSwitcher', () => {
+describe('TestedPlatformSwitcher', () => {
     const props = {
         app_routing_history: [{ pathname: 'test' }],
         platform_config: [],
-        toggleDrawer: () => {},
+        toggleDrawer: () => { },
     };
 
-    const wrapper = shallow(
-        <BrowserRouter>
-            <PlatformSwitcher {...props} />
-        </BrowserRouter>
-    )
-        .dive()
-        .dive()
-        .dive()
-        .dive()
-        .dive()
-        .dive();
+    const wrapper = shallow(<TestedPlatformSwitcher {...props} />)
 
-    it('should render one <PlatformSwitcher /> component', () => {
+    it('should render one <TestedPlatformSwitcher /> component', () => {
         expect(wrapper).to.have.length(1);
+        console.log(wrapper.debug());
     });
 
     it('should have .platform-switcher__preloader and have not .platform-switcher if app_routing_history is an empty array', () => {
-        const wrapper = shallow(
-            <BrowserRouter>
-                <PlatformSwitcher app_routing_history={[]} />
-            </BrowserRouter>
-        )
-            .dive()
-            .dive()
-            .dive()
-            .dive()
-            .dive()
-            .dive();
-
+        const wrapper = shallow(<TestedPlatformSwitcher app_routing_history={[]} />)
         expect(wrapper.find('.platform-switcher__preloader').exists()).to.be.true;
         expect(wrapper.find('.platform-switcher').exists()).to.be.false;
     });

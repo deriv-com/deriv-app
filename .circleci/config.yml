@@ -23,8 +23,6 @@ commands:
             then
               git fetch origin --tags
             fi
-            echo "___________________branch name should render here_____________________: "
-            echo ${CIRCLE_BRANCH}
       - checkout
       - run:
           name: "Compress git objects"

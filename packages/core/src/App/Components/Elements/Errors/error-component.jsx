@@ -5,9 +5,12 @@ import { PageError } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { CloseMXAccountContent } from 'App/Containers/CloseMXAccountModal/close-mx-account-modal.jsx';
+import { CloseMxMltAccountContent } from 'App/Containers/CloseMxMltAccountModal/close-mx-mlt-account-modal.jsx';
 
 const ErrorComponent = ({
+    can_have_mlt_account,
+    country_standpoint,
+    has_malta_account,
     header,
     message,
     redirect_label,
@@ -15,10 +18,9 @@ const ErrorComponent = ({
     should_clear_error_on_click,
     setError,
     showNotificationMessageByKey,
-    showCloseMXAccountPopup,
+    showCloseMxMltAccountPopup,
     removeNotificationMessageByKey,
     type,
-    is_iom,
     redirect_to = routes.trade,
     should_show_refresh = true,
 }) => {
@@ -34,26 +36,25 @@ const ErrorComponent = ({
     }, [history, setError]);
 
     const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
+    const hide_notification = localStorage.getItem('hide_close_mx_mlt_account_notification');
 
-    if (type === 'mx_removal') {
+    if (type === 'mx_mlt_removal' && !hide_notification) {
         return (
-            <div className='close-mx-account--is-fullscreen'>
-                <div className='close-mx-account'>
-                    <div className='close-mx-account__content'>
-                        <CloseMXAccountContent
-                            is_iom={is_iom}
-                            is_fullscreen={true}
-                            showNotificationMessageByKey={showNotificationMessageByKey}
-                            showCloseMXAccountPopup={showCloseMXAccountPopup}
-                            removeNotificationMessageByKey={removeNotificationMessageByKey}
-                        />
-                    </div>
-                </div>
+            <div className='close-mx-mlt-account close-mx-mlt-account--is-fullscreen'>
+                <CloseMxMltAccountContent
+                    can_have_mlt_account={can_have_mlt_account}
+                    country_standpoint={country_standpoint}
+                    has_malta_account={has_malta_account}
+                    is_fullscreen={true}
+                    showNotificationMessageByKey={showNotificationMessageByKey}
+                    showCloseMxMltAccountPopup={showCloseMxMltAccountPopup}
+                    removeNotificationMessageByKey={removeNotificationMessageByKey}
+                />
             </div>
         );
     }
 
-    if (localStorage.getItem('hide_close_mx_account_notification')) {
+    if (localStorage.getItem('hide_close_mx_mlt_account_notification')) {
         return (
             <PageError
                 header={header || localize('Something’s not right')}
@@ -79,6 +80,7 @@ const ErrorComponent = ({
             buttonOnClick={redirectOnClick || (() => location.reload())}
             should_clear_error_on_click={should_clear_error_on_click}
             setError={setError}
+            has_malta_account={has_malta_account}
         />
     );
 };
@@ -90,6 +92,8 @@ ErrorComponent.propTypes = {
 
 export default connect(({ client, ui }) => ({
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
-    showCloseMXAccountPopup: ui.showCloseMXAccountPopup,
-    is_iom: client.residence === 'im',
+    showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
+    has_malta_account: client.has_malta_account,
+    can_have_mlt_account: client.can_have_mlt_account,
+    country_standpoint: client.country_standpoint,
 }))(ErrorComponent);

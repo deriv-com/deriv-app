@@ -603,6 +603,40 @@ export default class ClientStore extends BaseStore {
         return result;
     }
 
+    // TODO: Remove closed_mlt_accounts variable after the MLT and MX account closure has concluded.
+    @computed
+    get can_have_mlt_account() {
+        const countries = [
+            'nl',
+            'cy',
+            'ie',
+            'ro',
+            'be',
+            'lt',
+            'bg',
+            'cz',
+            'dk',
+            'se',
+            'pl',
+            'ee',
+            'hr',
+            'at',
+            'hu',
+            'sl',
+            'fi',
+            'sk',
+            'pt',
+            'lv',
+        ].includes(this.residence);
+        return countries;
+    }
+
+    // TODO: Remove closed_mlt_accounts variable after the MLT and MX account closure has concluded.
+    get can_have_mx_account() {
+        const countries = ['gb', 'im'].includes(this.residence);
+        return countries;
+    }
+
     @computed
     get can_upgrade() {
         return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
@@ -655,6 +689,9 @@ export default class ClientStore extends BaseStore {
     };
 
     isDxtradeAllowed = landing_companies => {
+        // Stop showing DerivX for non-logged in EU users
+        if (!this.is_logged_in && this.is_eu_country) return false;
+
         if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
             return true;
 

@@ -11,10 +11,10 @@ describe('TestedPlatformSwitcher', () => {
     const props = {
         app_routing_history: [{ pathname: 'test' }],
         platform_config: [],
-        toggleDrawer: () => { },
+        toggleDrawer: () => {},
     };
 
-    const wrapper = shallow(<TestedPlatformSwitcher {...props} />)
+    const wrapper = shallow(<TestedPlatformSwitcher {...props} />);
 
     it('should render one <TestedPlatformSwitcher /> component', () => {
         expect(wrapper).to.have.length(1);
@@ -22,7 +22,7 @@ describe('TestedPlatformSwitcher', () => {
     });
 
     it('should have .platform-switcher__preloader and have not .platform-switcher if app_routing_history is an empty array', () => {
-        const wrapper = shallow(<TestedPlatformSwitcher app_routing_history={[]} />)
+        const wrapper = shallow(<TestedPlatformSwitcher app_routing_history={[]} />);
         expect(wrapper.find('.platform-switcher__preloader').exists()).to.be.true;
         expect(wrapper.find('.platform-switcher').exists()).to.be.false;
     });

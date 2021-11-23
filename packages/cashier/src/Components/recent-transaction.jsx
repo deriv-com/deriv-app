@@ -18,7 +18,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
     }
 
     let { address_hash, submit_date, transaction_type } = crypto_transactions[0];
-    const {status_code, transaction_hash} = crypto_transactions[0];
+    const { status_code, transaction_hash } = crypto_transactions[0];
     const status = getStatus(transaction_hash, transaction_type, status_code);
     submit_date = epochToMoment(submit_date).format('MMM D, YYYY');
     transaction_type = transaction_type[0].toUpperCase() + transaction_type.slice(1);
@@ -34,7 +34,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
         <div className='cashier-recent-transaction-wrapper'>
             <div className='cashier-recent-transaction'>
                 <Text weight='bold' as='p' line_height='s' size='xs'>
-                    <Localize i18n_default_text='Recent Transactions' />
+                    <Localize i18n_default_text='Recent transactions' />
                 </Text>
                 <div className='cashier-recent-transaction__data-wrapper'>
                     <Icon
@@ -55,7 +55,8 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
                             </Text>
                             <div className='cashier-recent-transaction__status'>
                                 <span
-                                    className={classNames('cashier-recent-transaction__status-indicator', 
+                                    className={classNames(
+                                        'cashier-recent-transaction__status-indicator',
                                         `cashier-recent-transaction__status-indicator-${status.renderer}`
                                     )}
                                 />

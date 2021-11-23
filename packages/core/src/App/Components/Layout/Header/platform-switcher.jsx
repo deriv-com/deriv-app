@@ -10,7 +10,6 @@ import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';
 
 const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }) => {
-
     const [is_open, setIsOpen] = React.useState(false);
 
     const is_close_drawer_fired_ref = React.useRef(false);
@@ -27,7 +26,7 @@ const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }
         setIsOpen(false);
         is_close_drawer_fired_ref.current = true;
     };
-    
+
     return app_routing_history.length === 0 ? (
         <div
             className={classNames('platform-switcher__preloader', {

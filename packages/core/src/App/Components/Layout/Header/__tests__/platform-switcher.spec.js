@@ -9,7 +9,6 @@ import { CSSTransition } from 'react-transition-group';
 configure({ adapter: new Adapter() });
 
 describe('PlatformSwitcher', () => {
-
     const props = {
         app_routing_history: [{ pathname: 'test' }],
         platform_config: [],
@@ -27,7 +26,7 @@ describe('PlatformSwitcher', () => {
         .dive()
         .dive()
         .dive();
-    
+
     it('should render one <PlatformSwitcher /> component', () => {
         expect(wrapper).to.have.length(1);
     });
@@ -44,7 +43,7 @@ describe('PlatformSwitcher', () => {
             .dive()
             .dive()
             .dive();
-            
+
         expect(wrapper.find('.platform-switcher__preloader').exists()).to.be.true;
         expect(wrapper.find('.platform-switcher').exists()).to.be.false;
     });

@@ -19,6 +19,7 @@ import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
+import CreateAdErrorModal from './create-ad-error-modal.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -72,6 +73,7 @@ const CreateAdForm = () => {
         return () => {
             clearInterval(ad_website_status);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [my_ads_store.is_ad_created_modal_visible]);
 
     return (
@@ -355,29 +357,7 @@ const CreateAdForm = () => {
                     );
                 }}
             </Formik>
-            <Modal
-                className='p2p-my-ads__modal-error'
-                is_open={my_ads_store.is_api_error_modal_visible}
-                small
-                has_close_icon={false}
-                title={my_ads_store.create_ad_error_message_title}
-            >
-                <Modal.Body>
-                    <Text as='p' size='xs' color='prominent'>
-                        {my_ads_store.api_error_message}
-                    </Text>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Ok')}
-                        onClick={() => my_ads_store.setIsApiErrorModalVisible(false)}
-                        primary
-                        large
-                    />
-                </Modal.Footer>
-            </Modal>
-
+            <CreateAdErrorModal />
             <Modal
                 className='p2p-my-ads__ad-created'
                 has_close_icon={false}

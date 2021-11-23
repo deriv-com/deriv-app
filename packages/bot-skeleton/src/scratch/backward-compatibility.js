@@ -2,14 +2,15 @@ import { localize } from '@deriv/translations';
 import { config } from '../constants/config';
 import ApiHelpers from '../services/api/api-helpers';
 
+let convert_only_trade_again;
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
     constructor() {
+        convert_only_trade_again = false;
         this.blocks_pending_reconnect = {};
         this.workspace = this.createWorkspace();
         this.workspace_variables = {};
     }
-
     getConversions() {
         const generateGrowingListBlock = (block_node, block_type, variable_name, child_value_input_name) => {
             const block = this.workspace.newBlock(block_type);
@@ -269,6 +270,27 @@ export default class BlockConversion {
         return conversions;
     }
 
+    getTradeAgainConversion() {
+        const tradeAgain = () => {
+            const block = this.workspace.newBlock('trade_again');
+            const shadow_sl = this.workspace.newBlock('math_number');
+            const shadow_tp = this.workspace.newBlock('math_number');
+
+            shadow_sl.setShadow(true);
+            shadow_tp.setShadow(true);
+            block.getInput('STOP_LOSS').connection.connect(shadow_sl.outputConnection);
+            block.getInput('TAKE_PROFIT').connection.connect(shadow_tp.outputConnection);
+            block.getField('SL_ENABLED').setValue('FALSE');
+            block.getField('TP_ENABLED').setValue('FALSE');
+
+            return { block_to_attach: block };
+        };
+        const conversion = {
+            trade_again: tradeAgain,
+        };
+        return conversion;
+    }
+
     // eslint-disable-next-line class-methods-use-this
     getIllegalBlocks() {
         const illegal_blocks = [];
@@ -397,20 +419,18 @@ export default class BlockConversion {
     convertStrategy(strategy_node, showIncompatibleStrategyDialog) {
         // Disable events (globally) to suppress block onchange listeners from firing.
         Blockly.Events.disable();
-
         // We only want to update renamed fields for modern strategies.
         const xml = this.updateRenamedFields(strategy_node);
-
+        const has_sl_tp_trade_again = [...xml.getElementsByTagName('block')]
+            .filter(el => el.getAttribute('type') === 'trade_again')
+            .every(el => el.children.length);
         // Don't convert already compatible strategies if they contain SL/TP trade_again block
         if (strategy_node.hasAttribute('is_dbot') && strategy_node.getAttribute('is_dbot') === 'true') {
-            const has_sl_tp_trade_again = [...xml.getElementsByTagName('block')]
-                .filter(el => el.getAttribute('type') === 'trade_again')
-                .every(el => el.children.length);
-
             if (has_sl_tp_trade_again) {
                 Blockly.Events.enable();
                 return xml;
             }
+            convert_only_trade_again = true;
         }
 
         const has_illegal_block = this.getIllegalBlocks().some(
@@ -471,7 +491,7 @@ export default class BlockConversion {
         // variable instances for them if they don't exist yet.
         registerVariables(xml.querySelectorAll('field[name="VAR"]'));
 
-        block_nodes.forEach(block_node => this.convertBlockNode(block_node));
+        block_nodes.forEach(block_node => this.convertBlockNode(block_node, null));
 
         // Re-connect blocks that have been transformed into multiples. i.e. in the case
         // of old multiline blocks converted to statement blocks.
@@ -536,7 +556,8 @@ export default class BlockConversion {
     }
 
     convertBlockNode(el_block, parent_block = null) {
-        const conversions = this.getConversions();
+        const conversions = convert_only_trade_again ? this.getTradeAgainConversion() : this.getConversions();
+        // const conversions = this.getConversions();
         const block_type = el_block.getAttribute('type');
         const is_old_block = Object.keys(conversions).includes(block_type);
         let block = null;

@@ -92,26 +92,11 @@ Blockly.Blocks.trade_again = {
     },
     onchange(event) {
         if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.BLOCK_CREATE) {
-            if (event.type === Blockly.Events.BLOCK_CREATE) {
-                if (this.getDescendants()[1]) {
-                    this.getDescendants()[1].setDisabled(this.getFieldValue('SL_ENABLED') !== 'TRUE');
-                }
-                if (this.getDescendants()[2]) {
-                    this.getDescendants()[2].setDisabled(this.getFieldValue('TP_ENABLED') !== 'TRUE');
-                }
+            if (this.getDescendants()[1]) {
+                this.getDescendants()[1].setDisabled(this.getFieldValue('SL_ENABLED') !== 'TRUE');
             }
-            if (event.type === Blockly.Events.BLOCK_CHANGE) {
-                switch (event.name) {
-                    case 'SL_ENABLED':
-                        this.getDescendants()[1].setDisabled(event.newValue === 'FALSE');
-                        break;
-
-                    case 'TP_ENABLED':
-                        this.getDescendants()[2].setDisabled(event.newValue === 'FALSE');
-                        break;
-                    default:
-                        break;
-                }
+            if (this.getDescendants()[2]) {
+                this.getDescendants()[2].setDisabled(this.getFieldValue('TP_ENABLED') !== 'TRUE');
             }
         }
     },
@@ -123,7 +108,7 @@ Blockly.JavaScript.trade_again = block => {
     const stop_loss = Blockly.JavaScript.valueToCode(block, 'STOP_LOSS', Blockly.JavaScript.ORDER_ATOMIC) || 0;
     const take_profit = Blockly.JavaScript.valueToCode(block, 'TAKE_PROFIT', Blockly.JavaScript.ORDER_ATOMIC) || 0;
     const code = `
-    Bot.isTradeAgain(null, ${is_sl_enabled === 'TRUE'}, ${is_tp_enabled === 'TRUE'}, ${stop_loss}, ${take_profit});
+    Bot.isTradeAgain(${is_sl_enabled === 'TRUE'}, ${is_tp_enabled === 'TRUE'}, ${stop_loss}, ${take_profit});
     return true;\n
     `;
 

@@ -9,7 +9,7 @@ import NotificationBanner from './notification-banner.jsx';
 import { default_delay, types } from './constants';
 import NotificationPromo from './notification-promo.jsx';
 import { BinaryLink } from '../../Routes';
-import NotificationCloseMX from './notification-close-mx.jsx';
+import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
@@ -41,9 +41,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     onClose={destroy}
                 />
             );
-        case 'close_mx':
+        case 'close_mx_mlt':
             return (
-                <NotificationCloseMX
+                <NotificationCloseMxMlt
                     header={data.header}
                     message={data.message}
                     secondary_btn={data.secondary_btn}
@@ -159,7 +159,7 @@ Notification.propTypes = {
             'news',
             'announce',
             'promotions',
-            'close_mx',
+            'close_mx_mlt',
         ]).isRequired,
     }),
     removeNotificationMessage: PropTypes.func,

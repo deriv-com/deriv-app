@@ -4,7 +4,6 @@ import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-
 import 'Sass/error.scss';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (

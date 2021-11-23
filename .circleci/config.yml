@@ -16,6 +16,7 @@ commands:
           name: "Fetch git tags"
           command: |
             mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
             echo "github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==" >> ~/.ssh/known_hosts
             # Fetch tags if git cache is present
             if [ -e /home/circleci/project/.git ]
@@ -130,8 +131,7 @@ commands:
         type: string
         default: "Dockerfile"
     steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - run:
           name: Building docker image
           command: |
@@ -166,7 +166,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -174,7 +174,7 @@ jobs:
 
   build_dashboard:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -182,7 +182,7 @@ jobs:
 
   release_storybook:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -202,7 +202,7 @@ jobs:
 
   release_staging:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -217,7 +217,7 @@ jobs:
 
   release_staging_dashboard:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -233,7 +233,7 @@ jobs:
 
   release_production:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -250,7 +250,7 @@ jobs:
 
   release_production_dashboard:
     docker:
-      - image: circleci/node:12.18.0-stretch  
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -263,10 +263,10 @@ jobs:
       - notify_slack
     environment:
       NODE_ENV: staging
-  
+
   build_and_test:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache

@@ -20,7 +20,7 @@ import {
 } from '@deriv/components';
 import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, toMoment, PlatformContext, routes } from '@deriv/shared';
+import { isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 

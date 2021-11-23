@@ -11,9 +11,9 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 
-const AcceptRiskForm = ({ onConfirm, onClose }) => {
+const AcceptRiskForm = ({ onSubmit }) => {
     return (
-        <Formik initialValues={{}} onSubmit={onConfirm} validateOnMount>
+        <Formik initialValues={{}} onSubmit={onSubmit} validateOnMount>
             {({ handleSubmit }) => (
                 <AutoHeightWrapper default_height={200}>
                     {({ setRef, height }) => (
@@ -23,31 +23,21 @@ const AcceptRiskForm = ({ onConfirm, onClose }) => {
                                     <div className='accept-risk__container'>
                                         <div className='accept-risk__header'>
                                             <Text weight='bold' size='xs'>
-                                                {localize('Appropriateness Test, WARNING:')}
+                                                {localize('Warning')}
                                             </Text>
                                         </div>
                                         <Text as='p' size='xs'>
                                             <Localize
-                                                i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
-                                                components={[<br key={0} />, <br key={1} />]}
+                                                i18n_default_text="Our products and services may expose you to risks that can be substantial at times, including the risk of losing your entire investment. Please note that by clicking <0>Continue</0>, you'll be accepting these risks."
+                                                components={[<strong key={0} />]}
                                             />
-                                            <Localize
-                                                i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><1/>'
-                                                components={[<br key={0} />, <br key={1} />]}
-                                            />
-                                            <Localize i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be exposing yourself to risks (which may be significant, including the risk of loss of the entire sum invested) that you may not have the knowledge and experience to properly assess or mitigate.' />
                                         </Text>
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
+                            <input name='accept_risk' value='1' type='hidden' />
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
-                                <FormSubmitButton
-                                    is_absolute={isMobile()}
-                                    label={localize('Accept')}
-                                    has_cancel
-                                    cancel_label={localize('Decline')}
-                                    onCancel={onClose}
-                                />
+                                <FormSubmitButton is_absolute={isMobile()} label={localize('Continue')} />
                             </Modal.Footer>
                         </form>
                     )}

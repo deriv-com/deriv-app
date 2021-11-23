@@ -119,13 +119,7 @@ const Error = ({ error, setErrorMessage }) => {
             );
             break;
         case 'PaymentAgentWithdrawError':
-            AccountError = (
-                <ErrorComponent
-                    header={error.message}
-                    onClickButton={onClickButton}
-                    button_text={localize('Back to payment agents')}
-                />
-            );
+            AccountError = <ErrorComponent header={error.message} onClickButton={onClickButton} />;
             break;
         default:
             AccountError = <ErrorComponent header={error.message} />;

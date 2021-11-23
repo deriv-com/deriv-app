@@ -3,6 +3,7 @@ import React from 'react';
 import { reaction } from 'mobx';
 import { ButtonToggle, Checkbox, Icon, PopoverMobile } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
+import classNames from 'classnames';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
@@ -47,7 +48,11 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     );
 
     return (
-        <div className='buy-sell__header'>
+        <div
+            className={classNames('buy-sell__header', {
+                'buy-sell__header-position-static': !!buy_sell_store.api_error_message,
+            })}
+        >
             <div className='buy-sell__header-container'>
                 <AnimationWrapper is_visible={is_visible}>
                     <ToggleContainer>

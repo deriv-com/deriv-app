@@ -14,8 +14,9 @@ export default class AppStore {
             () => {
                 // temporarily added this to refresh just dbot in case of changing language,
                 // otherwise it should change language without refresh.
+                const { pathname } = window.location;
                 const is_bot =
-                    /^\/bot/.test(l.pathname) || (/^\/(br_)/.test(l.pathname) && l.pathname.split('/')[2] === 'bot');
+                    /^\/bot/.test(pathname) || (/^\/(br_)/.test(pathname) && pathname.split('/')[2] === 'bot');
                 if (is_bot) window.location.reload();
             }
         );

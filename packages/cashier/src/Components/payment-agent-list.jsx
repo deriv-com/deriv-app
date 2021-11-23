@@ -160,6 +160,9 @@ const PaymentAgentList = ({
                                                 is_email_sent={is_email_sent}
                                                 is_resend_clicked={is_resend_clicked}
                                                 resend_timeout={resend_timeout}
+                                                resendVerificationEmail={resendVerificationEmail}
+                                                sendVerificationEmail={sendVerificationEmail}
+                                                setVerificationResendClicked={setVerificationResendClicked}
                                             />
                                         </div>
                                     ) : (

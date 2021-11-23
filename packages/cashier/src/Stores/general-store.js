@@ -215,6 +215,8 @@ export default class GeneralStore extends BaseStore {
                     await this.getAdvertizerError();
                     this.checkP2pStatus();
                     await withdraw_store.check10kLimit();
+                    await payment_agent_store.setPaymentAgentList();
+                    await payment_agent_store.filterPaymentAgentList();
                 }
             );
             when(

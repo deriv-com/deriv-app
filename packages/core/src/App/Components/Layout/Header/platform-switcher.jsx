@@ -20,6 +20,7 @@ const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }
                 toggleDrawer();
             }
         }
+        is_close_drawer_fired_ref.current = false;
     });
 
     const closeDrawer = () => {

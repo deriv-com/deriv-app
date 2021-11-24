@@ -5,16 +5,10 @@ import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-class ResultMobile extends React.PureComponent {
-    handleClick = e => {
-        if (this.props.is_unsupported) {
-            e.preventDefault();
-            this.props.onClick();
-        }
-    };
-
-    render() {
-        const { is_visible, result } = this.props;
+const ResultMobile = ({
+    is_visible,
+    result,
+}) => {
         const is_contract_won = result === 'won';
         return (
             <React.Fragment>
@@ -28,7 +22,10 @@ class ResultMobile extends React.PureComponent {
                     }}
                     unmountOnExit
                 >
-                    <div className='positions-modal-card__caption-wrapper'>
+                    <div 
+                        className='positions-modal-card__caption-wrapper' 
+                        data-testid="result_mobile"
+                    >
                         <span
                             className={classNames('positions-modal-card__caption', {
                                 'positions-modal-card__caption--won': is_contract_won,
@@ -55,7 +52,6 @@ class ResultMobile extends React.PureComponent {
                 </CSSTransition>
             </React.Fragment>
         );
-    }
 }
 
 ResultMobile.propTypes = {

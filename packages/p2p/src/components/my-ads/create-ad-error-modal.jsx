@@ -24,7 +24,7 @@ const CreateAdErrorModal = () => {
                 <Modal.Footer>
                     <Button
                         has_effect
-                        text={localize('Ok')}
+                        text={localize('Update ad')}
                         onClick={() => my_ads_store.setIsApiErrorModalVisible(false)}
                         primary
                         large
@@ -49,7 +49,7 @@ const CreateAdErrorModal = () => {
                 <Modal.Footer>
                     <Button
                         has_effect
-                        text={localize('Ok')}
+                        text={localize('Update ad')}
                         onClick={() => my_ads_store.setIsApiErrorModalVisible(false)}
                         primary
                         large

@@ -71,23 +71,25 @@ const CryptoFiatConverter = ({
             <Field name='converter_from_amount' validate={validateFromAmount}>
                 {({ field }) => (
                     <fieldset>
-                    <Input
-                        {...field}
-                        onFocus={() => {
-                            setArrowIconDirection('right');
-                        }}
-                        onChange={e => {
-                            onChangeConverterFromAmount(e, from_currency, to_currency);
-                            handleChange(e);
-                        }}
-                        type='text'
-                        error={converter_from_error}
-                        label={localize('Amount ({{currency}})', { currency: getCurrencyDisplayCode(from_currency) })}
-                        value={converter_from_amount}
-                        autoComplete='off'
-                        required
-                        hint={hint}
-                    />
+                        <Input
+                            {...field}
+                            onFocus={() => {
+                                setArrowIconDirection('right');
+                            }}
+                            onChange={e => {
+                                onChangeConverterFromAmount(e, from_currency, to_currency);
+                                handleChange(e);
+                            }}
+                            type='text'
+                            error={converter_from_error}
+                            label={localize('Amount ({{currency}})', {
+                                currency: getCurrencyDisplayCode(from_currency),
+                            })}
+                            value={converter_from_amount}
+                            autoComplete='off'
+                            required
+                            hint={hint}
+                        />
                     </fieldset>
                 )}
             </Field>

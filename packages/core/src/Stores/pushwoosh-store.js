@@ -1,5 +1,5 @@
 import { action } from 'mobx';
-import { Pushwoosh } from '@deriv/web-push-notifications';
+import { Pushwoosh } from 'web-push-notifications';
 import { getAppId, urlForCurrentDomain } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BaseStore from './base-store';

@@ -255,7 +255,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                         )}
                     </div>
                     {is_doc_selected && (
-                        <Text className='proof-of-identity__text' align='center' size='xs'>
+                        <Text className='proof-of-identity__text btm-spacer' align='center' size='xs'>
                             <Localize i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.' />
                         </Text>
                     )}

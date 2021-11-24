@@ -1001,7 +1001,7 @@
             }
         }
         .dc-form-submit-button {
-            background-color: inherit;
+            background-color: var(--color-white);
         }
     }
     .dc-autocomplete {
@@ -1220,17 +1220,28 @@
         align-items: center;
         height: 100%;
 
+        @include mobile {
+            display: unset;
+        }
+
         .proof-of-identity__container {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 45%;
+
             @include mobile {
-                width: 95%;
+                width: 100%;
+                padding: 0 1.2rem;
             }
 
             .icon {
+                width: 128px;
+                height: 128px;
                 margin: 1.6rem 0 2.4rem 0;
+            }
+            .dc-input__bottom-label {
+                margin: unset;
             }
             .btm-spacer {
                 margin-bottom: 1.6rem;
@@ -1251,6 +1262,9 @@
             }
             .proof-of-identity__fieldset {
                 width: 100%;
+                @include mobile {
+                    margin-bottom: 1.8rem;
+                }
             }
             .proof-of-identity__footer {
                 width: 100%;
@@ -1259,6 +1273,9 @@
                 .proof-of-identity__submit-button {
                     margin-left: 0.8rem;
                 }
+            }
+            .proof-of-identity__sample-container {
+                margin-top: 2.4rem;
             }
         }
         .proof-of-identity__footer {

@@ -70,10 +70,11 @@ const CryptoFiatConverter = ({
         <div className='crypto-fiat-converter-form'>
             <Field name='converter_from_amount' validate={validateFromAmount}>
                 {({ field }) => (
+                    <fieldset>
                     <Input
                         {...field}
                         onFocus={() => {
-                        setArrowIconDirection('right');
+                            setArrowIconDirection('right');
                         }}
                         onChange={e => {
                             onChangeConverterFromAmount(e, from_currency, to_currency);
@@ -87,6 +88,7 @@ const CryptoFiatConverter = ({
                         required
                         hint={hint}
                     />
+                    </fieldset>
                 )}
             </Field>
             <MobileWrapper>

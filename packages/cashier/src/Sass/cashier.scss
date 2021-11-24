@@ -765,9 +765,6 @@
     }
     @include mobile {
         flex-direction: column;
-        .converter_from_amount {
-            width: 100%;
-        }
         fieldset {
             width: 100%;
         }

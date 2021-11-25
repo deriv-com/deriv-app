@@ -81,4 +81,4 @@ FormProgress.propTypes = {
 
 FormProgress.defaultProps = { steps: [] };
 
-export default FormProgress;
+export default React.memo(FormProgress);

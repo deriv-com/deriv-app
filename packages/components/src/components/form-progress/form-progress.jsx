@@ -4,7 +4,6 @@ import React from 'react';
 import Text from '../text';
 
 const FormProgress = ({ steps, current_step }) => {
-    
     React.useEffect(() => {
         animateCompleteBar();
     });
@@ -21,7 +20,7 @@ const FormProgress = ({ steps, current_step }) => {
         el_completed_bar.current.style.transform = `translateX(${
             el_first_identifier.offsetLeft + el_first_identifier.clientWidth / 2
         }px)`;
-    }
+    };
 
     let active = false;
 
@@ -70,7 +69,7 @@ const FormProgress = ({ steps, current_step }) => {
             </div>
         </div>
     );
-}
+};
 
 FormProgress.propTypes = {
     current_step: PropTypes.any,

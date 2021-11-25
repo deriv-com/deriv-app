@@ -1,5 +1,5 @@
 {
-    "0": "",
+    "0": "[empty string]",
     "1014140": "Aby złożyć skargę, możesz również zadzwonić na numer telefonu: <0>+447723580049</0>.",
     "3215342": "Ostatnie 30 dni",
     "7100308": "Godzina musi być wartością od 0 do 23.",
@@ -1778,6 +1778,7 @@
     "-38915613": "Niezapisane zmiany",
     "-2137450250": "Masz niezapisane zmiany. Czy na pewno chcesz odrzucić zmiany i opuścić stronę?",
     "-1067082004": "Opuść sekcję Ustawienia",
+    "-1466268810": "Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.",
     "-1120954663": "Imię*",
     "-1659980292": "Imię",
     "-1857534296": "Jan",

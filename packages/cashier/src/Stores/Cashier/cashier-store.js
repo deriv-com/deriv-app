@@ -493,8 +493,10 @@ export default class CashierStore extends BaseStore {
                 await this.getAdvertizerError();
                 this.checkP2pStatus();
                 await this.check10kLimit();
-                await this.setPaymentAgentList();
-                await this.filterPaymentAgentList();
+                if (!this.config.payment_agent.list.length) {
+                    await this.setPaymentAgentList();
+                    await this.filterPaymentAgentList();
+                }
             }
         );
         when(

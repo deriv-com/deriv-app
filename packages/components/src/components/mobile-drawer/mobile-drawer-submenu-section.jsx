@@ -29,4 +29,4 @@ SubMenuSection.propTypes = {
     section_title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
-export default SubMenuSection;
+export default React.memo(SubMenuSection);

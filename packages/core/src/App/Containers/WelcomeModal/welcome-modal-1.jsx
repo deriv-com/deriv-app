@@ -18,7 +18,11 @@ const WelcomeModal = props => {
     return (
         <Modal width='760px' className='welcome welcome-cr' is_open has_close_icon={false} has_outer_content>
             <ThemedScrollbars height={700}>
-                <Welcome country_standpoint={country_standpoint} is_eu={is_eu} switchPlatform={switchPlatform} />
+                <Welcome 
+                    country_standpoint={country_standpoint} 
+                    is_eu={is_eu}
+                    switchPlatform={switchPlatform} 
+                />
             </ThemedScrollbars>
         </Modal>
     );

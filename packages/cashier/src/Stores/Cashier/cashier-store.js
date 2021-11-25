@@ -493,10 +493,8 @@ export default class CashierStore extends BaseStore {
                 await this.getAdvertizerError();
                 this.checkP2pStatus();
                 await this.check10kLimit();
-                if (!this.config.payment_agent.list.length) {
-                    await this.setPaymentAgentList();
-                    await this.filterPaymentAgentList();
-                }
+                await this.setPaymentAgentList();
+                await this.filterPaymentAgentList();
             }
         );
         when(
@@ -565,11 +563,6 @@ export default class CashierStore extends BaseStore {
 
             if (should_remount) {
                 this.onRemount = this.onMountCommon;
-            }
-            // we need to see if client's country has PA
-            // if yes, we can show the PA tab in cashier
-            if (!this.config.payment_agent.list.length) {
-                this.setPaymentAgentList().then(this.filterPaymentAgentList);
             }
 
             if (!this.config.payment_agent_transfer.is_payment_agent) {

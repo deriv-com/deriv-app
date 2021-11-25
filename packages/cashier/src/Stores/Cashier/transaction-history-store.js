@@ -47,10 +47,10 @@ export default class TransactionHistoryStore {
     }
     @action.bound
     async onMount() {
-        const { currency } = this.root_store.client;
+        const { currency, switched } = this.root_store.client;
         const is_crypto = !!currency && isCryptocurrency(currency);
 
-        if (is_crypto) {
+        if (is_crypto && !switched) {
             this.setLoading(true);
             await this.unsubscribeCryptoTransactions();
             await this.getCryptoTransactions();
@@ -72,7 +72,6 @@ export default class TransactionHistoryStore {
     async cancelCryptoTransaction(transaction_id) {
         await this.WS.cancelCryptoTransaction(transaction_id).then(response => {
             if (!response.error) {
-                this.getCryptoTransactions();
                 this.setSelectedCryptoTransactionId('');
                 this.setIsCryptoTransactionsCancelModalVisible(false);
                 return Promise.resolve(response);

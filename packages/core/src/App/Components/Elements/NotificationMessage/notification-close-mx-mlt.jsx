@@ -3,8 +3,8 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
 
-const NotificationCloseMX = ({ header, message, secondary_btn, img_src, img_alt, onClose }) => (
-    <div className='close-mx notification-banner'>
+const NotificationCloseMxMlt = ({ header, message, secondary_btn, img_src, img_alt, onClose }) => (
+    <div className='close-mx-mlt notification-banner'>
         <div className='notification-banner--left'>
             <Text as='h4' size={isMobile() ? 'xs' : 's'} weight='bold' className='notification-banner__title'>
                 {header}
@@ -28,7 +28,7 @@ const NotificationCloseMX = ({ header, message, secondary_btn, img_src, img_alt,
     </div>
 );
 
-NotificationCloseMX.propTypes = {
+NotificationCloseMxMlt.propTypes = {
     header: PropTypes.string,
     img_alt: PropTypes.string,
     img_src: PropTypes.string,
@@ -40,4 +40,4 @@ NotificationCloseMX.propTypes = {
     }),
 };
 
-export default NotificationCloseMX;
+export default NotificationCloseMxMlt;

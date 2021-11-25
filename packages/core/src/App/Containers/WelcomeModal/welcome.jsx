@@ -22,31 +22,30 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
         if (is_eu || is_uk) {
             show_options = false;
         }
-        return show_options
-    }
+        return show_options;
+    };
     const cfdOptions = () => {
         let country_options;
         if (is_uk) {
-            country_options = ['Forex', 'Stocks', 'Stock indices', 'Commodities']
-        }
-        else if (is_eu) {
-            country_options = ['Forex', 'Synthetics', 'Stocks', 'Stock indices', 'Cryptocurrencies', 'Commodities']
+            country_options = ['Forex', 'Stocks', 'Stock indices', 'Commodities'];
+        } else if (is_eu) {
+            country_options = ['Forex', 'Synthetics', 'Stocks', 'Stock indices', 'Cryptocurrencies', 'Commodities'];
         } else {
-            country_options = ['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']
+            country_options = ['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities'];
         }
         return country_options;
-    }
+    };
     const mfOptions = () => {
         let mf_options;
         if (is_pl || is_es) {
-            mf_options = ['Forex', 'Synthetics', 'Cryptocurrencies']
+            mf_options = ['Forex', 'Synthetics', 'Cryptocurrencies'];
         } else if (is_uk) {
-            mf_options = ['Forex']
+            mf_options = ['Forex'];
         } else {
-            mf_options = ['Forex', 'Synthetics']
+            mf_options = ['Forex', 'Synthetics'];
         }
         return mf_options;
-    }
+    };
     return (
         <>
             <DesktopWrapper>

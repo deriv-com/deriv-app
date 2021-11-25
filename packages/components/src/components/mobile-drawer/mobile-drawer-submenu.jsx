@@ -5,10 +5,17 @@ import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon.jsx';
 import Text from '../text/text.jsx';
 
-const SubMenu = ({ onToggle, submenu_toggle_class, submenu_icon, 
-    submenu_title, submenu_suffix_icon, has_subheader, children } ) => {
-
-    let [isExpanded, setIsExpanded] = React.useState(false);
+const SubMenu = ({
+    onToggle,
+    submenu_toggle_class,
+    submenu_icon,
+    submenu_title,
+    submenu_suffix_icon,
+    has_subheader,
+    children,
+}) => {
+    
+    const [isExpanded, setIsExpanded] = React.useState(false);
 
     const toggleMenu = () => {
         const is_expanded = !isExpanded;
@@ -17,26 +24,17 @@ const SubMenu = ({ onToggle, submenu_toggle_class, submenu_icon,
             onToggle(is_expanded);
         }
     };
-    console.log('render');
     return (
         <React.Fragment>
-            <div
-                className={classNames('dc-mobile-drawer__submenu-toggle', submenu_toggle_class)}
-                onClick={toggleMenu}
-            >
-                {submenu_icon && (
-                    <Icon className='dc-mobile-drawer__submenu-toggle-icon' icon={submenu_icon} />
-                )}
+            <div className={classNames('dc-mobile-drawer__submenu-toggle', submenu_toggle_class)} onClick={toggleMenu}>
+                {submenu_icon && <Icon className='dc-mobile-drawer__submenu-toggle-icon' icon={submenu_icon} />}
                 {submenu_title && (
                     <Text as='h3' size='xs'>
                         {submenu_title}
                     </Text>
                 )}
                 {submenu_suffix_icon && (
-                    <Icon
-                        className='dc-mobile-drawer__submenu-toggle-suffix-icon'
-                        icon={submenu_suffix_icon}
-                    />
+                    <Icon className='dc-mobile-drawer__submenu-toggle-suffix-icon' icon={submenu_suffix_icon} />
                 )}
             </div>
             <SubMenuList
@@ -49,7 +47,7 @@ const SubMenu = ({ onToggle, submenu_toggle_class, submenu_icon,
             </SubMenuList>
         </React.Fragment>
     );
-}
+};
 
 SubMenu.propTypes = {
     children: PropTypes.node,

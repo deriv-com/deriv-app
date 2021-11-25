@@ -34,7 +34,7 @@
         }
     }
     &__button {
-        position: absolute;
+        position: absolute !important;
         z-index: 1;
         top: 2px;
         height: 28px;

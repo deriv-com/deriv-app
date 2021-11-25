@@ -1,4 +1,4 @@
-.close-mx.notification-banner {
+.close-mx-mlt.notification-banner {
     height: 16.8rem;
     @include mobile {
         min-height: 14.8rem;
@@ -6,6 +6,10 @@
     .notification-banner {
         &__bg {
             background-color: transparent;
+        }
+        &__btn {
+            position: absolute;
+            bottom: 1rem;
         }
         &__btn-wrapper {
             margin-top: 1.9rem;

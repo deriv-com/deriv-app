@@ -5,55 +5,50 @@ import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon.jsx';
 import Text from '../text/text.jsx';
 
-class SubMenu extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            is_expanded: false,
-        };
-    }
+const SubMenu = ({ onToggle, submenu_toggle_class, submenu_icon, 
+    submenu_title, submenu_suffix_icon, has_subheader, children } ) => {
 
-    toggleMenu = () => {
-        const is_expanded = !this.state.is_expanded;
-        this.setState({ is_expanded });
-        if (this.props.onToggle) {
-            this.props.onToggle(is_expanded);
+    let [isExpanded, setIsExpanded] = React.useState(false);
+
+    const toggleMenu = () => {
+        const is_expanded = !isExpanded;
+        setIsExpanded(is_expanded);
+        if (onToggle) {
+            onToggle(is_expanded);
         }
     };
-
-    render() {
-        return (
-            <React.Fragment>
-                <div
-                    className={classNames('dc-mobile-drawer__submenu-toggle', this.props.submenu_toggle_class)}
-                    onClick={this.toggleMenu}
-                >
-                    {this.props.submenu_icon && (
-                        <Icon className='dc-mobile-drawer__submenu-toggle-icon' icon={this.props.submenu_icon} />
-                    )}
-                    {this.props.submenu_title && (
-                        <Text as='h3' size='xs'>
-                            {this.props.submenu_title}
-                        </Text>
-                    )}
-                    {this.props.submenu_suffix_icon && (
-                        <Icon
-                            className='dc-mobile-drawer__submenu-toggle-suffix-icon'
-                            icon={this.props.submenu_suffix_icon}
-                        />
-                    )}
-                </div>
-                <SubMenuList
-                    has_subheader={this.props.has_subheader}
-                    is_expanded={this.state.is_expanded}
-                    submenu_title={this.props.submenu_title}
-                    collapse={this.toggleMenu}
-                >
-                    {this.props.children}
-                </SubMenuList>
-            </React.Fragment>
-        );
-    }
+    console.log('render');
+    return (
+        <React.Fragment>
+            <div
+                className={classNames('dc-mobile-drawer__submenu-toggle', submenu_toggle_class)}
+                onClick={toggleMenu}
+            >
+                {submenu_icon && (
+                    <Icon className='dc-mobile-drawer__submenu-toggle-icon' icon={submenu_icon} />
+                )}
+                {submenu_title && (
+                    <Text as='h3' size='xs'>
+                        {submenu_title}
+                    </Text>
+                )}
+                {submenu_suffix_icon && (
+                    <Icon
+                        className='dc-mobile-drawer__submenu-toggle-suffix-icon'
+                        icon={submenu_suffix_icon}
+                    />
+                )}
+            </div>
+            <SubMenuList
+                has_subheader={has_subheader}
+                is_expanded={isExpanded}
+                submenu_title={submenu_title}
+                collapse={toggleMenu}
+            >
+                {children}
+            </SubMenuList>
+        </React.Fragment>
+    );
 }
 
 SubMenu.propTypes = {

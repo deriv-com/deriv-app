@@ -139,5 +139,12 @@ export const isNavigationFromP2P = (routing_history, platform_route) => {
 };
 
 export const isNavigationFromExternalPlatform = (routing_history, platform_route) => {
-    return routing_history.some(history_item => history_item.pathname === platform_route);
+    const platform_index = routing_history.findIndex(history_item => history_item.pathname === platform_route);
+    const dtrader_index = routing_history.findIndex(history_item => history_item.pathname === routes.trade);
+
+    if (platform_index !== -1) {
+        return dtrader_index === -1 ? true : platform_index < dtrader_index;
+    }
+    
+    return false;
 };

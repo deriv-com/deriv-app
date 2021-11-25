@@ -274,11 +274,6 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setCreateAdErrorMessageTitle(create_ad_error_message_title) {
-        this.create_ad_error_message_title = create_ad_error_message_title;
-    }
-
-    @action.bound
     setDefaultAdvertDescription(default_advert_description) {
         this.default_advert_description = default_advert_description;
     }

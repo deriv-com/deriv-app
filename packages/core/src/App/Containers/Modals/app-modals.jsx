@@ -7,6 +7,9 @@ import { connect } from 'Stores/connect';
 const AccountSignupModal = React.lazy(() =>
     import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal')
 );
+const CloseMxMltAccountModal = React.lazy(() =>
+    import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal')
+);
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
     import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal')
 );
@@ -19,17 +22,14 @@ const SetResidenceModal = React.lazy(() =>
 const RealityCheckModal = React.lazy(() =>
     import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal')
 );
-const AccountTypesModal = React.lazy(() =>
-    import(/* webpackChunkName: "account-types-modal"  */ '../AccountTypesModal')
-);
 const WelcomeModal = React.lazy(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'));
 
 const AppModals = ({
     is_account_needed_modal_on,
-    is_account_types_modal_visible,
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
+    is_close_mx_mlt_account_modal_visible,
     is_eu,
     is_logged_in,
 }) => {
@@ -53,9 +53,8 @@ const AppModals = ({
             }
             break;
     }
-
-    if (is_account_types_modal_visible) {
-        ComponentToLoad = <AccountTypesModal />;
+    if (is_close_mx_mlt_account_modal_visible) {
+        ComponentToLoad = <CloseMxMltAccountModal />;
     }
 
     if (is_welcome_modal_visible) {
@@ -79,9 +78,9 @@ const AppModals = ({
 };
 
 export default connect(({ client, ui }) => ({
-    is_account_types_modal_visible: ui.is_account_types_modal_visible,
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
+    is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_eu: client.is_eu,

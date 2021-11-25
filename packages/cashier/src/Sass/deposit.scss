@@ -2,6 +2,10 @@
     &__wrapper {
         margin: 0 auto;
         max-width: 51rem;
+
+        @include mobile {
+            max-width: none;
+        }
     }
 
     &__transaction-wrapper {
@@ -23,17 +27,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 2.4rem;
 
             &__text {
                 display: flex;
                 justify-content: space-between;
-                align-items: center;
-                width: 27.6rem;
+                width: auto;
                 padding: 0.8rem;
                 margin: 2.4rem 0;
                 border-radius: $BORDER_RADIUS;
-                background-color: var(--status-warning-transparent);
+                background-color: $alpha-color-yellow-1;
+
+                svg {
+                    margin-right: 0.3rem;
+                }
             }
 
             .dc-btn {

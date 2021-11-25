@@ -685,7 +685,8 @@ export default class CashierStore extends BaseStore {
                     this.clearVerification();
                 }
             } else {
-                this.setLoading(false);
+                await this.checkIframeLoaded();
+                this.setIframeUrl(response_cashier.cashier);
                 this.setSessionTimeout(false);
                 this.setTimeoutCashierUrl();
             }

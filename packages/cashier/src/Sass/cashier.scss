@@ -440,6 +440,7 @@
     /** @define cashier-error */
     &-error {
         &__icon {
+            margin-top: 2rem;
             width: 6.4rem;
             height: 6.4rem;
             margin-bottom: 1.6rem;
@@ -677,9 +678,18 @@
     }
     &__title {
         margin-bottom: 0.8rem;
+        @include mobile {
+            margin-left: 1.2rem;
+            margin-right: 1.2rem;
+        }
     }
     &__desc {
         margin-bottom: 3.2rem;
+    }
+    @include mobile {
+        &__desc {
+            padding: 0 1rem;
+        }
     }
 }
 
@@ -946,6 +956,8 @@
     &__accordion-content {
         &-line {
             margin-bottom: 8px;
+            display: flex;
+            flex-direction: row;
 
             &:first-child {
                 & .payment-agent__contact {
@@ -957,7 +969,6 @@
             }
             @include mobile {
                 overflow: hidden;
-                white-space: nowrap;
                 text-overflow: ellipsis;
 
                 &:not(:first-child) {
@@ -1495,12 +1506,17 @@ div.payment-agent-transfer {
                 &__header {
                     margin-top: 0.4rem;
                 }
-                &__form-submit-button {
-                    max-width: 100%;
-
-                    /* iPhone SE screen width fixes due to UI space restrictions */
-                    @media only screen and (max-width: 340px) {
-                        max-width: 150px;
+                &__form-submit {
+                    padding: 1.6rem;
+                    &-button {
+                        &:first-child {
+                            margin-bottom: 2rem;
+                            margin-right: 0;
+                        }
+                        &:last-child {
+                            margin-bottom: 2rem;
+                            margin-left: 0;
+                        }
                     }
                 }
                 &__success {

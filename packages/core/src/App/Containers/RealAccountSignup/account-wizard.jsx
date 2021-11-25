@@ -279,6 +279,8 @@ const AccountWizard = props => {
                     onSubmit={updateValue}
                     onCancel={prevStep}
                     onSave={saveFormData}
+                    closeRealAccountSignup={props.closeRealAccountSignup}
+                    is_virtual={props.is_virtual}
                     has_currency={props.has_currency}
                     form_error={form_error}
                     {...passthrough}
@@ -334,6 +336,8 @@ export default connect(({ client, ui }) => ({
     account_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
     realAccountSignup: client.realAccountSignup,
+    closeRealAccountSignup: ui.closeRealAccountSignup,
+    is_virtual: client.is_virtual,
     has_real_account: client.has_active_real_account,
     upgrade_info: client.upgrade_info,
     real_account_signup_target: ui.real_account_signup_target,

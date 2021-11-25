@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
@@ -18,18 +17,20 @@ const checkNimcStep = documents => {
     return has_nimc;
 };
 
-const Unsupported = ({ residence, ...props }) => {
+const Unsupported = ({ country_code, ...props }) => {
     const [detail, setDetail] = React.useState(null);
     const toggleDetail = index => setDetail(index);
     const documents = getDocumentIndex({
         setDetail,
-        residence,
+        country_code,
     });
 
+    console.log('');
+    console.log('unsupported', props);
     if (detail !== null) {
         return (
             <DetailComponent
-                is_onfido_supported={residence === 'ng' && !checkNimcStep(documents[detail].details.documents)}
+                is_onfido_supported={country_code === 'ng' && !checkNimcStep(documents[detail].details.documents)}
                 document={documents[detail]}
                 root_class='manual-poi'
                 onClickBack={() => setDetail(null)}

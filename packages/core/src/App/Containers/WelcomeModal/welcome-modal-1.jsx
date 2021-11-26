@@ -5,7 +5,7 @@ import { Modal, ThemedScrollbars } from '@deriv/components';
 import Welcome from './welcome.jsx';
 
 const WelcomeModal = props => {
-    const { 
+    const {
         country_standpoint,
         is_eu,
         can_have_mf_account,
@@ -26,7 +26,7 @@ const WelcomeModal = props => {
     return (
         <Modal width='760px' className='welcome welcome-cr' is_open has_close_icon={false} has_outer_content>
             <ThemedScrollbars height={700}>
-                <Welcome 
+                <Welcome
                     country_standpoint={country_standpoint}
                     is_eu={is_eu}
                     switchPlatform={switchPlatform}

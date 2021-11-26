@@ -13,17 +13,11 @@ import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
 import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
-const Welcome = ({ 
-    is_eu,
-    country_standpoint,
-    switchPlatform,
-    can_have_mf_account,
-    can_have_mlt_account,
-}) => {
+const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_account, can_have_mlt_account }) => {
     const is_uk = country_standpoint.is_united_kingdom;
     const is_mlt_mf = can_have_mf_account && can_have_mlt_account;
     const is_mf_only = can_have_mf_account && !can_have_mlt_account;
-    
+
     const shouldShowOptions = () => {
         let show_options = true;
         if (is_eu || is_uk) {

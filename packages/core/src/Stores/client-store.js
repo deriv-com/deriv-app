@@ -654,7 +654,6 @@ export default class ClientStore extends BaseStore {
             'cy',
             'ie',
             'ro',
-            'be',
             'lt',
             'bg',
             'cz',

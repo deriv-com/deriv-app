@@ -10,7 +10,7 @@ import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
 
 const ChatFooter = observer(() => {
-    const { sendbird_store } = useStores();
+    const { order_store, sendbird_store } = useStores();
     const file_input_ref = React.useRef(null);
     const text_input_ref = React.useRef(null);
     const [character_count, setCharacterCount] = React.useState(0);
@@ -76,6 +76,14 @@ const ChatFooter = observer(() => {
 
     const should_show_attachment_icon = character_count === 0;
     const max_characters = 5000;
+
+    if (sendbird_store.is_chat_frozen || order_store.order_information.is_inactive_order) {
+        return (
+            <Text align='center' className='order-chat__footer--frozen' color='prominent' line_height='s' size='xs'>
+                <Localize i18n_default_text='This conversation is closed.' />
+            </Text>
+        );
+    }
 
     return (
         <React.Fragment>

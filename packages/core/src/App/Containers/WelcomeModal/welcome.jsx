@@ -13,10 +13,17 @@ import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
 import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
-const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
+const Welcome = ({ 
+    is_eu,
+    country_standpoint,
+    switchPlatform,
+    can_have_mf_account,
+    can_have_mlt_account,
+}) => {
     const is_uk = country_standpoint.is_united_kingdom;
-    const is_pl = country_standpoint.is_poland;
-    const is_es = country_standpoint.is_spain;
+    const is_mlt_mf = can_have_mf_account && can_have_mlt_account;
+    const is_mf_only = can_have_mf_account && !can_have_mlt_account;
+    
     const shouldShowOptions = () => {
         let show_options = true;
         if (is_eu || is_uk) {
@@ -37,7 +44,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
     };
     const mfOptions = () => {
         let mf_options;
-        if (is_pl || is_es) {
+        if (is_mlt_mf || is_mf_only) {
             mf_options = ['Forex', 'Synthetics', 'Cryptocurrencies'];
         } else if (is_uk) {
             mf_options = ['Forex'];

@@ -73,8 +73,6 @@ const FormProgress = ({ steps, current_step }) => {
 
 FormProgress.propTypes = {
     current_step: PropTypes.any,
-    nextStep: PropTypes.any,
-    prevStep: PropTypes.any,
     steps: PropTypes.array,
 };
 

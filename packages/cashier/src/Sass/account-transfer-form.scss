@@ -55,12 +55,8 @@
         }
     }
     &__notes {
-        text-align: left;
         @include mobile {
-            color: var(--text-general);
             padding: 1.6rem 0;
-            font-size: var(--text-size-xxs);
-            line-height: 1.5;
         }
 
         .account-transfer-form__notes-header {

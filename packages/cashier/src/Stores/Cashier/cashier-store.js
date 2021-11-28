@@ -2195,16 +2195,25 @@ export default class CashierStore extends BaseStore {
                 decimals: getDecimalPlaces(currency),
             });
             if (!is_ok) error_message = message;
-
-            if (+balance < +this.converter_from_amount) error_message = localize('Insufficient funds');
-
-            if (
+            else if (+balance < +this.converter_from_amount) error_message = localize('Insufficient funds');
+            else if (+balance < +min_withdraw_amount)
+                error_message = (
+                    <Localize
+                        i18n_default_text='Your balance ({{balance}} {{currency}}) is less than the current minimum withdrawal allowed ({{min_withdraw_amount}} {{currency}}). Please top up your account to continue with your withdrawal.'
+                        values={{
+                            balance,
+                            currency,
+                            min_withdraw_amount,
+                        }}
+                    />
+                );
+            else if (
                 +this.converter_from_amount < +min_withdraw_amount ||
                 +this.converter_from_amount > +max_withdraw_amount
             ) {
                 error_message = (
                     <Localize
-                        i18n_default_text='The allowed withdraw amount is {{min_withdraw_amount}} to {{max_withdraw_amount}} {{currency}}'
+                        i18n_default_text='The current allowed withdraw amount is {{min_withdraw_amount}} to {{max_withdraw_amount}} {{currency}}'
                         values={{
                             min_withdraw_amount,
                             max_withdraw_amount,

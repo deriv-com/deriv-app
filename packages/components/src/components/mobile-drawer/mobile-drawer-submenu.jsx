@@ -57,13 +57,7 @@ SubMenu.propTypes = {
     submenu_toggle_class: PropTypes.string,
 };
 
-const SubMenuList = ({ 
-    children, 
-    collapse, 
-    has_subheader, 
-    is_expanded, 
-    submenu_title 
-}) => (
+const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_title }) => (
     <CSSTransition
         in={is_expanded}
         classNames={{

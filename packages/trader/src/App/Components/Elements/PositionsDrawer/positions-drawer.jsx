@@ -5,13 +5,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, DataList, Text } from '@deriv/components';
-import { routes, isHighLow, useNewRowTransition } from '@deriv/shared';
+import { routes, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect } from 'Stores/connect';
-import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
-import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
 import PositionsDrawerCard from './PositionsDrawerCard';
+import { filterByContractType } from './helpers';
 
 const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosition, is_new_row }) => {
     const { in_prop } = useNewRowTransition(is_new_row);
@@ -77,17 +76,6 @@ const PositionsDrawer = ({
     React.useEffect(() => {
         onUnmount();
     }, [onUnmount]);
-
-    const filterByContractType = ({ contract_type, shortcode }) => {
-        const is_call_put = isCallPut(trade_contract_type);
-        const is_high_low = isHighLow({ shortcode });
-        const trade_types = is_call_put
-            ? ['CALL', 'CALLE', 'PUT', 'PUTE']
-            : getContractTypesConfig()[trade_contract_type]?.trade_types;
-        const match = trade_types?.includes(contract_type);
-        if (trade_contract_type === 'high_low') return is_high_low;
-        return match && !is_high_low;
-    };
 
     const positions = all_positions.filter(
         p =>

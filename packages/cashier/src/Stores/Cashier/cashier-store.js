@@ -649,6 +649,7 @@ export default class CashierStore extends BaseStore {
         const current_container = this.active_container;
 
         this.setErrorMessage('');
+        this.setContainerHeight(0);
         this.setLoading(true);
 
         if (!this.config[this.active_container].is_session_timeout) {
@@ -676,7 +677,6 @@ export default class CashierStore extends BaseStore {
             return;
         }
         if (response_cashier.error) {
-            this.setContainerHeight(0);
             this.handleCashierError(response_cashier.error);
             this.setLoading(false);
             this.setSessionTimeout(true);
@@ -1483,7 +1483,7 @@ export default class CashierStore extends BaseStore {
             'fees',
             this.config.account_transfer.selected_to.currency,
         ]);
-        this.config.account_transfer.transfer_fee = typeof transfer_fee === 'undefined' ? 1 : +transfer_fee;
+        this.config.account_transfer.transfer_fee = Number(transfer_fee || 0);
     }
 
     @action.bound
@@ -1770,6 +1770,7 @@ export default class CashierStore extends BaseStore {
             );
         }
         this.setTransferFee();
+        this.setMinimumFee();
         this.setTransferLimit();
     }
 

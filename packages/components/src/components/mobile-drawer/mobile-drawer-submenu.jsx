@@ -6,22 +6,21 @@ import Icon from '../icon/icon.jsx';
 import Text from '../text/text.jsx';
 
 const SubMenu = ({
+    children,
+    has_subheader,
     onToggle,
     submenu_toggle_class,
     submenu_icon,
     submenu_title,
     submenu_suffix_icon,
-    has_subheader,
-    children,
 }) => {
-    
-    const [isExpanded, setIsExpanded] = React.useState(false);
+    const [is_expanded, setIsExpanded] = React.useState(false);
 
     const toggleMenu = () => {
-        const is_expanded = !isExpanded;
-        setIsExpanded(is_expanded);
+        const should_expanded = !is_expanded;
+        setIsExpanded(should_expanded);
         if (onToggle) {
-            onToggle(is_expanded);
+            onToggle(should_expanded);
         }
     };
     return (
@@ -38,10 +37,10 @@ const SubMenu = ({
                 )}
             </div>
             <SubMenuList
-                has_subheader={has_subheader}
-                is_expanded={isExpanded}
-                submenu_title={submenu_title}
                 collapse={toggleMenu}
+                has_subheader={has_subheader}
+                is_expanded={is_expanded}
+                submenu_title={submenu_title}
             >
                 {children}
             </SubMenuList>
@@ -58,7 +57,13 @@ SubMenu.propTypes = {
     submenu_toggle_class: PropTypes.string,
 };
 
-const SubMenuList = ({ is_expanded, collapse, children, has_subheader, submenu_title }) => (
+const SubMenuList = ({ 
+    children, 
+    collapse, 
+    has_subheader, 
+    is_expanded, 
+    submenu_title 
+}) => (
     <CSSTransition
         in={is_expanded}
         classNames={{

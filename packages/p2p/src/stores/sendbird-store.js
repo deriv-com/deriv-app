@@ -26,6 +26,11 @@ export default class SendbirdStore extends BaseStore {
     }
 
     @computed
+    get is_chat_frozen() {
+        return this.active_chat_channel?.isFrozen;
+    }
+
+    @computed
     get last_other_user_activity() {
         const message = this.chat_messages
             .slice()
@@ -129,16 +134,17 @@ export default class SendbirdStore extends BaseStore {
 
     initialiseOrderChannel() {
         this.setHasChatError(false);
+        this.setIsChatLoading(true);
 
         this.sendbird_api.GroupChannel.getChannel(this.chat_channel_url, (group_channel, error) => {
             if (error) {
                 // eslint-disable-next-line no-console
                 console.warn(error);
                 this.setHasChatError(true);
-                this.setIsChatLoading(false);
             } else {
                 this.setActiveChatChannel(group_channel);
             }
+            this.setIsChatLoading(false);
         });
     }
 

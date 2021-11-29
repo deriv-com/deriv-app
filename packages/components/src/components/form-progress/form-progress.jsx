@@ -8,7 +8,7 @@ const FormProgress = ({ steps, current_step }) => {
         animateCompleteBar();
     });
 
-    const el_completed_bar = React.createRef();
+    const el_completed_bar = React.useRef(null);
 
     const animateCompleteBar = () => {
         const el_first_identifier = document.querySelector('.identifier') || {

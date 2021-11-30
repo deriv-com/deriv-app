@@ -1,4 +1,5 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
+import { toJS } from 'mobx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -133,8 +134,8 @@ const PaymentAgentList = ({
                                             content: (
                                                 <PaymentAgentDetails
                                                     payment_agent_email={payment_agent.email}
-                                                    payment_agent_phones={payment_agent.phones}
-                                                    payment_agent_urls={payment_agent.urls}
+                                                    payment_agent_phones={toJS(payment_agent.phones)}
+                                                    payment_agent_urls={toJS(payment_agent.urls)}
                                                 />
                                             ),
                                         }))}

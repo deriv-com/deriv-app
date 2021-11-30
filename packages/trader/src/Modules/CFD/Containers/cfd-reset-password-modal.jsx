@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
 import * as PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
 import {
@@ -55,7 +55,7 @@ const CFDResetPasswordModal = ({
     setCFDPasswordResetModal,
     history,
 }) => {
-    const [state, setState] = useState({
+    const [state, setState] = React.useState({
         error_code: undefined,
         has_error: false,
         error_message: undefined,

@@ -7,7 +7,6 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const ProofOfIdentityForm = ({ form_error, index, onCancel, onSubmit, value }) => {
-    
     const [poi_state, setPoiState] = React.useState('none');
 
     const validateForm = () => {
@@ -23,9 +22,7 @@ const ProofOfIdentityForm = ({ form_error, index, onCancel, onSubmit, value }) =
         <Formik
             initialValues={value}
             validate={validateForm}
-            onSubmit={(actions) =>
-                onSubmit(index, { poi_state }, actions.setSubmitting)
-            }
+            onSubmit={actions => onSubmit(index, { poi_state }, actions.setSubmitting)}
         >
             {({ handleSubmit }) => (
                 <AutoHeightWrapper default_height={200}>
@@ -35,7 +32,7 @@ const ProofOfIdentityForm = ({ form_error, index, onCancel, onSubmit, value }) =
                                 <input type='hidden' name='poi_state' value={poi_state} readOnly />
                                 <ProofOfIdentityContainer
                                     height={height}
-                                    onStateChange={() => setPoiState({status})}
+                                    onStateChange={() => setPoiState({ status })}
                                     is_from_external={true}
                                 />
                                 <FormSubmitButton
@@ -54,7 +51,7 @@ const ProofOfIdentityForm = ({ form_error, index, onCancel, onSubmit, value }) =
             )}
         </Formik>
     );
-}
+};
 
 ProofOfIdentityForm.propTypes = {
     form_error: PropTypes.string,

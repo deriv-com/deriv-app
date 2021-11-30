@@ -44,8 +44,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
     const { chat_channel_url } = sendbird_store;
 
-    const has_full_name = other_user_details.first_name && other_user_details.last_name;
-
     React.useEffect(() => {
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
@@ -109,31 +107,18 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         <div className='order-details-card__info-columns'>
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
-                                    label={labels.other_party_role}
+                                    label={labels.counterparty_nickname_label}
                                     value={
-                                        <React.Fragment>
-                                            <Text
-                                                size={has_full_name ? 's' : 'xs'}
-                                                color='prominent'
-                                                line_height='m'
-                                                weight={has_full_name && 'bold'}
-                                            >
-                                                {other_user_details.name}
-                                            </Text>
-
-                                            {has_full_name && (
-                                                <Text size='xs' line_height='xs'>
-                                                    {` ${other_user_details.first_name} ${other_user_details.last_name}`}
-                                                </Text>
-                                            )}
-                                        </React.Fragment>
+                                        <Text size='xs' line_height='m'>
+                                            {other_user_details.name}
+                                        </Text>
                                     }
                                 />
                             </div>
                             <div className='order-details-card__info--right'>
                                 <OrderInfoBlock
-                                    label={localize('Rate (1 {{ account_currency }})', { account_currency })}
-                                    value={getFormattedText(rate, local_currency)}
+                                    label={labels.counterparty_real_name_label}
+                                    value={`${other_user_details.first_name} ${other_user_details.last_name}`}
                                 />
                             </div>
                         </div>
@@ -143,13 +128,17 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                     label={labels.left_send_or_receive}
                                     value={getFormattedText(price, local_currency)}
                                 />
-                                <OrderInfoBlock label={localize('Time')} value={purchase_time} />
+                                <OrderInfoBlock
+                                    label={localize('Rate (1 {{ account_currency }})', { account_currency })}
+                                    value={getFormattedText(rate, local_currency)}
+                                />
                             </div>
                             <div className='order-details-card__info--right'>
                                 <OrderInfoBlock
                                     label={labels.right_send_or_receive}
                                     value={`${amount_display} ${account_currency}`}
                                 />
+                                <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
                         <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />

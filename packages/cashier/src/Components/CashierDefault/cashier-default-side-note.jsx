@@ -4,16 +4,9 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
-import 'Sass/cashier-default.scss';
+import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 
-const CashierDefaultSideNote = ({
-    can_change_fiat_currency,
-    currency,
-    is_crypto,
-    openRealAccountSignup,
-    setDepositTarget,
-}) => {
+const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto, openRealAccountSignup }) => {
     const currency_code = getCurrencyDisplayCode(currency);
     return (
         <div
@@ -26,7 +19,7 @@ const CashierDefaultSideNote = ({
                     'cashier-default-detail__div': isMobile(),
                 })}
             >
-                <Text className='cashier-default-side-note__text' color='prominent' weight='bold' sixe='xs' as='p'>
+                <Text className='cashier-side-note__text' color='prominent' weight='bold' sixe='xs' as='p'>
                     {is_crypto ? (
                         <Localize
                             i18n_default_text='This is your {{currency_code}} account.'
@@ -39,7 +32,7 @@ const CashierDefaultSideNote = ({
                         />
                     )}
                 </Text>
-                <Text className='cashier-default-side-note__text' size='xxs' as='p'>
+                <Text className='cashier-side-note__text' size='xxs' as='p'>
                     {is_crypto ? (
                         <Localize
                             i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
@@ -62,7 +55,7 @@ const CashierDefaultSideNote = ({
                             components={[
                                 <span
                                     key={0}
-                                    className='link link--orange cashier-default-side-note__text-nowrap'
+                                    className='link link--orange cashier-side-note__text-nowrap'
                                     onClick={() => window.LC_API.open_chat_window()}
                                 />,
                             ]}
@@ -72,10 +65,7 @@ const CashierDefaultSideNote = ({
                 {is_crypto && (
                     <div
                         className='cashier-default-side-note__link'
-                        onClick={() => {
-                            setDepositTarget(routes.cashier_deposit);
-                            openRealAccountSignup('add_crypto');
-                        }}
+                        onClick={() => openRealAccountSignup('add_crypto')}
                     >
                         <Text size='xxs' color='red'>
                             <Localize i18n_default_text='Manage your accounts ' />
@@ -93,13 +83,11 @@ CashierDefaultSideNote.propTypes = {
     currency: PropTypes.string,
     mt5_login_list: PropTypes.array,
     openRealAccountSignup: PropTypes.func,
-    setDepositTarget: PropTypes.func,
 };
 
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ client, ui }) => ({
     can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,
     mt5_login_list: client.mt5_login_list,
     openRealAccountSignup: ui.openRealAccountSignup,
-    setDepositTarget: modules.cashier.setDepositTarget,
 }))(CashierDefaultSideNote);

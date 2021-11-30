@@ -31,6 +31,7 @@ const CryptoDeposit = ({
         pollApiForDepositAddress(false);
     }, [pollApiForDepositAddress]);
 
+<<<<<<< HEAD
     const option_list = [
         { text: <Localize i18n_default_text='Binance Smart Chain' />, value: 1 },
         { text: <Localize i18n_default_text='Polygon (Matic)' />, value: 2 },
@@ -102,6 +103,34 @@ const CryptoDeposit = ({
         }
 
         setOptionListValue(event.target.value);
+=======
+    const eth_option_list = [
+        { text: <Localize i18n_default_text='Binance Smart Chain' />, value: 1 },
+        { text: <Localize i18n_default_text='Ethereum (ERC20)' />, value: 2 },
+        { text: <Localize i18n_default_text='Ethereum (ETH)' />, value: 3 },
+    ];
+
+    const [eth_option_message, setEthOptionMessage] = useState('');
+    const [eth_option_list_value, setEthOptionListValue] = useState(0);
+    const [eth_qrcode_header, setEthQRCodeHeader] = useState('');
+
+    const onChangeEthListOption = event => {
+        if (event.target.value === eth_option_list[0].value) {
+            setEthOptionMessage(
+                <Localize i18n_default_text='We do not support Binance Smart Chain tokens to deposit, please use only Ethereum (ETH).' />
+            );
+        } else if (event.target.value === eth_option_list[1].value) {
+            setEthOptionMessage(
+                <Localize i18n_default_text='This is an Ethereum (ETH) only address, please do not use ERC20 tokens.' />
+            );
+        } else if (event.target.value === eth_option_list[2].value) {
+            setEthOptionMessage('');
+            setEthQRCodeHeader(
+                <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
+            );
+        }
+        setEthOptionListValue(event.target.value);
+>>>>>>> e43684263 (George/added dropdown menu for ETH deposit (#4146))
     };
 
     if (is_deposit_address_loading) {
@@ -159,6 +188,7 @@ const CryptoDeposit = ({
                 ) : (
                     <>
                         <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>
+<<<<<<< HEAD
                             {qrcode_header || header_note}
                         </Text>
                         {
@@ -177,6 +207,24 @@ const CryptoDeposit = ({
                                     />
                                 )}
                                 {option_message && (
+=======
+                            {eth_qrcode_header || header_note}
+                        </Text>
+                        {currency === 'ETH' && (
+                            <>
+                                {eth_option_list_value !== eth_option_list[2].value && (
+                                    <Dropdown
+                                        className='crypto-deposit__dropdown-menu'
+                                        is_align_text_left
+                                        list={eth_option_list}
+                                        name='eth-dropdown'
+                                        onChange={onChangeEthListOption}
+                                        placeholder={localize('Choose an option')}
+                                        value={eth_option_list_value}
+                                    />
+                                )}
+                                {eth_option_message && (
+>>>>>>> e43684263 (George/added dropdown menu for ETH deposit (#4146))
                                     <Text
                                         align='center'
                                         as='p'
@@ -185,6 +233,7 @@ const CryptoDeposit = ({
                                         line_height='m'
                                         size={isMobile() ? 'xs' : 's'}
                                     >
+<<<<<<< HEAD
                                         {option_message}
                                     </Text>
                                 )}
@@ -193,6 +242,14 @@ const CryptoDeposit = ({
                         {(!['ETH', 'USDC', 'eUSDT'].includes(currency) ||
                             (currency === 'ETH' && option_list_value === option_list[4].value) ||
                             (['USDC', 'eUSDT'].includes(currency) && option_list_value === option_list[3].value)) && (
+=======
+                                        {eth_option_message}
+                                    </Text>
+                                )}
+                            </>
+                        )}
+                        {(currency !== 'ETH' || eth_option_list_value === eth_option_list[2].value) && (
+>>>>>>> e43684263 (George/added dropdown menu for ETH deposit (#4146))
                             <>
                                 <QRCode className='qrcode' value={deposit_address} size={160} />
                                 <div className='crypto-deposit__clipboard-wrapper'>

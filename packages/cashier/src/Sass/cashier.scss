@@ -353,7 +353,6 @@
             }
         }
     }
-}
 
         &-button {
             min-width: 25.8rem;
@@ -363,7 +362,7 @@
         .acc-prompt-dialog {
             padding: 0 1rem;
         }
-    }
+
     &-locked {
         width: 100%;
         display: flex;
@@ -408,7 +407,6 @@
         }
     }
 }
-
 .crypto-fiat-converter-form {
     display: grid;
     grid-template-columns: 1fr auto 1fr;

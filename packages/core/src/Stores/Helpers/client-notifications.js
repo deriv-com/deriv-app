@@ -48,7 +48,7 @@ export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_accou
                 },
             },
             img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
-            img_alt: 'DP2P',
+            img_alt: 'Deriv P2P',
             type: 'news',
         },
         close_mx_mlt_account: {

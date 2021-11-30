@@ -603,7 +603,8 @@ export default class ClientStore extends BaseStore {
         return result;
     }
 
-    // TODO: Remove closed_mlt_accounts variable after the MLT and MX account closure has concluded.
+    // Manual list of MLT countries during MLT/MX account removal.
+    // Also needed to check onboarding modal text for specific country.
     @computed
     get can_have_mlt_account() {
         const countries = [
@@ -631,9 +632,44 @@ export default class ClientStore extends BaseStore {
         return countries;
     }
 
-    // TODO: Remove closed_mlt_accounts variable after the MLT and MX account closure has concluded.
+    // Manual list of MX countries during MLT/MX account removal.
+    @computed
     get can_have_mx_account() {
         const countries = ['gb', 'im'].includes(this.residence);
+        return countries;
+    }
+
+    // Manual list of MF countries during MLT/MX account removal.
+    // Also needed to check onboarding modal text for specific country.
+    @computed
+    get can_have_mf_account() {
+        const countries = [
+            'it',
+            'fr',
+            'de',
+            'lu',
+            'es',
+            'gr',
+            'nl',
+            'cy',
+            'ie',
+            'ro',
+            'lt',
+            'bg',
+            'cz',
+            'dk',
+            'se',
+            'pl',
+            'ee',
+            'hr',
+            'at',
+            'hu',
+            'sl',
+            'fi',
+            'sk',
+            'pt',
+            'lv',
+        ].includes(this.residence);
         return countries;
     }
 

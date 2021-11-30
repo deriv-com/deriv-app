@@ -3,12 +3,14 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { Loading, ThemedScrollbars, Text } from '@deriv/components';
+import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
 import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-details.jsx';
+import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-side-note.jsx';
 
 const CashierDefault = ({
+    available_crypto_currencies,
     accounts_list,
     currency,
     has_set_currency,
@@ -25,6 +27,7 @@ const CashierDefault = ({
     setIsDeposit,
     setDepositTarget,
     setShouldShowAllAvailableCurrencies,
+    setSideNotes,
     showP2pInCashierDefault,
     show_p2p_in_cashier_default,
     toggleSetCurrencyModal,
@@ -33,6 +36,7 @@ const CashierDefault = ({
     const is_crypto = !!currency && isCryptocurrency(currency);
     const has_crypto_account = accounts_list.some(x => x.is_crypto);
     const has_fiat_account = accounts_list.some(x => !x.is_crypto);
+    const is_currency_banner_visible = !is_crypto || available_crypto_currencies.length > 0;
 
     React.useEffect(() => {
         onMountCashierDefault();
@@ -45,6 +49,18 @@ const CashierDefault = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (
+            typeof setSideNotes === 'function' &&
+            !is_switching &&
+            accounts_list.length > 0 &&
+            is_landing_company_loaded &&
+            is_currency_banner_visible
+        ) {
+            setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
+        }
+    }, [is_switching, accounts_list, is_landing_company_loaded]);
 
     const openRealAccount = target => {
         openRealAccountSignup('choose');
@@ -123,6 +139,11 @@ const CashierDefault = ({
 
     return (
         <div>
+            {is_currency_banner_visible && (
+                <MobileWrapper>
+                    <CashierDefaultSideNote is_crypto={is_crypto} />
+                </MobileWrapper>
+            )}
             <div className='cashier-default'>
                 <div className='cashier-default-header'>
                     <Text size={is_mobile ? 's' : 'sm'} line_height='xxl'>
@@ -164,6 +185,7 @@ const CashierDefault = ({
 
 CashierDefault.propTypes = {
     accounts_list: PropTypes.array,
+    available_crypto_currencies: PropTypes.array,
     currency: PropTypes.string,
     has_set_currency: PropTypes.bool,
     is_dark_mode_on: PropTypes.bool,
@@ -179,6 +201,7 @@ CashierDefault.propTypes = {
     setIsDeposit: PropTypes.func,
     setDepositTarget: PropTypes.func,
     setShouldShowAllAvailableCurrencies: PropTypes.func,
+    setSideNotes: PropTypes.func,
     showP2pInCashierDefault: PropTypes.func,
     show_p2p_in_cashier_default: PropTypes.bool,
     toggleSetCurrencyModal: PropTypes.func,
@@ -186,6 +209,7 @@ CashierDefault.propTypes = {
 
 export default connect(({ client, modules, ui }) => ({
     accounts_list: modules.cashier.account_transfer_store.accounts_list,
+    available_crypto_currencies: client.available_crypto_currencies,
     currency: client.currency,
     has_set_currency: modules.cashier.general_store.has_set_currency,
     is_dark_mode_on: ui.is_dark_mode_on,

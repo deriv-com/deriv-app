@@ -49,6 +49,16 @@
             margin-bottom: 2.4rem;
         }
     }
+
+    &__dropdown-menu {
+        margin: 2.4rem 0 0.8rem;
+        width: 55%;
+    }
+
+    &__eth-option-message {
+        margin: 1.6rem 0 0;
+    }
+
     &__clipboard-wrapper {
         display: flex;
         align-items: center;

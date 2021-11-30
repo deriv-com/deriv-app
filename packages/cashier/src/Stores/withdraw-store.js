@@ -182,10 +182,10 @@ export default class WithdrawStore {
         const { crypto_fiat_converter_store, general_store, iframe_store } = this.root_store.modules.cashier;
 
         general_store.setLoading(true);
-        const strRegExp = /^\w{8,128}$/;
+        const str_reg_exp = /^\w{8,128}$/;
         let response_cashier;
 
-        if (strRegExp.test(verification_code)) {
+        if (str_reg_exp.test(verification_code)) {
             response_cashier = await this.WS.cryptoWithdraw({
                 address: this.blockchain_address,
                 amount: +crypto_fiat_converter_store.converter_from_amount,

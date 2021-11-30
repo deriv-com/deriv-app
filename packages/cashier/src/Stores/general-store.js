@@ -139,7 +139,7 @@ export default class GeneralStore extends BaseStore {
         account_prompt_dialog_store.resetIsConfirmed();
 
         this.setLoading(true);
-        if (payment_agent_store.all_payment_agent_list?.paymentagent_list?.list === undefined) {
+        if (!payment_agent_store.all_payment_agent_list?.paymentagent_list?.list) {
             const agent_list = await payment_agent_store.getAllPaymentAgentList();
             payment_agent_store.setAllPaymentAgentList(agent_list);
         }
@@ -215,8 +215,6 @@ export default class GeneralStore extends BaseStore {
                     await this.getAdvertizerError();
                     this.checkP2pStatus();
                     await withdraw_store.check10kLimit();
-                    await payment_agent_store.setPaymentAgentList();
-                    await payment_agent_store.filterPaymentAgentList();
                 }
             );
             when(

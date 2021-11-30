@@ -234,11 +234,8 @@ export default class PaymentAgentStore {
             ) {
                 common.routeTo(routes.cashier_deposit);
             }
-
-            setLoading(false);
-        } else {
-            setLoading(false);
         }
+        setLoading(false);
     }
 
     @action.bound

@@ -50,6 +50,7 @@ const Withdrawal = ({
     current_currency_type,
     error,
     iframe_url,
+    iframeWillMount,
     is_10k_withdrawal_limit_reached,
     is_cashier_locked,
     is_crypto,
@@ -86,6 +87,7 @@ const Withdrawal = ({
     }, [check10kLimit]);
 
     React.useEffect(() => {
+        iframeWillMount();
         return () => willMountWithdraw(verification_code);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [willMountWithdraw]);
@@ -181,6 +183,7 @@ export default connect(({ client, modules }) => ({
     current_currency_type: client.current_currency_type,
     error: modules.cashier.withdraw_store.error,
     iframe_url: modules.cashier.iframe_store.iframe_url,
+    iframeWillMount: modules.cashier.iframe_store.iframeWillMount,
     is_10k_withdrawal_limit_reached: modules.cashier.withdraw_store.is_10k_withdrawal_limit_reached,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_crypto: modules.cashier.general_store.is_crypto,

@@ -165,6 +165,7 @@ const CashierDefault = ({
 CashierDefault.propTypes = {
     accounts_list: PropTypes.array,
     currency: PropTypes.string,
+    has_set_currency: PropTypes.bool,
     is_dark_mode_on: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
     is_mobile: PropTypes.bool,
@@ -176,6 +177,11 @@ CashierDefault.propTypes = {
     shouldNavigateAfterPrompt: PropTypes.func,
     setIsCashierDefault: PropTypes.func,
     setIsDeposit: PropTypes.func,
+    setDepositTarget: PropTypes.func,
+    setShouldShowAllAvailableCurrencies: PropTypes.func,
+    showP2pInCashierDefault: PropTypes.func,
+    show_p2p_in_cashier_default: PropTypes.bool,
+    toggleSetCurrencyModal: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({

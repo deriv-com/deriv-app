@@ -51,6 +51,8 @@ const CashierContainer = ({ iframe_height, iframe_url, iframeWillMount, is_crypt
 CashierContainer.propTypes = {
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
+    iframeWillMount: PropTypes.func,
+    is_crypto: PropTypes.bool,
     is_loading: PropTypes.bool,
 };
 

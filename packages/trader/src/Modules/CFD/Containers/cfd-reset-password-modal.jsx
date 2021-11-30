@@ -261,13 +261,15 @@ CFDResetPasswordModal.propTypes = {
     current_list: PropTypes.any,
 };
 
-export default withRouter(
-    connect(({ modules: { cfd }, client }) => ({
-        email: client.email,
-        is_eu: client.is_eu,
-        is_cfd_reset_password_modal_enabled: cfd.is_cfd_reset_password_modal_enabled,
-        setCFDPasswordResetModal: cfd.setCFDPasswordResetModal,
-        current_list: cfd.current_list,
-        is_logged_in: client.is_logged_in,
-    }))(CFDResetPasswordModal)
+export default React.memo(
+    withRouter(
+        connect(({ modules: { cfd }, client }) => ({
+            email: client.email,
+            is_eu: client.is_eu,
+            is_cfd_reset_password_modal_enabled: cfd.is_cfd_reset_password_modal_enabled,
+            setCFDPasswordResetModal: cfd.setCFDPasswordResetModal,
+            current_list: cfd.current_list,
+            is_logged_in: client.is_logged_in,
+        }))(CFDResetPasswordModal)
+    )
 );

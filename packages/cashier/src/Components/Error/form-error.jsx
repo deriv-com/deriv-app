@@ -29,7 +29,7 @@ const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
     }, [error.message]);
 
     const mapErrorToDetails = (error_code, error_message) => {
-        if (error_code === 'Fiat2CryptoTransferOverLimit' || error_code === 'Crypto2FiatTransferOverLimit') {
+        if (['Fiat2CryptoTransferOverLimit', 'Crypto2FiatTransferOverLimit'].includes(error_code)) {
             setDetails({
                 title: localize('Please verify your identity'),
                 cancel_button_text: localize('Cancel'),

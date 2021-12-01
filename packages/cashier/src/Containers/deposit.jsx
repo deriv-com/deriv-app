@@ -15,31 +15,6 @@ import RecentTransaction from 'Components/recent-transaction.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
 import CryptoDeposit from './crypto-deposit.jsx';
 
-// const DepositeSideNote = () => {
-//     const notes = [
-//         /*
-//         <Localize i18n_default_text='This address can only be used once to make a deposit.' key={0} />,
-//         <Localize
-//             i18n_default_text='For each deposit you will have to visit here again to generate a new address.'
-//             key={1}
-//         />,
-//         <Localize
-//             i18n_default_text='Each transaction will be confirmed once we receive three confirmations from the blockchain.'
-//             key={3}
-//         />,
-//         <Localize
-//             i18n_default_text='To view confirmed transactions, kindly visit the <0>statement page</0>'
-//             key={4}
-//             components={[<Link to='/reports/statement' key={0} className='link link--orange' />]}
-//         />,
-//         */
-//     ];
-//     const side_note_title =
-//         notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
-
-//     return <SideNote has_bullets notes={notes} title={side_note_title} />;
-// };
-
 const Deposit = ({
     crypto_transactions,
     container,

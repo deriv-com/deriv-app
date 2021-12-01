@@ -20,7 +20,6 @@ const Dialog = ({
     onEscapeButtonCancel,
     ...other_props
 }) => {
-
     const {
         cancel_button_text,
         className,
@@ -43,14 +42,15 @@ const Dialog = ({
     }, [is_visible, disableApp]);
 
     React.useEffect(() => {
-        const close = (e) => {
-          if(e.key === 'Escape'){
-            handleCancel();
-          }
-        }
+        const close = e => {
+            if (e.key === 'Escape') {
+                handleCancel();
+            }
+        };
         window.addEventListener('keydown', close);
-      return () => window.removeEventListener('keydown', close);
-    },[])
+        return () => window.removeEventListener('keydown', close);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleCancel = () => {
         if (is_closed_on_cancel && enableApp) {

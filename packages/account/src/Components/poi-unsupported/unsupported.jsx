@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { connect } from 'Stores/connect';
 import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
@@ -56,6 +57,4 @@ const Unsupported = ({ country_code, ...props }) => {
     );
 };
 
-export default connect(({ client }) => ({
-    residence: client.residence,
-}))(Unsupported);
+export default Unsupported;

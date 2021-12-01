@@ -78,6 +78,6 @@ WithdrawalLocked.propTypes = {
 
 export default connect(({ modules, client }) => ({
     account_status: client.account_status,
-    is_10K_limit: modules.cashier.withdraw_store.is_10k_withdrawal_limit_reached,
-    is_ask_financial_risk_approval: modules.cashier.withdraw_store.error.is_ask_financial_risk_approval,
+    is_10K_limit: modules.cashier.withdraw.is_10k_withdrawal_limit_reached,
+    is_ask_financial_risk_approval: modules.cashier.withdraw.error.is_ask_financial_risk_approval,
 }))(WithdrawalLocked);

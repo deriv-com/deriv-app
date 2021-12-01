@@ -543,33 +543,32 @@ export default class AccountTransferStore {
 
     @action.bound
     setTransferPercentageSelectorResult(amount) {
-        const { crypto_fiat_converter_store, general_store } = this.root_store.modules.cashier;
+        const { crypto_fiat_converter, general_store } = this.root_store.modules.cashier;
 
         const selected_from_currency = this.selected_from.currency;
         const selected_to_currency = this.selected_to.currency;
 
         if (amount > 0 || +this.selected_from.balance === 0) {
-            crypto_fiat_converter_store.setConverterFromAmount(amount);
+            crypto_fiat_converter.setConverterFromAmount(amount);
             this.validateTransferFromAmount();
-            crypto_fiat_converter_store.onChangeConverterFromAmount(
+            crypto_fiat_converter.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 selected_from_currency,
                 selected_to_currency
             );
         } else if (+this.selected_from.balance === 0) {
-            crypto_fiat_converter_store.setConverterFromAmount(amount);
+            crypto_fiat_converter.setConverterFromAmount(amount);
             this.validateTransferFromAmount();
         } else {
-            crypto_fiat_converter_store.resetConverter();
+            crypto_fiat_converter.resetConverter();
         }
-        crypto_fiat_converter_store.setIsTimerVisible(false);
+        crypto_fiat_converter.setIsTimerVisible(false);
         general_store.percentageSelectorSelectionStatus(false);
     }
 
     @action.bound
     validateTransferFromAmount() {
-        const { converter_from_amount, setConverterFromError } =
-            this.root_store.modules.cashier.crypto_fiat_converter_store;
+        const { converter_from_amount, setConverterFromError } = this.root_store.modules.cashier.crypto_fiat_converter;
 
         if (!converter_from_amount) {
             setConverterFromError(localize('This field is required.'));
@@ -592,8 +591,7 @@ export default class AccountTransferStore {
 
     @action.bound
     validateTransferToAmount() {
-        const { converter_to_amount, setConverterToError } =
-            this.root_store.modules.cashier.crypto_fiat_converter_store;
+        const { converter_to_amount, setConverterToError } = this.root_store.modules.cashier.crypto_fiat_converter;
 
         if (converter_to_amount) {
             const currency = this.selected_to.currency;

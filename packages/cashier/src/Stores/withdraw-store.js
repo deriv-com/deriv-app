@@ -23,7 +23,7 @@ export default class WithdrawStore {
 
     @action.bound
     setIsWithdrawConfirmed(is_withdraw_confirmed) {
-        const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter_store;
+        const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
         this.is_withdraw_confirmed = is_withdraw_confirmed;
 
         if (is_withdraw_confirmed) this.setWithdrawAmount(converter_from_amount);
@@ -41,20 +41,20 @@ export default class WithdrawStore {
     @action.bound
     async requestWithdraw(verification_code) {
         const { client, modules } = this.root_store;
-        const { crypto_fiat_converter_store, error_dialog } = modules.cashier;
+        const { crypto_fiat_converter, error_dialog } = modules.cashier;
 
         if (!client.is_logged_in) {
             return;
         }
 
-        if (!crypto_fiat_converter_store.converter_from_amount) {
-            crypto_fiat_converter_store.setConverterFromError(localize('This field is required.'));
+        if (!crypto_fiat_converter.converter_from_amount) {
+            crypto_fiat_converter.setConverterFromError(localize('This field is required.'));
             return;
         }
 
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +crypto_fiat_converter_store.converter_from_amount,
+            amount: +crypto_fiat_converter.converter_from_amount,
             verification_code,
             dry_run: 1,
         }).then(response => {
@@ -68,7 +68,7 @@ export default class WithdrawStore {
 
     @action.bound
     async saveWithdraw(verification_code) {
-        const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter_store;
+        const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
 
         this.error.setErrorMessage('');
         await this.WS.cryptoWithdraw({
@@ -91,8 +91,7 @@ export default class WithdrawStore {
 
     @action.bound
     resetWithrawForm() {
-        const { setConverterFromAmount, setConverterToAmount } =
-            this.root_store.modules.cashier.crypto_fiat_converter_store;
+        const { setConverterFromAmount, setConverterToAmount } = this.root_store.modules.cashier.crypto_fiat_converter;
         this.setBlockchainAddress('');
         setConverterFromAmount('');
         setConverterToAmount('');
@@ -123,7 +122,7 @@ export default class WithdrawStore {
             setSessionTimeout,
             setTimeoutCashierUrl,
             iframeWillMount,
-        } = modules.cashier.iframe_store;
+        } = modules.cashier.iframe;
         const { is_virtual } = client;
         const current_container = active_container;
 
@@ -179,7 +178,7 @@ export default class WithdrawStore {
 
     @action.bound
     async onMountCryptoWithdraw(verification_code) {
-        const { crypto_fiat_converter_store, general_store, iframe_store } = this.root_store.modules.cashier;
+        const { crypto_fiat_converter, general_store, iframe } = this.root_store.modules.cashier;
 
         general_store.setLoading(true);
         const str_reg_exp = /^\w{8,128}$/;
@@ -188,7 +187,7 @@ export default class WithdrawStore {
         if (str_reg_exp.test(verification_code)) {
             response_cashier = await this.WS.cryptoWithdraw({
                 address: this.blockchain_address,
-                amount: +crypto_fiat_converter_store.converter_from_amount,
+                amount: +crypto_fiat_converter.converter_from_amount,
                 verification_code,
                 dry_run: 1,
             });
@@ -199,8 +198,8 @@ export default class WithdrawStore {
         if (response_cashier.error.code === 'InvalidToken') {
             this.error.handleCashierError(response_cashier.error);
             general_store.setLoading(false);
-            iframe_store.setSessionTimeout(true);
-            iframe_store.clearTimeoutCashierUrl();
+            iframe.setSessionTimeout(true);
+            iframe.clearTimeoutCashierUrl();
             if (verification_code) {
                 // clear verification code on error
                 this.verification.clearVerification();
@@ -246,21 +245,21 @@ export default class WithdrawStore {
     @action.bound
     setWithdrawPercentageSelectorResult(amount) {
         const { client, modules } = this.root_store;
-        const { crypto_fiat_converter_store, general_store } = modules.cashier;
+        const { crypto_fiat_converter, general_store } = modules.cashier;
         const { currency, current_fiat_currency } = client;
 
         if (amount > 0) {
-            crypto_fiat_converter_store.setConverterFromAmount(amount);
+            crypto_fiat_converter.setConverterFromAmount(amount);
             this.validateWithdrawFromAmount();
-            crypto_fiat_converter_store.onChangeConverterFromAmount(
+            crypto_fiat_converter.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 currency,
                 current_fiat_currency || 'USD'
             );
         } else {
-            crypto_fiat_converter_store.resetConverter();
+            crypto_fiat_converter.resetConverter();
         }
-        crypto_fiat_converter_store.setIsTimerVisible(false);
+        crypto_fiat_converter.setIsTimerVisible(false);
         general_store.percentageSelectorSelectionStatus(false);
     }
 
@@ -270,7 +269,7 @@ export default class WithdrawStore {
 
         const { client, modules } = this.root_store;
         const { balance, currency, website_status } = client;
-        const { converter_from_amount, setConverterFromError } = modules.cashier.crypto_fiat_converter_store;
+        const { converter_from_amount, setConverterFromError } = modules.cashier.crypto_fiat_converter;
 
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
         const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
@@ -305,7 +304,7 @@ export default class WithdrawStore {
         let error_message = '';
         const { client, modules } = this.root_store;
         const { current_fiat_currency } = client;
-        const { converter_to_amount, setConverterToError } = modules.cashier.crypto_fiat_converter_store;
+        const { converter_to_amount, setConverterToError } = modules.cashier.crypto_fiat_converter;
 
         if (converter_to_amount) {
             const { is_ok, message } = validNumber(converter_to_amount, {

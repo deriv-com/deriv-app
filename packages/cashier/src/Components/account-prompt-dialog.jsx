@@ -56,12 +56,12 @@ AccountPromptDialog.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    accounts_list: modules.cashier.account_transfer_store.accounts_list,
-    continueRoute: modules.cashier.account_prompt_dialog_store.continueRoute,
+    accounts_list: modules.cashier.account_transfer.accounts_list,
+    continueRoute: modules.cashier.account_prompt_dialog.continueRoute,
     currency: client.currency,
-    is_confirmed: modules.cashier.account_prompt_dialog_store.is_confirmed,
-    last_location: modules.cashier.account_prompt_dialog_store.last_location,
-    onCancel: modules.cashier.account_prompt_dialog_store.onCancel,
-    onConfirm: modules.cashier.account_prompt_dialog_store.onConfirm,
-    should_show: modules.cashier.account_prompt_dialog_store.should_show,
+    is_confirmed: modules.cashier.account_prompt_dialog.is_confirmed,
+    last_location: modules.cashier.account_prompt_dialog.last_location,
+    onCancel: modules.cashier.account_prompt_dialog.onCancel,
+    onConfirm: modules.cashier.account_prompt_dialog.onConfirm,
+    should_show: modules.cashier.account_prompt_dialog.should_show,
 }))(AccountPromptDialog);

@@ -130,29 +130,29 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     async onMountCashierDefault() {
-        const { account_prompt_dialog_store, payment_agent_store } = this.root_store.modules.cashier;
+        const { account_prompt_dialog, payment_agent } = this.root_store.modules.cashier;
 
         if (!this.has_set_currency) {
             this.setHasSetCurrency();
         }
         this.setIsCashierDefault(true);
-        account_prompt_dialog_store.resetIsConfirmed();
+        account_prompt_dialog.resetIsConfirmed();
 
         this.setLoading(true);
-        if (!payment_agent_store.all_payment_agent_list?.paymentagent_list?.list) {
-            const agent_list = await payment_agent_store.getAllPaymentAgentList();
-            payment_agent_store.setAllPaymentAgentList(agent_list);
+        if (!payment_agent.all_payment_agent_list?.paymentagent_list?.list) {
+            const agent_list = await payment_agent.getAllPaymentAgentList();
+            payment_agent.setAllPaymentAgentList(agent_list);
         }
         this.setLoading(false);
     }
 
     @action.bound
-    calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter_store.converter_from_amount) {
+    calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount) {
         const { client, modules } = this.root_store;
-        const { account_transfer_store } = modules.cashier;
+        const { account_transfer } = modules.cashier;
 
-        if (this.active_container === account_transfer_store.container) {
-            this.percentage = +((amount / +account_transfer_store.selected_from.balance) * 100).toFixed(0);
+        if (this.active_container === account_transfer.container) {
+            this.percentage = +((amount / +account_transfer.selected_from.balance) * 100).toFixed(0);
         } else {
             this.percentage = +((amount / +client.balance) * 100).toFixed(0);
         }
@@ -206,7 +206,7 @@ export default class GeneralStore extends BaseStore {
     init() {
         if (this.root_store.modules.cashier) {
             const { client, modules } = this.root_store;
-            const { account_prompt_dialog_store, payment_agent_store, withdraw_store } = modules.cashier;
+            const { account_prompt_dialog, payment_agent, withdraw } = modules.cashier;
             const { currency, is_logged_in, switched } = client;
 
             when(
@@ -214,12 +214,12 @@ export default class GeneralStore extends BaseStore {
                 async () => {
                     await this.getAdvertizerError();
                     this.checkP2pStatus();
-                    await withdraw_store.check10kLimit();
+                    await withdraw.check10kLimit();
                 }
             );
             when(
-                () => payment_agent_store.is_payment_agent_visible,
-                () => payment_agent_store.filterPaymentAgentList()
+                () => payment_agent.is_payment_agent_visible,
+                () => payment_agent.filterPaymentAgentList()
             );
 
             reaction(
@@ -230,7 +230,7 @@ export default class GeneralStore extends BaseStore {
 
                     if (is_logged_in) {
                         await this.getAdvertizerError();
-                        account_prompt_dialog_store.resetLastLocation();
+                        account_prompt_dialog.resetLastLocation();
                         if (!switched) {
                             this.checkP2pStatus();
                             // check if withdrawal limit is reached
@@ -244,7 +244,7 @@ export default class GeneralStore extends BaseStore {
             reaction(
                 () => [currency],
                 () => {
-                    withdraw_store.setIsWithdrawConfirmed(false);
+                    withdraw.setIsWithdrawConfirmed(false);
                 }
             );
         }
@@ -271,13 +271,8 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     async onMountCommon(should_remount) {
         const { client, common, modules } = this.root_store;
-        const {
-            account_transfer_store,
-            onramp,
-            payment_agent_store,
-            payment_agent_transfer_store,
-            transaction_history,
-        } = modules.cashier;
+        const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
+            modules.cashier;
 
         if (client.is_logged_in) {
             // avoid calling this again
@@ -292,16 +287,16 @@ export default class GeneralStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
-            if (!payment_agent_store.list.length) {
-                payment_agent_store.setPaymentAgentList().then(payment_agent_store.filterPaymentAgentList);
+            if (!payment_agent.list.length) {
+                payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
             }
 
-            if (!payment_agent_transfer_store.is_payment_agent) {
-                payment_agent_transfer_store.checkIsPaymentAgent();
+            if (!payment_agent_transfer.is_payment_agent) {
+                payment_agent_transfer.checkIsPaymentAgent();
             }
 
-            if (!account_transfer_store.accounts_list.length) {
-                account_transfer_store.sortAccountsTransfer();
+            if (!account_transfer.accounts_list.length) {
+                account_transfer.sortAccountsTransfer();
             }
 
             if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
@@ -334,7 +329,7 @@ export default class GeneralStore extends BaseStore {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
             this.root_store.common.routeTo(
-                this.root_store.modules.cashier.account_prompt_dialog_store.last_location ?? routes.cashier_deposit
+                this.root_store.modules.cashier.account_prompt_dialog.last_location ?? routes.cashier_deposit
             );
         }
     }
@@ -366,13 +361,13 @@ export default class GeneralStore extends BaseStore {
     }
 
     accountSwitcherListener() {
-        const { iframe_store, payment_agent_store, withdraw_store } = this.root_store.modules.cashier;
+        const { iframe, payment_agent, withdraw } = this.root_store.modules.cashier;
 
-        withdraw_store.verification.clearVerification();
-        payment_agent_store.verification.clearVerification();
-        iframe_store.iframeWillMount();
+        withdraw.verification.clearVerification();
+        payment_agent.verification.clearVerification();
+        iframe.iframeWillMount();
 
-        this.payment_agent = payment_agent_store;
+        this.payment_agent = payment_agent;
         this.is_populating_values = false;
 
         this.onRemount();

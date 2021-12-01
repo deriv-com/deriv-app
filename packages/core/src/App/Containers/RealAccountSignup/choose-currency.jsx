@@ -172,7 +172,7 @@ ChooseCurrency.propTypes = {
 
 export default connect(({ client, modules, ui }) => ({
     account_list: client.account_list,
-    all_payment_agent_list: modules.cashier.payment_agent_store.all_payment_agent_list,
+    all_payment_agent_list: modules.cashier.payment_agent.all_payment_agent_list,
     available_crypto_currencies: client.available_crypto_currencies,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     continueRouteAfterChooseCrypto: ui.continueRouteAfterChooseCrypto,

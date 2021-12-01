@@ -23,7 +23,7 @@ export default class DepositStore {
             setIframeUrl,
             setSessionTimeout,
             setTimeoutCashierUrl,
-        } = modules.cashier.iframe_store;
+        } = modules.cashier.iframe;
         const { is_virtual } = client;
         const current_container = active_container;
 

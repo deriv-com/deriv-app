@@ -54,29 +54,29 @@ export default class CryptoFiatConverterStore {
 
     @action.bound
     validateFromAmount() {
-        const { account_transfer_store, general_store, withdraw_store } = this.root_store.modules.cashier;
+        const { account_transfer, general_store, withdraw } = this.root_store.modules.cashier;
 
-        if (general_store.active_container === account_transfer_store.container) {
-            account_transfer_store.validateTransferFromAmount();
+        if (general_store.active_container === account_transfer.container) {
+            account_transfer.validateTransferFromAmount();
         } else {
-            withdraw_store.validateWithdrawFromAmount();
+            withdraw.validateWithdrawFromAmount();
         }
     }
 
     @action.bound
     validateToAmount() {
-        const { account_transfer_store, general_store, withdraw_store } = this.root_store.modules.cashier;
+        const { account_transfer, general_store, withdraw } = this.root_store.modules.cashier;
 
-        if (general_store.active_container === account_transfer_store.container) {
-            account_transfer_store.validateTransferToAmount();
+        if (general_store.active_container === account_transfer.container) {
+            account_transfer.validateTransferToAmount();
         } else {
-            withdraw_store.validateWithdrawToAmount();
+            withdraw.validateWithdrawToAmount();
         }
     }
 
     @action.bound
     async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
-        const { account_transfer_store, general_store } = this.root_store.modules.cashier;
+        const { account_transfer, general_store } = this.root_store.modules.cashier;
 
         this.resetTimer();
         if (target.value) {
@@ -88,7 +88,7 @@ export default class CryptoFiatConverterStore {
                 this.setConverterToAmount('');
                 this.setConverterToError('');
                 this.setIsTimerVisible(false);
-                account_transfer_store.setAccountTransferAmount('');
+                account_transfer.setAccountTransferAmount('');
             } else {
                 const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency);
@@ -101,7 +101,7 @@ export default class CryptoFiatConverterStore {
                 this.validateToAmount();
                 this.setConverterToError('');
                 this.setIsTimerVisible(true);
-                account_transfer_store.setAccountTransferAmount(target.value);
+                account_transfer.setAccountTransferAmount(target.value);
             }
         } else {
             this.resetConverter();
@@ -110,7 +110,7 @@ export default class CryptoFiatConverterStore {
 
     @action.bound
     async onChangeConverterToAmount({ target }, from_currency, to_currency) {
-        const { account_transfer_store, general_store } = this.root_store.modules.cashier;
+        const { account_transfer, general_store } = this.root_store.modules.cashier;
 
         this.resetTimer();
         if (target.value) {
@@ -120,7 +120,7 @@ export default class CryptoFiatConverterStore {
                 this.setConverterFromAmount('');
                 this.setConverterFromError('');
                 this.setIsTimerVisible(false);
-                account_transfer_store.setAccountTransferAmount('');
+                account_transfer.setAccountTransferAmount('');
             } else {
                 const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency);
@@ -135,11 +135,11 @@ export default class CryptoFiatConverterStore {
                 this.validateFromAmount();
                 if (this.converter_from_error) {
                     this.setIsTimerVisible(false);
-                    account_transfer_store.setAccountTransferAmount('');
+                    account_transfer.setAccountTransferAmount('');
                 } else {
                     this.setConverterFromError('');
                     this.setIsTimerVisible(true);
-                    account_transfer_store.setAccountTransferAmount(amount);
+                    account_transfer.setAccountTransferAmount(amount);
                 }
             }
         } else {

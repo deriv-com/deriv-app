@@ -165,7 +165,7 @@ export default connect(({ modules, common, client }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
     is_cashier_default: modules.cashier.general_store.is_cashier_default,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
-    is_deposit_locked: modules.cashier.deposit_store.is_deposit_locked,
+    is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
     is_loading: modules.cashier.general_store.is_loading,
     is_switching: client.is_switching,

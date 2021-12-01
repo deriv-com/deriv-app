@@ -172,13 +172,13 @@ CryptoWithdrawReceipt.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    account: modules.cashier.account_transfer_store.selected_from,
-    blockchain_address: modules.cashier.withdraw_store.blockchain_address,
-    withdraw_amount: modules.cashier.withdraw_store.withdraw_amount,
+    account: modules.cashier.account_transfer.selected_from,
+    blockchain_address: modules.cashier.withdraw.blockchain_address,
+    withdraw_amount: modules.cashier.withdraw.withdraw_amount,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
-    resetWithrawForm: modules.cashier.withdraw_store.resetWithrawForm,
+    resetWithrawForm: modules.cashier.withdraw.resetWithrawForm,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
-    setIsWithdrawConfirmed: modules.cashier.withdraw_store.setIsWithdrawConfirmed,
+    setIsWithdrawConfirmed: modules.cashier.withdraw.setIsWithdrawConfirmed,
 }))(CryptoWithdrawReceipt);

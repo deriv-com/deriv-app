@@ -40,5 +40,5 @@ FundsProtection.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    submitFundsProtection: modules.cashier.deposit_store.submitFundsProtection,
+    submitFundsProtection: modules.cashier.deposit.submitFundsProtection,
 }))(FundsProtection);

@@ -40,12 +40,12 @@ Withdraw.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    container: modules.cashier.withdraw_store.container,
-    iframe_height: modules.cashier.iframe_store.iframe_height,
-    iframe_url: modules.cashier.iframe_store.iframe_url,
-    iframeWillMount: modules.cashier.iframe_store.iframeWillMount,
+    container: modules.cashier.withdraw.container,
+    iframe_height: modules.cashier.iframe.iframe_height,
+    iframe_url: modules.cashier.iframe.iframe_url,
+    iframeWillMount: modules.cashier.iframe.iframeWillMount,
     is_loading: modules.cashier.general_store.is_loading,
-    onMount: modules.cashier.withdraw_store.onMountWithdraw,
+    onMount: modules.cashier.withdraw.onMountWithdraw,
     setActiveTab: modules.cashier.general_store.setActiveTab,
     verification_code: client.verification_code.payment_withdraw,
 }))(Withdraw);

@@ -56,13 +56,13 @@ PaymentAgent.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    container: modules.cashier.payment_agent_store.container,
+    container: modules.cashier.payment_agent.container,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
-    is_payment_agent_withdraw: modules.cashier.payment_agent_store.is_withdraw,
-    payment_agent_active_tab_index: modules.cashier.payment_agent_store.active_tab_index,
+    is_payment_agent_withdraw: modules.cashier.payment_agent.is_withdraw,
+    payment_agent_active_tab_index: modules.cashier.payment_agent.active_tab_index,
     setActiveTab: modules.cashier.general_store.setActiveTab,
-    setPaymentAgentActiveTabIndex: modules.cashier.payment_agent_store.setActiveTabIndex,
+    setPaymentAgentActiveTabIndex: modules.cashier.payment_agent.setActiveTabIndex,
     verification_code: client.verification_code.payment_agent_withdraw,
 }))(PaymentAgent);

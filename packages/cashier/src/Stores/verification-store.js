@@ -59,7 +59,7 @@ export default class VerificationStore {
     @action.bound
     async sendVerificationEmail() {
         const { client, modules } = this.root_store;
-        const { resetPaymentAgent } = modules.cashier.payment_agent_store;
+        const { resetPaymentAgent } = modules.cashier.payment_agent;
         const { active_container } = modules.cashier.general_store;
         const container = Constants.map_action[active_container];
 

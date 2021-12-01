@@ -33,7 +33,7 @@ export default class AccountPromptDialogStore {
     @action.bound
     async onConfirm() {
         const { client, modules } = this.root_store;
-        const { accounts_list } = modules.cashier.account_transfer_store;
+        const { accounts_list } = modules.cashier.account_transfer;
 
         this.should_show = false;
         this.is_confirmed = true;
@@ -44,9 +44,9 @@ export default class AccountPromptDialogStore {
 
     async doSwitch() {
         const { client, modules } = this.root_store;
-        const { account_transfer_store, general_store } = modules.cashier;
+        const { account_transfer, general_store } = modules.cashier;
 
-        const non_crypto_accounts = account_transfer_store.accounts_list.filter(x => !x.is_crypto);
+        const non_crypto_accounts = account_transfer.accounts_list.filter(x => !x.is_crypto);
         const loginid = non_crypto_accounts.map(x => x.value)[0];
         await client.switchAccount(loginid);
 

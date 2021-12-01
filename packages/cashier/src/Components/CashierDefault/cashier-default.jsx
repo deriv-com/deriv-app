@@ -208,19 +208,19 @@ CashierDefault.propTypes = {
 };
 
 export default connect(({ client, modules, ui }) => ({
-    accounts_list: modules.cashier.account_transfer_store.accounts_list,
+    accounts_list: modules.cashier.account_transfer.accounts_list,
     available_crypto_currencies: client.available_crypto_currencies,
     currency: client.currency,
     has_set_currency: modules.cashier.general_store.has_set_currency,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_landing_company_loaded: client.is_landing_company_loaded,
     is_mobile: ui.is_mobile,
-    is_payment_agent_visible_in_onboarding: modules.cashier.payment_agent_store.is_payment_agent_visible_in_onboarding,
+    is_payment_agent_visible_in_onboarding: modules.cashier.payment_agent.is_payment_agent_visible_in_onboarding,
     is_switching: client.is_switching,
     onMountCashierDefault: modules.cashier.general_store.onMountCashierDefault,
     openRealAccountSignup: ui.openRealAccountSignup,
     shouldNavigateAfterChooseCrypto: ui.shouldNavigateAfterChooseCrypto,
-    shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog_store.shouldNavigateAfterPrompt,
+    shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt,
     setIsCashierDefault: modules.cashier.general_store.setIsCashierDefault,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,
     setDepositTarget: modules.cashier.general_store.setDepositTarget,

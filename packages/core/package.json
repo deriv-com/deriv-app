@@ -102,7 +102,6 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
-        "@deriv/web-push-notifications": "^3.21.1",
         "@livechat/customer-sdk": "^2.0.4",
         "acorn": "^6.1.1",
         "babel-polyfill": "^6.26.0",
@@ -133,6 +132,7 @@
         "react-router-dom": "^5.2.0",
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "^4.3.0",
-        "react-window": "^1.8.5"
+        "react-window": "^1.8.5",
+        "web-push-notifications": "^3.22.0"
     }
 }

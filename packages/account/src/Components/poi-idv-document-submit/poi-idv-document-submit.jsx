@@ -229,7 +229,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, is_from_external, s
                                             onKeyUp={e => {
                                                 const { example_format } = values.document_type;
                                                 const current_input = example_format.includes('-')
-                                                    ? formatInput(example_format, current_input, '-')
+                                                    ? formatInput(example_format, current_input || e.target.value, '-')
                                                     : e.target.value;
                                                 setFieldValue('document_number', current_input, true);
                                                 validateFields(values);

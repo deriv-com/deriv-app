@@ -66,16 +66,15 @@ const PositionsDrawer = ({
 
     React.useEffect(() => {
         onMount();
-    }, [onMount]);
+        return () => {
+            onUnmount();
+        };
+    }, []);
 
     React.useEffect(() => {
         list_ref?.current?.scrollTo(0);
         scrollbar_ref?.current?.scrollToTop();
     }, [symbol, trade_contract_type]);
-
-    React.useEffect(() => {
-        onUnmount();
-    }, [onUnmount]);
 
     const positions = all_positions.filter(
         p =>

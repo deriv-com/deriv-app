@@ -33,7 +33,9 @@
             display: none;
         }
     }
-    &__button {
+    &__button,
+    #dt_amount_input_add,
+    #dt_amount_input_sub {
         position: absolute;
         z-index: 1;
         top: 2px;

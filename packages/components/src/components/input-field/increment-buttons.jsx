@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Button from '../button';
-import Icon from '../icon';
+import Button from '../button/button.jsx';
+import Icon from '../icon/icon.jsx';
 
 const IncrementButtons = ({
     decrementValue,

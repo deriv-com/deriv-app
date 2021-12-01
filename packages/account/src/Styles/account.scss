@@ -335,6 +335,25 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+        &__divider {
+            height: 2px;
+            margin: 1.6rem 0;
+            width: 100%;
+            border-top: 1px solid var(--general-active);
+        }
+        .pro-client {
+            h1 {
+                color: var(--text-red);
+            }
+            p{
+                padding-bottom: 1.6rem;
+            }
+
+        }
+
+        .dc-checkbox__box{
+            margin-left: 0;
+        }
         &__footer {
             height: 80px;
             position: absolute;
@@ -1062,7 +1081,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 0.5em;
 
                 .account-form__fieldset {
-                    margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
+                    margin-bottom: 2.6em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
                 }
             }
         }

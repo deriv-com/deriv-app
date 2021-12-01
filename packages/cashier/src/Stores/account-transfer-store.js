@@ -183,7 +183,7 @@ export default class AccountTransferStore {
             'fees',
             this.selected_to.currency,
         ]);
-        this.transfer_fee = typeof transfer_fee === 'undefined' ? 1 : +transfer_fee;
+        this.transfer_fee = Number(transfer_fee || 0);
     }
 
     @action.bound
@@ -452,6 +452,7 @@ export default class AccountTransferStore {
             this.selected_to.error = getSelectedError(this.selected_to.value);
         }
         this.setTransferFee();
+        this.setMinimumFee();
         this.setTransferLimit();
     }
 

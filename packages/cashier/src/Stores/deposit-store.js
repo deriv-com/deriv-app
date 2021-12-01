@@ -31,6 +31,7 @@ export default class DepositStore {
         await onMountCommon();
 
         this.error.setErrorMessage('');
+        setContainerHeight(0);
         setLoading(true);
 
         if (!is_session_timeout) {
@@ -57,7 +58,6 @@ export default class DepositStore {
             return;
         }
         if (response_cashier.error) {
-            setContainerHeight(0);
             this.error.handleCashierError(response_cashier.error);
             setLoading(false);
             setSessionTimeout(true);

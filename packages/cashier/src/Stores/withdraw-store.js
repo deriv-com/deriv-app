@@ -117,11 +117,12 @@ export default class WithdrawStore {
         const {
             checkIframeLoaded,
             clearTimeoutCashierUrl,
+            iframeWillMount,
             is_session_timeout,
+            setContainerHeight,
             setIframeUrl,
             setSessionTimeout,
             setTimeoutCashierUrl,
-            iframeWillMount,
         } = modules.cashier.iframe;
         const { is_virtual } = client;
         const current_container = active_container;
@@ -130,6 +131,7 @@ export default class WithdrawStore {
         await onMountCommon();
 
         this.error.setErrorMessage('');
+        setContainerHeight(0);
         iframeWillMount();
         setLoading(true);
 

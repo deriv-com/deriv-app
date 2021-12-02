@@ -142,6 +142,7 @@ export default class TradeStore extends BaseStore {
     @observable should_skip_prepost_lifecycle = false;
 
     constructor({ root_store }) {
+        console.info('Initializing DTrader'); // eslint-disable-line
         const local_storage_properties = [
             'amount',
             'currency',

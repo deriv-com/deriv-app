@@ -246,6 +246,7 @@ import './common/ic-help-centre.svg';
 import './common/ic-highs-lows.svg';
 import './common/ic-identity-card-dashboard.svg';
 import './common/ic-identity-card.svg';
+import './common/ic-image.svg';
 import './common/ic-info-blue.svg';
 import './common/ic-info-outline.svg';
 import './common/ic-info.svg';

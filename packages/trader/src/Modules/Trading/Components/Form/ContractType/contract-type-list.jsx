@@ -15,7 +15,7 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
         });
 
         return (
-            <div key={key} className='contract-type-list'>
+            <div key={key} className='contract-type-list' data-testid='contract_list'>
                 <div className='contract-type-list__label'>
                     <span>{contract_category.label}</span>
                 </div>

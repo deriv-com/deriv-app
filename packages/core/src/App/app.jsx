@@ -10,6 +10,7 @@ import {
     checkAndSetEndpointFromUrl,
     setUrlLanguage,
     isMobile,
+    isTablet,
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
@@ -41,6 +42,7 @@ import '@deriv/deriv-charts/dist/smartcharts.css';
 import 'Sass/app.scss';
 
 const App = ({ root_store }) => {
+    console.info('Initializing Core'); // eslint-disable-line
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
@@ -64,7 +66,7 @@ const App = ({ root_store }) => {
     }, []);
 
     const handleResize = React.useCallback(() => {
-        if (isTouchDevice() && isMobile()) {
+        if (isTouchDevice() && (isMobile() || isTablet())) {
             const is_android_device = mobileOSDetect() === 'Android';
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;

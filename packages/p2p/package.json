@@ -47,7 +47,7 @@
         "react-i18next": "^11.11.0",
         "react-svg-loader": "^3.0.3",
         "react-transition-group": "^4.3.0",
-        "sendbird": "^3.0.137"
+        "sendbird": "~3.0.137"
     },
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -64,7 +64,6 @@
         "@deriv/publisher": "0.0.1-beta4",
         "babel-core": "^6.26.3",
         "babel-eslint": "^10.1.0",
-        "babel-jest": "^26.5.2",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
         "commander": "^3.0.2",
@@ -88,7 +87,6 @@
         "postcss-loader": "^6.1.1",
         "postcss-preset-env": "^6.7.0",
         "postcss-scss": "^4.0.0",
-
         "sass-loader": "^10.1.1",
         "sass-resources-loader": "^2.1.1",
         "style-loader": "^1.2.1",

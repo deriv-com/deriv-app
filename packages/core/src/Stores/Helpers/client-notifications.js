@@ -32,6 +32,8 @@ export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_accou
     const MxMltNotificationText = () => {
         if (has_malta_account || can_have_mlt_account) {
             return localize('Withdraw all funds from your Options account.');
+        } else if (is_uk) {
+            return localize('Please withdraw all your funds as soon as possible.');
         }
         return localize('Please proceed to withdraw your funds before 30 November 2021.');
     };

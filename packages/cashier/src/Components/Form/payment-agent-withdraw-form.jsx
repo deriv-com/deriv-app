@@ -180,10 +180,7 @@ const PaymentAgentWithdrawForm = ({
         validateWithdrawal(values, {
             balance,
             currency,
-            payment_agent:
-                values.payment_method === 'payment_agent'
-                    ? payment_agent_list.find(pa => pa.value === values.payment_agent)
-                    : payment_agent_list.find(pa => pa.value === values.payment_agents),
+            payment_agent: payment_agent_list.find(pa => pa.value === values[values.payment_method]),
         });
 
     const onWithdrawalPassthrough = async (values, actions) => {

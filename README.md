@@ -1,4 +1,4 @@
-<h1 align="center">Deriv Apps</h1>
+<h1 align="center">Deriv App</h1>
 
 This repository contains the various platforms of the Deriv application.
 

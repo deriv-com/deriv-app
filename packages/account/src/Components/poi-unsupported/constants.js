@@ -33,8 +33,7 @@ const date_field = {
     required: true,
 };
 
-export const getDocumentIndex = ({ country_code }) => {
-    return ([
+export const getDocumentIndex = ({ country_code }) => [
     {
         onfido_name: 'Passport',
         card: {
@@ -180,4 +179,4 @@ export const getDocumentIndex = ({ country_code }) => {
               },
           ]
         : []),
-])};
+];

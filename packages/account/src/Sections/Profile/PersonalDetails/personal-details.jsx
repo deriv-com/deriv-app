@@ -302,7 +302,7 @@ export class PersonalDetailsForm extends React.Component {
             !regex_checks.address_details.jersey_postcode.test(values.address_postcode) &&
             (is_uk || values.citizen === 'United Kingdom')
         ) {
-            errors.address_postcode = localize("We don't offer accounts/services for Jersey's residents.");
+            errors.address_postcode = localize("Our accounts and services are unavailable for the Jersey postal code");
         }
 
         if (values.address_postcode) {

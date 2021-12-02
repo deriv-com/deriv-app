@@ -44,7 +44,7 @@ const Dialog = ({
     React.useEffect(() => {
         const close = e => {
             if (e.key === 'Escape') {
-                handleCancel();
+                onEscapeButtonCancel?.();
             }
         };
         window.addEventListener('keydown', close);
@@ -56,8 +56,7 @@ const Dialog = ({
         if (is_closed_on_cancel && enableApp) {
             enableApp();
         }
-        onCancel?.();
-        onEscapeButtonCancel?.();
+        onCancel();
     };
 
     const handleConfirm = () => {

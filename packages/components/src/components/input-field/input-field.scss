@@ -34,8 +34,8 @@
         }
     }
     &__button,
-    #dt_amount_input_add,
-    #dt_amount_input_sub {
+    &__button[id^='_add'],
+    &__button[id^='_sub'] {
         position: absolute;
         z-index: 1;
         top: 2px;

@@ -37,7 +37,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic_eu: localize('EUR'),
                 financial: localize('USD'),
                 financial_au: localize('USD'),
-                financial_eu: localize('EUR/GBP'),
+                financial_eu: localize('EUR/GBP/USD'),
                 financial_stp: localize('USD'),
                 footnote: null,
             },
@@ -111,7 +111,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic_eu: localize('Fixed/Variable'),
                 financial: localize('Variable'),
                 financial_au: localize('Variable'),
-                financial_eu: localize('Variable'),
+                financial_eu: localize('Fixed/Variable'),
                 financial_stp: localize('Variable'),
                 footnote: localize(
                     "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
@@ -267,9 +267,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_au: localize(
                     'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
                 ),
-                financial_eu: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
-                ),
+                financial_eu: localize('Forex, stocks, stock indices, cryptocurrencies, synthetic indices'),
                 financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
                 footnote: null,
             },
@@ -439,7 +437,7 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies,
     );
 };
 
-const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related, residence }) => {
+const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related, residence, is_eu }) => {
     const [cols, setCols] = React.useState([]);
     const [template_columns, updateColumnsStyle] = React.useState(
         platform === CFD_PLATFORMS.DXTRADE ? '1.5fr 1fr 2fr' : '1.5fr 1fr 2fr 1fr'
@@ -499,7 +497,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                                             type: 'financial',
                                         }) && (
                                             <Table.Head>
-                                                {localize('Financial')}
+                                                {is_eu ? localize('CFDs') : localize('Financial')}
                                                 <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
                                                     *
                                                 </Text>
@@ -619,6 +617,7 @@ const CompareAccountsModal = ({
                             platform={platform}
                             show_eu_related={show_eu_related}
                             residence={residence}
+                            is_eu={is_eu}
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -636,6 +635,7 @@ const CompareAccountsModal = ({
                             platform={platform}
                             show_eu_related={show_eu_related}
                             residence={residence}
+                            is_eu={is_eu}
                         />
                     </MobileDialog>
                 </MobileWrapper>

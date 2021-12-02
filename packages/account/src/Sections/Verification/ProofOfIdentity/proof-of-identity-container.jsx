@@ -56,9 +56,6 @@ const ProofOfIdentityContainer = ({
                     if (response_residence_list.error) {
                         setAPIError(response_residence_list.error);
                     } else {
-                        console.log('');
-                        console.log('Residence list');
-                        console.log(response_residence_list.residence_list);
                         setResidenceList(response_residence_list.residence_list);
                     }
                     setStatusLoading(false);
@@ -96,11 +93,7 @@ const ProofOfIdentityContainer = ({
         </Button>
     );
 
-    console.log('');
-    console.log('Works?');
-    console.log('');
     if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission) {
-        console.log('goes here');
         return (
             <POISubmission
                 allow_poi_resubmission={allow_poi_resubmission}
@@ -125,7 +118,6 @@ const ProofOfIdentityContainer = ({
         // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
         (identity_status === 'verified' && identity_status !== identity_last_attempt.status)
     ) {
-        console.log('goes there');
         switch (identity_status) {
             case identity_status_codes.pending:
                 return (
@@ -158,11 +150,6 @@ const ProofOfIdentityContainer = ({
                 break;
         }
     }
-
-    console.log('');
-    console.warn('identity_last_attempt.services');
-    console.log(identity_last_attempt.service);
-    console.log(manual);
 
     switch (identity_last_attempt.service) {
         case service_code.idv:

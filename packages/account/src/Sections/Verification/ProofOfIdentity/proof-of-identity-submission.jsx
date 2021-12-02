@@ -28,27 +28,18 @@ const POISubmission = ({
     const [submission_service, setSubmissionService] = React.useState();
     const [selected_country, setSelectedCountry] = React.useState();
 
-    console.log('Am here');
-
     const handleSelectionNext = () => {
         if (selected_country) {
-            console.log('');
-            console.warn('selected country');
-            console.log(selected_country);
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
             const is_onfido_supported = selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
-            console.error('Is onfido supported', is_onfido_supported);
 
             if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
-                console.log('setSubmissionService(service_code.idv);');
                 setSubmissionService(service_code.idv);
             } else if (onfido_submissions_left && is_onfido_supported) {
-                console.log('setSubmissionService(service_code.onfido);');
                 setSubmissionService(service_code.onfido);
             } else {
-                console.log('setSubmissionService(service_code.manual);');
                 setSubmissionService(service_code.manual);
             }
             setSubmissionStatus(submission_status_code.submitting);
@@ -104,8 +95,6 @@ const POISubmission = ({
         }
     }, []);
 
-    console.log('It calls this one');
-    console.log(submission_status);
     switch (submission_status) {
         case submission_status_code.selecting: {
             const show_helper_msg = has_attempted_idv && Number(idv.submissions_left) > 0;
@@ -121,10 +110,6 @@ const POISubmission = ({
             );
         }
         case submission_status_code.submitting: {
-            console.log(submission_service);
-            console.log('');
-            console.info('Do you even do anything??');
-            console.log('');
             switch (submission_service) {
                 case service_code.idv:
                     return (
@@ -147,6 +132,7 @@ const POISubmission = ({
                             height={height}
                             is_from_external={is_from_external}
                             refreshNotifications={refreshNotifications}
+                            OnfidoUpload
                         />
                     );
                 }

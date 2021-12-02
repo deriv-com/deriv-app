@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
@@ -26,12 +25,11 @@ const Unsupported = ({ country_code, ...props }) => {
         country_code,
     });
 
-    console.log('');
-    console.log('unsupported', props);
     if (detail !== null) {
         return (
             <DetailComponent
                 is_onfido_supported={country_code === 'ng' && !checkNimcStep(documents[detail].details.documents)}
+                country_code={country_code}
                 document={documents[detail]}
                 root_class='manual-poi'
                 onClickBack={() => setDetail(null)}

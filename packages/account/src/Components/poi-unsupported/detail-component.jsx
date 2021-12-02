@@ -6,7 +6,8 @@ import { WS } from '@deriv/shared';
 import UploadComplete from 'Components/poi-upload-complete';
 import PoiUnsupportedFailed from 'Components/poi-unsupported-failed';
 import uploadFile from 'Components/file-uploader-container/upload-file';
-import Onfido from 'Sections/Verification/ProofOfIdentity/onfido.jsx';
+import OnfidoUpload from '../../Sections/Verification/ProofOfIdentity/onfido-sdk-view.jsx';
+
 import CardDetails from './card-details';
 import { SELFIE_DOCUMENT } from './constants';
 
@@ -106,12 +107,12 @@ const DetailComponent = ({
                                     {localize('Back')}
                                 </Text>
                             </div>
-                            <Onfido
+                            <OnfidoUpload
                                 country_code={country_code_key}
                                 documents_supported={[document.onfido_name]}
-                                onfido_service_token={onfido_service_token}
                                 height={height ?? null}
                                 handleComplete={handleComplete}
+                                is_from_external={false}
                                 {...props}
                             />
                         </React.Fragment>

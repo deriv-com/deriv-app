@@ -2189,6 +2189,10 @@ export default class CashierStore extends BaseStore {
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
         const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
 
+        const format_balance = formatMoney(currency, balance, true);
+        const format_min_withdraw_amount = formatMoney(currency, min_withdraw_amount, true);
+        const format_max_withdraw_amount = formatMoney(currency, max_withdraw_amount, true);
+
         if (this.converter_from_amount) {
             const { is_ok, message } = validNumber(this.converter_from_amount, {
                 type: 'float',
@@ -2199,11 +2203,11 @@ export default class CashierStore extends BaseStore {
             else if (+balance < +min_withdraw_amount)
                 error_message = (
                     <Localize
-                        i18n_default_text='Your balance ({{balance}} {{currency}}) is less than the current minimum withdrawal allowed ({{min_withdraw_amount}} {{currency}}). Please top up your account to continue with your withdrawal.'
+                        i18n_default_text='Your balance ({{format_balance}} {{currency}}) is less than the current minimum withdrawal allowed ({{format_min_withdraw_amount}} {{currency}}). Please top up your account to continue with your withdrawal.'
                         values={{
-                            balance,
+                            format_balance,
                             currency,
-                            min_withdraw_amount,
+                            format_min_withdraw_amount,
                         }}
                     />
                 );
@@ -2213,10 +2217,10 @@ export default class CashierStore extends BaseStore {
             ) {
                 error_message = (
                     <Localize
-                        i18n_default_text='The current allowed withdraw amount is {{min_withdraw_amount}} to {{max_withdraw_amount}} {{currency}}'
+                        i18n_default_text='The current allowed withdraw amount is {{format_min_withdraw_amount}} to {{format_max_withdraw_amount}} {{currency}}'
                         values={{
-                            min_withdraw_amount,
-                            max_withdraw_amount,
+                            format_min_withdraw_amount,
+                            format_max_withdraw_amount,
                             currency,
                         }}
                     />

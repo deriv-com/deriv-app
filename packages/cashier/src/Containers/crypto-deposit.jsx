@@ -49,6 +49,23 @@ const CryptoDeposit = ({
 
         const token = currency === 'ETH' ? token_ETH : ['USDC', 'eUSDT'].includes(currency) ? token_USDC_eUSDT : '';
 
+        const setProhibitedTokenMessage = () => {
+            const prohibited_token = token === token_ETH ? `${token_USDC_eUSDT} token` : token_ETH;
+            setOptionMessage(
+                <Localize
+                    i18n_default_text='This is an Ethereum ({{token}}) only address, please do not use {{prohibited_token}}.'
+                    values={{ token, prohibited_token }}
+                />
+            );
+        };
+
+        const setQRCodeHeaderMessage = () => {
+            setOptionMessage('');
+            setQRCodeHeader(
+                <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
+            );
+        };
+
         if (event.target.value === option_list[0].value) {
             setOptionMessage(
                 <Localize
@@ -71,18 +88,9 @@ const CryptoDeposit = ({
                 />
             );
         } else if (event.target.value === option_list[3].value) {
-            const prohibited_token = token === token_ETH ? `${token_USDC_eUSDT} token` : token_ETH;
-            setOptionMessage(
-                <Localize
-                    i18n_default_text='This is an Ethereum ({{token}}) only address, please do not use {{prohibited_token}}.'
-                    values={{ token, prohibited_token }}
-                />
-            );
+            (currency === 'ETH' ? setProhibitedTokenMessage : setQRCodeHeaderMessage)();
         } else if (event.target.value === option_list[4].value) {
-            setOptionMessage('');
-            setQRCodeHeader(
-                <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
-            );
+            (['USDC', 'eUSDT'].includes(currency) ? setProhibitedTokenMessage : setQRCodeHeaderMessage)();
         }
         setOptionListValue(event.target.value);
     };
@@ -144,14 +152,16 @@ const CryptoDeposit = ({
                         <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>
                             {qrcode_header || header_note}
                         </Text>
-                        {['ETH', 'USDC', 'eUSDT'].includes(currency) && (
+                        {
                             <>
-                                {option_list_value !== option_list[4].value && (
+                                {((currency === 'ETH' && option_list_value !== option_list[4].value) ||
+                                    (['USDC', 'eUSDT'].includes(currency) &&
+                                        option_list_value !== option_list[3].value)) && (
                                     <Dropdown
                                         className='crypto-deposit__dropdown-menu'
                                         is_align_text_left
                                         list={option_list}
-                                        name='eth-dropdown'
+                                        name='dropdown'
                                         onChange={onChangeListOption}
                                         placeholder={localize('Choose an option')}
                                         value={option_list_value}
@@ -170,9 +180,10 @@ const CryptoDeposit = ({
                                     </Text>
                                 )}
                             </>
-                        )}
+                        }
                         {(!['ETH', 'USDC', 'eUSDT'].includes(currency) ||
-                            option_list_value === option_list[4].value) && (
+                            (currency === 'ETH' && option_list_value === option_list[4].value) ||
+                            (['USDC', 'eUSDT'].includes(currency) && option_list_value === option_list[3].value)) && (
                             <>
                                 <QRCode className='qrcode' value={deposit_address} size={160} />
                                 <div className='crypto-deposit__clipboard-wrapper'>

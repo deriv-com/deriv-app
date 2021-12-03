@@ -18,6 +18,7 @@ const NotificationsContent = ({
     notifications,
     removeNotificationMessage,
     markNotificationMessage,
+    refreshNotifications,
     has_iom_account,
     has_malta_account,
     is_logged_in,
@@ -31,6 +32,7 @@ const NotificationsContent = ({
             if (!is_dtrader && get_close_mx_mlt_notification) {
                 markNotificationMessage({ key: 'close_mx_mlt_account' });
             }
+            refreshNotifications();
         }
     }, [window_location]);
 
@@ -67,6 +69,7 @@ const AppNotificationMessages = ({
     removeNotificationMessage,
     stopNotificationLoading,
     markNotificationMessage,
+    refreshNotifications,
     has_iom_account,
     has_malta_account,
     is_logged_in,
@@ -98,7 +101,6 @@ const AppNotificationMessages = ({
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     const notifications_sublist = notifications.slice(0, notifications_limit);
-
     return notifications_sublist.length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
@@ -108,6 +110,7 @@ const AppNotificationMessages = ({
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
+                    refreshNotifications={refreshNotifications}
                     has_iom_account={has_iom_account}
                     has_malta_account={has_malta_account}
                     is_logged_in={is_logged_in}
@@ -147,6 +150,7 @@ export default connect(({ ui, client }) => ({
     notification_messages: ui.notification_messages,
     removeNotificationMessage: ui.removeNotificationMessage,
     markNotificationMessage: ui.markNotificationMessage,
+    refreshNotifications: client.refreshNotifications,
     has_iom_account: client.has_iom_account,
     has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,

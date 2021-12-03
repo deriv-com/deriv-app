@@ -671,6 +671,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
+
     let has_missing_required_field, has_risk_assessment;
 
     const hidden_close_account_notification =
@@ -679,7 +680,11 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
-    if ((has_iom_account || has_malta_account) && is_logged_in && !hidden_close_account_notification) {
+    if (
+        (has_iom_account || has_malta_account) &&
+        is_logged_in &&
+        !hidden_close_account_notification
+    ) {
         addNotificationMessage(
             clientNotifications(ui_store, {}, is_uk, has_malta_account, can_have_mlt_account).close_mx_mlt_account
         );

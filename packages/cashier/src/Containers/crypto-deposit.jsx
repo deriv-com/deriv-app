@@ -44,15 +44,10 @@ const CryptoDeposit = ({
     const [qrcode_header, setQRCodeHeader] = useState('');
 
     const onChangeListOption = event => {
-        let token;
         const token_ETH = 'ETH';
         const token_USDC_eUSDT = 'ERC20';
 
-        currency === 'ETH'
-            ? (token = token_ETH)
-            : ['USDC', 'eUSDT'].includes(currency)
-            ? (token = token_USDC_eUSDT)
-            : '';
+        const token = currency === 'ETH' ? token_ETH : ['USDC', 'eUSDT'].includes(currency) ? token_USDC_eUSDT : '';
 
         if (event.target.value === option_list[0].value) {
             setOptionMessage(
@@ -76,7 +71,7 @@ const CryptoDeposit = ({
                 />
             );
         } else if (event.target.value === option_list[3].value) {
-            const prohibited_token = token === token_ETH ? token_USDC_eUSDT + ' tokens' : token_ETH;
+            const prohibited_token = token === token_ETH ? `${token_USDC_eUSDT} token` : token_ETH;
             setOptionMessage(
                 <Localize
                     i18n_default_text='This is an Ethereum ({{token}}) only address, please do not use {{prohibited_token}}.'

@@ -298,8 +298,14 @@ export default class TradeStore extends BaseStore {
             localStorage.getItem('hide_close_mx_mlt_account_notification')
         );
         const is_logged_in = this.root_store.client.is_logged_in;
+        const clients_country = this.root_store.client.clients_country;
         const showError = this.root_store.common.showError;
         const setError = this.root_store.common.setError;
+
+        // To resolve infinite load for Belgium and Isle of man logout IPs
+        if (['be', 'im'].includes(clients_country) && !is_logged_in) {
+            showUnavailableLocationError(showError, is_logged_in);
+        }
 
         const { active_symbols, error } = await WS.authorized.activeSymbols();
 

@@ -91,7 +91,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             ],
         },
     };
-    
+
     if (is_gb) {
         const gb_case = {
             ...base_case,
@@ -124,7 +124,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     ],
                 ],
             },
-        }
+        };
         return gb_case;
     }
     return base_case;

@@ -93,36 +93,6 @@ const address_details_config = ({ account_settings, is_svg }) => {
     };
     
     if (is_gb) {
-        // const gb_rules = [
-        //     [
-        //         'length',
-        //         localize('Please enter a {{field_name}} under {{max_number}} characters.', {
-        //             field_name: localize('postal/ZIP code'),
-        //             max_number: 20,
-        //             interpolation: { escapeValue: false },
-        //         }),
-        //         { min: 0, max: 20 },
-        //     ],
-        //     [
-        //         'regular',
-        //         localize('Letters, numbers, spaces, hyphens only'),
-        //         {
-        //             regex: regex_checks.address_details.address_postcode,
-        //         },
-        //     ],
-        //     [
-        //         'regular',
-        //         localize('Our accounts and services are unavailable for the Jersey postal code.'),
-        //         {
-        //             regex: regex_checks.address_details.jersey_postcode,
-        //         },
-        //     ],
-        // ];
-        // const gb_case = {
-        //     ...base_case, address_postcode: {
-        //         ...base_case.address_postcode, rules: gb_rules,
-        //     }
-        // }
         const gb_case = {
             ...base_case,
             address_postcode: {
@@ -155,7 +125,6 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ],
             },
         }
-        console.log({gb_case});
         return gb_case;
     }
     return base_case;

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
@@ -39,7 +39,7 @@ const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
     return <Tabs {...props}>{children}</Tabs>;
 };
 
-const CFDDashboard = (props) =>  {
+const CFDDashboard = props => {
     // state = {
     //     is_demo_enabled: false,
     //     is_real_enabled: false,
@@ -49,12 +49,12 @@ const CFDDashboard = (props) =>  {
     //     required_account: {},
     //     is_notification_loaded: false,
     //     password_manager: {
-            // is_visible: false,
-            // selected_login: '',
-            // selected_account: '',
-            // selected_account_type: '',
-            // selected_account_group: '',
-            // selected_server: '',
+    // is_visible: false,
+    // selected_login: '',
+    // selected_account: '',
+    // selected_account_type: '',
+    // selected_account_group: '',
+    // selected_server: '',
     //     },
     // };
 
@@ -81,10 +81,10 @@ const CFDDashboard = (props) =>  {
     // }
 
     useEffect(() => {
-            updateActiveIndex(getIndexToSet());
-            openResetPassword();
-            props.onMount();
-    }, [])
+        updateActiveIndex(getIndexToSet());
+        openResetPassword();
+        props.onMount();
+    }, []);
 
     // componentWillUnmount() {
     //     this.props.onUnmount();
@@ -93,8 +93,8 @@ const CFDDashboard = (props) =>  {
     useEffect(() => {
         return () => {
             props.onUnmount();
-        }
-    }, [])
+        };
+    }, []);
 
     // componentDidUpdate() {
     //     this.updateActiveIndex();
@@ -131,9 +131,7 @@ const CFDDashboard = (props) =>  {
         if (props.is_logged_in) {
             ['demo', 'real'].forEach(account_type => {
                 const should_enable_tab =
-                    isSyntheticCardVisible(account_type) ||
-                    isFinancialCardVisible() ||
-                    isFinancialStpCardVisible();
+                    isSyntheticCardVisible(account_type) || isFinancialCardVisible() || isFinancialStpCardVisible();
 
                 const [is_tab_enabled, setIs_tab_enabled] = useState([`is_${account_type}_enabled`]);
 
@@ -147,8 +145,7 @@ const CFDDashboard = (props) =>  {
         const is_real_disabled = !is_real_enabled;
         const is_demo_disabled = !is_demo_enabled;
         if (!props.is_logged_in && (is_real_disabled || is_demo_disabled)) {
-            setIs_real_enabled(true),
-            setIs_demo_enabled(true)
+            setIs_real_enabled(true), setIs_demo_enabled(true);
         }
     }, [is_real_enabled, is_demo_enabled]);
 
@@ -213,7 +210,7 @@ const CFDDashboard = (props) =>  {
             selected_account: typeof title === 'string' ? title : '',
             selected_account_group: group,
             selected_account_type: type,
-            selected_server: server
+            selected_server: server,
         }));
     };
 
@@ -401,7 +398,7 @@ const CFDDashboard = (props) =>  {
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? mt5_disabled_signup_types.real
                                                         : dxtrade_disabled_signup_types.real ||
-                                                            !!dxtrade_accounts_list_error
+                                                          !!dxtrade_accounts_list_error
                                                 }
                                                 openAccountNeededModal={openAccountNeededModal}
                                                 current_list={current_list}
@@ -443,7 +440,7 @@ const CFDDashboard = (props) =>  {
                                                 platform === CFD_PLATFORMS.MT5
                                                     ? mt5_disabled_signup_types.demo
                                                     : dxtrade_disabled_signup_types.demo ||
-                                                        !!dxtrade_accounts_list_error
+                                                      !!dxtrade_accounts_list_error
                                             }
                                             openAccountNeededModal={openAccountNeededModal}
                                             standpoint={standpoint}
@@ -618,7 +615,7 @@ const CFDDashboard = (props) =>  {
             )}
         </React.Fragment>
     );
-}
+};
 
 export default withRouter(
     connect(({ client, modules, ui }) => ({

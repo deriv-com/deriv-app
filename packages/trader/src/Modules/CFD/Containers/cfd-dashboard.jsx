@@ -61,9 +61,9 @@ const CFDDashboard = props => {
     const [is_demo_enabled, setIs_demo_enabled] = useState(false);
     const [is_real_enabled, setIs_real_enabled] = useState(false);
     const [active_index, setActiveIndex] = useState(0);
-    const [is_account_needed_modal_open, setIs_account_needed_modal_open] = useState(false);
-    const [is_demo_tab, setIs_demo_tab] = useState(true);
-    const [required_account, setRequired_account] = useState({});
+    // const [is_account_needed_modal_open, setIs_account_needed_modal_open] = useState(false);
+    const [is_demo_tab] = useState(true);
+    // const [required_account, setRequired_account] = useState({});
     const [is_notification_loaded, setIs_notification_loaded] = useState(false);
     const [password_manager, setPassword_manager] = useState({
         is_visible: false,
@@ -133,19 +133,18 @@ const CFDDashboard = props => {
                 const should_enable_tab =
                     isSyntheticCardVisible(account_type) || isFinancialCardVisible() || isFinancialStpCardVisible();
 
-                const [is_tab_enabled, setIs_tab_enabled] = useState([`is_${account_type}_enabled`]);
+                let is_tab_enabled = [`is_${account_type}_enabled`];
 
                 if (is_tab_enabled !== should_enable_tab) {
-                    setIs_tab_enabled({
-                        [`is_${account_type}_enabled`]: should_enable_tab,
-                    });
+                    is_tab_enabled = should_enable_tab;
                 }
             });
         }
         const is_real_disabled = !is_real_enabled;
         const is_demo_disabled = !is_demo_enabled;
         if (!props.is_logged_in && (is_real_disabled || is_demo_disabled)) {
-            setIs_real_enabled(true), setIs_demo_enabled(true);
+            setIs_real_enabled(true);
+            setIs_demo_enabled(true);
         }
     }, [is_real_enabled, is_demo_enabled]);
 
@@ -177,7 +176,7 @@ const CFDDashboard = props => {
     };
 
     const updateActiveIndex = index => {
-        const updated_state = {};
+        let updated_state = {};
         // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
         if (index === 1) updated_state.is_demo_tab = true;
         else if (index === 0) updated_state.is_demo_tab = false;
@@ -187,7 +186,7 @@ const CFDDashboard = props => {
         }
 
         if (!isEmptyObject(updated_state)) {
-            const [updated_state, setUpdated_state] = useState(updated_state);
+            updated_state = {};
         }
     };
 

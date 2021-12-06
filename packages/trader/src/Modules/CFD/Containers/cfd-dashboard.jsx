@@ -40,24 +40,6 @@ const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
 };
 
 const CFDDashboard = props => {
-    // state = {
-    //     is_demo_enabled: false,
-    //     is_real_enabled: false,
-    //     active_index: 0,
-    //     is_account_needed_modal_open: false,
-    //     is_demo_tab: true,
-    //     required_account: {},
-    //     is_notification_loaded: false,
-    //     password_manager: {
-    // is_visible: false,
-    // selected_login: '',
-    // selected_account: '',
-    // selected_account_type: '',
-    // selected_account_group: '',
-    // selected_server: '',
-    //     },
-    // };
-
     const [is_demo_enabled, setIs_demo_enabled] = useState(false);
     const [is_real_enabled, setIs_real_enabled] = useState(false);
     const [active_index, setActiveIndex] = useState(0);
@@ -74,12 +56,6 @@ const CFDDashboard = props => {
         selected_server: '',
     });
 
-    // async componentDidMount() {
-    //     this.updateActiveIndex(this.getIndexToSet());
-    //     this.openResetPassword();
-    //     this.props.onMount();
-    // }
-
     useEffect(() => {
         updateActiveIndex(getIndexToSet());
         openResetPassword();
@@ -95,34 +71,6 @@ const CFDDashboard = props => {
             props.onUnmount();
         };
     }, []);
-
-    // componentDidUpdate() {
-    //     this.updateActiveIndex();
-    //     this.props.checkShouldOpenAccount();
-
-    //     if (this.props.is_logged_in) {
-    //         ['demo', 'real'].forEach(account_type => {
-    //             const should_enable_tab =
-    //                 this.isSyntheticCardVisible(account_type) ||
-    //                 this.isFinancialCardVisible() ||
-    //                 this.isFinancialStpCardVisible();
-
-    //             const is_tab_enabled = this.state[`is_${account_type}_enabled`];
-
-    //             if (is_tab_enabled !== should_enable_tab) {
-    //                 this.setState({
-    //                     [`is_${account_type}_enabled`]: should_enable_tab,
-    //                 });
-    //             }
-    //         });
-    //     }
-    //     const is_real_disabled = !is_real_enabled;
-    //     const is_demo_disabled = !is_demo_enabled;
-    //     if (!props.is_logged_in && (is_real_disabled || is_demo_disabled)) {
-    //         setIs_real_enabled(true),
-    //         setIs_demo_enabled(true),
-    //     }
-    // }
 
     useEffect(() => {
         updateActiveIndex();

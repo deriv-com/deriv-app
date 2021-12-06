@@ -40,14 +40,12 @@ const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
 };
 
 const CFDDashboard = props => {
-    const [is_demo_enabled, setIs_demo_enabled] = React.useState(false);
-    const [is_real_enabled, setIs_real_enabled] = React.useState(false);
+    const [is_demo_enabled, setIsDemoEnabled] = React.useState(false);
+    const [is_real_enabled, setIsRealEnabled] = React.useState(false);
     const [active_index, setActiveIndex] = React.useState(0);
-    // const [is_account_needed_modal_open, setIs_account_needed_modal_open] = React.useState(false);
     const [is_demo_tab] = React.useState(true);
-    // const [required_account, setRequired_account] = React.useState({});
-    const [is_notification_loaded, setIs_notification_loaded] = React.useState(false);
-    const [password_manager, setPassword_manager] = React.useState({
+    const [is_notification_loaded, setIsNotificationLoaded] = React.useState(false);
+    const [password_manager, setPasswordManager] = React.useState({
         is_visible: false,
         selected_login: '',
         selected_account: '',
@@ -60,13 +58,6 @@ const CFDDashboard = props => {
         updateActiveIndex(getIndexToSet());
         openResetPassword();
         props.onMount();
-    }, []);
-
-    // componentWillUnmount() {
-    //     this.props.onUnmount();
-    // }
-
-    React.useEffect(() => {
         return () => {
             props.onUnmount();
         };
@@ -88,11 +79,9 @@ const CFDDashboard = props => {
                 }
             });
         }
-        const is_real_disabled = !is_real_enabled;
-        const is_demo_disabled = !is_demo_enabled;
-        if (!props.is_logged_in && (is_real_disabled || is_demo_disabled)) {
-            setIs_real_enabled(true);
-            setIs_demo_enabled(true);
+        if (!props.is_logged_in && (!is_real_enabled || !is_demo_enabled)) {
+            setIsRealEnabled(true);
+            setIsDemoEnabled(true);
         }
     }, [is_real_enabled, is_demo_enabled]);
 
@@ -120,7 +109,7 @@ const CFDDashboard = props => {
     };
 
     const stopNotificationLoading = () => {
-        setIs_notification_loaded(true);
+        setIsNotificationLoaded(true);
     };
 
     const updateActiveIndex = index => {
@@ -151,7 +140,7 @@ const CFDDashboard = props => {
 
     const togglePasswordManagerModal = (login, title, group, type, server) => {
         setActiveIndex(prev_state => prev_state.active_index);
-        setPassword_manager(prev_state => ({
+        setPasswordManager(prev_state => ({
             is_visible: !prev_state.is_visible,
             selected_login: typeof login === 'string' ? login : '',
             selected_account: typeof title === 'string' ? title : '',
@@ -432,44 +421,6 @@ const CFDDashboard = props => {
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            {/* <div className='cfd-dashboard__download-center'>
-                                If you have the app, launch it
-                                {platform === CFD_PLATFORMS.DXTRADE && (
-                                    <React.Fragment>
-                                        <div className='cfd-dashboard__download-center-options--mobile'>
-                                            <Icon icon='IcDxtradeDeviceDesktop' width={128} height={83} />
-                                            <Icon icon='IcDxtradeDeviceLaptop' width={81} height={54} />
-                                        </div>
-                                        <div className='cfd-dashboard__download-center-options--mobile'>
-                                            <a
-                                                className='cfd-dashboard__dxtrade-download'
-                                                href={getDXTradeWebTerminalLink(
-                                                    this.state.active_index === 0 ? 'real' : 'demo'
-                                                )}
-                                                target='_blank'
-                                                rel='noopener noreferrer'
-                                            >
-                                                <Icon
-                                                    className='cfd-dashboard__dxtrade-download--icon'
-                                                    icon='IcBrandDxtrade'
-                                                    width={32}
-                                                    height={32}
-                                                />
-                                                <div className='cfd-dashboard__dxtrade-download-text'>
-                                                    <Text
-                                                        className='cfd-dashboard__dxtrade-download--title'
-                                                        color='colored-background'
-                                                        size='xxs'
-                                                        weight='bold'
-                                                    >
-                                                        <Localize i18n_default_text='Web terminal' />
-                                                    </Text>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </React.Fragment>
-                                )}
-                            </div> */}
                             <div className='cfd-dashboard__download-center'>
                                 <h1 className='cfd-dashboard__download-center--heading'>
                                     {platform === CFD_PLATFORMS.MT5 && (

@@ -15,140 +15,120 @@ const index_lookup = {
     CFDPendingVerification: 3,
 };
 
-class CFDFinancialStpRealAccountSignup extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            finished: undefined,
-            step: 0,
-            form_error: '',
-            is_loading: false,
-            items: [
-                {
-                    header: {
-                        active_title: localize('Complete your personal details'),
-                        title: localize('Personal details'),
-                    },
-                    body: CFDPersonalDetailsForm,
-                    form_value: {
-                        citizen: '',
-                        tax_residence: '',
-                        tax_identification_number: '',
-                        account_opening_reason: '',
-                    },
-                    props: ['residence_list', 'is_fully_authenticated', 'landing_company'],
-                },
-                {
-                    header: {
-                        active_title: localize('Complete your proof of identity'),
-                        title: localize('Proof of identity'),
-                    },
-                    body: CFDPOI,
-                    form_value: {
-                        poi_state: 'unknown',
-                    },
-                    props: [
-                        'addNotificationByKey',
-                        'authentication_status',
-                        'refreshNotifications',
-                        'removeNotificationMessage',
-                        'removeNotificationByKey',
-                    ],
-                },
-                {
-                    header: {
-                        active_title: localize('Complete your proof of address'),
-                        title: localize('Proof of address'),
-                    },
-                    body: CFDPOA,
-                    form_value: {
-                        address_line_1: props.get_settings.address_line_1,
-                        address_line_2: props.get_settings.address_line_2,
-                        address_city: props.get_settings.address_city,
-                        address_state: props.get_settings.address_state,
-                        address_postcode: props.get_settings.address_postcode,
-                        upload_file: '',
-                    },
-                    props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
-                },
+const CFDFinancialStpRealAccountSignup = props => {
+    const [step, setStep] = React.useState(0);
+    const [form_error, setFormError] = React.useState('');
+    const [is_loading, setIsLoading] = React.useState(false);
+    const [items, setItems] = React.useState([
+        {
+            header: {
+                active_title: localize('Complete your personal details'),
+                title: localize('Personal details'),
+            },
+            body: CFDPersonalDetailsForm,
+            form_value: {
+                citizen: '',
+                tax_residence: '',
+                tax_identification_number: '',
+                account_opening_reason: '',
+            },
+            props: ['residence_list', 'is_fully_authenticated', 'landing_company'],
+        },
+        {
+            header: {
+                active_title: localize('Complete your proof of identity'),
+                title: localize('Proof of identity'),
+            },
+            body: CFDPOI,
+            form_value: {
+                poi_state: 'unknown',
+            },
+            props: [
+                'addNotificationByKey',
+                'authentication_status',
+                'refreshNotifications',
+                'removeNotificationMessage',
+                'removeNotificationByKey',
             ],
-        };
-    }
+        },
+        {
+            header: {
+                active_title: localize('Complete your proof of address'),
+                title: localize('Proof of address'),
+            },
+            body: CFDPOA,
+            form_value: {
+                address_line_1: props.get_settings.address_line_1,
+                address_line_2: props.get_settings.address_line_2,
+                address_city: props.get_settings.address_city,
+                address_state: props.get_settings.address_state,
+                address_postcode: props.get_settings.address_postcode,
+                upload_file: '',
+            },
+            props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
+        },
+    ]);
 
-    get state_index() {
-        return this.state.step;
-    }
+    const state_index = step;
 
-    get has_more_steps() {
-        return this.state.step + 1 < this.state.items.length;
-    }
+    const has_more_steps = () => step + 1 < items.length;
 
-    clearError = () => {
-        this.setState({
-            form_error: '',
-        });
+    const clearError = () => {
+        setFormError('');
     };
 
-    nextStep = () => {
-        this.clearError();
-        if (this.has_more_steps) {
-            this.goNext();
+    const nextStep = () => {
+        clearError();
+        if (has_more_steps) {
+            goNext();
         } else {
-            this.finishWizard();
+            finishWizard();
         }
     };
 
-    finishWizard = () => {
-        this.props.openPendingDialog();
-        this.props.toggleModal();
+    const finishWizard = () => {
+        props.openPendingDialog();
+        props.toggleModal();
     };
 
-    prevStep = () => {
-        this.setState({
-            step: this.state.step - 1,
-            form_error: '',
-        });
+    const prevStep = () => {
+        setStep(step - 1);
+        setFormError('');
     };
-
-    updateValue = async (index, value, setSubmitting, is_dirty = true) => {
+    const updateValue = async (index, value, setSubmitting, is_dirty = true) => {
         if (is_dirty && index_lookup.CFDPersonalDetailsForm === index) {
             // Set account settings
             const data = await WS.setSettings(value);
             if (data.error) {
-                this.setState({
-                    form_error: data.error.message,
-                });
+                setFormError(data.error.message);
                 setSubmitting(false);
                 return;
             }
-            this.initiatePersonalDetails(setSubmitting);
+            initiatePersonalDetails(setSubmitting);
         }
-        if (index === 0) await WS.triggerMt5DryRun({ email: this.props.client_email });
-        this.saveFormData(index, value);
-        this.nextStep(setSubmitting);
+        if (index === 0) await WS.triggerMt5DryRun({ email: props.client_email });
+        saveFormData(index, value);
+        nextStep(setSubmitting);
     };
 
-    initiatePersonalDetails = async setSubmitting => {
+    const initiatePersonalDetails = async setSubmitting => {
         // force request to update settings cache since settings have been updated
         const response = await WS.authorized.storage.getSettings();
 
         if (response.error) {
-            this.setState({ form_error: response.error.message });
+            setFormError(response.error.message);
             if (typeof setSubmitting === 'function') {
                 setSubmitting(false);
             }
             return;
         }
 
-        const cloned = Object.assign([], this.state.items);
+        const cloned = Object.assign([], items);
         if (response.get_settings.citizen) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.citizen = this.transform(
-                response.get_settings.citizen
-            );
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(response.get_settings.citizen);
         }
         if (response.get_settings.tax_residence) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = this.transform(
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(
                 response.get_settings.tax_residence
             );
         }
@@ -160,117 +140,103 @@ class CFDFinancialStpRealAccountSignup extends React.Component {
             cloned[index_lookup.CFDPersonalDetailsForm].form_value.account_opening_reason =
                 response.get_settings.account_opening_reason;
         }
-        this.setState(
-            {
-                items: cloned,
-            },
-            this.props.refreshNotifications
-        );
+        setItems(cloned);
     };
 
-    transform = value => {
-        const [result] = this.props.residence_list.filter(item => item.value === value);
+    React.useEffect(() => {
+        props.refreshNotifications();
+    }, [items]);
+
+    const transform = value => {
+        const [result] = props.residence_list.filter(item => item.value === value);
         return getPropertyValue(result, ['text']) || value;
     };
 
-    goNext = () => {
-        this.setState({
-            step: this.state.step + 1,
-        });
+    const goNext = () => {
+        setStep(step + 1);
     };
 
-    componentDidMount() {
-        if (this.state_index === index_lookup.CFDPersonalDetailsForm) {
-            this.setState({
-                is_loading: true,
-            });
-            this.initiatePersonalDetails().then(() => {
-                this.setState({
-                    is_loading: false,
-                });
+    React.useEffect(() => {
+        if (state_index === index_lookup.CFDPersonalDetailsForm) {
+            setIsLoading(true);
+            initiatePersonalDetails().then(() => {
+                setIsLoading(false);
             });
         }
-    }
+    }, []);
 
-    getCurrent = key => {
-        return key ? this.state.items[this.state_index][key] : this.state.items[this.state_index];
+    const getCurrent = key => {
+        return key ? items[state_index][key] : items[state_index];
     };
 
-    saveFormData = (index, value) => {
-        const cloned_items = Object.assign([], this.state.items);
+    const saveFormData = (index, value) => {
+        const cloned_items = Object.assign([], items);
         cloned_items[index].form_value = value;
-        if (this.state_index === index_lookup.CFDPersonalDetailsForm) {
-            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.citizen = this.transform(value.citizen);
+        if (state_index === index_lookup.CFDPersonalDetailsForm) {
+            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(value.citizen);
 
-            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = this.transform(
-                value.tax_residence
-            );
+            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(value.tax_residence);
         }
-        this.setState({
-            items: cloned_items,
-        });
+        setItems(cloned_items);
     };
+    const BodyComponent = getCurrent('body');
+    const form_value = getCurrent('form_value');
+    const passthrough = (getCurrent('props') || []).reduce((arr, item) => {
+        return Object.assign(arr, { [item]: props[item] });
+    }, {});
+    const height = getCurrent('height') || 'auto';
 
-    render() {
-        const BodyComponent = this.getCurrent('body');
-        const form_value = this.getCurrent('form_value');
-        const passthrough = (this.getCurrent('props') || []).reduce((arr, item) => {
-            return Object.assign(arr, { [item]: this.props[item] });
-        }, {});
-        const height = this.getCurrent('height') || 'auto';
-
-        return (
-            <Div100vhContainer
-                className='cfd-financial-stp-modal'
-                id='real_mt5_financial_stp_account_opening'
-                is_disabled={isDesktop()}
-                height_offset='40px'
-            >
-                <div className='cfd-financial-stp-modal__heading'>
-                    {this.getCurrent() && (
-                        <>
-                            <DesktopWrapper>
-                                <FormProgress steps={this.state.items} current_step={this.state.step} />
-                            </DesktopWrapper>
-                            <MobileWrapper>
-                                <div className='cfd-financial-stp-modal__header-steps'>
-                                    <h4 className='cfd-financial-stp-modal__header-steps-title'>
-                                        <Localize
-                                            i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
-                                            values={{
-                                                step: this.state.step + 1,
-                                                steps: this.state.items.length,
-                                                step_title: this.state.items[this.state.step].header.title,
-                                            }}
-                                        />
+    return (
+        <Div100vhContainer
+            className='cfd-financial-stp-modal'
+            id='real_mt5_financial_stp_account_opening'
+            is_disabled={isDesktop()}
+            height_offset='40px'
+        >
+            <div className='cfd-financial-stp-modal__heading'>
+                {getCurrent() && (
+                    <>
+                        <DesktopWrapper>
+                            <FormProgress steps={items} current_step={step} />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <div className='cfd-financial-stp-modal__header-steps'>
+                                <h4 className='cfd-financial-stp-modal__header-steps-title'>
+                                    <Localize
+                                        i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
+                                        values={{
+                                            step: step + 1,
+                                            steps: items.length,
+                                            step_title: items[step].header.title,
+                                        }}
+                                    />
+                                </h4>
+                                {items[step].header.active_title && (
+                                    <h4 className='cfd-financial-stp-modal__header-steps-subtitle'>
+                                        {items[step].header.active_title}
                                     </h4>
-                                    {this.state.items[this.state.step].header.active_title && (
-                                        <h4 className='cfd-financial-stp-modal__header-steps-subtitle'>
-                                            {this.state.items[this.state.step].header.active_title}
-                                        </h4>
-                                    )}
-                                </div>
-                            </MobileWrapper>
-                        </>
-                    )}
-                </div>
-                <div className='cfd-financial-stp-modal__body'>
-                    <BodyComponent
-                        value={form_value}
-                        index={this.state_index}
-                        onSubmit={this.updateValue}
-                        height={height}
-                        is_loading={this.state.is_loading}
-                        onCancel={this.prevStep}
-                        onSave={this.saveFormData}
-                        form_error={this.state.form_error}
-                        {...passthrough}
-                    />
-                </div>
-            </Div100vhContainer>
-        );
-    }
-}
+                                )}
+                            </div>
+                        </MobileWrapper>
+                    </>
+                )}
+            </div>
+            <div className='cfd-financial-stp-modal__body'>
+                <BodyComponent
+                    value={form_value}
+                    index={state_index}
+                    onSubmit={updateValue}
+                    height={height}
+                    is_loading={is_loading}
+                    onCancel={prevStep}
+                    onSave={saveFormData}
+                    form_error={form_error}
+                    {...passthrough}
+                />
+            </div>
+        </Div100vhContainer>
+    );
+};
 
 CFDFinancialStpRealAccountSignup.propTypes = {
     openPendingDialog: PropTypes.func,

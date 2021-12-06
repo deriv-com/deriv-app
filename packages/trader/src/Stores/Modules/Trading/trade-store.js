@@ -1109,18 +1109,23 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    manageMxMltRemovalNotification() {
+    async manageMxMltRemovalNotification() {
         const client_notifications = this.root_store.client.client_notifications;
         const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages'));
         const is_logged_in = this.root_store.client.is_logged_in;
-        const is_uk = this.root_store.client.is_uk;
         const has_iom_account = this.root_store.client.has_iom_account;
         const has_malta_account = this.root_store.client.has_malta_account;
-        const can_have_mlt_account = this.root_store.client.can_have_mlt_account;
-
+        const mx_mlt_custom_header = this.root_store.client.custom_notifications.mx_mlt_notification.header();
+        const mx_mlt_custom_content = this.root_store.client.custom_notifications.mx_mlt_notification.main();
+        const await_residence = await this.root_store.client.residence
+        
         this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
-
-        if (get_notification_messages !== null && is_logged_in && (has_iom_account || has_malta_account)) {
+        if (
+            get_notification_messages !== null &&
+            await_residence &&
+            is_logged_in &&
+            (has_iom_account || has_malta_account)
+        ) {
             const get_notification_messages_array = Object.fromEntries(
                 Object.entries(get_notification_messages).map(([key, name]) => {
                     const new_name = name.filter(message => message !== 'close_mx_mlt_account');
@@ -1129,7 +1134,7 @@ export default class TradeStore extends BaseStore {
             );
             localStorage.setItem('notification_messages', JSON.stringify(get_notification_messages_array));
             this.root_store.ui.addNotificationMessage(
-                client_notifications(this.root_store.ui, {}, is_uk, has_malta_account, can_have_mlt_account)
+                client_notifications(this.root_store.ui, {}, mx_mlt_custom_header, mx_mlt_custom_content)
                     .close_mx_mlt_account
             );
             reaction(
@@ -1141,7 +1146,7 @@ export default class TradeStore extends BaseStore {
                         (has_iom_account || has_malta_account) && !hidden_close_account_notification;
                     if (should_retain_notification) {
                         this.root_store.ui.addNotificationMessage(
-                            client_notifications(this.root_store.ui, {}, is_uk, has_malta_account, can_have_mlt_account)
+                            client_notifications(this.root_store.ui, {}, mx_mlt_custom_header, mx_mlt_custom_content)
                                 .close_mx_mlt_account
                         );
                     }

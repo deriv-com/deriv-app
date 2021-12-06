@@ -18,7 +18,6 @@ const NotificationsContent = ({
     notifications,
     removeNotificationMessage,
     markNotificationMessage,
-    refreshNotifications,
     has_iom_account,
     has_malta_account,
     is_logged_in,
@@ -32,7 +31,6 @@ const NotificationsContent = ({
             if (!is_dtrader && get_close_mx_mlt_notification) {
                 markNotificationMessage({ key: 'close_mx_mlt_account' });
             }
-            refreshNotifications();
         }
     }, [window_location]);
 
@@ -85,6 +83,7 @@ const AppNotificationMessages = ({
             if (notifications_ref.parentElement !== null) {
                 const bounds = notifications_ref.parentElement.getBoundingClientRect();
                 setStyle({ top: bounds.top + 8 });
+                refreshNotifications();
             }
         }
     }, [notifications_ref]);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
@@ -41,14 +40,14 @@ const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
 };
 
 const CFDDashboard = props => {
-    const [is_demo_enabled, setIs_demo_enabled] = useState(false);
-    const [is_real_enabled, setIs_real_enabled] = useState(false);
-    const [active_index, setActiveIndex] = useState(0);
-    // const [is_account_needed_modal_open, setIs_account_needed_modal_open] = useState(false);
-    const [is_demo_tab] = useState(true);
-    // const [required_account, setRequired_account] = useState({});
-    const [is_notification_loaded, setIs_notification_loaded] = useState(false);
-    const [password_manager, setPassword_manager] = useState({
+    const [is_demo_enabled, setIs_demo_enabled] = React.useState(false);
+    const [is_real_enabled, setIs_real_enabled] = React.useState(false);
+    const [active_index, setActiveIndex] = React.useState(0);
+    // const [is_account_needed_modal_open, setIs_account_needed_modal_open] = React.useState(false);
+    const [is_demo_tab] = React.useState(true);
+    // const [required_account, setRequired_account] = React.useState({});
+    const [is_notification_loaded, setIs_notification_loaded] = React.useState(false);
+    const [password_manager, setPassword_manager] = React.useState({
         is_visible: false,
         selected_login: '',
         selected_account: '',
@@ -57,7 +56,7 @@ const CFDDashboard = props => {
         selected_server: '',
     });
 
-    useEffect(() => {
+    React.useEffect(() => {
         updateActiveIndex(getIndexToSet());
         openResetPassword();
         props.onMount();
@@ -67,13 +66,13 @@ const CFDDashboard = props => {
     //     this.props.onUnmount();
     // }
 
-    useEffect(() => {
+    React.useEffect(() => {
         return () => {
             props.onUnmount();
         };
     }, []);
 
-    useEffect(() => {
+    React.useEffect(() => {
         updateActiveIndex();
         props.checkShouldOpenAccount();
 

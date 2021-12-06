@@ -66,32 +66,41 @@ const CryptoDeposit = ({
             );
         };
 
-        if (event.target.value === option_list[0].value) {
-            setOptionMessage(
-                <Localize
-                    i18n_default_text='We do not support Binance Smart Chain tokens to deposit, please use only Ethereum ({{token}}).'
-                    values={{ token }}
-                />
-            );
-        } else if (event.target.value === option_list[1].value) {
-            setOptionMessage(
-                <Localize
-                    i18n_default_text='We do not support Polygon (Matic), to deposit please use only Ethereum ({{token}}).'
-                    values={{ token }}
-                />
-            );
-        } else if (event.target.value === option_list[2].value) {
-            setOptionMessage(
-                <Localize
-                    i18n_default_text='We do not support Tron, to deposit please use only Ethereum ({{token}}).'
-                    values={{ token }}
-                />
-            );
-        } else if (event.target.value === option_list[3].value) {
-            (currency === 'ETH' ? setProhibitedTokenMessage : setQRCodeHeaderMessage)();
-        } else if (event.target.value === option_list[4].value) {
-            (['USDC', 'eUSDT'].includes(currency) ? setProhibitedTokenMessage : setQRCodeHeaderMessage)();
+        switch (event.target.value) {
+            case option_list[0].value:
+                setOptionMessage(
+                    <Localize
+                        i18n_default_text='We do not support Binance Smart Chain tokens to deposit, please use only Ethereum ({{token}}).'
+                        values={{ token }}
+                    />
+                );
+                break;
+            case option_list[1].value:
+                setOptionMessage(
+                    <Localize
+                        i18n_default_text='We do not support Polygon (Matic), to deposit please use only Ethereum ({{token}}).'
+                        values={{ token }}
+                    />
+                );
+                break;
+            case option_list[2].value:
+                setOptionMessage(
+                    <Localize
+                        i18n_default_text='We do not support Tron, to deposit please use only Ethereum ({{token}}).'
+                        values={{ token }}
+                    />
+                );
+                break;
+            case option_list[3].value:
+                (currency === 'ETH' ? setProhibitedTokenMessage : setQRCodeHeaderMessage)();
+                break;
+            case option_list[4].value:
+                (['USDC', 'eUSDT'].includes(currency) ? setProhibitedTokenMessage : setQRCodeHeaderMessage)();
+                break;
+            default:
+                setOptionMessage('');
         }
+
         setOptionListValue(event.target.value);
     };
 

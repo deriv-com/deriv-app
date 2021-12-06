@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from "react";
+import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';

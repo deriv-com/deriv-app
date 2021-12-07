@@ -5,6 +5,7 @@ import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
+import 'Sass/cashier-default.scss';
 
 const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto, openRealAccountSignup }) => {
     const currency_code = getCurrencyDisplayCode(currency);
@@ -19,7 +20,7 @@ const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto,
                     'cashier-default-detail__div': isMobile(),
                 })}
             >
-                <Text className='cashier-side-note__text' color='prominent' weight='bold' sixe='xs' as='p'>
+                <Text className='cashier-default-side-note__text' color='prominent' weight='bold' sixe='xs' as='p'>
                     {is_crypto ? (
                         <Localize
                             i18n_default_text='This is your {{currency_code}} account.'
@@ -32,7 +33,7 @@ const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto,
                         />
                     )}
                 </Text>
-                <Text className='cashier-side-note__text' size='xxs' as='p'>
+                <Text className='cashier-default-side-note__text' size='xxs' as='p'>
                     {is_crypto ? (
                         <Localize
                             i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
@@ -55,7 +56,7 @@ const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto,
                             components={[
                                 <span
                                     key={0}
-                                    className='link link--orange cashier-side-note__text-nowrap'
+                                    className='link link--orange cashier-default-side-note__text-nowrap'
                                     onClick={() => window.LC_API.open_chat_window()}
                                 />,
                             ]}

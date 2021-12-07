@@ -72,6 +72,7 @@ const ToggleMenuDrawer = React.forwardRef(
             is_p2p_enabled,
             is_payment_agent_transfer_visible,
             is_payment_agent_visible,
+            is_account_transfer_visible,
             is_virtual,
             logoutClient,
             platform_header,
@@ -173,7 +174,8 @@ const ToggleMenuDrawer = React.forwardRef(
                                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                                 (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                                (route.path !== routes.cashier_onramp || is_onramp_tab_visible)
+                                (route.path !== routes.cashier_onramp || is_onramp_tab_visible) &&
+                                (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                             ) {
                                 return (
                                     <MobileDrawer.Item key={index}>

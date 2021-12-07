@@ -72,10 +72,10 @@ const CFDDashboard = props => {
                 const should_enable_tab =
                     isSyntheticCardVisible(account_type) || isFinancialCardVisible() || isFinancialStpCardVisible();
 
-                let is_tab_enabled = [`is_${account_type}_enabled`];
-
-                if (is_tab_enabled !== should_enable_tab) {
-                    is_tab_enabled = should_enable_tab;
+                if (account_type === 'real') {
+                    setIsRealEnabled(should_enable_tab);
+                } else if (account_type === 'demo') {
+                     setIsDemoEnabled(should_enable_tab);
                 }
             });
         }

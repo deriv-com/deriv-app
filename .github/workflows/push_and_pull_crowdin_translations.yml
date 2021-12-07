@@ -32,6 +32,7 @@ jobs:
           git config --global user.email "80095553+DerivFE@users.noreply.github.com"
 
           echo "Installing Crowdin CLI and bootstrapping project"
+          sudo npm i -g node-sass
           sudo npm i -g @crowdin/cli
           npm run bootstrap
 

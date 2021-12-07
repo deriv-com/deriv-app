@@ -98,6 +98,7 @@ const FinishedSetCurrency = ({
                 <SuccessMessage prev={prev} current={current} />
             </div>
             <div className='status-dialog__footer'>
+                <Button onClick={closeModal} text={localize('Maybe later')} secondary />
                 <Button
                     onClick={
                         ['add_crypto', 'add_fiat', 'add_currency'].includes(deposit_real_account_signup_target)
@@ -107,7 +108,6 @@ const FinishedSetCurrency = ({
                     text={localize('Deposit now')}
                     primary
                 />
-                <Button onClick={closeModal} text={localize('Maybe later')} secondary />
             </div>
         </Div100vhContainer>
     );

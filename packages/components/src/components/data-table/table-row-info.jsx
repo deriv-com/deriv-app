@@ -42,7 +42,7 @@ TableRowInfo.propTypes = {
     cells: PropTypes.arrayOf(PropTypes.node),
     className: PropTypes.string,
     replace: PropTypes.shape({
-        component: PropTypes.func,
+        component: PropTypes.object,
         message: PropTypes.string,
     }),
     is_footer: PropTypes.bool,

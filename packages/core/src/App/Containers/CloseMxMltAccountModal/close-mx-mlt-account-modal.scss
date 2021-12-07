@@ -100,15 +100,11 @@
                 margin: 0.3rem 0;
             }
             @include mobile {
-                position: fixed;
+                position: absolute;
                 border-radius: unset;
                 margin-top: unset;
                 height: 100%;
                 width: 100%;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
             }
         }
     }

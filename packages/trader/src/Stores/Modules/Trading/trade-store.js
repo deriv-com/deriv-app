@@ -1124,7 +1124,7 @@ export default class TradeStore extends BaseStore {
             get_notification_messages !== null &&
             await_residence &&
             is_logged_in &&
-            (has_iom_account || has_malta_account)
+            (has_iom_account || has_malta_account) 
         ) {
             const get_notification_messages_array = Object.fromEntries(
                 Object.entries(get_notification_messages).map(([key, name]) => {

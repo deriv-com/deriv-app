@@ -642,6 +642,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
         getRiskAssessment,
         is_eu,
         residence,
+        landing_company_shortcode,
         has_malta_account,
         custom_notifications,
         has_iom_account,
@@ -654,6 +655,8 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
     const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
     const await_residence = await residence;
+    const malta_account = landing_company_shortcode === 'maltainvest';
+    const iom_account = landing_company_shortcode === 'virtual';
     const mx_mlt_custom_header = custom_notifications.mx_mlt_notification.header();
     const mx_mlt_custom_content = custom_notifications.mx_mlt_notification.main();
 
@@ -667,6 +670,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
 
     if (
         (has_iom_account || has_malta_account) &&
+        (!malta_account || !iom_account) &&
         is_logged_in &&
         !hidden_close_account_notification &&
         await_residence

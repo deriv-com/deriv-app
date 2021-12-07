@@ -624,8 +624,8 @@ export default class ClientStore extends BaseStore {
                     return localize('Please proceed to withdraw your funds before 30 November 2021.');
                 },
             },
-        }
-        return notification_content; 
+        };
+        return notification_content;
     }
 
     // Manual list of MLT countries during MLT/MX account removal.

@@ -672,7 +672,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
         await_residence
     ) {
         addNotificationMessage(
-            clientNotifications(ui_store, {}, mx_mlt_custom_header, mx_mlt_custom_content ).close_mx_mlt_account
+            clientNotifications(ui_store, {}, mx_mlt_custom_header, mx_mlt_custom_content).close_mx_mlt_account
         );
     }
 

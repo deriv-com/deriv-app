@@ -1117,8 +1117,8 @@ export default class TradeStore extends BaseStore {
         const has_malta_account = this.root_store.client.has_malta_account;
         const mx_mlt_custom_header = this.root_store.client.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.root_store.client.custom_notifications.mx_mlt_notification.main();
-        const await_residence = await this.root_store.client.residence
-        
+        const await_residence = await this.root_store.client.residence;
+
         this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
         if (
             get_notification_messages !== null &&

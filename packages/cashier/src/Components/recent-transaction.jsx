@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { getStatus } from '../Constants/transaction-status';
-import '../Sass/recent-transaction.scss';
+import 'Sass/recent-transaction.scss';
 
 const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCryptoTransactionsVisible }) => {
     React.useEffect(() => {
@@ -31,7 +31,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
     };
 
     return (
-        <div className='cashier-recent-transaction-wrapper'>
+        <div className='recent-transaction__wrapper'>
             <div className='cashier-recent-transaction'>
                 <Text weight='bold' as='p' line_height='s' size='xs'>
                     <Localize i18n_default_text='Recent transactions' />

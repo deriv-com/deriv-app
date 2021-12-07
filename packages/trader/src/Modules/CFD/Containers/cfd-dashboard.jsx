@@ -75,7 +75,7 @@ const CFDDashboard = props => {
                 if (account_type === 'real') {
                     setIsRealEnabled(should_enable_tab);
                 } else if (account_type === 'demo') {
-                     setIsDemoEnabled(should_enable_tab);
+                    setIsDemoEnabled(should_enable_tab);
                 }
             });
         }

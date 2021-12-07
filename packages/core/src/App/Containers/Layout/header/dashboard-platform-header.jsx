@@ -110,6 +110,7 @@ const DashboardPlatformHeader = ({
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
+    is_account_transfer_visible,
     is_settings_modal_on,
     is_virtual,
     location,
@@ -148,6 +149,7 @@ const DashboardPlatformHeader = ({
                         is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                         is_onramp_tab_visible={is_onramp_tab_visible}
                         is_payment_agent_visible={is_payment_agent_visible}
+                        is_account_transfer_visible={is_account_transfer_visible}
                         is_virtual={is_virtual}
                         toggleTheme={setDarkMode}
                         platform_header={getPlatformInformation(app_routing_history).header}
@@ -215,6 +217,7 @@ DashboardPlatformHeader.propTypes = {
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
+    is_account_transfer_visible: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,
@@ -239,6 +242,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     notifications_count: ui.filtered_notifications.length,

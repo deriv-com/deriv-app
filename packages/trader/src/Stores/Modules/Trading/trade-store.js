@@ -142,6 +142,7 @@ export default class TradeStore extends BaseStore {
     @observable should_skip_prepost_lifecycle = false;
 
     constructor({ root_store }) {
+        console.info('Initializing DTrader'); // eslint-disable-line
         const local_storage_properties = [
             'amount',
             'currency',
@@ -1247,6 +1248,9 @@ export default class TradeStore extends BaseStore {
         }
         if (req.active_symbols) {
             return WS.activeSymbols('brief');
+        }
+        if (req.trading_times) {
+            return WS.tradingTimes(req.trading_times);
         }
         return WS.storage.send(req);
     };

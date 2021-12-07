@@ -249,7 +249,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-right: 0.8rem;
         }
         &__subtitle {
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: var(--text-prominent);
             font-weight: normal;
             align-self: baseline;
@@ -265,7 +265,18 @@ $MIN_HEIGHT_FLOATING: calc(
             &-side-note {
                 grid-area: section-side-note;
                 width: 26rem;
-                margin-top: 1rem;
+                .dc-text {
+                    color: var(--text-less-prominent);
+                    font-size: 1.4rem;
+                    @include mobile {
+                        font-size: 1.2rem;
+                    }
+                }
+                .account-poa__upload-box-dashboard {
+                    @include mobile {
+                        align-items: flex-start;
+                    }
+                }
                 @include mobile {
                     margin-top: unset;
                     width: 100%;
@@ -1143,12 +1154,10 @@ $MIN_HEIGHT_FLOATING: calc(
 .account-poa {
     &__upload {
         &-icon {
-            width: 25px;
-        }
-        &-section {
-            margin-top: 1em;
-            display: flex;
-            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            @include mobile {
+                margin-bottom: 0;
+            }
         }
         &-dashboard {
             max-width: calc(100% - 42rem);
@@ -1157,18 +1166,29 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             flex: 1;
             margin-right: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            .account-poa__upload-box {
+                border: 1px solid var(--icon-grey-background);
+                border-radius: $BORDER_RADIUS * 2;
+                margin: 0 0.8rem 1.6rem;
+                padding: 0.8rem;
+                @include mobile {
+                    border: none;
+                    margin: 0;
+                }
+            }
 
             @include mobile {
-                flex: unset;
+                flex-direction: column;
                 margin-right: 0;
             }
         }
         &-file {
-            width: 100%;
             flex: 1;
             height: 240px;
             position: relative;
-            max-width: 400px;
+            margin: 0 0.8rem;
             &-dashboard {
                 height: 10.5rem;
                 & .account-poa__upload-remove-btn {
@@ -1181,6 +1201,20 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-width: 40rem;
                 height: 24rem;
                 padding: 0.8rem;
+            }
+
+            .dc-file-dropzone {
+                border: 1px solid var(--general-active);
+                &__message {
+                    max-width: unset;
+                    &-subtitle {
+                        font-size: 1.4rem;
+                        font-weight: bold;
+                    }
+                }
+                @include mobile {
+                    border: 1px dashed var(--icon-grey-background);
+                }
             }
 
             @include mobile {
@@ -1252,23 +1286,33 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &-box {
             display: flex;
+            flex-direction: column;
             margin-bottom: 2em;
+            text-align: center;
             align-items: center;
             justify-content: flex-start;
+            flex: 1 0 calc((100% / 3) - 3.2rem);
             &-dashboard {
-                flex-direction: column;
+                flex-direction: column !important;
                 margin-left: 1.6rem;
                 & span {
                     display: list-item;
                     list-style-type: disc;
                     margin-bottom: 0.8rem;
                 }
+                @include mobile {
+                    margin-top: 1.6rem;
+                    margin-bottom: 0;
+                }
+            }
+            @include mobile {
+                text-align: left;
+                flex-direction: row;
             }
         }
         &-item {
-            min-width: 23.8rem;
             width: 100%;
-            margin-left: 1em;
+            padding: 0 0.5em;
             font-size: var(--text-size-xxs);
             line-height: 1.5;
             color: var(--text-prominent);
@@ -1822,11 +1866,6 @@ $MIN_HEIGHT_FLOATING: calc(
         z-index: 4;
     }
     &__footer {
-        @media (max-height: 900px) {
-            position: fixed;
-            bottom: 36px;
-        }
-
         @include mobile {
             display: flex;
             flex-direction: row;
@@ -1834,6 +1873,12 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: flex-end;
             position: fixed;
             bottom: 0;
+        }
+    }
+    &__footer-external {
+        @media (max-height: 900px) {
+            position: fixed;
+            bottom: 36px;
         }
     }
     &__footer-alert {

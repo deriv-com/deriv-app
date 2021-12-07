@@ -31,10 +31,7 @@ const NotificationsContent = ({
             const is_dtrader = getPathname() === 'DTrader';
             const malta_account = landing_company_shortcode === 'malta';
             const iom_account = landing_company_shortcode === 'iom';
-            if (
-                (!is_dtrader && get_close_mx_mlt_notification) ||
-                (malta_account || iom_account)
-            ) {
+            if ((!is_dtrader && get_close_mx_mlt_notification) || malta_account || iom_account) {
                 markNotificationMessage({ key: 'close_mx_mlt_account' });
             }
         }

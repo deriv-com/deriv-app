@@ -11,6 +11,11 @@
         margin-top: auto;
     }
 
+    &--frozen {
+        border-top: 2px solid var(--general-section-1);
+        padding: 1.6rem 2.4rem;
+    }
+
     &-icon-container {
         align-items: center;
         border-radius: $BORDER_RADIUS;

@@ -73,6 +73,11 @@ const FinishedSetCurrency = ({
         }
     };
 
+    const closeModal = () => {
+        onCancel();
+        setIsDeposit(false);
+    };
+
     return (
         <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
             <div
@@ -102,7 +107,7 @@ const FinishedSetCurrency = ({
                     text={localize('Deposit now')}
                     primary
                 />
-                <Button onClick={onCancel} text={localize('Maybe later')} secondary />
+                <Button onClick={closeModal} text={localize('Maybe later')} secondary />
             </div>
         </Div100vhContainer>
     );

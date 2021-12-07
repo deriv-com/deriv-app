@@ -48,7 +48,7 @@ const Drawer = ({
             style={{
                 zIndex,
                 transform:
-                has_open &&
+                    has_open &&
                     !is_mobile &&
                     (anchor === 'left'
                         ? `translateX(calc(${width}px - 16px))`

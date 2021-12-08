@@ -264,7 +264,11 @@ export default class CashierStore extends BaseStore {
     get is_account_transfer_visible() {
         // cashier Transfer account tab is hidden for iom clients
         // check for residence to hide the tab before creating a real money account
-        return this.root_store.client.residence !== 'im';
+        return (
+            this.root_store.client.residence !== 'im' && (
+                this.root_store.client.landing_company_shortcode !== 'malta' || this.root_store.client.has_maltainvest_account
+            )
+        );
     }
 
     @computed
@@ -493,8 +497,6 @@ export default class CashierStore extends BaseStore {
                 await this.getAdvertizerError();
                 this.checkP2pStatus();
                 await this.check10kLimit();
-                await this.setPaymentAgentList();
-                await this.filterPaymentAgentList();
             }
         );
         when(
@@ -564,6 +566,7 @@ export default class CashierStore extends BaseStore {
             if (should_remount) {
                 this.onRemount = this.onMountCommon;
             }
+
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
             if (!this.config.payment_agent.list.length) {

@@ -40,7 +40,14 @@ export default class JournalStore {
     playAudio = sound => {
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
             const audio = document.getElementById(sound);
-            audio.play();
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        sound.pause();
+                    })
+                    .catch(() => {});
+            }
         }
     };
 

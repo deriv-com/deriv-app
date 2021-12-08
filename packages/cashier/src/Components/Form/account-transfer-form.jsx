@@ -239,8 +239,6 @@ const AccountTransferForm = ({
     const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
 
-    const current_amount = selected_from.balance < transfer_limit.max ? selected_from.balance : transfer_limit.max;
-
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -528,7 +526,7 @@ const AccountTransferForm = ({
                                                                 />,
                                                                 <Money
                                                                     key={1}
-                                                                    amount={current_amount}
+                                                                    amount={transfer_limit.max}
                                                                     currency={selected_from.currency}
                                                                     show_currency
                                                                 />,

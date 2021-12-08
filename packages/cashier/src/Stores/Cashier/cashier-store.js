@@ -1852,6 +1852,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     resetAccountTransfer = async () => {
         this.setIsTransferConfirm(false);
+        this.setTransferLimit();
     };
 
     @action.bound

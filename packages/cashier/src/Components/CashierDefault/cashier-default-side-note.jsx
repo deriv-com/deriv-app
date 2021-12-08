@@ -4,10 +4,16 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import 'Sass/cashier-default.scss';
 
-const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto, openRealAccountSignup }) => {
+const CashierDefaultSideNote = ({
+    can_change_fiat_currency,
+    currency,
+    is_crypto,
+    openRealAccountSignup,
+    setDepositTarget,
+}) => {
     const currency_code = getCurrencyDisplayCode(currency);
     return (
         <div
@@ -66,7 +72,10 @@ const CashierDefaultSideNote = ({ can_change_fiat_currency, currency, is_crypto,
                 {is_crypto && (
                     <div
                         className='cashier-default-side-note__link'
-                        onClick={() => openRealAccountSignup('add_crypto')}
+                        onClick={() => {
+                            setDepositTarget(routes.cashier_deposit);
+                            openRealAccountSignup('add_crypto');
+                        }}
                     >
                         <Text size='xxs' color='red'>
                             <Localize i18n_default_text='Manage your accounts ' />
@@ -84,11 +93,13 @@ CashierDefaultSideNote.propTypes = {
     currency: PropTypes.string,
     mt5_login_list: PropTypes.array,
     openRealAccountSignup: PropTypes.func,
+    setDepositTarget: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, modules, ui }) => ({
     can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,
     mt5_login_list: client.mt5_login_list,
     openRealAccountSignup: ui.openRealAccountSignup,
+    setDepositTarget: modules.cashier.setDepositTarget,
 }))(CashierDefaultSideNote);

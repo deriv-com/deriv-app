@@ -61,9 +61,10 @@ export default class AccountTransferStore {
 
     @computed
     get is_account_transfer_visible() {
+        const { has_maltainvest_account, landing_company_shortcode, residence } = this.root_store.client;
         // cashier Transfer account tab is hidden for iom clients
         // check for residence to hide the tab before creating a real money account
-        return this.root_store.client.residence !== 'im';
+        return residence !== 'im' && (landing_company_shortcode !== 'malta' || has_maltainvest_account);
     }
 
     @action.bound

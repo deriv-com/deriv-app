@@ -85,7 +85,7 @@ export default class IframeStore {
     }
 
     @action.bound
-    iframeWillMount() {
+    clearIframe() {
         this.setIframeUrl('');
         this.clearTimeoutCashierUrl();
         this.setSessionTimeout(true);

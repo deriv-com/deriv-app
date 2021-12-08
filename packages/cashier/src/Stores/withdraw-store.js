@@ -117,7 +117,7 @@ export default class WithdrawStore {
         const {
             checkIframeLoaded,
             clearTimeoutCashierUrl,
-            iframeWillMount,
+            clearIframe,
             is_session_timeout,
             setContainerHeight,
             setIframeUrl,
@@ -132,7 +132,7 @@ export default class WithdrawStore {
 
         this.error.setErrorMessage('');
         setContainerHeight(0);
-        iframeWillMount();
+        clearIframe();
         setLoading(true);
 
         if (!is_session_timeout) {

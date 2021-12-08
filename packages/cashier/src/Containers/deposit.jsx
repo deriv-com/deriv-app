@@ -29,7 +29,7 @@ const Deposit = ({
     is_eu,
     iframe_height,
     iframe_url,
-    iframeWillMount,
+    clearIframe,
     is_loading,
     is_switching,
     is_system_maintenance,
@@ -114,7 +114,7 @@ const Deposit = ({
                 iframe_url={iframe_url}
                 is_loading={is_loading}
                 is_crypto={is_crypto}
-                iframeWillMount={iframeWillMount}
+                clearIframe={clearIframe}
             />
         );
     }
@@ -161,7 +161,7 @@ export default connect(({ client, modules }) => ({
     is_eu: client.is_eu,
     iframe_height: modules.cashier.iframe.iframe_height,
     iframe_url: modules.cashier.iframe.iframe_url,
-    iframeWillMount: modules.cashier.iframe.iframeWillMount,
+    clearIframe: modules.cashier.iframe.clearIframe,
     is_loading: modules.cashier.general_store.is_loading,
     is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_switching: client.is_switching,

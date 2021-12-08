@@ -365,7 +365,7 @@ export default class GeneralStore extends BaseStore {
 
         withdraw.verification.clearVerification();
         payment_agent.verification.clearVerification();
-        iframe.iframeWillMount();
+        iframe.clearIframe();
 
         this.payment_agent = payment_agent;
         this.is_populating_values = false;

@@ -7,7 +7,7 @@ const Withdraw = ({
     container,
     iframe_height,
     iframe_url,
-    iframeWillMount,
+    clearIframe,
     is_loading,
     onMount,
     setActiveTab,
@@ -23,7 +23,7 @@ const Withdraw = ({
         <CashierContainer
             iframe_height={iframe_height}
             iframe_url={iframe_url}
-            iframeWillMount={iframeWillMount}
+            clearIframe={clearIframe}
             is_loading={is_loading}
         />
     );
@@ -43,7 +43,7 @@ export default connect(({ client, modules }) => ({
     container: modules.cashier.withdraw.container,
     iframe_height: modules.cashier.iframe.iframe_height,
     iframe_url: modules.cashier.iframe.iframe_url,
-    iframeWillMount: modules.cashier.iframe.iframeWillMount,
+    clearIframe: modules.cashier.iframe.clearIframe,
     is_loading: modules.cashier.general_store.is_loading,
     onMount: modules.cashier.withdraw.onMountWithdraw,
     setActiveTab: modules.cashier.general_store.setActiveTab,

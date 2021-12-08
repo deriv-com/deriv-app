@@ -109,7 +109,7 @@ const Cashier = ({
     };
 
     return (
-        <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
+        <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             {init()}
             <AccountPromptDialog />
             <ErrorDialog />
@@ -134,7 +134,7 @@ const Cashier = ({
                             tab_headers_note={
                                 <Button
                                     id='cashier_learn_more'
-                                    className='cashier-page-wrapper__button'
+                                    className='cashier__page-wrapper-button'
                                     text={localize('Learn more about payment methods')}
                                     onClick={() => window.open(getStaticUrl('/payment-methods'))}
                                     secondary

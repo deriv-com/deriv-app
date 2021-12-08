@@ -6,6 +6,7 @@ import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/sh
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details.jsx';
+import 'Sass/payment-agent-receipt.scss';
 
 const openStatement = (history, resetPaymentAgent) => {
     history.push(routes.statement);
@@ -20,7 +21,7 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
     const currency_display_code = getCurrencyDisplayCode(currency);
 
     return (
-        <div className='cashier__wrapper--align-left payment-agent__receipt '>
+        <div className='cashier__wrapper--align-left payment-agent-receipt'>
             <div className='cashier__success'>
                 <Text
                     as='h1'
@@ -32,12 +33,20 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
                 >
                     <Localize i18n_default_text='Your funds have been transferred' />
                 </Text>
-                <div className='cashier__transferred-amount cashier__text--bold'>
+                <Text
+                    as='p'
+                    size='l'
+                    weight='bold'
+                    lh='xs'
+                    color='profit-success'
+                    align='center'
+                    className='cashier__transferred-amount'
+                >
                     {formatMoney(currency, receipt.amount_transferred, true)} {currency_display_code}
-                </div>
+                </Text>
                 <div className='cashier__transferred-details-wrapper'>
                     <span className='cashier__transferred-details'>
-                        <Text as='span' size='xs' weight='bold' className='cashier__text--end'>
+                        <Text as='span' size='xs' weight='bold' className='payment-agent-receipt__text--end'>
                             {currency_display_code}
                         </Text>
                         <Text as='span' size='xs' color='less-prominent'>
@@ -67,7 +76,7 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
                 color='prominent'
                 size={isMobile() ? 'xxs' : 'xs'}
                 line_height='m'
-                className='payment-agent__explanation cashier__paragraph'
+                className='payment-agent-receipt__explanation cashier__paragraph'
             >
                 <Localize
                     i18n_default_text={
@@ -76,12 +85,12 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
                 />
             </Text>
             {receipt.payment_agent_name && (
-                <div className='payment-agent__transferred-contact-wrapper'>
+                <div className='payment-agent-receipt__transferred-contact-wrapper'>
                     <Text
                         as='p'
                         size={isMobile() ? 'xxs' : 'xs'}
                         line_height='m'
-                        className='cashier__paragraph payment-agent__paragraph'
+                        className='cashier__paragraph payment-agent-receipt__paragraph'
                     >
                         <Localize
                             i18n_default_text='{{payment_agent}} agent contact details:'
@@ -90,7 +99,7 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
                         />
                     </Text>
                     <PaymentAgentDetails
-                        className='payment-agent__transferred-contact'
+                        className='payment-agent-receipt__transferred-contact'
                         payment_agent_email={receipt.payment_agent_email}
                         payment_agent_phone={receipt.payment_agent_phone}
                         payment_agent_url={receipt.payment_agent_url}

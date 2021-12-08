@@ -71,15 +71,13 @@ const CFDFinancialStpRealAccountSignup = props => {
 
     const state_index = step;
 
-    const has_more_steps = () => step + 1 < items.length;
-
     const clearError = () => {
         setFormError('');
     };
 
     const nextStep = () => {
         clearError();
-        if (has_more_steps) {
+        if (step + 1 < items.length) {
             goNext();
         } else {
             finishWizard();

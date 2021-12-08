@@ -52,7 +52,7 @@ const TransitionBlocker = ({ dirty, onDirty }) => {
     const history = useHistory();
 
     React.useEffect(() => {
-        return unblock;
+        return () => unblock();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

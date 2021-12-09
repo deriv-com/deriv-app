@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ArrowContainer, Popover as TinyPopover } from 'react-tiny-popover';
+import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
 import Icon from '../icon';
 import Text from '../text';
 import { useHover, useHoverCallback } from '../../hooks/use-hover';
@@ -131,11 +131,10 @@ const Popover = ({
                               },
                           }
                         : { containerStyle: { zIndex } })}
-                    content={({ childRect, popoverRect, position, targetRect }) => {
+                    content={({ position, targetRect, popoverRect }) => {
                         return (
                             <ArrowContainer
                                 position={position}
-                                childRect={childRect}
                                 targetRect={targetRect}
                                 popoverRect={popoverRect}
                                 arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}

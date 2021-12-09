@@ -112,11 +112,15 @@ export const PersonalDetailsForm = props => {
         getChangeableFields,
     } = props;
 
-    const [state, setState] = useStateCallback({
+    console.log(props);
+    const [state, setState] = React.useState({
         is_loading: true,
-        is_state_loading: false,
         show_form: true,
         errors: false,
+    });
+
+    const [state2, setWithCallback] = useStateCallback({
+        is_state_loading: false,
     });
 
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -185,9 +189,10 @@ export const PersonalDetailsForm = props => {
             }
             setState({ ...state, ...response.get_settings });
             refreshNotifications();
-            setState({ ...state, is_btn_loading: false, is_submit_success: true });
+            setState({ ...state, is_btn_loading: false });
+            setWithCallback({ ...state2, is_submit_success: true });
             setTimeout(() => {
-                setState({ ...state, is_submit_success: false }, () => {
+                setWithCallback({ ...state2, is_submit_success: false }, () => {
                     setSubmitting(false);
                 });
             }, 10000);
@@ -202,7 +207,7 @@ export const PersonalDetailsForm = props => {
 
     // TODO: standardize validations and refactor this
     const validateFields = values => {
-        setState({ ...state, is_submit_success: false });
+        setWithCallback({ ...state2, is_submit_success: false });
         const errors = {};
         const validateValues = validate(errors, values);
 
@@ -395,6 +400,7 @@ export const PersonalDetailsForm = props => {
                 'immutable_fields',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
+            console.log('Nikita', form_initial_values);
             setState({
                 ...state,
                 changeable_fields: is_virtual ? [] : getChangeableFields(),
@@ -411,19 +417,15 @@ export const PersonalDetailsForm = props => {
 
             fetchResidenceList();
             if (has_residence) {
-                setState({ ...state, is_state_loading: true }, () => {
+                setWithCallback({ ...state2, is_state_loading: true }, () => {
                     fetchStatesList().then(() => {
-                        setState({ ...state, is_state_loading: false });
+                        setWithCallback({ ...state2, is_state_loading: false });
                     });
                 });
             }
             initializeFormValues();
         };
         getSettigs();
-    }, []);
-
-    React.useEffect(() => {
-        initializeFormValues();
     }, [account_settings, is_eu, is_mf]);
 
     const salutation_list = [
@@ -437,11 +439,11 @@ export const PersonalDetailsForm = props => {
         form_initial_values: { ...form_initial_values },
         api_error,
         is_loading,
-        is_state_loading,
         is_btn_loading,
-        is_submit_success,
         show_form,
     } = state;
+
+    const { is_state_loading, is_submit_success } = state2;
 
     console.log(state);
     if (api_error) return <LoadErrorMessage error_message={api_error} />;

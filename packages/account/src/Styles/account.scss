@@ -1929,6 +1929,9 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 94%;
         }
     }
+    &__sample-container-external {
+        margin-top: 2.8rem;
+    }
     &__image-container {
         width: fit-content;
         height: fit-content;

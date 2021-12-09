@@ -1246,6 +1246,9 @@
             .btm-spacer {
                 margin-bottom: 1.6rem;
             }
+            .top-spacer {
+                margin-top: 1.6rem;
+            }
             .proof-of-identity__header {
                 margin-bottom: 1.6rem;
             }
@@ -1269,6 +1272,15 @@
             .proof-of-identity__footer {
                 width: 100%;
                 margin-bottom: 8.6em;
+
+                span.dc-text.dc-btn__text {
+                    display: inline-flex;
+                    align-items: center;
+                }
+
+                .back-btn-icon {
+                    margin-right: 0.8rem;
+                }
 
                 .proof-of-identity__submit-button {
                     margin-left: 0.8rem;

@@ -1070,7 +1070,7 @@ export class PersonalDetailsForm extends React.Component {
                                             </React.Fragment>
                                         )}
                                     </React.Fragment>
-                                    {!!current_landing_company.support_professional_client && (
+                                    {!!current_landing_company?.support_professional_client && (
                                         <>
                                             <div className='account-form__divider' />
                                             <div className='pro-client'>

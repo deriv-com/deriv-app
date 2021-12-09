@@ -142,6 +142,7 @@ AccountActions.propTypes = {
     is_acc_switcher_disabled: PropTypes.any,
     disableApp: PropTypes.any,
     enableApp: PropTypes.any,
+    country_standpoint: PropTypes.object,
     is_acc_switcher_on: PropTypes.any,
     is_logged_in: PropTypes.any,
     is_notifications_visible: PropTypes.any,

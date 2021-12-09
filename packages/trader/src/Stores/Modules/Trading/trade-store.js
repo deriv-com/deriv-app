@@ -1118,11 +1118,7 @@ export default class TradeStore extends BaseStore {
         const mx_mlt_custom_content = this.root_store.client.custom_notifications.mx_mlt_notification.main();
         this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
         await this.root_store.client.residence;
-        if (
-            get_notification_messages !== null &&
-            is_logged_in &&
-            (has_iom_account || has_malta_account)
-        ) {
+        if (get_notification_messages !== null && is_logged_in && (has_iom_account || has_malta_account)) {
             const get_notification_messages_array = Object.fromEntries(
                 Object.entries(get_notification_messages).map(([key, name]) => {
                     const new_name = name.filter(message => message !== 'close_mx_mlt_account');
@@ -1135,9 +1131,10 @@ export default class TradeStore extends BaseStore {
                     .close_mx_mlt_account
             );
             reaction(
-                () => this.root_store.client.is_logged_in &&
-                this.root_store.client.residence &&
-                this.root_store.ui.notification_messages.length === 0,
+                () =>
+                    this.root_store.client.is_logged_in &&
+                    this.root_store.client.residence &&
+                    this.root_store.ui.notification_messages.length === 0,
                 async () => {
                     await this.root_store.client.residence;
                     const hidden_close_account_notification =
@@ -1145,10 +1142,10 @@ export default class TradeStore extends BaseStore {
                     const should_retain_notification =
                         (has_iom_account || has_malta_account) && !hidden_close_account_notification;
                     if (should_retain_notification) {
-                        const mx_mlt_custom_header_reaction = this.root_store
-                        .client.custom_notifications.mx_mlt_notification.header();
-                        const mx_mlt_custom_content_reaction = this.root_store
-                        .client.custom_notifications.mx_mlt_notification.main();
+                        const mx_mlt_custom_header_reaction =
+                            this.root_store.client.custom_notifications.mx_mlt_notification.header();
+                        const mx_mlt_custom_content_reaction =
+                            this.root_store.client.custom_notifications.mx_mlt_notification.main();
                         this.root_store.ui.addNotificationMessage(
                             client_notifications(
                                 this.root_store.ui,

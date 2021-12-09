@@ -117,7 +117,6 @@ const POISubmission = ({
                             handleViewComplete={handleViewComplete}
                             handleBack={handleBack}
                             selected_country={selected_country}
-                            is_from_external={is_from_external}
                         />
                     );
                 case service_code.onfido: {

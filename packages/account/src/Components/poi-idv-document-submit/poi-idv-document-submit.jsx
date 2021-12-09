@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
@@ -10,7 +9,7 @@ import { getDocumentData, getRegex } from './utils';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from '../../Assets/ic-document-submit-icon.svg';
 
-const IdvDocumentSubmit = ({ handleBack, handleViewComplete, is_from_external, selected_country }) => {
+const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -260,11 +259,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, is_from_external, s
                             <Localize i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.' />
                         </Text>
                     )}
-                    <FormFooter
-                        className={classNames('proof-of-identity__footer', {
-                            'proof-of-identity__footer-external': is_from_external,
-                        })}
-                    >
+                    <FormFooter className='proof-of-identity__footer'>
                         <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
                             <BackButtonIcon className='back-btn' /> {localize('Go Back')}
                         </Button>
@@ -288,7 +283,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, is_from_external, s
 IdvDocumentSubmit.propTypes = {
     handleBack: PropTypes.func,
     handleViewComplete: PropTypes.func,
-    is_from_external: PropTypes.bool,
     selected_country: PropTypes.object,
 };
 

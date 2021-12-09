@@ -115,11 +115,8 @@ export default class TransactionsStore {
 
     @action.bound
     onMount() {
-        this.transactions.forEach(({ data: trx }) => {
-            if (trx.is_completed || this.recovered_transactions.includes(trx.contract_id)) return;
-            this.recoverPendingContracts(trx.contract_id);
-        });
         window.addEventListener('click', this.onClickOutsideTransaction);
+        this.recoverPendingContracts();
     }
 
     @action.bound
@@ -156,9 +153,9 @@ export default class TransactionsStore {
         // User could've left the page mid-contract. On initial load, try
         // to recover any pending contracts so we can reflect accurate stats
         // and transactions.
-        const disposeRecoverContracts = when(
-            () => this.elements.length,
-            () => this.recoverPendingContracts(null)
+        const disposeRecoverContracts = reaction(
+            () => this.transactions.length,
+            () => this.recoverPendingContracts()
         );
 
         return () => {
@@ -168,7 +165,14 @@ export default class TransactionsStore {
         };
     }
 
-    recoverPendingContracts(contract_id) {
+    recoverPendingContracts() {
+        this.transactions.forEach(({ data: trx }) => {
+            if (trx.is_completed || this.recovered_transactions.includes(trx.contract_id)) return;
+            this.recoverPendingContractsById(trx.contract_id);
+        });
+    }
+
+    recoverPendingContractsById(contract_id) {
         const { ws } = this.root_store;
 
         ws.authorized.subscribeProposalOpenContract(contract_id, response => {

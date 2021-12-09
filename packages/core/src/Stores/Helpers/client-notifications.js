@@ -16,6 +16,7 @@ import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
+import BinarySocket from '_common/base/socket_base';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
@@ -32,7 +33,10 @@ export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_accou
     const MxMltNotificationText = () => {
         if (has_malta_account || can_have_mlt_account) {
             return localize('Withdraw all funds from your Options account.');
+        } else if (is_uk) {
+            return localize('Please withdraw all your funds as soon as possible.');
         }
+
         return localize('Please proceed to withdraw your funds before 30 November 2021.');
     };
 
@@ -677,6 +681,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
+    await BinarySocket.wait('residence_list');
     if ((has_iom_account || has_malta_account) && is_logged_in && !hidden_close_account_notification) {
         addNotificationMessage(
             clientNotifications(ui_store, {}, is_uk, has_malta_account, can_have_mlt_account).close_mx_mlt_account

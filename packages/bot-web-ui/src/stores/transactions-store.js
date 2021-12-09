@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction, when } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { formatDate, isEnded } from '@deriv/shared';
 import { log_types } from '@deriv/bot-skeleton';
 import { transaction_elements } from '../constants/transactions';

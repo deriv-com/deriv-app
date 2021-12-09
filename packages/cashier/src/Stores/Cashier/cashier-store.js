@@ -2216,7 +2216,11 @@ export default class CashierStore extends BaseStore {
                             expand_text={localize('more')}
                             text={error_content}
                             collapse_length={25}
-                            openDialog={() => this.error_dialog.setErrorMessage(error_content)}
+                            openDialog={() => {
+                                this.error_dialog.setErrorMessage(error_content);
+                                this.error_dialog.setConfirmButtonText(localize('ok'));
+                            }}
+                            show_dialog
                         />
                     );
                 } else {

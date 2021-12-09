@@ -2,19 +2,18 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-const ReadMore = ({ className, collapse_length, expand_text, openDialog, text }) => {
+const ReadMore = ({ className, collapse_length, expand_text, openDialog, show_dialog, text }) => {
     const [content, updateContent] = React.useState('');
     const [is_collapsed, setIsCollapsed] = React.useState(true);
 
     React.useEffect(() => {
-        openDialog
-            ? updateContent(text.substring(0, collapse_length))
-            : updateContent(is_collapsed ? text.substring(0, collapse_length) : text);
+        if (show_dialog) updateContent(text.substring(0, collapse_length));
+        else updateContent(is_collapsed ? text.substring(0, collapse_length) : text);
     }, [is_collapsed]);
 
     return (
         <React.Fragment>
-            {openDialog && (
+            {show_dialog && (
                 <div className={classNames('dc-read-more', className)}>
                     <span className='dc-read-more__content'>{content}</span>
                     <span>...</span>
@@ -23,7 +22,7 @@ const ReadMore = ({ className, collapse_length, expand_text, openDialog, text })
                     </span>
                 </div>
             )}
-            {!openDialog && (
+            {!show_dialog && (
                 <div
                     className={classNames('dc-read-more', className)}
                     onClick={is_collapsed ? undefined : () => setIsCollapsed(true)}
@@ -48,6 +47,7 @@ ReadMore.propTypes = {
     collapse_text: PropTypes.string,
     expand_text: PropTypes.string,
     openDialog: PropTypes.func,
+    show_dialog: PropTypes.bool,
     text: PropTypes.string,
 };
 

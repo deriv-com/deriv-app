@@ -252,6 +252,7 @@ export const icons = {
         'IcHighsLows',
         'IcIdentityCardDashboard',
         'IcIdentityCard',
+        'IcImage',
         'IcInfoBlue',
         'IcInfoOutline',
         'IcInfo',

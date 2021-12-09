@@ -3,8 +3,10 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import 'Sass/virtual.scss';
 
 const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }) => {
     return (
@@ -12,25 +14,25 @@ const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }) => {
             <React.Fragment>
                 <div
                     className={classNames(
-                        'cashier__account-switch-icon',
-                        is_dark_mode_on ? 'cashier__account-switch-icon--dark' : 'cashier__account-switch-icon--light'
+                        'virtual__account-switch-icon',
+                        is_dark_mode_on ? 'virtual__account-switch-icon--dark' : 'virtual__account-switch-icon--light'
                     )}
                 />
-                <Text as='h2' align='center' weight='bold' color='prominent' className='cashier__virtual-header'>
+                <Text as='h2' align='center' weight='bold' color='prominent' className='virtual__header'>
                     <Localize i18n_default_text={'You are using a demo account'} />
                 </Text>
                 <Text
                     as='p'
-                    size='xs'
+                    size={isMobile() ? 'xxs' : 'xs'}
                     line_height='s'
                     align='center'
-                    className='cashier__paragraph cashier__text cashier__text--full-width'
+                    className='cashier__paragraph cashier__text'
                 >
                     <Localize
                         i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the <1>Account Switcher.</1>'
                         components={[
                             <br key={0} />,
-                            <span key={1} className='cashier__account-switch-text' onClick={toggleAccountsDialog} />,
+                            <span key={1} className='virtual__account-switch-text' onClick={toggleAccountsDialog} />,
                         ]}
                     />
                 </Text>

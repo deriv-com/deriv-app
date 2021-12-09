@@ -768,7 +768,7 @@ const CFDPasswordModal = ({
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width={isMobile() && '32.8rem'}
+            width={isMobile() ? '32.8rem' : 'auto'}
         >
             {should_show_server_form ? cfd_server_form : cfd_password_form}
         </Modal>
@@ -820,7 +820,7 @@ const CFDPasswordModal = ({
                 text_submit={success_modal_submit_label}
                 has_cancel={account_type.category === 'real'}
                 has_close_icon={false}
-                width={isMobile() && '32.8rem'}
+                width={isMobile() ? '32.8rem' : 'auto'}
                 is_medium_button={isMobile()}
             />
             <SentEmailModal

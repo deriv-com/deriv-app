@@ -1088,7 +1088,7 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    onMount() {
+    async onMount() {
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
@@ -1116,12 +1116,10 @@ export default class TradeStore extends BaseStore {
         const has_malta_account = this.root_store.client.has_malta_account;
         const mx_mlt_custom_header = this.root_store.client.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.root_store.client.custom_notifications.mx_mlt_notification.main();
-        const await_residence = await this.root_store.client.residence;
-
         this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
+        await this.root_store.client.residence;
         if (
             get_notification_messages !== null &&
-            await_residence &&
             is_logged_in &&
             (has_iom_account || has_malta_account)
         ) {
@@ -1137,16 +1135,27 @@ export default class TradeStore extends BaseStore {
                     .close_mx_mlt_account
             );
             reaction(
-                () => this.root_store.client.is_logged_in && this.root_store.ui.notification_messages.length === 0,
-                () => {
+                () => this.root_store.client.is_logged_in &&
+                this.root_store.client.residence &&
+                this.root_store.ui.notification_messages.length === 0,
+                async () => {
+                    await this.root_store.client.residence;
                     const hidden_close_account_notification =
                         parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
                     const should_retain_notification =
                         (has_iom_account || has_malta_account) && !hidden_close_account_notification;
                     if (should_retain_notification) {
+                        const mx_mlt_custom_header_reaction = this.root_store
+                        .client.custom_notifications.mx_mlt_notification.header();
+                        const mx_mlt_custom_content_reaction = this.root_store
+                        .client.custom_notifications.mx_mlt_notification.main();
                         this.root_store.ui.addNotificationMessage(
-                            client_notifications(this.root_store.ui, {}, mx_mlt_custom_header, mx_mlt_custom_content)
-                                .close_mx_mlt_account
+                            client_notifications(
+                                this.root_store.ui,
+                                {},
+                                mx_mlt_custom_header_reaction,
+                                mx_mlt_custom_content_reaction
+                            ).close_mx_mlt_account
                         );
                     }
                 }

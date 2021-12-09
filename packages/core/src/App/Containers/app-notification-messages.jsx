@@ -70,7 +70,6 @@ const AppNotificationMessages = ({
     removeNotificationMessage,
     stopNotificationLoading,
     markNotificationMessage,
-    refreshNotifications,
     landing_company_shortcode,
     has_iom_account,
     has_malta_account,
@@ -78,7 +77,6 @@ const AppNotificationMessages = ({
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
-
     React.useEffect(() => {
         if (is_mt5) {
             stopNotificationLoading();
@@ -87,11 +85,9 @@ const AppNotificationMessages = ({
             if (notifications_ref.parentElement !== null) {
                 const bounds = notifications_ref.parentElement.getBoundingClientRect();
                 setStyle({ top: bounds.top + 8 });
-                refreshNotifications();
             }
         }
     }, [notifications_ref]);
-
     const notifications = notification_messages.filter(message => {
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
@@ -113,7 +109,6 @@ const AppNotificationMessages = ({
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
-                    refreshNotifications={refreshNotifications}
                     landing_company_shortcode={landing_company_shortcode}
                     has_iom_account={has_iom_account}
                     has_malta_account={has_malta_account}
@@ -155,7 +150,6 @@ export default connect(({ ui, client }) => ({
     removeNotificationMessage: ui.removeNotificationMessage,
     markNotificationMessage: ui.markNotificationMessage,
     landing_company_shortcode: client.landing_company_shortcode,
-    refreshNotifications: client.refreshNotifications,
     has_iom_account: client.has_iom_account,
     has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,

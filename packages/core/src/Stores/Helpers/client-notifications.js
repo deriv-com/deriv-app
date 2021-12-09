@@ -654,7 +654,6 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
-    const await_residence = await residence;
     const malta_account = landing_company_shortcode === 'maltainvest';
     const iom_account = landing_company_shortcode === 'virtual';
     const mx_mlt_custom_header = custom_notifications.mx_mlt_notification.header();
@@ -668,12 +667,13 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
+    await residence;
+
     if (
         (has_iom_account || has_malta_account) &&
         (!malta_account || !iom_account) &&
         is_logged_in &&
-        !hidden_close_account_notification &&
-        await_residence
+        !hidden_close_account_notification
     ) {
         addNotificationMessage(
             clientNotifications(ui_store, {}, mx_mlt_custom_header, mx_mlt_custom_content).close_mx_mlt_account

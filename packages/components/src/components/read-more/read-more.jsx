@@ -7,8 +7,9 @@ const ReadMore = ({ className, collapse_length, expand_text, openDialog, text })
     const [is_collapsed, setIsCollapsed] = React.useState(true);
 
     React.useEffect(() => {
-        const collapse_text = text.substring(0, collapse_length);
-        openDialog ? updateContent(collapse_text) : updateContent(is_collapsed ? collapse_text : text);
+        openDialog
+            ? updateContent(text.substring(0, collapse_length))
+            : updateContent(is_collapsed ? text.substring(0, collapse_length) : text);
     }, [is_collapsed]);
 
     return (

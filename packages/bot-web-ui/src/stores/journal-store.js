@@ -40,6 +40,10 @@ export default class JournalStore {
     playAudio = sound => {
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
             const audio = document.getElementById(sound);
+            // A play() call on an a <video> or <audio> element now returns a Promise
+            // in Chrome/Chromium browsers starting from v50 which raise an issue and the following
+            // solution is accotding to:
+            // Due to https://developers.google.com/web/updates/2016/03/play-returns-promise?hl=en,
             const playPromise = audio.play();
             if (playPromise !== undefined) {
                 playPromise

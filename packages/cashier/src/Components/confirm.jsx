@@ -4,26 +4,30 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Icon, Text } from '@deriv/components';
 import FormError from './Error/form-error.jsx';
+import 'Sass/confirm.scss';
 
 const Row = ({ item_key, label, value }) => (
-    <div className='cashier__confirm-row'>
-        <span>{label}</span>
+    <div className='confirm__row'>
+        <Text size='xs'>{label}</Text>
         {Array.isArray(value) ? (
-            <span>
+            <div>
                 {value.map((v, idx) => (
-                    <div key={idx}>
-                        <strong>{v}</strong>
-                    </div>
+                    <Text as='div' key={idx} size='xs' weight='bold' align='right'>
+                        {v}
+                    </Text>
                 ))}
-            </span>
+            </div>
         ) : (
-            <strong
+            <Text
+                size='xs'
+                weight='bold'
+                align='right'
                 className={classNames({
                     description: item_key === 'description',
                 })}
             >
                 {value}
-            </strong>
+            </Text>
         )}
     </div>
 );
@@ -31,23 +35,17 @@ const Row = ({ item_key, label, value }) => (
 const Confirm = ({ data, error, header, onClickBack, onClickConfirm }) => (
     <div className='cashier__wrapper cashier__wrapper--confirm'>
         <Icon icon='IcConfirmDetails' width='128' height='128' />
-        <Text
-            as='h2'
-            color='prominent'
-            align='center'
-            weight='bold'
-            className='cashier__header cashier__confirm-header'
-        >
+        <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header confirm__header'>
             {header}
         </Text>
-        <div className='cashier__confirm-column-wrapper'>
-            <div className='cashier__confirm-column'>
+        <div className='confirm__column-wrapper'>
+            <div className='confirm__column'>
                 {data.map((d, key) => (
                     <Row item_key={key} label={d.label} value={d.value} key={key} />
                 ))}
             </div>
         </div>
-        <div className='cashier__confirm-submit'>
+        <div className='confirm__submit'>
             <Button large text={localize('Back')} onClick={onClickBack} secondary />
             <Button large text={localize('Confirm')} onClick={onClickConfirm} primary />
         </div>

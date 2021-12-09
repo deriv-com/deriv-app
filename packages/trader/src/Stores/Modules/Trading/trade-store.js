@@ -1248,6 +1248,9 @@ export default class TradeStore extends BaseStore {
         if (req.active_symbols) {
             return WS.activeSymbols('brief');
         }
+        if (req.trading_times) {
+            return WS.tradingTimes(req.trading_times);
+        }
         return WS.storage.send(req);
     };
 

@@ -270,7 +270,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                     </Field>
                                                     <Button
                                                         className={classNames(
-                                                            'dc-input__token-create',
+                                                            'dc-btn__token-create',
                                                             'da-api-token__button',
                                                             {
                                                                 'da-api-token__button--success': is_success,

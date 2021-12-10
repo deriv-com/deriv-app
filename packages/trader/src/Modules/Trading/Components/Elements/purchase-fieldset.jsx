@@ -111,12 +111,12 @@ const PurchaseFieldset = ({
                         }}
                     >
                         <div className='btn-purchase__box-shadow' />
-                        {is_proposal_error && !is_market_close ? (
+                        {is_proposal_error && !is_market_closed ? (
                             <Popover
                                 has_error
                                 alignment='left'
                                 message={info.message}
-                                is_open={is_proposal_error && !is_market_close}
+                                is_open={is_proposal_error && !is_market_closed}
                                 relative_render
                                 margin={6}
                             >

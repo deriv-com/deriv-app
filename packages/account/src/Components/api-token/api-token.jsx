@@ -252,7 +252,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 type='text'
-                                                                className='da-api-token__input'
+                                                                className='da-api-token__input dc-input__token-input'
                                                                 label={localize('Token name')}
                                                                 value={values.token_name}
                                                                 onChange={e => {
@@ -269,9 +269,13 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                         )}
                                                     </Field>
                                                     <Button
-                                                        className={classNames('da-api-token__button', {
-                                                            'da-api-token__button--success': is_success,
-                                                        })}
+                                                        className={classNames(
+                                                            'dc-input__token-create',
+                                                            'da-api-token__button',
+                                                            {
+                                                                'da-api-token__button--success': is_success,
+                                                            }
+                                                        )}
                                                         type='submit'
                                                         is_disabled={
                                                             !dirty ||

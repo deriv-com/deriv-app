@@ -10,9 +10,14 @@ jobs:
   push_and_pull_crowdin_translations:
     if: github.repository == 'binary-com/deriv-app'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
     steps:
       - name: Setup node
         uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
 
       # We checkout the master branch so we can run the translations
       # script on the latest changes.

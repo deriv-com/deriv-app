@@ -132,22 +132,29 @@ export const PersonalDetailsForm = props => {
 
     const { is_dashboard } = React.useContext(PlatformContext);
 
-    React.useEffect(() => {
-        const getSettigs = async () => {
-            // waits for residence to be populated
-            await WS.wait('get_settings');
+    const first_render = React.useRef(true);
 
-            fetchResidenceList();
-            if (has_residence && !states_list) {
-                setIsStatesLoading(true, () => {
-                    fetchStatesList().then(() => {
-                        setIsStatesLoading(false);
+    React.useEffect(() => {
+        if (first_render) {
+            const getSettings = async () => {
+                // waits for residence to be populated
+                await WS.wait('get_settings');
+
+                fetchResidenceList();
+                if (has_residence && !states_list) {
+                    setIsStatesLoading(true, () => {
+                        fetchStatesList().then(() => {
+                            setIsStatesLoading(false);
+                        });
                     });
-                });
-            }
+                }
+                initializeFormValues();
+            };
+            getSettings();
+            first_render.current = false;
+        } else {
             initializeFormValues();
-        };
-        getSettigs();
+        }
     }, [account_settings, is_eu, is_mf]);
 
     React.useEffect(() => {

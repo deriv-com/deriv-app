@@ -151,7 +151,17 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
             validate={validatePassword}
             onSubmit={onSubmit}
         >
-            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
+            {({
+                errors,
+                isSubmitting,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldTouched,
+                touched,
+                values,
+                validateForm,
+            }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'>
                         <Icon
@@ -195,8 +205,10 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
                                         value={values.password}
                                         onBlur={handleBlur}
                                         onChange={e => {
-                                            setFieldTouched('password', true);
                                             handleChange(e);
+                                            validateForm().then(() => {
+                                                setFieldTouched('password', true);
+                                            });
                                         }}
                                     />
                                 )}
@@ -333,7 +345,17 @@ const CFDPasswordForm = props => {
             validate={props.validatePassword}
             onSubmit={props.submitPassword}
         >
-            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
+            {({
+                errors,
+                isSubmitting,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldTouched,
+                touched,
+                values,
+                validateForm,
+            }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!props.should_set_trading_password && (
@@ -361,8 +383,10 @@ const CFDPasswordForm = props => {
                                 value={values.password}
                                 onBlur={handleBlur}
                                 onChange={e => {
-                                    setFieldTouched('password', true);
                                     handleChange(e);
+                                    validateForm().then(() => {
+                                        setFieldTouched('password', true);
+                                    });
                                 }}
                             />
                         </div>
@@ -596,7 +620,15 @@ const CFDPasswordModal = ({
 
     const handleForgotPassword = () => {
         closeModal();
-        const redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
+        let redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
+
+        // if account type is real convert redirect_to from 1 or 2 to 10 or 20
+        // and if account type is demo convert redirect_to from 1 or 2 to 11 or 21
+        if (account_type.category === 'real') {
+            redirect_to = Number(`${redirect_to}0`);
+        } else if (account_type.category === 'demo') {
+            redirect_to = Number(`${redirect_to}1`);
+        }
 
         const password_reset_code =
             platform === CFD_PLATFORMS.MT5
@@ -736,7 +768,7 @@ const CFDPasswordModal = ({
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width={isMobile() && '32.8rem'}
+            width={isMobile() ? '32.8rem' : 'auto'}
         >
             {should_show_server_form ? cfd_server_form : cfd_password_form}
         </Modal>
@@ -788,7 +820,7 @@ const CFDPasswordModal = ({
                 text_submit={success_modal_submit_label}
                 has_cancel={account_type.category === 'real'}
                 has_close_icon={false}
-                width={isMobile() && '32.8rem'}
+                width={isMobile() ? '32.8rem' : 'auto'}
                 is_medium_button={isMobile()}
             />
             <SentEmailModal

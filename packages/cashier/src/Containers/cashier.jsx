@@ -12,7 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, isMobile, routes, WS, platforms } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from 'Components/account-prompt-dialog.jsx';
 import ErrorDialog from 'Components/error-dialog.jsx';
@@ -36,6 +36,7 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
+    platform,
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
@@ -107,11 +108,15 @@ const Cashier = ({
     };
 
     return (
-        <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
+        <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <AccountPromptDialog />
             <ErrorDialog />
             <div className='cashier'>
-                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose}>
+                <PageOverlay
+                    header={getHeaderTitle()}
+                    onClickClose={onClickClose}
+                    is_close_disabled={!!platforms[platform]}
+                >
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
@@ -127,7 +132,7 @@ const Cashier = ({
                             tab_headers_note={
                                 <Button
                                     id='cashier_learn_more'
-                                    className='cashier-page-wrapper__button'
+                                    className='cashier__page-wrapper-button'
                                     text={localize('Learn more about payment methods')}
                                     onClick={() => window.open(getStaticUrl('/payment-methods'))}
                                     secondary
@@ -189,6 +194,7 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
+    platform: PropTypes.string,
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
@@ -213,6 +219,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_visible: ui.is_cashier_visible,
     onMount: modules.cashier.onMountCommon,
     p2p_notification_count: modules.cashier.p2p_notification_count,
+    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
     setTabIndex: modules.cashier.setCashierTabIndex,

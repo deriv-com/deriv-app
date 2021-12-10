@@ -21,7 +21,7 @@ const PurchaseFieldset = ({
     is_disabled,
     is_high_low,
     is_loading,
-    is_market_close,
+    is_market_closed,
     is_multiplier,
     is_proposal_empty,
     is_proposal_error,
@@ -56,7 +56,7 @@ const PurchaseFieldset = ({
                 purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
                 setPurchaseState={setPurchaseState}
-                should_fade={should_fade}
+                should_fade={this.state.should_fade}
                 type={type}
                 basis={basis} // mobile-only
             />
@@ -139,19 +139,64 @@ const PurchaseFieldset = ({
                                 )}
                             </React.Fragment>
                         )}
-                        {
-                            // is_purchase_confirm_on ?
-                            //     <PopConfirm
-                            //         alignment='left'
-                            //         cancel_text={localize('Cancel')}
-                            //         confirm_text={localize('Purchase')}
-                            //         message={localize('Are you sure you want to purchase this contract?')}
-                            //     >
-                            //         {purchase_button}
-                            //     </PopConfirm>
-                            //     :
-                            //     purchase_button
-                        }
+                        <div
+                            className={classNames('btn-purchase__shadow-wrapper', {
+                                'btn-purchase__shadow-wrapper--disabled': is_proposal_error || is_disabled,
+                            })}
+                            onMouseEnter={() => {
+                                if (!is_disabled) {
+                                    onHoverPurchase(true, type);
+                                }
+                            }}
+                            onMouseLeave={() => {
+                                if (!is_disabled) {
+                                    onHoverPurchase(false);
+                                }
+                            }}
+                        >
+                            <div className='btn-purchase__box-shadow' />
+                            {is_proposal_error && !is_market_closed ? (
+                                <Popover
+                                    has_error
+                                    alignment='left'
+                                    message={info.message}
+                                    is_open={is_proposal_error && !is_market_closed}
+                                    relative_render
+                                    margin={6}
+                                >
+                                    {purchase_button}
+                                </Popover>
+                            ) : (
+                                <React.Fragment>
+                                    {is_multiplier ? (
+                                        <Popover
+                                            alignment='left'
+                                            is_bubble_hover_enabled
+                                            margin={8}
+                                            message={info.message}
+                                            relative_render
+                                        >
+                                            {purchase_button}
+                                        </Popover>
+                                    ) : (
+                                        purchase_button
+                                    )}
+                                </React.Fragment>
+                            )}
+                            {
+                                // is_purchase_confirm_on ?
+                                //     <PopConfirm
+                                //         alignment='left'
+                                //         cancel_text={localize('Cancel')}
+                                //         confirm_text={localize('Purchase')}
+                                //         message={localize('Are you sure you want to purchase this contract?')}
+                                //     >
+                                //         {purchase_button}
+                                //     </PopConfirm>
+                                //     :
+                                //     purchase_button
+                            }
+                        </div>
                     </div>
                 </div>
             </DesktopWrapper>
@@ -173,7 +218,7 @@ PurchaseFieldset.propTypes = {
     is_disabled: PropTypes.bool,
     is_high_low: PropTypes.bool,
     is_loading: PropTypes.bool,
-    is_market_close: PropTypes.bool,
+    is_market_closed: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_proposal_empty: PropTypes.bool,
     is_proposal_error: PropTypes.bool,

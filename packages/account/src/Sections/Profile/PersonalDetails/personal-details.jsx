@@ -114,7 +114,7 @@ export const PersonalDetailsForm = props => {
 
     const [is_loading, setIsLoading] = React.useState(true);
 
-    const [is_state_loading, setIsStateLoading] = useStateCallback(false);
+    const [is_states_loading, setIsStatesLoading] = useStateCallback(false);
 
     const [is_btn_loading, setIsButtonLoading] = React.useState(false);
 
@@ -139,9 +139,9 @@ export const PersonalDetailsForm = props => {
 
             fetchResidenceList();
             if (has_residence && !states_list) {
-                setIsStateLoading(true, () => {
+                setIsStatesLoading(true, () => {
                     fetchStatesList().then(() => {
-                        setIsStateLoading(false);
+                        setIsStatesLoading(false);
                     });
                 });
             }
@@ -464,7 +464,7 @@ export const PersonalDetailsForm = props => {
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (is_loading || is_state_loading || !residence_list.length) {
+    if (is_loading || is_states_loading || !residence_list.length) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 

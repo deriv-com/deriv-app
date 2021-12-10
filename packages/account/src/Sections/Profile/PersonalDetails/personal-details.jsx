@@ -97,37 +97,39 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
 
 export const PersonalDetailsForm = props => {
     const {
+        is_eu,
         is_mf,
+        is_svg,
         is_virtual,
         residence_list,
-        is_eu,
-        is_svg,
         states_list,
         refreshNotifications,
-        history,
         fetchResidenceList,
         fetchStatesList,
         has_residence,
         account_settings,
         getChangeableFields,
+        history,
     } = props;
 
-    console.log(props);
-    const [state, setState] = React.useState({
-        is_loading: true,
+    const [is_loading, setIsLoading] = React.useState(true);
+
+    const [is_state_loading, setIsStateLoading] = useStateCallback(false);
+
+    const [is_btn_loading, setIsButtonLoading] = React.useState(false);
+
+    const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
+
+    const [restState, setRestState] = React.useState({
         show_form: true,
         errors: false,
-    });
-
-    const [state2, setWithCallback] = useStateCallback({
-        is_state_loading: false,
     });
 
     const { is_dashboard } = React.useContext(PlatformContext);
 
     const makeSettingsRequest = settings => {
         if (is_virtual) return { email_consent: +settings.email_consent };
-        const request = filterObjProperties(settings, [...state.changeable_fields]);
+        const request = filterObjProperties(settings, [...restState.changeable_fields]);
 
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         if (request.first_name) {
@@ -173,26 +175,27 @@ export const PersonalDetailsForm = props => {
     const onSubmit = async (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
         const request = makeSettingsRequest(values);
-        setState({ ...state, is_btn_loading: true });
+        setIsButtonLoading(true);
         const data = await WS.setSettings(request);
 
         if (data.error) {
             setStatus({ msg: data.error.message });
-            setState({ ...state, is_btn_loading: false });
+            setIsButtonLoading(false);
             setSubmitting(false);
         } else {
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
-                setState({ ...state, api_error: response.error.message });
+                setRestState({ ...restState, api_error: response.error.message });
                 return;
             }
-            setState({ ...state, ...response.get_settings });
+            setRestState({ ...restState, ...response.get_settings });
+            setIsLoading(false);
             refreshNotifications();
-            setState({ ...state, is_btn_loading: false });
-            setWithCallback({ ...state2, is_submit_success: true });
+            setIsButtonLoading(false);
+            setIsSubmitSuccess(true);
             setTimeout(() => {
-                setWithCallback({ ...state2, is_submit_success: false }, () => {
+                setIsSubmitSuccess(false, () => {
                     setSubmitting(false);
                 });
             }, 10000);
@@ -207,7 +210,7 @@ export const PersonalDetailsForm = props => {
 
     // TODO: standardize validations and refactor this
     const validateFields = values => {
-        setWithCallback({ ...state2, is_submit_success: false });
+        setIsSubmitSuccess(false);
         const errors = {};
         const validateValues = validate(errors, values);
 
@@ -343,14 +346,14 @@ export const PersonalDetailsForm = props => {
             }
         }
 
-        setState({ ...state, errors: Object.keys(errors).length > 0 });
+        setRestState({ ...restState, errors: Object.keys(errors).length > 0 });
 
         return errors;
     };
 
     const getWarningMessages = values => {
         const warnings = {};
-        const active_errors = state.errors;
+        const active_errors = restState.errors;
         const account_object = props;
         const residence_list_array = Object.values(account_object.residence_list);
 
@@ -374,10 +377,10 @@ export const PersonalDetailsForm = props => {
         return warnings;
     };
 
-    const showForm = show_form => setState({ show_form });
+    const showForm = show_form => setRestState({ show_form });
 
     const isChangeableField = name => {
-        return state.changeable_fields.some(field => field === name);
+        return restState.changeable_fields.some(field => field === name);
     };
 
     const initializeFormValues = () => {
@@ -400,13 +403,12 @@ export const PersonalDetailsForm = props => {
                 'immutable_fields',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
-            console.log('Nikita', form_initial_values);
-            setState({
-                ...state,
+            setRestState({
+                ...restState,
                 changeable_fields: is_virtual ? [] : getChangeableFields(),
-                is_loading: false,
                 form_initial_values,
             });
+            setIsLoading(false);
         });
     };
 
@@ -416,10 +418,10 @@ export const PersonalDetailsForm = props => {
             await WS.wait('get_settings');
 
             fetchResidenceList();
-            if (has_residence) {
-                setWithCallback({ ...state2, is_state_loading: true }, () => {
+            if (has_residence && !states_list) {
+                setIsStateLoading(true, () => {
                     fetchStatesList().then(() => {
-                        setWithCallback({ ...state2, is_state_loading: false });
+                        setIsStateLoading(false);
                     });
                 });
             }
@@ -438,14 +440,9 @@ export const PersonalDetailsForm = props => {
     const {
         form_initial_values: { ...form_initial_values },
         api_error,
-        is_loading,
-        is_btn_loading,
         show_form,
-    } = state;
+    } = restState;
 
-    const { is_state_loading, is_submit_success } = state2;
-
-    console.log(state);
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
     if (is_loading || is_state_loading || !residence_list.length) {

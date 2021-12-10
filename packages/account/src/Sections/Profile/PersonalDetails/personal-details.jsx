@@ -120,16 +120,52 @@ export const PersonalDetailsForm = props => {
 
     const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
 
-    const [restState, setRestState] = React.useState({
+    const [rest_state, setRestState] = React.useState({
         show_form: true,
         errors: false,
     });
 
+    const [start_on_submit_timeout, setStartOnSubmitTimeout] = React.useState({
+        is_timeout_started: false,
+        timeout_callback: null,
+    });
+
     const { is_dashboard } = React.useContext(PlatformContext);
+
+    React.useEffect(() => {
+        const getSettigs = async () => {
+            // waits for residence to be populated
+            await WS.wait('get_settings');
+
+            fetchResidenceList();
+            if (has_residence && !states_list) {
+                setIsStateLoading(true, () => {
+                    fetchStatesList().then(() => {
+                        setIsStateLoading(false);
+                    });
+                });
+            }
+            initializeFormValues();
+        };
+        getSettigs();
+    }, [account_settings, is_eu, is_mf]);
+
+    React.useEffect(() => {
+        let timeout_id;
+        if (start_on_submit_timeout.is_timeout_started) {
+            timeout_id = setTimeout(() => {
+                setIsSubmitSuccess(false, start_on_submit_timeout.timeout_callback);
+            }, 10000);
+        }
+
+        return () => {
+            clearTimeout(timeout_id);
+        };
+    }, [start_on_submit_timeout.is_timeout_started]);
 
     const makeSettingsRequest = settings => {
         if (is_virtual) return { email_consent: +settings.email_consent };
-        const request = filterObjProperties(settings, [...restState.changeable_fields]);
+        const request = filterObjProperties(settings, [...rest_state.changeable_fields]);
 
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         if (request.first_name) {
@@ -186,19 +222,20 @@ export const PersonalDetailsForm = props => {
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
-                setRestState({ ...restState, api_error: response.error.message });
+                setRestState({ ...rest_state, api_error: response.error.message });
                 return;
             }
-            setRestState({ ...restState, ...response.get_settings });
+            setRestState({ ...rest_state, ...response.get_settings });
             setIsLoading(false);
             refreshNotifications();
             setIsButtonLoading(false);
             setIsSubmitSuccess(true);
-            setTimeout(() => {
-                setIsSubmitSuccess(false, () => {
+            setStartOnSubmitTimeout({
+                is_timeout_started: true,
+                timeout_callback: () => {
                     setSubmitting(false);
-                });
-            }, 10000);
+                },
+            });
             // redirection back based on 'from' param in query string
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
@@ -346,14 +383,14 @@ export const PersonalDetailsForm = props => {
             }
         }
 
-        setRestState({ ...restState, errors: Object.keys(errors).length > 0 });
+        setRestState({ ...rest_state, errors: Object.keys(errors).length > 0 });
 
         return errors;
     };
 
     const getWarningMessages = values => {
         const warnings = {};
-        const active_errors = restState.errors;
+        const active_errors = rest_state.errors;
         const account_object = props;
         const residence_list_array = Object.values(account_object.residence_list);
 
@@ -380,7 +417,7 @@ export const PersonalDetailsForm = props => {
     const showForm = show_form => setRestState({ show_form });
 
     const isChangeableField = name => {
-        return restState.changeable_fields.some(field => field === name);
+        return rest_state.changeable_fields.some(field => field === name);
     };
 
     const initializeFormValues = () => {
@@ -404,31 +441,13 @@ export const PersonalDetailsForm = props => {
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
             setRestState({
-                ...restState,
+                ...rest_state,
                 changeable_fields: is_virtual ? [] : getChangeableFields(),
                 form_initial_values,
             });
             setIsLoading(false);
         });
     };
-
-    React.useEffect(() => {
-        const getSettigs = async () => {
-            // waits for residence to be populated
-            await WS.wait('get_settings');
-
-            fetchResidenceList();
-            if (has_residence && !states_list) {
-                setIsStateLoading(true, () => {
-                    fetchStatesList().then(() => {
-                        setIsStateLoading(false);
-                    });
-                });
-            }
-            initializeFormValues();
-        };
-        getSettigs();
-    }, [account_settings, is_eu, is_mf]);
 
     const salutation_list = [
         { text: localize('Mr'), value: 'Mr' },
@@ -441,7 +460,7 @@ export const PersonalDetailsForm = props => {
         form_initial_values: { ...form_initial_values },
         api_error,
         show_form,
-    } = restState;
+    } = rest_state;
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 

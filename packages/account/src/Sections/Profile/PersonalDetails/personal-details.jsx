@@ -135,7 +135,7 @@ export const PersonalDetailsForm = props => {
     const first_render = React.useRef(true);
 
     React.useEffect(() => {
-        if (first_render) {
+        if (first_render.current) {
             const getSettings = async () => {
                 // waits for residence to be populated
                 await WS.wait('get_settings');

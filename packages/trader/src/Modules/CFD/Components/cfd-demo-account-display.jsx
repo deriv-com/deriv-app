@@ -39,14 +39,15 @@ const CFDDemoAccountDisplay = ({
     };
 
     const financial_specs = React.useMemo(() => {
+        const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
         if (residence === 'au') {
             return specifications[platform].au_real_financial_specs;
         }
-        if (is_eu || is_eu_country) {
+        if (should_show_eu) {
             return specifications[platform].eu_real_financial_specs;
         }
         return specifications[platform].real_financial_specs;
-    }, [is_eu, is_eu_country, residence, platform]);
+    }, [ is_logged_in, is_eu, is_eu_country, residence, platform]);
 
     return is_loading ? (
         <div className='cfd-demo-accounts-display'>

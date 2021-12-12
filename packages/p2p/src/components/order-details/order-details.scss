@@ -144,6 +144,8 @@ $card-width: 456px;
         }
     }
     &__footer {
+        display: flex;
+        justify-content: space-between;
         border-top: 1px solid var(--general-section-1);
         margin-top: auto;
         font-size: 1.4rem;
@@ -154,9 +156,14 @@ $card-width: 456px;
         height: 72px;
 
         @include mobile {
-            border-top: unset;
-            height: 100%;
-            padding: unset;
+            width: 100%;
+            height: 72px;
+            padding: 16px;
+        }
+        @include tablet-up {
+            width: 100%;
+            height: 72px;
+            padding: 16px;
         }
 
         &--left {

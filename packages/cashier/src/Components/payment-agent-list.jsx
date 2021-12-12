@@ -68,7 +68,7 @@ const PaymentAgentList = ({
                     >
                         <div label={localize('Deposit')}>
                             {is_loading ? (
-                                <Loading className='payment-agent__loader' />
+                                <Loading is_fullscreen={false} />
                             ) : (
                                 <React.Fragment>
                                     <Text

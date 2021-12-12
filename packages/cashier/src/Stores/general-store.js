@@ -206,7 +206,7 @@ export default class GeneralStore extends BaseStore {
     init() {
         if (this.root_store.modules.cashier) {
             const { client, modules } = this.root_store;
-            const { account_prompt_dialog, payment_agent, withdraw } = modules.cashier;
+            const { account_prompt_dialog, withdraw } = modules.cashier;
             const { currency, is_logged_in, switched } = client;
 
             when(
@@ -216,10 +216,6 @@ export default class GeneralStore extends BaseStore {
                     this.checkP2pStatus();
                     await withdraw.check10kLimit();
                 }
-            );
-            when(
-                () => payment_agent.is_payment_agent_visible,
-                () => payment_agent.filterPaymentAgentList()
             );
 
             reaction(
@@ -287,9 +283,7 @@ export default class GeneralStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
-            if (!payment_agent.list.length) {
-                payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
-            }
+            payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
 
             if (!payment_agent_transfer.is_payment_agent) {
                 payment_agent_transfer.checkIsPaymentAgent();

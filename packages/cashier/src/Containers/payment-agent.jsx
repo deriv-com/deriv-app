@@ -30,7 +30,7 @@ const PaymentAgent = ({
     }, []);
 
     if (is_switching) {
-        return <Loading className='payment-agent__loader' />;
+        return <Loading />;
     }
 
     if (is_virtual) {

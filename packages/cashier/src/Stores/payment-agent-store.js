@@ -48,10 +48,6 @@ export default class PaymentAgentStore {
 
     @action.bound
     async getPaymentAgentList() {
-        if (this.list.length) {
-            return this.WS.wait('paymentagent_list');
-        }
-
         // wait for get_settings so residence gets populated in client-store
         // TODO: set residence in client-store from authorize so it's faster
         await this.WS.wait('get_settings');
@@ -76,6 +72,11 @@ export default class PaymentAgentStore {
     }
 
     @action.bound
+    clearSuppertedBanks() {
+        this.supported_banks = [];
+    }
+
+    @action.bound
     sortSupportedBanks() {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.supported_banks.replace(
@@ -97,11 +98,15 @@ export default class PaymentAgentStore {
     }
 
     @action.bound
+    clearList() {
+        this.list = [];
+    }
+
+    @action.bound
     async setPaymentAgentList(pa_list) {
         const payment_agent_list = pa_list || (await this.getPaymentAgentList());
-        if (!payment_agent_list || !payment_agent_list.paymentagent_list) {
-            return;
-        }
+        this.clearList();
+        this.clearSuppertedBanks();
         // TODO: Once telephone, url and supported_banks removed from paymentagent_list.list we can remove them and just use the plural ones
         payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
             this.setList({
@@ -277,6 +282,7 @@ export default class PaymentAgentStore {
         setLoading(true);
         this.onRemount = this.onMountPaymentAgentList;
         await onMountCommon();
+        await this.getPaymentAgentList();
 
         setLoading(false);
     }

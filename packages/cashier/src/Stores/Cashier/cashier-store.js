@@ -2206,47 +2206,32 @@ export default class CashierStore extends BaseStore {
             if (!is_ok) error_message = message;
             else if (+balance < +this.converter_from_amount) error_message = localize('Insufficient funds');
             else if (+balance < +min_withdraw_amount) {
-                const error_content = localize(
+                error_message = localize(
                     'Your balance ({{format_balance}} {{currency}}) is less than the current minimum withdrawal allowed ({{format_min_withdraw_amount}} {{currency}}). Please top up your account to continue with your withdrawal.',
                     { format_balance, currency, format_min_withdraw_amount }
                 );
-                if (isMobile()) {
-                    error_message = (
-                        <ReadMore
-                            expand_text={localize('more')}
-                            text={error_content}
-                            collapse_length={25}
-                            openDialog={() => {
-                                this.error_dialog.setErrorMessage(error_content);
-                                this.error_dialog.setConfirmButtonText(localize('ok'));
-                            }}
-                            show_dialog
-                        />
-                    );
-                } else {
-                    error_message = (
-                        <Localize
-                            i18n_default_text='Your balance ({{format_balance}} {{currency}}) is less than the current minimum withdrawal allowed ({{format_min_withdraw_amount}} {{currency}}). Please top up your account to continue with your withdrawal.'
-                            values={{
-                                format_balance,
-                                currency,
-                                format_min_withdraw_amount,
-                            }}
-                        />
-                    );
-                }
             } else if (
                 +this.converter_from_amount < +min_withdraw_amount ||
                 +this.converter_from_amount > +max_withdraw_amount
             ) {
+                error_message = localize(
+                    'The current allowed withdraw amount is {{format_min_withdraw_amount}} to {{format_max_withdraw_amount}} {{currency}}',
+                    { format_min_withdraw_amount, format_max_withdraw_amount, currency }
+                );
+            }
+
+            if (isMobile() && error_message.length >= 28) {
+                const error_content = error_message;
                 error_message = (
-                    <Localize
-                        i18n_default_text='The current allowed withdraw amount is {{format_min_withdraw_amount}} to {{format_max_withdraw_amount}} {{currency}}'
-                        values={{
-                            format_min_withdraw_amount,
-                            format_max_withdraw_amount,
-                            currency,
+                    <ReadMore
+                        expand_text={localize('more')}
+                        text={error_content}
+                        collapse_length={28}
+                        openDialog={() => {
+                            this.error_dialog.setErrorMessage(error_content);
+                            this.error_dialog.setConfirmButtonText(localize('ok'));
                         }}
+                        show_dialog
                     />
                 );
             }

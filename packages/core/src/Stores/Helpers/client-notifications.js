@@ -19,23 +19,7 @@ import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_account, can_have_mlt_account) => {
-    const MxMltNotificationHeader = () => {
-        if (has_malta_account || can_have_mlt_account) {
-            return localize('Your Options account is scheduled to be closed');
-        } else if (is_uk) {
-            return localize('Your Gaming account is scheduled to be closed');
-        }
-        return localize('Your account is scheduled to be closed');
-    };
-
-    const MxMltNotificationText = () => {
-        if (has_malta_account || can_have_mlt_account) {
-            return localize('Withdraw all funds from your Options account.');
-        }
-        return localize('Please proceed to withdraw your funds before 30 November 2021.');
-    };
-
+export const clientNotifications = (ui = {}, client = {}, custom_header, custom_content) => {
     const notifications = {
         dp2p: {
             key: 'dp2p',
@@ -53,8 +37,8 @@ export const clientNotifications = (ui = {}, client = {}, is_uk, has_malta_accou
         },
         close_mx_mlt_account: {
             key: 'close_mx_mlt_account',
-            header: MxMltNotificationHeader(),
-            message: MxMltNotificationText(),
+            header: custom_header,
+            message: custom_content,
             secondary_btn: {
                 text: localize('Learn more'),
                 onClick: () => {
@@ -657,9 +641,10 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
         account_status,
         getRiskAssessment,
         is_eu,
-        is_uk,
+        residence,
+        landing_company_shortcode,
         has_malta_account,
-        can_have_mlt_account,
+        custom_notifications,
         has_iom_account,
         is_logged_in,
         is_tnc_needed,
@@ -669,6 +654,11 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
     const { current_language, selected_contract_type } = common_store;
+    const malta_account = landing_company_shortcode === 'maltainvest';
+    const virtual_account = landing_company_shortcode === 'virtual';
+    const mx_mlt_custom_header = custom_notifications.mx_mlt_notification.header();
+    const mx_mlt_custom_content = custom_notifications.mx_mlt_notification.main();
+
     let has_missing_required_field, has_risk_assessment;
 
     const hidden_close_account_notification =
@@ -677,9 +667,16 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
-    if ((has_iom_account || has_malta_account) && is_logged_in && !hidden_close_account_notification) {
+    await residence;
+
+    if (
+        (has_iom_account || has_malta_account) &&
+        (!malta_account || !virtual_account) &&
+        is_logged_in &&
+        !hidden_close_account_notification
+    ) {
         addNotificationMessage(
-            clientNotifications(ui_store, {}, is_uk, has_malta_account, can_have_mlt_account).close_mx_mlt_account
+            clientNotifications(ui_store, {}, mx_mlt_custom_header, mx_mlt_custom_content).close_mx_mlt_account
         );
     }
 

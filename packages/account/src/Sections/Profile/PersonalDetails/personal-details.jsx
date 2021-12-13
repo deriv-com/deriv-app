@@ -1,4 +1,4 @@
-// import PropTypes        from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Formik, Field } from 'formik';
 import classNames from 'classnames';
@@ -1153,7 +1153,22 @@ export const PersonalDetailsForm = props => {
     );
 };
 
-// PersonalDetailsForm.propTypes = {};
+PersonalDetailsForm.propTypes = {
+    is_eu: PropTypes.bool,
+    is_mf: PropTypes.bool,
+    is_svg: PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    residence_list: PropTypes.arrayOf(PropTypes.object),
+    states_list: PropTypes.array,
+    refreshNotifications: PropTypes.func,
+    fetchResidenceList: PropTypes.func,
+    fetchStatesList: PropTypes.func,
+    has_residence: PropTypes.bool,
+    account_settings: PropTypes.object,
+    getChangeableFields: PropTypes.func,
+    history: PropTypes.object,
+};
+
 export default connect(({ client }) => ({
     account_settings: client.account_settings,
     has_residence: client.has_residence,

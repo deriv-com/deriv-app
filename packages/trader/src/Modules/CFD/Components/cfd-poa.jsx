@@ -57,7 +57,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 v => validLength(v, { min: 1, max: 35 }),
                 v => validLetterSymbol(v),
             ],
-            address_state: [v => !v || validLength(v, { max: 35 })],
+            address_state: [v => validLength(v, { max: 35 })],
             address_postcode: [v => validLength(v, { max: 20 }), v => !v || validPostCode(v)],
         };
 

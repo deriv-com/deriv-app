@@ -18,10 +18,12 @@ import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 const DefaultHeader = ({
     acc_switcher_disabled_message,
     account_status,
+    account_type,
     addNotificationMessage,
     app_routing_history,
     balance,
     currency,
+    country_standpoint,
     disableApp,
     enableApp,
     header_extension,
@@ -31,16 +33,19 @@ const DefaultHeader = ({
     is_app_disabled,
     is_dark_mode,
     is_dxtrade_allowed,
+    is_eu,
     is_logged_in,
     is_logging_in,
     is_mf,
     is_mt5_allowed,
+    is_multipliers_only,
     is_notifications_visible,
     is_onramp_tab_visible,
     is_options_blocked,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
+    is_account_transfer_visible,
     is_route_modal_on,
     is_virtual,
     location,
@@ -49,6 +54,7 @@ const DefaultHeader = ({
     notifications_count,
     openRealAccountSignup,
     platform,
+    replaceCashierMenuOnclick,
     removeNotificationMessage,
     setDarkMode,
     should_allow_authentication,
@@ -76,23 +82,21 @@ const DefaultHeader = ({
             if (config.link_to === routes.dxtrade) {
                 return is_dxtrade_allowed;
             }
-            if ((is_mf || is_options_blocked) && config.href === routes.smarttrader) {
-                return false;
+            if (
+                config.link_to === routes.bot ||
+                config.href === routes.binarybot ||
+                config.href === routes.smarttrader
+            ) {
+                return is_virtual ? !is_multipliers_only : !is_mf && !is_options_blocked;
             }
             return true;
         });
-
     return (
         <header
-            className={classNames(
-                'header',
-                {
-                    'header--is-disabled': is_app_disabled || is_route_modal_on,
-                },
-                {
-                    'header--is-hidden': platforms[platform],
-                }
-            )}
+            className={classNames('header', {
+                'header--is-disabled': is_app_disabled || is_route_modal_on,
+                'header--is-hidden': platforms[platform],
+            })}
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
@@ -117,6 +121,7 @@ const DefaultHeader = ({
                             is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                             is_onramp_tab_visible={is_onramp_tab_visible}
                             is_payment_agent_visible={is_payment_agent_visible}
+                            is_account_transfer_visible={is_account_transfer_visible}
                             is_virtual={is_virtual}
                             toggleTheme={setDarkMode}
                             platform_header={getPlatformInformation(app_routing_history).header}
@@ -133,6 +138,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
+                    {menu_items && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div
@@ -154,12 +160,15 @@ const DefaultHeader = ({
                     <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
                         <AccountActions
                             acc_switcher_disabled_message={acc_switcher_disabled_message}
+                            account_type={account_type}
                             balance={balance}
                             currency={currency}
+                            country_standpoint={country_standpoint}
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_acc_switcher_on={is_acc_switcher_on}
                             is_acc_switcher_disabled={is_acc_switcher_disabled}
+                            is_eu={is_eu}
                             is_notifications_visible={is_notifications_visible}
                             is_logged_in={is_logged_in}
                             is_virtual={is_virtual}
@@ -182,6 +191,7 @@ const DefaultHeader = ({
 
 DefaultHeader.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
+    account_type: PropTypes.string,
     should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
     addNotificationMessage: PropTypes.func,
@@ -200,7 +210,9 @@ DefaultHeader.propTypes = {
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_dxtrade_allowed: PropTypes.bool,
+    is_multipliers_only: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
+    is_account_transfer_visible: PropTypes.bool,
     // is_p2p_enabled: PropTypes.bool,
     // is_payment_agent_transfer_visible: PropTypes.bool,
     // is_payment_agent_visible: PropTypes.bool,
@@ -211,6 +223,7 @@ DefaultHeader.propTypes = {
     openRealAccountSignup: PropTypes.func,
     platform: PropTypes.string,
     removeNotificationMessage: PropTypes.func,
+    replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
@@ -219,12 +232,14 @@ DefaultHeader.propTypes = {
 export default connect(({ client, common, ui, menu, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
+    account_type: client.account_type,
     should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: ui.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
     is_mf: client.landing_company_shortcode === 'maltainvest',
     currency: client.currency,
+    country_standpoint: client.country_standpoint,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,
@@ -232,22 +247,26 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
+    is_eu: client.is_eu,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
+    is_multipliers_only: client.is_multipliers_only,
     is_notifications_visible: ui.is_notifications_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     menu_items: menu.extensions,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
+    replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
     is_options_blocked: client.is_options_blocked,
     platform: common.platform,
     removeNotificationMessage: ui.removeNotificationMessage,

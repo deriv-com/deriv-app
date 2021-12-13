@@ -2,7 +2,14 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
-import { isEmptyObject, isMobile, routes, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
+import {
+    isEmptyObject,
+    isMobile,
+    routes,
+    getCFDPlatformLabel,
+    CFD_PLATFORMS,
+    isLandingCompanyEnabled,
+} from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { ResetTradingPasswordModal } from '@deriv/account';
 import { connect } from 'Stores/connect';
@@ -34,6 +41,8 @@ const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
 
 class CFDDashboard extends React.Component {
     state = {
+        is_demo_enabled: false,
+        is_real_enabled: false,
         active_index: 0,
         is_account_needed_modal_open: false,
         is_demo_tab: true,
@@ -62,6 +71,31 @@ class CFDDashboard extends React.Component {
     componentDidUpdate() {
         this.updateActiveIndex();
         this.props.checkShouldOpenAccount();
+
+        if (this.props.is_logged_in) {
+            ['demo', 'real'].forEach(account_type => {
+                const should_enable_tab =
+                    this.isSyntheticCardVisible(account_type) ||
+                    this.isFinancialCardVisible() ||
+                    this.isFinancialStpCardVisible();
+
+                const is_tab_enabled = this.state[`is_${account_type}_enabled`];
+
+                if (is_tab_enabled !== should_enable_tab) {
+                    this.setState({
+                        [`is_${account_type}_enabled`]: should_enable_tab,
+                    });
+                }
+            });
+        }
+        const is_real_disabled = !this.state.is_real_enabled;
+        const is_demo_disabled = !this.state.is_demo_enabled;
+        if (!this.props.is_logged_in && (is_real_disabled || is_demo_disabled)) {
+            this.setState({
+                is_real_enabled: true,
+                is_demo_enabled: true,
+            });
+        }
     }
 
     openResetPassword = () => {
@@ -73,6 +107,13 @@ class CFDDashboard extends React.Component {
     };
 
     getIndexToSet = () => {
+        if (this.state.is_real_enabled) {
+            return 0;
+        }
+        if (this.state.is_demo_enabled) {
+            return 1;
+        }
+
         const hash = this.props.location.hash;
         if (hash) {
             return /demo/.test(this.props.location.hash) ? 1 : 0;
@@ -90,9 +131,8 @@ class CFDDashboard extends React.Component {
         if (index === 1) updated_state.is_demo_tab = true;
         else if (index === 0) updated_state.is_demo_tab = false;
 
-        const index_to_set = this.getIndexToSet();
-        if (this.state.active_index !== index_to_set) {
-            updated_state.active_index = index_to_set;
+        if (index !== undefined && this.state.active_index !== index) {
+            updated_state.active_index = index;
         }
 
         if (!isEmptyObject(updated_state)) {
@@ -128,6 +168,44 @@ class CFDDashboard extends React.Component {
     openRealPasswordModal = account_type => {
         this.props.setAccountType(account_type);
         this.props.openPasswordModal();
+    };
+
+    isSyntheticCardVisible = account_category => {
+        const { current_list, platform, is_eu, is_eu_country, landing_companies, is_logged_in } = this.props;
+        const has_synthetic_account = Object.keys(current_list).some(key =>
+            key.startsWith(`${platform}.${account_category}.synthetic`)
+        );
+
+        // Hiding card for logged out EU users
+        if (!is_logged_in && is_eu_country) return false;
+
+        if (is_eu && !has_synthetic_account) return false;
+
+        return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
+    };
+
+    isFinancialCardVisible = () => {
+        const { platform, landing_companies, is_logged_in } = this.props;
+
+        return (
+            !is_logged_in ||
+            isLandingCompanyEnabled({
+                landing_companies,
+                platform,
+                type: 'financial',
+            })
+        );
+    };
+
+    isFinancialStpCardVisible = () => {
+        const { platform, landing_companies, is_logged_in, is_eu_country } = this.props;
+
+        // Hiding card for logged out EU users
+        if (!is_logged_in && is_eu_country) return false;
+
+        return (
+            (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === CFD_PLATFORMS.MT5
+        );
     };
 
     render() {
@@ -200,9 +278,8 @@ class CFDDashboard extends React.Component {
 
         const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
-        if (is_logged_in && !landing_companies) return <Loading />;
-
         if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
+        if ((is_logged_in && !landing_companies) || is_loading) return <Loading />;
 
         return (
             <React.Fragment>
@@ -260,76 +337,87 @@ class CFDDashboard extends React.Component {
                                     onTabItemClick={this.updateActiveIndex}
                                     should_update_hash
                                 >
-                                    <div label={localize('Real account')} data-hash='real'>
-                                        <React.Fragment>
-                                            {should_show_missing_real_account && (
-                                                <MissingRealAccount
-                                                    onClickSignup={beginRealSignupForMt5}
+                                    {this.state.is_real_enabled && (
+                                        <div label={localize('Real account')} data-hash='real'>
+                                            <React.Fragment>
+                                                {should_show_missing_real_account && (
+                                                    <MissingRealAccount
+                                                        onClickSignup={beginRealSignupForMt5}
+                                                        platform={platform}
+                                                    />
+                                                )}
+                                                <CFDRealAccountDisplay
+                                                    is_accounts_switcher_on={is_accounts_switcher_on}
+                                                    is_eu={is_eu}
+                                                    is_eu_country={is_eu_country}
+                                                    is_logged_in={is_logged_in}
+                                                    has_maltainvest_account={has_maltainvest_account}
+                                                    has_malta_account={has_malta_account}
+                                                    has_cfd_account_error={
+                                                        platform === CFD_PLATFORMS.MT5
+                                                            ? mt5_disabled_signup_types.real
+                                                            : dxtrade_disabled_signup_types.real ||
+                                                              !!dxtrade_accounts_list_error
+                                                    }
+                                                    openAccountNeededModal={openAccountNeededModal}
+                                                    current_list={current_list}
+                                                    account_status={account_status}
+                                                    has_cfd_account={has_cfd_account}
+                                                    onSelectAccount={createCFDAccount}
+                                                    account_settings={account_settings}
+                                                    landing_companies={landing_companies}
+                                                    is_pending_authentication={is_pending_authentication}
+                                                    is_fully_authenticated={is_fully_authenticated}
+                                                    is_virtual={is_virtual}
+                                                    isSyntheticCardVisible={this.isSyntheticCardVisible}
+                                                    isFinancialCardVisible={this.isFinancialCardVisible}
+                                                    isFinancialStpCardVisible={this.isFinancialStpCardVisible}
+                                                    openAccountTransfer={this.openAccountTransfer}
+                                                    openPasswordManager={this.togglePasswordManagerModal}
+                                                    openPasswordModal={this.openRealPasswordModal}
                                                     platform={platform}
+                                                    isAccountOfTypeDisabled={isAccountOfTypeDisabled}
+                                                    has_real_account={has_real_account}
+                                                    standpoint={standpoint}
+                                                    toggleAccountsDialog={toggleAccountsDialog}
+                                                    toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                                                    can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
+                                                    residence={residence}
+                                                    residence_list={residence_list}
                                                 />
-                                            )}
-                                            <CFDRealAccountDisplay
-                                                is_accounts_switcher_on={is_accounts_switcher_on}
+                                            </React.Fragment>
+                                        </div>
+                                    )}
+                                    {this.state.is_demo_enabled && (
+                                        <div label={localize('Demo account')} data-hash='demo'>
+                                            <CFDDemoAccountDisplay
                                                 is_eu={is_eu}
                                                 is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}
-                                                has_malta_account={has_malta_account}
                                                 has_cfd_account_error={
                                                     platform === CFD_PLATFORMS.MT5
-                                                        ? mt5_disabled_signup_types.real
-                                                        : dxtrade_disabled_signup_types.real ||
+                                                        ? mt5_disabled_signup_types.demo
+                                                        : dxtrade_disabled_signup_types.demo ||
                                                           !!dxtrade_accounts_list_error
                                                 }
                                                 openAccountNeededModal={openAccountNeededModal}
-                                                current_list={current_list}
-                                                account_status={account_status}
+                                                standpoint={standpoint}
+                                                is_loading={is_loading}
+                                                isSyntheticCardVisible={this.isSyntheticCardVisible}
+                                                isFinancialCardVisible={this.isFinancialCardVisible}
+                                                isFinancialStpCardVisible={this.isFinancialStpCardVisible}
                                                 has_cfd_account={has_cfd_account}
+                                                current_list={current_list}
                                                 onSelectAccount={createCFDAccount}
-                                                account_settings={account_settings}
                                                 landing_companies={landing_companies}
-                                                is_pending_authentication={is_pending_authentication}
-                                                is_fully_authenticated={is_fully_authenticated}
-                                                is_virtual={is_virtual}
                                                 openAccountTransfer={this.openAccountTransfer}
                                                 openPasswordManager={this.togglePasswordManagerModal}
-                                                openPasswordModal={this.openRealPasswordModal}
                                                 platform={platform}
-                                                isAccountOfTypeDisabled={isAccountOfTypeDisabled}
-                                                has_real_account={has_real_account}
-                                                standpoint={standpoint}
-                                                toggleAccountsDialog={toggleAccountsDialog}
-                                                toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-                                                can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
                                                 residence={residence}
-                                                residence_list={residence_list}
                                             />
-                                        </React.Fragment>
-                                    </div>
-                                    <div label={localize('Demo account')} data-hash='demo'>
-                                        <CFDDemoAccountDisplay
-                                            is_eu={is_eu}
-                                            is_logged_in={is_logged_in}
-                                            has_maltainvest_account={has_maltainvest_account}
-                                            has_cfd_account_error={
-                                                platform === CFD_PLATFORMS.MT5
-                                                    ? mt5_disabled_signup_types.demo
-                                                    : dxtrade_disabled_signup_types.demo ||
-                                                      !!dxtrade_accounts_list_error
-                                            }
-                                            openAccountNeededModal={openAccountNeededModal}
-                                            standpoint={standpoint}
-                                            is_loading={is_loading}
-                                            has_cfd_account={has_cfd_account}
-                                            current_list={current_list}
-                                            onSelectAccount={createCFDAccount}
-                                            landing_companies={landing_companies}
-                                            openAccountTransfer={this.openAccountTransfer}
-                                            openPasswordManager={this.togglePasswordManagerModal}
-                                            platform={platform}
-                                            residence={residence}
-                                        />
-                                    </div>
+                                        </div>
+                                    )}
                                 </LoadTab>
                                 <CompareAccountsModal platform={platform} />
                                 <div className='cfd-dashboard__maintenance'>

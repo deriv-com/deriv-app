@@ -37,13 +37,8 @@ const PasswordModalHeader = ({
     should_show_server_form,
     account_title,
     is_password_reset_error,
-    has_mt5_account,
     platform,
 }) => {
-    if (should_set_trading_password && has_mt5_account) {
-        return null;
-    }
-
     const element = isMobile() ? 'p' : 'span';
     const alignment = 'center';
     const font_size = 's';
@@ -75,13 +70,17 @@ const PasswordModalHeader = ({
         </Text>
     );
 };
-const getSubmitText = (type, category, platform) => {
+const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
     if (!category && !type) return '';
 
     const category_label = category === 'real' ? localize('real') : localize('demo');
-    const type_label = getMtCompanies()[category][type].short_title;
+    const type_label = getMtCompanies(is_eu)[category][type].short_title;
 
     if (category === 'real') {
+        if (needs_poi) {
+            return localize('We need proof of your identity and address before you can start trading.');
+        }
+
         return (
             <Localize
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
@@ -108,7 +107,7 @@ const getSubmitText = (type, category, platform) => {
     );
 };
 
-const IconType = React.memo(({ platform, type }) => {
+const IconType = React.memo(({ platform, type, is_eu }) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
         if (type === 'synthetic') {
             return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
@@ -121,6 +120,9 @@ const IconType = React.memo(({ platform, type }) => {
         case 'synthetic':
             return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
         case 'financial':
+            if (is_eu) {
+                return <Icon icon='IcMt5Cfds' size={128} />;
+            }
             return <Icon icon='IcMt5FinancialPlatform' size={128} />;
         default:
             return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
@@ -149,7 +151,17 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
             validate={validatePassword}
             onSubmit={onSubmit}
         >
-            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
+            {({
+                errors,
+                isSubmitting,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldTouched,
+                touched,
+                values,
+                validateForm,
+            }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'>
                         <Icon
@@ -193,8 +205,10 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
                                         value={values.password}
                                         onBlur={handleBlur}
                                         onChange={e => {
-                                            setFieldTouched('password', true);
                                             handleChange(e);
+                                            validateForm().then(() => {
+                                                setFieldTouched('password', true);
+                                            });
                                         }}
                                     />
                                 )}
@@ -331,7 +345,17 @@ const CFDPasswordForm = props => {
             validate={props.validatePassword}
             onSubmit={props.submitPassword}
         >
-            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
+            {({
+                errors,
+                isSubmitting,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldTouched,
+                touched,
+                values,
+                validateForm,
+            }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!props.should_set_trading_password && (
@@ -359,8 +383,10 @@ const CFDPasswordForm = props => {
                                 value={values.password}
                                 onBlur={handleBlur}
                                 onChange={e => {
-                                    setFieldTouched('password', true);
                                     handleChange(e);
+                                    validateForm().then(() => {
+                                        setFieldTouched('password', true);
+                                    });
                                 }}
                             />
                         </div>
@@ -510,9 +536,11 @@ const CFDPasswordModal = ({
     error_message,
     error_type,
     form_error,
+    getAccountStatus,
     history,
     is_eu,
     is_eu_country,
+    is_fully_authenticated,
     is_logged_in,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
@@ -581,14 +609,26 @@ const CFDPasswordModal = ({
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login);
-            history.push(routes.cashier_acc_transfer);
+            if (needs_poi) {
+                history.push(routes.proof_of_identity);
+            } else {
+                sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login);
+                history.push(routes.cashier_acc_transfer);
+            }
         }
     };
 
     const handleForgotPassword = () => {
         closeModal();
-        const redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
+        let redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
+
+        // if account type is real convert redirect_to from 1 or 2 to 10 or 20
+        // and if account type is demo convert redirect_to from 1 or 2 to 11 or 21
+        if (account_type.category === 'real') {
+            redirect_to = Number(`${redirect_to}0`);
+        } else if (account_type.category === 'demo') {
+            redirect_to = Number(`${redirect_to}1`);
+        }
 
         const password_reset_code =
             platform === CFD_PLATFORMS.MT5
@@ -628,10 +668,6 @@ const CFDPasswordModal = ({
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
-    const should_show_password_modal = should_show_password && (should_set_trading_password ? true : isDesktop());
-
-    const should_show_password_dialog = should_show_password && !should_set_trading_password && isMobile();
-
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
     const should_show_server_form = React.useMemo(() => {
@@ -646,6 +682,33 @@ const CFDPasswordModal = ({
             platform === CFD_PLATFORMS.MT5
         );
     }, [is_eu, is_eu_country, is_logged_in, is_real_synthetic, server, mt5_login_list, platform]);
+
+    const should_show_password_modal = React.useMemo(() => {
+        if (should_show_password) {
+            if (should_show_server_form) return isDesktop();
+            return should_set_trading_password ? true : isDesktop();
+        }
+        return false;
+    }, [should_set_trading_password, should_show_password, should_show_server_form]);
+
+    const should_show_password_dialog = React.useMemo(() => {
+        if (should_show_password) {
+            if (should_show_server_form || !should_set_trading_password) return isMobile();
+        }
+        return false;
+    }, [should_set_trading_password, should_show_password, should_show_server_form]);
+
+    const needs_poi = is_eu && !is_fully_authenticated;
+
+    const success_modal_submit_label = React.useMemo(() => {
+        if (account_type.category === 'real') {
+            if (needs_poi) {
+                return localize('Submit proof');
+            }
+            return localize('Transfer now');
+        }
+        return localize('Continue');
+    }, [account_type, needs_poi]);
 
     React.useEffect(() => {
         if ((!is_password_error && !is_password_reset && has_cfd_error) || is_cfd_success_dialog_enabled) {
@@ -698,14 +761,14 @@ const CFDPasswordModal = ({
                     should_show_server_form={should_show_server_form}
                     should_set_trading_password={should_set_trading_password}
                     account_title={account_title}
-                    has_mt5_account={has_mt5_account}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
                 />
             )}
+            onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width={isMobile() && '32.8rem'}
+            width={isMobile() ? '32.8rem' : 'auto'}
         >
             {should_show_server_form ? cfd_server_form : cfd_password_form}
         </Modal>
@@ -732,6 +795,14 @@ const CFDPasswordModal = ({
         </MobileDialog>
     );
 
+    const success_heading = needs_poi ? (
+        <Text as='h2' weight='bold' size='s' className='dc-modal-header__title'>
+            {localize('Your account is ready')}
+        </Text>
+    ) : (
+        ''
+    );
+
     return (
         <React.Fragment>
             {password_modal}
@@ -742,13 +813,14 @@ const CFDPasswordModal = ({
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
-                message={getSubmitText(account_type.type, account_type.category, platform)}
-                icon={<IconType platform={platform} type={account_type.type} />}
+                heading={success_heading}
+                message={getSubmitText(account_type.type, account_type.category, platform, is_eu, needs_poi)}
+                icon={<IconType platform={platform} type={account_type.type} is_eu={is_eu} />}
                 icon_size='xlarge'
-                text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('Continue')}
+                text_submit={success_modal_submit_label}
                 has_cancel={account_type.category === 'real'}
                 has_close_icon={false}
-                width={isMobile() && '32.8rem'}
+                width={isMobile() ? '32.8rem' : 'auto'}
                 is_medium_button={isMobile()}
             />
             <SentEmailModal
@@ -791,6 +863,7 @@ export default connect(({ client, modules }) => ({
     disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
     error_message: modules.cfd.error_message,
     error_type: modules.cfd.error_type,
+    getAccountStatus: modules.cfd.getAccountStatus,
     has_cfd_error: modules.cfd.has_cfd_error,
     landing_companies: client.landing_companies,
     is_eu: client.is_eu,
@@ -806,4 +879,5 @@ export default connect(({ client, modules }) => ({
     cfd_new_account: modules.cfd.new_account_response,
     mt5_trading_servers: client.mt5_trading_servers,
     mt5_login_list: client.mt5_login_list,
+    is_fully_authenticated: client.is_fully_authenticated,
 }))(withRouter(CFDPasswordModal));

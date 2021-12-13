@@ -40,7 +40,7 @@ const OnRampProviderPopup = ({
     }
 
     if (is_deposit_address_loading || (should_show_widget && is_requesting_widget_html)) {
-        return <Loading is_fullscreen={false} />;
+        return <Loading is_fullscreen />;
     }
 
     if (should_show_widget) {
@@ -63,13 +63,13 @@ const OnRampProviderPopup = ({
     if (should_show_dialog) {
         return (
             <div className='on-ramp__popup-no-deposit-address'>
-                <div className='on-ramp__popup-no-deposit-address-text'>
+                <Text size='xs' className='on-ramp__popup-no-deposit-address-text'>
                     {api_error ? (
                         <Localize i18n_default_text='Please go to the Deposit page to get an address.' />
                     ) : (
                         <Localize i18n_default_text='Please go to the Deposit page to generate an address. Then come back here to continue with your transaction.' />
                     )}
-                </div>
+                </Text>
                 <Button.Group className='on-ramp__popup-no-deposit-address-buttons'>
                     <Button text={localize('Cancel')} onClick={() => setIsOnRampModalOpen(false)} secondary large />
                     <Button text={localize('Go to Deposit page')} onClick={onClickGoToDepositPage} primary large />

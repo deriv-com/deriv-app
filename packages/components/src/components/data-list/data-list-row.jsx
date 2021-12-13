@@ -1,9 +1,29 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useIsMounted } from '@deriv/shared';
 
-const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
+const DataListRow = ({
+    action_desc,
+    destination_link,
+    row_gap,
+    row_key,
+    rowRenderer,
+    measure,
+    is_dynamic_height,
+    ...other_props
+}) => {
     const [show_desc, setShowDesc] = React.useState(false);
+    const isMounted = useIsMounted();
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            if (isMounted() && is_dynamic_height) {
+                measure?.();
+            }
+        });
+    }, [show_desc]);
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
             {destination_link ? (
@@ -17,10 +37,14 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                         },
                     }}
                 >
-                    <div className='data-list__item'>{rowRenderer({ ...other_props })}</div>
+                    <div className='data-list__item'>{rowRenderer({ measure, ...other_props })}</div>
                 </NavLink>
             ) : (
-                <div className='data-list__item--wrapper'>
+                <div
+                    className={classNames('data-list__item--wrapper', {
+                        'data-list__item--dynamic-height-wrapper': is_dynamic_height,
+                    })}
+                >
                     {action_desc ? (
                         <div className={'data-list__item'} onClick={() => setShowDesc(!show_desc)}>
                             {show_desc ? (
@@ -28,11 +52,11 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                                     {action_desc.component && <div>{action_desc.component}</div>}
                                 </div>
                             ) : (
-                                rowRenderer({ ...other_props })
+                                rowRenderer({ measure, ...other_props })
                             )}
                         </div>
                     ) : (
-                        <div className='data-list__item'>{rowRenderer({ ...other_props })}</div>
+                        <div className='data-list__item'>{rowRenderer({ measure, ...other_props })}</div>
                     )}
                 </div>
             )}
@@ -46,6 +70,7 @@ DataListRow.propTypes = {
     row_gap: PropTypes.number,
     row_key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     rowRenderer: PropTypes.func,
+    measure: PropTypes.func,
 };
 
 export default React.memo(DataListRow);

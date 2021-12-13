@@ -8,6 +8,7 @@ import Icon from '../icon';
 const Clipboard = ({
     text_copy,
     info_message,
+    icon,
     success_message,
     className,
     popoverClassName,
@@ -60,7 +61,7 @@ const Clipboard = ({
                 )}
                 {!is_copied && (
                     <Icon
-                        icon='IcClipboard'
+                        icon={icon || 'IcClipboard'}
                         custom_color='var(--text-less-prominent)'
                         className={classNames('dc-clipboard', className)}
                         onClick={onClick}
@@ -72,6 +73,7 @@ const Clipboard = ({
 };
 Clipboard.propTypes = {
     text_copy: PropTypes.string,
+    icon: PropTypes.string,
     info_message: PropTypes.string,
     success_message: PropTypes.string,
     className: PropTypes.string,

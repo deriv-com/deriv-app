@@ -265,9 +265,9 @@ export default class CashierStore extends BaseStore {
         // cashier Transfer account tab is hidden for iom clients
         // check for residence to hide the tab before creating a real money account
         return (
-            this.root_store.client.residence !== 'im' && (
-                this.root_store.client.landing_company_shortcode !== 'malta' || this.root_store.client.has_maltainvest_account
-            )
+            this.root_store.client.residence !== 'im' &&
+            (this.root_store.client.landing_company_shortcode !== 'malta' ||
+                this.root_store.client.has_maltainvest_account)
         );
     }
 

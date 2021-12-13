@@ -603,6 +603,31 @@ export default class ClientStore extends BaseStore {
         return result;
     }
 
+    @computed
+    get custom_notifications() {
+        const notification_content = {
+            mx_mlt_notification: {
+                header: () => {
+                    if (this.has_malta_account || this.can_have_mlt_account) {
+                        return localize('Your Options account is scheduled to be closed');
+                    } else if (this.is_uk) {
+                        return localize('Your Gaming account is scheduled to be closed');
+                    }
+                    return localize('Your account is scheduled to be closed');
+                },
+                main: () => {
+                    if (this.has_malta_account || this.can_have_mlt_account) {
+                        return localize('Withdraw all funds from your Options account.');
+                    } else if (this.is_uk) {
+                        return localize('Please withdraw all your funds as soon as possible.');
+                    }
+                    return localize('Please proceed to withdraw your funds before 30 November 2021.');
+                },
+            },
+        };
+        return notification_content;
+    }
+
     // Manual list of MLT countries during MLT/MX account removal.
     // Also needed to check onboarding modal text for specific country.
     @computed

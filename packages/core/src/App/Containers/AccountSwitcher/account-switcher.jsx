@@ -35,23 +35,11 @@ const AccountSwitcher = props => {
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
 
     const wrapper_ref = React.useRef();
-    const scroll_ref = React.useRef(null);
-
     React.useEffect(() => {
         if (getMaxAccountsDisplayed()) {
             setDmt5RealVisible(false);
         }
     }, []);
-
-    React.useEffect(() => {
-        if (scroll_ref.current && (is_dmt5_real_visible || is_dxtrade_real_visible)) {
-            scroll_ref.current.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-                inline: 'nearest',
-            });
-        }
-    }, [is_dmt5_real_visible, is_dxtrade_real_visible]);
 
     const toggleVisibility = section => {
         switch (section) {
@@ -573,7 +561,7 @@ const AccountSwitcher = props => {
     );
 
     const real_accounts = (
-        <div ref={scroll_ref} className='acc-switcher__list-wrapper'>
+        <div className='acc-switcher__list-wrapper'>
             <React.Fragment>
                 <AccountWrapper
                     header={localize('Deriv Accounts')}

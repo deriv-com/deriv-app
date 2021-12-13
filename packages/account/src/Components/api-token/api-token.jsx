@@ -252,7 +252,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 type='text'
-                                                                className='da-api-token__input dc-input__token-input'
+                                                                className='da-api-token__input dc-input__input-group'
                                                                 label={localize('Token name')}
                                                                 value={values.token_name}
                                                                 onChange={e => {
@@ -270,7 +270,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                     </Field>
                                                     <Button
                                                         className={classNames(
-                                                            'dc-btn__token-create',
+                                                            'dc-btn__button-group',
                                                             'da-api-token__button',
                                                             {
                                                                 'da-api-token__button--success': is_success,

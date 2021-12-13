@@ -96,25 +96,25 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
 );
 
 export const PersonalDetailsForm = ({
-        is_eu,
-        is_mf,
-        is_svg,
-        is_virtual,
-        residence_list,
-        states_list,
-        refreshNotifications,
-        fetchResidenceList,
-        fetchStatesList,
-        has_residence,
-        account_settings,
-        getChangeableFields,
-        history,
+    is_eu,
+    is_mf,
+    is_svg,
+    is_virtual,
+    residence_list,
+    states_list,
+    refreshNotifications,
+    fetchResidenceList,
+    fetchStatesList,
+    has_residence,
+    account_settings,
+    getChangeableFields,
+    history,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
-    const [is_states_loading, setIsStatesLoading] = useStateCallback(false);
+    const [is_state_loading, setIsStateLoading] = useStateCallback(false);
 
-    const [is_btn_loading, setIsButtonLoading] = React.useState(false);
+    const [is_btn_loading, setIsBtnLoading] = React.useState(false);
 
     const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
 
@@ -140,9 +140,9 @@ export const PersonalDetailsForm = ({
 
                 fetchResidenceList();
                 if (has_residence && !states_list) {
-                    setIsStatesLoading(true, () => {
+                    setIsStateLoading(true, () => {
                         fetchStatesList().then(() => {
-                            setIsStatesLoading(false);
+                            setIsStateLoading(false);
                         });
                     });
                 }
@@ -216,12 +216,12 @@ export const PersonalDetailsForm = ({
     const onSubmit = async (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
         const request = makeSettingsRequest(values);
-        setIsButtonLoading(true);
+        setIsBtnLoading(true);
         const data = await WS.setSettings(request);
 
         if (data.error) {
             setStatus({ msg: data.error.message });
-            setIsButtonLoading(false);
+            setIsBtnLoading(false);
             setSubmitting(false);
         } else {
             // force request to update settings cache since settings have been updated
@@ -233,7 +233,7 @@ export const PersonalDetailsForm = ({
             setRestState({ ...rest_state, ...response.get_settings });
             setIsLoading(false);
             refreshNotifications();
-            setIsButtonLoading(false);
+            setIsBtnLoading(false);
             setIsSubmitSuccess(true);
             setStartOnSubmitTimeout({
                 is_timeout_started: true,
@@ -467,7 +467,7 @@ export const PersonalDetailsForm = ({
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (is_loading || is_states_loading || !residence_list.length) {
+    if (is_loading || is_state_loading || !residence_list.length) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -514,12 +514,7 @@ export const PersonalDetailsForm = ({
     }
 
     return (
-        <Formik
-            initialValues={form_initial_values}
-            enableReinitialize={true}
-            onSubmit={onSubmit}
-            validate={validateFields}
-        >
+        <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
             {({
                 values,
                 errors,

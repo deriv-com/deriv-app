@@ -288,7 +288,6 @@ const OpenPositions = ({
     onClickCancel,
     onClickSell,
     onMount,
-    onUnmount,
     server_time,
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);

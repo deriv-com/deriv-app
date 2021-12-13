@@ -95,8 +95,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
     </React.Fragment>
 );
 
-export const PersonalDetailsForm = props => {
-    const {
+export const PersonalDetailsForm = ({
         is_eu,
         is_mf,
         is_svg,
@@ -110,8 +109,7 @@ export const PersonalDetailsForm = props => {
         account_settings,
         getChangeableFields,
         history,
-    } = props;
-
+}) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     const [is_states_loading, setIsStatesLoading] = useStateCallback(false);
@@ -398,10 +396,8 @@ export const PersonalDetailsForm = props => {
     const getWarningMessages = values => {
         const warnings = {};
         const active_errors = rest_state.errors;
-        const account_object = props;
-        const residence_list_array = Object.values(account_object.residence_list);
 
-        const filter_tin_regex = residence_list_array.filter(residence => {
+        const filter_tin_regex = residence_list.filter(residence => {
             return residence.text === values.tax_residence && residence.tin_format;
         });
 

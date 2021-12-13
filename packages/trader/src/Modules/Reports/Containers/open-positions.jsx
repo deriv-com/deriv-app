@@ -306,9 +306,6 @@ const OpenPositions = ({
 
         checkForMultiplierContract();
 
-        return () => {
-            if (!isMobile()) onUnmount();
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

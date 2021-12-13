@@ -18,6 +18,7 @@ const NotificationsContent = ({
     notifications,
     removeNotificationMessage,
     markNotificationMessage,
+    landing_company_shortcode,
     has_iom_account,
     has_malta_account,
     is_logged_in,
@@ -28,7 +29,9 @@ const NotificationsContent = ({
         if ((has_iom_account || has_malta_account) && is_logged_in) {
             const get_close_mx_mlt_notification = notifications.find(item => item.key === 'close_mx_mlt_account');
             const is_dtrader = getPathname() === 'DTrader';
-            if (!is_dtrader && get_close_mx_mlt_notification) {
+            const malta_account = landing_company_shortcode === 'malta';
+            const iom_account = landing_company_shortcode === 'iom';
+            if ((!is_dtrader && get_close_mx_mlt_notification) || malta_account || iom_account) {
                 markNotificationMessage({ key: 'close_mx_mlt_account' });
             }
         }
@@ -67,13 +70,13 @@ const AppNotificationMessages = ({
     removeNotificationMessage,
     stopNotificationLoading,
     markNotificationMessage,
+    landing_company_shortcode,
     has_iom_account,
     has_malta_account,
     is_logged_in,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
-
     React.useEffect(() => {
         if (is_mt5) {
             stopNotificationLoading();
@@ -85,7 +88,6 @@ const AppNotificationMessages = ({
             }
         }
     }, [notifications_ref]);
-
     const notifications = notification_messages.filter(message => {
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
@@ -98,7 +100,6 @@ const AppNotificationMessages = ({
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     const notifications_sublist = notifications.slice(0, notifications_limit);
-
     return notifications_sublist.length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
@@ -108,6 +109,7 @@ const AppNotificationMessages = ({
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
+                    landing_company_shortcode={landing_company_shortcode}
                     has_iom_account={has_iom_account}
                     has_malta_account={has_malta_account}
                     is_logged_in={is_logged_in}
@@ -147,6 +149,7 @@ export default connect(({ ui, client }) => ({
     notification_messages: ui.notification_messages,
     removeNotificationMessage: ui.removeNotificationMessage,
     markNotificationMessage: ui.markNotificationMessage,
+    landing_company_shortcode: client.landing_company_shortcode,
     has_iom_account: client.has_iom_account,
     has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,

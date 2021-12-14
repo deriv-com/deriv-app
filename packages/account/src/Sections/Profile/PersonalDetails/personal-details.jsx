@@ -1083,7 +1083,7 @@ export class PersonalDetailsForm extends React.Component {
                                                     <fieldset className='account-form__fieldset'>
                                                         <div>
                                                             <Text as='p' size='xxs'>
-                                                                <Localize i18n_default_text='By default, all Deriv.com clients are retail clients but anyone can request to be treated as a professional client.  ' />
+                                                                <Localize i18n_default_text='By default, all Deriv.com clients are retail clients but anyone can request to be treated as a professional client.' />
                                                             </Text>
                                                             <Text as='p' size='xxs'>
                                                                 <Localize i18n_default_text='A professional client receives a lower degree of client protection due to the following.' />
@@ -1092,7 +1092,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 <Localize i18n_default_text='We presume that you possess the experience, knowledge, and expertise to make your own investment decisions and properly assess the risk involved.' />
                                                             </Text>
                                                             <Text as='p' size='xxs' className='last-child'>
-                                                                <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings. ' />
+                                                                <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
                                                             </Text>
                                                         </div>
                                                         <Checkbox

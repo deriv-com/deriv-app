@@ -11,7 +11,7 @@ type TCFDChangePasswordConfirmationProps = {
     className: string;
     onConfirm: () => void;
     onCancel: () => void;
-}
+};
 
 const ChangePasswordConfirmation: React.FC<TCFDChangePasswordConfirmationProps> = ({
     confirm_label,

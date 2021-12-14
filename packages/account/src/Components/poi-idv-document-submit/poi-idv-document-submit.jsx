@@ -294,6 +294,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
 IdvDocumentSubmit.propTypes = {
     handleBack: PropTypes.func,
     handleViewComplete: PropTypes.func,
+    is_from_external: PropTypes.bool,
     selected_country: PropTypes.object,
 };
 

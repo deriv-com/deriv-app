@@ -265,9 +265,9 @@ export default class CashierStore extends BaseStore {
         // cashier Transfer account tab is hidden for iom clients
         // check for residence to hide the tab before creating a real money account
         return (
-            this.root_store.client.residence !== 'im' && (
-                this.root_store.client.landing_company_shortcode !== 'malta' || this.root_store.client.has_maltainvest_account
-            )
+            this.root_store.client.residence !== 'im' &&
+            (this.root_store.client.landing_company_shortcode !== 'malta' ||
+                this.root_store.client.has_maltainvest_account)
         );
     }
 
@@ -375,6 +375,10 @@ export default class CashierStore extends BaseStore {
             this.percentage = +((amount / +this.config.account_transfer.selected_from.balance) * 100).toFixed(0);
         } else {
             this.percentage = +((amount / +this.root_store.client.balance) * 100).toFixed(0);
+        }
+
+        if (!isFinite(this.percentage)) {
+            this.percentage = 0;
         }
     }
 

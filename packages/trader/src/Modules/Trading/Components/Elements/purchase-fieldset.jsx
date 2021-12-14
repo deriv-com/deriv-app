@@ -2,11 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-// import { localize }   from '@deriv/translations';
-// import { PopConfirm } from 'App/Components/Elements/PopConfirm';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
-// import PurchaseLock   from 'Modules/Trading/Components/Form/Purchase/PurchaseLock';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button.jsx';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info.jsx';
 
@@ -15,7 +12,6 @@ const PurchaseFieldset = ({
     buy_info,
     currency,
     has_cancellation,
-    // index,
     info,
     index,
     is_disabled,
@@ -26,11 +22,8 @@ const PurchaseFieldset = ({
     is_proposal_empty,
     is_proposal_error,
     purchased_states_arr,
-    // is_purchase_confirm_on,
-    // is_purchase_locked,
     onClickPurchase,
     onHoverPurchase,
-    // togglePurchaseLock,
     setPurchaseState,
     type,
 }) => {
@@ -74,9 +67,6 @@ const PurchaseFieldset = ({
                 'purchase-container__option--has-cancellation': has_cancellation,
             })}
         >
-            {/* {(is_purchase_locked && index === 0) && */}
-            {/* <PurchaseLock onClick={togglePurchaseLock} /> */}
-            {/* } */}
             <DesktopWrapper>
                 <div
                     className={classNames('trade-container__fieldset-wrapper', {
@@ -139,19 +129,6 @@ const PurchaseFieldset = ({
                                 )}
                             </React.Fragment>
                         )}
-                        {
-                            // is_purchase_confirm_on ?
-                            //     <PopConfirm
-                            //         alignment='left'
-                            //         cancel_text={localize('Cancel')}
-                            //         confirm_text={localize('Purchase')}
-                            //         message={localize('Are you sure you want to purchase this contract?')}
-                            //     >
-                            //         {purchase_button}
-                            //     </PopConfirm>
-                            //     :
-                            //     purchase_button
-                        }
                     </div>
                 </div>
             </DesktopWrapper>
@@ -178,11 +155,8 @@ PurchaseFieldset.propTypes = {
     is_proposal_empty: PropTypes.bool,
     is_proposal_error: PropTypes.bool,
     onClickPurchase: PropTypes.func,
-    // is_purchase_confirm_on: PropTypes.bool,
-    // is_purchase_locked    : PropTypes.bool,
     onHoverPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,
-    // togglePurchaseLock    : PropTypes.func,
     setPurchaseState: PropTypes.func,
     type: PropTypes.string,
 };

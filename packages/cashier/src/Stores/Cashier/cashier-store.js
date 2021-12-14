@@ -376,7 +376,7 @@ export default class CashierStore extends BaseStore {
         } else {
             this.percentage = +((amount / +this.root_store.client.balance) * 100).toFixed(0);
         }
-        
+
         if (!isFinite(this.percentage)) {
             this.percentage = 0;
         }

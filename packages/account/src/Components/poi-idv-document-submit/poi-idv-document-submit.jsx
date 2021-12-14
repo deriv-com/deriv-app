@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
@@ -9,7 +10,7 @@ import { getDocumentData, getRegex } from './utils';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from '../../Assets/ic-document-submit-icon.svg';
 
-const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country }) => {
+const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -293,6 +294,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
 IdvDocumentSubmit.propTypes = {
     handleBack: PropTypes.func,
     handleViewComplete: PropTypes.func,
+    is_from_external: PropTypes.bool,
     selected_country: PropTypes.object,
 };
 

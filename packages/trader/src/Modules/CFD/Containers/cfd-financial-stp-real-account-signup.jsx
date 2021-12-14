@@ -78,15 +78,11 @@ const CFDFinancialStpRealAccountSignup = props => {
     const nextStep = () => {
         clearError();
         if (step + 1 < items.length) {
-            goNext();
+            setStep(step + 1);
         } else {
-            finishWizard();
+            props.openPendingDialog();
+            props.toggleModal();
         }
-    };
-
-    const finishWizard = () => {
-        props.openPendingDialog();
-        props.toggleModal();
     };
 
     const prevStep = () => {
@@ -148,10 +144,6 @@ const CFDFinancialStpRealAccountSignup = props => {
     const transform = value => {
         const [result] = props.residence_list.filter(item => item.value === value);
         return getPropertyValue(result, ['text']) || value;
-    };
-
-    const goNext = () => {
-        setStep(step + 1);
     };
 
     React.useEffect(() => {

@@ -9,7 +9,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
     const wrapper_ref = React.useRef(null);
     const [is_dialog_open, setDialogVisibility] = React.useState(false);
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
-    const [localList, setLocalList] = React.useState(list);
+    const [internal_list, setInternalList] = React.useState(list);
     const [selected_category, setSelectedCategory] = React.useState(null);
     const [search_query, setSearchQuery] = React.useState('');
     const [item, setItem] = React.useState(null);
@@ -22,8 +22,9 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
     }, []);
 
     React.useEffect(() => {
-        if (list.length !== localList.length) {
-            setLocalList(list);
+        if (list.length !== internal_list.length) {
+            // reset internal list state when contracts list is changed in store (on contracts_for response)
+            setInternalList(list);
         }
     }, [list]);
 
@@ -43,14 +44,14 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
         }
     }, [item]);
 
-    const handleInfoClick = ClickedItem => {
+    const handleInfoClick = clicked_item => {
         setInfoDialogVisibility(!is_info_dialog_open);
 
-        setItem(ClickedItem);
+        setItem(clicked_item);
     };
 
-    const handleNavigationClick = naveClickedItem => {
-        setItem(naveClickedItem);
+    const handleNavigationClick = nav_clicked_item => {
+        setItem(nav_clicked_item);
     };
 
     const handleClickOutside = event => {
@@ -81,10 +82,10 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
-        const multipliers_category = localList.filter(
+        const multipliers_category = list.filter(
             contract_category => contract_category.label === localize('Multipliers')
         );
-        const options_category = localList.filter(
+        const options_category = list.filter(
             contract_category => contract_category.label !== localize('Multipliers')
         );
 
@@ -93,7 +94,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
         if (multipliers_category.length > 0 && options_category.length > 0) {
             categories.push({
                 label: localize('All'),
-                contract_categories: [...localList],
+                contract_categories: [...list],
             });
         }
 
@@ -171,14 +172,22 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
                 is_open={is_dialog_open}
                 item={item || { value }}
                 categories={list_with_category()}
-                list={localList}
+                list={internal_list}
                 selected={selected_category || list_with_category()[0]?.label}
                 onBackButtonClick={onBackButtonClick}
                 onClose={handleVisibility}
                 onChangeInput={onChangeInput}
                 onCategoryClick={handleCategoryClick}
             >
-                {!is_info_dialog_open ? (
+                {is_info_dialog_open ? (
+                    <ContractType.Info
+                        handleNavigationClick={handleNavigationClick}
+                        initial_index={selected_contract_index()}
+                        handleSelect={handleSelect}
+                        item={item || { value }}
+                        list={list_with_category()}
+                    />
+                ) : (
                     <ContractType.List
                         handleInfoClick={handleInfoClick}
                         handleSelect={handleSelect}
@@ -186,14 +195,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
                         list={selected_category_contracts()}
                         name={name}
                         value={value}
-                    />
-                ) : (
-                    <ContractType.Info
-                        handleNavigationClick={handleNavigationClick}
-                        initial_index={selected_contract_index()}
-                        handleSelect={handleSelect}
-                        item={item || { value }}
-                        list={list_with_category()}
                     />
                 )}
             </ContractType.Dialog>

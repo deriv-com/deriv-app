@@ -30,7 +30,7 @@ import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/cfd.scss';
 import { connect } from 'Stores/connect';
-import ChangePasswordConfirmation from './cfd-change-password-confirmation.jsx';
+import ChangePasswordConfirmation from './cfd-change-password-confirmation.tsx';
 
 const PasswordModalHeader = ({
     should_set_trading_password,

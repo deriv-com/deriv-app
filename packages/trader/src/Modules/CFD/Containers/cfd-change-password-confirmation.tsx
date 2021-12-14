@@ -4,14 +4,7 @@ import { Formik } from 'formik';
 import { Text, Icon, FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv/shared';
-
-type TCFDChangePasswordConfirmationProps = {
-    confirm_label: string;
-    platform: string;
-    className: string;
-    onConfirm: () => void;
-    onCancel: () => void;
-};
+import { TCFDChangePasswordConfirmationProps } from "./props.types";
 
 const ChangePasswordConfirmation: React.FC<TCFDChangePasswordConfirmationProps> = ({
     confirm_label,

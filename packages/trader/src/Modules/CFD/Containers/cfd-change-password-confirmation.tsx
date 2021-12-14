@@ -5,7 +5,7 @@ import { Text, Icon, FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv/shared';
 
-interface ICFDChangePasswordConfirmationProps {
+type TCFDChangePasswordConfirmationProps = {
     confirm_label: string;
     platform: string;
     className: string;
@@ -13,7 +13,7 @@ interface ICFDChangePasswordConfirmationProps {
     onCancel: () => void;
 }
 
-const ChangePasswordConfirmation: React.FC<ICFDChangePasswordConfirmationProps> = ({
+const ChangePasswordConfirmation: React.FC<TCFDChangePasswordConfirmationProps> = ({
     confirm_label,
     className,
     platform,

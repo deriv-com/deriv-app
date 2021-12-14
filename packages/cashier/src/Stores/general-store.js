@@ -156,6 +156,9 @@ export default class GeneralStore extends BaseStore {
         } else {
             this.percentage = +((amount / +client.balance) * 100).toFixed(0);
         }
+        if (!isFinite(this.percentage)) {
+            this.percentage = 0;
+        }
     }
 
     @action.bound

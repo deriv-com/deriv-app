@@ -425,7 +425,6 @@ OpenPositions.propTypes = {
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
     onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
     server_time: PropTypes.object,
 };
 
@@ -440,6 +439,5 @@ export default connect(({ modules, client, common, ui }) => ({
     onClickCancel: modules.portfolio.onClickCancel,
     onClickSell: modules.portfolio.onClickSell,
     onMount: modules.portfolio.onMount,
-    onUnmount: modules.portfolio.onUnmount,
     server_time: common.server_time,
 }))(withRouter(OpenPositions));

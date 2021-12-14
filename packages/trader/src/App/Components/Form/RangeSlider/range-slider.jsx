@@ -5,8 +5,8 @@ import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 import TickSteps from './tick-steps.jsx';
 
-const RangeSlider = ({ className, name, value, min_value, max_value, onChange }) =>  {
-    const [ hover_value, setHoverValue ] = React.useState(0);
+const RangeSlider = ({ className, name, value, min_value, max_value, onChange }) => {
+    const [hover_value, setHoverValue] = React.useState(0);
     const range_slider_ref = React.useRef();
 
     const handleChange = e => {
@@ -20,7 +20,7 @@ const RangeSlider = ({ className, name, value, min_value, max_value, onChange })
     const handleClick = index => {
         if (index !== value) {
             resetOnHover();
-           onChange({ target: { name, value: index } });
+            onChange({ target: { name, value: index } });
         }
     };
 
@@ -104,7 +104,7 @@ const RangeSlider = ({ className, name, value, min_value, max_value, onChange })
             </div>
         </div>
     );
-}
+};
 // Keypress events do not trigger on Safari due to the way it handles input type='range' elements, using focus on the input element also doesn't work for Safari.
 
 RangeSlider.propTypes = {

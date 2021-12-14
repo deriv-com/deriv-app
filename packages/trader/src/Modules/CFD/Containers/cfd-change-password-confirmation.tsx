@@ -13,7 +13,13 @@ interface ICFDChangePasswordConfirmationProps {
     onCancel: () => void;
 }
 
-const ChangePasswordConfirmation: React.FC<ICFDChangePasswordConfirmationProps> = ({ confirm_label, className, platform, onConfirm, onCancel }) => (
+const ChangePasswordConfirmation: React.FC<ICFDChangePasswordConfirmationProps> = ({
+    confirm_label,
+    className,
+    platform,
+    onConfirm,
+    onCancel,
+}) => (
     <Formik initialValues={{}} onSubmit={onConfirm}>
         {({ isSubmitting, handleSubmit }) => (
             <form onSubmit={handleSubmit}>

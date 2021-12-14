@@ -1,12 +1,19 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik } from 'formik';
-import PropTypes from 'prop-types';
 import { Text, Icon, FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv/shared';
 
-const ChangePasswordConfirmation = ({ confirm_label, className, platform, onConfirm, onCancel }) => (
+interface ICFDChangePasswordConfirmationProps {
+    confirm_label: string;
+    platform: string;
+    className: string;
+    onConfirm: () => void;
+    onCancel: () => void;
+}
+
+const ChangePasswordConfirmation: React.FC<ICFDChangePasswordConfirmationProps> = ({ confirm_label, className, platform, onConfirm, onCancel }) => (
     <Formik initialValues={{}} onSubmit={onConfirm}>
         {({ isSubmitting, handleSubmit }) => (
             <form onSubmit={handleSubmit}>
@@ -58,12 +65,5 @@ const ChangePasswordConfirmation = ({ confirm_label, className, platform, onConf
         )}
     </Formik>
 );
-
-ChangePasswordConfirmation.propTypes = {
-    confirm_label: PropTypes.string,
-    onConfirm: PropTypes.func,
-    onCancel: PropTypes.func,
-    platform: PropTypes.string,
-};
 
 export default ChangePasswordConfirmation;

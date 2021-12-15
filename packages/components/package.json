@@ -5,7 +5,7 @@
     "main": "src/index.js",
     "private": true,
     "engines": {
-        "node": "^14.17.1"
+        "node": "^16.13.0"
     },
     "scripts": {
         "start": "rimraf lib && npm run test && npm run serve",
@@ -50,9 +50,9 @@
         "eslint-plugin-react-hooks": "^4.2.0",
         "glob": "^7.1.5",
         "lint-staged": "^10.4.0",
-        "node-sass": "^4.12.0",
+        "node-sass": "^7.0.0",
         "react": "^16.14.0",
-        "sass-loader": "^10.1.1",
+        "sass-loader": "^12.4.0",
         "sass-resources-loader": "^2.1.1",
         "style-loader": "^1.2.1",
         "svg-sprite-loader": "^5.2.1",

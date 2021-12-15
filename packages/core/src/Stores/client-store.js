@@ -1272,8 +1272,10 @@ export default class ClientStore extends BaseStore {
                 await BinarySocket.authorize(client.token);
             }
             if (redirect_url) {
-                const platform = search_params?.get('platform') ? `?platform=${platform}` : '';
-                window.location.replace(urlFor(routes[redirect_url], { query_string: platform }));
+                const platform_query = search_params?.get('platform');
+                window.location.replace(
+                    urlFor(routes[redirect_url], { query_string: platform_query ? `platform=${platform_query}` : '' })
+                );
             }
             runInAction(() => {
                 this.is_populating_account_list = false;

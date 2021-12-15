@@ -268,7 +268,6 @@ const PaymentAgentWithdrawForm = ({
                     };
 
                     return (
-
                         <Form>
                             <div className='payment-agent-withdraw-form__radio-group'>
                                 <Field

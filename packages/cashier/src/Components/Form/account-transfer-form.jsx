@@ -11,7 +11,7 @@ import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
 import PercentageSelector from '../percentage-selector';
 import RecentTransaction from '../recent-transaction.jsx';
-import '../../Sass/account-transfer.scss';
+import 'Sass/account-transfer-form.scss';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;
@@ -26,12 +26,12 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
                 <div>
                     <Icon
                         icon={account.platform_icon || `IcCurrency-${account.currency.toLowerCase()}`}
-                        className='account-transfer__currency-icon'
+                        className='account-transfer-form__currency-icon'
                     />
                 </div>
             )}
 
-            <div className='account-transfer__currency-wrapper'>
+            <div className='account-transfer-form__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
                     {account.is_dxtrade || account.is_mt ? account.text : getCurrencyName(account.currency)}
                 </Text>
@@ -47,7 +47,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
                 </Text>
             )}
 
-            <span className='account-transfer__balance'>
+            <span className='account-transfer-form__balance'>
                 <Money
                     amount={account.balance}
                     currency={account.currency}
@@ -60,9 +60,9 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 };
 
 const AccountTransferBullet = ({ children }) => (
-    <div className='account-transfer__bullet-wrapper'>
-        <div className='account-transfer__bullet' />
-        <span>{children}</span>
+    <div className='account-transfer-form__bullet-wrapper'>
+        <div className='account-transfer-form__bullet' />
+        <Text size='xxs'>{children}</Text>
     </div>
 );
 
@@ -132,13 +132,13 @@ const AccountTransferNote = ({
     };
 
     return (
-        <div className='account-transfer__notes'>
+        <div className='account-transfer-form__notes'>
             <DesktopWrapper>
                 <Text
                     as='h2'
                     color='prominent'
                     weight='bold'
-                    className='cashier__header account-transfer__notes-header'
+                    className='cashier__header account-transfer-form__notes-header'
                 >
                     <Localize i18n_default_text='Notes' />
                 </Text>
@@ -405,7 +405,7 @@ const AccountTransferForm = ({
     }, [selected_to, selected_from, account_limits]);
 
     return (
-        <div className='cashier__wrapper account-transfer__wrapper'>
+        <div className='cashier__wrapper account-transfer-form__wrapper'>
             <Text
                 as='h2'
                 color='prominent'
@@ -435,10 +435,10 @@ const AccountTransferForm = ({
                             </div>
                         ) : (
                             <Form>
-                                <div className='cashier__drop-down-wrapper account-transfer__drop-down-wrapper'>
+                                <div className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'>
                                     <Dropdown
                                         id='transfer_from'
-                                        className='cashier__drop-down account-transfer__drop-down'
+                                        className='account-transfer-form__drop-down'
                                         classNameDisplay='cashier__drop-down-display'
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
@@ -460,12 +460,12 @@ const AccountTransferForm = ({
                                     />
                                     <Dropdown
                                         id='transfer_to'
-                                        className='cashier__drop-down account-transfer__drop-down account-transfer__drop-down--to-dropdown'
+                                        className='account-transfer-form__drop-down account-transfer-form__drop-down--to-dropdown'
                                         classNameDisplay='cashier__drop-down-display'
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
                                         classNameLabel='cashier__drop-down-label'
-                                        classNameHint='cashier__hint'
+                                        classNameHint='account-transfer-form__hint'
                                         is_large
                                         label={localize('To')}
                                         list={to_accounts}
@@ -493,8 +493,8 @@ const AccountTransferForm = ({
                                                     setAccountTransferAmount(e.target.value);
                                                     setFieldTouched('amount', true, false);
                                                 }}
-                                                className='cashier__input dc-input--no-placeholder account-transfer__input'
-                                                classNameHint='cashier__hint'
+                                                className='cashier__input dc-input--no-placeholder account-transfer-form__input'
+                                                classNameHint='account-transfer-form__hint'
                                                 type='text'
                                                 label={localize('Amount')}
                                                 error={touched.amount && errors.amount ? errors.amount : ''}
@@ -541,7 +541,7 @@ const AccountTransferForm = ({
                                     </Field>
                                 ) : (
                                     <div>
-                                        <div className='crypto-account-transfer__percentage-selector'>
+                                        <div className='account-transfer-form__crypto--percentage-selector'>
                                             <PercentageSelector
                                                 amount={+selected_from.balance}
                                                 currency={selected_from.currency}
@@ -583,12 +583,12 @@ const AccountTransferForm = ({
                                         />
                                     </div>
                                 )}
-                                <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
+                                <div className='cashier__form-submit account-transfer-form__form-submit'>
                                     <Button
                                         className={classNames({
                                             'cashier__form-submit-button':
                                                 selected_from.currency === selected_to.currency,
-                                            'cashier__account-transfer__form-submit-button':
+                                            'account-transfer-form__submit-button':
                                                 selected_from.currency !== selected_to.currency,
                                         })}
                                         type='submit'

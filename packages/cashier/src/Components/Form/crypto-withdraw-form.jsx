@@ -123,22 +123,24 @@ const CryptoWithdrawForm = ({
                                 />
                             )}
                         </Field>
-                        <div className='crypto-withdraw-form__percentage-selector'>
-                            <PercentageSelector
-                                amount={+balance}
-                                currency={currency}
-                                getCalculatedAmount={setWithdrawPercentageSelectorResult}
-                                percentage={percentage}
-                                should_percentage_reset={should_percentage_reset}
-                            />
-                        </div>
-                        <div className='crypto-withdraw-form__crypto-fiat-converter'>
-                            <CryptoFiatConverter
-                                from_currency={crypto_currency}
-                                to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
-                                validateFromAmount={validateWithdrawFromAmount}
-                                validateToAmount={validateWithdrawToAmount}
-                            />
+                        <div>
+                            <div className='crypto-withdraw-form__percentage-selector'>
+                                <PercentageSelector
+                                    amount={+balance}
+                                    currency={currency}
+                                    getCalculatedAmount={setWithdrawPercentageSelectorResult}
+                                    percentage={percentage}
+                                    should_percentage_reset={should_percentage_reset}
+                                />
+                            </div>
+                            <div className='crypto-withdraw-form__crypto-fiat-converter'>
+                                <CryptoFiatConverter
+                                    from_currency={crypto_currency}
+                                    to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
+                                    validateFromAmount={validateWithdrawFromAmount}
+                                    validateToAmount={validateWithdrawToAmount}
+                                />
+                            </div>
                         </div>
                         <div className='crypto-withdraw-form-submit'>
                             <Button

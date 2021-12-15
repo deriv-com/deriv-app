@@ -397,12 +397,12 @@ const CFDAccountCard = ({
                                             <tr key={idx} className='cfd-account-card__specs-table-row'>
                                                 <td className='cfd-account-card__specs-table-attribute'>
                                                     <p className='cfd-account-card--paragraph'>
-                                                        {localize(spec_attribute)}
+                                                        {specs[spec_attribute].key()}
                                                     </p>
                                                 </td>
                                                 <td className='cfd-account-card__specs-table-data'>
                                                     <p className='cfd-account-card--paragraph'>
-                                                        {localize(specs[spec_attribute])}
+                                                        {specs[spec_attribute].value()}
                                                     </p>
                                                 </td>
                                             </tr>

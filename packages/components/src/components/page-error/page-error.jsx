@@ -11,6 +11,7 @@ const PageError = ({
     buttonOnClick,
     buttonSize,
     classNameImage,
+    has_malta_account,
     header,
     image_url,
     messages,
@@ -57,6 +58,7 @@ const PageError = ({
             <div
                 className={classNames('dc-page-error__box', {
                     'dc-page-error__box--left': !!image_url,
+                    'dc-page-error__box--malta': has_malta_account,
                 })}
             >
                 <Text as='h3' size='l' align='center' weight='bold' line_height='s' color='prominent'>

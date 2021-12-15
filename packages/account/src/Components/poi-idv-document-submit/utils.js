@@ -48,12 +48,12 @@ const idv_document_data = {
     za: {
         national_id: {
             new_display_name: 'National ID',
-            example_format: '123456789012',
+            example_format: '1234567890123',
             sample_image: getImageLocation('za_national_identity_card.png'),
         },
         national_id_no_photo: {
             new_display_name: 'National ID (No Photo)',
-            example_format: '123456789012',
+            example_format: '1234567890123',
             sample_image: '',
         },
     },
@@ -118,6 +118,13 @@ const idv_document_data = {
         voter_id: {
             new_display_name: 'Voter ID',
             example_format: '01234567890',
+            sample_image: '',
+        },
+    },
+    br: {
+        cpf: {
+            new_display_name: 'CPF',
+            example_format: '123.456.789-12',
             sample_image: '',
         },
     },

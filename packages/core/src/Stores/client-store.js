@@ -1290,13 +1290,14 @@ export default class ClientStore extends BaseStore {
             () => [
                 this.account_settings,
                 this.account_status,
+                this.landing_companies,
                 this.root_store.modules?.cashier?.is_p2p_visible,
                 this.root_store.common?.selected_contract_type,
                 this.is_eu,
             ],
             () => {
                 client = this.accounts[this.loginid];
-                BinarySocket.wait('landing_company').then(() => {
+                if (Object.keys(this.landing_companies).length > 0) {
                     this.root_store.ui.removeNotifications();
                     this.root_store.ui.removeAllNotificationMessages();
                     const { has_missing_required_field } = handleClientNotifications(
@@ -1309,7 +1310,7 @@ export default class ClientStore extends BaseStore {
                     if (client && !client.is_virtual) {
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }
-                });
+                }
             }
         );
 

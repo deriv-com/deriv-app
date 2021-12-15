@@ -2,7 +2,7 @@
 
 This repository contains the various platforms of the Deriv application.
 
-![CircleCI](https://img.shields.io/circleci/build/github/binary-com/deriv-app) ![Prerequisite](https://img.shields.io/badge/node-%3E%3D16.13.0-blue.svg) ![Prerequisite](https://img.shields.io/badge/npm-%3E%3D7.21.0-blue.svg) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+![CircleCI](https://img.shields.io/circleci/build/github/binary-com/deriv-app) ![Prerequisite](https://img.shields.io/badge/node-%3E%3D16.13.0-blue.svg) ![Prerequisite](https://img.shields.io/badge/npm-%3E%3D8.1.0-blue.svg) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 ![Sonar Tech Debt](https://img.shields.io/sonar/tech_debt/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
 ![Sonar Violations (short format)](https://img.shields.io/sonar/violations/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
 
@@ -38,7 +38,7 @@ This repository contains the various platforms of the Deriv application.
 Before running or contribute to this project, you need to have the setup of the following package in your environment.
 
 -   node >=16.13.0
--   npm >=7.21.0
+-   npm >=8.1.0
 -   git (for `contribution`)
 
 **Note**: `node -v` and `sudo node -v` should be the same version.

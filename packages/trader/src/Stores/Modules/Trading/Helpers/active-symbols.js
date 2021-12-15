@@ -26,23 +26,29 @@ export const showUnavailableLocationError = flow(function* (showError, is_logged
     });
 });
 
-export const showMXUnavailableError = flow(function* (showError) {
-    const website_status = yield WS.wait('website_status');
+export const showMxMltUnavailableError = flow(function* (showError, can_have_mlt_account, can_have_mx_account) {
+    const get_settings = yield WS.wait('get_settings');
     const residence_list = yield WS.residenceList();
 
-    const clients_country_code = website_status.website_status.clients_country;
+    const clients_country_code = get_settings.get_settings.country_code;
     const clients_country_text = (
         residence_list.residence_list.find(obj_country => obj_country.value === clients_country_code) || {}
     ).text;
 
-    const header = clients_country_text
-        ? localize('Sorry, trading is unavailable in {{clients_country}}.', {
-              clients_country: clients_country_text,
-          })
-        : localize('Sorry, trading is unavailable in your current location.');
+    let header;
+
+    if (can_have_mlt_account) {
+        header = localize("Unfortunately, trading options isn't possible in your country");
+    } else if (clients_country_text || can_have_mx_account) {
+        header = localize('Sorry, trading is unavailable in {{clients_country}}.', {
+            clients_country: clients_country_text,
+        });
+    } else {
+        header = localize('Sorry, trading is unavailable in your current location.');
+    }
 
     showError({
-        message: null,
+        message: ' ',
         header,
         redirect_label: null,
         redirectOnClick: () => ({}),

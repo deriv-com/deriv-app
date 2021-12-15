@@ -1,4 +1,4 @@
-.close-mx-account {
+.close-mx-mlt-account {
     &--is-fullscreen {
         max-width: 80vw;
         display: flex;
@@ -6,16 +6,20 @@
         justify-content: center;
         flex-direction: column;
         margin: 0 auto;
-        .close-mx-account__content {
-            padding: 14.4rem 0.6rem 2.4rem;
+        .close-mx-mlt-account__content {
+            max-width: 800px;
+            padding: 2.4rem 0.6rem;
         }
 
         @include mobile {
             max-width: 99vw;
+            max-height: 99%;
 
-            .close-mx-account__content {
-                padding: 8.4rem 0.6rem 2.4rem;
+            .close-mx-mlt-account__content {
+                padding: 0 0.6rem;
                 overflow-y: scroll;
+                height: calc(100vh - 280px);
+                margin: 2.4rem 0;
             }
         }
     }
@@ -27,11 +31,7 @@
         align-items: center;
         justify-content: center;
         background-color: #e0f0f0;
-        position: absolute;
         padding: 0 2rem;
-        top: 0;
-        left: 0;
-        right: 0;
         border-top-left-radius: 0.8rem;
         border-top-right-radius: 0.8rem;
         .dc-icon {
@@ -39,11 +39,12 @@
             height: 96px;
             margin-bottom: 2.4rem;
         }
-        &__heading {
+        &__heading.dc-text {
             font-size: 2rem;
         }
         @include mobile {
             height: 132px;
+            position: sticky;
             .dc-icon {
                 width: 64px;
                 height: 64px;
@@ -51,25 +52,15 @@
                 margin-top: 1.6rem;
             }
             .dc-text {
-                margin: 1.6rem 0;
-            }
-            h1 {
-                font-size: 14px;
+                margin: 1.6rem 0 !important;
+                font-size: 1.4rem;
             }
         }
     }
     &__content {
-        padding: 21.4rem 0 2.4rem;
-        .close-mx-bullet {
-            list-style: disc;
-            font-size: 1.6rem;
-            margin-left: 2.5rem;
-        }
+        padding: 1rem 1.5rem;
         .link {
             font-weight: unset;
-        }
-        @include mobile {
-            padding: 13.3rem 0 2.4rem;
         }
     }
 
@@ -83,15 +74,15 @@
             width: 800px;
             height: 640px;
             margin-top: 0;
-            padding: 1.4rem;
+            padding: 0;
             .dc-dialog__content {
                 max-width: unset;
                 height: 100%;
                 margin-bottom: 5rem;
                 overflow-y: auto;
-                padding: 0 0.5rem;
+                padding: 0;
             }
-            .close-mx-account.dc-dialog__footer {
+            .close-mx-mlt-account.dc-dialog__footer {
                 position: absolute;
                 right: 0;
                 bottom: 0;
@@ -120,7 +111,7 @@
 }
 
 body.theme--dark {
-    .close-mx-account .close-mx-account-header h1 {
+    .close-mx-mlt-account .close-mx-mlt-account-header h1 {
         color: var(--general-main-1);
     }
 }

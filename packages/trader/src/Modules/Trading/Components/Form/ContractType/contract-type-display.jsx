@@ -11,6 +11,7 @@ const Display = ({ is_open, list, name, onClick, value }) => {
 
     return (
         <div
+            data-testid='dt_contract_dropdown'
             className={classNames('contract-type-widget__display', {
                 'contract-type-widget__display--clicked': is_open,
             })}

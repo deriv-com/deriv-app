@@ -98,7 +98,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                     />
                                 )}
                             </Text>
-                            <AdStatus is_active={is_advert_active} />
+                            <AdStatus is_active={!!is_advert_active} />
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
                             <Text color='profit-success' line_height='m' size='xxs'>
@@ -171,7 +171,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 </Table.Cell>
                 <Table.Cell>
                     <div className='p2p-my-ads__table-status'>
-                        <AdStatus is_active={is_advert_active} />
+                        <AdStatus is_active={!!is_advert_active} />
                     </div>
                 </Table.Cell>
                 {is_popover_actions_visible && (

@@ -15,7 +15,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled } from '@deriv/shared';
 
-const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
+const getAccounts = ({ landing_companies, platform, is_logged_in, is_uk }) => {
     const getLoggedOutTypesCount = () => (platform === CFD_PLATFORMS.MT5 ? 3 : 2);
     const getLoggedInTypesCount = () =>
         (platform === CFD_PLATFORMS.MT5
@@ -28,6 +28,17 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
         ).filter(Boolean).length;
 
     const account_types_count = is_logged_in ? getLoggedInTypesCount() : getLoggedOutTypesCount();
+    const financial_eu_trading_instruments = is_uk ? (
+        <div>
+            {localize('Forex, stocks, stock indices, cryptocurrencies')}
+            <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
+                **
+            </Text>
+            {localize(', synthetic indices')}
+        </div>
+    ) : (
+        localize('Forex, stocks, stock indices, cryptocurrencies, synthetic indices')
+    );
 
     return [
         {
@@ -37,7 +48,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic_eu: localize('EUR'),
                 financial: localize('USD'),
                 financial_au: localize('USD'),
-                financial_eu: localize('EUR/GBP'),
+                financial_eu: localize('EUR/GBP/USD'),
                 financial_stp: localize('USD'),
                 footnote: null,
             },
@@ -111,7 +122,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic_eu: localize('Fixed/Variable'),
                 financial: localize('Variable'),
                 financial_au: localize('Variable'),
-                financial_eu: localize('Variable'),
+                financial_eu: localize('Fixed/Variable'),
                 financial_stp: localize('Variable'),
                 footnote: localize(
                     "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
@@ -267,9 +278,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_au: localize(
                     'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
                 ),
-                financial_eu: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
-                ),
+                financial_eu: financial_eu_trading_instruments,
                 financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
                 footnote: null,
             },
@@ -362,11 +371,11 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu
         });
 };
 
-const compareAccountsData = ({ landing_companies, is_logged_in, show_eu_related, platform, residence }) => {
+const compareAccountsData = ({ landing_companies, is_logged_in, show_eu_related, platform, residence, is_uk }) => {
     const is_australian = residence === 'au';
     return filterAvailableAccounts(
         landing_companies,
-        getAccounts({ landing_companies, platform, is_logged_in }),
+        getAccounts({ landing_companies, platform, is_logged_in, is_uk }),
         is_logged_in,
         show_eu_related,
         platform,
@@ -374,7 +383,7 @@ const compareAccountsData = ({ landing_companies, is_logged_in, show_eu_related,
     );
 };
 
-const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies, is_logged_in }) => {
+const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies, is_logged_in, is_uk }) => {
     return (
         <div className='cfd-compare-account--hint'>
             <div className='cfd-compare-accounts__bullet-wrapper'>
@@ -403,9 +412,27 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies,
                             }}
                         />
                     </div>
+                    {is_uk && (
+                        <div className='cfd-compare-accounts__bullet-wrapper'>
+                            <Text
+                                size='xs'
+                                line_height='x'
+                                weight='bold'
+                                className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--star cfd-compare-accounts__star'
+                            >
+                                **
+                            </Text>
+                            <Localize
+                                i18n_default_text='Cryptocurrency trading is not available for clients residing in the United Kingdom.'
+                                values={{
+                                    platform: platform === CFD_PLATFORMS.MT5 ? localize('MT5') : localize('Deriv X'),
+                                }}
+                            />
+                        </div>
+                    )}
                 </React.Fragment>
             )}
-            {getAccounts({ landing_companies, platform, is_logged_in })
+            {getAccounts({ landing_companies, platform, is_logged_in, is_uk })
                 .filter(item => !!item[platform]?.footnote)
                 .map((account, index) => {
                     return (
@@ -439,14 +466,14 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies,
     );
 };
 
-const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related, residence }) => {
+const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related, residence, is_eu, is_uk }) => {
     const [cols, setCols] = React.useState([]);
     const [template_columns, updateColumnsStyle] = React.useState(
         platform === CFD_PLATFORMS.DXTRADE ? '1.5fr 1fr 2fr' : '1.5fr 1fr 2fr 1fr'
     );
 
     React.useEffect(() => {
-        setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence }));
+        setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence, is_uk }));
 
         if (is_logged_in) {
             if (platform === CFD_PLATFORMS.MT5) {
@@ -499,7 +526,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                                             type: 'financial',
                                         }) && (
                                             <Table.Head>
-                                                {localize('Financial')}
+                                                {is_eu ? localize('CFDs') : localize('Financial')}
                                                 <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
                                                     *
                                                 </Text>
@@ -557,6 +584,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                     show_risk_message={show_risk_message}
                     landing_companies={landing_companies}
                     is_logged_in={is_logged_in}
+                    is_uk={is_uk}
                 />
             </ThemedScrollbars>
         </Div100vhContainer>
@@ -571,6 +599,7 @@ const CompareAccountsModal = ({
     is_loading,
     is_logged_in,
     is_eu,
+    is_uk,
     is_eu_country,
     platform,
     residence,
@@ -619,6 +648,8 @@ const CompareAccountsModal = ({
                             platform={platform}
                             show_eu_related={show_eu_related}
                             residence={residence}
+                            is_eu={is_eu}
+                            is_uk={is_uk}
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -636,6 +667,8 @@ const CompareAccountsModal = ({
                             platform={platform}
                             show_eu_related={show_eu_related}
                             residence={residence}
+                            is_eu={is_eu}
+                            is_uk={is_uk}
                         />
                     </MobileDialog>
                 </MobileWrapper>
@@ -650,6 +683,7 @@ export default connect(({ modules, ui, client }) => ({
     is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,
     is_loading: client.is_populating_mt5_account_list,
     is_eu: client.is_eu,
+    is_uk: client.is_uk,
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
     landing_companies: client.landing_companies,

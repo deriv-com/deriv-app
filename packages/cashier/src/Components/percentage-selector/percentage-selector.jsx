@@ -54,32 +54,31 @@ const PercentageSelector = ({
         <React.Fragment>
             <div className='percentage-selector'>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
+                    <Text color='prominent' size='xs' className='percentage-selector__text'>
                         {'25%'}
                     </Text>
                     <div id='1' className='percentage-selector-block' onClick={e => calculateAmount(e, 25)} />
                 </div>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
+                    <Text color='prominent' size='xs' className='percentage-selector__text'>
                         {'50%'}
                     </Text>
                     <div id='2' className='percentage-selector-block' onClick={e => calculateAmount(e, 50)} />
                 </div>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
+                    <Text color='prominent' size='xs' className='percentage-selector__text'>
                         {'75%'}
                     </Text>
                     <div id='3' className='percentage-selector-block' onClick={e => calculateAmount(e, 75)} />
                 </div>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
+                    <Text color='prominent' size='xs' className='percentage-selector__text'>
                         <Localize i18n_default_text='All' />
                     </Text>
                     <div id='4' className='percentage-selector-block' onClick={e => calculateAmount(e, 100)} />
                 </div>
             </div>
-
-            <Text as='div' color='less-prominent' size='xxs' line_height='l'>
+            <Text color='less-prominent' size='xxs' line_height='l' className='percentage-selector__text'>
                 <Localize
                     i18n_default_text={`{{selected_percentage}}% of available balance ({{format_amount}} {{currency__display_code}})`}
                     values={{ selected_percentage, format_amount, currency__display_code }}

@@ -330,7 +330,7 @@ export default class CFDStore extends BaseStore {
             this.root_store.client.responseMt5LoginList(mt5_login_list_response);
 
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
-            this.root_store.client.responseTradingServers(await WS.tradingServers());
+            this.root_store.client.responseMT5TradingServers(await WS.tradingServers(CFD_PLATFORMS.MT5));
             this.setCFDNewAccount(response.mt5_new_account);
         } else {
             await this.getAccountStatus(CFD_PLATFORMS.MT5);

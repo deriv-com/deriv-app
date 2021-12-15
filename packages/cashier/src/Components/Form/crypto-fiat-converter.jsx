@@ -6,6 +6,7 @@ import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
+import 'Sass/crypto-fiat-converter.scss';
 
 const Timer = props => {
     const initial_time = 60;
@@ -24,7 +25,7 @@ const Timer = props => {
     });
 
     return (
-        <Text as='p' size='xs' className='timer'>
+        <Text as='p' size='xs' color='less-prominent' className='timer'>
             <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time }} />
         </Text>
     );
@@ -67,30 +68,27 @@ const CryptoFiatConverter = ({
     }, [from_currency]);
 
     return (
-        <div className='crypto-fiat-converter-form'>
+        <div className='crypto-fiat-converter'>
             <Field name='converter_from_amount' validate={validateFromAmount}>
                 {({ field }) => (
-                    <fieldset>
-                        <Input
-                            {...field}
-                            onFocus={() => {
-                                setArrowIconDirection('right');
-                            }}
-                            onChange={e => {
-                                onChangeConverterFromAmount(e, from_currency, to_currency);
-                                handleChange(e);
-                            }}
-                            type='text'
-                            error={converter_from_error}
-                            label={localize('Amount ({{currency}})', {
-                                currency: getCurrencyDisplayCode(from_currency),
-                            })}
-                            value={converter_from_amount}
-                            autoComplete='off'
-                            required
-                            hint={hint}
-                        />
-                    </fieldset>
+                    <Input
+                        {...field}
+                        onFocus={() => {
+                            setArrowIconDirection('right');
+                        }}
+                        onChange={e => {
+                            onChangeConverterFromAmount(e, from_currency, to_currency);
+                            handleChange(e);
+                        }}
+                        type='text'
+                        error={converter_from_error}
+                        label={localize('Amount ({{currency}})', { currency: getCurrencyDisplayCode(from_currency) })}
+                        value={converter_from_amount}
+                        autoComplete='off'
+                        required
+                        hint={hint}
+                        classNameHint='crypto-fiat-converter__hint'
+                    />
                 )}
             </Field>
             <MobileWrapper>
@@ -117,6 +115,7 @@ const CryptoFiatConverter = ({
                             value={converter_to_amount}
                             autoComplete='off'
                             hint={localize('Approximate value')}
+                            classNameHint='crypto-fiat-converter__hint'
                         />
                         {is_timer_visible && (
                             <Timer

@@ -13,6 +13,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
     const [selected_category, setSelectedCategory] = React.useState(null);
     const [search_query, setSearchQuery] = React.useState('');
     const [item, setItem] = React.useState(null);
+    const [selected_item, setSelectedItem] = React.useState(null);
 
     React.useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -30,19 +31,20 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
 
     const handleCategoryClick = ({ label }) => setSelectedCategory(label);
 
-    const handleSelect = (selectedItem, e) => {
+    const handleSelect = (clicked_item, e) => {
         if (e.target.id !== 'info-icon') {
             setDialogVisibility(false);
             setInfoDialogVisibility(false);
-            setItem(selectedItem);
+            setItem(clicked_item);
+            setSelectedItem(clicked_item);
         }
     };
 
     React.useEffect(() => {
-        if (item && item.value !== value) {
-            onChange({ target: { name, value: item.value } });
+        if (selected_item && selected_item.value !== value) {
+            onChange({ target: { name, value: selected_item.value } });
         }
-    }, [item]);
+    }, [selected_item]);
 
     const handleInfoClick = clicked_item => {
         setInfoDialogVisibility(!is_info_dialog_open);
@@ -85,9 +87,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
         const multipliers_category = list.filter(
             contract_category => contract_category.label === localize('Multipliers')
         );
-        const options_category = list.filter(
-            contract_category => contract_category.label !== localize('Multipliers')
-        );
+        const options_category = list.filter(contract_category => contract_category.label !== localize('Multipliers'));
 
         const categories = [];
 

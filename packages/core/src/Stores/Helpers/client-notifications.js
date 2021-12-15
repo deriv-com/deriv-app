@@ -641,7 +641,6 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
         account_status,
         getRiskAssessment,
         is_eu,
-        residence,
         landing_company_shortcode,
         has_malta_account,
         custom_notifications,
@@ -666,8 +665,6 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
     const { withdrawal_locked, deposit_locked } = getStatusValidations(account_status?.status || []);
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
-
-    await residence;
 
     if (
         (has_iom_account || has_malta_account) &&

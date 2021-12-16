@@ -32,26 +32,4 @@
             width: 100%;
         }
     }
-    &__crypto-fiat-converter {
-        width: fit-content;
-        @include desktop {
-            /* To fit the content in Firefox */
-            @-moz-document url-prefix('') {
-                max-width: 57%;
-            }
-        }
-        // fix for safari bug with header being truncated
-        @media not all and (min-resolution: 0.001dpcm) {
-            // stylelint-disable-line
-            @supports (-webkit-appearance: none) {
-                /* postcss-bem-linter: ignore */
-                @include desktop {
-                    max-width: 57%;
-                }
-            }
-        }
-        @include mobile {
-            width: 100%;
-        }
-    }
 }

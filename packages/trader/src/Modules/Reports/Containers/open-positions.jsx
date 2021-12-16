@@ -122,7 +122,7 @@ const MobileRowRenderer = ({ row, is_footer, columns_map, server_time, onClickCa
     );
 };
 
-const OpenPositionsTable = ({
+export const OpenPositionsTable = ({
     className,
     columns,
     component_icon,
@@ -289,6 +289,7 @@ const OpenPositions = ({
     onClickSell,
     onMount,
     server_time,
+    qqq,
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier contract
@@ -307,6 +308,11 @@ const OpenPositions = ({
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // eslint-disable-next-line no-console
+    console.log('OpenPositions active_positions: ', active_positions);
+    // eslint-disable-next-line no-console
+    console.log('OpenPositions qqq: ', qqq);
 
     React.useEffect(() => {
         checkForMultiplierContract(previous_active_positions);
@@ -440,4 +446,5 @@ export default connect(({ modules, client, common, ui }) => ({
     onClickSell: modules.portfolio.onClickSell,
     onMount: modules.portfolio.onMount,
     server_time: common.server_time,
+    qqq: modules,
 }))(withRouter(OpenPositions));

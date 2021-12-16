@@ -306,12 +306,7 @@ export default class TradeStore extends BaseStore {
             showUnavailableLocationError(showError, is_logged_in);
         }
 
-        const notification_messages = this.root_store.ui.notification_messages;
-        this.root_store.ui.notification_messages = [];
         const { active_symbols, error } = await WS.authorized.activeSymbols();
-        runInAction(() => {
-            this.root_store.ui.notification_messages = notification_messages;
-        });
 
         if (error) {
             showError({ message: localize('Trading is unavailable at this time.') });

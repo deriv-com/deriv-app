@@ -19,7 +19,7 @@ const MyProfileHeader = () => {
             value: my_profile_tabs.PAYMENT_METHODS,
         },
         {
-            text: localize('Ad template'),
+            text: localize('Ad details'),
             value: my_profile_tabs.AD_TEMPLATE,
         },
     ];

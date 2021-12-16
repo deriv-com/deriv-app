@@ -10,8 +10,10 @@ const AddPaymentMethod = () => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
-        // my_profile_store.setSelectedPaymentMethod('');
-        my_profile_store.getPaymentMethodsList();
+        // my_profile_store.setIsLoading(true);
+        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+        my_profile_store.setSelectedPaymentMethod('');
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

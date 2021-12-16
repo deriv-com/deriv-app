@@ -45,7 +45,7 @@ const Autocomplete = React.memo(props => {
         value,
         ...other_props
     } = props;
-    console.log(list_items);
+
     const dropdown_ref = React.useRef();
     const list_wrapper_ref = React.useRef();
     const list_item_ref = React.useRef();

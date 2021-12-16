@@ -1,0 +1,25 @@
+.add-payment-method {
+    &__cross-icon {
+        cursor: pointer;
+    }
+
+    &-form {
+        &__buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: end;
+
+            &--add {
+                margin-left: 0.8rem;
+            }
+        }
+
+        &__field {
+            -webkit-text-fill-color: var(--text-prominent) !important;
+        }
+
+        &__payment-method-field {
+            margin: 3.8rem 0;
+        }
+    }
+}

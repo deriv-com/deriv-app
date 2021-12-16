@@ -36,6 +36,40 @@
             }
         }
     }
+
+    &-line {
+        border-top: 1px solid var(--general-section-1);
+        margin: 1.6rem 0;
+        width: 100%;
+    }
+
+    &-payment-method {
+        &--container {
+            align-self: center;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.6rem;
+        }
+
+        &--icon {
+            border-radius: 2px;
+            margin-right: 0.8rem;
+        }
+
+        &--row {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+        }
+
+        &--title {
+            margin-bottom: 0.8rem;
+        }
+    }
+
+    &--sell-payment-methods {
+        margin-bottom: 1.6rem;
+    }
 }
 
 .buy-sell__modal-content {

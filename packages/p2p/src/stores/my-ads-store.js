@@ -52,6 +52,25 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    getAdvertInfo() {
+        this.setIsFormLoading(true);
+        this.setEditAdFormError('');
+
+        requestWS({
+            p2p_advert_info: 1,
+            id: this.selected_ad_id,
+        }).then(response => {
+            if (!response.error) {
+                const { p2p_advert_info } = response;
+                this.setP2pAdvertInformation(p2p_advert_info);
+            } else {
+                this.setEditAdFormError(response.error.message);
+            }
+            this.setIsFormLoading(false);
+        });
+    }
+
+    @action.bound
     getAdvertiserInfo() {
         this.setIsFormLoading(true);
 
@@ -182,6 +201,53 @@ export default class MyAdsStore extends BaseStore {
     onClickDelete(id) {
         this.setSelectedAdId(id);
         this.setIsDeleteModalOpen(true);
+    }
+
+    @action.bound
+    onClickEdit(id) {
+        this.setSelectedAdId(id);
+        this.setShowEditAdForm(true);
+    }
+
+    @action.bound
+    onClickSaveEditAd(values, { setSubmitting }) {
+        this.setEditAdFormError('');
+
+        const is_sell_ad = values.type === buy_sell.SELL;
+
+        const update_advert = {
+            p2p_advert_update: 1,
+            amount: Number(values.offer_amount),
+            max_order_amount: Number(values.max_transaction),
+            min_order_amount: Number(values.min_transaction),
+            // TODO: Allow for other types of payment_method.
+            // payment_method: 'bank_transfer',
+            rate: Number(values.price_rate),
+        };
+
+        if (values.contact_info && is_sell_ad) {
+            update_advert.contact_info = values.contact_info;
+        }
+
+        if (values.payment_info && is_sell_ad) {
+            update_advert.payment_info = values.payment_info;
+        }
+
+        if (values.default_advert_description) {
+            update_advert.description = values.default_advert_description;
+        }
+
+        requestWS(update_advert).then(response => {
+            // If there's an error, let the user submit the form again.
+            // If there's no error, send them back to the list of ads.
+            if (response.error) {
+                this.setEditAdFormError(response.error.message);
+                setSubmitting(false);
+                this.setIsEditErrorModalVisible(true);
+            } else {
+                this.setShowAdForm(false);
+            }
+        });
     }
 
     @action.bound

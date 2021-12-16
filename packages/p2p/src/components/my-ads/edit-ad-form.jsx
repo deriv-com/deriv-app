@@ -1,26 +1,17 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
-import {
-    Button,
-    Checkbox,
-    Div100vhContainer,
-    Input,
-    Modal,
-    RadioGroup,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { Button, Div100vhContainer, Input, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
-import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
+import PageReturn from 'Components/page-return/page-return.jsx';
 import CreateAdSummary from './create-ad-summary.jsx';
 
-const CreateAdFormWrapper = ({ children }) => {
+const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
         return <Div100vhContainer height_offset='auto'>{children}</Div100vhContainer>;
     }
@@ -28,76 +19,45 @@ const CreateAdFormWrapper = ({ children }) => {
     return children;
 };
 
-const CreateAdForm = () => {
-    const { general_store, my_ads_store } = useStores();
+const EditAdForm = () => {
+    const { my_ads_store } = useStores();
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
 
-    const { currency, local_currency_config } = general_store.client;
-
-    const should_not_show_auto_archive_message_again = React.useRef(false);
-
-    const onCheckboxChange = () =>
-        (should_not_show_auto_archive_message_again.current = !should_not_show_auto_archive_message_again.current);
-
-    const onClickOkCreatedAd = () => {
-        localStorage.setItem(
-            'should_not_show_auto_archive_message',
-            JSON.stringify(should_not_show_auto_archive_message_again.current)
-        );
-        my_ads_store.setIsAdCreatedModalVisible(false);
-        my_ads_store.setShowAdForm(false);
-    };
-
-    React.useEffect(() => {
-        const disposeApiErrorReaction = reaction(
-            () => my_ads_store.api_error_message,
-            () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
-        );
-
-        return () => {
-            disposeApiErrorReaction();
-            my_ads_store.setApiErrorMessage('');
-        };
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    React.useEffect(() => {
-        const ad_website_status = setInterval(() => {
-            if (my_ads_store.is_ad_created_modal_visible) {
-                my_ads_store.getWebsiteStatus();
-            }
-        }, 10000);
-
-        return () => {
-            clearInterval(ad_website_status);
-        };
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [my_ads_store.is_ad_created_modal_visible]);
+    const {
+        account_currency,
+        amount_display,
+        contact_info,
+        description,
+        local_currency,
+        max_order_amount_display,
+        min_order_amount_display,
+        payment_info,
+        rate_display,
+        type,
+    } = my_ads_store.p2p_advert_information;
 
     return (
         <React.Fragment>
+            <PageReturn
+                onClick={() => my_ads_store.setShowEditAdForm(false)}
+                page_title={localize('Edit {{ad_type}} ad', { ad_type: type })}
+            />
             <Formik
                 initialValues={{
-                    contact_info: my_ads_store.contact_info,
-                    default_advert_description: my_ads_store.default_advert_description,
-                    max_transaction: '',
-                    min_transaction: '',
-                    offer_amount: '',
-                    payment_info: my_ads_store.payment_info,
-                    price_rate: '',
-                    type: buy_sell.BUY,
+                    contact_info,
+                    description,
+                    max_transaction: max_order_amount_display,
+                    min_transaction: min_order_amount_display,
+                    offer_amount: amount_display,
+                    payment_info,
+                    price_rate: rate_display,
+                    type,
                 }}
-                onSubmit={my_ads_store.handleSubmit}
+                onSubmit={my_ads_store.onClickSaveEditAd}
                 validate={my_ads_store.validateCreateAdForm}
-                initialErrors={{
-                    // Pass one error to ensure Post ad button is disabled initially.
-                    offer_amount: true,
-                }}
             >
-                {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
+                {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
                     return (
@@ -112,28 +72,7 @@ const CreateAdForm = () => {
                                     className='p2p-my-ads__form-scrollbar'
                                     is_scrollbar_hidden={isMobile()}
                                 >
-                                    <CreateAdFormWrapper>
-                                        <Field name='type'>
-                                            {({ field }) => (
-                                                <RadioGroup
-                                                    {...field}
-                                                    className='p2p-my-ads__form-radio-group'
-                                                    name='type'
-                                                    onToggle={event => setFieldValue('type', event.target.value)}
-                                                    selected={values.type}
-                                                    required
-                                                >
-                                                    <RadioGroup.Item
-                                                        value={buy_sell.BUY}
-                                                        label={localize('Buy {{currency}}', { currency })}
-                                                    />
-                                                    <RadioGroup.Item
-                                                        value={buy_sell.SELL}
-                                                        label={localize('Sell {{currency}}', { currency })}
-                                                    />
-                                                </RadioGroup>
-                                            )}
-                                        </Field>
+                                    <EditAdFormWrapper>
                                         <div className='p2p-my-ads__form-summary'>
                                             <CreateAdSummary
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
@@ -157,7 +96,7 @@ const CreateAdForm = () => {
                                                                 line_height='m'
                                                                 size={isDesktop() ? 'xxs' : 's'}
                                                             >
-                                                                {currency}
+                                                                {account_currency}
                                                             </Text>
                                                         }
                                                         onChange={e => {
@@ -170,10 +109,10 @@ const CreateAdForm = () => {
                                                                 ? undefined
                                                                 : localize('Your DP2P balance is {{ dp2p_balance }}', {
                                                                       dp2p_balance: `${formatMoney(
-                                                                          currency,
+                                                                          account_currency,
                                                                           available_balance,
                                                                           true
-                                                                      )} ${currency}`,
+                                                                      )} ${account_currency}`,
                                                                   })
                                                         }
                                                         is_relative_hint
@@ -188,8 +127,8 @@ const CreateAdForm = () => {
                                                         data-lpignore='true'
                                                         type='text'
                                                         error={touched.price_rate && errors.price_rate}
-                                                        label={localize('Fixed rate (1 {{currency}})', {
-                                                            currency,
+                                                        label={localize('Fixed rate (1 {{account_currency}})', {
+                                                            account_currency,
                                                         })}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
@@ -198,7 +137,7 @@ const CreateAdForm = () => {
                                                                 line_height='m'
                                                                 size={isDesktop() ? 'xxs' : 's'}
                                                             >
-                                                                {local_currency_config.currency}
+                                                                {local_currency}
                                                             </Text>
                                                         }
                                                         onChange={e => {
@@ -225,7 +164,7 @@ const CreateAdForm = () => {
                                                                 line_height='m'
                                                                 size={isDesktop() ? 'xxs' : 's'}
                                                             >
-                                                                {currency}
+                                                                {account_currency}
                                                             </Text>
                                                         }
                                                         onChange={e => {
@@ -250,7 +189,7 @@ const CreateAdForm = () => {
                                                                 line_height='m'
                                                                 size={isDesktop() ? 'xxs' : 's'}
                                                             >
-                                                                {currency}
+                                                                {account_currency}
                                                             </Text>
                                                         }
                                                         onChange={e => {
@@ -277,7 +216,7 @@ const CreateAdForm = () => {
                                                             error={touched.payment_info && errors.payment_info}
                                                             hint={localize('e.g. your bank/e-wallet account details')}
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={my_ads_store.payment_info.length}
+                                                            initial_character_count={payment_info.length}
                                                             required
                                                             has_character_counter
                                                             max_characters={300}
@@ -297,7 +236,7 @@ const CreateAdForm = () => {
                                                             }
                                                             error={touched.contact_info && errors.contact_info}
                                                             className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={my_ads_store.contact_info.length}
+                                                            initial_character_count={contact_info.length}
                                                             required
                                                             has_character_counter
                                                             max_characters={300}
@@ -306,16 +245,13 @@ const CreateAdForm = () => {
                                                 </Field>
                                             </React.Fragment>
                                         )}
-                                        <Field name='default_advert_description'>
+                                        <Field name='description'>
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
                                                     type='textarea'
-                                                    error={
-                                                        touched.default_advert_description &&
-                                                        errors.default_advert_description
-                                                    }
+                                                    error={touched.description && errors.description}
                                                     label={
                                                         <Text color='less-prominent' size='xs'>
                                                             <Localize i18n_default_text='Instructions (optional)' />
@@ -323,15 +259,14 @@ const CreateAdForm = () => {
                                                     }
                                                     hint={localize('This information will be visible to everyone.')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                    initial_character_count={
-                                                        my_ads_store.default_advert_description.length
-                                                    }
+                                                    initial_character_count={description && description.length}
                                                     has_character_counter
                                                     max_characters={300}
                                                     required
                                                 />
                                             )}
                                         </Field>
+
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
                                                 className='p2p-my-ads__form-button'
@@ -344,14 +279,15 @@ const CreateAdForm = () => {
                                             </Button>
                                             <Button
                                                 className='p2p-my-ads__form-button'
+                                                has_effect
                                                 primary
                                                 large
-                                                is_disabled={isSubmitting || !isValid}
+                                                is_disabled={!dirty || isSubmitting || !isValid}
                                             >
-                                                <Localize i18n_default_text='Post ad' />
+                                                <Localize i18n_default_text='Save changes' />
                                             </Button>
                                         </div>
-                                    </CreateAdFormWrapper>
+                                    </EditAdFormWrapper>
                                 </ThemedScrollbars>
                             </Form>
                         </div>
@@ -360,54 +296,28 @@ const CreateAdForm = () => {
             </Formik>
             <Modal
                 className='p2p-my-ads__modal-error'
-                is_open={my_ads_store.is_api_error_modal_visible}
+                is_open={my_ads_store.is_edit_ad_error_modal_visible}
                 small
                 has_close_icon={false}
                 title={localize('Something’s not right')}
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>
-                        {my_ads_store.api_error_message}
+                        {my_ads_store.edit_ad_form_error}
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
                         has_effect
                         text={localize('Ok')}
-                        onClick={() => my_ads_store.setIsApiErrorModalVisible(false)}
+                        onClick={() => my_ads_store.setIsEditErrorModalVisible(false)}
                         primary
                         large
                     />
-                </Modal.Footer>
-            </Modal>
-
-            <Modal
-                className='p2p-my-ads__ad-created'
-                has_close_icon={false}
-                is_open={my_ads_store.is_ad_created_modal_visible}
-                small
-                title={localize("You've created an ad")}
-            >
-                <Modal.Body>
-                    <Text as='p' size='xs' color='prominent'>
-                        <Localize
-                            i18n_default_text="If the ad doesn't receive an order for {{adverts_archive_period}} days, it will be deactivated."
-                            values={{ adverts_archive_period: my_ads_store.adverts_archive_period }}
-                        />
-                    </Text>
-                    <br />
-                    <Checkbox
-                        label={localize('Don’t show this message again.')}
-                        onChange={onCheckboxChange}
-                        value={should_not_show_auto_archive_message_again.current}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button has_effect text={localize('Ok')} onClick={onClickOkCreatedAd} primary large />
                 </Modal.Footer>
             </Modal>
         </React.Fragment>
     );
 };
 
-export default observer(CreateAdForm);
+export default observer(EditAdForm);

@@ -65,6 +65,12 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                 <div className='buy-sell__header-row'>
                     <SearchBox />
                     <SortDropdown />
+                    <Icon
+                        className='buy-sell__header-row--filter'
+                        icon='IcFilter'
+                        onClick={() => buy_sell_store.setIsFilterModalOpen(true)}
+                        size={42}
+                    />
                 </div>
             </div>
             <div className='buy-sell__header-match-ads'>

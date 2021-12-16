@@ -11,6 +11,24 @@ $card-width: 456px;
         min-height: $card-height;
         max-height: $card-height;
     }
+
+    &--warning {
+        margin-bottom: 1.6rem;
+
+        @include mobile {
+            margin: 1rem 2rem;
+        }
+
+        .dc-hint-box {
+            &__icon {
+                @include mobile {
+                    align-self: flex-start;
+                    min-width: 16px;
+                    min-height: 16px;
+                }
+            }
+        }
+    }
 }
 
 .order-details-card {

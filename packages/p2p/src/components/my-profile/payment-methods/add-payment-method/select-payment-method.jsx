@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Formik, Field, Form } from 'formik';
-import { Autocomplete, Icon } from '@deriv/components';
+import { Autocomplete, Icon, Loading } from '@deriv/components';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 
@@ -9,9 +9,14 @@ const SelectPaymentMethod = () => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
-        // my_profile_store.getPaymentMethodsList();
+        my_profile_store.getPaymentMethodsList();
+        // my_profile_store.setIsLoading(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    if (!my_profile_store.payment_methods_list_items) {
+        return <Loading is_fullscreen={false} />;
+    }
 
     return (
         <Formik>

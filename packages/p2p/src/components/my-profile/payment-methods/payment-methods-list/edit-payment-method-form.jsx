@@ -4,9 +4,9 @@ import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal.jsx';
+// import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal.jsx';
 
-const AddPaymentMethodForm = ({ should_show_footer = true, should_show_other_payment_method_hint = true }) => {
+const EditPaymentMethodForm = ({ should_show_footer = true, should_show_other_payment_method_hint = true }) => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
@@ -23,7 +23,7 @@ const AddPaymentMethodForm = ({ should_show_footer = true, should_show_other_pay
 
     return (
         <React.Fragment>
-            <CancelAddPaymentMethodModal />
+            {/* <CancelAddPaymentMethodModal /> */}
             <Formik enableReinitialize initialValues={{}} onSubmit={my_profile_store.createPaymentMethod}>
                 {({ dirty, handleChange, isSubmitting }) => {
                     return (
@@ -105,4 +105,4 @@ const AddPaymentMethodForm = ({ should_show_footer = true, should_show_other_pay
     );
 };
 
-export default observer(AddPaymentMethodForm);
+export default observer(EditPaymentMethodForm);

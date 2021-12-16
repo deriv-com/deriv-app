@@ -135,6 +135,7 @@ import './common/ic-account-transfer.svg';
 import './common/ic-account-trash-can-dashboard.svg';
 import './common/ic-account-trash-can.svg';
 import './common/ic-add-bold.svg';
+import './common/ic-add-circle.svg';
 import './common/ic-add-outline.svg';
 import './common/ic-add-rounded.svg';
 import './common/ic-add.svg';

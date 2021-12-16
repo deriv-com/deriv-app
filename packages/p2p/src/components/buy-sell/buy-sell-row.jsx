@@ -37,6 +37,7 @@ const BuySellRow = ({ row: advert }) => {
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
+        payment_method_names,
         price_display,
     } = advert;
 
@@ -86,6 +87,17 @@ const BuySellRow = ({ row: advert }) => {
                             />
                         </Text>
                     </div>
+                    <div>
+                        {payment_method_names
+                            ? payment_method_names.map((payment_method, key) => {
+                                  return (
+                                      <div className='buy-sell-row__payment-method' key={key}>
+                                          {payment_method}
+                                      </div>
+                                  );
+                              })
+                            : null}
+                    </div>
                     {!is_my_advert && (
                         <Button primary large onClick={() => buy_sell_store.setSelectedAdvert(advert)}>
                             {is_buy_advert ? (
@@ -134,6 +146,19 @@ const BuySellRow = ({ row: advert }) => {
                 <Text color='profit-success' size='xs' line-height='m' weight='bold'>
                     {price_display} {local_currency}
                 </Text>
+            </Table.Cell>
+            <Table.Cell>
+                <div>
+                    {payment_method_names
+                        ? payment_method_names.map((payment_method, key) => {
+                              return (
+                                  <div className='buy-sell-row__payment-method' key={key}>
+                                      {payment_method}
+                                  </div>
+                              );
+                          })
+                        : null}
+                </div>
             </Table.Cell>
             {is_my_advert ? (
                 <Table.Cell />

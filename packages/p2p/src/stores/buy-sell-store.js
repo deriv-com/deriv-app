@@ -12,6 +12,7 @@ export default class BuySellStore extends BaseStore {
     @observable contact_info = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
+    @observable is_filter_modal_open = false;
     @observable is_loading = true;
     @observable is_submit_disabled = true;
     @observable items = [];
@@ -287,6 +288,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setIsFilterModalOpen(is_filter_modal_open) {
+        this.is_filter_modal_open = is_filter_modal_open;
+    }
+
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
@@ -366,8 +372,14 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     setSelectedAdvert(selected_advert) {
+        const { my_profile_store } = this.root_store;
+
         if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
+        } else if (this.is_sell_advert) {
+            this.getAdvertiserInfo();
+            this.setSelectedAdState(selected_advert);
+            this.setShouldShowPopup(true);
         } else {
             this.setSelectedAdState(selected_advert);
             this.setShouldShowPopup(true);

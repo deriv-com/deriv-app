@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ThemedScrollbars } from '@deriv/components';
+import { HintBox, Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -72,6 +72,17 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
+            <div className='order-details--warning'>
+                <HintBox
+                    icon='IcAlertWarning'
+                    message={
+                        <Text size='xxxs' color='prominent' line_height='xs'>
+                            <Localize i18n_default_text='To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.' />
+                        </Text>
+                    }
+                    is_warn
+                />
+            </div>
             <div className='order-details'>
                 <div className='order-details-card'>
                     <div className='order-details-card__header'>

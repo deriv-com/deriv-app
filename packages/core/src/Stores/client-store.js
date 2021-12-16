@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
+import { action, computed, computedFn, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
 import {
     redirectToLogin,
@@ -67,8 +67,8 @@ export default class ClientStore extends BaseStore {
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
 
-    // TODO: Temporary variable. Remove after MX account closure has finished.
-    @observable client_notifications = clientNotifications;
+    // // TODO: Temporary variable. Remove after MX account closure has finished.
+    // @observable client_notifications = clientNotifications; // Doesn't make sense to me (unused here, used in trade-store)
 
     // this will store the landing_company API response, including
     // financial_company: {}
@@ -599,30 +599,30 @@ export default class ClientStore extends BaseStore {
         return result;
     }
 
-    @computed
-    get custom_notifications() {
-        const notification_content = {
-            mx_mlt_notification: {
-                header: () => {
-                    if (this.has_malta_account || this.can_have_mlt_account) {
-                        return localize('Your Options account is scheduled to be closed');
-                    } else if (this.is_uk) {
-                        return localize('Your Gaming account is scheduled to be closed');
-                    }
-                    return localize('Your account is scheduled to be closed');
-                },
-                main: () => {
-                    if (this.has_malta_account || this.can_have_mlt_account) {
-                        return localize('Withdraw all funds from your Options account.');
-                    } else if (this.is_uk) {
-                        return localize('Please withdraw all your funds as soon as possible.');
-                    }
-                    return localize('Please proceed to withdraw your funds before 30 November 2021.');
-                },
-            },
-        };
-        return notification_content;
-    }
+    // @computed
+    // get custom_notifications() {
+    //     const notification_content = {
+    //         mx_mlt_notification: {
+    //             header: () => {
+    //                 if (this.has_malta_account || this.can_have_mlt_account) {
+    //                     return localize('Your Options account is scheduled to be closed');
+    //                 } else if (this.is_uk) {
+    //                     return localize('Your Gaming account is scheduled to be closed');
+    //                 }
+    //                 return localize('Your account is scheduled to be closed');
+    //             },
+    //             main: () => {
+    //                 if (this.has_malta_account || this.can_have_mlt_account) {
+    //                     return localize('Withdraw all funds from your Options account.');
+    //                 } else if (this.is_uk) {
+    //                     return localize('Please withdraw all your funds as soon as possible.');
+    //                 }
+    //                 return localize('Please proceed to withdraw your funds before 30 November 2021.');
+    //             },
+    //         },
+    //     };
+    //     return notification_content;
+    // }
 
     // Manual list of MLT countries during MLT/MX account removal.
     // Also needed to check onboarding modal text for specific country.
@@ -1148,7 +1148,8 @@ export default class ClientStore extends BaseStore {
         return filtered_list.length > 0 && filtered_list.every(acc => acc.is_disabled);
     };
 
-    getRiskAssessment = () => {
+    getRiskAssessment = computedFn(() => {
+        // returns unused variable
         if (!this.account_status) return false;
 
         const status = this.account_status?.status;
@@ -1156,7 +1157,7 @@ export default class ClientStore extends BaseStore {
         return this.isAccountOfType('financial')
             ? /(financial_assessment|trading_experience)_not_complete/.test(status)
             : /financial_assessment_not_complete/.test(status);
-    };
+    });
 
     shouldCompleteTax = () => {
         if (!this.isAccountOfType('financial')) return false;
@@ -1207,20 +1208,20 @@ export default class ClientStore extends BaseStore {
         this.switch_broadcast = false;
     }
 
-    @action.bound
-    refreshNotifications() {
-        this.root_store.ui.removeNotifications(true);
-        this.root_store.ui.removeAllNotificationMessages();
-        const client = this.accounts[this.loginid];
-        const { has_missing_required_field } = handleClientNotifications(
-            client,
-            this,
-            this.root_store.ui,
-            this.root_store.modules.cashier,
-            this.root_store.common
-        );
-        this.setHasMissingRequiredField(has_missing_required_field);
-    }
+    // @action.bound
+    // refreshNotifications() {
+    //     this.root_store.ui.removeNotifications(true);
+    //     this.root_store.ui.removeAllNotificationMessages();
+    //     const client = this.accounts[this.loginid];
+    //     const { has_missing_required_field } = handleClientNotifications(
+    //         client,
+    //         this,
+    //         this.root_store.ui,
+    //         this.root_store.modules.cashier,
+    //         this.root_store.common
+    //     );
+    //     this.setHasMissingRequiredField(has_missing_required_field); // sets unused variable
+    // }
 
     /**
      * We initially fetch things from local storage, and then do everything inside the store.
@@ -1307,7 +1308,7 @@ export default class ClientStore extends BaseStore {
                         this.root_store.common
                     );
                     if (client && !client.is_virtual) {
-                        this.setHasMissingRequiredField(has_missing_required_field);
+                        this.setHasMissingRequiredField(has_missing_required_field); // sets unused variable
                     }
                 });
             }
@@ -1431,7 +1432,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setHasMissingRequiredField(has_missing_required_field) {
-        this.has_missing_required_field = has_missing_required_field;
+        this.has_missing_required_field = has_missing_required_field; // unused
     }
 
     /**
@@ -1591,33 +1592,33 @@ export default class ClientStore extends BaseStore {
         );
     }
 
-    @action.bound
-    resetVirtualBalanceNotification(loginid) {
-        if (!this.is_logged_in) return;
-        if (!this.accounts[loginid].is_virtual) return;
-        const min_reset_limit = 1000;
-        const max_reset_limit = 999000;
-        const balance = parseInt(this.accounts[loginid].balance);
+    // @action.bound
+    // resetVirtualBalanceNotification(loginid) {
+    //     if (!this.is_logged_in) return;
+    //     if (!this.accounts[loginid].is_virtual) return;
+    //     const min_reset_limit = 1000;
+    //     const max_reset_limit = 999000;
+    //     const balance = parseInt(this.accounts[loginid].balance);
 
-        // Display notification message to user with virtual account to reset their balance
-        // if the balance is less than equals to 1000 or more than equals to 999000
-        if (balance <= min_reset_limit || balance >= max_reset_limit) {
-            let message = localize(
-                'Your demo account balance is low. Reset your balance to continue trading from your demo account.'
-            );
-            if (balance >= max_reset_limit)
-                message = localize(
-                    'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
-                );
-            this.root_store.ui.addNotificationMessage(
-                clientNotifications({}, { resetVirtualBalance: this.resetVirtualBalance, message })
-                    .reset_virtual_balance
-            );
-        } else {
-            this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
-            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
-        }
-    }
+    //     // Display notification message to user with virtual account to reset their balance
+    //     // if the balance is less than equals to 1000 or more than equals to 999000
+    //     if (balance <= min_reset_limit || balance >= max_reset_limit) {
+    //         let message = localize(
+    //             'Your demo account balance is low. Reset your balance to continue trading from your demo account.'
+    //         );
+    //         if (balance >= max_reset_limit)
+    //             message = localize(
+    //                 'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
+    //             );
+    //         this.root_store.ui.addNotificationMessage(
+    //             clientNotifications({}, { resetVirtualBalance: this.resetVirtualBalance, message })
+    //                 .reset_virtual_balance
+    //         );
+    //     } else {
+    //         this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
+    //         this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
+    //     }
+    // }
 
     @action.bound
     setBalanceActiveAccount(obj_balance) {

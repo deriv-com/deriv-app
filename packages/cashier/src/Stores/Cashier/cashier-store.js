@@ -1216,11 +1216,13 @@ export default class CashierStore extends BaseStore {
         if (bank) {
             this.config.payment_agent.filtered_list = [];
             this.config.payment_agent.list.forEach(payment_agent => {
-                if (
-                    payment_agent.supported_banks &&
-                    payment_agent.supported_banks.toLowerCase().split(',').indexOf(bank) !== -1
-                ) {
-                    this.config.payment_agent.filtered_list.push(payment_agent);
+                if (payment_agent.supported_banks) {
+                    const is_string = typeof payment_agent.supported_banks === 'string';
+                    const bank_index = is_string
+                        ? payment_agent.supported_banks?.toLowerCase().split(',').indexOf(bank)
+                        : payment_agent.supported_banks.map(x => x.payment_method).indexOf(bank);
+
+                    if (bank_index !== -1) this.config.payment_agent.filtered_list.push(payment_agent);
                 }
             });
         } else {

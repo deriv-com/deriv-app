@@ -101,8 +101,8 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
                     <PaymentAgentDetails
                         className='payment-agent-receipt__transferred-contact'
                         payment_agent_email={receipt.payment_agent_email}
-                        payment_agent_phone={receipt.payment_agent_phone}
-                        payment_agent_url={receipt.payment_agent_url}
+                        payment_agent_phones={receipt.payment_agent_phone}
+                        payment_agent_urls={receipt.payment_agent_url}
                     />
                 </div>
             )}

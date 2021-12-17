@@ -449,4 +449,4 @@ export default connect(({ modules, client, common, ui }) => ({
     server_time: common.server_time,
 }))(withRouter(OpenPositions));
 
-module.exports = OpenPositions;
+// module.exports = OpenPositions;

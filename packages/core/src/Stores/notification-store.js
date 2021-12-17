@@ -38,7 +38,7 @@ export default class NotificationStore extends BaseStore {
 
     constructor(root_store) {
         super({ root_store });
-        this.init(); // need to decide when exactly to initialize this store
+        // this.init(); // need to decide when exactly to initialize this store
     }
 
     @computed

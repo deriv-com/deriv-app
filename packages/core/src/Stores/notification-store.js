@@ -374,6 +374,7 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     setClientNotifications(ui = {}, client = {}, custom_header, custom_content) {
+        // TODO: Update links to app_2 links when components are done. (Mahdi)
         const notifications = {
             dp2p: {
                 key: 'dp2p',

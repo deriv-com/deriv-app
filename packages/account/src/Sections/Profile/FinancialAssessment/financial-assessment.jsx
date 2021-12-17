@@ -1006,7 +1006,7 @@ class FinancialAssessment extends React.Component {
 }
 
 // FinancialAssessment.propTypes = {};
-export default connect(({ client, common, ui }) => ({
+export default connect(({ client, common, notifications }) => ({
     account_status: client.account_status,
     is_authentication_needed: client.is_authentication_needed,
     is_virtual: client.is_virtual,
@@ -1017,6 +1017,6 @@ export default connect(({ client, common, ui }) => ({
     is_svg: client.is_svg,
     platform: common.platform,
     routeBackInApp: common.routeBackInApp,
-    removeNotificationMessage: ui.removeNotificationMessage,
-    removeNotificationByKey: ui.removeNotificationByKey,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    removeNotificationByKey: notifications.removeNotificationByKey,
 }))(withRouter(FinancialAssessment));

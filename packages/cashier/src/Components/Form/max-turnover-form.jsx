@@ -123,10 +123,10 @@ MaxTurnoverForm.propTypes = {
     removeNotificationMessageByKey: PropTypes.func,
 };
 
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ client, modules, notifications }) => ({
     currency: client.currency,
     onMount: modules.cashier.onMount,
     setErrorConfig: modules.cashier.setErrorConfig,
-    removeNotificationByKey: ui.removeNotificationByKey,
-    removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
+    removeNotificationByKey: notifications.removeNotificationByKey,
+    removeNotificationMessageByKey: notifications.removeNotificationMessageByKey,
 }))(MaxTurnoverForm);

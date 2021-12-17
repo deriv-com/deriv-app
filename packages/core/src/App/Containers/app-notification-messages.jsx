@@ -144,11 +144,11 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
 };
 
-export default connect(({ ui, client }) => ({
-    marked_notifications: ui.marked_notifications,
-    notification_messages: ui.notification_messages,
-    removeNotificationMessage: ui.removeNotificationMessage,
-    markNotificationMessage: ui.markNotificationMessage,
+export default connect(({ client, notifications }) => ({
+    marked_notifications: notifications.marked_notifications,
+    notification_messages: notifications.notification_messages,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    markNotificationMessage: notifications.markNotificationMessage,
     landing_company_shortcode: client.landing_company_shortcode,
     has_iom_account: client.has_iom_account,
     has_malta_account: client.has_malta_account,

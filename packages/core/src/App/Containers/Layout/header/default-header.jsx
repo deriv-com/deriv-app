@@ -10,7 +10,6 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import { connect } from 'Stores/connect';
-import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
@@ -22,6 +21,7 @@ const DefaultHeader = ({
     addNotificationMessage,
     app_routing_history,
     balance,
+    client_notifications,
     currency,
     country_standpoint,
     disableApp,
@@ -62,7 +62,7 @@ const DefaultHeader = ({
     toggleNotifications,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
-    const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
+    const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
@@ -197,6 +197,7 @@ DefaultHeader.propTypes = {
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
+    client_notifications: PropTypes.object,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
@@ -229,15 +230,16 @@ DefaultHeader.propTypes = {
     toggleNotifications: PropTypes.func,
 };
 
-export default connect(({ client, common, ui, menu, modules }) => ({
+export default connect(({ client, common, ui, menu, modules, notifications }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
     account_type: client.account_type,
     should_allow_authentication: client.should_allow_authentication,
-    addNotificationMessage: ui.addNotificationMessage,
+    addNotificationMessage: notifications.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
     is_mf: client.landing_company_shortcode === 'maltainvest',
+    client_notifications: notifications.client_notifications,
     currency: client.currency,
     country_standpoint: client.country_standpoint,
     disableApp: ui.disableApp,
@@ -254,7 +256,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_multipliers_only: client.is_multipliers_only,
-    is_notifications_visible: ui.is_notifications_visible,
+    is_notifications_visible: notifications.is_notifications_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
@@ -264,13 +266,13 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     menu_items: menu.extensions,
-    notifications_count: ui.filtered_notifications.length,
+    notifications_count: notifications.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
     is_options_blocked: client.is_options_blocked,
     platform: common.platform,
-    removeNotificationMessage: ui.removeNotificationMessage,
+    removeNotificationMessage: notifications.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
-    toggleNotifications: ui.toggleNotificationsModal,
+    toggleNotifications: notifications.toggleNotificationsModal,
 }))(withRouter(DefaultHeader));

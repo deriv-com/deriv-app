@@ -1157,7 +1157,7 @@ export class PersonalDetailsForm extends React.Component {
 }
 
 // PersonalDetailsForm.propTypes = {};
-export default connect(({ client }) => ({
+export default connect(({ client, notifications }) => ({
     account_settings: client.account_settings,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
@@ -1169,5 +1169,5 @@ export default connect(({ client }) => ({
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
 }))(withRouter(PersonalDetailsForm));

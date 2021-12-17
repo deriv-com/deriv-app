@@ -72,13 +72,13 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
     );
 };
 
-export default connect(({ client, common }) => ({
+export default connect(({ client, common, notifications }) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     fetchResidenceList: client.fetchResidenceList,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
 }))(CFDPOI);

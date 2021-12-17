@@ -448,5 +448,3 @@ export default connect(({ modules, client, common, ui }) => ({
     onUnmount: modules.portfolio.onUnmount,
     server_time: common.server_time,
 }))(withRouter(OpenPositions));
-
-// module.exports = OpenPositions;

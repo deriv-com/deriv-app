@@ -288,6 +288,7 @@ const OpenPositions = ({
     onClickCancel,
     onClickSell,
     onMount,
+    onUnmount,
     server_time,
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
@@ -305,8 +306,12 @@ const OpenPositions = ({
 
         checkForMultiplierContract();
 
+        return () => {
+            if (!isMobile()) onUnmount();
+        };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [active_positions, onMount, onUnmount]);
 
     React.useEffect(() => {
         checkForMultiplierContract(previous_active_positions);
@@ -425,6 +430,7 @@ OpenPositions.propTypes = {
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
     onMount: PropTypes.func,
+    onUnmount: PropTypes.func,
     server_time: PropTypes.object,
 };
 
@@ -439,6 +445,7 @@ export default connect(({ modules, client, common, ui }) => ({
     onClickCancel: modules.portfolio.onClickCancel,
     onClickSell: modules.portfolio.onClickSell,
     onMount: modules.portfolio.onMount,
+    onUnmount: modules.portfolio.onUnmount,
     server_time: common.server_time,
 }))(withRouter(OpenPositions));
 

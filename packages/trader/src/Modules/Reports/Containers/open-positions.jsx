@@ -260,7 +260,7 @@ const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selecte
         let profit_loss = 0;
         let payout = 0;
 
-        active_positions_filtered.forEach(portfolio_pos => {
+        active_positions_filtered?.forEach(portfolio_pos => {
             indicative += +portfolio_pos.indicative;
             purchase += +portfolio_pos.purchase;
             profit_loss += portfolio_pos.profit_loss;
@@ -289,7 +289,6 @@ const OpenPositions = ({
     onClickSell,
     onMount,
     server_time,
-    qqq,
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier contract
@@ -309,11 +308,6 @@ const OpenPositions = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // eslint-disable-next-line no-console
-    console.log('OpenPositions active_positions: ', active_positions);
-    // eslint-disable-next-line no-console
-    console.log('OpenPositions qqq: ', qqq);
-
     React.useEffect(() => {
         checkForMultiplierContract(previous_active_positions);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -331,7 +325,7 @@ const OpenPositions = ({
 
     const is_multiplier_selected = has_multiplier_contract && active_index === 1;
 
-    const active_positions_filtered = active_positions.filter(p => {
+    const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
             return is_multiplier_selected
                 ? isMultiplierContract(p.contract_info.contract_type)
@@ -446,5 +440,6 @@ export default connect(({ modules, client, common, ui }) => ({
     onClickSell: modules.portfolio.onClickSell,
     onMount: modules.portfolio.onMount,
     server_time: common.server_time,
-    qqq: modules,
 }))(withRouter(OpenPositions));
+
+module.exports = OpenPositions;

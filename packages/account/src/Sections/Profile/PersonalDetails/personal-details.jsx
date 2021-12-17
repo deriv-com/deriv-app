@@ -139,21 +139,19 @@ export const PersonalDetailsForm = ({
                 await WS.wait('get_settings');
 
                 fetchResidenceList();
-                if (has_residence && !states_list) {
+                if (has_residence) {
                     setIsStateLoading(true, () => {
                         fetchStatesList().then(() => {
                             setIsStateLoading(false);
                         });
                     });
                 }
-                initializeFormValues();
             };
             getSettings();
             first_render.current = false;
-        } else {
-            initializeFormValues();
         }
-    }, [account_settings, is_eu, is_mf]);
+        initializeFormValues();
+    }, [account_settings, is_eu, is_mf, first_render.current]);
 
     React.useEffect(() => {
         let timeout_id;

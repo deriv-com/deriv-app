@@ -13,7 +13,7 @@ describe('OpenPositions', () => {
         console.log(wrapper.debug());
     });
 
-    it("should render child <OpenPositionsTable /> component when passed in", () => {
+    it('should render child <OpenPositionsTable /> component when passed in', () => {
         const child_div = <OpenPositionsTable />;
         const wrapper = shallow(<OpenPositions>{child_div}</OpenPositions>);
         expect(wrapper.contains(child_div)).to.equal(true);

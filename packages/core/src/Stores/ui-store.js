@@ -65,7 +65,7 @@ export default class UIStore extends BaseStore {
     @observable is_onscreen_keyboard_active = false;
 
     // @observable notifications = [];
-    @observable notification_messages = [];
+    // @observable notification_messages = [];
     // @observable marked_notifications = [];
     // @observable push_notifications = [];
 

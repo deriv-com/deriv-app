@@ -1,30 +1,31 @@
-import React from 'react';
-import { action, computed, observable } from 'mobx';
-import {
-    getPathname,
-    LocalStore,
-    unique,
-    platform_name,
-    isMobile,
-    routes,
-    getUrlBase,
-    formatDate,
-    isCryptocurrency,
-    getStaticUrl,
-    isMultiplierContract,
-} from '@deriv/shared';
-import BaseStore from './base-store';
-import {
-    getStatusValidations,
-    checkAccountStatus,
-    hasMissingRequiredField,
-    excluded_notifications,
-} from './Helpers/client-notifications';
 import { StaticUrl } from '@deriv/components';
+import {
+    formatDate,
+    getPathname,
+    getStaticUrl,
+    getUrlBase,
+    isCryptocurrency,
+    isEmptyObject,
+    isMobile,
+    isMultiplierContract,
+    LocalStore,
+    platform_name,
+    routes,
+    unique,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
+import { action, computed, observable } from 'mobx';
+import React from 'react';
 import { WS } from 'Services';
 import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
+import BaseStore from './base-store';
+import {
+    excluded_notifications,
+    getCashierValidations,
+    getStatusValidations,
+    hasMissingRequiredField,
+} from './Helpers/client-notifications';
 
 export default class NotificationStore extends BaseStore {
     @observable is_notifications_visible = false;
@@ -86,9 +87,16 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
+    addVerificationNotifications(identity, document) {
+        if (identity.status === 'expired') this.addNotificationMessage(this.client_notifications.poi_expired);
+
+        if (document.status === 'expired') this.addNotificationMessage(this.client_notifications.poa_expired);
+    }
+
+    @action.bound
     filterNotificationMessages() {
         if (LocalStore.get('active_loginid') !== 'null')
-            this.root_store.client.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
+            this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
         this.notifications = this.notification_messages.filter(notification => {
             if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                 return true;
@@ -106,34 +114,39 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    handleClientNotifications(client, client_store, ui_store, cashier_store, common_store) {
+    handleClientNotifications() {
         const {
+            accounts,
             account_settings,
             account_status,
-            getRiskAssessment,
             is_eu,
             landing_company_shortcode,
             has_malta_account,
-            custom_notifications,
             has_iom_account,
             is_logged_in,
             is_tnc_needed,
             isAccountOfType,
             loginid,
-        } = client_store;
-        // const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
-        const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
-        const { current_language, selected_contract_type } = common_store;
+        } = this.root_store.client;
+        const { is_10k_withdrawal_limit_reached, is_p2p_visible } = this.root_store.modules.cashier;
+        const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const virtual_account = landing_company_shortcode === 'virtual';
-        const mx_mlt_custom_header = custom_notifications.mx_mlt_notification.header();
-        const mx_mlt_custom_content = custom_notifications.mx_mlt_notification.main();
+        const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
+        const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
 
-        let has_missing_required_field, has_risk_assessment;
+        let has_missing_required_field;
+
+        const {
+            authentication: { document, identity, needs_verification },
+            status,
+            cashier_validation,
+        } = account_status;
 
         const hidden_close_account_notification =
             parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
-        const { withdrawal_locked, deposit_locked } = getStatusValidations(account_status?.status || []);
+        const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
+            getStatusValidations(status || []);
 
         if (loginid !== LocalStore.get('active_loginid')) return {};
 
@@ -143,21 +156,98 @@ export default class NotificationStore extends BaseStore {
             is_logged_in &&
             !hidden_close_account_notification
         ) {
-            this.setClientNotifications(ui_store, {}, mx_mlt_custom_header, mx_mlt_custom_content);
+            this.setClientNotifications(this.root_store.ui, {}, mx_mlt_custom_header, mx_mlt_custom_content);
             this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
         }
-
+        const client = accounts[loginid];
         if (client && !client.is_virtual) {
-            ({ has_risk_assessment } = checkAccountStatus(
-                account_status,
-                client,
-                this.addNotificationMessage,
-                loginid,
-                getRiskAssessment,
-                isAccountOfType,
-                ui_store,
-                is_10k_withdrawal_limit_reached
-            ));
+            if (isEmptyObject(account_status)) return {};
+            if (loginid !== LocalStore.get('active_loginid')) return {};
+
+            const {
+                system_maintenance,
+                is_virtual,
+                no_residence,
+                documents_expired,
+                unwelcome_status,
+                no_withdrawal_or_trading_status,
+                withdrawal_locked_status,
+                cashier_locked_status,
+                FinancialAssessmentRequired,
+                SelfExclusion,
+                ASK_CURRENCY,
+                ASK_AUTHENTICATE,
+                ASK_FINANCIAL_RISK_APPROVAL,
+                ASK_TIN_INFORMATION,
+                ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
+                ASK_FIX_DETAILS,
+                ASK_UK_FUNDS_PROTECTION,
+            } = cashier_validation ? getCashierValidations(cashier_validation) : {};
+
+            this.addVerificationNotifications(identity, document);
+            const needs_poa =
+                is_10k_withdrawal_limit_reached &&
+                (needs_verification.includes('document') || document?.status !== 'verified');
+            const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+
+            if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
+            if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
+            if (system_maintenance) {
+                this.setClientNotifications({}, client);
+                this.addNotificationMessage(
+                    this.client_notifications.system_maintenance(withdrawal_locked, deposit_locked)
+                );
+            } else if (cashier_locked) {
+                if (is_virtual) {
+                    this.addNotificationMessage(this.client_notifications.is_virtual);
+                } else if (no_residence) {
+                    this.addNotificationMessage(this.client_notifications.no_residence);
+                } else if (documents_expired) {
+                    this.addNotificationMessage(this.client_notifications.documents_expired);
+                } else if (cashier_locked_status) {
+                    this.addNotificationMessage(this.client_notifications.cashier_locked);
+                } else if (ASK_CURRENCY) {
+                    this.setClientNotifications(this.root_store.ui);
+                    this.addNotificationMessage(this.client_notifications.currency);
+                } else if (ASK_AUTHENTICATE) {
+                    this.addNotificationMessage(this.client_notifications.authenticate);
+                } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
+                    this.addNotificationMessage(this.client_notifications.ask_financial_risk_approval);
+                } else if (FinancialAssessmentRequired) {
+                    this.addNotificationMessage(this.client_notifications.risk);
+                } else if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
+                    this.addNotificationMessage(this.client_notifications.tax);
+                } else if (ASK_UK_FUNDS_PROTECTION) {
+                    this.addNotificationMessage(this.client_notifications.ask_uk_funds_protection);
+                } else if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
+                    this.addNotificationMessage(this.client_notifications.max_turnover_limit_not_set);
+                } else if (ASK_FIX_DETAILS) {
+                    this.addNotificationMessage(
+                        this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
+                    );
+                } else {
+                    this.addNotificationMessage(this.client_notifications.cashier_locked);
+                }
+            } else {
+                if (withdrawal_locked && ASK_AUTHENTICATE) {
+                    this.addNotificationMessage(this.client_notifications.withdrawal_locked_review);
+                } else if (withdrawal_locked && no_withdrawal_or_trading_status) {
+                    this.addNotificationMessage(this.client_notifications.no_withdrawal_or_trading);
+                } else if (withdrawal_locked && withdrawal_locked_status) {
+                    this.addNotificationMessage(this.client_notifications.withdrawal_locked);
+                } else if (withdrawal_locked && ASK_FIX_DETAILS) {
+                    this.addNotificationMessage(
+                        this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
+                    );
+                }
+                if (deposit_locked && SelfExclusion) {
+                    this.addNotificationMessage(this.client_notifications.self_exclusion(client.excluded_until));
+                } else if (deposit_locked && unwelcome_status) {
+                    this.addNotificationMessage(this.client_notifications.unwelcome);
+                }
+            }
+            if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
+            if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
             if (is_p2p_visible) {
                 this.addNotificationMessage(this.client_notifications.dp2p);
             } else {
@@ -165,13 +255,13 @@ export default class NotificationStore extends BaseStore {
             }
 
             if (is_tnc_needed) {
-                this.setClientNotifications(ui_store);
+                this.setClientNotifications(this.root_store.ui);
                 this.addNotificationMessage(this.client_notifications.tnc);
             }
 
             has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
             if (has_missing_required_field) {
-                this.setClientNotifications(ui_store);
+                this.setClientNotifications(this.root_store.ui);
                 this.addNotificationMessage(
                     this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
                 );
@@ -183,17 +273,13 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
-
-        return {
-            has_missing_required_field, // unused
-            has_risk_assessment, // unused
-        };
     }
 
     @action.bound
     init() {
         this.setClientNotifications();
         this.setCustomNotifications();
+        this.handleClientNotifications();
     }
 
     @action.bound
@@ -203,17 +289,16 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     refreshNotifications() {
-        this.root_store.ui.removeNotifications(true);
-        this.root_store.ui.removeAllNotificationMessages();
-        const client = this.accounts[this.loginid];
-        const { has_missing_required_field } = this.handleClientNotifications(
-            client,
-            this,
-            this.root_store.ui,
-            this.root_store.modules.cashier,
-            this.root_store.common
-        );
-        this.setHasMissingRequiredField(has_missing_required_field); // sets unused variable
+        this.removeNotifications(true);
+        this.removeAllNotificationMessages();
+        this.handleClientNotifications();
+    }
+
+    @action.bound
+    removeAllNotificationMessages(should_close_persistent) {
+        this.notification_messages = should_close_persistent
+            ? []
+            : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
     }
 
     @action.bound
@@ -261,19 +346,13 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    removeAllNotificationMessages(should_close_persistent) {
-        this.notification_messages = should_close_persistent
-            ? []
-            : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
-    }
-
-    @action.bound
     resetVirtualBalanceNotification(loginid) {
-        if (!this.is_logged_in) return;
-        if (!this.accounts[loginid].is_virtual) return;
+        const { accounts, is_logged_in } = this.root_store.client;
+        if (!is_logged_in) return;
+        if (!accounts[loginid].is_virtual) return;
         const min_reset_limit = 1000;
         const max_reset_limit = 999000;
-        const balance = parseInt(this.accounts[loginid].balance);
+        const balance = parseInt(accounts[loginid].balance);
 
         // Display notification message to user with virtual account to reset their balance
         // if the balance is less than equals to 1000 or more than equals to 999000
@@ -286,10 +365,10 @@ export default class NotificationStore extends BaseStore {
                     'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
                 );
             this.setClientNotifications({}, { resetVirtualBalance: this.resetVirtualBalance, message });
-            this.root_store.ui.addNotificationMessage(this.client_notifications.reset_virtual_balance);
+            this.addNotificationMessage(this.client_notifications.reset_virtual_balance);
         } else {
-            this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
-            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
+            this.removeNotificationByKey({ key: 'reset_virtual_balance' });
+            this.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
         }
     }
 
@@ -731,20 +810,21 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     setCustomNotifications() {
+        const { has_malta_account, can_have_mlt_account, is_uk } = this.root_store.client;
         const notification_content = {
             mx_mlt_notification: {
                 header: () => {
-                    if (this.has_malta_account || this.can_have_mlt_account) {
+                    if (has_malta_account || can_have_mlt_account) {
                         return localize('Your Options account is scheduled to be closed');
-                    } else if (this.is_uk) {
+                    } else if (is_uk) {
                         return localize('Your Gaming account is scheduled to be closed');
                     }
                     return localize('Your account is scheduled to be closed');
                 },
                 main: () => {
-                    if (this.has_malta_account || this.can_have_mlt_account) {
+                    if (has_malta_account || can_have_mlt_account) {
                         return localize('Withdraw all funds from your Options account.');
-                    } else if (this.is_uk) {
+                    } else if (is_uk) {
                         return localize('Please withdraw all your funds as soon as possible.');
                     }
                     return localize('Please proceed to withdraw your funds before 30 November 2021.');

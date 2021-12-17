@@ -1148,16 +1148,16 @@ export default class ClientStore extends BaseStore {
         return filtered_list.length > 0 && filtered_list.every(acc => acc.is_disabled);
     };
 
-    getRiskAssessment = computedFn(() => {
-        // returns unused variable
-        if (!this.account_status) return false;
+    // getRiskAssessment = computedFn(() => {
+    //     // returns unused variable
+    //     if (!this.account_status) return false;
 
-        const status = this.account_status?.status;
+    //     const status = this.account_status?.status;
 
-        return this.isAccountOfType('financial')
-            ? /(financial_assessment|trading_experience)_not_complete/.test(status)
-            : /financial_assessment_not_complete/.test(status);
-    });
+    //     return this.isAccountOfType('financial')
+    //         ? /(financial_assessment|trading_experience)_not_complete/.test(status)
+    //         : /financial_assessment_not_complete/.test(status);
+    // });
 
     shouldCompleteTax = () => {
         if (!this.isAccountOfType('financial')) return false;
@@ -1300,16 +1300,11 @@ export default class ClientStore extends BaseStore {
                 BinarySocket.wait('landing_company').then(() => {
                     this.root_store.ui.removeNotifications();
                     this.root_store.ui.removeAllNotificationMessages();
-                    const { has_missing_required_field } = handleClientNotifications(
-                        client,
-                        this,
-                        this.root_store.ui,
-                        this.root_store.modules.cashier,
-                        this.root_store.common
-                    );
-                    if (client && !client.is_virtual) {
-                        this.setHasMissingRequiredField(has_missing_required_field); // sets unused variable
-                    }
+                    this.handleClientNotifications();
+                    // const { has_missing_required_field } = handleClientNotifications();
+                    // if (client && !client.is_virtual) {
+                    //     this.setHasMissingRequiredField(has_missing_required_field); // sets unused variable
+                    // }
                 });
             }
         );
@@ -1430,10 +1425,10 @@ export default class ClientStore extends BaseStore {
         this.switched = switched;
     }
 
-    @action.bound
-    setHasMissingRequiredField(has_missing_required_field) {
-        this.has_missing_required_field = has_missing_required_field; // unused
-    }
+    // @action.bound
+    // setHasMissingRequiredField(has_missing_required_field) {
+    //     this.has_missing_required_field = has_missing_required_field; // unused
+    // }
 
     /**
      * Check if account is disabled or not

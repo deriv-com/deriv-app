@@ -1118,7 +1118,6 @@ export default class TradeStore extends BaseStore {
         const {
             addNotificationMessage,
             client_notifications,
-            custom_notifications,
             notification_messages,
             setClientNotifications,
             unmarkNotificationMessage,
@@ -1135,14 +1134,7 @@ export default class TradeStore extends BaseStore {
                     const should_retain_notification =
                         (has_iom_account || has_malta_account) && !hidden_close_account_notification;
                     if (should_retain_notification) {
-                        const mx_mlt_custom_header_reaction = custom_notifications.mx_mlt_notification.header();
-                        const mx_mlt_custom_content_reaction = custom_notifications.mx_mlt_notification.main();
-                        setClientNotifications(
-                            this.root_store.ui,
-                            {},
-                            mx_mlt_custom_header_reaction,
-                            mx_mlt_custom_content_reaction
-                        );
+                        setClientNotifications();
                         addNotificationMessage(client_notifications.close_mx_mlt_account);
                     }
                 }

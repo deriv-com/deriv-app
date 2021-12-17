@@ -16,6 +16,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { action, computed, observable } from 'mobx';
+import { computedFn } from 'mobx-utils';
 import React from 'react';
 import { WS } from 'Services';
 import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
@@ -34,11 +35,36 @@ export default class NotificationStore extends BaseStore {
     @observable marked_notifications = [];
     @observable push_notifications = [];
     @observable client_notifications = {};
-    @observable custom_notifications = {};
 
     constructor(root_store) {
         super({ root_store });
-        // this.init(); // need to decide when exactly to initialize this store
+        this.init(); // need to decide when exactly to initialize this store
+    }
+
+    @computed
+    get custom_notifications() {
+        const { has_malta_account, can_have_mlt_account, is_uk } = this.root_store.client;
+        const notification_content = {
+            mx_mlt_notification: {
+                header: () => {
+                    if (has_malta_account || can_have_mlt_account) {
+                        return localize('Your Options account is scheduled to be closed');
+                    } else if (is_uk) {
+                        return localize('Your Gaming account is scheduled to be closed');
+                    }
+                    return localize('Your account is scheduled to be closed');
+                },
+                main: () => {
+                    if (has_malta_account || can_have_mlt_account) {
+                        return localize('Withdraw all funds from your Options account.');
+                    } else if (is_uk) {
+                        return localize('Please withdraw all your funds as soon as possible.');
+                    }
+                    return localize('Please proceed to withdraw your funds before 30 November 2021.');
+                },
+            },
+        };
+        return notification_content;
     }
 
     @computed
@@ -82,7 +108,7 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     addNotificationMessageByKey(key) {
-        this.setClientNotifications(this);
+        this.setClientNotifications();
         if (key) this.addNotificationMessage(this.client_notifications[key]);
     }
 
@@ -132,8 +158,6 @@ export default class NotificationStore extends BaseStore {
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const virtual_account = landing_company_shortcode === 'virtual';
-        const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
-        const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
 
         let has_missing_required_field;
 
@@ -156,7 +180,7 @@ export default class NotificationStore extends BaseStore {
             is_logged_in &&
             !hidden_close_account_notification
         ) {
-            this.setClientNotifications(this.root_store.ui, {}, mx_mlt_custom_header, mx_mlt_custom_content);
+            this.setClientNotifications();
             this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
         }
         const client = accounts[loginid];
@@ -193,7 +217,7 @@ export default class NotificationStore extends BaseStore {
             if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
             if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
             if (system_maintenance) {
-                this.setClientNotifications({}, client);
+                this.setClientNotifications(client);
                 this.addNotificationMessage(
                     this.client_notifications.system_maintenance(withdrawal_locked, deposit_locked)
                 );
@@ -207,7 +231,7 @@ export default class NotificationStore extends BaseStore {
                 } else if (cashier_locked_status) {
                     this.addNotificationMessage(this.client_notifications.cashier_locked);
                 } else if (ASK_CURRENCY) {
-                    this.setClientNotifications(this.root_store.ui);
+                    this.setClientNotifications();
                     this.addNotificationMessage(this.client_notifications.currency);
                 } else if (ASK_AUTHENTICATE) {
                     this.addNotificationMessage(this.client_notifications.authenticate);
@@ -255,13 +279,13 @@ export default class NotificationStore extends BaseStore {
             }
 
             if (is_tnc_needed) {
-                this.setClientNotifications(this.root_store.ui);
+                this.setClientNotifications();
                 this.addNotificationMessage(this.client_notifications.tnc);
             }
 
             has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
             if (has_missing_required_field) {
-                this.setClientNotifications(this.root_store.ui);
+                this.setClientNotifications();
                 this.addNotificationMessage(
                     this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
                 );
@@ -278,8 +302,6 @@ export default class NotificationStore extends BaseStore {
     @action.bound
     init() {
         this.setClientNotifications();
-        this.setCustomNotifications();
-        this.handleClientNotifications();
     }
 
     @action.bound
@@ -364,7 +386,7 @@ export default class NotificationStore extends BaseStore {
                 message = localize(
                     'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
                 );
-            this.setClientNotifications({}, { resetVirtualBalance: this.resetVirtualBalance, message });
+            this.setClientNotifications({ resetVirtualBalance: this.resetVirtualBalance, message });
             this.addNotificationMessage(this.client_notifications.reset_virtual_balance);
         } else {
             this.removeNotificationByKey({ key: 'reset_virtual_balance' });
@@ -373,8 +395,12 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    setClientNotifications(ui = {}, client = {}, custom_header, custom_content) {
+    setClientNotifications(client = {}) {
         // TODO: Update links to app_2 links when components are done. (Mahdi)
+        const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
+        const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
+        const { ui } = this.root_store;
+
         const notifications = {
             dp2p: {
                 key: 'dp2p',
@@ -392,8 +418,8 @@ export default class NotificationStore extends BaseStore {
             },
             close_mx_mlt_account: {
                 key: 'close_mx_mlt_account',
-                header: custom_header,
-                message: custom_content,
+                header: mx_mlt_custom_header,
+                message: mx_mlt_custom_content,
                 secondary_btn: {
                     text: localize('Learn more'),
                     onClick: () => {
@@ -807,32 +833,6 @@ export default class NotificationStore extends BaseStore {
             },
         };
         this.client_notifications = notifications;
-    }
-
-    @action.bound
-    setCustomNotifications() {
-        const { has_malta_account, can_have_mlt_account, is_uk } = this.root_store.client;
-        const notification_content = {
-            mx_mlt_notification: {
-                header: () => {
-                    if (has_malta_account || can_have_mlt_account) {
-                        return localize('Your Options account is scheduled to be closed');
-                    } else if (is_uk) {
-                        return localize('Your Gaming account is scheduled to be closed');
-                    }
-                    return localize('Your account is scheduled to be closed');
-                },
-                main: () => {
-                    if (has_malta_account || can_have_mlt_account) {
-                        return localize('Withdraw all funds from your Options account.');
-                    } else if (is_uk) {
-                        return localize('Please withdraw all your funds as soon as possible.');
-                    }
-                    return localize('Please proceed to withdraw your funds before 30 November 2021.');
-                },
-            },
-        };
-        this.custom_notifications = notification_content;
     }
 
     @action.bound

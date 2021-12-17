@@ -452,7 +452,7 @@ export default class RunPanelStore {
 
     @action.bound
     showErrorMessage(data) {
-        const { journal, ui } = this.root_store;
+        const { journal, notifications } = this.root_store;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
             this.toggleDrawer(true);
@@ -465,7 +465,7 @@ export default class RunPanelStore {
 
     @action.bound
     switchToJournal() {
-        const { journal, ui } = this.root_store;
+        const { journal, notifications } = this.root_store;
         journal.journal_filters.push(message_types.ERROR);
         this.setActiveTabIndex(run_panel.JOURNAL);
         this.toggleDrawer(true);

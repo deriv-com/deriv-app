@@ -16,7 +16,6 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { action, computed, observable } from 'mobx';
-import { computedFn } from 'mobx-utils';
 import React from 'react';
 import { WS } from 'Services';
 import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
@@ -172,7 +171,7 @@ export default class NotificationStore extends BaseStore {
         const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
             getStatusValidations(status || []);
 
-        if (loginid !== LocalStore.get('active_loginid')) return {};
+        if (loginid !== LocalStore.get('active_loginid')) return;
 
         if (
             (has_iom_account || has_malta_account) &&
@@ -185,8 +184,8 @@ export default class NotificationStore extends BaseStore {
         }
         const client = accounts[loginid];
         if (client && !client.is_virtual) {
-            if (isEmptyObject(account_status)) return {};
-            if (loginid !== LocalStore.get('active_loginid')) return {};
+            if (isEmptyObject(account_status)) return;
+            if (loginid !== LocalStore.get('active_loginid')) return;
 
             const {
                 system_maintenance,

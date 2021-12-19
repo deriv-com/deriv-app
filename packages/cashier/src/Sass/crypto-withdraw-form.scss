@@ -14,6 +14,9 @@
             min-width: 36rem;
             width: fit-content;
         }
+        @include mobile {
+            align-items: center;
+        }
 
         > * {
             width: auto;

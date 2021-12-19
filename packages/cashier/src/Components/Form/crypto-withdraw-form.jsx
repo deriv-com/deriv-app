@@ -139,24 +139,24 @@ const CryptoWithdrawForm = ({
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}
                             />
-                        </div>
-                        <div className='cashier__form-submit crypto-withdraw-form-submit'>
-                            <Button
-                                className='cashier__form-submit-button'
-                                is_disabled={
-                                    validateAddress(values.address) ||
-                                    !!converter_from_error ||
-                                    !!converter_to_error ||
-                                    isSubmitting ||
-                                    !blockchain_address
-                                }
-                                type='submit'
-                                primary
-                                large
-                                onClick={() => requestWithdraw(verification_code)}
-                            >
-                                <Localize i18n_default_text='Withdraw' />
-                            </Button>
+                            <div className='crypto-withdraw-form-submit'>
+                                <Button
+                                    className='cashier__form-submit-button'
+                                    is_disabled={
+                                        validateAddress(values.address) ||
+                                        !!converter_from_error ||
+                                        !!converter_to_error ||
+                                        isSubmitting ||
+                                        !blockchain_address
+                                    }
+                                    type='submit'
+                                    primary
+                                    large
+                                    onClick={() => requestWithdraw(verification_code)}
+                                >
+                                    <Localize i18n_default_text='Withdraw' />
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 )}

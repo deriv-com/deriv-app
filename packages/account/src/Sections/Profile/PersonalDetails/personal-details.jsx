@@ -137,7 +137,17 @@ export class PersonalDetailsForm extends React.Component {
         const request = filterObjProperties(settings, [...this.state.changeable_fields]);
 
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
-        request.request_professional_status = +request.request_professional_status; // checkbox is boolean but api expects number (1 or 0)
+        if (
+            !!request.request_professional_status &&
+            !!this.state.form_initial_values.request_professional_status === false
+        ) {
+            // We can just send the value of request_professional_status once. Also backend just accepts true value for this field!
+            request.request_professional_status = +request.request_professional_status; // checkbox is boolean but api expects number (1 or 0)
+        } else {
+            // if it is already active we have to exclude it from request. otherwise backend returns error!
+            delete request.request_professional_status;
+        }
+
         if (request.first_name) {
             request.first_name = request.first_name.trim();
         }

@@ -140,7 +140,7 @@ const CryptoWithdrawForm = ({
                                 validateToAmount={validateWithdrawToAmount}
                             />
                         </div>
-                        <div className='crypto-withdraw-form-submit'>
+                        <div className='cashier__form-submit crypto-withdraw-form-submit'>
                             <Button
                                 className='cashier__form-submit-button'
                                 is_disabled={

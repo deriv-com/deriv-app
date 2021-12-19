@@ -1135,9 +1135,10 @@ export class PersonalDetailsForm extends React.Component {
                                                     </fieldset>
                                                 </FormBodySection>
                                             </div>
+                                            <div className='account-form__divider' />
                                         </>
                                     )}
-                                    <div className='account-form__divider' />
+
                                     <FormSubHeader title={localize('Email preference')} />
                                     <FormBodySection
                                         has_side_note={is_dashboard}

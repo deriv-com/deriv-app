@@ -3,7 +3,6 @@ import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import 'Sass/error.scss';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
@@ -35,7 +34,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
-const Error = ({ error, setErrorMessage }) => {
+const Error = ({ error }) => {
     const error_fields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),
@@ -54,7 +53,7 @@ const Error = ({ error, setErrorMessage }) => {
     };
 
     const clearErrorMessage = () => {
-        setErrorMessage('');
+        error.setErrorMessage('');
     };
 
     let AccountError;
@@ -129,9 +128,6 @@ const Error = ({ error, setErrorMessage }) => {
 
 Error.propTypes = {
     error: PropTypes.object,
-    setErrorMessage: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
-    setErrorMessage: modules.cashier.setErrorMessage,
-}))(Error);
+export default Error;

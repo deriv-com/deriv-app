@@ -1866,6 +1866,11 @@ $MIN_HEIGHT_FLOATING: calc(
         z-index: 4;
     }
     &__footer {
+        @media (max-height: 900px) {
+            position: fixed;
+            bottom: 36px;
+        }
+
         @include mobile {
             display: flex;
             flex-direction: row;
@@ -1873,12 +1878,6 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: flex-end;
             position: fixed;
             bottom: 0;
-        }
-    }
-    &__footer-external {
-        @media (max-height: 900px) {
-            position: fixed;
-            bottom: 36px;
         }
     }
     &__footer-alert {
@@ -1928,6 +1927,9 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-left: unset;
             width: 94%;
         }
+    }
+    &__sample-container-external {
+        margin-top: 2.8rem;
     }
     &__image-container {
         width: fit-content;

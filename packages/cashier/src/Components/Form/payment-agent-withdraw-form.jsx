@@ -19,6 +19,7 @@ import { connect } from 'Stores/connect';
 import PaymentAgentWithdrawConfirm from '../Confirm/payment-agent-withdraw-confirm.jsx';
 import FormError from '../Error/form-error.jsx';
 import PaymentAgentReceipt from '../Receipt/payment-agent-receipt.jsx';
+import 'Sass/payment-agent-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     const errors = {};
@@ -52,7 +53,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
 
 // TODO: refactor this to use the main radio component for forms too if possible
 const Radio = ({ children, field, props }) => (
-    <div className='payment-agent__radio-container'>
+    <div className='payment-agent-withdraw-form__radio-container'>
         <input
             id={props.id}
             className={props.className}
@@ -62,10 +63,10 @@ const Radio = ({ children, field, props }) => (
             onChange={field.onChange}
             type='radio'
         />
-        <label htmlFor={props.id} className='payment-agent__radio-wrapper'>
+        <label htmlFor={props.id} className='payment-agent-withdraw-form__radio-wrapper'>
             <span
-                className={classNames('payment-agent__radio-circle', {
-                    'payment-agent__radio-circle--selected': field.value === props.id,
+                className={classNames('payment-agent-withdraw-form__radio-circle', {
+                    'payment-agent-withdraw-form__radio-circle--selected': field.value === props.id,
                 })}
             />
             {children}
@@ -75,12 +76,7 @@ const Radio = ({ children, field, props }) => (
 
 const RadioDropDown = ({ field, values, ...props }) => (
     <Radio field={field} props={props}>
-        <Text
-            as='p'
-            size='xxs'
-            line_height='s'
-            className='payment-agent__radio-label cashier__paragraph cashier__paragraph-by-name'
-        >
+        <Text as='p' size='xxs' line_height='s' className='payment-agent-withdraw-form__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By name' />
         </Text>
         <Field name='payment_agents'>
@@ -90,7 +86,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                         <Dropdown
                             placeholder={localize('Choose an agent')}
                             is_align_text_left
-                            className='cashier__drop-down payment-agent__drop-down'
+                            className='payment-agent-withdraw-form__drop-down'
                             classNameDisplay='cashier__drop-down-display'
                             classNameDisplaySpan='cashier__drop-down-display-span'
                             classNameItems='cashier__drop-down-items'
@@ -106,7 +102,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                         <SelectNative
                             placeholder={localize('Please select')}
                             name='payment_methods'
-                            className='payment-agent__drop-down'
+                            className='payment-agent-withdraw-form__drop-down'
                             list_items={props.payment_agent_list}
                             value={values.payment_agents}
                             label={localize('Choose agent')}
@@ -126,15 +122,15 @@ const RadioDropDown = ({ field, values, ...props }) => (
 
 const RadioInput = ({ touched, errors, field, values, ...props }) => (
     <Radio field={field} props={props}>
-        <Text as='p' size='xxs' line_height='s' className='payment-agent__radio-label cashier__paragraph'>
+        <Text as='p' size='xxs' line_height='s' className='payment-agent-withdraw-form__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By payment agent ID' />
         </Text>
         <Field>
             {params => (
                 <Input
                     name='payment_agent'
-                    className='payment-agent__input'
-                    classNameError='payment-agent__input-error'
+                    className='payment-agent-withdraw-form__input'
+                    classNameError='payment-agent-withdraw-form__input-error'
                     type='text'
                     placeholder='CR'
                     error={touched.payment_agent && errors.payment_agent}
@@ -210,14 +206,14 @@ const PaymentAgentWithdrawForm = ({
     const should_fill_id = !payment_agent_name && payment_agent_id;
 
     return (
-        <div className='cashier__wrapper--align-center payment-agent__withdrawal'>
+        <div className='cashier__wrapper--align-center payment-agent-withdraw-form__withdrawal'>
             <Text
                 as='p'
                 size='s'
                 weight='bold'
                 align='center'
                 color='prominent'
-                className='cashier__header payment-agent__withdrawal-header'
+                className='cashier__header payment-agent-withdraw-form__withdrawal-header'
             >
                 <Localize i18n_default_text='Payment agent withdrawal' />
             </Text>
@@ -237,12 +233,12 @@ const PaymentAgentWithdrawForm = ({
             >
                 {({ errors, isSubmitting, isValid, values, touched }) => (
                     <Form>
-                        <div className='payment-agent__radio-group'>
+                        <div className='payment-agent-withdraw-form__radio-group'>
                             <Field
                                 id='payment_agents'
                                 component={RadioDropDown}
                                 payment_agent_list={payment_agent_list}
-                                className='payment-agent__radio'
+                                className='payment-agent-withdraw-form__radio'
                                 name='payment_method'
                                 values={values}
                             />
@@ -252,7 +248,7 @@ const PaymentAgentWithdrawForm = ({
                                 touched={touched}
                                 errors={errors}
                                 values={values}
-                                className='payment-agent__radio'
+                                className='payment-agent-withdraw-form__radio'
                                 name='payment_method'
                             />
                         </div>
@@ -340,17 +336,17 @@ PaymentAgentWithdrawForm.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    amount: modules.cashier.config.payment_agent.confirm.amount,
+    amount: modules.cashier.payment_agent.confirm.amount,
     balance: client.balance,
     currency: client.currency,
-    error: modules.cashier.config.payment_agent.error,
-    is_loading: modules.cashier.is_loading,
-    is_try_withdraw_successful: modules.cashier.config.payment_agent.is_try_withdraw_successful,
-    is_withdraw_successful: modules.cashier.config.payment_agent.is_withdraw_successful,
-    onMount: modules.cashier.onMountPaymentAgentWithdraw,
-    payment_agent_id: modules.cashier.config.payment_agent.confirm.loginid,
-    payment_agent_list: modules.cashier.config.payment_agent.agents,
-    payment_agent_name: modules.cashier.config.payment_agent.confirm.payment_agent_name,
-    requestTryPaymentAgentWithdraw: modules.cashier.requestTryPaymentAgentWithdraw,
-    resetPaymentAgent: modules.cashier.resetPaymentAgent,
+    error: modules.cashier.payment_agent.error,
+    is_loading: modules.cashier.general_store.is_loading,
+    is_try_withdraw_successful: modules.cashier.payment_agent.is_try_withdraw_successful,
+    is_withdraw_successful: modules.cashier.payment_agent.is_withdraw_successful,
+    onMount: modules.cashier.payment_agent.onMountPaymentAgentWithdraw,
+    payment_agent_id: modules.cashier.payment_agent.confirm.loginid,
+    payment_agent_list: modules.cashier.payment_agent.agents,
+    payment_agent_name: modules.cashier.payment_agent.confirm.payment_agent_name,
+    requestTryPaymentAgentWithdraw: modules.cashier.payment_agent.requestTryPaymentAgentWithdraw,
+    resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,
 }))(PaymentAgentWithdrawForm);

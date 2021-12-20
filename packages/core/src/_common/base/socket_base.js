@@ -343,7 +343,7 @@ const BinarySocketBase = (() => {
 
     const realityCheck = () => deriv_api.send({ reality_check: 1 });
 
-    const tradingServers = () => deriv_api.send({ platform: 'mt5', trading_servers: 1 });
+    const tradingServers = platform => deriv_api.send({ platform, trading_servers: 1 });
 
     const tradingPlatformAccountsList = platform =>
         deriv_api.send({

@@ -13,12 +13,13 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, website_name } from '@deriv/shared';
+import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from './payment-agent-details.jsx';
 import Error from './Error/error.jsx';
 import EmailSent from './Email/email-sent.jsx';
 import PaymentAgentWithdrawForm from './Form/payment-agent-withdraw-form.jsx';
+import 'Sass/payment-agent-list.scss';
 
 const PaymentAgentList = ({
     error,
@@ -31,8 +32,11 @@ const PaymentAgentList = ({
     payment_agent_active_tab_index,
     payment_agent_list,
     resend_timeout,
+    resendVerificationEmail,
     selected_bank,
+    sendVerificationEmail,
     setActiveTabIndex,
+    setVerificationResendClicked,
     supported_banks,
     verification_code,
 }) => {
@@ -48,13 +52,13 @@ const PaymentAgentList = ({
     return (
         <div className='cashier__wrapper--align-left cashier__wrapper-padding'>
             <React.Fragment>
-                <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
+                <Text as='p' line_height='s' size={isMobile() ? 'xxs' : 'xs'} className='cashier__paragraph'>
                     <Localize
                         i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.'
                         values={{ website_name }}
                     />
                 </Text>
-                <div className='payment-agent__instructions'>
+                <div className='payment-agent-list__instructions'>
                     <Tabs
                         active_index={payment_agent_active_tab_index}
                         className='tabs--desktop'
@@ -64,7 +68,7 @@ const PaymentAgentList = ({
                     >
                         <div label={localize('Deposit')}>
                             {is_loading ? (
-                                <Loading className='payment-agent__loader' />
+                                <Loading is_fullscreen={false} />
                             ) : (
                                 <React.Fragment>
                                     <Text
@@ -72,13 +76,18 @@ const PaymentAgentList = ({
                                         size='xs'
                                         weight='bold'
                                         color='prominent'
-                                        className='cashier__header payment-agent__list-header'
+                                        className='payment-agent-list__list-header'
                                     >
                                         <Localize i18n_default_text='Payment agents' />
                                     </Text>
-                                    <div className='payment-agent__list-line' />
-                                    <div className='payment-agent__list-selector'>
-                                        <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
+                                    <div className='payment-agent-list__list-line' />
+                                    <div className='payment-agent-list__list-selector'>
+                                        <Text
+                                            as='p'
+                                            size={isMobile() ? 'xxs' : 'xs'}
+                                            line_height='s'
+                                            className='cashier__paragraph'
+                                        >
                                             <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
                                         </Text>
                                         {supported_banks.length > 1 && (
@@ -86,8 +95,8 @@ const PaymentAgentList = ({
                                                 <DesktopWrapper>
                                                     <Dropdown
                                                         id='payment_methods'
-                                                        className='payment-agent__drop-down payment-agent__filter'
-                                                        classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
+                                                        className='payment-agent-list__drop-down payment-agent-list__filter'
+                                                        classNameDisplay='cashier__drop-down-display payment-agent-list__filter-display'
                                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                                         classNameItems='cashier__drop-down-items'
                                                         list={list_with_default}
@@ -122,7 +131,7 @@ const PaymentAgentList = ({
                                         )}
                                     </div>
                                     <Accordion
-                                        className='payment-agent__accordion'
+                                        className='payment-agent-list__accordion'
                                         list={payment_agent_list.map(payment_agent => ({
                                             header: payment_agent.name,
                                             content: (
@@ -136,15 +145,17 @@ const PaymentAgentList = ({
                                     />
                                 </React.Fragment>
                             )}
-                            <div className='payment-agent__disclaimer'>
-                                <Text size='xs' line_height='xs' weight='bold' className='cashier__text'>
+                            <div className='payment-agent-list__disclaimer'>
+                                <Text size='xs' lh='s' weight='bold' className='cashier__text'>
                                     <Localize i18n_default_text='DISCLAIMER' />
                                 </Text>
                                 :&nbsp;
-                                <Localize
-                                    i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
-                                    values={{ website_name }}
-                                />
+                                <Text size='xxs'>
+                                    <Localize
+                                        i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
+                                        values={{ website_name }}
+                                    />
+                                </Text>
                             </div>
                         </div>
                         <div label={localize('Withdrawal')}>
@@ -158,6 +169,9 @@ const PaymentAgentList = ({
                                                 is_email_sent={is_email_sent}
                                                 is_resend_clicked={is_resend_clicked}
                                                 resend_timeout={resend_timeout}
+                                                resendVerificationEmail={resendVerificationEmail}
+                                                sendVerificationEmail={sendVerificationEmail}
+                                                setVerificationResendClicked={setVerificationResendClicked}
                                             />
                                         </div>
                                     ) : (
@@ -186,23 +200,29 @@ PaymentAgentList.propTypes = {
     payment_agent_active_tab_index: PropTypes.number,
     payment_agent_list: PropTypes.array,
     resend_timeout: PropTypes.number,
+    resendVerificationEmail: PropTypes.func,
     selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    sendVerificationEmail: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
+    setVerificationResendClicked: PropTypes.func,
     supported_banks: MobxPropTypes.arrayOrObservableArray,
     verification_code: PropTypes.string,
 };
 
 export default connect(({ modules }) => ({
-    error: modules.cashier.config.payment_agent.verification.error,
-    is_email_sent: modules.cashier.config.payment_agent.verification.is_email_sent,
-    is_loading: modules.cashier.is_loading,
-    is_resend_clicked: modules.cashier.config.payment_agent.verification.is_resend_clicked,
-    onChangePaymentMethod: modules.cashier.onChangePaymentMethod,
-    onMount: modules.cashier.onMountPaymentAgentList,
-    payment_agent_active_tab_index: modules.cashier.config.payment_agent.active_tab_index,
-    payment_agent_list: modules.cashier.config.payment_agent.filtered_list,
-    resend_timeout: modules.cashier.config.payment_agent.verification.resend_timeout,
-    selected_bank: modules.cashier.config.payment_agent.selected_bank,
-    setActiveTabIndex: modules.cashier.setActiveTabIndex,
-    supported_banks: modules.cashier.config.payment_agent.supported_banks,
+    error: modules.cashier.payment_agent.verification.error,
+    is_email_sent: modules.cashier.payment_agent.verification.is_email_sent,
+    is_loading: modules.cashier.general_store.is_loading,
+    is_resend_clicked: modules.cashier.payment_agent.verification.is_resend_clicked,
+    onChangePaymentMethod: modules.cashier.payment_agent.onChangePaymentMethod,
+    onMount: modules.cashier.payment_agent.onMountPaymentAgentList,
+    payment_agent_active_tab_index: modules.cashier.payment_agent.active_tab_index,
+    payment_agent_list: modules.cashier.payment_agent.filtered_list,
+    resend_timeout: modules.cashier.payment_agent.verification.resend_timeout,
+    resendVerificationEmail: modules.cashier.payment_agent.verification.resendVerificationEmail,
+    selected_bank: modules.cashier.payment_agent.selected_bank,
+    sendVerificationEmail: modules.cashier.payment_agent.verification.sendVerificationEmail,
+    setActiveTabIndex: modules.cashier.payment_agent.setActiveTab,
+    setVerificationResendClicked: modules.cashier.payment_agent.verification.setVerificationResendClicked,
+    supported_banks: modules.cashier.payment_agent.supported_banks,
 }))(PaymentAgentList);

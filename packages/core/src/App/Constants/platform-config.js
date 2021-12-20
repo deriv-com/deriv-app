@@ -35,7 +35,7 @@ const platform_config = [
         icon: 'IcBrandSmarttrader',
         title: () => localize('SmartTrader'),
         name: 'SmartTrader',
-        description: () => localize('Trade the world’s markets with our popular user-friendly platform'),
+        description: () => localize('Trade the world’s markets with our popular user-friendly platform.'),
         href: routes.smarttrader,
     },
     {

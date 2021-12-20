@@ -6,6 +6,7 @@ import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
+import 'Sass/crypto-fiat-converter.scss';
 
 const Timer = props => {
     const initial_time = 60;
@@ -24,7 +25,7 @@ const Timer = props => {
     });
 
     return (
-        <Text as='p' size='xs' className='timer'>
+        <Text as='p' size='xs' color='less-prominent' className='timer'>
             <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time }} />
         </Text>
     );
@@ -67,7 +68,7 @@ const CryptoFiatConverter = ({
     }, [from_currency]);
 
     return (
-        <div className='crypto-fiat-converter-form'>
+        <div className='crypto-fiat-converter'>
             <Field name='converter_from_amount' validate={validateFromAmount}>
                 {({ field }) => (
                     <Input
@@ -86,6 +87,7 @@ const CryptoFiatConverter = ({
                         autoComplete='off'
                         required
                         hint={hint}
+                        classNameHint='crypto-fiat-converter__hint'
                     />
                 )}
             </Field>
@@ -113,6 +115,7 @@ const CryptoFiatConverter = ({
                             value={converter_to_amount}
                             autoComplete='off'
                             hint={localize('Approximate value')}
+                            classNameHint='crypto-fiat-converter__hint'
                         />
                         {is_timer_visible && (
                             <Timer
@@ -152,12 +155,12 @@ CryptoFiatConverter.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    converter_from_amount: modules.cashier.converter_from_amount,
-    converter_from_error: modules.cashier.converter_from_error,
-    converter_to_error: modules.cashier.converter_to_error,
-    converter_to_amount: modules.cashier.converter_to_amount,
-    is_timer_visible: modules.cashier.is_timer_visible,
-    onChangeConverterFromAmount: modules.cashier.onChangeConverterFromAmount,
-    onChangeConverterToAmount: modules.cashier.onChangeConverterToAmount,
-    resetConverter: modules.cashier.resetConverter,
+    converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
+    converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
+    converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
+    converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
+    is_timer_visible: modules.cashier.crypto_fiat_converter.is_timer_visible,
+    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
+    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
+    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
 }))(CryptoFiatConverter);

@@ -13,6 +13,7 @@ import {
     State,
     toMoment,
     deriv_urls,
+    urlFor,
     urlForLanguage,
     CFD_PLATFORMS,
     routes,
@@ -121,7 +122,8 @@ export default class ClientStore extends BaseStore {
 
     @observable financial_assessment = null;
 
-    @observable trading_servers = [];
+    @observable mt5_trading_servers = [];
+    @observable dxtrade_trading_servers = [];
 
     is_mt5_account_list_updated = false;
 
@@ -348,37 +350,31 @@ export default class ClientStore extends BaseStore {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }
 
-    getListOfMT5AccountsWithError = account_type => {
-        if (!this.is_logged_in) return [];
-        return this.mt5_login_list?.filter(
-            account => !!account.has_error && (!account_type || account.account_type === account_type)
-        );
+    hasAccountErrorInCFDList = (platform, account_type) => {
+        if (!this.is_logged_in) return false;
+
+        const list = platform === CFD_PLATFORMS.MT5 ? this.mt5_login_list : this.dxtrade_accounts_list;
+        return list?.some(account => !!account.has_error && account.account_type === account_type);
     };
 
     @computed
-    get list_of_real_mt5_accounts_with_error() {
-        return this.getListOfMT5AccountsWithError('real');
-    }
-
-    @computed
     get has_account_error_in_mt5_real_list() {
-        return this.list_of_real_mt5_accounts_with_error.length > 0;
-    }
-
-    @computed
-    get list_of_demo_mt5_accounts_with_error() {
-        return this.getListOfMT5AccountsWithError('demo');
+        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.MT5, 'real');
     }
 
     @computed
     get has_account_error_in_mt5_demo_list() {
-        return this.list_of_demo_mt5_accounts_with_error.length > 0;
+        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.MT5, 'demo');
     }
 
     @computed
-    get has_account_error_in_dxtrade_list() {
-        if (!this.is_logged_in) return false;
-        return this.dxtrade_accounts_list?.some(account => !!account.has_error);
+    get has_account_error_in_dxtrade_real_list() {
+        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.DXTRADE, 'real');
+    }
+
+    @computed
+    get has_account_error_in_dxtrade_demo_list() {
+        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.DXTRADE, 'demo');
     }
 
     @computed
@@ -388,7 +384,7 @@ export default class ClientStore extends BaseStore {
                 cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
             return is_included ? acc + 1 : acc;
         }, 0);
-        const number_of_available_synthetic = this.trading_servers.reduce(
+        const number_of_available_synthetic = this.mt5_trading_servers.reduce(
             (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
@@ -603,7 +599,33 @@ export default class ClientStore extends BaseStore {
         return result;
     }
 
-    // TODO: Remove closed_mlt_accounts variable after the MLT and MX account closure has concluded.
+    @computed
+    get custom_notifications() {
+        const notification_content = {
+            mx_mlt_notification: {
+                header: () => {
+                    if (this.has_malta_account || this.can_have_mlt_account) {
+                        return localize('Your Options account is scheduled to be closed');
+                    } else if (this.is_uk) {
+                        return localize('Your Gaming account is scheduled to be closed');
+                    }
+                    return localize('Your account is scheduled to be closed');
+                },
+                main: () => {
+                    if (this.has_malta_account || this.can_have_mlt_account) {
+                        return localize('Withdraw all funds from your Options account.');
+                    } else if (this.is_uk) {
+                        return localize('Please withdraw all your funds as soon as possible.');
+                    }
+                    return localize('Please proceed to withdraw your funds before 30 November 2021.');
+                },
+            },
+        };
+        return notification_content;
+    }
+
+    // Manual list of MLT countries during MLT/MX account removal.
+    // Also needed to check onboarding modal text for specific country.
     @computed
     get can_have_mlt_account() {
         const countries = [
@@ -631,9 +653,44 @@ export default class ClientStore extends BaseStore {
         return countries;
     }
 
-    // TODO: Remove closed_mlt_accounts variable after the MLT and MX account closure has concluded.
+    // Manual list of MX countries during MLT/MX account removal.
+    @computed
     get can_have_mx_account() {
         const countries = ['gb', 'im'].includes(this.residence);
+        return countries;
+    }
+
+    // Manual list of MF countries during MLT/MX account removal.
+    // Also needed to check onboarding modal text for specific country.
+    @computed
+    get can_have_mf_account() {
+        const countries = [
+            'it',
+            'fr',
+            'de',
+            'lu',
+            'es',
+            'gr',
+            'nl',
+            'cy',
+            'ie',
+            'ro',
+            'lt',
+            'bg',
+            'cz',
+            'dk',
+            'se',
+            'pl',
+            'ee',
+            'hr',
+            'at',
+            'hu',
+            'sl',
+            'fi',
+            'sk',
+            'pt',
+            'lv',
+        ].includes(this.residence);
         return countries;
     }
 
@@ -1215,7 +1272,7 @@ export default class ClientStore extends BaseStore {
                 await BinarySocket.authorize(client.token);
             }
             if (redirect_url) {
-                window.location.replace(routes[redirect_url]);
+                window.location.replace(urlFor(routes[redirect_url], { query_string: search }));
             }
             runInAction(() => {
                 this.is_populating_account_list = false;
@@ -1233,7 +1290,7 @@ export default class ClientStore extends BaseStore {
             () => [
                 this.account_settings,
                 this.account_status,
-                this.root_store.modules?.cashier?.is_p2p_visible,
+                this.root_store.modules?.cashier?.general_store?.is_p2p_visible,
                 this.root_store.common?.selected_contract_type,
                 this.is_eu,
             ],
@@ -1261,8 +1318,11 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
-            WS.tradingServers().then(this.responseTradingServers);
+            WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
+
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
+            WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
+
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -1577,7 +1637,7 @@ export default class ClientStore extends BaseStore {
     setBalanceOtherAccounts(obj_balance) {
         // Balance subscription response received when mt5 transfer is in progress should be ignored.
         // After mt5 transfer is done, `balanceAll` is requested along with `mt5LoginList` in order to update the correct balance.
-        if (this.root_store.modules?.cashier?.isMT5TransferInProgress()) return;
+        if (this.root_store.modules?.cashier?.account_transfer?.is_mt5_transfer_in_progress) return;
 
         // Only the first response of balance:all will include all accounts
         // subsequent requests will be single account balance updates
@@ -2004,12 +2064,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    responseTradingServers(response) {
+    responseMT5TradingServers(response) {
         if (response.error) {
-            this.trading_servers = [];
+            this.mt5_trading_servers = [];
             return;
         }
-        this.trading_servers = response.trading_servers;
+        this.mt5_trading_servers = response.trading_servers;
     }
 
     @action.bound
@@ -2055,10 +2115,29 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    responseDxtradeTradingServers(response) {
+        if (response.error) {
+            this.dxtrade_trading_servers = [];
+            return;
+        }
+        this.dxtrade_trading_servers = response.trading_servers;
+
+        this.dxtrade_trading_servers.forEach(trading_server => {
+            const { account_type, disabled } = trading_server;
+            if (disabled) {
+                this.setCFDDisabledSignupTypes(CFD_PLATFORMS.DXTRADE, {
+                    [account_type]: true,
+                });
+            }
+        });
+    }
+
+    @action.bound
     responseTradingPlatformAccountsList(response) {
         const { platform } = response.echo_req || {};
 
         this[`is_populating_${platform}_account_list`] = false;
+        this[`${platform}_accounts_list_error`] = null;
 
         if (!response.error) {
             this[`${platform}_accounts_list`] = response.trading_platform_accounts.map(account => {
@@ -2067,8 +2146,7 @@ export default class ClientStore extends BaseStore {
                     const { account_type, server } = account.error.details;
                     if (platform === CFD_PLATFORMS.DXTRADE) {
                         this.setCFDDisabledSignupTypes(platform, {
-                            real: account_type === 'real',
-                            demo: account_type === 'demo',
+                            [account_type]: true,
                         });
                     }
                     return {

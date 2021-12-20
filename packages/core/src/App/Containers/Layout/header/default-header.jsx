@@ -45,6 +45,7 @@ const DefaultHeader = ({
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
+    is_account_transfer_visible,
     is_route_modal_on,
     is_virtual,
     location,
@@ -120,6 +121,7 @@ const DefaultHeader = ({
                             is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                             is_onramp_tab_visible={is_onramp_tab_visible}
                             is_payment_agent_visible={is_payment_agent_visible}
+                            is_account_transfer_visible={is_account_transfer_visible}
                             is_virtual={is_virtual}
                             toggleTheme={setDarkMode}
                             platform_header={getPlatformInformation(app_routing_history).header}
@@ -210,6 +212,7 @@ DefaultHeader.propTypes = {
     is_dxtrade_allowed: PropTypes.bool,
     is_multipliers_only: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
+    is_account_transfer_visible: PropTypes.bool,
     // is_p2p_enabled: PropTypes.bool,
     // is_payment_agent_transfer_visible: PropTypes.bool,
     // is_payment_agent_visible: PropTypes.bool,
@@ -252,17 +255,18 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_multipliers_only: client.is_multipliers_only,
     is_notifications_visible: ui.is_notifications_visible,
-    is_p2p_enabled: modules.cashier.is_p2p_enabled,
-    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
+    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
+    is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
+    is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     menu_items: menu.extensions,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
-    replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
+    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     is_options_blocked: client.is_options_blocked,
     platform: common.platform,
     removeNotificationMessage: ui.removeNotificationMessage,

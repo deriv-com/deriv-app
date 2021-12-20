@@ -333,6 +333,10 @@
                 position: static;
                 margin-top: 1.6rem;
                 gap: 1.2rem;
+            /* postcss-bem-linter: ignore */
+            & .dc-page-overlay__header {
+                position: fixed;
+                top: 4rem;
                 width: 100%;
                 height: 4rem;
             }
@@ -361,7 +365,7 @@
         .acc-prompt-dialog {
             padding: 0 1rem;
         }
-
+    }
     &-locked {
         width: 100%;
         display: flex;

@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import CashierLocked from '../Components/Error/cashier-locked.jsx';
-import PaymentAgentList from '../Components/payment-agent-list.jsx';
-import Virtual from '../Components/Error/virtual.jsx';
+import CashierLocked from 'Components/Error/cashier-locked.jsx';
+import PaymentAgentList from 'Components/payment-agent-list.jsx';
+import Virtual from 'Components/Error/virtual.jsx';
 
 const PaymentAgent = ({
     container,
@@ -12,10 +12,10 @@ const PaymentAgent = ({
     is_payment_agent_withdraw,
     is_switching,
     is_virtual,
-    setActiveTab,
-    verification_code,
-    setPaymentAgentActiveTabIndex,
     payment_agent_active_tab_index,
+    setActiveTab,
+    setPaymentAgentActiveTabIndex,
+    verification_code,
 }) => {
     const initial_active_index =
         verification_code || is_payment_agent_withdraw || payment_agent_active_tab_index ? 1 : 0;
@@ -30,7 +30,7 @@ const PaymentAgent = ({
     }, []);
 
     if (is_switching) {
-        return <Loading className='payment-agent__loader' />;
+        return <Loading />;
     }
 
     if (is_virtual) {
@@ -49,20 +49,20 @@ PaymentAgent.propTypes = {
     is_cashier_locked: PropTypes.bool,
     is_payment_agent_withdraw: PropTypes.bool,
     is_virtual: PropTypes.bool,
-    setActiveTab: PropTypes.func,
-    verification_code: PropTypes.string,
-    setPaymentAgentActiveTabIndex: PropTypes.func,
     payment_agent_active_tab_index: PropTypes.number,
+    setActiveTab: PropTypes.func,
+    setPaymentAgentActiveTabIndex: PropTypes.func,
+    verification_code: PropTypes.string,
 };
 
 export default connect(({ client, modules }) => ({
-    is_cashier_locked: modules.cashier.is_cashier_locked,
+    container: modules.cashier.payment_agent.container,
+    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
+    is_payment_agent_withdraw: modules.cashier.payment_agent.is_withdraw,
+    payment_agent_active_tab_index: modules.cashier.payment_agent.active_tab_index,
+    setActiveTab: modules.cashier.general_store.setActiveTab,
+    setPaymentAgentActiveTabIndex: modules.cashier.payment_agent.setActiveTabIndex,
     verification_code: client.verification_code.payment_agent_withdraw,
-    container: modules.cashier.config.payment_agent.container,
-    is_payment_agent_withdraw: modules.cashier.config.payment_agent.is_withdraw,
-    setActiveTab: modules.cashier.setActiveTab,
-    setPaymentAgentActiveTabIndex: modules.cashier.config.payment_agent.setActiveTabIndex,
-    payment_agent_active_tab_index: modules.cashier.config.payment_agent.active_tab_index,
 }))(PaymentAgent);

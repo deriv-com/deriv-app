@@ -199,11 +199,16 @@ CashierDefault.propTypes = {
     shouldNavigateAfterPrompt: PropTypes.func,
     setIsCashierDefault: PropTypes.func,
     setIsDeposit: PropTypes.func,
+    setDepositTarget: PropTypes.func,
+    setShouldShowAllAvailableCurrencies: PropTypes.func,
     setSideNotes: PropTypes.func,
+    showP2pInCashierDefault: PropTypes.func,
+    show_p2p_in_cashier_default: PropTypes.bool,
+    toggleSetCurrencyModal: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({
-    accounts_list: modules.cashier.config.account_transfer.accounts_list,
+    accounts_list: modules.cashier.account_transfer.accounts_list,
     available_crypto_currencies: client.available_crypto_currencies,
     currency: client.currency,
     has_set_currency: modules.cashier.general_store.has_set_currency,

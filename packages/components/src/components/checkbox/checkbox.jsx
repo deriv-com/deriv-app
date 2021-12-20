@@ -21,7 +21,6 @@ const Checkbox = React.forwardRef(
         },
         ref
     ) => {
-        console.log("greyDisabled",greyDisabled)
         const [checked, setChecked] = React.useState(defaultChecked || value);
         const input_ref = React.useRef();
 

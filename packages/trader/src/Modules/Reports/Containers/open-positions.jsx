@@ -309,7 +309,6 @@ const OpenPositions = ({
         return () => {
             if (!isMobile()) onUnmount();
         };
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_positions, onMount, onUnmount]);
 

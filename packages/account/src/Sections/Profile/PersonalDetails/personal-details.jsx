@@ -1128,6 +1128,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 is_virtual ||
                                                                 !!form_initial_values.request_professional_status
                                                             }
+                                                            greyDisabled
                                                             className={classNames({
                                                                 'dc-checkbox-blue': is_dashboard,
                                                             })}

@@ -153,7 +153,8 @@ export default class NotificationStore extends BaseStore {
             isAccountOfType,
             loginid,
         } = this.root_store.client;
-        const { is_10k_withdrawal_limit_reached, is_p2p_visible } = this.root_store.modules.cashier;
+        const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
+        const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const virtual_account = landing_company_shortcode === 'virtual';

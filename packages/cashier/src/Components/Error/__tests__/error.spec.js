@@ -1,14 +1,14 @@
 import React from 'react';
 import Error from '../error';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 describe('<Error />', () => {
     it('Should render an <Error /> component with "Email verification failed" header, if the error.code is equal to "InvalidToken"', () => {
         const error = {
             code: 'InvalidToken',
         };
-        const screen = render(<Error error={error} />);
-        expect(screen.getByText('Email verification failed')).not.toBe(null);
+        render(<Error error={error} />);
+        expect(screen.getByText('Email verification failed')).toBeInTheDocument();
     });
 
     it('Should render a default-case of <Error /> component with "Oops, you have an error!" header if the error.code is equal to "empty_string"', () => {
@@ -16,19 +16,22 @@ describe('<Error />', () => {
             code: '',
             message: 'Oops, you have an error!',
         };
-        const screen = render(<Error error={error} />);
-        expect(screen.getByText('Oops, you have an error!')).not.toBe(null);
+        render(<Error error={error} />);
+        expect(screen.getByText('Oops, you have an error!')).toBeInTheDocument();
     });
 
     it('Should clear the error.message if onClickButton function is fired on <Error /> component', () => {
         const error = {
-            code: 'InvalidToken',
+            code: 'WrongResponse',
+            message: 'Something is wrong with your payment agent!!!',
             setErrorMessage(value) {
                 this.message = value;
             },
         };
         render(<Error error={error} />);
-        const error_btn = document.querySelector('.error__button');
+        expect(screen.getByText(error.message)).toBeInTheDocument();
+        expect(error.message).toBe('Something is wrong with your payment agent!!!');
+        const error_btn = screen.getByRole('button');
         fireEvent.click(error_btn);
         expect(error.message).toBe('');
     });

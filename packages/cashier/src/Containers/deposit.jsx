@@ -3,42 +3,17 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { isCryptocurrency } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import CashierContainer from 'Components/cashier-container.jsx';
+import CashierDefault from 'Components/CashierDefault/cashier-default.jsx';
+import CashierLocked from 'Components/Error/cashier-locked.jsx';
+import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
+import DepositsLocked from 'Components/Error/deposit-locked.jsx';
+import Error from 'Components/Error/error.jsx';
+import FundsProtection from 'Components/Error/funds-protection.jsx';
+import USDTSideNote from 'Components/usdt-side-note.jsx';
+import RecentTransaction from 'Components/recent-transaction.jsx';
+import Virtual from 'Components/Error/virtual.jsx';
 import CryptoDeposit from './crypto-deposit.jsx';
-import CashierContainer from '../Components/cashier-container.jsx';
-import CashierDefault from '../Components/CashierDefault/cashier-default.jsx';
-import Error from '../Components/Error/error.jsx';
-import Virtual from '../Components/Error/virtual.jsx';
-import CashierLocked from '../Components/Error/cashier-locked.jsx';
-import DepositsLocked from '../Components/Error/deposit-locked.jsx';
-import FundsProtection from '../Components/Error/funds-protection.jsx';
-import USDTSideNote from '../Components/usdt-side-note.jsx';
-import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
-import RecentTransaction from '../Components/recent-transaction.jsx';
-
-// const DepositeSideNote = () => {
-//     const notes = [
-//         /*
-//         <Localize i18n_default_text='This address can only be used once to make a deposit.' key={0} />,
-//         <Localize
-//             i18n_default_text='For each deposit you will have to visit here again to generate a new address.'
-//             key={1}
-//         />,
-//         <Localize
-//             i18n_default_text='Each transaction will be confirmed once we receive three confirmations from the blockchain.'
-//             key={3}
-//         />,
-//         <Localize
-//             i18n_default_text='To view confirmed transactions, kindly visit the <0>statement page</0>'
-//             key={4}
-//             components={[<Link to='/reports/statement' key={0} className='link link--orange' />]}
-//         />,
-//         */
-//     ];
-//     const side_note_title =
-//         notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
-
-//     return <SideNote has_bullets notes={notes} title={side_note_title} />;
-// };
 
 const Deposit = ({
     crypto_transactions,
@@ -54,6 +29,7 @@ const Deposit = ({
     is_eu,
     iframe_height,
     iframe_url,
+    clearIframe,
     is_loading,
     is_switching,
     is_system_maintenance,
@@ -61,6 +37,7 @@ const Deposit = ({
     onMount,
     recentTransactionOnMount,
     setActiveTab,
+    setErrorMessage,
     setIsDeposit,
     setSideNotes,
     tab_index,
@@ -77,9 +54,12 @@ const Deposit = ({
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
-        return () => setIsDeposit(false);
+        return () => {
+            setIsDeposit(false);
+            setErrorMessage('');
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setActiveTab, onMount, container]);
+    }, [setActiveTab, onMount, container, setErrorMessage]);
 
     React.useEffect(() => {
         if (typeof setSideNotes === 'function') {
@@ -134,6 +114,7 @@ const Deposit = ({
                 iframe_url={iframe_url}
                 is_loading={is_loading}
                 is_crypto={is_crypto}
+                clearIframe={clearIframe}
             />
         );
     }
@@ -168,26 +149,28 @@ Deposit.propTypes = {
 
 export default connect(({ client, modules }) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    container: modules.cashier.config.deposit.container,
+    container: modules.cashier.deposit.container,
     currency: client.currency,
     current_currency_type: client.current_currency_type,
-    error: modules.cashier.config.deposit.error,
-    is_cashier_default: modules.cashier.is_cashier_default,
-    is_cashier_locked: modules.cashier.is_cashier_locked,
+    error: modules.cashier.deposit.error,
+    is_cashier_default: modules.cashier.general_store.is_cashier_default,
+    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
-    is_deposit: modules.cashier.is_deposit,
-    is_deposit_locked: modules.cashier.is_deposit_locked,
+    is_deposit: modules.cashier.general_store.is_deposit,
+    is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
     is_eu: client.is_eu,
-    iframe_height: modules.cashier.config.deposit.iframe_height,
-    iframe_url: modules.cashier.config.deposit.iframe_url,
-    is_loading: modules.cashier.is_loading,
-    is_system_maintenance: modules.cashier.is_system_maintenance,
+    iframe_height: modules.cashier.iframe.iframe_height,
+    iframe_url: modules.cashier.iframe.iframe_url,
+    clearIframe: modules.cashier.iframe.clearIframe,
+    is_loading: modules.cashier.general_store.is_loading,
+    is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
-    onMount: modules.cashier.onMount,
+    onMount: modules.cashier.deposit.onMountDeposit,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    setActiveTab: modules.cashier.setActiveTab,
-    setIsDeposit: modules.cashier.setIsDeposit,
+    setActiveTab: modules.cashier.general_store.setActiveTab,
+    setErrorMessage: modules.cashier.deposit.error.setErrorMessage,
+    setIsDeposit: modules.cashier.general_store.setIsDeposit,
     standpoint: client.standpoint,
-    tab_index: modules.cashier.cashier_route_tab_index,
+    tab_index: modules.cashier.general_store.cashier_route_tab_index,
 }))(Deposit);

@@ -14,8 +14,10 @@ const SendEmail = ({
     is_email_sent,
     is_resend_clicked,
     resend_timeout,
+    resendVerificationEmail,
     recentTransactionOnMount,
     sendVerificationEmail,
+    setVerificationResendClicked,
 }) => {
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -28,6 +30,9 @@ const SendEmail = ({
                     is_email_sent={is_email_sent}
                     is_resend_clicked={is_resend_clicked}
                     resend_timeout={resend_timeout}
+                    resendVerificationEmail={resendVerificationEmail}
+                    sendVerificationEmail={sendVerificationEmail}
+                    setVerificationResendClicked={setVerificationResendClicked}
                 />
             ) : (
                 <React.Fragment>
@@ -64,15 +69,19 @@ SendEmail.propTypes = {
     is_resend_clicked: PropTypes.bool,
     resend_timeout: PropTypes.number,
     recentTransactionOnMount: PropTypes.func,
+    resendVerificationEmail: PropTypes.func,
     sendVerificationEmail: PropTypes.func,
+    setVerificationResendClicked: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
-    is_email_sent: modules.cashier.config.withdraw.verification.is_email_sent,
-    is_resend_clicked: modules.cashier.config.withdraw.verification.is_resend_clicked,
-    resend_timeout: modules.cashier.config.withdraw.verification.resend_timeout,
+    is_email_sent: modules.cashier.withdraw.verification.is_email_sent,
+    is_resend_clicked: modules.cashier.withdraw.verification.is_resend_clicked,
+    resend_timeout: modules.cashier.withdraw.verification.resend_timeout,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    sendVerificationEmail: modules.cashier.sendVerificationEmail,
+    resendVerificationEmail: modules.cashier.withdraw.verification.resendVerificationEmail,
+    sendVerificationEmail: modules.cashier.withdraw.verification.sendVerificationEmail,
+    setVerificationResendClicked: modules.cashier.withdraw.verification.setVerificationResendClicked,
 }))(SendEmail);

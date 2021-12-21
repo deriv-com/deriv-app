@@ -39,8 +39,7 @@ describe('<FormError />', () => {
                 <FormError error={error} />
             </Router>
         );
-        const on_cancel_on_confirm_btns = screen.getAllByRole('button');
-        const [on_cancel_btn, on_confirm_btn] = on_cancel_on_confirm_btns;
+        const on_confirm_btn = screen.getByRole('button', { name: 'Verify identity' });
         fireEvent.click(on_confirm_btn);
         expect(history.location.pathname).toBe(routes[expected_route]);
         expect(error.message).toBe('');
@@ -56,9 +55,7 @@ describe('<FormError />', () => {
         };
 
         render(<FormError error={error} />);
-
-        const on_cancel_on_confirm_btns = screen.getAllByRole('button');
-        const [on_cancel_btn, on_confirm_btn] = on_cancel_on_confirm_btns;
+        const on_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
         fireEvent.click(on_cancel_btn);
         await waitFor(() => {
             expect(screen.queryByText('Please verify your identity')).not.toBeInTheDocument();

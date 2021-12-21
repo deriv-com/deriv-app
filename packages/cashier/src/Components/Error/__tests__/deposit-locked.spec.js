@@ -69,10 +69,6 @@ describe('<DepositsLocked />', () => {
     });
 
     it('should show the terms and conditions accept button', () => {
-        account_status.authentication.identity.status = '';
-        account_status.authentication.document.status = '';
-        account_status.authentication.needs_verification = [];
-
         const screen = render(
             <DepositsLocked
                 account_status={account_status}

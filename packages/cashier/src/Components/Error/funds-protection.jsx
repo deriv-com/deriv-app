@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from '../../Stores/connect';
+import { connect } from 'Stores/connect';
 import 'Sass/funds-protection.scss';
 
-export const FundsProtection = ({ submitFundsProtection }) => {
+const FundsProtection = ({ submitFundsProtection }) => {
     return (
         <div className='funds-protection'>
             <Icon icon='IcCashierFundsProtection' className='funds-protection__icon' />

@@ -1,6 +1,6 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor } from '@testing-library/react';
-import { FundsProtection } from '../funds-protection.jsx';
+import { screen, render, fireEvent } from '@testing-library/react';
+import FundsProtection from '../funds-protection.jsx';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -8,7 +8,7 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-describe('funds-protection component tests', () => {
+describe('FundsProtection component tests', () => {
     it('should render the component', () => {
         render(<FundsProtection />);
 
@@ -16,7 +16,7 @@ describe('funds-protection component tests', () => {
         expect(screen.getByText('Deposit now')).toBeInTheDocument();
     });
 
-    it('onClick function should be triggered', async () => {
+    it('onClick function should be triggered', () => {
         const handleClose = jest.fn();
         render(<FundsProtection submitFundsProtection={handleClose} />);
 

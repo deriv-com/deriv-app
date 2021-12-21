@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
-import DepositsLocked from '../deposit-locked.jsx';
+import DepositsLocked from '../deposit-locked';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -9,7 +9,7 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-describe('DepositsLocked', () => {
+describe('<DepositsLocked />', () => {
     const onMount = jest.fn();
     const standpoint = {
         iom: false,

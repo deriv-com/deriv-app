@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
 import DepositsLocked from '../deposit-locked';
 
@@ -38,7 +38,7 @@ describe('<DepositsLocked />', () => {
                 needs_verification: ['identity'],
             },
         };
-        const screen = render(
+        render(
             <DepositsLocked
                 account_status={poi_account_status}
                 is_tnc_needed={false}
@@ -66,7 +66,7 @@ describe('<DepositsLocked />', () => {
                 needs_verification: ['document'],
             },
         };
-        const screen = render(
+        render(
             <DepositsLocked
                 account_status={poa_account_status}
                 is_tnc_needed={false}
@@ -83,7 +83,7 @@ describe('<DepositsLocked />', () => {
     });
 
     it('should show the terms and conditions accept button', () => {
-        const screen = render(
+        render(
             <DepositsLocked
                 account_status={account_status}
                 is_tnc_needed
@@ -106,7 +106,7 @@ describe('<DepositsLocked />', () => {
     it('should show the financial assessment completion message', () => {
         standpoint.iom = true;
 
-        const screen = render(
+        render(
             <DepositsLocked
                 account_status={account_status}
                 is_tnc_needed={false}
@@ -135,8 +135,8 @@ describe('<DepositsLocked />', () => {
                 onClick: onClick,
             },
         ];
-        const screen = render(<Checklist className='cashier-locked__checklist' items={items} />);
-        const btn = screen.container.querySelector('.dc-checklist__item-status--action');
+        const { container } = render(<Checklist className='cashier-locked__checklist' items={items} />);
+        const btn = container.querySelector('.dc-checklist__item-status--action');
 
         fireEvent.click(btn);
         expect(onClick).toHaveBeenCalled();

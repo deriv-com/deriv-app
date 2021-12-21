@@ -117,6 +117,6 @@ export default connect(({ client, modules }) => ({
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_financial_account: client.is_financial_account,
-    onMount: modules.cashier.onMount,
+    onMount: modules.cashier.deposit.onMountDeposit,
     standpoint: client.standpoint,
 }))(DepositsLocked);

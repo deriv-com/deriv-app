@@ -27,20 +27,13 @@ describe('<DepositsLocked />', () => {
     };
 
     it('should show the proof of identity document verification message', () => {
-        const poi_account_status = {
-            authentication: {
-                identity: {
-                    status: 'pending',
-                },
-                document: {
-                    status: 'none',
-                },
-                needs_verification: ['identity'],
-            },
-        };
+        account_status.authentication.identity.status = 'pending';
+        account_status.authentication.document.status = 'none';
+        account_status.authentication.needs_verification = ['identity'];
+
         const screen = render(
             <DepositsLocked
-                account_status={poi_account_status}
+                account_status={account_status}
                 is_tnc_needed={false}
                 is_financial_information_incomplete={false}
                 is_trading_experience_incomplete={false}
@@ -55,20 +48,13 @@ describe('<DepositsLocked />', () => {
     });
 
     it('should show the proof of address document verification message', () => {
-        const poa_account_status = {
-            authentication: {
-                identity: {
-                    status: 'none',
-                },
-                document: {
-                    status: 'pending',
-                },
-                needs_verification: ['document'],
-            },
-        };
+        account_status.authentication.identity.status = 'none';
+        account_status.authentication.document.status = 'pending';
+        account_status.authentication.needs_verification = ['document'];
+
         const screen = render(
             <DepositsLocked
-                account_status={poa_account_status}
+                account_status={account_status}
                 is_tnc_needed={false}
                 is_financial_information_incomplete={false}
                 is_trading_experience_incomplete={false}
@@ -83,6 +69,10 @@ describe('<DepositsLocked />', () => {
     });
 
     it('should show the terms and conditions accept button', () => {
+        account_status.authentication.identity.status = '';
+        account_status.authentication.document.status = '';
+        account_status.authentication.needs_verification = [];
+
         const screen = render(
             <DepositsLocked
                 account_status={account_status}
@@ -104,9 +94,8 @@ describe('<DepositsLocked />', () => {
     });
 
     it('should show the financial assessment completion message', () => {
-        const standpoint_iom = {
-            iom: true,
-        };
+        standpoint.iom = true;
+
         const screen = render(
             <DepositsLocked
                 account_status={account_status}
@@ -115,7 +104,7 @@ describe('<DepositsLocked />', () => {
                 is_trading_experience_incomplete={false}
                 is_financial_account
                 onMount={onMount}
-                standpoint={standpoint_iom}
+                standpoint={standpoint}
             />
         );
 

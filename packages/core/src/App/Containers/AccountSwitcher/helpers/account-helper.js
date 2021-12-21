@@ -45,7 +45,14 @@ export const getSortedCFDList = account_list => {
 
 export const isDemo = account => account.account_type === 'demo';
 
-export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts, trading_servers, platform, is_eu) => {
+export const getCFDConfig = (
+    market_type,
+    landing_company,
+    existing_cfd_accounts,
+    mt5_trading_servers,
+    platform,
+    is_eu
+) => {
     const cfd_config = [];
 
     if (landing_company) {
@@ -58,7 +65,7 @@ export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts
                 return account.sub_account_type === company && account_market_type === market_type;
             });
             if (has_account && platform === CFD_PLATFORMS.MT5) {
-                const number_market_type_available = trading_servers.filter(s => {
+                const number_market_type_available = mt5_trading_servers.filter(s => {
                     const server_market_type = s.market_type === 'synthetic' ? 'gaming' : s.market_type;
                     return market_type === server_market_type && !s.disabled;
                 }).length;

@@ -173,7 +173,7 @@ export const PersonalDetailsForm = ({
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         if (
             !!request.request_professional_status &&
-            !!this.state.form_initial_values.request_professional_status === false
+            !!rest_state.form_initial_values.request_professional_status === false
         ) {
             // We can just send the value of request_professional_status once. Also backend just accepts true value for this field!
             request.request_professional_status = +request.request_professional_status; // checkbox is boolean but api expects number (1 or 0)
@@ -1050,104 +1050,113 @@ export const PersonalDetailsForm = ({
                                                                 onBlur={handleBlur}
                                                                 disabled={!isChangeableField('address_state')}
                                                             />
-                                                        </fieldset>
-                                                    </div>
-                                                </FormBodySection>
-                                            </React.Fragment>
-                                        )}
-                                    </React.Fragment>
-                                    {!!current_landing_company?.support_professional_client && (
-                                        <>
-                                            <div className='account-form__divider' />
-                                            <div className='pro-client'>
-                                                <FormSubHeader
-                                                    className='account-form__red-header'
-                                                    title={localize('Professional Client')}
-                                                />
-
-                                                <FormBodySection>
+                                                        )}
+                                                    </fieldset>
                                                     <fieldset className='account-form__fieldset'>
-                                                        <div>
-                                                            <Text as='p' size='xs'>
-                                                                <Localize i18n_default_text='By default, all Deriv.com clients are retail clients but anyone can request to be treated as a professional client.' />
-                                                            </Text>
-                                                            <Text as='p' size='xs'>
-                                                                <Localize i18n_default_text='A professional client receives a lower degree of client protection due to the following.' />
-                                                            </Text>
-                                                            <Text as='p' size='xs'>
-                                                                <Localize i18n_default_text='We presume that you possess the experience, knowledge, and expertise to make your own investment decisions and properly assess the risk involved.' />
-                                                            </Text>
-                                                            <Text as='p' size='xs' className='last-child'>
-                                                                <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
-                                                            </Text>
-                                                        </div>
-                                                        <Checkbox
-                                                            name='request_professional_status'
-                                                            value={values.request_professional_status}
-                                                            onChange={() => {
-                                                                setFieldValue(
-                                                                    'request_professional_status',
-                                                                    !values.request_professional_status
-                                                                );
-                                                                setFieldTouched(
-                                                                    'request_professional_status',
-                                                                    true,
-                                                                    true
-                                                                );
-                                                            }}
-                                                            label={localize(
-                                                                'I would like to be treated as a professional client.'
-                                                            )}
-                                                            id='request_professional_status'
-                                                            defaultChecked={!!values.request_professional_status}
-                                                            disabled={
-                                                                is_virtual ||
-                                                                !!form_initial_values.request_professional_status
-                                                            }
-                                                            greyDisabled
-                                                            className={classNames({
-                                                                'dc-checkbox-blue': is_dashboard,
-                                                            })}
+                                                        <Input
+                                                            data-lpignore='true'
+                                                            autoComplete='off' // prevent chrome autocomplete
+                                                            type='text'
+                                                            name='address_postcode'
+                                                            id='address_postcode'
+                                                            label={localize('Postal/ZIP code')}
+                                                            value={values.address_postcode}
+                                                            error={errors.address_postcode}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            disabled={!isChangeableField('address_postcode')}
                                                         />
                                                     </fieldset>
-                                                </FormBodySection>
-                                            </div>
-                                            <div className='account-form__divider' />
-                                        </>
+                                                </div>
+                                            </FormBodySection>
+                                        </React.Fragment>
                                     )}
-
-                                    <FormSubHeader title={localize('Email preference')} />
-                                    <FormBodySection
-                                        has_side_note={is_dashboard}
-                                        side_note={localize('Check this box to receive updates via email.')}
-                                    >
-                                        <fieldset className='account-form__fieldset'>
-                                            <Checkbox
-                                                name='email_consent'
-                                                value={values.email_consent}
-                                                onChange={() => {
-                                                    setFieldValue('email_consent', !values.email_consent);
-                                                    setFieldTouched('email_consent', true, true);
-                                                }}
-                                                label={localize(
-                                                    'Get updates about Deriv products, services and events.'
-                                                )}
-                                                id='email_consent'
-                                                defaultChecked={!!values.email_consent}
-                                                disabled={!isChangeableField('email_consent') && !is_virtual}
-                                                className={classNames({ 'dc-checkbox-blue': is_dashboard })}
+                                </React.Fragment>
+                                {!!current_landing_company?.support_professional_client && (
+                                    <>
+                                        <div className='account-form__divider' />
+                                        <div className='pro-client'>
+                                            <FormSubHeader
+                                                className='account-form__red-header'
+                                                title={localize('Professional Client')}
                                             />
-                                        </fieldset>
-                                    </FormBodySection>
-                                </FormBody>
-                                <FormFooter>
-                                    {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!is_virtual &&
-                                        !(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                            <Text className='account-form__footer-note' size='xxxs'>
-                                                {localize(
-                                                    'Please make sure your information is correct or it may affect your trading experience.'
-                                                )}
+
+                                            <FormBodySection>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <div>
+                                                        <Text as='p' size='xs'>
+                                                            <Localize i18n_default_text='By default, all Deriv.com clients are retail clients but anyone can request to be treated as a professional client.' />
+                                                        </Text>
+                                                        <Text as='p' size='xs'>
+                                                            <Localize i18n_default_text='A professional client receives a lower degree of client protection due to the following.' />
+                                                        </Text>
+                                                        <Text as='p' size='xs'>
+                                                            <Localize i18n_default_text='We presume that you possess the experience, knowledge, and expertise to make your own investment decisions and properly assess the risk involved.' />
+                                                        </Text>
+                                                        <Text as='p' size='xs' className='last-child'>
+                                                            <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
+                                                        </Text>
+                                                    </div>
+                                                    <Checkbox
+                                                        name='request_professional_status'
+                                                        value={values.request_professional_status}
+                                                        onChange={() => {
+                                                            setFieldValue(
+                                                                'request_professional_status',
+                                                                !values.request_professional_status
+                                                            );
+                                                            setFieldTouched('request_professional_status', true, true);
+                                                        }}
+                                                        label={localize(
+                                                            'I would like to be treated as a professional client.'
+                                                        )}
+                                                        id='request_professional_status'
+                                                        defaultChecked={!!values.request_professional_status}
+                                                        disabled={
+                                                            is_virtual ||
+                                                            !!form_initial_values.request_professional_status
+                                                        }
+                                                        greyDisabled
+                                                        className={classNames({
+                                                            'dc-checkbox-blue': is_dashboard,
+                                                        })}
+                                                    />
+                                                </fieldset>
+                                            </FormBodySection>
+                                        </div>
+                                        <div className='account-form__divider' />
+                                    </>
+                                )}
+
+                                <FormSubHeader title={localize('Email preference')} />
+                                <FormBodySection
+                                    has_side_note={is_dashboard}
+                                    side_note={localize('Check this box to receive updates via email.')}
+                                >
+                                    <fieldset className='account-form__fieldset'>
+                                        <Checkbox
+                                            name='email_consent'
+                                            value={values.email_consent}
+                                            onChange={() => {
+                                                setFieldValue('email_consent', !values.email_consent);
+                                                setFieldTouched('email_consent', true, true);
+                                            }}
+                                            label={localize('Get updates about Deriv products, services and events.')}
+                                            id='email_consent'
+                                            defaultChecked={!!values.email_consent}
+                                            disabled={!isChangeableField('email_consent') && !is_virtual}
+                                            className={classNames({ 'dc-checkbox-blue': is_dashboard })}
+                                        />
+                                    </fieldset>
+                                </FormBodySection>
+                            </FormBody>
+                            <FormFooter>
+                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                {!is_virtual && !(isSubmitting || is_submit_success || (status && status.msg)) && (
+                                    <Text className='account-form__footer-note' size='xxxs'>
+                                        {localize(
+                                            'Please make sure your information is correct or it may affect your trading experience.'
+                                        )}
                                     </Text>
                                 )}
                                 <Button
@@ -1212,6 +1221,7 @@ PersonalDetailsForm.propTypes = {
     has_residence: PropTypes.bool,
     account_settings: PropTypes.object,
     getChangeableFields: PropTypes.func,
+    current_landing_company: PropTypes.object,
     history: PropTypes.object,
 };
 

@@ -27,13 +27,20 @@ describe('<DepositsLocked />', () => {
     };
 
     it('should show the proof of identity document verification message', () => {
-        account_status.authentication.identity.status = 'pending';
-        account_status.authentication.document.status = 'none';
-        account_status.authentication.needs_verification = ['identity'];
-
+        const poi_account_status = {
+            authentication: {
+                identity: {
+                    status: 'pending',
+                },
+                document: {
+                    status: 'none',
+                },
+                needs_verification: ['identity'],
+            },
+        };
         const screen = render(
             <DepositsLocked
-                account_status={account_status}
+                account_status={poi_account_status}
                 is_tnc_needed={false}
                 is_financial_information_incomplete={false}
                 is_trading_experience_incomplete={false}
@@ -48,13 +55,20 @@ describe('<DepositsLocked />', () => {
     });
 
     it('should show the proof of address document verification message', () => {
-        account_status.authentication.identity.status = 'none';
-        account_status.authentication.document.status = 'pending';
-        account_status.authentication.needs_verification = ['document'];
-
+        const poa_account_status = {
+            authentication: {
+                identity: {
+                    status: 'none',
+                },
+                document: {
+                    status: 'pending',
+                },
+                needs_verification: ['document'],
+            },
+        };
         const screen = render(
             <DepositsLocked
-                account_status={account_status}
+                account_status={poa_account_status}
                 is_tnc_needed={false}
                 is_financial_information_incomplete={false}
                 is_trading_experience_incomplete={false}

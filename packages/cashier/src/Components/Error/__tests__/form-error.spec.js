@@ -46,7 +46,7 @@ describe('<FormError />', () => {
         expect(error.message).toBe('');
     });
 
-    it('<ErrorForm /> component should not be visible, when "Cancel" button is clicked', async () => {
+    it('in case of error.code is equal to "Fiat2CryptoTransferOverLimit", <ErrorForm /> component should not be visible, when "Cancel" button is clicked', async () => {
         const error = {
             code: 'Fiat2CryptoTransferOverLimit',
             message: 'Error is occured',
@@ -54,13 +54,8 @@ describe('<FormError />', () => {
                 this.message = value;
             },
         };
-        const history = createBrowserHistory();
 
-        render(
-            <Router history={history}>
-                <FormError error={error} />
-            </Router>
-        );
+        render(<FormError error={error} />);
 
         const on_cancel_on_confirm_btns = screen.getAllByRole('button');
         const [on_cancel_btn, on_confirm_btn] = on_cancel_on_confirm_btns;

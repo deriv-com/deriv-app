@@ -16,6 +16,7 @@ const Checkbox = React.forwardRef(
             onChange, // This needs to be here so it's not included in `otherProps`
             value,
             withTabIndex,
+            greyDisabled = false,
             ...otherProps
         },
         ref
@@ -69,6 +70,7 @@ const Checkbox = React.forwardRef(
                     className={classNames('dc-checkbox__box', {
                         'dc-checkbox__box--active': checked,
                         'dc-checkbox__box--disabled': disabled,
+                        'dc-checkbox--grey-disabled': disabled && greyDisabled,
                     })}
                     {...(withTabIndex?.length > 0 ? { tabIndex: withTabIndex } : {})}
                     tabIndex='0'
@@ -91,6 +93,7 @@ Checkbox.propTypes = {
     classNameLabel: PropTypes.string,
     defaultChecked: PropTypes.bool,
     disabled: PropTypes.bool,
+    greyDisabled: PropTypes.bool,
     id: PropTypes.string,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onChange: PropTypes.func,

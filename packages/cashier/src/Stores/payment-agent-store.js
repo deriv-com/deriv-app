@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import { routes } from '@deriv/shared';
+import { formatMoney, routes } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
@@ -300,5 +300,37 @@ export default class PaymentAgentStore {
     @computed
     get is_payment_agent_visible_in_onboarding() {
         return !!this.all_payment_agent_list?.paymentagent_list?.list?.length;
+    }
+
+    @action.bound
+    async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        this.error.setErrorMessage('');
+        const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
+            loginid,
+            currency,
+            amount,
+            verification_code,
+        });
+        if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
+            const selected_agent = this.agents.find(agent => agent.value === loginid);
+            this.setReceipt({
+                amount_transferred: formatMoney(currency, amount, true),
+                ...(selected_agent && {
+                    payment_agent_email: selected_agent.email,
+                    payment_agent_id: selected_agent.value,
+                    payment_agent_name: selected_agent.text,
+                    payment_agent_phone: selected_agent.phone,
+                    payment_agent_url: selected_agent.url,
+                }),
+                ...(!selected_agent && {
+                    payment_agent_id: loginid,
+                }),
+            });
+            this.setIsWithdrawSuccessful(true);
+            this.setIsTryWithdrawSuccessful(false);
+            this.setConfirmation({});
+        } else {
+            this.error.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
+        }
     }
 }

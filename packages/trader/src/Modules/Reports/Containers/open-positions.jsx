@@ -294,7 +294,7 @@ const OpenPositions = ({
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier contract
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-
+    const [active_positions_saved, set_active_positions] = React.useState([]);
     const previous_active_positions = usePrevious(active_positions);
 
     React.useEffect(() => {
@@ -310,7 +310,13 @@ const OpenPositions = ({
             if (!isMobile()) onUnmount();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [active_positions, onMount, onUnmount]);
+    }, []);
+
+    React.useEffect(() => {
+        if (active_positions.length !== 0) {
+            set_active_positions(active_positions);
+        }
+    }, [active_positions, active_positions_saved]);
 
     React.useEffect(() => {
         checkForMultiplierContract(previous_active_positions);
@@ -329,7 +335,7 @@ const OpenPositions = ({
 
     const is_multiplier_selected = has_multiplier_contract && active_index === 1;
 
-    const active_positions_filtered = active_positions?.filter(p => {
+    const active_positions_filtered = active_positions_saved?.filter(p => {
         if (p.contract_info) {
             return is_multiplier_selected
                 ? isMultiplierContract(p.contract_info.contract_type)

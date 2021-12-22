@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
 import DepositsLocked from '../deposit-locked';
 
-jest.mock('Stores/connect.js', () => ({
+jest.mock('Stores/connect', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     connect: () => Component => Component,

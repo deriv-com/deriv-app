@@ -11,6 +11,7 @@ describe('<Error />', () => {
         };
         render(<Error error={error} />);
         expect(screen.getByText('Email verification failed')).toBeInTheDocument();
+
         expect(screen.getByText('Resend email')).toBeInTheDocument();
     });
 
@@ -24,6 +25,7 @@ describe('<Error />', () => {
                 <Error error={error} />
             </Router>
         );
+
         expect(screen.getByText('Update your personal details')).toBeInTheDocument();
         expect(screen.getByText('Update my details')).toBeInTheDocument();
     });
@@ -34,6 +36,7 @@ describe('<Error />', () => {
             message: 'Oops, you have an error!',
         };
         render(<Error error={error} />);
+
         expect(screen.getByText('Oops, you have an error!')).toBeInTheDocument();
         expect(screen.getByText('Try again')).toBeInTheDocument();
     });
@@ -44,6 +47,7 @@ describe('<Error />', () => {
             message: 'Oops, you have an error with withdrawal!',
         };
         render(<Error error={error} />);
+
         expect(screen.getByText('Oops, you have an error with withdrawal!')).toBeInTheDocument();
     });
 
@@ -53,6 +57,7 @@ describe('<Error />', () => {
             message: 'Default error',
         };
         render(<Error error={error} />);
+
         expect(screen.getByText('Default error')).toBeInTheDocument();
     });
 
@@ -65,14 +70,17 @@ describe('<Error />', () => {
                     this.message = value;
                 },
             };
-            render(
+            const { unmount } = render(
                 <Router history={history}>
                     <Error error={error} />
                 </Router>
             );
             const error_btn = screen.getByText(btn_name);
             fireEvent.click(error_btn);
+
             expect(error.message).toBe('');
+
+            unmount();
         };
 
         checkButton('Resend email', 'InvalidToken');

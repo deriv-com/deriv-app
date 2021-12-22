@@ -57,16 +57,26 @@ describe('<Error />', () => {
     });
 
     it('should clear an error.message if one of the buttons ["Resend email", "Update my details", "Try again"] was clicked', () => {
-        const error = {
-            code: 'InvalidToken',
-            setErrorMessage(value) {
-                this.message = value;
-            },
+        let checkButton = (btn_name, error_code) => {
+            const history = createBrowserHistory();
+            const error = {
+                code: error_code,
+                setErrorMessage(value) {
+                    this.message = value;
+                },
+            };
+            render(
+                <Router history={history}>
+                    <Error error={error} />
+                </Router>
+            );
+            const error_btn = screen.getByText(btn_name);
+            fireEvent.click(error_btn);
+            expect(error.message).toBe('');
         };
 
-        render(<Error error={error} />);
-        const error_btn = screen.getByRole('button', { name: 'Resend email' });
-        fireEvent.click(error_btn);
-        expect(error.message).toBe('');
+        checkButton('Resend email', 'InvalidToken');
+        checkButton('Try again', 'WrongResponse');
+        checkButton('Update my details', 'ASK_FIX_DETAILS');
     });
 });

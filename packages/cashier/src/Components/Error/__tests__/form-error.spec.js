@@ -16,49 +16,98 @@ describe('<FormError />', () => {
     portalRoot.setAttribute('id', 'modal_root');
     global.document.body.appendChild(portalRoot);
 
-    it('should render an <ErrorForm />, when the error.code is equal to "Fiat2CryptoTransferOverLimit"', () => {
+    it('should show "Please verify your identity" message, "Cancel" and "Verify identity" buttons', () => {
         render(<FormError error={{ code: 'Fiat2CryptoTransferOverLimit', message: 'Error is occured' }} />);
+
         expect(screen.getByText('Please verify your identity')).toBeInTheDocument();
         expect(screen.getByText('Cancel')).toBeInTheDocument();
         expect(screen.getByText('Verify identity')).toBeInTheDocument();
     });
 
-    it('in case of error.code is equal to "Fiat2CryptoTransferOverLimit", should redirect to "/account/proof-of-identity" page, when confirm button is clicked', () => {
+    it('should redirect to "/account/proof-of-identity" page, when "Verify identity" button was clicked', () => {
+        const history = createBrowserHistory();
+        const setErrorMessage = jest.fn();
         const error = {
             code: 'Fiat2CryptoTransferOverLimit',
             message: 'Error is occured',
-            setErrorMessage(value) {
-                this.message = value;
-            },
+            setErrorMessage,
         };
-        const history = createBrowserHistory();
         const expected_route = 'proof_of_identity';
-
         render(
             <Router history={history}>
                 <FormError error={error} />
             </Router>
         );
-        const on_confirm_btn = screen.getByRole('button', { name: 'Verify identity' });
+        const on_confirm_btn = screen.getByText('Verify identity');
         fireEvent.click(on_confirm_btn);
+
         expect(history.location.pathname).toBe(routes[expected_route]);
-        expect(error.message).toBe('');
     });
 
-    it('in case of error.code is equal to "Fiat2CryptoTransferOverLimit", <ErrorForm /> component should not be visible, when "Cancel" button is clicked', async () => {
+    it('should show "Cashier Error" message and "OK" button', () => {
+        render(<FormError error={{ code: '', message: 'Error is occured' }} />);
+
+        expect(screen.getByText('Cashier Error')).toBeInTheDocument();
+        expect(screen.getByText('OK')).toBeInTheDocument();
+    });
+
+    it('should not show "Cashier Error" message, when "OK" button was clicked', async () => {
+        const setErrorMessage = jest.fn();
+        const error = {
+            code: '',
+            message: 'Error is occured',
+            setErrorMessage,
+        };
+        render(<FormError error={error} />);
+        const ok_btn = screen.getByText('OK');
+        fireEvent.click(ok_btn);
+
+        await waitFor(() => {
+            expect(screen.queryByText('Error is occured')).not.toBeInTheDocument();
+        });
+    });
+
+    it('should not show "Please verify your identity" message, when "Cancel" button was clicked', async () => {
+        const setErrorMessage = jest.fn();
         const error = {
             code: 'Fiat2CryptoTransferOverLimit',
             message: 'Error is occured',
-            setErrorMessage(value) {
-                this.message = value;
-            },
+            setErrorMessage,
+        };
+        render(<FormError error={error} />);
+        const cancel_btn = screen.getByText('Cancel');
+        fireEvent.click(cancel_btn);
+
+        await waitFor(() => {
+            expect(screen.queryByText('Error is occured')).not.toBeInTheDocument();
+        });
+    });
+
+    it('should clear an error.message if one of the buttons ["Verify identity", "Cancel", "OK"] was clicked', () => {
+        const checkButton = (error_code, btn_name) => {
+            const history = createBrowserHistory();
+            const error = {
+                code: error_code,
+                message: 'Error is occured',
+                setErrorMessage(value) {
+                    this.message = value;
+                },
+            };
+            const { unmount } = render(
+                <Router history={history}>
+                    <FormError error={error} />
+                </Router>
+            );
+            const error_btn = screen.getByText(btn_name);
+            fireEvent.click(error_btn);
+
+            expect(error.message).toBe('');
+
+            unmount();
         };
 
-        render(<FormError error={error} />);
-        const on_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
-        fireEvent.click(on_cancel_btn);
-        await waitFor(() => {
-            expect(screen.queryByText('Please verify your identity')).not.toBeInTheDocument();
-        });
+        checkButton('Fiat2CryptoTransferOverLimit', 'Verify identity');
+        checkButton('Fiat2CryptoTransferOverLimit', 'Cancel');
+        checkButton('', 'OK');
     });
 });

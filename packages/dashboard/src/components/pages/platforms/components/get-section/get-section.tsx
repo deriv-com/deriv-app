@@ -54,7 +54,7 @@ const GetSection: React.FC<TGetSection> = ({
                             {localize('Trade')}
                         </Text>
                         <div className='dw-get__item-grid'>
-                            {trades.map((trade, idx) => (
+                            {trades?.map((trade, idx) => (
                                 <div key={idx} className='dw-get__wrapper dw-get__item'>
                                     <Icon className='dw-get__item-icon' icon={trade.icon} width='16' height='16' />
                                     <Text size='xxxs'>{trade.title}</Text>
@@ -68,7 +68,7 @@ const GetSection: React.FC<TGetSection> = ({
                             {localize('Markets')}
                         </Text>
                         <div className='dw-get__item-grid'>
-                            {markets.map((market, idx) => (
+                            {markets?.map((market, idx) => (
                                 <div key={idx} className='dw-get__wrapper dw-get__item'>
                                     <Icon className='dw-get__item-icon' icon={market.icon} width='16' height='16' />
                                     <Text size='xxxs'>{market.title}</Text>

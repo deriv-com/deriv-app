@@ -5,13 +5,18 @@ import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
-import { getAccountText } from '../../_common/utility';
-import '../../Sass/withdraw.scss';
+import { getAccountText } from '_common/utility';
+import 'Sass/crypto-withdraw-receipt.scss';
 
 const Status = () => {
     return (
-        <Text as='p' color='prominent' weight='bold' align='center' className='withdraw__receipt-status'>
-            <Icon icon='IcCircleDynamicColor' color='orange' size={8} className='withdraw__receipt-status-icon' />
+        <Text as='p' color='prominent' weight='bold' align='center' className='crypto-withdraw-receipt__status'>
+            <Icon
+                icon='IcCircleDynamicColor'
+                color='orange'
+                size={8}
+                className='crypto-withdraw-receipt__status-icon'
+            />
             <Localize i18n_default_text='In review' />
         </Text>
     );
@@ -19,15 +24,15 @@ const Status = () => {
 
 const AcountInformation = ({ account }) => {
     return (
-        <div className='withdraw__account-info'>
-            <div className='withdraw__account-info-detail'>
+        <div className='crypto-withdraw-receipt__account-info'>
+            <div className='crypto-withdraw-receipt__account-info-detail'>
                 <Icon icon={account?.platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`} size={32} />
                 <Text
                     color='prominent'
                     weight='bold'
                     size={isMobile() ? 'xxs' : 's'}
                     align='center'
-                    className='withdraw__account-info-detail-text'
+                    className='crypto-withdraw-receipt__account-info-detail-text'
                 >
                     {account?.currency?.toUpperCase()}
                 </Text>
@@ -36,7 +41,7 @@ const AcountInformation = ({ account }) => {
                 color='less-prominent'
                 size={isMobile() ? 'xs' : 's'}
                 align='center'
-                className='withdraw__account-info-detail-text'
+                className='crypto-withdraw-receipt__account-info-detail-text'
             >
                 {account?.value}
             </Text>
@@ -47,10 +52,15 @@ const AcountInformation = ({ account }) => {
 const WalletInformation = ({ account, blockchain_address }) => {
     const text = getAccountText(account);
     return (
-        <div className='withdraw__account-info'>
-            <div className='withdraw__account-info-detail'>
+        <div className='crypto-withdraw-receipt__account-info'>
+            <div className='crypto-withdraw-receipt__account-info-detail'>
                 <Icon icon='IcCashierWithdrawWallet' size={32} />
-                <Text color='prominent' weight='bold' align='center' className='withdraw__account-info-detail-text'>
+                <Text
+                    color='prominent'
+                    weight='bold'
+                    align='center'
+                    className='crypto-withdraw-receipt__account-info-detail-text'
+                >
                     <Localize
                         i18n_default_text='{{account_text}} wallet'
                         values={{
@@ -59,13 +69,13 @@ const WalletInformation = ({ account, blockchain_address }) => {
                     />
                 </Text>
             </div>
-            <div className='withdraw__account-info-address'>
+            <div className='crypto-withdraw-receipt__account-info-address'>
                 <Text
                     color='less-prominent'
                     as='p'
                     size={isMobile() ? 'xxs' : 'xs'}
                     align='center'
-                    className='withdraw__account-info-detail-text'
+                    className='crypto-withdraw-receipt__account-info-detail-text'
                 >
                     {blockchain_address}
                 </Text>
@@ -105,7 +115,7 @@ const CryptoWithdrawReceipt = ({
     }, []);
 
     return (
-        <div className='cashier__wrapper withdraw__wrapper'>
+        <div className='cashier__wrapper'>
             <Text
                 as='h2'
                 color='prominent'
@@ -115,15 +125,15 @@ const CryptoWithdrawReceipt = ({
             >
                 <Localize i18n_default_text='Your withdrawal will be processed within 24 hours' />
             </Text>
-            <div className='withdraw__receipt-detail'>
+            <div className='crypto-withdraw-receipt__detail'>
                 {!isMobile() && <Status />}
                 <Text
                     as='p'
-                    color='prominent'
+                    color='profit-success'
                     weight='bold'
                     align='center'
                     size={isMobile() ? 'm' : 'l'}
-                    className='withdraw__receipt-crypto'
+                    className='crypto-withdraw-receipt__crypto'
                 >
                     <Localize
                         i18n_default_text='{{withdraw_amount}} {{currency_symbol}}'
@@ -135,20 +145,20 @@ const CryptoWithdrawReceipt = ({
                 </Text>
                 {isMobile() && <Status />}
                 <AcountInformation account={account} />
-                <Icon className='withdraw__receipt-icon' icon='IcArrowDown' size={30} />
+                <Icon className='crypto-withdraw-receipt__icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} />
             </div>
-            <div className='withdraw__receipt-button-wrapper'>
+            <div className='crypto-withdraw-receipt__button-wrapper'>
                 <Button
                     id='withdraw_transaction'
-                    className='withdraw__receipt-button withdraw__receipt-button-left'
+                    className='crypto-withdraw-receipt__button crypto-withdraw-receipt__button-left'
                     text={localize('View transaction history')}
                     onClick={() => setIsCryptoTransactionsVisible(true)}
                     secondary
                 />
                 <Button
-                    id='withdraw_receipt'
-                    className='withdraw__receipt-button'
+                    id='crypto-withdraw-receipt'
+                    className='crypto-withdraw-receipt__button'
                     has_effect
                     text={localize('Make a new withdrawal')}
                     onClick={() => setIsWithdrawConfirmed(false)}
@@ -172,13 +182,13 @@ CryptoWithdrawReceipt.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    account: modules.cashier.config.account_transfer.selected_from,
-    blockchain_address: modules.cashier.blockchain_address,
-    withdraw_amount: modules.cashier.withdraw_amount,
+    account: modules.cashier.account_transfer.selected_from,
+    blockchain_address: modules.cashier.withdraw.blockchain_address,
+    withdraw_amount: modules.cashier.withdraw.withdraw_amount,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
-    resetWithrawForm: modules.cashier.resetWithrawForm,
+    resetWithrawForm: modules.cashier.withdraw.resetWithrawForm,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
-    setIsWithdrawConfirmed: modules.cashier.setIsWithdrawConfirmed,
+    setIsWithdrawConfirmed: modules.cashier.withdraw.setIsWithdrawConfirmed,
 }))(CryptoWithdrawReceipt);

@@ -5,6 +5,7 @@ import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import 'Sass/account-transfer-receipt.scss';
 
 const AccountTransferReceipt = ({
     disableApp,
@@ -58,11 +59,11 @@ const AccountTransferReceipt = ({
     };
 
     return (
-        <div className='cashier__crypto-account-transfer__receipt'>
+        <div className='account-transfer-receipt__crypto'>
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
             </Text>
-            <div className='cashier__crypto-transferred-amount cashier__text--bold'>
+            <div className='account-transfer-receipt__crypto--amount'>
                 <Text as='p' size='l' weight='bold' color='profit-success'>
                     <Localize
                         i18n_default_text='{{amount}} {{currency}}'
@@ -73,7 +74,7 @@ const AccountTransferReceipt = ({
                     />
                 </Text>
             </div>
-            <div className='cashier__crypto-transferred-details-wrapper'>
+            <div className='account-transfer-receipt__crypto--details-wrapper'>
                 <div className='crypto-transfer-from'>
                     <div className='crypto-transfer-from-details'>
                         <Icon
@@ -104,9 +105,9 @@ const AccountTransferReceipt = ({
                     </Text>
                 </div>
             </div>
-            <div className='crypto-transfer__receipt-form-submit'>
+            <div className='account-transfer-receipt__crypto--form-submit'>
                 <Button
-                    className='account-transfer__button'
+                    className='account-transfer-receipt__button'
                     has_effect
                     text={localize('View transaction details')}
                     onClick={checkAccount}
@@ -114,7 +115,7 @@ const AccountTransferReceipt = ({
                     large
                 />
                 <Button
-                    className='account-transfer__button'
+                    className='account-transfer-receipt__button'
                     has_effect
                     text={localize('Make a new transfer')}
                     onClick={resetAccountTransfer}
@@ -128,7 +129,7 @@ const AccountTransferReceipt = ({
                 enableApp={enableApp}
                 disableApp={disableApp}
                 has_close_icon={isMobile()}
-                id='account_transfer_switch_modal'
+                className='account_transfer_switch_modal'
                 small
                 title={localize(`Switch to ${switch_to.currency} account?`)}
             >
@@ -168,10 +169,10 @@ export default withRouter(
     connect(({ client, modules, ui }) => ({
         loginid: client.loginid,
         switchAccount: client.switchAccount,
-        receipt: modules.cashier.config.account_transfer.receipt,
-        resetAccountTransfer: modules.cashier.resetAccountTransfer,
-        selected_from: modules.cashier.config.account_transfer.selected_from,
-        selected_to: modules.cashier.config.account_transfer.selected_to,
+        receipt: modules.cashier.account_transfer.receipt,
+        resetAccountTransfer: modules.cashier.account_transfer.resetAccountTransfer,
+        selected_from: modules.cashier.account_transfer.selected_from,
+        selected_to: modules.cashier.account_transfer.selected_to,
         disableApp: ui.disableApp,
         enableApp: ui.enableApp,
     }))(AccountTransferReceipt)

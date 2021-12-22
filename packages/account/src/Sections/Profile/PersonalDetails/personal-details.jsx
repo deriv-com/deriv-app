@@ -1080,7 +1080,6 @@ export const PersonalDetailsForm = ({
                                                 className='account-form__red-header'
                                                 title={localize('Professional Client')}
                                             />
-
                                             <FormBodySection>
                                                 <fieldset className='account-form__fieldset'>
                                                     <div>
@@ -1127,7 +1126,6 @@ export const PersonalDetailsForm = ({
                                         <div className='account-form__divider' />
                                     </>
                                 )}
-
                                 <FormSubHeader title={localize('Email preference')} />
                                 <FormBodySection
                                     has_side_note={is_dashboard}

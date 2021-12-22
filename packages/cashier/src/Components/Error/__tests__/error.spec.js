@@ -1,43 +1,72 @@
 import React from 'react';
 import Error from '../error';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { createBrowserHistory } from 'history';
+import { Router } from 'react-router';
 
 describe('<Error />', () => {
-    it('Should render an <Error /> component with "Email verification failed" header, if the error.code is equal to "InvalidToken"', () => {
+    it('should show the "Email verification failed" message, and "Resend email" button', () => {
         const error = {
             code: 'InvalidToken',
         };
         render(<Error error={error} />);
         expect(screen.getByText('Email verification failed')).toBeInTheDocument();
+        expect(screen.getByText('Resend email')).toBeInTheDocument();
     });
 
-    it('Should render a default-case of <Error /> component with "Oops, you have an error!" header if the error.code is equal to "empty_string"', () => {
+    it('should show the "Update your personal details" message, and "Update my details" button', () => {
+        const history = createBrowserHistory();
         const error = {
-            code: '',
+            code: 'ASK_FIX_DETAILS',
+        };
+        render(
+            <Router history={history}>
+                <Error error={error} />
+            </Router>
+        );
+        expect(screen.getByText('Update your personal details')).toBeInTheDocument();
+        expect(screen.getByText('Update my details')).toBeInTheDocument();
+    });
+
+    it('should show the "Oops, you have an error!" message, and "Try again" button', () => {
+        const error = {
+            code: 'WrongResponse',
             message: 'Oops, you have an error!',
         };
         render(<Error error={error} />);
         expect(screen.getByText('Oops, you have an error!')).toBeInTheDocument();
+        expect(screen.getByText('Try again')).toBeInTheDocument();
     });
 
-    it('Should clear the error.message if onClickButton function is fired on <Error /> component', () => {
-        const handleClcik = jest.fn();
+    it('should show the "Oops, you have an error with withdrawal!" message', () => {
+        const error = {
+            code: 'PaymentAgentWithdrawError',
+            message: 'Oops, you have an error with withdrawal!',
+        };
+        render(<Error error={error} />);
+        expect(screen.getByText('Oops, you have an error with withdrawal!')).toBeInTheDocument();
+    });
 
+    it('should show the "Default error" message', () => {
+        const error = {
+            code: '',
+            message: 'Default error',
+        };
+        render(<Error error={error} />);
+        expect(screen.getByText('Default error')).toBeInTheDocument();
+    });
+
+    it('should clear an error.message if one of the buttons ["Resend email", "Update my details", "Try again"] was clicked', () => {
         const error = {
             code: 'InvalidToken',
             setErrorMessage(value) {
                 this.message = value;
             },
-            onClickButton: handleClcik,
         };
 
         render(<Error error={error} />);
-        expect(
-            screen.getByText('The verification link you used is invalid or expired. Please request for a new one.')
-        ).toBeInTheDocument();
-        const error_btn = screen.getByRole('button');
+        const error_btn = screen.getByRole('button', { name: 'Resend email' });
         fireEvent.click(error_btn);
-        expect(handleClcik).toHaveBeenCalledTimes(1);
         expect(error.message).toBe('');
     });
 });

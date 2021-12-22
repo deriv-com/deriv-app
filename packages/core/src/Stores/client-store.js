@@ -1236,12 +1236,6 @@ export default class ClientStore extends BaseStore {
         const authorize_response = await this.setUserLogin(login_new_user);
         this.setDeviceData();
 
-        window.location.replace(
-            urlFor(routes[redirect_url], {
-                query_string: filterUrlQuery(search, ['platforms', 'code', 'action']),
-            })
-        );
-
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
             await this.logout();

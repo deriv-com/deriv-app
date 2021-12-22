@@ -108,7 +108,7 @@ describe('<AccountTransferReceipt />', () => {
         });
     });
 
-    it('should redirect to "/reports/statement", when the "Switch to {currency} account" button was clicked', async () => {
+    it('should redirect to "/reports/statement", when the "Switch to {currency} account" button was clicked', () => {
         const portalRoot = global.document.createElement('div');
         portalRoot.setAttribute('id', 'modal_root');
         global.document.body.appendChild(portalRoot);

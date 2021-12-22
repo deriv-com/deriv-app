@@ -77,12 +77,12 @@ const max_allowed_reasons = 3;
 
 const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dxtrade_accounts_list }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
-    const [is_account_deactivated, setAccountDeactivated] = React.useState(false);
-    const [is_loading, setLoading] = React.useState(false);
-    const [is_modal_open, setModalVisibility] = React.useState(false);
-    const [which_modal_should_render, setModalType] = React.useState();
+    const [is_account_deactivated, setIsAccountDeactivated] = React.useState(false);
+    const [is_loading, setIsLoading] = React.useState(false);
+    const [is_modal_open, setIsModalOpen] = React.useState(false);
+    const [which_modal_should_render, setWhichModalShouldRender] = React.useState();
     const [reason, setReason] = React.useState(null);
-    const [is_checkbox_disabled, setCheckboxDisabled] = React.useState(false);
+    const [is_checkbox_disabled, setIsCheckboxDisabled] = React.useState(false);
     const [total_checkbox_checked, setTotalCheckboxChecked] = React.useState(0);
     const [remaining_characters, setRemainingCharacters] = React.useState(character_limit_no);
     const [total_accumulated_characters, setTotalAccumulatedCharacters] = React.useState(0);
@@ -97,7 +97,6 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
 
         if (selected_reason_count) {
             const final_value = preparingReason(values);
-
             remaining_chars = remaining_chars >= 0 ? remaining_chars : 0;
 
             if (!/^[ a-zA-Z0-9.,'-\s]*$/.test(final_value)) {
@@ -116,20 +115,23 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
     const handleSubmitForm = values => {
         const final_reason = preparingReason(values);
 
-        setModalVisibility(true);
-        setModalType('warning_modal');
+        setIsModalOpen(true);
+        setWhichModalShouldRender('warning_modal');
         setReason(final_reason);
     };
+
+    React.useEffect(() => {
+        if (total_checkbox_checked === max_allowed_reasons) setIsCheckboxDisabled(true);
+        else if (is_checkbox_disabled) setIsCheckboxDisabled(false);
+    }, [total_checkbox_checked]);
 
     const handleChangeCheckbox = (values, name, setFieldValue) => {
         if (!values[name]) {
             setTotalCheckboxChecked(total_checkbox_checked + 1);
             setFieldValue(name, !values[name]);
-            if (total_checkbox_checked === max_allowed_reasons) setCheckboxDisabled(true);
         } else {
             setTotalCheckboxChecked(total_checkbox_checked - 1);
             setFieldValue(name, !values[name]);
-            if (is_checkbox_disabled) setCheckboxDisabled(true);
         }
     };
 
@@ -159,15 +161,15 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
     };
 
     const startDeactivating = async () => {
-        setModalVisibility(false);
-        setLoading(true);
+        setIsModalOpen(false);
+        setIsLoading(true);
         const account_closure_response = await WS.authorized.accountClosure({
             account_closure: 1,
             reason,
         });
 
         if (account_closure_response.account_closure === 1) {
-            setAccountDeactivated(true);
+            setIsAccountDeactivated(true);
         } else {
             const { code, message, details: errorDetails } = account_closure_response.error;
             const getModalToRender = () => {
@@ -180,11 +182,11 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
                 return 'error_modal';
             };
 
-            setModalType(getModalToRender());
+            setWhichModalShouldRender(getModalToRender());
             setDetails(errorDetails);
             setApiErrorMessage(message);
-            setModalVisibility(true);
-            setLoading(false);
+            setIsModalOpen(true);
+            setIsLoading(false);
         }
     };
 
@@ -217,11 +219,11 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
             <Modal
                 className='deactivate-account-reasons'
                 is_open={is_modal_open}
-                toggleModal={() => setModalVisibility(!is_modal_open)}
+                toggleModal={() => setIsModalOpen(!is_modal_open)}
                 title={getModalTitle()}
             >
                 {which_modal_should_render === 'warning_modal' && (
-                    <WarningModal closeModal={() => setModalVisibility(false)} startDeactivating={startDeactivating} />
+                    <WarningModal closeModal={() => setIsModalOpen(false)} startDeactivating={startDeactivating} />
                 )}
                 {which_modal_should_render === 'AccountHasPendingConditions' && (
                     <AccountHasPendingConditions
@@ -233,7 +235,7 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
                     />
                 )}
                 {which_modal_should_render === 'inaccessible_modal' && (
-                    <GeneralErrorContent message={api_error_message} onClick={() => setModalVisibility(false)} />
+                    <GeneralErrorContent message={api_error_message} onClick={() => setIsModalOpen(false)} />
                 )}
             </Modal>
         </div>

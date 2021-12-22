@@ -5,15 +5,15 @@ import { localize } from '@deriv/translations';
 import { PlatformContext } from '@deriv/shared';
 
 const initial_form = {
-    'I have other financial priorities': false,
-    'I want to stop myself from trading': false,
-    "I'm no longer interested in trading": false,
-    'I prefer another trading website': false,
-    "The platforms aren't user-friendly": false,
-    'Making deposits and withdrawals is difficult': false,
-    'The platforms lack key features or functionality': false,
-    'Customer service was unsatisfactory': false,
-    "I'm deactivating my account for other reasons": false,
+    'financial-priorities': false,
+    'stop-trading': false,
+    'not-interested': false,
+    'another-website': false,
+    'not-user-friendly': false,
+    'difficult-transactions': false,
+    'lack-of-features': false,
+    'unsatisfactory-service': false,
+    'other-reasons': false,
     other_trading_platforms: '',
     do_to_improve: '',
 };
@@ -35,7 +35,7 @@ const DeactivateAccountReasonFrom = ({
         <Formik initialValues={initial_form} validate={validateFields} onSubmit={onSubmit}>
             {({ values, setFieldValue, errors, handleChange, handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
-                    <Field name='I have other financial priorities'>
+                    <Field name='financial-priorities'>
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
@@ -48,7 +48,7 @@ const DeactivateAccountReasonFrom = ({
                             />
                         )}
                     </Field>
-                    <Field name='I want to stop myself from trading'>
+                    <Field name='stop-trading'>
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
@@ -61,7 +61,7 @@ const DeactivateAccountReasonFrom = ({
                             />
                         )}
                     </Field>
-                    <Field name="I'm no longer interested in trading">
+                    <Field name='not-interested'>
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
@@ -74,7 +74,7 @@ const DeactivateAccountReasonFrom = ({
                             />
                         )}
                     </Field>
-                    <Field name='I prefer another trading website'>
+                    <Field name='another-website'>
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
@@ -87,7 +87,7 @@ const DeactivateAccountReasonFrom = ({
                             />
                         )}
                     </Field>
-                    <Field name="The platforms aren't user-friendly">
+                    <Field name='not-user-friendly'>
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
@@ -100,7 +100,7 @@ const DeactivateAccountReasonFrom = ({
                             />
                         )}
                     </Field>
-                    <Field name='Making deposits and withdrawals is difficult'>
+                    <Field name='difficult-transactions'>
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
@@ -113,7 +113,7 @@ const DeactivateAccountReasonFrom = ({
                             />
                         )}
                     </Field>
-                    <Field name='The platforms lack key features or functionality'>
+                    <Field name='lack-of-features'>
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
@@ -126,7 +126,7 @@ const DeactivateAccountReasonFrom = ({
                             />
                         )}
                     </Field>
-                    <Field name='Customer service was unsatisfactory'>
+                    <Field name='unsatisfactory-service'>
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
@@ -139,7 +139,7 @@ const DeactivateAccountReasonFrom = ({
                             />
                         )}
                     </Field>
-                    <Field name="I'm deactivating my account for other reasons">
+                    <Field name='other-reasons'>
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}

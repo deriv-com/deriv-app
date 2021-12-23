@@ -2,7 +2,7 @@ import React from 'react';
 import FormError from '../form-error';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 
 jest.mock('Stores/connect.js', () => ({
@@ -12,9 +12,13 @@ jest.mock('Stores/connect.js', () => ({
 }));
 
 describe('<FormError />', () => {
-    const portalRoot = global.document.createElement('div');
-    portalRoot.setAttribute('id', 'modal_root');
-    global.document.body.appendChild(portalRoot);
+    beforeAll(() => {
+        const portalRoot = global.document.createElement('div');
+        portalRoot.setAttribute('id', 'modal_root');
+        global.document.body.appendChild(portalRoot);
+    });
+
+    afterEach(cleanup);
 
     it('should show "Please verify your identity" message, "Cancel" and "Verify identity" buttons', () => {
         render(<FormError error={{ code: 'Fiat2CryptoTransferOverLimit', message: 'Error is occured' }} />);

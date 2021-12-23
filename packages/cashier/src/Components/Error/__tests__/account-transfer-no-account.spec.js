@@ -9,14 +9,14 @@ jest.mock('Stores/connect.js', () => ({
 }));
 
 describe('<AccountTransferNoAccount />', () => {
-    it('should show "Please create another Deriv, DMT5, or Deriv X account." messsgae and "Create account" button', () => {
+    it('should show "Please create another Deriv, DMT5, or Deriv X account." message and "Create account" button', () => {
         render(<AccountTransferNoAccount is_dxtrade_allowed />);
 
         expect(screen.getByText('Please create another Deriv, DMT5, or Deriv X account.')).toBeInTheDocument();
         expect(screen.getByText('Create account')).toBeInTheDocument();
     });
 
-    it('should show "Please create another Deriv or DMT5 account." messsgae and "Create account" button', () => {
+    it('should show "Please create another Deriv or DMT5 account." message and "Create account" button', () => {
         render(<AccountTransferNoAccount is_dxtrade_allowed={false} />);
 
         expect(screen.getByText('Please create another Deriv or DMT5 account.')).toBeInTheDocument();

@@ -6,16 +6,16 @@ import { useHistory } from 'react-router';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
-import Unsupported from 'Components/poi-unsupported';
+import POISubmission from './proof-of-identity-submission.jsx';
+import Onfido from './onfido.jsx';
+import IdvContainer from './idv.jsx';
+import Manual from './manual.jsx';
+import { identity_status_codes, service_code } from './proof-of-identity-utils';
+import { populateVerificationStatus } from '../Helpers/verification';
 import Verified from 'Components/poi-verified';
 import Limited from 'Components/poi-limited';
 import Expired from 'Components/poi-expired';
 import UploadComplete from 'Components/poi-upload-complete';
-import POISubmission from './proof-of-identity-submission.jsx';
-import Onfido from './onfido.jsx';
-import IdvContainer from './idv.jsx';
-import { identity_status_codes, service_code } from './proof-of-identity-utils';
-import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = ({
     account_status,
@@ -176,7 +176,15 @@ const ProofOfIdentityContainer = ({
                 />
             );
         case service_code.manual:
-            return <Unsupported manual={manual} />;
+            return (
+                <Manual
+                    manual={manual}
+                    is_from_external={is_from_external}
+                    needs_poa={needs_poa}
+                    redirect_button={redirect_button}
+                    handleRequireSubmission={handleRequireSubmission}
+                />
+            );
         default:
             return null;
     }

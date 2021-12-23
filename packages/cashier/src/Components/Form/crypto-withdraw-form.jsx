@@ -123,40 +123,40 @@ const CryptoWithdrawForm = ({
                                 />
                             )}
                         </Field>
-                        <div className='crypto-withdraw-form__percentage-selector'>
-                            <PercentageSelector
-                                amount={+balance}
-                                currency={currency}
-                                getCalculatedAmount={setWithdrawPercentageSelectorResult}
-                                percentage={percentage}
-                                should_percentage_reset={should_percentage_reset}
-                            />
-                        </div>
-                        <div className='crypto-withdraw-form__crypto-fiat-converter'>
+                        <div>
+                            <div className='crypto-withdraw-form__percentage-selector'>
+                                <PercentageSelector
+                                    amount={+balance}
+                                    currency={currency}
+                                    getCalculatedAmount={setWithdrawPercentageSelectorResult}
+                                    percentage={percentage}
+                                    should_percentage_reset={should_percentage_reset}
+                                />
+                            </div>
                             <CryptoFiatConverter
                                 from_currency={crypto_currency}
                                 to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}
                             />
-                        </div>
-                        <div className='crypto-withdraw-form-submit'>
-                            <Button
-                                className='cashier__form-submit-button'
-                                is_disabled={
-                                    validateAddress(values.address) ||
-                                    !!converter_from_error ||
-                                    !!converter_to_error ||
-                                    isSubmitting ||
-                                    !blockchain_address
-                                }
-                                type='submit'
-                                primary
-                                large
-                                onClick={() => requestWithdraw(verification_code)}
-                            >
-                                <Localize i18n_default_text='Withdraw' />
-                            </Button>
+                            <div className='crypto-withdraw-form-submit'>
+                                <Button
+                                    className='cashier__form-submit-button'
+                                    is_disabled={
+                                        validateAddress(values.address) ||
+                                        !!converter_from_error ||
+                                        !!converter_to_error ||
+                                        isSubmitting ||
+                                        !blockchain_address
+                                    }
+                                    type='submit'
+                                    primary
+                                    large
+                                    onClick={() => requestWithdraw(verification_code)}
+                                >
+                                    <Localize i18n_default_text='Withdraw' />
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 )}

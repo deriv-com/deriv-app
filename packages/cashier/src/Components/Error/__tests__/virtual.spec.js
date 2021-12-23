@@ -27,7 +27,7 @@ describe('<Virtual />', () => {
     it(`icon styling should be dark when 'is_dark_mode_on' prop is true`, () => {
         const component = render(
             <Router history={history}>
-                <Virtual has_real_account is_dark_mode_on />
+                <Virtual is_dark_mode_on />
             </Router>
         );
 
@@ -37,61 +37,25 @@ describe('<Virtual />', () => {
     it(`icon styling should be light when 'is_dark_mode_on' prop is false`, () => {
         const component = render(
             <Router history={history}>
-                <Virtual has_real_account is_dark_mode_on={false} />
+                <Virtual is_dark_mode_on={false} />
             </Router>
         );
 
         expect(component.container.querySelector('.virtual__account-switch-icon--light')).toBeInTheDocument();
     });
 
-    it(`should render 'You are using demo account' section when 'has_real_account' prop is true`, () => {
-        render(
-            <Router history={history}>
-                <Virtual has_real_account />
-            </Router>
-        );
-
-        expect(screen.getByText('You are using a demo account')).toBeInTheDocument();
-    });
-
-    it(`should render 'Cashier is locked' section when 'has_real_account' prop is false`, () => {
-        render(
-            <Router history={history}>
-                <Virtual has_real_account={false} />
-            </Router>
-        );
-
-        expect(screen.getByText('Cashier is locked')).toBeInTheDocument();
-    });
-
-    it(`toggleAccountsDialog func should be triggered on click on text element 'switch' when using demo account`, () => {
+    it(`toggleAccountsDialog func should be triggered on click on text element 'Account Switcher.'`, () => {
         const toggleAccountsDialog = jest.fn();
 
         render(
             <Router history={history}>
-                <Virtual has_real_account={false} toggleAccountsDialog={toggleAccountsDialog} />
+                <Virtual toggleAccountsDialog={toggleAccountsDialog} />
             </Router>
         );
 
-        const btn = screen.getByText('switch');
+        const btn = screen.getByText('Account Switcher.');
         fireEvent.click(btn);
 
         expect(toggleAccountsDialog).toBeCalledTimes(1);
-    });
-
-    it(`openRealAccountSignup func should redirect to trade page when click on text element 'create' when using demo account`, () => {
-        const openRealAccountSignup = jest.fn();
-        const trade = 'trade';
-
-        render(
-            <Router history={history}>
-                <Virtual has_real_account={false} openRealAccountSignup={openRealAccountSignup} />
-            </Router>
-        );
-
-        const btn = screen.getByText('create');
-        fireEvent.click(btn);
-
-        expect(history.location.pathname).toBe(routes[trade]);
     });
 });

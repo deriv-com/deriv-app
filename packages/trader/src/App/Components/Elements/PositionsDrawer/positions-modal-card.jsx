@@ -39,7 +39,6 @@ const PositionsModalCard = ({
     is_mobile,
     is_sell_requested,
     is_unsupported,
-    onClickRemove,
     onClickSell,
     profit_loss,
     onClickCancel,
@@ -183,10 +182,7 @@ const PositionsModalCard = ({
                 {result || !!contract_info.is_sold ? (
                     <ResultMobile
                         contract_id={id}
-                        is_unsupported={is_unsupported}
                         is_visible={!!contract_info.is_sold}
-                        onClickRemove={onClickRemove}
-                        onClick={() => toggleUnsupportedContractModal(true)}
                         result={result || fallback_result}
                     />
                 ) : (

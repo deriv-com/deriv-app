@@ -6,16 +6,16 @@ import { useHistory } from 'react-router';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
+import Verified from 'Components/poi-verified';
+import Limited from 'Components/poi-limited';
+import Expired from 'Components/poi-expired';
+import UploadComplete from 'Components/poi-upload-complete';
 import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
 import Manual from './manual.jsx';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
-import Verified from 'Components/poi-verified';
-import Limited from 'Components/poi-limited';
-import Expired from 'Components/poi-expired';
-import UploadComplete from 'Components/poi-upload-complete';
 
 const ProofOfIdentityContainer = ({
     account_status,

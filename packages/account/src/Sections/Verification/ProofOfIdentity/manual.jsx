@@ -32,10 +32,8 @@ const Manual = ({ manual, is_from_external, needs_poa, redirect_button, handleRe
         case identity_status_codes.suspected:
             return <Limited handleRequireSubmission={handleRequireSubmission} />;
         default:
-            break;
+            return <Unsupported />;
     }
-
-    return <Unsupported />;
 };
 
 export default Manual;

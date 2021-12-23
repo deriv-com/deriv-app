@@ -23,6 +23,17 @@ export default class GeneralStore extends BaseStore {
         if (!this.has_set_currency) {
             this.changeSetCurrencyModalTitle();
         }
+
+        reaction(
+            () => [
+                this.root_store.client.switched,
+                this.root_store.client.is_logged_in,
+                this.root_store.client.currency,
+            ],
+            () => {
+                this.init();
+            }
+        );
     }
 
     @observable is_loading = false;
@@ -241,7 +252,7 @@ export default class GeneralStore extends BaseStore {
             );
 
             reaction(
-                () => [currency],
+                () => currency,
                 () => {
                     withdraw.setIsWithdrawConfirmed(false);
                 }

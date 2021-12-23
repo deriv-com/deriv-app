@@ -11,11 +11,12 @@ import initStore from './init-store.js'; // eslint-disable-line import/extension
 import 'Sass/app.scss';
 
 const TradeModals = Loadable({
+    //@ts-ignore
     loader: () => import(/* webpackChunkName: "trade-modals", webpackPrefetch: true */ './Containers/Modals'),
     loading: () => null,
 });
 
-const App = ({ passthrough }) => {
+const App = ({ passthrough }: any) => {
     const [root_store] = React.useState(initStore(passthrough.root_store, passthrough.WS));
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);

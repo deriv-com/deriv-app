@@ -197,5 +197,5 @@ export const getContractPath = contract_id => getPath(routes.contract, { contrac
 export const filterUrlQuery = (search_param, allowed_keys) => {
     const search_params = new URLSearchParams(search_param);
     const filtered_queries = [...search_params].filter(kvp => allowed_keys.includes(kvp[0]));
-    return new URLSearchParams(filtered_queries || '');
+    return new URLSearchParams(filtered_queries || '').toString();
 };

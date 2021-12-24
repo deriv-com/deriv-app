@@ -1275,7 +1275,7 @@ export default class ClientStore extends BaseStore {
             if (redirect_url) {
                 window.location.replace(
                     urlFor(routes[redirect_url], {
-                        query_string: filterUrlQuery(search, ['platforms', 'code', 'action']),
+                        query_string: filterUrlQuery(search, ['platform', 'code', 'action']),
                     })
                 );
             }

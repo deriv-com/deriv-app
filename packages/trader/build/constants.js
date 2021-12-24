@@ -50,7 +50,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
     ...(is_test_env && !is_mocha_only
         ? [
               {
-                  test: /\.(js|jsx|ts|tsx)$/,
+                  test: /\.(js|jsx)$/,
                   exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
                   include: /src/,
                   loader: 'eslint-loader',
@@ -58,6 +58,18 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
                   options: {
                       formatter: require('eslint-formatter-pretty'),
                       configFile: path.resolve(__dirname, '../.eslintrc.js'),
+                      ignorePath: path.resolve(__dirname, '../.eslintignore'),
+                  },
+              },
+              {
+                  test: /\.(ts|tsx)$/,
+                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+                  include: /src/,
+                  loader: 'eslint-loader',
+                  enforce: 'pre',
+                  options: {
+                      formatter: require('eslint-formatter-pretty'),
+                      configFile: path.resolve(__dirname, '../.eslintrc.ts'),
                       ignorePath: path.resolve(__dirname, '../.eslintignore'),
                   },
               },

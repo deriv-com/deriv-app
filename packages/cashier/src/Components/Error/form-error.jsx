@@ -72,6 +72,7 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
                 }
                 dismissError();
             }}
+            onEscapeButtonCancel={dismissError}
             onCancel={details.cancel_button_text ? dismissError : undefined}
             disableApp={disableApp}
             enableApp={enableApp}

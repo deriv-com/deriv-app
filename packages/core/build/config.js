@@ -1,6 +1,8 @@
 const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { transformContentUrlBase } = require('./helpers');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 const copyConfig = base => {
     const patterns = [
@@ -147,6 +149,14 @@ const generateSWConfig = is_release => ({
 const htmlOutputConfig = is_release => ({
     template: 'index.html',
     filename: 'index.html',
+    meta: is_release
+        ? {
+              versionMetaTAG: {
+                  name: 'version',
+                  content: gitRevisionPlugin.branch(),
+              },
+          }
+        : {},
     minify: !is_release
         ? false
         : {

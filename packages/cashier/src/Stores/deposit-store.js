@@ -48,29 +48,28 @@ export default class DepositStore {
             return;
         }
 
-        const response_cashier = await this.WS.authorized.cashier(active_container, {
-            verification_code: 'undefined',
-        });
+        if (!is_crypto) {
+            const response_cashier = await this.WS.authorized.cashier(active_container, {
+                verification_code: 'undefined',
+            });
 
-        // if tab changed while waiting for response, ignore it
-        if (current_container !== active_container) {
-            setLoading(false);
-            return;
+            // if tab changed while waiting for response, ignore it
+            if (current_container !== active_container) {
+                setLoading(false);
+                return;
+            }
+            if (response_cashier.error) {
+                this.error.handleCashierError(response_cashier.error);
+                setSessionTimeout(true);
+                clearTimeoutCashierUrl();
+            } else {
+                await checkIframeLoaded();
+                setIframeUrl(response_cashier.cashier);
+                setSessionTimeout(false);
+                setTimeoutCashierUrl();
+            }
         }
-        if (response_cashier.error) {
-            this.error.handleCashierError(response_cashier.error);
-            setLoading(false);
-            setSessionTimeout(true);
-            clearTimeoutCashierUrl();
-        } else if (is_crypto) {
-            setLoading(false);
-        } else {
-            await checkIframeLoaded();
-            setLoading(false);
-            setIframeUrl(response_cashier.cashier);
-            setSessionTimeout(false);
-            setTimeoutCashierUrl();
-        }
+        setLoading(false);
     }
 
     @computed

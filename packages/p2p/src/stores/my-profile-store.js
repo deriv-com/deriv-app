@@ -24,12 +24,14 @@ export default class MyProfileStore extends BaseStore {
     @observable is_submit_success = false;
     @observable payment_info = '';
     @observable payment_method_to_delete = {};
+    @observable payment_method_to_edit = {};
     @observable selected_payment_method = '';
     @observable selected_payment_method_display_name = '';
     @observable selected_payment_method_fields = [];
     @observable selected_payment_method_type = '';
     @observable should_hide_my_profile_tab = false;
     @observable should_show_add_payment_method_form = false;
+    @observable should_show_edit_payment_method_form = false;
 
     @computed
     get advertiser_has_payment_methods() {
@@ -54,6 +56,22 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @computed
+    get initial_values() {
+        const object = {};
+        Object.entries(this.payment_method_info.fields).forEach(payment_method_field => {
+            // console.log(payment_method_field[1].value)
+            object[payment_method_field[0]] = payment_method_field[1].value;
+        });
+
+        return object;
+    }
+
+    @computed
+    get payment_method_info() {
+        return this.advertiser_payment_methods_list.filter(method => method.ID === this.payment_method_to_edit.ID)[0];
+    }
+
+    @computed
     get payment_methods_list_items() {
         const list_items = [];
 
@@ -69,23 +87,6 @@ export default class MyProfileStore extends BaseStore {
         const methods = [];
 
         Object.entries(this.advertiser_payment_methods).forEach(key => {
-            // if (payment_methods.length) {
-            //     if (payment_methods.some(e => e.ID !== key[0])) {
-            //         payment_methods.push({
-            //             ID: key[0],
-            //             name: key[1].display_name,
-            //             method: key[1].method,
-            //             fields: key[1].fields,
-            //         });
-            //     }
-            // } else {
-            //     payment_methods.push({
-            //         ID: key[0],
-            //         name: key[1].display_name,
-            //         method: key[1].method,
-            //         fields: key[1].fields,
-            //     });
-            // }
             if (methods.length) {
                 if (methods.some(e => e.method !== key[1].method)) {
                     methods.push({ method: key[1].method, display_name: key[1].display_name });
@@ -101,7 +102,6 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     createPaymentMethod(values, { setSubmitting }) {
         setSubmitting(true);
-        console.log(values);
         requestWS({
             p2p_advertiser_payment_methods: 1,
             create: [
@@ -242,12 +242,11 @@ export default class MyProfileStore extends BaseStore {
         this.setShouldShowAddPaymentMethodForm(false);
     }
 
+    @action.bound
     onClickDelete() {
-        console.log({ delete: this.payment_method_to_delete });
-
         requestWS({
             p2p_advertiser_payment_methods: 1,
-            delete: [this.payment_method_to_delete?.ID],
+            delete: [this.payment_method_to_delete.ID],
         }).then(response => {
             if (response) {
                 this.getAdvertiserPaymentMethods();
@@ -256,13 +255,28 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    @action.bound
     onClickEdit(payment_method) {
-        console.log({ edit: payment_method });
+        console.log(payment_method);
     }
 
     @action.bound
     showAddPaymentMethodForm() {
         this.setShouldShowAddPaymentMethodForm(true);
+    }
+
+    @action.bound
+    updatePaymentMethod(values) {
+        const id = this.payment_method_to_edit?.ID;
+        console.log(values);
+        requestWS({
+            p2p_advertiser_payment_methods: 1,
+            update: {
+                id: {
+                    values,
+                },
+            },
+        }).then(response => console.log(response));
     }
 
     validateForm = values => {
@@ -395,6 +409,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setPaymentMethodToEdit(payment_method_to_edit) {
+        this.payment_method_to_edit = payment_method_to_edit;
+    }
+
+    @action.bound
     setSelectedPaymentMethod(selected_payment_method) {
         this.selected_payment_method = selected_payment_method;
     }
@@ -422,5 +441,10 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {
         this.should_show_add_payment_method_form = should_show_add_payment_method_form;
+    }
+
+    @action.bound
+    setShouldShowEditPaymentMethodForm(should_show_edit_payment_method_form) {
+        this.should_show_edit_payment_method_form = should_show_edit_payment_method_form;
     }
 }

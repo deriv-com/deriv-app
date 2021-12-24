@@ -11,7 +11,7 @@ const PaymentMethodCardMenu = ({ payment_method }) => {
             <Text
                 className='payment-method-card__menu--text'
                 color='prominent'
-                onClick={() => my_profile_store.onClickEdit(payment_method)}
+                // onClick={() => my_profile_store.onClickEdit(payment_method)}
                 size='s'
             >
                 <Localize i18n_default_text='Edit' />

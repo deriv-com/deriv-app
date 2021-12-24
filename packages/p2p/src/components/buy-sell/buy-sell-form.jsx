@@ -14,6 +14,7 @@ const BuySellForm = props => {
     const isMounted = useIsMounted();
     const { advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
 
+    const [style, setStyle] = React.useState({});
     buy_sell_store.setFormProps(props);
 
     const { setPageFooterParent } = props;
@@ -58,6 +59,21 @@ const BuySellForm = props => {
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps
     );
+
+    const onClickPaymentMethodCard = payment_method => {
+        if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
+            buy_sell_store.payment_method_ids.push(payment_method.ID);
+            setStyle({
+                borderColor: 'var(--brand-secondary)',
+                borderWidth: '2px',
+            });
+        } else {
+            buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
+                payment_method_id => payment_method_id !== payment_method.ID
+            );
+            setStyle({});
+        }
+    };
 
     return (
         <Formik
@@ -174,10 +190,12 @@ const BuySellForm = props => {
                                             ? my_profile_store.advertiser_payment_methods_list.map(
                                                   (payment_method, key) => (
                                                       <PaymentMethodCard
-                                                          id={payment_method.id}
+                                                          is_vertical_ellipsis_visible={false}
                                                           key={key}
                                                           medium
+                                                          onClick={() => onClickPaymentMethodCard(payment_method)}
                                                           payment_method={payment_method}
+                                                          style={style}
                                                       />
                                                   )
                                               )

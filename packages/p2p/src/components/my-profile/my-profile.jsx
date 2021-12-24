@@ -1,5 +1,5 @@
 import React from 'react';
-import { AutoSizer, Text, ThemedScrollbars } from '@deriv/components';
+import { AutoSizer, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';

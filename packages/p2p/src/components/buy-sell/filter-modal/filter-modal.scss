@@ -1,0 +1,33 @@
+.filter-modal {
+    &__column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__row {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &__toggle {
+        align-items: center;
+        display: flex;
+        justify-items: flex-start;
+        transform: scale(0.5) translateX(-50%);
+
+        &-button {
+            top: 3px;
+
+            &--on {
+                left: calc(100% - 4px);
+            }
+        }
+
+        &-label {
+            height: 2.4rem;
+            width: 4.5rem;
+        }
+    }
+}

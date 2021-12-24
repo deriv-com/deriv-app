@@ -25,6 +25,7 @@ export default class BuySellStore extends BaseStore {
     @observable should_show_verification = false;
     @observable should_use_client_limits = false;
     @observable show_advertiser_page = false;
+    @observable show_filter_payment_methods = false;
     @observable sort_by = 'rate';
     @observable submitForm = () => {};
     @observable table_type = buy_sell.BUY;
@@ -35,6 +36,8 @@ export default class BuySellStore extends BaseStore {
         // For sell orders we require extra information.
         ...(this.is_sell_advert ? { contact_info: this.contact_info, payment_info: this.payment_info } : {}),
     };
+
+    payment_method_ids = [];
 
     @computed
     get account_currency() {
@@ -127,6 +130,7 @@ export default class BuySellStore extends BaseStore {
             p2p_order_create: 1,
             advert_id: this.advert.id,
             amount: values.amount,
+            payment_method_ids: this.payment_method_ids,
             // Validate extra information for sell adverts.
             ...(this.is_sell_advert
                 ? {
@@ -361,6 +365,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setShowFilterPaymentMethods(show_filter_payment_methods) {
+        this.show_filter_payment_methods = show_filter_payment_methods;
+    }
+
+    @action.bound
     setSortBy(sort_by) {
         this.sort_by = sort_by;
     }
@@ -372,8 +381,6 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     setSelectedAdvert(selected_advert) {
-        const { my_profile_store } = this.root_store;
-
         if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
         } else if (this.is_sell_advert) {

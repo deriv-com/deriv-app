@@ -11,7 +11,8 @@ const PaymentMethodsList = () => {
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
-
+        my_profile_store.setPaymentMethodToDelete(null);
+        my_profile_store.setPaymentMethodToEdit(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -39,7 +40,6 @@ const PaymentMethodsList = () => {
                         </Text>
                         {payment_methods_list.map(each_payment_method => (
                             <PaymentMethodCard
-                                id={each_payment_method.id}
                                 key={key}
                                 large={isDesktop()}
                                 payment_method={each_payment_method}

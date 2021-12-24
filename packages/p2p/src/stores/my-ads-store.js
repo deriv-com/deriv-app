@@ -27,9 +27,11 @@ export default class MyAdsStore extends BaseStore {
     @observable is_table_loading = false;
     @observable is_loading = false;
     @observable item_offset = 0;
+    @observable p2p_advert_information = {};
     @observable payment_info = '';
     @observable selected_ad_id = '';
     @observable show_ad_form = false;
+    @observable show_edit_ad_form = false;
 
     @action.bound
     getAccountStatus() {
@@ -54,7 +56,7 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     getAdvertInfo() {
         this.setIsFormLoading(true);
-        this.setEditAdFormError('');
+        // this.setEditAdFormError('');
 
         requestWS({
             p2p_advert_info: 1,
@@ -64,7 +66,7 @@ export default class MyAdsStore extends BaseStore {
                 const { p2p_advert_info } = response;
                 this.setP2pAdvertInformation(p2p_advert_info);
             } else {
-                this.setEditAdFormError(response.error.message);
+                // this.setEditAdFormError(response.error.message);
             }
             this.setIsFormLoading(false);
         });
@@ -207,17 +209,18 @@ export default class MyAdsStore extends BaseStore {
     onClickEdit(id) {
         this.setSelectedAdId(id);
         this.setShowEditAdForm(true);
+        this.getAdvertInfo();
     }
 
     @action.bound
     onClickSaveEditAd(values, { setSubmitting }) {
-        this.setEditAdFormError('');
+        // this.setEditAdFormError('');
 
         const is_sell_ad = values.type === buy_sell.SELL;
 
         const update_advert = {
             p2p_advert_update: 1,
-            amount: Number(values.offer_amount),
+            remaining_amount: Number(values.offer_amount),
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
             // TODO: Allow for other types of payment_method.
@@ -239,14 +242,12 @@ export default class MyAdsStore extends BaseStore {
 
         requestWS(update_advert).then(response => {
             // If there's an error, let the user submit the form again.
-            // If there's no error, send them back to the list of ads.
             if (response.error) {
-                this.setEditAdFormError(response.error.message);
+                // this.setEditAdFormError(response.error.message);
                 setSubmitting(false);
                 this.setIsEditErrorModalVisible(true);
-            } else {
-                this.setShowAdForm(false);
             }
+            this.setShowEditAdForm(false);
         });
     }
 
@@ -389,6 +390,11 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setP2pAdvertInformation(p2p_advert_information) {
+        this.p2p_advert_information = p2p_advert_information;
+    }
+
+    @action.bound
     setPaymentInfo(payment_info) {
         this.payment_info = payment_info;
     }
@@ -401,6 +407,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setShowAdForm(show_ad_form) {
         this.show_ad_form = show_ad_form;
+    }
+
+    @action.bound
+    setShowEditAdForm(show_edit_ad_form) {
+        this.show_edit_ad_form = show_edit_ad_form;
     }
 
     @action.bound

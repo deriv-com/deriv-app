@@ -37,6 +37,11 @@ const EditAdForm = () => {
         type,
     } = my_ads_store.p2p_advert_information;
 
+    // React.useEffect(() => {
+
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
+
     return (
         <React.Fragment>
             <PageReturn

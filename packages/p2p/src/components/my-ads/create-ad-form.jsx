@@ -332,6 +332,14 @@ const CreateAdForm = () => {
                                                 />
                                             )}
                                         </Field>
+                                        <div>
+                                            <Text color='prominent'>
+                                                <Localize i18n_default_text='Payment methods' />
+                                            </Text>
+                                            <Text color='less-prominent'>
+                                                <Localize i18n_default_text='You may choose up to 3.' />
+                                            </Text>
+                                        </div>
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
                                                 className='p2p-my-ads__form-button'

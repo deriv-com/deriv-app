@@ -1,22 +1,24 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv/components';
-import PaymentMethodCardMenu from './payment-method-card-menu.jsx';
+import { Dropdown, Icon, Text } from '@deriv/components';
+import { localize } from 'Components/i18next';
+import { useStores } from 'Stores';
 
 const PaymentMethodCard = ({
     add_payment_method,
-    // id,
     is_add = false,
+    is_vertical_ellipsis_visible = true,
     large,
     medium,
+    onClick = () => {},
     onClickAdd = () => {},
     payment_method,
     // payment_method_field,
     // payment_method_field_info,
     small,
+    style,
 }) => {
-    // console.log(payment_method);
-    const [should_show_card_menu, setShouldShowCardMenu] = React.useState(false);
+    const { my_profile_store } = useStores();
     const method = !is_add && payment_method.display_name.replace(/\s|-/gm, '');
 
     if (is_add) {
@@ -28,6 +30,7 @@ const PaymentMethodCard = ({
                     'payment-method-card--small': small,
                 })}
                 onClick={onClickAdd}
+                style={style}
             >
                 <Icon
                     icon='IcAddCircle'
@@ -35,6 +38,7 @@ const PaymentMethodCard = ({
                     custom_color='var(--brand-red-coral)'
                     size={32}
                 />
+
                 <Text color='prominent' size='xs'>
                     {add_payment_method}
                 </Text>
@@ -49,17 +53,40 @@ const PaymentMethodCard = ({
                 'payment-method-card--medium': medium,
                 'payment-method-card--small': small,
             })}
+            onClick={onClick}
+            style={style}
         >
             <div className='payment-method-card__header'>
-                <Icon className='payment-method-card__icon' icon={`IcCashier${method}`} size={24} />
                 <Icon
-                    className='payment-method-card__ellipsis'
-                    icon='IcCashierVerticalEllipsis'
-                    onClick={() => setShouldShowCardMenu(true)}
-                    size={16}
+                    className='payment-method-card__icon'
+                    icon={`IcCashier${method}`}
+                    size={medium || small ? 16 : 24}
                 />
+                {is_vertical_ellipsis_visible && (
+                    <Dropdown
+                        list={[
+                            {
+                                text: localize('Edit'),
+                                value: 'edit',
+                            },
+                            {
+                                text: localize('Delete'),
+                                value: 'delete',
+                            },
+                        ]}
+                        onChange={e => {
+                            if (e.target.value === 'edit') {
+                                my_profile_store.setPaymentMethodToEdit(payment_method);
+                                my_profile_store.setShouldShowEditPaymentMethodForm(true);
+                            } else {
+                                my_profile_store.setPaymentMethodToDelete(payment_method);
+                                my_profile_store.setIsConfirmDeleteModalOpen(true);
+                            }
+                        }}
+                        suffix_icon='IcCashierVerticalEllipsis'
+                    />
+                )}
             </div>
-            {should_show_card_menu && <PaymentMethodCardMenu payment_method={payment_method} />}
         </div>
     );
 };

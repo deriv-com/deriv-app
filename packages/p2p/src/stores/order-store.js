@@ -26,6 +26,7 @@ export default class OrderStore {
     @observable orders = [];
     @observable order_id = null;
     @observable order_rerender_timeout = null;
+    @observable payment_method_accordion_details = [];
 
     interval;
     order_info_subscription = {};
@@ -209,6 +210,7 @@ export default class OrderStore {
     setOrderDetails(response) {
         if (!response.error) {
             const { p2p_order_info } = response;
+            this.setPaymentMethodAccordionDetails(Object.entries(response.payment_method_details));
             this.setQueryDetails(p2p_order_info);
         } else {
             this.unsubscribeFromCurrentOrder();
@@ -235,6 +237,11 @@ export default class OrderStore {
     @action.bound
     setOrderRendererTimeout(order_rerender_timeout) {
         this.order_rerender_timeout = order_rerender_timeout;
+    }
+
+    @action.bound
+    setPaymentMethodAccordionDetails(payment_method_accordion_details) {
+        this.payment_method_accordion_details = payment_method_accordion_details;
     }
 
     @action.bound

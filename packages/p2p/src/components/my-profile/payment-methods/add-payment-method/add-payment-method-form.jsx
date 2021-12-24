@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
@@ -6,7 +7,10 @@ import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal.jsx';
 
-const AddPaymentMethodForm = ({ should_show_footer = true, should_show_other_payment_method_hint = true }) => {
+const AddPaymentMethodForm = ({
+    should_show_separated_footer = false,
+    should_show_other_payment_method_hint = true,
+}) => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
@@ -66,7 +70,7 @@ const AddPaymentMethodForm = ({ should_show_footer = true, should_show_other_pay
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
-                                                    type='text'
+                                                    type={payment_method_field[1].type}
                                                     label={payment_method_field[1].display_name}
                                                     className='add-payment-method-form__payment-method-field'
                                                     onChange={handleChange}
@@ -77,26 +81,29 @@ const AddPaymentMethodForm = ({ should_show_footer = true, should_show_other_pay
                                         </Field>
                                     );
                                 })}
-                            {should_show_footer && (
-                                <div className='add-payment-method-form__buttons'>
-                                    <Button
-                                        secondary
-                                        large
-                                        onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
-                                        type='button'
-                                    >
-                                        <Localize i18n_default_text='Cancel' />
-                                    </Button>
-                                    <Button
-                                        className='add-payment-method-form__buttons--add'
-                                        primary
-                                        large
-                                        is_disabled={isSubmitting || !dirty}
-                                    >
-                                        <Localize i18n_default_text='Add' />
-                                    </Button>
-                                </div>
-                            )}
+
+                            <div
+                                className={classNames('add-payment-method-form__buttons', {
+                                    'add-payment-method-form__buttons--separated-footer': should_show_separated_footer,
+                                })}
+                            >
+                                <Button
+                                    secondary
+                                    large
+                                    onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
+                                    type='button'
+                                >
+                                    <Localize i18n_default_text='Cancel' />
+                                </Button>
+                                <Button
+                                    className='add-payment-method-form__buttons--add'
+                                    primary
+                                    large
+                                    is_disabled={isSubmitting || !dirty}
+                                >
+                                    <Localize i18n_default_text='Add' />
+                                </Button>
+                            </div>
                         </Form>
                     );
                 }}

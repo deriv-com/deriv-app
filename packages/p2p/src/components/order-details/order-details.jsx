@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { HintBox, Text, ThemedScrollbars } from '@deriv/components';
+import { Accordion, HintBox, Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -32,6 +32,8 @@ const OrderDetails = observer(({ onPageReturn }) => {
         local_currency,
         other_user_details,
         payment_info,
+        payment_method,
+        payment_method_details,
         price,
         purchase_time,
         rate,
@@ -41,6 +43,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         should_show_order_footer,
         status_string,
     } = order_store.order_information;
+    console.log(order_store.order_information);
 
     const { chat_channel_url } = sendbird_store;
 
@@ -131,7 +134,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                             >
                                                 {other_user_details.name}
                                             </Text>
-
                                             {has_full_name && (
                                                 <Text size='xs' line_height='xs'>
                                                     {` ${other_user_details.first_name} ${other_user_details.last_name}`}
@@ -163,7 +165,18 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 />
                             </div>
                         </div>
-                        <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
+                        {order_store.payment_method_accordion_details ? (
+                            <Accordion
+                                className='payment-agent__accordion'
+                                list={order_store.payment_method_accordion_details.forEach(method => {
+                                    // header: method[0],
+                                    // content: method[1],
+                                    console.log(method);
+                                })}
+                            />
+                        ) : (
+                            <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
+                        )}
                         <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
                         <OrderInfoBlock label={labels.instructions} value={advert_details.description.trim() || '-'} />
                     </ThemedScrollbars>

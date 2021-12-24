@@ -57,7 +57,6 @@ const BuySellTable = ({ onScroll }) => {
     if (buy_sell_store.items.length) {
         return (
             <Table className='buy-sell__table'>
-                {buy_sell_store.is_filter_modal_open}
                 {isDesktop() && (
                     <Table.Header>
                         <Table.Row className='buy-sell__table-header'>

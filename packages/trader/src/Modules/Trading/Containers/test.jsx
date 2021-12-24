@@ -43,7 +43,7 @@ const Test = props => {
 
     const stateVisibility = e => {
         // Ctrl + s
-        if (e.keyCode === 83) setIsVisible(!is_visible);
+        if (e.ctrlKey && e.keyCode === 83) setIsVisible(!is_visible);
     };
 
     const renderStoreContent = ([k, v]) => {

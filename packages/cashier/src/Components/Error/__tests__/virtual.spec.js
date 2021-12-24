@@ -2,7 +2,6 @@ import React from 'react';
 import { screen, render, fireEvent } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { routes } from '@deriv/shared';
 import Virtual from '../virtual';
 
 jest.mock('Stores/connect', () => ({

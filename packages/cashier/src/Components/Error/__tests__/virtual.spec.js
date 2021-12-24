@@ -24,45 +24,52 @@ describe('<Virtual />', () => {
         expect(component.container.querySelector('.cashier__wrapper')).toBeInTheDocument();
     });
 
-    it(`icon styling should change depending on 'is_dark_mode_on' prop`, () => {
-        const has_real_account = true;
-        const is_dark_mode_on = true;
-
+    it(`icon styling should be dark when 'is_dark_mode_on' prop is true`, () => {
         const component = render(
             <Router history={history}>
-                <Virtual has_real_account={has_real_account} is_dark_mode_on={is_dark_mode_on} />
+                <Virtual has_real_account is_dark_mode_on />
             </Router>
         );
 
-        if (is_dark_mode_on) {
-            expect(component.container.querySelector('.virtual__account-switch-icon--dark')).toBeInTheDocument();
-        } else {
-            expect(component.container.querySelector('.virtual__account-switch-icon--light')).toBeInTheDocument();
-        }
+        expect(component.container.querySelector('.virtual__account-switch-icon--dark')).toBeInTheDocument();
     });
 
-    it(`should render 'You are using demo account' section when 'has_real_account' prop is true, otherwise render 'Cashier is locked' section`, () => {
-        const has_real_account = true;
-
-        render(
+    it(`icon styling should be light when 'is_dark_mode_on' prop is false`, () => {
+        const component = render(
             <Router history={history}>
-                <Virtual has_real_account={has_real_account} />
+                <Virtual has_real_account is_dark_mode_on={false} />
             </Router>
         );
-        if (has_real_account) {
-            expect(screen.getByText('You are using a demo account')).toBeInTheDocument();
-        } else {
-            expect(screen.getByText('Cashier is locked')).toBeInTheDocument();
-        }
+
+        expect(component.container.querySelector('.virtual__account-switch-icon--light')).toBeInTheDocument();
+    });
+
+    it(`should render 'You are using demo account' section when 'has_real_account' prop is true`, () => {
+        render(
+            <Router history={history}>
+                <Virtual has_real_account />
+            </Router>
+        );
+
+        expect(screen.getByText('You are using a demo account')).toBeInTheDocument();
+    });
+
+    it(`should render 'Cashier is locked' section when 'has_real_account' prop is false`, () => {
+        render(
+            <Router history={history}>
+                <Virtual has_real_account={false} />
+            </Router>
+        );
+
+        expect(screen.getByText('Cashier is locked')).toBeInTheDocument();
     });
 
     it(`toggleAccountsDialog func should be triggered on click on text element 'switch' when using demo account`, () => {
-        const has_real_account = false;
         const toggleAccountsDialog = jest.fn();
 
         render(
             <Router history={history}>
-                <Virtual has_real_account={has_real_account} toggleAccountsDialog={toggleAccountsDialog} />
+                <Virtual has_real_account={false} toggleAccountsDialog={toggleAccountsDialog} />
             </Router>
         );
 
@@ -73,13 +80,12 @@ describe('<Virtual />', () => {
     });
 
     it(`openRealAccountSignup func should redirect to trade page when click on text element 'create' when using demo account`, () => {
-        const has_real_account = false;
         const openRealAccountSignup = jest.fn();
         const trade = 'trade';
 
         render(
             <Router history={history}>
-                <Virtual has_real_account={has_real_account} openRealAccountSignup={openRealAccountSignup} />
+                <Virtual has_real_account={false} openRealAccountSignup={openRealAccountSignup} />
             </Router>
         );
 

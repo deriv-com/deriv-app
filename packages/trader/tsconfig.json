@@ -36,5 +36,5 @@
         "skipDefaultLibCheck": true
     },
     "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"],
-    "exclude": ["**/*.js", "**/*.jsx"]
+    "exclude": ["*.js", "*.jsx"]
 }

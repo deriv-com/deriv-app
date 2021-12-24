@@ -15,11 +15,9 @@ describe('<NoBalance />', () => {
     const history = createBrowserHistory();
 
     it('component should render', () => {
-        const is_deposit_locked = false;
-
         render(
             <Router history={history}>
-                <NoBalance is_deposit_locked={is_deposit_locked} />
+                <NoBalance is_deposit_locked={false} />
             </Router>
         );
 
@@ -29,11 +27,9 @@ describe('<NoBalance />', () => {
     });
 
     it('must not able to make a deposit when deposit is locked', async () => {
-        const is_deposit_locked = true;
-
         render(
             <Router history={history}>
-                <NoBalance is_deposit_locked={is_deposit_locked} />
+                <NoBalance is_deposit_locked />
             </Router>
         );
 
@@ -43,13 +39,12 @@ describe('<NoBalance />', () => {
     });
 
     it('component should redirect to deposit page when button is clicked', () => {
-        const is_deposit_locked = false;
-        const cashier_deposit = 'cashier_deposit';
         const setTabIndex = jest.fn();
+        const cashier_deposit = 'cashier_deposit';
 
         render(
             <Router history={history}>
-                <NoBalance is_deposit_locked={is_deposit_locked} setTabIndex={setTabIndex} />
+                <NoBalance is_deposit_locked={false} setTabIndex={setTabIndex} />
             </Router>
         );
 

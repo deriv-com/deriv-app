@@ -36,7 +36,7 @@ const PaymentAgentList = ({
     selected_bank,
     sendVerificationEmail,
     setActiveTabIndex,
-    setVerificationResendClicked,
+    setIsResendClicked,
     supported_banks,
     verification_code,
 }) => {
@@ -171,7 +171,7 @@ const PaymentAgentList = ({
                                                 resend_timeout={resend_timeout}
                                                 resendVerificationEmail={resendVerificationEmail}
                                                 sendVerificationEmail={sendVerificationEmail}
-                                                setVerificationResendClicked={setVerificationResendClicked}
+                                                setIsResendClicked={setIsResendClicked}
                                             />
                                         </div>
                                     ) : (
@@ -204,7 +204,7 @@ PaymentAgentList.propTypes = {
     selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     sendVerificationEmail: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
-    setVerificationResendClicked: PropTypes.func,
+    setIsResendClicked: PropTypes.func,
     supported_banks: MobxPropTypes.arrayOrObservableArray,
     verification_code: PropTypes.string,
 };
@@ -223,6 +223,6 @@ export default connect(({ modules }) => ({
     selected_bank: modules.cashier.payment_agent.selected_bank,
     sendVerificationEmail: modules.cashier.payment_agent.verification.sendVerificationEmail,
     setActiveTabIndex: modules.cashier.payment_agent.setActiveTab,
-    setVerificationResendClicked: modules.cashier.payment_agent.verification.setVerificationResendClicked,
+    setIsResendClicked: modules.cashier.payment_agent.verification.setIsResendClicked,
     supported_banks: modules.cashier.payment_agent.supported_banks,
 }))(PaymentAgentList);

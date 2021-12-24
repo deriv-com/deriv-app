@@ -1,10 +1,3 @@
 declare module '@deriv/components';
 declare module '@deriv/translations';
 declare module '@deriv/shared';
-declare module 'Stores/connect';
-declare module 'Modules/Trading/Containers/toast-popup.jsx';
-declare module 'App/Containers/trade-settings-extensions.jsx';
-declare module 'App/Containers/trade-footer-extensions.jsx';
-declare module 'App/Containers/trade-header-extensions.jsx';
-declare module 'App/Containers/Routes/routes.jsx';
-declare module 'react-loadable';

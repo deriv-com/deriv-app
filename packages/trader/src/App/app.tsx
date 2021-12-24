@@ -11,7 +11,6 @@ import initStore from './init-store.js'; // eslint-disable-line import/extension
 import 'Sass/app.scss';
 
 const TradeModals = Loadable({
-    //@ts-ignore
     loader: () => import(/* webpackChunkName: "trade-modals", webpackPrefetch: true */ './Containers/Modals'),
     loading: () => null,
 });

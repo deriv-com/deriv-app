@@ -5,7 +5,6 @@ module.exports = {
     moduleNameMapper: {
         '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
-        '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
     },
-    testPathIgnorePatterns: ['/Routes/', '/Validator/'],
+    modulePathIgnorePatterns: ['/icon/', '/.out/'],
 };

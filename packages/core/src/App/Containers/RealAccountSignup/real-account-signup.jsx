@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromPlatform } from '@deriv/shared';
+import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
@@ -340,8 +340,12 @@ const RealAccountSignup = ({
         }
         closeRealAccountSignup();
 
-        if (isNavigationFromPlatform(routing_history, routes.smarttrader)) {
+        if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
             window.location = routes.smarttrader;
+        }
+
+        if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
+            window.location = routes.binarybot;
         }
     };
 
@@ -486,21 +490,21 @@ export default connect(({ ui, client, common, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     has_fiat: client.has_fiat,
     has_real_account: client.has_active_real_account,
-    continueRoute: modules.cashier.continueRoute,
+    continueRoute: modules.cashier.general_store.continueRoute,
     currency: client.currency,
-    deposit_target: modules.cashier.deposit_target,
+    deposit_target: modules.cashier.general_store.deposit_target,
     is_eu: client.is_eu,
     country_standpoint: client.country_standpoint,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
-    replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
+    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     setParams: ui.setRealAccountSignupParams,
     is_from_restricted_country: client.is_from_restricted_country,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
-    setIsDeposit: modules.cashier.setIsDeposit,
-    should_show_all_available_currencies: modules.cashier.should_show_all_available_currencies,
+    setIsDeposit: modules.cashier.general_store.setIsDeposit,
+    should_show_all_available_currencies: modules.cashier.general_store.should_show_all_available_currencies,
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,

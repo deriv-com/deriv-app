@@ -19,6 +19,7 @@ const CashierLocked = ({
     const unwelcome_status = cashier_validation?.includes('unwelcome_status');
     const self_exclusion = cashier_validation?.includes('SelfExclusion');
     const no_withdrawal_or_trading_status = cashier_validation?.includes('no_withdrawal_or_trading_status');
+    const only_pa_withdrawals_allowed_status = cashier_validation?.includes('only_pa_withdrawals_allowed_status');
     const withdrawal_locked_status = cashier_validation?.includes('withdrawal_locked_status');
     const documents_expired = cashier_validation?.includes('documents_expired');
     const cashier_locked_status = cashier_validation?.includes('cashier_locked_status');
@@ -187,7 +188,7 @@ const CashierLocked = ({
     } else if (is_deposit_lock && unwelcome_status) {
         icon = 'IcCashierDepositLock';
         title = localize('Deposits are locked');
-        message = localize('Please contact us via live chat to enable deposits.');
+        message = localize('Please contact us via live chat.');
     } else if (is_withdrawal_lock && no_withdrawal_or_trading_status) {
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');
@@ -200,6 +201,10 @@ const CashierLocked = ({
         message = localize(
             'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
         );
+    } else if (is_withdrawal_lock && only_pa_withdrawals_allowed_status) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Withdrawals are locked');
+        message = localize('You can only make deposits. Please contact us via live chat for more information.');
     }
 
     return (
@@ -230,7 +235,7 @@ export default connect(({ client, modules }) => ({
     accounts: client.accounts,
     current_currency_type: client.current_currency_type,
     is_deposit_lock: client.is_deposit_lock,
-    is_system_maintenance: modules.cashier.is_system_maintenance,
+    is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_withdrawal_lock: client.is_withdrawal_lock,
     loginid: client.loginid,
 }))(CashierLocked);

@@ -12,7 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, isMobile, routes, WS, platforms } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from 'Components/account-prompt-dialog.jsx';
 import ErrorDialog from 'Components/error-dialog.jsx';
@@ -36,6 +36,7 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
+    platform,
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
@@ -107,11 +108,15 @@ const Cashier = ({
     };
 
     return (
-        <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
+        <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <AccountPromptDialog />
             <ErrorDialog />
             <div className='cashier'>
-                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose}>
+                <PageOverlay
+                    header={getHeaderTitle()}
+                    onClickClose={onClickClose}
+                    is_close_disabled={!!platforms[platform]}
+                >
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
@@ -127,7 +132,7 @@ const Cashier = ({
                             tab_headers_note={
                                 <Button
                                     id='cashier_learn_more'
-                                    className='cashier-page-wrapper__button'
+                                    className='cashier__page-wrapper-button'
                                     text={localize('Learn more about payment methods')}
                                     onClick={() => window.open(getStaticUrl('/payment-methods'))}
                                     secondary
@@ -189,6 +194,7 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
+    platform: PropTypes.string,
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
@@ -198,24 +204,25 @@ Cashier.propTypes = {
 };
 
 export default connect(({ client, common, modules, ui }) => ({
-    is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
+    is_cashier_default: modules.cashier.general_store.is_cashier_default,
+    is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
-    is_cashier_default: modules.cashier.is_cashier_default,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
-    is_loading: modules.cashier.is_loading,
+    is_loading: modules.cashier.general_store.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_p2p_enabled: modules.cashier.is_p2p_enabled,
-    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
-    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
+    is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
+    is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,
-    onMount: modules.cashier.onMountCommon,
-    p2p_notification_count: modules.cashier.p2p_notification_count,
+    onMount: modules.cashier.general_store.onMountCommon,
+    p2p_notification_count: modules.cashier.general_store.p2p_notification_count,
+    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
-    setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
-    setTabIndex: modules.cashier.setCashierTabIndex,
-    tab_index: modules.cashier.cashier_route_tab_index,
+    setAccountSwitchListener: modules.cashier.general_store.setAccountSwitchListener,
+    setTabIndex: modules.cashier.general_store.setCashierTabIndex,
+    tab_index: modules.cashier.general_store.cashier_route_tab_index,
     toggleCashier: ui.toggleCashier,
 }))(withRouter(Cashier));

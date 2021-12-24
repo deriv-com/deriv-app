@@ -6,7 +6,6 @@ import { FileDropzone, Icon, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     isMobile,
-    PlatformContext,
     compressImageFiles,
     readFiles,
     getSupportedFiles,
@@ -15,14 +14,11 @@ import {
 } from '@deriv/shared';
 
 const UploadMessage = () => {
-    const { is_dashboard } = React.useContext(PlatformContext);
     return (
         <React.Fragment>
             <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />
             <div className='dc-file-dropzone__message-subtitle'>
-                {is_dashboard && isMobile()
-                    ? localize('Tap here to upload (JPEG  JPG  PNG  PDF  GIF)')
-                    : localize('Drop file (JPEG  JPG  PNG  PDF  GIF) or click here to upload')}
+                {isMobile() ? localize('Click here to upload') : localize('Drop file or click here to upload')}
             </div>
         </React.Fragment>
     );

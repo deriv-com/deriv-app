@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-import { Button, ButtonLink, Clipboard, Loading, Text, Icon } from '@deriv/components';
+import React, { useState } from 'react';
+import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import QRCode from 'qrcode.react';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
-import '../Sass/deposit.scss';
+import 'Sass/crypto-deposit.scss';
 
 const CryptoDeposit = ({
     api_error,
@@ -31,6 +31,79 @@ const CryptoDeposit = ({
         pollApiForDepositAddress(false);
     }, [pollApiForDepositAddress]);
 
+    const option_list = [
+        { text: <Localize i18n_default_text='Binance Smart Chain' />, value: 1 },
+        { text: <Localize i18n_default_text='Polygon (Matic)' />, value: 2 },
+        { text: <Localize i18n_default_text='Tron' />, value: 3 },
+        { text: <Localize i18n_default_text='Ethereum (ERC20)' />, value: 4 },
+        { text: <Localize i18n_default_text='Ethereum (ETH)' />, value: 5 },
+    ];
+
+    const [option_message, setOptionMessage] = useState('');
+    const [option_list_value, setOptionListValue] = useState(0);
+    const [qrcode_header, setQRCodeHeader] = useState('');
+
+    const onChangeListOption = event => {
+        const token_ETH = 'ETH';
+        const token_USDC_eUSDT = 'ERC20';
+
+        const token = currency === 'ETH' ? token_ETH : ['USDC', 'eUSDT'].includes(currency) ? token_USDC_eUSDT : '';
+
+        const setProhibitedTokenMessage = () => {
+            const prohibited_token = token === token_ETH ? `${token_USDC_eUSDT} token` : token_ETH;
+            setOptionMessage(
+                <Localize
+                    i18n_default_text='This is an Ethereum ({{token}}) only address, please do not use {{prohibited_token}}.'
+                    values={{ token, prohibited_token }}
+                />
+            );
+        };
+
+        const setQRCodeHeaderMessage = () => {
+            setOptionMessage('');
+            setQRCodeHeader(
+                <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
+            );
+        };
+
+        switch (event.target.value) {
+            case option_list[0].value:
+                setOptionMessage(
+                    <Localize
+                        i18n_default_text='We do not support Binance Smart Chain tokens to deposit, please use only Ethereum ({{token}}).'
+                        values={{ token }}
+                    />
+                );
+                break;
+            case option_list[1].value:
+                setOptionMessage(
+                    <Localize
+                        i18n_default_text='We do not support Polygon (Matic), to deposit please use only Ethereum ({{token}}).'
+                        values={{ token }}
+                    />
+                );
+                break;
+            case option_list[2].value:
+                setOptionMessage(
+                    <Localize
+                        i18n_default_text='We do not support Tron, to deposit please use only Ethereum ({{token}}).'
+                        values={{ token }}
+                    />
+                );
+                break;
+            case option_list[3].value:
+                (currency === 'ETH' ? setProhibitedTokenMessage : setQRCodeHeaderMessage)();
+                break;
+            case option_list[4].value:
+                (['USDC', 'eUSDT'].includes(currency) ? setProhibitedTokenMessage : setQRCodeHeaderMessage)();
+                break;
+            default:
+                setOptionMessage('');
+        }
+
+        setOptionListValue(event.target.value);
+    };
+
     if (is_deposit_address_loading) {
         return <Loading is_fullscreen />;
     }
@@ -39,19 +112,10 @@ const CryptoDeposit = ({
     const currency_display_code = CryptoConfig.get()[currency].display_code;
 
     let header_note;
-    if (['USDC', 'eUSDT'].includes(currency)) {
+
+    if (['ETH', 'USDC', 'eUSDT'].includes(currency)) {
         header_note = (
-            <Localize
-                i18n_default_text='To avoid loss of funds, please <0>do not send</0> ETH, and <1>do not use</1> Binance Chain (BNB) and Binance Smart Chain (BSC) networks.'
-                components={[<strong key={0} />, <strong key={1} />]}
-            />
-        );
-    } else if (currency === 'ETH') {
-        header_note = (
-            <Localize
-                i18n_default_text='To avoid loss of funds, please <0>do not send</0> ERC20 tokens, and <1>do not use</1> Binance Chain (BNB) and Binance Smart Chain (BSC) networks.'
-                components={[<strong key={0} />, <strong key={1} />]}
-            />
+            <Localize i18n_default_text='Please select the network from where your deposit will come from.' />
         );
     } else {
         header_note = (
@@ -64,12 +128,12 @@ const CryptoDeposit = ({
             <div className='crypto-deposit__transaction-wrapper'>
                 <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />
                 <Text
-                    className='crypto-deposit__transaction-currency'
-                    weight='bold'
+                    align='center'
                     as='p'
+                    className='crypto-deposit__transaction-currency'
                     line_height='m'
                     size={isMobile() ? 'xs' : 's'}
-                    align='center'
+                    weight='bold'
                 >
                     <Localize
                         i18n_default_text='Send only {{currency}} ({{currency_symbol}}) to this address.'
@@ -79,15 +143,11 @@ const CryptoDeposit = ({
                         }}
                     />
                 </Text>
-                <Text as='p' line_height='m' size={isMobile() ? 'xs' : 's'} align='center'>
-                    {header_note}
-                </Text>
-
                 {api_error ? (
                     <div className='crypto-api-error'>
                         <Text as='p' align='center' size='xs' className='crypto-api-error__text'>
-                            <Icon icon='IcAlertWarning' />
-                            <Localize i18n_default_text='Our server cannot retrieve an address' />
+                            <Icon width={30} height={20} icon='IcAlertWarning' />
+                            <Localize i18n_default_text="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later." />
                         </Text>
                         <Button
                             text={localize('Refresh')}
@@ -98,26 +158,64 @@ const CryptoDeposit = ({
                     </div>
                 ) : (
                     <>
-                        <QRCode className='qrcode' value={deposit_address} size={160} />
-                        <div className='crypto-deposit__clipboard-wrapper'>
-                            <Text
-                                className='crypto-deposit__address-hash'
-                                line_height='m'
-                                size={isMobile() ? 'xxs' : 'xs'}
-                                weight='bold'
-                                align='center'
-                            >
-                                {deposit_address}
-                            </Text>
-                            <Clipboard
-                                className='crypto-deposit__clipboard'
-                                text_copy={deposit_address}
-                                info_message={isMobile() ? '' : localize('copy')}
-                                icon='IcCashierClipboard'
-                                success_message={localize('copied!')}
-                                popoverAlignment={isMobile() ? 'left' : 'bottom'}
-                            />
-                        </div>
+                        <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>
+                            {qrcode_header || header_note}
+                        </Text>
+                        {
+                            <>
+                                {((currency === 'ETH' && option_list_value !== option_list[4].value) ||
+                                    (['USDC', 'eUSDT'].includes(currency) &&
+                                        option_list_value !== option_list[3].value)) && (
+                                    <Dropdown
+                                        className='crypto-deposit__dropdown-menu'
+                                        is_align_text_left
+                                        list={option_list}
+                                        name='dropdown'
+                                        onChange={onChangeListOption}
+                                        placeholder={localize('Choose an option')}
+                                        value={option_list_value}
+                                    />
+                                )}
+                                {option_message && (
+                                    <Text
+                                        align='center'
+                                        as='p'
+                                        color='loss-danger'
+                                        className='crypto-deposit__eth-option-message'
+                                        line_height='m'
+                                        size={isMobile() ? 'xs' : 's'}
+                                    >
+                                        {option_message}
+                                    </Text>
+                                )}
+                            </>
+                        }
+                        {(!['ETH', 'USDC', 'eUSDT'].includes(currency) ||
+                            (currency === 'ETH' && option_list_value === option_list[4].value) ||
+                            (['USDC', 'eUSDT'].includes(currency) && option_list_value === option_list[3].value)) && (
+                            <>
+                                <QRCode className='qrcode' value={deposit_address} size={160} />
+                                <div className='crypto-deposit__clipboard-wrapper'>
+                                    <Text
+                                        className='crypto-deposit__address-hash'
+                                        line_height='m'
+                                        size={isMobile() ? 'xxs' : 'xs'}
+                                        weight='bold'
+                                        align='center'
+                                    >
+                                        {deposit_address}
+                                    </Text>
+                                    <Clipboard
+                                        className='crypto-deposit__clipboard'
+                                        text_copy={deposit_address}
+                                        info_message={isMobile() ? '' : localize('copy')}
+                                        icon='IcCashierClipboard'
+                                        success_message={localize('copied!')}
+                                        popoverAlignment={isMobile() ? 'left' : 'bottom'}
+                                    />
+                                </div>
+                            </>
+                        )}
                     </>
                 )}
             </div>
@@ -161,5 +259,5 @@ export default connect(({ modules, client }) => ({
     is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
-    setIsDeposit: modules.cashier.setIsDeposit,
+    setIsDeposit: modules.cashier.general_store.setIsDeposit,
 }))(CryptoDeposit);

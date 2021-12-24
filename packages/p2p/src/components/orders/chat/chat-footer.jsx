@@ -1,16 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Input } from '@deriv/components';
+import { Input, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import ChatFooterIcon from 'Components/orders/chat/chat-footer-icon.jsx';
 import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
 
 const ChatFooter = observer(() => {
-    const { sendbird_store } = useStores();
+    const { order_store, sendbird_store } = useStores();
     const file_input_ref = React.useRef(null);
     const text_input_ref = React.useRef(null);
     const [character_count, setCharacterCount] = React.useState(0);
@@ -77,40 +77,55 @@ const ChatFooter = observer(() => {
     const should_show_attachment_icon = character_count === 0;
     const max_characters = 5000;
 
+    if (sendbird_store.is_chat_frozen || order_store.order_information.is_inactive_order) {
+        return (
+            <Text align='center' className='order-chat__footer--frozen' color='prominent' line_height='s' size='xs'>
+                <Localize i18n_default_text='This conversation is closed.' />
+            </Text>
+        );
+    }
+
     return (
-        <div
-            className={classNames('order-chat__footer', {
-                'order-chat__footer--empty': sendbird_store.chat_messages.length === 0,
-            })}
-        >
-            <div className='order-chat__footer-input'>
-                <Input
-                    has_character_counter
-                    initial_character_count={character_count}
-                    max_characters={max_characters}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}
-                    placeholder={localize('Enter message')}
-                    ref={ref => (text_input_ref.current = ref)}
-                    rows={1}
-                    trailing_icon={
-                        <div
-                            className='order-chat__footer-icon-container'
-                            onClick={should_show_attachment_icon ? () => file_input_ref.current.click() : sendMessage}
-                        >
-                            <ChatFooterIcon should_show_attachment_icon={should_show_attachment_icon} />
-                        </div>
-                    }
-                    type='textarea'
-                />
-                <input
-                    onChange={e => sendbird_store.sendFile(e.target.files[0])}
-                    ref={el => (file_input_ref.current = el)}
-                    style={{ display: 'none' }}
-                    type='file'
-                />
+        <React.Fragment>
+            <Text className='order-chat__footer-disclaimer' color='less-prominent' size='xxs'>
+                <Localize i18n_default_text='In case of a dispute, we will only consider the communication through Deriv P2P chat channel.' />
+            </Text>
+            <div
+                className={classNames('order-chat__footer', {
+                    'order-chat__footer--empty': sendbird_store.chat_messages.length === 0,
+                })}
+            >
+                <div className='order-chat__footer-input'>
+                    <Input
+                        has_character_counter
+                        initial_character_count={character_count}
+                        max_characters={max_characters}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                        placeholder={localize('Enter message')}
+                        ref={ref => (text_input_ref.current = ref)}
+                        rows={1}
+                        trailing_icon={
+                            <div
+                                className='order-chat__footer-icon-container'
+                                onClick={
+                                    should_show_attachment_icon ? () => file_input_ref.current.click() : sendMessage
+                                }
+                            >
+                                <ChatFooterIcon should_show_attachment_icon={should_show_attachment_icon} />
+                            </div>
+                        }
+                        type='textarea'
+                    />
+                    <input
+                        onChange={e => sendbird_store.sendFile(e.target.files[0])}
+                        ref={el => (file_input_ref.current = el)}
+                        style={{ display: 'none' }}
+                        type='file'
+                    />
+                </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 });
 

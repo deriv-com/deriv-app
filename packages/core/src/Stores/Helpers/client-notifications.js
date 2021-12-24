@@ -19,7 +19,7 @@ import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}, client = {}) => {
+export const clientNotifications = (ui = {}, client = {}, custom_header, custom_content) => {
     const notifications = {
         dp2p: {
             key: 'dp2p',
@@ -32,8 +32,22 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 },
             },
             img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
-            img_alt: 'DP2P',
+            img_alt: 'Deriv P2P',
             type: 'news',
+        },
+        close_mx_mlt_account: {
+            key: 'close_mx_mlt_account',
+            header: custom_header,
+            message: custom_content,
+            secondary_btn: {
+                text: localize('Learn more'),
+                onClick: () => {
+                    ui.showCloseMxMltAccountPopup(true);
+                },
+            },
+            img_src: getUrlBase('/public/images/common/close_account_banner.png'),
+            img_alt: 'close mx mlt account',
+            type: 'close_mx_mlt',
         },
         is_virtual: {
             key: 'is_virtual',
@@ -209,7 +223,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
         unwelcome: {
             key: 'unwelcome',
             header: localize('Deposits are locked'),
-            message: localize('Please contact us via live chat to enable deposits.'),
+            message: localize('Please contact us via live chat.'),
             action: {
                 onClick: () => {
                     window.LC_API.open_chat_window();
@@ -524,13 +538,8 @@ const checkAccountStatus = (
         cashier_validation,
     } = account_status;
 
-    const {
-        cashier_locked,
-        withdrawal_locked,
-        deposit_locked,
-        mt5_withdrawal_locked,
-        document_needs_action,
-    } = getStatusValidations(status);
+    const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
+        getStatusValidations(status);
 
     const {
         system_maintenance,
@@ -554,7 +563,8 @@ const checkAccountStatus = (
 
     addVerificationNotifications(identity, document, addNotificationMessage);
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa = is_10k_withdrawal_limit_reached && needs_verification.includes('document');
+    const needs_poa =
+        is_10k_withdrawal_limit_reached && (needs_verification.includes('document') || document?.status !== 'verified');
     const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
 
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
@@ -625,23 +635,48 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (client, client_store, ui_store, cashier_store, common_store) => {
+export const handleClientNotifications = async (client, client_store, ui_store, cashier_store, common_store) => {
     const {
         account_settings,
         account_status,
         getRiskAssessment,
         is_eu,
+        landing_company_shortcode,
+        has_malta_account,
+        custom_notifications,
+        has_iom_account,
         is_logged_in,
         is_tnc_needed,
         isAccountOfType,
         loginid,
     } = client_store;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
-    const { is_10k_withdrawal_limit_reached, is_p2p_visible } = cashier_store;
+    const { is_p2p_visible } = cashier_store.general_store;
+    const { is_10k_withdrawal_limit_reached } = cashier_store.withdraw;
     const { current_language, selected_contract_type } = common_store;
+    const malta_account = landing_company_shortcode === 'maltainvest';
+    const virtual_account = landing_company_shortcode === 'virtual';
+    const mx_mlt_custom_header = custom_notifications.mx_mlt_notification.header();
+    const mx_mlt_custom_content = custom_notifications.mx_mlt_notification.main();
+
     let has_missing_required_field, has_risk_assessment;
 
+    const hidden_close_account_notification =
+        parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
+    const { withdrawal_locked, deposit_locked } = getStatusValidations(account_status?.status || []);
+
     if (loginid !== LocalStore.get('active_loginid')) return {};
+
+    if (
+        (has_iom_account || has_malta_account) &&
+        (!malta_account || !virtual_account) &&
+        is_logged_in &&
+        !hidden_close_account_notification
+    ) {
+        addNotificationMessage(
+            clientNotifications(ui_store, {}, mx_mlt_custom_header, mx_mlt_custom_content).close_mx_mlt_account
+        );
+    }
 
     if (client && !client.is_virtual) {
         ({ has_risk_assessment } = checkAccountStatus(
@@ -654,7 +689,6 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
             ui_store,
             is_10k_withdrawal_limit_reached
         ));
-
         if (is_p2p_visible) {
             addNotificationMessage(clientNotifications().dp2p);
         } else {
@@ -665,7 +699,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
 
         has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
         if (has_missing_required_field) {
-            addNotificationMessage(clientNotifications(ui_store).required_fields);
+            addNotificationMessage(clientNotifications(ui_store).required_fields(withdrawal_locked, deposit_locked));
         }
     }
 

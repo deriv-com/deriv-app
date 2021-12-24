@@ -43,7 +43,7 @@ class CFDDashboard extends React.Component {
     state = {
         is_demo_enabled: false,
         is_real_enabled: false,
-        active_index: this.props.platform === CFD_PLATFORMS.MT5 ? 0 : 1,
+        active_index: 0,
         is_account_needed_modal_open: false,
         is_demo_tab: true,
         required_account: {},
@@ -74,8 +74,6 @@ class CFDDashboard extends React.Component {
 
         if (this.props.is_logged_in) {
             ['demo', 'real'].forEach(account_type => {
-                if (account_type === 'real' && this.props.platform === CFD_PLATFORMS.DXTRADE) return;
-
                 const should_enable_tab =
                     this.isSyntheticCardVisible(account_type) ||
                     this.isFinancialCardVisible() ||
@@ -90,11 +88,11 @@ class CFDDashboard extends React.Component {
                 }
             });
         }
-        const is_real_disabled = !this.state.is_real_enabled && this.props.platform === CFD_PLATFORMS.MT5;
+        const is_real_disabled = !this.state.is_real_enabled;
         const is_demo_disabled = !this.state.is_demo_enabled;
         if (!this.props.is_logged_in && (is_real_disabled || is_demo_disabled)) {
             this.setState({
-                is_real_enabled: this.props.platform === CFD_PLATFORMS.MT5,
+                is_real_enabled: true,
                 is_demo_enabled: true,
             });
         }
@@ -109,12 +107,11 @@ class CFDDashboard extends React.Component {
     };
 
     getIndexToSet = () => {
-        // TODO: remove this when real accounts are enabled for Deriv X
-        if (!this.state.is_real_enabled) {
-            return 1;
-        }
-        if (!this.state.is_demo_enabled) {
+        if (this.state.is_real_enabled) {
             return 0;
+        }
+        if (this.state.is_demo_enabled) {
+            return 1;
         }
 
         const hash = this.props.location.hash;
@@ -134,9 +131,8 @@ class CFDDashboard extends React.Component {
         if (index === 1) updated_state.is_demo_tab = true;
         else if (index === 0) updated_state.is_demo_tab = false;
 
-        const index_to_set = this.getIndexToSet();
-        if (this.state.active_index !== index_to_set) {
-            updated_state.active_index = index_to_set;
+        if (index !== undefined && this.state.active_index !== index) {
+            updated_state.active_index = index;
         }
 
         if (!isEmptyObject(updated_state)) {
@@ -175,10 +171,13 @@ class CFDDashboard extends React.Component {
     };
 
     isSyntheticCardVisible = account_category => {
-        const { current_list, platform, is_eu, landing_companies, is_logged_in } = this.props;
+        const { current_list, platform, is_eu, is_eu_country, landing_companies, is_logged_in } = this.props;
         const has_synthetic_account = Object.keys(current_list).some(key =>
             key.startsWith(`${platform}.${account_category}.synthetic`)
         );
+
+        // Hiding card for logged out EU users
+        if (!is_logged_in && is_eu_country) return false;
 
         if (is_eu && !has_synthetic_account) return false;
 
@@ -199,7 +198,10 @@ class CFDDashboard extends React.Component {
     };
 
     isFinancialStpCardVisible = () => {
-        const { platform, landing_companies, is_logged_in } = this.props;
+        const { platform, landing_companies, is_logged_in, is_eu_country } = this.props;
+
+        // Hiding card for logged out EU users
+        if (!is_logged_in && is_eu_country) return false;
 
         return (
             (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === CFD_PLATFORMS.MT5
@@ -234,7 +236,8 @@ class CFDDashboard extends React.Component {
             has_cfd_account,
             has_mt5_real_account_error,
             has_mt5_demo_account_error,
-            has_dxtrade_account_error,
+            has_dxtrade_real_account_error,
+            has_dxtrade_demo_account_error,
             mt5_disabled_signup_types,
             dxtrade_disabled_signup_types,
             has_real_account,
@@ -260,12 +263,18 @@ class CFDDashboard extends React.Component {
             !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
         if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
-        const has_mt5_account_error = this.state.is_demo_tab ? has_mt5_demo_account_error : has_mt5_real_account_error;
+        const has_mt5_account_error = this.state.is_demo_tab
+            ? has_mt5_demo_account_error || mt5_disabled_signup_types.demo
+            : has_mt5_real_account_error || mt5_disabled_signup_types.real;
+
+        const has_dxtrade_account_error = this.state.is_demo_tab
+            ? has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
+            : has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
 
         const has_cfd_account_error =
             platform === CFD_PLATFORMS.MT5
                 ? has_mt5_account_error
-                : has_dxtrade_account_error || dxtrade_accounts_list_error;
+                : has_dxtrade_account_error || !!dxtrade_accounts_list_error;
 
         const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
@@ -287,7 +296,7 @@ class CFDDashboard extends React.Component {
                                     {general_messages.getWelcomeHeader(is_logged_in, platform)}
                                 </h1>
                             </div>
-                            {has_cfd_account_error && (
+                            {is_logged_in && has_cfd_account_error && (
                                 <div className='cfd-dashboard__accounts-error'>
                                     <Text
                                         as='p'
@@ -383,6 +392,7 @@ class CFDDashboard extends React.Component {
                                         <div label={localize('Demo account')} data-hash='demo'>
                                             <CFDDemoAccountDisplay
                                                 is_eu={is_eu}
+                                                is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}
                                                 has_cfd_account_error={
@@ -603,7 +613,8 @@ export default withRouter(
         has_cfd_account: modules.cfd.has_cfd_account,
         has_mt5_real_account_error: client.has_account_error_in_mt5_real_list,
         has_mt5_demo_account_error: client.has_account_error_in_mt5_demo_list,
-        has_dxtrade_account_error: client.has_account_error_in_dxtrade_list,
+        has_dxtrade_real_account_error: client.has_account_error_in_dxtrade_real_list,
+        has_dxtrade_demo_account_error: client.has_account_error_in_dxtrade_demo_list,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.cfd.setAccountType,
         setCFDPasswordResetModal: modules.cfd.setCFDPasswordResetModal,

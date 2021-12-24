@@ -13,8 +13,40 @@ import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
 import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
-const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
-    const should_show_options = is_eu ? country_standpoint.is_rest_of_eu || country_standpoint.is_united_kingdom : true;
+const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_account, can_have_mlt_account }) => {
+    const is_uk = country_standpoint.is_united_kingdom;
+    const is_mlt_mf = can_have_mf_account && can_have_mlt_account;
+    const is_mf_only = can_have_mf_account && !can_have_mlt_account;
+
+    const shouldShowOptions = () => {
+        let show_options = true;
+        if (is_eu || is_uk) {
+            show_options = false;
+        }
+        return show_options;
+    };
+    const cfdOptions = () => {
+        let country_options;
+        if (is_uk) {
+            country_options = ['Forex', 'Stocks', 'Stock indices', 'Commodities'];
+        } else if (is_eu) {
+            country_options = ['Forex', 'Synthetics', 'Stocks', 'Stock indices', 'Cryptocurrencies', 'Commodities'];
+        } else {
+            country_options = ['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities'];
+        }
+        return country_options;
+    };
+    const mfOptions = () => {
+        let mf_options;
+        if (is_mlt_mf || is_mf_only) {
+            mf_options = ['Forex', 'Synthetics', 'Cryptocurrencies'];
+        } else if (is_uk) {
+            mf_options = ['Forex'];
+        } else {
+            mf_options = ['Forex', 'Synthetics'];
+        }
+        return mf_options;
+    };
     return (
         <>
             <DesktopWrapper>
@@ -39,11 +71,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
                     onClick={() => switchPlatform({ route: routes.mt5 })}
                     icon={<CFDs />}
                     mobileIcon={<CFDsMobile />}
-                    options={
-                        is_eu
-                            ? ['Forex', 'Synthetics', 'Stocks', 'Stock indices', 'Cryptocurrencies', 'Commodities']
-                            : ['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']
-                    }
+                    options={cfdOptions()}
                 />
                 <WelcomeItem
                     description={
@@ -56,9 +84,9 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform }) => {
                     title={localize('Multipliers')}
                     icon={<Multipliers />}
                     mobileIcon={<MultipliersMobile />}
-                    options={['Forex', 'Synthetics']}
+                    options={mfOptions()}
                 />
-                {should_show_options && (
+                {shouldShowOptions() && (
                     <WelcomeItem
                         description={
                             <Localize

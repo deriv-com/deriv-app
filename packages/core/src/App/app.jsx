@@ -10,6 +10,7 @@ import {
     checkAndSetEndpointFromUrl,
     setUrlLanguage,
     isMobile,
+    isTablet,
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
@@ -47,6 +48,7 @@ const App = ({ root_store }) => {
     const [is_translation_loaded] = useOnLoadTranslation();
     const initCashierStore = () => {
         root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
+        root_store.modules.cashier.general_store.init();
     };
     // TODO: investigate the order of cashier store initialization
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,7 +66,7 @@ const App = ({ root_store }) => {
     }, []);
 
     const handleResize = React.useCallback(() => {
-        if (isTouchDevice() && isMobile()) {
+        if (isTouchDevice() && (isMobile() || isTablet())) {
             const is_android_device = mobileOSDetect() === 'Android';
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;

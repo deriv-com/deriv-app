@@ -1,6 +1,8 @@
 const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { transformContentUrlBase } = require('./helpers');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 const copyConfig = base => {
     const patterns = [
@@ -37,8 +39,8 @@ const copyConfig = base => {
             to: 'cashier/css',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public/'),
-            to: 'public',
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public'),
+            to: 'cashier/public',
             transformPath(context) {
                 return context.split('node_modules/@deriv/cashier/dist/')[1];
             },
@@ -117,7 +119,26 @@ const copyConfig = base => {
 
 const generateSWConfig = is_release => ({
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
+    exclude: [
+        /CNAME$/,
+        /index\.html$/,
+        /404\.html$/,
+        /^localstorage-sync\.html$/,
+        /\.map$/,
+        /sitemap\.xml$/,
+        /robots\.txt$/,
+        /manifest\.json$/,
+        /^apple-app-site-association/,
+        /^assetlinks.json/,
+        /^.well-known\//,
+        /^account\//,
+        /^js\/smartcharts\//,
+        /^bot\//,
+        /^media\//,
+        /^trader\//,
+        /^cashier\//,
+        /^js\/core\.[a-z_]*-json\./,
+    ],
     skipWaiting: true,
     clientsClaim: true,
     ...(is_release && {
@@ -128,6 +149,14 @@ const generateSWConfig = is_release => ({
 const htmlOutputConfig = is_release => ({
     template: 'index.html',
     filename: 'index.html',
+    meta: is_release
+        ? {
+              versionMetaTAG: {
+                  name: 'version',
+                  content: gitRevisionPlugin.branch(),
+              },
+          }
+        : {},
     minify: !is_release
         ? false
         : {

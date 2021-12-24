@@ -86,7 +86,7 @@ TableRow.propTypes = {
     is_header: PropTypes.bool,
     passthrough: PropTypes.object,
     replace: PropTypes.shape({
-        component: PropTypes.func,
+        component: PropTypes.object,
         message: PropTypes.string,
     }),
     row_obj: PropTypes.object,

@@ -5,6 +5,7 @@ import { Button, Icon, Text } from '@deriv/components';
 import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import 'Sass/payment-agent-transfer-receipt.scss';
 
 const openStatement = (history, resetPaymentAgentTransfer) => {
     history.push(routes.statement);
@@ -12,22 +13,30 @@ const openStatement = (history, resetPaymentAgentTransfer) => {
 };
 
 const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, resetPaymentAgentTransfer }) => (
-    <div className='cashier__wrapper payment-agent-transfer__wrapper'>
+    <div className='cashier__wrapper payment-agent-transfer-receipt__wrapper'>
         <div className='cashier__success'>
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
             </Text>
-            <div className='cashier__transferred-amount cashier__text--bold'>
+            <Text
+                as='p'
+                size='l'
+                weight='bold'
+                lh='xs'
+                color='profit-success'
+                align='center'
+                className='cashier__transferred-amount'
+            >
                 {formatMoney(currency, receipt.amount_transferred, true)} {getCurrencyDisplayCode(currency)}
-            </div>
+            </Text>
             <div className='cashier__transferred-details-wrapper'>
                 <span className='account-transfer__transfer-details-from'>
                     <Icon icon={`IcCurrency-${currency.toLowerCase()}`} />
                     <span className='cashier__transferred-details'>
-                        <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
+                        <Text size='xs' line_height='xs' weight='bold'>
                             {getCurrencyName(currency)}
                         </Text>
-                        <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
+                        <Text size='xs' line_height='xs' color='less-prominent'>
                             {loginid}
                         </Text>
                     </span>
@@ -36,11 +45,11 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
                 <span className='account-transfer__transfer-details-to'>
                     <Icon icon='IcClient' />
                     <span className='cashier__transferred-details'>
-                        <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
+                        <Text size='xs' line_height='xs' weight='bold' align='center'>
                             {receipt.client_name}
                         </Text>
-                        <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
-                            {receipt.client_id}
+                        <Text size='xs' line_height='xs' color='less-prominent'>
+                            {receipt.client_id.toUpperCase()}
                         </Text>
                     </span>
                 </span>
@@ -79,7 +88,7 @@ export default withRouter(
     connect(({ client, modules }) => ({
         currency: client.currency,
         loginid: client.loginid,
-        receipt: modules.cashier.config.payment_agent_transfer.receipt,
-        resetPaymentAgentTransfer: modules.cashier.resetPaymentAgentTransfer,
+        receipt: modules.cashier.payment_agent_transfer.receipt,
+        resetPaymentAgentTransfer: modules.cashier.payment_agent_transfer.resetPaymentAgentTransfer,
     }))(PaymentAgentTransferReceipt)
 );

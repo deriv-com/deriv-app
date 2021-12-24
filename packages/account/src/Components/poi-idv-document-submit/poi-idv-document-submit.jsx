@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
@@ -9,12 +10,11 @@ import { getDocumentData, getRegex } from './utils';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from '../../Assets/ic-document-submit-icon.svg';
 
-const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country }) => {
+const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
     const [is_doc_selected, setDocSelected] = React.useState(false);
-
     const document_data = selected_country.identity.services.idv.documents_supported;
     const {
         value: country_code,
@@ -27,10 +27,9 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
 
     React.useEffect(() => {
         // NOTE: This is a temporary filter. Remove after backend handles this from their side
-        const filtered_documents =
-            country_code === 'gh'
-                ? Object.keys(document_data).filter(d => d !== 'voter_id')
-                : Object.keys(document_data);
+        const filtered_documents = ['gh', 'ng'].includes(country_code)
+            ? Object.keys(document_data).filter(d => d !== 'voter_id')
+            : Object.keys(document_data);
 
         setDocumentList(
             filtered_documents.map(key => {
@@ -142,15 +141,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                     <Text className='proof-of-identity__text btm-spacer' size='xs'>
                         {localize('Please select the document type and enter the ID number.')}
                     </Text>
-                    {is_doc_selected && (
-                        <Text className='proof-of-identity__text btm-spacer' align='center' size='xs'>
-                            <Localize
-                                i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to <0>account settings</0>.'
-                                components={[<a key={0} className='link' href='/account/personal-details' />]}
-                            />
-                        </Text>
-                    )}
-                    <div className='proof-of-identity__inner-container'>
+                    <div className='proof-of-identity__inner-container btm-spacer'>
                         <div className='proof-of-identity__fieldset-container'>
                             <fieldset className='proof-of-identity__fieldset'>
                                 <Field name='document'>
@@ -238,7 +229,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                             onKeyUp={e => {
                                                 const { example_format } = values.document_type;
                                                 const current_input = example_format.includes('-')
-                                                    ? formatInput(example_format, current_input, '-')
+                                                    ? formatInput(example_format, current_input || e.target.value, '-')
                                                     : e.target.value;
                                                 setFieldValue('document_number', current_input, true);
                                                 validateFields(values);
@@ -250,7 +241,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                             </fieldset>
                         </div>
                         {document_image && (
-                            <div className='proof-of-identity__sample-container'>
+                            <div
+                                className={classNames('proof-of-identity__sample-container', {
+                                    'proof-of-identity__sample-container-external': is_from_external,
+                                })}
+                            >
                                 <Text size='xxs' weight='bold'>
                                     {localize('Sample:')}
                                 </Text>
@@ -264,9 +259,20 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                             </div>
                         )}
                     </div>
+                    {is_doc_selected && (
+                        <Text
+                            className={classNames('proof-of-identity__text btm-spacer', {
+                                'top-spacer': is_from_external,
+                            })}
+                            align='center'
+                            size='xs'
+                        >
+                            <Localize i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.' />
+                        </Text>
+                    )}
                     <FormFooter className='proof-of-identity__footer'>
                         <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
-                            <BackButtonIcon className='back-btn' /> {localize('Go Back')}
+                            <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}
                         </Button>
                         <Button
                             className='proof-of-identity__submit-button'
@@ -288,6 +294,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
 IdvDocumentSubmit.propTypes = {
     handleBack: PropTypes.func,
     handleViewComplete: PropTypes.func,
+    is_from_external: PropTypes.bool,
     selected_country: PropTypes.object,
 };
 

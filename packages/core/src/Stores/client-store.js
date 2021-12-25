@@ -13,7 +13,6 @@ import {
     State,
     toMoment,
     deriv_urls,
-    urlFor,
     urlForLanguage,
     filterUrlQuery,
     CFD_PLATFORMS,

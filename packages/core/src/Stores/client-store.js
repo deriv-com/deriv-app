@@ -1273,11 +1273,13 @@ export default class ClientStore extends BaseStore {
                 await BinarySocket.authorize(client.token);
             }
             if (redirect_url) {
-                window.location.replace(
-                    urlFor(routes[redirect_url], {
-                        query_string: filterUrlQuery(search, ['platform', 'code', 'action']),
-                    })
-                );
+                const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
+                if (search_params?.get('action') === 'reset_password') {
+                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
+                    window.location.replace(`${redirect_route}/redirect?${query_string}`);
+                } else {
+                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
+                }
             }
             runInAction(() => {
                 this.is_populating_account_list = false;

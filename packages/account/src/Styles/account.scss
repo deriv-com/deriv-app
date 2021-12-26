@@ -132,7 +132,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: calc(100vw - 33rem);
             }
             & .da-icon-with-message {
-                margin-top: 0rem;
+                margin-top: 0;
             }
         }
 
@@ -335,6 +335,25 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+        &__divider {
+            height: 2px;
+            margin: 1.6rem 0;
+            width: 100%;
+            max-width: 400px;
+            border-top: 1px solid var(--general-active);
+        }
+        .pro-client {
+            h1 {
+                color: var(--text-red);
+            }
+            p {
+                padding-bottom: 1.6rem;
+            }
+        }
+
+        .dc-checkbox__box {
+            margin-left: 0;
+        }
         &__footer {
             height: 80px;
             position: absolute;
@@ -348,7 +367,6 @@ $MIN_HEIGHT_FLOATING: calc(
             z-index: 4;
             border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
             border-top: 1px solid var(--general-section-1);
-            border-width: 1px;
             background-color: var(--general-main-1);
 
             .back-btn {
@@ -439,7 +457,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding-top: 0.8rem;
             }
             @include mobile {
-                padding: 16px 0px;
+                padding: 16px 0;
                 flex-direction: column;
                 height: auto;
                 align-items: initial;
@@ -992,7 +1010,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     background-color: var(--general-main-2);
                     margin-bottom: 1rem;
                     padding: 1rem;
-                    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05), 0px 16px 20px rgba(0, 0, 0, 0.05);
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 16px 20px rgba(0, 0, 0, 0.05);
                     border-radius: 0.4rem;
                 }
                 &__row {
@@ -1062,7 +1080,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 0.5em;
 
                 .account-form__fieldset {
-                    margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
+                    margin-bottom: 2.6em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
                 }
             }
         }
@@ -1440,7 +1458,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 grid-template-columns: 17rem 20rem 15.5rem 11rem;
             }
             & .data-list__item {
-                box-shadow: 0px 1.6rem #00000005, 0px 1.6rem #0000000d;
+                box-shadow: 0 1.6rem #00000005, 0 1.6rem #0000000d;
             }
         }
     }
@@ -1536,7 +1554,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__wrapper--dashboard {
             & .ReactVirtualized__Grid__innerScrollContainer {
-                box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05), 0px 16px 20px rgba(0, 0, 0, 0.05);
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 16px 20px rgba(0, 0, 0, 0.05);
                 border-radius: 0.4rem;
             }
             & .data-list__col {
@@ -1866,6 +1884,11 @@ $MIN_HEIGHT_FLOATING: calc(
         z-index: 4;
     }
     &__footer {
+        @media (max-height: 900px) {
+            position: fixed;
+            bottom: 36px;
+        }
+
         @include mobile {
             display: flex;
             flex-direction: row;
@@ -1873,12 +1896,6 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: flex-end;
             position: fixed;
             bottom: 0;
-        }
-    }
-    &__footer-external {
-        @media (max-height: 900px) {
-            position: fixed;
-            bottom: 36px;
         }
     }
     &__footer-alert {
@@ -1928,6 +1945,9 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-left: unset;
             width: 94%;
         }
+    }
+    &__sample-container-external {
+        margin-top: 2.8rem;
     }
     &__image-container {
         width: fit-content;

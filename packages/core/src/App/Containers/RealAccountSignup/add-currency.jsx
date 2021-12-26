@@ -230,11 +230,11 @@ AddCurrency.propTypes = {
 };
 
 export default connect(({ client, modules, ui }) => ({
-    all_payment_agent_list: modules.cashier.all_payment_agent_list,
+    all_payment_agent_list: modules.cashier.payment_agent.all_payment_agent_list,
     available_crypto_currencies: client.available_crypto_currencies,
     has_fiat: client.has_fiat,
     legal_allowed_currencies: client.upgradeable_currencies,
     openRealAccountSignup: ui.openRealAccountSignup,
-    setShouldShowAllAvailableCurrencies: modules.cashier.setShouldShowAllAvailableCurrencies,
-    deposit_target: modules.cashier.deposit_target,
+    setShouldShowAllAvailableCurrencies: modules.cashier.general_store.setShouldShowAllAvailableCurrencies,
+    deposit_target: modules.cashier.general_store.deposit_target,
 }))(AddCurrency);

@@ -18,14 +18,40 @@ const Dialog = ({
     onCancel,
     onClose,
     onConfirm,
+    onEscapeButtonCancel,
     ...other_props
 }) => {
+    const {
+        cancel_button_text,
+        className,
+        children,
+        confirm_button_text,
+        is_loading,
+        is_mobile_full_width = true,
+        is_content_centered,
+        portal_element_id,
+        title,
+        has_close_icon,
+    } = other_props;
+
     const wrapper_ref = React.useRef();
+
     React.useEffect(() => {
         if (is_visible && !!disableApp) {
             disableApp();
         }
     }, [is_visible, disableApp]);
+
+    React.useEffect(() => {
+        const close = e => {
+            if (e.key === 'Escape') {
+                onEscapeButtonCancel?.();
+            }
+        };
+        window.addEventListener('keydown', close);
+        return () => window.removeEventListener('keydown', close);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleCancel = () => {
         if (is_closed_on_cancel && enableApp) {
@@ -54,19 +80,6 @@ const Dialog = ({
     const validateClickOutside = () => dismissable || (has_close_icon && is_visible && is_closed_on_cancel);
 
     useOnClickOutside(wrapper_ref, handleClose, validateClickOutside);
-
-    const {
-        cancel_button_text,
-        className,
-        children,
-        confirm_button_text,
-        is_loading,
-        is_mobile_full_width = true,
-        is_content_centered,
-        portal_element_id,
-        title,
-        has_close_icon,
-    } = other_props;
 
     const content_classes = classNames('dc-dialog__content', {
         'dc-dialog__content--centered': is_content_centered,
@@ -174,6 +187,7 @@ Dialog.propTypes = {
     is_mobile_full_width: PropTypes.bool,
     is_visible: PropTypes.bool,
     onCancel: PropTypes.func,
+    onEscapeButtonCancel: PropTypes.func,
     onConfirm: PropTypes.func,
     portal_element_id: PropTypes.string,
     title: PropTypes.string,

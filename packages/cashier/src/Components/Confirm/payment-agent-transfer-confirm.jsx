@@ -57,11 +57,11 @@ PaymentAgentTransferConfirm.propTypes = {
 export default connect(({ client, modules }) => ({
     currency: client.currency,
     loginid: client.loginid,
-    amount: modules.cashier.config.payment_agent_transfer.confirm.amount,
-    description: modules.cashier.config.payment_agent_transfer.confirm.description,
-    error: modules.cashier.config.payment_agent_transfer.error,
-    requestPaymentAgentTransfer: modules.cashier.requestPaymentAgentTransfer,
-    setIsTryTransferSuccessful: modules.cashier.setIsTryTransferSuccessful,
-    transfer_to: modules.cashier.config.payment_agent_transfer.confirm.client_id,
-    transfer_to_name: modules.cashier.config.payment_agent_transfer.confirm.client_name,
+    amount: modules.cashier.payment_agent_transfer.confirm.amount,
+    description: modules.cashier.payment_agent_transfer.confirm.description,
+    error: modules.cashier.payment_agent_transfer.error,
+    requestPaymentAgentTransfer: modules.cashier.payment_agent_transfer.requestPaymentAgentTransfer,
+    setIsTryTransferSuccessful: modules.cashier.payment_agent_transfer.setIsTryTransferSuccessful,
+    transfer_to: modules.cashier.payment_agent_transfer.confirm.client_id,
+    transfer_to_name: modules.cashier.payment_agent_transfer.confirm.client_name,
 }))(PaymentAgentTransferConfirm);

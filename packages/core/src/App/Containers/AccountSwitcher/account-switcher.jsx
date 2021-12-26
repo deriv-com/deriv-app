@@ -76,14 +76,13 @@ const AccountSwitcher = props => {
         return props?.account_list?.length > 4;
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         closeAccountsDialog();
         if (props.is_positions_drawer_on) {
             props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        props.logoutClient().then(() => {
-            props.routeBackInApp(props.history);
-        });
+        props.routeBackInApp(props.history);
+        await props.logoutClient();
     };
 
     const closeAccountsDialog = () => {
@@ -208,7 +207,7 @@ const AccountSwitcher = props => {
                 ? props.landing_companies?.mt_gaming_company
                 : props.landing_companies?.dxtrade_gaming_company,
             existing_cfd_accounts,
-            props.trading_servers,
+            props.mt5_trading_servers,
             platform,
             is_eu
         );
@@ -218,7 +217,7 @@ const AccountSwitcher = props => {
                 ? props.landing_companies?.mt_financial_company
                 : props.landing_companies?.dxtrade_financial_company,
             existing_cfd_accounts,
-            props.trading_servers,
+            props.mt5_trading_servers,
             platform,
             is_eu
         );
@@ -957,7 +956,7 @@ const account_switcher = withRouter(
         standpoint: client.standpoint,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
-        trading_servers: client.trading_servers,
+        mt5_trading_servers: client.mt5_trading_servers,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         togglePositionsDrawer: ui.togglePositionsDrawer,
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,

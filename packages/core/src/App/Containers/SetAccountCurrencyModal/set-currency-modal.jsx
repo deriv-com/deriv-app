@@ -63,7 +63,7 @@ SetAccountCurrencyModal.propTypes = {
 export default connect(({ client, modules, ui }) => ({
     is_virtual: client.is_virtual,
     is_visible: ui.is_set_currency_modal_visible,
-    should_set_currency_modal_title_change: modules.cashier.should_set_currency_modal_title_change,
+    should_set_currency_modal_title_change: modules.cashier.general_store.should_set_currency_modal_title_change,
     setCurrency: ui.openRealAccountSignup,
     toggleModal: ui.toggleSetCurrencyModal,
 }))(SetAccountCurrencyModal);

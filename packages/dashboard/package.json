@@ -63,8 +63,8 @@
         "@types/classnames": "^2.2.11",
         "@types/object.fromentries": "^2.0.0",
         "@types/react-router-dom": "^5.1.6",
-        "@typescript-eslint/eslint-plugin": "^4.10.0",
-        "@typescript-eslint/parser": "^4.10.0",
+        "@typescript-eslint/eslint-plugin": "^5.8.0",
+        "@typescript-eslint/parser": "^5.8.0",
         "babel-core": "^6.26.3",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
@@ -79,7 +79,6 @@
         "postcss-loader": "^6.1.1",
         "postcss-preset-env": "^6.7.0",
         "postcss-scss": "^4.0.0",
-
         "resolve-url-loader": "^3.1.2",
         "sass-loader": "^10.1.1",
         "sass-resources-loader": "^2.1.1",

@@ -3,7 +3,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -17,7 +16,7 @@ const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }) => {
     return (
         <div className='cashier__wrapper cashier__no-balance'>
             <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
-            <Text as='h2' weight='bold' align='center' className='withdraw__header'>
+            <Text as='h2' weight='bold' align='center'>
                 <Localize
                     i18n_default_text='You have no funds in your {{currency}} account'
                     values={{ currency: getCurrencyDisplayCode(currency) }}
@@ -51,6 +50,6 @@ NoBalance.propTypes = {
 
 export default connect(({ client, modules }) => ({
     currency: client.currency,
-    is_deposit_locked: modules.cashier.is_deposit_locked,
-    setTabIndex: modules.cashier.setCashierTabIndex,
+    is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
+    setTabIndex: modules.cashier.general_store.setCashierTabIndex,
 }))(withRouter(NoBalance));

@@ -1,29 +1,30 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import 'Sass/error.scss';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
     <div className='cashier__wrapper cashier__wrapper-error'>
-        <Icon icon='IcCashierError' className='cashier-error__icon' />
+        <Icon icon='IcCashierError' className='error__icon' />
         {header && (
-            <Text as='h2' color='loss-danger' weight='bold' align='center' className='cashier-error__header'>
+            <Text as='h2' color='loss-danger' weight='bold' align='center' className='error__header'>
                 {header}
             </Text>
         )}
         {message && (
-            <Text as='p' align='center' size='xs' line_height='s' className='cashier__paragraph'>
+            <Text as='p' align='center' size={isMobile() ? 'xxs' : 'xs'} line_height='s' className='cashier__paragraph'>
                 {message}
             </Text>
         )}
         {button_link && (
-            <ButtonLink className='cashier-error__button' to={button_link} onClick={onClickButton} primary large>
+            <ButtonLink className='error__button' to={button_link} onClick={onClickButton} primary large>
                 <span className='dc-btn__text'>{button_text}</span>
             </ButtonLink>
         )}
         {!button_link && button_text && (
-            <Button className='cashier-error__button' onClick={onClickButton} text={button_text} primary large />
+            <Button className='error__button' onClick={onClickButton} text={button_text} primary large />
         )}
         {footer && (
             <Text as='h2' size='xxs'>
@@ -33,7 +34,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
-const Error = ({ error, setErrorMessage }) => {
+const Error = ({ error }) => {
     const error_fields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),
@@ -52,7 +53,7 @@ const Error = ({ error, setErrorMessage }) => {
     };
 
     const clearErrorMessage = () => {
-        setErrorMessage('');
+        error.setErrorMessage('');
     };
 
     let AccountError;
@@ -127,9 +128,6 @@ const Error = ({ error, setErrorMessage }) => {
 
 Error.propTypes = {
     error: PropTypes.object,
-    setErrorMessage: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
-    setErrorMessage: modules.cashier.setErrorMessage,
-}))(Error);
+export default Error;

@@ -1,8 +1,7 @@
 import React from 'react';
-import { cleanup, fireEvent, getByText, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import PaymentAgentTransferConfirm from '../payment-agent-transfer-confirm';
 import Confirm from '../../confirm';
-import FormError from '../../Error/form-error';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

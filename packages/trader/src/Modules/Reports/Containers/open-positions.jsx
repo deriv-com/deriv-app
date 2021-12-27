@@ -290,11 +290,12 @@ const OpenPositions = ({
     onMount,
     onUnmount,
     server_time,
+    loginid,
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier contract
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-    const [active_positions_saved, set_active_positions] = React.useState([]);
+    const [loginId_saved, setLoginId] = React.useState('');
     const previous_active_positions = usePrevious(active_positions);
 
     React.useEffect(() => {
@@ -313,10 +314,8 @@ const OpenPositions = ({
     }, []);
 
     React.useEffect(() => {
-        if (active_positions.length !== 0) {
-            set_active_positions(active_positions);
-        }
-    }, [active_positions, active_positions_saved]);
+        setLoginId(loginid);
+    }, [loginid]);
 
     React.useEffect(() => {
         checkForMultiplierContract(previous_active_positions);
@@ -324,7 +323,7 @@ const OpenPositions = ({
     }, [previous_active_positions]);
 
     const checkForMultiplierContract = (prev_active_positions = []) => {
-        if (!has_multiplier_contract && active_positions !== prev_active_positions) {
+        if (!has_multiplier_contract && active_positions || (loginid !== loginId_saved) !== prev_active_positions) {
             setMultiplierContract(active_positions.some(p => isMultiplierContract(p.contract_info?.contract_type)));
         }
     };
@@ -334,8 +333,7 @@ const OpenPositions = ({
     if (error) return <p>{error}</p>;
 
     const is_multiplier_selected = has_multiplier_contract && active_index === 1;
-
-    const active_positions_filtered = active_positions_saved?.filter(p => {
+    const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
             return is_multiplier_selected
                 ? isMultiplierContract(p.contract_info.contract_type)
@@ -452,4 +450,5 @@ export default connect(({ modules, client, common, ui }) => ({
     onMount: modules.portfolio.onMount,
     onUnmount: modules.portfolio.onUnmount,
     server_time: common.server_time,
+    loginid: client.loginid,
 }))(withRouter(OpenPositions));

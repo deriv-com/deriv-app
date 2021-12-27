@@ -12,6 +12,7 @@ const ErrorDialog = ({ error_message, setShouldShow, should_show }) => {
             confirm_button_text={localize('Retry')}
             onConfirm={() => setShouldShow(false)}
             is_visible={should_show}
+            onEscapeButtonCancel={() => setShouldShow(false)}
             has_close_icon
         >
             {error_message}

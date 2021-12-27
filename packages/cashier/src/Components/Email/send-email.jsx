@@ -17,7 +17,7 @@ const SendEmail = ({
     resendVerificationEmail,
     recentTransactionOnMount,
     sendVerificationEmail,
-    setVerificationResendClicked,
+    setIsResendClicked,
 }) => {
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -32,7 +32,7 @@ const SendEmail = ({
                     resend_timeout={resend_timeout}
                     resendVerificationEmail={resendVerificationEmail}
                     sendVerificationEmail={sendVerificationEmail}
-                    setVerificationResendClicked={setVerificationResendClicked}
+                    setIsResendClicked={setIsResendClicked}
                 />
             ) : (
                 <React.Fragment>
@@ -71,7 +71,7 @@ SendEmail.propTypes = {
     recentTransactionOnMount: PropTypes.func,
     resendVerificationEmail: PropTypes.func,
     sendVerificationEmail: PropTypes.func,
-    setVerificationResendClicked: PropTypes.func,
+    setIsResendClicked: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
@@ -83,5 +83,5 @@ export default connect(({ client, modules }) => ({
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     resendVerificationEmail: modules.cashier.withdraw.verification.resendVerificationEmail,
     sendVerificationEmail: modules.cashier.withdraw.verification.sendVerificationEmail,
-    setVerificationResendClicked: modules.cashier.withdraw.verification.setVerificationResendClicked,
+    setIsResendClicked: modules.cashier.withdraw.verification.setIsResendClicked,
 }))(SendEmail);

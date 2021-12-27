@@ -47,6 +47,17 @@ $card-width: 456px;
         width: 100%;
     }
 
+    &__accordion {
+        &-column {
+            display: flex;
+            flex-direction: column;
+        }
+        &-row {
+            display: flex;
+            flex-direction: row;
+        }
+    }
+
     &__header {
         display: flex;
         justify-content: space-between;

@@ -99,10 +99,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 page_footer_className='buy-sell__modal-footer'
             >
                 {my_profile_store.should_show_add_payment_method_form ? (
-                    <AddPaymentMethodForm
-                        should_show_separated_footer={true}
-                        should_show_other_payment_method_hint={false}
-                    />
+                    <AddPaymentMethodForm should_show_separated_footer={true} />
                 ) : (
                     <Form
                         advert={selected_ad}
@@ -132,10 +129,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                 <Modal.Body>
                     {my_profile_store.should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm
-                            should_show_separated_footer
-                            should_show_other_payment_method_hint={false}
-                        />
+                        <AddPaymentMethodForm should_show_separated_footer />
                     ) : (
                         <Form
                             advert={selected_ad}

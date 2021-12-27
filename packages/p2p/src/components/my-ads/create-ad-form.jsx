@@ -5,6 +5,7 @@ import {
     Button,
     Checkbox,
     Div100vhContainer,
+    Icon,
     Input,
     Modal,
     RadioGroup,
@@ -29,7 +30,7 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
-    const { general_store, my_ads_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
 
@@ -50,6 +51,7 @@ const CreateAdForm = () => {
     };
 
     React.useEffect(() => {
+        my_profile_store.getAdvertiserPaymentMethods();
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
@@ -332,7 +334,7 @@ const CreateAdForm = () => {
                                                 />
                                             )}
                                         </Field>
-                                        <div>
+                                        <div className='p2p-my-ads__form-payment-methods--text'>
                                             <Text color='prominent'>
                                                 <Localize i18n_default_text='Payment methods' />
                                             </Text>
@@ -340,6 +342,43 @@ const CreateAdForm = () => {
                                                 <Localize i18n_default_text='You may choose up to 3.' />
                                             </Text>
                                         </div>
+                                        {my_profile_store.advertiser_has_payment_methods ? (
+                                            <React.Fragment>
+                                                {my_profile_store.payment_methods_list_methods.map(
+                                                    (payment_method, key) => {
+                                                        const method = payment_method.display_name.replace(
+                                                            /\s|-/gm,
+                                                            ''
+                                                        );
+                                                        return (
+                                                            <div
+                                                                className='p2p-my-ads__form-payment-methods--empty'
+                                                                key={key}
+                                                            >
+                                                                <div>
+                                                                    <Icon icon={`IcCashier${method}`} />
+                                                                    <Text color='prominent' size='xs'>
+                                                                        <Localize
+                                                                            i18n_default_text={
+                                                                                payment_method.display_name
+                                                                            }
+                                                                        />
+                                                                    </Text>
+                                                                </div>
+                                                                <Icon ic='IcDelete' />
+                                                            </div>
+                                                        );
+                                                    }
+                                                )}
+                                            </React.Fragment>
+                                        ) : (
+                                            <div className='p2p-my-ads__form-payment-methods--empty'>
+                                                <Icon icon='IcAddCircle' size={14} />
+                                                <Text color='less-prominent' size='xs'>
+                                                    <Localize i18n_default_text='Add' />
+                                                </Text>
+                                            </div>
+                                        )}
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
                                                 className='p2p-my-ads__form-button'

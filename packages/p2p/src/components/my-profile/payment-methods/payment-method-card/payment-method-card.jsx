@@ -13,8 +13,6 @@ const PaymentMethodCard = ({
     onClick = () => {},
     onClickAdd = () => {},
     payment_method,
-    // payment_method_field,
-    // payment_method_field_info,
     small,
     style,
 }) => {

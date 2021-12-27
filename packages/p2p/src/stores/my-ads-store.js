@@ -56,7 +56,6 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     getAdvertInfo() {
         this.setIsFormLoading(true);
-        // this.setEditAdFormError('');
 
         requestWS({
             p2p_advert_info: 1,
@@ -65,8 +64,6 @@ export default class MyAdsStore extends BaseStore {
             if (!response.error) {
                 const { p2p_advert_info } = response;
                 this.setP2pAdvertInformation(p2p_advert_info);
-            } else {
-                // this.setEditAdFormError(response.error.message);
             }
             this.setIsFormLoading(false);
         });
@@ -214,8 +211,6 @@ export default class MyAdsStore extends BaseStore {
 
     @action.bound
     onClickSaveEditAd(values, { setSubmitting }) {
-        // this.setEditAdFormError('');
-
         const is_sell_ad = values.type === buy_sell.SELL;
 
         const update_advert = {
@@ -223,8 +218,7 @@ export default class MyAdsStore extends BaseStore {
             remaining_amount: Number(values.offer_amount),
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
-            // TODO: Allow for other types of payment_method.
-            // payment_method: 'bank_transfer',
+            payment_method: values.payment_method,
             rate: Number(values.price_rate),
         };
 
@@ -243,7 +237,6 @@ export default class MyAdsStore extends BaseStore {
         requestWS(update_advert).then(response => {
             // If there's an error, let the user submit the form again.
             if (response.error) {
-                // this.setEditAdFormError(response.error.message);
                 setSubmitting(false);
                 this.setIsEditErrorModalVisible(true);
             }

@@ -1,10 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
-import { Button, Icon, Input, Loading, Text } from '@deriv/components';
+import { Button, Input, Loading, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-// import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal.jsx';
 
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
@@ -47,7 +46,6 @@ const EditPaymentMethodForm = () => {
                             </Field>
                             {Object.entries(my_profile_store.payment_method_info.fields).map(
                                 (payment_method_field, key) => {
-                                    console.log(payment_method_field);
                                     return (
                                         <Field name={payment_method_field[0]} id={payment_method_field[0]} key={key}>
                                             {({ field }) => (

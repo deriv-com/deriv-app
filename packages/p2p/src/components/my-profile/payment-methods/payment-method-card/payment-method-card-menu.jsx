@@ -5,15 +5,10 @@ import { useStores } from 'Stores';
 
 const PaymentMethodCardMenu = ({ payment_method }) => {
     const { my_profile_store } = useStores();
-    console.log(payment_method);
+
     return (
         <div className='payment-method-card__menu'>
-            <Text
-                className='payment-method-card__menu--text'
-                color='prominent'
-                // onClick={() => my_profile_store.onClickEdit(payment_method)}
-                size='s'
-            >
+            <Text className='payment-method-card__menu--text' color='prominent' size='s'>
                 <Localize i18n_default_text='Edit' />
             </Text>
             <Text

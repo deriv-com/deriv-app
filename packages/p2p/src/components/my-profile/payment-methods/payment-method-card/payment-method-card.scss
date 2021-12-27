@@ -47,6 +47,10 @@
         align-items: center;
         display: flex;
         justify-content: space-between;
+
+        .dc-dropdown {
+            border: unset;
+        }
     }
 
     &__icon {

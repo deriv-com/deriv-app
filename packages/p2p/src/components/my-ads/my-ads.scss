@@ -64,6 +64,18 @@
             }
         }
 
+        &-payment-methods {
+            &--empty {
+                border: 1px dotted var(--border-normal);
+                padding: 1.2rem 1.6rem;
+            }
+
+            &--text {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
         &-radio-group {
             display: flex;
             margin-top: unset;

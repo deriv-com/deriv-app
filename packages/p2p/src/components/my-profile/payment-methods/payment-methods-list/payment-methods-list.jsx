@@ -16,8 +16,6 @@ const PaymentMethodsList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // TODO: Add loader
-
     return (
         <div className='payment-methods-list'>
             <Button

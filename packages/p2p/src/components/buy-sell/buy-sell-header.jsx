@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { reaction } from 'mobx';
-import { ButtonToggle, Checkbox, Icon, PopoverMobile } from '@deriv/components';
+import { ButtonToggle } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
@@ -25,7 +25,6 @@ const getBuySellFilters = () => [
 
 const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     const { buy_sell_store } = useStores();
-    const [is_no_match_tooltip_open, setIsNoMatchTooltipOpen] = React.useState(false);
 
     const onChangeTableType = event => setTableType(event.target.value);
 
@@ -65,30 +64,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                 <div className='buy-sell__header-row'>
                     <SearchBox />
                     <SortDropdown />
-                    <div
-                        className='buy-sell__header-row--filter'
-                        onClick={() => buy_sell_store.setIsFilterModalOpen(true)}
-                    >
-                        <Icon icon='IcFilter' />
-                    </div>
                 </div>
-            </div>
-            <div className='buy-sell__header-match-ads'>
-                <Checkbox
-                    label={localize('Show the matching ads')}
-                    onChange={() => buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)}
-                    value={buy_sell_store.should_use_client_limits}
-                />
-                <PopoverMobile
-                    desktop_alignment='right'
-                    button_text={localize('Got it')}
-                    className='buy-sell__header-match-ads__popover'
-                    is_open={is_no_match_tooltip_open}
-                    message={localize('See the ads that match your DP2P balance and limit.')}
-                    setIsOpen={setIsNoMatchTooltipOpen}
-                >
-                    <Icon icon='IcInfoOutline' size={16} />
-                </PopoverMobile>
             </div>
         </div>
     );

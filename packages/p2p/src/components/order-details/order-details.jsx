@@ -11,6 +11,8 @@ import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx'
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
 import { useStores } from 'Stores';
+import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
+import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
@@ -18,8 +20,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
     const {
         account_currency,
         advert_details,
+        advertiser_details,
         amount_display,
         chat_channel_url: order_channel_url,
+        client_details,
         contact_info,
         has_timer_expired,
         id,
@@ -32,8 +36,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         local_currency,
         other_user_details,
         payment_info,
-        payment_method,
-        payment_method_details,
+        payment_methods,
         price,
         purchase_time,
         rate,
@@ -43,7 +46,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
         should_show_order_footer,
         status_string,
     } = order_store.order_information;
-    console.log(order_store.order_information);
 
     const { chat_channel_url } = sendbird_store;
 
@@ -165,14 +167,22 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 />
                             </div>
                         </div>
-                        {order_store.payment_method_accordion_details ? (
+                        {payment_methods ? (
                             <Accordion
-                                className='payment-agent__accordion'
-                                list={order_store.payment_method_accordion_details.forEach(method => {
-                                    // header: method[0],
-                                    // content: method[1],
-                                    console.log(method);
-                                })}
+                                className='order-details-card__accordion'
+                                icon_close='IcChevronRight'
+                                icon_open='IcChevronDown'
+                                list={payment_methods.map(payment_method => ({
+                                    header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
+                                    content: (
+                                        <PaymentMethodAccordionContent
+                                            advertiser_details={advertiser_details}
+                                            client_details={client_details}
+                                            is_my_ad={is_my_ad}
+                                            payment_method={payment_method}
+                                        />
+                                    ),
+                                }))}
                             />
                         ) : (
                             <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />

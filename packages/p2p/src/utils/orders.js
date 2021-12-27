@@ -98,6 +98,14 @@ export default class ExtendedOrderDetails {
         return server_time_moment.isAfter(expiry_time_moment);
     }
 
+    get payment_methods() {
+        if (this.order_details.payment_method_details) {
+            return Object.values(this.order_details.payment_method_details);
+        }
+
+        return null;
+    }
+
     get remaining_seconds() {
         const server_time_moment = this.server_time.get();
         const expiry_time_moment = toMoment(this.order_details.expiry_time);

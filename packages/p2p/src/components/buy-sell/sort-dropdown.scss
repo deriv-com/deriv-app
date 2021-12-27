@@ -40,4 +40,19 @@
             width: 14rem;
         }
     }
+
+    &--sort {
+        align-items: center;
+        align-self: center;
+        display: flex;
+        border: 1px solid var(--border-normal);
+        border-radius: 4px;
+        padding: 0.8rem;
+
+        @include mobile {
+            height: 3.2rem;
+            margin: 0.8rem 1.6rem 1rem 0;
+            width: 3.2rem;
+        }
+    }
 }

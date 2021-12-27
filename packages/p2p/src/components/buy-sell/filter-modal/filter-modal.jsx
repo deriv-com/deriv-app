@@ -24,14 +24,7 @@ const FilterModal = () => {
             <Modal.Body>
                 {buy_sell_store.show_filter_payment_methods ? (
                     my_profile_store.payment_methods_list_items.map((payment_method, key) => {
-                        return (
-                            <Checkbox
-                                key={key}
-                                label={payment_method.text}
-                                // onChange={() => buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)}
-                                value={payment_method.value}
-                            />
-                        );
+                        return <Checkbox key={key} label={payment_method.text} value={payment_method.value} />;
                     })
                 ) : (
                     <>
@@ -63,8 +56,9 @@ const FilterModal = () => {
                                 className='filter-modal__toggle'
                                 classNameButton='filter-modal__toggle-button'
                                 classNameLabel='filter-modal__toggle-label'
-                                // is_enabled={true}
-                                // handleToggle={handleToggle}
+                                handleToggle={() =>
+                                    buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)
+                                }
                             />
                         </div>
                     </>

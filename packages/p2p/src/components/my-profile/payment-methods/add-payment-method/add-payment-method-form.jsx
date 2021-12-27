@@ -7,17 +7,13 @@ import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal.jsx';
 
-const AddPaymentMethodForm = ({
-    should_show_separated_footer = false,
-    should_show_other_payment_method_hint = true,
-}) => {
+const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
-        // my_profile_store.setIsLoading(false);
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getSelectedPaymentMethodDetails();
-        // my_profile_store.getAdvertiserInfo();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -45,8 +41,6 @@ const AddPaymentMethodForm = ({
                                             </Text>
                                         }
                                         value={my_profile_store.selected_payment_method_display_name}
-                                        // error={errors.contact_info}
-                                        // className='add-payment-method__textarea'
                                         required
                                         trailing_icon={
                                             <Icon
@@ -59,9 +53,6 @@ const AddPaymentMethodForm = ({
                                     />
                                 )}
                             </Field>
-                            {should_show_other_payment_method_hint && (
-                                <Localize i18n_default_text='Don’t see the payment method of your choice? Add new.' />
-                            )}
                             {my_profile_store.selected_payment_method_fields &&
                                 my_profile_store.selected_payment_method_fields.map((payment_method_field, key) => {
                                     return (

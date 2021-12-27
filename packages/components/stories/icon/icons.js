@@ -108,6 +108,7 @@ export const icons =
         'IcCashierSepaDark',
         'IcCashierSepaLight',
         'IcCashierSofort',
+        'IcCashierSort',
         'IcCashierTetherDark',
         'IcCashierTetherLight',
         'IcCashierTopUp',

@@ -14,6 +14,7 @@ export default class BuySellStore extends BaseStore {
     @observable has_more_items_to_load = false;
     @observable is_filter_modal_open = false;
     @observable is_loading = true;
+    @observable is_sort_dropdown_open = false;
     @observable is_submit_disabled = true;
     @observable items = [];
     @observable payment_info = '';
@@ -21,6 +22,7 @@ export default class BuySellStore extends BaseStore {
     @observable search_results = [];
     @observable search_term = '';
     @observable selected_ad_state = {};
+    @observable selected_value = 'rate';
     @observable should_show_popup = false;
     @observable should_show_verification = false;
     @observable should_use_client_limits = false;
@@ -38,6 +40,10 @@ export default class BuySellStore extends BaseStore {
     };
 
     payment_method_ids = [];
+    sort_list = [
+        { text: localize('Exchange rate (Default)'), value: 'rate' },
+        { text: localize('Completion rate'), value: 'completion' },
+    ];
 
     @computed
     get account_currency() {
@@ -116,6 +122,16 @@ export default class BuySellStore extends BaseStore {
                 this.setPaymentInfo('');
             }
         });
+    }
+
+    @action.bound
+    handleChange(e) {
+        this.setIsLoading(true);
+        this.setSelectedValue(e.target.value);
+        this.setItems([]);
+        this.setSortBy(e.target.value);
+        this.loadMoreItems({ startIndex: 0 });
+        this.setIsSortDropdownOpen(false);
     }
 
     @action.bound
@@ -302,6 +318,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setIsSortDropdownOpen(is_sort_dropdown_open) {
+        this.is_sort_dropdown_open = is_sort_dropdown_open;
+    }
+
+    @action.bound
     setIsSubmitDisabled(is_submit_disabled) {
         this.is_submit_disabled = is_submit_disabled;
     }
@@ -342,6 +363,11 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setSelectedAdState(selected_ad_state) {
         this.selected_ad_state = selected_ad_state;
+    }
+
+    @action.bound
+    setSelectedValue(selected_value) {
+        this.selected_value = selected_value;
     }
 
     @action.bound

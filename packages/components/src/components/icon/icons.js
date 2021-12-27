@@ -103,6 +103,7 @@ import './cashier/ic-cashier-send-email.svg';
 import './cashier/ic-cashier-sepa-dark.svg';
 import './cashier/ic-cashier-sepa-light.svg';
 import './cashier/ic-cashier-sofort.svg';
+import './cashier/ic-cashier-sort.svg';
 import './cashier/ic-cashier-tether-dark.svg';
 import './cashier/ic-cashier-tether-light.svg';
 import './cashier/ic-cashier-top-up.svg';

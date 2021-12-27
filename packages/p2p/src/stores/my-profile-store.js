@@ -59,7 +59,6 @@ export default class MyProfileStore extends BaseStore {
     get initial_values() {
         const object = {};
         Object.entries(this.payment_method_info.fields).forEach(payment_method_field => {
-            // console.log(payment_method_field[1].value)
             object[payment_method_field[0]] = payment_method_field[1].value;
         });
 
@@ -95,7 +94,7 @@ export default class MyProfileStore extends BaseStore {
                 methods.push({ method: key[1].method, display_name: key[1].display_name });
             }
         });
-        console.log(methods);
+
         return methods;
     }
 
@@ -129,7 +128,6 @@ export default class MyProfileStore extends BaseStore {
             p2p_advertiser_info: 1,
         }).then(response => {
             if (!response.error) {
-                console.log(response);
                 const { p2p_advertiser_info } = response;
 
                 this.setAdvertiserInfo(p2p_advertiser_info);
@@ -151,7 +149,6 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_advertiser_payment_methods: 1,
         }).then(response => {
-            console.log(response);
             if (response.error) {
                 this.setAdvertiserPaymentMethodsError(response.error.message);
             } else {
@@ -174,11 +171,6 @@ export default class MyProfileStore extends BaseStore {
     getSelectedPaymentMethodDetails() {
         this.setSelectedPaymentMethodDisplayName(
             this.available_payment_methods[this.selected_payment_method].display_name
-        );
-
-        console.log(typeof Object.entries(this.available_payment_methods[this.selected_payment_method].fields));
-        Object.entries(this.available_payment_methods[this.selected_payment_method].fields).forEach(field =>
-            console.log(field[1].display_name)
         );
         this.setSelectedPaymentMethodFields(
             Object.entries(this.available_payment_methods[this.selected_payment_method].fields)
@@ -256,27 +248,20 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    onClickEdit(payment_method) {
-        console.log(payment_method);
-    }
-
-    @action.bound
     showAddPaymentMethodForm() {
         this.setShouldShowAddPaymentMethodForm(true);
     }
 
     @action.bound
     updatePaymentMethod(values) {
-        const id = this.payment_method_to_edit?.ID;
-        console.log(values);
         requestWS({
             p2p_advertiser_payment_methods: 1,
             update: {
-                id: {
+                [this.payment_method_to_edit.ID]: {
                     values,
                 },
             },
-        }).then(response => console.log(response));
+        });
     }
 
     validateForm = values => {

@@ -9,13 +9,8 @@ const MyProfileStatsTable = () => {
     const { general_store, my_profile_store } = useStores();
     const [is_statistics_tooltip_open, setIsStatisticsTooltipOpen] = React.useState(false);
 
-    const {
-        daily_buy,
-        daily_buy_limit,
-        daily_sell,
-        daily_sell_limit,
-        total_orders_count,
-    } = my_profile_store.advertiser_info;
+    const { daily_buy, daily_buy_limit, daily_sell, daily_sell_limit, total_orders_count } =
+        my_profile_store.advertiser_info;
 
     return (
         <Table>

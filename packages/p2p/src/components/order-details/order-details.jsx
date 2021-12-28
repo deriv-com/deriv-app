@@ -125,21 +125,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock
                                     label={labels.counterparty_nickname_label}
                                     value={
-                                        <React.Fragment>
-                                            <Text
-                                                size={has_full_name ? 's' : 'xs'}
-                                                color='prominent'
-                                                line_height='m'
-                                                weight={has_full_name && 'bold'}
-                                            >
-                                                {other_user_details.name}
-                                            </Text>
-                                            {has_full_name && (
-                                                <Text size='xs' line_height='xs'>
-                                                    {` ${other_user_details.first_name} ${other_user_details.last_name}`}
-                                                </Text>
-                                            )}
-                                        </React.Fragment>
+                                        <Text size='xs' line_height='m'>
+                                            {other_user_details.name}
+                                        </Text>
                                     }
                                 />
                             </div>

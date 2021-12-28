@@ -4,7 +4,7 @@ import { Button, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RecentTransaction from 'Components/recent-transaction.jsx';
+import RecentTransaction from '../recent-transaction.jsx';
 import EmailSent from './email-sent.jsx';
 import 'Sass/send-email.scss';
 

@@ -13,6 +13,7 @@ const CashierLocked = ({
     is_system_maintenance,
     is_withdrawal_lock,
     loginid,
+    is_identity_verification_needed,
 }) => {
     const { cashier_validation } = account_status;
     const no_residence = cashier_validation?.includes('no_residence');
@@ -91,7 +92,16 @@ const CashierLocked = ({
                     ]}
                 />
             );
-        } else {
+        } else if(is_identity_verification_needed){
+                message = (
+                    <Localize
+                        i18n_default_text='Please submit your <0>proof of identity</0> to authenticate your account and access your Cashier.'
+                        components={[
+                            <a key={0} className='link' rel='noopener noreferrer' href={'/account/proof-of-identity'} />,
+                        ]}
+                    />
+                );
+        }else{
             message = (
                 <Localize
                     i18n_default_text='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and access your cashier.'
@@ -238,4 +248,5 @@ export default connect(({ client, modules }) => ({
     is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_withdrawal_lock: client.is_withdrawal_lock,
     loginid: client.loginid,
+    is_identity_verification_needed: client.is_identity_verification_needed,
 }))(CashierLocked);

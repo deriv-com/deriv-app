@@ -6,8 +6,15 @@ import { Button, Loading, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import 'Sass/cashier-container.scss';
 
-const CashierContainer = ({ iframe_height, iframe_url, is_crypto, is_loading }) => {
+const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_crypto, is_loading }) => {
     const history = useHistory();
+
+    React.useEffect(() => {
+        return () => {
+            clearIframe();
+        };
+    }, [clearIframe]);
+
     return (
         <div className='cashier__wrapper'>
             {is_loading && <Loading is_fullscreen />}
@@ -45,6 +52,8 @@ const CashierContainer = ({ iframe_height, iframe_url, is_crypto, is_loading }) 
 CashierContainer.propTypes = {
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
+    clearIframe: PropTypes.func,
+    is_crypto: PropTypes.bool,
     is_loading: PropTypes.bool,
 };
 

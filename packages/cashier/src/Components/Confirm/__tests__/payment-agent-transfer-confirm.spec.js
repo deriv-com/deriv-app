@@ -39,27 +39,27 @@ describe('<PaymentAgentTransferConfirm />', () => {
     ];
 
     it('component should be rendered', () => {
-        const component = render(
+        const { container } = render(
             <PaymentAgentTransferConfirm transfer_to={transfer_to}>
                 <Confirm />
             </PaymentAgentTransferConfirm>
         );
 
-        expect(component.container.querySelector('.cashier__wrapper--confirm')).toBeInTheDocument();
+        expect(container.querySelector('.cashier__wrapper--confirm')).toBeInTheDocument();
     });
 
     it('component <Row /> should be rendered when has data', () => {
-        const component = render(
+        const { container } = render(
             <PaymentAgentTransferConfirm transfer_to={transfer_to}>
                 <Confirm data={data} />
             </PaymentAgentTransferConfirm>
         );
 
-        expect(component.container.querySelector('.confirm__row')).toBeInTheDocument();
+        expect(container.querySelector('.confirm__row')).toBeInTheDocument();
     });
 
     it('component <FormError /> should be rendered when has an error', () => {
-        const component = render(
+        render(
             <PaymentAgentTransferConfirm transfer_to={transfer_to} error={error}>
                 <Confirm data={data} error={error} />
             </PaymentAgentTransferConfirm>

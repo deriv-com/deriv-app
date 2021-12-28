@@ -259,6 +259,8 @@ const BinarySocketBase = (() => {
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
 
+    const allPaymentAgentList = country => deriv_api.send({ paymentagent_list: country });
+
     const paymentAgentDetails = (passthrough, req_id) =>
         deriv_api.send({ paymentagent_details: 1, passthrough, req_id });
 
@@ -341,7 +343,7 @@ const BinarySocketBase = (() => {
 
     const realityCheck = () => deriv_api.send({ reality_check: 1 });
 
-    const tradingServers = () => deriv_api.send({ platform: 'mt5', trading_servers: 1 });
+    const tradingServers = platform => deriv_api.send({ platform, trading_servers: 1 });
 
     const tradingPlatformAccountsList = platform =>
         deriv_api.send({
@@ -423,6 +425,7 @@ const BinarySocketBase = (() => {
         tradingPlatformInvestorPasswordReset,
         activeSymbols,
         paymentAgentList,
+        allPaymentAgentList,
         paymentAgentDetails,
         paymentAgentWithdraw,
         paymentAgentTransfer,

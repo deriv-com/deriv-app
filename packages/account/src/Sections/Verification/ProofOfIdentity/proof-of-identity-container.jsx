@@ -68,8 +68,6 @@ const ProofOfIdentityContainer = ({
         return <Loading is_fullscreen={false} />;
     } else if (is_virtual) {
         return <DemoMessage />;
-    } else if (!should_allow_authentication) {
-        return <NotRequired />;
     } else if (api_error) {
         return <ErrorMessage error_message={api_error?.message || api_error} />;
     }
@@ -81,11 +79,16 @@ const ProofOfIdentityContainer = ({
         has_attempted_idv,
         identity_last_attempt,
         identity_status,
+        is_age_verified,
         is_idv_disallowed,
         manual,
         needs_poa,
         onfido,
     } = verification_status;
+
+    if (!should_allow_authentication && !is_age_verified) {
+        return <NotRequired />;
+    }
 
     const redirect_button = should_show_redirect_btn && (
         <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>
@@ -113,8 +116,11 @@ const ProofOfIdentityContainer = ({
                 residence_list={residence_list}
             />
         );
-        // Client status modified from BO does not get their latest attempts populated
-    } else if (!identity_last_attempt) {
+    } else if (
+        !identity_last_attempt ||
+        // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
+        (identity_status === 'verified' && identity_status !== identity_last_attempt.status)
+    ) {
         switch (identity_status) {
             case identity_status_codes.pending:
                 return (

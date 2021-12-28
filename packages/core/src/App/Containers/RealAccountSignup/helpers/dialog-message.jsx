@@ -40,6 +40,15 @@ export const DialogMessage = ({
                 />
             );
         }
+    } else if (landing_company_shortcode === 'iom') {
+        if (country_standpoint.is_united_kingdom && is_fully_authenticated) {
+            message = (
+                <Localize
+                    i18n_default_text='You have added a real Gaming account.<0/>Make a deposit now to start trading.'
+                    components={[<br key={0} />]}
+                />
+            );
+        }
     } else {
         switch (status) {
             case EXPERIAN.WARN:

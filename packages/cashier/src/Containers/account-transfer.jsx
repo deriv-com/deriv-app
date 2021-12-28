@@ -3,16 +3,15 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import AccountTransferNoAccount from '../Components/Error/account-transfer-no-account.jsx';
-import Error from '../Components/Error/error.jsx';
-import NoBalance from '../Components/Error/no-balance.jsx';
-import Virtual from '../Components/Error/virtual.jsx';
-import CashierLocked from '../Components/Error/cashier-locked.jsx';
-import TransferLock from '../Components/Error/transfer-locked.jsx';
-import AccountTransferForm from '../Components/Form/account-transfer-form.jsx';
-import AccountTransferReceipt from '../Components/Receipt/account-transfer-receipt.jsx';
-import AccountTransferConfirm from '../Components/Confirm/account-transfer-confirm.jsx';
-import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
+import AccountTransferNoAccount from 'Components/Error/account-transfer-no-account.jsx';
+import Error from 'Components/Error/error.jsx';
+import NoBalance from 'Components/Error/no-balance.jsx';
+import Virtual from 'Components/Error/virtual.jsx';
+import CashierLocked from 'Components/Error/cashier-locked.jsx';
+import TransferLock from 'Components/Error/transfer-locked.jsx';
+import AccountTransferForm from 'Components/Form/account-transfer-form.jsx';
+import AccountTransferReceipt from 'Components/Receipt/account-transfer-receipt.jsx';
+import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 
 const AccountTransfer = ({
     accounts_list,
@@ -26,7 +25,6 @@ const AccountTransfer = ({
     is_switching,
     is_transfer_confirm,
     is_transfer_lock,
-    is_transfer_successful,
     is_virtual,
     onMount,
     recentTransactionOnMount,
@@ -41,6 +39,7 @@ const AccountTransfer = ({
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
     React.useEffect(() => {
@@ -55,12 +54,14 @@ const AccountTransfer = ({
             setAccountTransferAmount('');
             setIsTransferConfirm(false);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         if (typeof setSideNotes === 'function' && (has_no_accounts_balance || is_switching)) {
             setSideNotes(null);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setSideNotes, has_no_accounts_balance]);
 
     if (is_virtual) {
@@ -87,9 +88,6 @@ const AccountTransfer = ({
         return <NoBalance />;
     }
     if (is_transfer_confirm) {
-        return <AccountTransferConfirm />;
-    }
-    if (is_transfer_successful) {
         return <AccountTransferReceipt />;
     }
     if (is_crypto_transactions_visible) {
@@ -110,7 +108,6 @@ AccountTransfer.propTypes = {
     is_loading: PropTypes.bool,
     is_switching: PropTypes.bool,
     is_transfer_confirm: PropTypes.bool,
-    is_transfer_successful: PropTypes.bool,
     is_transfer_lock: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
@@ -124,20 +121,19 @@ AccountTransfer.propTypes = {
 export default connect(({ client, modules }) => ({
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
-    accounts_list: modules.cashier.config.account_transfer.accounts_list,
-    container: modules.cashier.config.account_transfer.container,
-    error: modules.cashier.config.account_transfer.error,
-    has_no_account: modules.cashier.config.account_transfer.has_no_account,
-    has_no_accounts_balance: modules.cashier.config.account_transfer.has_no_accounts_balance,
-    is_cashier_locked: modules.cashier.is_cashier_locked,
+    accounts_list: modules.cashier.account_transfer.accounts_list,
+    container: modules.cashier.account_transfer.container,
+    error: modules.cashier.account_transfer.error,
+    has_no_account: modules.cashier.account_transfer.has_no_account,
+    has_no_accounts_balance: modules.cashier.account_transfer.has_no_accounts_balance,
+    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
-    is_loading: modules.cashier.is_loading,
-    is_transfer_confirm: modules.cashier.config.account_transfer.is_transfer_confirm,
-    is_transfer_successful: modules.cashier.config.account_transfer.is_transfer_successful,
-    is_transfer_lock: modules.cashier.is_transfer_lock,
-    onMount: modules.cashier.onMountAccountTransfer,
+    is_loading: modules.cashier.general_store.is_loading,
+    is_transfer_confirm: modules.cashier.account_transfer.is_transfer_confirm,
+    is_transfer_lock: modules.cashier.general_store.is_transfer_lock,
+    onMount: modules.cashier.account_transfer.onMountAccountTransfer,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    setActiveTab: modules.cashier.setActiveTab,
-    setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
-    setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
+    setActiveTab: modules.cashier.general_store.setActiveTab,
+    setAccountTransferAmount: modules.cashier.account_transfer.setAccountTransferAmount,
+    setIsTransferConfirm: modules.cashier.account_transfer.setIsTransferConfirm,
 }))(AccountTransfer);

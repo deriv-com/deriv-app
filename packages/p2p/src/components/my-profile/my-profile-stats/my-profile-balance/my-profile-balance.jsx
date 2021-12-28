@@ -16,7 +16,7 @@ const MyProfileBalance = () => {
         <div className='my-profile-balance'>
             <MyProfileSeparatorContainer>
                 <Text color='less-prominent' line_height='m' size='xs'>
-                    <Localize i18n_default_text='Available DP2P balance' />
+                    <Localize i18n_default_text='Available Deriv P2P balance' />
                 </Text>
                 <MyProfileSeparatorContainer.Line is_invisible={isMobile()} />
                 <Text className='my-profile-balance__amount' color='prominent' line_height='m' size='xs' weight='bold'>
@@ -26,7 +26,7 @@ const MyProfileBalance = () => {
                     button_text={localize('Got it')}
                     is_open={is_balance_tooltip_open}
                     message={localize(
-                        'DP2P balance = deposits that can’t be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)'
+                        'Deriv P2P balance = deposits that can’t be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)'
                     )}
                     setIsOpen={setIsBalanceTooltipOpen}
                     title={localize('Available balance')}

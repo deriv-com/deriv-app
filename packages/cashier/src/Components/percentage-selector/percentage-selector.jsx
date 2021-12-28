@@ -33,11 +33,15 @@ const PercentageSelector = ({
     }, [from_account, to_account]);
 
     const calculateAmount = (e, percent) => {
-        setSelectedPercentage(percent || 0);
-        getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
+        let new_percentage = percent;
+        const is_percentage_selected = percent > 0 && percent <= selected_percentage;
+        if (is_percentage_selected) new_percentage -= 25;
+
+        setSelectedPercentage(new_percentage || 0);
+        getCalculatedAmount((amount * (new_percentage / 100)).toFixed(getDecimalPlaces(currency)));
 
         for (let i = 1; i <= 4; i++) {
-            if (i <= e.target.id) {
+            if (i < e.target.id || (i === +e.target.id && !is_percentage_selected)) {
                 document.getElementById(i).style.backgroundColor = 'var(--status-success)';
             } else {
                 document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
@@ -50,31 +54,31 @@ const PercentageSelector = ({
         <React.Fragment>
             <div className='percentage-selector'>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
+                    <Text color='prominent' size='xs' className='percentage-selector__text'>
                         {'25%'}
                     </Text>
                     <div id='1' className='percentage-selector-block' onClick={e => calculateAmount(e, 25)} />
                 </div>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
+                    <Text color='prominent' size='xs' className='percentage-selector__text'>
                         {'50%'}
                     </Text>
                     <div id='2' className='percentage-selector-block' onClick={e => calculateAmount(e, 50)} />
                 </div>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
+                    <Text color='prominent' size='xs' className='percentage-selector__text'>
                         {'75%'}
                     </Text>
                     <div id='3' className='percentage-selector-block' onClick={e => calculateAmount(e, 75)} />
                 </div>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
+                    <Text color='prominent' size='xs' className='percentage-selector__text'>
                         <Localize i18n_default_text='All' />
                     </Text>
                     <div id='4' className='percentage-selector-block' onClick={e => calculateAmount(e, 100)} />
                 </div>
             </div>
-            <Text color='less-prominent' size='xxs' line_height='l'>
+            <Text color='less-prominent' size='xxs' line_height='l' className='percentage-selector__text'>
                 <Localize
                     i18n_default_text={`{{selected_percentage}}% of available balance ({{format_amount}} {{currency__display_code}})`}
                     values={{ selected_percentage, format_amount, currency__display_code }}

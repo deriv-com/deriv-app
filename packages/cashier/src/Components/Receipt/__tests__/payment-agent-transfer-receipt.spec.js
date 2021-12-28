@@ -1,9 +1,9 @@
 import React from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import PaymentAgentTransferReceipt from '../payment-agent-transfer-receipt';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import PaymentAgentTransferReceipt from '../payment-agent-transfer-receipt';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -20,13 +20,13 @@ describe('<PaymentAgentTransferReceipt />', () => {
             amount_transferred: 'someAmount',
             client_id: 'id',
         };
-        const component = render(
+        const { container } = render(
             <Router history={history}>
                 <PaymentAgentTransferReceipt currency={currency} receipt={receipt} />
             </Router>
         );
 
-        expect(component.container.querySelector('.payment-agent-transfer-receipt__wrapper')).toBeInTheDocument();
+        expect(container.querySelector('.payment-agent-transfer-receipt__wrapper')).toBeInTheDocument();
     });
 
     it(`should redirect to statement page when click on 'View in statement' button`, () => {

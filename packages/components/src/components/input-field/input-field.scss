@@ -35,7 +35,7 @@ button.dc-input-wrapper {
         }
     }
     &__button {
-        position: absolute;
+        position: absolute !important;
         z-index: 1;
         top: 2px;
         height: 28px;

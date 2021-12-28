@@ -82,9 +82,9 @@ describe('<AccountTransferReceipt />', () => {
     });
 
     it('should not show "We’re switching over to your {{currency}} account to view the transaction." message, when the "Cancel" button was clicked', async () => {
-        const portalRoot = global.document.createElement('div');
-        portalRoot.setAttribute('id', 'modal_root');
-        global.document.body.appendChild(portalRoot);
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
 
         const props = mockProps('CR90000403');
 
@@ -109,9 +109,9 @@ describe('<AccountTransferReceipt />', () => {
     });
 
     it('should redirect to "/reports/statement", when the "Switch to {currency} account" button was clicked', () => {
-        const portalRoot = global.document.createElement('div');
-        portalRoot.setAttribute('id', 'modal_root');
-        global.document.body.appendChild(portalRoot);
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
 
         const props = mockProps('CR90000403');
         props.switchAccount = jest.fn();

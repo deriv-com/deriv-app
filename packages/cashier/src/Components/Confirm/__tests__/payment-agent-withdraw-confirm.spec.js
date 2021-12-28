@@ -26,7 +26,6 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
         code: 'testCode',
         message: 'testMessage',
     };
-    // const transfer_to = 'test';
     const requestPaymentAgentWithdraw = jest.fn();
     const setIsTryWithdrawSuccessful = jest.fn();
     const header = 'Please confirm the transaction details in order to complete the withdrawal:';

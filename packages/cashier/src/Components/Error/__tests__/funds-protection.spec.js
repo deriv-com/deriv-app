@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import FundsProtection from '../funds-protection.jsx';
 
 jest.mock('Stores/connect', () => ({

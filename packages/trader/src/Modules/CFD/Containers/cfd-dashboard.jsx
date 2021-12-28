@@ -44,6 +44,7 @@ const CFDDashboard = props => {
     const [is_real_enabled, setIsRealEnabled] = React.useState(false);
     const [active_index, setActiveIndex] = React.useState(0);
     const [is_demo_tab] = React.useState(true);
+    const [updated_state, setUpdatedState] = React.useState({});
     const [is_notification_loaded, setIsNotificationLoaded] = React.useState(false);
     const [password_manager, setPasswordManager] = React.useState({
         is_visible: false,
@@ -64,7 +65,7 @@ const CFDDashboard = props => {
     }, []);
 
     React.useEffect(() => {
-        updateActiveIndex();
+        updateActiveIndex(getIndexToSet());
         props.checkShouldOpenAccount();
 
         if (props.is_logged_in) {
@@ -122,9 +123,9 @@ const CFDDashboard = props => {
             updated_state.active_index = index;
         }
 
-        if (!isEmptyObject(updated_state)) return updated_state;
-
-        return updated_state;
+        if (!isEmptyObject(updated_state)) {
+            setUpdatedState(updated_state);
+        }
     };
 
     const openAccountTransfer = (data, meta) => {
@@ -273,7 +274,7 @@ const CFDDashboard = props => {
                                 {general_messages.getWelcomeHeader(is_logged_in, platform)}
                             </h1>
                         </div>
-                        {has_cfd_account_error && (
+                        {is_logged_in && has_cfd_account_error && (
                             <div className='cfd-dashboard__accounts-error'>
                                 <Text
                                     as='p'

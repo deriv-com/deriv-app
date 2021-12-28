@@ -10,9 +10,9 @@ jest.mock('Stores/connect', () => ({
 }));
 
 beforeAll(() => {
-    const portalRoot = global.document.createElement('div');
-    portalRoot.setAttribute('id', 'modal_root');
-    global.document.body.appendChild(portalRoot);
+    const portal_root = document.createElement('div');
+    portal_root.setAttribute('id', 'modal_root');
+    document.body.appendChild(portal_root);
 });
 
 afterEach(cleanup);
@@ -55,7 +55,7 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
     });
 
     it('component <FormError /> should be rendered when has an error', () => {
-        const component = render(
+        render(
             <PaymentAgentWithdrawConfirm error={error}>
                 <Confirm data={data} error={error} />
             </PaymentAgentWithdrawConfirm>

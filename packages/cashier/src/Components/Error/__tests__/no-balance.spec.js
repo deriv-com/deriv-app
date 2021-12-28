@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, fireEvent, cleanup } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
@@ -40,7 +40,6 @@ describe('<NoBalance />', () => {
 
     it('component should redirect to deposit page when button is clicked', () => {
         const setTabIndex = jest.fn();
-        const cashier_deposit = 'cashier_deposit';
 
         render(
             <Router history={history}>
@@ -51,6 +50,6 @@ describe('<NoBalance />', () => {
         const btn = screen.getByRole('button');
         fireEvent.click(btn);
 
-        expect(history.location.pathname).toBe(routes[cashier_deposit]);
+        expect(history.location.pathname).toBe(routes.cashier_deposit);
     });
 });

@@ -84,7 +84,7 @@ const CFDDashboard = props => {
             setIsRealEnabled(true);
             setIsDemoEnabled(true);
         }
-    }, [is_real_enabled, is_demo_enabled, updated_state]);
+    }, [is_real_enabled, is_demo_enabled]);
 
     const openResetPassword = () => {
         if (!/reset-password/.test(props.location.hash)) {

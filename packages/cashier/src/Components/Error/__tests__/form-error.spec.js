@@ -18,7 +18,9 @@ describe('<FormError />', () => {
         document.body.appendChild(modal_root_el);
     });
 
-    afterEach(cleanup);
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
 
     it('should show "Please verify your identity" message, "Cancel" and "Verify identity" buttons', () => {
         render(<FormError error={{ code: 'Fiat2CryptoTransferOverLimit', message: 'Error is occured' }} />);

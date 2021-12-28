@@ -7,9 +7,9 @@ describe('<EmailSent />', () => {
     const setIsResendClicked = jest.fn();
 
     it('component should be rendered', () => {
-        const component = render(<EmailSent />);
+        const { container } = render(<EmailSent />);
 
-        expect(component.container.querySelector('.email-sent')).toBeInTheDocument();
+        expect(container.querySelector('.email-sent')).toBeInTheDocument();
         expect(screen.getByText("We've sent you an email.")).toBeInTheDocument();
         expect(
             screen.getByText('Please check your email for the verification link to complete the process.')
@@ -17,18 +17,18 @@ describe('<EmailSent />', () => {
     });
 
     it("React.Fragment should be rendered if 'is_resend_clicked' prop is true", () => {
-        const component = render(<EmailSent is_resend_clicked />);
+        const { container } = render(<EmailSent is_resend_clicked />);
 
         expect(screen.getByText("Didn't receive the email?")).toBeInTheDocument();
         expect(
             screen.getByText("Check your spam or junk folder. If it's not there, try resending the email.")
         ).toBeInTheDocument();
-        expect(component.container.querySelector('.email-sent__resend-button')).toBeInTheDocument();
+        expect(container.querySelector('.email-sent__resend-button')).toBeInTheDocument();
     });
 
     it("resendVerificationEmail func should not be triggered when 'resend_timeout' prop is less than 60", () => {
         const resend_timeout = 59;
-        const component = render(
+        const { container } = render(
             <EmailSent
                 is_resend_clicked
                 resend_timeout={resend_timeout}
@@ -36,7 +36,7 @@ describe('<EmailSent />', () => {
             />
         );
 
-        const btn = component.container.querySelector('.email-sent__resend-button');
+        const btn = container.querySelector('.email-sent__resend-button');
         fireEvent.click(btn);
 
         expect(resendVerificationEmail).toHaveBeenCalledTimes(0);
@@ -44,7 +44,7 @@ describe('<EmailSent />', () => {
 
     it("resendVerificationEmail func should be triggered when 'resend_timeout' prop is more or equal 60", () => {
         const resend_timeout = 60;
-        const component = render(
+        const { container } = render(
             <EmailSent
                 is_resend_clicked
                 resend_timeout={resend_timeout}
@@ -52,7 +52,7 @@ describe('<EmailSent />', () => {
             />
         );
 
-        const btn = component.container.querySelector('.email-sent__resend-button');
+        const btn = container.querySelector('.email-sent__resend-button');
         fireEvent.click(btn);
 
         expect(resendVerificationEmail).toHaveBeenCalledTimes(1);

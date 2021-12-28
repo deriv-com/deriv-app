@@ -179,7 +179,6 @@ export const clientNotifications = (ui = {}, client = {}, custom_header, custom_
             },
             type: 'warning',
         },
-        //
         no_withdrawal_or_trading: {
             key: 'no_withdrawal_or_trading',
             header: localize('You are only allowed to make deposits'),
@@ -598,8 +597,8 @@ const checkAccountStatus = (
             addNotificationMessage(clientNotifications(ui_store).currency);
         } else if (ASK_AUTHENTICATE && is_identity_verification_needed) {
             addNotificationMessage(clientNotifications().identity);
-        }else if (ASK_AUTHENTICATE) {
-            addNotificationMessage(clientNotifications().authenticate); 
+        } else if (ASK_AUTHENTICATE) {
+            addNotificationMessage(clientNotifications().authenticate);
         } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
             addNotificationMessage(clientNotifications().ask_financial_risk_approval);
         } else if (FinancialAssessmentRequired) {
@@ -630,7 +629,7 @@ const checkAccountStatus = (
         } else if (deposit_locked && unwelcome_status) {
             addNotificationMessage(clientNotifications().unwelcome);
         }
-        if(is_identity_verification_needed){
+        if (is_identity_verification_needed) {
             addNotificationMessage(clientNotifications().identity);
         }
     }

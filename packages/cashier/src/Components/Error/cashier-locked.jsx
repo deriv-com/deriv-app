@@ -92,16 +92,16 @@ const CashierLocked = ({
                     ]}
                 />
             );
-        } else if(is_identity_verification_needed){
-                message = (
-                    <Localize
-                        i18n_default_text='Please submit your <0>proof of identity</0> to authenticate your account and access your Cashier.'
-                        components={[
-                            <a key={0} className='link' rel='noopener noreferrer' href={'/account/proof-of-identity'} />,
-                        ]}
-                    />
-                );
-        }else{
+        } else if (is_identity_verification_needed) {
+            message = (
+                <Localize
+                    i18n_default_text='Please submit your <0>proof of identity</0> to authenticate your account and access your Cashier.'
+                    components={[
+                        <a key={0} className='link' rel='noopener noreferrer' href={'/account/proof-of-identity'} />,
+                    ]}
+                />
+            );
+        } else {
             message = (
                 <Localize
                     i18n_default_text='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and access your cashier.'

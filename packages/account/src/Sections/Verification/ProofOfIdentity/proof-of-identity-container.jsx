@@ -151,6 +151,9 @@ const ProofOfIdentityContainer = ({
         }
     }
 
+    console.log('');
+    console.log('proof fo identity');
+    console.log(identity_last_attempt.service);
     switch (identity_last_attempt.service) {
         case service_code.idv:
             return (

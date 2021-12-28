@@ -13,9 +13,9 @@ jest.mock('Stores/connect.js', () => ({
 
 describe('<FormError />', () => {
     beforeAll(() => {
-        const portalRoot = global.document.createElement('div');
-        portalRoot.setAttribute('id', 'modal_root');
-        global.document.body.appendChild(portalRoot);
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
     });
 
     afterEach(cleanup);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, fireEvent, render } from '@testing-library/react';
+import { fireEvent, screen, render } from '@testing-library/react';
 import EmailSent from '../email-sent';
 
 describe('<EmailSent />', () => {

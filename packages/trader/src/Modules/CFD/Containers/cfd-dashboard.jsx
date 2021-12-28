@@ -44,7 +44,6 @@ const CFDDashboard = props => {
     const [is_real_enabled, setIsRealEnabled] = React.useState(false);
     const [active_index, setActiveIndex] = React.useState(0);
     const [is_demo_tab] = React.useState(true);
-    const [updated_state, setUpdatedState] = React.useState({});
     const [is_notification_loaded, setIsNotificationLoaded] = React.useState(false);
     const [password_manager, setPasswordManager] = React.useState({
         is_visible: false,
@@ -65,7 +64,7 @@ const CFDDashboard = props => {
     }, []);
 
     React.useEffect(() => {
-        updateActiveIndex(getIndexToSet());
+        updateActiveIndex();
         props.checkShouldOpenAccount();
 
         if (props.is_logged_in) {
@@ -124,8 +123,9 @@ const CFDDashboard = props => {
         }
 
         if (!isEmptyObject(updated_state)) {
-            setUpdatedState(updated_state);
+            return updated_state;
         }
+        return updated_state;
     };
 
     const openAccountTransfer = (data, meta) => {

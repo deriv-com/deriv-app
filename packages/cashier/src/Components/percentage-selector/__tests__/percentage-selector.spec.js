@@ -11,7 +11,7 @@ describe('<PercentageSelector />', () => {
         expect(container.firstChild).toHaveClass('percentage-selector');
     });
 
-    it('should calculate amount on click of percentage block', () => {
+    it('should calculate the percentage amount on click of percentage block', () => {
         const { container } = render(
             <PercentageSelector amount={100} currency={'USD'} getCalculatedAmount={getCalculatedAmount} />
         );
@@ -24,31 +24,24 @@ describe('<PercentageSelector />', () => {
         });
     });
 
-    it('should change the background color to green on click of percentage block', () => {
-        const { container } = render(<PercentageSelector getCalculatedAmount={getCalculatedAmount} />);
+    it('should reset the percentage block upon clicking twice', () => {
+        const { container } = render(
+            <PercentageSelector amount={100} currency={'USD'} getCalculatedAmount={getCalculatedAmount} />
+        );
 
         container.querySelectorAll('.percentage-selector-block').forEach(block => {
             fireEvent.click(block);
-            expect(block).toHaveStyle('background-color: var(--general-section-1)');
-        });
-    });
-
-    it('should remove the background color on clicking twice of percentage block', () => {
-        const { container } = render(<PercentageSelector getCalculatedAmount={getCalculatedAmount} />);
-
-        container.querySelectorAll('.percentage-selector-block').forEach(block => {
             fireEvent.click(block);
-            expect(block).toHaveStyle('background-color: var(--status-success)');
-        });
 
-        container.querySelectorAll('.percentage-selector-block').forEach(block => {
-            fireEvent.click(block);
-            expect(block).toHaveStyle('background-color: var(--general-section-1)');
+            let percentage =
+                block.previousSibling.innerHTML === 'All' ? 100 : parseInt(block.previousSibling.innerHTML);
+            percentage -= 25;
+            expect(screen.getByText(`${percentage}% of available balance (100.00 USD)`)).toBeInTheDocument();
         });
     });
 
     it('should reset the percentage', () => {
-        const { container } = render(
+        render(
             <PercentageSelector
                 amount={100}
                 currency={'USD'}
@@ -56,10 +49,6 @@ describe('<PercentageSelector />', () => {
                 should_percentage_reset
             />
         );
-
-        container.querySelectorAll('.percentage-selector-block').forEach(block => {
-            expect(block).toHaveStyle('background-color: var(--general-section-1)');
-        });
 
         expect(screen.getByText('0% of available balance (100.00 USD)')).toBeInTheDocument();
     });

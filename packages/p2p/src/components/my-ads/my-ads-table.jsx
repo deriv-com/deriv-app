@@ -10,6 +10,7 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
+import AdExceedsDailyLimitModal from './ad-exceeds-daily-limit-modal.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -40,6 +41,7 @@ const MyAdsTable = () => {
     if (my_ads_store.adverts.length) {
         return (
             <React.Fragment>
+                <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (
                         <Button

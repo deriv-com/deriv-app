@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import FundsProtection from '../funds-protection.jsx';
+import FundsProtection from '../funds-protection';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

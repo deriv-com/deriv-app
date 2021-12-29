@@ -85,7 +85,7 @@ const CFDDashboard = props => {
             if (account_type == 'demo') {
                 setIsDemoEnabled(true);
             }
-    
+
             if (account_type == 'real') {
                 setIsRealEnabled(true);
             }

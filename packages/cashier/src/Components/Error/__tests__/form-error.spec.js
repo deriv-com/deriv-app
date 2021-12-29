@@ -38,7 +38,6 @@ describe('<FormError />', () => {
             message: 'Error is occured',
             setErrorMessage,
         };
-        const expected_route = 'proof_of_identity';
         render(
             <Router history={history}>
                 <FormError error={error} />
@@ -47,7 +46,7 @@ describe('<FormError />', () => {
         const on_confirm_btn = screen.getByText('Verify identity');
         fireEvent.click(on_confirm_btn);
 
-        expect(history.location.pathname).toBe(routes[expected_route]);
+        expect(history.location.pathname).toBe(routes.proof_of_identity);
     });
 
     it('should show "Cashier Error" message and "OK" button', () => {

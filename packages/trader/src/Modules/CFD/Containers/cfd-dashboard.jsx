@@ -82,8 +82,13 @@ const CFDDashboard = props => {
             });
         }
         if (!props.is_logged_in && (!is_real_enabled || !is_demo_enabled)) {
-            setIsRealEnabled(true);
-            setIsDemoEnabled(true);
+            if (account_type == 'demo') {
+                setIsDemoEnabled(true);
+            }
+    
+            if (account_type == 'real') {
+                setIsRealEnabled(true);
+            }
         }
     }, [is_real_enabled, is_demo_enabled]);
 

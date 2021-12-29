@@ -273,6 +273,7 @@ jobs:
       - build
       - run:
           name: "Run tests"
+          no_output_timeout: 30m
           command: npm test
 
 workflows:

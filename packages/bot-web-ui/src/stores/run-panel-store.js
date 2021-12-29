@@ -4,7 +4,7 @@ import { error_types, unrecoverable_errors, observer, message_types } from '@der
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
-import { mobileOSDetect } from '@deriv/shared';
+import { isSafari, mobileOSDetect } from '@deriv/shared';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -103,7 +103,7 @@ export default class RunPanelStore {
          * user action(e.g click/touch) to be downloaded, otherwise throws an error. Also it should be called
          * syncronously, so keep above await.
          */
-        if (is_ios) this.preloadAudio();
+        if (is_ios || isSafari()) this.preloadAudio();
 
         await self_exclusion.checkRestriction();
         if (!self_exclusion.should_bot_run) {
@@ -544,10 +544,13 @@ export default class RunPanelStore {
 
         strategy_sounds.forEach(sound => {
             const audioElement = document.getElementById(sound);
+
+            audioElement.muted = true;
             audioElement.play().catch(() => {
                 // suppressing abort error, thrown on immediate .pause()
             });
             audioElement.pause();
+            audioElement.muted = false;
         });
     }
 }

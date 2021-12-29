@@ -249,12 +249,12 @@ const CFDDashboard = props => {
     if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
     const has_mt5_account_error = is_demo_tab
-            ? has_mt5_demo_account_error || mt5_disabled_signup_types.demo
-            : has_mt5_real_account_error || mt5_disabled_signup_types.real;
+        ? has_mt5_demo_account_error || mt5_disabled_signup_types.demo
+        : has_mt5_real_account_error || mt5_disabled_signup_types.real;
 
     const has_dxtrade_account_error = is_demo_tab
-            ? has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
-            : has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
+        ? has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
+        : has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
 
     const has_cfd_account_error =
         platform === CFD_PLATFORMS.MT5

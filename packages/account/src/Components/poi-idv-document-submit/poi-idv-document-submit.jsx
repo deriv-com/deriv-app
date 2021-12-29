@@ -10,7 +10,7 @@ import { getDocumentData, getRegex } from './utils';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from '../../Assets/ic-document-submit-icon.svg';
 
-const IdvDocumentSubmit = ({ handleBack, handleViewComplete, is_from_external, selected_country }) => {
+const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -241,7 +241,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, is_from_external, s
                             </fieldset>
                         </div>
                         {document_image && (
-                            <div className='proof-of-identity__sample-container'>
+                            <div
+                                className={classNames('proof-of-identity__sample-container', {
+                                    'proof-of-identity__sample-container-external': is_from_external,
+                                })}
+                            >
                                 <Text size='xxs' weight='bold'>
                                     {localize('Sample:')}
                                 </Text>
@@ -256,17 +260,19 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, is_from_external, s
                         )}
                     </div>
                     {is_doc_selected && (
-                        <Text className='proof-of-identity__text' align='center' size='xs'>
+                        <Text
+                            className={classNames('proof-of-identity__text btm-spacer', {
+                                'top-spacer': is_from_external,
+                            })}
+                            align='center'
+                            size='xs'
+                        >
                             <Localize i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.' />
                         </Text>
                     )}
-                    <FormFooter
-                        className={classNames('proof-of-identity__footer', {
-                            'proof-of-identity__footer-external': is_from_external,
-                        })}
-                    >
+                    <FormFooter className='proof-of-identity__footer'>
                         <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
-                            <BackButtonIcon className='back-btn' /> {localize('Go Back')}
+                            <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}
                         </Button>
                         <Button
                             className='proof-of-identity__submit-button'

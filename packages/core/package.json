@@ -87,7 +87,8 @@
         "webpack-dev-server": "^3.11.2",
         "webpack-manifest-plugin": "^4.0.2",
         "webpack-node-externals": "^2.5.2",
-        "workbox-webpack-plugin": "^6.0.2"
+        "workbox-webpack-plugin": "^6.0.2",
+        "git-revision-webpack-plugin": "^5.0.0"
     },
     "dependencies": {
         "@babel/polyfill": "^7.4.4",
@@ -130,7 +131,7 @@
         "react-pose": "^4.0.10",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
-        "react-tiny-popover": "^7.0.1",
+        "react-tiny-popover": "^5.1.0",
         "react-transition-group": "^4.3.0",
         "react-window": "^1.8.5",
         "web-push-notifications": "^3.22.0"

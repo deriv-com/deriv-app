@@ -221,7 +221,8 @@ const CFDDashboard = props => {
         has_cfd_account,
         has_mt5_real_account_error,
         has_mt5_demo_account_error,
-        has_dxtrade_account_error,
+        has_dxtrade_real_account_error,
+        has_dxtrade_demo_account_error,
         mt5_disabled_signup_types,
         dxtrade_disabled_signup_types,
         has_real_account,
@@ -247,12 +248,18 @@ const CFDDashboard = props => {
         !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
     if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
-    const has_mt5_account_error = is_demo_tab ? has_mt5_demo_account_error : has_mt5_real_account_error;
+    const has_mt5_account_error = is_demo_tab
+            ? has_mt5_demo_account_error || mt5_disabled_signup_types.demo
+            : has_mt5_real_account_error || mt5_disabled_signup_types.real;
+
+    const has_dxtrade_account_error = is_demo_tab
+            ? has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
+            : has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
 
     const has_cfd_account_error =
         platform === CFD_PLATFORMS.MT5
             ? has_mt5_account_error
-            : has_dxtrade_account_error || dxtrade_accounts_list_error;
+            : has_dxtrade_account_error || !!dxtrade_accounts_list_error;
 
     const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 

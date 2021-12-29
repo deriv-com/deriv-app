@@ -74,6 +74,7 @@ const AppNotificationMessages = ({
     has_iom_account,
     has_malta_account,
     is_logged_in,
+    should_show_popups,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
@@ -100,6 +101,9 @@ const AppNotificationMessages = ({
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     const notifications_sublist = notifications.slice(0, notifications_limit);
+
+    if (!should_show_popups) return null;
+
     return notifications_sublist.length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
@@ -153,4 +157,5 @@ export default connect(({ client, notifications }) => ({
     has_iom_account: client.has_iom_account,
     has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,
+    should_show_popups: notifications.should_show_popups,
 }))(AppNotificationMessages);

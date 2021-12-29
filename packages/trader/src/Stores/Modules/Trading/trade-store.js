@@ -349,6 +349,7 @@ export default class TradeStore extends BaseStore {
                 return;
             }
         }
+        this.root_store.notifications.setShouldShowPopups(true);
         await this.processNewValuesAsync({ active_symbols });
     }
 
@@ -1098,6 +1099,7 @@ export default class TradeStore extends BaseStore {
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
+        this.root_store.notifications.setShouldShowPopups(false);
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
@@ -1161,6 +1163,7 @@ export default class TradeStore extends BaseStore {
         if (this.should_skip_prepost_lifecycle) {
             return;
         }
+        this.root_store.notifications.setShouldShowPopups(true);
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();

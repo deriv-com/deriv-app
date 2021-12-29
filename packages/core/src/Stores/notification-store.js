@@ -15,7 +15,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import React from 'react';
 import { WS } from 'Services';
 import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
@@ -34,10 +34,36 @@ export default class NotificationStore extends BaseStore {
     @observable marked_notifications = [];
     @observable push_notifications = [];
     @observable client_notifications = {};
+    @observable should_show_popups = false;
 
     constructor(root_store) {
         super({ root_store });
-        this.init(); // need to decide when exactly to initialize this store
+        reaction(
+            () => root_store.common.app_routing_history.map(i => i.pathname),
+            () => {
+                this.filterNotificationMessages(); // filter notifications after they are set
+            }
+        );
+        reaction(
+            () => [
+                root_store.client.account_settings,
+                root_store.client.account_status,
+                root_store.client.landing_companies,
+                root_store.modules?.cashier?.general_store?.is_p2p_visible,
+                root_store.common?.selected_contract_type,
+                root_store.client.is_eu,
+            ],
+            () => {
+                if (
+                    root_store.client.landing_companies &&
+                    Object.keys(root_store.client.landing_companies).length > 0
+                ) {
+                    this.removeNotifications();
+                    this.removeAllNotificationMessages();
+                    this.handleClientNotifications();
+                }
+            }
+        );
     }
 
     @computed
@@ -297,6 +323,7 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
+        this.setShouldShowPopups(true);
     }
 
     @action.bound
@@ -833,6 +860,11 @@ export default class NotificationStore extends BaseStore {
             },
         };
         this.client_notifications = notifications;
+    }
+
+    @action.bound
+    setShouldShowPopups(should_show_popups) {
+        this.should_show_popups = should_show_popups;
     }
 
     @action.bound

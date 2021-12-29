@@ -1231,28 +1231,6 @@ export default class ClientStore extends BaseStore {
             }
         }
 
-        /**
-         * Set up reaction for account_settings, account_status, is_p2p_visible
-         */
-        reaction(
-            () => [
-                this.account_settings,
-                this.account_status,
-                this.landing_companies,
-                this.root_store.modules?.cashier?.general_store?.is_p2p_visible,
-                this.root_store.common?.selected_contract_type,
-                this.is_eu,
-            ],
-            () => {
-                client = this.accounts[this.loginid];
-                if (Object.keys(this.landing_companies).length > 0) {
-                    this.root_store.notifications.removeNotifications();
-                    this.root_store.notifications.removeAllNotificationMessages();
-                    this.root_store.notifications.handleClientNotifications();
-                }
-            }
-        );
-
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());

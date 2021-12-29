@@ -9,13 +9,6 @@ import BaseStore from './base-store';
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
-
-        reaction(
-            () => this.app_routing_history.map(i => i.pathname),
-            () => {
-                this.root_store.notifications.filterNotificationMessages(); // sets notifications at once
-            }
-        );
     }
 
     @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js

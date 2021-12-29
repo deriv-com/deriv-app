@@ -43,7 +43,7 @@ const CFDDashboard = props => {
     const [is_demo_enabled, setIsDemoEnabled] = React.useState(false);
     const [is_real_enabled, setIsRealEnabled] = React.useState(false);
     const [active_index, setActiveIndex] = React.useState(0);
-    const [is_demo_tab] = React.useState(true);
+    const [is_demo_tab, setIsDemoTab] = React.useState(true);
     const [is_notification_loaded, setIsNotificationLoaded] = React.useState(false);
     const [password_manager, setPasswordManager] = React.useState({
         is_visible: false,
@@ -72,9 +72,11 @@ const CFDDashboard = props => {
                 const should_enable_tab =
                     isSyntheticCardVisible(account_type) || isFinancialCardVisible() || isFinancialStpCardVisible();
 
-                if (is_real_enabled !== should_enable_tab) {
+                if (account_type == 'real' && is_real_enabled !== should_enable_tab) {
                     setIsRealEnabled(should_enable_tab);
-                } else if (is_demo_enabled !== should_enable_tab) {
+                } 
+                
+                if (account_type == 'demo' && is_demo_enabled !== should_enable_tab) {
                     setIsDemoEnabled(should_enable_tab);
                 }
             });
@@ -123,9 +125,9 @@ const CFDDashboard = props => {
         }
 
         if (!isEmptyObject(updated_state)) {
-            return updated_state;
+            setActiveIndex(updated_state.active_index);
+            setIsDemoTab(updated_state.is_demo_tab);
         }
-        return updated_state;
     };
 
     const openAccountTransfer = (data, meta) => {

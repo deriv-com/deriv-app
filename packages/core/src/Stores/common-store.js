@@ -1,6 +1,6 @@
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, routes, toMoment } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
-import { action, observable, reaction } from 'mobx';
+import { action, observable } from 'mobx';
 import { currentLanguage } from 'Utils/Language/index';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';

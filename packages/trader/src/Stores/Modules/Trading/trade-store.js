@@ -349,7 +349,6 @@ export default class TradeStore extends BaseStore {
                 return;
             }
         }
-        this.root_store.notifications.setShouldShowPopups(true);
         await this.processNewValuesAsync({ active_symbols });
     }
 
@@ -1109,7 +1108,8 @@ export default class TradeStore extends BaseStore {
         this.setChartStatus(true);
         runInAction(async () => {
             this.is_trade_component_mounted = true;
-            this.prepareTradeStore();
+            await this.prepareTradeStore();
+            this.root_store.notifications.setShouldShowPopups(true);
         });
         // TODO: remove this function when the closure of MX and MLT accounts is completed.
         this.manageMxMltRemovalNotification();
@@ -1157,7 +1157,6 @@ export default class TradeStore extends BaseStore {
         if (this.should_skip_prepost_lifecycle) {
             return;
         }
-        this.root_store.notifications.setShouldShowPopups(true);
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();

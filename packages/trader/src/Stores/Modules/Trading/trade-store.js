@@ -1117,13 +1117,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     manageMxMltRemovalNotification() {
-        const {
-            addNotificationMessage,
-            client_notifications,
-            notification_messages,
-            setClientNotifications,
-            unmarkNotificationMessage,
-        } = this.root_store.notifications;
+        const { addNotificationMessage, client_notifications, notification_messages, unmarkNotificationMessage } =
+            this.root_store.notifications;
         const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages'));
         const { has_iom_account, has_malta_account, is_logged_in } = this.root_store.client;
         unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
@@ -1136,7 +1131,6 @@ export default class TradeStore extends BaseStore {
                     const should_retain_notification =
                         (has_iom_account || has_malta_account) && !hidden_close_account_notification;
                     if (should_retain_notification) {
-                        setClientNotifications();
                         addNotificationMessage(client_notifications.close_mx_mlt_account);
                     }
                 }

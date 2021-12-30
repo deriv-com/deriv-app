@@ -41,7 +41,7 @@ export default class NotificationStore extends BaseStore {
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
             () => {
-                this.filterNotificationMessages(); // filter notifications after they are set
+                this.filterNotificationMessages();
             }
         );
         reaction(
@@ -133,7 +133,6 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     addNotificationMessageByKey(key) {
-        this.setClientNotifications();
         if (key) this.addNotificationMessage(this.client_notifications[key]);
     }
 
@@ -206,7 +205,6 @@ export default class NotificationStore extends BaseStore {
             is_logged_in &&
             !hidden_close_account_notification
         ) {
-            this.setClientNotifications();
             this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
         }
         const client = accounts[loginid];
@@ -257,7 +255,6 @@ export default class NotificationStore extends BaseStore {
                 } else if (cashier_locked_status) {
                     this.addNotificationMessage(this.client_notifications.cashier_locked);
                 } else if (ASK_CURRENCY) {
-                    this.setClientNotifications();
                     this.addNotificationMessage(this.client_notifications.currency);
                 } else if (ASK_AUTHENTICATE) {
                     this.addNotificationMessage(this.client_notifications.authenticate);
@@ -305,13 +302,11 @@ export default class NotificationStore extends BaseStore {
             }
 
             if (is_tnc_needed) {
-                this.setClientNotifications();
                 this.addNotificationMessage(this.client_notifications.tnc);
             }
 
             has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
             if (has_missing_required_field) {
-                this.setClientNotifications();
                 this.addNotificationMessage(
                     this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
                 );

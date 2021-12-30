@@ -75,7 +75,7 @@ const CFDDashboard = props => {
                 if (account_type === 'real' && is_real_enabled !== should_enable_tab) {
                     setIsRealEnabled(should_enable_tab);
                 }
-
+                
                 if (account_type === 'demo' && is_demo_enabled !== should_enable_tab) {
                     setIsDemoEnabled(should_enable_tab);
                 }
@@ -83,10 +83,10 @@ const CFDDashboard = props => {
         }
 
         if (!props.is_logged_in && (!is_real_enabled || !is_demo_enabled)) {
-            setIsDemoEnabled(true);
             setIsRealEnabled(true);
+            setIsDemoEnabled(true);
         }
-    }, [is_real_enabled, is_demo_enabled]);
+    });
 
     const openResetPassword = () => {
         if (!/reset-password/.test(props.location.hash)) {

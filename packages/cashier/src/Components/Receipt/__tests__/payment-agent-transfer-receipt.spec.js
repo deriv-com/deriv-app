@@ -36,7 +36,6 @@ describe('<PaymentAgentTransferReceipt />', () => {
             client_id: 'id',
         };
         const resetPaymentAgentTransfer = jest.fn();
-        const statement = 'statement';
 
         render(
             <Router history={history}>
@@ -51,7 +50,7 @@ describe('<PaymentAgentTransferReceipt />', () => {
         const btn = screen.getByText('View in statement');
         fireEvent.click(btn);
 
-        expect(history.location.pathname).toBe(routes[statement]);
+        expect(history.location.pathname).toBe(routes.statement);
     });
 
     it(`resetPaymentAgentTransfer func should be triggered when click on 'Make a new transfer' button`, () => {

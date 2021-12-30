@@ -303,11 +303,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 const duration_input = this.getInput('DURATION');
                 const duration_options = durations.map(duration => [duration.display, duration.unit]);
 
-                if (duration_field_dropdown) {
-                    duration_field_dropdown.updateOptions(duration_options, {
-                        default_value: should_use_default_unit ? undefined : duration_field_dropdown.getValue(),
-                    });
-                }
+                duration_field_dropdown?.updateOptions(duration_options, {
+                    default_value: should_use_default_unit ? undefined : duration_field_dropdown.getValue(),
+                });
 
                 if (should_update_value && duration_input && duration_input.connection) {
                     const target_block = duration_input.connection.targetBlock();

@@ -70,6 +70,25 @@ Blockly.Blocks.trade_definition_multiplier = {
             description: localize('Define your trade options such as multiplier and stake.'),
         };
     },
+    validateBlocksInStatement() {
+        // Enforce only multiplier_<type> blocks in MULTIPLIER_PARAMS statement.
+        const blocks_in_multiplier = this.getBlocksInStatement('MULTIPLIER_PARAMS');
+
+        if (blocks_in_multiplier.length > 0) {
+            const block_types_in_multiplier = [];
+            blocks_in_multiplier.forEach(block => {
+                block_types_in_multiplier.push(block.type);
+                if (
+                    !/^multiplier_.+$/.test(block.type) ||
+                    new Set(block_types_in_multiplier).size !== block_types_in_multiplier.length
+                ) {
+                    runIrreversibleEvents(() => {
+                        block.unplug(true);
+                    });
+                }
+            });
+        }
+    },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
@@ -95,44 +114,22 @@ Blockly.Blocks.trade_definition_multiplier = {
         this.selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
         this.selected_multiplier = this.getFieldValue('MULTIPLIERTYPE_LIST');
 
-        if (
-            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            event.type === Blockly.Events.END_DRAG
-        ) {
-            this.setCurrency();
-            this.updateAmountLimits();
-        }
-        if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.END_DRAG) {
-            // Enforce only multiplier_<type> blocks in MULTIPLIER_PARAMS statement.
-            const blocks_in_multiplier = this.getBlocksInStatement('MULTIPLIER_PARAMS');
-
-            if (blocks_in_multiplier.length > 0) {
-                const block_types_in_multiplier = [];
-                blocks_in_multiplier.forEach(block => {
-                    block_types_in_multiplier.push(block.type);
-                    if (
-                        !/^multiplier_.+$/.test(block.type) ||
-                        new Set(block_types_in_multiplier).size !== block_types_in_multiplier.length
-                    ) {
-                        runIrreversibleEvents(() => {
-                            block.unplug(true);
-                        });
-                    }
-                });
-            }
-        }
-
         const is_load_event = /^dbot-load/.test(event.group);
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            this.setCurrency();
+            this.updateAmountLimits();
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
                 this.updateMultiplierInput(false);
-                this.updateAmountLimits();
             } else {
                 this.updateMultiplierInput(true);
             }
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
+            return;
+        }
+
+        if (event.type === Blockly.Events.BLOCK_CHANGE) {
+            this.validateBlocksInStatement();
             if (is_load_event) {
                 if (event.name === 'TRADETYPE_LIST') {
                     this.updateMultiplierInput(false);
@@ -150,14 +147,22 @@ Blockly.Blocks.trade_definition_multiplier = {
                 this.updateMultiplierInput(true);
                 this.updateAmountLimits();
             }
-        } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
-            // Ensure this block is populated after initial drag from flyout.
-            if (!this.selected_multiplier) {
-                const fake_creation_event = new Blockly.Events.Create(this);
-                fake_creation_event.recordUndo = false;
-                Blockly.Events.fire(fake_creation_event);
-            } else if (this.selected_trade_type !== 'multiplier') {
-                this.updateMultiplierInput(true);
+            return;
+        }
+
+        if (event.type === Blockly.Events.END_DRAG) {
+            this.setCurrency();
+            this.updateAmountLimits();
+            this.validateBlocksInStatement();
+            if (event.blockId === this.id) {
+                // Ensure this block is populated after initial drag from flyout.
+                if (!this.selected_multiplier) {
+                    const fake_creation_event = new Blockly.Events.Create(this);
+                    fake_creation_event.recordUndo = false;
+                    Blockly.Events.fire(fake_creation_event);
+                } else if (this.selected_trade_type !== 'multiplier') {
+                    this.updateMultiplierInput(true);
+                }
             }
         }
     },

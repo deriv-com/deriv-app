@@ -135,11 +135,12 @@ export default class PaymentAgentStore {
         if (bank) {
             this.filtered_list = [];
             this.list.forEach(payment_agent => {
-                if (payment_agent.supported_banks) {
-                    const is_string = typeof payment_agent.supported_banks === 'string';
+                const supported_banks = payment_agent.supported_banks;
+                if (supported_banks) {
+                    const is_string = typeof supported_banks === 'string';
                     const bank_index = is_string
-                        ? payment_agent.supported_banks?.toLowerCase().split(',').indexOf(bank)
-                        : payment_agent.supported_banks.map(x => x.payment_method).indexOf(bank);
+                        ? supported_banks?.toLowerCase().split(',').indexOf(bank)
+                        : supported_banks.map(x => x.payment_method).indexOf(bank);
 
                     if (bank_index !== -1) this.filtered_list.push(payment_agent);
                 }

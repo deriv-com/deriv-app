@@ -184,7 +184,10 @@ Blockly.Blocks.trade_definition_multiplier = {
                     });
                 }
             });
-        } else if (this.isDescendantOf('trade_definition')) {
+            return;
+        }
+
+        if (this.isDescendantOf('trade_definition')) {
             runIrreversibleEvents(() => {
                 runGroupedEvents(false, () => {
                     const duration_block = this.workspace.newBlock('trade_definition_tradeoptions');

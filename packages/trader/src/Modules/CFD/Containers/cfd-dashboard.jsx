@@ -72,24 +72,21 @@ const CFDDashboard = props => {
                 const should_enable_tab =
                     isSyntheticCardVisible(account_type) || isFinancialCardVisible() || isFinancialStpCardVisible();
 
-                if (account_type == 'real' && is_real_enabled !== should_enable_tab) {
+                if (account_type === 'real' && is_real_enabled !== should_enable_tab) {
                     setIsRealEnabled(should_enable_tab);
                 }
 
-                if (account_type == 'demo' && is_demo_enabled !== should_enable_tab) {
+                if (account_type === 'demo' && is_demo_enabled !== should_enable_tab) {
                     setIsDemoEnabled(should_enable_tab);
                 }
             });
         }
+        
         if (!props.is_logged_in && (!is_real_enabled || !is_demo_enabled)) {
-            if (account_type == 'demo') {
-                setIsDemoEnabled(true);
-            }
-
-            if (account_type == 'real') {
-                setIsRealEnabled(true);
-            }
+            setIsDemoEnabled(true);
+            setIsRealEnabled(true);
         }
+
     }, [is_real_enabled, is_demo_enabled]);
 
     const openResetPassword = () => {

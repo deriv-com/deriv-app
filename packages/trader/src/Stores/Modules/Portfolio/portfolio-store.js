@@ -360,7 +360,7 @@ export default class PortfolioStore extends BaseStore {
         this.updateTradeStore(is_over, position);
     }
 
-    async preSwitchAccountListener() {
+    preSwitchAccountListener() {
         this.clearTable();
         this.is_loading = true;
         await WS.portfolio().then(this.portfolioHandler);

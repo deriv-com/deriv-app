@@ -319,7 +319,7 @@ const OpenPositions = ({
     }, [previous_active_positions]);
 
     const checkForMultiplierContract = (prev_active_positions = []) => {
-        if ((!has_multiplier_contract && active_positions) || (loginid !== loginId_saved) !== prev_active_positions) {
+        if (!has_multiplier_contract && active_positions !== prev_active_positions) {
             setMultiplierContract(active_positions.some(p => isMultiplierContract(p.contract_info?.contract_type)));
         }
     };

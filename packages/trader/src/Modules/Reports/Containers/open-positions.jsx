@@ -310,10 +310,6 @@ const OpenPositions = ({
     }, []);
 
     React.useEffect(() => {
-        setLoginId(loginid);
-    }, [loginid]);
-
-    React.useEffect(() => {
         checkForMultiplierContract(previous_active_positions);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);

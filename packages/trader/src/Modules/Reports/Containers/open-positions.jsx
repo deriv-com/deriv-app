@@ -289,12 +289,10 @@ const OpenPositions = ({
     onClickSell,
     onMount,
     server_time,
-    loginid,
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier contract
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-    const [loginId_saved, setLoginId] = React.useState('');
     const previous_active_positions = usePrevious(active_positions);
 
     React.useEffect(() => {
@@ -440,5 +438,4 @@ export default connect(({ modules, client, common, ui }) => ({
     onClickSell: modules.portfolio.onClickSell,
     onMount: modules.portfolio.onMount,
     server_time: common.server_time,
-    loginid: client.loginid,
 }))(withRouter(OpenPositions));

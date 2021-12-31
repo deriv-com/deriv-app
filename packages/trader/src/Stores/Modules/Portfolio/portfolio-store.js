@@ -41,7 +41,7 @@ export default class PortfolioStore extends BaseStore {
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);
         WS.subscribeTransaction(this.transactionHandler);
         this.has_subscribed_to_poc_and_transaction = true;
-    };
+    }
 
     @action.bound
     clearTable() {

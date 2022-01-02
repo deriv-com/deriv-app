@@ -20,7 +20,6 @@
         "@jest/globals": "^26.5.3",
         "@testing-library/react": "^12.0.0",
         "babel-eslint": "^10.1.0",
-        "babel-polyfill": "^6.26.0",
         "chai": "^4.2.0",
         "eslint": "^7.18.0",
         "eslint-config-airbnb-base": "^14.2.1",

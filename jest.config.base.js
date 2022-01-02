@@ -8,9 +8,6 @@ module.exports = {
     transformIgnorePatterns: [
         "/node_modules/(?!react-virtualized).+\\.js$",
     ],
-    setupFiles: [
-        "<rootDir>/../../jest.setup.js",
-    ],
     setupFilesAfterEnv:[
         "<rootDir>/../../setupTests.js",
     ],

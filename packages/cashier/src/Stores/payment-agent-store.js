@@ -108,7 +108,7 @@ export default class PaymentAgentStore {
         this.clearList();
         this.clearSuppertedBanks();
         // TODO: Once telephone, url and supported_banks removed from paymentagent_list.list we can remove them and just use the plural ones
-        payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
+        payment_agent_list.paymentagent_list?.list.forEach(payment_agent => {
             this.setList({
                 email: payment_agent.email,
                 phones: payment_agent?.phone_numbers || payment_agent?.telephone,

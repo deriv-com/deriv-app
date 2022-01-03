@@ -89,4 +89,46 @@ describe('<PaymentAgentWithdrawForm />', () => {
             expect(screen.getByText('This field is required.')).toBeInTheDocument();
         });
     });
+
+    it('should not proceed if amount is greater than the withdrawal limit', async () => {
+        const { container } = render(
+            <PaymentAgentWithdrawForm
+                currency={'USD'}
+                onMount={onMount}
+                payment_agent_list={payment_agent_list}
+                resetPaymentAgent={resetPaymentAgent}
+            />
+        );
+
+        const amount = container.querySelector('input[name=amount]');
+        const withdraw_button = screen.getByRole('button');
+
+        fireEvent.change(amount, { target: { value: '2500' } });
+        fireEvent.click(withdraw_button);
+
+        await waitFor(() => {
+            expect(withdraw_button).toBeDisabled();
+        });
+    });
+
+    it('should not proceed if payment agent id is invalid', async () => {
+        const { container } = render(
+            <PaymentAgentWithdrawForm
+                currency={'USD'}
+                onMount={onMount}
+                payment_agent_list={payment_agent_list}
+                resetPaymentAgent={resetPaymentAgent}
+            />
+        );
+
+        const payment_agent = container.querySelector('input[name=payment_agent]');
+        const withdraw_button = screen.getByRole('button');
+
+        fireEvent.change(payment_agent, { target: { value: 'abc' } });
+        fireEvent.click(withdraw_button);
+
+        await waitFor(() => {
+            expect(withdraw_button).toBeDisabled();
+        });
+    });
 });

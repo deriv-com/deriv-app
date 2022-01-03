@@ -96,9 +96,7 @@ const CashierLocked = ({
             message = (
                 <Localize
                     i18n_default_text='Please submit your <0>proof of identity</0> to authenticate your account and access your Cashier.'
-                    components={[
-                        <a key={0} className='link' href={'/account/proof-of-identity'} />,
-                    ]}
+                    components={[<a key={0} className='link' href={'/account/proof-of-identity'} />]}
                 />
             );
         } else {

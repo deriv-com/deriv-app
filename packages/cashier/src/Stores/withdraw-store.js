@@ -302,7 +302,7 @@ export default class WithdrawStore {
                 );
             }
 
-            if (isMobile() && error_message.length >= 28) {
+            if (isMobile() && error_message.length > 35) {
                 const error_content = error_message;
                 error_message = (
                     <ReadMore

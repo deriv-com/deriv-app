@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 
 export default class ErrorDialogStore {
+    @observable confirm_button_text = '';
     @observable error_message = '';
     @observable should_show = false;
 
@@ -13,5 +14,10 @@ export default class ErrorDialogStore {
     setErrorMessage(message) {
         this.error_message = message;
         this.setShouldShow(true);
+    }
+
+    @action.bound
+    setConfirmButtonText(text) {
+        this.confirm_button_text = text;
     }
 }

@@ -1080,7 +1080,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 0.5em;
 
                 .account-form__fieldset {
-                    margin-bottom: 2.6em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
+                    margin-bottom: 4.6em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
                 }
             }
         }
@@ -1141,6 +1141,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding-left: 0;
             }
         }
+    }
+    & .email_consent {
+        margin-left: 10px;
     }
     &__demo-message {
         &-wrapper {

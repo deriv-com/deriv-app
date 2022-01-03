@@ -204,6 +204,7 @@ DefaultHeader.propTypes = {
     is_app_disabled: PropTypes.bool,
     is_bot_allowed: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
+    is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,

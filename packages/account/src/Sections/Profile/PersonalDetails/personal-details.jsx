@@ -1,4 +1,3 @@
-// import PropTypes        from 'prop-types';
 import React from 'react';
 import { Formik, Field } from 'formik';
 import classNames from 'classnames';
@@ -30,10 +29,9 @@ import {
     routes,
     WS,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { withRouter } from 'react-router';
 import { connect } from 'Stores/connect';
-// import { account_opening_reason_list }         from './constants';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
@@ -139,6 +137,17 @@ export class PersonalDetailsForm extends React.Component {
         const request = filterObjProperties(settings, [...this.state.changeable_fields]);
 
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
+        if (
+            !!request.request_professional_status &&
+            !!this.state.form_initial_values.request_professional_status === false
+        ) {
+            // We can just send the value of request_professional_status once. Also backend just accepts true value for this field!
+            request.request_professional_status = +request.request_professional_status; // checkbox is boolean but api expects number (1 or 0)
+        } else {
+            // if it is already active we have to exclude it from request. otherwise backend returns error!
+            delete request.request_professional_status;
+        }
+
         if (request.first_name) {
             request.first_name = request.first_name.trim();
         }
@@ -415,7 +424,6 @@ export class PersonalDetailsForm extends React.Component {
                 'user_hash',
                 'country',
                 (!is_dashboard || !is_eu) && 'salutation',
-                'request_professional_status',
                 'immutable_fields',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
@@ -445,7 +453,7 @@ export class PersonalDetailsForm extends React.Component {
         } = this.state;
 
         const { is_dashboard } = this.context;
-        const { is_eu, residence_list, states_list, is_virtual, is_mf, is_svg } = this.props;
+        const { is_eu, residence_list, states_list, is_virtual, is_mf, is_svg, current_landing_company } = this.props;
         if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
         if (is_loading || is_state_loading || !residence_list.length) {
@@ -1072,6 +1080,66 @@ export class PersonalDetailsForm extends React.Component {
                                             </React.Fragment>
                                         )}
                                     </React.Fragment>
+                                    {!!current_landing_company?.support_professional_client && (
+                                        <>
+                                            <div className='account-form__divider' />
+                                            <div className='pro-client'>
+                                                <FormSubHeader
+                                                    className='account-form__red-header'
+                                                    title={localize('Professional Client')}
+                                                />
+
+                                                <FormBodySection>
+                                                    <fieldset className='account-form__fieldset'>
+                                                        <div>
+                                                            <Text as='p' size='xs'>
+                                                                <Localize i18n_default_text='By default, all Deriv.com clients are retail clients but anyone can request to be treated as a professional client.' />
+                                                            </Text>
+                                                            <Text as='p' size='xs'>
+                                                                <Localize i18n_default_text='A professional client receives a lower degree of client protection due to the following.' />
+                                                            </Text>
+                                                            <Text as='p' size='xs'>
+                                                                <Localize i18n_default_text='We presume that you possess the experience, knowledge, and expertise to make your own investment decisions and properly assess the risk involved.' />
+                                                            </Text>
+                                                            <Text as='p' size='xs' className='last-child'>
+                                                                <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
+                                                            </Text>
+                                                        </div>
+                                                        <Checkbox
+                                                            name='request_professional_status'
+                                                            value={values.request_professional_status}
+                                                            onChange={() => {
+                                                                setFieldValue(
+                                                                    'request_professional_status',
+                                                                    !values.request_professional_status
+                                                                );
+                                                                setFieldTouched(
+                                                                    'request_professional_status',
+                                                                    true,
+                                                                    true
+                                                                );
+                                                            }}
+                                                            label={localize(
+                                                                'I would like to be treated as a professional client.'
+                                                            )}
+                                                            id='request_professional_status'
+                                                            defaultChecked={!!values.request_professional_status}
+                                                            disabled={
+                                                                is_virtual ||
+                                                                !!form_initial_values.request_professional_status
+                                                            }
+                                                            greyDisabled
+                                                            className={classNames({
+                                                                'dc-checkbox-blue': is_dashboard,
+                                                            })}
+                                                        />
+                                                    </fieldset>
+                                                </FormBodySection>
+                                            </div>
+                                            <div className='account-form__divider' />
+                                        </>
+                                    )}
+
                                     <FormSubHeader title={localize('Email preference')} />
                                     <FormBodySection
                                         has_side_note={is_dashboard}
@@ -1156,11 +1224,11 @@ export class PersonalDetailsForm extends React.Component {
     }
 }
 
-// PersonalDetailsForm.propTypes = {};
 export default connect(({ client }) => ({
     account_settings: client.account_settings,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
+    current_landing_company: client.current_landing_company,
     is_eu: client.is_eu,
     is_mf: client.landing_company_shortcode === 'maltainvest',
     is_svg: client.is_svg,

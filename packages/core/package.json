@@ -87,7 +87,8 @@
         "webpack-dev-server": "^3.11.2",
         "webpack-manifest-plugin": "^4.0.2",
         "webpack-node-externals": "^2.5.2",
-        "workbox-webpack-plugin": "^6.0.2"
+        "workbox-webpack-plugin": "^6.0.2",
+        "git-revision-webpack-plugin": "^5.0.0"
     },
     "dependencies": {
         "@babel/polyfill": "^7.4.4",

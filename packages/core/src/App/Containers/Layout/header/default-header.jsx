@@ -31,20 +31,19 @@ const DefaultHeader = ({
     is_acc_switcher_disabled,
     is_acc_switcher_on,
     is_app_disabled,
+    is_bot_allowed,
     is_dark_mode,
     is_dxtrade_allowed,
     is_eu,
     is_logged_in,
     is_logging_in,
-    is_mf,
     is_mt5_allowed,
-    is_multipliers_only,
     is_notifications_visible,
     is_onramp_tab_visible,
-    is_options_blocked,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
+    is_account_transfer_visible,
     is_route_modal_on,
     is_virtual,
     location,
@@ -86,7 +85,7 @@ const DefaultHeader = ({
                 config.href === routes.binarybot ||
                 config.href === routes.smarttrader
             ) {
-                return is_virtual ? !is_multipliers_only : !is_mf && !is_options_blocked;
+                return is_bot_allowed;
             }
             return true;
         });
@@ -120,6 +119,7 @@ const DefaultHeader = ({
                             is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                             is_onramp_tab_visible={is_onramp_tab_visible}
                             is_payment_agent_visible={is_payment_agent_visible}
+                            is_account_transfer_visible={is_account_transfer_visible}
                             is_virtual={is_virtual}
                             toggleTheme={setDarkMode}
                             platform_header={getPlatformInformation(app_routing_history).header}
@@ -202,14 +202,15 @@ DefaultHeader.propTypes = {
     is_acc_switcher_disabled: PropTypes.bool,
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
+    is_bot_allowed: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_dxtrade_allowed: PropTypes.bool,
-    is_multipliers_only: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
+    is_account_transfer_visible: PropTypes.bool,
     // is_p2p_enabled: PropTypes.bool,
     // is_payment_agent_transfer_visible: PropTypes.bool,
     // is_payment_agent_visible: PropTypes.bool,
@@ -234,7 +235,6 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     addNotificationMessage: ui.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
-    is_mf: client.landing_company_shortcode === 'maltainvest',
     currency: client.currency,
     country_standpoint: client.country_standpoint,
     disableApp: ui.disableApp,
@@ -243,6 +243,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_acc_switcher_disabled: ui.is_account_switcher_disabled,
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
+    is_bot_allowed: client.is_bot_allowed,
     is_dark_mode: ui.is_dark_mode_on,
     is_eu: client.is_eu,
     is_loading: ui.is_loading,
@@ -250,12 +251,12 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
-    is_multipliers_only: client.is_multipliers_only,
     is_notifications_visible: ui.is_notifications_visible,
-    is_p2p_enabled: modules.cashier.is_p2p_enabled,
-    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
+    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
+    is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
+    is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
@@ -263,7 +264,6 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     replaceCashierMenuOnclick: modules.cashier.replaceCashierMenuOnclick,
-    is_options_blocked: client.is_options_blocked,
     platform: common.platform,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,

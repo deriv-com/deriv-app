@@ -29,7 +29,7 @@
     "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
     "build:travis": "rimraf dist && webpack --config \"./build/webpack.config.js\"  --mode=production",
-    "build": "f () { webpack --config \"./build/webpack.config.js\" --env base $1;}; f"
+    "build": "f () { webpack --config \"./build/webpack.config.js\" --env base=$1;}; f"
   },
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"

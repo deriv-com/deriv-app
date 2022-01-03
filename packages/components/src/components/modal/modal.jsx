@@ -88,7 +88,6 @@ const ModalElement = ({
         };
         window.addEventListener('keydown', closeOnEscButton);
         return () => window.removeEventListener('keydown', closeOnEscButton);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const rendered_title = typeof renderTitle === 'function' ? renderTitle() : null;

@@ -5,7 +5,6 @@ import Icon from '../icon/icon.jsx';
 import Text from '../text/text.jsx';
 
 const SubMenuSection = props => {
-    
     const { submenu_toggle_class, section_title, section_icon, children } = props;
 
     return (

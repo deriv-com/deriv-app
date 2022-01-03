@@ -724,6 +724,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_bot_allowed() {
+        return this.is_virtual
+            ? !this.is_multipliers_only
+            : !this.landing_company_shortcode === 'maltainvest' && !this.is_options_blocked;
+    }
+
+    @computed
     get is_mt5_allowed() {
         return this.isMT5Allowed(this.landing_companies);
     }
@@ -731,6 +738,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_dxtrade_allowed() {
         return this.isDxtradeAllowed(this.landing_companies);
+    }
+
+    @computed
+    get is_bot_allowed() {
+        return this.isBotAllowed();
     }
 
     isMT5Allowed = landing_companies => {
@@ -757,6 +769,14 @@ export default class ClientStore extends BaseStore {
             'dxtrade_gaming_company' in landing_companies ||
             (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
         );
+    };
+
+    isBotAllowed = () => {
+        // Stop showing Bot, DBot, DSmartTrader for logged out EU IPs
+        if (!this.is_logged_in && this.is_eu_country) return false;
+
+        const is_mf = this.landing_company_shortcode === 'maltainvest';
+        return this.is_virtual ? !this.is_multipliers_only : !is_mf && !this.is_options_blocked;
     };
 
     @computed

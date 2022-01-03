@@ -5,7 +5,7 @@ import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
-import { getAccountText } from '../../_common/utility';
+import { getAccountText } from '_common/utility';
 import 'Sass/crypto-withdraw-receipt.scss';
 
 const Status = () => {
@@ -182,13 +182,13 @@ CryptoWithdrawReceipt.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    account: modules.cashier.config.account_transfer.selected_from,
-    blockchain_address: modules.cashier.blockchain_address,
-    withdraw_amount: modules.cashier.withdraw_amount,
+    account: modules.cashier.account_transfer.selected_from,
+    blockchain_address: modules.cashier.withdraw.blockchain_address,
+    withdraw_amount: modules.cashier.withdraw.withdraw_amount,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
-    resetWithrawForm: modules.cashier.resetWithrawForm,
+    resetWithrawForm: modules.cashier.withdraw.resetWithrawForm,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
-    setIsWithdrawConfirmed: modules.cashier.setIsWithdrawConfirmed,
+    setIsWithdrawConfirmed: modules.cashier.withdraw.setIsWithdrawConfirmed,
 }))(CryptoWithdrawReceipt);

@@ -32,8 +32,11 @@ const PaymentAgentList = ({
     payment_agent_active_tab_index,
     payment_agent_list,
     resend_timeout,
+    resendVerificationEmail,
     selected_bank,
+    sendVerificationEmail,
     setActiveTabIndex,
+    setIsResendClicked,
     supported_banks,
     verification_code,
 }) => {
@@ -65,7 +68,7 @@ const PaymentAgentList = ({
                     >
                         <div label={localize('Deposit')}>
                             {is_loading ? (
-                                <Loading className='payment-agent__loader' />
+                                <Loading is_fullscreen={false} />
                             ) : (
                                 <React.Fragment>
                                     <Text
@@ -166,6 +169,9 @@ const PaymentAgentList = ({
                                                 is_email_sent={is_email_sent}
                                                 is_resend_clicked={is_resend_clicked}
                                                 resend_timeout={resend_timeout}
+                                                resendVerificationEmail={resendVerificationEmail}
+                                                sendVerificationEmail={sendVerificationEmail}
+                                                setIsResendClicked={setIsResendClicked}
                                             />
                                         </div>
                                     ) : (
@@ -194,23 +200,29 @@ PaymentAgentList.propTypes = {
     payment_agent_active_tab_index: PropTypes.number,
     payment_agent_list: PropTypes.array,
     resend_timeout: PropTypes.number,
+    resendVerificationEmail: PropTypes.func,
     selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    sendVerificationEmail: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
+    setIsResendClicked: PropTypes.func,
     supported_banks: MobxPropTypes.arrayOrObservableArray,
     verification_code: PropTypes.string,
 };
 
 export default connect(({ modules }) => ({
-    error: modules.cashier.config.payment_agent.verification.error,
-    is_email_sent: modules.cashier.config.payment_agent.verification.is_email_sent,
-    is_loading: modules.cashier.is_loading,
-    is_resend_clicked: modules.cashier.config.payment_agent.verification.is_resend_clicked,
-    onChangePaymentMethod: modules.cashier.onChangePaymentMethod,
-    onMount: modules.cashier.onMountPaymentAgentList,
-    payment_agent_active_tab_index: modules.cashier.config.payment_agent.active_tab_index,
-    payment_agent_list: modules.cashier.config.payment_agent.filtered_list,
-    resend_timeout: modules.cashier.config.payment_agent.verification.resend_timeout,
-    selected_bank: modules.cashier.config.payment_agent.selected_bank,
-    setActiveTabIndex: modules.cashier.setActiveTabIndex,
-    supported_banks: modules.cashier.config.payment_agent.supported_banks,
+    error: modules.cashier.payment_agent.verification.error,
+    is_email_sent: modules.cashier.payment_agent.verification.is_email_sent,
+    is_loading: modules.cashier.general_store.is_loading,
+    is_resend_clicked: modules.cashier.payment_agent.verification.is_resend_clicked,
+    onChangePaymentMethod: modules.cashier.payment_agent.onChangePaymentMethod,
+    onMount: modules.cashier.payment_agent.onMountPaymentAgentList,
+    payment_agent_active_tab_index: modules.cashier.payment_agent.active_tab_index,
+    payment_agent_list: modules.cashier.payment_agent.filtered_list,
+    resend_timeout: modules.cashier.payment_agent.verification.resend_timeout,
+    resendVerificationEmail: modules.cashier.payment_agent.verification.resendVerificationEmail,
+    selected_bank: modules.cashier.payment_agent.selected_bank,
+    sendVerificationEmail: modules.cashier.payment_agent.verification.sendVerificationEmail,
+    setActiveTabIndex: modules.cashier.payment_agent.setActiveTab,
+    setIsResendClicked: modules.cashier.payment_agent.verification.setIsResendClicked,
+    supported_banks: modules.cashier.payment_agent.supported_banks,
 }))(PaymentAgentList);

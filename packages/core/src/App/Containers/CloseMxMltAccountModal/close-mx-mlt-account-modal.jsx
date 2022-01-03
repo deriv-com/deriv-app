@@ -53,10 +53,7 @@ export const CloseMxMltAccountContent = ({
     const OptionsAccountClosedText = () => {
         if (country_standpoint.is_united_kingdom) {
             return (
-                <Localize
-                    i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>'
-                    components={[<strong key={0} />]}
-                />
+                <Localize i18n_default_text='You’ll lose access to your Gaming account when it gets closed, so make sure to withdraw your funds as soon as possible.' />
             );
         } else if (has_malta_account || can_have_mlt_account) {
             return (

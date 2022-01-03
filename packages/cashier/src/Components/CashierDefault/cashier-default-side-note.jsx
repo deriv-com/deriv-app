@@ -101,5 +101,5 @@ export default connect(({ client, modules, ui }) => ({
     currency: client.currency,
     mt5_login_list: client.mt5_login_list,
     openRealAccountSignup: ui.openRealAccountSignup,
-    setDepositTarget: modules.cashier.setDepositTarget,
+    setDepositTarget: modules.cashier.general_store.setDepositTarget,
 }))(CashierDefaultSideNote);

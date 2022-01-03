@@ -724,13 +724,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_bot_allowed() {
-        return this.is_virtual
-            ? !this.is_multipliers_only
-            : !this.landing_company_shortcode === 'maltainvest' && !this.is_options_blocked;
-    }
-
-    @computed
     get is_mt5_allowed() {
         return this.isMT5Allowed(this.landing_companies);
     }

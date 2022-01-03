@@ -541,6 +541,7 @@ export default class AccountTransferStore {
     @action.bound
     resetAccountTransfer = async () => {
         this.setIsTransferConfirm(false);
+        this.setTransferLimit();
     };
 
     @action.bound

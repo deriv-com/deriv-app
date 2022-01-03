@@ -724,6 +724,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_bot_allowed() {
+        return this.is_virtual
+            ? !this.is_multipliers_only
+            : !this.landing_company_shortcode === 'maltainvest' && !this.is_options_blocked;
+    }
+
+    @computed
     get is_mt5_allowed() {
         return this.isMT5Allowed(this.landing_companies);
     }
@@ -731,6 +738,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_dxtrade_allowed() {
         return this.isDxtradeAllowed(this.landing_companies);
+    }
+
+    @computed
+    get is_bot_allowed() {
+        return this.isBotAllowed();
     }
 
     isMT5Allowed = landing_companies => {
@@ -757,6 +769,14 @@ export default class ClientStore extends BaseStore {
             'dxtrade_gaming_company' in landing_companies ||
             (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
         );
+    };
+
+    isBotAllowed = () => {
+        // Stop showing Bot, DBot, DSmartTrader for logged out EU IPs
+        if (!this.is_logged_in && this.is_eu_country) return false;
+
+        const is_mf = this.landing_company_shortcode === 'maltainvest';
+        return this.is_virtual ? !this.is_multipliers_only : !is_mf && !this.is_options_blocked;
     };
 
     @computed
@@ -1290,13 +1310,14 @@ export default class ClientStore extends BaseStore {
             () => [
                 this.account_settings,
                 this.account_status,
-                this.root_store.modules?.cashier?.is_p2p_visible,
+                this.landing_companies,
+                this.root_store.modules?.cashier?.general_store?.is_p2p_visible,
                 this.root_store.common?.selected_contract_type,
                 this.is_eu,
             ],
             () => {
                 client = this.accounts[this.loginid];
-                BinarySocket.wait('landing_company').then(() => {
+                if (Object.keys(this.landing_companies).length > 0) {
                     this.root_store.ui.removeNotifications();
                     this.root_store.ui.removeAllNotificationMessages();
                     const { has_missing_required_field } = handleClientNotifications(
@@ -1309,7 +1330,7 @@ export default class ClientStore extends BaseStore {
                     if (client && !client.is_virtual) {
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }
-                });
+                }
             }
         );
 
@@ -1637,7 +1658,7 @@ export default class ClientStore extends BaseStore {
     setBalanceOtherAccounts(obj_balance) {
         // Balance subscription response received when mt5 transfer is in progress should be ignored.
         // After mt5 transfer is done, `balanceAll` is requested along with `mt5LoginList` in order to update the correct balance.
-        if (this.root_store.modules?.cashier?.isMT5TransferInProgress()) return;
+        if (this.root_store.modules?.cashier?.account_transfer?.is_mt5_transfer_in_progress) return;
 
         // Only the first response of balance:all will include all accounts
         // subsequent requests will be single account balance updates

@@ -46,6 +46,7 @@ const CFDFinancialStpRealAccountSignup = props => {
             props: [
                 'addNotificationByKey',
                 'authentication_status',
+                'get_settings',
                 'refreshNotifications',
                 'removeNotificationMessage',
                 'removeNotificationByKey',

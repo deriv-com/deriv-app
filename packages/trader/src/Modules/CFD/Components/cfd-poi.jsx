@@ -6,7 +6,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }) => {
+const CFDPOI = ({ authentication_status, get_settings, form_error, index, onCancel, onSubmit, value, ...props }) => {
     const { identity_status } = authentication_status;
     const [poi_state, setPOIState] = React.useState('none');
     const validateForm = React.useCallback(() => {
@@ -18,7 +18,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
     }, [poi_state, identity_status]);
 
     const is_next_btn_disabled = !(
-        ['pending'].includes(poi_state) || ['pending', 'verified'].includes(identity_status)
+        ['pending'].includes(poi_state) || ['pending', 'verified'].includes(identity_status) || get_settings.tax_identification_number === null
     );
 
     return (

@@ -15,8 +15,8 @@ describe('<PaymentAgentTransferReceipt />', () => {
     const history = createBrowserHistory();
     const currency = 'currency';
     const receipt = {
-        amount_transferred: 'someAmount',
-        client_id: 'id',
+        amount_transferred: '1',
+        client_id: 'CR9000000',
     };
 
     it('component should render', () => {

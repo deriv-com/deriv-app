@@ -1,11 +1,17 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     connect: () => Component => Component,
+}));
+
+jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
+    isMobile: jest.fn(),
 }));
 
 describe('<AccountTransferForm />', () => {
@@ -285,8 +291,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show <AccountTransferNote /> component', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const mt5_login_list = [];
@@ -320,13 +325,10 @@ describe('<AccountTransferForm />', () => {
                 'Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show note with proper message if is_dxtrade_allowed', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const account_limits = {
             daily_transfers: {
@@ -376,13 +378,10 @@ describe('<AccountTransferForm />', () => {
                 'Each day, you can make up to 1 transfers between your Deriv accounts, up to 1 transfers between your Deriv and DMT5 accounts, and up to 1 transfers between your Deriv and Deriv X accounts.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show note with proper message if is_dxtrade_allowed is false', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const account_limits = {
             daily_transfers: {
@@ -430,13 +429,10 @@ describe('<AccountTransferForm />', () => {
                 'Each day, you can make up to 1 transfers between your Deriv accounts and up to 1 transfers between your Deriv and DMT5 accounts.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper hint about mt5 remained transfers', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const account_limits = {
             daily_transfers: {
@@ -472,13 +468,10 @@ describe('<AccountTransferForm />', () => {
         );
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper hint about dxtrade remained transfers', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const account_limits = {
             daily_transfers: {
@@ -515,13 +508,10 @@ describe('<AccountTransferForm />', () => {
         );
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper hint about internal remained transfers', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const account_limits = {
             daily_transfers: {
@@ -558,13 +548,10 @@ describe('<AccountTransferForm />', () => {
         );
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it("should show proper AccountTransferNote if 'is_dxtrade_allowed' prop is true", () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const mt5_login_list = [];
@@ -595,13 +582,10 @@ describe('<AccountTransferForm />', () => {
         expect(
             screen.getByText('You may transfer between your Deriv fiat, cryptocurrency, DMT5, and Deriv X accounts.')
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it("should show proper AccountTransferNote if 'is_dxtrade_allowed' prop is false", () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const mt5_login_list = [];
@@ -632,13 +616,10 @@ describe('<AccountTransferForm />', () => {
         expect(
             screen.getByText('You may transfer between your Deriv fiat, cryptocurrency, and DMT5 accounts.')
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper note if no transfer fee and dxtrade_allowed ', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const mt5_login_list = [];
@@ -673,13 +654,10 @@ describe('<AccountTransferForm />', () => {
                 'We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts and between your Deriv fiat and Deriv X accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper note if no transfer fee and is_dxtrade_allowed is false ', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const mt5_login_list = [];
@@ -714,13 +692,10 @@ describe('<AccountTransferForm />', () => {
                 'You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper note if transfer fee is 1% and is_dxtrade_allowed ', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const mt5_login_list = [];
@@ -755,13 +730,11 @@ describe('<AccountTransferForm />', () => {
                 'We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and DMT5 accounts and between your Deriv fiat and Deriv X accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper note if transfer fee is 1% and is_dxtrade_allowed is false ', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
+
         const accounts_list = [{}];
         const mt5_login_list = [];
         const onMount = jest.fn();
@@ -795,13 +768,10 @@ describe('<AccountTransferForm />', () => {
                 'We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and DMT5 accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper note if transfer fee is 2% and is_crypto_to_crypto_transfer', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const minimum_fee = 0;
@@ -837,13 +807,10 @@ describe('<AccountTransferForm />', () => {
                 'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper note if transfer fee is 2%, is_mt_transfer and is_dxtrade_allowed', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const minimum_fee = 0;
@@ -881,13 +848,10 @@ describe('<AccountTransferForm />', () => {
                 'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts and between your Deriv cryptocurrency and Deriv X accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper note if transfer fee is 2%, is_mt_transfer, and is_dxtrade_allowed is false', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const minimum_fee = 0;
@@ -925,13 +889,10 @@ describe('<AccountTransferForm />', () => {
                 'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should show proper note if transfer fee is 2% and is_mt_transfer is false', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
 
         const accounts_list = [{}];
         const minimum_fee = 0;
@@ -968,7 +929,5 @@ describe('<AccountTransferForm />', () => {
                 'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv fiat and Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 });

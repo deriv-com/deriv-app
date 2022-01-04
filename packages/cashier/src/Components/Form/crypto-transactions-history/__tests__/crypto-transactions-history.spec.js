@@ -1,5 +1,6 @@
 import React from 'react';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { isMobile } from '@deriv/shared';
 import CryptoTransactionsHistory from '../crypto-transactions-history';
 import CryptoTransactionsRenderer from '../crypto-transactions-renderer';
 import CryptoTransactionsCancelModal from '../crypto-transactions-cancel-modal';
@@ -9,6 +10,11 @@ jest.mock('Stores/connect.js', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     connect: () => Component => Component,
+}));
+
+jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
+    isMobile: jest.fn(),
 }));
 
 describe('<CryptoTransactionsHistory />', () => {
@@ -87,8 +93,7 @@ describe('<CryptoTransactionsRenderer />', () => {
     });
 
     it('should show the proper data in Mobile mode', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
+        isMobile.mockReturnValue(true);
         render(<CryptoTransactionsRenderer row={row} currency={'BTC'} />);
 
         expect(screen.getByText('withdrawal')).toBeInTheDocument();
@@ -97,14 +102,10 @@ describe('<CryptoTransactionsRenderer />', () => {
         expect(screen.getByText('tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt')).toBeInTheDocument();
         expect(screen.getByText('In review')).toBeInTheDocument();
         expect(screen.getByText('Cancel transaction')).toBeInTheDocument();
-
-        window.innerWidth = default_window_inner_width;
     });
 
     it('should trigger onClick callback when the user clicks "Cancel transaction" button in Mobile mode', () => {
-        let default_window_inner_width = window.innerWidth;
-        window.innerWidth = 399;
-        // const onClickCancelTransaction = jest.fn();
+        isMobile.mockReturnValue(true);
         const showCryptoTransactionsCancelModal = jest.fn();
 
         render(
@@ -118,8 +119,6 @@ describe('<CryptoTransactionsRenderer />', () => {
         let cancel_transaction_btn = screen.getByText('Cancel transaction');
         fireEvent.click(cancel_transaction_btn);
         expect(showCryptoTransactionsCancelModal).toHaveBeenCalledTimes(1);
-
-        window.innerWidth = default_window_inner_width;
     });
 });
 

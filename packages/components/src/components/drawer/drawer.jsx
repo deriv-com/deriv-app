@@ -84,16 +84,15 @@ const Drawer = ({
 };
 
 Drawer.propTypes = {
+    anchor: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     className: PropTypes.string,
     contentClassName: PropTypes.string,
-    clear_stat_button_text: PropTypes.string,
     footer: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     header: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-    is_clear_stat_disabled: PropTypes.bool,
-    is_mobile: PropTypes.bool,
+    width: PropTypes.number,
+    zIndex: PropTypes.number,
     is_open: PropTypes.bool,
-    onClearStatClick: PropTypes.func,
     toggleDrawer: PropTypes.func,
 };
 

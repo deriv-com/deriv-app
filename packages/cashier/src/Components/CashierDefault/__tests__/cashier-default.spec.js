@@ -75,7 +75,7 @@ describe('<CashierDefault />', () => {
         expect(window.open).toHaveBeenCalledTimes(1);
     });
 
-    it('should not show "Choose a way to fund your account" message if is_switching is false', () => {
+    it('should not show "Choose a way to fund your account" message if is_switching is true', () => {
         const props = mockProps();
         render(<CashierDefault {...props} is_switching />);
 
@@ -145,7 +145,7 @@ describe('<CashierDefaultDetails />', () => {
 describe('<CashierDefaultSideNote />', () => {
     const textContentMatcher = text => {
         return (content, node) => {
-            const hasText = node => node.textContent === text;
+            const hasText = element => element.textContent === text;
             const node_has_text = hasText(node);
             const children_dont_have_ext = Array.from(node?.children || []).every(child => !hasText(child));
             return node_has_text && children_dont_have_ext;

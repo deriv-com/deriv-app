@@ -274,7 +274,7 @@ export default class WithdrawStore {
         const { balance, currency, website_status } = client;
         const { crypto_fiat_converter, error_dialog } = modules.cashier;
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
-        const { setConfirmButtonText, setErrorMessage } = error_dialog;
+        const { openReadMoreDialog } = error_dialog;
 
         const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
         const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
@@ -302,17 +302,14 @@ export default class WithdrawStore {
                 );
             }
 
-            if (isMobile() && error_message.length >= 28) {
+            if (isMobile() && error_message.length > 35) {
                 const error_content = error_message;
                 error_message = (
                     <ReadMore
                         expand_text={localize('more')}
                         text={error_content}
                         collapse_length={28}
-                        openDialog={() => {
-                            setErrorMessage(error_content);
-                            setConfirmButtonText(localize('ok'));
-                        }}
+                        openDialog={() => openReadMoreDialog(error_content, localize('OK'))}
                         show_dialog
                     />
                 );

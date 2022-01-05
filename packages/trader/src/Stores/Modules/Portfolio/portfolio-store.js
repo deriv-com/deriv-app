@@ -31,8 +31,8 @@ export default class PortfolioStore extends BaseStore {
     @observable.shallow active_positions = [];
 
     @action.bound
-    initializePortfolio = async should_clear_table => {
-        if (this.has_subscribed_to_poc_and_transaction || should_clear_table) {
+    async initializePortfolio() {
+        if (this.has_subscribed_to_poc_and_transaction) {
             this.clearTable();
         }
         this.is_loading = true;
@@ -41,7 +41,7 @@ export default class PortfolioStore extends BaseStore {
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);
         WS.subscribeTransaction(this.transactionHandler);
         this.has_subscribed_to_poc_and_transaction = true;
-    };
+    }
 
     @action.bound
     clearTable() {
@@ -341,7 +341,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     async accountSwitcherListener() {
-        await this.initializePortfolio(true);
+        await this.initializePortfolio();
         return Promise.resolve();
     }
 
@@ -362,7 +362,6 @@ export default class PortfolioStore extends BaseStore {
 
     preSwitchAccountListener() {
         this.clearTable();
-
         return Promise.resolve();
     }
 
@@ -405,6 +404,7 @@ export default class PortfolioStore extends BaseStore {
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();
+        this.clearTable();
     }
 
     getPositionIndexById(contract_id) {

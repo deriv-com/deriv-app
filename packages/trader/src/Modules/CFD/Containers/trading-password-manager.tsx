@@ -5,7 +5,7 @@ import { getCFDPlatformLabel, CFD_PLATFORMS, WS } from '@deriv/shared';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation.jsx';
 
 type TChangePassword = {
-    platform: string;
+    platform: 'mt5' | 'dxtrade';
     onConfirm: () => void;
 };
 
@@ -97,12 +97,12 @@ const PasswordReset = ({ email, platform, account_group }: TPasswordReset) => {
 };
 
 type TTradingPasswordManager = {
-    platform: string;
+    platform: 'mt5' | 'dxtrade';
     email: string;
     account_group: string;
 };
 
-const TradingPasswordManager = ({ platform, email, account_group }) => {
+const TradingPasswordManager = ({ platform, email, account_group }: TTradingPasswordManager) => {
     const multi_step_ref = React.useRef();
 
     const steps = [

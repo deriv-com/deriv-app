@@ -3,7 +3,12 @@ import { Clipboard } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 
-const CFDAccountCopy = ({ text, className }) => {
+type TCFDAccountCopy = {
+    text: string;
+    className: string;
+}
+
+const CFDAccountCopy = ({ text, className }: TCFDAccountCopy) => {
     return (
         <div className={className}>
             <Clipboard

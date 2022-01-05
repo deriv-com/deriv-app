@@ -6,7 +6,7 @@ import { isMobile } from '@deriv/shared';
 type TCFDAccountCopy = {
     text: string;
     className: string;
-}
+};
 
 const CFDAccountCopy = ({ text, className }: TCFDAccountCopy) => {
     return (

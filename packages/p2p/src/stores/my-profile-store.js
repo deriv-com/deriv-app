@@ -35,7 +35,7 @@ export default class MyProfileStore extends BaseStore {
 
     @computed
     get advertiser_has_payment_methods() {
-        return Object.keys(this.advertiser_payment_methods).length;
+        return !!Object.keys(this.advertiser_payment_methods).length;
     }
 
     @computed
@@ -96,6 +96,15 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return methods;
+    }
+
+    @computed
+    get payment_methods_list_values() {
+        const list = [];
+
+        Object.entries(this.available_payment_methods).forEach(key => list.push(key[0]));
+
+        return list;
     }
 
     @action.bound
@@ -216,7 +225,8 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
-    handleToggle = () => {
+    @action.bound
+    handleToggle() {
         requestWS({
             p2p_advertiser_update: 1,
             show_name: this.root_store?.general_store?.should_show_real_name ? 0 : 1,
@@ -227,7 +237,7 @@ export default class MyProfileStore extends BaseStore {
                 this.root_store.general_store.setShouldShowRealName(true);
             }
         });
-    };
+    }
 
     @action.bound
     hideAddPaymentMethodForm() {

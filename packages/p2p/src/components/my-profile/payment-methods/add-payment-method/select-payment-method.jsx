@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Formik, Field } from 'formik';
-import { Autocomplete, Icon, Loading } from '@deriv/components';
+import { Autocomplete, Icon, Loading, Text } from '@deriv/components';
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
 
@@ -27,7 +27,6 @@ const SelectPaymentMethod = () => {
                             {({ field }) => (
                                 <Autocomplete
                                     {...field}
-                                    autoComplete='off'
                                     data-lpignore='true'
                                     label={localize('Payment method')}
                                     list_items={my_profile_store.payment_methods_list_items}
@@ -40,9 +39,17 @@ const SelectPaymentMethod = () => {
                                 />
                             )}
                         </Field>
-                        <div onClick={() => my_profile_store.setSelectedPaymentMethod('other')}>
-                            <Localize i18n_default_text='Don’t see the payment method of your choice? Add new.' />
-                        </div>
+                        <Localize
+                            i18n_default_text='Don’t see the payment method of your choice? <0>Add new.</0>'
+                            components={[
+                                <Text
+                                    key={0}
+                                    color='loss-danger'
+                                    size='xs'
+                                    onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
+                                />,
+                            ]}
+                        />
                     </React.Fragment>
                 );
             }}

@@ -11,6 +11,7 @@ export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
     @observable contact_info = '';
     @observable error_message = '';
+    @observable filter_payment_methods = [];
     @observable has_more_items_to_load = false;
     @observable is_filter_modal_open = false;
     @observable is_loading = true;
@@ -108,6 +109,13 @@ export default class BuySellStore extends BaseStore {
         return this.items;
     }
 
+    @computed
+    get should_filter_by_payment_method() {
+        const { my_profile_store } = this.root_store;
+
+        return my_profile_store.payment_methods_list_values !== this.filter_payment_methods;
+    }
+
     @action.bound
     getAdvertiserInfo() {
         requestWS({
@@ -193,6 +201,7 @@ export default class BuySellStore extends BaseStore {
                 limit: general_store.list_item_limit,
                 sort_by: this.sort_by,
                 use_client_limits: this.should_use_client_limits ? 1 : 0,
+                payment_method: this.should_filter_by_payment_method ? this.filter_payment_methods : [],
             }).then(response => {
                 if (!response.error) {
                     // Ignore any responses that don't match our request. This can happen
@@ -255,8 +264,36 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    onChange(e) {
+        const { my_profile_store } = this.root_store;
+
+        let list = my_profile_store.payment_methods_list_values;
+
+        if (list.includes(e.target.value)) {
+            list = list.filter(item => item.value !== e.target.value);
+            this.setFilterPaymentMethods(list);
+        } else {
+            list.push(e.target.value);
+            this.setFilterPaymentMethods(list);
+        }
+    }
+
+    @action.bound
     onChangeTableType(event) {
         this.setTableType(event.target.value);
+    }
+
+    @action.bound
+    onClickApply() {
+        this.setItems([]);
+        this.setIsLoading(true);
+        this.loadMoreItems({ startIndex: 0 });
+        this.setIsFilterModalOpen(false);
+    }
+
+    @action.bound
+    onClickReset() {
+        this.setShouldUseClientLimits(false);
     }
 
     @action.bound
@@ -295,6 +332,11 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
+    }
+
+    @action.bound
+    setFilterPaymentMethods(filter_payment_methods) {
+        this.filter_payment_methods = filter_payment_methods;
     }
 
     @action.bound

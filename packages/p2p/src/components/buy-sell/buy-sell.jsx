@@ -65,7 +65,7 @@ const BuySell = () => {
 
     return (
         <div className='buy-sell'>
-            {buy_sell_store.is_filter_modal_open && <FilterModal />}
+            <FilterModal />
             <BuySellHeader
                 is_visible={is_toggle_visible}
                 table_type={buy_sell_store.table_type}

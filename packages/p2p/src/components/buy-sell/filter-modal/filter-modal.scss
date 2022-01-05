@@ -4,6 +4,13 @@
         flex-direction: column;
     }
 
+    &__footer {
+        &-button {
+            display: flex;
+            width: 100%;
+        }
+    }
+
     &__row {
         align-items: center;
         display: flex;

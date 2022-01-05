@@ -1,7 +1,6 @@
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
-import { reaction } from 'mobx';
-import { ButtonToggle } from '@deriv/components';
+import { ButtonToggle, Icon } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { buy_sell } from 'Constants/buy-sell';
@@ -32,15 +31,9 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     React.useEffect(
         () => {
             buy_sell_store.setSearchTerm('');
-            return reaction(
-                () => buy_sell_store.should_use_client_limits,
-                () => {
-                    buy_sell_store.setItems([]);
-                    buy_sell_store.setIsLoading(true);
-                    buy_sell_store.loadMoreItems({ startIndex: 0 });
-                },
-                { fireImmediately: true }
-            );
+            buy_sell_store.setItems([]);
+            buy_sell_store.setIsLoading(true);
+            buy_sell_store.loadMoreItems({ startIndex: 0 });
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
@@ -69,6 +62,12 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                 <div className='buy-sell__header-row'>
                     <SearchBox />
                     <SortDropdown />
+                    <Icon
+                        className='buy-sell__header-row--filter'
+                        icon='IcFilter'
+                        onClick={() => buy_sell_store.setIsFilterModalOpen(true)}
+                        size={42}
+                    />
                 </div>
             </div>
         </div>

@@ -3,6 +3,10 @@
     border-radius: 8px;
     padding: 1.6rem;
 
+    .dc-dropdown__display {
+        border: unset;
+    }
+
     &--add {
         align-items: center;
         border: 1px dotted var(--border-normal);

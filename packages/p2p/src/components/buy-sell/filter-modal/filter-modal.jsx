@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Checkbox, Icon, Modal, Text, ToggleSwitch } from '@deriv/components';
+import { Formik, Field } from 'formik';
+import { Autocomplete, Button, Checkbox, Icon, Modal, Text, ToggleSwitch } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import FilterModalHeader from './filter-modal-header.jsx';
 
 const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
@@ -17,30 +19,62 @@ const FilterModal = () => {
     return (
         <Modal
             has_close_icon
-            title={localize('Filter')}
+            title={<FilterModalHeader />}
             is_open={buy_sell_store.is_filter_modal_open}
             toggleModal={() => buy_sell_store.setIsFilterModalOpen(false)}
         >
             <Modal.Body>
                 {buy_sell_store.show_filter_payment_methods ? (
-                    my_profile_store.payment_methods_list_items.map((payment_method, key) => {
-                        return <Checkbox key={key} label={payment_method.text} value={payment_method.value} />;
-                    })
+                    <React.Fragment>
+                        <Formik>
+                            {() => {
+                                return (
+                                    <Field name='payment_method_search'>
+                                        {({ field }) => (
+                                            <Autocomplete
+                                                {...field}
+                                                data-lpignore='true'
+                                                label={localize('Payment method')}
+                                                list_items={my_profile_store.payment_methods_list_items}
+                                                onItemSelection={({ value }) => {
+                                                    my_profile_store.setSelectedPaymentMethod(value);
+                                                }}
+                                                trailing_icon={<Icon icon='IcSearch' />}
+                                                type='text'
+                                                required
+                                            />
+                                        )}
+                                    </Field>
+                                );
+                            }}
+                        </Formik>
+                        {my_profile_store.payment_methods_list_items.map((payment_method, key) => {
+                            return (
+                                <Checkbox
+                                    key={key}
+                                    label={payment_method.text}
+                                    onChange={e => buy_sell_store.onChange(e)}
+                                    value={payment_method.value}
+                                />
+                            );
+                        })}
+                    </React.Fragment>
                 ) : (
-                    <>
+                    <React.Fragment>
                         <div className='filter-modal__row'>
                             <div className='filter-modal__column'>
                                 <Text color='prominent' size='xs'>
                                     <Localize i18n_default_text='Payment methods' />
                                 </Text>
                                 <Text color='less-prominent' size='xs'>
-                                    idk
-                                    {/* <Localize i18n_default_text= /> */}
+                                    <Localize i18n_default_text='All' />
                                 </Text>
                             </div>
-                            <div onClick={() => buy_sell_store.setShowFilterPaymentMethods(true)}>
-                                <Icon icon='IcChevronRight' size={18} />
-                            </div>
+                            <Icon
+                                icon='IcChevronRight'
+                                onClick={() => buy_sell_store.setShowFilterPaymentMethods(true)}
+                                size={18}
+                            />
                         </div>
                         <div className='filter-modal__row'>
                             <div className='filter-modal__column'>
@@ -59,20 +93,32 @@ const FilterModal = () => {
                                 handleToggle={() =>
                                     buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)
                                 }
+                                is_enabled={buy_sell_store.should_use_client_limits}
                             />
                         </div>
-                    </>
+                    </React.Fragment>
                 )}
             </Modal.Body>
             <Modal.Footer has_separator>
-                <Button.Group>
-                    <Button secondary large onClick={() => {}}>
-                        {localize('Reset')}
+                {buy_sell_store.show_filter_payment_methods ? (
+                    <Button
+                        className='filter-modal__footer-button'
+                        large
+                        secondary
+                        onClick={() => buy_sell_store.onClickReset()}
+                    >
+                        <Localize i18n_default_text='Clear' />
                     </Button>
-                    <Button is_disabled={false} large onClick={() => {}} primary>
-                        {localize('Apply')}
-                    </Button>
-                </Button.Group>
+                ) : (
+                    <Button.Group>
+                        <Button large secondary onClick={() => buy_sell_store.onClickReset()}>
+                            {localize('Reset')}
+                        </Button>
+                        <Button large primary onClick={() => buy_sell_store.onClickApply()}>
+                            {localize('Apply')}
+                        </Button>
+                    </Button.Group>
+                )}
             </Modal.Footer>
         </Modal>
     );

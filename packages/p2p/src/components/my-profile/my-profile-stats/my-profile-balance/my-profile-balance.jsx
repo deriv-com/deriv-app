@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Icon, Money, PopoverMobile, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { DesktopWrapper, Icon, MobileWrapper, Money, PopoverMobile, Text } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { Localize, localize } from 'Components/i18next';
@@ -15,13 +15,31 @@ const MyProfileBalance = () => {
     return (
         <div className='my-profile-balance'>
             <MyProfileSeparatorContainer>
-                <Text color='less-prominent' line_height='m' size='xs'>
-                    <Localize i18n_default_text='Available Deriv P2P balance' />
-                </Text>
-                <MyProfileSeparatorContainer.Line is_invisible={isMobile()} />
-                <Text className='my-profile-balance__amount' color='prominent' line_height='m' size='xs' weight='bold'>
-                    <Money amount={available_balance} currency={general_store.client.currency} show_currency />
-                </Text>
+                <DesktopWrapper>
+                    <Text color='less-prominent' line_height='m' size='xs'>
+                        <Localize i18n_default_text='Available Deriv P2P balance' />
+                    </Text>
+                    <MyProfileSeparatorContainer.Line />
+                    <Text
+                        className='my-profile-balance__amount'
+                        color='prominent'
+                        line_height='m'
+                        size='xs'
+                        weight='bold'
+                    >
+                        <Money amount={available_balance} currency={general_store.client.currency} show_currency />
+                    </Text>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <div className='my-profile-balance__mobile'>
+                        <Text color='prominent' line_height='m' size='xxs'>
+                            <Localize i18n_default_text='Available Deriv P2P balance' />
+                        </Text>
+                        <Text color='less-prominent' line_height='m' size='xxs'>
+                            <Money amount={available_balance} currency={general_store.client.currency} show_currency />
+                        </Text>
+                    </div>
+                </MobileWrapper>
                 <PopoverMobile
                     button_text={localize('Got it')}
                     is_open={is_balance_tooltip_open}
@@ -34,6 +52,7 @@ const MyProfileBalance = () => {
                     <Icon icon='IcInfoOutline' size={16} />
                 </PopoverMobile>
             </MyProfileSeparatorContainer>
+            <MyProfileSeparatorContainer.Line is_invisible={isDesktop()} />
         </div>
     );
 };

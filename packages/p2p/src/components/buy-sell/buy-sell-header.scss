@@ -61,18 +61,15 @@
 
         @include mobile {
             border-top: 1px solid var(--general-section-1);
-            justify-content: space-between;
         }
 
         &--filter {
             align-self: center;
-            display: flex;
             border: 1px solid var(--border-normal);
             border-radius: 4px;
-            height: 4.2rem;
+            display: flex;
             margin-left: 0.8rem;
             padding: 1.3rem;
-            width: 4.2rem;
         }
     }
 }

@@ -49,9 +49,12 @@ const CryptoWithdrawForm = ({
     current_fiat_currency,
     is_loading,
     onMountWithdraw,
+    onChangeConverterFromAmount,
+    onChangeConverterToAmount,
     percentage,
     percentageSelectorSelectionStatus,
     recentTransactionOnMount,
+    resetConverter,
     requestWithdraw,
     setBlockchainAddress,
     setWithdrawPercentageSelectorResult,
@@ -135,9 +138,12 @@ const CryptoWithdrawForm = ({
                             </div>
                             <CryptoFiatConverter
                                 from_currency={crypto_currency}
+                                resetConverter={resetConverter}
                                 to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}
+                                onChangeConverterFromAmount={onChangeConverterFromAmount}
+                                onChangeConverterToAmount={onChangeConverterToAmount}
                             />
                             <div className='crypto-withdraw-form-submit'>
                                 <Button
@@ -180,10 +186,13 @@ CryptoWithdrawForm.propTypes = {
     current_fiat_currency: PropTypes.string,
     is_loading: PropTypes.bool,
     onMountWithdraw: PropTypes.func,
+    onChangeConverterFromAmount: PropTypes.func,
+    onChangeConverterToAmount: PropTypes.func,
     percentage: PropTypes.number,
     percentageSelectorSelectionStatus: PropTypes.func,
     requestWithdraw: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
+    resetConverter: PropTypes.func,
     setBlockchainAddress: PropTypes.func,
     setWithdrawPercentageSelectorResult: PropTypes.func,
     should_percentage_reset: PropTypes.bool,
@@ -203,11 +212,14 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
     is_loading: modules.cashier.general_store.is_loading,
+    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
+    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
     onMountWithdraw: modules.cashier.withdraw.onMountCryptoWithdraw,
     percentage: modules.cashier.general_store.percentage,
     percentageSelectorSelectionStatus: modules.cashier.general_store.percentageSelectorSelectionStatus,
     requestWithdraw: modules.cashier.withdraw.requestWithdraw,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
+    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
     setBlockchainAddress: modules.cashier.withdraw.setBlockchainAddress,
     setWithdrawPercentageSelectorResult: modules.cashier.withdraw.setWithdrawPercentageSelectorResult,
     should_percentage_reset: modules.cashier.general_store.should_percentage_reset,

@@ -29,27 +29,12 @@ describe('<PaymentAgentTransferConfirm />', () => {
     const setIsTryTransferSuccessful = jest.fn();
     const transfer_to = 'test';
 
-    it('component should be rendered', () => {
-        const { container } = render(<PaymentAgentTransferConfirm transfer_to={transfer_to} />);
+    it('component and header should be rendered, also <Row /> and <FormError /> if value provided or has an error', () => {
+        const { container } = render(<PaymentAgentTransferConfirm transfer_to={transfer_to} error={error} />);
 
         expect(container.querySelector('.cashier__wrapper--confirm')).toBeInTheDocument();
-    });
-
-    it('header should be rendered', () => {
-        render(<PaymentAgentTransferConfirm transfer_to={transfer_to} />);
-
         expect(screen.getByText(header)).toBeInTheDocument();
-    });
-
-    it('component <Row /> should be rendered when has data', () => {
-        const { container } = render(<PaymentAgentTransferConfirm transfer_to={transfer_to} />);
-
         expect(container.querySelector('.confirm__row')).toBeInTheDocument();
-    });
-
-    it('component <FormError /> should be rendered when has an error', () => {
-        render(<PaymentAgentTransferConfirm error={error} transfer_to={transfer_to} />);
-
         expect(screen.getByText('testMessage')).toBeInTheDocument();
     });
 

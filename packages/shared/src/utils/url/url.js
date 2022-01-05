@@ -190,3 +190,14 @@ export const getPath = (route_path, parameters = {}) =>
     Object.keys(parameters).reduce((p, name) => p.replace(`:${name}`, parameters[name]), route_path);
 
 export const getContractPath = contract_id => getPath(routes.contract, { contract_id });
+
+/**
+ * Filters query string. Returns filtered query (without '/?')
+ * @param {string} search_param window.location.search
+ * @param {Array<string>} allowed_keys array of string of allowed query string keys
+ */
+export const filterUrlQuery = (search_param, allowed_keys) => {
+    const search_params = new URLSearchParams(search_param);
+    const filtered_queries = [...search_params].filter(kvp => allowed_keys.includes(kvp[0]));
+    return new URLSearchParams(filtered_queries || '').toString();
+};

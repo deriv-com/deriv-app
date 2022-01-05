@@ -145,7 +145,7 @@ const CryptoWithdrawForm = ({
                                 onChangeConverterFromAmount={onChangeConverterFromAmount}
                                 onChangeConverterToAmount={onChangeConverterToAmount}
                             />
-                            <div className='crypto-withdraw-form-submit'>
+                            <div className='crypto-withdraw-form__submit'>
                                 <Button
                                     className='cashier__form-submit-button'
                                     is_disabled={

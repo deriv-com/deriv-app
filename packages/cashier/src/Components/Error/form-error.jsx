@@ -22,6 +22,7 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
         if (error.message) {
             mapErrorToDetails(error.code, error.message);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error.code]);
 
     React.useEffect(() => {

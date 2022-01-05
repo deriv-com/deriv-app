@@ -50,6 +50,7 @@ const Cashier = ({
         return () => {
             toggleCashier();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     React.useEffect(() => {
         (async () => {
@@ -59,6 +60,7 @@ const Cashier = ({
                 setAccountSwitchListener();
             }
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_logged_in]);
 
     const onClickClose = () => routeBackInApp(history);

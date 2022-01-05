@@ -64,6 +64,7 @@ const OnRamp = ({
         if (menu_options && selected_cashier_path !== routes.cashier_onramp) {
             routeTo(selected_cashier_path);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_cashier_path]);
 
     React.useEffect(() => {

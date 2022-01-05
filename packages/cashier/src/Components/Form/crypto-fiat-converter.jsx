@@ -22,7 +22,8 @@ const Timer = props => {
             props.onComplete();
             setRemainingTime(initial_time);
         }
-    });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Text as='p' size='xs' color='less-prominent' className='timer'>

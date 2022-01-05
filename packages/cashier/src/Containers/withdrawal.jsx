@@ -72,6 +72,7 @@ const Withdrawal = ({
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
     React.useEffect(() => {

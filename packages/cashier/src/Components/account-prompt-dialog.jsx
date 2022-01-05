@@ -15,6 +15,7 @@ const AccountPromptDialog = ({
     onConfirm,
     should_show,
 }) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(continueRoute, [is_confirmed, last_location]);
 
     const non_crypto_accounts = accounts_list.filter(x => !x.is_crypto);

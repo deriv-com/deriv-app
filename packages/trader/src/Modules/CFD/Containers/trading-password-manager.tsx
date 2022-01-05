@@ -7,7 +7,7 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation.jsx';
 type TChangePassword = {
     platform: string;
     onConfirm: () => void;
-}
+};
 
 const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
     <div className='cfd-change-password'>
@@ -52,7 +52,7 @@ type TPasswordReset = {
     email: string;
     platform: string;
     account_group: 'real' | 'demo';
-}
+};
 
 const PasswordReset = ({ email, platform, account_group }: TPasswordReset) => {
     const onClickSendEmail = React.useCallback(() => {

@@ -444,6 +444,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_identity_verification_needed() {
+        const needs_verification = this.account_status?.authentication?.needs_verification;
+        return needs_verification?.length === 1 && needs_verification?.includes('identity');
+    }
+
+    @computed
     get is_tnc_needed() {
         if (this.is_virtual) return false;
 

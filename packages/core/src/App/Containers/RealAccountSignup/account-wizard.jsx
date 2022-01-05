@@ -56,6 +56,7 @@ const AccountWizard = props => {
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
+    const is_target_account_mf = props.real_account_signup_target === 'maltainvest';
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -240,7 +241,7 @@ const AccountWizard = props => {
         submitForm(payload)
             .then(response => {
                 props.setIsRiskWarningVisible(false);
-                if (props.real_account_signup_target === 'maltainvest') {
+                if (is_target_account_mf) {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
                 } else if (props.real_account_signup_target === 'samoa') {
                     props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
@@ -250,7 +251,7 @@ const AccountWizard = props => {
             })
             .catch(error => {
                 if (error.code === 'show risk disclaimer') {
-                    props.setIsRiskWarningVisible(true);
+                    if (!is_target_account_mf) props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
                 } else {
                     props.onError(error, state_items);
@@ -262,9 +263,16 @@ const AccountWizard = props => {
     const onAcceptRisk = () => {
         createRealAccount({ accept_risk: 1 });
     };
+    const onDeclineRisk = () => {
+        props.onClose();
+        clearError();
+    };
 
     if (props.is_loading) return <LoadingModal />;
     if (should_accept_financial_risk) {
+        if (is_target_account_mf) {
+            return <AcceptRiskForm is_target_account_mf onSubmit={onAcceptRisk} onClose={onDeclineRisk} />;
+        }
         return <AcceptRiskForm onSubmit={onAcceptRisk} />;
     }
     if (!mounted) return null;

@@ -18,24 +18,31 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
         }
     }, [show_details]);
 
-    return (
-        <div
-            onClick={is_footer || !replace ? undefined : toggleDetails}
-            className={classNames(className, { 'statement__row--detail': show_details })}
-        >
-            {show_details ? (
-                is_dynamic_height ? (
+    if (is_dynamic_height) {
+        return (
+            <div
+                onClick={is_footer || !replace ? undefined : toggleDetails}
+                className={classNames(className, {'statement__row--detail': show_details})}
+            >
+                {show_details ? <div>{replace?.component}</div> : (
+                    cells
+                )}
+            </div>
+        );
+    } else {
+        return (
+            <div
+                onClick={is_footer || !replace ? undefined : toggleDetails}
+                className={classNames(className, {'statement__row--detail': show_details})}
+            >
+                {show_details ? <ThemedScrollbars height='80px'>
                     <div>{replace?.component}</div>
-                ) : (
-                    <ThemedScrollbars height='80px'>
-                        <div>{replace?.component}</div>
-                    </ThemedScrollbars>
-                )
-            ) : (
-                cells
-            )}
-        </div>
-    );
+                </ThemedScrollbars> : (
+                    cells
+                )}
+            </div>
+        );
+    }
 };
 
 TableRowInfo.propTypes = {

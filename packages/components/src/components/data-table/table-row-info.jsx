@@ -16,7 +16,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
         if (is_dynamic_height) {
             measure?.();
         }
-    }, [show_details]);
+    }, [show_details, is_dynamic_height, measure]);
 
     if (is_dynamic_height) {
         return (

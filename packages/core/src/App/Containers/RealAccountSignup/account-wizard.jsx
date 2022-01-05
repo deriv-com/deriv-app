@@ -251,7 +251,7 @@ const AccountWizard = props => {
             })
             .catch(error => {
                 if (error.code === 'show risk disclaimer') {
-                    if (!is_target_account_mf) props.setIsRiskWarningVisible(true);
+                    props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
                 } else {
                     props.onError(error, state_items);
@@ -265,7 +265,7 @@ const AccountWizard = props => {
     };
     const onDeclineRisk = () => {
         props.onClose();
-        clearError();
+        props.setIsRiskWarningVisible(false);
     };
 
     if (props.is_loading) return <LoadingModal />;

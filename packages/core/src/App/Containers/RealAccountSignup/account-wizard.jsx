@@ -271,9 +271,15 @@ const AccountWizard = props => {
     if (props.is_loading) return <LoadingModal />;
     if (should_accept_financial_risk) {
         if (is_target_account_mf) {
-            return <AcceptRiskForm is_target_account_mf onSubmit={onAcceptRisk} onClose={onDeclineRisk} />;
+            return (
+                <AcceptRiskForm
+                    is_appropriateness_test_warning_shown
+                    onConfirm={onAcceptRisk}
+                    onClose={onDeclineRisk}
+                />
+            );
         }
-        return <AcceptRiskForm onSubmit={onAcceptRisk} />;
+        return <AcceptRiskForm onConfirm={onAcceptRisk} />;
     }
     if (!mounted) return null;
     if (!finished) {

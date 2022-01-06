@@ -11,9 +11,9 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 
-const AcceptRiskForm = ({ is_target_account_mf = false, onSubmit, onClose = null }) => {
+const AcceptRiskForm = ({ is_appropriateness_test_warning_shown = false, onConfirm, onClose = null }) => {
     return (
-        <Formik initialValues={{}} onSubmit={onSubmit} validateOnMount>
+        <Formik initialValues={{}} onSubmit={onConfirm} validateOnMount>
             {({ handleSubmit }) => (
                 <AutoHeightWrapper default_height={200}>
                     {({ setRef, height }) => (
@@ -23,13 +23,13 @@ const AcceptRiskForm = ({ is_target_account_mf = false, onSubmit, onClose = null
                                     <div className='accept-risk__container'>
                                         <div className='accept-risk__header'>
                                             <Text weight='bold' size='xs'>
-                                                {is_target_account_mf
+                                                {is_appropriateness_test_warning_shown
                                                     ? localize('Appropriateness Test, WARNING:')
                                                     : localize('Warning')}
                                             </Text>
                                         </div>
                                         <Text as='p' size='xs'>
-                                            {is_target_account_mf ? (
+                                            {is_appropriateness_test_warning_shown ? (
                                                 <>
                                                     <Localize
                                                         i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
@@ -53,7 +53,7 @@ const AcceptRiskForm = ({ is_target_account_mf = false, onSubmit, onClose = null
                             </Div100vhContainer>
                             <input name='accept_risk' value='1' type='hidden' />
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
-                                {is_target_account_mf && onClose ? (
+                                {is_appropriateness_test_warning_shown && onClose ? (
                                     <FormSubmitButton
                                         is_absolute={isMobile()}
                                         label={localize('Accept')}

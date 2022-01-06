@@ -13,6 +13,9 @@
     &__container {
         padding: 0 2.4rem;
 
+        & .dc-text {
+            text-align: justify;
+        }
         @include mobile {
             padding: 0 1.6rem;
         }

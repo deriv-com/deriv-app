@@ -18,36 +18,35 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
     });
 
     React.useEffect(() => {
+        const mapErrorToDetails = (error_code, error_message) => {
+            if (['Fiat2CryptoTransferOverLimit', 'Crypto2FiatTransferOverLimit'].includes(error_code)) {
+                setDetails({
+                    title: localize('Please verify your identity'),
+                    cancel_button_text: localize('Cancel'),
+                    confirm_button_text: localize('Verify identity'),
+                    onConfirm: () => history.push(routes.proof_of_identity),
+                    message: error_message,
+                });
+            } else {
+                setDetails({
+                    title: localize('Cashier Error'),
+                    cancel_button_text: undefined,
+                    confirm_button_text: localize('OK'),
+                    onConfirm: undefined,
+                    message: error_message,
+                });
+            }
+        };
+
         // avoid resetting the text when dismissing the pop up
         if (error.message) {
             mapErrorToDetails(error.code, error.message);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [error.code]);
+    }, [error.code, error.message, history]);
 
     React.useEffect(() => {
         setErrorVisibility(!!error.message);
     }, [error.message]);
-
-    const mapErrorToDetails = (error_code, error_message) => {
-        if (['Fiat2CryptoTransferOverLimit', 'Crypto2FiatTransferOverLimit'].includes(error_code)) {
-            setDetails({
-                title: localize('Please verify your identity'),
-                cancel_button_text: localize('Cancel'),
-                confirm_button_text: localize('Verify identity'),
-                onConfirm: () => history.push(routes.proof_of_identity),
-                message: error_message,
-            });
-        } else {
-            setDetails({
-                title: localize('Cashier Error'),
-                cancel_button_text: undefined,
-                confirm_button_text: localize('OK'),
-                onConfirm: undefined,
-                message: error_message,
-            });
-        }
-    };
 
     const setErrorVisibility = is_error_visible => {
         setIsVisible(is_error_visible);

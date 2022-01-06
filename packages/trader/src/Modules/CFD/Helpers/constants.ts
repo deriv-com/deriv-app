@@ -49,7 +49,15 @@ const getDXTradeWebTerminalLink = (category?: string) => {
     return category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
 };
 
-const getMT5WebTerminalLink = ({ category, loginid, server_name = 'Deriv-Server' }: {category?: string; loginid?: string; server_name?: string;}) => {
+const getMT5WebTerminalLink = ({
+    category,
+    loginid,
+    server_name = 'Deriv-Server',
+}: {
+    category?: string;
+    loginid?: string;
+    server_name?: string;
+}) => {
     const is_demo = category === 'demo';
     const server = is_demo ? 'Deriv-Demo' : server_name;
     const login = loginid ?? '';

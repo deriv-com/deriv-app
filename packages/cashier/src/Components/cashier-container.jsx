@@ -25,6 +25,7 @@ const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_crypto, i
                     src={iframe_url}
                     frameBorder='0'
                     scrolling='auto'
+                    allowpaymentrequest
                 />
             )}
             {is_crypto && (

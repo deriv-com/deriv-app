@@ -18,7 +18,18 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
     });
 
     React.useEffect(() => {
-        const mapErrorToDetails = (error_code, error_message) => {
+        // avoid resetting the text when dismissing the pop up
+        if (error.message) {
+            mapErrorToDetails(error.code, error.message);
+        }
+    }, [error.code, error.message, mapErrorToDetails]);
+
+    React.useEffect(() => {
+        setErrorVisibility(!!error.message);
+    }, [error.message]);
+
+    const mapErrorToDetails = React.useCallback(
+        (error_code, error_message) => {
             if (['Fiat2CryptoTransferOverLimit', 'Crypto2FiatTransferOverLimit'].includes(error_code)) {
                 setDetails({
                     title: localize('Please verify your identity'),
@@ -36,17 +47,9 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
                     message: error_message,
                 });
             }
-        };
-
-        // avoid resetting the text when dismissing the pop up
-        if (error.message) {
-            mapErrorToDetails(error.code, error.message);
-        }
-    }, [error.code, error.message, history]);
-
-    React.useEffect(() => {
-        setErrorVisibility(!!error.message);
-    }, [error.message]);
+        },
+        [history]
+    );
 
     const setErrorVisibility = is_error_visible => {
         setIsVisible(is_error_visible);

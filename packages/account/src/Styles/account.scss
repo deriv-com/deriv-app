@@ -295,7 +295,7 @@ $MIN_HEIGHT_FLOATING: calc(
             position: relative;
             max-width: 400px;
             margin-top: 9px;
-            margin-bottom: 18px;
+            margin-bottom: 3.6rem;
 
             &--2-cols {
                 display: grid;
@@ -1141,9 +1141,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding-left: 0;
             }
         }
-    }
-    & .email_consent {
-        margin-left: 10px;
     }
     &__demo-message {
         &-wrapper {

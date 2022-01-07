@@ -1144,7 +1144,7 @@ export class PersonalDetailsForm extends React.Component {
                                         has_side_note={is_dashboard}
                                         side_note={localize('Check this box to receive updates via email.')}
                                     >
-                                        <fieldset className='account-form__fieldset email_consent'>
+                                        <fieldset className='account-form__fieldset'>
                                             <Checkbox
                                                 name='email_consent'
                                                 value={values.email_consent}

@@ -3,11 +3,7 @@ import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/compone
 import { localize, Localize } from '@deriv/translations';
 import { getCFDPlatformLabel, CFD_PLATFORMS, WS } from '@deriv/shared';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
-
-type TChangePassword = {
-    platform: 'mt5' | 'dxtrade';
-    onConfirm: () => void;
-};
+import { TChangePassword, TPasswordResetAndTradingPasswordManager } from './props.types';
 
 const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
     <div className='cfd-change-password'>
@@ -48,13 +44,7 @@ const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
     </div>
 );
 
-type TPasswordReset = {
-    email: string;
-    platform: string;
-    account_group: 'real' | 'demo';
-};
-
-const PasswordReset = ({ email, platform, account_group }: TPasswordReset) => {
+const PasswordReset = ({ email, platform, account_group }: TPasswordResetAndTradingPasswordManager) => {
     const onClickSendEmail = React.useCallback(() => {
         let redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
 
@@ -96,14 +86,8 @@ const PasswordReset = ({ email, platform, account_group }: TPasswordReset) => {
     );
 };
 
-type TTradingPasswordManager = {
-    platform: 'mt5' | 'dxtrade';
-    email: string;
-    account_group: string;
-};
-
-const TradingPasswordManager = ({ platform, email, account_group }: TTradingPasswordManager) => {
-    const multi_step_ref = React.useRef();
+const TradingPasswordManager = ({ platform, email, account_group }: TPasswordResetAndTradingPasswordManager) => {
+    const multi_step_ref = React.useRef<{ goNextStep: () => void; goPrevStep: () => void; }>();
 
     const steps = [
         {

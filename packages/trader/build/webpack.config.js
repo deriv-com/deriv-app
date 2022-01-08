@@ -5,10 +5,10 @@ module.exports = function (env, argv) {
     const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
 
     return {
-        context: path.resolve(__dirname, '../src'),
+        context: path.resolve(__dirname, '../'),
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
-            trader: path.resolve(__dirname, '../src', 'index.js'),
+            trader: path.resolve(__dirname, '../src', 'index.tsx'),
             CFDStore: 'Stores/Modules/CFD/cfd-store.js',
         },
         mode: IS_RELEASE ? 'production' : 'development',
@@ -17,7 +17,7 @@ module.exports = function (env, argv) {
         },
         resolve: {
             alias: ALIASES,
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         optimization: {
             chunkIds: 'named',

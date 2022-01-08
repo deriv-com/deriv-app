@@ -6,7 +6,7 @@ const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com/';
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 
-const getServerName = (is_demo: 'Deriv-Demo') => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
+const getServerName = (is_demo?: 'Deriv-Demo') => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
 
 const getBrokerName = () => 'Deriv Limited';
 

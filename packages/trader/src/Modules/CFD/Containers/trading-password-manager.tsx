@@ -87,7 +87,7 @@ const PasswordReset = ({ email, platform, account_group }: TPasswordResetAndTrad
 };
 
 const TradingPasswordManager = ({ platform, email, account_group }: TPasswordResetAndTradingPasswordManager) => {
-    const multi_step_ref = React.useRef<{ goNextStep: () => void; goPrevStep: () => void; }>();
+    const multi_step_ref = React.useRef<{ goNextStep: () => void; goPrevStep: () => void }>();
 
     const steps = [
         {

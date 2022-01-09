@@ -139,6 +139,7 @@ const CFDFinancialStpRealAccountSignup = props => {
 
     React.useEffect(() => {
         props.refreshNotifications();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items]);
 
     const transform = value => {

@@ -44,7 +44,7 @@ const Ticks = ({
 }) => {
     React.useEffect(() => {
         setDurationError(false);
-    }, []);
+    }, [setDurationError]);
 
     const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
 

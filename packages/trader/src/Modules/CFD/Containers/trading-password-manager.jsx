@@ -71,7 +71,7 @@ const PasswordReset = ({ email, platform, account_group }) => {
                 redirect_to,
             },
         });
-    }, [email, platform]);
+    }, [email, platform, account_group]);
 
     React.useEffect(() => {
         onClickSendEmail();

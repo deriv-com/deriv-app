@@ -11,4 +11,4 @@ export type TMT5AccountOpeningRealFinancialStpModal = {
     disableApp: boolean;
     disableMt5FinancialStpModal: boolean;
     is_mt5_financial_stp_modal_open: boolean;
-}
+};

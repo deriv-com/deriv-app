@@ -8,7 +8,7 @@ module.exports = function (env, argv) {
     return {
         context: path.resolve(__dirname, '../src'),
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
-        entry: './index.js',
+        entry: './index.tsx',
         externals: [nodeExternals()],
         mode: IS_RELEASE ? 'development' : 'production',
         module: {
@@ -26,7 +26,7 @@ module.exports = function (env, argv) {
         plugins: plugins(base, true, env && env.mocha_only),
         resolve: {
             alias: ALIASES,
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         target: 'node',
     };

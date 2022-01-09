@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCFDPlatformLabel, CFD_PLATFORMS, WS } from '@deriv/shared';
-import ChangePasswordConfirmation from './cfd-change-password-confirmation.jsx';
+import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 const ChangePassword = ({ platform, onConfirm }) => (
     <div className='cfd-change-password'>

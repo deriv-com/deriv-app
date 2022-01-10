@@ -7,6 +7,8 @@ module.exports = {
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
         '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
         '^Constants/(.*)$': '<rootDir>/src/Constants/$1',
+        '^Config/(.*)$': '<rootDir>/src/Config/$1',
+        '^Components/(.*)$': '<rootDir>/src/Components/$1',
     },
     testPathIgnorePatterns: ['/Routes/', '/Validator/'],
 };

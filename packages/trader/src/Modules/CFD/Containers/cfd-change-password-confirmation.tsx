@@ -1,12 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik } from 'formik';
-import PropTypes from 'prop-types';
 import { Text, Icon, FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv/shared';
+import { TCFDChangePasswordConfirmationProps } from './props.types';
 
-const ChangePasswordConfirmation = ({ confirm_label, className, platform, onConfirm, onCancel }) => (
+const ChangePasswordConfirmation = ({
+    confirm_label,
+    className,
+    platform,
+    onConfirm,
+    onCancel,
+}: TCFDChangePasswordConfirmationProps) => (
     <Formik initialValues={{}} onSubmit={onConfirm}>
         {({ isSubmitting, handleSubmit }) => (
             <form onSubmit={handleSubmit}>
@@ -58,12 +64,5 @@ const ChangePasswordConfirmation = ({ confirm_label, className, platform, onConf
         )}
     </Formik>
 );
-
-ChangePasswordConfirmation.propTypes = {
-    confirm_label: PropTypes.string,
-    onConfirm: PropTypes.func,
-    onCancel: PropTypes.func,
-    platform: PropTypes.string,
-};
 
 export default ChangePasswordConfirmation;

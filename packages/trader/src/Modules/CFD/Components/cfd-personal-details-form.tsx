@@ -17,22 +17,25 @@ import {
 } from '@deriv/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Field, Formik, FormikProps } from 'formik';
+import {
+    Field,
+    FieldProps,
+    Formik,
+    FormikErrors,
+    FormikHelpers as FormikActions,
+    FormikProps,
+    FormikTouched,
+} from 'formik';
 import React from 'react';
 
 type TCFDPersonalDetailsFormProps = {
-    onSave: (index: number, values: { [key: string]: string }) => void;
+    onSave: (index: number, values: TFormValues) => void;
     is_fully_authenticated: boolean;
     is_loading: boolean;
     landing_company: TLandingCompany;
     residence_list: TResidenceObject[];
     onCancel: () => void;
-    onSubmit: (
-        index: number,
-        value: string,
-        setSubmitting: (isSubmitting: boolean) => void,
-        is_dirty?: boolean
-    ) => void;
+    onSubmit: TOnSubmit;
     value: { [key: string]: string };
     index: number;
     form_error?: string;
@@ -135,7 +138,7 @@ type TAccountOpeningReasonList = {
 }[];
 
 type TValidatePersonalDetailsParams = {
-    values: { [key: string]: string };
+    values: TFormValues;
     residence_list: TResidenceObject[];
     account_opening_reason: TAccountOpeningReasonList;
     is_tin_required: boolean;
@@ -169,6 +172,22 @@ type TFormValues = {
     account_opening_reason: string;
 };
 
+type TOnSubmit = (
+    index: number,
+    value: TFormValues,
+    setSubmitting: (isSubmitting: boolean) => void,
+    is_dirty?: boolean
+) => void;
+
+type TSubmitForm = (
+    values: TFormValues,
+    actions: FormikActions<TFormValues>,
+    idx: number,
+    onSubmitFn: TOnSubmit,
+    is_dirty: boolean,
+    residence_list: TResidenceObject[]
+) => void;
+
 const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
     {
         text: localize('Hedging'),
@@ -190,15 +209,18 @@ const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
 
 export const InputField = ({ maxLength, name, optional = false, ...props }: TCFDInputFieldProps) => (
     <Field name={name}>
-        {({ field, form: { errors, touched } }) => (
+        {({ field, form: { errors, touched } }: FieldProps) => (
             <Input
+                {...field}
                 type='text'
                 required={!optional}
                 name={name}
                 autoComplete='off'
                 maxLength={maxLength || '30'}
-                error={touched[field.name] && errors[field.name]}
-                {...field}
+                error={
+                    touched[field.name as keyof FormikTouched<TFormValues>] &&
+                    errors[field.name as keyof FormikErrors<TFormValues>]
+                }
                 {...props}
             />
         )}
@@ -216,13 +238,16 @@ const validatePersonalDetails = ({
     const tin_regex = tin_format || '^[A-Za-z0-9./s-]{0,25}$'; // fallback to API's default rule check
 
     const validations = {
-        citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
-        tax_residence: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
+        citizen: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
+        tax_residence: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
         tax_identification_number: [
-            v => ((!values.tax_residence && is_tin_required) || tin_format ? !!v : true),
-            v => (tin_regex ? v.match(tin_regex) : true),
+            (v: string) => ((!values.tax_residence && is_tin_required) || tin_format ? !!v : true),
+            (v: string) => (tin_regex ? v.match(tin_regex) : true),
         ],
-        account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.value).includes(v)],
+        account_opening_reason: [
+            (v: string) => !!v,
+            (v: string) => account_opening_reason.map(i => i.value).includes(v),
+        ],
     };
     const mappedKey: { [key: string]: string } = {
         citizen: localize('Citizenship'),
@@ -239,9 +264,9 @@ const validatePersonalDetails = ({
     const errors: { [key: string]: React.ReactNode } = {};
 
     Object.entries(validations).forEach(([key, rules]) => {
-        const error_index = rules.findIndex(v => !v(values[key]));
+        const error_index = rules.findIndex(v => !v(values[key as keyof TFormValues]));
         if (error_index !== -1) {
-            errors[key] = <React.Fragment>{field_error_messages(mappedKey[key])[error_index]}</React.Fragment>;
+            errors[key] = field_error_messages(mappedKey[key])[error_index];
         }
     });
 
@@ -265,7 +290,7 @@ const findDefaultValuesInResidenceList: TFindDefaultValuesInResidenceList = (
     return { citizen, tax_residence };
 };
 
-const submitForm = (values, actions, idx, onSubmitFn, is_dirty, residence_list) => {
+const submitForm: TSubmitForm = (values, actions, idx, onSubmitFn, is_dirty, residence_list) => {
     const { citizen: citizen_text, tax_residence: tax_residence_text, ...restOfValues } = values;
     const { citizen, tax_residence } = findDefaultValuesInResidenceList(
         citizen_text,
@@ -296,12 +321,12 @@ const CFDPersonalDetailsForm = ({
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = !!(landing_company?.config?.tax_details_required ?? false);
 
-    const handleCancel = (values: { [key: string]: string }) => {
+    const handleCancel = (values: TFormValues) => {
         onSave(index, values);
         onCancel();
     };
 
-    const onSubmitForm = (values: { [key: string]: string }, actions) =>
+    const onSubmitForm = (values: TFormValues, actions: FormikActions<TFormValues>) =>
         submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values), residence_list);
 
     if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
@@ -340,7 +365,7 @@ const CFDPersonalDetailsForm = ({
                 isValid,
             }: FormikProps<TFormValues>) => (
                 <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
-                    {({ height, setRef }) => (
+                    {({ height, setRef }: { height: number; setRef: (instance: HTMLFormElement | null) => void }) => (
                         <form
                             className='cfd-financial-stp-modal__form'
                             ref={setRef}
@@ -365,7 +390,7 @@ const CFDPersonalDetailsForm = ({
                                         <fieldset className='account-form__fieldset'>
                                             <DesktopWrapper>
                                                 <Field name='citizen'>
-                                                    {({ field }) => (
+                                                    {({ field }: FieldProps<TFormValues>) => (
                                                         <Autocomplete
                                                             {...field}
                                                             id='real_mt5_citizenship'
@@ -376,7 +401,7 @@ const CFDPersonalDetailsForm = ({
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={!!(value.citizen && is_fully_authenticated)}
                                                             list_items={residence_list}
-                                                            onItemSelection={item =>
+                                                            onItemSelection={(item: TResidenceObject) =>
                                                                 setFieldValue(
                                                                     'citizen',
                                                                     item.value ? item.text : '',
@@ -410,7 +435,7 @@ const CFDPersonalDetailsForm = ({
                                         <fieldset className='account-form__fieldset'>
                                             <DesktopWrapper>
                                                 <Field name='tax_residence'>
-                                                    {({ field }) => (
+                                                    {({ field }: FieldProps<TFormValues>) => (
                                                         <Autocomplete
                                                             id='real_mt5_tax_residence'
                                                             data-lpignore='true'
@@ -420,7 +445,7 @@ const CFDPersonalDetailsForm = ({
                                                             error={touched.tax_residence && errors.tax_residence}
                                                             disabled={!!(value.tax_residence && is_fully_authenticated)}
                                                             list_items={residence_list}
-                                                            onItemSelection={({ value: v, text }) =>
+                                                            onItemSelection={({ value: v, text }: TResidenceObject) =>
                                                                 setFieldValue('tax_residence', v ? text : '', true)
                                                             }
                                                             list_portal_id='modal_root'
@@ -458,10 +483,11 @@ const CFDPersonalDetailsForm = ({
                                         </fieldset>
                                         <FormSubHeader title={localize('Account opening reason')} />
                                         <Field name='account_opening_reason'>
-                                            {({ field }) => (
+                                            {({ field }: FieldProps<TFormValues>) => (
                                                 <React.Fragment>
                                                     <DesktopWrapper>
                                                         <Dropdown
+                                                            {...field}
                                                             placeholder={localize('Account opening reason')}
                                                             is_align_text_left
                                                             name={field.name}
@@ -474,11 +500,11 @@ const CFDPersonalDetailsForm = ({
                                                                 errors.account_opening_reason
                                                             }
                                                             list_portal_id='modal_root'
-                                                            {...field}
                                                         />
                                                     </DesktopWrapper>
                                                     <MobileWrapper>
                                                         <SelectNative
+                                                            {...field}
                                                             placeholder={localize('Please select')}
                                                             name={field.name}
                                                             label={localize('Account opening reason')}
@@ -496,7 +522,6 @@ const CFDPersonalDetailsForm = ({
                                                                     true
                                                                 );
                                                             }}
-                                                            {...field}
                                                         />
                                                     </MobileWrapper>
                                                 </React.Fragment>

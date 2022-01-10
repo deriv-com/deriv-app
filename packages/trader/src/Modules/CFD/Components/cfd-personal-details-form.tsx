@@ -1,3 +1,13 @@
+import {
+    Field,
+    FieldProps,
+    Formik,
+    FormikErrors,
+    FormikHelpers as FormikActions,
+    FormikProps,
+    FormikTouched,
+} from 'formik';
+import React from 'react';
 import { FormSubHeader } from '@deriv/account';
 import {
     Autocomplete,
@@ -17,16 +27,6 @@ import {
 } from '@deriv/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import {
-    Field,
-    FieldProps,
-    Formik,
-    FormikErrors,
-    FormikHelpers as FormikActions,
-    FormikProps,
-    FormikTouched,
-} from 'formik';
-import React from 'react';
 
 type TCFDPersonalDetailsFormProps = {
     onSave: (index: number, values: TFormValues) => void;

@@ -9,6 +9,6 @@ Blockly.JavaScript = require('blockly/javascript');
 window.goog = goog;
 window.Blockly = Blockly;
 
-require('imports-loader!scratch-blocks/msg/messages.js');
+require('imports-loader!scratch-blocks/msg/messages');
 require('./blocks');
 require('./hooks');

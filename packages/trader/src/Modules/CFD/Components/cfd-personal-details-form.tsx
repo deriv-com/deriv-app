@@ -1,12 +1,4 @@
-import {
-    Field,
-    FieldProps,
-    Formik,
-    FormikErrors,
-    FormikHelpers as FormikActions,
-    FormikProps,
-    FormikTouched,
-} from 'formik';
+import { Field, FieldProps, Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
 import React from 'react';
 import { FormSubHeader } from '@deriv/account';
 import {
@@ -188,7 +180,7 @@ const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
 
 export const InputField = ({ maxLength, name, optional = false, ...props }: TCFDInputFieldProps) => (
     <Field name={name}>
-        {({ field, form: { errors, touched } }: FieldProps) => (
+        {({ field, form: { errors, touched } }: FieldProps<TFormValues>) => (
             <Input
                 {...field}
                 type='text'
@@ -196,10 +188,7 @@ export const InputField = ({ maxLength, name, optional = false, ...props }: TCFD
                 name={name}
                 autoComplete='off'
                 maxLength={maxLength || '30'}
-                error={
-                    touched[field.name as keyof FormikTouched<TFormValues>] &&
-                    errors[field.name as keyof FormikErrors<TFormValues>]
-                }
+                error={touched[field.name] && errors[field.name]}
                 {...props}
             />
         )}

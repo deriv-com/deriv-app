@@ -1,5 +1,6 @@
 import { Field, FieldProps, Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
 import React from 'react';
+// @ts-ignore
 import { FormSubHeader } from '@deriv/account';
 import {
     Autocomplete,

@@ -105,7 +105,7 @@ type TIdentityObject = {
 
 type TPOIServiceObject = {
     documents_supported: {
-        [key: string]: { display_name: string } | {};
+        [key: string]: { display_name: string } | undefined;
     };
     has_visual_sample?: number;
     is_country_supported: number;

@@ -17,12 +17,11 @@ import {
 } from '@deriv/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Field, Formik } from 'formik';
-import PropTypes from 'prop-types';
+import { Field, Formik, FormikProps } from 'formik';
 import React from 'react';
 
 type TCFDPersonalDetailsFormProps = {
-    onSave: (index: number, value: string) => void;
+    onSave: (index: number, values: { [key: string]: string }) => void;
     is_fully_authenticated: boolean;
     is_loading: boolean;
     landing_company: TLandingCompany;
@@ -151,6 +150,25 @@ type TFindDefaultValuesInResidenceList = (
     tax_residence?: TResidenceObject;
 };
 
+type TCFDInputFieldProps = {
+    id?: string;
+    value?: string;
+    name: string;
+    maxLength?: number;
+    label: string;
+    optional?: boolean;
+    required?: boolean;
+    placeholder: string;
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+};
+
+type TFormValues = {
+    citizen: string;
+    tax_residence: string;
+    tax_identification_number: string;
+    account_opening_reason: string;
+};
+
 const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
     {
         text: localize('Hedging'),
@@ -170,7 +188,7 @@ const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
     },
 ];
 
-export const InputField = ({ maxLength, name, optional = false, ...props }) => (
+export const InputField = ({ maxLength, name, optional = false, ...props }: TCFDInputFieldProps) => (
     <Field name={name}>
         {({ field, form: { errors, touched } }) => (
             <Input
@@ -278,12 +296,12 @@ const CFDPersonalDetailsForm = ({
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = !!(landing_company?.config?.tax_details_required ?? false);
 
-    const handleCancel = values => {
+    const handleCancel = (values: { [key: string]: string }) => {
         onSave(index, values);
         onCancel();
     };
 
-    const onSubmitForm = (values, actions) =>
+    const onSubmitForm = (values: { [key: string]: string }, actions) =>
         submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values), residence_list);
 
     if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
@@ -320,7 +338,7 @@ const CFDPersonalDetailsForm = ({
                 values,
                 setFieldValue,
                 isValid,
-            }) => (
+            }: FormikProps<TFormValues>) => (
                 <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
                     {({ height, setRef }) => (
                         <form
@@ -356,7 +374,7 @@ const CFDPersonalDetailsForm = ({
                                                             type='text'
                                                             label={localize('Citizenship')}
                                                             error={touched.citizen && errors.citizen}
-                                                            disabled={value.citizen && is_fully_authenticated}
+                                                            disabled={!!(value.citizen && is_fully_authenticated)}
                                                             list_items={residence_list}
                                                             onItemSelection={item =>
                                                                 setFieldValue(
@@ -378,9 +396,11 @@ const CFDPersonalDetailsForm = ({
                                                     value={values.citizen}
                                                     list_items={residence_list}
                                                     error={touched.citizen && errors.citizen}
-                                                    disabled={value.citizen && is_fully_authenticated}
+                                                    disabled={!!(value.citizen && is_fully_authenticated)}
                                                     use_text={true}
-                                                    onChange={e => setFieldValue('citizen', e.target.value, true)}
+                                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                                                        setFieldValue('citizen', e.target.value, true)
+                                                    }
                                                     required
                                                     should_hide_disabled_options={false}
                                                 />
@@ -398,7 +418,7 @@ const CFDPersonalDetailsForm = ({
                                                             autoComplete='off'
                                                             label={localize('Tax residence')}
                                                             error={touched.tax_residence && errors.tax_residence}
-                                                            disabled={value.tax_residence && is_fully_authenticated}
+                                                            disabled={!!(value.tax_residence && is_fully_authenticated)}
                                                             list_items={residence_list}
                                                             onItemSelection={({ value: v, text }) =>
                                                                 setFieldValue('tax_residence', v ? text : '', true)
@@ -415,10 +435,12 @@ const CFDPersonalDetailsForm = ({
                                                     label={localize('Tax residence')}
                                                     value={values.tax_residence}
                                                     error={touched.tax_residence && errors.tax_residence}
-                                                    disabled={value.tax_residence && is_fully_authenticated}
+                                                    disabled={!!(value.tax_residence && is_fully_authenticated)}
                                                     list_items={residence_list}
                                                     use_text={true}
-                                                    onChange={e => setFieldValue('tax_residence', e.target.value, true)}
+                                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                                                        setFieldValue('tax_residence', e.target.value, true)
+                                                    }
                                                     required
                                                 />
                                             </MobileWrapper>
@@ -466,7 +488,7 @@ const CFDPersonalDetailsForm = ({
                                                                 touched.account_opening_reason &&
                                                                 errors.account_opening_reason
                                                             }
-                                                            onChange={e => {
+                                                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                                                 handleChange(e);
                                                                 setFieldValue(
                                                                     'account_opening_reason',
@@ -499,17 +521,6 @@ const CFDPersonalDetailsForm = ({
             )}
         </Formik>
     );
-};
-
-CFDPersonalDetailsForm.propTypes = {
-    is_fully_authenticated: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    onCancel: PropTypes.func,
-    onSave: PropTypes.func,
-    onSubmit: PropTypes.func,
-    residence_list: PropTypes.array,
-    value: PropTypes.object,
-    landing_company: PropTypes.object.isRequired,
 };
 
 export default CFDPersonalDetailsForm;

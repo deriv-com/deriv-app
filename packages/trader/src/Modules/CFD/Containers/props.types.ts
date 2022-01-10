@@ -7,8 +7,8 @@ export type TCFDChangePasswordConfirmationProps = {
 };
 
 export type TMT5AccountOpeningRealFinancialStpModal = {
-    enableApp: boolean;
-    disableApp: boolean;
-    disableMt5FinancialStpModal: boolean;
+    enableApp: () => void;
+    disableApp: () => void;
+    disableMt5FinancialStpModal: () => void;
     is_mt5_financial_stp_modal_open: boolean;
 };

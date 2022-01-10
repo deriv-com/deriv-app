@@ -208,6 +208,8 @@ const AccountTransferForm = ({
     is_dark_mode_on,
     minimum_fee,
     mt5_login_list,
+    onChangeConverterFromAmount,
+    onChangeConverterToAmount,
     onChangeTransferFrom,
     onChangeTransferTo,
     onMount,
@@ -552,7 +554,6 @@ const AccountTransferForm = ({
                                         </div>
                                         <CryptoFiatConverter
                                             from_currency={selected_from.currency}
-                                            to_currency={selected_to.currency}
                                             hint={
                                                 transfer_limit.max ? (
                                                     <Localize
@@ -576,6 +577,10 @@ const AccountTransferForm = ({
                                                     ''
                                                 )
                                             }
+                                            onChangeConverterFromAmount={onChangeConverterFromAmount}
+                                            onChangeConverterToAmount={onChangeConverterToAmount}
+                                            resetConverter={resetConverter}
+                                            to_currency={selected_to.currency}
                                             validateFromAmount={validateTransferFromAmount}
                                             validateToAmount={validateTransferToAmount}
                                         />
@@ -644,6 +649,8 @@ AccountTransferForm.propTypes = {
     error: PropTypes.object,
     is_crypto: PropTypes.bool,
     minimum_fee: PropTypes.string,
+    onChangeConverterFromAmount: PropTypes.func,
+    onChangeConverterToAmount: PropTypes.func,
     onChangeTransferFrom: PropTypes.func,
     onChangeTransferTo: PropTypes.func,
     onMount: PropTypes.func,
@@ -677,6 +684,8 @@ export default connect(({ client, modules, ui }) => ({
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     minimum_fee: modules.cashier.account_transfer.minimum_fee,
     mt5_login_list: client.mt5_login_list,
+    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
+    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
     onChangeTransferFrom: modules.cashier.account_transfer.onChangeTransferFrom,
     onChangeTransferTo: modules.cashier.account_transfer.onChangeTransferTo,
     onMount: client.getLimits,

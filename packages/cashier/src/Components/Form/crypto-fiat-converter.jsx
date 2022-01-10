@@ -160,7 +160,4 @@ export default connect(({ modules }) => ({
     converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
     converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
     is_timer_visible: modules.cashier.crypto_fiat_converter.is_timer_visible,
-    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
-    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
-    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
 }))(CryptoFiatConverter);

@@ -113,7 +113,7 @@ const PositionsDrawerCard = ({
         </React.Fragment>
     );
 
-    const supportedContractCard = (
+    const supported_contract_card = (
         <div
             className={classNames('dc-contract-card', {
                 'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
@@ -125,7 +125,7 @@ const PositionsDrawerCard = ({
         </div>
     );
 
-    const unsupportedContractCard = is_link_disabled ? (
+    const unsupported_contract_card = is_link_disabled ? (
         <div
             className={classNames('dc-contract-card', {
                 'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
@@ -142,9 +142,6 @@ const PositionsDrawerCard = ({
             })}
             to={{
                 pathname: `/contract/${contract_info.contract_id}`,
-                state: {
-                    // from_table_row: true,
-                },
             }}
         >
             {contract_info.underlying ? contract_el : loader_el}
@@ -178,7 +175,7 @@ const PositionsDrawerCard = ({
                     if (typeof onMouseLeave === 'function') onMouseLeave();
                 }}
             >
-                {is_unsupported ? supportedContractCard : unsupportedContractCard}
+                {is_unsupported ? supported_contract_card : unsupported_contract_card}
                 {card_footer}
             </div>
         </ContractCard>

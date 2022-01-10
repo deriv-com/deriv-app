@@ -105,47 +105,55 @@ const CFDFinancialStpRealAccountSignup = props => {
         nextStep(setSubmitting);
     };
 
-    const initiatePersonalDetails = async setSubmitting => {
-        // force request to update settings cache since settings have been updated
-        const response = await WS.authorized.storage.getSettings();
+    const initiatePersonalDetails = React.useCallback(
+        async setSubmitting => {
+            // force request to update settings cache since settings have been updated
+            const response = await WS.authorized.storage.getSettings();
 
-        if (response.error) {
-            setFormError(response.error.message);
-            if (typeof setSubmitting === 'function') {
-                setSubmitting(false);
+            if (response.error) {
+                setFormError(response.error.message);
+                if (typeof setSubmitting === 'function') {
+                    setSubmitting(false);
+                }
+                return;
             }
-            return;
-        }
 
-        const cloned = Object.assign([], items);
-        if (response.get_settings.citizen) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(response.get_settings.citizen);
-        }
-        if (response.get_settings.tax_residence) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(
-                response.get_settings.tax_residence
-            );
-        }
-        if (response.get_settings.tax_identification_number) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_identification_number =
-                response.get_settings.tax_identification_number;
-        }
-        if (response.get_settings.account_opening_reason) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.account_opening_reason =
-                response.get_settings.account_opening_reason;
-        }
-        setItems(cloned);
-    };
+            const cloned = Object.assign([], items);
+            if (response.get_settings.citizen) {
+                cloned[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(
+                    response.get_settings.citizen
+                );
+            }
+            if (response.get_settings.tax_residence) {
+                cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(
+                    response.get_settings.tax_residence
+                );
+            }
+            if (response.get_settings.tax_identification_number) {
+                cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_identification_number =
+                    response.get_settings.tax_identification_number;
+            }
+            if (response.get_settings.account_opening_reason) {
+                cloned[index_lookup.CFDPersonalDetailsForm].form_value.account_opening_reason =
+                    response.get_settings.account_opening_reason;
+            }
+            setItems(cloned);
+        },
+        [items, transform]
+    );
 
     React.useEffect(() => {
         props.refreshNotifications();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items]);
 
-    const transform = value => {
-        const [result] = props.residence_list.filter(item => item.value === value);
-        return getPropertyValue(result, ['text']) || value;
-    };
+    const transform = React.useCallback(
+        value => {
+            const [result] = props.residence_list.filter(item => item.value === value);
+            return getPropertyValue(result, ['text']) || value;
+        },
+        [props.residence_list]
+    );
 
     React.useEffect(() => {
         if (state_index === index_lookup.CFDPersonalDetailsForm) {
@@ -154,7 +162,7 @@ const CFDFinancialStpRealAccountSignup = props => {
                 setIsLoading(false);
             });
         }
-    }, []);
+    }, [initiatePersonalDetails, state_index]);
 
     const getCurrent = key => {
         return key ? items[state_index][key] : items[state_index];

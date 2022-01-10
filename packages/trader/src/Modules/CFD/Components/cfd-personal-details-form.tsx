@@ -21,6 +21,117 @@ import { FormSubHeader } from '@deriv/account';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
+type TCFDPersonalDetailsFormProps = {
+    onSave: (index: number, value: string) => void;
+    is_fully_authenticated: boolean;
+    is_loading: boolean;
+    landing_company: TLandingCompany;
+    residence_list: TResidenceObject[];
+    onCancel: () => void;
+    onSubmit: (
+        index: number,
+        value: string,
+        setSubmitting: (isSubmitting: boolean) => void,
+        is_dirty?: boolean
+    ) => void;
+    value: TValueObject;
+    index: number;
+    form_error?: string;
+};
+
+type TValueObject = {
+    citizen: string;
+    tax_residence: string;
+    tax_identification_number: string;
+    account_opening_reason: string;
+};
+
+type TResidenceObject = {
+    identity: TIdentityObject;
+    phone_idd: string;
+    text: string;
+    value: string;
+};
+
+type TIdentityObject = {
+    services: {
+        idv: TPOIServiceObject;
+        onfido: TPOIServiceObject;
+    };
+};
+
+type TPOIServiceObject = {
+    documents_supported: {
+        [key: string]: { display_name: string } | {};
+    };
+    has_visual_sample?: number;
+    is_country_supported: number;
+};
+
+type TLandingCompany = {
+    config: {};
+    dxtrade_financial_company: {
+        standard: TCompanyObject;
+    };
+    dxtrade_gaming_company: {
+        standard: TCompanyObject;
+    };
+    financial_company: {
+        standard: TCompanyObject;
+    };
+    gaming_company: {
+        standard: TCompanyObject;
+    };
+    id: string;
+    minimum_age: number;
+    mt_financial_company: {
+        financial: TCompanyObject;
+        financial_stp: TCompanyObject;
+        swap_free: TCompanyObject;
+    };
+    mt_gaming_company: {
+        financial: TCompanyObject;
+        swap_free: TCompanyObject;
+    };
+    name: string;
+    virtual_company: string;
+};
+
+type TMarketPairsObject = {
+    [key: string]: {
+        max_payout: number;
+        min_stake: number;
+    };
+};
+
+type TCompanyObject = {
+    address: string | null;
+    changeable_fields: {
+        only_before_auth: string[];
+        personal_details_not_locked: string[];
+    };
+    country: string;
+    currency_config: {
+        commodities: TMarketPairsObject;
+        cryptocurrency: TMarketPairsObject;
+        forex: TMarketPairsObject;
+        indices: TMarketPairsObject;
+        synthetic_index: TMarketPairsObject;
+    };
+    has_reality_check: number;
+    legal_allowed_contract_categories: string[];
+    legal_allowed_currencies: string[];
+    legal_allowed_markets: string[];
+    legal_default_currency: string;
+    name: string;
+    requirements: {
+        signup: string[];
+        withdrawal: string[];
+    };
+    shortcode: string;
+    support_professional_client: number;
+};
+
 const getAccountOpeningReasonList = () => [
     {
         text: localize('Hedging'),
@@ -135,7 +246,7 @@ const CFDPersonalDetailsForm = ({
     value,
     index,
     form_error,
-}) => {
+}: TCFDPersonalDetailsFormProps) => {
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = landing_company?.config?.tax_details_required ?? false;
 

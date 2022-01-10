@@ -26,7 +26,7 @@ import {
 } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
-import { InputField } from './cfd-personal-details-form.jsx';
+import { InputField } from './cfd-personal-details-form';
 
 let file_uploader_ref;
 

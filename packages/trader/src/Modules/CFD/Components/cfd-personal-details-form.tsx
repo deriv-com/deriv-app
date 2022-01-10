@@ -1,6 +1,4 @@
-import { Field, Formik } from 'formik';
-import PropTypes from 'prop-types';
-import React from 'react';
+import { FormSubHeader } from '@deriv/account';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -14,12 +12,14 @@ import {
     MobileWrapper,
     Modal,
     SelectNative,
-    ThemedScrollbars,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { FormSubHeader } from '@deriv/account';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { Field, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 type TCFDPersonalDetailsFormProps = {
     onSave: (index: number, value: string) => void;
@@ -34,78 +34,46 @@ type TCFDPersonalDetailsFormProps = {
         setSubmitting: (isSubmitting: boolean) => void,
         is_dirty?: boolean
     ) => void;
-    value: TValueObject;
+    value: { [key: string]: string };
     index: number;
     form_error?: string;
 };
 
-type TValueObject = {
-    citizen: string;
-    tax_residence: string;
-    tax_identification_number: string;
-    account_opening_reason: string;
-};
-
-type TResidenceObject = {
-    identity: TIdentityObject;
-    phone_idd: string;
-    text: string;
-    value: string;
-};
-
-type TIdentityObject = {
-    services: {
-        idv: TPOIServiceObject;
-        onfido: TPOIServiceObject;
-    };
-};
-
-type TPOIServiceObject = {
-    documents_supported: {
-        [key: string]: { display_name: string } | {};
-    };
-    has_visual_sample?: number;
-    is_country_supported: number;
-};
-
 type TLandingCompany = {
-    config: {};
+    config: {
+        tax_details_required?: number;
+        tin_format?: string[];
+        tin_format_description?: string;
+    };
     dxtrade_financial_company: {
-        standard: TCompanyObject;
+        standard: TCompanyDetailsObject;
     };
     dxtrade_gaming_company: {
-        standard: TCompanyObject;
+        standard: TCompanyDetailsObject;
     };
     financial_company: {
-        standard: TCompanyObject;
+        standard: TCompanyDetailsObject;
     };
     gaming_company: {
-        standard: TCompanyObject;
+        standard: TCompanyDetailsObject;
     };
     id: string;
     minimum_age: number;
     mt_financial_company: {
-        financial: TCompanyObject;
-        financial_stp: TCompanyObject;
-        swap_free: TCompanyObject;
+        financial: TCompanyDetailsObject;
+        financial_stp: TCompanyDetailsObject;
+        swap_free: TCompanyDetailsObject;
     };
     mt_gaming_company: {
-        financial: TCompanyObject;
-        swap_free: TCompanyObject;
+        financial: TCompanyDetailsObject;
+        swap_free: TCompanyDetailsObject;
     };
     name: string;
     virtual_company: string;
 };
 
-type TMarketPairsObject = {
-    [key: string]: {
-        max_payout: number;
-        min_stake: number;
-    };
-};
-
-type TCompanyObject = {
-    address: string | null;
+type TCompanyDetailsObject = {
+    address: string[] | {} | null;
     changeable_fields: {
         only_before_auth: string[];
         personal_details_not_locked: string[];
@@ -132,7 +100,58 @@ type TCompanyObject = {
     support_professional_client: number;
 };
 
-const getAccountOpeningReasonList = () => [
+type TMarketPairsObject = {
+    [key: string]: {
+        max_payout: number;
+        min_stake: number;
+    };
+};
+
+type TResidenceObject = {
+    identity: TIdentityObject;
+    phone_idd: string;
+    text: string;
+    value: string;
+    tin_format?: string[];
+};
+
+type TIdentityObject = {
+    services: {
+        idv: TPOIServiceObject;
+        onfido: TPOIServiceObject;
+    };
+};
+
+type TPOIServiceObject = {
+    documents_supported: {
+        [key: string]: { display_name: string } | {};
+    };
+    has_visual_sample?: number;
+    is_country_supported: number;
+};
+
+type TAccountOpeningReasonList = {
+    text: string;
+    value: string;
+}[];
+
+type TValidatePersonalDetailsParams = {
+    values: { [key: string]: string };
+    residence_list: TResidenceObject[];
+    account_opening_reason: TAccountOpeningReasonList;
+    is_tin_required: boolean;
+};
+
+type TFindDefaultValuesInResidenceList = (
+    citizen_text: string,
+    tax_residence_text: string,
+    residence_list: TResidenceObject[]
+) => {
+    citizen?: TResidenceObject;
+    tax_residence?: TResidenceObject;
+};
+
+const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
     {
         text: localize('Hedging'),
         value: 'Hedging',
@@ -168,7 +187,12 @@ export const InputField = ({ maxLength, name, optional = false, ...props }) => (
     </Field>
 );
 
-const validatePersonalDetails = ({ values, residence_list, account_opening_reason, is_tin_required }) => {
+const validatePersonalDetails = ({
+    values,
+    residence_list,
+    account_opening_reason,
+    is_tin_required,
+}: TValidatePersonalDetailsParams) => {
     const [tax_residence_obj] = residence_list.filter(res => res.text === values.tax_residence && res.tin_format);
     const [tin_format] = tax_residence_obj?.tin_format ?? [];
     const tin_regex = tin_format || '^[A-Za-z0-9./s-]{0,25}$'; // fallback to API's default rule check
@@ -182,19 +206,19 @@ const validatePersonalDetails = ({ values, residence_list, account_opening_reaso
         ],
         account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.value).includes(v)],
     };
-    const mappedKey = {
+    const mappedKey: { [key: string]: string } = {
         citizen: localize('Citizenship'),
         tax_residence: localize('Tax residence'),
         tax_identification_number: localize('Tax identification number'),
         account_opening_reason: localize('Account opening reason'),
     };
 
-    const field_error_messages = field_name => [
+    const field_error_messages = (field_name: string): string[] => [
         localize('{{field_name}} is required', { field_name }),
         localize('{{field_name}} is not properly formatted.', { field_name }),
     ];
 
-    const errors = {};
+    const errors: { [key: string]: React.ReactNode } = {};
 
     Object.entries(validations).forEach(([key, rules]) => {
         const error_index = rules.findIndex(v => !v(values[key]));
@@ -206,9 +230,13 @@ const validatePersonalDetails = ({ values, residence_list, account_opening_reaso
     return errors;
 };
 
-const findDefaultValuesInResidenceList = (citizen_text, tax_residence_text, residence_list) => {
+const findDefaultValuesInResidenceList: TFindDefaultValuesInResidenceList = (
+    citizen_text,
+    tax_residence_text,
+    residence_list
+) => {
     let citizen, tax_residence;
-    residence_list.forEach(item => {
+    residence_list.forEach((item: TResidenceObject) => {
         if (item.text === citizen_text) {
             citizen = item;
         }
@@ -248,7 +276,7 @@ const CFDPersonalDetailsForm = ({
     form_error,
 }: TCFDPersonalDetailsFormProps) => {
     const account_opening_reason = getAccountOpeningReasonList();
-    const is_tin_required = landing_company?.config?.tax_details_required ?? false;
+    const is_tin_required = !!(landing_company?.config?.tax_details_required ?? false);
 
     const handleCancel = values => {
         onSave(index, values);

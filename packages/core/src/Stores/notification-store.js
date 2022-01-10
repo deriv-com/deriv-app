@@ -173,6 +173,7 @@ export default class NotificationStore extends BaseStore {
             landing_company_shortcode,
             has_malta_account,
             has_iom_account,
+            is_identity_verification_needed,
             is_logged_in,
             is_tnc_needed,
             isAccountOfType,
@@ -256,6 +257,8 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.cashier_locked);
                 } else if (ASK_CURRENCY) {
                     this.addNotificationMessage(this.client_notifications.currency);
+                } else if (ASK_AUTHENTICATE && is_identity_verification_needed) {
+                    this.addNotificationMessage(this.client_notifications.identity);
                 } else if (ASK_AUTHENTICATE) {
                     this.addNotificationMessage(this.client_notifications.authenticate);
                 } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
@@ -291,6 +294,9 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.self_exclusion(client.excluded_until));
                 } else if (deposit_locked && unwelcome_status) {
                     this.addNotificationMessage(this.client_notifications.unwelcome);
+                }
+                if (is_identity_verification_needed) {
+                    this.addNotificationMessage(this.client_notifications.identity);
                 }
             }
             if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
@@ -547,6 +553,18 @@ export default class NotificationStore extends BaseStore {
                     message,
                     type: 'warning',
                 };
+            },
+            identity: {
+                key: 'identity',
+                header: localize('Let’s verify your ID'),
+                message: localize(
+                    'You need to make a quick identity verification before you can access the Cashier. Please go to your account settings to submit your proof of identity.'
+                ),
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Go to my account settings'),
+                },
+                type: 'warning',
             },
             authenticate: {
                 key: 'authenticate',

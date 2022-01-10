@@ -262,10 +262,14 @@ const AccountWizard = props => {
     const onAcceptRisk = () => {
         createRealAccount({ accept_risk: 1 });
     };
+    const onDeclineRisk = () => {
+        props.onClose();
+        props.setIsRiskWarningVisible(false);
+    };
 
     if (props.is_loading) return <LoadingModal />;
     if (should_accept_financial_risk) {
-        return <AcceptRiskForm onSubmit={onAcceptRisk} />;
+        return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
     if (!mounted) return null;
     if (!finished) {

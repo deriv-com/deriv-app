@@ -1,6 +1,4 @@
 import {
-    CFD_PLATFORMS,
-    deriv_urls,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
@@ -8,12 +6,14 @@ import {
     isEmptyObject,
     LocalStore,
     redirectToLogin,
-    routes,
     setCurrencies,
     State,
     toMoment,
-    urlFor,
+    deriv_urls,
     urlForLanguage,
+    filterUrlQuery,
+    CFD_PLATFORMS,
+    routes,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import Cookies from 'js-cookie';
@@ -439,6 +439,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_identity_verification_needed() {
+        const needs_verification = this.account_status?.authentication?.needs_verification;
+        return needs_verification?.length === 1 && needs_verification?.includes('identity');
+    }
+
+    @computed
     get is_tnc_needed() {
         if (this.is_virtual) return false;
 
@@ -703,6 +709,11 @@ export default class ClientStore extends BaseStore {
         return this.isDxtradeAllowed(this.landing_companies);
     }
 
+    @computed
+    get is_bot_allowed() {
+        return this.isBotAllowed();
+    }
+
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
@@ -727,6 +738,14 @@ export default class ClientStore extends BaseStore {
             'dxtrade_gaming_company' in landing_companies ||
             (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
         );
+    };
+
+    isBotAllowed = () => {
+        // Stop showing Bot, DBot, DSmartTrader for logged out EU IPs
+        if (!this.is_logged_in && this.is_eu_country) return false;
+
+        const is_mf = this.landing_company_shortcode === 'maltainvest';
+        return this.is_virtual ? !this.is_multipliers_only : !is_mf && !this.is_options_blocked;
     };
 
     @computed
@@ -1220,7 +1239,13 @@ export default class ClientStore extends BaseStore {
                 await BinarySocket.authorize(client.token);
             }
             if (redirect_url) {
-                window.location.replace(urlFor(routes[redirect_url], { query_string: search }));
+                const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
+                if (search_params?.get('action') === 'reset_password') {
+                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
+                    window.location.replace(`${redirect_route}/redirect?${query_string}`);
+                } else {
+                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
+                }
             }
             runInAction(() => {
                 this.is_populating_account_list = false;

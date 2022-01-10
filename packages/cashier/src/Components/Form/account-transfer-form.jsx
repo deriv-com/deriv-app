@@ -323,13 +323,11 @@ const AccountTransferForm = ({
             if (!is_selected_from) {
                 const is_selected_from_mt = selected_from.is_mt && account.is_mt;
                 const is_selected_from_dxtrade = selected_from.is_dxtrade && account.is_dxtrade;
-                const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
 
                 // cannot transfer to MT account from MT
-                // cannot transfer to crypto account from crypto
                 // cannot transfer to Dxtrade account from Dxtrade
 
-                const is_disabled = is_selected_from_mt || is_selected_from_crypto || is_selected_from_dxtrade;
+                const is_disabled = is_selected_from_mt || is_selected_from_dxtrade;
 
                 getAccounts('to', account).push({
                     text,

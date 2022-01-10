@@ -108,23 +108,28 @@ export default class PaymentAgentStore {
         this.clearList();
         this.clearSuppertedBanks();
         // TODO: Once telephone, url and supported_banks removed from paymentagent_list.list we can remove them and just use the plural ones
-        payment_agent_list.paymentagent_list?.list.forEach(payment_agent => {
-            this.setList({
-                email: payment_agent.email,
-                phones: payment_agent?.phone_numbers || payment_agent?.telephone,
-                name: payment_agent.name,
-                supported_banks: payment_agent?.supported_payment_methods || payment_agent?.supported_banks,
-                urls: payment_agent?.urls || payment_agent?.url,
-            });
-            if (payment_agent.supported_banks) {
-                const supported_banks_array = payment_agent?.supported_payment_methods
-                    ? payment_agent.supported_payment_methods.map(bank => bank.payment_method)
-                    : payment_agent.supported_banks.split(',');
-                supported_banks_array.forEach(bank => {
-                    this.addSupportedBank(bank);
+        try {
+            payment_agent_list.paymentagent_list?.list.forEach(payment_agent => {
+                this.setList({
+                    email: payment_agent.email,
+                    phones: payment_agent?.phone_numbers || payment_agent?.telephone,
+                    name: payment_agent.name,
+                    supported_banks: payment_agent?.supported_payment_methods || payment_agent?.supported_banks,
+                    urls: payment_agent?.urls || payment_agent?.url,
                 });
-            }
-        });
+                if (payment_agent.supported_banks) {
+                    const supported_banks_array = payment_agent?.supported_payment_methods
+                        ? payment_agent.supported_payment_methods.map(bank => bank.payment_method)
+                        : payment_agent.supported_banks.split(',');
+                    supported_banks_array.forEach(bank => {
+                        this.addSupportedBank(bank);
+                    });
+                }
+            });
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(e);
+        }
 
         this.sortSupportedBanks();
     }

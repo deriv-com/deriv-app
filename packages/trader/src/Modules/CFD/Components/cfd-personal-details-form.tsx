@@ -36,7 +36,7 @@ type TCFDPersonalDetailsFormProps = {
     residence_list: TResidenceObject[];
     onCancel: () => void;
     onSubmit: TOnSubmit;
-    value: { [key: string]: string };
+    value: TFormValues;
     index: number;
     form_error?: string;
 };
@@ -47,47 +47,29 @@ type TLandingCompany = {
         tin_format?: string[];
         tin_format_description?: string;
     };
-    dxtrade_financial_company: {
-        standard: TCompanyDetailsObject;
-    };
-    dxtrade_gaming_company: {
-        standard: TCompanyDetailsObject;
-    };
-    financial_company: {
-        standard: TCompanyDetailsObject;
-    };
-    gaming_company: {
-        standard: TCompanyDetailsObject;
-    };
+    dxtrade_financial_company: Record<'standard', TCompanyDetailsObject>;
+    dxtrade_gaming_company: Record<'standard', TCompanyDetailsObject>;
+    financial_company: Record<'standard', TCompanyDetailsObject>;
+    gaming_company: Record<'standard', TCompanyDetailsObject>;
     id: string;
     minimum_age: number;
-    mt_financial_company: {
-        financial: TCompanyDetailsObject;
-        financial_stp: TCompanyDetailsObject;
-        swap_free: TCompanyDetailsObject;
-    };
-    mt_gaming_company: {
-        financial: TCompanyDetailsObject;
-        swap_free: TCompanyDetailsObject;
-    };
+    mt_financial_company: Record<'financial' | 'financial_stp' | 'swap_free', TCompanyDetailsObject>;
+    mt_gaming_company: Record<'financial' | 'swap_free', TCompanyDetailsObject>;
     name: string;
     virtual_company: string;
 };
 
 type TCompanyDetailsObject = {
-    address: string[] | {} | null;
+    address: string[] | null;
     changeable_fields: {
         only_before_auth: string[];
         personal_details_not_locked: string[];
     };
     country: string;
-    currency_config: {
-        commodities: TMarketPairsObject;
-        cryptocurrency: TMarketPairsObject;
-        forex: TMarketPairsObject;
-        indices: TMarketPairsObject;
-        synthetic_index: TMarketPairsObject;
-    };
+    currency_config: Record<
+        'commodities' | 'cryptocurrency' | 'forex' | 'indices' | 'synthetic_index',
+        TMarketPairsObject
+    >;
     has_reality_check: number;
     legal_allowed_contract_categories: string[];
     legal_allowed_currencies: string[];
@@ -118,10 +100,7 @@ type TResidenceObject = {
 };
 
 type TIdentityObject = {
-    services: {
-        idv: TPOIServiceObject;
-        onfido: TPOIServiceObject;
-    };
+    services: Record<'idv' | 'onfido', TPOIServiceObject>;
 };
 
 type TPOIServiceObject = {
@@ -131,11 +110,6 @@ type TPOIServiceObject = {
     has_visual_sample?: number;
     is_country_supported: number;
 };
-
-type TAccountOpeningReasonList = {
-    text: string;
-    value: string;
-}[];
 
 type TValidatePersonalDetailsParams = {
     values: TFormValues;
@@ -187,6 +161,11 @@ type TSubmitForm = (
     is_dirty: boolean,
     residence_list: TResidenceObject[]
 ) => void;
+
+type TAccountOpeningReasonList = {
+    text: string;
+    value: string;
+}[];
 
 const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
     {

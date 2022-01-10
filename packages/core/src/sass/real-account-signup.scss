@@ -13,11 +13,15 @@
     &__container {
         padding: 0 2.4rem;
 
+        & .dc-text {
+            text-align: justify;
+        }
         @include mobile {
             padding: 0 1.6rem;
         }
     }
     &__form {
+        display: grid;
         height: calc(100% - 57px);
         position: relative;
         width: 100%;

@@ -98,7 +98,7 @@
         "@deriv/components": "^1.0.0",
         "@deriv/dashboard": "^0.0.4",
         "@deriv/deriv-api": "^1.0.8",
-        "@deriv/deriv-charts": "^0.4.1",
+        "@deriv/deriv-charts": "^0.5.0",
         "@deriv/p2p": "^0.7.3",
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",

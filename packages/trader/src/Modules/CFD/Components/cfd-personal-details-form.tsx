@@ -262,187 +262,198 @@ const CFDPersonalDetailsForm = ({
                 values,
                 setFieldValue,
                 isValid,
-            }: FormikProps<TFormValues>) => (
-                <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
-                    {({ height, setRef }: { height: number; setRef: (instance: HTMLFormElement | null) => void }) => (
-                        <form
-                            className='cfd-financial-stp-modal__form'
-                            ref={setRef}
-                            onSubmit={handleSubmit}
-                            autoComplete='off'
-                        >
-                            <Div100vhContainer
-                                className='details-form'
-                                max_autoheight_offset='179px'
-                                is_disabled={isDesktop()}
+            }: FormikProps<TFormValues>) => {
+                const citizenship_error = touched.citizen && errors.citizen;
+                const tax_residence_error = touched.tax_residence && errors.tax_residence;
+                const account_opening_reason_error = touched.account_opening_reason && errors.account_opening_reason;
+                const is_citizenship_disabled = !!(value.citizen && is_fully_authenticated);
+                const is_tax_residence_disabled = !!(value.tax_residence && is_fully_authenticated);
+
+                return (
+                    <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
+                        {({
+                            height,
+                            setRef,
+                        }: {
+                            height: number;
+                            setRef: (instance: HTMLFormElement | null) => void;
+                        }) => (
+                            <form
+                                className='cfd-financial-stp-modal__form'
+                                ref={setRef}
+                                onSubmit={handleSubmit}
+                                autoComplete='off'
                             >
-                                <Text as='p' size='xxxs' align='center' className='details-form__description'>
-                                    <Localize
-                                        i18n_default_text={
-                                            'Any information you provide is confidential and will be used for verification purposes only.'
-                                        }
+                                <Div100vhContainer
+                                    className='details-form'
+                                    max_autoheight_offset='179px'
+                                    is_disabled={isDesktop()}
+                                >
+                                    <Text as='p' size='xxxs' align='center' className='details-form__description'>
+                                        <Localize
+                                            i18n_default_text={
+                                                'Any information you provide is confidential and will be used for verification purposes only.'
+                                            }
+                                        />
+                                    </Text>
+                                    <ThemedScrollbars height={height} is_bypassed={isMobile()}>
+                                        <div className='details-form__elements'>
+                                            <FormSubHeader title={localize('Details')} />
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Field name='citizen'>
+                                                        {({ field }: FieldProps<string, TFormValues>) => (
+                                                            <Autocomplete
+                                                                {...field}
+                                                                id='real_mt5_citizenship'
+                                                                data-lpignore='true'
+                                                                autoComplete='off'
+                                                                type='text'
+                                                                label={localize('Citizenship')}
+                                                                error={citizenship_error}
+                                                                disabled={is_citizenship_disabled}
+                                                                list_items={residence_list}
+                                                                onItemSelection={(item: ResidenceList[0]) =>
+                                                                    setFieldValue(
+                                                                        'citizen',
+                                                                        item.value ? item.text : '',
+                                                                        true
+                                                                    )
+                                                                }
+                                                                list_portal_id='modal_root'
+                                                                required
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        label={localize('Citizenship')}
+                                                        value={values.citizen}
+                                                        list_items={residence_list}
+                                                        error={citizenship_error}
+                                                        disabled={is_citizenship_disabled}
+                                                        use_text={true}
+                                                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                                                            setFieldValue('citizen', e.target.value, true)
+                                                        }
+                                                        required
+                                                        should_hide_disabled_options={false}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                            <FormSubHeader title={localize('Tax information')} />
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Field name='tax_residence'>
+                                                        {({ field }: FieldProps<string, TFormValues>) => (
+                                                            <Autocomplete
+                                                                id='real_mt5_tax_residence'
+                                                                data-lpignore='true'
+                                                                type='text'
+                                                                autoComplete='off'
+                                                                label={localize('Tax residence')}
+                                                                error={tax_residence_error}
+                                                                disabled={is_tax_residence_disabled}
+                                                                list_items={residence_list}
+                                                                onItemSelection={({
+                                                                    value: v,
+                                                                    text,
+                                                                }: ResidenceList[0]) =>
+                                                                    setFieldValue('tax_residence', v ? text : '', true)
+                                                                }
+                                                                list_portal_id='modal_root'
+                                                                {...field}
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        label={localize('Tax residence')}
+                                                        value={values.tax_residence}
+                                                        error={tax_residence_error}
+                                                        disabled={is_tax_residence_disabled}
+                                                        list_items={residence_list}
+                                                        use_text={true}
+                                                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                                                            setFieldValue('tax_residence', e.target.value, true)
+                                                        }
+                                                        required
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <InputField
+                                                    id='real_mt5_tax_identification_number'
+                                                    name='tax_identification_number'
+                                                    label={localize('Tax identification number')}
+                                                    placeholder={localize('Tax identification number')}
+                                                    value={values.tax_identification_number}
+                                                    onBlur={handleBlur}
+                                                    optional
+                                                />
+                                            </fieldset>
+                                            <FormSubHeader title={localize('Account opening reason')} />
+                                            <Field name='account_opening_reason'>
+                                                {({ field }: FieldProps<string, TFormValues>) => (
+                                                    <React.Fragment>
+                                                        <DesktopWrapper>
+                                                            <Dropdown
+                                                                {...field}
+                                                                placeholder={localize('Account opening reason')}
+                                                                is_align_text_left
+                                                                name={field.name}
+                                                                list={account_opening_reason}
+                                                                value={values.account_opening_reason}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={account_opening_reason_error}
+                                                                list_portal_id='modal_root'
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                {...field}
+                                                                placeholder={localize('Please select')}
+                                                                name={field.name}
+                                                                label={localize('Account opening reason')}
+                                                                list_items={account_opening_reason}
+                                                                value={values.account_opening_reason}
+                                                                error={account_opening_reason_error}
+                                                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                                                    handleChange(e);
+                                                                    setFieldValue(
+                                                                        'account_opening_reason',
+                                                                        e.target.value,
+                                                                        true
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </MobileWrapper>
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                        </div>
+                                    </ThemedScrollbars>
+                                </Div100vhContainer>
+                                <Modal.Footer is_bypassed={isMobile()}>
+                                    {form_error && <FormSubmitErrorMessage message={form_error} />}
+                                    <FormSubmitButton
+                                        cancel_label={localize('Previous')}
+                                        is_disabled={isSubmitting || !isValid}
+                                        is_absolute={isMobile()}
+                                        label={localize('Next')}
+                                        onCancel={() => handleCancel(values)}
                                     />
-                                </Text>
-                                <ThemedScrollbars height={height} is_bypassed={isMobile()}>
-                                    <div className='details-form__elements'>
-                                        <FormSubHeader title={localize('Details')} />
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Field name='citizen'>
-                                                    {({ field }: FieldProps<string, TFormValues>) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            id='real_mt5_citizenship'
-                                                            data-lpignore='true'
-                                                            autoComplete='off'
-                                                            type='text'
-                                                            label={localize('Citizenship')}
-                                                            error={touched.citizen && errors.citizen}
-                                                            disabled={!!(value.citizen && is_fully_authenticated)}
-                                                            list_items={residence_list}
-                                                            onItemSelection={(item: ResidenceList[0]) =>
-                                                                setFieldValue(
-                                                                    'citizen',
-                                                                    item.value ? item.text : '',
-                                                                    true
-                                                                )
-                                                            }
-                                                            list_portal_id='modal_root'
-                                                            required
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    label={localize('Citizenship')}
-                                                    value={values.citizen}
-                                                    list_items={residence_list}
-                                                    error={touched.citizen && errors.citizen}
-                                                    disabled={!!(value.citizen && is_fully_authenticated)}
-                                                    use_text={true}
-                                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                                                        setFieldValue('citizen', e.target.value, true)
-                                                    }
-                                                    required
-                                                    should_hide_disabled_options={false}
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
-                                        <FormSubHeader title={localize('Tax information')} />
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Field name='tax_residence'>
-                                                    {({ field }: FieldProps<string, TFormValues>) => (
-                                                        <Autocomplete
-                                                            id='real_mt5_tax_residence'
-                                                            data-lpignore='true'
-                                                            type='text'
-                                                            autoComplete='off'
-                                                            label={localize('Tax residence')}
-                                                            error={touched.tax_residence && errors.tax_residence}
-                                                            disabled={!!(value.tax_residence && is_fully_authenticated)}
-                                                            list_items={residence_list}
-                                                            onItemSelection={({ value: v, text }: ResidenceList[0]) =>
-                                                                setFieldValue('tax_residence', v ? text : '', true)
-                                                            }
-                                                            list_portal_id='modal_root'
-                                                            {...field}
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    label={localize('Tax residence')}
-                                                    value={values.tax_residence}
-                                                    error={touched.tax_residence && errors.tax_residence}
-                                                    disabled={!!(value.tax_residence && is_fully_authenticated)}
-                                                    list_items={residence_list}
-                                                    use_text={true}
-                                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                                                        setFieldValue('tax_residence', e.target.value, true)
-                                                    }
-                                                    required
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
-                                        <fieldset className='account-form__fieldset'>
-                                            <InputField
-                                                id='real_mt5_tax_identification_number'
-                                                name='tax_identification_number'
-                                                label={localize('Tax identification number')}
-                                                placeholder={localize('Tax identification number')}
-                                                value={values.tax_identification_number}
-                                                onBlur={handleBlur}
-                                                optional
-                                            />
-                                        </fieldset>
-                                        <FormSubHeader title={localize('Account opening reason')} />
-                                        <Field name='account_opening_reason'>
-                                            {({ field }: FieldProps<string, TFormValues>) => (
-                                                <React.Fragment>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            {...field}
-                                                            placeholder={localize('Account opening reason')}
-                                                            is_align_text_left
-                                                            name={field.name}
-                                                            list={account_opening_reason}
-                                                            value={values.account_opening_reason}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.account_opening_reason &&
-                                                                errors.account_opening_reason
-                                                            }
-                                                            list_portal_id='modal_root'
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            {...field}
-                                                            placeholder={localize('Please select')}
-                                                            name={field.name}
-                                                            label={localize('Account opening reason')}
-                                                            list_items={account_opening_reason}
-                                                            value={values.account_opening_reason}
-                                                            error={
-                                                                touched.account_opening_reason &&
-                                                                errors.account_opening_reason
-                                                            }
-                                                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                                                handleChange(e);
-                                                                setFieldValue(
-                                                                    'account_opening_reason',
-                                                                    e.target.value,
-                                                                    true
-                                                                );
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </React.Fragment>
-                                            )}
-                                        </Field>
-                                    </div>
-                                </ThemedScrollbars>
-                            </Div100vhContainer>
-                            <Modal.Footer is_bypassed={isMobile()}>
-                                {form_error && <FormSubmitErrorMessage message={form_error} />}
-                                <FormSubmitButton
-                                    cancel_label={localize('Previous')}
-                                    is_disabled={isSubmitting || !isValid}
-                                    is_absolute={isMobile()}
-                                    label={localize('Next')}
-                                    onCancel={() => handleCancel(values)}
-                                />
-                            </Modal.Footer>
-                        </form>
-                    )}
-                </AutoHeightWrapper>
-            )}
+                                </Modal.Footer>
+                            </form>
+                        )}
+                    </AutoHeightWrapper>
+                );
+            }}
         </Formik>
     );
 };

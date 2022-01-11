@@ -1,7 +1,7 @@
 import { Field, FieldProps, Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
 import React from 'react';
-// @ts-ignore
 import { FormSubHeader } from '@deriv/account';
+import { LandingCompany, ResidenceList } from '@deriv/api-types';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -34,66 +34,18 @@ type TCFDPersonalDetailsFormProps = {
     form_error?: string;
 };
 
-type TLandingCompany = {
-    config: {
+type TLandingCompany = LandingCompany & {
+    config?: {
         tax_details_required?: number;
         tin_format?: string[];
         tin_format_description?: string;
     };
-    dxtrade_financial_company: Record<'standard', TCompanyDetailsObject>;
-    dxtrade_gaming_company: Record<'standard', TCompanyDetailsObject>;
-    financial_company: Record<'standard', TCompanyDetailsObject>;
-    gaming_company: Record<'standard', TCompanyDetailsObject>;
-    id: string;
-    minimum_age: number;
-    mt_financial_company: Record<'financial' | 'financial_stp' | 'swap_free', TCompanyDetailsObject>;
-    mt_gaming_company: Record<'financial' | 'swap_free', TCompanyDetailsObject>;
-    name: string;
-    virtual_company: string;
 };
 
-type TCompanyDetailsObject = {
-    address: string[] | null;
-    changeable_fields: {
-        only_before_auth: string[];
-        personal_details_not_locked: string[];
+type TResidenceObject = ResidenceList[0] & {
+    identity: {
+        services: Record<'idv' | 'onfido', TPOIServiceObject>;
     };
-    country: string;
-    currency_config: Record<
-        'commodities' | 'cryptocurrency' | 'forex' | 'indices' | 'synthetic_index',
-        TMarketPairsObject
-    >;
-    has_reality_check: number;
-    legal_allowed_contract_categories: string[];
-    legal_allowed_currencies: string[];
-    legal_allowed_markets: string[];
-    legal_default_currency: string;
-    name: string;
-    requirements: {
-        signup: string[];
-        withdrawal: string[];
-    };
-    shortcode: string;
-    support_professional_client: number;
-};
-
-type TMarketPairsObject = {
-    [key: string]: {
-        max_payout: number;
-        min_stake: number;
-    };
-};
-
-type TResidenceObject = {
-    identity: TIdentityObject;
-    phone_idd: string;
-    text: string;
-    value: string;
-    tin_format?: string[];
-};
-
-type TIdentityObject = {
-    services: Record<'idv' | 'onfido', TPOIServiceObject>;
 };
 
 type TPOIServiceObject = {
@@ -268,8 +220,8 @@ const submitForm: TSubmitForm = (values, actions, idx, onSubmitFn, is_dirty, res
     );
 
     const payload = {
-        citizen: typeof citizen !== 'undefined' ? citizen.value : '',
-        tax_residence: typeof tax_residence !== 'undefined' ? tax_residence.value : '',
+        citizen: citizen && citizen.value ? citizen.value : '',
+        tax_residence: tax_residence && tax_residence.value ? tax_residence.value : '',
         ...restOfValues,
     };
     onSubmitFn(idx, payload, actions.setSubmitting, is_dirty);

@@ -111,7 +111,7 @@ const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
 
 export const InputField = ({ maxLength, name, optional = false, ...props }: TCFDInputFieldProps) => (
     <Field name={name}>
-        {({ field, form: { errors, touched } }: FieldProps<TFormValues>) => (
+        {({ field, form: { errors, touched } }: FieldProps<string, TFormValues>) => (
             <Input
                 {...field}
                 type='text'
@@ -119,7 +119,7 @@ export const InputField = ({ maxLength, name, optional = false, ...props }: TCFD
                 name={name}
                 autoComplete='off'
                 maxLength={maxLength || '30'}
-                error={touched[field.name] && errors[field.name]}
+                error={touched[field.name as keyof TFormValues] && errors[field.name as keyof TFormValues]}
                 {...props}
             />
         )}
@@ -289,7 +289,7 @@ const CFDPersonalDetailsForm = ({
                                         <fieldset className='account-form__fieldset'>
                                             <DesktopWrapper>
                                                 <Field name='citizen'>
-                                                    {({ field }: FieldProps<TFormValues>) => (
+                                                    {({ field }: FieldProps<string, TFormValues>) => (
                                                         <Autocomplete
                                                             {...field}
                                                             id='real_mt5_citizenship'
@@ -334,7 +334,7 @@ const CFDPersonalDetailsForm = ({
                                         <fieldset className='account-form__fieldset'>
                                             <DesktopWrapper>
                                                 <Field name='tax_residence'>
-                                                    {({ field }: FieldProps<TFormValues>) => (
+                                                    {({ field }: FieldProps<string, TFormValues>) => (
                                                         <Autocomplete
                                                             id='real_mt5_tax_residence'
                                                             data-lpignore='true'
@@ -382,7 +382,7 @@ const CFDPersonalDetailsForm = ({
                                         </fieldset>
                                         <FormSubHeader title={localize('Account opening reason')} />
                                         <Field name='account_opening_reason'>
-                                            {({ field }: FieldProps<TFormValues>) => (
+                                            {({ field }: FieldProps<string, TFormValues>) => (
                                                 <React.Fragment>
                                                     <DesktopWrapper>
                                                         <Dropdown

@@ -13,13 +13,13 @@ export const getWalletLabels = (): IWalletLabels => ({
 });
 
 interface IWalletLabels {
-    DEPOSIT: string,
-    GET_WALLET: string,
-    RESET: string,
-    SETTINGS: string,
-    TEMPORARILY_UNAVAILABLE: string,
-    TOPUP: string,
-    TRANSACTIONS: string,
-    TRANSFER: string,
-    WITHDRAWAL: string,
+    DEPOSIT: string;
+    GET_WALLET: string;
+    RESET: string;
+    SETTINGS: string;
+    TEMPORARILY_UNAVAILABLE: string;
+    TOPUP: string;
+    TRANSACTIONS: string;
+    TRANSFER: string;
+    WITHDRAWAL: string;
 }

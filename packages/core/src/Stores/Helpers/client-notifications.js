@@ -143,6 +143,18 @@ export const clientNotifications = (ui = {}, client = {}, custom_header, custom_
                 type: 'warning',
             };
         },
+        identity: {
+            key: 'identity',
+            header: localize('Let’s verify your ID'),
+            message: localize(
+                'You need to make a quick identity verification before you can access the Cashier. Please go to your account settings to submit your proof of identity.'
+            ),
+            action: {
+                route: routes.proof_of_identity,
+                text: localize('Go to my account settings'),
+            },
+            type: 'warning',
+        },
         authenticate: {
             key: 'authenticate',
             header: localize('Your account has not been verified'),
@@ -527,7 +539,8 @@ const checkAccountStatus = (
     getRiskAssessment,
     isAccountOfType,
     ui_store,
-    is_10k_withdrawal_limit_reached
+    is_10k_withdrawal_limit_reached,
+    is_identity_verification_needed
 ) => {
     if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
@@ -582,6 +595,8 @@ const checkAccountStatus = (
             addNotificationMessage(clientNotifications().cashier_locked);
         } else if (ASK_CURRENCY) {
             addNotificationMessage(clientNotifications(ui_store).currency);
+        } else if (ASK_AUTHENTICATE && is_identity_verification_needed) {
+            addNotificationMessage(clientNotifications().identity);
         } else if (ASK_AUTHENTICATE) {
             addNotificationMessage(clientNotifications().authenticate);
         } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
@@ -613,6 +628,9 @@ const checkAccountStatus = (
             addNotificationMessage(clientNotifications().self_exclusion(client.excluded_until));
         } else if (deposit_locked && unwelcome_status) {
             addNotificationMessage(clientNotifications().unwelcome);
+        }
+        if (is_identity_verification_needed) {
+            addNotificationMessage(clientNotifications().identity);
         }
     }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
@@ -649,6 +667,7 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
         is_tnc_needed,
         isAccountOfType,
         loginid,
+        is_identity_verification_needed,
     } = client_store;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_p2p_visible } = cashier_store.general_store;
@@ -687,7 +706,8 @@ export const handleClientNotifications = async (client, client_store, ui_store, 
             getRiskAssessment,
             isAccountOfType,
             ui_store,
-            is_10k_withdrawal_limit_reached
+            is_10k_withdrawal_limit_reached,
+            is_identity_verification_needed
         ));
         if (is_p2p_visible) {
             addNotificationMessage(clientNotifications().dp2p);

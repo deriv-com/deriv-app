@@ -51,7 +51,6 @@
         &--is-mobile {
             @include mobile {
                 width: 100vw;
-                margin-top: 4rem;
 
                 .dc-collapsible {
                     position: relative;

@@ -95,7 +95,11 @@ const CryptoFiatConverter = ({
                 {arrow_icon_direction === 'right' ? <Icon icon='IcArrowDownBold' /> : <Icon icon='IcArrowUpBold' />}
             </MobileWrapper>
             <DesktopWrapper>
-                {arrow_icon_direction === 'right' ? <Icon icon='IcArrowRightBold' /> : <Icon icon='IcArrowLeftBold' />}
+                {arrow_icon_direction === 'right' ? (
+                    <Icon icon='IcArrowRightBold' id='arrow_right_bold' />
+                ) : (
+                    <Icon icon='IcArrowLeftBold' id='arrow_left_bold' />
+                )}
             </DesktopWrapper>
             <Field name='converter_to_amount' validate={validateToAmount}>
                 {({ field }) => (

@@ -37,7 +37,7 @@ type TCFDPersonalDetailsFormProps = {
 type TValidatePersonalDetailsParams = {
     values: TFormValues;
     residence_list: ResidenceList;
-    account_opening_reason: TAccountOpeningReasonList;
+    account_opening_reason: TTextValueObject[];
     is_tin_required: boolean;
 };
 
@@ -85,12 +85,12 @@ type TSubmitForm = (
     residence_list: ResidenceList
 ) => void;
 
-type TAccountOpeningReasonList = {
+type TTextValueObject = {
     text: string;
     value: string;
-}[];
+};
 
-const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
+const getAccountOpeningReasonList = (): TTextValueObject[] => [
     {
         text: localize('Hedging'),
         value: 'Hedging',
@@ -268,6 +268,10 @@ const CFDPersonalDetailsForm = ({
                 const account_opening_reason_error = touched.account_opening_reason && errors.account_opening_reason;
                 const is_citizenship_disabled = !!(value.citizen && is_fully_authenticated);
                 const is_tax_residence_disabled = !!(value.tax_residence && is_fully_authenticated);
+                const handleItemSelection = (item: TTextValueObject, _field: string) => {
+                    const _value = item.value ? item.text : '';
+                    setFieldValue(_field, _value, true);
+                };
 
                 return (
                     <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
@@ -313,10 +317,9 @@ const CFDPersonalDetailsForm = ({
                                                                 error={citizenship_error}
                                                                 disabled={is_citizenship_disabled}
                                                                 list_items={residence_list}
-                                                                onItemSelection={(item: ResidenceList[0]) => {
-                                                                    const _value = item.value ? item.text : '';
-                                                                    setFieldValue('citizen', _value, true);
-                                                                }}
+                                                                onItemSelection={(item: TTextValueObject) =>
+                                                                    handleItemSelection(item, 'citizen')
+                                                                }
                                                                 list_portal_id='modal_root'
                                                                 required
                                                             />
@@ -354,13 +357,9 @@ const CFDPersonalDetailsForm = ({
                                                                 error={tax_residence_error}
                                                                 disabled={is_tax_residence_disabled}
                                                                 list_items={residence_list}
-                                                                onItemSelection={({
-                                                                    value: v,
-                                                                    text,
-                                                                }: ResidenceList[0]) => {
-                                                                    const _value = v ? text : '';
-                                                                    setFieldValue('tax_residence', _value, true);
-                                                                }}
+                                                                onItemSelection={(item: TTextValueObject) =>
+                                                                    handleItemSelection(item, 'tax_residence')
+                                                                }
                                                                 list_portal_id='modal_root'
                                                                 {...field}
                                                             />

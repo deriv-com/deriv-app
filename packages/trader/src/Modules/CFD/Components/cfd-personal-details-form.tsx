@@ -313,13 +313,10 @@ const CFDPersonalDetailsForm = ({
                                                                 error={citizenship_error}
                                                                 disabled={is_citizenship_disabled}
                                                                 list_items={residence_list}
-                                                                onItemSelection={(item: ResidenceList[0]) =>
-                                                                    setFieldValue(
-                                                                        'citizen',
-                                                                        item.value ? item.text : '',
-                                                                        true
-                                                                    )
-                                                                }
+                                                                onItemSelection={(item: ResidenceList[0]) => {
+                                                                    const _value = item.value ? item.text : '';
+                                                                    setFieldValue('citizen', _value, true);
+                                                                }}
                                                                 list_portal_id='modal_root'
                                                                 required
                                                             />
@@ -360,9 +357,10 @@ const CFDPersonalDetailsForm = ({
                                                                 onItemSelection={({
                                                                     value: v,
                                                                     text,
-                                                                }: ResidenceList[0]) =>
-                                                                    setFieldValue('tax_residence', v ? text : '', true)
-                                                                }
+                                                                }: ResidenceList[0]) => {
+                                                                    const _value = v ? text : '';
+                                                                    setFieldValue('tax_residence', _value, true);
+                                                                }}
                                                                 list_portal_id='modal_root'
                                                                 {...field}
                                                             />

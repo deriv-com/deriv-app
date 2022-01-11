@@ -9,7 +9,6 @@ const FlyoutBlock = ({ initBlockWorkspace, block_node, should_center_block, shou
     React.useEffect(() => {
         initBlockWorkspace(el_block_workspace, block_node, should_center_block);
     }, [should_center_block, block_node, initBlockWorkspace]);
-    // initBlockWorkspace
 
     return (
         <div

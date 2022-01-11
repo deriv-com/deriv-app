@@ -25,8 +25,8 @@ type TCFDPersonalDetailsFormProps = {
     onSave: (index: number, values: TFormValues) => void;
     is_fully_authenticated: boolean;
     is_loading: boolean;
-    landing_company: TLandingCompany;
-    residence_list: TResidenceObject[];
+    landing_company: LandingCompany;
+    residence_list: ResidenceList;
     onCancel: () => void;
     onSubmit: TOnSubmit;
     value: TFormValues;
@@ -34,31 +34,9 @@ type TCFDPersonalDetailsFormProps = {
     form_error?: string;
 };
 
-type TLandingCompany = LandingCompany & {
-    config?: {
-        tax_details_required?: number;
-        tin_format?: string[];
-        tin_format_description?: string;
-    };
-};
-
-type TResidenceObject = ResidenceList[0] & {
-    identity: {
-        services: Record<'idv' | 'onfido', TPOIServiceObject>;
-    };
-};
-
-type TPOIServiceObject = {
-    documents_supported: {
-        [key: string]: { display_name: string } | undefined;
-    };
-    has_visual_sample?: number;
-    is_country_supported: number;
-};
-
 type TValidatePersonalDetailsParams = {
     values: TFormValues;
-    residence_list: TResidenceObject[];
+    residence_list: ResidenceList;
     account_opening_reason: TAccountOpeningReasonList;
     is_tin_required: boolean;
 };
@@ -66,10 +44,10 @@ type TValidatePersonalDetailsParams = {
 type TFindDefaultValuesInResidenceList = (
     citizen_text: string,
     tax_residence_text: string,
-    residence_list: TResidenceObject[]
+    residence_list: ResidenceList
 ) => {
-    citizen?: TResidenceObject;
-    tax_residence?: TResidenceObject;
+    citizen?: ResidenceList[0];
+    tax_residence?: ResidenceList[0];
 };
 
 type TCFDInputFieldProps = {
@@ -104,7 +82,7 @@ type TSubmitForm = (
     idx: number,
     onSubmitFn: TOnSubmit,
     is_dirty: boolean,
-    residence_list: TResidenceObject[]
+    residence_list: ResidenceList
 ) => void;
 
 type TAccountOpeningReasonList = {
@@ -200,7 +178,7 @@ const findDefaultValuesInResidenceList: TFindDefaultValuesInResidenceList = (
     residence_list
 ) => {
     let citizen, tax_residence;
-    residence_list.forEach((item: TResidenceObject) => {
+    residence_list.forEach((item: ResidenceList[0]) => {
         if (item.text === citizen_text) {
             citizen = item;
         }
@@ -322,7 +300,7 @@ const CFDPersonalDetailsForm = ({
                                                             error={touched.citizen && errors.citizen}
                                                             disabled={!!(value.citizen && is_fully_authenticated)}
                                                             list_items={residence_list}
-                                                            onItemSelection={(item: TResidenceObject) =>
+                                                            onItemSelection={(item: ResidenceList[0]) =>
                                                                 setFieldValue(
                                                                     'citizen',
                                                                     item.value ? item.text : '',
@@ -366,7 +344,7 @@ const CFDPersonalDetailsForm = ({
                                                             error={touched.tax_residence && errors.tax_residence}
                                                             disabled={!!(value.tax_residence && is_fully_authenticated)}
                                                             list_items={residence_list}
-                                                            onItemSelection={({ value: v, text }: TResidenceObject) =>
+                                                            onItemSelection={({ value: v, text }: ResidenceList[0]) =>
                                                                 setFieldValue('tax_residence', v ? text : '', true)
                                                             }
                                                             list_portal_id='modal_root'

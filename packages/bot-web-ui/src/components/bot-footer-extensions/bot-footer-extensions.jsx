@@ -16,7 +16,8 @@ const SecurityAndPrivacy = () => (
 
 const BotFooterExtensions = ({ active_tab, populateFooterExtensions, setActiveTab }) => {
     React.useEffect(() => populateFooter());
-    React.useEffect(() => () => populateFooterExtensions([]), []);
+    React.useEffect(() => () => populateFooterExtensions([]), [populateFooterExtensions]);
+    // populateFooterExtensions
 
     const FooterTabs = () => (
         <div className='bot-footer-extensions'>

@@ -27,7 +27,7 @@ const App = ({ passthrough }) => {
 
     React.useEffect(() => {
         showDigitalOptionsMaltainvestError(core.client, common);
-    }, [core.client.is_options_blocked]);
+    }, [core.client, showDigitalOptionsMaltainvestError, common]);
 
     React.useEffect(() => {
         GTM.init(root_store_instance.current);

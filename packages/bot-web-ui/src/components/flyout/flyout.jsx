@@ -37,7 +37,7 @@ const FlyoutContent = props => {
 
     React.useEffect(() => {
         flyout_ref.current.scrollTop = 0;
-    }, [selected_category]);
+    }, [selected_category, flyout_ref]);
 
     React.useEffect(() => {
         const view = flyout_ref.current.querySelector('.flyout__item--active');
@@ -47,7 +47,7 @@ const FlyoutContent = props => {
                 block: 'start',
             });
         }
-    }, [active_helper]);
+    }, [active_helper, flyout_ref]);
 
     return (
         <div

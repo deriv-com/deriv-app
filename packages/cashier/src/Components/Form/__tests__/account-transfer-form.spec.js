@@ -24,18 +24,37 @@ describe('<AccountTransferForm />', () => {
         document.body.removeChild(modal_root_el);
     });
     const mockProps = () => ({
-        accounts_list: [1, 2, 3],
+        accounts_list: [
+            {
+                currency: 'USD',
+                is_mt: false,
+                is_dxtrade: false,
+                market_type: 'gaming',
+                value: 'value',
+            },
+        ],
         account_limits: {
             daily_transfers: {
-                mt5: {},
                 dxtrade: {},
                 internal: {},
+                mt5: {},
             },
         },
         minimum_fee: '0',
-        mt5_login_list: [],
-        selected_from: { is_mt: false, currency: 'USD' },
-        selected_to: { is_mt: false, currency: 'USD' },
+        mt5_login_list: [
+            {
+                login: 'value',
+                market_type: 'gaming',
+                server_info: {
+                    geolocation: {
+                        region: 'region',
+                        sequence: 0,
+                    },
+                },
+            },
+        ],
+        selected_from: { currency: 'USD', is_mt: false },
+        selected_to: { currency: 'USD', is_mt: false },
         transfer_fee: 2,
         transfer_limit: {
             min: 0,
@@ -44,6 +63,7 @@ describe('<AccountTransferForm />', () => {
         onMount: jest.fn(),
         resetConverter: jest.fn(),
         recentTransactionOnMount: jest.fn(),
+        requestTransferBetweenAccounts: jest.fn(),
     });
 
     it('component should be rendered', () => {
@@ -120,6 +140,25 @@ describe('<AccountTransferForm />', () => {
         await waitFor(() => {
             expect(screen.getByText('Insufficient balance')).toBeInTheDocument();
         });
+    });
+
+    it('should not allow to do transfer if accounts from and to are same', () => {
+        isMobile.mockReturnValue(true);
+        const props = mockProps();
+        props.accounts_list[0].is_mt = true;
+        props.selected_from.is_mt = true;
+        props.selected_from.balance = 200;
+        props.setAccountTransferAmount = jest.fn();
+        props.setErrorMessage = jest.fn();
+
+        const { container } = render(<AccountTransferForm {...props} />);
+
+        act(() => {
+            fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '100' } });
+        });
+        fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
+
+        expect(props.requestTransferBetweenAccounts).not.toHaveBeenCalled();
     });
 
     it('should show input if same currency', () => {
@@ -419,5 +458,15 @@ describe('<AccountTransferForm />', () => {
                 'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv fiat and Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
+    });
+
+    it('should show proper note if transfer fee is 2% and is_mt_transfer is false', () => {
+        isMobile.mockReturnValue(true);
+        const props = mockProps();
+        props.transfer_fee = null;
+
+        render(<AccountTransferForm {...props} />);
+
+        expect(screen.getByText('Please bear in mind that some transfers may not be possible.')).toBeInTheDocument();
     });
 });

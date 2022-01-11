@@ -74,4 +74,4 @@ LinearProgressContainer.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
-export default React.forwardRef(LinearProgressContainer);
+export default LinearProgressContainer;

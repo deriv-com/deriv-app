@@ -51,7 +51,6 @@
         &--is-mobile {
             @include mobile {
                 width: 100vw;
-                margin-top: 4rem;
 
                 .dc-collapsible {
                     position: relative;
@@ -259,7 +258,6 @@
     &__page-wrapper {
         @include mobile {
             height: unset;
-            margin-top: 2.4rem;
         }
         &__loader {
             position: fixed;
@@ -333,30 +331,30 @@
                 position: static;
                 margin-top: 1.6rem;
                 gap: 1.2rem;
-            /* postcss-bem-linter: ignore */
-            & .dc-page-overlay__header {
-                position: fixed;
-                top: 4rem;
-                width: 100%;
-                height: 4rem;
-            }
-        }
-        &-side-note {
-            &__link {
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-
-                &:hover {
-                    text-decoration: underline var(--brand-red-coral);
-                }
-
-                .dc-text {
-                    margin-right: 0.4rem;
+                /* postcss-bem-linter: ignore */
+                & .dc-page-overlay__header {
+                    position: fixed;
+                    top: 4rem;
+                    width: 100%;
+                    height: 4rem;
                 }
             }
+            &-side-note {
+                &__link {
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+
+                    &:hover {
+                        text-decoration: underline var(--brand-red-coral);
+                    }
+
+                    .dc-text {
+                        margin-right: 0.4rem;
+                    }
+                }
+            }
         }
-    }
         &-button {
             min-width: 25.8rem;
             padding: 6px 16px;

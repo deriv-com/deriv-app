@@ -207,7 +207,7 @@ describe('<AccountTransferForm />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show note with proper message if is_dxtrade_allowed', () => {
+    it('should show notes with proper messages if is_dxtrade_allowed', () => {
         isMobile.mockReturnValue(true);
         const props = mockProps();
         props.account_limits = {
@@ -236,7 +236,7 @@ describe('<AccountTransferForm />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show note with proper message if is_dxtrade_allowed is false', () => {
+    it('should show notes with proper messages if is_dxtrade_allowed is false', () => {
         isMobile.mockReturnValue(true);
         const props = mockProps();
         props.account_limits = {
@@ -312,27 +312,6 @@ describe('<AccountTransferForm />', () => {
         render(<AccountTransferForm {...props} />);
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
-    });
-
-    it("should show proper AccountTransferNote if 'is_dxtrade_allowed' prop is true", () => {
-        isMobile.mockReturnValue(true);
-        const props = mockProps();
-
-        render(<AccountTransferForm {...props} is_dxtrade_allowed />);
-        expect(
-            screen.getByText('You may transfer between your Deriv fiat, cryptocurrency, DMT5, and Deriv X accounts.')
-        ).toBeInTheDocument();
-    });
-
-    it("should show proper AccountTransferNote if 'is_dxtrade_allowed' prop is false", () => {
-        isMobile.mockReturnValue(true);
-        const props = mockProps();
-
-        render(<AccountTransferForm {...props} is_dxtrade_allowed={false} />);
-
-        expect(
-            screen.getByText('You may transfer between your Deriv fiat, cryptocurrency, and DMT5 accounts.')
-        ).toBeInTheDocument();
     });
 
     it('should show proper note if no transfer fee and dxtrade_allowed ', () => {

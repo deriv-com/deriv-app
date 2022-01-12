@@ -72,8 +72,6 @@ const PasswordBox = ({ platform, onClick }) => (
                     <Icon
                         icon='IcEdit'
                         className='da-article__learn-more-icon'
-                        height={16}
-                        width={16}
                         custom_color='var(--text-less-prominent)'
                     />
                 }

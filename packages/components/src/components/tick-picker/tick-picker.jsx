@@ -43,7 +43,7 @@ const TickPicker = ({
 
     React.useEffect(() => {
         if (onValueChange) onValueChange(tick_value);
-    }, [tick_value]);
+    }, [tick_value, onValueChange]);
 
     const throttledSwipeHandler = throttle(
         ({ dir }) => {

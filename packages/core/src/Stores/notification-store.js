@@ -370,12 +370,12 @@ export default class NotificationStore extends BaseStore {
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');
         if (!excluded_notifications.includes(key) && active_loginid) {
-            const messages = LocalStore.getObject('notification_messages');
+            let messages = LocalStore.getObject('notification_messages');
             // Check if same message already exists in LocalStore for this account
             if (messages[active_loginid] && messages[active_loginid].includes(key)) {
                 return;
             }
-            const current_message = () => {
+            const getCurrentMessage = () => {
                 if (Array.isArray(messages[active_loginid])) {
                     messages[active_loginid].push(key);
                     return messages[active_loginid];
@@ -384,7 +384,7 @@ export default class NotificationStore extends BaseStore {
             };
             if (!should_show_again) {
                 // Store message into LocalStore upon closing message
-                Object.assign(messages, { [active_loginid]: current_message() });
+                messages = { ...messages, [active_loginid]: getCurrentMessage() };
                 LocalStore.setObject('notification_messages', messages);
             }
         }
@@ -424,7 +424,6 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     setClientNotifications(client = {}) {
-        // TODO: Update links to app_2 links when components are done. (Mahdi)
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
         const { ui } = this.root_store;

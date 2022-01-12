@@ -34,7 +34,7 @@ describe('<CryptoWithdrawForm />', () => {
         expect(container.querySelector('.cashier__content-header')).toBeInTheDocument();
     });
 
-    it('should show a proper error if adress is not provided', async () => {
+    it('should show a proper error if address is not provided', async () => {
         const props = mockProps();
         const { container } = render(<CryptoWithdrawForm {...props} />);
 
@@ -51,7 +51,7 @@ describe('<CryptoWithdrawForm />', () => {
         });
     });
 
-    it('should show a proper error if adress is less characters than needed', async () => {
+    it('should show a proper error if provided address has less characters than needed', async () => {
         const props = mockProps();
         const { container } = render(<CryptoWithdrawForm {...props} />);
 
@@ -65,7 +65,7 @@ describe('<CryptoWithdrawForm />', () => {
         });
     });
 
-    it('should show a proper error if adress is more characters than needed', async () => {
+    it('should show a proper error if provided address has more characters than needed', async () => {
         const props = mockProps();
         const { container } = render(<CryptoWithdrawForm {...props} />);
 
@@ -81,7 +81,7 @@ describe('<CryptoWithdrawForm />', () => {
         });
     });
 
-    it("requestWithdraw func should be called if value provided from 'converter_from_amount' input and click on withdraw button", async () => {
+    it("requestWithdraw func should be called if value provided from 'converter_from_amount' input and withdraw button is clicked", async () => {
         const props = mockProps();
         const { container } = render(<CryptoWithdrawForm {...props} />);
 
@@ -102,7 +102,7 @@ describe('<CryptoWithdrawForm />', () => {
         await waitFor(() => expect(props.requestWithdraw).toHaveBeenCalled());
     });
 
-    it("requestWithdraw func should be called if value provided from 'converter_to_amount' input and click on withdraw button", async () => {
+    it("requestWithdraw func should be called if value provided from 'converter_to_amount' input and withdraw button is clicked", async () => {
         const props = mockProps();
         const { container } = render(<CryptoWithdrawForm {...props} />);
 

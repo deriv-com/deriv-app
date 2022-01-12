@@ -12,7 +12,7 @@ const offsetTop = (extra_offset, is_floating, ref, selected) => {
     const headers = ref.current.querySelectorAll(
         '.dc-vertical-tab__header__link, .dc-vertical-tab__header-group__link'
     );
-    let selected_el = [...headers].find(header =>
+    const selected_el = [...headers].find(header =>
         typeof selected.getTitle === 'function'
             ? header.innerText === selected.getTitle()
             : header.innerText === selected.label

@@ -4,7 +4,7 @@ module.exports = {
     extends: '../../.eslintrc.js',
     settings: {
         'import/resolver': {
-            webpack: { config: webpackConfig({})},
-        }
+            webpack: { config: webpackConfig({}) },
+        },
     },
 };

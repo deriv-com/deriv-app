@@ -1,6 +1,11 @@
 import React from 'react';
 
-export const useLongPress = (callback = () => {}, ms = 300) => {
+export const useLongPress = (
+    callback = () => {
+        /** empty function */
+    },
+    ms = 300
+) => {
     const [startLongPress, setStartLongPress] = React.useState(false);
 
     const preventDefaults = e => {
@@ -13,13 +18,15 @@ export const useLongPress = (callback = () => {}, ms = 300) => {
         if (startLongPress) {
             timer = setTimeout(callback, ms);
         } else {
-            clearTimeout(timer);
+            if (timer) {
+                clearTimeout(timer);
+            }
         }
 
         return () => {
             clearTimeout(timer);
         };
-    }, [startLongPress]);
+    }, [startLongPress, callback, ms]);
 
     return {
         onMouseDown: e => {

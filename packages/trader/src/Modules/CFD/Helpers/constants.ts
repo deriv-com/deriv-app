@@ -64,7 +64,6 @@ const getMT5WebTerminalLink = ({
 };
 
 export {
-    getServerName,
     getBrokerName,
     getPlatformDXTradeDownloadLink,
     getPlatformMt5DownloadLink,

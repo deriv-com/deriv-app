@@ -37,7 +37,7 @@ type TCFDPersonalDetailsFormProps = {
 type TValidatePersonalDetailsParams = {
     values: TFormValues;
     residence_list: ResidenceList;
-    account_opening_reason: TTextValueObject[];
+    account_opening_reason: TAccountOpeningReasonList;
     is_tin_required: boolean;
 };
 
@@ -85,12 +85,12 @@ type TSubmitForm = (
     residence_list: ResidenceList
 ) => void;
 
-type TTextValueObject = {
+type TAccountOpeningReasonList = {
     text: string;
     value: string;
-};
+}[];
 
-const getAccountOpeningReasonList = (): TTextValueObject[] => [
+const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
     {
         text: localize('Hedging'),
         value: 'Hedging',
@@ -268,7 +268,7 @@ const CFDPersonalDetailsForm = ({
                 const account_opening_reason_error = touched.account_opening_reason && errors.account_opening_reason;
                 const is_citizenship_disabled = !!(value.citizen && is_fully_authenticated);
                 const is_tax_residence_disabled = !!(value.tax_residence && is_fully_authenticated);
-                const handleItemSelection = (item: TTextValueObject, _field: string) => {
+                const handleItemSelection = (item: ResidenceList[0], _field: string) => {
                     const _value = item.value ? item.text : '';
                     setFieldValue(_field, _value, true);
                 };
@@ -317,7 +317,7 @@ const CFDPersonalDetailsForm = ({
                                                                 error={citizenship_error}
                                                                 disabled={is_citizenship_disabled}
                                                                 list_items={residence_list}
-                                                                onItemSelection={(item: TTextValueObject) =>
+                                                                onItemSelection={(item: ResidenceList[0]) =>
                                                                     handleItemSelection(item, 'citizen')
                                                                 }
                                                                 list_portal_id='modal_root'
@@ -357,7 +357,7 @@ const CFDPersonalDetailsForm = ({
                                                                 error={tax_residence_error}
                                                                 disabled={is_tax_residence_disabled}
                                                                 list_items={residence_list}
-                                                                onItemSelection={(item: TTextValueObject) =>
+                                                                onItemSelection={(item: ResidenceList[0]) =>
                                                                     handleItemSelection(item, 'tax_residence')
                                                                 }
                                                                 list_portal_id='modal_root'

@@ -380,15 +380,15 @@ describe('<AccountTransferForm />', () => {
     it('should show proper note if transfer fee is 2% and is_crypto_to_crypto_transfer', () => {
         isMobile.mockReturnValue(true);
         const props = mockProps();
-        props.selected_from = { currency: 'USD', is_crypto: true };
-        props.selected_to = { currency: 'USD', is_crypto: true };
+        props.selected_from = { currency: 'BTC', is_crypto: true };
+        props.selected_to = { currency: 'BTC', is_crypto: true };
         props.transfer_fee = 2;
 
         render(<AccountTransferForm {...props} />);
 
         expect(
             screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
+                'We’ll charge a 2% transfer fee or 0 BTC, whichever is higher, for transfers between your Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
     });
@@ -439,7 +439,7 @@ describe('<AccountTransferForm />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show proper note if transfer fee is 2% and is_mt_transfer is false', () => {
+    it('should show proper note if transfer fee is null', () => {
         isMobile.mockReturnValue(true);
         const props = mockProps();
         props.transfer_fee = null;

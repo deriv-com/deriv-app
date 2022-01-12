@@ -7,6 +7,6 @@ export type TCFDChangePasswordConfirmationProps = {
 };
 
 export type TMissingRealAccount = {
-    onClickSignup: () => void; 
-    platform:'dxtrade' | 'mt5';
-}
+    onClickSignup: () => void;
+    platform: 'dxtrade' | 'mt5';
+};

@@ -3,7 +3,7 @@ import React from 'react';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TMissingRealAccount } from "./props.types";
+import { TMissingRealAccount } from './props.types';
 
 const MissingRealAccount = ({ onClickSignup, platform }: TMissingRealAccount) => (
     <div className='cfd-dashboard__missing-real'>

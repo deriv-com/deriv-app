@@ -17,10 +17,8 @@ export const useLongPress = (
         let timer;
         if (startLongPress) {
             timer = setTimeout(callback, ms);
-        } else {
-            if (timer) {
-                clearTimeout(timer);
-            }
+        } else if (timer) {
+            clearTimeout(timer);
         }
 
         return () => {

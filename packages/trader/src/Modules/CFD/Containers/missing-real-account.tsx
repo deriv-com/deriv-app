@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { Button } from '@deriv/components';

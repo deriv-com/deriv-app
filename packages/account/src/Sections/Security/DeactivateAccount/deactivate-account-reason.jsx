@@ -123,7 +123,8 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
     React.useEffect(() => {
         if (total_checkbox_checked === max_allowed_reasons) setIsCheckboxDisabled(true);
         else if (is_checkbox_disabled) setIsCheckboxDisabled(false);
-    }, [is_checkbox_disabled, total_checkbox_checked]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [total_checkbox_checked]);
 
     const handleChangeCheckbox = (values, name, setFieldValue) => {
         if (!values[name]) {

@@ -24,7 +24,7 @@ import CFDServerErrorDialog from './cfd-server-error-dialog.jsx';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal.jsx';
 import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog.jsx';
+import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';

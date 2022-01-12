@@ -80,16 +80,6 @@ const ModalElement = ({
         };
     }, []);
 
-    React.useEffect(() => {
-        const closeOnEscButton = e => {
-            if (e.key === 'Escape') {
-                toggleModal?.();
-            }
-        };
-        window.addEventListener('keydown', closeOnEscButton);
-        return () => window.removeEventListener('keydown', closeOnEscButton);
-    }, []);
-
     const rendered_title = typeof renderTitle === 'function' ? renderTitle() : null;
 
     return ReactDOM.createPortal(

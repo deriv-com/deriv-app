@@ -37,7 +37,7 @@ const Error = Loadable({
 });
 
 const Routes = ({
-    clearPortfolio,
+    onUnmountPortfolio,
     error,
     has_error,
     history,
@@ -63,14 +63,14 @@ const Routes = ({
                                     }
                                     return [route.path];
                                 })
-                                .filter(path => path && path !== routes.mt5),
-                            to: [routes.mt5],
+                                .filter(path => path && path !== routes.mt5 && path !== routes.dxtrade),
+                            to: [routes.mt5, routes.dxtrade],
                         },
                     ],
                     action,
                     callback: has_match => {
                         if (has_match) {
-                            clearPortfolio();
+                            onUnmountPortfolio();
                         }
                     },
                 });
@@ -95,8 +95,8 @@ const Routes = ({
     }, []);
 
     React.useEffect(() => {
-        return () => clearPortfolio();
-    }, [clearPortfolio]);
+        return () => onUnmountPortfolio();
+    }, [onUnmountPortfolio]);
 
     if (has_error) return <Error {...error} />;
 
@@ -118,7 +118,7 @@ Routes.propTypes = {
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
     connect(({ client, common, modules, ui }) => ({
-        clearPortfolio: modules.portfolio.clearTable,
+        onUnmountPortfolio: modules.portfolio.onUnmount,
         error: common.error,
         has_error: common.has_error,
         is_logged_in: client.is_logged_in,

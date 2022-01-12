@@ -69,7 +69,6 @@ const BuySellTable = ({ onScroll }) => {
                         })}
                     </RadioGroup>
                 </Modal>
-
                 {isDesktop() && (
                     <Table.Header>
                         <Table.Row className='buy-sell__table-header'>

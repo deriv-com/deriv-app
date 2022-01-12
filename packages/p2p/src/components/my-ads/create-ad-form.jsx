@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import {
+    Autocomplete,
     Button,
     Checkbox,
     Div100vhContainer,
@@ -375,12 +376,30 @@ const CreateAdForm = () => {
                                                 )}
                                             </React.Fragment>
                                         ) : (
-                                            <div className='p2p-my-ads__form-payment-methods--empty'>
-                                                <Icon icon='IcAddCircle' size={14} />
-                                                <Text color='less-prominent' size='xs'>
-                                                    <Localize i18n_default_text='Add' />
-                                                </Text>
-                                            </div>
+                                            <Field name='add'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        {...field}
+                                                        className='p2p-my-ads__form-payment-methods--empty'
+                                                        data-lpignore='true'
+                                                        label={
+                                                            <React.Fragment>
+                                                                <Icon icon='IcAddCircle' size={14} />
+                                                                <Text color='less-prominent' size='xs'>
+                                                                    <Localize i18n_default_text='Add' />
+                                                                </Text>
+                                                            </React.Fragment>
+                                                        }
+                                                        list_items={my_profile_store.payment_methods_list_items}
+                                                        onItemSelection={({ value }) => {
+                                                            setFieldValue('add', value);
+                                                        }}
+                                                        trailing_icon={<></>}
+                                                        type='text'
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
                                         )}
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button

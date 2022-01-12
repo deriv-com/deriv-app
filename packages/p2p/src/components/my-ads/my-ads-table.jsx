@@ -16,6 +16,7 @@ const getHeaders = offered_currency => [
     { text: localize('Limits') },
     { text: localize('Rate (1 {{ offered_currency }})', { offered_currency }) },
     { text: localize('Available amount') },
+    { text: localize('Payment methods') },
     { text: localize('Status') },
     { text: '' }, // empty header for delete and archive icons
 ];
@@ -79,7 +80,6 @@ const MyAdsTable = () => {
                         />
                     </Table.Body>
                 </Table>
-
                 {isMobile() && (
                     <div className='p2p-my-ads__create-container'>
                         <Button className='p2p-my-ads__create' large primary onClick={my_ads_store.onClickCreate}>

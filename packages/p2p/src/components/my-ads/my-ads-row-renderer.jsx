@@ -21,6 +21,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         local_currency,
         max_order_amount_display,
         min_order_amount_display,
+        payment_method_names,
         price_display,
         remaining_amount,
         remaining_amount_display,
@@ -174,6 +175,24 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                     <div className='p2p-my-ads__table-available-value'>
                         {remaining_amount_display}/{amount_display} {account_currency}
                     </div>
+                </Table.Cell>
+                <Table.Cell>
+                    {payment_method_names ? (
+                        payment_method_names.map((payment_method, key) => {
+                            return (
+                                <div className='p2p-my-ads__table__payment-method' key={key}>
+                                    {payment_method}
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <div className='p2p-my-ads__table-add'>
+                            <Icon icon='IcAdd' />
+                            <Text color='prominent' size='xxs'>
+                                <Localize i18n_default_text='Add' />
+                            </Text>
+                        </div>
+                    )}
                 </Table.Cell>
                 <Table.Cell>
                     <div className='p2p-my-ads__table-status'>

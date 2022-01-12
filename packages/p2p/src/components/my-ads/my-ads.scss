@@ -66,7 +66,7 @@
 
         &-payment-methods {
             &--empty {
-                border: 1px dotted var(--border-normal);
+                max-width: 67.2rem;
                 padding: 1.2rem 1.6rem;
             }
 
@@ -190,10 +190,29 @@
         flex: 1;
         flex-direction: column;
 
+        &-add {
+            align-items: center;
+            border: 1px solid var(--border-normal);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0.5rem;
+        }
+
         &-body {
             flex: 1;
             display: flex;
             flex-direction: column;
+        }
+
+        &__payment-method {
+            align-items: center;
+            border: 1px solid var(--border-normal);
+            border-radius: 0.4rem;
+            display: flex;
+            flex-direction: row;
+            padding: 0 0.8rem;
         }
 
         &-price {
@@ -327,7 +346,7 @@
         }
         &-row {
             padding: 1.6rem;
-            grid-template-columns: repeat(4, 2fr) 1.8fr;
+            grid-template-columns: repeat(5, 2fr) 1.8fr;
 
             @include mobile {
                 grid-template-columns: unset;

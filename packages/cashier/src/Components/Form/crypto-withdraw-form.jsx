@@ -138,10 +138,10 @@ const CryptoWithdrawForm = ({
                             </div>
                             <CryptoFiatConverter
                                 from_currency={crypto_currency}
-                                to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 onChangeConverterFromAmount={onChangeConverterFromAmount}
                                 onChangeConverterToAmount={onChangeConverterToAmount}
                                 resetConverter={resetConverter}
+                                to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}
                             />

@@ -278,7 +278,7 @@ export default class WithdrawStore {
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
         const { openReadMoreDialog } = error_dialog;
 
-        const min_withdraw_amount = this.crypto_config.currencies_config[currency].minimum_withdrawal;
+        const min_withdraw_amount = this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal;
         const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
 
         const format_balance = formatMoney(currency, balance, true);

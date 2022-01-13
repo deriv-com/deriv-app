@@ -24,7 +24,8 @@ export const useLongPress = (
         return () => {
             clearTimeout(timer);
         };
-    }, [startLongPress, callback, ms]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [startLongPress]);
 
     return {
         onMouseDown: e => {

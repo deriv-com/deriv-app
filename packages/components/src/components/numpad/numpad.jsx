@@ -40,6 +40,7 @@ const Numpad = ({
             updateValue(value);
             setFloat(isFloat(value));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     React.useEffect(() => {

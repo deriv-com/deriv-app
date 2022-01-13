@@ -41,6 +41,7 @@ const Content = ({ is_routed, items, selected }) => {
             setSideNotes(notes_array[0] ?? null);
             notes_array.splice(0, notes_array.length);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_item]);
 
     return (

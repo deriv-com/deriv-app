@@ -97,7 +97,7 @@ const POISubmission = ({
 
     switch (submission_status) {
         case submission_status_code.selecting: {
-            const show_helper_msg = has_attempted_idv && Number(idv.submissions_left) > 0;
+            const show_helper_msg = has_attempted_idv && Number(idv.submissions_left) > 0 && !is_idv_disallowed;
             return (
                 <CountrySelector
                     handleSelectionNext={handleSelectionNext}

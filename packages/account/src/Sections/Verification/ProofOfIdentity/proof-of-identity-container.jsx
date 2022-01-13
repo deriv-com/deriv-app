@@ -3,6 +3,7 @@ import { Button, Loading } from '@deriv/components';
 import { getPlatformRedirect, WS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
+import { connect } from 'Stores/connect';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
@@ -25,6 +26,8 @@ const ProofOfIdentityContainer = ({
     is_from_external,
     is_switching,
     is_virtual,
+    is_high_risk,
+    is_withdrawal_lock,
     onStateChange,
     refreshNotifications,
     routeBackInApp,
@@ -85,6 +88,8 @@ const ProofOfIdentityContainer = ({
         needs_poa,
         onfido,
     } = verification_status;
+    const is_last_attempt_idv = identity_last_attempt?.service === 'idv';
+    const should_ignore_idv = is_high_risk && is_withdrawal_lock;
 
     if (!should_allow_authentication && !is_age_verified) {
         return <NotRequired />;
@@ -96,7 +101,8 @@ const ProofOfIdentityContainer = ({
         </Button>
     );
 
-    if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission) {
+    if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission 
+        || should_ignore_idv && is_last_attempt_idv) {
         return (
             <POISubmission
                 allow_poi_resubmission={allow_poi_resubmission}
@@ -106,7 +112,7 @@ const ProofOfIdentityContainer = ({
                 identity_last_attempt={identity_last_attempt}
                 idv={idv}
                 is_from_external={!!is_from_external}
-                is_idv_disallowed={is_idv_disallowed}
+                is_idv_disallowed={is_idv_disallowed || should_ignore_idv}
                 manual={manual}
                 needs_poa={needs_poa}
                 onfido={onfido}
@@ -182,4 +188,7 @@ const ProofOfIdentityContainer = ({
     }
 };
 
-export default ProofOfIdentityContainer;
+export default connect(({ client }) => ({
+    is_high_risk: client.is_high_risk,
+    is_withdrawal_lock: client.is_withdrawal_lock,
+}))(ProofOfIdentityContainer)

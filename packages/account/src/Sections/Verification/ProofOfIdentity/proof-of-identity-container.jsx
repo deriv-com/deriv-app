@@ -101,8 +101,12 @@ const ProofOfIdentityContainer = ({
         </Button>
     );
 
-    if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission 
-        || should_ignore_idv && is_last_attempt_idv) {
+    if (
+        identity_status === identity_status_codes.none ||
+        has_require_submission ||
+        allow_poi_resubmission ||
+        (should_ignore_idv && is_last_attempt_idv)
+    ) {
         return (
             <POISubmission
                 allow_poi_resubmission={allow_poi_resubmission}
@@ -191,4 +195,4 @@ const ProofOfIdentityContainer = ({
 export default connect(({ client }) => ({
     is_high_risk: client.is_high_risk,
     is_withdrawal_lock: client.is_withdrawal_lock,
-}))(ProofOfIdentityContainer)
+}))(ProofOfIdentityContainer);

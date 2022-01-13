@@ -46,7 +46,7 @@ const Numpad = ({
     React.useEffect(() => {
         const is_error = !onValidate(default_value) || onValidate(default_value) === 'error';
         setHasError(is_error);
-    }, [default_value, value]);
+    }, [default_value, value, onValidate]);
 
     const updateValue = val => {
         setValue(val);

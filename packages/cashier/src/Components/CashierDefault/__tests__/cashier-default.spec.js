@@ -81,26 +81,6 @@ describe('<CashierDefault />', () => {
         expect(screen.queryByText('Buy cryptocurrencies via fiat onramp')).not.toBeInTheDocument();
     });
 
-    it('should not show "Deposit with Deriv P2P" section when <CashierDefault /> is rendered with crypto account', () => {
-        const props = mockProps();
-        props.accounts_list = [{ is_crypto: true }];
-        render(
-            <CashierDefault
-                {...props}
-                available_crypto_currencies={['BTC', 'ETH']}
-                currency='BTC'
-                is_payment_agent_visible_in_onboarding
-            />
-        );
-
-        expect(screen.queryByText('Deposit with Deriv P2P')).not.toBeInTheDocument();
-        expect(
-            screen.queryByText(
-                'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
-            )
-        ).not.toBeInTheDocument();
-    });
-
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his fiat account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: false }];

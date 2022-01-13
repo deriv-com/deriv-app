@@ -4,6 +4,7 @@ import { error_types, unrecoverable_errors, observer, message_types } from '@der
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
+import { isSafari, mobileOSDetect } from '@deriv/shared';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -89,12 +90,21 @@ export default class RunPanelStore {
     async onRunButtonClick() {
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
+        const is_ios = mobileOSDetect() === 'iOS';
 
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
             this.showLoginDialog();
             return;
         }
+
+        /**
+         * Due to Apple's policy on cellular data usage in ios audioElement.play() should be initially called on
+         * user action(e.g click/touch) to be downloaded, otherwise throws an error. Also it should be called
+         * syncronously, so keep above await.
+         */
+        if (is_ios || isSafari()) this.preloadAudio();
+
         await self_exclusion.checkRestriction();
         if (!self_exclusion.should_bot_run) {
             self_exclusion.setIsRestricted(true);
@@ -527,5 +537,20 @@ export default class RunPanelStore {
         const { client } = this.root_store.core;
         await client.logout();
         this.setActiveTabIndex(run_panel.SUMMARY);
+    }
+
+    preloadAudio() {
+        const strategy_sounds = this.dbot.getStrategySounds();
+
+        strategy_sounds.forEach(sound => {
+            const audioElement = document.getElementById(sound);
+
+            audioElement.muted = true;
+            audioElement.play().catch(() => {
+                // suppressing abort error, thrown on immediate .pause()
+            });
+            audioElement.pause();
+            audioElement.muted = false;
+        });
     }
 }

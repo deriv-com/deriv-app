@@ -476,6 +476,25 @@ class DBot {
         });
     }
 
+    /**
+     * Checks whether the workspace contains non-silent notification blocks. Returns array of names for audio files to be played.
+     */
+    getStrategySounds() {
+        const all_blocks = this.workspace.getAllBlocks();
+        const notify_blocks = all_blocks.filter(block => block.type === 'notify');
+        const strategy_sounds = [];
+
+        notify_blocks.forEach(block => {
+            const selected_sound = block.inputList[0].fieldRow[3].value_;
+
+            if (selected_sound !== 'silent') {
+                strategy_sounds.push(selected_sound);
+            }
+        });
+
+        return strategy_sounds;
+    }
+
     static handleDragOver(event) {
         event.stopPropagation();
         event.preventDefault();

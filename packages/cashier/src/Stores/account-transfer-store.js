@@ -426,10 +426,6 @@ export default class AccountTransferStore {
             // not allowed to transfer between MT and Dxtrade
             const first_non_cfd = this.accounts_list.find(account => !account.is_mt && !account.is_dxtrade);
             this.onChangeTransferTo({ target: { value: first_non_cfd.value } });
-        } else if (selected_from.is_crypto && this.selected_to.is_crypto) {
-            // not allowed to transfer crypto to crypto
-            const first_fiat = this.accounts_list.find(account => !account.is_crypto);
-            this.onChangeTransferTo({ target: { value: first_fiat.value } });
         }
 
         if (hasTransferNotAllowedLoginid(selected_from.value)) {

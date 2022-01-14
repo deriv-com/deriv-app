@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Loading, Text } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import ChatHeader from 'Components/orders/chat/chat-header.jsx';
@@ -12,14 +12,6 @@ import 'Components/orders/chat/chat.scss';
 
 const Chat = observer(() => {
     const { sendbird_store } = useStores();
-
-    if (sendbird_store.is_chat_loading) {
-        return (
-            <div className='order-chat'>
-                <Loading is_fullscreen={false} />;
-            </div>
-        );
-    }
 
     if (sendbird_store.has_chat_error) {
         return (
@@ -57,7 +49,6 @@ const Chat = observer(() => {
 Chat.displayName = 'Chat';
 Chat.propTypes = {
     has_chat_error: PropTypes.bool,
-    is_chat_loading: PropTypes.bool,
     initialiseChatWsConnection: PropTypes.func,
     should_show_chat_modal: PropTypes.bool,
 };

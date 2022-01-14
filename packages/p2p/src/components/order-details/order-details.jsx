@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ThemedScrollbars } from '@deriv/components';
+import { Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -64,8 +64,13 @@ const OrderDetails = observer(({ onPageReturn }) => {
         (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
             : localize('Sell {{offered_currency}} order', { offered_currency: account_currency });
+
     if (sendbird_store.should_show_chat_on_orders) {
         return <Chat />;
+    }
+
+    if (sendbird_store.is_chat_loading) {
+        return <Loading is_fullscreen={false} />;
     }
 
     return (

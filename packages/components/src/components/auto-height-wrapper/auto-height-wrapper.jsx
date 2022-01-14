@@ -24,7 +24,7 @@ const AutoHeightWrapper = props => {
     const setRef = ref => {
         if (Number.isInteger(ref?.clientHeight) && ref.clientHeight !== prev_child_client_height) {
             child_client_height_ref.current = ref.clientHeight;
-            setTimeout(updateHeight, 0);
+            setTimeout(updateHeight, 400);
         }
     };
 

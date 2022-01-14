@@ -6,7 +6,17 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const CFDPOI = ({ authentication_status, form_error, index, is_high_risk, is_withdrawal_lock, onCancel, onSubmit, value, ...props }) => {
+const CFDPOI = ({
+    authentication_status,
+    form_error,
+    index,
+    is_high_risk,
+    is_withdrawal_lock,
+    onCancel,
+    onSubmit,
+    value,
+    ...props
+}) => {
     const { identity_status } = authentication_status;
     const [poi_state, setPOIState] = React.useState('none');
     const validateForm = React.useCallback(() => {

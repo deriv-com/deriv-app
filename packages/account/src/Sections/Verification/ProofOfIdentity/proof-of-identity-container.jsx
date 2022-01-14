@@ -3,7 +3,6 @@ import { Button, Loading } from '@deriv/components';
 import { getPlatformRedirect, WS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
-import { connect } from 'Stores/connect';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
@@ -192,7 +191,4 @@ const ProofOfIdentityContainer = ({
     }
 };
 
-export default connect(({ client }) => ({
-    is_high_risk: client.is_high_risk,
-    is_withdrawal_lock: client.is_withdrawal_lock,
-}))(ProofOfIdentityContainer);
+export default ProofOfIdentityContainer;

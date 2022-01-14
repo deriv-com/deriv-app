@@ -6,7 +6,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }) => {
+const CFDPOI = ({ authentication_status, form_error, index, is_high_risk, is_withdrawal_lock, onCancel, onSubmit, value, ...props }) => {
     const { identity_status } = authentication_status;
     const [poi_state, setPOIState] = React.useState('none');
     const validateForm = React.useCallback(() => {
@@ -43,6 +43,8 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                     <ProofOfIdentityContainer
                                         height={height}
                                         is_from_external={true}
+                                        is_high_risk={is_high_risk}
+                                        is_withdrawal_lock={is_withdrawal_lock}
                                         onStateChange={status => setPOIState(status)}
                                         {...props}
                                     />
@@ -78,6 +80,8 @@ export default connect(({ client, common }) => ({
     fetchResidenceList: client.fetchResidenceList,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
+    is_high_risk: client.is_high_risk,
+    is_withdrawal_lock: client.is_withdrawal_lock,
     refreshNotifications: client.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,

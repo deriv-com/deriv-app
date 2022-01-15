@@ -143,7 +143,6 @@ const CFDDashboard = props => {
     };
 
     const togglePasswordManagerModal = (login, title, group, type, server) => {
-        setActiveIndex(prev_state => prev_state.active_index);
         setPasswordManager(prev_state => ({
             is_visible: !prev_state.is_visible,
             selected_login: typeof login === 'string' ? login : '',

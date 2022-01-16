@@ -3,6 +3,9 @@ import { action, observable, computed } from 'mobx';
 import { TClientProps, TCurrenciesList, TUpgradeInfo, TAccountList } from 'Types';
 import BaseStore from './base-store';
 
+type TExtendedAccount = NonNullable<TAccountList>[0] & {
+    is_wallet?: boolean;
+};
 class ClientStore extends BaseStore {
     @observable
     public loginid = '';
@@ -14,7 +17,7 @@ class ClientStore extends BaseStore {
     public currencies_list: TCurrenciesList = {};
 
     @observable
-    public accounts_list: TAccountList = [];
+    public accounts_list: TExtendedAccount[] | undefined = [];
 
     @observable
     public currency = '';

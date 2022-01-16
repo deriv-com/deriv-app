@@ -6,7 +6,7 @@ type LoadingProps = {
     is_invisible?: boolean;
     theme?: string;
     id?: string;
-}
+};
 
 const Loading = ({ className, is_invisible, theme, id }: LoadingProps) => (
     <div

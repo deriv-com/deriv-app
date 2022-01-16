@@ -16,6 +16,7 @@ const index_lookup = {
 };
 
 const CFDFinancialStpRealAccountSignup = props => {
+    const { refreshNotifications } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
@@ -105,55 +106,46 @@ const CFDFinancialStpRealAccountSignup = props => {
         nextStep(setSubmitting);
     };
 
-    const initiatePersonalDetails = React.useCallback(
-        async setSubmitting => {
-            // force request to update settings cache since settings have been updated
-            const response = await WS.authorized.storage.getSettings();
+    const initiatePersonalDetails = async setSubmitting => {
+        // force request to update settings cache since settings have been updated
+        const response = await WS.authorized.storage.getSettings();
 
-            if (response.error) {
-                setFormError(response.error.message);
-                if (typeof setSubmitting === 'function') {
-                    setSubmitting(false);
-                }
-                return;
+        if (response.error) {
+            setFormError(response.error.message);
+            if (typeof setSubmitting === 'function') {
+                setSubmitting(false);
             }
+            return;
+        }
 
-            const cloned = Object.assign([], items);
-            if (response.get_settings.citizen) {
-                cloned[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(
-                    response.get_settings.citizen
-                );
-            }
-            if (response.get_settings.tax_residence) {
-                cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(
-                    response.get_settings.tax_residence
-                );
-            }
-            if (response.get_settings.tax_identification_number) {
-                cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_identification_number =
-                    response.get_settings.tax_identification_number;
-            }
-            if (response.get_settings.account_opening_reason) {
-                cloned[index_lookup.CFDPersonalDetailsForm].form_value.account_opening_reason =
-                    response.get_settings.account_opening_reason;
-            }
-            setItems(cloned);
-        },
-        [items, transform]
-    );
+        const cloned = Object.assign([], items);
+        if (response.get_settings.citizen) {
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(response.get_settings.citizen);
+        }
+        if (response.get_settings.tax_residence) {
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(
+                response.get_settings.tax_residence
+            );
+        }
+        if (response.get_settings.tax_identification_number) {
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_identification_number =
+                response.get_settings.tax_identification_number;
+        }
+        if (response.get_settings.account_opening_reason) {
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.account_opening_reason =
+                response.get_settings.account_opening_reason;
+        }
+        setItems(cloned);
+    };
 
     React.useEffect(() => {
-        props.refreshNotifications();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [items]);
+        refreshNotifications();
+    }, [items, refreshNotifications]);
 
-    const transform = React.useCallback(
-        value => {
-            const [result] = props.residence_list.filter(item => item.value === value);
-            return getPropertyValue(result, ['text']) || value;
-        },
-        [props.residence_list]
-    );
+    const transform = value => {
+        const [result] = props.residence_list.filter(item => item.value === value);
+        return getPropertyValue(result, ['text']) || value;
+    };
 
     React.useEffect(() => {
         if (state_index === index_lookup.CFDPersonalDetailsForm) {
@@ -162,7 +154,8 @@ const CFDFinancialStpRealAccountSignup = props => {
                 setIsLoading(false);
             });
         }
-    }, [initiatePersonalDetails, state_index]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const getCurrent = key => {
         return key ? items[state_index][key] : items[state_index];

@@ -42,7 +42,9 @@ const CFDTopUpDemoModal = ({
 }: TCFDTopUpDemoModalProps) => {
     const getAccountTitle = React.useCallback(() => {
         if ((!mt5_companies && !dxtrade_companies) || !current_account) return '';
-        return mt5_companies[current_account.category][current_account.type].title;
+        return mt5_companies[current_account.category as keyof TMtCompanies][
+            current_account.type as keyof TMtCompanies['demo' | 'real']
+        ].title;
     }, [mt5_companies, dxtrade_companies, current_account]);
 
     const onCloseSuccess = () => {
@@ -107,13 +109,13 @@ const CFDTopUpDemoModal = ({
                             <Money
                                 amount={current_account.display_balance}
                                 currency={current_account.currency}
-                                has_sign={current_account.balance < 0}
+                                has_sign={(current_account.balance as number) < 0}
                             />
                         </div>
                     </div>
                     <div className='dc-modal__container_top-up-virtual--button'>
                         <Button
-                            is_disabled={current_account.balance > 1000 || is_top_up_virtual_in_progress}
+                            is_disabled={(current_account.balance as number) > 1000 || is_top_up_virtual_in_progress}
                             type='button'
                             is_loading={is_top_up_virtual_in_progress}
                             onClick={() => topUpVirtual(platform)}

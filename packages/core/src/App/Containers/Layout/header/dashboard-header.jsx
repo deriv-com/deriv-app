@@ -18,21 +18,15 @@ import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Prel
 const LoggedInHeader = ({ is_dark_mode }) => {
     const history = useHistory();
 
+    const getDesktopHeaderLogo = () => (!is_dark_mode ? <DerivLogoLight /> : <DerivLogoDark />);
+
+    const getMobileHeaderLogo = () => (!is_dark_mode ? <DerivLogoLightMobile /> : <DerivLogoDarkMobile />);
+
     return (
         <header className='dashboard-header dashboard-header--logged-in'>
             <div className='dashboard-header__left'>
                 <div onClick={() => history.push(routes.dashboard)}>
-                    {isDesktop() ? (
-                        !is_dark_mode ? (
-                            <DerivLogoLight />
-                        ) : (
-                            <DerivLogoDark />
-                        )
-                    ) : !is_dark_mode ? (
-                        <DerivLogoLightMobile />
-                    ) : (
-                        <DerivLogoDarkMobile />
-                    )}
+                    {isDesktop() ? getDesktopHeaderLogo() : getMobileHeaderLogo()}
                 </div>
             </div>
             <div className='dashboard-header__right--logged-in'>

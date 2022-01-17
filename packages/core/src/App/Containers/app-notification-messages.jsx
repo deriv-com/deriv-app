@@ -12,6 +12,7 @@ import 'Sass/app/_common/components/app-notification-message.scss';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
+
 const NotificationsContent = ({
     is_notification_loaded,
     style,
@@ -35,6 +36,7 @@ const NotificationsContent = ({
                 markNotificationMessage({ key: 'close_mx_mlt_account' });
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window_location]);
 
     return (
@@ -78,6 +80,7 @@ const AppNotificationMessages = ({
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
+
     React.useEffect(() => {
         if (is_mt5) {
             stopNotificationLoading();
@@ -88,7 +91,8 @@ const AppNotificationMessages = ({
                 setStyle({ top: bounds.top + 8 });
             }
         }
-    }, [notifications_ref]);
+    }, [is_mt5, notifications_ref, stopNotificationLoading]);
+
     const notifications = notification_messages.filter(message => {
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()

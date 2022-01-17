@@ -23,7 +23,7 @@ jest.mock('Components/Form/crypto-transactions-history', () => () => <div>Crypto
 jest.mock('Components/Email/send-email', () => () => <div>SendEmail</div>);
 jest.mock('Components/recent-transaction', () => () => <div>RecentTransaction</div>);
 jest.mock('@deriv/components', () => ({
-    __esModule: true,
+    ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading</div>,
 }));
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({

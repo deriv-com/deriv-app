@@ -65,7 +65,13 @@ type TCFDPasswordReset = {
     password_type: string;
 };
 
-const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server, password_type }: TCFDPasswordReset) => {
+const CFDPasswordReset = ({
+    sendVerifyEmail,
+    account_type,
+    account_group,
+    server,
+    password_type,
+}: TCFDPasswordReset) => {
     const [is_resend_verification_requested, setResendVerification] = React.useState(false);
     const [is_resend_verification_sent, setResendVerificationSent] = React.useState(false);
 
@@ -165,7 +171,7 @@ const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }: TCFDPasswordSuc
 
 type TCFDPasswordManagerTabContentWrapper = {
     multi_step_ref: React.MutableRefObject<any>;
-    steps: Array<{component: JSX.Element}>;
+    steps: Array<{ component: JSX.Element }>;
 };
 
 const CFDPasswordManagerTabContentWrapper = ({ multi_step_ref, steps }: TCFDPasswordManagerTabContentWrapper) => (
@@ -179,13 +185,7 @@ type TInvestorPasswordManager = {
     onSubmit: (values: any) => Promise<void>;
     setPasswordType: (value: string) => void;
     toggleModal: () => boolean;
-    validatePassword: (
-        values: {
-            old_password: string;
-            new_password: string;
-            password_type: string;
-        }
-    ) => void | object;
+    validatePassword: (values: { old_password: string; new_password: string; password_type: string }) => void | object;
 };
 
 const InvestorPasswordManager = ({
@@ -321,12 +321,8 @@ const CFDPasswordManagerTabContent = ({
 
     // view height - margin top and bottom of modal - modal title - modal content margin top and bottom - table title
     const password_container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
-    const validatePassword = (values: {
-        old_password: string;
-        new_password: string;
-        password_type: string;
-    }) => {
-        const errors: {new_password?: string; old_password?: string} = {};
+    const validatePassword = (values: { old_password: string; new_password: string; password_type: string }) => {
+        const errors: { new_password?: string; old_password?: string } = {};
 
         if (
             !validLength(values.new_password, {

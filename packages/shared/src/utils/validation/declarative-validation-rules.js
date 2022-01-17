@@ -12,7 +12,7 @@ const validRequired = (value /* , options, field */) => {
 };
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
-export const validTaxID = value => /(?!^$|\s+)[A-Za-z0-9.\/\s-]$/.test(value);
+export const validTaxID = value => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
 export const validPhone = value => /^\+?((-|\s)*[0-9])*$/.test(value);
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 export const validLength = (value = '', options) =>

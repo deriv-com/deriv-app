@@ -11,4 +11,13 @@ module.exports = {
         '^Components/(.*)$': '<rootDir>/src/Components/$1',
     },
     testPathIgnorePatterns: ['/Routes/', '/Validator/'],
+    coveragePathIgnorePatterns: [
+        '/Routes/__tests__/',
+        '/Validator/__tests__/',
+        '<rootDir>/.eslintrc.js',
+        '<rootDir>/jest.config.js',
+        '<rootDir>/build',
+        '<rootDir>/coverage/lcov-report',
+        '<rootDir>/dist',
+    ],
 };

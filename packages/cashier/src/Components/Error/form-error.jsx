@@ -30,7 +30,13 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
 
     const mapErrorToDetails = React.useCallback(
         (error_code, error_message) => {
-            if (['Fiat2CryptoTransferOverLimit', 'Crypto2FiatTransferOverLimit'].includes(error_code)) {
+            if (
+                [
+                    'Fiat2CryptoTransferOverLimit',
+                    'Crypto2FiatTransferOverLimit',
+                    'Crypto2CryptoTransferOverLimit',
+                ].includes(error_code)
+            ) {
                 setDetails({
                     title: localize('Please verify your identity'),
                     cancel_button_text: localize('Cancel'),

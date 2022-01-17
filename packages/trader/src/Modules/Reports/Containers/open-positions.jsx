@@ -122,7 +122,7 @@ const MobileRowRenderer = ({ row, is_footer, columns_map, server_time, onClickCa
     );
 };
 
-const OpenPositionsTable = ({
+export const OpenPositionsTable = ({
     className,
     columns,
     component_icon,
@@ -260,7 +260,7 @@ const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selecte
         let profit_loss = 0;
         let payout = 0;
 
-        active_positions_filtered.forEach(portfolio_pos => {
+        active_positions_filtered?.forEach(portfolio_pos => {
             indicative += +portfolio_pos.indicative;
             purchase += +portfolio_pos.purchase;
             profit_loss += portfolio_pos.profit_loss;
@@ -288,13 +288,11 @@ const OpenPositions = ({
     onClickCancel,
     onClickSell,
     onMount,
-    onUnmount,
     server_time,
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier contract
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-
     const previous_active_positions = usePrevious(active_positions);
 
     React.useEffect(() => {
@@ -306,9 +304,6 @@ const OpenPositions = ({
 
         checkForMultiplierContract();
 
-        return () => {
-            if (!isMobile()) onUnmount();
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -328,8 +323,7 @@ const OpenPositions = ({
     if (error) return <p>{error}</p>;
 
     const is_multiplier_selected = has_multiplier_contract && active_index === 1;
-
-    const active_positions_filtered = active_positions.filter(p => {
+    const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
             return is_multiplier_selected
                 ? isMultiplierContract(p.contract_info.contract_type)
@@ -429,7 +423,6 @@ OpenPositions.propTypes = {
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
     onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
     server_time: PropTypes.object,
 };
 
@@ -444,6 +437,5 @@ export default connect(({ modules, client, common, ui }) => ({
     onClickCancel: modules.portfolio.onClickCancel,
     onClickSell: modules.portfolio.onClickSell,
     onMount: modules.portfolio.onMount,
-    onUnmount: modules.portfolio.onUnmount,
     server_time: common.server_time,
 }))(withRouter(OpenPositions));

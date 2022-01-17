@@ -4,7 +4,7 @@ import { Button, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import 'Sass/email-sent.scss';
 
-const EmailSent = ({ is_resend_clicked, resend_timeout, resendVerificationEmail, setVerificationResendClicked }) => (
+const EmailSent = ({ is_resend_clicked, resend_timeout, resendVerificationEmail, setIsResendClicked }) => (
     <div className='email-sent'>
         <Icon icon='IcEmailSent' className='email-sent__icon' size={128} />
         <Text as='p' weight='bold' align='center' className='email-sent__title'>
@@ -44,11 +44,11 @@ const EmailSent = ({ is_resend_clicked, resend_timeout, resendVerificationEmail,
                     />
                 </React.Fragment>
             ) : (
-                <Button onClick={() => setVerificationResendClicked(true)} tertiary>
-                    <Text size='xs' weight='bold' color='coral'>
-                        {localize("Didn't receive the email?")}
-                    </Text>
-                </Button>
+                <Button
+                    onClick={() => setIsResendClicked(true)}
+                    text={localize("Didn't receive the email?")}
+                    tertiary
+                />
             )}
         </div>
     </div>
@@ -58,7 +58,7 @@ EmailSent.propTypes = {
     is_resend_clicked: PropTypes.bool,
     resend_timeout: PropTypes.number,
     resendVerificationEmail: PropTypes.func,
-    setVerificationResendClicked: PropTypes.func,
+    setIsResendClicked: PropTypes.func,
 };
 
 export default EmailSent;

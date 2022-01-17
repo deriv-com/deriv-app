@@ -16,36 +16,6 @@ export default class TransactionHistoryStore {
     @observable selected_crypto_status_description = '';
 
     @action.bound
-    updateCryptoTransactions(transactions) {
-        transactions.forEach(transaction => {
-            const index = this.crypto_transactions.findIndex(crypto => crypto.id === transaction.id);
-            if (index === -1) {
-                this.crypto_transactions.push(transaction);
-            } else {
-                Object.assign(this.crypto_transactions[index], transaction);
-            }
-        });
-        this.sortCryptoTransactions();
-    }
-    @action.bound
-    setCryptoTransactionsHistory(transactions) {
-        this.crypto_transactions = transactions;
-        this.sortCryptoTransactions();
-    }
-    @action.bound
-    sortCryptoTransactions() {
-        this.crypto_transactions = this.crypto_transactions.sort((a, b) => b.submit_date - a.submit_date);
-    }
-    @action.bound
-    async getCryptoTransactions() {
-        await this.WS.subscribeCashierPayments(response => {
-            if (!response.error) {
-                const { crypto } = response.cashier_payments;
-                this.updateCryptoTransactions(crypto);
-            }
-        });
-    }
-    @action.bound
     async onMount() {
         const { currency, switched } = this.root_store.client;
         const is_crypto = !!currency && isCryptocurrency(currency);
@@ -66,6 +36,40 @@ export default class TransactionHistoryStore {
                 this.setCryptoTransactionsHistory(crypto);
             }
         });
+    }
+
+    @action.bound
+    async getCryptoTransactions() {
+        await this.WS.subscribeCashierPayments(response => {
+            if (!response.error) {
+                const { crypto } = response.cashier_payments;
+                this.updateCryptoTransactions(crypto);
+            }
+        });
+    }
+
+    @action.bound
+    setCryptoTransactionsHistory(transactions) {
+        this.crypto_transactions = transactions;
+        this.sortCryptoTransactions();
+    }
+
+    @action.bound
+    updateCryptoTransactions(transactions) {
+        transactions.forEach(transaction => {
+            const index = this.crypto_transactions.findIndex(crypto => crypto.id === transaction.id);
+            if (index === -1) {
+                this.crypto_transactions.push(transaction);
+            } else {
+                Object.assign(this.crypto_transactions[index], transaction);
+            }
+        });
+        this.sortCryptoTransactions();
+    }
+
+    @action.bound
+    sortCryptoTransactions() {
+        this.crypto_transactions = this.crypto_transactions.sort((a, b) => b.submit_date - a.submit_date);
     }
 
     @action.bound

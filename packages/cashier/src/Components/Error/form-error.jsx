@@ -29,7 +29,11 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
     }, [error.message]);
 
     const mapErrorToDetails = (error_code, error_message) => {
-        if (error_code === 'Fiat2CryptoTransferOverLimit') {
+        if (
+            ['Fiat2CryptoTransferOverLimit', 'Crypto2FiatTransferOverLimit', 'Crypto2CryptoTransferOverLimit'].includes(
+                error_code
+            )
+        ) {
             setDetails({
                 title: localize('Please verify your identity'),
                 cancel_button_text: localize('Cancel'),
@@ -68,6 +72,7 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
                 }
                 dismissError();
             }}
+            onEscapeButtonCancel={dismissError}
             onCancel={details.cancel_button_text ? dismissError : undefined}
             disableApp={disableApp}
             enableApp={enableApp}

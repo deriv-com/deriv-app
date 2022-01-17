@@ -41,7 +41,7 @@ const mt5 = {
 
 const dxtrade = {
     real_synthetic_specs: {
-        [localize('Leverage')]: localize('Up to 1:500'),
+        [localize('Leverage')]: localize('Up to 1:1000'),
         [localize('Margin call')]: localize('100%'),
         [localize('Stop out level')]: localize('50%'),
         [localize('Number of assets')]: localize('20+'),

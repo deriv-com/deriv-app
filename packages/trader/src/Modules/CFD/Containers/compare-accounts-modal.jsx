@@ -75,7 +75,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in, is_uk }) => {
                 ),
             },
             dxtrade: {
-                synthetic: localize('Up to 1:500'),
+                synthetic: localize('Up to 1:1000'),
                 synthetic_eu: localize('Up to 1:1000'),
                 financial: localize('Up to 1:1000'),
                 financial_au: localize('Up to 1:30'),

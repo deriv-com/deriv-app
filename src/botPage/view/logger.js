@@ -1,7 +1,7 @@
 import { TrackJS } from 'trackjs';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { getToken } from '../../common/utils/storageManager';
-import { isProduction } from '../../common/utils/tools';
+import { isMobile, isProduction } from '../../common/utils/tools';
 
 const log = (type, ...args) => {
     if (type === 'warn') {
@@ -18,8 +18,9 @@ const log = (type, ...args) => {
 
 const notify = ({ className, message, position = 'left', sound = 'silent' }) => {
     log(className, message);
+    const pos = isMobile() ? 'right' : position;
 
-    $.notify(message.toString(), { position: `bottom ${position}`, className });
+    $.notify(message.toString(), { position: `bottom ${pos}`, className });
     if (sound !== 'silent') {
         $(`#${sound}`)
             .get(0)

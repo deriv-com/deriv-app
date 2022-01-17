@@ -51,6 +51,7 @@ import Footer from './deriv/layout/Footer';
 import Header from './deriv/layout/Header';
 import Main from './deriv/layout/Main';
 import store from './deriv/store';
+import { isMobile } from '../../common/utils/tools';
 
 let realityCheckTimeout;
 let chart;
@@ -67,7 +68,7 @@ api.events.on('website_status', response => {
     const { message } = response.website_status;
     if (message) {
         $.notify(message, {
-            position: 'bottom left',
+            position: `bottom ${isMobile() ? 'right' : 'left'}`,
             autoHide: false,
             className: 'warn web-status',
         });

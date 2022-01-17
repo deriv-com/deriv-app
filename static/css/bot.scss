@@ -64,7 +64,7 @@ body {
     .notifyjs-bootstrap-warn,
     .notifyjs-bootstrap-error {
         @include mobile {
-        max-width: 40vw !important;
+        max-width: 80vw !important;
         min-height: 30px;
         padding: 2px;
         word-break: break-word !important;

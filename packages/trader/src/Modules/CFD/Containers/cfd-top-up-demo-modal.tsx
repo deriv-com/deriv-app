@@ -1,11 +1,32 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import RootStore from '../../../Stores';
 import { connect } from 'Stores/connect';
 import { getTopUpConfig } from '../Helpers/constants';
+import { TDxCompanies, TMtCompanies } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
+
+type TExtendedCurrentAccount = DetailsOfEachMT5Loginid & {
+    display_login: string;
+    category: string;
+    type: string;
+};
+
+type TCFDTopUpDemoModalProps = {
+    dxtrade_companies: TDxCompanies;
+    mt5_companies: TMtCompanies;
+    current_account?: TExtendedCurrentAccount;
+    closeSuccessTopUpModal: () => void;
+    closeTopUpModal: () => void;
+    is_top_up_virtual_open: boolean;
+    is_top_up_virtual_in_progress: boolean;
+    is_top_up_virtual_success: boolean;
+    platform: string;
+    topUpVirtual: (platform: string) => void;
+};
 
 const CFDTopUpDemoModal = ({
     dxtrade_companies,
@@ -18,7 +39,7 @@ const CFDTopUpDemoModal = ({
     is_top_up_virtual_success,
     platform,
     topUpVirtual,
-}) => {
+}: TCFDTopUpDemoModalProps) => {
     const getAccountTitle = React.useCallback(() => {
         if ((!mt5_companies && !dxtrade_companies) || !current_account) return '';
         return mt5_companies[current_account.category][current_account.type].title;
@@ -157,19 +178,7 @@ const CFDTopUpDemoModal = ({
     );
 };
 
-CFDTopUpDemoModal.propTypes = {
-    account_title: PropTypes.string,
-    closeSuccessTopUpModal: PropTypes.func,
-    closeTopUpVirtual: PropTypes.func,
-    currency: PropTypes.string,
-    display_balance: PropTypes.string,
-    is_top_up_virtual_open: PropTypes.bool,
-    is_top_up_virtual_in_progress: PropTypes.bool,
-    is_top_up_virtual_success: PropTypes.bool,
-    topUpVirtual: PropTypes.func,
-};
-
-export default connect(({ ui, modules }) => ({
+export default connect(({ ui, modules }: RootStore) => ({
     is_top_up_virtual_open: ui.is_top_up_virtual_open,
     is_top_up_virtual_in_progress: ui.is_top_up_virtual_in_progress,
     is_top_up_virtual_success: ui.is_top_up_virtual_success,

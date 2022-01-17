@@ -1,5 +1,8 @@
 import { localize } from '@deriv/translations';
 
+export type TDxCompanies = ReturnType<typeof getDxCompanies>;
+export type TMtCompanies = ReturnType<typeof getMtCompanies>;
+
 export const getDxCompanies = () => {
     const synthetic_config = {
         account_type: '',
@@ -40,10 +43,10 @@ export const getDxCompanies = () => {
                 short_title: financial_config.short_title,
             },
         },
-    };
+    } as const;
 };
 
-export const getMtCompanies = is_eu => {
+export const getMtCompanies = (is_eu: boolean) => {
     const synthetic_config = {
         account_type: '',
         leverage: 500,
@@ -101,5 +104,5 @@ export const getMtCompanies = is_eu => {
                 short_title: financial_stp_config.short_title,
             },
         },
-    };
+    } as const;
 };

@@ -1,5 +1,5 @@
-import { Field, Form, Formik } from 'formik';
-import PropTypes from 'prop-types';
+import { Field, Form, Formik, FieldProps } from 'formik';
+import PropTypes, { string } from 'prop-types';
 import React from 'react';
 import {
     Icon,
@@ -29,9 +29,15 @@ import {
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager.jsx';
+import { JSXElement } from '@babel/types';
 
-const CountdownComponent = ({ count_from = 60, onTimeout }) => {
-    const [count, setCount] = React.useState(count_from);
+type TCountdownComponent = {
+    count_from: number;
+    onTimeout: (value?: boolean) => void;
+};
+
+const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
+    const [count, setCount] = React.useState<number>(count_from);
 
     React.useEffect(() => {
         if (count !== 0) {
@@ -50,7 +56,16 @@ const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     return <span className='countdown'>{count}</span>;
 };
 
-const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server, password_type }) => {
+// ****** needs review ******
+type TCFDPasswordReset = {
+    sendVerifyEmail: () => Promise<string>;
+    account_type: string;
+    account_group: string;
+    server: string;
+    password_type: string;
+};
+
+const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server, password_type }: TCFDPasswordReset) => {
     const [is_resend_verification_requested, setResendVerification] = React.useState(false);
     const [is_resend_verification_sent, setResendVerificationSent] = React.useState(false);
 
@@ -61,11 +76,11 @@ const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onClickVerification = () => {
+    const onClickVerification = (): void => {
         setResendVerification(true);
     };
 
-    const resendVerification = () => {
+    const resendVerification = (): void => {
         sendVerifyEmail();
         setResendVerificationSent(true);
     };
@@ -127,7 +142,12 @@ const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server
     );
 };
 
-const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }) => (
+type TCFDPasswordSuccessMessage = {
+    toggleModal: () => boolean;
+    is_investor: boolean;
+};
+
+const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }: TCFDPasswordSuccessMessage) => (
     <div className='cfd-password-manager__success'>
         <Icon icon='IcPasswordUpdated' size={128} />
         <Text as='p' size='xxs' align='center'>
@@ -143,9 +163,30 @@ const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }) => (
     </div>
 );
 
-const CFDPasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
+type TCFDPasswordManagerTabContentWrapper = {
+    multi_step_ref: React.MutableRefObject<any>;
+    steps: Array<{component: JSX.Element}>;
+};
+
+const CFDPasswordManagerTabContentWrapper = ({ multi_step_ref, steps }: TCFDPasswordManagerTabContentWrapper) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='cfd-password-manager' lbl_previous={localize('Back')} />
 );
+
+type TInvestorPasswordManager = {
+    error_message_investor: string;
+    is_submit_success_investor: boolean;
+    multi_step_ref: React.MutableRefObject<any>;
+    onSubmit: (values: any) => Promise<void>;
+    setPasswordType: (value: string) => void;
+    toggleModal: () => boolean;
+    validatePassword: (
+        values: {
+            old_password: string;
+            new_password: string;
+            password_type: string;
+        }
+    ) => void | object;
+};
 
 const InvestorPasswordManager = ({
     error_message_investor,
@@ -155,7 +196,7 @@ const InvestorPasswordManager = ({
     setPasswordType,
     toggleModal,
     validatePassword,
-}) => {
+}: TInvestorPasswordManager) => {
     if (is_submit_success_investor) {
         return <CFDPasswordSuccessMessage toggleModal={toggleModal} is_investor />;
     }
@@ -179,7 +220,7 @@ const InvestorPasswordManager = ({
                 {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                     <Form className='cfd-password-manager__investor-form' noValidate>
                         <Field name='old_password'>
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                                 <PasswordInput
                                     {...field}
                                     autoComplete='current-password'
@@ -190,13 +231,13 @@ const InvestorPasswordManager = ({
                             )}
                         </Field>
                         <Field name='new_password'>
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                                 <PasswordMeter
                                     input={field.value}
                                     has_error={!!(touched.new_password && errors.new_password)}
                                     custom_feedback_messages={getErrorMessages().password_warnings}
                                 >
-                                    {({ has_warning }) => (
+                                    {({ has_warning }: any) => (
                                         <PasswordInput
                                             {...field}
                                             autoComplete='new-password'
@@ -208,7 +249,7 @@ const InvestorPasswordManager = ({
                                                 )
                                             }
                                             error={touched.new_password && errors.new_password}
-                                            onChange={e => {
+                                            onChange={(e: React.FormEvent<HTMLInputElement>) => {
                                                 setFieldTouched('new_password', true, true);
                                                 field.onChange(e);
                                             }}
@@ -252,6 +293,18 @@ const InvestorPasswordManager = ({
     );
 };
 
+type TCFDPasswordManagerTabContent = {
+    toggleModal: () => boolean;
+    selected_login: string;
+    email: string;
+    setPasswordType: (value: string) => void;
+    multi_step_ref: React.MutableRefObject<any>;
+    platform: 'dxtrade' | 'mt5';
+    onChangeActiveTabIndex: (value: number) => void;
+    account_group: string;
+    password_type?: string;
+};
+
 const CFDPasswordManagerTabContent = ({
     toggleModal,
     selected_login,
@@ -261,15 +314,19 @@ const CFDPasswordManagerTabContent = ({
     platform,
     onChangeActiveTabIndex,
     account_group,
-}) => {
-    const [active_tab_index, setActiveTabIndex] = React.useState(0);
-    const [error_message_investor, setErrorMessageInvestor] = React.useState('');
-    const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState(false);
+}: TCFDPasswordManagerTabContent) => {
+    const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
+    const [error_message_investor, setErrorMessageInvestor] = React.useState<string>('');
+    const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState<boolean>(false);
 
     // view height - margin top and bottom of modal - modal title - modal content margin top and bottom - table title
     const password_container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
-    const validatePassword = values => {
-        const errors = {};
+    const validatePassword = (values: {
+        old_password: string;
+        new_password: string;
+        password_type: string;
+    }) => {
+        const errors: {new_password?: string; old_password?: string} = {};
 
         if (
             !validLength(values.new_password, {
@@ -293,7 +350,7 @@ const CFDPasswordManagerTabContent = ({
 
         return errors;
     };
-    const showError = error_message => {
+    const showError = (error_message: string) => {
         setErrorMessageInvestor(error_message);
     };
 
@@ -318,7 +375,7 @@ const CFDPasswordManagerTabContent = ({
         [selected_login]
     );
 
-    const updateAccountTabIndex = index => {
+    const updateAccountTabIndex = (index: number) => {
         setActiveTabIndex(index);
         onChangeActiveTabIndex(index);
         setErrorMessageInvestor('');
@@ -355,13 +412,13 @@ const CFDPasswordManagerTabContent = ({
     return (
         <Tabs active_index={active_tab_index} onTabItemClick={updateAccountTabIndex} top>
             <div
-                label={localize('{{platform}} password', {
+                data-label={localize('{{platform}} password', {
                     platform: getCFDPlatformLabel(platform),
                 })}
             >
                 {trading_password_manager}
             </div>
-            <div label={localize('Investor password')}>
+            <div data-label={localize('Investor password')}>
                 <DesktopWrapper>
                     <ThemedScrollbars height={password_container_height}>
                         <InvestorPasswordManager
@@ -393,6 +450,21 @@ const CFDPasswordManagerTabContent = ({
     );
 };
 
+type TCFDPasswordManagerModal = {
+    enableApp: () => void;
+    email: string;
+    disableApp: () => void;
+    is_visible: boolean;
+    platform: 'dxtrade' | 'mt5';
+    selected_login: string;
+    selected_account: string;
+    toggleModal: () => boolean;
+    selected_account_type: string;
+    selected_account_group: string;
+    selected_server: string;
+    sendVerifyEmail: () => Promise<string>;
+};
+
 const CFDPasswordManagerModal = ({
     enableApp,
     email,
@@ -406,15 +478,15 @@ const CFDPasswordManagerModal = ({
     selected_account_group,
     selected_server,
     sendVerifyEmail,
-}) => {
+}: TCFDPasswordManagerModal) => {
     const multi_step_ref = React.useRef();
     const [index, setIndex] = React.useState(0);
 
-    const [password_type, setPasswordType] = React.useState('main');
+    const [password_type, setPasswordType] = React.useState<string>('main');
 
     if (!selected_login) return null;
 
-    const getTitle = i => {
+    const getTitle = (i: number) => {
         if (i === 0) {
             return localize('Manage {{platform}} password', {
                 platform: getCFDPlatformLabel(platform),
@@ -431,7 +503,7 @@ const CFDPasswordManagerModal = ({
               });
     };
 
-    const getHeader = i => {
+    const getHeader = (i: number) => {
         if (i === 0) {
             return localize('Manage {{platform}} password', {
                 platform: getCFDPlatformLabel(platform),
@@ -440,7 +512,7 @@ const CFDPasswordManagerModal = ({
         return localize('Manage password');
     };
 
-    const onChangeActiveTabIndex = i => {
+    const onChangeActiveTabIndex = (i: number) => {
         setIndex(i);
     };
 
@@ -514,7 +586,7 @@ CFDPasswordManagerModal.propTypes = {
     platform: PropTypes.string,
 };
 
-export default connect(({ modules: { cfd }, client, ui }) => ({
+export default connect(({ modules: { cfd }, client, ui }: any) => ({
     email: client.email,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,

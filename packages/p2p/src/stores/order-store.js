@@ -26,7 +26,6 @@ export default class OrderStore {
     @observable orders = [];
     @observable order_id = null;
     @observable order_rerender_timeout = null;
-    // @observable payment_method_accordion_details = [];
 
     interval;
     order_info_subscription = {};

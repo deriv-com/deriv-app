@@ -19,7 +19,7 @@ import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-f
 import CompareAccountsModal from './compare-accounts-modal.jsx';
 import CFDDashboardContainer from './cfd-dashboard-container.jsx';
 import CFDPasswordManagerModal from './cfd-password-manager-modal.jsx';
-import CFDPasswordModal from './cfd-password-modal.jsx';
+import CFDPasswordModal from './cfd-password-modal';
 import CFDServerErrorDialog from './cfd-server-error-dialog.jsx';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal.jsx';
 import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';

@@ -64,6 +64,12 @@ const dxtrade = {
         [localize('Stop out level')]: localize('50%'),
         [localize('Number of assets')]: localize('90+'),
     },
+    demo_financial_stp_specs: {
+        // [localize('Leverage')]: localize('Up to 1:100'),
+        // [localize('Margin call')]: localize('100%'),
+        // [localize('Stop out level')]: localize('50%'),
+        // [localize('Number of assets')]: localize('70+'),
+    },
 };
 
 const specifications = {

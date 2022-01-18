@@ -4,7 +4,14 @@ import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import Loading from '../../../templates/_common/components/loading.jsx';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Mt5LoginList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+
+// const Loading  = ({className, is_invisible, theme, id}: {
+//     className?: string;
+//     is_invisible?: boolean;
+//     theme?: string;
+//     id?: string;
+// }) => JSX.Element;
 
 type TStandPoint = {
     financial_company: string;
@@ -14,9 +21,7 @@ type TStandPoint = {
     maltainvest: boolean;
     svg: boolean;
 };
-type TOpenAccountTransferData = {
-    login: string;
-};
+
 type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
@@ -35,9 +40,9 @@ type TCFDDemoAccountDisplayProps = {
     isFinancialCardVisible: () => boolean;
     isFinancialStpCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
-    openAccountTransfer: (data: TOpenAccountTransferData, meta: TOpenAccountTransferMeta) => void;
+    openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     platform: 'dxtrade' | 'mt5';
-    current_list: Array<DetailsOfEachMT5Loginid>;
+    current_list: Mt5LoginList;
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
@@ -114,9 +119,9 @@ const CFDDemoAccountDisplay = ({
                     is_logged_in={is_logged_in}
                     existing_data={
                         current_list[
-                            Object.keys(current_list).find((key: number) =>
+                            Number(Object.keys(current_list).find((key: string) =>
                                 key.startsWith(`${platform}.demo.synthetic`)
-                            )
+                            ))
                         ]
                     }
                     commission_message={localize('No commission')}
@@ -130,7 +135,8 @@ const CFDDemoAccountDisplay = ({
                     onClickFund={() =>
                         openAccountTransfer(
                             current_list[
-                                Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.synthetic`))
+                                Number(Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.demo.synthetic`)
+                                ))
                             ],
                             {
                                 category: 'demo',
@@ -162,7 +168,9 @@ const CFDDemoAccountDisplay = ({
                     }}
                     existing_data={
                         current_list[
-                            Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial@`))
+                            Number(Object.keys(current_list).find((key: string) =>
+                            key.startsWith(`${platform}.demo.financial@`)
+                        ))
                         ]
                     }
                     commission_message={localize('No commission')}
@@ -171,7 +179,9 @@ const CFDDemoAccountDisplay = ({
                     onClickFund={() =>
                         openAccountTransfer(
                             current_list[
-                                Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial@`))
+                                Number(Object.keys(current_list).find((key: string) =>
+                                key.startsWith(`${platform}.demo.financial@`)
+                                ))
                             ],
                             {
                                 category: 'demo',
@@ -199,7 +209,9 @@ const CFDDemoAccountDisplay = ({
                     is_logged_in={is_logged_in}
                     existing_data={
                         current_list[
-                            Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial_stp@`))
+                            Number(Object.keys(current_list).find((key: string) =>
+                            key.startsWith(`${platform}.demo.financial_stp@`)
+                            ))
                         ]
                     }
                     commission_message={localize('No commission')}
@@ -213,7 +225,9 @@ const CFDDemoAccountDisplay = ({
                     onClickFund={() =>
                         openAccountTransfer(
                             current_list[
-                                Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial_stp@`))
+                                Number(Object.keys(current_list).find((key: string) =>
+                                key.startsWith(`${platform}.demo.financial_stp@`)
+                                ))
                             ],
                             {
                                 category: 'demo',

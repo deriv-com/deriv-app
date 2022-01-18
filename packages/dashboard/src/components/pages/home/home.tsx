@@ -24,7 +24,7 @@ const Home: React.FC = () => {
         consumer_routes: config_store.routes,
         Page404: ui_store.components.Page404,
     })[0].routes?.filter(route => {
-        return sidebarItems.includes(route.path!);
+        return route.path && sidebarItems.includes(route.path);
     });
 
     const list_groups: TRouteGroup[] = [];

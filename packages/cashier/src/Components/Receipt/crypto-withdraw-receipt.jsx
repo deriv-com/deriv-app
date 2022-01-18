@@ -97,10 +97,12 @@ const CryptoWithdrawReceipt = ({
     withdraw_amount,
     crypto_transactions,
     currency,
+    is_switching,
     resetWithrawForm,
     recentTransactionOnMount,
     setIsCryptoTransactionsVisible,
     setIsWithdrawConfirmed,
+    tab_index,
 }) => {
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -112,7 +114,7 @@ const CryptoWithdrawReceipt = ({
             resetWithrawForm();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [is_switching, tab_index]);
 
     return (
         <div className='cashier__wrapper'>
@@ -175,10 +177,12 @@ CryptoWithdrawReceipt.propTypes = {
     crypto_transactions: PropTypes.array,
     blockchain_address: PropTypes.string,
     currency: PropTypes.string,
+    is_switching: PropTypes.bool,
     resetWithrawForm: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
     setIsCryptoTransactionsVisible: PropTypes.func,
     setIsWithdrawConfirmed: PropTypes.func,
+    tab_index: PropTypes.number,
 };
 
 export default connect(({ client, modules }) => ({
@@ -187,8 +191,10 @@ export default connect(({ client, modules }) => ({
     withdraw_amount: modules.cashier.withdraw.withdraw_amount,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
+    is_switching: client.is_switching,
     resetWithrawForm: modules.cashier.withdraw.resetWithrawForm,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
     setIsWithdrawConfirmed: modules.cashier.withdraw.setIsWithdrawConfirmed,
+    tab_index: modules.cashier.general_store.cashier_route_tab_index,
 }))(CryptoWithdrawReceipt);

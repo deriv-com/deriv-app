@@ -82,6 +82,15 @@ const DurationWrapper = props => {
     );
 
     React.useEffect(() => {
+        if (duration_unit === 'd') {
+            onChangeUiStore({
+                name: 'is_advanced_duration',
+                value: true,
+            });
+        }
+    }, [duration_unit, onChangeUiStore]);
+
+    React.useEffect(() => {
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
 

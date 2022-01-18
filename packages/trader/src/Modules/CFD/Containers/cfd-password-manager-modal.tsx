@@ -1,5 +1,4 @@
 import { Field, Form, Formik, FieldProps } from 'formik';
-import PropTypes from 'prop-types';
 import React from 'react';
 import {
     Icon,
@@ -570,16 +569,6 @@ const CFDPasswordManagerModal = ({
             </MobileWrapper>
         </React.Suspense>
     );
-};
-
-CFDPasswordManagerModal.propTypes = {
-    email: PropTypes.string,
-    is_visible: PropTypes.bool,
-    selected_account: PropTypes.string,
-    selected_server: PropTypes.string,
-    selected_login: PropTypes.string,
-    toggleModal: PropTypes.func,
-    platform: PropTypes.string,
 };
 
 export default connect(({ modules: { cfd }, client, ui }: any) => ({

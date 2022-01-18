@@ -9,7 +9,7 @@ import {
     LandingCompany,
     Mt5NewAccount,
 } from '@deriv/api-types';
-import RootStore from '../../../Stores';
+import RootStore from 'Stores/index';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
@@ -288,7 +288,6 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
 };
 
 const CFDCreatePasswordForm = ({ has_mt5_account, platform, error_message, validatePassword, submitPassword }) => {
-    console.log('CFDCreatePasswordForm');
     const multi_step_ref = React.useRef();
     const [password, setPassword] = React.useState('');
 
@@ -489,7 +488,6 @@ const CFDPasswordForm = props => {
 };
 
 const CFDServerModalWarning = ({ show_warning = true, platform }: TCFDServerModalWarningProps) => {
-    console.log('CFDServerModalWarning');
     if (!show_warning) return null;
     return (
         <div className='cfd-password-modal__warning'>
@@ -514,7 +512,6 @@ const CFDServerModalWarning = ({ show_warning = true, platform }: TCFDServerModa
 };
 
 const CFDServerForm = ({ ...props }) => {
-    console.log('CFDServerForm');
     const available_servers = React.useMemo(() => {
         return [...props.mt5_trading_servers]
             .map(server => {

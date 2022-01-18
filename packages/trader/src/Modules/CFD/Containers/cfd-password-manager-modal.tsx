@@ -1,5 +1,5 @@
 import { Field, Form, Formik, FieldProps } from 'formik';
-import PropTypes, { string } from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {
     Icon,
@@ -70,8 +70,8 @@ const CFDPasswordReset = ({
     server,
     password_type,
 }: TCFDPasswordReset) => {
-    const [is_resend_verification_requested, setResendVerification] = React.useState(false);
-    const [is_resend_verification_sent, setResendVerificationSent] = React.useState(false);
+    const [is_resend_verification_requested, setResendVerification] = React.useState<boolean>(false);
+    const [is_resend_verification_sent, setResendVerificationSent] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         localStorage.setItem('cfd_reset_password_intent', [server, account_group, account_type].join('.'));
@@ -381,6 +381,7 @@ const CFDPasswordManagerTabContent = ({
             <DesktopWrapper>
                 <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
                     <TradingPasswordManager
+                        // @ts-ignore
                         toggleModal={toggleModal}
                         platform={platform}
                         email={email}
@@ -391,6 +392,7 @@ const CFDPasswordManagerTabContent = ({
             <MobileWrapper>
                 <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
                     <TradingPasswordManager
+                        // @ts-ignore
                         toggleModal={toggleModal}
                         platform={platform}
                         email={email}

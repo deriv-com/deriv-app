@@ -12,6 +12,7 @@ module.exports = {
     },
     testPathIgnorePatterns: ['/Routes/', '/Validator/'],
     coveragePathIgnorePatterns: [
+        // TODO: Remove '/Routes/__tests__/' and '/Validator/__tests__/' when the old tests written in chai and enzyme replaced with testing library
         '/Routes/__tests__/',
         '/Validator/__tests__/',
         '<rootDir>/.eslintrc.js',

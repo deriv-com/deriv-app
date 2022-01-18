@@ -4,7 +4,48 @@ import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import Loading from '../../../templates/_common/components/loading.jsx';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
+type TStandPoint = {
+    financial_company: string;
+    gaming_company: string;
+    iom: boolean;
+    malta: boolean;
+    maltainvest: boolean;
+    svg: boolean;
+}
+type TOpenAccountTransferData = {
+    login: string;
+}
+type TOpenAccountTransferMeta = {
+    category: string;
+}
+
+type TCFDDemoAccountDisplayProps = {
+    is_eu: boolean,
+    is_eu_country: boolean,
+    has_maltainvest_account: boolean,
+    has_cfd_account_error: boolean,
+    openAccountNeededModal: (target: string, target_label: string, target_dmt5_label: string) => void;
+    standpoint: TStandPoint,
+    is_loading: boolean,
+    is_logged_in: boolean,
+    isSyntheticCardVisible: (account_category: string) => boolean;
+    isFinancialCardVisible: () => boolean;
+    isFinancialStpCardVisible: () => boolean;
+    onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number; }) => void;
+    openAccountTransfer: (data: TOpenAccountTransferData , meta: TOpenAccountTransferMeta) => void;
+    platform: string | number,
+    current_list: Array<DetailsOfEachMT5Loginid> | [];
+    has_cfd_account: boolean,
+    openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
+    residence: string,
+}
+// existing_data.login,
+// title,
+// type.category,
+// type.type,
+// existing_data.server
 const CFDDemoAccountDisplay = ({
     is_eu,
     is_eu_country,
@@ -24,7 +65,7 @@ const CFDDemoAccountDisplay = ({
     has_cfd_account,
     openPasswordManager,
     residence,
-}) => {
+}: TCFDDemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const openCFDAccount = () => {

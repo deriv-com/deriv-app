@@ -493,6 +493,12 @@ export default class RunPanelStore {
 
     @action.bound
     onClickSell() {
+        const { is_multiplier } = this.root_store.summary_card;
+
+        if (is_multiplier) {
+            this.setContractStage(contract_stages.IS_STOPPING);
+        }
+
         this.dbot.interpreter.bot.getBotInterface().sellAtMarket();
     }
 

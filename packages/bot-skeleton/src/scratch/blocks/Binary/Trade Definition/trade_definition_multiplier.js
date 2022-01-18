@@ -67,7 +67,9 @@ Blockly.Blocks.trade_definition_multiplier = {
     meta() {
         return {
             display_name: localize('Multiplier trade options'),
-            description: localize('Define your trade options such as multiplier and stake.'),
+            description: localize(
+                'Define your trade options such as multiplier and stake. Note: This block can only be used with the multipliers trade type. If you select another trade type, this block will be replaced with the Duration block.'
+            ),
         };
     },
     validateBlocksInStatement() {

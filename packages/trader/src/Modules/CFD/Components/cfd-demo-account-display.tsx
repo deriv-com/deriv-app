@@ -13,35 +13,35 @@ type TStandPoint = {
     malta: boolean;
     maltainvest: boolean;
     svg: boolean;
-}
+};
 type TOpenAccountTransferData = {
     login: string;
-}
+};
 type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
-}
+};
 
 type TCFDDemoAccountDisplayProps = {
-    is_eu: boolean,
-    is_eu_country: boolean,
-    has_maltainvest_account: boolean,
-    has_cfd_account_error: boolean,
+    is_eu: boolean;
+    is_eu_country: boolean;
+    has_maltainvest_account: boolean;
+    has_cfd_account_error: boolean;
     openAccountNeededModal: (target: string, target_label: string, target_dmt5_label: string) => void;
-    standpoint: TStandPoint,
-    is_loading: boolean,
-    is_logged_in: boolean,
+    standpoint: TStandPoint;
+    is_loading: boolean;
+    is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
     isFinancialCardVisible: () => boolean;
     isFinancialStpCardVisible: () => boolean;
-    onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number; }) => void;
-    openAccountTransfer: (data: TOpenAccountTransferData , meta: TOpenAccountTransferMeta) => void;
-    platform: 'dxtrade' | 'mt5',
+    onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
+    openAccountTransfer: (data: TOpenAccountTransferData, meta: TOpenAccountTransferMeta) => void;
+    platform: 'dxtrade' | 'mt5';
     current_list: Array<DetailsOfEachMT5Loginid>;
-    has_cfd_account: boolean,
+    has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
-    residence: string,
-}
+    residence: string;
+};
 // existing_data.login,
 // title,
 // type.category,
@@ -93,7 +93,8 @@ const CFDDemoAccountDisplay = ({
 
     return is_loading ? (
         <div className='cfd-demo-accounts-display'>
-            {// @ts-ignore 
+            {
+                // @ts-ignore
             }
             <Loading />
         </div>
@@ -113,7 +114,9 @@ const CFDDemoAccountDisplay = ({
                     is_logged_in={is_logged_in}
                     existing_data={
                         current_list[
-                            Object.keys(current_list).find((key: number) => key.startsWith(`${platform}.demo.synthetic`))
+                            Object.keys(current_list).find((key: number) =>
+                                key.startsWith(`${platform}.demo.synthetic`)
+                            )
                         ]
                     }
                     commission_message={localize('No commission')}

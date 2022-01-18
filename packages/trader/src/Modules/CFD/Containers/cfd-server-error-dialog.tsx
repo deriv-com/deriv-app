@@ -1,8 +1,17 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+
+type TCFDServerErrorDialog = {
+    clearCFDError?: () => void;
+    disableApp?: () => void;
+    enableApp?: () => void;
+    error_message: string;
+    error_type?: string;
+    has_cfd_error?: boolean;
+    is_cfd_success_dialog_enabled?: boolean;
+};
 
 const CFDServerErrorDialog = ({
     clearCFDError,
@@ -12,9 +21,12 @@ const CFDServerErrorDialog = ({
     error_type,
     has_cfd_error,
     is_cfd_success_dialog_enabled,
-}) => {
+}: TCFDServerErrorDialog) => {
     const should_show_error =
-        has_cfd_error && !is_cfd_success_dialog_enabled && !['PasswordReset', 'PasswordError'].includes(error_type);
+        has_cfd_error &&
+        !is_cfd_success_dialog_enabled &&
+        error_type &&
+        !['PasswordReset', 'PasswordError'].includes(error_type);
     return (
         <Dialog
             title={localize('Something’s not right')}
@@ -29,16 +41,7 @@ const CFDServerErrorDialog = ({
     );
 };
 
-CFDServerErrorDialog.propTypes = {
-    clearCFDError: PropTypes.func,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    error_message: PropTypes.string,
-    has_cfd_error: PropTypes.bool,
-    is_cfd_success_dialog_enabled: PropTypes.bool,
-};
-
-export default connect(({ ui, modules }) => ({
+export default connect(({ ui, modules }: any) => ({
     clearCFDError: modules.cfd.clearCFDError,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,

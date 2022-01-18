@@ -24,7 +24,7 @@ describe('TransferLocked', () => {
         expect(screen.getByText('Transfers are locked')).toBeInTheDocument();
     });
 
-    it('Should show the default lock content if the account is financial and the account information is incomplete', () => {
+    it('Should show the default lock content if the account is financial and any of the account information (financial or trading_experience) is incomplete', () => {
         render(
             <TransferLocked
                 is_financial_account

@@ -24,7 +24,7 @@ const SuccessDialog = ({
     toggleModal,
     title,
     has_close_icon,
-    width,
+    width = '',
     is_medium_button,
 }) => {
     return (
@@ -84,7 +84,6 @@ SuccessDialog.defaultProps = {
     icon_size: 'large',
     has_cancel: false,
     has_submit: true,
-    width: undefined,
 };
 
 SuccessDialog.propTypes = {

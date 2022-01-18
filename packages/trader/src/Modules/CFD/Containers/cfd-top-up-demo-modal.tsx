@@ -4,10 +4,10 @@ import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import RootStore from '../../../Stores';
+import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
+import { TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { getTopUpConfig } from '../Helpers/constants';
-import { TDxCompanies, TMtCompanies } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 
 type TExtendedCurrentAccount = DetailsOfEachMT5Loginid & {
     display_login: string;

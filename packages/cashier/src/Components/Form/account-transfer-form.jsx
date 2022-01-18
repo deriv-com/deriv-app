@@ -582,7 +582,8 @@ const AccountTransferForm = ({
                                     </div>
                                 )}
                                 <div className='cashier__form-submit account-transfer-form__form-submit'>
-                                    <Button className='account-transfer-form__submit-button'
+                                    <Button
+                                        className='account-transfer-form__submit-button'
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||

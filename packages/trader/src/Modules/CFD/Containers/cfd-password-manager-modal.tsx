@@ -29,7 +29,6 @@ import {
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager.jsx';
-import { JSXElement } from '@babel/types';
 
 type TCountdownComponent = {
     count_from: number;
@@ -56,7 +55,6 @@ const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent)
     return <span className='countdown'>{count}</span>;
 };
 
-// ****** needs review ******
 type TCFDPasswordReset = {
     sendVerifyEmail: () => Promise<string>;
     account_type: string;

@@ -486,6 +486,8 @@ export default class RunPanelStore {
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
                 break;
             }
+            default:
+                break;
         }
     }
 

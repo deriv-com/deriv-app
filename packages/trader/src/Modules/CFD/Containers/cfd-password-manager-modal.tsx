@@ -198,7 +198,8 @@ const InvestorPasswordManager = ({
         return <CFDPasswordSuccessMessage toggleModal={toggleModal} is_investor />;
     }
 
-    const initial_values = { old_password: '', new_password: '', password_type: 'investor' };
+    const typeInvestor = 'investor';
+    const initial_values = { old_password: '', new_password: '', password_type: `${typeInvestor}` };
 
     return (
         <div className='cfd-password-manager__investor-wrapper'>
@@ -317,7 +318,7 @@ const CFDPasswordManagerTabContent = ({
     const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState<boolean>(false);
 
     // view height - margin top and bottom of modal - modal title - modal content margin top and bottom - table title
-    const password_container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
+    const container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
     const validatePassword = (values: { old_password: string; new_password: string; password_type: string }) => {
         const errors: { new_password?: string; old_password?: string } = {};
 
@@ -378,7 +379,7 @@ const CFDPasswordManagerTabContent = ({
     const trading_password_manager = (
         <React.Fragment>
             <DesktopWrapper>
-                <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
+                <ThemedScrollbars height={container_height} is_bypassed={isMobile()} autohide={false}>
                     <TradingPasswordManager
                         // @ts-ignore
                         toggleModal={toggleModal}
@@ -415,7 +416,7 @@ const CFDPasswordManagerTabContent = ({
             </div>
             <div data-label={localize('Investor password')}>
                 <DesktopWrapper>
-                    <ThemedScrollbars height={password_container_height}>
+                    <ThemedScrollbars height={container_height}>
                         <InvestorPasswordManager
                             is_submit_success_investor={is_submit_success_investor}
                             toggleModal={toggleModal}

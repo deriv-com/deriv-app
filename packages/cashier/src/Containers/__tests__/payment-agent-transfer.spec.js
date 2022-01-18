@@ -14,45 +14,14 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('Components/Error/cashier-locked', () => {
-    const originalModule = jest.requireActual('Components/Error/cashier-locked');
-
-    return {
-        __esModule: true,
-        ...originalModule,
-        default: jest.fn(() => 'mock cashier locked'),
-    };
-});
-
-jest.mock('Components/Error/error', () => {
-    const originalModule = jest.requireActual('Components/Error/error');
-
-    return {
-        __esModule: true,
-        ...originalModule,
-        default: jest.fn(() => 'mock error'),
-    };
-});
-
-jest.mock('Components/Confirm/payment-agent-transfer-confirm', () => {
-    const originalModule = jest.requireActual('Components/Confirm/payment-agent-transfer-confirm');
-
-    return {
-        __esModule: true,
-        ...originalModule,
-        default: jest.fn(() => 'mock payment agent transfer confirm'),
-    };
-});
-
-jest.mock('Components/Receipt/payment-agent-transfer-receipt', () => {
-    const originalModule = jest.requireActual('Components/Receipt/payment-agent-transfer-receipt');
-
-    return {
-        __esModule: true,
-        ...originalModule,
-        default: jest.fn(() => 'mock payment agent transfer receipt'),
-    };
-});
+jest.mock('Components/Error/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
+jest.mock('Components/Error/error', () => jest.fn(() => 'mockedError'));
+jest.mock('Components/Confirm/payment-agent-transfer-confirm', () =>
+    jest.fn(() => 'mockedPaymentAgentTransferConfirm')
+);
+jest.mock('Components/Receipt/payment-agent-transfer-receipt', () =>
+    jest.fn(() => 'mockedPaymentAgentTransferReceipt')
+);
 
 describe('<PaymentAgentTransfer />', () => {
     const history = createBrowserHistory();

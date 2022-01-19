@@ -59,14 +59,24 @@ const PasswordBox = ({ platform, onClick }) => (
                     }
                 )}
                 classNameBubble='cfd-account-card__password-tooltip'
-                margin={35}
             >
                 <Text size='xs'>•••••••••••••••</Text>
             </Popover>
         </div>
-        <Button className='cfd-account-card__password-action' tertiary onClick={onClick}>
-            {localize('Change')}
-        </Button>
+        <Popover alignment='bottom' message={localize('Change Password')}>
+            <Button
+                className='cfd-account-card__password-action toolbar__btn--icon'
+                transparent
+                onClick={onClick}
+                icon={
+                    <Icon
+                        icon='IcEdit'
+                        className='da-article__learn-more-icon'
+                        custom_color='var(--text-less-prominent)'
+                    />
+                }
+            />
+        </Popover>
     </div>
 );
 

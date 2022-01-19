@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCFDPlatformLabel, CFD_PLATFORMS, WS } from '@deriv/shared';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
+import { TChangePassword, TPasswordResetAndTradingPasswordManager } from './props.types';
 
-const ChangePassword = ({ platform, onConfirm }) => (
+const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
     <div className='cfd-change-password'>
         <Icon
             className='cfd-change-password__icon'
@@ -44,12 +44,7 @@ const ChangePassword = ({ platform, onConfirm }) => (
     </div>
 );
 
-ChangePassword.propTypes = {
-    onConfirm: PropTypes.func,
-    platform: PropTypes.string,
-};
-
-const PasswordReset = ({ email, platform, account_group }) => {
+const PasswordReset = ({ email, platform, account_group }: TPasswordResetAndTradingPasswordManager) => {
     const onClickSendEmail = React.useCallback(() => {
         let redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
 
@@ -91,13 +86,8 @@ const PasswordReset = ({ email, platform, account_group }) => {
     );
 };
 
-PasswordReset.propTypes = {
-    email: PropTypes.string,
-    platform: PropTypes.string,
-};
-
-const TradingPasswordManager = ({ platform, email, account_group }) => {
-    const multi_step_ref = React.useRef();
+const TradingPasswordManager = ({ platform, email, account_group }: TPasswordResetAndTradingPasswordManager) => {
+    const multi_step_ref = React.useRef<{ goNextStep: () => void; goPrevStep: () => void }>();
 
     const steps = [
         {
@@ -123,12 +113,6 @@ const TradingPasswordManager = ({ platform, email, account_group }) => {
             <MultiStep ref={multi_step_ref} steps={steps} />
         </div>
     );
-};
-
-TradingPasswordManager.propTypes = {
-    platform: PropTypes.string,
-    email: PropTypes.string,
-    account_group: PropTypes.string,
 };
 
 export default TradingPasswordManager;

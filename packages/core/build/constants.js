@@ -33,7 +33,7 @@ const {
     svg_loaders,
 } = require('./loaders-config');
 
-const IS_RELEASE = true;
+const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const HOISTED_PACKAGES = {
     react: path.resolve(__dirname, '../../../node_modules/react'),

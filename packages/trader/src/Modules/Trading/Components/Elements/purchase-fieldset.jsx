@@ -32,7 +32,7 @@ const PurchaseFieldset = ({
 
     useEffect(() => {
         setShouldFade(true);
-    }, [])
+    }, []);
 
     const purchase_button = (
         <React.Fragment>
@@ -139,7 +139,7 @@ const PurchaseFieldset = ({
             </MobileWrapper>
         </Fieldset>
     );
-}
+};
 
 PurchaseFieldset.propTypes = {
     basis: PropTypes.string,

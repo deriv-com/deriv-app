@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
 import 'Sass/crypto-fiat-converter.scss';
 
-const Timer = props => {
+const Timer = ({ onComplete }) => {
     const initial_time = 60;
     const [remaining_time, setRemainingTime] = React.useState(initial_time);
 
@@ -19,10 +19,10 @@ const Timer = props => {
     }, 1000);
     React.useEffect(() => {
         if (remaining_time === 0) {
-            props.onComplete();
+            onComplete();
             setRemainingTime(initial_time);
         }
-    });
+    }, [onComplete, remaining_time]);
 
     return (
         <Text as='p' size='xs' color='less-prominent' className='timer'>

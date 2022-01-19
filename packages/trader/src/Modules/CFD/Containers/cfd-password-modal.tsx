@@ -39,6 +39,13 @@ import 'Sass/app/modules/mt5/cfd.scss';
 import { connect } from 'Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
+export type TCFDPasswordFormValues = { password: string };
+export type TCFDServerFormValues = { server: string };
+
+type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_type'> & {
+    market_type?: 'synthetic' | 'financial' | 'gaming';
+};
+
 type TPasswordModalHeaderProps = {
     should_set_trading_password: boolean;
     should_show_server_form: boolean;
@@ -48,23 +55,26 @@ type TPasswordModalHeaderProps = {
     has_mt5_account?: boolean;
 };
 
-type TCFDServerModalWarningProps = {
-    show_warning: boolean;
-    platform: string;
-};
-
-export type TCFDPasswordFormValues = {
-    password: string;
-};
-
-export type TCFDServerFormValues = {
-    server: string;
-};
-
 type TIconTypeProps = {
     platform: string;
     type?: string;
     is_eu: boolean;
+};
+
+type TCFDPasswordFormReusedProps = {
+    platform: string;
+    error_message: string;
+    validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
+};
+
+type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
+    password: string;
+    onSubmit: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
+};
+
+type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
+    has_mt5_account: boolean;
+    submitPassword: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
 };
 
 type TMultiStepRefProps = {
@@ -72,8 +82,25 @@ type TMultiStepRefProps = {
     goPrevStep: () => void;
 };
 
-type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_type'> & {
-    market_type?: 'synthetic' | 'financial' | 'gaming';
+type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
+    account_title: string;
+    closeModal: () => void;
+    error_type?: string;
+    form_error?: string;
+    has_mt5_account: boolean;
+    is_bvi: boolean;
+    is_dxtrade_allowed: boolean;
+    is_real_financial_stp: boolean;
+    onCancel: () => void;
+    onForgotPassword: () => void;
+    should_set_trading_password: boolean;
+    should_show_server_form: boolean;
+    submitPassword: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
+};
+
+type TCFDServerModalWarningProps = {
+    show_warning: boolean;
+    platform: string;
 };
 
 type TCFDServerFormProps = {
@@ -86,38 +113,6 @@ type TCFDServerFormProps = {
     platform: string;
     has_error: boolean;
     validateServer?: (values: TCFDServerFormValues) => FormikErrors<TCFDServerFormValues>;
-};
-
-type TCFDCreatePasswordProps = {
-    password: string;
-    platform: string;
-    error_message: string;
-    validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
-    onSubmit: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
-};
-
-type TCFDCreatePasswordFormProps = Pick<
-    TCFDPasswordFormProps,
-    'platform' | 'error_message' | 'validatePassword' | 'submitPassword' | 'has_mt5_account'
->;
-
-type TCFDPasswordFormProps = {
-    account_title: string;
-    closeModal: () => void;
-    error_message: string;
-    error_type?: string;
-    form_error?: string;
-    has_mt5_account: boolean;
-    is_bvi: boolean;
-    is_dxtrade_allowed: boolean;
-    is_real_financial_stp: boolean;
-    onCancel: () => void;
-    onForgotPassword: () => void;
-    platform: string;
-    should_set_trading_password: boolean;
-    should_show_server_form: boolean;
-    submitPassword: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
-    validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
 };
 
 type TCFDPasswordModalProps = RouteComponentProps & {
@@ -368,7 +363,6 @@ const CFDCreatePasswordForm = ({
     validatePassword,
     submitPassword,
 }: TCFDCreatePasswordFormProps) => {
-    console.log('CFDCreatePasswordForm');
     const multi_step_ref = React.useRef<TMultiStepRefProps>();
     const [password, setPassword] = React.useState('');
 
@@ -595,7 +589,6 @@ const CFDServerModalWarning = ({ show_warning = true, platform }: TCFDServerModa
 };
 
 const CFDServerForm = ({ ...props }: TCFDServerFormProps) => {
-    console.log('CFDServerForm');
     const available_servers = React.useMemo(() => {
         return [...props.mt5_trading_servers]
             .map(server => {

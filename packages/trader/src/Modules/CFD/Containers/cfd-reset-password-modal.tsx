@@ -1,7 +1,4 @@
 import { Formik, FormikHelpers } from 'formik';
-import * as PropTypes from 'prop-types';
-import { History } from 'history';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import RootStore from 'Stores/index';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
@@ -18,12 +15,7 @@ import {
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
-
-type TResetPasswordIntent = {
-    current_list: { [key: string]: DetailsOfEachMT5Loginid };
-    children({ ...props }): React.ReactElement;
-    is_eu: boolean;
-};
+import { TResetPasswordIntent, TCFDResetPasswordModal } from "./props.types";
 
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
@@ -54,17 +46,6 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
         type: reset_password_type,
         ...props,
     });
-};
-
-type TCFDResetPasswordModal = {
-    current_list: { [key: string]: DetailsOfEachMT5Loginid };
-    email: string;
-    is_cfd_reset_password_modal_enabled: boolean;
-    is_eu: boolean;
-    is_logged_in: boolean;
-    platform: 'dxtrade' | 'mt5';
-    setCFDPasswordResetModal: (value: boolean) => void;
-    history: History;
 };
 
 const CFDResetPasswordModal = ({
@@ -287,14 +268,6 @@ const CFDResetPasswordModal = ({
             )}
         </Modal>
     );
-};
-
-CFDResetPasswordModal.propTypes = {
-    email: PropTypes.string,
-    is_eu: PropTypes.bool,
-    is_cfd_reset_password_modal_enabled: PropTypes.any,
-    setCFDPasswordResetModal: PropTypes.any,
-    current_list: PropTypes.any,
 };
 
 export default React.memo(

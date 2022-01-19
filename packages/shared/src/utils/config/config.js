@@ -19,7 +19,6 @@ export const domain_app_ids = {
     'app.deriv.com': 16929,
     'myapps.deriv.com': 1411, // TODO: we need to create a new one
     'app.deriv.me': 1411,
-    'app.deriv.be': 30767,
     'binary.com': 1,
 };
 

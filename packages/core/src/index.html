@@ -84,11 +84,7 @@
         <!-- Start RudderStack Script -->
         <script type="text/javascript">
             const isProduction = () => {
-                return (
-                    window.location.hostname === 'app.deriv.com' ||
-                    window.location.hostname === 'app.deriv.me' ||
-                    window.location.hostname === 'app.deriv.be'
-                );
+                return window.location.hostname === 'app.deriv.com' || window.location.hostname === 'app.deriv.me';
             };
 
             rudderanalytics = window.rudderanalytics = [];

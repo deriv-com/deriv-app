@@ -43,7 +43,7 @@ export const getDxCompanies = () => {
     };
 };
 
-export const getMtCompanies = is_eu => {
+export const getMtCompanies = (is_eu: boolean) => {
     const synthetic_config = {
         account_type: '',
         leverage: 500,
@@ -103,3 +103,6 @@ export const getMtCompanies = is_eu => {
         },
     };
 };
+
+export type TMtCompanies = ReturnType<typeof getMtCompanies>;
+export type TDXCompanies = ReturnType<typeof getDxCompanies>;

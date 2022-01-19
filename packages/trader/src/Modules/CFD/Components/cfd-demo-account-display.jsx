@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import Loading from '../../../templates/_common/components/loading.jsx';
+import Loading from '../../../templates/_common/components/loading';
 
 const CFDDemoAccountDisplay = ({
     is_eu,

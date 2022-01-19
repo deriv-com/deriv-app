@@ -17,11 +17,11 @@ const ToggleFullScreen = () => {
         fullscreen_map.event.forEach(event => {
             document.addEventListener(event, onFullScreen, false);
         });
-    }, []);
+    }, [fullscreen_map.event, onFullScreen]);
 
-    const onFullScreen = () => {
+    const onFullScreen = React.useCallback(() => {
         setIsFullScreen(fullscreen_map.element.some(el => document[el]));
-    };
+    }, [fullscreen_map.element]);
 
     const toggleFullScreen = e => {
         e.stopPropagation();

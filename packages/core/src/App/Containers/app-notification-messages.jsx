@@ -12,25 +12,31 @@ import 'Sass/app/_common/components/app-notification-message.scss';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
+
 const NotificationsContent = ({
     is_notification_loaded,
     style,
     notifications,
     removeNotificationMessage,
     markNotificationMessage,
+    landing_company_shortcode,
     has_iom_account,
+    has_malta_account,
     is_logged_in,
 }) => {
-    // TODO: Remove this useEffect when MX account closure has finished.
+    // TODO: Remove this useEffect when MX and MLT account closure has finished.
     const window_location = window.location;
     React.useEffect(() => {
-        if (has_iom_account && is_logged_in) {
-            const get_close_mx_notification = notifications.find(item => item.key === 'close_mx_account');
+        if ((has_iom_account || has_malta_account) && is_logged_in) {
+            const get_close_mx_mlt_notification = notifications.find(item => item.key === 'close_mx_mlt_account');
             const is_dtrader = getPathname() === 'DTrader';
-            if (!is_dtrader && get_close_mx_notification) {
-                markNotificationMessage({ key: 'close_mx_account' });
+            const malta_account = landing_company_shortcode === 'malta';
+            const iom_account = landing_company_shortcode === 'iom';
+            if ((!is_dtrader && get_close_mx_mlt_notification) || malta_account || iom_account) {
+                markNotificationMessage({ key: 'close_mx_mlt_account' });
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window_location]);
 
     return (
@@ -66,7 +72,9 @@ const AppNotificationMessages = ({
     removeNotificationMessage,
     stopNotificationLoading,
     markNotificationMessage,
+    landing_company_shortcode,
     has_iom_account,
+    has_malta_account,
     is_logged_in,
 }) => {
     const [style, setStyle] = React.useState({});
@@ -82,12 +90,12 @@ const AppNotificationMessages = ({
                 setStyle({ top: bounds.top + 8 });
             }
         }
-    }, [notifications_ref]);
+    }, [is_mt5, notifications_ref, stopNotificationLoading]);
 
     const notifications = notification_messages.filter(message => {
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
-            ? ['unwelcome', 'contract_sold', 'dp2p', 'install_pwa', 'tnc', 'deriv_go', 'close_mx_account'].includes(
+            ? ['unwelcome', 'contract_sold', 'dp2p', 'install_pwa', 'tnc', 'deriv_go', 'close_mx_mlt_account'].includes(
                   message.key
               )
             : true;
@@ -106,7 +114,9 @@ const AppNotificationMessages = ({
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
+                    landing_company_shortcode={landing_company_shortcode}
                     has_iom_account={has_iom_account}
+                    has_malta_account={has_malta_account}
                     is_logged_in={is_logged_in}
                 />
             </Portal>
@@ -132,7 +142,7 @@ AppNotificationMessages.propTypes = {
                 'contract_sold',
                 'news',
                 'announce',
-                'close_mx',
+                'close_mx_mlt',
             ]),
         })
     ),
@@ -144,6 +154,8 @@ export default connect(({ ui, client }) => ({
     notification_messages: ui.notification_messages,
     removeNotificationMessage: ui.removeNotificationMessage,
     markNotificationMessage: ui.markNotificationMessage,
+    landing_company_shortcode: client.landing_company_shortcode,
     has_iom_account: client.has_iom_account,
+    has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,
 }))(AppNotificationMessages);

@@ -56,7 +56,7 @@ AccountPromptDialog.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    accounts_list: modules.cashier.config.account_transfer.accounts_list,
+    accounts_list: modules.cashier.account_transfer.accounts_list,
     continueRoute: modules.cashier.account_prompt_dialog.continueRoute,
     currency: client.currency,
     is_confirmed: modules.cashier.account_prompt_dialog.is_confirmed,

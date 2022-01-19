@@ -96,7 +96,7 @@ export default class UIStore extends BaseStore {
     @observable is_welcome_modal_visible = false;
 
     // Remove MX gaming account modal
-    @observable is_close_mx_account_modal_visible = false;
+    @observable is_close_mx_mlt_account_modal_visible = false;
 
     // set currency modal
     @observable is_set_currency_modal_visible = false;
@@ -246,8 +246,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showCloseMXAccountPopup(is_open) {
-        this.is_close_mx_account_modal_visible = is_open;
+    showCloseMxMltAccountPopup(is_open) {
+        this.is_close_mx_mlt_account_modal_visible = is_open;
     }
 
     @computed
@@ -797,7 +797,7 @@ export default class UIStore extends BaseStore {
         this.root_store.common.routeTo(this.choose_crypto_currency_target);
 
         if (this.choose_crypto_currency_target === routes.cashier_deposit) {
-            this.root_store.modules.cashier.setIsDeposit(true);
+            this.root_store.modules.cashier.general_store.setIsDeposit(true);
         }
     }
 }

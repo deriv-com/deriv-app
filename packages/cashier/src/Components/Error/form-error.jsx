@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 
-const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
+const FormError = ({ disableApp, enableApp, error = {} }) => {
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState({
@@ -29,7 +29,11 @@ const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
     }, [error.message]);
 
     const mapErrorToDetails = (error_code, error_message) => {
-        if (error_code === 'Fiat2CryptoTransferOverLimit') {
+        if (
+            ['Fiat2CryptoTransferOverLimit', 'Crypto2FiatTransferOverLimit', 'Crypto2CryptoTransferOverLimit'].includes(
+                error_code
+            )
+        ) {
             setDetails({
                 title: localize('Please verify your identity'),
                 cancel_button_text: localize('Cancel'),
@@ -53,7 +57,7 @@ const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
     };
 
     const dismissError = () => {
-        setErrorMessage('');
+        error.setErrorMessage('');
         setErrorVisibility(false);
     };
 
@@ -68,6 +72,7 @@ const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
                 }
                 dismissError();
             }}
+            onEscapeButtonCancel={dismissError}
             onCancel={details.cancel_button_text ? dismissError : undefined}
             disableApp={disableApp}
             enableApp={enableApp}
@@ -86,11 +91,9 @@ FormError.propTypes = {
     error: PropTypes.object,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
-    setErrorMessage: PropTypes.func,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ ui }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    setErrorMessage: modules.cashier.setErrorMessage,
 }))(FormError);

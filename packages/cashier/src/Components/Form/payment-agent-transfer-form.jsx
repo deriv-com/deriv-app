@@ -7,6 +7,7 @@ import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/sh
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
+import 'Sass/payment-agent-transfer-form.scss';
 
 const validateTransfer = (values, { balance, currency, transfer_limit }) => {
     const errors = {};
@@ -70,7 +71,7 @@ const PaymentAgentTransferForm = ({
     };
 
     return (
-        <div className='cashier__wrapper payment-agent-transfer__container'>
+        <div className='cashier__wrapper payment-agent-transfer-form__container'>
             <DesktopWrapper>
                 <Text
                     as='h2'
@@ -102,7 +103,7 @@ const PaymentAgentTransferForm = ({
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
-                                    className='payment-agent-transfer__input'
+                                    className='payment-agent-transfer-form__input'
                                     type='text'
                                     label={localize('Client login ID')}
                                     error={touched.loginid && errors.loginid}
@@ -120,7 +121,7 @@ const PaymentAgentTransferForm = ({
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
-                                    className='payment-agent-transfer__input dc-input--no-placeholder'
+                                    className='payment-agent-transfer-form__input dc-input--no-placeholder'
                                     type='text'
                                     label={localize('Amount')}
                                     error={touched.amount && errors.amount}
@@ -148,14 +149,14 @@ const PaymentAgentTransferForm = ({
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
-                                    className='payment-agent-transfer__input-area'
+                                    className='payment-agent-transfer-form__input-area'
                                     type='textarea'
                                     label={localize('Description')}
                                     error={errors.description}
                                     required
                                     autoComplete='off'
                                     has_character_counter
-                                    max_characters='250'
+                                    max_characters={250}
                                 />
                             )}
                         </Field>
@@ -193,11 +194,11 @@ PaymentAgentTransferForm.propTypes = {
 export default connect(({ client, modules }) => ({
     balance: client.balance,
     currency: client.currency,
-    amount: modules.cashier.config.payment_agent_transfer.confirm.amount,
-    description: modules.cashier.config.payment_agent_transfer.confirm.description,
-    error: modules.cashier.config.payment_agent_transfer.error,
-    requestTryPaymentAgentTransfer: modules.cashier.requestTryPaymentAgentTransfer,
-    setErrorMessage: modules.cashier.setErrorMessage,
-    transfer_limit: modules.cashier.config.payment_agent_transfer.transfer_limit,
-    transfer_to: modules.cashier.config.payment_agent_transfer.confirm.client_id,
+    amount: modules.cashier.payment_agent_transfer.confirm.amount,
+    description: modules.cashier.payment_agent_transfer.confirm.description,
+    error: modules.cashier.payment_agent_transfer.error,
+    requestTryPaymentAgentTransfer: modules.cashier.payment_agent_transfer.requestTryPaymentAgentTransfer,
+    setErrorMessage: modules.cashier.payment_agent_transfer.error.setErrorMessage,
+    transfer_limit: modules.cashier.payment_agent_transfer.transfer_limit,
+    transfer_to: modules.cashier.payment_agent_transfer.confirm.client_id,
 }))(PaymentAgentTransferForm);

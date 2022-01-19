@@ -41,7 +41,7 @@ const AccountSwitcher = props => {
         if (getMaxAccountsDisplayed()) {
             setDmt5RealVisible(false);
         }
-    }, []);
+    }, [getMaxAccountsDisplayed]);
 
     React.useEffect(() => {
         if (scroll_ref.current && (is_dmt5_real_visible || is_dxtrade_real_visible)) {
@@ -51,7 +51,7 @@ const AccountSwitcher = props => {
                 inline: 'nearest',
             });
         }
-    }, [is_dmt5_real_visible, is_dxtrade_real_visible]);
+    }, [getMaxAccountsDisplayed, is_dmt5_real_visible, is_dxtrade_real_visible]);
 
     const toggleVisibility = section => {
         switch (section) {
@@ -72,18 +72,17 @@ const AccountSwitcher = props => {
         }
     };
 
-    const getMaxAccountsDisplayed = () => {
+    const getMaxAccountsDisplayed = React.useCallback(() => {
         return props?.account_list?.length > 4;
-    };
+    }, [props?.account_list?.length]);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         closeAccountsDialog();
         if (props.is_positions_drawer_on) {
             props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        props.logoutClient().then(() => {
-            props.routeBackInApp(props.history);
-        });
+        props.routeBackInApp(props.history);
+        await props.logoutClient();
     };
 
     const closeAccountsDialog = () => {
@@ -208,7 +207,7 @@ const AccountSwitcher = props => {
                 ? props.landing_companies?.mt_gaming_company
                 : props.landing_companies?.dxtrade_gaming_company,
             existing_cfd_accounts,
-            props.trading_servers,
+            props.mt5_trading_servers,
             platform,
             is_eu
         );
@@ -218,7 +217,7 @@ const AccountSwitcher = props => {
                 ? props.landing_companies?.mt_financial_company
                 : props.landing_companies?.dxtrade_financial_company,
             existing_cfd_accounts,
-            props.trading_servers,
+            props.mt5_trading_servers,
             platform,
             is_eu
         );
@@ -957,7 +956,7 @@ const account_switcher = withRouter(
         standpoint: client.standpoint,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
-        trading_servers: client.trading_servers,
+        mt5_trading_servers: client.mt5_trading_servers,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         togglePositionsDrawer: ui.togglePositionsDrawer,
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,

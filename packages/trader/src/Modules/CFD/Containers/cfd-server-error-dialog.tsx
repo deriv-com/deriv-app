@@ -2,15 +2,16 @@ import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
-type TCFDServerErrorDialog = {
+type TCFDServerErrorDialogProps = {
     clearCFDError?: () => void;
     disableApp?: () => void;
     enableApp?: () => void;
     error_message: string;
     error_type?: string;
-    has_cfd_error?: boolean;
-    is_cfd_success_dialog_enabled?: boolean;
+    has_cfd_error: boolean;
+    is_cfd_success_dialog_enabled: boolean;
 };
 
 const CFDServerErrorDialog = ({
@@ -21,7 +22,7 @@ const CFDServerErrorDialog = ({
     error_type,
     has_cfd_error,
     is_cfd_success_dialog_enabled,
-}: TCFDServerErrorDialog) => {
+}: TCFDServerErrorDialogProps) => {
     const should_show_error =
         has_cfd_error &&
         !is_cfd_success_dialog_enabled &&
@@ -41,7 +42,7 @@ const CFDServerErrorDialog = ({
     );
 };
 
-export default connect(({ ui, modules }: any) => ({
+export default connect(({ ui, modules }: RootStore) => ({
     clearCFDError: modules.cfd.clearCFDError,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,

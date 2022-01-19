@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
@@ -172,6 +173,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
                 setPreviousData(fetchFromStorage());
             }
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_settings]);
 
     React.useEffect(() => {
@@ -185,7 +187,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
             setStateItems(items);
             setPreviousData([]);
         }
-    }, [previous_data]);
+    }, [previous_data, state_items]);
 
     const fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');

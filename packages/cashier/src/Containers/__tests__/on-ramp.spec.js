@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import OnRamp from '../on-ramp';
 
 jest.mock('Stores/connect.js', () => ({
@@ -130,11 +130,11 @@ describe('<OnRamp />', () => {
         props.menu_options = [
             {
                 label: 'Deposit',
-                path: '/cashier/deposit',
+                path: routes.cashier_deposit,
             },
             {
                 label: 'Transfer',
-                path: '/cashier/account-transfer',
+                path: routes.cashier_acc_transfer,
             },
         ];
 
@@ -152,22 +152,22 @@ describe('<OnRamp />', () => {
         props.menu_options = [
             {
                 label: 'Deposit',
-                path: '/cashier/deposit',
+                path: routes.cashier_deposit,
             },
             {
                 label: 'Transfer',
-                path: '/cashier/account-transfer',
+                path: routes.cashier_acc_transfer,
             },
             {
                 label: 'Fiat onramp',
-                path: '/cashier/on-ramp',
+                path: routes.cashier_onramp,
             },
         ];
 
         const { container } = render(<OnRamp {...props} />);
         const select = container.querySelector('#dt_components_select-native_select-tag');
 
-        fireEvent.change(select, { target: { value: '/cashier/deposit' } });
+        fireEvent.change(select, { target: { value: routes.cashier_deposit } });
 
         expect(props.routeTo).toHaveBeenCalledTimes(1);
     });

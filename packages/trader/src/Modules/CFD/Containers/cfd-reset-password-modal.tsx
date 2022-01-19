@@ -1,8 +1,8 @@
 import { Formik, FormikHelpers } from 'formik';
 import * as PropTypes from 'prop-types';
-import { History } from "history";
-import { DetailsOfEachMT5Loginid } from "@deriv/api-types";
-import RootStore from "Stores/index";
+import { History } from 'history';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import RootStore from 'Stores/index';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
@@ -20,8 +20,8 @@ import { connect } from 'Stores/connect';
 import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 
 type TResetPasswordIntent = {
-    current_list: {[key: string]: DetailsOfEachMT5Loginid};
-    children({...props}): React.ReactElement;
+    current_list: { [key: string]: DetailsOfEachMT5Loginid };
+    children({ ...props }): React.ReactElement;
     is_eu: boolean;
 };
 
@@ -39,7 +39,9 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
     } else if (current_list) {
         [server, group, type] = Object.keys(current_list)?.pop()!.split('.');
         login = current_list[`mt5.${group}.${type}@${server}`]?.login ?? '';
-        title = getMtCompanies(is_eu)?.[group as keyof TMtCompanies]?.[type as keyof TMtCompanies['demo' | 'real']]?.title ?? '';
+        title =
+            getMtCompanies(is_eu)?.[group as keyof TMtCompanies]?.[type as keyof TMtCompanies['demo' | 'real']]
+                ?.title ?? '';
     } else {
         // Set a default intent
         login = '';
@@ -55,7 +57,7 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
 };
 
 type TCFDResetPasswordModal = {
-    current_list: {[key: string]: DetailsOfEachMT5Loginid};
+    current_list: { [key: string]: DetailsOfEachMT5Loginid };
     email: string;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;
@@ -89,7 +91,7 @@ const CFDResetPasswordModal = ({
         changed_password_type: '',
     });
 
-    const renderErrorBox = (error: {code: number | string; message: string}) => {
+    const renderErrorBox = (error: { code: number | string; message: string }) => {
         setState({
             ...state,
             error_code: error.code,
@@ -103,8 +105,8 @@ const CFDResetPasswordModal = ({
         localStorage.removeItem('cfd_reset_password_code');
         history.push(`${routes.mt5}`);
     };
-    const validatePassword = (values: {new_password: string}) => {
-        const errors: {new_password?: string} = {};
+    const validatePassword = (values: { new_password: string }) => {
+        const errors: { new_password?: string } = {};
 
         if (
             !validLength(values.new_password, {
@@ -126,7 +128,12 @@ const CFDResetPasswordModal = ({
         return errors;
     };
 
-    const resetPassword = (values: {new_password: string}, password_type: string, login: string, actions: FormikHelpers<{new_password: string}>) => {
+    const resetPassword = (
+        values: { new_password: string },
+        password_type: string,
+        login: string,
+        actions: FormikHelpers<{ new_password: string }>
+    ) => {
         const { setSubmitting } = actions;
         setSubmitting(true);
         const request = {
@@ -136,19 +143,21 @@ const CFDResetPasswordModal = ({
             verification_code: localStorage.getItem('cfd_reset_password_code'),
         };
 
-        WS.tradingPlatformInvestorPasswordReset(request).then((response: {error: {code: string | number; message: string;}; password_type: string;}) => {
-            if (response.error && response.error.code === 'InvalidToken') {
-                renderErrorBox(response.error);
-            } else {
-                setState({
-                    ...state,
-                    is_finished: true,
-                    changed_password_type: password_type,
-                });
-                clearAddressBar();
+        WS.tradingPlatformInvestorPasswordReset(request).then(
+            (response: { error: { code: string | number; message: string }; password_type: string }) => {
+                if (response.error && response.error.code === 'InvalidToken') {
+                    renderErrorBox(response.error);
+                } else {
+                    setState({
+                        ...state,
+                        is_finished: true,
+                        changed_password_type: password_type,
+                    });
+                    clearAddressBar();
+                }
+                setSubmitting(false);
             }
-            setSubmitting(false);
-        });
+        );
     };
     const getIsListFetched = () => {
         return Object.keys(current_list).length !== 0;

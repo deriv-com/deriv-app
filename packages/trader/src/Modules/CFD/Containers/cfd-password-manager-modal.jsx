@@ -28,7 +28,7 @@ import {
 } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
-import TradingPasswordManager from './trading-password-manager.jsx';
+import TradingPasswordManager from './trading-password-manager';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);

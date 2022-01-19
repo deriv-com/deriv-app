@@ -5,9 +5,9 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 
 type TCFDServerErrorDialogProps = {
-    clearCFDError?: () => void;
-    disableApp?: () => void;
-    enableApp?: () => void;
+    clearCFDError: () => void;
+    disableApp: () => void;
+    enableApp: () => void;
     error_message: string;
     error_type?: string;
     has_cfd_error: boolean;

@@ -10,7 +10,7 @@ import {
     Mt5NewAccount,
 } from '@deriv/api-types';
 import RootStore from 'Stores/index';
-import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
@@ -53,11 +53,11 @@ type TCFDServerModalWarningProps = {
     platform: string;
 };
 
-type TCFDPasswordFormValues = {
+export type TCFDPasswordFormValues = {
     password: string;
 };
 
-type TCFDServerFormValues = {
+export type TCFDServerFormValues = {
     server: string;
 };
 
@@ -65,6 +65,11 @@ type TIconTypeProps = {
     platform: string;
     type?: string;
     is_eu: boolean;
+};
+
+type TMultiStepRefProps = {
+    goNextStep: () => void;
+    goPrevStep: () => void;
 };
 
 type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_type'> & {
@@ -81,6 +86,14 @@ type TCFDServerFormProps = {
     platform: string;
     has_error: boolean;
     validateServer?: (values: TCFDServerFormValues) => FormikErrors<TCFDServerFormValues>;
+};
+
+type TCFDCreatePasswordProps = {
+    password: string;
+    platform: string;
+    error_message: string;
+    validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
+    onSubmit: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
 };
 
 type TCFDCreatePasswordFormProps = Pick<
@@ -184,11 +197,12 @@ const PasswordModalHeader = ({
         </Text>
     );
 };
-const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
+const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, type?: string, category?: string) => {
     if (!category && !type) return '';
 
     const category_label = category === 'real' ? localize('real') : localize('demo');
-    const type_label = getMtCompanies(is_eu)[category][type].short_title;
+    const type_label =
+        getMtCompanies(is_eu)[category as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].short_title;
 
     if (category === 'real') {
         if (needs_poi) {
@@ -259,7 +273,7 @@ const getCancelButtonLabel = ({
     return localize('Forgot password?');
 };
 
-const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_message }) => {
+const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_message }: TCFDCreatePasswordProps) => {
     return (
         <Formik
             initialValues={{
@@ -322,7 +336,7 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
                                         name='password'
                                         value={values.password}
                                         onBlur={handleBlur}
-                                        onChange={e => {
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             handleChange(e);
                                             validateForm().then(() => {
                                                 setFieldTouched('password', true);
@@ -355,10 +369,10 @@ const CFDCreatePasswordForm = ({
     submitPassword,
 }: TCFDCreatePasswordFormProps) => {
     console.log('CFDCreatePasswordForm');
-    const multi_step_ref = React.useRef();
+    const multi_step_ref = React.useRef<TMultiStepRefProps>();
     const [password, setPassword] = React.useState('');
 
-    const onSubmit = (values, actions) => {
+    const onSubmit = (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => {
         if (platform === CFD_PLATFORMS.MT5 && has_mt5_account) {
             setPassword(values.password);
             multi_step_ref.current?.goNextStep();
@@ -384,7 +398,9 @@ const CFDCreatePasswordForm = ({
                 <ChangePasswordConfirmation
                     className='cfd-password-modal__change-password-confirmation'
                     platform={platform}
-                    onConfirm={(values, actions) => submitPassword({ password }, actions)}
+                    onConfirm={(_values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) =>
+                        submitPassword({ password }, actions)
+                    }
                     onCancel={() => multi_step_ref.current?.goPrevStep()}
                 />
             ),
@@ -713,7 +729,7 @@ const CFDPasswordModal = ({
         } else if (!validPassword(values.password)) {
             errors.password = getErrorMessages().password();
         }
-        if (values.password.toLowerCase() === email.toLowerCase()) {
+        if (values.password?.toLowerCase() === email.toLowerCase()) {
             errors.password = localize('Your password cannot be the same as your email address.');
         }
 
@@ -940,7 +956,7 @@ const CFDPasswordModal = ({
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
                 heading={success_heading}
-                message={getSubmitText(account_type.type, account_type.category, platform, is_eu, needs_poi)}
+                message={getSubmitText(platform, is_eu, needs_poi, account_type.type, account_type.category)}
                 icon={<IconType platform={platform} type={account_type.type} is_eu={is_eu} />}
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}

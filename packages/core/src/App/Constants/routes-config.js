@@ -459,10 +459,13 @@ const getModules = ({ is_dashboard }) => {
     return modules;
 };
 
-const lazyLoadComplaintsPolicy = makeLazyLoader(
-    () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
-    () => <Loading />
-);
+const lazyLoadComplaintsPolicy = makeLazyLoader({
+    importFn: () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
+    // eslint-disable-next-line react/display-name
+    loaderFn: () => <Loading />,
+    modulesFn: ['Modules/ComplaintsPolicy'],
+    webpackFn: () => [require.resolveWeak('Modules/ComplaintsPolicy')],
+});
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes

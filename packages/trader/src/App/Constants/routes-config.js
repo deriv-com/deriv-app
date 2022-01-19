@@ -7,15 +7,17 @@ import Trade from 'Modules/Trading';
 const ContractDetails = React.lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
 
 // CFD Routes
-const CFD = React.lazy(() => import(/* webpackChunkName: "cfd", webpackPrefetch: true */ 'Modules/CFD'));
+const CFD = React.lazy(() => import(/* webpackChunkName: "cfd" */ 'Modules/CFD'));
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const lazyLoadReportComponent = makeLazyLoader(
-    () => import(/* webpackChunkName: "reports" */ 'Modules/Reports'),
-    () => <Loading />
-);
+const lazyLoadReportComponent = makeLazyLoader({
+    importFn: () => import(/* webpackChunkName: "reports" */ 'Modules/Reports'),
+    loaderFn: () => <Loading />,
+    modulesFn: ['Modules/Reports'],
+    webpackFn: () => [require.resolveWeak('Modules/Reports')],
+});
 
 // Order matters
 const initRoutesConfig = () => {

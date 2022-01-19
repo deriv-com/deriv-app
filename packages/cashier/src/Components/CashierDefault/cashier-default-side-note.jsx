@@ -15,6 +15,40 @@ const CashierDefaultSideNote = ({
     setDepositTarget,
 }) => {
     const currency_code = getCurrencyDisplayCode(currency);
+
+    const getSideNoteDescription = () => {
+        if (is_crypto) {
+            return (
+                <Localize
+                    i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
+                    values={{ currency_code }}
+                />
+            );
+        } else if (can_change_fiat_currency) {
+            return (
+                <Localize
+                    i18n_default_text='You can <0>set a new currency</0> before you deposit for the first time or create a real DMT5 or Deriv X account.'
+                    components={[
+                        <a key={0} className='link link--orange' onClick={() => openRealAccountSignup('manage')} />,
+                    ]}
+                />
+            );
+        }
+
+        return (
+            <Localize
+                i18n_default_text="You can no longer change your account currency because you've made a deposit into your fiat account or created a real DMT5 or Deriv X account. Please contact us via <0>live chat</0> for clarification."
+                components={[
+                    <span
+                        key={0}
+                        className='link link--orange cashier-default-side-note__text-nowrap'
+                        onClick={() => window.LC_API.open_chat_window()}
+                    />,
+                ]}
+            />
+        );
+    };
+
     return (
         <div
             className={classNames({
@@ -40,34 +74,7 @@ const CashierDefaultSideNote = ({
                     )}
                 </Text>
                 <Text className='cashier-default-side-note__text' size='xxs' as='p'>
-                    {is_crypto ? (
-                        <Localize
-                            i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
-                            values={{ currency_code }}
-                        />
-                    ) : can_change_fiat_currency ? (
-                        <Localize
-                            i18n_default_text='You can <0>set a new currency</0> before you deposit for the first time or create a real DMT5 or Deriv X account.'
-                            components={[
-                                <a
-                                    key={0}
-                                    className='link link--orange'
-                                    onClick={() => openRealAccountSignup('manage')}
-                                />,
-                            ]}
-                        />
-                    ) : (
-                        <Localize
-                            i18n_default_text="You can no longer change your account currency because you've made a deposit into your fiat account or created a real DMT5 or Deriv X account. Please contact us via <0>live chat</0> for clarification."
-                            components={[
-                                <span
-                                    key={0}
-                                    className='link link--orange cashier-default-side-note__text-nowrap'
-                                    onClick={() => window.LC_API.open_chat_window()}
-                                />,
-                            ]}
-                        />
-                    )}
+                    {getSideNoteDescription()}
                 </Text>
                 {is_crypto && (
                     <div

@@ -13,7 +13,7 @@
         "build:travis": "echo \"No build:travis specified\"",
         "test": "echo \"Running mocha tests.\"",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
-        "test:mocha": "mochapack -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env.mocha_only --require ignore-styles",
+        "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env.mocha_only --require ignore-styles",
         "deploy": "npm run build && gh-pages -d dist --remove=\"js\"",
         "deploy:clean": "npm run build && gh-pages -d dist",
         "deploy:folder": "f () { npm run build -- $1 && gh-pages -d dist -e $1 ;}; f"
@@ -105,6 +105,7 @@
         "@deriv/translations": "^1.0.0",
         "@livechat/customer-sdk": "^2.0.4",
         "acorn": "^6.1.1",
+        "babel-polyfill": "^6.26.0",
         "canvas-toBlob": "^1.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",

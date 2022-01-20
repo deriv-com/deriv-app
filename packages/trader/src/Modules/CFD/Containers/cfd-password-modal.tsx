@@ -46,6 +46,8 @@ type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_ty
     market_type?: 'synthetic' | 'financial' | 'gaming';
 };
 
+type TOnSubmitPassword = (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
+
 type TPasswordModalHeaderProps = {
     should_set_trading_password: boolean;
     should_show_server_form: boolean;
@@ -69,12 +71,12 @@ type TCFDPasswordFormReusedProps = {
 
 type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
     password: string;
-    onSubmit: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
+    onSubmit: TOnSubmitPassword;
 };
 
 type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
     has_mt5_account: boolean;
-    submitPassword: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
+    submitPassword: TOnSubmitPassword;
 };
 
 type TMultiStepRefProps = {
@@ -95,7 +97,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     onForgotPassword: () => void;
     should_set_trading_password: boolean;
     should_show_server_form: boolean;
-    submitPassword: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
+    submitPassword: TOnSubmitPassword;
 };
 
 type TCFDServerModalWarningProps = {
@@ -366,7 +368,7 @@ const CFDCreatePasswordForm = ({
     const multi_step_ref = React.useRef<TMultiStepRefProps>();
     const [password, setPassword] = React.useState('');
 
-    const onSubmit = (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => {
+    const onSubmit: TOnSubmitPassword = (values, actions) => {
         if (platform === CFD_PLATFORMS.MT5 && has_mt5_account) {
             setPassword(values.password);
             multi_step_ref.current?.goNextStep();
@@ -778,7 +780,7 @@ const CFDPasswordModal = ({
         setIsSentEmailModalOpen(true);
     };
 
-    const submitPassword = (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => {
+    const submitPassword: TOnSubmitPassword = (values, actions) => {
         if (platform === CFD_PLATFORMS.MT5) {
             submitMt5Password(
                 {

@@ -2212,6 +2212,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     syncWithLegacyPlatforms(active_loginid, client_accounts) {
+        return;
         const smartTrader = {};
         const binaryBot = {};
 

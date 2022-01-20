@@ -20,8 +20,6 @@ import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deri
 import { CashierStore } from '@deriv/cashier';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
-import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
-import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
@@ -112,8 +110,6 @@ const App = ({ root_store }) => {
                                 <Footer />
                             </DesktopWrapper>
                             <AppModals />
-                            <SmartTraderIFrame />
-                            <BinaryBotIFrame />
                             <AppToastMessages />
                         </PlatformContainer>
                     </MobxContentProvider>

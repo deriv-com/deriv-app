@@ -207,6 +207,7 @@ import './common/ic-close-light.svg';
 import './common/ic-cloud-upload.svg';
 import './common/ic-confirm-details.svg';
 import './common/ic-copy.svg';
+import './common/ic-credit-card.svg';
 import './common/ic-cross-circle.svg';
 import './common/ic-cross-light.svg';
 import './common/ic-cross-solid.svg';

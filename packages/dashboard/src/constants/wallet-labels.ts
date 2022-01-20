@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const getWalletLabels = () => ({
+export const getWalletLabels = (): IWalletLabels => ({
     DEPOSIT: localize('Deposit'),
     GET_WALLET: localize('Get more wallets'),
     RESET: localize('Reset'),
@@ -11,3 +11,15 @@ export const getWalletLabels = () => ({
     TRANSFER: localize('Transfer'),
     WITHDRAWAL: localize('Withdrawal'),
 });
+
+interface IWalletLabels {
+    DEPOSIT: string;
+    GET_WALLET: string;
+    RESET: string;
+    SETTINGS: string;
+    TEMPORARILY_UNAVAILABLE: string;
+    TOPUP: string;
+    TRANSACTIONS: string;
+    TRANSFER: string;
+    WITHDRAWAL: string;
+}

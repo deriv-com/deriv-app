@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { GetSettings } from '@deriv/api-types';
 
 export type TWizardItemConfig = {

@@ -295,7 +295,7 @@ $MIN_HEIGHT_FLOATING: calc(
             position: relative;
             max-width: 400px;
             margin-top: 9px;
-            margin-bottom: 18px;
+            margin-bottom: 2rem;
 
             &--2-cols {
                 display: grid;
@@ -1079,7 +1079,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 0.5em;
 
                 .account-form__fieldset {
-                    margin-bottom: 2.6em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
+                    margin-bottom: 3em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
                 }
             }
         }

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
@@ -27,9 +27,9 @@ const PurchaseFieldset = ({
     setPurchaseState,
     type,
 }) => {
-    const [should_fade, setShouldFade] = useState(false);
+    const [should_fade, setShouldFade] = React.useState(false);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setShouldFade(true);
     }, []);
 

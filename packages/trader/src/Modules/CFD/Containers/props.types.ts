@@ -28,7 +28,7 @@ export type TResetPasswordIntent = {
 
 export type TError = {
     code: string | number;
-    message: string 
+    message: string;
 };
 
 export type TCFDResetPasswordModal = {

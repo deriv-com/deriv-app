@@ -124,21 +124,19 @@ const CFDResetPasswordModal = ({
             verification_code: localStorage.getItem('cfd_reset_password_code'),
         };
 
-        WS.tradingPlatformInvestorPasswordReset(request).then(
-            (response: { error: TError; password_type: string }) => {
-                if (response.error && response.error.code === 'InvalidToken') {
-                    renderErrorBox(response.error);
-                } else {
-                    setState({
-                        ...state,
-                        is_finished: true,
-                        changed_password_type: password_type,
-                    });
-                    clearAddressBar();
-                }
-                setSubmitting(false);
+        WS.tradingPlatformInvestorPasswordReset(request).then((response: { error: TError; password_type: string }) => {
+            if (response.error && response.error.code === 'InvalidToken') {
+                renderErrorBox(response.error);
+            } else {
+                setState({
+                    ...state,
+                    is_finished: true,
+                    changed_password_type: password_type,
+                });
+                clearAddressBar();
             }
-        );
+            setSubmitting(false);
+        });
     };
     const getIsListFetched = () => {
         return Object.keys(current_list).length !== 0;
@@ -175,7 +173,7 @@ const CFDResetPasswordModal = ({
                                                     has_error={!!(touched.new_password && errors.new_password)}
                                                     custom_feedback_messages={getErrorMessages().password_warnings}
                                                 >
-                                                    {({ has_warning }: {has_warning: boolean}) => (
+                                                    {({ has_warning }: { has_warning: boolean }) => (
                                                         <PasswordInput
                                                             autoComplete='new-password'
                                                             className='cfd-reset-password__password-field'

@@ -31,6 +31,7 @@ import {
     regex_checks,
     routes,
     WS,
+    useIsMounted,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { withRouter } from 'react-router';
@@ -132,10 +133,10 @@ export const PersonalDetailsForm = ({
 
     const { is_dashboard } = React.useContext(PlatformContext);
 
-    const first_render = React.useRef(true);
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
-        if (first_render.current) {
+        if (isMounted()) {
             const getSettings = async () => {
                 // waits for residence to be populated
                 await WS.wait('get_settings');
@@ -150,10 +151,9 @@ export const PersonalDetailsForm = ({
                 }
             };
             getSettings();
-            first_render.current = false;
         }
         initializeFormValues();
-    }, [account_settings, is_eu, is_mf, first_render.current]);
+    }, [account_settings, is_eu, is_mf]);
 
     React.useEffect(() => {
         let timeout_id;

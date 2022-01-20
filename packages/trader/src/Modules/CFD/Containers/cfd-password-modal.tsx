@@ -270,6 +270,18 @@ const getCancelButtonLabel = ({
     return localize('Forgot password?');
 };
 
+const handlePasswordInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
+    setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
+) => {
+    handleChange(e);
+    validateForm().then(() => {
+        setFieldTouched('password', true);
+    });
+};
+
 const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_message }: TCFDCreatePasswordProps) => {
     return (
         <Formik
@@ -334,10 +346,7 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
                                         value={values.password}
                                         onBlur={handleBlur}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            handleChange(e);
-                                            validateForm().then(() => {
-                                                setFieldTouched('password', true);
-                                            });
+                                            handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
                                         }}
                                     />
                                 )}
@@ -520,10 +529,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                 value={values.password}
                                 onBlur={handleBlur}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    handleChange(e);
-                                    validateForm().then(() => {
-                                        setFieldTouched('password', true);
-                                    });
+                                    handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
                                 }}
                             />
                         </div>
@@ -594,13 +600,13 @@ const CFDServerForm = ({ ...props }: TCFDServerFormProps) => {
     const available_servers = React.useMemo(() => {
         return [...props.mt5_trading_servers]
             .map(server => {
+                const geolocation_sequence = server.geolocation?.sequence === 1 ? '' : server.geolocation?.sequence;
+                const message_to_client = server.disabled ? `(${server.message_to_client})` : '';
                 // Transform properties to support radiogroup
                 return {
                     ...server,
                     ...{
-                        label: `${server.geolocation?.region} ${
-                            server.geolocation?.sequence === 1 ? '' : server.geolocation?.sequence
-                        } ${server.disabled ? `(${server.message_to_client})` : ''}`,
+                        label: `${server.geolocation?.region} ${geolocation_sequence} ${message_to_client}`,
                         value: server.id,
                         disabled: server.disabled,
                     },

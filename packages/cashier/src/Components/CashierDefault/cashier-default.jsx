@@ -60,6 +60,7 @@ const CashierDefault = ({
         ) {
             setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts_list, is_landing_company_loaded]);
 
     const openRealAccount = target => {

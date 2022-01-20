@@ -15,7 +15,7 @@ import {
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
-import { TResetPasswordIntent, TCFDResetPasswordModal } from './props.types';
+import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
@@ -29,7 +29,7 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
         login = current_list[`mt5.${group}.${type}@${server}`].login;
         title = getMtCompanies(is_eu)[group as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].title;
     } else if (current_list) {
-        [server, group, type] = Object.keys(current_list)?.pop()!.split('.');
+        [server, group, type] = (Object.keys(current_list).pop() as string).split('.');
         login = current_list[`mt5.${group}.${type}@${server}`]?.login ?? '';
         title =
             getMtCompanies(is_eu)?.[group as keyof TMtCompanies]?.[type as keyof TMtCompanies['demo' | 'real']]
@@ -125,7 +125,7 @@ const CFDResetPasswordModal = ({
         };
 
         WS.tradingPlatformInvestorPasswordReset(request).then(
-            (response: { error: { code: string | number; message: string }; password_type: string }) => {
+            (response: { error: TError; password_type: string }) => {
                 if (response.error && response.error.code === 'InvalidToken') {
                     renderErrorBox(response.error);
                 } else {
@@ -175,7 +175,7 @@ const CFDResetPasswordModal = ({
                                                     has_error={!!(touched.new_password && errors.new_password)}
                                                     custom_feedback_messages={getErrorMessages().password_warnings}
                                                 >
-                                                    {({ has_warning }: any) => (
+                                                    {({ has_warning }: {has_warning: boolean}) => (
                                                         <PasswordInput
                                                             autoComplete='new-password'
                                                             className='cfd-reset-password__password-field'

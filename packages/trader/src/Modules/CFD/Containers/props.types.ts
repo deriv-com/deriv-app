@@ -21,13 +21,18 @@ export type TPasswordResetAndTradingPasswordManager = {
 };
 
 export type TResetPasswordIntent = {
-    current_list: { [key: string]: DetailsOfEachMT5Loginid };
+    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
     children({ ...props }): React.ReactElement;
     is_eu: boolean;
 };
 
+export type TError = {
+    code: string | number;
+    message: string 
+};
+
 export type TCFDResetPasswordModal = {
-    current_list: { [key: string]: DetailsOfEachMT5Loginid };
+    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
     email: string;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;

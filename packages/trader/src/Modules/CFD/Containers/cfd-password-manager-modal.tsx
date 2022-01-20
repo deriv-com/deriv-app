@@ -299,7 +299,7 @@ type TCFDPasswordManagerTabContent = {
     multi_step_ref: React.MutableRefObject<any>;
     platform: 'dxtrade' | 'mt5';
     onChangeActiveTabIndex: (value: number) => void;
-    account_group: string;
+    account_group: 'real' | 'demo';
     password_type?: string;
 };
 
@@ -456,7 +456,7 @@ type TCFDPasswordManagerModal = {
     selected_account: string;
     toggleModal: () => boolean;
     selected_account_type: string;
-    selected_account_group: string;
+    selected_account_group: 'real' | 'demo';
     selected_server: string;
     sendVerifyEmail: () => Promise<string>;
 };

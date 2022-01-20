@@ -27,7 +27,7 @@ import {
 } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
-import TradingPasswordManager from './trading-password-manager.jsx';
+import TradingPasswordManager from './trading-password-manager';
 
 type TCountdownComponent = {
     count_from: number;

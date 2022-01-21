@@ -182,7 +182,9 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             payment_method_names.map((payment_method, key) => {
                                 return (
                                     <div className='p2p-my-ads__table__payment-method--label' key={key}>
-                                        <Text color='general' size='xs' line-height='l'>{payment_method}</Text>
+                                        <Text color='general' size='xs' line-height='l'>
+                                            {payment_method}
+                                        </Text>
                                     </div>
                                 );
                             })

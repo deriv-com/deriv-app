@@ -153,7 +153,9 @@ const BuySellRow = ({ row: advert }) => {
                         ? payment_method_names.map((payment_method, key) => {
                               return (
                                   <div className='buy-sell-row__payment-method--label' key={key}>
-                                      <Text color='general' size='xs' line-height='l'>{payment_method}</Text>
+                                      <Text color='general' size='xs' line-height='l'>
+                                          {payment_method}
+                                      </Text>
                                   </div>
                               );
                           })

@@ -28,7 +28,7 @@ jest.mock('@deriv/components', () => ({
 }));
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
-    isDesktop: jest.fn(),
+    isDesktop: jest.fn(() => true),
 }));
 
 describe('<Withdrawal />', () => {
@@ -57,7 +57,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CashierLocked /> component', () => {
-        isDesktop.mockReturnValue(true);
         const props = mockDefaultProps();
         const history = createBrowserHistory();
         props.current_currency_type = 'crypto';
@@ -73,7 +72,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Loading /> component', () => {
-        isDesktop.mockReturnValue(true);
         const props = mockDefaultProps();
         const history = createBrowserHistory();
         props.is_10k_withdrawal_limit_reached = undefined;
@@ -87,7 +85,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Virtual /> component', () => {
-        isDesktop.mockReturnValue(true);
         const props = mockDefaultProps();
         const history = createBrowserHistory();
         props.is_virtual = true;
@@ -101,7 +98,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CashierLocked /> component when "is_cashier_locked = true"', () => {
-        isDesktop.mockReturnValue(true);
         const props = mockDefaultProps();
         const history = createBrowserHistory();
         props.is_cashier_locked = true;
@@ -116,7 +112,6 @@ describe('<Withdrawal />', () => {
 
     it('should render <WithdrawalLocked /> component', () => {
         const renderWithCustomProperty = property => {
-            isDesktop.mockReturnValue(true);
             const history = createBrowserHistory();
             const props = mockDefaultProps();
             props[property] = true;
@@ -135,7 +130,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <NoBalance /> component', () => {
-        isDesktop.mockReturnValue(true);
         const props = mockDefaultProps();
         const history = createBrowserHistory();
         props.balance = '0';
@@ -150,7 +144,6 @@ describe('<Withdrawal />', () => {
 
     it('should render <Error /> component', () => {
         const renderWithCustomProperty = property => {
-            isDesktop.mockReturnValue(true);
             const history = createBrowserHistory();
             const props = mockDefaultProps();
             props[property] = { message: 'Error message' };
@@ -170,7 +163,6 @@ describe('<Withdrawal />', () => {
 
     it('should render <Withdraw /> component', () => {
         const renderWithCustomProperty = property => {
-            isDesktop.mockReturnValue(true);
             const history = createBrowserHistory();
             const props = mockDefaultProps();
             props.is_crypto = false;
@@ -190,7 +182,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {
-        isDesktop.mockReturnValue(true);
         const history = createBrowserHistory();
         const props = mockDefaultProps();
         props.verification_code = 'CODE';
@@ -206,7 +197,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoWithdrawReceipt /> component', () => {
-        isDesktop.mockReturnValue(true);
         const history = createBrowserHistory();
         const props = mockDefaultProps();
         props.is_withdraw_confirmed = true;
@@ -221,7 +211,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
-        isDesktop.mockReturnValue(true);
         const history = createBrowserHistory();
         const props = mockDefaultProps();
         props.is_crypto_transactions_visible = true;
@@ -236,7 +225,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <SendEmail /> component', () => {
-        isDesktop.mockReturnValue(true);
         const history = createBrowserHistory();
         const props = mockDefaultProps();
 
@@ -250,8 +238,8 @@ describe('<Withdrawal />', () => {
     });
 
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {
-        isDesktop.mockReturnValue(false);
         const history = createBrowserHistory();
+        isDesktop.mockReturnValueOnce(false);
         const props = mockDefaultProps();
 
         render(
@@ -265,7 +253,6 @@ describe('<Withdrawal />', () => {
 
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
         const renderWithCryptoCurrency = crypto_currency => {
-            isDesktop.mockReturnValue(true);
             const history = createBrowserHistory();
             const props = mockDefaultProps();
             props.crypto_transactions = [{}];

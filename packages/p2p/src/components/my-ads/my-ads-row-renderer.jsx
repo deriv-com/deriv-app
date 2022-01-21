@@ -177,22 +177,24 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                     </div>
                 </Table.Cell>
                 <Table.Cell>
-                    {payment_method_names ? (
-                        payment_method_names.map((payment_method, key) => {
-                            return (
-                                <div className='p2p-my-ads__table__payment-method' key={key}>
-                                    {payment_method}
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <div className='p2p-my-ads__table-add'>
-                            <Icon icon='IcAdd' />
-                            <Text color='prominent' size='xxs'>
-                                <Localize i18n_default_text='Add' />
-                            </Text>
-                        </div>
-                    )}
+                    <div className='p2p-my-ads__table__payment-method'>
+                        {payment_method_names ? (
+                            payment_method_names.map((payment_method, key) => {
+                                return (
+                                    <div className='p2p-my-ads__table__payment-method--label' key={key}>
+                                        <Text color='general' size='xs' line-height='l'>{payment_method}</Text>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className='p2p-my-ads__table-add'>
+                                <Icon icon='IcAdd' />
+                                <Text color='prominent' size='xxs'>
+                                    <Localize i18n_default_text='Add' />
+                                </Text>
+                            </div>
+                        )}
+                    </div>
                 </Table.Cell>
                 <Table.Cell>
                     <div className='p2p-my-ads__table-status'>

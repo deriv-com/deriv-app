@@ -148,12 +148,12 @@ const BuySellRow = ({ row: advert }) => {
                 </Text>
             </Table.Cell>
             <Table.Cell>
-                <div>
+                <div className='buy-sell-row__payment-method'>
                     {payment_method_names
                         ? payment_method_names.map((payment_method, key) => {
                               return (
-                                  <div className='buy-sell-row__payment-method' key={key}>
-                                      {payment_method}
+                                  <div className='buy-sell-row__payment-method--label' key={key}>
+                                      <Text color='general' size='xs' line-height='l'>{payment_method}</Text>
                                   </div>
                               );
                           })

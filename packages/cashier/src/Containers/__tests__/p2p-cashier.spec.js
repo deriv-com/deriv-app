@@ -19,12 +19,13 @@ jest.mock('@deriv/components', () => ({
 jest.mock('@deriv/p2p', () => () => <div>P2P</div>);
 
 describe('<P2PCashier />', () => {
-    const mockDefaultProps = () => ({
-        is_logging_in: false,
+    let history, props;
+    beforeEach(() => {
+        history = createBrowserHistory();
+        props = { is_logging_in: false };
     });
-    it('should render <Loading /> component', () => {
-        const history = createBrowserHistory();
 
+    it('should render <Loading /> component', () => {
         render(
             <Router history={history}>
                 <P2PCashier is_logging_in />
@@ -35,9 +36,6 @@ describe('<P2PCashier />', () => {
     });
 
     it('should render <P2P /> component', () => {
-        const history = createBrowserHistory();
-        const props = mockDefaultProps();
-
         render(
             <Router history={history}>
                 <P2PCashier {...props} />
@@ -48,9 +46,7 @@ describe('<P2PCashier />', () => {
     });
 
     it('should redirect to "/cashier/p2p" page with "?order=1" query parameter', () => {
-        let history = createBrowserHistory();
         let history_copy = { ...history, location: { ...history.location, search: 'order=1' } };
-        const props = mockDefaultProps();
 
         render(
             <Router history={history_copy}>

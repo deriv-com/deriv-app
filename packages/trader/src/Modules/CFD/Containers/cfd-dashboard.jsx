@@ -16,7 +16,7 @@ import { connect } from 'Stores/connect';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import MissingRealAccount from './missing-real-account.jsx';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal.jsx';
-import CompareAccountsModal from './compare-accounts-modal.jsx';
+import CompareAccountsModal from './compare-accounts-modal';
 import CFDDashboardContainer from './cfd-dashboard-container.jsx';
 import CFDPasswordManagerModal from './cfd-password-manager-modal.jsx';
 import CFDPasswordModal from './cfd-password-modal.jsx';

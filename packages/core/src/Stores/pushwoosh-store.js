@@ -1,14 +1,13 @@
 import { action } from 'mobx';
-import { Pushwoosh } from 'web-push-notifications';
 import { getAppId, urlForCurrentDomain } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BaseStore from './base-store';
 
 export default class PushwooshStore extends BaseStore {
     // only available on staging & production (bot and deriv)
-    is_applicable = /^(16929|19111|24091|16303)$/.test(getAppId());
+    is_applicable = false;
     has_initialized = false;
-    push_woosh = new Pushwoosh();
+    push_woosh = [];
 
     constructor(root_store) {
         super({ root_store });

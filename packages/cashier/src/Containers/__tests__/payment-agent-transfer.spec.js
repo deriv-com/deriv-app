@@ -3,10 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
-import CashierLocked from 'Components/Error/cashier-locked';
-import Error from 'Components/Error/error';
-import PaymentAgentTransferConfirm from 'Components/Confirm/payment-agent-transfer-confirm';
-import PaymentAgentTransferReceipt from 'Components/Receipt/payment-agent-transfer-receipt';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -14,8 +10,19 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+
+    return {
+        ...original_module,
+        Loading: jest.fn(() => 'mockedLoading'),
+    };
+});
+
 jest.mock('Components/Error/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 jest.mock('Components/Error/error', () => jest.fn(() => 'mockedError'));
+jest.mock('Components/Error/no-balance', () => jest.fn(() => 'mockedNoBalance'));
+jest.mock('Components/Form/payment-agent-transfer-form', () => jest.fn(() => 'mockedPaymentAgentTransferForm'));
 jest.mock('Components/Confirm/payment-agent-transfer-confirm', () =>
     jest.fn(() => 'mockedPaymentAgentTransferConfirm')
 );
@@ -25,10 +32,13 @@ jest.mock('Components/Receipt/payment-agent-transfer-receipt', () =>
 
 describe('<PaymentAgentTransfer />', () => {
     const history = createBrowserHistory();
-    const onMount = jest.fn();
-    const onUnMount = jest.fn();
-    const setActiveTab = jest.fn();
-    const error = {};
+    const props = {
+        balance: '100',
+        error: {},
+        onMount: jest.fn(),
+        onUnMount: jest.fn(),
+        setActiveTab: jest.fn(),
+    };
 
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
@@ -41,33 +51,19 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should render the component', () => {
-        const { container } = render(
+        render(
             <Router history={history}>
-                <PaymentAgentTransfer
-                    balance='100'
-                    error={error}
-                    onMount={onMount}
-                    onUnMount={onUnMount}
-                    setActiveTab={setActiveTab}
-                />
+                <PaymentAgentTransfer {...props} />
             </Router>
         );
 
-        expect(onMount).toHaveBeenCalled();
-        expect(container.firstChild).toHaveClass('payment-agent-transfer-form__container');
+        expect(screen.getByText('mockedPaymentAgentTransferForm')).toBeInTheDocument();
     });
 
     it('should show the virtual component if client is using demo account', () => {
         render(
             <Router history={history}>
-                <PaymentAgentTransfer
-                    is_virtual
-                    balance='100'
-                    error={error}
-                    onMount={onMount}
-                    onUnMount={onUnMount}
-                    setActiveTab={setActiveTab}
-                />
+                <PaymentAgentTransfer is_virtual {...props} />
             </Router>
         );
 
@@ -77,37 +73,23 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should show the loading component if in loading state', () => {
-        const { container } = render(
+        render(
             <Router history={history}>
-                <PaymentAgentTransfer
-                    is_loading
-                    balance='100'
-                    error={error}
-                    onMount={onMount}
-                    onUnMount={onUnMount}
-                    setActiveTab={setActiveTab}
-                />
+                <PaymentAgentTransfer is_loading {...props} />
             </Router>
         );
 
-        expect(container.querySelector('.initial-loader')).toBeInTheDocument();
+        expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should show the cashier locked component if cashier is locked', () => {
         render(
             <Router history={history}>
-                <PaymentAgentTransfer
-                    is_cashier_locked
-                    balance='100'
-                    error={error}
-                    onMount={onMount}
-                    onUnMount={onUnMount}
-                    setActiveTab={setActiveTab}
-                />
+                <PaymentAgentTransfer is_cashier_locked {...props} />
             </Router>
         );
 
-        expect(CashierLocked).toHaveBeenCalled();
+        expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
 
     it('should show a popup if there is an error that needs CTA', () => {
@@ -117,66 +99,40 @@ describe('<PaymentAgentTransfer />', () => {
 
         render(
             <Router history={history}>
-                <PaymentAgentTransfer
-                    balance='100'
-                    error={cta_error}
-                    onMount={onMount}
-                    onUnMount={onUnMount}
-                    setActiveTab={setActiveTab}
-                />
+                <PaymentAgentTransfer {...props} error={cta_error} />
             </Router>
         );
 
-        expect(Error).toHaveBeenCalled();
+        expect(screen.getByText('mockedError')).toBeInTheDocument();
     });
 
     it('should show the no balance component if account has no balance', () => {
-        const { container } = render(
+        render(
             <Router history={history}>
-                <PaymentAgentTransfer
-                    balance='0'
-                    error={error}
-                    onMount={onMount}
-                    onUnMount={onUnMount}
-                    setActiveTab={setActiveTab}
-                />
+                <PaymentAgentTransfer {...props} balance='0' />
             </Router>
         );
 
-        expect(container.querySelector('.cashier__no-balance')).toBeInTheDocument();
+        expect(screen.getByText('mockedNoBalance')).toBeInTheDocument();
     });
 
     it('should show the confirmation if validations are passed', () => {
         render(
             <Router history={history}>
-                <PaymentAgentTransfer
-                    is_try_transfer_successful
-                    balance='100'
-                    error={error}
-                    onMount={onMount}
-                    onUnMount={onUnMount}
-                    setActiveTab={setActiveTab}
-                />
+                <PaymentAgentTransfer is_try_transfer_successful {...props} />
             </Router>
         );
 
-        expect(PaymentAgentTransferConfirm).toHaveBeenCalled();
+        expect(screen.getByText('mockedPaymentAgentTransferConfirm')).toBeInTheDocument();
     });
 
     it('should show the receipt if transfer is successful', () => {
         render(
             <Router history={history}>
-                <PaymentAgentTransfer
-                    is_transfer_successful
-                    balance='100'
-                    error={error}
-                    onMount={onMount}
-                    onUnMount={onUnMount}
-                    setActiveTab={setActiveTab}
-                />
+                <PaymentAgentTransfer is_transfer_successful {...props} />
             </Router>
         );
 
-        expect(PaymentAgentTransferReceipt).toHaveBeenCalled();
+        expect(screen.getByText('mockedPaymentAgentTransferReceipt')).toBeInTheDocument();
     });
 });

@@ -19,6 +19,7 @@ const FilterModal = () => {
     return (
         <Modal
             has_close_icon
+            height={'56rem'}
             title={<FilterModalHeader />}
             is_open={buy_sell_store.is_filter_modal_open}
             toggleModal={() => buy_sell_store.setIsFilterModalOpen(false)}

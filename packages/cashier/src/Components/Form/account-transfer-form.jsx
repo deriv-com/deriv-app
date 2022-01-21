@@ -554,6 +554,7 @@ const AccountTransferForm = ({
                                         </div>
                                         <CryptoFiatConverter
                                             from_currency={selected_from.currency}
+                                            to_currency={selected_to.currency}
                                             hint={
                                                 transfer_limit.max ? (
                                                     <Localize
@@ -577,7 +578,6 @@ const AccountTransferForm = ({
                                                     ''
                                                 )
                                             }
-                                            to_currency={selected_to.currency}
                                             onChangeConverterFromAmount={onChangeConverterFromAmount}
                                             onChangeConverterToAmount={onChangeConverterToAmount}
                                             resetConverter={resetConverter}

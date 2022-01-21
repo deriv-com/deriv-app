@@ -8,7 +8,6 @@ import Purchase from '../../Containers/purchase.jsx';
 import TradeParams from '../../Containers/trade-params.jsx';
 
 const ScreenLarge = ({ is_market_closed, is_trade_enabled }) => {
-
     const [is_trade_enabled_state, setTradeEnabledState] = React.useState(false);
 
     React.useEffect(() => {
@@ -16,8 +15,8 @@ const ScreenLarge = ({ is_market_closed, is_trade_enabled }) => {
             setTradeEnabledState(true);
         } else {
             setTradeEnabledState(false);
-        };
-    }, [is_trade_enabled])
+        }
+    }, [is_trade_enabled]);
 
     return (
         <div
@@ -39,7 +38,7 @@ const ScreenLarge = ({ is_market_closed, is_trade_enabled }) => {
                 </React.Fragment>
             )}
         </div>
-    )
+    );
 };
 
 ScreenLarge.propTypes = {

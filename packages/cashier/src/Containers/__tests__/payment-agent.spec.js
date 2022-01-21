@@ -3,8 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import PaymentAgent from '../payment-agent';
-import PaymentAgentList from 'Components/payment-agent-list';
-import CashierLocked from 'Components/Error/cashier-locked';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -12,59 +10,54 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+
+    return {
+        ...original_module,
+        Loading: jest.fn(() => 'mockedLoading'),
+    };
+});
+
 jest.mock('Components/payment-agent-list', () => jest.fn(() => 'mockedPaymentAgentList'));
 jest.mock('Components/Error/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 
 describe('<PaymentAgent />', () => {
     const history = createBrowserHistory();
-    const setActiveTab = jest.fn();
-    const setPaymentAgentActiveTabIndex = jest.fn();
+    const props = {
+        container: 'payment_agent',
+        is_payment_agent_withdraw: false,
+        payment_agent_active_tab_index: 0,
+        setActiveTab: jest.fn(),
+        setPaymentAgentActiveTabIndex: jest.fn(),
+        verification_code: '',
+    };
 
     it('should render the payment agent list', () => {
         render(
             <Router history={history}>
-                <PaymentAgent
-                    container={'payment_agent'}
-                    is_cashier_locked={false}
-                    is_payment_agent_withdraw={false}
-                    is_switching={false}
-                    is_virtual={false}
-                    payment_agent_active_tab_index={0}
-                    setActiveTab={setActiveTab}
-                    setPaymentAgentActiveTabIndex={setPaymentAgentActiveTabIndex}
-                    verification_code={''}
-                />
+                <PaymentAgent {...props} />
             </Router>
         );
 
-        expect(setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(0);
-        expect(setActiveTab).toHaveBeenCalledWith('payment_agent');
-        expect(PaymentAgentList).toHaveBeenCalled();
+        expect(props.setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(0);
+        expect(screen.getByText('mockedPaymentAgentList')).toBeInTheDocument();
     });
 
     it('should render the loading component if in loading state', () => {
-        const { container } = render(
+        render(
             <Router history={history}>
-                <PaymentAgent
-                    is_switching
-                    setActiveTab={setActiveTab}
-                    setPaymentAgentActiveTabIndex={setPaymentAgentActiveTabIndex}
-                />
+                <PaymentAgent is_switching {...props} />
             </Router>
         );
 
-        expect(container.querySelector('.initial-loader')).toBeInTheDocument();
+        expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should show the virtual component if the client is using demo account', () => {
         render(
             <Router history={history}>
-                <PaymentAgent
-                    is_virtual
-                    is_payment_agent_withdraw={false}
-                    setActiveTab={setActiveTab}
-                    setPaymentAgentActiveTabIndex={setPaymentAgentActiveTabIndex}
-                />
+                <PaymentAgent is_virtual {...props} />
             </Router>
         );
 
@@ -76,43 +69,31 @@ describe('<PaymentAgent />', () => {
     it('should show the cashier locked component if cashier is locked', () => {
         render(
             <Router history={history}>
-                <PaymentAgent
-                    is_cashier_locked
-                    is_payment_agent_withdraw={false}
-                    setActiveTab={setActiveTab}
-                    setPaymentAgentActiveTabIndex={setPaymentAgentActiveTabIndex}
-                />
+                <PaymentAgent is_cashier_locked {...props} />
             </Router>
         );
 
-        expect(CashierLocked).toHaveBeenCalled();
+        expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
 
     it('should reset the index on unmount of component', () => {
-        const component = render(
+        const { unmount } = render(
             <Router history={history}>
-                <PaymentAgent
-                    setActiveTab={setActiveTab}
-                    setPaymentAgentActiveTabIndex={setPaymentAgentActiveTabIndex}
-                />
+                <PaymentAgent {...props} />
             </Router>
         );
 
-        component.unmount();
-        expect(setPaymentAgentActiveTabIndex).toHaveBeenCalled();
+        unmount();
+        expect(props.setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(0);
     });
 
     it('should set the active tab index accordingly', () => {
         render(
             <Router history={history}>
-                <PaymentAgent
-                    setActiveTab={setActiveTab}
-                    setPaymentAgentActiveTabIndex={setPaymentAgentActiveTabIndex}
-                    verification_code={'7GbuuVaX'}
-                />
+                <PaymentAgent {...props} verification_code={'7GbuuVaX'} />
             </Router>
         );
 
-        expect(setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(1);
+        expect(props.setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(1);
     });
 });

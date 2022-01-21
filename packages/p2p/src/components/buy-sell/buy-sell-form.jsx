@@ -141,11 +141,24 @@ const BuySellForm = props => {
                                         payment_method_names.map((payment_method, key) => {
                                             const method = payment_method.replace(/\s|-/gm, '');
 
+                                            if (method === 'BankTransfer' || method === 'Other') {
+                                                return (
+                                                    <div className='buy-sell__modal-payment-method--row' key={key}>
+                                                        <Icon
+                                                            className='buy-sell__modal-payment-method--icon'
+                                                            icon={`IcCashier${method}`}
+                                                            size={16}
+                                                        />
+                                                        {payment_method}
+                                                    </div>
+                                                );
+                                            }
+
                                             return (
                                                 <div className='buy-sell__modal-payment-method--row' key={key}>
                                                     <Icon
                                                         className='buy-sell__modal-payment-method--icon'
-                                                        icon={`IcCashier${method}`}
+                                                        icon='IcCashierEwallet'
                                                         size={16}
                                                     />
                                                     {payment_method}

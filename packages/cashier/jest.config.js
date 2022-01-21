@@ -8,7 +8,6 @@ module.exports = {
         '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
         '^Constants/(.*)$': '<rootDir>/src/Constants/$1',
         '^_common/(.*)$': '<rootDir>/src/_common/$1',
-        '^Constants/(.*)$': '<rootDir>/src/Constants/$1',
         '^Config/(.*)$': '<rootDir>/src/Config/$1',
         '^Components/(.*)$': '<rootDir>/src/Components/$1',
     },

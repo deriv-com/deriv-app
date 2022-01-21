@@ -32,7 +32,7 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 describe('<Withdrawal />', () => {
-    const mockDefaultProps = () => ({
+    const props = {
         check10kLimit: jest.fn(),
         recentTransactionOnMount: jest.fn(),
         setActiveTab: jest.fn(),
@@ -54,17 +54,13 @@ describe('<Withdrawal />', () => {
         is_virtual: false,
         verification_code: '',
         verify_error: {},
-    });
+    };
 
     it('should render <CashierLocked /> component', () => {
-        const props = mockDefaultProps();
         const history = createBrowserHistory();
-        props.current_currency_type = 'crypto';
-        props.is_system_maintenance = true;
-        props.is_withdrawal_locked = true;
         render(
             <Router history={history}>
-                <Withdrawal {...props} />
+                <Withdrawal {...props} current_currency_type='crypto' is_system_maintenance is_withdrawal_locked />
             </Router>
         );
 
@@ -72,12 +68,10 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Loading /> component', () => {
-        const props = mockDefaultProps();
         const history = createBrowserHistory();
-        props.is_10k_withdrawal_limit_reached = undefined;
         render(
             <Router history={history}>
-                <Withdrawal {...props} />
+                <Withdrawal {...props} is_10k_withdrawal_limit_reached={undefined} />
             </Router>
         );
 
@@ -85,12 +79,10 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Virtual /> component', () => {
-        const props = mockDefaultProps();
         const history = createBrowserHistory();
-        props.is_virtual = true;
         render(
             <Router history={history}>
-                <Withdrawal {...props} />
+                <Withdrawal {...props} is_virtual />
             </Router>
         );
 
@@ -98,12 +90,10 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CashierLocked /> component when "is_cashier_locked = true"', () => {
-        const props = mockDefaultProps();
         const history = createBrowserHistory();
-        props.is_cashier_locked = true;
         render(
             <Router history={history}>
-                <Withdrawal {...props} />
+                <Withdrawal {...props} is_cashier_locked />
             </Router>
         );
 
@@ -111,31 +101,29 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <WithdrawalLocked /> component', () => {
-        const renderWithCustomProperty = property => {
-            const history = createBrowserHistory();
-            const props = mockDefaultProps();
-            props[property] = true;
-            const { unmount } = render(
-                <Router history={history}>
-                    <Withdrawal {...props} />
-                </Router>
-            );
+        const history = createBrowserHistory();
+        const { rerender } = render(
+            <Router history={history}>
+                <Withdrawal {...props} is_withdrawal_locked />
+            </Router>
+        );
 
-            expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
-            unmount();
-        };
+        expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
 
-        renderWithCustomProperty('is_withdrawal_locked');
-        renderWithCustomProperty('is_10k_withdrawal_limit_reached');
+        rerender(
+            <Router history={history}>
+                <Withdrawal {...props} is_10k_withdrawal_limit_reached />
+            </Router>
+        );
+
+        expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
     });
 
     it('should render <NoBalance /> component', () => {
-        const props = mockDefaultProps();
         const history = createBrowserHistory();
-        props.balance = '0';
         render(
             <Router history={history}>
-                <Withdrawal {...props} />
+                <Withdrawal {...props} balance='0' />
             </Router>
         );
 
@@ -143,53 +131,48 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Error /> component', () => {
-        const renderWithCustomProperty = property => {
-            const history = createBrowserHistory();
-            const props = mockDefaultProps();
-            props[property] = { message: 'Error message' };
-            const { unmount } = render(
-                <Router history={history}>
-                    <Withdrawal {...props} />
-                </Router>
-            );
+        const history = createBrowserHistory();
+        const { rerender } = render(
+            <Router history={history}>
+                <Withdrawal {...props} error={{ message: 'Error message' }} />
+            </Router>
+        );
 
-            expect(screen.getByText('Error')).toBeInTheDocument();
-            unmount();
-        };
+        expect(screen.getByText('Error')).toBeInTheDocument();
 
-        renderWithCustomProperty('error');
-        renderWithCustomProperty('verify_error');
+        rerender(
+            <Router history={history}>
+                <Withdrawal {...props} verify_error={{ message: 'Error message' }} />
+            </Router>
+        );
+
+        expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
     it('should render <Withdraw /> component', () => {
-        const renderWithCustomProperty = property => {
-            const history = createBrowserHistory();
-            const props = mockDefaultProps();
-            props.is_crypto = false;
-            props[property] = property === 'verification_code' ? 'CODE' : 'iframe_url';
-            const { unmount } = render(
-                <Router history={history}>
-                    <Withdrawal {...props} />
-                </Router>
-            );
+        const history = createBrowserHistory();
+        const { rerender } = render(
+            <Router history={history}>
+                <Withdrawal {...props} verification_code='verification_code' />
+            </Router>
+        );
 
-            expect(screen.getByText('Withdraw')).toBeInTheDocument();
-            unmount();
-        };
+        expect(screen.getByText('Withdraw')).toBeInTheDocument();
 
-        renderWithCustomProperty('verification_code');
-        renderWithCustomProperty('iframe_url');
+        rerender(
+            <Router history={history}>
+                <Withdrawal {...props} iframe_url='coiframe_urlde' />
+            </Router>
+        );
+
+        expect(screen.getByText('Withdraw')).toBeInTheDocument();
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {
         const history = createBrowserHistory();
-        const props = mockDefaultProps();
-        props.verification_code = 'CODE';
-        props.is_crypto = true;
-
         render(
             <Router history={history}>
-                <Withdrawal {...props} />
+                <Withdrawal {...props} is_crypto verification_code='verification_code' />
             </Router>
         );
 
@@ -198,12 +181,9 @@ describe('<Withdrawal />', () => {
 
     it('should render <CryptoWithdrawReceipt /> component', () => {
         const history = createBrowserHistory();
-        const props = mockDefaultProps();
-        props.is_withdraw_confirmed = true;
-
         render(
             <Router history={history}>
-                <Withdrawal {...props} />
+                <Withdrawal {...props} is_withdraw_confirmed />
             </Router>
         );
 
@@ -212,12 +192,9 @@ describe('<Withdrawal />', () => {
 
     it('should render <CryptoTransactionsHistory /> component', () => {
         const history = createBrowserHistory();
-        const props = mockDefaultProps();
-        props.is_crypto_transactions_visible = true;
-
         render(
             <Router history={history}>
-                <Withdrawal {...props} />
+                <Withdrawal {...props} is_crypto_transactions_visible />
             </Router>
         );
 
@@ -226,8 +203,6 @@ describe('<Withdrawal />', () => {
 
     it('should render <SendEmail /> component', () => {
         const history = createBrowserHistory();
-        const props = mockDefaultProps();
-
         render(
             <Router history={history}>
                 <Withdrawal {...props} />
@@ -240,35 +215,41 @@ describe('<Withdrawal />', () => {
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {
         const history = createBrowserHistory();
         isDesktop.mockReturnValueOnce(false);
-        const props = mockDefaultProps();
-
+        const setSideNotes = jest.fn();
         render(
             <Router history={history}>
-                <Withdrawal {...props} />
+                <Withdrawal {...props} setSideNotes={setSideNotes} />
             </Router>
         );
 
-        expect(props.setSideNotes).not.toHaveBeenCalled();
+        expect(setSideNotes).not.toHaveBeenCalled();
     });
 
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
-        const renderWithCryptoCurrency = crypto_currency => {
-            const history = createBrowserHistory();
-            const props = mockDefaultProps();
-            props.crypto_transactions = [{}];
-            props.currency = crypto_currency;
-            const { unmount } = render(
-                <Router history={history}>
-                    <Withdrawal {...props} />
-                </Router>
-            );
+        const history = createBrowserHistory();
 
-            expect(props.setSideNotes).toHaveBeenCalledTimes(1);
-            unmount();
-        };
+        const { rerender } = render(
+            <Router history={history}>
+                <Withdrawal {...props} crypto_transactions={[{}]} currency='BTC' />
+            </Router>
+        );
 
-        renderWithCryptoCurrency('BTC');
-        renderWithCryptoCurrency('UST');
-        renderWithCryptoCurrency('eUSDT');
+        expect(props.setSideNotes).toHaveBeenCalled();
+
+        rerender(
+            <Router history={history}>
+                <Withdrawal {...props} crypto_transactions={[{}]} currency='UST' />
+            </Router>
+        );
+
+        expect(props.setSideNotes).toHaveBeenCalled();
+
+        rerender(
+            <Router history={history}>
+                <Withdrawal {...props} crypto_transactions={[{}]} currency='eUSDT' />
+            </Router>
+        );
+
+        expect(props.setSideNotes).toHaveBeenCalled();
     });
 });

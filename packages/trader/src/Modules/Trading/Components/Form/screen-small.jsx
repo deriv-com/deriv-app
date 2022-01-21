@@ -93,9 +93,7 @@ const ScreenSmall = ({
         isRiseFallEqual(contract_type) && (has_callputequal_duration || expiry_type === 'endtime') && has_callputequal;
 
     return !is_trade_enabled ? (
-        <div className='mobile-wrapper__content-loader'>
-            <TradeParamsLoader speed={2} />
-        </div>
+        <div className='mobile-wrapper__content-loader' />
     ) : (
         <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...props} />
     );

@@ -87,7 +87,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                 render={data.timeoutMessage}
                                 should_store_in_session={true}
                                 session_id={data.key}
-                                linear_progress_container_ref={linear_progress_container_ref}
+                                ref={linear_progress_container_ref}
                             />
                         )}
                         <p className='notification__text-body'>{data.message}</p>

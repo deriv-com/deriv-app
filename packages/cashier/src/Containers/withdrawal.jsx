@@ -72,7 +72,7 @@ const Withdrawal = ({
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
         }
-    }, [is_switching]);
+    }, [is_crypto_transactions_visible, is_switching, recentTransactionOnMount]);
 
     React.useEffect(() => {
         setActiveTab(container);

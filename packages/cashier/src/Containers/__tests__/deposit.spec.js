@@ -22,26 +22,29 @@ jest.mock('Components/cashier-container', () => () => <div>CashierContainer</div
 jest.mock('Components/CashierDefault/cashier-default', () => () => <div>CashierDefault</div>);
 
 describe('<Deposit />', () => {
-    const props = {
-        currency: 'USD',
-        current_currency_type: 'fiat',
-        error: { is_ask_uk_funds_protection: false, message: '' },
-        is_cashier_locked: false,
-        is_crypto_transactions_visible: false,
-        is_deposit: false,
-        is_deposit_locked: false,
-        is_eu: false,
-        is_loading: false,
-        is_switching: false,
-        is_system_maintenance: false,
-        is_virtual: false,
-        onMount: jest.fn(),
-        recentTransactionOnMount: jest.fn(),
-        setActiveTab: jest.fn(),
-        setIsDeposit: jest.fn(),
-        setErrorMessage: jest.fn(),
-        setSideNotes: jest.fn(),
-    };
+    let props;
+    beforeEach(() => {
+        props = {
+            currency: 'USD',
+            current_currency_type: 'fiat',
+            error: { is_ask_uk_funds_protection: false, message: '' },
+            is_cashier_locked: false,
+            is_crypto_transactions_visible: false,
+            is_deposit: false,
+            is_deposit_locked: false,
+            is_eu: false,
+            is_loading: false,
+            is_switching: false,
+            is_system_maintenance: false,
+            is_virtual: false,
+            onMount: jest.fn(),
+            recentTransactionOnMount: jest.fn(),
+            setActiveTab: jest.fn(),
+            setIsDeposit: jest.fn(),
+            setErrorMessage: jest.fn(),
+            setSideNotes: jest.fn(),
+        };
+    });
 
     it('should render <Loading /> component', () => {
         const { rerender } = render(<Deposit {...props} is_switching is_loading={false} iframe_url='' />);
@@ -116,6 +119,6 @@ describe('<Deposit />', () => {
     it('should trigger "setSideNotes" callback', () => {
         render(<Deposit {...props} is_deposit crypto_transactions={[{}]} currency='UST' />);
 
-        expect(props.setSideNotes).toHaveBeenCalled();
+        expect(props.setSideNotes).toHaveBeenCalledTimes(2);
     });
 });

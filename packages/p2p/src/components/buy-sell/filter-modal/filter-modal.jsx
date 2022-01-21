@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Formik, Field } from 'formik';
-import { Autocomplete, Button, Checkbox, Icon, Modal, Text, ToggleSwitch } from '@deriv/components';
+import { Autocomplete, Button, Checkbox, Icon, Modal, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import FilterModalHeader from './filter-modal-header.jsx';
@@ -18,6 +18,7 @@ const FilterModal = () => {
 
     return (
         <Modal
+            className={'payment-methods'}
             has_close_icon
             height={'56rem'}
             title={<FilterModalHeader />}
@@ -35,13 +36,14 @@ const FilterModal = () => {
                                             <Autocomplete
                                                 {...field}
                                                 data-lpignore='true'
-                                                label={localize('Payment method')}
+                                                label={localize('Search payment method')}
                                                 list_items={my_profile_store.payment_methods_list_items}
                                                 onItemSelection={({ value }) => {
                                                     my_profile_store.setSelectedPaymentMethod(value);
                                                 }}
                                                 trailing_icon={<Icon icon='IcSearch' />}
                                                 type='text'
+                                                is_alignment_top
                                                 required
                                             />
                                         )}
@@ -49,16 +51,20 @@ const FilterModal = () => {
                                 );
                             }}
                         </Formik>
-                        {my_profile_store.payment_methods_list_items.map((payment_method, key) => {
-                            return (
-                                <Checkbox
-                                    key={key}
-                                    label={payment_method.text}
-                                    onChange={e => buy_sell_store.onChange(e)}
-                                    value={payment_method.value}
-                                />
-                            );
-                        })}
+                        <div className='filter-modal__checkbox-container'>
+                            <ThemedScrollbars is_scrollbar_hidden>
+                                {my_profile_store.payment_methods_list_items.map((payment_method, key) => {
+                                    return (
+                                        <Checkbox
+                                            key={key}
+                                            label={payment_method.text}
+                                            onChange={e => buy_sell_store.onChange(e)}
+                                            value={payment_method.value}
+                                        />
+                                    );
+                                })}
+                            </ThemedScrollbars>
+                        </div>
                     </React.Fragment>
                 ) : (
                     <React.Fragment>

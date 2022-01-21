@@ -1,4 +1,4 @@
-import { Formik, FormikErrors, FormikHelpers as FormikActions } from 'formik';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
@@ -46,7 +46,7 @@ type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_ty
     market_type?: 'synthetic' | 'financial' | 'gaming';
 };
 
-type TOnSubmitPassword = (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
+type TOnSubmitPassword = (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
 
 type TPasswordModalHeaderProps = {
     should_set_trading_password: boolean;
@@ -147,11 +147,11 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     setMt5Error: (state: boolean, obj?: Error) => void;
     submitMt5Password: (
         values: TCFDPasswordFormValues & { server?: string },
-        actions: FormikActions<TCFDPasswordFormValues>
+        actions: FormikHelpers<TCFDPasswordFormValues>
     ) => void;
     submitCFDPassword: (
         values: TCFDPasswordFormValues & { platform?: string },
-        actions: FormikActions<TCFDPasswordFormValues>
+        actions: FormikHelpers<TCFDPasswordFormValues>
     ) => void;
     mt5_trading_servers: DetailsOfEachServer[];
 };
@@ -403,7 +403,7 @@ const CFDCreatePasswordForm = ({
                 <ChangePasswordConfirmation
                     className='cfd-password-modal__change-password-confirmation'
                     platform={platform}
-                    onConfirm={(_values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) =>
+                    onConfirm={(_values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) =>
                         submitPassword({ password }, actions)
                     }
                     onCancel={() => multi_step_ref.current?.goPrevStep()}

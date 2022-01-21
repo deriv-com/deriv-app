@@ -28,25 +28,18 @@ jest.mock('Components/Error/error', () => jest.fn(() => 'mockedError'));
 
 describe('<AccountTransfer />', () => {
     const history = createBrowserHistory();
-    const error = {};
-    const onMount = jest.fn();
-    const recentTransactionOnMount = jest.fn();
-    const setAccountTransferAmount = jest.fn();
-    const setActiveTab = jest.fn();
-    const setIsTransferConfirm = jest.fn();
-    const setSideNotes = jest.fn();
+    const props = {
+        error: {},
+        onMount: jest.fn(),
+        recentTransactionOnMount: jest.fn(),
+        setAccountTransferAmount: jest.fn(),
+        setActiveTab: jest.fn(),
+        setIsTransferConfirm: jest.fn(),
+        setSideNotes: jest.fn(),
+    };
 
     it('should render the account transfer form', async () => {
-        render(
-            <AccountTransfer
-                error={error}
-                onMount={onMount}
-                recentTransactionOnMount={recentTransactionOnMount}
-                setAccountTransferAmount={setAccountTransferAmount}
-                setActiveTab={setActiveTab}
-                setIsTransferConfirm={setIsTransferConfirm}
-            />
-        );
+        render(<AccountTransfer {...props} />);
 
         await waitFor(() => {
             expect(screen.getByText('mockedAccountTransferForm')).toBeInTheDocument();
@@ -56,36 +49,19 @@ describe('<AccountTransfer />', () => {
     it('should not show the side notes when switching', async () => {
         render(
             <Router history={history}>
-                <AccountTransfer
-                    is_switching
-                    error={error}
-                    onMount={onMount}
-                    recentTransactionOnMount={recentTransactionOnMount}
-                    setAccountTransferAmount={setAccountTransferAmount}
-                    setActiveTab={setActiveTab}
-                    setIsTransferConfirm={setIsTransferConfirm}
-                    setSideNotes={setSideNotes}
-                />
+                <AccountTransfer is_switching {...props} />
             </Router>
         );
 
         await waitFor(() => {
-            expect(setSideNotes).toHaveBeenCalled();
+            expect(props.setSideNotes).toHaveBeenCalledWith(null);
         });
     });
 
     it('should render the virtual component if client is using a demo account', async () => {
         render(
             <Router history={history}>
-                <AccountTransfer
-                    is_virtual
-                    error={error}
-                    onMount={onMount}
-                    recentTransactionOnMount={recentTransactionOnMount}
-                    setAccountTransferAmount={setAccountTransferAmount}
-                    setActiveTab={setActiveTab}
-                    setIsTransferConfirm={setIsTransferConfirm}
-                />
+                <AccountTransfer is_virtual {...props} />
             </Router>
         );
 
@@ -97,17 +73,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the cashier locked component if cashier is locked', async () => {
-        render(
-            <AccountTransfer
-                is_cashier_locked
-                error={error}
-                onMount={onMount}
-                recentTransactionOnMount={recentTransactionOnMount}
-                setAccountTransferAmount={setAccountTransferAmount}
-                setActiveTab={setActiveTab}
-                setIsTransferConfirm={setIsTransferConfirm}
-            />
-        );
+        render(<AccountTransfer is_cashier_locked {...props} />);
 
         await waitFor(() => {
             expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
@@ -115,17 +81,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the transfer lock component if only transfer is locked', async () => {
-        render(
-            <AccountTransfer
-                is_transfer_lock
-                error={error}
-                onMount={onMount}
-                recentTransactionOnMount={recentTransactionOnMount}
-                setAccountTransferAmount={setAccountTransferAmount}
-                setActiveTab={setActiveTab}
-                setIsTransferConfirm={setIsTransferConfirm}
-            />
-        );
+        render(<AccountTransfer is_transfer_lock {...props} />);
 
         await waitFor(() => {
             expect(screen.getByText('Transfers are locked')).toBeInTheDocument();
@@ -138,17 +94,7 @@ describe('<AccountTransfer />', () => {
             message: 'error',
         };
 
-        render(
-            <AccountTransfer
-                accounts_list={accounts_list}
-                error={cta_error}
-                onMount={onMount}
-                recentTransactionOnMount={recentTransactionOnMount}
-                setAccountTransferAmount={setAccountTransferAmount}
-                setActiveTab={setActiveTab}
-                setIsTransferConfirm={setIsTransferConfirm}
-            />
-        );
+        render(<AccountTransfer {...props} accounts_list={accounts_list} error={cta_error} />);
 
         await waitFor(() => {
             expect(screen.getByText('mockedError')).toBeInTheDocument();
@@ -156,17 +102,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the no account component if the client has only one account', async () => {
-        render(
-            <AccountTransfer
-                has_no_account
-                error={error}
-                onMount={onMount}
-                recentTransactionOnMount={recentTransactionOnMount}
-                setAccountTransferAmount={setAccountTransferAmount}
-                setActiveTab={setActiveTab}
-                setIsTransferConfirm={setIsTransferConfirm}
-            />
-        );
+        render(<AccountTransfer has_no_account {...props} />);
 
         await waitFor(() => {
             expect(screen.getByText('You need at least two accounts')).toBeInTheDocument();
@@ -176,37 +112,19 @@ describe('<AccountTransfer />', () => {
     it('should render the no balance component if the account has no balance', async () => {
         render(
             <Router history={history}>
-                <AccountTransfer
-                    has_no_accounts_balance
-                    error={error}
-                    onMount={onMount}
-                    recentTransactionOnMount={recentTransactionOnMount}
-                    setAccountTransferAmount={setAccountTransferAmount}
-                    setActiveTab={setActiveTab}
-                    setIsTransferConfirm={setIsTransferConfirm}
-                    setSideNotes={setSideNotes}
-                />
+                <AccountTransfer has_no_accounts_balance {...props} />
             </Router>
         );
 
         await waitFor(() => {
             expect(screen.getByText(/You have no funds/i)).toBeInTheDocument();
-            expect(setSideNotes).toHaveBeenCalled();
         });
     });
 
     it('should show the receipt if transfer is successful', async () => {
         render(
             <Router history={history}>
-                <AccountTransfer
-                    is_transfer_confirm
-                    error={error}
-                    onMount={onMount}
-                    recentTransactionOnMount={recentTransactionOnMount}
-                    setAccountTransferAmount={setAccountTransferAmount}
-                    setActiveTab={setActiveTab}
-                    setIsTransferConfirm={setIsTransferConfirm}
-                />
+                <AccountTransfer is_transfer_confirm {...props} />
             </Router>
         );
 
@@ -218,15 +136,7 @@ describe('<AccountTransfer />', () => {
     it('should show the crypto transactions if triggered from recent transactions', async () => {
         render(
             <Router history={history}>
-                <AccountTransfer
-                    is_crypto_transactions_visible
-                    error={error}
-                    onMount={onMount}
-                    recentTransactionOnMount={recentTransactionOnMount}
-                    setAccountTransferAmount={setAccountTransferAmount}
-                    setActiveTab={setActiveTab}
-                    setIsTransferConfirm={setIsTransferConfirm}
-                />
+                <AccountTransfer is_crypto_transactions_visible {...props} />
             </Router>
         );
 

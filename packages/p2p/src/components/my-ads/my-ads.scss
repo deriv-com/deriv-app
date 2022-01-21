@@ -212,11 +212,13 @@
 
             &--label {
                 align-items: center;
-                border: 1px solid var(--border-normal);
                 border-radius: 0.4rem;
+                border: 1px solid var(--border-normal);
                 display: flex;
                 flex-direction: row;
+                margin: 0.25rem;
                 padding: 0 0.8rem;
+                width: fit-content;
             }
         }
 
@@ -389,7 +391,6 @@
         }
 
         &-status {
-            height: 100%;
             width: 100%;
         }
 

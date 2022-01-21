@@ -720,25 +720,23 @@
     }
     &__password {
         &-box {
-            display: flex;
-            align-items: center;
-        }
-        &-text {
+            display: grid;
+            grid-template-columns: 1fr 2.4rem;
             border: 1px solid var(--border-normal);
             border-radius: $BORDER_RADIUS;
+        }
+        &-text {
             padding: 0.4rem;
-            font-family: Courier, monospace;
             overflow: hidden;
-            margin-right: 0.4rem;
-            flex: 1;
         }
         &-action {
-            padding: 0;
-            height: auto;
-
-            .dc-text {
-                font-size: var(--text-size-xxxs);
-            }
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            border-left: 1px solid var(--border-normal);
+            border-radius: 0;
+            padding: 0 0 0 0.5rem;
+            overflow: hidden;
         }
         &-tooltip {
             width: 20rem;

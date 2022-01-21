@@ -32,32 +32,35 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 describe('<Withdrawal />', () => {
-    const props = {
-        check10kLimit: jest.fn(),
-        recentTransactionOnMount: jest.fn(),
-        setActiveTab: jest.fn(),
-        setErrorMessage: jest.fn(),
-        setSideNotes: jest.fn(),
-        willMountWithdraw: jest.fn(),
-        balance: '1000',
-        currency: 'USD',
-        current_currency_type: '',
-        error: {},
-        is_10k_withdrawal_limit_reached: false,
-        is_cashier_locked: false,
-        is_crypto: false,
-        is_crypto_transactions_visible: false,
-        is_system_maintenance: false,
-        is_switching: false,
-        is_withdraw_confirmed: false,
-        is_withdrawal_locked: false,
-        is_virtual: false,
-        verification_code: '',
-        verify_error: {},
-    };
+    let history, props;
+    beforeEach(() => {
+        history = createBrowserHistory();
+        props = {
+            check10kLimit: jest.fn(),
+            recentTransactionOnMount: jest.fn(),
+            setActiveTab: jest.fn(),
+            setErrorMessage: jest.fn(),
+            setSideNotes: jest.fn(),
+            willMountWithdraw: jest.fn(),
+            balance: '1000',
+            currency: 'USD',
+            current_currency_type: '',
+            error: {},
+            is_10k_withdrawal_limit_reached: false,
+            is_cashier_locked: false,
+            is_crypto: false,
+            is_crypto_transactions_visible: false,
+            is_system_maintenance: false,
+            is_switching: false,
+            is_withdraw_confirmed: false,
+            is_withdrawal_locked: false,
+            is_virtual: false,
+            verification_code: '',
+            verify_error: {},
+        };
+    });
 
     it('should render <CashierLocked /> component', () => {
-        const history = createBrowserHistory();
         render(
             <Router history={history}>
                 <Withdrawal {...props} current_currency_type='crypto' is_system_maintenance is_withdrawal_locked />
@@ -68,7 +71,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Loading /> component', () => {
-        const history = createBrowserHistory();
         render(
             <Router history={history}>
                 <Withdrawal {...props} is_10k_withdrawal_limit_reached={undefined} />
@@ -79,7 +81,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Virtual /> component', () => {
-        const history = createBrowserHistory();
         render(
             <Router history={history}>
                 <Withdrawal {...props} is_virtual />
@@ -90,7 +91,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CashierLocked /> component when "is_cashier_locked = true"', () => {
-        const history = createBrowserHistory();
         render(
             <Router history={history}>
                 <Withdrawal {...props} is_cashier_locked />
@@ -101,7 +101,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <WithdrawalLocked /> component', () => {
-        const history = createBrowserHistory();
         const { rerender } = render(
             <Router history={history}>
                 <Withdrawal {...props} is_withdrawal_locked />
@@ -120,7 +119,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <NoBalance /> component', () => {
-        const history = createBrowserHistory();
         render(
             <Router history={history}>
                 <Withdrawal {...props} balance='0' />
@@ -131,7 +129,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Error /> component', () => {
-        const history = createBrowserHistory();
         const { rerender } = render(
             <Router history={history}>
                 <Withdrawal {...props} error={{ message: 'Error message' }} />
@@ -150,7 +147,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Withdraw /> component', () => {
-        const history = createBrowserHistory();
         const { rerender } = render(
             <Router history={history}>
                 <Withdrawal {...props} verification_code='verification_code' />
@@ -169,7 +165,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {
-        const history = createBrowserHistory();
         render(
             <Router history={history}>
                 <Withdrawal {...props} is_crypto verification_code='verification_code' />
@@ -180,7 +175,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoWithdrawReceipt /> component', () => {
-        const history = createBrowserHistory();
         render(
             <Router history={history}>
                 <Withdrawal {...props} is_withdraw_confirmed />
@@ -191,7 +185,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
-        const history = createBrowserHistory();
         render(
             <Router history={history}>
                 <Withdrawal {...props} is_crypto_transactions_visible />
@@ -202,7 +195,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <SendEmail /> component', () => {
-        const history = createBrowserHistory();
         render(
             <Router history={history}>
                 <Withdrawal {...props} />
@@ -213,43 +205,23 @@ describe('<Withdrawal />', () => {
     });
 
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {
-        const history = createBrowserHistory();
         isDesktop.mockReturnValueOnce(false);
-        const setSideNotes = jest.fn();
         render(
             <Router history={history}>
-                <Withdrawal {...props} setSideNotes={setSideNotes} />
+                <Withdrawal {...props} />
             </Router>
         );
 
-        expect(setSideNotes).not.toHaveBeenCalled();
+        expect(props.setSideNotes).not.toHaveBeenCalled();
     });
 
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
-        const history = createBrowserHistory();
-
-        const { rerender } = render(
+        render(
             <Router history={history}>
                 <Withdrawal {...props} crypto_transactions={[{}]} currency='BTC' />
             </Router>
         );
 
-        expect(props.setSideNotes).toHaveBeenCalled();
-
-        rerender(
-            <Router history={history}>
-                <Withdrawal {...props} crypto_transactions={[{}]} currency='UST' />
-            </Router>
-        );
-
-        expect(props.setSideNotes).toHaveBeenCalled();
-
-        rerender(
-            <Router history={history}>
-                <Withdrawal {...props} crypto_transactions={[{}]} currency='eUSDT' />
-            </Router>
-        );
-
-        expect(props.setSideNotes).toHaveBeenCalled();
+        expect(props.setSideNotes).toHaveBeenCalledTimes(1);
     });
 });

@@ -9,7 +9,7 @@ const TradeParamsLoader = ({ speed }) => (
             <ContentLoader
                 height={214}
                 width={344}
-                speed={speed}
+                speed={0}
                 primaryColor={'var(--general-section-1)'}
                 secondaryColor={'var(--general-hover)'}
             >
@@ -24,7 +24,7 @@ const TradeParamsLoader = ({ speed }) => (
             <ContentLoader
                 height={548}
                 width={240}
-                speed={speed}
+                speed={0}
                 primaryColor={'var(--general-section-1)'}
                 secondaryColor={'var(--general-hover)'}
             >

@@ -134,7 +134,7 @@ const Trade = ({
             {/* Div100vhContainer is workaround for browsers on devices
                     with toolbars covering screen height,
                     using css vh is not returning correct screen height */}
-            <Div100vhContainer
+            {/* <Div100vhContainer
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
@@ -183,10 +183,8 @@ const Trade = ({
                         </SwipeableWrapper>
                     </MobileWrapper>
                 </React.Suspense>
-
-                {/* Remove Test component for debugging below for production release */}
                 <Test />
-            </Div100vhContainer>
+            </Div100vhContainer> */}
             <div className={form_wrapper_class}>
                 {is_market_closed && !is_market_unavailable_visible && (
                     <MarketIsClosedOverlay

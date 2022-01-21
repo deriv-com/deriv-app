@@ -2224,25 +2224,71 @@ $MIN_HEIGHT_FLOATING: calc(
 .proof-of-ownership {
     width: 100%;
     height: 100%;
-    &__card {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        width: 71.6rem;
-        height:  10.6rem;
-        padding: 2.4rem;
-        margin-top: 1.6rem;
+    &__card {    
         border: 1px solid var(--general-section-1);
         border-radius: 4px;
-       
-        &-text {
-            line-height: 2.4rem;
-            padding-left: 1.6rem;
-            width:56.1rem;
+        width: 71.6rem;
+        height: 10.6rem;
+        padding: 2.4rem;
+        margin-top: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        &-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            &-text {
+                line-height: 2.4rem;
+                padding-left: 1.6rem;
+                width: 56.1rem;
+            }
+            &-icon {
+                margin-left: auto;
+            }   
+        } 
+        &-open {
+           height:auto;
+           &-desc{
+               line-height: 2rem;
+               margin: 8px 0px;
+               &-link{
+                   color: var(--text-red);
+               }
+
+           }
+           &-inputs{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top:3rem;
+            
+            &-cardnumber{
+             padding-top: 1.6rem;
+             border: 1px solid #D6DADB;
+             box-sizing: border-box;
+             border-radius: 4px;
+             height: 4rem;
+             width: 33rem;
+           }
+
+           &-photo{
+            margin-left: 1rem;
+            &-btn{
+                margin: 0 1rem  3.2rem;
+                padding: 10px 16px;
+                position: static;
+                width: 82px;
+                height: 40px;
+            }
+           }
         }
-        &-icon {
-            margin-left:auto;
         }
     }
 }
+.sample_credit_card_modal{
+       &-text{
+           padding:0 2.4rem;
+       }
+    }
+    
 /* stylelint-enable */

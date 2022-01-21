@@ -331,6 +331,7 @@ import './common/ic-regulatory-information.svg';
 import './common/ic-remove-token.svg';
 import './common/ic-reports.svg';
 import './common/ic-reset.svg';
+import './common/ic-sample-credit-card.svg';
 import './common/ic-save-filled.svg';
 import './common/ic-save.svg';
 import './common/ic-search.svg';

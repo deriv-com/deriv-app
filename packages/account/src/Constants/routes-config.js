@@ -103,12 +103,12 @@ const initRoutesConfig = ({ is_dashboard }) => [
                     ...(is_dashboard
                         ? []
                         : [
-                              {
-                                  path: routes.api_token,
-                                  component: ApiToken,
-                                  getTitle: () => localize('API token'),
-                              },
-                          ]),
+                            {
+                                path: routes.api_token,
+                                component: ApiToken,
+                                getTitle: () => localize('API token'),
+                            },
+                        ]),
                     {
                         path: routes.connected_apps,
                         component: ConnectedApps,

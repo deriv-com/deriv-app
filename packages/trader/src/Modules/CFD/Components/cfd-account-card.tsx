@@ -6,8 +6,16 @@ import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy';
 import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
+import {
+    TAccounIconValues,
+    TSpecBoxProps,
+    TPasswordBoxProps,
+    TCFDAccountCardActionProps,
+    TExistingData,
+    TCFDAccountCard,
+} from './props.types';
 
-const account_icons = {
+const account_icons: { [key: string]: TAccounIconValues } = {
     mt5: {
         synthetic: 'IcMt5SyntheticPlatform',
         financial: 'IcMt5FinancialPlatform',
@@ -21,24 +29,29 @@ const account_icons = {
     },
 };
 
-const AddTradeServerButton = React.forwardRef(({ onSelectAccount, is_disabled }, ref) => {
-    return (
-        <div
-            onClick={is_disabled ? null : onSelectAccount}
-            className={classNames('cfd-account-card__add-server', {
-                'cfd-account-card__add-server--disabled': is_disabled,
-            })}
-            ref={ref}
-        >
-            <span className='cfd-account-card__add-server--icon'>+</span>
-            <Localize i18n_default_text='Add region' />
-        </div>
-    );
-});
+const AddTradeServerButton = React.forwardRef(
+    (
+        { onSelectAccount, is_disabled }: { onSelectAccount: () => void; is_disabled: boolean },
+        ref: React.LegacyRef<HTMLDivElement> | undefined
+    ) => {
+        return (
+            <div
+                onClick={is_disabled ? () => null : onSelectAccount}
+                className={classNames('cfd-account-card__add-server', {
+                    'cfd-account-card__add-server--disabled': is_disabled,
+                })}
+                ref={ref}
+            >
+                <span className='cfd-account-card__add-server--icon'>+</span>
+                <Localize i18n_default_text='Add region' />
+            </div>
+        );
+    }
+);
 
 AddTradeServerButton.displayName = 'AddTradeServerButton';
 
-const SpecBox = ({ value, is_bold }) => (
+const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
     <div className='cfd-account-card__spec-box'>
         <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-account-card__spec-text'>
             {value}
@@ -47,7 +60,7 @@ const SpecBox = ({ value, is_bold }) => (
     </div>
 );
 
-const PasswordBox = ({ platform, onClick }) => (
+const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
     <div className='cfd-account-card__password-box'>
         <div className='cfd-account-card__password-text'>
             <Popover
@@ -92,7 +105,7 @@ const CFDAccountCardAction = ({
     type,
     platform,
     title,
-}) => {
+}: TCFDAccountCardActionProps) => {
     if (
         is_virtual &&
         type.category === 'real' &&
@@ -170,13 +183,15 @@ const CFDAccountCard = ({
     should_show_trade_servers,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
-}) => {
-    const icon = type.type ? <Icon icon={account_icons[type.platform][is_eu ? 'cfd' : type.type]} size={64} /> : null;
-    const has_popular_banner =
+}: TCFDAccountCard) => {
+    const icon: any = type.type ? (
+        <Icon icon={account_icons[type.platform][is_eu ? 'cfd' : type.type]} size={64} />
+    ) : null;
+    const has_popular_banner: boolean =
         type.type === 'synthetic' &&
         type.category === 'real' &&
         (platform === CFD_PLATFORMS.MT5 ? !existing_data : true);
-    const has_demo_banner = type.category === 'demo';
+    const has_demo_banner: boolean = type.category === 'demo';
     const has_server_banner =
         is_logged_in &&
         existing_data &&
@@ -184,47 +199,47 @@ const CFDAccountCard = ({
         type.type === 'synthetic' &&
         existing_data?.server_info;
 
-    const is_real_synthetic_account = type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
-    const get_server_region = existing_data?.server_info?.geolocation.region;
+    const is_real_synthetic_account: boolean =
+        type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
+    const get_server_region = existing_data?.server_info?.geolocation?.region;
     const get_server_environment = existing_data?.server_info?.environment;
 
-    const ref = React.useRef();
-    const wrapper_ref = React.useRef();
-    const button_ref = React.useRef();
+    const ref = React.useRef<HTMLDivElement>(null);
+    const wrapper_ref = React.useRef<HTMLDivElement>(null);
+    const button_ref = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
+        const ref_current = ref?.current;
+        const button_ref_current = button_ref?.current;
         if (existing_data) {
             const show = () => {
                 onHover?.(existing_data.group);
             };
 
-            ref.current.addEventListener('mouseenter', show);
-            button_ref?.current?.addEventListener('mouseenter', show);
+            ref_current?.addEventListener('mouseenter', show);
+            button_ref_current?.addEventListener('mouseenter', show);
 
             return () => {
-                ref.current.removeEventListener('mouseenter', show);
-                button_ref?.current?.removeEventListener('mouseenter', () => show);
+                ref_current?.removeEventListener('mouseenter', show);
+                button_ref_current?.removeEventListener('mouseenter', () => show);
             };
         }
         return () => {};
-    }, [onHover]);
+    }, [onHover, existing_data]);
 
-    const getServerName = React.useCallback(
-        server => {
-            if (server) {
-                const server_region = server.server_info?.geolocation.region;
-                if (server_region) {
-                    return `${server_region} ${
-                        server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
-                    }`;
-                }
+    const getServerName: (value: TExistingData) => string = React.useCallback(server => {
+        if (server) {
+            const server_region = server.server_info?.geolocation?.region;
+            if (server_region) {
+                return `${server_region} ${
+                    server?.server_info?.geolocation?.sequence === 1 ? '' : server?.server_info?.geolocation?.sequence
+                }`;
             }
-            return '';
-        },
-        [existing_data]
-    );
+        }
+        return '';
+    }, []);
 
-    const createFullServerNames = () => {
+    const createFullServerNames: () => string = () => {
         let region_string = '';
         let server_number = '';
         const server_environment = get_server_environment ? get_server_environment.toLowerCase() : '';
@@ -238,12 +253,12 @@ const CFDAccountCard = ({
         return `${type.category}-${type.type}${region_string}${server_number}`;
     };
 
-    const handleClickSwitchAccount = () => {
+    const handleClickSwitchAccount: () => void = () => {
         toggleShouldShowRealAccountsList(true);
         toggleAccountsDialog(true);
     };
 
-    const getDxtradeDownloadLink = () => {
+    const getDxtradeDownloadLink: () => string = () => {
         const os = mobileOSDetect();
         if (os === 'iOS') {
             return getPlatformDXTradeDownloadLink('ios');
@@ -295,14 +310,14 @@ const CFDAccountCard = ({
                                 <Money
                                     amount={existing_data.display_balance}
                                     currency={existing_data.currency}
-                                    has_sign={existing_data.balance < 0}
+                                    has_sign={1000}
                                     show_currency
                                 />
                             </Text>
                         )}
                         {existing_data?.display_login && is_logged_in && (
                             <Text color='less-prominent' size='xxxs' line_height='s'>
-                                {existing_data.display_login}
+                                {existing_data?.display_login}
                             </Text>
                         )}
                     </div>
@@ -338,7 +353,7 @@ const CFDAccountCard = ({
                                                         <td className='cfd-account-card__login-specs-table-data'>
                                                             <div className='cfd-account-card--paragraph'>
                                                                 <SpecBox
-                                                                    value={existing_data.server_info.environment}
+                                                                    value={existing_data?.server_info?.environment}
                                                                 />
                                                             </div>
                                                         </td>
@@ -351,7 +366,7 @@ const CFDAccountCard = ({
                                                         </td>
                                                         <td className='cfd-account-card__login-specs-table-data'>
                                                             <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox value={existing_data.display_login} />
+                                                                <SpecBox value={existing_data?.display_login} />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -384,11 +399,11 @@ const CFDAccountCard = ({
                                                             platform={platform}
                                                             onClick={() => {
                                                                 onPasswordManager(
-                                                                    existing_data.login,
+                                                                    existing_data?.login,
                                                                     title,
                                                                     type.category,
                                                                     type.type,
-                                                                    existing_data.server
+                                                                    existing_data?.server
                                                                 );
                                                             }}
                                                         />
@@ -474,7 +489,7 @@ const CFDAccountCard = ({
                                         : getMT5WebTerminalLink({
                                               category: type.category,
                                               loginid: existing_data.display_login,
-                                              server_name: existing_data.server_info.environment,
+                                              server_name: existing_data?.server_info?.environment,
                                           })
                                 }
                                 target='_blank'

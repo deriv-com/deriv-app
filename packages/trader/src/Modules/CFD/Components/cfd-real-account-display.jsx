@@ -4,7 +4,7 @@ import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
-import { CFDAccountCard } from './cfd-account-card.jsx';
+import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 
 const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentication, has_required_credentials) => {

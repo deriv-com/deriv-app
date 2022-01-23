@@ -17,7 +17,7 @@ const getTopUpConfig = () => {
     };
 };
 
-const getPlatformDXTradeDownloadLink = (platform = undefined) => {
+const getPlatformDXTradeDownloadLink = (platform = '') => {
     switch (platform || OSDetect()) {
         case 'ios':
             return DXTRADE_IOS_APP_URL;

@@ -55,7 +55,7 @@ const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent)
 };
 
 type TCFDPasswordReset = {
-    sendVerifyEmail: () => Promise<string>;
+    sendVerifyEmail: () => Promise<any>;
     account_type: string;
     account_group: string;
     server: string;
@@ -235,7 +235,7 @@ const InvestorPasswordManager = ({
                                     has_error={!!(touched.new_password && errors.new_password)}
                                     custom_feedback_messages={getErrorMessages().password_warnings}
                                 >
-                                    {({ has_warning }: any) => (
+                                    {({ has_warning }: {has_warning: boolean}) => (
                                         <PasswordInput
                                             {...field}
                                             autoComplete='new-password'
@@ -458,7 +458,7 @@ type TCFDPasswordManagerModal = {
     selected_account_type: string;
     selected_account_group: 'real' | 'demo';
     selected_server: string;
-    sendVerifyEmail: () => Promise<string>;
+    sendVerifyEmail: () => Promise<any>;
 };
 
 const CFDPasswordManagerModal = ({

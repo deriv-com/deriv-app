@@ -34,6 +34,10 @@ Things that this document covers:
 
   ​		Be informed that this command will run all of the tests in the whole app based on following configuration provided.
 
+  ​		Also the mentioned command will generate a coverage directory in the root directory, you can check the current coverage percentage by the generated html.
+
+  
+
    
 
   #### 	Jest configuration files explanation
@@ -41,9 +45,9 @@ Things that this document covers:
   ​	
 
   * `jest.config.js`
-
+  
     General configuration of the jest which will use to run the tests from root directory of deriv-app 
-
+  
     1. `collectCoverage`: with this flag jest will collect the coverage report in order to know how much and which files of the code has test coverage.
     2. `collectCoverageFrom`: To indicate which files should and should not test. Generally we exclude all of `node_modules` directories.
     3. `collectCoverageFrom`: The type of needed coverage report.
@@ -61,6 +65,8 @@ Things that this document covers:
 
     Also in each component has a `jest.config.js` which extend the `jest.config.base.js` 
 
+    
+
     In this case we have another option to run tests from a specific package inside the app:	
 
     ##### 	Prerequisite
@@ -68,16 +74,17 @@ Things that this document covers:
     ​    	You should install `jest` globally using following command
 
     ​			``` npm install jest@[CURRENT_VERSION_OF_JEST_IN_THE_ROOT_PACKAGE.JSON] -g ```
-
-
-#### Run tests from a specific package
  
-   Navigate to the related directory of package on the command line, then simply run one of the following commands:
+
+##### Run tests from a specific package
+ Navigate to the related directory of package on the command line, then simply run one of the following commands:
     `jest` or `npx jest`
-
+    Please be informed with `collectCoverage` provided in the `jest.config.base.js` this command will generate coverage percentage in the directory that you are running the tests.
   
-* `setupTests.js`
-
+    
+  
+  * `setupTests.js`
+  
     This configuration file helps to add some extra assets and tools to the jest framework in order to have better accessibility and tools for the test runner(`jest`).
     All of needed description are commented within the file it self. 
   

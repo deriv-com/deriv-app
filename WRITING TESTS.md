@@ -4,99 +4,81 @@ This document is intended to be a guideline for writing and running tests on der
 
 Things that this document covers:
 
-* Brief explanation on test framework implemented on the project.(Jest)
+*   Brief explanation on test framework implemented on the project.(Jest)
 
-* We will describe how `react-testing-library` configured. 
+*   We will describe how `react-testing-library` configured.
 
-* An example of how to write test on using implemented framework
+*   An example of how to write test on using implemented framework
 
-   
+    ## Test Framework explanation
 
-  ## Test Framework explanation 
+    ​ We are using `Jest` as test runner and [React Testing library](https://testing-library.com/docs/react-testing-library/intro/) as our main test component to have the ultimate needed utilities.
 
-  ​	We are using `Jest` as test runner and [React Testing library](https://testing-library.com/docs/react-testing-library/intro/) as our main test component to have the ultimate needed utilities.
+    ### Jest
 
-  
+    ​ With Jest, we can run our tests quickly and even parallel.
 
-  ### 	Jest 
+    ​ All of needed configurations are located in root folder of the app.
 
-  ​		With Jest we can run our tests quickly and even parallel.
+    #### Run Tests
 
-  ​		All of needed configurations are located in root folder of the app.
+    ​ To Run tests from root directory simply run:
 
-  
+    ​ `npm run test:jest`
 
-  #### 	Run Tests
+    ​ Be informed that this command will run all tests in the whole app based on following configuration provided.
 
-  ​		To Run tests from root directory simply run:
+    ​ Also, the mentioned command will generate a coverage directory in the root directory, you can check the current coverage percentage by the generated html.
 
-  ​			```npm run test:jest```
+    #### Jest configuration files explanation
 
-  ​		Be informed that this command will run all of the tests in the whole app based on following configuration provided.
+    ​
 
-  ​		Also the mentioned command will generate a coverage directory in the root directory, you can check the current coverage percentage by the generated html.
+    -   `jest.config.js`
 
-  
+        General configuration of the jest which will use to run the tests from root directory of deriv-app
 
-   
+        * `collectCoverage`: with this flag jest will collect the coverage report in order to know how much and which files of the code has test coverage.
+        * `collectCoverageFrom`: To indicate which files should and should not test. Generally we exclude all of `node_modules` directories.
+        * `collectCoverageFrom`: The type of needed coverage report.
+        * `clearMocks`: configuration option to clear mocks automatically before each test.
+        * `projects`: To indicate that which components/directories should test.
+        * `transform`: A map from regular expressions to paths to transformers. A transformer is a module that provides a synchronous function for transforming source files.
+        * `testRegex`: The pattern or patterns Jest uses to detect test files.
+        * `transformIgnorePatterns`: An array of regexp pattern strings that are matched against all source file paths before transformation. If the file path matches **any** of the patterns, it will not be transformed.
 
-  #### 	Jest configuration files explanation
+    -   `jest.config.base.js`
 
-  ​	
+        This Configuration file is held in common across all individual packages. In other words if you want to just run tests related to one package (e.g. trader) this is what that particular package will use as base configuration.
 
-  * `jest.config.js`
-  
-    General configuration of the jest which will use to run the tests from root directory of deriv-app 
-  
-    1. `collectCoverage`: with this flag jest will collect the coverage report in order to know how much and which files of the code has test coverage.
-    2. `collectCoverageFrom`: To indicate which files should and should not test. Generally we exclude all of `node_modules` directories.
-    3. `collectCoverageFrom`: The type of needed coverage report.
-    4. `clearMocks`: configuration option to clear mocks automatically before each tests.   
-    5. `projects`: To indicate that which components/directories should test.
-    6. `transform`: A map from regular expressions to paths to transformers. A transformer is a module that provides a synchronous function for transforming source files.
-    7. `testRegex`: The pattern or patterns Jest uses to detect test files.
-    8. `transformIgnorePatterns`: An array of regexp pattern strings that are matched against all source file paths before transformation. If the file path matches **any** of the patterns, it will not be transformed.
+        Also in each component has a `jest.config.js` which extend the `jest.config.base.js`
 
-  
+        In this case we have another option to run tests from a specific package inside the app:
 
-  * `jest.config.base.js`
+        ##### Prerequisite
 
-    This Configuration file is held in common across all of the individual packages. In other words if you want to just run tests related to one package (eg. trader) this is what that particular package will use as base configuration.
+        ​ You should install `jest` globally using following command
 
-    Also in each component has a `jest.config.js` which extend the `jest.config.base.js` 
-
-    
-
-    In this case we have another option to run tests from a specific package inside the app:	
-
-    ##### 	Prerequisite
-
-    ​    	You should install `jest` globally using following command
-
-    ​			``` npm install jest@[CURRENT_VERSION_OF_JEST_IN_THE_ROOT_PACKAGE.JSON] -g ```
- 
+        ​ `npm install jest@[CURRENT_VERSION_OF_JEST_IN_THE_ROOT_PACKAGE.JSON] -g`
 
 ##### Run tests from a specific package
- Navigate to the related directory of package on the command line, then simply run one of the following commands:
-    `jest` or `npx jest`
-    Please be informed with `collectCoverage` provided in the `jest.config.base.js` this command will generate coverage percentage in the directory that you are running the tests.
-  
-    
-  
-  * `setupTests.js`
-  
+
+Navigate to the related directory of package on the command line, then simply run one of the following commands:
+`jest` or `npx jest`
+Please be informed with `collectCoverage` provided in the `jest.config.base.js` this command will generate coverage percentage in the directory that you are running the tests.
+
+-   `setupTests.js`
+
     This configuration file helps to add some extra assets and tools to the jest framework in order to have better accessibility and tools for the test runner(`jest`).
-    All of needed description are commented within the file it self. 
-  
-    
+    All of needed description are commented within the file itself.
 
-### 	React Testing library
+### React Testing library
 
-​			Regarding to setup of `jest` in the root directory of deriv-app you will see that we have access to all of base api's of `react-testing-library` in the 
+​ Regarding setup of `jest` in the root directory of deriv-app you will see that we have access to all api's of `react-testing-library` in the
 
-​			global. So you can just start to write tests without import `expect`, `it` or `describe` and lots of others as well (check [react-testing-library/jest-dom](https://www.npmjs.com/package/@testing-library/jest-dom) official document for more info).
+​ global. So you can just start to write tests without import `expect`, `it` or `describe` and lots of others as well (check [react-testing-library/jest-dom](https://www.npmjs.com/package/@testing-library/jest-dom) official document for more info).
 
-​			In the deriv-app all of needed packages and configuration are in the root directory, So no need to worry about configuration in all of the packages. 
+​ In the deriv-app all of needed packages and configuration are in the root directory, So no need to worry about configuration in all packages.
 
 Some of added packages to root package.json are:
 
@@ -108,7 +90,7 @@ Some of added packages to root package.json are:
    @testing-library/jest-dom
    ```
 
-​	
+​
 
 Here we have a simple component test that written using `react-testing-library ` :
 

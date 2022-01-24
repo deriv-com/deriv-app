@@ -51,20 +51,19 @@ const ExpandedCard = () => {
                             />
                         </Text>
                         <div className='proof-of-ownership__card-open-inputs'>
-
                             <Input
                                 label={localize('Card number')}
                                 data-lpignore='true'
                                 className='proof-of-ownership__card-open-inputs-cardnumber'
-                                type="text"
+                                type='text'
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 value={values.cardNumber
-                                    .replace(/\s/g, "")
-                                    .replace(/(\d{4})/g, "$1 ")
+                                    .replace(/\s/g, '')
+                                    .replace(/(\d{4})/g, '$1 ')
                                     .trim()}
-                                name="cardNumber"
-                                maxLength="18"
+                                name='cardNumber'
+                                maxLength='18'
                                 onKeyDown={e => {
                                     console.log(e.which);
                                 }}

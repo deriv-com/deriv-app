@@ -110,7 +110,7 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
                     'regular',
                     localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
                     {
-                        regex: /^(?!^$|\s+)[A-Za-z0-9.\/\s-]{0,25}$/,
+                        regex: /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
                     },
                 ],
                 [

@@ -11,7 +11,7 @@ const ScreenLarge = ({ is_market_closed, is_trade_enabled }) => {
     const [is_trade_enabled_state, setIsTradeEnabledState] = React.useState(false);
 
     React.useEffect(() => {
-            setIsTradeEnabledState(is_trade_enabled);
+        setIsTradeEnabledState(is_trade_enabled);
     }, [is_trade_enabled]);
 
     return (

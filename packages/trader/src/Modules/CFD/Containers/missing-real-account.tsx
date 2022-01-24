@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { TMissingRealAccount } from './props.types';
 
-const MissingRealAccount = ({ onClickSignup, platform }) => (
+const MissingRealAccount = ({ onClickSignup, platform }: TMissingRealAccount) => (
     <div className='cfd-dashboard__missing-real'>
         <h1 className='cfd-dashboard__missing-real--heading'>
             {platform === CFD_PLATFORMS.MT5 ? (
@@ -20,10 +20,5 @@ const MissingRealAccount = ({ onClickSignup, platform }) => (
         </Button>
     </div>
 );
-
-MissingRealAccount.propTypes = {
-    onClickSignup: PropTypes.func,
-    platform: PropTypes.string,
-};
 
 export default MissingRealAccount;

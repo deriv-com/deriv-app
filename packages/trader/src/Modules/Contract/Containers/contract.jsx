@@ -18,7 +18,7 @@ const Contract = ({ error_code, error_message, match, history, has_error, onMoun
             removeErrorMessage();
             onUnmount();
         };
-    }, [onMount, onUnmount, removeErrorMessage]);
+    }, [onMount, onUnmount, removeErrorMessage, history, match.params.contract_id]);
 
     if (isNaN(match.params.contract_id)) {
         return <Redirect to='/404' />;

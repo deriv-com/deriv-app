@@ -114,9 +114,10 @@ export default class MyProfileStore extends BaseStore {
             p2p_advertiser_payment_methods: 1,
             create: [
                 {
-                    account: values.account,
-                    bank_name: values.bank_name,
+                    account: values?.account,
+                    bank_name: values?.bank_name,
                     method: this.selected_payment_method,
+                    name: values?.name,
                 },
             ],
         }).then(response => {

@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';
 
 const ExpandedCard = () => {
-    const [filename, setFileName] = useState('Choose a photo');
+    const [filename, setFileName] = useState('');
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
 
     const handleUploadedFile = event => {
@@ -51,21 +51,25 @@ const ExpandedCard = () => {
                             />
                         </Text>
                         <div className='proof-of-ownership__card-open-inputs'>
+
                             <Input
+                                label={localize('Card number')}
                                 data-lpignore='true'
                                 className='proof-of-ownership__card-open-inputs-cardnumber'
-                                type='number'
-                                name='cardNumber'
-                                label={localize('Card number')}
-                                required
-                                max_characters={2}
-                                placeholder={'1234 56xx xxxx 1234'}
-                                value={values.cardNumber}
-                                onChange={e => {
-                                    handleChange(e);
+                                type="text"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.cardNumber
+                                    .replace(/\s/g, "")
+                                    .replace(/(\d{4})/g, "$1 ")
+                                    .trim()}
+                                name="cardNumber"
+                                maxLength="18"
+                                onKeyDown={e => {
+                                    console.log(e.which);
                                 }}
-                                // onKeyUp={(ev) => formatCardNumber(ev.target.value)}
                             />
+
                             <Input
                                 name='cardImgName'
                                 required

@@ -429,7 +429,6 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
         .map(({ attribute, mt5 = {}, dxtrade = {} }) => {
             const { synthetic, synthetic_eu, financial, financial_au, financial_eu, footnote } =
                 platform === CFD_PLATFORMS.MT5 ? mt5 : dxtrade;
-            const financial_stp = platform === CFD_PLATFORMS.MT5 && mt5.financial_stp;
             const synthetic_object = { synthetic: show_eu_related ? synthetic_eu : synthetic };
             const financial_object = { financial: getFinancialObject(financial, financial_au, financial_eu) };
 
@@ -439,7 +438,7 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
                     ...(landing_companies?.mt_gaming_company?.financial ? synthetic_object : {}),
                     ...(landing_companies?.mt_financial_company?.financial ? financial_object : {}),
                     ...(landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5
-                        ? { financial_stp }
+                        ? { financial_stp: mt5?.financial_stp }
                         : {}),
                 };
             }
@@ -454,7 +453,7 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
                 attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
                 ...synthetic_object,
                 ...financial_object,
-                ...{ financial_stp },
+                ...{ financial_stp: mt5?.financial_stp },
             };
         });
 };
@@ -594,20 +593,18 @@ const ModalContent = ({
     React.useEffect(() => {
         setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence, is_uk }));
 
-        if (is_logged_in) {
-            if (platform === CFD_PLATFORMS.MT5) {
-                updateColumnsStyle(
-                    `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
-                        landing_companies?.mt_financial_company?.financial ? '2fr' : ''
-                    } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
-                );
-            } else {
-                updateColumnsStyle(
-                    `1.5fr ${landing_companies?.dxtrade_gaming_company ? '1fr' : ''} ${
-                        landing_companies?.dxtrade_financial_company ? '2fr' : ''
-                    }`
-                );
-            }
+        if (is_logged_in && platform === CFD_PLATFORMS.MT5) {
+            updateColumnsStyle(
+                `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
+                    landing_companies?.mt_financial_company?.financial ? '2fr' : ''
+                } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
+            );
+        } else if (is_logged_in && platform === CFD_PLATFORMS.DXTRADE) {
+            updateColumnsStyle(
+                `1.5fr ${landing_companies?.dxtrade_gaming_company ? '1fr' : ''} ${
+                    landing_companies?.dxtrade_financial_company ? '2fr' : ''
+                }`
+            );
         }
     }, [
         landing_companies?.mt_financial_company,
@@ -622,6 +619,7 @@ const ModalContent = ({
     ]);
 
     const show_risk_message = platform === CFD_PLATFORMS.MT5 || !show_eu_related;
+    const financial_account_table_head_text = is_eu ? localize('CFDs') : localize('Financial');
 
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
@@ -647,7 +645,7 @@ const ModalContent = ({
                                             type: 'financial',
                                         }) && (
                                             <Table.Head>
-                                                {is_eu ? localize('CFDs') : localize('Financial')}
+                                                {financial_account_table_head_text}
                                                 <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
                                                     *
                                                 </Text>

@@ -168,7 +168,7 @@ describe('<Cashier />', () => {
     it('should go to selected route page on desktop', () => {
         const history = createBrowserHistory();
 
-        const { rerender } = render(
+        render(
             <Router history={history}>
                 <Cashier {...props} />
             </Router>

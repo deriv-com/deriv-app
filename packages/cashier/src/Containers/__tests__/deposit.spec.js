@@ -49,6 +49,8 @@ describe('<Deposit />', () => {
         expect(screen.getByText('Loading')).toBeInTheDocument();
 
         rerender(<Deposit {...props} is_switching={false} is_loading iframe_url='' />);
+
+        expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should render <Virtual /> component', () => {

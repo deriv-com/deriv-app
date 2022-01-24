@@ -12,6 +12,18 @@ export type TCFDDashboardContainer = {
     is_dark_mode_on: boolean;
 };
 
+export type TMT5AccountOpeningRealFinancialStpModal = {
+    enableApp: () => void;
+    disableApp: () => void;
+    disableMt5FinancialStpModal: () => void;
+    is_mt5_financial_stp_modal_open: boolean;
+};
+
+export type TMissingRealAccount = {
+    onClickSignup: () => void;
+    platform: 'dxtrade' | 'mt5';
+};
+
 export type TChangePassword = {
     platform: 'mt5' | 'dxtrade';
     onConfirm: () => void;

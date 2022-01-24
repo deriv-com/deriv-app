@@ -60,6 +60,7 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
                 );
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
     const handleResubmit = () => {

@@ -22,35 +22,40 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
         if (error.message) {
             mapErrorToDetails(error.code, error.message);
         }
-    }, [error.code]);
+    }, [error.code, error.message, mapErrorToDetails]);
 
     React.useEffect(() => {
         setErrorVisibility(!!error.message);
     }, [error.message]);
 
-    const mapErrorToDetails = (error_code, error_message) => {
-        if (
-            ['Fiat2CryptoTransferOverLimit', 'Crypto2FiatTransferOverLimit', 'Crypto2CryptoTransferOverLimit'].includes(
-                error_code
-            )
-        ) {
-            setDetails({
-                title: localize('Please verify your identity'),
-                cancel_button_text: localize('Cancel'),
-                confirm_button_text: localize('Verify identity'),
-                onConfirm: () => history.push(routes.proof_of_identity),
-                message: error_message,
-            });
-        } else {
-            setDetails({
-                title: localize('Cashier Error'),
-                cancel_button_text: undefined,
-                confirm_button_text: localize('OK'),
-                onConfirm: undefined,
-                message: error_message,
-            });
-        }
-    };
+    const mapErrorToDetails = React.useCallback(
+        (error_code, error_message) => {
+            if (
+                [
+                    'Fiat2CryptoTransferOverLimit',
+                    'Crypto2FiatTransferOverLimit',
+                    'Crypto2CryptoTransferOverLimit',
+                ].includes(error_code)
+            ) {
+                setDetails({
+                    title: localize('Please verify your identity'),
+                    cancel_button_text: localize('Cancel'),
+                    confirm_button_text: localize('Verify identity'),
+                    onConfirm: () => history.push(routes.proof_of_identity),
+                    message: error_message,
+                });
+            } else {
+                setDetails({
+                    title: localize('Cashier Error'),
+                    cancel_button_text: undefined,
+                    confirm_button_text: localize('OK'),
+                    onConfirm: undefined,
+                    message: error_message,
+                });
+            }
+        },
+        [history]
+    );
 
     const setErrorVisibility = is_error_visible => {
         setIsVisible(is_error_visible);

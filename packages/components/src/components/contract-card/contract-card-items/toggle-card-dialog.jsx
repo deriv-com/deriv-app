@@ -38,8 +38,10 @@ const ToggleCardDialog = ({
     const toggle_ref = React.useRef();
     const dialog_ref = React.useRef();
     const contract = getContractById(contract_id);
-    ContractUpdateFormWrapper =
-        ContractUpdateFormWrapper || connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
+
+    React.useEffect(() => {
+        ContractUpdateFormWrapper = connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
+    }, [connectWithContractUpdate]);
 
     React.useEffect(() => {
         if (is_visible && toggle_ref?.current && dialog_ref?.current) {
@@ -141,7 +143,35 @@ const ToggleCardDialog = ({
                     onClose={toggleDialogWrapper}
                     wrapper_classname='contract-update'
                 >
-                    <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
+                    {ContractUpdateFormWrapper && (
+                        <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
+                            <ContractUpdateFormWrapper
+                                addToast={addToast}
+                                contract={contract}
+                                current_focus={current_focus}
+                                error_message_alignment={error_message_alignment}
+                                getCardLabels={getCardLabels}
+                                getContractById={getContractById}
+                                onMouseLeave={onMouseLeave}
+                                removeToast={removeToast}
+                                setCurrentFocus={setCurrentFocus}
+                                status={status}
+                                toggleDialog={toggleDialogWrapper}
+                            />
+                        </Div100vhContainer>
+                    )}
+                </MobileDialog>
+            </MobileWrapper>
+            <DesktopWrapper>
+                <ContractCardDialog
+                    ref={dialog_ref}
+                    is_visible={is_visible}
+                    left={left}
+                    top={top}
+                    toggle_ref={toggle_ref}
+                    toggleDialog={toggleDialogWrapper}
+                >
+                    {ContractUpdateFormWrapper && (
                         <ContractUpdateFormWrapper
                             addToast={addToast}
                             contract={contract}
@@ -155,31 +185,7 @@ const ToggleCardDialog = ({
                             status={status}
                             toggleDialog={toggleDialogWrapper}
                         />
-                    </Div100vhContainer>
-                </MobileDialog>
-            </MobileWrapper>
-            <DesktopWrapper>
-                <ContractCardDialog
-                    ref={dialog_ref}
-                    is_visible={is_visible}
-                    left={left}
-                    top={top}
-                    toggle_ref={toggle_ref}
-                    toggleDialog={toggleDialogWrapper}
-                >
-                    <ContractUpdateFormWrapper
-                        addToast={addToast}
-                        contract={contract}
-                        current_focus={current_focus}
-                        error_message_alignment={error_message_alignment}
-                        getCardLabels={getCardLabels}
-                        getContractById={getContractById}
-                        onMouseLeave={onMouseLeave}
-                        removeToast={removeToast}
-                        setCurrentFocus={setCurrentFocus}
-                        status={status}
-                        toggleDialog={toggleDialogWrapper}
-                    />
+                    )}
                 </ContractCardDialog>
             </DesktopWrapper>
         </div>

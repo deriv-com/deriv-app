@@ -16,15 +16,16 @@ const AccountDeactivated = ({ logout }) => {
         return () => {
             if (handleInterval) clearInterval(handleInterval);
         };
-    }, [timer, is_modal_open]);
+    }, [timer, is_modal_open, logout, counter]);
 
-    const counter = () => {
+    const counter = React.useCallback(() => {
         if (timer > 0) {
             setTimer(timer - 1);
         } else {
             window.location.href = getStaticUrl('/', { is_dashboard });
         }
-    };
+    }, [is_dashboard, timer]);
+
     return (
         <Modal
             is_open={is_modal_open}

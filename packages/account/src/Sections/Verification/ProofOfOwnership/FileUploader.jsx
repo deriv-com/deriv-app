@@ -12,7 +12,7 @@ const FileUploader = ({ handleFile }) => {
 
     const handleChange = event => {
         const fileUploaded = event.target.files[0];
-        console.log(fileUploaded)
+        console.log(fileUploaded);
         handleFile(fileUploaded);
     };
     return (
@@ -24,7 +24,7 @@ const FileUploader = ({ handleFile }) => {
                 primary
             ></Button>
             <input
-                type="file"
+                type='file'
                 accept={'image/png, image/jpeg, image/jpg, image/gif, application/pdf'}
                 ref={hiddenFileInput}
                 onChange={handleChange}
@@ -32,5 +32,5 @@ const FileUploader = ({ handleFile }) => {
             />
         </>
     );
-}
+};
 export default FileUploader;

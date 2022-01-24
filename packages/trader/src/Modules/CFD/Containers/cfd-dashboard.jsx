@@ -13,18 +13,18 @@ import {
 import { Localize, localize } from '@deriv/translations';
 import { ResetTradingPasswordModal } from '@deriv/account';
 import { connect } from 'Stores/connect';
+import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
-import MissingRealAccount from './missing-real-account.jsx';
-import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal.jsx';
+import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
 import CompareAccountsModal from './compare-accounts-modal.jsx';
-import CFDDashboardContainer from './cfd-dashboard-container.jsx';
+import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal.jsx';
 import CFDPasswordModal from './cfd-password-modal.jsx';
 import CFDServerErrorDialog from './cfd-server-error-dialog.jsx';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog.jsx';
+import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
@@ -61,8 +61,10 @@ const CFDDashboard = props => {
         return () => {
             props.onUnmount();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
         updateActiveIndex();
         props.checkShouldOpenAccount();

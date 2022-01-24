@@ -8,13 +8,14 @@ import {
     getPlatformDXTradeDownloadLink,
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
+import { TCFDDashboardContainer } from './props.types';
 
-const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
+const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFDDashboardContainer) => (
     <div className='cfd-dashboard__download-center'>
         <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
             className='cfd-dashboard__download-center-options'
-            style={{ justifyContent: platform === CFD_PLATFORMS.DXTRADE ? 'space-evenly' : null }}
+            style={{ justifyContent: platform === CFD_PLATFORMS.DXTRADE ? 'space-evenly' : undefined }}
         >
             <div className='cfd-dashboard__download-center-options--desktop'>
                 <div className='cfd-dashboard__download-center-options--desktop-links'>

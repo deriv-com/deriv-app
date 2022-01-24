@@ -85,6 +85,7 @@
         flex-direction: column;
         justify-content: center;
         padding: 0 1rem 0.1rem 0;
+        pointer-events: none;
     }
     &__select-arrow {
         pointer-events: none;

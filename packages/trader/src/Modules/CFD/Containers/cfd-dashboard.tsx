@@ -77,7 +77,7 @@ type TCFDDashboard = {
     is_dxtrade_allowed: boolean;
     is_pending_authentication: boolean;
     is_virtual: boolean;
-    landing_companies: { mt_financial_company: { financial_stp: string }; };
+    landing_companies: { mt_financial_company: { financial_stp: string } };
     has_malta_account: boolean;
     has_maltainvest_account: boolean;
     has_cfd_account: boolean;
@@ -211,7 +211,7 @@ const CFDDashboard = (props: TCFDDashboard) => {
     };
 
     const updateActiveIndex = (index?: number) => {
-        const updated_state: {is_demo_tab?: boolean; active_index?: number} = {};
+        const updated_state: { is_demo_tab?: boolean; active_index?: number } = {};
         // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
         if (index === 1) updated_state.is_demo_tab = true;
         else if (index === 0) updated_state.is_demo_tab = false;

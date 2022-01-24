@@ -29,7 +29,7 @@ import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.js
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import RootStore from 'Stores/index';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { History } from 'history';
 
 type TLoadTab = {
@@ -42,7 +42,7 @@ type TLoadTab = {
     is_logged_in: boolean;
     onTabItemClick: (index: number) => void;
     should_update_hash: boolean;
-    landing_companies?: object;
+    landing_companies?: LandingCompany;
 };
 
 import 'Sass/app/modules/mt5/cfd-dashboard.scss';
@@ -77,7 +77,7 @@ type TCFDDashboard = {
     is_dxtrade_allowed: boolean;
     is_pending_authentication: boolean;
     is_virtual: boolean;
-    landing_companies: { mt_financial_company: { financial_stp: string } };
+    landing_companies: LandingCompany;
     has_malta_account: boolean;
     has_maltainvest_account: boolean;
     has_cfd_account: boolean;

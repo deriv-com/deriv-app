@@ -588,12 +588,7 @@ const AccountTransferForm = ({
                                 )}
                                 <div className='cashier__form-submit account-transfer-form__form-submit'>
                                     <Button
-                                        className={classNames({
-                                            'cashier__form-submit-button':
-                                                selected_from.currency === selected_to.currency,
-                                            'account-transfer-form__submit-button':
-                                                selected_from.currency !== selected_to.currency,
-                                        })}
+                                        className='account-transfer-form__submit-button'
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||

@@ -431,10 +431,11 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
                 platform === CFD_PLATFORMS.MT5 ? mt5 : dxtrade;
             const synthetic_object = { synthetic: show_eu_related ? synthetic_eu : synthetic };
             const financial_object = { financial: getFinancialObject(financial, financial_au, financial_eu) };
+            const footnote_counter = footnote ? ++footnote_number : null;
 
             if (is_logged_in) {
                 return {
-                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote_counter} />,
                     ...(landing_companies?.mt_gaming_company?.financial ? synthetic_object : {}),
                     ...(landing_companies?.mt_financial_company?.financial ? financial_object : {}),
                     ...(landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5
@@ -444,13 +445,13 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
             }
             if (platform === CFD_PLATFORMS.DXTRADE) {
                 return {
-                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote_counter} />,
                     ...synthetic_object,
                     ...financial_object,
                 };
             }
             return {
-                attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                attribute: <CFDAttributeDescriber name={attribute} counter={footnote_counter} />,
                 ...synthetic_object,
                 ...financial_object,
                 ...{ financial_stp: mt5?.financial_stp },

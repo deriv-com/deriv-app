@@ -3,15 +3,9 @@ import { localize } from '@deriv/translations';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import Loading from '../../../templates/_common/components/loading.jsx';
+import Loading from '../../../templates/_common/components/loading';
 import { Mt5LoginList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
-
-// const Loading  = ({className, is_invisible, theme, id}: {
-//     className?: string;
-//     is_invisible?: boolean;
-//     theme?: string;
-//     id?: string;
-// }) => JSX.Element;
+import {TSpecifications} from '../Constants/cfd-specifications';
 
 type TStandPoint = {
     financial_company: string;
@@ -41,17 +35,13 @@ type TCFDDemoAccountDisplayProps = {
     isFinancialStpCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
     openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
-    platform: 'dxtrade' | 'mt5';
+    platform: string;
     current_list: Mt5LoginList;
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
 };
-// existing_data.login,
-// title,
-// type.category,
-// type.type,
-// existing_data.server
+
 const CFDDemoAccountDisplay = ({
     is_eu,
     is_eu_country,
@@ -88,19 +78,16 @@ const CFDDemoAccountDisplay = ({
     const financial_specs = React.useMemo(() => {
         const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
         if (residence === 'au') {
-            return specifications[platform].au_real_financial_specs;
+            return specifications[platform as keyof TSpecifications].au_real_financial_specs;
         }
         if (should_show_eu) {
-            return specifications[platform].eu_real_financial_specs;
+            return specifications[platform as keyof TSpecifications].eu_real_financial_specs;
         }
-        return specifications[platform].real_financial_specs;
+        return specifications[platform as keyof TSpecifications].real_financial_specs;
     }, [is_logged_in, is_eu, is_eu_country, residence, platform]);
 
     return is_loading ? (
         <div className='cfd-demo-accounts-display'>
-            {
-                // @ts-ignore
-            }
             <Loading />
         </div>
     ) : (
@@ -148,7 +135,7 @@ const CFDDemoAccountDisplay = ({
                     descriptor={localize(
                         'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                     )}
-                    specs={specifications[platform].real_synthetic_specs}
+                    specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                     has_banner
                 />
             )}
@@ -238,7 +225,7 @@ const CFDDemoAccountDisplay = ({
                     descriptor={localize(
                         'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
                     )}
-                    specs={specifications[platform].demo_financial_stp_specs}
+                    specs={(specifications as TSpecifications)[platform as keyof TSpecifications].demo_financial_stp_specs}
                     platform={platform}
                     has_banner
                 />

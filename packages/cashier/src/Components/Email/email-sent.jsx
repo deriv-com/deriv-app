@@ -44,11 +44,11 @@ const EmailSent = ({ is_resend_clicked, resend_timeout, resendVerificationEmail,
                     />
                 </React.Fragment>
             ) : (
-                <Button onClick={() => setIsResendClicked(true)} tertiary>
-                    <Text size='xs' weight='bold' color='coral'>
-                        {localize("Didn't receive the email?")}
-                    </Text>
-                </Button>
+                <Button
+                    onClick={() => setIsResendClicked(true)}
+                    text={localize("Didn't receive the email?")}
+                    tertiary
+                />
             )}
         </div>
     </div>

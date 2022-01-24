@@ -67,6 +67,23 @@ export default class AccountTransferStore {
         return residence !== 'im' && (landing_company_shortcode !== 'malta' || has_maltainvest_account);
     }
 
+    @computed
+    get is_transfer_locked() {
+        const {
+            is_financial_account,
+            is_financial_information_incomplete,
+            is_trading_experience_incomplete,
+            account_status,
+        } = this.root_store.client;
+
+        if (!account_status.status) return false;
+
+        const need_financial_assessment =
+            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+
+        return need_financial_assessment && this.error.is_ask_financial_risk_approval;
+    }
+
     @action.bound
     setBalanceByLoginId(loginid, balance) {
         this.accounts_list.find(acc => loginid === acc.value).balance = balance;
@@ -426,10 +443,6 @@ export default class AccountTransferStore {
             // not allowed to transfer between MT and Dxtrade
             const first_non_cfd = this.accounts_list.find(account => !account.is_mt && !account.is_dxtrade);
             this.onChangeTransferTo({ target: { value: first_non_cfd.value } });
-        } else if (selected_from.is_crypto && this.selected_to.is_crypto) {
-            // not allowed to transfer crypto to crypto
-            const first_fiat = this.accounts_list.find(account => !account.is_crypto);
-            this.onChangeTransferTo({ target: { value: first_fiat.value } });
         }
 
         if (hasTransferNotAllowedLoginid(selected_from.value)) {

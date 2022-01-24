@@ -21,7 +21,7 @@ import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal.jsx';
 import CFDPasswordModal from './cfd-password-modal.jsx';
 import CFDServerErrorDialog from './cfd-server-error-dialog.jsx';
-import CFDTopUpDemoModal from './cfd-top-up-demo-modal.jsx';
+import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';

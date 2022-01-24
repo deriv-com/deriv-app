@@ -193,36 +193,35 @@ const CFDAccountCard = ({
     const button_ref = React.useRef();
 
     React.useEffect(() => {
+        const ref_current = ref?.current;
+        const button_ref_current = button_ref?.current;
         if (existing_data) {
             const show = () => {
                 onHover?.(existing_data.group);
             };
 
-            ref.current.addEventListener('mouseenter', show);
-            button_ref?.current?.addEventListener('mouseenter', show);
+            ref_current.addEventListener('mouseenter', show);
+            button_ref_current?.addEventListener('mouseenter', show);
 
             return () => {
-                ref.current.removeEventListener('mouseenter', show);
-                button_ref?.current?.removeEventListener('mouseenter', () => show);
+                ref_current.removeEventListener('mouseenter', show);
+                button_ref_current?.removeEventListener('mouseenter', () => show);
             };
         }
         return () => {};
-    }, [onHover]);
+    }, [onHover, existing_data]);
 
-    const getServerName = React.useCallback(
-        server => {
-            if (server) {
-                const server_region = server.server_info?.geolocation.region;
-                if (server_region) {
-                    return `${server_region} ${
-                        server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
-                    }`;
-                }
+    const getServerName = React.useCallback(server => {
+        if (server) {
+            const server_region = server.server_info?.geolocation.region;
+            if (server_region) {
+                return `${server_region} ${
+                    server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
+                }`;
             }
-            return '';
-        },
-        [existing_data]
-    );
+        }
+        return '';
+    }, []);
 
     const createFullServerNames = () => {
         let region_string = '';

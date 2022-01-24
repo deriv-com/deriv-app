@@ -618,6 +618,7 @@ const ModalContent = ({
         platform,
         show_eu_related,
         residence,
+        is_uk,
     ]);
 
     const show_risk_message = platform === CFD_PLATFORMS.MT5 || !show_eu_related;

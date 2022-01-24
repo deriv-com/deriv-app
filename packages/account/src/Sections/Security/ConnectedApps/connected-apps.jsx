@@ -73,9 +73,9 @@ const ConnectedApps = () => {
     const handleRevokeAccess = React.useCallback(() => {
         setModalVisibility(false);
         revokeConnectedApp(selected_app_id);
-    }, [selected_app_id]);
+    }, [revokeConnectedApp, selected_app_id]);
 
-    const revokeConnectedApp = async app_id => {
+    const revokeConnectedApp = React.useCallback(async app_id => {
         setLoading(true);
         const response = await WS.authorized.send({ revoke_oauth_app: app_id });
         if (!response.error) {
@@ -83,7 +83,7 @@ const ConnectedApps = () => {
         } else {
             setError(true);
         }
-    };
+    }, []);
 
     return (
         <section

@@ -13,9 +13,11 @@
 
     &__row {
         align-items: center;
+        border-bottom: 2px solid var(--general-section-1);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        min-height: 8rem;
         padding: 0 2.4rem;
     }
 
@@ -40,12 +42,13 @@
     }
 
     &__checkbox-container {
-        height: 34.4rem;
+        height: 36rem;
     }
 }
 
 .dc-modal__container_payment-methods {
     .dc-modal-header {
+        border-bottom: 2px solid var(--general-section-1);
         height: 5.6rem;
 
         &__title {
@@ -54,7 +57,7 @@
     }
 
     .dc-modal-body {
-        padding: 2.4rem 0;
+        padding: 0;
     }
 
     .dc-checkbox {

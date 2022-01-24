@@ -6,6 +6,12 @@ export type TCFDChangePasswordConfirmationProps = {
     onCancel: () => void;
 };
 
+export type TCFDDashboardContainer = {
+    platform: 'dxtrade' | 'mt5';
+    active_index: number;
+    is_dark_mode_on: boolean;
+};
+
 export type TMT5AccountOpeningRealFinancialStpModal = {
     enableApp: () => void;
     disableApp: () => void;

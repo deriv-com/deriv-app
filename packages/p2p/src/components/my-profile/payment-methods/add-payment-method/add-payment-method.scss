@@ -3,6 +3,10 @@
         cursor: pointer;
     }
 
+    &-hint {
+        padding: 0.2rem 0 0 1.6rem;
+    }
+
     &-form {
         &__buttons {
             display: flex;

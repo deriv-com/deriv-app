@@ -39,17 +39,20 @@ const SelectPaymentMethod = () => {
                                 />
                             )}
                         </Field>
-                        <Localize
-                            i18n_default_text='Don’t see the payment method of your choice? <0>Add new.</0>'
-                            components={[
-                                <Text
-                                    key={0}
-                                    color='loss-danger'
-                                    size='xs'
-                                    onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
-                                />,
-                            ]}
-                        />
+                        <div className='add-payment-method-hint'>
+                            <Localize
+                                i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                                components={[
+                                    <Text key={0} color='less-prominent' size='xxs' />,
+                                    <Text
+                                        key={1}
+                                        color='loss-danger'
+                                        size='xxs'
+                                        onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
+                                    />,
+                                ]}
+                            />
+                        </div>
                     </React.Fragment>
                 );
             }}

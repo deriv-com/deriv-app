@@ -25,6 +25,7 @@ const PageOverlay = ({ children, header, id, is_close_disabled = false, is_open,
                         <div className='dc-page-overlay__header-title'>{header}</div>
                         {!is_close_disabled && (
                             <div
+                                data-testid='page_overlay_header_close'
                                 className='dc-page-overlay__header-close'
                                 onClick={onClickClose || window.history.back}
                             >

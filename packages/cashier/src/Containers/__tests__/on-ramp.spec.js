@@ -23,22 +23,19 @@ jest.mock('Components/on-ramp-provider-card', () => () => <div>OnRampProviderCar
 jest.mock('Components/on-ramp-provider-popup', () => () => <div>OnRampProviderPopup</div>);
 
 describe('<OnRamp />', () => {
-    let props;
-    beforeEach(() => {
-        props = {
-            filtered_onramp_providers: [{ name: 'name' }],
-            is_cashier_locked: false,
-            is_deposit_locked: false,
-            is_loading: false,
-            is_switching: false,
-            should_show_dialog: false,
-            onMountOnramp: jest.fn(),
-            onUnmountOnramp: jest.fn(),
-            setIsOnRampModalOpen: jest.fn(),
-            setSideNotes: jest.fn(),
-            routeTo: jest.fn(),
-        };
-    });
+    const props = {
+        filtered_onramp_providers: [{ name: 'name' }],
+        is_cashier_locked: false,
+        is_deposit_locked: false,
+        is_loading: false,
+        is_switching: false,
+        should_show_dialog: false,
+        onMountOnramp: jest.fn(),
+        onUnmountOnramp: jest.fn(),
+        setIsOnRampModalOpen: jest.fn(),
+        setSideNotes: jest.fn(),
+        routeTo: jest.fn(),
+    };
 
     it('should render <Loading /> component', () => {
         const { rerender } = render(<OnRamp {...props} is_loading />);

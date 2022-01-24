@@ -1,1 +1,1 @@
-export * from './cfd.js';
+export * from './cfd';

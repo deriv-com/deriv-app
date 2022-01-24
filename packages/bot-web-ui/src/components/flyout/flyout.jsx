@@ -23,7 +23,7 @@ const SearchResult = ({ search_term, total_result }) => (
 );
 
 const FlyoutContent = props => {
-    const flyout_ref = React.createRef();
+    const flyout_ref = React.useRef();
     const {
         flyout_content,
         active_helper,

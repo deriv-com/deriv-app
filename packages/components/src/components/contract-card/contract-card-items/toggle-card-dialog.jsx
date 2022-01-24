@@ -40,7 +40,8 @@ const ToggleCardDialog = ({
     const contract = getContractById(contract_id);
 
     React.useEffect(() => {
-        ContractUpdateFormWrapper = connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
+        ContractUpdateFormWrapper =
+            ContractUpdateFormWrapper || connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
     }, [connectWithContractUpdate]);
 
     React.useEffect(() => {

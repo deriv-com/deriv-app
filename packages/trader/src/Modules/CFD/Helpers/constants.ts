@@ -6,8 +6,6 @@ const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com/';
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 
-const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
-
 const getBrokerName = () => 'Deriv Limited';
 
 const getTopUpConfig = () => {
@@ -17,7 +15,7 @@ const getTopUpConfig = () => {
     };
 };
 
-const getPlatformDXTradeDownloadLink = (platform = undefined) => {
+const getPlatformDXTradeDownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
         case 'ios':
             return DXTRADE_IOS_APP_URL;
@@ -28,7 +26,7 @@ const getPlatformDXTradeDownloadLink = (platform = undefined) => {
     }
 };
 
-const getPlatformMt5DownloadLink = (platform = undefined) => {
+const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
         case 'windows':
             return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe';
@@ -45,11 +43,19 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
     }
 };
 
-const getDXTradeWebTerminalLink = category => {
+const getDXTradeWebTerminalLink = (category?: string) => {
     return category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
 };
 
-const getMT5WebTerminalLink = ({ category, loginid, server_name = 'Deriv-Server' }) => {
+const getMT5WebTerminalLink = ({
+    category,
+    loginid,
+    server_name = 'Deriv-Server',
+}: {
+    category?: string;
+    loginid?: string;
+    server_name?: string;
+}) => {
     const is_demo = category === 'demo';
     const server = is_demo ? 'Deriv-Demo' : server_name;
     const login = loginid ?? '';
@@ -58,7 +64,6 @@ const getMT5WebTerminalLink = ({ category, loginid, server_name = 'Deriv-Server'
 };
 
 export {
-    getServerName,
     getBrokerName,
     getPlatformDXTradeDownloadLink,
     getPlatformMt5DownloadLink,

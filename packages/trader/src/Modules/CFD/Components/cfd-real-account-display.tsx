@@ -6,8 +6,59 @@ import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORM
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
+import { Mt5LoginList, DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
+import {TSpecifications} from '../Constants/cfd-specifications';
 
-const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentication, has_required_credentials) => {
+type TStandPoint = {
+    financial_company: string;
+    gaming_company: string;
+    iom: boolean;
+    malta: boolean;
+    maltainvest: boolean;
+    svg: boolean;
+};
+
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
+type TCFDRealAccountDisplayProps = {
+    has_real_account: boolean;
+    is_accounts_switcher_on: boolean;
+    is_eu: boolean;
+    is_eu_country: boolean;
+    has_malta_account: boolean;
+    has_maltainvest_account: boolean;
+    has_cfd_account_error: boolean;
+    is_fully_authenticated: boolean;
+    account_settings: GetSettings;
+    openAccountNeededModal: (target: string, target_label: string, target_dmt5_label: string) => void;
+    standpoint: TStandPoint;
+    is_loading: boolean;
+    is_logged_in: boolean;
+    isSyntheticCardVisible: (account_category: string) => boolean;
+    is_pending_authentication: boolean;
+    is_virtual: boolean;
+    isFinancialCardVisible: () => boolean;
+    isFinancialStpCardVisible: () => boolean;
+    landing_companies: LandingCompany;
+    onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
+    openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    platform: string;
+    isAccountOfTypeDisabled: (account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }) => boolean;
+    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
+    has_cfd_account: boolean;
+    openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
+    toggleAccountsDialog: (is_accounts_switcher_on: boolean) => void;
+    toggleShouldShowRealAccountsList: (is_should_show_real_acc_list: boolean) => void;
+    can_have_more_real_synthetic_mt5: boolean;
+    residence: string;
+    residence_list: ResidenceList;
+};
+
+const getRealFinancialStpBtnLbl = (is_fully_authenticated: boolean, is_pending_authentication: boolean, has_required_credentials: boolean) => {
     if (is_fully_authenticated && has_required_credentials) {
         return <Localize i18n_default_text='Set your password' />;
     } else if (is_pending_authentication) {
@@ -49,7 +100,7 @@ const CFDRealAccountDisplay = ({
     can_have_more_real_synthetic_mt5,
     residence,
     residence_list,
-}) => {
+}: TCFDRealAccountDisplayProps) => {
     const should_show_trade_servers =
         is_logged_in &&
         !is_eu &&
@@ -65,12 +116,11 @@ const CFDRealAccountDisplay = ({
 
         if (citizen && tax_residence) {
             const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
-
-            return is_tin_required || !residence_list.filter(v => v.value === tax_residence && v.tin_format).length;
+            return is_tin_required || !(residence_list as ResidenceList).filter(v => v.value === tax_residence && v.tin_format).length;
         }
 
         return false;
-    }, [account_settings, residence_list, landing_companies]);
+    }, [account_settings, residence_list, landing_companies]) as boolean;
 
     const button_label = getRealFinancialStpBtnLbl(
         is_fully_authenticated,
@@ -86,12 +136,12 @@ const CFDRealAccountDisplay = ({
         const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
         const is_australian = residence === 'au';
         if (is_australian) {
-            return specifications[platform].au_real_financial_specs;
+            return specifications[platform as keyof TSpecifications].au_real_financial_specs;
         }
         if (should_show_eu) {
-            return specifications[platform].eu_real_financial_specs;
+            return specifications[platform as keyof TSpecifications].eu_real_financial_specs;
         }
-        return specifications[platform].real_financial_specs;
+        return specifications[platform as keyof TSpecifications].real_financial_specs;
     }, [residence, is_logged_in, is_eu, is_eu_country, platform]);
 
     const onSelectRealSynthetic = () => {
@@ -120,9 +170,9 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = account =>
+    const onClickFundReal = (account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }) =>
         openAccountTransfer(current_list[getAccountListKey(account, platform)], {
-            category: account.account_type,
+            category: account.account_type as keyof TOpenAccountTransferMeta,
             type: getCFDAccountKey({
                 market_type: account.market_type,
                 sub_account_type: account.sub_account_type,
@@ -130,14 +180,16 @@ const CFDRealAccountDisplay = ({
             }),
         });
 
-    const handleHoverCard = name => {
+    const handleHoverCard = (name: string) => {
+        
         const real_synthetic_accounts_list = Object.keys(current_list).filter(key =>
             key.startsWith(`${platform}.real.synthetic`)
         );
-        setActiveHover(real_synthetic_accounts_list.findIndex(t => current_list[t].group === name));
+        setActiveHover((real_synthetic_accounts_list as Array<string>).findIndex(t => current_list[t].group === name));
     };
 
-    const isMT5AccountCardDisabled = sub_account_type => {
+    const isMT5AccountCardDisabled = (sub_account_type: string) => {
+        
         if (has_cfd_account_error) return true;
 
         if (sub_account_type === 'synthetic' && standpoint.malta) return true;
@@ -163,12 +215,13 @@ const CFDRealAccountDisplay = ({
         (Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.synthetic`))
-                  .reduce((acc, cur) => {
+                  .reduce((acc, cur ) => {
                       acc.push(current_list[cur]);
                       return acc;
-                  }, [])
+                  }, [] as DetailsOfEachMT5Loginid[])
                   .map((acc, index) => {
                       return (
+                          // @ts-ignore
                           <CFDAccountCard
                               key={index}
                               has_cfd_account={has_cfd_account}
@@ -192,12 +245,13 @@ const CFDRealAccountDisplay = ({
                               descriptor={localize(
                                   'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                               )}
-                              specs={specifications[platform].real_synthetic_specs}
+                              specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                               onHover={handleHoverCard}
                           />
                       );
                   })
             : [
+                // @ts-ignore
                   <CFDAccountCard
                       key='real.synthetic'
                       has_cfd_account={has_cfd_account}
@@ -219,7 +273,7 @@ const CFDRealAccountDisplay = ({
                       descriptor={localize(
                           'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                       )}
-                      specs={specifications[platform].real_synthetic_specs}
+                      specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                       onHover={handleHoverCard}
                       is_virtual={is_virtual}
                       toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
@@ -228,6 +282,7 @@ const CFDRealAccountDisplay = ({
               ]);
 
     const financial_stp_account = isFinancialStpCardVisible() && (
+        // @ts-ignore
         <CFDAccountCard
             key='real.financial_stp'
             has_cfd_account={has_cfd_account}
@@ -239,7 +294,7 @@ const CFDRealAccountDisplay = ({
             }}
             is_logged_in={is_logged_in}
             existing_data={
-                current_list[Object.keys(current_list).find(key => key.startsWith(`${platform}.real.financial_stp@`))]
+                current_list[Number(Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial_stp@`)))]
             }
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancialStp}
@@ -251,7 +306,7 @@ const CFDRealAccountDisplay = ({
             descriptor={localize(
                 'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
             )}
-            specs={specifications[platform].real_financial_stp_specs}
+            specs={(specifications as TSpecifications)[platform as keyof TSpecifications].real_financial_stp_specs}
             is_disabled={isMT5AccountCardDisabled('financial_stp')}
             is_virtual={is_virtual}
             has_real_account={has_real_account}
@@ -262,6 +317,7 @@ const CFDRealAccountDisplay = ({
     );
 
     const financial_account = isFinancialCardVisible() && (
+        // @ts-ignore
         <CFDAccountCard
             key='real.financial'
             has_cfd_account={has_cfd_account}
@@ -273,7 +329,7 @@ const CFDRealAccountDisplay = ({
                 platform,
             }}
             existing_data={
-                current_list[Object.keys(current_list).find(key => key.startsWith(`${platform}.real.financial@`))]
+                current_list[Number(Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial@`)))]
             }
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancial}

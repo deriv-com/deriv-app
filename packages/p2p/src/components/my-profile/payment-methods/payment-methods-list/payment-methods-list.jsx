@@ -26,27 +26,29 @@ const PaymentMethodsList = () => {
             >
                 <Localize i18n_default_text='Add new' />
             </Button>
-            {my_profile_store.payment_methods_list_methods.map((payment_methods_list_method, key) => {
-                const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
-                    payment_method => payment_method.method === payment_methods_list_method.method
-                );
+            <div className='payment-methods-list__list-container'>
+                {my_profile_store.payment_methods_list_methods.map((payment_methods_list_method, key) => {
+                    const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
+                        payment_method => payment_method.method === payment_methods_list_method.method
+                    );
 
-                return (
-                    <React.Fragment key={key}>
-                        <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
-                            {`${payment_methods_list_method.display_name}s`}
-                        </Text>
-                        {payment_methods_list.map(each_payment_method => (
-                            <PaymentMethodCard
-                                key={key}
-                                large={isDesktop()}
-                                payment_method={each_payment_method}
-                                small={isMobile()}
-                            />
-                        ))}
-                    </React.Fragment>
-                );
-            })}
+                    return (
+                        <React.Fragment key={key}>
+                            <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
+                                {`${payment_methods_list_method.display_name}s`}
+                            </Text>
+                            {payment_methods_list.map(each_payment_method => (
+                                <PaymentMethodCard
+                                    key={key}
+                                    large={isDesktop()}
+                                    payment_method={each_payment_method}
+                                    small={isMobile()}
+                                />
+                            ))}
+                        </React.Fragment>
+                    );
+                })}
+            </div>
             <Modal
                 is_open={my_profile_store.is_confirm_delete_modal_open}
                 small

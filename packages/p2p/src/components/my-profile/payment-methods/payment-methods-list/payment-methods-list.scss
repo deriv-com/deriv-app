@@ -1,9 +1,17 @@
 .payment-methods-list {
     &__button {
-        margin: 0.8rem 0;
+        margin: 0 0 2.4rem;
     }
 
-    &__list-header {
-        margin: 1.6rem 0;
+    &__list {
+        &-container {
+            .dc-dropdown-container {
+                margin-left: 0;
+            }
+        }
+
+        &-header {
+            margin: 0;
+        }
     }
 }

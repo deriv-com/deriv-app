@@ -82,8 +82,18 @@ const PaymentMethodCard = ({
                             }
                         }}
                         suffix_icon='IcCashierVerticalEllipsis'
+                        is_align_text_left
                     />
                 )}
+            </div>
+            <div className='payment-method-card__body'>
+                <Text color='prominent' size='xs'>
+                    {payment_method?.fields?.bank_name?.value}
+                </Text>
+                <br />
+                <Text color='prominent' size='xs'>
+                    {payment_method?.fields?.account?.value}
+                </Text>
             </div>
         </div>
     );

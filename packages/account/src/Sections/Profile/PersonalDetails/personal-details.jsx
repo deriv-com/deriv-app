@@ -298,7 +298,7 @@ export const PersonalDetailsForm = ({
         if (values.tax_identification_number) {
             if (
                 values.tax_identification_number &&
-                !/^(?!^$|\s+)[A-Za-z0-9.\/\s-]{0,25}$/.test(values.tax_identification_number)
+                !/^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/.test(values.tax_identification_number)
             ) {
                 errors.tax_identification_number = localize(
                     'Only letters, numbers, space, hyphen, period, and forward slash are allowed.'

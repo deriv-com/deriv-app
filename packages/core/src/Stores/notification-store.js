@@ -178,6 +178,7 @@ export default class NotificationStore extends BaseStore {
             is_tnc_needed,
             isAccountOfType,
             loginid,
+            obj_total_balance,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -197,6 +198,10 @@ export default class NotificationStore extends BaseStore {
             parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
         const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
             getStatusValidations(status || []);
+
+        if (obj_total_balance.amount_real > 0) {
+            this.addNotificationMessage(this.client_notifications.two_f_a);
+        }
 
         if (loginid !== LocalStore.get('active_loginid')) return;
 
@@ -429,6 +434,18 @@ export default class NotificationStore extends BaseStore {
         const { ui } = this.root_store;
 
         const notifications = {
+            two_f_a: {
+                key: 'two_f_a',
+                header: localize('Stronger security for your Deriv account'),
+                message: localize(
+                    'With two-factor authentication, you’ll protect your account with both your password and your phone - so only you can access your account, even if someone knows your password.'
+                ),
+                action: {
+                    route: routes.two_factor_authentication,
+                    text: localize('Secure my account'),
+                },
+                type: 'warning',
+            },
             dp2p: {
                 key: 'dp2p',
                 header: localize('Payment problems?'),

@@ -16,6 +16,7 @@ const index_lookup = {
 };
 
 const CFDFinancialStpRealAccountSignup = props => {
+    const { refreshNotifications } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
@@ -138,8 +139,8 @@ const CFDFinancialStpRealAccountSignup = props => {
     };
 
     React.useEffect(() => {
-        props.refreshNotifications();
-    }, [items]);
+        refreshNotifications();
+    }, [items, refreshNotifications]);
 
     const transform = value => {
         const [result] = props.residence_list.filter(item => item.value === value);
@@ -153,6 +154,7 @@ const CFDFinancialStpRealAccountSignup = props => {
                 setIsLoading(false);
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getCurrent = key => {

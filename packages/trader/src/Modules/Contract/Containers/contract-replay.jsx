@@ -53,6 +53,7 @@ const ContractReplay = ({
             setIsVisible(false);
             onUnmount();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contract_id, location, onMount, onUnmount]);
 
     const onClickClose = () => {

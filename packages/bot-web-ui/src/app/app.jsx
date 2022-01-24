@@ -27,6 +27,7 @@ const App = ({ passthrough }) => {
 
     React.useEffect(() => {
         showDigitalOptionsMaltainvestError(core.client, common);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [core.client.is_options_blocked]);
 
     React.useEffect(() => {

@@ -33,7 +33,6 @@ const ProofOfOwnership = () => {
             </Text>
             <Card />
         </div>
-
     );
 };
 

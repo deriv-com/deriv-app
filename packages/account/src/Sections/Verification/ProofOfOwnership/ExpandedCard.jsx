@@ -9,9 +9,9 @@ const ExpandedCard = () => {
     const [filename, setFileName] = useState('Choose a photo');
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
 
-    const handleUploadedFile = (event) => {
-        setFileName(event.name)
-    }
+    const handleUploadedFile = event => {
+        setFileName(event.name);
+    };
     const formatCardNumber = value => {
         console.log(value);
         // const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g
@@ -20,45 +20,42 @@ const ExpandedCard = () => {
         // return onlyNumbers.replace(regex, (regex, $1, $2, $3, $4) =>
         //     [$1, $2, $3, $4].filter(group => !!group).join(' ')
         // )
-    }
+    };
 
     const initial_form = {
         cardNumber: '',
-        cardImgName: ''
+        cardImgName: '',
     };
 
     const handleSubmit = () => {
         console.log('hello');
-    }
+    };
 
     return (
         <Formik initialValues={initial_form} onSubmit={handleSubmit}>
             {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting }) => (
                 <Form noValidate>
-
                     <div>
-                        <Text className="proof-of-ownership__card-open-desc"
-                            as='p'
-                            color='general'
-                            size='xs'
-                        >
+                        <Text className='proof-of-ownership__card-open-desc' as='p' color='general' size='xs'>
                             <Localize
                                 i18n_default_text='Upload a photo of your card or bank statement showing your name and card number. Your card number must only show the first 6 and last 4 digits.<0> See example </0>'
-                                components={[<span
-                                    className='proof-of-ownership__card-open-desc-link'
-                                    key={0}
-                                    onClick={() => {
-                                        setIsSampleModalOpen(true);
-                                    }}
-                                />]}
+                                components={[
+                                    <span
+                                        className='proof-of-ownership__card-open-desc-link'
+                                        key={0}
+                                        onClick={() => {
+                                            setIsSampleModalOpen(true);
+                                        }}
+                                    />,
+                                ]}
                             />
                         </Text>
                         <div className='proof-of-ownership__card-open-inputs'>
                             <Input
                                 data-lpignore='true'
-                                className="proof-of-ownership__card-open-inputs-cardnumber"
+                                className='proof-of-ownership__card-open-inputs-cardnumber'
                                 type='number'
-                                name="cardNumber"
+                                name='cardNumber'
                                 label={localize('Card number')}
                                 required
                                 max_characters={2}
@@ -67,12 +64,12 @@ const ExpandedCard = () => {
                                 onChange={e => {
                                     handleChange(e);
                                 }}
-                            // onKeyUp={(ev) => formatCardNumber(ev.target.value)}
+                                // onKeyUp={(ev) => formatCardNumber(ev.target.value)}
                             />
                             <Input
                                 name='cardImgName'
                                 required
-                                className="proof-of-ownership__card-open-inputs-photo"
+                                className='proof-of-ownership__card-open-inputs-photo'
                                 label={localize('Choose a photo')}
                                 maxLength={255}
                                 hint={localize('Accepted formats: pdf, jpeg, jpg, and png. Max file size: 8MB')}
@@ -90,13 +87,10 @@ const ExpandedCard = () => {
                             setIsSampleModalOpen(false);
                         }}
                     />
-
-
                 </Form>
-            )
-            }
-        </Formik >
+            )}
+        </Formik>
     );
-}
+};
 
 export default ExpandedCard;

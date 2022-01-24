@@ -14,6 +14,17 @@ jest.mock('Stores/connect', () => ({
 
 jest.mock('Components/Error/cashier-locked', () => () => <div>CashierLocked</div>);
 
+const fireButtonEvent = (container, text_content) => {
+    const node_list = container.querySelectorAll('.dc-checklist__item');
+    let node = Array.from(node_list).find(node => {
+        if (node.textContent === text_content) {
+            return node;
+        }
+    });
+    const btn = node.querySelector('.dc-checklist__item-status--action');
+    fireEvent.click(btn);
+};
+
 const setAccountStatus = (identity_status, document_status, needs_verification) => {
     return {
         authentication: {
@@ -33,34 +44,28 @@ describe('WithdrawalLocked', () => {
         const history = createBrowserHistory();
         const need_poi_account_status = setAccountStatus('pending', '', '');
 
-        const wrapper = render(
+        const { container } = render(
             <Router history={history}>
                 <WithdrawalLocked account_status={need_poi_account_status} is_10K_limit />
             </Router>
         );
-
-        const btn = wrapper.container.querySelector('.dc-checklist__item-status--action');
-        fireEvent.click(btn);
+        fireButtonEvent(container, 'Check proof of identity document verification status');
 
         expect(history.location.pathname).toBe(routes.proof_of_identity);
-        expect(screen.getByText('Check proof of identity document verification status')).toBeInTheDocument();
     });
 
     it('Should show "Upload a proof of identity to verify your identity" message and redirect to account/proof-of-identity when "-->" button clicked', () => {
         const history = createBrowserHistory();
         const need_poi_account_status = setAccountStatus('none', '', '');
 
-        const wrapper = render(
+        const { container } = render(
             <Router history={history}>
                 <WithdrawalLocked account_status={need_poi_account_status} is_10K_limit />
             </Router>
         );
-
-        const btn = wrapper.container.querySelector('.dc-checklist__item-status--action');
-        fireEvent.click(btn);
+        fireButtonEvent(container, 'Upload a proof of identity to verify your identity');
 
         expect(history.location.pathname).toBe(routes.proof_of_identity);
-        expect(screen.getByText('Upload a proof of identity to verify your identity')).toBeInTheDocument();
     });
 
     it('Should show "Check proof of address document verification status" message and redirect to account/proof_of_address when "-->" button clicked', () => {
@@ -72,12 +77,9 @@ describe('WithdrawalLocked', () => {
                 <WithdrawalLocked account_status={need_poa_account_status} is_10K_limit />
             </Router>
         );
-
-        const node_list = container.querySelectorAll('.dc-checklist__item-status--action');
-        Array.from(node_list).map(node => fireEvent.click(node));
+        fireButtonEvent(container, 'Check proof of address document verification status');
 
         expect(history.location.pathname).toBe(routes.proof_of_address);
-        expect(screen.getByText('Check proof of address document verification status')).toBeInTheDocument();
     });
 
     it('Should show "Upload a proof of address to verify your address" message and redirect to account/proof_of_address when "-->" button clicked', () => {
@@ -89,12 +91,9 @@ describe('WithdrawalLocked', () => {
                 <WithdrawalLocked account_status={need_poa_account_status} is_10K_limit />
             </Router>
         );
-
-        const node_list = container.querySelectorAll('.dc-checklist__item-status--action');
-        Array.from(node_list).map(node => fireEvent.click(node));
+        fireButtonEvent(container, 'Upload a proof of address to verify your address');
 
         expect(history.location.pathname).toBe(routes.proof_of_address);
-        expect(screen.getByText('Upload a proof of address to verify your address')).toBeInTheDocument();
     });
 
     it('Should show "Complete the financial assessment form" message and redirect to account/financial_assessment when "-->" button clicked', () => {
@@ -106,12 +105,9 @@ describe('WithdrawalLocked', () => {
                 <WithdrawalLocked account_status={account_status} is_10K_limit is_ask_financial_risk_approval />
             </Router>
         );
-
-        const node_list = container.querySelectorAll('.dc-checklist__item-status--action');
-        Array.from(node_list).map(node => fireEvent.click(node));
+        fireButtonEvent(container, 'Complete the financial assessment form');
 
         expect(history.location.pathname).toBe(routes.financial_assessment);
-        expect(screen.getByText('Complete the financial assessment form')).toBeInTheDocument();
     });
 
     it('Should trigger click on the checklist item', () => {

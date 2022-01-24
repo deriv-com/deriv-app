@@ -184,9 +184,8 @@ const CFDAccountCard = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }: TCFDAccountCard) => {
-    const icon: any = type.type ? (
-        <Icon icon={account_icons[type.platform][is_eu ? 'cfd' : type.type]} size={64} />
-    ) : null;
+    const platform_icon = is_eu ? 'cfd' : type.type;
+    const icon: any = type.type ? <Icon icon={account_icons[type.platform][platform_icon]} size={64} /> : null;
     const has_popular_banner: boolean =
         type.type === 'synthetic' &&
         type.category === 'real' &&
@@ -224,7 +223,9 @@ const CFDAccountCard = ({
                 button_ref_current?.removeEventListener('mouseenter', () => show);
             };
         }
-        return () => {};
+        return () => {
+            // Curly brackets could not be empty due to the sonarcloud code smells
+        };
     }, [onHover, existing_data]);
 
     const getServerName: (value: TExistingData) => string = React.useCallback(server => {
@@ -267,6 +268,55 @@ const CFDAccountCard = ({
     };
 
     const is_web_terminal_unsupported = isMobile() && platform === CFD_PLATFORMS.DXTRADE;
+    const tbody_content =
+        platform === CFD_PLATFORMS.MT5 ? (
+            <React.Fragment>
+                <tr className='cfd-account-card__login-specs-table-row'>
+                    <td className='cfd-account-card__login-specs-table-attribute'>
+                        <div className='cfd-account-card--paragraph'>{localize('Broker')}</div>
+                    </td>
+                    <td className='cfd-account-card__login-specs-table-data'>
+                        <div className='cfd-account-card--paragraph'>
+                            <SpecBox value={'Deriv Limited'} />
+                        </div>
+                    </td>
+                </tr>
+                <tr className='cfd-account-card__login-specs-table-row'>
+                    <td className='cfd-account-card__login-specs-table-attribute'>
+                        <div className='cfd-account-card--paragraph'>{localize('Server')}</div>
+                    </td>
+                    <td className='cfd-account-card__login-specs-table-data'>
+                        <div className='cfd-account-card--paragraph'>
+                            <SpecBox value={existing_data?.server_info?.environment} />
+                        </div>
+                    </td>
+                </tr>
+                <tr className='cfd-account-card__login-specs-table-row'>
+                    <td className='cfd-account-card__login-specs-table-attribute'>
+                        <div className='cfd-account-card--paragraph'>{localize('Login ID')}</div>
+                    </td>
+                    <td className='cfd-account-card__login-specs-table-data'>
+                        <div className='cfd-account-card--paragraph'>
+                            <SpecBox value={existing_data?.display_login} />
+                        </div>
+                    </td>
+                </tr>
+            </React.Fragment>
+        ) : (
+            <React.Fragment>
+                <tr className='cfd-account-card__login-specs-table-row'>
+                    <td className='cfd-account-card__login-specs-table-attribute'>
+                        <div className='cfd-account-card--paragraph'>{localize('Username')}</div>
+                    </td>
+                    <td className='cfd-account-card__login-specs-table-data'>
+                        <div className='cfd-account-card--paragraph'>
+                            <SpecBox value={existing_data.login} is_bold />
+                        </div>
+                    </td>
+                </tr>
+            </React.Fragment>
+        );
+
     return (
         <div ref={wrapper_ref} className='cfd-account-card__wrapper'>
             <div
@@ -330,63 +380,7 @@ const CFDAccountCard = ({
                                 <div className='cfd-account-card__login-specs'>
                                     <table className='cfd-account-card__login-specs-table'>
                                         <tbody>
-                                            {platform === CFD_PLATFORMS.MT5 ? (
-                                                <React.Fragment>
-                                                    <tr className='cfd-account-card__login-specs-table-row'>
-                                                        <td className='cfd-account-card__login-specs-table-attribute'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                {localize('Broker')}
-                                                            </div>
-                                                        </td>
-                                                        <td className='cfd-account-card__login-specs-table-data'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox value={'Deriv Limited'} />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className='cfd-account-card__login-specs-table-row'>
-                                                        <td className='cfd-account-card__login-specs-table-attribute'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                {localize('Server')}
-                                                            </div>
-                                                        </td>
-                                                        <td className='cfd-account-card__login-specs-table-data'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox
-                                                                    value={existing_data?.server_info?.environment}
-                                                                />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className='cfd-account-card__login-specs-table-row'>
-                                                        <td className='cfd-account-card__login-specs-table-attribute'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                {localize('Login ID')}
-                                                            </div>
-                                                        </td>
-                                                        <td className='cfd-account-card__login-specs-table-data'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox value={existing_data?.display_login} />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </React.Fragment>
-                                            ) : (
-                                                <React.Fragment>
-                                                    <tr className='cfd-account-card__login-specs-table-row'>
-                                                        <td className='cfd-account-card__login-specs-table-attribute'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                {localize('Username')}
-                                                            </div>
-                                                        </td>
-                                                        <td className='cfd-account-card__login-specs-table-data'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox value={existing_data.login} is_bold />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </React.Fragment>
-                                            )}
+                                            {tbody_content}
                                             <tr className='cfd-account-card__login-specs-table-row cfd-account-card__login-specs-table-row--account-id'>
                                                 <td className='cfd-account-card__login-specs-table-attribute'>
                                                     <div className='cfd-account-card--paragraph'>

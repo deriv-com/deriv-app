@@ -4,10 +4,11 @@ import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
-import { CFDAccountCard } from './cfd-account-card.jsx';
+import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { Mt5LoginList, DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
 import {TSpecifications} from '../Constants/cfd-specifications';
+import { TExistingData } from './props.types.js';
 
 type TStandPoint = {
     financial_company: string;
@@ -51,8 +52,8 @@ type TCFDRealAccountDisplayProps = {
     current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
-    toggleAccountsDialog: (is_accounts_switcher_on: boolean) => void;
-    toggleShouldShowRealAccountsList: (is_should_show_real_acc_list: boolean) => void;
+    toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
+    toggleShouldShowRealAccountsList: (is_should_show_real_acc_list?: boolean) => void;
     can_have_more_real_synthetic_mt5: boolean;
     residence: string;
     residence_list: ResidenceList;
@@ -170,7 +171,7 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = (account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }) =>
+    const onClickFundReal = (account: TExistingData) =>
         openAccountTransfer(current_list[getAccountListKey(account, platform)], {
             category: account.account_type as keyof TOpenAccountTransferMeta,
             type: getCFDAccountKey({
@@ -180,7 +181,7 @@ const CFDRealAccountDisplay = ({
             }),
         });
 
-    const handleHoverCard = (name: string) => {
+    const handleHoverCard = (name: string | undefined) => {
         
         const real_synthetic_accounts_list = Object.keys(current_list).filter(key =>
             key.startsWith(`${platform}.real.synthetic`)
@@ -221,7 +222,6 @@ const CFDRealAccountDisplay = ({
                   }, [] as DetailsOfEachMT5Loginid[])
                   .map((acc, index) => {
                       return (
-                          // @ts-ignore
                           <CFDAccountCard
                               key={index}
                               has_cfd_account={has_cfd_account}
@@ -251,7 +251,6 @@ const CFDRealAccountDisplay = ({
                       );
                   })
             : [
-                // @ts-ignore
                   <CFDAccountCard
                       key='real.synthetic'
                       has_cfd_account={has_cfd_account}
@@ -282,7 +281,6 @@ const CFDRealAccountDisplay = ({
               ]);
 
     const financial_stp_account = isFinancialStpCardVisible() && (
-        // @ts-ignore
         <CFDAccountCard
             key='real.financial_stp'
             has_cfd_account={has_cfd_account}
@@ -317,7 +315,6 @@ const CFDRealAccountDisplay = ({
     );
 
     const financial_account = isFinancialCardVisible() && (
-        // @ts-ignore
         <CFDAccountCard
             key='real.financial'
             has_cfd_account={has_cfd_account}
@@ -328,9 +325,7 @@ const CFDRealAccountDisplay = ({
                 type: 'financial',
                 platform,
             }}
-            existing_data={
-                current_list[Number(Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial@`)))]
-            }
+            existing_data={current_list[Number(Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial@`)))]}
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}

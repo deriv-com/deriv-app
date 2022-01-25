@@ -18,6 +18,8 @@ const PaymentMethodCard = ({
 }) => {
     const { my_profile_store } = useStores();
     const method = !is_add && payment_method.display_name.replace(/\s|-/gm, '');
+    const payment_account = payment_method?.fields?.account?.value;
+    const payment_bank_name = payment_method?.fields?.bank_name?.value;
 
     if (is_add) {
         return (
@@ -95,12 +97,12 @@ const PaymentMethodCard = ({
                 )}
             </div>
             <div className='payment-method-card__body'>
-                <Text color='prominent' size='xs'>
-                    {payment_method?.fields?.bank_name?.value}
+                <Text color='prominent' size={large ? 'xs' : 'xxs'}>
+                    {payment_bank_name}
                 </Text>
                 <br />
                 <Text color='prominent' size='xs'>
-                    {payment_method?.fields?.account?.value}
+                    {payment_account}
                 </Text>
             </div>
         </div>

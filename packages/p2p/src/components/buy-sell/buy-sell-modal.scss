@@ -69,7 +69,17 @@
     }
 
     &--sell-payment-methods {
+        display: flex;
+        flex-wrap: wrap;
         margin-bottom: 1.6rem;
+
+        .payment-method-card {
+            margin-right: 0.8rem;
+
+            &__body {
+                margin-top: 0.8rem;
+            }
+        }
     }
 }
 

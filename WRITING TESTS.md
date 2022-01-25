@@ -51,7 +51,7 @@ It will cover:
 
         This Configuration file is held in common across all individual packages. In other words if you want to just run tests related to one package (e.g. trader) this is what that particular package will use as base configuration.
 
-        Also, each component has a `jest.config.js` which extend the `jest.config.base.js`
+        Also, each component has a `jest.config.js` which extends the `jest.config.base.js`
 
 #### Run tests from a specific package
 

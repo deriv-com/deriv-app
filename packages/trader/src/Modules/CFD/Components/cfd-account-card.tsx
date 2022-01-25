@@ -106,8 +106,6 @@ const CFDAccountCardAction = ({
     platform,
     title,
 }: TCFDAccountCardActionProps) => {
-    console.log('button_label', button_label);
-    
     if (
         is_virtual &&
         type.category === 'real' &&
@@ -256,8 +254,8 @@ const CFDAccountCard = ({
         return `${type.category}-${type.type}${region_string}${server_number}`;
     };
 
-    const handleClickSwitchAccount = () : void  => {
-        if(toggleShouldShowRealAccountsList && toggleAccountsDialog){
+    const handleClickSwitchAccount = (): void => {
+        if (toggleShouldShowRealAccountsList && toggleAccountsDialog) {
             toggleShouldShowRealAccountsList(true);
             toggleAccountsDialog(true);
         }
@@ -416,18 +414,19 @@ const CFDAccountCard = ({
                             <div className='cfd-account-card__specs'>
                                 <table className='cfd-account-card__specs-table'>
                                     <tbody>
-                                        {(typeof specs !== 'undefined') && Object.keys(specs).map((spec_attribute, idx) => (
-                                            <tr key={idx} className='cfd-account-card__specs-table-row'>
-                                                <td className='cfd-account-card__specs-table-attribute'>
-                                                    <p className='cfd-account-card--paragraph'>{spec_attribute}</p>
-                                                </td>
-                                                <td className='cfd-account-card__specs-table-data'>
-                                                    <p className='cfd-account-card--paragraph'>
-                                                        {specs[spec_attribute]}
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {typeof specs !== 'undefined' &&
+                                            Object.keys(specs).map((spec_attribute, idx) => (
+                                                <tr key={idx} className='cfd-account-card__specs-table-row'>
+                                                    <td className='cfd-account-card__specs-table-attribute'>
+                                                        <p className='cfd-account-card--paragraph'>{spec_attribute}</p>
+                                                    </td>
+                                                    <td className='cfd-account-card__specs-table-data'>
+                                                        <p className='cfd-account-card--paragraph'>
+                                                            {specs[spec_attribute]}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         {has_server_banner &&
                                             existing_data &&
                                             type.type === 'synthetic' &&

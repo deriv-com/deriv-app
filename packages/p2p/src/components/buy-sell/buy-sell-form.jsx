@@ -219,7 +219,7 @@ const BuySellForm = props => {
                                                           />
                                                       )
                                                   )
-                                                : payment_method_names.map((add_payment_method, key) => (
+                                                : payment_method_names?.map((add_payment_method, key) => (
                                                       <PaymentMethodCard
                                                           add_payment_method={add_payment_method}
                                                           is_add={true}

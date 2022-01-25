@@ -32,7 +32,7 @@ const BuySellForm = props => {
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
-    }
+    };
 
     React.useEffect(
         () => {
@@ -210,7 +210,9 @@ const BuySellForm = props => {
                                                           medium
                                                           onClick={() => onClickPaymentMethodCard(payment_method)}
                                                           payment_method={payment_method}
-                                                          style={selected_methods.includes(payment_method.ID) ? style : {}}
+                                                          style={
+                                                              selected_methods.includes(payment_method.ID) ? style : {}
+                                                          }
                                                       />
                                                   )
                                               )

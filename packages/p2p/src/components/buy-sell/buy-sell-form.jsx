@@ -212,7 +212,9 @@ const BuySellForm = props => {
                                                               onClick={() => onClickPaymentMethodCard(payment_method)}
                                                               payment_method={payment_method}
                                                               style={
-                                                                  selected_methods.includes(payment_method.ID) ? style : {}
+                                                                  selected_methods.includes(payment_method.ID)
+                                                                      ? style
+                                                                      : {}
                                                               }
                                                           />
                                                       )

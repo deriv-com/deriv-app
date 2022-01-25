@@ -7,7 +7,7 @@ import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { Mt5LoginList, DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
-import {TSpecifications} from '../Constants/cfd-specifications';
+import { TSpecifications } from '../Constants/cfd-specifications';
 import { TExistingData } from './props.types.js';
 
 type TStandPoint = {
@@ -48,7 +48,9 @@ type TCFDRealAccountDisplayProps = {
     openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     platform: string;
-    isAccountOfTypeDisabled: (account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }) => boolean;
+    isAccountOfTypeDisabled: (
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
+    ) => boolean;
     current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
@@ -59,7 +61,11 @@ type TCFDRealAccountDisplayProps = {
     residence_list: ResidenceList;
 };
 
-const getRealFinancialStpBtnLbl = (is_fully_authenticated: boolean, is_pending_authentication: boolean, has_required_credentials: boolean) => {
+const getRealFinancialStpBtnLbl = (
+    is_fully_authenticated: boolean,
+    is_pending_authentication: boolean,
+    has_required_credentials: boolean
+) => {
     if (is_fully_authenticated && has_required_credentials) {
         return <Localize i18n_default_text='Set your password' />;
     } else if (is_pending_authentication) {
@@ -117,7 +123,10 @@ const CFDRealAccountDisplay = ({
 
         if (citizen && tax_residence) {
             const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
-            return is_tin_required || !(residence_list as ResidenceList).filter(v => v.value === tax_residence && v.tin_format).length;
+            return (
+                is_tin_required ||
+                !(residence_list as ResidenceList).filter(v => v.value === tax_residence && v.tin_format).length
+            );
         }
 
         return false;
@@ -182,7 +191,6 @@ const CFDRealAccountDisplay = ({
         });
 
     const handleHoverCard = (name: string | undefined) => {
-        
         const real_synthetic_accounts_list = Object.keys(current_list).filter(key =>
             key.startsWith(`${platform}.real.synthetic`)
         );
@@ -190,7 +198,6 @@ const CFDRealAccountDisplay = ({
     };
 
     const isMT5AccountCardDisabled = (sub_account_type: string) => {
-        
         if (has_cfd_account_error) return true;
 
         if (sub_account_type === 'synthetic' && standpoint.malta) return true;
@@ -216,7 +223,7 @@ const CFDRealAccountDisplay = ({
         (Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.synthetic`))
-                  .reduce((acc, cur ) => {
+                  .reduce((acc, cur) => {
                       acc.push(current_list[cur]);
                       return acc;
                   }, [] as DetailsOfEachMT5Loginid[])
@@ -292,7 +299,13 @@ const CFDRealAccountDisplay = ({
             }}
             is_logged_in={is_logged_in}
             existing_data={
-                current_list[Number(Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial_stp@`)))]
+                current_list[
+                    Number(
+                        Object.keys(current_list).find((key: string) =>
+                            key.startsWith(`${platform}.real.financial_stp@`)
+                        )
+                    )
+                ]
             }
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancialStp}
@@ -325,7 +338,13 @@ const CFDRealAccountDisplay = ({
                 type: 'financial',
                 platform,
             }}
-            existing_data={current_list[Number(Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial@`)))]}
+            existing_data={
+                current_list[
+                    Number(
+                        Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial@`))
+                    )
+                ]
+            }
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}

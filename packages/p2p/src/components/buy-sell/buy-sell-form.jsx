@@ -14,7 +14,7 @@ const BuySellForm = props => {
     const isMounted = useIsMounted();
     const { advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
 
-    const [style, setStyle] = React.useState({});
+    const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
 
     const { setPageFooterParent } = props;
@@ -28,6 +28,11 @@ const BuySellForm = props => {
         payment_method_names,
         price,
     } = buy_sell_store?.advert || {};
+
+    const style = {
+        borderColor: 'var(--brand-secondary)',
+        borderWidth: '2px',
+    }
 
     React.useEffect(
         () => {
@@ -63,15 +68,12 @@ const BuySellForm = props => {
     const onClickPaymentMethodCard = payment_method => {
         if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
             buy_sell_store.payment_method_ids.push(payment_method.ID);
-            setStyle({
-                borderColor: 'var(--brand-secondary)',
-                borderWidth: '2px',
-            });
+            setSelectedMethods([...selected_methods, payment_method.ID]);
         } else {
             buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
                 payment_method_id => payment_method_id !== payment_method.ID
             );
-            setStyle({});
+            setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
         }
     };
 
@@ -208,7 +210,7 @@ const BuySellForm = props => {
                                                           medium
                                                           onClick={() => onClickPaymentMethodCard(payment_method)}
                                                           payment_method={payment_method}
-                                                          style={style}
+                                                          style={selected_methods.includes(payment_method.ID) ? style : {}}
                                                       />
                                                   )
                                               )

@@ -63,9 +63,9 @@ With the base configuration extended in all packages, we have another option to 
 
 ​`npm install jest@[CURRENT_VERSION_OF_JEST_IN_THE_ROOT_PACKAGE.JSON] -g`
 
-##### Run tests in a specific package
+##### Run the tests
 
-Navigate to the related directory of package on the command line, then simply run one of the following commands:
+Navigate to the root directory of the package on the command line, then simply run one of the following commands:
 
 `jest` or `npx jest`
 

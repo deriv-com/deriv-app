@@ -83,7 +83,6 @@
     "webpack-node-externals": "^2.5.2"
   },
   "dependencies": {
-    "@deriv/api-types": "1.0.36",
     "@deriv/account": "^1.0.0",
     "@deriv/api-types": "1.0.48",
     "@deriv/components": "^1.0.0",

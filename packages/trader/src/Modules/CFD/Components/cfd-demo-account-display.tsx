@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
-import { CFDAccountCard } from './cfd-account-card.jsx';
+import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import Loading from '../../../templates/_common/components/loading';
 import { Mt5LoginList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
@@ -93,7 +93,6 @@ const CFDDemoAccountDisplay = ({
     ) : (
         <div className='cfd-demo-accounts-display'>
             {isSyntheticCardVisible('demo') && (
-                // @ts-ignore
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={localize('Synthetic')}
@@ -141,7 +140,6 @@ const CFDDemoAccountDisplay = ({
             )}
 
             {isFinancialCardVisible() && (
-                // @ts-ignore
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={is_eu_user ? localize('CFDs') : localize('Financial')}
@@ -183,7 +181,6 @@ const CFDDemoAccountDisplay = ({
                 />
             )}
             {isFinancialStpCardVisible() && (
-                // @ts-ignore
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={localize('Financial STP')}

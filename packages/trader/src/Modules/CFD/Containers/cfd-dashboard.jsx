@@ -26,7 +26,7 @@ import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display';
-import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
+import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/cfd-dashboard.scss';
 

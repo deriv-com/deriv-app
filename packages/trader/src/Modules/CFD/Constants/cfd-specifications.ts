@@ -37,6 +37,9 @@ type TDXTrade = {
     demo_financial_stp_specs?: {
         [index: string]: string;
     },
+    real_financial_stp_specs?: {
+        [index: string]: string;
+    },
 }
 
 export type TSpecifications = {

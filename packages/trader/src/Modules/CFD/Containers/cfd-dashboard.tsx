@@ -103,7 +103,7 @@ type TCFDDashboard = {
     toggleAccountsDialog: () => void;
     toggleShouldShowRealAccountsList: () => void;
     can_have_more_real_synthetic_mt5: () => number;
-    upgradeable_landing_companies: Array<Promise<any>>;
+    upgradeable_landing_companies: unknown[];
     is_reset_trading_password_modal_visible: boolean;
     toggleResetTradingPasswordModal: () => void;
     enableApp: () => void;

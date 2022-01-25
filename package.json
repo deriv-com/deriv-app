@@ -36,6 +36,7 @@
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "eslint-plugin-testing-library": "^4.2.0",
+        "fast-glob": "^3.2.11",
         "husky": "^7.0.0",
         "jest": "^26.4.2",
         "lerna": "^3.22.0",
@@ -81,7 +82,8 @@
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
         "stylelint-check": "stylelint-config-prettier-check",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "dev": "/usr/local/bin/jscodeshift -t ./scripts/codemods/proptypes.js ./packages/account/src/Components/account-limits/account-limits-table-cell.jsx -d -p --parser=tsx"
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",

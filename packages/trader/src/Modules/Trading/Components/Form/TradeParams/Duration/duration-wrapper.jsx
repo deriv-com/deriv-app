@@ -108,6 +108,7 @@ const DurationWrapper = props => {
         if (expiry_type === 'endtime') handleEndTime();
 
         assertDurationIsWithinBoundary(current_duration);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

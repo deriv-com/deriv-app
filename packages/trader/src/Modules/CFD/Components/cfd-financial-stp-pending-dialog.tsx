@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { TCFDFinancialStpPendingDialog } from './props.types';
 
 const CFDFinancialStpPendingDialog = ({
     enableApp,
@@ -9,7 +10,7 @@ const CFDFinancialStpPendingDialog = ({
     toggleModal,
     is_cfd_pending_dialog_open,
     is_fully_authenticated,
-}) => (
+}: TCFDFinancialStpPendingDialog) => (
     <Modal
         title={is_fully_authenticated ? ' ' : localize('Thanks for submitting your documents!')}
         className='cfd-pending-dialog'
@@ -33,7 +34,7 @@ const CFDFinancialStpPendingDialog = ({
     </Modal>
 );
 
-export default connect(({ ui, client, modules: { cfd } }) => ({
+export default connect(({ ui, client, modules: { cfd } }: any) => ({
     is_fully_authenticated: client.is_fully_authenticated,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,

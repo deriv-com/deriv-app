@@ -59,9 +59,11 @@ With the base configuration extended in all packages, we have another option to 
 
 ##### Prerequisite
 
-​install `jest` globally using following command:
+​install `jest` globally using the following command:
 
 ​`npm install jest@[CURRENT_VERSION_OF_JEST_IN_THE_ROOT_PACKAGE.JSON] -g`
+
+##### Run tests in a specific package
 
 Navigate to the related directory of package on the command line, then simply run one of the following commands:
 
@@ -69,7 +71,8 @@ Navigate to the related directory of package on the command line, then simply ru
 
 -   Please be informed with `collectCoverage` provided in the `jest.config.base.js` this command will generate coverage percentage in the directory that you are running the tests.
 
-####`setupTests.js`
+#### `setupTests.js`
+
 This configuration file helps to add some extra assets and tools to the jest framework in order to have better accessibility and tools for the test runner(`jest`).
 All of needed description are commented within the file itself.
 

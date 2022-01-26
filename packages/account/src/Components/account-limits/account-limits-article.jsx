@@ -6,7 +6,7 @@ import AccountArticle from 'Components/article/article.jsx';
 const AccountLimitsArticle = () => {
     return (
         <AccountArticle
-            title={localize('Account limits')}
+            title={localize('Account limits 123')}
             descriptions={[
                 <Localize key={0} i18n_default_text='These are default limits that we apply to your accounts.' />,
                 <Localize

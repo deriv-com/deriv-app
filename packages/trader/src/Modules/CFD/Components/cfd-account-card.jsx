@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { CFDAccountCopy } from './cfd-account-copy.jsx';
+import { CFDAccountCopy } from './cfd-account-copy';
 import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 
 const account_icons = {
@@ -59,14 +59,24 @@ const PasswordBox = ({ platform, onClick }) => (
                     }
                 )}
                 classNameBubble='cfd-account-card__password-tooltip'
-                margin={35}
             >
                 <Text size='xs'>•••••••••••••••</Text>
             </Popover>
         </div>
-        <Button className='cfd-account-card__password-action' tertiary onClick={onClick}>
-            {localize('Change')}
-        </Button>
+        <Popover alignment='bottom' message={localize('Change Password')}>
+            <Button
+                className='cfd-account-card__password-action toolbar__btn--icon'
+                transparent
+                onClick={onClick}
+                icon={
+                    <Icon
+                        icon='IcEdit'
+                        className='da-article__learn-more-icon'
+                        custom_color='var(--text-less-prominent)'
+                    />
+                }
+            />
+        </Popover>
     </div>
 );
 
@@ -183,36 +193,35 @@ const CFDAccountCard = ({
     const button_ref = React.useRef();
 
     React.useEffect(() => {
+        const ref_current = ref?.current;
+        const button_ref_current = button_ref?.current;
         if (existing_data) {
             const show = () => {
                 onHover?.(existing_data.group);
             };
 
-            ref.current.addEventListener('mouseenter', show);
-            button_ref?.current?.addEventListener('mouseenter', show);
+            ref_current.addEventListener('mouseenter', show);
+            button_ref_current?.addEventListener('mouseenter', show);
 
             return () => {
-                ref.current.removeEventListener('mouseenter', show);
-                button_ref?.current?.removeEventListener('mouseenter', () => show);
+                ref_current.removeEventListener('mouseenter', show);
+                button_ref_current?.removeEventListener('mouseenter', () => show);
             };
         }
         return () => {};
-    }, [onHover]);
+    }, [onHover, existing_data]);
 
-    const getServerName = React.useCallback(
-        server => {
-            if (server) {
-                const server_region = server.server_info?.geolocation.region;
-                if (server_region) {
-                    return `${server_region} ${
-                        server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
-                    }`;
-                }
+    const getServerName = React.useCallback(server => {
+        if (server) {
+            const server_region = server.server_info?.geolocation.region;
+            if (server_region) {
+                return `${server_region} ${
+                    server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
+                }`;
             }
-            return '';
-        },
-        [existing_data]
-    );
+        }
+        return '';
+    }, []);
 
     const createFullServerNames = () => {
         let region_string = '';

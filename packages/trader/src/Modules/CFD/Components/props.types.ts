@@ -13,7 +13,7 @@ export type TCFDAccountCopy = {
     className: string;
 };
 
-export type TAccounIconValues = { [key: string]: string };
+export type TAccountIconValues = { [key: string]: string };
 
 export type TSpecBoxProps = {
     value: string | undefined;

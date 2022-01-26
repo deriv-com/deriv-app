@@ -7,7 +7,7 @@ import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy';
 import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import {
-    TAccounIconValues,
+    TAccountIconValues,
     TSpecBoxProps,
     TPasswordBoxProps,
     TCFDAccountCardActionProps,
@@ -15,7 +15,7 @@ import {
     TCFDAccountCard,
 } from './props.types';
 
-const account_icons: { [key: string]: TAccounIconValues } = {
+const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
         synthetic: 'IcMt5SyntheticPlatform',
         financial: 'IcMt5FinancialPlatform',
@@ -29,14 +29,11 @@ const account_icons: { [key: string]: TAccounIconValues } = {
     },
 };
 
-const AddTradeServerButton = React.forwardRef(
-    (
-        { onSelectAccount, is_disabled }: { onSelectAccount: () => void; is_disabled: boolean },
-        ref: React.LegacyRef<HTMLDivElement> | undefined
-    ) => {
+const AddTradeServerButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () => void; is_disabled: boolean }>(
+    ({ onSelectAccount, is_disabled }, ref) => {
         return (
             <div
-                onClick={is_disabled ? () => null : onSelectAccount}
+                onClick={is_disabled ? () => undefined : onSelectAccount}
                 className={classNames('cfd-account-card__add-server', {
                     'cfd-account-card__add-server--disabled': is_disabled,
                 })}
@@ -203,9 +200,9 @@ const CFDAccountCard = ({
     const get_server_region = existing_data?.server_info?.geolocation?.region;
     const get_server_environment = existing_data?.server_info?.environment;
 
-    const ref = React.useRef<HTMLDivElement>(null);
-    const wrapper_ref = React.useRef<HTMLDivElement>(null);
-    const button_ref = React.useRef<HTMLDivElement>(null);
+    const ref = React.useRef<HTMLDivElement | null>(null);
+    const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
+    const button_ref = React.useRef<HTMLDivElement | null>(null);
 
     React.useEffect(() => {
         const ref_current = ref?.current;

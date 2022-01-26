@@ -45,10 +45,14 @@ module.exports = function (file, api, options) {
                     if (['memo', 'forwardRef'].includes(init.callee.property.name)) {
                         if (init.arguments[0]?.params?.length > 0) {
                             init.arguments[0].params[0].typeAnnotation = j.tsTypeAnnotation(typeRef);
+
+                            // init.predicate is added to make sure it adds parantheses to an arrow fn with single param which has a type
+                            init.predicate = false;
                         }
                     }
                 } else if (init.params && init.params.length === 1) {
                     init.params[0].typeAnnotation = j.tsTypeAnnotation(typeRef);
+                    init.predicate = false;
                 }
             }
         });

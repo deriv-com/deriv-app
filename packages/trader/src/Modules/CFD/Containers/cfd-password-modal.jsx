@@ -1,16 +1,9 @@
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
+import { Formik } from 'formik';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
-import {
-    DetailsOfEachMT5Loginid,
-    DetailsOfEachServer,
-    GetAccountStatus,
-    LandingCompany,
-    Mt5NewAccount,
-} from '@deriv/api-types';
-import RootStore from 'Stores/index';
-import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
@@ -39,130 +32,13 @@ import 'Sass/app/modules/mt5/cfd.scss';
 import { connect } from 'Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
-export type TCFDPasswordFormValues = { password: string };
-export type TCFDServerFormValues = { server: string };
-
-type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_type'> & {
-    market_type?: 'synthetic' | 'financial' | 'gaming';
-};
-
-type TOnSubmitPassword = (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
-
-type TPasswordModalHeaderProps = {
-    should_set_trading_password: boolean;
-    should_show_server_form: boolean;
-    account_title: string;
-    is_password_reset_error: boolean;
-    platform: string;
-    has_mt5_account?: boolean;
-};
-
-type TIconTypeProps = {
-    platform: string;
-    type?: string;
-    is_eu: boolean;
-};
-
-type TCFDPasswordFormReusedProps = {
-    platform: string;
-    error_message: string;
-    validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
-};
-
-type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
-    password: string;
-    onSubmit: TOnSubmitPassword;
-};
-
-type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
-    has_mt5_account: boolean;
-    submitPassword: TOnSubmitPassword;
-};
-
-type TMultiStepRefProps = {
-    goNextStep: () => void;
-    goPrevStep: () => void;
-};
-
-type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
-    account_title: string;
-    closeModal: () => void;
-    error_type?: string;
-    form_error?: string;
-    has_mt5_account: boolean;
-    is_bvi: boolean;
-    is_dxtrade_allowed: boolean;
-    is_real_financial_stp: boolean;
-    onCancel: () => void;
-    onForgotPassword: () => void;
-    should_set_trading_password: boolean;
-    should_show_server_form: boolean;
-    submitPassword: TOnSubmitPassword;
-};
-
-type TCFDServerModalWarningProps = {
-    show_warning: boolean;
-    platform: string;
-};
-
-type TCFDServerFormProps = {
-    mt5_trading_servers: DetailsOfEachServer[];
-    mt5_login_list: TExtendedDetailsOfEachMT5Loginid[];
-    account_title: string;
-    closeModal: () => void;
-    form_error?: string;
-    submitMt5Server: (server: string) => void;
-    platform: string;
-    has_error: boolean;
-    validateServer?: (values: TCFDServerFormValues) => FormikErrors<TCFDServerFormValues>;
-};
-
-type TCFDPasswordModalProps = RouteComponentProps & {
-    account_title: string;
-    account_type: {
-        category?: string;
-        type?: string;
-    };
-    account_status: GetAccountStatus;
-    disableCFDPasswordModal: () => void;
-    email: string;
-    error_message: string;
-    error_type?: string;
-    form_error?: string;
-    getAccountStatus: (platform: string) => void;
-    is_eu: boolean;
-    is_eu_country: boolean;
-    is_fully_authenticated: boolean;
-    is_logged_in: boolean;
-    is_cfd_password_modal_enabled: boolean;
-    is_cfd_success_dialog_enabled: boolean;
-    is_dxtrade_allowed: boolean;
-    platform: string;
-    has_cfd_error: boolean;
-    has_suspended_account: boolean;
-    landing_companies: LandingCompany;
-    mt5_login_list: TExtendedDetailsOfEachMT5Loginid[];
-    cfd_new_account: Mt5NewAccount;
-    setCFDSuccessDialog: (value: boolean) => void;
-    setMt5Error: (state: boolean, obj?: Error) => void;
-    submitMt5Password: (
-        values: TCFDPasswordFormValues & { server?: string },
-        actions: FormikHelpers<TCFDPasswordFormValues>
-    ) => void;
-    submitCFDPassword: (
-        values: TCFDPasswordFormValues & { platform?: string },
-        actions: FormikHelpers<TCFDPasswordFormValues>
-    ) => void;
-    mt5_trading_servers: DetailsOfEachServer[];
-};
-
 const PasswordModalHeader = ({
     should_set_trading_password,
     should_show_server_form,
     account_title,
     is_password_reset_error,
     platform,
-}: TPasswordModalHeaderProps) => {
+}) => {
     const element = isMobile() ? 'p' : 'span';
     const alignment = 'center';
     const font_size = 's';
@@ -194,12 +70,11 @@ const PasswordModalHeader = ({
         </Text>
     );
 };
-const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, type?: string, category?: string) => {
+const getSubmitText = (type, category, platform, is_eu, needs_poi) => {
     if (!category && !type) return '';
 
     const category_label = category === 'real' ? localize('real') : localize('demo');
-    const type_label =
-        getMtCompanies(is_eu)[category as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].short_title;
+    const type_label = getMtCompanies(is_eu)[category][type].short_title;
 
     if (category === 'real') {
         if (needs_poi) {
@@ -232,7 +107,7 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
     );
 };
 
-const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
+const IconType = React.memo(({ platform, type, is_eu }) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
         if (type === 'synthetic') {
             return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
@@ -255,11 +130,7 @@ const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
 });
 IconType.displayName = 'IconType';
 
-const getCancelButtonLabel = ({
-    should_set_trading_password,
-    error_type,
-    should_show_server_form,
-}: TCFDPasswordFormProps) => {
+const getCancelButtonLabel = ({ should_set_trading_password, error_type, should_show_server_form }) => {
     if (should_set_trading_password && error_type !== 'PasswordReset') {
         return isDesktop() ? null : localize('Cancel');
     }
@@ -270,19 +141,7 @@ const getCancelButtonLabel = ({
     return localize('Forgot password?');
 };
 
-const handlePasswordInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
-    setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
-) => {
-    handleChange(e);
-    validateForm().then(() => {
-        setFieldTouched('password', true);
-    });
-};
-
-const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_message }: TCFDCreatePasswordProps) => {
+const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_message }) => {
     return (
         <Formik
             initialValues={{
@@ -345,8 +204,11 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
                                         name='password'
                                         value={values.password}
                                         onBlur={handleBlur}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
+                                        onChange={e => {
+                                            handleChange(e);
+                                            validateForm().then(() => {
+                                                setFieldTouched('password', true);
+                                            });
                                         }}
                                     />
                                 )}
@@ -367,17 +229,11 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
     );
 };
 
-const CFDCreatePasswordForm = ({
-    has_mt5_account,
-    platform,
-    error_message,
-    validatePassword,
-    submitPassword,
-}: TCFDCreatePasswordFormProps) => {
-    const multi_step_ref = React.useRef<TMultiStepRefProps>();
+const CFDCreatePasswordForm = ({ has_mt5_account, platform, error_message, validatePassword, submitPassword }) => {
+    const multi_step_ref = React.useRef();
     const [password, setPassword] = React.useState('');
 
-    const onSubmit: TOnSubmitPassword = (values, actions) => {
+    const onSubmit = (values, actions) => {
         if (platform === CFD_PLATFORMS.MT5 && has_mt5_account) {
             setPassword(values.password);
             multi_step_ref.current?.goNextStep();
@@ -403,9 +259,7 @@ const CFDCreatePasswordForm = ({
                 <ChangePasswordConfirmation
                     className='cfd-password-modal__change-password-confirmation'
                     platform={platform}
-                    onConfirm={(_values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) =>
-                        submitPassword({ password }, actions)
-                    }
+                    onConfirm={(values, actions) => submitPassword({ password }, actions)}
                     onCancel={() => multi_step_ref.current?.goPrevStep()}
                 />
             ),
@@ -415,7 +269,7 @@ const CFDCreatePasswordForm = ({
     return <MultiStep ref={multi_step_ref} steps={steps} />;
 };
 
-const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
+const CFDPasswordForm = props => {
     const button_label = React.useMemo(() => {
         if (props.should_show_server_form) {
             return localize('Next');
@@ -528,8 +382,11 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                 name='password'
                                 value={values.password}
                                 onBlur={handleBlur}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
+                                onChange={e => {
+                                    handleChange(e);
+                                    validateForm().then(() => {
+                                        setFieldTouched('password', true);
+                                    });
                                 }}
                             />
                         </div>
@@ -572,7 +429,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
     );
 };
 
-const CFDServerModalWarning = ({ show_warning = true, platform }: TCFDServerModalWarningProps) => {
+const CFDServerModalWarning = ({ show_warning = true, platform }) => {
     if (!show_warning) return null;
     return (
         <div className='cfd-password-modal__warning'>
@@ -596,24 +453,24 @@ const CFDServerModalWarning = ({ show_warning = true, platform }: TCFDServerModa
     );
 };
 
-const CFDServerForm = ({ ...props }: TCFDServerFormProps) => {
+const CFDServerForm = ({ ...props }) => {
     const available_servers = React.useMemo(() => {
         return [...props.mt5_trading_servers]
             .map(server => {
-                const geolocation_sequence = server.geolocation?.sequence === 1 ? '' : server.geolocation?.sequence;
-                const message_to_client = server.disabled ? `(${server.message_to_client})` : '';
                 // Transform properties to support radiogroup
                 return {
                     ...server,
                     ...{
-                        label: `${server.geolocation?.region} ${geolocation_sequence} ${message_to_client}`,
+                        label: `${server.geolocation.region} ${
+                            server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
+                        } ${server.disabled ? `(${server.message_to_client})` : ''}`,
                         value: server.id,
                         disabled: server.disabled,
                     },
                 };
             })
-            .sort((a, _b) => (a.recommended ? -1 : 1))
-            .sort((a, b) => (a.disabled ? a.disabled : 0) - (b.disabled ? b.disabled : 0));
+            .sort((a, b) => (a.recommended ? a : b))
+            .sort((a, b) => a.disabled - b.disabled);
     }, [props.mt5_trading_servers]);
 
     return (
@@ -636,7 +493,7 @@ const CFDServerForm = ({ ...props }: TCFDServerFormProps) => {
                                         name='server'
                                         required
                                         selected={props.mt5_trading_servers.find(server => !server.disabled)?.id}
-                                        onToggle={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        onToggle={e => {
                                             e.persist();
                                             setFieldValue('server', e.target.value);
                                         }}
@@ -699,8 +556,8 @@ const CFDPasswordModal = ({
     submitMt5Password,
     submitCFDPassword,
     mt5_trading_servers,
-}: TCFDPasswordModalProps) => {
-    const [server, setServer] = React.useState<string>('');
+}) => {
+    const [server, setServer] = React.useState('');
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
 
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -714,8 +571,8 @@ const CFDPasswordModal = ({
     const is_password_reset = error_type === 'PasswordReset';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
-    const validatePassword = (values: TCFDPasswordFormValues) => {
-        const errors: FormikErrors<TCFDPasswordFormValues> = {};
+    const validatePassword = values => {
+        const errors = {};
 
         if (
             !validLength(values.password, {
@@ -730,7 +587,7 @@ const CFDPasswordModal = ({
         } else if (!validPassword(values.password)) {
             errors.password = getErrorMessages().password();
         }
-        if (values.password?.toLowerCase() === email.toLowerCase()) {
+        if (values.password.toLowerCase() === email.toLowerCase()) {
             errors.password = localize('Your password cannot be the same as your email address.');
         }
 
@@ -755,7 +612,7 @@ const CFDPasswordModal = ({
             if (needs_poi) {
                 history.push(routes.proof_of_identity);
             } else {
-                sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login || '');
+                sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login);
                 history.push(routes.cashier_acc_transfer);
             }
         }
@@ -786,7 +643,7 @@ const CFDPasswordModal = ({
         setIsSentEmailModalOpen(true);
     };
 
-    const submitPassword: TOnSubmitPassword = (values, actions) => {
+    const submitPassword = (values, actions) => {
         if (platform === CFD_PLATFORMS.MT5) {
             submitMt5Password(
                 {
@@ -796,7 +653,7 @@ const CFDPasswordModal = ({
                 actions
             );
         } else {
-            (values as TCFDPasswordFormValues & { platform: string }).platform = platform;
+            values.platform = platform;
             submitCFDPassword(values, actions);
         }
     };
@@ -957,7 +814,7 @@ const CFDPasswordModal = ({
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
                 heading={success_heading}
-                message={getSubmitText(platform, is_eu, needs_poi, account_type.type, account_type.category)}
+                message={getSubmitText(account_type.type, account_type.category, platform, is_eu, needs_poi)}
                 icon={<IconType platform={platform} type={account_type.type} is_eu={is_eu} />}
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}
@@ -976,11 +833,33 @@ const CFDPasswordModal = ({
     );
 };
 
-export default connect(({ client, modules }: RootStore) => ({
+CFDPasswordModal.propTypes = {
+    account_title: PropTypes.string,
+    account_type: PropTypes.object,
+    disableCFDPasswordModal: PropTypes.func,
+    email: PropTypes.string,
+    error_message: PropTypes.string,
+    has_cfd_error: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    is_eu_country: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
+    is_cfd_password_modal_enabled: PropTypes.bool,
+    is_cfd_success_dialog_enabled: PropTypes.bool,
+    is_dxtrade_allowed: PropTypes.bool,
+    platform: PropTypes.string,
+    setMt5Error: PropTypes.func,
+    setCFDSuccessDialog: PropTypes.func,
+    submitMt5Password: PropTypes.func,
+    submitCFDPassword: PropTypes.func,
+    cfd_new_account: PropTypes.object,
+};
+
+export default connect(({ client, modules }) => ({
     email: client.email,
     account_title: modules.cfd.account_title,
     account_type: modules.cfd.account_type,
     account_status: client.account_status,
+    clearCFDError: modules.cfd.clearCFDError,
     disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
     error_message: modules.cfd.error_message,
     error_type: modules.cfd.error_type,

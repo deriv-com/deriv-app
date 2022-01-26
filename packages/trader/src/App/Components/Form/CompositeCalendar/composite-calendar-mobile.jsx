@@ -237,8 +237,6 @@ const CompositeCalendarMobile = React.memo(
     }
 );
 
-CompositeCalendarMobile.displayName = 'CompositeCalendarMobile';
-
 CompositeCalendarMobile.propTypes = {
     current_focus: PropTypes.string,
     duration_list: PropTypes.array,

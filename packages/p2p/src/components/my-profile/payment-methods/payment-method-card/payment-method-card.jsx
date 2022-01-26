@@ -20,6 +20,7 @@ const PaymentMethodCard = ({
     const method = !is_add && payment_method.display_name.replace(/\s|-/gm, '');
     const payment_account = payment_method?.fields?.account?.value;
     const payment_bank_name = payment_method?.fields?.bank_name?.value;
+    const payment_name = payment_method?.fields?.name?.value;
 
     if (is_add) {
         return (
@@ -98,7 +99,7 @@ const PaymentMethodCard = ({
             </div>
             <div className='payment-method-card__body'>
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                    {payment_bank_name}
+                    {payment_bank_name || payment_name}
                 </Text>
                 <br />
                 <Text color='prominent' size='xs'>

@@ -89,7 +89,7 @@ export default class MyProfileStore extends BaseStore {
 
         Object.entries(this.advertiser_payment_methods).forEach(key => {
             if (methods.length) {
-                if (methods.some(e => e.method !== key[1].method)) {
+                if (methods.every(e => e.method !== key[1].method)) {
                     methods.push({ method: key[1].method, display_name: key[1].display_name });
                 }
             } else {

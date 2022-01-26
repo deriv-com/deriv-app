@@ -37,14 +37,16 @@ const PaymentMethodsList = () => {
                             <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
                                 {`${payment_methods_list_method.display_name}s`}
                             </Text>
-                            {payment_methods_list.map(each_payment_method => (
-                                <PaymentMethodCard
-                                    key={key}
-                                    large={isDesktop()}
-                                    payment_method={each_payment_method}
-                                    small={isMobile()}
-                                />
-                            ))}
+                            <div className='payment-methods-list__list-body'>
+                                {payment_methods_list.map(each_payment_method => (
+                                    <PaymentMethodCard
+                                        key={key}
+                                        large={isDesktop()}
+                                        payment_method={each_payment_method}
+                                        small={isMobile()}
+                                    />
+                                ))}
+                            </div>
                         </React.Fragment>
                     );
                 })}

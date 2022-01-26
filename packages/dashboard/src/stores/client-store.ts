@@ -6,6 +6,7 @@ import BaseStore from './base-store';
 type TExtendedAccount = NonNullable<TAccountList>[0] & {
     is_wallet?: boolean;
 };
+
 class ClientStore extends BaseStore {
     @observable
     public loginid = '';

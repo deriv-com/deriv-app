@@ -25,6 +25,8 @@ export default class MyProfileStore extends BaseStore {
     @observable payment_info = '';
     @observable payment_method_to_delete = {};
     @observable payment_method_to_edit = {};
+    @observable search_results = [];
+    @observable search_term = '';
     @observable selected_payment_method = '';
     @observable selected_payment_method_display_name = '';
     @observable selected_payment_method_fields = [];
@@ -173,7 +175,21 @@ export default class MyProfileStore extends BaseStore {
             p2p_payment_methods: 1,
         }).then(response => {
             const { p2p_payment_methods } = response;
+            const list_items = [];
             this.setAvailablePaymentMethods(p2p_payment_methods);
+
+            if (this.search_term) {
+                Object.entries(this.available_payment_methods).forEach(key => {
+                    if (key[1].display_name.toLowerCase().includes(this.search_term.toLowerCase().trim()))
+                        list_items.push({ text: key[1].display_name, value: key[0] });
+                });
+            }
+
+            if (list_items.length) {
+                this.setSearchResults(list_items);
+            } else {
+                this.setSearchResults([]);
+            }
         });
     }
 
@@ -407,6 +423,16 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setPaymentMethodToEdit(payment_method_to_edit) {
         this.payment_method_to_edit = payment_method_to_edit;
+    }
+
+    @action.bound
+    setSearchResults(search_results) {
+        this.search_results = search_results;
+    }
+
+    @action.bound
+    setSearchTerm(search_term) {
+        this.search_term = search_term;
     }
 
     @action.bound

@@ -13,6 +13,7 @@ export default class BuySellStore extends BaseStore {
     @observable error_message = '';
     @observable filter_payment_methods = [];
     @observable has_more_items_to_load = false;
+    @observable is_filter_modal_loading = false;
     @observable is_filter_modal_open = false;
     @observable is_loading = true;
     @observable is_sort_dropdown_open = false;
@@ -346,6 +347,11 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setHasMoreItemsToLoad(has_more_items_to_load) {
         this.has_more_items_to_load = has_more_items_to_load;
+    }
+
+    @action.bound
+    setIsFilterModalLoading(is_filter_modal_loading) {
+        this.is_filter_modal_loading = is_filter_modal_loading;
     }
 
     @action.bound

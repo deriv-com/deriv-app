@@ -13,12 +13,7 @@ const ChangePasswordConfirmation = ({
     onConfirm,
     onCancel,
 }: TCFDChangePasswordConfirmationProps) => (
-    <Formik
-        initialValues={{
-            password: '',
-        }}
-        onSubmit={onConfirm}
-    >
+    <Formik initialValues={{}} onSubmit={onConfirm}>
         {({ isSubmitting, handleSubmit }) => (
             <form onSubmit={handleSubmit}>
                 <div

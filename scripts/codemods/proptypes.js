@@ -33,12 +33,23 @@ module.exports = function (file, api, options) {
     };
 
     function addTsTypeToTheComponentParam(componentName, typeName) {
+        // doesn't work with React.memo or React.forwardRef
         root.find(j.VariableDeclarator, {
             id: { name: componentName },
         }).forEach(path => {
-            if (path?.value?.init?.params && path.value.init.params.length === 1) {
-                const typeRef = j.tsTypeReference(j.identifier(typeName));
-                path.value.init.params[0].typeAnnotation = j.tsTypeAnnotation(typeRef);
+            const typeRef = j.tsTypeReference(j.identifier(typeName));
+
+            const init = path?.value?.init;
+            if (init) {
+                if (init.type === 'CallExpression') {
+                    if (['memo', 'forwardRef'].includes(init.callee.property.name)) {
+                        if (init.arguments[0]?.params?.length > 0) {
+                            init.arguments[0].params[0].typeAnnotation = j.tsTypeAnnotation(typeRef);
+                        }
+                    }
+                } else if (init.params && init.params.length === 1) {
+                    init.params[0].typeAnnotation = j.tsTypeAnnotation(typeRef);
+                }
             }
         });
     }

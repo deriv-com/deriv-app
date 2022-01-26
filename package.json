@@ -83,7 +83,7 @@
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
         "stylelint-check": "stylelint-config-prettier-check",
         "prepare": "husky install",
-        "dev": "/usr/local/bin/jscodeshift -t ./scripts/codemods/proptypes.js ./packages/account/src/Components/account-limits/account-limits-table-cell.jsx -d -p --parser=tsx"
+        "dev": "/usr/local/bin/jscodeshift -t ./scripts/codemods/proptypes.js ./packages/trader/src/App/Components/Form/CompositeCalendar/two-month-picker.jsx -d -p --parser=tsx"
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",

@@ -18,7 +18,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
     const {
         account_currency,
         advert_details,
-        amount,
         amount_display,
         chat_channel_url: order_channel_url,
         contact_info,
@@ -93,7 +92,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
                                 <div className='order-details-card__header-amount'>
-                                    {getFormattedText(amount * rate, local_currency)}
+                                    {getFormattedText(amount_display * rate, local_currency)}
                                 </div>
                             )}
                             <div className='order-details-card__header-id'>
@@ -127,7 +126,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.left_send_or_receive}
-                                    value={getFormattedText(amount * rate, local_currency)}
+                                    value={getFormattedText(amount_display * rate, local_currency)}
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}

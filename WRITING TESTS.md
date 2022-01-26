@@ -10,27 +10,27 @@ It will cover:
 
 -   Examples
 
-    ## Test Framework explanation
+    ## Test Framework
 
-    ​ We are using `Jest` as test runner and [React Testing library](https://testing-library.com/docs/react-testing-library/intro/) as our main test component to have the ultimate needed utilities.
+    ​ We are using [Jest](https://jestjs.io/)  as test runner and [React Testing library](https://testing-library.com/docs/react-testing-library/intro/) as our main test component to have the ultimate needed utilities.
 
     ### Jest
 
-    ​ With Jest, we can run our tests quickly and even parallel.
+    ​ With Jest, we can run our tests quickly and even in parallel.
 
-    ​ All of needed configurations are located in root folder of the app.
+    ​ All of needed configurations are located in root folder of the project.
 
     #### Run Tests
 
-    ​ To Run tests from root directory simply run:
+    ​ To start the test suite, from the root directory, simply run:
 
     ​ `npm run test:jest`
 
-    ​ Be informed that this command will run all tests in the whole app based on following configuration provided.
+    ​ Be informed that this command will run all tests in the whole project based on following configuration provided.
 
-    ​ Also, the mentioned command will generate a coverage directory in the root directory, you can check the current coverage percentage by the generated html.
+    ​ Also, the mentioned command will generate a coverage directory in the root directory, you can check the current coverage percentage from the generated html.
 
-    #### Jest configuration files explanation
+    #### Jest configuration
 
     ​
 
@@ -38,8 +38,8 @@ It will cover:
 
         General configuration of the jest which will use to run the tests from root directory of _Deriv app_
 
-        -   `collectCoverage`: with this flag jest will collect the coverage report in order to know how much and which files of the code has test coverage.
-        -   `collectCoverageFrom`: To indicate which files should and should not test. Generally we exclude all of `node_modules` directories.
+        -   `collectCoverage`: This flag makes jest to collect coverage report.
+        -   `collectCoverageFrom`: To indicate which files the coverage report should collect from. Generally we exclude all of `node_modules` directories.
         -   `collectCoverageFrom`: The type of needed coverage report.
         -   `clearMocks`: configuration option to clear mocks automatically before each test.
         -   `projects`: To indicate that which components/directories should test.

@@ -1075,31 +1075,6 @@
 
 .account-poa {
     &__upload {
-        &-icon {
-            width: 25px;
-        }
-        &-section {
-            margin-top: 0;
-            display: flex;
-        }
-        &-list {
-            width: 100%;
-            flex: 1;
-            margin-right: 16px;
-        }
-        &-file {
-            width: 100%;
-            flex: 1;
-            height: 240px;
-            position: relative;
-
-            .dc-file-dropzone {
-                max-width: 400px;
-            }
-            @include mobile {
-                flex: unset;
-            }
-        }
         &-remove-btn {
             position: absolute;
             width: 16px;
@@ -1125,20 +1100,6 @@
                 height: 100%;
             }
         }
-        &-box {
-            display: flex;
-            margin-bottom: 2rem;
-            align-items: center;
-            justify-content: flex-start;
-        }
-        &-item {
-            min-width: 238px;
-            width: 100%;
-            margin-left: 1rem;
-            font-size: var(--text-size-xxs);
-            line-height: 1.5;
-            color: var(--text-prominent);
-        }
     }
 }
 
@@ -1153,8 +1114,61 @@
         padding-top: 0.8rem;
         position: relative;
 
-        li {
-            margin: 0 0 0.8rem 0;
+        .account-poa__upload-section {
+            margin-top: 0;
+            display: flex;
+        }
+
+        .account-poa__upload-file {
+            width: 100%;
+            flex: 1;
+            height: 240px;
+            position: relative;
+
+            .dc-file-dropzone {
+                border: 1px dashed var(--border-normal);
+                max-width: 400px;
+
+                &__message-subtitle {
+                    font-size: unset;
+                    font-weight: unset;
+                }
+            }
+            @include mobile {
+                flex: unset;
+            }
+        }
+
+        .account-poa__upload-list {
+            display: block;
+
+            .account-poa__upload-box {
+                display: flex;
+                flex-direction: unset;
+                flex: unset;
+                align-items: center;
+                justify-content: flex-start;
+                margin: 0 0 0.8rem 0;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                text-align: unset;
+            }
+
+            .account-poa__upload-icon {
+                width: 25px;
+                margin-bottom: 0;
+            }
+        }
+
+        .account-poa__upload-item {
+            min-width: 238px;
+            width: 100%;
+            margin-left: 1rem;
+            font-size: var(--text-size-xxs);
+            line-height: 1.5;
+            color: var(--text-prominent);
+            padding: 0;
         }
     }
     &__field-area {

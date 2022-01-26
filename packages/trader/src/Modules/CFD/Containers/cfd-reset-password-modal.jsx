@@ -16,9 +16,10 @@ import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 
+const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
+
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
-    const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
         reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
 
@@ -109,8 +110,10 @@ const CFDResetPasswordModal = ({
             verification_code: localStorage.getItem('cfd_reset_password_code'),
         };
 
+        const error_code_list = ['InvalidToken' || 'BadSession'];
+
         WS.tradingPlatformInvestorPasswordReset(request).then(response => {
-            if (response.error && response.error.code === 'InvalidToken') {
+            if (error_code_list.includes(response?.error?.code)) {
                 renderErrorBox(response.error);
             } else {
                 setState({
@@ -127,10 +130,13 @@ const CFDResetPasswordModal = ({
         return Object.keys(current_list).length !== 0;
     };
 
+    const is_modal_open =
+        is_cfd_reset_password_modal_enabled && reset_password_type !== 'investor' && !getIsListFetched();
+
     return (
         <Modal
             className='cfd-reset-password-modal'
-            is_open={is_cfd_reset_password_modal_enabled}
+            is_open={is_modal_open}
             toggleModal={() => setCFDPasswordResetModal(false)}
             title={
                 platform === CFD_PLATFORMS.DXTRADE

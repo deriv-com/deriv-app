@@ -1,0 +1,76 @@
+import classNames from 'classnames';
+import React from 'react';
+import { Icon } from '@deriv/components';
+import 'Sass/payment-agent-details.scss';
+
+type PaymentAgentDetailsProps = {
+    className: string;
+    payment_agent_email: string;
+    payment_agent_phone: string;
+    payment_agent_url: string;
+};
+
+type DetailProps = {
+    action: string;
+    icon: string;
+    is_last_child: boolean;
+    rel: string;
+    target: string;
+    value: string;
+};
+
+const Detail = ({ action, icon, is_last_child, children, ...rest }: DetailProps) => {
+    const detail = Array.isArray(children) ? children : children.split(',');
+    return (
+        <div className='payment-agent-details__accordion-content-line'>
+            <div>
+                <Icon icon={`Ic${icon}`} className='payment-agent-details__accordion-content-icon' color='secondary' />
+            </div>
+            <div>
+                {detail.map((child, id) => (
+                    <a
+                        key={id}
+                        className='payment-agent-details__contact cashier__paragraph'
+                        href={`${action ? `${action}:` : ''}${child}`}
+                        {...rest}
+                    >
+                        {child}
+                        {id === detail.length - 1 ? '' : ', '}
+                    </a>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const PaymentAgentDetails = ({
+    className,
+    payment_agent_phones,
+    payment_agent_urls,
+    payment_agent_email,
+}: PaymentAgentDetailsProps) => {
+    //  TODO: Once telephone, url removed from paymentagent_list.list we can remove isArray conditions and only use the array
+    return (
+        <div className={classNames('payment-agent-details__accordion-content', className)}>
+            {payment_agent_phones && (
+                <Detail action='tel' icon='Phone'>
+                    {Array.isArray(payment_agent_phones)
+                        ? payment_agent_phones.map(phone => phone.phone_number)
+                        : payment_agent_phones}
+                </Detail>
+            )}
+            {payment_agent_urls && (
+                <Detail icon='Website' target='_blank' rel='noopener noreferrer'>
+                    {Array.isArray(payment_agent_urls) ? payment_agent_urls.map(url => url.url) : payment_agent_urls}
+                </Detail>
+            )}
+            {payment_agent_email && (
+                <Detail action='mailto' icon='EmailOutline' is_last_child target='_blank' rel='noopener noreferrer'>
+                    {payment_agent_email}
+                </Detail>
+            )}
+        </div>
+    );
+};
+
+export default PaymentAgentDetails;

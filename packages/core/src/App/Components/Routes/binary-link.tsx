@@ -1,0 +1,49 @@
+import classNames from 'classnames';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { connect } from 'Stores/connect';
+import { PlatformContext } from '@deriv/shared';
+import { findRouteByPath, normalizePath } from './helpers';
+import getRoutesConfig from '../../Constants/routes-config';
+
+type BinaryLinkProps = {
+    active_class: string;
+    children: React.ReactNode;
+    to: string;
+};
+
+// TODO: solve circular dependency problem
+// when binary link is imported into components present in routes config
+// or into their descendants
+const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...props }: BinaryLinkProps) => {
+    const platform_context = React.useContext(PlatformContext);
+    const is_dashboard = platform_context?.is_dashboard;
+    const path = normalizePath(to);
+    const route = findRouteByPath(path, getRoutesConfig({ is_dashboard }));
+
+    if (!route && to) {
+        throw new Error(`Route not found: ${to}`);
+    }
+
+    return to && !href ? (
+        <span
+            className={classNames({
+                [`${active_class}__link-wrapper`]: !!active_class,
+            })}
+            onClick={() => {
+                if (has_error) setError(false, null);
+            }}
+        >
+            <NavLink to={path} activeClassName={active_class || 'active'} exact={route.exact} {...props}>
+                {children}
+            </NavLink>
+        </span>
+    ) : (
+        <a {...props}>{children}</a>
+    );
+};
+
+export default connect(({ common }) => ({
+    has_error: common.has_error,
+    setError: common.setError,
+}))(BinaryLink);

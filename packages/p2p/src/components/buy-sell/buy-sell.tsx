@@ -1,0 +1,110 @@
+import React from 'react';
+import { useSafeState } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
+import { localize } from 'Components/i18next';
+import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
+import PageReturn from 'Components/page-return/page-return.jsx';
+import Verification from 'Components/verification/verification.jsx';
+import { buy_sell } from 'Constants/buy-sell';
+import { useStores } from 'Stores';
+import BuySellHeader from './buy-sell-header.jsx';
+import BuySellModal from './buy-sell-modal.jsx';
+import BuySellTable from './buy-sell-table.jsx';
+import './buy-sell.scss';
+
+type BuySellProps = {
+    error_message: string,
+    hideAdvertiserPage: () => void,
+    hideVerification: () => void,
+    is_submit_disabled: boolean,
+    navigate: () => void,
+    onCancelClick: () => void,
+    onChangeTableType: () => void,
+    onConfirmClick: () => void,
+    params: unknown,
+    selected_ad_state: unknown,
+    setErrorMessage: () => void,
+    setIsSubmitDisabled: () => void,
+    setSelectedAdvert: () => void,
+    should_show_popup: boolean,
+    should_show_verification: boolean,
+    show_advertiser_page: boolean,
+    showAdvertiserPage: () => void,
+    submitForm: () => void,
+    table_type: string
+};
+
+const BuySell = () => {
+    const { buy_sell_store } = useStores();
+    const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
+    const previous_scroll_top = React.useRef(0);
+
+    React.useEffect(() => {
+        const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
+        const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
+
+        return () => {
+            disposeIsListedReaction();
+            disposeAdvertIntervalReaction();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const onScroll = event => {
+        if (!buy_sell_store.show_advertiser_page) {
+            if (event.target.scrollTop !== previous_scroll_top.current) {
+                const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
+                setIsToggleVisible(!is_scrolling_down);
+            }
+
+            previous_scroll_top.current = event.target.scrollTop;
+        }
+    };
+
+    if (buy_sell_store.should_show_verification) {
+        return (
+            <React.Fragment>
+                <PageReturn onClick={buy_sell_store.hideVerification} page_title={localize('Verification')} />
+                <Verification />
+            </React.Fragment>
+        );
+    }
+
+    if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
+        return (
+            <React.Fragment>
+                <PageReturn
+                    className='buy-sell__advertiser-page-return'
+                    onClick={buy_sell_store.hideAdvertiserPage}
+                    page_title={localize("Advertiser's page")}
+                />
+                <AdvertiserPage />
+            </React.Fragment>
+        );
+    }
+
+    return (
+        <div className='buy-sell'>
+            <BuySellHeader
+                is_visible={is_toggle_visible}
+                table_type={buy_sell_store.table_type}
+                setTableType={buy_sell_store.setTableType}
+            />
+            <BuySellTable
+                key={buy_sell_store.table_type}
+                is_buy={buy_sell_store.table_type === buy_sell.BUY}
+                setSelectedAdvert={buy_sell_store.setSelectedAdvert}
+                showAdvertiserPage={buy_sell_store.showAdvertiserPage}
+                onScroll={onScroll}
+            />
+            <BuySellModal
+                selected_ad={buy_sell_store.selected_ad_state}
+                should_show_popup={buy_sell_store.should_show_popup}
+                setShouldShowPopup={buy_sell_store.setShouldShowPopup}
+                table_type={buy_sell_store.table_type}
+            />
+        </div>
+    );
+};
+
+export default observer(BuySell);

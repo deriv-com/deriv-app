@@ -1,0 +1,31 @@
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+import { Text } from '@deriv/components';
+import { Localize } from 'Components/i18next';
+import './ad-status.scss';
+
+type AdStatusProps = {
+    is_active: boolean
+};
+
+const AdStatus = (
+    {
+        is_active
+    }: AdStatusProps
+) => {
+    if (!is_active) {
+        return (
+            <Text className='ad-status--inactive' color='loss-danger' line_height='s' size='xs' weight='bold'>
+                <Localize i18n_default_text='Inactive' />
+            </Text>
+        );
+    }
+
+    return (
+        <Text className='ad-status--active' color='profit-success' line_height='s' size='xs' weight='bold'>
+            <Localize i18n_default_text='Active' />
+        </Text>
+    );
+};
+
+export default observer(AdStatus);

@@ -1,0 +1,65 @@
+import React from 'react';
+import { Tabs } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { WS } from '@deriv/shared';
+import ContractDetails from './contract-details.jsx';
+import ContractHistory from './contract-history.jsx';
+
+type ContractAuditProps = {
+    contract_info: unknown;
+    contract_update_history: unknown;
+    has_result: boolean;
+    is_multiplier: boolean;
+    toggleHistoryTab: () => void;
+};
+
+const ContractAudit = ({
+    contract_update_history,
+    has_result,
+    is_multiplier,
+    toggleHistoryTab,
+    ...props
+}: ContractAuditProps) => {
+    const { contract_id, currency } = props.contract_info;
+    const [update_history, setUpdateHistory] = React.useState([]);
+
+    const getSortedUpdateHistory = history => history.sort((a, b) => b.order_date - a.order_date);
+
+    React.useEffect(() => {
+        if (!!contract_update_history.length && contract_update_history.length > update_history.length)
+            setUpdateHistory(getSortedUpdateHistory(contract_update_history));
+    }, [contract_update_history, update_history]);
+
+    const onTabItemClick = tab_index => {
+        toggleHistoryTab(tab_index);
+        if (tab_index) {
+            WS.contractUpdateHistory(contract_id).then(response => {
+                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
+            });
+        }
+    };
+
+    if (!has_result) return null;
+
+    if (!is_multiplier) {
+        return (
+            <div className='contract-audit__wrapper'>
+                <ContractDetails {...props} />
+            </div>
+        );
+    }
+    return (
+        <div className='contract-audit__wrapper'>
+            <Tabs top className='contract-audit__tabs' onTabItemClick={onTabItemClick}>
+                <div label={localize('Details')}>
+                    <ContractDetails {...props} />
+                </div>
+                <div label={localize('History')}>
+                    <ContractHistory currency={currency} history={update_history} />
+                </div>
+            </Tabs>
+        </div>
+    );
+};
+
+export default ContractAudit;

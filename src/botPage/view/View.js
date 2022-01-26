@@ -68,7 +68,7 @@ api.events.on('website_status', response => {
     const { message } = response.website_status;
     if (message) {
         $.notify(message, {
-            position: `bottom ${isMobile() ? 'right' : 'left'}`,
+            position: `bottom ${isMobile() ? 'right' : 'right'}`,
             autoHide: false,
             className: 'warn web-status',
         });

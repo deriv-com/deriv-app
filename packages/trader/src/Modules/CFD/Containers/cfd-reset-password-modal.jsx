@@ -110,10 +110,8 @@ const CFDResetPasswordModal = ({
             verification_code: localStorage.getItem('cfd_reset_password_code'),
         };
 
-        const error_code_list = ['InvalidToken' || 'BadSession'];
-
         WS.tradingPlatformInvestorPasswordReset(request).then(response => {
-            if (error_code_list.includes(response?.error?.code)) {
+            if (response.error && (response.error.code === 'InvalidToken' || response.error.code === 'BadSession')) {
                 renderErrorBox(response.error);
             } else {
                 setState({
@@ -130,7 +128,7 @@ const CFDResetPasswordModal = ({
         return Object.keys(current_list).length !== 0;
     };
 
-    const is_invalid_investor_token = !getIsListFetched() && reset_password_type === 'investor';
+    const is_invalid_investor_token = !getIsListFetched() && localStorage.getItem('cfd_reset_password_code');
 
     return (
         <Modal

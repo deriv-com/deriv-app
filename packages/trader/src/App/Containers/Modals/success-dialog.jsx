@@ -9,7 +9,7 @@ const Checkmark = ({ className }) => (
 );
 
 const SuccessDialog = ({
-    classNameMessage = '',
+    classNameMessage = undefined,
     has_cancel,
     has_submit,
     icon,
@@ -100,7 +100,6 @@ SuccessDialog.propTypes = {
     onSubmit: PropTypes.func,
     text_cancel: PropTypes.string,
     text_submit: PropTypes.string,
-    title: PropTypes.string,
     width: PropTypes.string,
 };
 

@@ -83,7 +83,7 @@
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
         "stylelint-check": "stylelint-config-prettier-check",
         "prepare": "husky install",
-        "dev": "/usr/local/bin/jscodeshift -t ./scripts/codemods/proptypes.js ./packages/trader/src/App/Components/Form/CompositeCalendar/composite-calendar.tsx -d -p --parser=tsx"
+        "dev": "/usr/local/bin/jscodeshift -t ./scripts/codemods/proptypes.js ./packages/p2p/src/components/orders/order-table/order-table-header.jsx -d -p --parser=tsx"
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",

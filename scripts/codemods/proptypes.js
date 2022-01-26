@@ -42,7 +42,10 @@ module.exports = function (file, api, options) {
             const init = path?.value?.init;
             if (init) {
                 if (init.type === 'CallExpression') {
-                    if (['memo', 'forwardRef'].includes(init.callee.property.name)) {
+                    if (
+                        ['memo', 'forwardRef'].includes(init.callee.property?.name) ||
+                        ['observer'].includes(init.callee.name)
+                    ) {
                         if (init.arguments[0]?.params?.length > 0) {
                             init.arguments[0].params[0].typeAnnotation = j.tsTypeAnnotation(typeRef);
 

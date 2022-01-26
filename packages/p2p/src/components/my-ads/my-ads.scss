@@ -229,7 +229,8 @@
         &-popovers {
             background-color: var(--general-main-1);
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            min-width: 11rem;
             padding: 1.6rem;
             position: absolute;
             right: 0;
@@ -321,7 +322,6 @@
                 width: 3.2rem;
 
                 @include desktop {
-                    margin: 0 0.8rem;
                     &:hover {
                         background-color: var(--general-hover);
                     }
@@ -353,7 +353,7 @@
         }
         &-row {
             padding: 1.6rem;
-            grid-template-columns: repeat(5, 2fr) 1.8fr;
+            grid-template-columns: repeat(3, 2fr) repeat(2, 2.3fr) 1.2fr;
 
             @include mobile {
                 grid-template-columns: unset;

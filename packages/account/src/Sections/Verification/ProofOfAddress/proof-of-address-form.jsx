@@ -83,7 +83,7 @@ const ProofOfAddressForm = ({
                 );
             });
         });
-    }, []);
+    }, [account_settings, fetchResidenceList, fetchStatesList, is_eu, setFormValues]);
 
     const validateFields = values => {
         setFormState({ ...form_state, ...{ should_allow_submit: false } });

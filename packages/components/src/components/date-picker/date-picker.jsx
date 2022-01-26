@@ -239,6 +239,8 @@ const DatePicker = React.memo(props => {
     );
 });
 
+DatePicker.displayName = 'DatePicker';
+
 DatePicker.defaultProps = {
     alignment: 'bottom',
     date_format: 'YYYY-MM-DD',

@@ -1,0 +1,11 @@
+/** @define duration */
+.dc-dropdown {
+    &__display {
+        &--no-symbol-duration {
+            border: none !important;
+            .dc-dropdown__display-text {
+                color: var(--text-general);
+            }
+        }
+    }
+}

@@ -119,8 +119,6 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
     );
 });
 
-FileUploader.displayName = 'FileUploader';
-
 FileUploader.propTypes = {
     onFileDrop: PropTypes.func,
     getSocket: PropTypes.func,

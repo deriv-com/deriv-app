@@ -16,10 +16,9 @@ import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 
-const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
-
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
+    const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
         reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
 

@@ -62,13 +62,13 @@ const PaymentMethodCard = ({
                     <Icon
                         className='payment-method-card__icon'
                         icon={`IcCashier${method}`}
-                        size={medium || small ? 16 : 21}
+                        size={medium || small ? 16 : 24}
                     />
                 ) : (
                     <Icon
                         className='payment-method-card__icon'
                         icon='IcCashierEwallet'
-                        size={medium || small ? 16 : 21}
+                        size={medium || small ? 16 : 24}
                     />
                 )}
                 {is_vertical_ellipsis_visible && (

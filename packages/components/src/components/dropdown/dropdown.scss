@@ -71,11 +71,6 @@
         &--has-symbol {
             justify-content: unset;
         }
-        &--no-symbol {
-            .dc-dropdown__display-text {
-                padding: unset;
-            }
-        }
         &--no-border {
             border-color: var(--fill-normal);
         }

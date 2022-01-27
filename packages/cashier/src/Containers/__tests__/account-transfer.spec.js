@@ -27,7 +27,6 @@ jest.mock('Components/Receipt/account-transfer-receipt', () => jest.fn(() => 'mo
 jest.mock('Components/Error/error', () => jest.fn(() => 'mockedError'));
 
 describe('<AccountTransfer />', () => {
-    const history = createBrowserHistory();
     const props = {
         error: {},
         onMount: jest.fn(),
@@ -47,11 +46,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should not show the side notes when switching', async () => {
-        render(
-            <Router history={history}>
-                <AccountTransfer is_switching {...props} />
-            </Router>
-        );
+        render(<AccountTransfer is_switching {...props} />);
 
         await waitFor(() => {
             expect(props.setSideNotes).toHaveBeenCalledWith(null);
@@ -59,6 +54,8 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the virtual component if client is using a demo account', async () => {
+        const history = createBrowserHistory();
+
         render(
             <Router history={history}>
                 <AccountTransfer is_virtual {...props} />
@@ -110,6 +107,8 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the no balance component if the account has no balance', async () => {
+        const history = createBrowserHistory();
+
         render(
             <Router history={history}>
                 <AccountTransfer has_no_accounts_balance {...props} />
@@ -122,11 +121,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should show the receipt if transfer is successful', async () => {
-        render(
-            <Router history={history}>
-                <AccountTransfer is_transfer_confirm {...props} />
-            </Router>
-        );
+        render(<AccountTransfer is_transfer_confirm {...props} />);
 
         await waitFor(() => {
             expect(screen.getByText('mockedAccountTransferReceipt')).toBeInTheDocument();
@@ -134,11 +129,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should show the crypto transactions if triggered from recent transactions', async () => {
-        render(
-            <Router history={history}>
-                <AccountTransfer is_crypto_transactions_visible {...props} />
-            </Router>
-        );
+        render(<AccountTransfer is_crypto_transactions_visible {...props} />);
 
         await waitFor(() => {
             expect(screen.getByText('mockedCryptoTransactionsHistory')).toBeInTheDocument();

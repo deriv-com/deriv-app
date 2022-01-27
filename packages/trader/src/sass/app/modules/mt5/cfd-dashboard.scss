@@ -1124,6 +1124,8 @@
             flex: 1;
             height: 240px;
             position: relative;
+            margin-bottom: 0;
+            margin: 0;
 
             .dc-file-dropzone {
                 border: 1px dashed var(--border-normal);

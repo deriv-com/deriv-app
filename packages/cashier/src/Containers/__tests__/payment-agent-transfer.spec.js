@@ -51,11 +51,7 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should render the component', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentTransfer {...props} />
-            </Router>
-        );
+        render(<PaymentAgentTransfer {...props} />);
 
         expect(screen.getByText('mockedPaymentAgentTransferForm')).toBeInTheDocument();
     });
@@ -73,21 +69,13 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should show the loading component if in loading state', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentTransfer is_loading {...props} />
-            </Router>
-        );
+        render(<PaymentAgentTransfer is_loading {...props} />);
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should show the cashier locked component if cashier is locked', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentTransfer is_cashier_locked {...props} />
-            </Router>
-        );
+        render(<PaymentAgentTransfer is_cashier_locked {...props} />);
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
@@ -97,41 +85,25 @@ describe('<PaymentAgentTransfer />', () => {
             is_show_full_page: true,
         };
 
-        render(
-            <Router history={history}>
-                <PaymentAgentTransfer {...props} error={cta_error} />
-            </Router>
-        );
+        render(<PaymentAgentTransfer {...props} error={cta_error} />);
 
         expect(screen.getByText('mockedError')).toBeInTheDocument();
     });
 
     it('should show the no balance component if account has no balance', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentTransfer {...props} balance='0' />
-            </Router>
-        );
+        render(<PaymentAgentTransfer {...props} balance='0' />);
 
         expect(screen.getByText('mockedNoBalance')).toBeInTheDocument();
     });
 
     it('should show the confirmation if validations are passed', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentTransfer is_try_transfer_successful {...props} />
-            </Router>
-        );
+        render(<PaymentAgentTransfer is_try_transfer_successful {...props} />);
 
         expect(screen.getByText('mockedPaymentAgentTransferConfirm')).toBeInTheDocument();
     });
 
     it('should show the receipt if transfer is successful', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentTransfer is_transfer_successful {...props} />
-            </Router>
-        );
+        render(<PaymentAgentTransfer is_transfer_successful {...props} />);
 
         expect(screen.getByText('mockedPaymentAgentTransferReceipt')).toBeInTheDocument();
     });

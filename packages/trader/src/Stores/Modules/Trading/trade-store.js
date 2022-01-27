@@ -742,28 +742,28 @@ export default class TradeStore extends BaseStore {
             obj_new_values.contract_type = 'rise_fall_equal';
         }
 
-        switch(obj_new_values.contract_type) {
+        switch (obj_new_values.contract_type) {
             case 'even_odd':
                 obj_new_values.form_components = ['duration', 'amount'];
                 obj_new_values.trade_types = {
-                    DIGITEVEN: "Digit Even",
-                    DIGITODD: "Digit Odd"
+                    DIGITEVEN: 'Digit Even',
+                    DIGITODD: 'Digit Odd',
                 };
                 break;
             case 'over_under':
                 obj_new_values.form_components = ['duration', 'amount', 'last_digit'];
                 obj_new_values.trade_types = {
-                    DIGITOVER: "Digit Over",
-                    DIGITUNDER: "Digit Under"
+                    DIGITOVER: 'Digit Over',
+                    DIGITUNDER: 'Digit Under',
                 };
                 break;
-            case 'match_diff': 
-            obj_new_values.form_components = ['duration', 'amount', 'last_digit'];
-            obj_new_values.trade_types = {
-                DIGITDIFF: "Digit Differs",
-                DIGITMATCH: "Digit Matches"
-            };
-            break;
+            case 'match_diff':
+                obj_new_values.form_components = ['duration', 'amount', 'last_digit'];
+                obj_new_values.trade_types = {
+                    DIGITDIFF: 'Digit Differs',
+                    DIGITMATCH: 'Digit Matches',
+                };
+                break;
         }
 
         // if (obj_new_values.contract_type === 'even_odd') {

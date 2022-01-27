@@ -72,13 +72,13 @@ export default Engine =>
 
         getLastDigit() {
             return new Promise(resolve =>
-                this.getLastTick().then(tick => resolve(getLastDigit(tick, this.getPipSize())))
+                this.getLastTick().then(tick => resolve(getLastDigit(tick)))
             );
         }
 
         getLastDigitList() {
             return new Promise(resolve =>
-                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick, this.getPipSize()))))
+                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick))))
             );
         }
 

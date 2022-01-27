@@ -586,7 +586,7 @@ const ModalContent = ({
     is_eu,
     is_uk,
 }: TModalContentProps) => {
-    const [cols, setCols] = React.useState<Array<{ [key: string]: string | React.ReactNode | undefined }>>([]);
+    const [cols, setCols] = React.useState<Array<Record<string, string | React.ReactNode | undefined>>>([]);
     const [template_columns, updateColumnsStyle] = React.useState(
         platform === CFD_PLATFORMS.DXTRADE ? '1.5fr 1fr 2fr' : '1.5fr 1fr 2fr 1fr'
     );

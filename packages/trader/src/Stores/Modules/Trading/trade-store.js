@@ -764,6 +764,8 @@ export default class TradeStore extends BaseStore {
                     DIGITMATCH: 'Digit Matches',
                 };
                 break;
+            default:
+                break;
         }
 
         // if (obj_new_values.contract_type === 'even_odd') {

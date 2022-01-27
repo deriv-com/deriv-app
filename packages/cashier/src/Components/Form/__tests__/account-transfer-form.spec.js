@@ -108,13 +108,8 @@ describe('<AccountTransferForm />', () => {
         const amount_field = container.querySelector('input[name=amount]');
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
 
-        act(() => {
-            fireEvent.change(amount_field, { target: { value: '1' } });
-        });
-
-        act(() => {
-            fireEvent.change(amount_field, { target: { value: '' } });
-        });
+        fireEvent.change(amount_field, { target: { value: '1' } });
+        fireEvent.change(amount_field, { target: { value: '' } });
         fireEvent.click(submit_button);
 
         await waitFor(() => {
@@ -132,9 +127,7 @@ describe('<AccountTransferForm />', () => {
 
         const { container } = render(<AccountTransferForm {...props} />);
 
-        act(() => {
-            fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '200' } });
-        });
+        fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '200' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
 
         await waitFor(() => {
@@ -153,9 +146,7 @@ describe('<AccountTransferForm />', () => {
 
         const { container } = render(<AccountTransferForm {...props} />);
 
-        act(() => {
-            fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '100' } });
-        });
+        fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '100' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
 
         expect(props.requestTransferBetweenAccounts).not.toHaveBeenCalled();

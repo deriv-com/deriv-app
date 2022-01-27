@@ -12,7 +12,6 @@ export const getUrlSmartTrader = () => {
     const url_lang = getlangFromUrl();
     const i18n_language = window.localStorage.getItem('i18n_language') || url_lang || 'en';
 
-    console.log("lng",  window.localStorage.getItem('i18n_language'), url_lang, i18n_language)
     let base_link = '';
 
     if (is_staging_deriv_app) {
@@ -21,7 +20,6 @@ export const getUrlSmartTrader = () => {
         base_link = deriv_urls.SMARTTRADER_PRODUCTION;
     }
 
-    console.log("url" , `${base_link}/${i18n_language.toLowerCase()}/trading.html`)
     return `${base_link}/${i18n_language.toLowerCase()}/trading.html`;
 };
 

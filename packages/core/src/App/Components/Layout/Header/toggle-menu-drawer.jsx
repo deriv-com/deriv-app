@@ -390,5 +390,5 @@ const ToggleMenuDrawer = React.forwardRef(
         );
     }
 );
-
+ToggleMenuDrawer.displayName = 'ToggleMenuDrawer';
 export default ToggleMenuDrawer;

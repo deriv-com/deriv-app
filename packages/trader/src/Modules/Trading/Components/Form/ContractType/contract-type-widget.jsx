@@ -19,7 +19,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, []);
+    }, [handleClickOutside]);
 
 
     const handleCategoryClick = ({ label }) => setSelectedCategory(label);
@@ -37,7 +37,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
         if (selected_item && selected_item.value !== value) {
             onChange({ target: { name, value: selected_item.value } });
         }
-    }, [selected_item]);
+    }, [selected_item, onChange, name, value]);
 
     const handleInfoClick = clicked_item => {
         setInfoDialogVisibility(!is_info_dialog_open);
@@ -49,14 +49,17 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
         setItem(nav_clicked_item);
     };
 
-    const handleClickOutside = event => {
-        if (isMobile()) return;
-        if (wrapper_ref && !wrapper_ref.current?.contains(event.target)) {
-            setDialogVisibility(false);
-            setInfoDialogVisibility(false);
-            setItem({ ...item, value });
-        }
-    };
+    const handleClickOutside = React.useCallback(
+        event => {
+            if (isMobile()) return;
+            if (wrapper_ref && !wrapper_ref.current?.contains(event.target)) {
+                setDialogVisibility(false);
+                setInfoDialogVisibility(false);
+                setItem({ ...item, value });
+            }
+        },
+        [item, value]
+    );
 
     const handleVisibility = () => {
         setDialogVisibility(!is_dialog_open);

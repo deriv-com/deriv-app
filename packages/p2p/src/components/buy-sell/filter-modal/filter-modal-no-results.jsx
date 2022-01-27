@@ -13,7 +13,7 @@ const FilterModalNoResults = ({ text }) => (
             {localize('Check your spelling or use a different term.')}
         </Text>
     </div>
-); 
+);
 
 FilterModalNoResults.propTypes = {
     text: PropTypes.string,

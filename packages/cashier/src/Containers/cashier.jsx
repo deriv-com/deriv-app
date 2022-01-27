@@ -51,7 +51,7 @@ const Cashier = ({
         return () => {
             toggleCashier();
         };
-    }, []);
+    }, [toggleCashier]);
     React.useEffect(() => {
         (async () => {
             await WS.wait('authorize');
@@ -60,7 +60,7 @@ const Cashier = ({
                 setAccountSwitchListener();
             }
         })();
-    }, [is_logged_in]);
+    }, [is_logged_in, onMount, setAccountSwitchListener]);
 
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {

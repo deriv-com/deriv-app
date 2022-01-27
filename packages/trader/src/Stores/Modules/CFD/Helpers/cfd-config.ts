@@ -1,5 +1,8 @@
 import { localize } from '@deriv/translations';
 
+export type TDxCompanies = ReturnType<typeof getDxCompanies>;
+export type TMtCompanies = ReturnType<typeof getMtCompanies>;
+
 export const getDxCompanies = () => {
     const synthetic_config = {
         account_type: '',
@@ -43,7 +46,7 @@ export const getDxCompanies = () => {
     };
 };
 
-export const getMtCompanies = is_eu => {
+export const getMtCompanies = (is_eu: boolean) => {
     const synthetic_config = {
         account_type: '',
         leverage: 500,

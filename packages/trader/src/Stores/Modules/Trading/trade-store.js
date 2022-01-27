@@ -768,30 +768,6 @@ export default class TradeStore extends BaseStore {
                 break;
         }
 
-        // if (obj_new_values.contract_type === 'even_odd') {
-        //     obj_new_values.form_components = ['duration', 'amount'];
-        //     obj_new_values.trade_types = {
-        //         DIGITEVEN: "Digit Even",
-        //         DIGITODD: "Digit Odd"
-        //     };
-        // }
-
-        // if (obj_new_values.contract_type === 'over_under') {
-        //     obj_new_values.form_components = ['duration', 'amount', 'last_digit'];
-        //     obj_new_values.trade_types = {
-        //         DIGITOVER: "Digit Over",
-        //         DIGITUNDER: "Digit Under"
-        //     };
-        // }
-
-        // if (obj_new_values.contract_type === 'match_diff') {
-        //     obj_new_values.form_components = ['duration', 'amount', 'last_digit'];
-        //     obj_new_values.trade_types = {
-        //         DIGITDIFF: "Digit Differs",
-        //         DIGITMATCH: "Digit Matches"
-        //     };
-        // }
-
         if (/\bduration\b/.test(Object.keys(obj_new_values))) {
             // TODO: fix this in input-field.jsx
             if (typeof obj_new_values.duration === 'string') {

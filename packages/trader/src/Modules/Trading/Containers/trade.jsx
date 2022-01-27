@@ -84,7 +84,7 @@ const Trade = ({
             setMarket();
         }
         return () => onUnmount();
-    }, [onMount, onUnmount]);
+    }, [onMount, onUnmount, getFirstOpenMarket, is_synthetics_available]);
 
     React.useEffect(() => {
         if (isMobile()) {
@@ -92,7 +92,7 @@ const Trade = ({
         }
         setTrySyntheticIndices(false);
         setTryOpenMarkets(false);
-    }, [symbol, setDigits, setTrySyntheticIndices]);
+    }, [symbol, setDigits, setTrySyntheticIndices, is_synthetics_available]);
 
     React.useEffect(() => {
         const selectMultipliers = async () => {
@@ -103,6 +103,7 @@ const Trade = ({
         if (should_show_multipliers_onboarding && !is_chart_loading && (is_synthetics_available || !is_market_closed)) {
             selectMultipliers();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_multipliers_onboarding, is_chart_loading]);
 
     const bottomWidgets = React.useCallback(({ digits: d, tick: t }) => {

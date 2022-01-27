@@ -5,6 +5,7 @@ import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import FilterModalHeader from './filter-modal-header.jsx';
 import FilterModalSearch from './filter-modal-search.jsx';
+import FilterModalNoResults from './filter-modal-no-results.jsx';
 
 const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
@@ -31,28 +32,35 @@ const FilterModal = () => {
                         <FilterModalSearch />
                         <div className='filter-modal__checkbox-container'>
                             <ThemedScrollbars is_scrollbar_hidden>
-                                {buy_sell_store.is_filter_modal_loading && <Loading is_fullscreen={false} />}
-                                {my_profile_store.search_term
-                                    ? my_profile_store.search_results.map((payment_method, key) => {
-                                          return (
-                                              <Checkbox
-                                                  key={key}
-                                                  label={payment_method.text}
-                                                  onChange={e => buy_sell_store.onChange(e)}
-                                                  // value={payment_method.value}
-                                              />
-                                          );
-                                      })
-                                    : my_profile_store.payment_methods_list_items.map((payment_method, key) => {
-                                          return (
-                                              <Checkbox
-                                                  key={key}
-                                                  label={payment_method.text}
-                                                  onChange={e => buy_sell_store.onChange(e)}
-                                                  // value={payment_method.value}
-                                              />
-                                          );
-                                      })}
+                                {buy_sell_store.is_filter_modal_loading ? (
+                                    <Loading is_fullscreen={false} />
+                                ) : my_profile_store.search_term ? (
+                                    !my_profile_store.search_results || my_profile_store.search_results.length > 0 ? (
+                                        my_profile_store.search_results?.map((payment_method, key) => {
+                                            return (
+                                                <Checkbox
+                                                    key={key}
+                                                    label={payment_method.text}
+                                                    onChange={e => buy_sell_store.onChange(e)}
+                                                    // value={payment_method.value}
+                                                />
+                                            );
+                                        })
+                                    ) : (
+                                        <FilterModalNoResults text={my_profile_store.search_term} />
+                                    )
+                                ) : (
+                                    my_profile_store.payment_methods_list_items.map((payment_method, key) => {
+                                        return (
+                                            <Checkbox
+                                                key={key}
+                                                label={payment_method.text}
+                                                onChange={e => buy_sell_store.onChange(e)}
+                                                // value={payment_method.value}
+                                            />
+                                        );
+                                    })
+                                )}
                             </ThemedScrollbars>
                         </div>
                     </React.Fragment>

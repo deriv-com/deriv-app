@@ -25,6 +25,7 @@ const FilterModalSearch = () => {
         }
 
         buy_sell_store.setIsFilterModalLoading(true);
+        my_profile_store.setSearchResults();
         returnedFunction();
     };
 

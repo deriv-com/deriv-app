@@ -16,11 +16,9 @@ const log = (type, ...args) => {
     globalObserver.emit('bot.notify', { type, timestamp, message: args.join(':') });
 };
 
-const notify = ({ className, message, position = 'left', sound = 'silent' }) => {
+const notify = ({ className, message, position = isMobile() ? 'right' : 'left', sound = 'silent' }) => {
     log(className, message);
-    const pos = isMobile() ? 'right' : position;
-
-    $.notify(message.toString(), { position: `bottom ${pos}`, className });
+    $.notify(message.toString(), { position: `bottom ${position}`, className });
     if (sound !== 'silent') {
         $(`#${sound}`)
             .get(0)

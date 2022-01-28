@@ -28,7 +28,7 @@ export const general_messages = {
                 );
             }
             return localize(
-                'Trade major (standard and micro-lots) and minor currency pairs, stocks and stock indices, commodities, basket indices, and cryptocurrencies with high leverage.'
+                'Trade major (standard & micro-lots) and minor forex, stocks & stock indices, commodities, basket indices, and crypto with high leverage.'
             );
         }
         return '';

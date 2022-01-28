@@ -190,7 +190,7 @@ const CFDRealAccountDisplay = ({
                               onClickFund={onClickFundReal}
                               platform={platform}
                               descriptor={localize(
-                                  'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
+                                  'Trade CFDs on our Synthetic indices that simulate real-world market movement.'
                               )}
                               specs={specifications[platform].real_synthetic_specs}
                               onHover={handleHoverCard}
@@ -217,7 +217,7 @@ const CFDRealAccountDisplay = ({
                       onClickFund={onClickFundReal}
                       platform={platform}
                       descriptor={localize(
-                          'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
+                          'Trade CFDs on our Synthetic indices that simulate real-world market movement.'
                       )}
                       specs={specifications[platform].real_synthetic_specs}
                       onHover={handleHoverCard}

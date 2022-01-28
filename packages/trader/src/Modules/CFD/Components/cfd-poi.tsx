@@ -10,31 +10,33 @@ import { connect } from 'Stores/connect';
 type TCFDAuthenticationStatusProps = {
     document_status: string;
     identity_status: string;
-}
+};
 type TCFDValue = {
     poi_state: string;
-}
+};
 type TErrors = {
     poi_state: boolean;
-}
+};
 
-type TFormValues = {
-    citizen?: string;
-    tax_residence?: string;
-    tax_identification_number?: string;
-    account_opening_reason?: string;
-} | {};
+type TFormValues =
+    | {
+          citizen?: string;
+          tax_residence?: string;
+          tax_identification_number?: string;
+          account_opening_reason?: string;
+      }
+    | {};
 
 type TCFDAppRoutingHistory = {
     pathname: string;
-}
+};
 type TCFDNotificationByKey = {
     key: string;
-}
+};
 type TCFDNotificationMessage = {
     key: string;
     should_show_again: string;
-}
+};
 
 type TCFDPOIProps = {
     authentication_status: TCFDAuthenticationStatusProps;
@@ -80,7 +82,9 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                 poi_state: value.poi_state,
             }}
             validate={validateForm}
-            onSubmit={(_values: TFormValues, actions: FormikActions<TCFDValue>) => onSubmit(index, { poi_state }, actions.setSubmitting)}
+            onSubmit={(_values: TFormValues, actions: FormikActions<TCFDValue>) =>
+                onSubmit(index, { poi_state }, actions.setSubmitting)
+            }
         >
             {({ handleSubmit }) => (
                 <AutoHeightWrapper default_height={200}>

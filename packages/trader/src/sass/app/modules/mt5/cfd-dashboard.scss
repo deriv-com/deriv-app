@@ -1123,13 +1123,13 @@
                 &-file {
                     width: 100%;
                     flex: 1;
-                    height: 240px;
+                    height: 24rem;
                     position: relative;
                     margin: 0;
 
                     .dc-file-dropzone {
                         border: 1px dashed var(--border-normal);
-                        max-width: 400px;
+                        max-width: 40rem;
 
                         &__message-subtitle {
                             font-size: unset;
@@ -1156,11 +1156,11 @@
                     text-align: unset;
                 }
                 &-icon {
-                    width: 25px;
+                    width: 2.5rem;
                     margin-bottom: 0;
                 }
                 &-item {
-                    min-width: 238px;
+                    min-width: 23.8rem;
                     width: 100%;
                     margin-left: 1rem;
                     font-size: var(--text-size-xxs);

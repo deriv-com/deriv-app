@@ -71,8 +71,8 @@
         &--duration {
             border: none !important;
             .dc-dropdown__display-text {
-                color: var(--text-general);
-                padding-left: none !important;
+                color: var(--text-general) !important;
+                padding: 0 !important;
             }
         }
         &--has-symbol {

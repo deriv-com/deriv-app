@@ -307,7 +307,7 @@ const CFDAccountCard = ({
                     </td>
                     <td className='cfd-account-card__login-specs-table-data'>
                         <div className='cfd-account-card--paragraph'>
-                            <SpecBox value={existing_data.login} is_bold />
+                            <SpecBox value={existing_data?.login} is_bold />
                         </div>
                     </td>
                 </tr>

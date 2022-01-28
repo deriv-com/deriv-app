@@ -1124,7 +1124,6 @@
             flex: 1;
             height: 240px;
             position: relative;
-            margin-bottom: 0;
             margin: 0;
 
             .dc-file-dropzone {
@@ -1264,7 +1263,7 @@
                 margin-top: 1.6rem;
             }
             .proof-of-identity__header {
-                margin-bottom: 1.6rem;
+                margin: 0 0 1.6rem;
             }
             .proof-of-identity__country-text {
                 text-align: center;

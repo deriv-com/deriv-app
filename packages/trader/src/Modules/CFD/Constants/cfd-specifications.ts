@@ -1,45 +1,21 @@
 import { localize } from '@deriv/translations';
 
 type TMT5 = {
-    real_synthetic_specs: {
-        [index: string]: string;
-    };
-    real_financial_specs: {
-        [index: string]: string;
-    };
-    eu_real_financial_specs: {
-        [index: string]: string;
-    };
-    real_financial_stp_specs: {
-        [index: string]: string;
-    };
-    au_real_financial_specs: {
-        [index: string]: string;
-    };
-    demo_financial_stp_specs: {
-        [index: string]: string;
-    };
+    real_synthetic_specs: Record<string, string>;
+    real_financial_specs: Record<string, string>;
+    eu_real_financial_specs: Record<string, string>;
+    real_financial_stp_specs: Record<string, string>;
+    au_real_financial_specs: Record<string, string>;
+    demo_financial_stp_specs: Record<string, string>;
 };
 
 type TDXTrade = {
-    real_synthetic_specs: {
-        [index: string]: string;
-    };
-    real_financial_specs: {
-        [index: string]: string;
-    };
-    eu_real_financial_specs: {
-        [index: string]: string;
-    };
-    au_real_financial_specs: {
-        [index: string]: string;
-    };
-    demo_financial_stp_specs?: {
-        [index: string]: string;
-    };
-    real_financial_stp_specs?: {
-        [index: string]: string;
-    };
+    real_synthetic_specs: Record<string, string>;
+    real_financial_specs: Record<string, string>;
+    eu_real_financial_specs: Record<string, string>;
+    au_real_financial_specs: Record<string, string>;
+    demo_financial_stp_specs?: Record<string, string>;
+    real_financial_stp_specs?: Record<string, string>;
 };
 
 export type TSpecifications = {

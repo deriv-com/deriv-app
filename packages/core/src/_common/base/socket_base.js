@@ -285,6 +285,11 @@ const BinarySocketBase = (() => {
             dry_run,
         });
 
+    const cryptoConfig = () =>
+        deriv_api.send({
+            crypto_config: 1,
+        });
+
     const paymentAgentTransfer = ({ amount, currency, description, transfer_to, dry_run = 0 }) =>
         deriv_api.send({
             amount,
@@ -407,6 +412,7 @@ const BinarySocketBase = (() => {
         cancelContract,
         close,
         cryptoWithdraw,
+        cryptoConfig,
         contractUpdate,
         contractUpdateHistory,
         getFinancialAssessment,

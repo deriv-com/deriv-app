@@ -1142,18 +1142,19 @@
                 }
                 &-list {
                     display: unset;
-                }
-                &-box {
-                    display: flex;
-                    flex-direction: unset;
-                    flex: unset;
-                    align-items: center;
-                    justify-content: flex-start;
-                    margin: 0 1.6rem 0.8rem 0;
-                    border: none;
-                    border-radius: 0;
-                    padding: 0;
-                    text-align: unset;
+
+                    .account-poa__upload-box {
+                        display: flex;
+                        flex-direction: unset;
+                        flex: unset;
+                        align-items: center;
+                        justify-content: flex-start;
+                        margin: 0 1.6rem 0.8rem 0;
+                        border: none;
+                        border-radius: 0;
+                        padding: 0;
+                        text-align: unset;
+                    }
                 }
                 &-icon {
                     width: 2.5rem;

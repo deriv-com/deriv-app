@@ -9,6 +9,8 @@ import PaymentMethodCard from '../payment-method-card';
 const PaymentMethodsList = () => {
     const { my_profile_store } = useStores();
 
+    const independent_categories = ['bank_transfer', 'other'];
+
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
         my_profile_store.setPaymentMethodToDelete(null);
@@ -29,7 +31,10 @@ const PaymentMethodsList = () => {
             <div className='payment-methods-list__list-container'>
                 {my_profile_store.payment_methods_list_methods.map((payment_methods_list_method, key) => {
                     const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
-                        payment_method => payment_method.method === payment_methods_list_method.method
+                        payment_method =>
+                            payment_method.method === payment_methods_list_method.method ||
+                            (!independent_categories.includes(payment_method.method) &&
+                                payment_methods_list_method.method === 'e_wallet')
                     );
 
                     return (

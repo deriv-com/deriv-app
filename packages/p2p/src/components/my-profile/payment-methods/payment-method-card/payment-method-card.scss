@@ -24,22 +24,22 @@
     }
 
     &--large {
-        height: 12.8rem;
+        min-height: 12.8rem;
         width: 20.8rem;
     }
 
     &--medium {
-        height: 9.4rem;
+        min-height: 9.4rem;
         width: 14.4rem;
     }
 
     &--small {
-        height: 8.8rem;
+        min-height: 8.8rem;
         width: 13.6rem;
     }
 
     @include mobile {
-        height: 8.8rem;
+        min-height: 8.8rem;
         width: 13.6rem;
     }
 

@@ -29,7 +29,7 @@ const account_icons: { [key: string]: TAccountIconValues } = {
     },
 };
 
-const AddTradeServerButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () => void; is_disabled: boolean }>(
+const AddTradeServerButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () => void; is_disabled?: boolean }>(
     ({ onSelectAccount, is_disabled }, ref) => {
         return (
             <div
@@ -251,11 +251,12 @@ const CFDAccountCard = ({
         return `${type.category}-${type.type}${region_string}${server_number}`;
     };
 
-    const handleClickSwitchAccount = (): void => {
+    const handleClickSwitchAccount: () => void = () => {
         if (toggleShouldShowRealAccountsList && toggleAccountsDialog) {
             toggleShouldShowRealAccountsList(true);
             toggleAccountsDialog(true);
         }
+    };
 
     const getDxtradeDownloadLink: () => string = () => {
         const os = mobileOSDetect();

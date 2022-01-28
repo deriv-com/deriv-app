@@ -219,6 +219,11 @@
                 margin: 0.25rem;
                 padding: 0 0.8rem;
                 width: fit-content;
+
+                @include mobile {
+                    height: 2.4rem;
+                    margin: 0.25rem 0.5rem 0.25rem 0; 
+                }
             }
         }
 
@@ -392,6 +397,11 @@
                         }
                     }
                 }
+            }
+
+            &-methods {
+                display: flex;
+                flex-wrap: wrap;
             }
         }
 

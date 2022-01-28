@@ -140,6 +140,26 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                 {price_display} {local_currency}
                             </Text>
                         </div>
+                        <div className='p2p-my-ads__table-row-methods'>
+                            {payment_method_names ? (
+                                payment_method_names.map((payment_method, key) => {
+                                    return (
+                                        <div className='p2p-my-ads__table__payment-method--label' key={key}>
+                                            <Text color='general' size='xxxs' line-height='l'>
+                                                {payment_method}
+                                            </Text>
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <div className='p2p-my-ads__table-add'>
+                                    <Icon icon='IcAdd' />
+                                    <Text color='prominent' size='xxxs'>
+                                        <Localize i18n_default_text='Add' />
+                                    </Text>
+                                </div>
+                            )}
+                        </div>
                     </Table.Row>
                 }
             />

@@ -1141,7 +1141,7 @@
         }
 
         .account-poa__upload-list {
-            display: block;
+            display: unset;
 
             .account-poa__upload-box {
                 display: flex;
@@ -1149,7 +1149,7 @@
                 flex: unset;
                 align-items: center;
                 justify-content: flex-start;
-                margin: 0 0 0.8rem 0;
+                margin: 0 1.6rem 0.8rem 0;
                 border: none;
                 border-radius: 0;
                 padding: 0;

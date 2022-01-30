@@ -11,7 +11,7 @@ export const processTradeParams = async (store, new_state) => {
     for (let i = 0; i < functions.length; i++) {
         // Shallow copy with Object.assign is good enough to extend the snapshot with new state
         // we don't need deep extension here, since each function in functions array composes a property of the store completely
-        Object.assign(snapshot, await functions[i](snapshot)); // eslint-disable-line no-await-in-loop
+        await Object.assign(snapshot, functions[i](snapshot)); // eslint-disable-line no-await-in-loop
     }
 
     return snapshot;

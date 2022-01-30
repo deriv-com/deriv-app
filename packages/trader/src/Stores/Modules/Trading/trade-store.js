@@ -742,32 +742,6 @@ export default class TradeStore extends BaseStore {
             obj_new_values.contract_type = 'rise_fall_equal';
         }
 
-        switch (obj_new_values.contract_type) {
-            case 'even_odd':
-                obj_new_values.form_components = ['duration', 'amount'];
-                obj_new_values.trade_types = {
-                    DIGITEVEN: 'Digit Even',
-                    DIGITODD: 'Digit Odd',
-                };
-                break;
-            case 'over_under':
-                obj_new_values.form_components = ['duration', 'amount', 'last_digit'];
-                obj_new_values.trade_types = {
-                    DIGITOVER: 'Digit Over',
-                    DIGITUNDER: 'Digit Under',
-                };
-                break;
-            case 'match_diff':
-                obj_new_values.form_components = ['duration', 'amount', 'last_digit'];
-                obj_new_values.trade_types = {
-                    DIGITDIFF: 'Digit Differs',
-                    DIGITMATCH: 'Digit Matches',
-                };
-                break;
-            default:
-                break;
-        }
-
         if (/\bduration\b/.test(Object.keys(obj_new_values))) {
             // TODO: fix this in input-field.jsx
             if (typeof obj_new_values.duration === 'string') {

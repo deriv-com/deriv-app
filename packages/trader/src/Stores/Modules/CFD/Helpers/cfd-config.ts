@@ -106,6 +106,3 @@ export const getMtCompanies = (is_eu: boolean) => {
         },
     };
 };
-
-export type TMtCompanies = ReturnType<typeof getMtCompanies>;
-export type TDXCompanies = ReturnType<typeof getDxCompanies>;

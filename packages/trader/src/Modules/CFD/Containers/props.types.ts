@@ -21,7 +21,7 @@ export type TPasswordResetAndTradingPasswordManager = {
 };
 
 export type TResetPasswordIntent = {
-    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
+    current_list: Array<DetailsOfEachMT5Loginid> & Record<string, DetailsOfEachMT5Loginid>;
     children({ ...props }): React.ReactElement;
     is_eu: boolean;
 };
@@ -32,7 +32,7 @@ export type TError = {
 };
 
 export type TCFDResetPasswordModal = {
-    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
+    current_list: Array<DetailsOfEachMT5Loginid> & Record<string, DetailsOfEachMT5Loginid>;
     email: string;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;

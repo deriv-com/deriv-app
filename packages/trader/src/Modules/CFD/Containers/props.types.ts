@@ -1,12 +1,32 @@
 import { History } from 'history';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { FormikHelpers as FormikActions } from 'formik';
+import { TCFDPasswordFormValues } from './cfd-password-modal';
 
 export type TCFDChangePasswordConfirmationProps = {
-    confirm_label: string;
+    confirm_label?: string;
     platform: string;
     className?: string;
-    onConfirm: () => void;
+    onConfirm: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
     onCancel: () => void;
+};
+
+export type TCFDDashboardContainer = {
+    platform: 'dxtrade' | 'mt5';
+    active_index: number;
+    is_dark_mode_on: boolean;
+};
+
+export type TMT5AccountOpeningRealFinancialStpModal = {
+    enableApp: () => void;
+    disableApp: () => void;
+    disableMt5FinancialStpModal: () => void;
+    is_mt5_financial_stp_modal_open: boolean;
+};
+
+export type TMissingRealAccount = {
+    onClickSignup: () => void;
+    platform: 'dxtrade' | 'mt5';
 };
 
 export type TChangePassword = {

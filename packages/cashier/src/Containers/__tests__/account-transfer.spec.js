@@ -40,9 +40,7 @@ describe('<AccountTransfer />', () => {
     it('should render the account transfer form', async () => {
         render(<AccountTransfer {...props} />);
 
-        await waitFor(() => {
-            expect(screen.getByText('mockedAccountTransferForm')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('mockedAccountTransferForm')).toBeInTheDocument();
     });
 
     it('should not show the side notes when switching', async () => {
@@ -62,27 +60,21 @@ describe('<AccountTransfer />', () => {
             </Router>
         );
 
-        await waitFor(() => {
-            expect(
-                screen.getByText(/You need to switch to a real money account to use this feature./i)
-            ).toBeInTheDocument();
-        });
+        expect(
+            await screen.findByText(/You need to switch to a real money account to use this feature./i)
+        ).toBeInTheDocument();
     });
 
     it('should render the cashier locked component if cashier is locked', async () => {
         render(<AccountTransfer is_cashier_locked {...props} />);
 
-        await waitFor(() => {
-            expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('mockedCashierLocked')).toBeInTheDocument();
     });
 
     it('should render the transfer lock component if only transfer is locked', async () => {
         render(<AccountTransfer is_transfer_lock {...props} />);
 
-        await waitFor(() => {
-            expect(screen.getByText('Transfers are locked')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('Transfers are locked')).toBeInTheDocument();
     });
 
     it('should render the error component if there are errors when transferring between accounts', async () => {
@@ -93,17 +85,13 @@ describe('<AccountTransfer />', () => {
 
         render(<AccountTransfer {...props} accounts_list={accounts_list} error={cta_error} />);
 
-        await waitFor(() => {
-            expect(screen.getByText('mockedError')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('mockedError')).toBeInTheDocument();
     });
 
     it('should render the no account component if the client has only one account', async () => {
         render(<AccountTransfer has_no_account {...props} />);
 
-        await waitFor(() => {
-            expect(screen.getByText('You need at least two accounts')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('You need at least two accounts')).toBeInTheDocument();
     });
 
     it('should render the no balance component if the account has no balance', async () => {
@@ -115,24 +103,18 @@ describe('<AccountTransfer />', () => {
             </Router>
         );
 
-        await waitFor(() => {
-            expect(screen.getByText(/You have no funds/i)).toBeInTheDocument();
-        });
+        expect(await screen.findByText(/You have no funds/i)).toBeInTheDocument();
     });
 
     it('should show the receipt if transfer is successful', async () => {
         render(<AccountTransfer is_transfer_confirm {...props} />);
 
-        await waitFor(() => {
-            expect(screen.getByText('mockedAccountTransferReceipt')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('mockedAccountTransferReceipt')).toBeInTheDocument();
     });
 
     it('should show the crypto transactions if triggered from recent transactions', async () => {
         render(<AccountTransfer is_crypto_transactions_visible {...props} />);
 
-        await waitFor(() => {
-            expect(screen.getByText('mockedCryptoTransactionsHistory')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('mockedCryptoTransactionsHistory')).toBeInTheDocument();
     });
 });

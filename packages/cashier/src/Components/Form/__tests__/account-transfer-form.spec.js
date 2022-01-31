@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 
@@ -112,9 +112,7 @@ describe('<AccountTransferForm />', () => {
         fireEvent.change(amount_field, { target: { value: '' } });
         fireEvent.click(submit_button);
 
-        await waitFor(() => {
-            expect(screen.getByText('This field is required.')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('This field is required.')).toBeInTheDocument();
     });
 
     it('should show an error if transfer amount is greater than balance', async () => {
@@ -130,9 +128,7 @@ describe('<AccountTransferForm />', () => {
         fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '200' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
 
-        await waitFor(() => {
-            expect(screen.getByText('Insufficient balance')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
     });
 
     it('should not allow to do transfer if accounts from and to are same', () => {

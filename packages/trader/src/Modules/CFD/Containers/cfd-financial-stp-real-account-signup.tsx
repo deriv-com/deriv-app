@@ -72,8 +72,7 @@ type TItemsProps =
     | 'removeNotificationByKey'
     | 'states_list'
     | 'get_settings'
-    | 'storeProofOfAddress'
-    | 'refreshNotifications';
+    | 'storeProofOfAddress';
 
 type TgetCurrentProps = 'header' | 'body' | 'props' | 'form_value';
 const index_lookup: TIndexLookupObject = {
@@ -210,8 +209,8 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         refreshNotifications();
     }, [items, refreshNotifications]);
 
-    const transform = (value: any) => {
-        const [result] = props.residence_list.filter((item: any) => item.value === value);
+    const transform = (value: string | undefined) => {
+        const [result] = props.residence_list.filter(item => item.value === value);
         return getPropertyValue(result, ['text']) || value;
     };
 

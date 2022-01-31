@@ -73,7 +73,7 @@ describe('<PaymentAgent />', () => {
     });
 
     it('should set the active tab index accordingly', () => {
-        render(<PaymentAgent {...props} verification_code={'7GbuuVaX'} />);
+        render(<PaymentAgent {...props} verification_code='7GbuuVaX' />);
 
         expect(props.setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(1);
     });

@@ -17,8 +17,7 @@ import { localize, Localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 
-const hasTransferNotAllowedLoginid = loginid =>
-    loginid.startsWith('MX') || loginid.startsWith('VRTC') || loginid.startsWith('DXD');
+const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
 const getSelectedError = (selected_value, is_from_account) => {
     if (is_from_account) {
@@ -59,6 +58,7 @@ export default class AccountTransferStore {
     @observable account_transfer_amount = '';
     @observable transfer_fee = null;
     @observable transfer_limit = {};
+    @observable onRemount = () => {};
 
     @computed
     get is_account_transfer_visible() {
@@ -100,6 +100,11 @@ export default class AccountTransferStore {
         this.selected_to.balance = balance;
     }
 
+    @action.bound
+    setOnRemount(func) {
+        this.onRemount = func;
+    }
+
     // possible transfers:
     // 1. fiat to crypto & vice versa
     // 2. fiat to mt & vice versa
@@ -111,7 +116,7 @@ export default class AccountTransferStore {
         const { active_accounts, is_logged_in } = client;
 
         setLoading(true);
-        this.onRemount = this.onMountAccountTransfer;
+        this.setOnRemount(this.onMountCommon);
         await onMountCommon();
         await this.WS.wait('website_status');
 

@@ -1,3 +1,4 @@
+name: Coverage Commentor
 on: pull_request
 
 jobs:
@@ -8,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - run: npm i
+      - run: npm ci && npm run bootstrap
 
       - name: Comment with Test Coverage
         uses: dkershner6/jest-coverage-commenter-action@v1

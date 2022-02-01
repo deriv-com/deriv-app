@@ -244,13 +244,9 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const BodyComponent = getCurrent('body') as TItemsState['body'];
     const form_value = getCurrent('form_value');
 
-    // @ts-ignore: Unreachable code error
-    const passthrough = (getCurrent('props') || []).reduce<string[]>(
-        (arr: { [key: string]: any }, item: TItemsProps) => {
-            return Object.assign(arr, { [item]: props[item] });
-        },
-        {}
-    );
+    const passthrough = ((getCurrent('props') || []) as TItemsState['props']).reduce((arr, item) => {
+        return Object.assign(arr, { [item]: props[item as keyof TCFDFinancialStpRealAccountSignupProps] });
+    }, {});
     const height = 'auto';
 
     return (

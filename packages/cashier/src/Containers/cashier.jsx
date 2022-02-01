@@ -109,7 +109,7 @@ const Cashier = ({
     };
 
     const getSideNoteClassName = () => {
-        return location.pathname.endsWith(routes.cashier_withdrawal) && !is_crypto ? 'cashier__side-note' : '';
+        return location.pathname?.endsWith(routes.cashier_withdrawal) && !is_crypto ? 'cashier__side-note' : '';
     };
 
     return (

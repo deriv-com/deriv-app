@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { isMobile } from '@deriv/shared';
+import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
 
 jest.mock('Stores/connect', () => ({
@@ -36,6 +37,8 @@ jest.mock('@deriv/shared', () => {
 
 jest.mock('Components/account-prompt-dialog', () => jest.fn(() => 'mockedAccountPromptDialog'));
 jest.mock('Components/error-dialog', () => jest.fn(() => 'mockedErrorDialog'));
+jest.mock('../withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
+jest.mock('../deposit', () => jest.fn(() => 'mockedDeposit'));
 
 describe('<Cashier />', () => {
     const props = {
@@ -47,54 +50,7 @@ describe('<Cashier />', () => {
         is_p2p_enabled: true,
         is_onramp_tab_visible: true,
         is_visible: true,
-        location: {
-            pathname: '/cashier/deposit',
-        },
-        routes: [
-            {
-                path: '/cashier/deposit',
-                component: jest.fn(() => 'mockedDeposit'),
-                getTitle: () => 'Deposit',
-                icon_component: 'IcCashierAdd',
-                default: true,
-            },
-            {
-                path: '/cashier/withdrawal',
-                component: jest.fn(() => 'mockedWithdrawal'),
-                getTitle: () => 'Withdrawal',
-                icon_component: 'IcCashierMinus',
-            },
-            {
-                path: '/cashier/account-transfer',
-                component: jest.fn(() => 'mockedAccountTransfer'),
-                getTitle: () => 'Transfer',
-                icon_component: 'IcAccountTransfer',
-            },
-            {
-                path: '/cashier/payment-agent',
-                component: jest.fn(() => 'mockedPaymentAgent'),
-                getTitle: () => 'Payment agents',
-                icon_component: 'IcPaymentAgent',
-            },
-            {
-                path: '/cashier/payment-agent-transfer',
-                component: jest.fn(() => 'mockedPaymentAgentTransfer'),
-                getTitle: () => 'Transfer to client',
-                icon_component: 'IcAccountTransfer',
-            },
-            {
-                path: '/cashier/p2p',
-                component: jest.fn(() => 'mockedP2P'),
-                getTitle: () => 'Deriv P2P',
-                icon_component: 'IcDp2p',
-            },
-            {
-                path: '/cashier/on-ramp',
-                component: jest.fn(() => 'mockedOnRamp'),
-                getTitle: () => 'Fiat onramp',
-                icon_component: 'IcCashierOnRamp',
-            },
-        ],
+        routes: getRoutesConfig({})[0].routes,
         routeBackInApp: jest.fn(),
         onMount: jest.fn(),
         setAccountSwitchListener: jest.fn(),

@@ -41,6 +41,14 @@ jest.mock('../withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
 jest.mock('../deposit', () => jest.fn(() => 'mockedDeposit'));
 
 describe('<Cashier />', () => {
+    let history;
+    const renderWithRouter = component => {
+        history = createBrowserHistory();
+        return {
+            ...render(<Router history={history}>{component}</Router>),
+        };
+    };
+
     const props = {
         is_account_setting_loaded: true,
         is_account_transfer_visible: true,
@@ -58,25 +66,13 @@ describe('<Cashier />', () => {
     };
 
     it('should show the loading component if client_tnc_status is not yet loaded or not yet logged in', () => {
-        const history = createBrowserHistory();
-
-        render(
-            <Router history={history}>
-                <Cashier {...props} is_logged_in={false} is_logging_in is_account_setting_loaded={false} />
-            </Router>
-        );
+        renderWithRouter(<Cashier {...props} is_logged_in={false} is_logging_in is_account_setting_loaded={false} />);
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should render the component if client_tnc_status is loaded', () => {
-        const history = createBrowserHistory();
-
-        render(
-            <Router history={history}>
-                <Cashier {...props} />
-            </Router>
-        );
+        renderWithRouter(<Cashier {...props} />);
 
         expect(screen.getByRole('link', { name: 'Deposit' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Withdrawal' })).toBeInTheDocument();
@@ -89,15 +85,9 @@ describe('<Cashier />', () => {
     });
 
     it('should go to payment methods page if the learn more about payment methods button is clicked', () => {
-        const history = createBrowserHistory();
-
         window.open = jest.fn();
 
-        render(
-            <Router history={history}>
-                <Cashier {...props} />
-            </Router>
-        );
+        renderWithRouter(<Cashier {...props} />);
 
         const learn_more_btn = screen.getByRole('button', { name: 'Learn more about payment methods' });
         fireEvent.click(learn_more_btn);
@@ -106,13 +96,7 @@ describe('<Cashier />', () => {
     });
 
     it('should redirect to trade page if the close button is clicked ', () => {
-        const history = createBrowserHistory();
-
-        render(
-            <Router history={history}>
-                <Cashier {...props} />
-            </Router>
-        );
+        renderWithRouter(<Cashier {...props} />);
 
         const close_btn = screen.getByTestId('page_overlay_header_close');
         fireEvent.click(close_btn);
@@ -122,13 +106,7 @@ describe('<Cashier />', () => {
     });
 
     it('should go to selected route page on desktop', () => {
-        const history = createBrowserHistory();
-
-        render(
-            <Router history={history}>
-                <Cashier {...props} />
-            </Router>
-        );
+        renderWithRouter(<Cashier {...props} />);
 
         const withdrawal_link = screen.getByRole('link', { name: 'Withdrawal' });
         fireEvent.click(withdrawal_link);
@@ -137,27 +115,15 @@ describe('<Cashier />', () => {
     });
 
     it('should not render the side note if on crypto transactions page', () => {
-        const history = createBrowserHistory();
-
-        render(
-            <Router history={history}>
-                <Cashier is_crypto_transactions_visible {...props} />
-            </Router>
-        );
+        renderWithRouter(<Cashier is_crypto_transactions_visible {...props} />);
 
         expect(screen.queryByTestId('vertical_tab_side_note')).not.toBeInTheDocument();
     });
 
     it('should show the selected route page on mobile', () => {
-        const history = createBrowserHistory();
-
         isMobile.mockReturnValue(true);
 
-        render(
-            <Router history={history}>
-                <Cashier {...props} />
-            </Router>
-        );
+        renderWithRouter(<Cashier {...props} />);
 
         const payment_agent_link = screen.getByRole('link', { name: 'Payment agents' });
         fireEvent.click(payment_agent_link);

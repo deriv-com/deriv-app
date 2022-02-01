@@ -25,7 +25,6 @@ type TIndexLookupObject = {
     CFDPersonalDetailsForm: number;
     CFDPOI: number;
     CFDPOA: number;
-    CFDPendingVerification: number;
 };
 
 type TGetSettings = GetSettings & {
@@ -79,7 +78,6 @@ const index_lookup: TIndexLookupObject = {
     CFDPersonalDetailsForm: 0,
     CFDPOI: 1,
     CFDPOA: 2,
-    CFDPendingVerification: 3,
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
@@ -157,7 +155,12 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         setStep(step - 1);
         setFormError('');
     };
-    const updateValue = async (index: number, value: any, setSubmitting: TSetSubmiting, is_dirty: boolean = true) => {
+    const updateValue = async (
+        index: number,
+        value: { [key: string]: string | undefined },
+        setSubmitting: TSetSubmiting,
+        is_dirty: boolean = true
+    ) => {
         if (is_dirty && index_lookup.CFDPersonalDetailsForm === index) {
             // Set account settings
             const data = await WS.setSettings(value);
@@ -238,8 +241,9 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         }
         setItems(cloned_items);
     };
-    const BodyComponent: any = getCurrent('body');
+    const BodyComponent = getCurrent('body') as TItemsState['body'];
     const form_value = getCurrent('form_value');
+
     // @ts-ignore: Unreachable code error
     const passthrough = (getCurrent('props') || []).reduce<string[]>(
         (arr: { [key: string]: any }, item: TItemsProps) => {

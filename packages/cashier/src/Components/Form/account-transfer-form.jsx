@@ -241,6 +241,10 @@ const AccountTransferForm = ({
     const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
 
+    if (selected_from.value.startsWith('VRTC') || selected_from.value.startsWith('DXD')) {
+        location.reload();
+    }
+
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);

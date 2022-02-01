@@ -17,7 +17,8 @@ import { localize, Localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 
-const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
+const hasTransferNotAllowedLoginid = loginid =>
+    loginid.startsWith('MX') || loginid.startsWith('VRTC') || loginid.startsWith('DXD');
 
 const getSelectedError = (selected_value, is_from_account) => {
     if (is_from_account) {

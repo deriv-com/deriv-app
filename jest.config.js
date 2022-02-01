@@ -1,6 +1,5 @@
 module.exports = {
     collectCoverage: true,
-    collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
     coverageReporters: ['lcov'],
     coverageDirectory: './coverage/',
     clearMocks: true,

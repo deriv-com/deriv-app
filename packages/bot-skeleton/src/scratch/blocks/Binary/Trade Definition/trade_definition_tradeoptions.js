@@ -31,6 +31,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type: 'input_value',
                     name: 'DURATION',
+                    check: 'Number',
                 },
             ],
             args1: [
@@ -68,6 +69,20 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         };
     },
     onchange(event) {
+        if (event.type === 'change') {
+            const selected_block = this.workspace.getBlockById(event.blockId);
+            selected_block?.parentBlock_?.inputList.filter(
+                item => ['DURATION', 'AMOUNT'].includes(item.name)
+            ).forEach(input => {
+                const input_target = input.connection.targetBlock();
+                const value = input_target.getFieldValue('NUM');
+                if (isFinite(value) && value.startsWith('0')) {
+                    const new_value = value.replace(/^0+/, '');
+                    input_target.setFieldValue(new_value, 'NUM');
+                }
+            });
+        }
+
         if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
         }

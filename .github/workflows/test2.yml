@@ -3,19 +3,14 @@ on: pull_request
 
 jobs:
   test-coverage:
-    name: Node ${{ matrix.node }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [ 14 ]
-        os: [ ubuntu-latest ]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          node-version: '14'
+
       - run: npm ci && npm run bootstrap
 
       - name: Comment with Test Coverage

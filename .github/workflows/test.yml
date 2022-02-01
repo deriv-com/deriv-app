@@ -2,7 +2,6 @@ name: Tests
 on: [push, pull_request]
 env:
   CI: true
-  NODE_OPTIONS: --max_old_space_size=4096
 
 jobs:
   test:
@@ -20,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set Node.js version
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@master
         with:
           node-version: ${{ matrix.node }}
 
@@ -31,7 +30,7 @@ jobs:
         run: npm run bootstrap && npm run build # switch to `npm ci` when Node.js 6 support is dropped
 
       - name: Run tests
-        run: npm run test:jest
+        run: npm run test:ci
 
       - name: Coveralls
         uses: coverallsapp/github-action@master

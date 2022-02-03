@@ -52,6 +52,9 @@ export default class NotificationStore extends BaseStore {
                 root_store.modules?.cashier?.general_store?.is_p2p_visible,
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
+                root_store.client.is_uk,
+                root_store.client.has_malta_account,
+                root_store.client.can_have_mlt_account,
             ],
             () => {
                 if (
@@ -60,6 +63,7 @@ export default class NotificationStore extends BaseStore {
                 ) {
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
+                    this.setClientNotifications();
                     this.handleClientNotifications();
                 }
             }
@@ -330,11 +334,6 @@ export default class NotificationStore extends BaseStore {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
         this.setShouldShowPopups(true);
-    }
-
-    @action.bound
-    init() {
-        this.setClientNotifications();
     }
 
     @action.bound

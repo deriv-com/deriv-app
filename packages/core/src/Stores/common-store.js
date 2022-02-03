@@ -1,22 +1,14 @@
-import { action, observable, reaction } from 'mobx';
-import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId, getUrlBinaryBot } from '@deriv/shared';
+import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, routes, toMoment } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
-import BinarySocket from '_common/base/socket_base';
-import ServerTime from '_common/base/server_time';
+import { action, observable } from 'mobx';
 import { currentLanguage } from 'Utils/Language/index';
+import ServerTime from '_common/base/server_time';
+import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
-import { clientNotifications } from './Helpers/client-notifications';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
-
-        reaction(
-            () => this.app_routing_history.map(i => i.pathname),
-            () => {
-                this.root_store.ui.filterNotificationMessages();
-            }
-        );
     }
 
     @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
@@ -122,11 +114,12 @@ export default class CommonStore extends BaseStore {
         }
         this.is_network_online = is_online;
 
-        const ui_store = this.root_store.ui;
+        const { addNotificationMessage, client_notifications, removeNotificationMessage } =
+            this.root_store.notifications;
         if (!is_online) {
-            ui_store.addNotificationMessage(clientNotifications().you_are_offline);
+            addNotificationMessage(client_notifications.you_are_offline);
         } else {
-            ui_store.removeNotificationMessage(clientNotifications().you_are_offline);
+            removeNotificationMessage(client_notifications.you_are_offline);
         }
     }
 

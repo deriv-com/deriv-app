@@ -379,7 +379,7 @@ export const PersonalDetailsForm = ({
 
         // Not allowing Jersey postcodes with a UK residence.
         if (
-            !regex_checks.address_details.jersey_postcode.test(values.address_postcode) &&
+            !regex_checks.address_details.non_jersey_postcode.test(values.address_postcode) &&
             (is_uk || values.citizen === 'United Kingdom')
         ) {
             errors.address_postcode = localize('Our accounts and services are unavailable for the Jersey postal code');

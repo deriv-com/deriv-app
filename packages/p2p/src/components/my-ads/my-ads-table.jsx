@@ -43,10 +43,10 @@ const MyAdsTable = () => {
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (
                         <Button
-                            large
-                            primary
                             is_disabled={general_store.is_barred}
+                            large
                             onClick={my_ads_store.onClickCreate}
+                            primary
                         >
                             {localize('Create new ad')}
                         </Button>
@@ -70,19 +70,25 @@ const MyAdsTable = () => {
                     <Table.Body className='p2p-my-ads__table-body'>
                         <InfiniteDataList
                             data_list_className='p2p-my-ads__data-list'
-                            items={my_ads_store.adverts}
-                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
-                            has_more_items_to_load={my_ads_store.has_more_items_to_load}
-                            loadMoreRowsFn={my_ads_store.loadMoreAds}
-                            keyMapperFn={item => item.id}
                             getRowSize={() => (isMobile() ? 151 : 75)}
+                            has_more_items_to_load={my_ads_store.has_more_items_to_load}
+                            items={my_ads_store.adverts}
+                            keyMapperFn={item => item.id}
+                            loadMoreRowsFn={my_ads_store.loadMoreAds}
+                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
                         />
                     </Table.Body>
                 </Table>
 
                 {isMobile() && (
                     <div className='p2p-my-ads__create-container'>
-                        <Button className='p2p-my-ads__create' large primary onClick={my_ads_store.onClickCreate}>
+                        <Button
+                            className='p2p-my-ads__create'
+                            is_disabled={general_store.is_barred}
+                            large
+                            onClick={my_ads_store.onClickCreate}
+                            primary
+                        >
                             {localize('Create new ad')}
                         </Button>
                     </div>
@@ -90,9 +96,9 @@ const MyAdsTable = () => {
                 <MyAdsDeleteModal />
                 <Modal
                     className='p2p-my-ads__modal-error'
+                    has_close_icon={false}
                     is_open={my_ads_store.activate_deactivate_error_message}
                     small
-                    has_close_icon={false}
                     title={localize('Something’s not right')}
                 >
                     <Modal.Body>
@@ -103,10 +109,10 @@ const MyAdsTable = () => {
                     <Modal.Footer>
                         <Button
                             has_effect
-                            text={localize('Ok')}
+                            large
                             onClick={() => my_ads_store.setActivateDeactivateErrorMessage('')}
                             primary
-                            large
+                            text={localize('Ok')}
                         />
                     </Modal.Footer>
                 </Modal>

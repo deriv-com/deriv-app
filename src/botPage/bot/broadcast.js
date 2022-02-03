@@ -13,5 +13,5 @@ export const notify = (className, message) =>
     globalObserver.emit('Notify', {
         className,
         message,
-        position: isMobile() ? 'right' : 'left',
+        position: isMobile() ? 'left' : 'right',
     });

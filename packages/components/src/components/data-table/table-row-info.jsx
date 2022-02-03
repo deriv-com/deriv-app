@@ -16,21 +16,27 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
         if (is_dynamic_height) {
             measure?.();
         }
-    }, [show_details]);
+    }, [show_details, is_dynamic_height, measure]);
 
+    if (is_dynamic_height) {
+        return (
+            <div
+                onClick={is_footer || !replace ? undefined : toggleDetails}
+                className={classNames(className, { 'statement__row--detail': show_details })}
+            >
+                {show_details ? <div>{replace?.component}</div> : cells}
+            </div>
+        );
+    }
     return (
         <div
             onClick={is_footer || !replace ? undefined : toggleDetails}
             className={classNames(className, { 'statement__row--detail': show_details })}
         >
             {show_details ? (
-                is_dynamic_height ? (
+                <ThemedScrollbars height='80px'>
                     <div>{replace?.component}</div>
-                ) : (
-                    <ThemedScrollbars height='80px'>
-                        <div>{replace?.component}</div>
-                    </ThemedScrollbars>
-                )
+                </ThemedScrollbars>
             ) : (
                 cells
             )}

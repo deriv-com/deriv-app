@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDPOA from '../Components/cfd-poa.jsx';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
-import CFDPOI from '../Components/cfd-poi.jsx';
+import CFDPOI from '../Components/cfd-poi';
 
 const index_lookup = {
     CFDPersonalDetailsForm: 0,

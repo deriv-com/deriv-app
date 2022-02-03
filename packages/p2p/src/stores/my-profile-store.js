@@ -88,16 +88,12 @@ export default class MyProfileStore extends BaseStore {
         const methods = [];
 
         Object.entries(this.advertiser_payment_methods).forEach(key => {
-            if (methods.length) {
-                if (methods.every(e => e.method !== key[1].method)) {
-                    if (key[1].method === 'other' || key[1].method === 'bank_transfer') {
-                        methods.push({ method: key[1].method, display_name: key[1].display_name });
-                    } else if (methods.every(e => e.method !== 'e_wallet')) {
-                        methods.push({ method: 'e_wallet', display_name: 'E-wallet' });
-                    }
+            if (methods.every(e => e.method !== key[1].method)) {
+                if (key[1].method === 'other' || key[1].method === 'bank_transfer') {
+                    methods.push({ method: key[1].method, display_name: key[1].display_name });
+                } else if (methods.every(e => e.method !== 'e_wallet')) {
+                    methods.push({ method: 'e_wallet', display_name: 'E-wallet' });
                 }
-            } else {
-                methods.push({ method: key[1].method, display_name: key[1].display_name });
             }
         });
 

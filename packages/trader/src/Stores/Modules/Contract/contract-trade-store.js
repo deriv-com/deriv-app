@@ -125,7 +125,7 @@ export default class ContractTradeStore extends BaseStore {
         this.contracts.push(contract);
         this.contracts_map[contract_id] = contract;
 
-        if (is_tick_contract && this.granularity !== 0 && isDesktop()) {
+        if (is_tick_contract && !this.root_store.modules.trade.is_multiplier && this.granularity !== 0 && isDesktop()) {
             this.root_store.ui.addNotificationMessage(switch_to_tick_chart);
         }
     }

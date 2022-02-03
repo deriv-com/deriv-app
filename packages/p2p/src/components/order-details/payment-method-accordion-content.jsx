@@ -16,7 +16,6 @@ const PaymentMethodAccordionContent = ({ advertiser_details, client_details, is_
                         : `${advertiser_details.first_name} ${advertiser_details.last_name}`}
                 </Text>
             </div>
-            {console.log(payment_method?.fields)}
             {/* {payment_method?.fields?.map((field, key) => {
                 return (
                     <div key={key}>

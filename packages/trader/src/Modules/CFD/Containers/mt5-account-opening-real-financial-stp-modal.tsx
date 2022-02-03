@@ -3,13 +3,14 @@ import { Modal, MobileDialog, DesktopWrapper, MobileWrapper } from '@deriv/compo
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDFinancialStpRealAccountSignup from 'Modules/CFD/Containers/cfd-financial-stp-real-account-signup.jsx';
+import { TMT5AccountOpeningRealFinancialStpModal } from './props.types';
 
 const MT5AccountOpeningRealFinancialStpModal = ({
     disableApp,
     disableMt5FinancialStpModal,
     enableApp,
     is_mt5_financial_stp_modal_open,
-}) => (
+}: TMT5AccountOpeningRealFinancialStpModal) => (
     <React.Fragment>
         <DesktopWrapper>
             <Modal
@@ -41,7 +42,7 @@ const MT5AccountOpeningRealFinancialStpModal = ({
     </React.Fragment>
 );
 
-export default connect(({ ui, modules }) => ({
+export default connect(({ ui, modules }: any) => ({
     disableApp: ui.disableApp,
     disableMt5FinancialStpModal: modules.cfd.disableMt5FinancialStpModal,
     enableApp: ui.enableApp,

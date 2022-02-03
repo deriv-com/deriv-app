@@ -13,18 +13,98 @@ import {
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled } from '@deriv/shared';
+import { LandingCompany } from '@deriv/api-types';
 
-const getAccounts = ({ landing_companies, platform, is_logged_in, is_uk }) => {
+type TCFDAttributeDescriberProps = {
+    name: string;
+    counter: number | null;
+};
+
+type TFilterAvailableAccounts = (
+    landing_companies: LandingCompany,
+    table: TAccountsDescription[],
+    is_logged_in: boolean,
+    show_eu_related: boolean,
+    platform: string,
+    is_australian: boolean
+) => Array<{ [key: string]: string | React.ReactNode | undefined }>;
+
+type TAccountsDescription = {
+    attribute: string;
+    mt5: TDxTradeAccountsDescription & { financial_stp: string };
+    dxtrade: TDxTradeAccountsDescription;
+};
+
+type TDxTradeAccountsDescription = {
+    synthetic: string;
+    synthetic_eu: string;
+    financial: string;
+    financial_au: string;
+    financial_eu: string | React.ReactNode;
+    footnote: string | null;
+};
+
+type TCompareAccountsReusedProps = {
+    landing_companies: LandingCompany;
+    platform: string;
+    is_logged_in: boolean;
+    is_uk: boolean;
+};
+
+type TCompareAccountsDataParams = TCompareAccountsReusedProps & {
+    show_eu_related: boolean;
+    residence: string;
+};
+
+type TCFDCompareAccountHintProps = TCompareAccountsReusedProps & {
+    show_risk_message: boolean;
+};
+
+type TModalContentProps = TCompareAccountsReusedProps & {
+    show_eu_related: boolean;
+    residence: string;
+    is_eu: boolean;
+};
+
+type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
+    disableApp: () => void;
+    enableApp: () => void;
+    is_compare_accounts_visible: boolean;
+    is_loading: boolean;
+    is_eu: boolean;
+    is_eu_country: boolean;
+    residence: string;
+    toggleCompareAccounts: () => void;
+};
+
+type TGetAccounts = (params: TCompareAccountsReusedProps) => TAccountsDescription[];
+
+type TAccountTypesToFilter = (
+    | NonNullable<LandingCompany['mt_gaming_company']>['financial']
+    | NonNullable<LandingCompany['mt_financial_company']>['financial']
+    | NonNullable<LandingCompany['mt_financial_company']>['financial_stp']
+    | LandingCompany['dxtrade_gaming_company']
+    | LandingCompany['dxtrade_financial_company']
+    | boolean
+    | undefined
+)[];
+
+const getAccounts: TGetAccounts = ({ landing_companies, platform, is_logged_in, is_uk }) => {
     const getLoggedOutTypesCount = () => (platform === CFD_PLATFORMS.MT5 ? 3 : 2);
     const getLoggedInTypesCount = () =>
-        (platform === CFD_PLATFORMS.MT5
-            ? [
-                  landing_companies?.mt_gaming_company?.financial,
-                  landing_companies?.mt_financial_company?.financial,
-                  landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5,
-              ]
-            : [landing_companies?.dxtrade_gaming_company, landing_companies?.dxtrade_financial_company]
+        (
+            (platform === CFD_PLATFORMS.MT5
+                ? [
+                      landing_companies?.mt_gaming_company?.financial,
+                      landing_companies?.mt_financial_company?.financial,
+                      landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5,
+                  ]
+                : [
+                      landing_companies?.dxtrade_gaming_company,
+                      landing_companies?.dxtrade_financial_company,
+                  ]) as TAccountTypesToFilter
         ).filter(Boolean).length;
 
     const account_types_count = is_logged_in ? getLoggedInTypesCount() : getLoggedOutTypesCount();
@@ -298,7 +378,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in, is_uk }) => {
     ];
 };
 
-const CFDAttributeDescriber = ({ name, counter }) => {
+const CFDAttributeDescriber = ({ name, counter }: TCFDAttributeDescriberProps) => {
     const [is_visible, setIsVisible] = React.useState(false);
     const toggleModal = () => setIsVisible(!is_visible);
 
@@ -325,8 +405,15 @@ const CFDAttributeDescriber = ({ name, counter }) => {
     );
 };
 
-const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu_related, platform, is_australian) => {
-    const getFinancialObject = (financial, financial_au, financial_eu) => {
+const filterAvailableAccounts: TFilterAvailableAccounts = (
+    landing_companies,
+    table,
+    is_logged_in,
+    show_eu_related,
+    platform,
+    is_australian
+) => {
+    const getFinancialObject = (financial?: string, financial_au?: string, financial_eu?: string | React.ReactNode) => {
         if (is_australian) {
             return financial_au;
         }
@@ -338,40 +425,48 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu
 
     let footnote_number = 0;
     return table
-        .filter(row => row[platform])
+        .filter(row => row[platform as keyof TAccountsDescription])
         .map(({ attribute, mt5 = {}, dxtrade = {} }) => {
-            const { synthetic, synthetic_eu, financial_stp, financial, financial_au, financial_eu, footnote } =
+            const { synthetic, synthetic_eu, financial, financial_au, financial_eu, footnote } =
                 platform === CFD_PLATFORMS.MT5 ? mt5 : dxtrade;
             const synthetic_object = { synthetic: show_eu_related ? synthetic_eu : synthetic };
             const financial_object = { financial: getFinancialObject(financial, financial_au, financial_eu) };
+            const footnote_counter = footnote ? ++footnote_number : null;
 
             if (is_logged_in) {
                 return {
-                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote_counter} />,
                     ...(landing_companies?.mt_gaming_company?.financial ? synthetic_object : {}),
                     ...(landing_companies?.mt_financial_company?.financial ? financial_object : {}),
                     ...(landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5
-                        ? { financial_stp }
+                        ? { financial_stp: mt5?.financial_stp }
                         : {}),
                 };
             }
             if (platform === CFD_PLATFORMS.DXTRADE) {
                 return {
-                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote_counter} />,
                     ...synthetic_object,
                     ...financial_object,
                 };
             }
             return {
-                attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                attribute: <CFDAttributeDescriber name={attribute} counter={footnote_counter} />,
                 ...synthetic_object,
                 ...financial_object,
-                ...{ financial_stp },
+                ...{ financial_stp: mt5?.financial_stp },
             };
         });
 };
 
-const compareAccountsData = ({ landing_companies, is_logged_in, show_eu_related, platform, residence, is_uk }) => {
+const compareAccountsData = ({
+    landing_companies,
+    is_logged_in,
+    show_eu_related,
+    platform,
+    residence,
+    is_uk,
+}: TCompareAccountsDataParams) => {
     const is_australian = residence === 'au';
     return filterAvailableAccounts(
         landing_companies,
@@ -383,7 +478,13 @@ const compareAccountsData = ({ landing_companies, is_logged_in, show_eu_related,
     );
 };
 
-const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies, is_logged_in, is_uk }) => {
+const CFDCompareAccountHint = ({
+    platform,
+    show_risk_message,
+    landing_companies,
+    is_logged_in,
+    is_uk,
+}: TCFDCompareAccountHintProps) => {
     return (
         <div className='cfd-compare-account--hint'>
             <div className='cfd-compare-accounts__bullet-wrapper'>
@@ -433,7 +534,11 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies,
                 </React.Fragment>
             )}
             {getAccounts({ landing_companies, platform, is_logged_in, is_uk })
-                .filter(item => !!item[platform]?.footnote)
+                .filter(
+                    item =>
+                        !!(item[platform as keyof TAccountsDescription] as TAccountsDescription['mt5' | 'dxtrade'])
+                            ?.footnote
+                )
                 .map((account, index) => {
                     return (
                         <div key={index} className='cfd-compare-accounts__bullet-wrapper'>
@@ -456,7 +561,13 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies,
                                     {account.attribute}
                                 </Text>
                                 <Text size='xs' color='prominent'>
-                                    {account[platform].footnote}
+                                    {
+                                        (
+                                            account[platform as keyof TAccountsDescription] as TAccountsDescription[
+                                                | 'mt5'
+                                                | 'dxtrade']
+                                        ).footnote
+                                    }
                                 </Text>
                             </div>
                         </div>
@@ -466,8 +577,16 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies,
     );
 };
 
-const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related, residence, is_eu, is_uk }) => {
-    const [cols, setCols] = React.useState([]);
+const ModalContent = ({
+    landing_companies,
+    is_logged_in,
+    platform,
+    show_eu_related,
+    residence,
+    is_eu,
+    is_uk,
+}: TModalContentProps) => {
+    const [cols, setCols] = React.useState<Array<Record<string, string | React.ReactNode | undefined>>>([]);
     const [template_columns, updateColumnsStyle] = React.useState(
         platform === CFD_PLATFORMS.DXTRADE ? '1.5fr 1fr 2fr' : '1.5fr 1fr 2fr 1fr'
     );
@@ -475,25 +594,24 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
     React.useEffect(() => {
         setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence, is_uk }));
 
-        if (is_logged_in) {
-            if (platform === CFD_PLATFORMS.MT5) {
-                updateColumnsStyle(
-                    `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
-                        landing_companies?.mt_financial_company?.financial ? '2fr' : ''
-                    } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
-                );
-            } else {
-                updateColumnsStyle(
-                    `1.5fr ${landing_companies?.dxtrade_gaming_company ? '1fr' : ''} ${
-                        landing_companies?.dxtrade_financial_company ? '2fr' : ''
-                    }`
-                );
-            }
+        if (is_logged_in && platform === CFD_PLATFORMS.MT5) {
+            updateColumnsStyle(
+                `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
+                    landing_companies?.mt_financial_company?.financial ? '2fr' : ''
+                } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
+            );
+        } else if (is_logged_in && platform === CFD_PLATFORMS.DXTRADE) {
+            updateColumnsStyle(
+                `1.5fr ${landing_companies?.dxtrade_gaming_company ? '1fr' : ''} ${
+                    landing_companies?.dxtrade_financial_company ? '2fr' : ''
+                }`
+            );
         }
     }, [
         landing_companies?.mt_financial_company,
         landing_companies?.mt_gaming_company,
         is_logged_in,
+        is_uk,
         landing_companies,
         platform,
         show_eu_related,
@@ -502,6 +620,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
     ]);
 
     const show_risk_message = platform === CFD_PLATFORMS.MT5 || !show_eu_related;
+    const financial_account_table_head_text = is_eu ? localize('CFDs') : localize('Financial');
 
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
@@ -527,7 +646,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                                             type: 'financial',
                                         }) && (
                                             <Table.Head>
-                                                {is_eu ? localize('CFDs') : localize('Financial')}
+                                                {financial_account_table_head_text}
                                                 <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
                                                     *
                                                 </Text>
@@ -605,7 +724,7 @@ const CompareAccountsModal = ({
     platform,
     residence,
     toggleCompareAccounts,
-}) => {
+}: TCompareAccountsModalProps) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const mt5_accounts = [
@@ -678,7 +797,7 @@ const CompareAccountsModal = ({
     );
 };
 
-export default connect(({ modules, ui, client }) => ({
+export default connect(({ modules, ui, client }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,

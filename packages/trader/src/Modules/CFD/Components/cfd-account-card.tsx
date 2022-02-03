@@ -252,10 +252,8 @@ const CFDAccountCard = ({
     };
 
     const handleClickSwitchAccount: () => void = () => {
-        if (toggleShouldShowRealAccountsList && toggleAccountsDialog) {
-            toggleShouldShowRealAccountsList(true);
-            toggleAccountsDialog(true);
-        }
+        toggleShouldShowRealAccountsList?.(true);
+        toggleAccountsDialog?.(true);
     };
 
     const getDxtradeDownloadLink: () => string = () => {

@@ -1,8 +1,16 @@
 import { deriv_urls } from './constants';
 
+export const getlangFromUrl = () => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const lang = urlParams.get('lang');
+    return lang;
+};
+
 export const getUrlSmartTrader = () => {
     const { is_staging_deriv_app } = getPlatformFromUrl();
-    const i18n_language = window.localStorage.getItem('i18n_language') || 'en';
+    const url_lang = getlangFromUrl();
+    const i18n_language = window.localStorage.getItem('i18n_language') || url_lang || 'en';
 
     let base_link = '';
 

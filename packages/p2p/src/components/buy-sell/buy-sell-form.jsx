@@ -202,38 +202,42 @@ const BuySellForm = props => {
                                             )}
                                         </Text>
                                         <div className='buy-sell__modal--sell-payment-methods'>
-                                            {my_profile_store.advertiser_has_payment_methods
-                                                ? my_profile_store.advertiser_payment_methods_list.map(
-                                                      (payment_method, key) => (
-                                                          <PaymentMethodCard
-                                                              is_vertical_ellipsis_visible={false}
-                                                              key={key}
-                                                              medium
-                                                              onClick={() => onClickPaymentMethodCard(payment_method)}
-                                                              payment_method={payment_method}
-                                                              style={
-                                                                  selected_methods.includes(payment_method.ID)
-                                                                      ? style
-                                                                      : {}
-                                                              }
-                                                          />
-                                                      )
-                                                  )
-                                                : payment_method_names?.map((add_payment_method, key) => (
-                                                      <PaymentMethodCard
-                                                          add_payment_method={add_payment_method}
-                                                          is_add={true}
-                                                          key={key}
-                                                          medium
-                                                          onClickAdd={() => {
-                                                              const method = add_payment_method
-                                                                  .toLowerCase()
-                                                                  .replace(' ', '_');
-                                                              my_profile_store.setSelectedPaymentMethod(method);
-                                                              my_profile_store.setShouldShowAddPaymentMethodForm(true);
-                                                          }}
-                                                      />
-                                                  ))}
+                                            {payment_method_names?.map((add_payment_method, key) => {
+                                                const matching_payment_methods =
+                                                    my_profile_store.advertiser_payment_methods_list.filter(
+                                                        pm => pm.display_name === add_payment_method
+                                                    );
+                                                return matching_payment_methods.length > 0 ? (
+                                                    matching_payment_methods.map(payment_method => (
+                                                        <PaymentMethodCard
+                                                            is_vertical_ellipsis_visible={false}
+                                                            key={key}
+                                                            medium
+                                                            onClick={() => onClickPaymentMethodCard(payment_method)}
+                                                            payment_method={payment_method}
+                                                            style={
+                                                                selected_methods.includes(payment_method.ID)
+                                                                    ? style
+                                                                    : {}
+                                                            }
+                                                        />
+                                                    ))
+                                                ) : (
+                                                    <PaymentMethodCard
+                                                        add_payment_method={add_payment_method}
+                                                        is_add={true}
+                                                        key={key}
+                                                        medium
+                                                        onClickAdd={() => {
+                                                            const method = add_payment_method
+                                                                .toLowerCase()
+                                                                .replace(' ', '_');
+                                                            my_profile_store.setSelectedPaymentMethod(method);
+                                                            my_profile_store.setShouldShowAddPaymentMethodForm(true);
+                                                        }}
+                                                    />
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 )}

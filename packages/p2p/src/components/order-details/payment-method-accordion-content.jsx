@@ -3,6 +3,7 @@ import { Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 const PaymentMethodAccordionContent = ({ advertiser_details, client_details, is_my_ad, payment_method }) => {
+    // debugger;
     return (
         <React.Fragment>
             <div>
@@ -15,18 +16,19 @@ const PaymentMethodAccordionContent = ({ advertiser_details, client_details, is_
                         : `${advertiser_details.first_name} ${advertiser_details.last_name}`}
                 </Text>
             </div>
-            {payment_method.fields.map((field, key) => {
+            {console.log(payment_method?.fields)}
+            {/* {payment_method?.fields?.map((field, key) => {
                 return (
                     <div key={key}>
                         <Text color='less-prominent' size='xxs'>
-                            {field.display_name}
+                            {field?.display_name}
                         </Text>
                         <Text color='prominent' size='xs'>
-                            {field.value}
+                            {field?.value} 
                         </Text>
                     </div>
                 );
-            })}
+            })} */}
         </React.Fragment>
     );
 };

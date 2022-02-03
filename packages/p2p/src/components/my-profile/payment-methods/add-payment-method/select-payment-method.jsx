@@ -27,15 +27,16 @@ const SelectPaymentMethod = () => {
                             {({ field }) => (
                                 <Autocomplete
                                     {...field}
+                                    autoComplete='off' // prevent chrome autocomplete
                                     data-lpignore='true'
                                     label={localize('Payment method')}
                                     list_items={my_profile_store.payment_methods_list_items}
                                     onItemSelection={({ value }) => {
                                         my_profile_store.setSelectedPaymentMethod(value);
                                     }}
+                                    required
                                     trailing_icon={<Icon icon='IcSearch' />}
                                     type='text'
-                                    required
                                 />
                             )}
                         </Field>

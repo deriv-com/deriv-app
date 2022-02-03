@@ -12,7 +12,7 @@ const PaymentMethodAccordionHeader = ({ payment_method }) => {
                     {payment_method.display_name}
                 </Text>
                 <Text color='less-prominent' size='xs'>
-                    {payment_method.fields.bank_name.value}
+                    {/* {payment_method.fields.bank_name.value} */}
                 </Text>
             </div>
         </div>

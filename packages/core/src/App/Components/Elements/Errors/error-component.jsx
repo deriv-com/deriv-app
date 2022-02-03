@@ -90,8 +90,8 @@ ErrorComponent.propTypes = {
     type: PropTypes.string,
 };
 
-export default connect(({ client, ui }) => ({
-    removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
+export default connect(({ client, notifications, ui }) => ({
+    removeNotificationMessageByKey: notifications.removeNotificationMessageByKey,
     showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
     has_malta_account: client.has_malta_account,
     can_have_mlt_account: client.can_have_mlt_account,

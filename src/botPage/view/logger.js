@@ -1,7 +1,7 @@
 import { TrackJS } from 'trackjs';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { getToken } from '../../common/utils/storageManager';
-import { isProduction } from '../../common/utils/tools';
+import { isProduction, isMobile } from '../../common/utils/tools';
 
 const log = (type, ...args) => {
     if (type === 'warn') {
@@ -16,8 +16,9 @@ const log = (type, ...args) => {
     globalObserver.emit('bot.notify', { type, timestamp, message: args.join(':') });
 };
 
-const notify = ({ className, message, position = 'right', sound = 'silent' }) => {
+const notify = ({ className, message, position = 'left', sound = 'silent' }) => {
     log(className, message);
+    console.log('position', position, message);
     $.notify(message.toString(), { position: `bottom ${position}`, className });
     if (sound !== 'silent') {
         $(`#${sound}`)
@@ -81,7 +82,9 @@ const waitForNotifications = () => {
     globalObserver.register('Error', notifyError);
 
     notifList.forEach(className =>
-        globalObserver.register(`ui.log.${className}`, message => notify({ className, message, position: 'right' }))
+        globalObserver.register(`ui.log.${className}`, message =>
+            notify({ className, message, position: isMobile() ? 'left' : 'right' })
+        )
     );
 };
 

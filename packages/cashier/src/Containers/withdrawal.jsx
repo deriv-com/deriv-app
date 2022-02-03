@@ -155,7 +155,7 @@ Withdrawal.propTypes = {
     balance: PropTypes.string,
     container: PropTypes.string,
     crypto_transactions: PropTypes.array,
-    current_currency_type: PropTypes.bool,
+    current_currency_type: PropTypes.string,
     error: PropTypes.object,
     iframe_url: PropTypes.string,
     is_cashier_locked: PropTypes.bool,

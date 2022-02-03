@@ -154,7 +154,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             ) : (
                                 <div className='p2p-my-ads__table-add'>
                                     <Icon icon='IcAdd' />
-                                    <Text color='prominent' size='xxxs'>
+                                    <Text color='prominent' size='xxs'>
                                         <Localize i18n_default_text='Add' />
                                     </Text>
                                 </div>

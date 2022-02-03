@@ -2,8 +2,12 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
-const PaymentMethodAccordionContent = ({ advertiser_details, client_details, is_my_ad, payment_method }) => {
-    // debugger;
+const PaymentMethodAccordionContent = ({
+    advertiser_details,
+    client_details,
+    is_my_ad,
+    // payment_method
+}) => {
     return (
         <React.Fragment>
             <div>

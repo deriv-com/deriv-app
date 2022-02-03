@@ -19,7 +19,7 @@ const SelectPaymentMethod = () => {
     }
 
     return (
-        <Formik>
+        <Formik enableReinitialize initialValues={{}}>
             {() => {
                 return (
                     <React.Fragment>

@@ -185,7 +185,7 @@ const CFDRealAccountDisplay = ({
             category: account.account_type as keyof TOpenAccountTransferMeta,
             type: getCFDAccountKey({
                 market_type: account.market_type,
-                sub_account_type: account.sub_account_type,
+                sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
                 platform,
             }),
         });

@@ -9,6 +9,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import { Mt5LoginList, DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
 import { TExistingData } from './props.types.js';
+import {TradingPlatformAccounts} from './props.types';
 
 type TStandPoint = {
     financial_company: string;
@@ -51,7 +52,7 @@ type TCFDRealAccountDisplayProps = {
     isAccountOfTypeDisabled: (
         account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
     ) => boolean;
-    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
+    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid & TradingPlatformAccounts };
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;

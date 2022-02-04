@@ -6,6 +6,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import Loading from '../../../templates/_common/components/loading';
 import { Mt5LoginList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
+import { any, array, bool } from 'prop-types';
 
 type TStandPoint = {
     financial_company: string;
@@ -19,6 +20,52 @@ type TStandPoint = {
 type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
+};
+
+export type TradingPlatformAccounts = DetailsOfEachDXTRadeLoginid[];
+export interface DetailsOfEachDXTRadeLoginid {
+
+    account_id?: string;
+  /**
+   * Account type.
+   */
+    account_type?: "demo" | "real";
+  /**
+   * Balance of the DXTrade account.
+   */
+    balance?: number;
+  /**
+   * Residence of the DXTrade account.
+   */
+    country?: string;
+  /**
+   * Currency of the DXTrade account.
+   */
+    currency?: string;
+  /**
+   * Account balance, formatted to appropriate decimal places.
+   */
+    display_balance?: string;
+  /**
+   * Display login of DXTrade account.
+   */
+    display_login?: string;
+  /**
+   * Landing company shortcode of the DXTrade account.
+   */
+    landing_company_short?: "bvi" | "labuan" | "malta" | "maltainvest" | "samoa" | "svg" | "vanuatu";
+  /**
+   * Login of DXTrade account.
+   */
+    login?: string;
+  /**
+   * Market type
+   */
+    market_type?: "financial" | "synthetic";
+  /**
+   * Name of trading platform.
+   */
+    platform?: "dxtrade";
 };
 
 type TCFDDemoAccountDisplayProps = {
@@ -36,7 +83,7 @@ type TCFDDemoAccountDisplayProps = {
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
     openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     platform: string;
-    current_list: Mt5LoginList;
+    current_list: Record<string, Mt5LoginList| TradingPlatformAccounts>;
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
@@ -62,6 +109,8 @@ const CFDDemoAccountDisplay = ({
     openPasswordManager,
     residence,
 }: TCFDDemoAccountDisplayProps) => {
+    console.log('current_list', current_list);
+    
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const openCFDAccount = () => {
@@ -105,11 +154,8 @@ const CFDDemoAccountDisplay = ({
                     is_logged_in={is_logged_in}
                     existing_data={
                         current_list[
-                            Number(
-                                Object.keys(current_list).find((key: string) =>
-                                    key.startsWith(`${platform}.demo.synthetic`)
-                                )
-                            )
+                            Object.keys(current_list).find((key: string) =>
+                                key.startsWith(`${platform}.demo.synthetic`)) || ''
                         ]
                     }
                     commission_message={localize('No commission')}
@@ -123,11 +169,8 @@ const CFDDemoAccountDisplay = ({
                     onClickFund={() =>
                         openAccountTransfer(
                             current_list[
-                                Number(
-                                    Object.keys(current_list).find((key: string) =>
-                                        key.startsWith(`${platform}.demo.synthetic`)
-                                    )
-                                )
+                                Object.keys(current_list).find((key: string) =>
+                                    key.startsWith(`${platform}.demo.synthetic`)) || ''
                             ],
                             {
                                 category: 'demo',
@@ -158,11 +201,8 @@ const CFDDemoAccountDisplay = ({
                     }}
                     existing_data={
                         current_list[
-                            Number(
-                                Object.keys(current_list).find((key: string) =>
-                                    key.startsWith(`${platform}.demo.financial@`)
-                                )
-                            )
+                            Object.keys(current_list).find((key: string) =>
+                                key.startsWith(`${platform}.demo.financial@`)) || ''
                         ]
                     }
                     commission_message={localize('No commission')}
@@ -171,11 +211,8 @@ const CFDDemoAccountDisplay = ({
                     onClickFund={() =>
                         openAccountTransfer(
                             current_list[
-                                Number(
                                     Object.keys(current_list).find((key: string) =>
-                                        key.startsWith(`${platform}.demo.financial@`)
-                                    )
-                                )
+                                        key.startsWith(`${platform}.demo.financial@`)) || ''
                             ],
                             {
                                 category: 'demo',
@@ -202,11 +239,8 @@ const CFDDemoAccountDisplay = ({
                     is_logged_in={is_logged_in}
                     existing_data={
                         current_list[
-                            Number(
-                                Object.keys(current_list).find((key: string) =>
-                                    key.startsWith(`${platform}.demo.financial_stp@`)
-                                )
-                            )
+                            Object.keys(current_list).find((key: string) =>
+                                key.startsWith(`${platform}.demo.financial_stp@`)) || ''
                         ]
                     }
                     commission_message={localize('No commission')}
@@ -220,11 +254,8 @@ const CFDDemoAccountDisplay = ({
                     onClickFund={() =>
                         openAccountTransfer(
                             current_list[
-                                Number(
-                                    Object.keys(current_list).find((key: string) =>
-                                        key.startsWith(`${platform}.demo.financial_stp@`)
-                                    )
-                                )
+                                Object.keys(current_list).find((key: string) =>
+                                    key.startsWith(`${platform}.demo.financial_stp@`)) || ''
                             ],
                             {
                                 category: 'demo',

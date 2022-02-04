@@ -8,7 +8,7 @@ import { useStores } from 'Stores';
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
 
-    const validateFields = (values) => {
+    const validateFields = values => {
         const errors = {};
         const no_symbols_regex = /^(?!^$|\s+)[A-Za-z0-9\s]{0,}$/;
         const no_symbols_message = localize('Special characters are not allowed to use.');
@@ -26,7 +26,7 @@ const EditPaymentMethodForm = () => {
         }
 
         return errors;
-    }
+    };
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();

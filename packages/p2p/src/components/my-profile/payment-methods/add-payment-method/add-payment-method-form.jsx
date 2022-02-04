@@ -10,7 +10,7 @@ import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal.jsx';
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_profile_store } = useStores();
 
-    const validateFields = (values) => {
+    const validateFields = values => {
         const errors = {};
         const no_symbols_regex = /^(?!^$|\s+)[A-Za-z0-9\s]{0,}$/;
         const no_symbols_message = localize('Special characters are not allowed to use.');
@@ -28,7 +28,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
         }
 
         return errors;
-    }
+    };
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -44,7 +44,12 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     return (
         <React.Fragment>
             <CancelAddPaymentMethodModal />
-            <Formik enableReinitialize initialValues={{}} onSubmit={my_profile_store.createPaymentMethod} validate={validateFields}>
+            <Formik
+                enableReinitialize
+                initialValues={{}}
+                onSubmit={my_profile_store.createPaymentMethod}
+                validate={validateFields}
+            >
                 {({ dirty, handleChange, isSubmitting, errors }) => {
                     return (
                         <Form className='add-payment-method-form__form'>

@@ -251,11 +251,11 @@ const Dropdown = ({
         if (is_nativepicker && !is_nativepicker_visible && is_list_visible) {
             setIsListVisible(false);
         }
-    }, [is_nativepicker, is_nativepicker_visible]);
+    }, [is_nativepicker, is_nativepicker_visible, is_list_visible]);
 
     React.useEffect(() => {
         if (!initial_render.current && !is_list_visible && value) dropdown_ref.current.focus();
-    }, [is_list_visible]);
+    }, [is_list_visible, value]);
 
     const handleSelect = item => {
         if (item.value !== value) onChange({ target: { name, value: item.value } });

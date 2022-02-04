@@ -64,7 +64,6 @@ const AddOrManageAccounts = props => {
             if (key === 'fiat') {
                 setCurrency(value)
                     .then(response => {
-                        setSubmitting(false);
                         onSuccessSetAccountCurrency(
                             response.passthrough.previous_currency,
                             response.echo_req.set_account_currency,
@@ -80,7 +79,6 @@ const AddOrManageAccounts = props => {
                 createCryptoAccount(value)
                     .then(() => {
                         onSuccessSetAccountCurrency('', value, deposit_target);
-                        setSubmitting(false);
                         resetRealAccountSignupTarget();
                         setIsDeposit(true);
                     })

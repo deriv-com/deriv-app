@@ -232,7 +232,9 @@ const CFDAccountCard = ({
             const server_region = (server as DetailsOfEachMT5Loginid).server_info?.geolocation?.region;
             if (server_region) {
                 return `${server_region} ${
-                    (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence === 1 ? '' : (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence
+                    (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence === 1
+                        ? ''
+                        : (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence
                 }`;
             }
         }
@@ -485,7 +487,8 @@ const CFDAccountCard = ({
                                         : getMT5WebTerminalLink({
                                               category: type.category,
                                               loginid: (existing_data as TradingPlatformAccounts).display_login,
-                                              server_name: (existing_data as DetailsOfEachMT5Loginid)?.server_info?.environment,
+                                              server_name: (existing_data as DetailsOfEachMT5Loginid)?.server_info
+                                                  ?.environment,
                                           })
                                 }
                                 target='_blank'

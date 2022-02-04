@@ -1,5 +1,5 @@
-import { DetailsOfEachMT5Loginid, Mt5LoginList } from '@deriv/api-types';
-import {DetailsOfEachDXTRadeLoginid, TradingPlatformAccounts} from '../Components/cfd-demo-account-display';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TradingPlatformAccounts } from '../Components/cfd-demo-account-display';
 
 export type TCFDFinancialStpPendingDialog = {
     enableApp: () => void;
@@ -46,7 +46,7 @@ export type TCFDAccountCardActionProps = {
     title: string;
 };
 
-export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachDXTRadeLoginid;
+export type TExistingData = DetailsOfEachMT5Loginid & TradingPlatformAccounts;
 
 export type TCFDAccountCard = {
     button_label?: string | JSX.Element;

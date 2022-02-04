@@ -18,7 +18,7 @@ const log = (type, ...args) => {
 
 const notify = ({ className, message, position = 'left', sound = 'silent' }) => {
     log(className, message);
-    console.log('position', position, message);
+
     $.notify(message.toString(), { position: `bottom ${position}`, className });
     if (sound !== 'silent') {
         $(`#${sound}`)

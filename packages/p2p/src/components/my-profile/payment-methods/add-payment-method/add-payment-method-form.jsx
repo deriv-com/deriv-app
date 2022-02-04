@@ -3,12 +3,32 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
-import { Localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal.jsx';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_profile_store } = useStores();
+
+    const validateFields = (values) => {
+        const errors = {};
+        const no_symbols_regex = /^(?!^$|\s+)[A-Za-z0-9\s]{0,}$/;
+        const no_symbols_message = localize('Special characters are not allowed to use.');
+
+        if (values.account) {
+            if (!no_symbols_regex.test(values.account)) {
+                errors.account = no_symbols_message;
+            }
+        }
+
+        if (values.bank_name) {
+            if (!no_symbols_regex.test(values.bank_name)) {
+                errors.bank_name = no_symbols_message;
+            }
+        }
+
+        return errors;
+    }
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -24,8 +44,8 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     return (
         <React.Fragment>
             <CancelAddPaymentMethodModal />
-            <Formik enableReinitialize initialValues={{}} onSubmit={my_profile_store.createPaymentMethod}>
-                {({ dirty, handleChange, isSubmitting }) => {
+            <Formik enableReinitialize initialValues={{}} onSubmit={my_profile_store.createPaymentMethod} validate={validateFields}>
+                {({ dirty, handleChange, isSubmitting, errors }) => {
                     return (
                         <Form className='add-payment-method-form__form'>
                             <Field name='choose_payment_method'>
@@ -61,6 +81,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
+                                                    error={errors[payment_method_field[0]]}
                                                     type={payment_method_field[1].type}
                                                     label={payment_method_field[1].display_name}
                                                     className='add-payment-method-form__payment-method-field'

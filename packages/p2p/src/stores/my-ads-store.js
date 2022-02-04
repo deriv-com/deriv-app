@@ -279,7 +279,7 @@ export default class MyAdsStore extends BaseStore {
                     const { list } = response.p2p_advertiser_adverts;
                     this.setHasMoreItemsToLoad(list.length >= list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
-                    this.setMissingPaymentMethods(!!list.find((payment_method) => !payment_method.payment_method_names));
+                    this.setMissingPaymentMethods(!!list.find(payment_method => !payment_method.payment_method_names));
                 } else if (response.error.code === 'PermissionDenied') {
                     this.root_store.general_store.setIsBlocked(true);
                 } else {

@@ -18,7 +18,8 @@ import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import AdStatus from 'Components/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
-import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
+import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
+import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 
 const MyAdsRowRenderer = observer(({ row: advert }) => {
     const { general_store, my_ads_store, my_profile_store } = useStores();

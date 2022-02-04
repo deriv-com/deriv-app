@@ -35,7 +35,7 @@ type TCFDDemoAccountDisplayProps = {
     isFinancialCardVisible: () => boolean;
     isFinancialStpCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
-    openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
+    openAccountTransfer: (data: DetailsOfEachMT5Loginid | TradingPlatformAccounts, meta: TOpenAccountTransferMeta) => void;
     platform: string;
     current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TradingPlatformAccounts };
     has_cfd_account: boolean;

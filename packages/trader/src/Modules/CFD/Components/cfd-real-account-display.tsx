@@ -46,7 +46,10 @@ type TCFDRealAccountDisplayProps = {
     isFinancialStpCardVisible: () => boolean;
     landing_companies: LandingCompany;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
-    openAccountTransfer: (data: DetailsOfEachMT5Loginid | TradingPlatformAccounts, meta: TOpenAccountTransferMeta) => void;
+    openAccountTransfer: (
+        data: DetailsOfEachMT5Loginid | TradingPlatformAccounts,
+        meta: TOpenAccountTransferMeta
+    ) => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     platform: string;
     isAccountOfTypeDisabled: (
@@ -195,7 +198,11 @@ const CFDRealAccountDisplay = ({
         const real_synthetic_accounts_list = Object.keys(current_list).filter(key =>
             key.startsWith(`${platform}.real.synthetic`)
         );
-        setActiveHover((real_synthetic_accounts_list as Array<string>).findIndex(t => (current_list[t] as DetailsOfEachMT5Loginid).group === name));
+        setActiveHover(
+            (real_synthetic_accounts_list as Array<string>).findIndex(
+                t => (current_list[t] as DetailsOfEachMT5Loginid).group === name
+            )
+        );
     };
 
     const isMT5AccountCardDisabled = (sub_account_type: string) => {

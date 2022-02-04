@@ -20,43 +20,41 @@ const SelectPaymentMethod = () => {
 
     return (
         <Formik enableReinitialize initialValues={{}}>
-            {() => {
-                return (
-                    <React.Fragment>
-                        <Field name='payment_method'>
-                            {({ field }) => (
-                                <Autocomplete
-                                    {...field}
-                                    autoComplete='off' // prevent chrome autocomplete
-                                    data-lpignore='true'
-                                    label={localize('Payment method')}
-                                    list_items={my_profile_store.payment_methods_list_items}
-                                    onItemSelection={({ value }) => {
-                                        my_profile_store.setSelectedPaymentMethod(value);
-                                    }}
-                                    required
-                                    trailing_icon={<Icon icon='IcSearch' />}
-                                    type='text'
-                                />
-                            )}
-                        </Field>
-                        <div className='add-payment-method-hint'>
-                            <Localize
-                                i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
-                                components={[
-                                    <Text key={0} color='less-prominent' size='xxs' />,
-                                    <Text
-                                        key={1}
-                                        color='loss-danger'
-                                        size='xxs'
-                                        onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
-                                    />,
-                                ]}
+            {() => (
+                <React.Fragment>
+                    <Field name='payment_method'>
+                        {({ field }) => (
+                            <Autocomplete
+                                {...field}
+                                autoComplete='off' // prevent chrome autocomplete
+                                data-lpignore='true'
+                                label={localize('Payment method')}
+                                list_items={my_profile_store.payment_methods_list_items}
+                                onItemSelection={({ value }) => {
+                                    my_profile_store.setSelectedPaymentMethod(value);
+                                }}
+                                required
+                                trailing_icon={<Icon icon='IcSearch' />}
+                                type='text'
                             />
-                        </div>
-                    </React.Fragment>
-                );
-            }}
+                        )}
+                    </Field>
+                    <div className='add-payment-method-hint'>
+                        <Localize
+                            i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                            components={[
+                                <Text key={0} color='less-prominent' size='xxs' />,
+                                <Text
+                                    key={1}
+                                    color='loss-danger'
+                                    size='xxs'
+                                    onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
+                                />,
+                            ]}
+                        />
+                    </div>
+                </React.Fragment>
+            )}
         </Formik>
     );
 };

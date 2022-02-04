@@ -33,6 +33,8 @@ export default class MyAdsStore extends BaseStore {
     @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
 
+    payment_method_ids = [];
+
     @action.bound
     getAccountStatus() {
         this.setIsLoading(true);
@@ -242,6 +244,18 @@ export default class MyAdsStore extends BaseStore {
                 this.setIsEditErrorModalVisible(true);
             }
             this.setShowEditAdForm(false);
+        });
+    }
+
+    @action.bound
+    onClickUpdatePaymentMethods(id) {
+        const { my_profile_store } = this.root_store;
+        requestWS({ p2p_advert_update: 1, id, payment_method: this.payment_method_ids }).then(response => {
+            if (!response.error) {
+                if (my_profile_store.should_show_add_payment_method_form) {
+                    my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                }
+            }
         });
     }
 

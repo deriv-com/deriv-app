@@ -8,6 +8,7 @@ const PaymentMethodCard = ({
     add_payment_method,
     is_add = false,
     is_vertical_ellipsis_visible = true,
+    label = undefined,
     large,
     medium,
     onClick = () => {},
@@ -42,7 +43,7 @@ const PaymentMethodCard = ({
                 />
 
                 <Text color='prominent' size='xs'>
-                    {add_payment_method}
+                    {label || add_payment_method}
                 </Text>
             </div>
         );

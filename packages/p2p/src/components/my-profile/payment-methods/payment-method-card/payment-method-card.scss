@@ -1,6 +1,6 @@
 .payment-method-card {
-    border-radius: 8px;
     border: 1px solid var(--border-normal);
+    border-radius: 8px;
     margin: 1.6rem 0;
     overflow-wrap: break-word;
     padding: 1.9rem;
@@ -12,6 +12,7 @@
     &--add {
         align-items: center;
         border: 1px dotted var(--border-normal);
+        border-radius: 8px;
         cursor: pointer;
         display: flex;
         flex-direction: column;

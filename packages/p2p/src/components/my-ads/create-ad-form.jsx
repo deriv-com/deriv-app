@@ -2,11 +2,9 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import {
-    Autocomplete,
     Button,
     Checkbox,
     Div100vhContainer,
-    Icon,
     Input,
     Modal,
     RadioGroup,
@@ -22,6 +20,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
+import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -54,6 +53,7 @@ const CreateAdForm = () => {
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
+
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
@@ -346,61 +346,7 @@ const CreateAdForm = () => {
                                                 <Localize i18n_default_text='You may choose up to 3.' />
                                             </Text>
                                         </div>
-                                        {my_profile_store.advertiser_has_payment_methods ? (
-                                            <React.Fragment>
-                                                {my_profile_store.payment_methods_list_methods.map(
-                                                    (payment_method, key) => {
-                                                        const method = payment_method.display_name.replace(
-                                                            /\s|-/gm,
-                                                            ''
-                                                        );
-                                                        return (
-                                                            <div
-                                                                className='p2p-my-ads__form-payment-methods--empty'
-                                                                key={key}
-                                                            >
-                                                                <div>
-                                                                    <Icon icon={`IcCashier${method}`} />
-                                                                    <Text color='prominent' size='xs'>
-                                                                        <Localize
-                                                                            i18n_default_text={
-                                                                                payment_method.display_name
-                                                                            }
-                                                                        />
-                                                                    </Text>
-                                                                </div>
-                                                                <Icon ic='IcDelete' />
-                                                            </div>
-                                                        );
-                                                    }
-                                                )}
-                                            </React.Fragment>
-                                        ) : (
-                                            <Field name='add'>
-                                                {({ field }) => (
-                                                    <Autocomplete
-                                                        {...field}
-                                                        className='p2p-my-ads__form-payment-methods--empty'
-                                                        data-lpignore='true'
-                                                        label={
-                                                            <React.Fragment>
-                                                                <Icon icon='IcAddCircle' size={14} />
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Add' />
-                                                                </Text>
-                                                            </React.Fragment>
-                                                        }
-                                                        list_items={my_profile_store.payment_methods_list_items}
-                                                        onItemSelection={({ value }) => {
-                                                            setFieldValue('add', value);
-                                                        }}
-                                                        trailing_icon={<></>}
-                                                        type='text'
-                                                        required
-                                                    />
-                                                )}
-                                            </Field>
-                                        )}
+                                        <CreateAdFormPaymentMethods is_sell_advert={is_sell_advert} />
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
                                                 className='p2p-my-ads__form-button'

@@ -6,7 +6,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import Loading from '../../../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
-import {TradingPlatformAccounts} from './props.types';
+import { TradingPlatformAccounts } from './props.types';
 
 type TStandPoint = {
     financial_company: string;

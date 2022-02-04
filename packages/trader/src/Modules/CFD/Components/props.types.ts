@@ -45,7 +45,7 @@ export type TCFDAccountCardActionProps = {
     title: string;
 };
 
-export type TExistingData = DetailsOfEachMT5Loginid & TradingPlatformAccounts;
+export type TExistingData = DetailsOfEachMT5Loginid | TradingPlatformAccounts;
 
 export type TCFDAccountCard = {
     button_label?: string | JSX.Element;

@@ -97,7 +97,6 @@ const MyAdsTable = () => {
                     <Table.Body className='p2p-my-ads__table-body'>
                         <InfiniteDataList
                             data_list_className='p2p-my-ads__data-list'
-                            getRowSize={() => (isMobile() ? 151 : 75)}
                             has_more_items_to_load={my_ads_store.has_more_items_to_load}
                             items={my_ads_store.adverts}
                             keyMapperFn={item => item.id}

@@ -58,7 +58,7 @@ const AddOrManageAccounts = props => {
         setActiveIndex(index);
     };
 
-    const manageOrChangeAccount = (obj, setSubmitting) => {
+    const manageOrChangeAccount = obj => {
         setLoading(true);
         Object.entries(obj).map(([key, value]) => {
             if (key === 'fiat') {
@@ -90,8 +90,8 @@ const AddOrManageAccounts = props => {
         });
     };
 
-    const updateValue = (index, value, setSubmitting) => {
-        manageOrChangeAccount(value, setSubmitting);
+    const updateValue = (index, value) => {
+        manageOrChangeAccount(value);
     };
 
     const hasNoAvailableCrypto = () => {

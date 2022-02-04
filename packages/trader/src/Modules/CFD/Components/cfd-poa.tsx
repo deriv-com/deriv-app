@@ -1,6 +1,6 @@
 import { Field, Formik, FieldProps, FormikHelpers as FormikActions, FormikProps, FormikErrors } from 'formik';
-import PropTypes, { string } from 'prop-types';
-import React, { ChangeEvent, RefObject } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {
     AutoHeightWrapper,
     FormSubmitButton,
@@ -27,37 +27,60 @@ import {
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
-import { GetSettings, StatesList, StatementResponse, GetAccountStatus, AccountStatusResponse } from '@deriv/api-types';
-import { types } from '@babel/core';
+import { GetSettings, StatesList, GetAccountStatus, AccountStatusResponse } from '@deriv/api-types';
 
-type TFormValues = GetSettings & { document_file: Array<string> | Array<null> };
+type TErrors = {
+    code: string;
+    message: string;
+};
 
-// type TGetSettingsExpand = {
-//     upload_file: string;
-// };
+type TFile = {
+    path: string;
+    lastModified: number;
+    lastModifiedDate: Date;
+    name: string;
+    size: number;
+    type: string;
+    webkitRelativePath: string;
+};
 
-// type TFormValue = GetSettings & TGetSettingsExpand;
+type TObjDocumentFile = {
+    errors: Array<TErrors>;
+    file: TFile;
+};
+
+type TFormValues = {
+    address_city?: string;
+    address_line_1?: string;
+    address_line_2?: string;
+    address_postcode?: string;
+    address_state?: string;
+    document_file: Array<TObjDocumentFile>;
+};
+
 type TFormValue = GetSettings;
 
-type TStatus = {
-    msg: string;
+type TApiResponse = {
+    document_upload: {
+        call_type: number;
+        checksum: string;
+        size: number;
+        status: string;
+        upload_id: number;
+    };
+    passthrough: {
+        document_upload: boolean;
+    };
+    warning?: string;
 };
-type TActions = {
-    setStatus: TStatus;
-    setSubmitting: (value: boolean) => void;
-};
-// type TFileUploader = {
-//     current: { upload: () => string | boolean | number | null | {warning: string} }
-//     values: TFormValues;
-//     actions: TActions;
-// }
-// type TStoreProofOfAddress = ( file_uploader_ref: TFileUploader ) => void;
+
+type TStoreProofOfAddress = (file_uploader_ref: React.RefObject<(HTMLElement | null) & TUpload>) => void;
 
 type TCFDPOAProps = {
-    onSave: (index: number, values: GetSettings) => void;
+    onSave: (index: number, values: TFormValues) => void;
     onCancel: () => void;
     index: number;
-    onSubmit: (index: number, value: GetSettings, setSubmitting?: boolean | ((isSubmitting: boolean) => void)) => void;
+    onSubmit: (index: number, value: TFormValues, setSubmitting?: boolean | ((isSubmitting: boolean) => void)) => void;
     refreshNotifications: () => void;
     form_error: string;
     get_settings: GetSettings;
@@ -74,9 +97,7 @@ type TUpload = {
 let file_uploader_ref: React.RefObject<(HTMLElement | null) & TUpload>;
 
 const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
-    console.log('props', props);
-
-    const form = React.useRef<HTMLHeadingElement>(null);
+    const form = React.useRef<FormikProps<TFormValues> | null>(null);
 
     const [is_loading, setIsLoading] = React.useState(true);
     const [form_state, setFormState] = useStateCallback({
@@ -139,8 +160,9 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         const errors: Record<string, string> = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            // @ts-ignore
-            const error_index = rules.findIndex(v => !v(values[key]));
+            const error_index = rules.findIndex(v => {
+                !v(values[key]);
+            });
             if (error_index !== -1) {
                 errors[key] = validation_errors[key][error_index];
             }
@@ -150,8 +172,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     };
 
     const handleCancel = (values: TFormValues) => {
-        console.log('values', values);
-
         onSave(index, values);
         onCancel();
     };
@@ -186,7 +206,8 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         });
     };
 
-    const onSubmitValues = async (values: TFormValue & { document_file: Array<string> }, actions: TActions) => {
+    // const onSubmitValues = async (values: TFormValue & { document_file: Array<string> }, actions: TActions) => {
+    const onSubmitValues = async (values: TFormValues, actions: FormikActions<TFormValues>) => {
         const { document_file, ...uploadables } = values;
 
         actions.setSubmitting(true);
@@ -217,8 +238,10 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
 
         try {
             const api_response = await file_uploader_ref.current?.upload();
-            if (api_response?.warning) {
-                setFormState({ ...form_state, ...{ form_error: api_response?.warning } });
+            console.log('api_response', api_response);
+
+            if (api_response && (api_response as TApiResponse)?.warning) {
+                setFormState({ ...form_state, ...{ form_error: (api_response as TApiResponse).warning } });
                 actions.setSubmitting(false);
                 return;
             }
@@ -245,10 +268,8 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                     handleCancel(get_settings);
                 }, 3000);
             }
-        } catch (e) {
-            console.log(typeof event);
-            //@ts-ignore
-            setFormState({ ...form_state, ...{ form_error: e.message } });
+        } catch (e: unknown) {
+            setFormState({ ...form_state, ...{ form_error: (e as Error).message } });
         }
         actions.setSubmitting(false);
         onSave(index, values);
@@ -273,7 +294,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refreshNotifications, setFormState]);
 
-    const isFormDisabled = (dirty: boolean, errors: FormikErrors<GetSettings>) => {
+    const isFormDisabled = (dirty: boolean, errors: FormikErrors<TFormValues>) => {
         if (form_state.poa_status === PoaStatusCodes.verified) {
             return false;
         }
@@ -320,9 +341,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 setFieldValue,
                 values,
                 touched,
-            }: FormikProps<GetSettings>) => {
-                console.log('FormikProps values', values);
-
+            }: FormikProps<TFormValues>) => {
                 return (
                     <AutoHeightWrapper default_height={200}>
                         {({
@@ -380,7 +399,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                                         {({
                                                                             field,
                                                                             form: { errors, touched },
-                                                                        }: FieldProps<string, GetSettings>) => (
+                                                                        }: FieldProps<string, TFormValues>) => (
                                                                             <Dropdown
                                                                                 id='address_state'
                                                                                 className='address_state-dropdown'
@@ -388,10 +407,10 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                                                 list={states_list}
                                                                                 error={
                                                                                     touched[
-                                                                                        field.name as keyof GetSettings
+                                                                                        field.name as keyof TFormValues
                                                                                     ] &&
                                                                                     errors[
-                                                                                        field.name as keyof GetSettings
+                                                                                        field.name as keyof TFormValues
                                                                                     ]
                                                                                 }
                                                                                 name='address_state'
@@ -447,9 +466,14 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                 </div>
                                                 <div className='cfd-proof-of-address__file-upload'>
                                                     <FileUploaderContainer
-                                                        onRef={(ref: HTMLElement | null) => (file_uploader_ref = ref)}
+                                                        onRef={(ref: React.RefObject<(HTMLElement | null) & TUpload>) =>
+                                                            (file_uploader_ref = ref)
+                                                        }
                                                         getSocket={WS.getSocket}
-                                                        onFileDrop={(df: { files: any; error_message: string }) =>
+                                                        onFileDrop={(df: {
+                                                            files: TObjDocumentFile;
+                                                            error_message: string;
+                                                        }) =>
                                                             onFileDrop(
                                                                 df.files,
                                                                 df.error_message,

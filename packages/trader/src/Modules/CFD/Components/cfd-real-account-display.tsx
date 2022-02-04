@@ -9,7 +9,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import { Mt5LoginList, DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
 import { TExistingData } from './props.types.js';
-import {TradingPlatformAccounts} from './props.types';
+import { TradingPlatformAccounts } from './props.types';
 
 type TStandPoint = {
     financial_company: string;

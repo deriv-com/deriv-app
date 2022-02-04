@@ -37,7 +37,7 @@
     &__header {
         display: flex;
         align-items: center;
-        margin: 2.4rem 0 1.6rem;
+        margin: 1.6rem 0;
         justify-content: space-between;
         min-height: 50px;
 
@@ -589,6 +589,23 @@
         border-bottom: 2px solid var(--general-section-1);
         margin: unset;
         padding: 0 2rem 1.6rem;
+    }
+
+    &__warning {
+        margin-top: 1.6rem;
+        width: fit-content;
+
+        @include mobile {
+            margin: 1.6rem;
+
+            .dc-hint-box {
+                align-items: normal;
+
+                &__icon {
+                    width: 3.5rem;
+                }
+            }
+        }
     }
 
     .toggle-ads {

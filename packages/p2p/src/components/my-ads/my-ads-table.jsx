@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, InfiniteDataList, Loading, Modal, Table, Text } from '@deriv/components';
+import { Button, HintBox, InfiniteDataList, Loading, Modal, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -41,6 +41,19 @@ const MyAdsTable = () => {
     if (my_ads_store.adverts.length) {
         return (
             <React.Fragment>
+                {isDesktop() && my_ads_store.has_missing_payment_methods && (
+                    <div className='p2p-my-ads__warning'>
+                        <HintBox
+                            icon='IcAlertWarning'
+                            message={
+                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                    <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
+                                </Text>
+                            }
+                            is_warn
+                        />
+                    </div>
+                )}
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (
                         <Button
@@ -54,6 +67,19 @@ const MyAdsTable = () => {
                     )}
                     <ToggleAds />
                 </div>
+                {isMobile() && my_ads_store.has_missing_payment_methods && (
+                    <div className='p2p-my-ads__warning'>
+                        <HintBox
+                            icon='IcAlertWarning'
+                            message={
+                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                    <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
+                                </Text>
+                            }
+                            is_warn
+                        />
+                    </div>
+                )}
                 <Table
                     className={classNames('p2p-my-ads__table', {
                         'p2p-my-ads__table--disabled': !general_store.is_listed || general_store.is_barred,

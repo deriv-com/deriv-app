@@ -4,9 +4,9 @@ import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import Loading from '../../../templates/_common/components/loading';
-import { Mt5LoginList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
-import { any, array, bool } from 'prop-types';
+import {TradingPlatformAccounts} from './props.types';
 
 type TStandPoint = {
     financial_company: string;
@@ -21,49 +21,6 @@ type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
 };
-export type TradingPlatformAccounts =  {
-    account_id?: string;
-    /**
-     * Account type.
-     */
-    account_type?: 'demo' | 'real';
-    /**
-     * Balance of the DXTrade account.
-     */
-    balance?: number;
-    /**
-     * Residence of the DXTrade account.
-     */
-    country?: string;
-    /**
-     * Currency of the DXTrade account.
-     */
-    currency?: string;
-    /**
-     * Account balance, formatted to appropriate decimal places.
-     */
-    display_balance?: string;
-    /**
-     * Display login of DXTrade account.
-     */
-    display_login?: string;
-    /**
-     * Landing company shortcode of the DXTrade account.
-     */
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
-    /**
-     * Login of DXTrade account.
-     */
-    login?: string;
-    /**
-     * Market type
-     */
-    market_type?: 'financial' | 'synthetic';
-    /**
-     * Name of trading platform.
-     */
-    platform?: 'dxtrade';
-}
 
 type TCFDDemoAccountDisplayProps = {
     is_eu: boolean;

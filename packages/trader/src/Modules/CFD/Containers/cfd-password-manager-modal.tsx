@@ -28,11 +28,16 @@ import {
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
-
-type TCountdownComponent = {
-    count_from: number;
-    onTimeout: (value?: boolean) => void;
-};
+import {
+    TCountdownComponent,
+    TCFDPasswordReset,
+    TCFDPasswordSuccessMessage,
+    TCFDPasswordManagerTabContentWrapper,
+    TInvestorPasswordManager,
+    TCFDPasswordManagerTabContent,
+    TCFDPasswordManagerModal,
+} from './props.types';
+import RootStore from '../../../Stores/index';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
@@ -52,14 +57,6 @@ const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);
     return <span className='countdown'>{count}</span>;
-};
-
-type TCFDPasswordReset = {
-    sendVerifyEmail: () => Promise<any>;
-    account_type: string;
-    account_group: string;
-    server: string;
-    password_type: string;
 };
 
 const CFDPasswordReset = ({
@@ -145,11 +142,6 @@ const CFDPasswordReset = ({
     );
 };
 
-type TCFDPasswordSuccessMessage = {
-    toggleModal: () => boolean;
-    is_investor: boolean;
-};
-
 const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }: TCFDPasswordSuccessMessage) => (
     <div className='cfd-password-manager__success'>
         <Icon icon='IcPasswordUpdated' size={128} />
@@ -166,24 +158,9 @@ const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }: TCFDPasswordSuc
     </div>
 );
 
-type TCFDPasswordManagerTabContentWrapper = {
-    multi_step_ref: React.MutableRefObject<any>;
-    steps: Array<{ component: JSX.Element }>;
-};
-
 const CFDPasswordManagerTabContentWrapper = ({ multi_step_ref, steps }: TCFDPasswordManagerTabContentWrapper) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='cfd-password-manager' lbl_previous={localize('Back')} />
 );
-
-type TInvestorPasswordManager = {
-    error_message_investor: string;
-    is_submit_success_investor: boolean;
-    multi_step_ref: React.MutableRefObject<any>;
-    onSubmit: (values: any) => Promise<void>;
-    setPasswordType: (value: string) => void;
-    toggleModal: () => boolean;
-    validatePassword: (values: { old_password: string; new_password: string; password_type: string }) => void | object;
-};
 
 const InvestorPasswordManager = ({
     error_message_investor,
@@ -291,18 +268,6 @@ const InvestorPasswordManager = ({
     );
 };
 
-type TCFDPasswordManagerTabContent = {
-    toggleModal: () => boolean;
-    selected_login: string;
-    email: string;
-    setPasswordType: (value: string) => void;
-    multi_step_ref: React.MutableRefObject<any>;
-    platform: 'dxtrade' | 'mt5';
-    onChangeActiveTabIndex: (value: number) => void;
-    account_group: 'real' | 'demo';
-    password_type?: string;
-};
-
 const CFDPasswordManagerTabContent = ({
     toggleModal,
     selected_login,
@@ -381,7 +346,6 @@ const CFDPasswordManagerTabContent = ({
             <DesktopWrapper>
                 <ThemedScrollbars height={container_height} is_bypassed={isMobile()} autohide={false}>
                     <TradingPasswordManager
-                        // @ts-ignore
                         toggleModal={toggleModal}
                         platform={platform}
                         email={email}
@@ -392,7 +356,6 @@ const CFDPasswordManagerTabContent = ({
             <MobileWrapper>
                 <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
                     <TradingPasswordManager
-                        // @ts-ignore
                         toggleModal={toggleModal}
                         platform={platform}
                         email={email}
@@ -444,21 +407,6 @@ const CFDPasswordManagerTabContent = ({
             </div>
         </Tabs>
     );
-};
-
-type TCFDPasswordManagerModal = {
-    enableApp: () => void;
-    email: string;
-    disableApp: () => void;
-    is_visible: boolean;
-    platform: 'dxtrade' | 'mt5';
-    selected_login: string;
-    selected_account: string;
-    toggleModal: () => boolean;
-    selected_account_type: string;
-    selected_account_group: 'real' | 'demo';
-    selected_server: string;
-    sendVerifyEmail: () => Promise<any>;
 };
 
 const CFDPasswordManagerModal = ({
@@ -572,7 +520,7 @@ const CFDPasswordManagerModal = ({
     );
 };
 
-export default connect(({ modules: { cfd }, client, ui }: any) => ({
+export default connect(({ modules: { cfd }, client, ui }: RootStore) => ({
     email: client.email,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,

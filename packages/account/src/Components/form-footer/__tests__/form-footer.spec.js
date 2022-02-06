@@ -13,14 +13,12 @@ const MockFormFooter = props => {
 describe('Testing form-footer component', () => {
     it('Should render children', () => {
         render(<MockFormFooter />);
-        const textElement = screen.getByText('Lorem Ipsum');
-        expect(textElement).toBeInTheDocument();
+        expect(screen.getByText('Lorem Ipsum')).toBeInTheDocument();
     });
 
     it('Container should render with a className prop', () => {
         const test_class = 'test-class';
         render(<MockFormFooter className={test_class} />);
-        const container = screen.getByTestId('form-footer-container');
-        expect(container).toHaveClass(test_class);
+        expect(screen.getByTestId('form-footer-container')).toHaveClass(test_class);
     });
 });

@@ -47,7 +47,10 @@ const BuySellRow = ({ row: advert }) => {
     if (isMobile()) {
         return (
             <div className='buy-sell-row'>
-                <div className='buy-sell-row__advertiser' onClick={() => buy_sell_store.showAdvertiserPage(advert)}>
+                <div
+                    className='buy-sell-row__advertiser'
+                    onClick={() => (general_store.is_barred ? null : buy_sell_store.showAdvertiserPage(advert))}
+                >
                     <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
                     <div className='buy-sell-row__advertiser-name'>
                         <Text size='xs' line_height='m' color='general' weight='bold'>
@@ -87,7 +90,12 @@ const BuySellRow = ({ row: advert }) => {
                         </Text>
                     </div>
                     {!is_my_advert && (
-                        <Button primary large onClick={() => buy_sell_store.setSelectedAdvert(advert)}>
+                        <Button
+                            is_disabled={general_store.is_barred}
+                            large
+                            onClick={() => buy_sell_store.setSelectedAdvert(advert)}
+                            primary
+                        >
                             {is_buy_advert ? (
                                 <Localize i18n_default_text='Buy {{account_currency}}' values={{ account_currency }} />
                             ) : (

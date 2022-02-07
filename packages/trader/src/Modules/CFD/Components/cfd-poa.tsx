@@ -308,6 +308,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     } = props;
 
     const { form_error, has_poi, poa_status, resubmit_poa, submitted_poa } = form_state;
+    const isVerified = poa_status === PoaStatusCodes.verified;
 
     const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);
 
@@ -347,188 +348,184 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                         }: {
                             setRef: (instance: HTMLFormElement | null) => void;
                             height: number;
-                        }) => {
-                            const displayStatusPoa = () => (
-                                <ThemedScrollbars height={height} is_bypassed={isMobile()}>
-                                    {submitted_poa && <PoaSubmitted is_description_enabled={false} has_poi={has_poi} />}
-                                    {poa_status === PoaStatusCodes.pending && (
-                                        <PoaNeedsReview is_description_enabled={false} />
-                                    )}
-                                    {poa_status === PoaStatusCodes.verified && (
-                                        <PoaVerified is_description_enabled={false} has_poi={has_poi} />
-                                    )}
-                                    {poa_status === PoaStatusCodes.expired && <PoaExpired onClick={handleResubmit} />}
-                                    {(poa_status === PoaStatusCodes.rejected ||
-                                        poa_status === PoaStatusCodes.suspected) && <PoaUnverified />}
-                                </ThemedScrollbars>
-                            );
-                            return (
-                                <form ref={setRef} onSubmit={handleSubmit} className='cfd-proof-of-address'>
-                                    <Div100vhContainer
-                                        className='details-form'
-                                        height_offset='100px'
-                                        is_disabled={isDesktop()}
-                                    >
-                                        {is_loading && <Loading is_fullscreen={false} />}
-                                        {is_form_visible && (
-                                            <ThemedScrollbars
-                                                autohide={false}
-                                                height={`${height - 77}px`}
-                                                is_bypassed={isMobile()}
-                                            >
-                                                <div className='cfd-proof-of-address__field-area'>
-                                                    <FormSubHeader title={localize('Address information')} />
-                                                    <InputField
-                                                        name='address_line_1'
-                                                        maxLength={255}
-                                                        required
-                                                        label={localize('First line of address*')}
-                                                        placeholder={localize('First line of address*')}
-                                                        onBlur={handleBlur}
-                                                    />
-                                                    <InputField
-                                                        name='address_line_2'
-                                                        maxLength={255}
-                                                        label={localize('Second line of address (optional)')}
-                                                        optional
-                                                        placeholder={localize('Second line of address')}
-                                                        onBlur={handleBlur}
-                                                    />
-                                                    <div className='cfd-proof-of-address__inline-fields'>
-                                                        <InputField
-                                                            maxLength={255}
-                                                            name='address_city'
-                                                            required
-                                                            label={localize('Town/City*')}
-                                                            placeholder={localize('Town/City*')}
-                                                            onBlur={handleBlur}
-                                                        />
-                                                        <fieldset className='address-state__fieldset'>
-                                                            {states_list?.length > 0 ? (
-                                                                <React.Fragment>
-                                                                    <DesktopWrapper>
-                                                                        <Field name='address_state'>
-                                                                            {({
-                                                                                field,
-                                                                            }: FieldProps<string, TFormValues>) => (
-                                                                                <Dropdown
-                                                                                    id='address_state'
-                                                                                    className='address_state-dropdown'
-                                                                                    is_align_text_left
-                                                                                    list={states_list}
-                                                                                    error={
-                                                                                        touched[
-                                                                                            field.name as keyof TFormValues
-                                                                                        ] &&
-                                                                                        errors[
-                                                                                            field.name as keyof TFormValues
-                                                                                        ]
-                                                                                    }
-                                                                                    name='address_state'
-                                                                                    value={values.address_state}
-                                                                                    onChange={handleChange}
-                                                                                    placeholder={localize(
-                                                                                        'State/Province'
-                                                                                    )}
-                                                                                    list_portal_id='modal_root'
-                                                                                />
-                                                                            )}
-                                                                        </Field>
-                                                                    </DesktopWrapper>
-                                                                    <MobileWrapper>
-                                                                        <SelectNative
-                                                                            label={localize('State/Province')}
-                                                                            value={values.address_state}
-                                                                            list_items={states_list}
-                                                                            error={
-                                                                                touched.address_state &&
-                                                                                errors.address_state
-                                                                            }
-                                                                            onChange={(
-                                                                                e: React.ChangeEvent<HTMLSelectElement>
-                                                                            ) => {
-                                                                                handleChange(e);
-                                                                                setFieldValue(
-                                                                                    'address_state',
-                                                                                    e.target.value,
-                                                                                    true
-                                                                                );
-                                                                            }}
-                                                                        />
-                                                                    </MobileWrapper>
-                                                                </React.Fragment>
-                                                            ) : (
-                                                                // Fallback to input field when states list is empty / unavailable for country
-                                                                <InputField
-                                                                    name='address_state'
-                                                                    label={localize('State/Province')}
-                                                                    placeholder={localize('State/Province')}
-                                                                    value={values.address_state}
-                                                                    onBlur={handleBlur}
-                                                                />
-                                                            )}
-                                                        </fieldset>
-                                                        <InputField
-                                                            maxLength={255}
-                                                            name='address_postcode'
-                                                            label={localize('Postal/ZIP code')}
-                                                            placeholder={localize('Postal/ZIP code')}
-                                                            onBlur={handleBlur}
-                                                            optional
-                                                        />
-                                                    </div>
-                                                    <div className='cfd-proof-of-address__file-upload'>
-                                                        <FileUploaderContainer
-                                                            onRef={(
-                                                                ref: React.RefObject<(HTMLElement | null) & TUpload>
-                                                            ) => (file_uploader_ref = ref)}
-                                                            getSocket={WS.getSocket}
-                                                            onFileDrop={(df: {
-                                                                files: TObjDocumentFile;
-                                                                error_message: string;
-                                                            }) =>
-                                                                onFileDrop(
-                                                                    df.files,
-                                                                    df.error_message,
-                                                                    setFieldTouched,
-                                                                    setFieldValue,
-                                                                    values as TFormValues
-                                                                )
-                                                            }
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </ThemedScrollbars>
-                                        )}
-                                        {poa_status !== PoaStatusCodes.none && !resubmit_poa && displayStatusPoa}
-                                        <Modal.Footer is_bypassed={isMobile()}>
-                                            {(poa_status === PoaStatusCodes.verified || is_form_visible) && (
-                                                <FormSubmitButton
-                                                    has_cancel
-                                                    cancel_label={localize('Previous')}
-                                                    is_disabled={
-                                                        isFormDisabled(dirty, errors) ||
-                                                        (poa_status !== PoaStatusCodes.verified &&
-                                                            document_upload.files &&
-                                                            document_upload.files.length < 1) ||
-                                                        !!document_upload.error_message
-                                                    }
-                                                    label={
-                                                        poa_status === PoaStatusCodes.verified
-                                                            ? localize('Submit')
-                                                            : localize('Next')
-                                                    }
-                                                    is_absolute={isMobile()}
-                                                    is_loading={isSubmitting}
-                                                    form_error={form_error}
-                                                    onCancel={() => handleCancel(values as TFormValues)}
+                        }) => (
+                            <form ref={setRef} onSubmit={handleSubmit} className='cfd-proof-of-address'>
+                                <Div100vhContainer
+                                    className='details-form'
+                                    height_offset='100px'
+                                    is_disabled={isDesktop()}
+                                >
+                                    {is_loading && <Loading is_fullscreen={false} />}
+                                    {is_form_visible && (
+                                        <ThemedScrollbars
+                                            autohide={false}
+                                            height={`${height - 77}px`}
+                                            is_bypassed={isMobile()}
+                                        >
+                                            <div className='cfd-proof-of-address__field-area'>
+                                                <FormSubHeader title={localize('Address information')} />
+                                                <InputField
+                                                    name='address_line_1'
+                                                    maxLength={255}
+                                                    required
+                                                    label={localize('First line of address*')}
+                                                    placeholder={localize('First line of address*')}
+                                                    onBlur={handleBlur}
                                                 />
+                                                <InputField
+                                                    name='address_line_2'
+                                                    maxLength={255}
+                                                    label={localize('Second line of address (optional)')}
+                                                    optional
+                                                    placeholder={localize('Second line of address')}
+                                                    onBlur={handleBlur}
+                                                />
+                                                <div className='cfd-proof-of-address__inline-fields'>
+                                                    <InputField
+                                                        maxLength={255}
+                                                        name='address_city'
+                                                        required
+                                                        label={localize('Town/City*')}
+                                                        placeholder={localize('Town/City*')}
+                                                        onBlur={handleBlur}
+                                                    />
+                                                    <fieldset className='address-state__fieldset'>
+                                                        {states_list?.length > 0 ? (
+                                                            <React.Fragment>
+                                                                <DesktopWrapper>
+                                                                    <Field name='address_state'>
+                                                                        {({
+                                                                            field,
+                                                                        }: FieldProps<string, TFormValues>) => (
+                                                                            <Dropdown
+                                                                                id='address_state'
+                                                                                className='address_state-dropdown'
+                                                                                is_align_text_left
+                                                                                list={states_list}
+                                                                                error={
+                                                                                    touched[
+                                                                                        field.name as keyof TFormValues
+                                                                                    ] &&
+                                                                                    errors[
+                                                                                        field.name as keyof TFormValues
+                                                                                    ]
+                                                                                }
+                                                                                name='address_state'
+                                                                                value={values.address_state}
+                                                                                onChange={handleChange}
+                                                                                placeholder={localize('State/Province')}
+                                                                                list_portal_id='modal_root'
+                                                                            />
+                                                                        )}
+                                                                    </Field>
+                                                                </DesktopWrapper>
+                                                                <MobileWrapper>
+                                                                    <SelectNative
+                                                                        label={localize('State/Province')}
+                                                                        value={values.address_state}
+                                                                        list_items={states_list}
+                                                                        error={
+                                                                            touched.address_state &&
+                                                                            errors.address_state
+                                                                        }
+                                                                        onChange={(
+                                                                            e: React.ChangeEvent<HTMLSelectElement>
+                                                                        ) => {
+                                                                            handleChange(e);
+                                                                            setFieldValue(
+                                                                                'address_state',
+                                                                                e.target.value,
+                                                                                true
+                                                                            );
+                                                                        }}
+                                                                    />
+                                                                </MobileWrapper>
+                                                            </React.Fragment>
+                                                        ) : (
+                                                            // Fallback to input field when states list is empty / unavailable for country
+                                                            <InputField
+                                                                name='address_state'
+                                                                label={localize('State/Province')}
+                                                                placeholder={localize('State/Province')}
+                                                                value={values.address_state}
+                                                                onBlur={handleBlur}
+                                                            />
+                                                        )}
+                                                    </fieldset>
+                                                    <InputField
+                                                        maxLength={255}
+                                                        name='address_postcode'
+                                                        label={localize('Postal/ZIP code')}
+                                                        placeholder={localize('Postal/ZIP code')}
+                                                        onBlur={handleBlur}
+                                                        optional
+                                                    />
+                                                </div>
+                                                <div className='cfd-proof-of-address__file-upload'>
+                                                    <FileUploaderContainer
+                                                        onRef={(ref: React.RefObject<(HTMLElement | null) & TUpload>) =>
+                                                            (file_uploader_ref = ref)
+                                                        }
+                                                        getSocket={WS.getSocket}
+                                                        onFileDrop={(df: {
+                                                            files: TObjDocumentFile;
+                                                            error_message: string;
+                                                        }) =>
+                                                            onFileDrop(
+                                                                df.files,
+                                                                df.error_message,
+                                                                setFieldTouched,
+                                                                setFieldValue,
+                                                                values as TFormValues
+                                                            )
+                                                        }
+                                                    />
+                                                </div>
+                                            </div>
+                                        </ThemedScrollbars>
+                                    )}
+                                    {poa_status !== PoaStatusCodes.none && !resubmit_poa && (
+                                        <ThemedScrollbars height={height} is_bypassed={isMobile()}>
+                                            {submitted_poa && (
+                                                <PoaSubmitted is_description_enabled={false} has_poi={has_poi} />
                                             )}
-                                        </Modal.Footer>
-                                    </Div100vhContainer>
-                                </form>
-                            );
-                        }}
+                                            {poa_status === PoaStatusCodes.pending && (
+                                                <PoaNeedsReview is_description_enabled={false} />
+                                            )}
+                                            {isVerified && (
+                                                <PoaVerified is_description_enabled={false} has_poi={has_poi} />
+                                            )}
+                                            {poa_status === PoaStatusCodes.expired && (
+                                                <PoaExpired onClick={handleResubmit} />
+                                            )}
+                                            {(poa_status === PoaStatusCodes.rejected ||
+                                                poa_status === PoaStatusCodes.suspected) && <PoaUnverified />}
+                                        </ThemedScrollbars>
+                                    )}
+                                    <Modal.Footer is_bypassed={isMobile()}>
+                                        {(isVerified || is_form_visible) && (
+                                            <FormSubmitButton
+                                                has_cancel
+                                                cancel_label={localize('Previous')}
+                                                is_disabled={
+                                                    isFormDisabled(dirty, errors) ||
+                                                    (!isVerified &&
+                                                        document_upload.files &&
+                                                        document_upload.files.length < 1) ||
+                                                    !!document_upload.error_message
+                                                }
+                                                label={isVerified ? localize('Submit') : localize('Next')}
+                                                is_absolute={isMobile()}
+                                                is_loading={isSubmitting}
+                                                form_error={form_error}
+                                                onCancel={() => handleCancel(values as TFormValues)}
+                                            />
+                                        )}
+                                    </Modal.Footer>
+                                </Div100vhContainer>
+                            </form>
+                        )}
+                        ;
                     </AutoHeightWrapper>
                 );
             }}

@@ -165,9 +165,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         const errors: Record<string, string> = {};
 
         Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => {
-                !v(values[key as keyof TFormValuesInputs] as string);
-            });
+            const error_index = rules.findIndex(v => !v(values[key as keyof TFormValuesInputs] as string));
             if (error_index !== -1) {
                 errors[key] = validation_errors[key][error_index];
             }

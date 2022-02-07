@@ -335,6 +335,16 @@ export default class NotificationStore extends BaseStore {
     @action.bound
     init() {
         this.setClientNotifications();
+        reaction(
+            () => [
+                this.root_store.client.is_uk,
+                this.root_store.client.has_malta_account,
+                this.root_store.client.can_have_mlt_account,
+            ],
+            () => {
+                this.setClientNotifications();
+            }
+        );
     }
 
     @action.bound

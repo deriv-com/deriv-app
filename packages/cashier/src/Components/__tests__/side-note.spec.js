@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import SideNote from '../side-note';
 
-describe('<USDTSideNote />', () => {
+describe('<SideNote />', () => {
     const props = {
         has_bullets: false,
         notes: ['First side note message', 'Second side note message'],

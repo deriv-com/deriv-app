@@ -223,14 +223,14 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         }
 
         // Store newly stored values in the component.
-        const { address_line_1, address_line_2, address_city, address_state, address_postcode } = get_settings;
+        const { _address_line_1, _address_line_2, _address_city, _address_state, _address_postcode } = get_settings;
 
         setFormValues({
-            address_line_1,
-            address_line_2,
-            address_city,
-            address_postcode,
-            address_state,
+            _address_line_1,
+            _address_line_2,
+            _address_city,
+            _address_postcode,
+            _address_state,
         });
 
         setFormState({ ...form_state, ...{ form_error: '' } });
@@ -251,8 +251,8 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 return;
             }
             const { identity } = get_account_status.authentication;
-            const has_poi = !(identity && identity.status === 'none');
-            if (has_poi) {
+            const _has_poi = !(identity && identity.status === 'none');
+            if (_has_poi) {
                 onProceed();
             } else {
                 setFormState({
@@ -280,9 +280,9 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
                 const { get_account_status } = response;
-                const { document, identity } = (get_account_status as GetAccountStatus).authentication!;
-                const _has_poi = !!(identity && identity.status === 'none');
-                setFormState({ ...form_state, ...{ poa_status: document?.status, _has_poi } }, () => {
+                const { document, identity } = get_account_status?.authentication!;
+                const __has_poi = !!(identity && identity.status === 'none');
+                setFormState({ ...form_state, ...{ poa_status: document?.status, __has_poi } }, () => {
                     setIsLoading(false);
                     refreshNotifications();
                 });
@@ -509,7 +509,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                 cancel_label={localize('Previous')}
                                                 is_disabled={
                                                     isFormDisabled(dirty, errors) ||
-                                                    (!(poa_status === PoaStatusCodes.verified) &&
+                                                    ((poa_status !== PoaStatusCodes.verified) &&
                                                         document_upload.files &&
                                                         document_upload.files.length < 1) ||
                                                     !!document_upload.error_message

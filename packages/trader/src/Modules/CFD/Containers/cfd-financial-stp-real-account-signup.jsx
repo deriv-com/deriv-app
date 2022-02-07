@@ -235,17 +235,17 @@ CFDFinancialStpRealAccountSignup.propTypes = {
     toggleModal: PropTypes.func,
 };
 
-export default connect(({ client, modules: { cfd }, ui }) => ({
-    addNotificationByKey: ui.addNotificationMessageByKey,
+export default connect(({ client, modules: { cfd }, notifications }) => ({
+    addNotificationByKey: notifications.addNotificationMessageByKey,
     authentication_status: client.authentication_status,
     get_settings: client.account_settings,
     client_email: client.email,
     is_fully_authenticated: client.is_fully_authenticated,
     landing_company: client.landing_company,
     openPendingDialog: cfd.openPendingDialog,
-    refreshNotifications: client.refreshNotifications,
-    removeNotificationMessage: ui.removeNotificationMessage,
-    removeNotificationByKey: ui.removeNotificationByKey,
+    refreshNotifications: notifications.refreshNotifications,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    removeNotificationByKey: notifications.removeNotificationByKey,
     residence_list: client.residence_list,
     states_list: client.states_list,
     storeProofOfAddress: cfd.storeProofOfAddress,

@@ -5,9 +5,9 @@
 
     &__header {
         display: flex;
+        flex-direction: column;
         height: fit-content;
         justify-content: space-between;
-        width: 657px;
 
         @include mobile {
             padding-top: 1.6rem;
@@ -29,11 +29,18 @@
         &-name {
             align-self: center;
             display: flex;
-            flex-flow: column;
+            flex-direction: row;
             height: fit-content;
             width: fit-content;
-            margin-left: 0.8rem;
+
+            &--column {
+                align-self: center;
+                display: flex;
+                flex-direction: column;
+                padding-left: 0.8rem;
+            }
         }
+
         &-real-name {
             margin-top: 0.4rem;
             max-width: 500px;
@@ -71,6 +78,10 @@
         overflow-x: auto;
     }
 
+    &__italic {
+        font-style: italic;
+    }
+
     &__modal {
         @include mobile {
             max-width: 100vw;
@@ -80,15 +91,15 @@
     &__stats {
         border-bottom: none;
         display: flex;
-        grid-template-columns: repeat(3, 1fr) 2fr 1fr;
-        grid-template-rows: 46px;
+        grid-template-columns: repeat(3, 1fr);
         height: 5rem;
         justify-content: space-between;
-        margin: 2.4rem 0 2.4rem 2.9rem;
-        width: 58.8rem;
+        margin: 2rem;
+        width: 100%;
 
         @include mobile {
-            margin: 2.4rem 0;
+            grid-template-columns: repeat(2, 1fr);
+            margin: 1.6rem;
             width: 100vw;
         }
 
@@ -152,6 +163,7 @@
             padding-top: 0.8rem;
         }
     }
+
     &__popover {
         &-icon {
             margin: 1.6rem 0.8rem 1.6rem 2.4rem;
@@ -161,6 +173,7 @@
             }
         }
     }
+
     &__adverts {
         flex: 1;
         display: flex;
@@ -179,7 +192,6 @@
             display: flex;
             flex: 1;
             flex-direction: column;
-            width: 657px;
 
             @include mobile {
                 display: flex;
@@ -227,7 +239,6 @@
             }
 
             position: absolute;
-            width: 657px;
 
             @include mobile {
                 bottom: 0;

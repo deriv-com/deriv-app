@@ -1,9 +1,5 @@
 .my-profile {
     &__content {
-        @include tablet-up {
-            max-width: 672px;
-            min-width: 672px;
-        }
         @include mobile {
             padding: 1.6rem;
             width: 100vw;

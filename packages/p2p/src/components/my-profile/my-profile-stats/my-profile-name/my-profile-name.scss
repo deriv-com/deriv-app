@@ -1,0 +1,35 @@
+.my-profile-name {
+    align-items: center;
+    display: flex;
+    margin: 2.4rem 0;
+    width: 100%;
+
+    @include mobile {
+        margin: 0 0 2.4rem;
+    }
+
+    &__avatar {
+        margin-right: 0.8rem;
+    }
+
+    &--column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__name {
+        width: 100%;
+    }
+
+    &--privacy {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    &--row {
+        display: flex;
+        flex-direction: row;
+    }
+}

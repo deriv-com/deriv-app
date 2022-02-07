@@ -1,0 +1,14 @@
+.my-profile-details-container {
+    border: 1px solid var(--general-hover);
+    border-radius: 0.8rem;
+    padding: 2.4rem;
+
+    @include mobile {
+        border: unset;
+        padding: unset;
+    }
+
+    &--table {
+        display: flex;
+    }
+}

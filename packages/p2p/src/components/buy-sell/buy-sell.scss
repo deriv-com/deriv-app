@@ -84,10 +84,17 @@
             display: flex;
             flex-direction: column;
             margin-left: 0.8rem;
+
+            &__row {
+                display: flex;
+                flex-direction: row;
+            }
         }
     }
 
     &__name {
+        padding-right: 0.4rem;
+
         &:hover {
             color: var(--brand-red-coral);
             text-decoration: underline;

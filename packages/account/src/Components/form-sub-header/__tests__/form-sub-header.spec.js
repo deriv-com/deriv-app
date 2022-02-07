@@ -15,7 +15,7 @@ describe('Testing FormSubHeader component', () => {
         expect(screen.getByText('lorem ipsum')).toBeInTheDocument();
     });
 
-    it('Should has title as class', () => {
+    it('Should has a title as class', () => {
         const test_title = 'test-title';
         render(<FormSubHeader title={test_title} />);
         const title_as_class = test_title.replace(/\s+/g, '-').toLowerCase();

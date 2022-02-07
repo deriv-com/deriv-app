@@ -6,14 +6,16 @@ import * as StartDate from '../Actions/start-date';
 export const processTradeParams = async (store, new_state) => {
     const snapshot = store.getSnapshot();
     const functions = getMethodsList(store, new_state);
+    const promises = [];
 
     // To make sure that every function is invoked and affects the snapshot respectively, we have to use for instead of forEach
     for (let i = 0; i < functions.length; i++) {
         // Shallow copy with Object.assign is good enough to extend the snapshot with new state
         // we don't need deep extension here, since each function in functions array composes a property of the store completely
-        await Object.assign(snapshot, functions[i](snapshot)); // eslint-disable-line no-await-in-loop
+        promises.push(functions[i](snapshot));
     }
 
+    Object.assign(snapshot, await Promise.all(promises));
     return snapshot;
 };
 

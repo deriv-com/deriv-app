@@ -1,18 +1,18 @@
 name: Tests
-on: [push, pull_request]
+on: [ push ]
 env:
   CI: true
 
 jobs:
   test:
-    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    name: Node ${{ matrix.package }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
-        node: [14]
-        os: [ubuntu-latest]
+        package: [ "trader","account","bot-skeleton","bot-web-ui","cashier","components","core","dashboard","indicators","p2p","publisher","shared","trader","translations" ]
+        os: [ ubuntu-latest ]
 
     steps:
       - name: Clone repository
@@ -21,7 +21,7 @@ jobs:
       - name: Set Node.js version
         uses: actions/setup-node@master
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '14.17.1'
 
       - name: Install npm dependencies
         run: npm install # switch to `npm ci` when Node.js 6 support is dropped
@@ -30,13 +30,13 @@ jobs:
         run: npm run bootstrap && npm run build # switch to `npm ci` when Node.js 6 support is dropped
 
       - name: Run tests
-        run: npm run test:ci
+        run: npm run test:ci /package/${{ matrix.package }}
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          flag-name: ${{matrix.os}}-node-${{ matrix.node }}
+          flag-name: 'ubuntu/node.14.17.1'
           parallel: true
 
   finish:

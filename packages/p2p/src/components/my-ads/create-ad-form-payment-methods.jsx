@@ -29,27 +29,29 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert }) => {
 
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {
-            return my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
+            return (
                 <>
-                    <PaymentMethodCard
-                        is_vertical_ellipsis_visible={false}
-                        key={key}
-                        large
-                        onClick={() => onClickPaymentMethodCard(payment_method)}
-                        payment_method={payment_method}
-                        style={selected_methods.includes(payment_method.ID) ? style : {}}
-                    />
-                    <PaymentMethodCard is_add={true} label={localize('Payment method')} large onClickAdd={() => {}} />
+                    {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
+                        <PaymentMethodCard
+                            is_vertical_ellipsis_visible={false}
+                            key={key}
+                            medium
+                            onClick={() => onClickPaymentMethodCard(payment_method)}
+                            payment_method={payment_method}
+                            style={selected_methods.includes(payment_method.ID) ? style : {}}
+                        />
+                    ))}
+                    <PaymentMethodCard is_add={true} label={localize('Payment method')} medium onClickAdd={() => {}} />
                 </>
-            ));
+            );
         }
 
-        return <PaymentMethodCard is_add={true} label={localize('Payment method')} large onClickAdd={() => {}} />;
+        return <PaymentMethodCard is_add={true} label={localize('Payment method')} medium onClickAdd={() => {}} />;
     }
 
     return (
         <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-            {({ handleBlur, setFieldValue }) => (
+            {({ setFieldValue }) => (
                 <Field name='payment_method'>
                     {({ field }) => (
                         <div className='p2p-my-ads__form-payment-methods--empty'>
@@ -57,6 +59,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert }) => {
                                 {...field}
                                 autoComplete='off' // prevent chrome autocomplete
                                 data-lpignore='true'
+                                has_updating_list={false}
                                 label={
                                     <React.Fragment>
                                         <Icon icon='IcAddCircle' size={14} />
@@ -65,14 +68,10 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert }) => {
                                         </Text>
                                     </React.Fragment>
                                 }
-                                list_items={my_profile_store.payment_methods_list_items}
-                                onBlur={e => {
-                                    handleBlur(e);
-                                    setFieldValue('payment_method', '');
-                                }}
-                                onItemSelection={({ value }) => {
-                                    setFieldValue('payment_method', value);
-                                }}
+                                list_items={my_profile_store.payment_methods_list}
+                                onItemSelection={({ text, value }) =>
+                                    setFieldValue('payment_method', value ? text : '')
+                                }
                                 required
                                 trailing_icon={<></>}
                                 type='text'

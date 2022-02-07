@@ -34,6 +34,7 @@ const Autocomplete = React.memo(props => {
         className,
         dropdown_offset,
         error,
+        has_updating_list = true,
         input_id,
         is_alignment_top,
         list_items,
@@ -62,9 +63,11 @@ const Autocomplete = React.memo(props => {
     let scroll_top_position = null;
 
     React.useEffect(() => {
-        setFilteredItems(list_items);
-        setActiveIndex(null);
-        setInputValue('');
+        if (has_updating_list) {
+            setFilteredItems(list_items);
+            setActiveIndex(null);
+            setInputValue('');
+        }
     }, [list_items]);
 
     React.useEffect(() => {

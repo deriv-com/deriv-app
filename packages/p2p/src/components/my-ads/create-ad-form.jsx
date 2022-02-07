@@ -52,6 +52,7 @@ const CreateAdForm = () => {
     };
 
     React.useEffect(() => {
+        my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
 
         const disposeApiErrorReaction = reaction(

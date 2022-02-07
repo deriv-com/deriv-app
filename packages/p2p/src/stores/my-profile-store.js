@@ -23,6 +23,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_loading = true;
     @observable is_submit_success = false;
     @observable payment_info = '';
+    @observable payment_methods_list = [];
     @observable payment_method_to_delete = {};
     @observable payment_method_to_edit = {};
     @observable search_results = [];
@@ -175,6 +176,7 @@ export default class MyProfileStore extends BaseStore {
             p2p_payment_methods: 1,
         }).then(response => {
             const { p2p_payment_methods } = response;
+            const list = [];
             const list_items = [];
             this.setAvailablePaymentMethods(p2p_payment_methods);
 
@@ -184,6 +186,11 @@ export default class MyProfileStore extends BaseStore {
                         list_items.push({ text: key[1].display_name, value: key[0] });
                 });
             }
+
+            Object.entries(this.available_payment_methods).forEach(key => {
+                list.push({ text: key[1].display_name, value: key[0] });
+            });
+            this.setPaymentMethodsList(list);
 
             if (list_items.length) {
                 this.setSearchResults(list_items);
@@ -413,6 +420,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setPaymentInfo(payment_info) {
         this.payment_info = payment_info;
+    }
+
+    @action.bound
+    setPaymentMethodsList(payment_methods_list) {
+        this.payment_methods_list = payment_methods_list;
     }
 
     @action.bound

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
-import { Button, Div100vhContainer, Icon, Input, Modal, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, Div100vhContainer, Input, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -10,6 +10,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import CreateAdSummary from './create-ad-summary.jsx';
+import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -38,6 +39,7 @@ const EditAdForm = () => {
     } = my_ads_store.p2p_advert_information;
 
     React.useEffect(() => {
+        my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -280,43 +282,7 @@ const EditAdForm = () => {
                                                 <Localize i18n_default_text='You may choose up to 3.' />
                                             </Text>
                                         </div>
-                                        {my_profile_store.advertiser_has_payment_methods ? (
-                                            <React.Fragment>
-                                                {my_profile_store.payment_methods_list_methods.map(
-                                                    (payment_method, key) => {
-                                                        const method = payment_method.display_name.replace(
-                                                            /\s|-/gm,
-                                                            ''
-                                                        );
-                                                        return (
-                                                            <div
-                                                                className='p2p-my-ads__form-payment-methods--empty'
-                                                                key={key}
-                                                            >
-                                                                <div>
-                                                                    <Icon icon={`IcCashier${method}`} />
-                                                                    <Text color='prominent' size='xs'>
-                                                                        <Localize
-                                                                            i18n_default_text={
-                                                                                payment_method.display_name
-                                                                            }
-                                                                        />
-                                                                    </Text>
-                                                                </div>
-                                                                <Icon ic='IcDelete' />
-                                                            </div>
-                                                        );
-                                                    }
-                                                )}
-                                            </React.Fragment>
-                                        ) : (
-                                            <div className='p2p-my-ads__form-payment-methods--empty'>
-                                                <Icon icon='IcAddCircle' size={14} />
-                                                <Text color='less-prominent' size='xs'>
-                                                    <Localize i18n_default_text='Add' />
-                                                </Text>
-                                            </div>
-                                        )}
+                                        <EditAdFormPaymentMethods is_sell_advert={is_sell_advert} />
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
                                                 className='p2p-my-ads__form-button'

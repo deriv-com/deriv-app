@@ -56,7 +56,7 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='advertiser-page__adverts-button'>
-                        <Button primary large onClick={showAdForm}>
+                        <Button primary large onClick={showAdForm} is_disabled={general_store.is_barred}>
                             {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                         </Button>
                     </Table.Cell>

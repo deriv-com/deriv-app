@@ -5,6 +5,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Formik, FormikHelpers as FormikActions } from 'formik';
 import React from 'react';
+import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 
 type TCFDAuthenticationStatusProps = {
@@ -129,13 +130,13 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
     );
 };
 
-export default connect(({ client, common }: any) => ({
+export default connect(({ client, common, notifications }: RootStore) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     fetchResidenceList: client.fetchResidenceList,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
 }))(CFDPOI);

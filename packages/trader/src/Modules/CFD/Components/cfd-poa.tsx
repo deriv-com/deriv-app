@@ -208,7 +208,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         });
     };
 
-    // const onSubmitValues = async (values: TFormValue & { document_file: Array<string> }, actions: TActions) => {
     const onSubmitValues = async (values: TFormValues, actions: FormikActions<TFormValues>) => {
         const { document_file, ...uploadables } = values;
 
@@ -283,11 +282,9 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
                 const { get_account_status } = response;
-
-                // const { document, identity } = (get_account_status as keyof AccountStatusResponse).(authentication as keyof GetAccountStatus);
                 const { document, identity } = (get_account_status as GetAccountStatus).authentication!;
-                const has_poi = !!(identity && identity.status === 'none');
-                setFormState({ ...form_state, ...{ poa_status: document?.status, has_poi } }, () => {
+                const _has_poi = !!(identity && identity.status === 'none');
+                setFormState({ ...form_state, ...{ poa_status: document?.status, _has_poi } }, () => {
                     setIsLoading(false);
                     refreshNotifications();
                 });

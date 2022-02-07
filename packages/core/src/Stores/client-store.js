@@ -565,11 +565,14 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_eu() {
         if (!this.landing_companies) return false;
-        const { gaming_company, financial_company } = this.landing_companies;
+        const { gaming_company, financial_company, mt_gaming_company } = this.landing_companies;
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
-        return financial_shortcode || gaming_shortcode
-            ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode)
+        const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
+        return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
+            ? eu_shortcode_regex.test(financial_shortcode) ||
+                  eu_shortcode_regex.test(gaming_shortcode) ||
+                  eu_shortcode_regex.test(mt_gaming_shortcode)
             : eu_excluded_regex.test(this.residence);
     }
 

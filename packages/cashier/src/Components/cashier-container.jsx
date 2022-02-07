@@ -17,7 +17,7 @@ const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_crypto, i
 
     return (
         <div className='cashier__wrapper'>
-            {is_loading && <Loading is_fullscreen />}
+            {is_loading && <Loading is_fullscreen data-testid='loader' />}
             {iframe_url && (
                 <iframe
                     className='cashier__content'
@@ -25,10 +25,11 @@ const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_crypto, i
                     src={iframe_url}
                     frameBorder='0'
                     scrolling='auto'
+                    data-testid='doughflow_section'
                 />
             )}
             {is_crypto && (
-                <div className='cashier-container__transfer-onramp'>
+                <div className='cashier-container__transfer-onramp' data-testid='cashier_section'>
                     <div className='cashier-container__transfer-onramp__header'>
                         <Text line_height='xxl'>
                             <Localize i18n_default_text='Looking for a way to buy cryptocurrency?' />

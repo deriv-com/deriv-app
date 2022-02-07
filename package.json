@@ -81,7 +81,8 @@
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
         "stylelint-check": "stylelint-config-prettier-check",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "test:specific": "jest --findRelatedTests $1 --watch"
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",

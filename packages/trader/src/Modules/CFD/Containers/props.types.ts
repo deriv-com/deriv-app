@@ -42,7 +42,7 @@ export type TPasswordResetAndTradingPasswordManager = {
 
 export type TResetPasswordIntent = {
     current_list: Array<DetailsOfEachMT5Loginid> & Record<string, DetailsOfEachMT5Loginid>;
-    children({ ...props }): React.ReactElement;
+    children({ ...props }): React.ReactNode;
     is_eu: boolean;
 };
 

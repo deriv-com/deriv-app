@@ -13,13 +13,6 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
-// jest.mock('@deriv/components', () => ({
-//     __esModule: true,
-//     Loading: () => {
-//         return <div>Loading...</div>;
-//     },
-// }));
-
 describe('<CashierContainer/>', () => {
     let clearIframe;
 
@@ -29,32 +22,44 @@ describe('<CashierContainer/>', () => {
 
     it('should render the component with iframe when iframe_url is true', async () => {
         const url = `https://doughflow-test.4x.my/cashier/login.asp?Sportsbook=test&PIN=CR90000010&Lang=en&Password=20192eef9f1c8258354030632a913916fe331c8f&Secret=11eb12e081e93780306d7c8a7483748a&Action=DEPOSIT&udef1=EN&udef2=deriv&theme=light`;
-        const { queryByTestId } = render(<CashierContainer iframe_url={url} clearIframe={clearIframe} />);
+        const { queryByTestId, container } = render(<CashierContainer iframe_url={url} clearIframe={clearIframe} />);
+        const loaderEle = container.querySelector('.barspinner');
+        expect(loaderEle).toBeNull();
         expect(queryByTestId('doughflow_section')).toBeTruthy();
         expect(queryByTestId('cashier_section')).toBeNull();
     });
 
     it('should render the crypto section when is_crypto is true', async () => {
         const isCrypto = true;
-        const { queryByTestId } = render(<CashierContainer is_crypto={isCrypto} clearIframe={clearIframe} />);
+        const { queryByTestId, container } = render(
+            <CashierContainer is_crypto={isCrypto} clearIframe={clearIframe} />
+        );
+        const loaderEle = container.querySelector('.barspinner');
+        expect(loaderEle).toBeNull();
         expect(queryByTestId('cashier_section')).toBeTruthy();
         expect(queryByTestId('doughflow_section')).toBeNull();
     });
 
     it('should render the loading when is_loading is true', async () => {
         const isLoading = true;
-        const { queryByTestId } = render(<CashierContainer clearIframe={clearIframe} is_loading={isLoading} />);
-        expect(queryByTestId('loader')).toBeTruthy();
+        const { queryByTestId, container } = render(
+            <CashierContainer clearIframe={clearIframe} is_loading={isLoading} />
+        );
+        const loaderEle = container.querySelector('.barspinner');
+        expect(loaderEle).toBeTruthy();
         expect(queryByTestId('doughflow_section')).toBeNull();
         expect(queryByTestId('cashier_section')).toBeNull();
     });
 
     it('will display doughflow and crypto if all props are provided', async () => {
         const isCrypto = true;
+        const isLoading = true;
         const url = `https://doughflow-test.4x.my/cashier/login.asp?Sportsbook=test&PIN=CR90000010&Lang=en&Password=20192eef9f1c8258354030632a913916fe331c8f&Secret=11eb12e081e93780306d7c8a7483748a&Action=DEPOSIT&udef1=EN&udef2=deriv&theme=light`;
-        const { queryByTestId } = render(
-            <CashierContainer is_crypto={isCrypto} iframe_url={url} clearIframe={clearIframe} />
+        const { queryByTestId, container } = render(
+            <CashierContainer is_crypto={isCrypto} iframe_url={url} clearIframe={clearIframe} is_loading={isLoading} />
         );
+        const loaderEle = container.querySelector('.barspinner');
+        expect(loaderEle).toBeTruthy();
         expect(queryByTestId('cashier_section')).toBeTruthy();
         expect(queryByTestId('doughflow_section')).toBeTruthy();
     });

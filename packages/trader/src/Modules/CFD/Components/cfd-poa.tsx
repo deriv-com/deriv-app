@@ -48,15 +48,20 @@ type TObjDocumentFile = {
     errors: Array<TErrors>;
     file: TFile;
 };
-
-type TFormValues = {
+type TFormValuesInputs = {
     address_city?: string;
     address_line_1?: string;
     address_line_2?: string;
     address_postcode?: string;
     address_state?: string;
-    document_file: Array<TObjDocumentFile>;
 };
+
+type TDocumentFile = {
+    document_file: Array<TObjDocumentFile>;
+    files?: Array<TObjDocumentFile>;
+};
+
+type TFormValues = TFormValuesInputs & TDocumentFile;
 
 type TFormValue = GetSettings;
 
@@ -109,7 +114,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     const [document_upload, setDocumentUpload] = useStateCallback({ files: [], error_message: null });
     const [form_values, setFormValues] = React.useState({});
 
-    const validateForm = (values: TFormValues) => {
+    const validateForm = (values: TFormValuesInputs) => {
         // No need to validate if we are waiting for confirmation.
         if ([PoaStatusCodes.verified, PoaStatusCodes.pending].includes(form_state.poa_status)) {
             return {};
@@ -161,7 +166,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
 
         Object.entries(validations).forEach(([key, rules]) => {
             const error_index = rules.findIndex(v => {
-                !v(values[key]);
+                !v(values[key as keyof TFormValuesInputs] as string);
             });
             if (error_index !== -1) {
                 errors[key] = validation_errors[key][error_index];
@@ -177,13 +182,10 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     };
 
     const onFileDrop = (
-        files: any,
+        files: TObjDocumentFile,
         error_message: string,
         setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void,
-        setFieldValue: {
-            (field: string, value: string, shouldValidate?: boolean | undefined): void;
-            (arg0: string, arg1: any): void;
-        },
+        setFieldValue: (field: string, files: TObjDocumentFile) => void,
         values: TFormValues
     ) => {
         setFieldTouched('document_file', true);
@@ -192,7 +194,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
             // To resolve sync issues with value states (form_values in container component and formik values)
             // This ensures container values are updated before being validated in runtime  (mt5-financial-stp-real-account-signup.jsx)
             if (typeof onSave === 'function') {
-                onSave(index, { ...values, ...{ document_file: files } });
+                onSave(index, { ...values, ...({ document_file: files } as unknown as TDocumentFile) });
             }
         });
     };

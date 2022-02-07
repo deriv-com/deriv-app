@@ -27,7 +27,7 @@ import {
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
-import { GetSettings, StatesList, GetAccountStatus, AccountStatusResponse } from '@deriv/api-types';
+import { GetSettings, StatesList, AccountStatusResponse } from '@deriv/api-types';
 
 type TErrors = {
     code: string;
@@ -393,10 +393,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                             <React.Fragment>
                                                                 <DesktopWrapper>
                                                                     <Field name='address_state'>
-                                                                        {({
-                                                                            field,
-                                                                            form: { errors, touched },
-                                                                        }: FieldProps<string, TFormValues>) => (
+                                                                        {({ field }: FieldProps<string, TFormValues>) => (
                                                                             <Dropdown
                                                                                 id='address_state'
                                                                                 className='address_state-dropdown'
@@ -509,7 +506,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                 cancel_label={localize('Previous')}
                                                 is_disabled={
                                                     isFormDisabled(dirty, errors) ||
-                                                    ((poa_status !== PoaStatusCodes.verified) &&
+                                                    (poa_status !== PoaStatusCodes.verified &&
                                                         document_upload.files &&
                                                         document_upload.files.length < 1) ||
                                                     !!document_upload.error_message

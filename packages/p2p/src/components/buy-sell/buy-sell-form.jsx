@@ -85,9 +85,12 @@ const BuySellForm = props => {
             initialValues={{
                 amount: min_order_amount_limit,
                 contact_info: buy_sell_store.contact_info,
+                payment_info: buy_sell_store.payment_info,
             }}
             initialErrors={
-                buy_sell_store.is_sell_advert && !buy_sell_store.has_payment_info ? { contact_info: true } : {}
+                buy_sell_store.is_sell_advert && !buy_sell_store.has_payment_info
+                    ? { contact_info: true, payment_info: true }
+                    : {}
             }
             onSubmit={(...args) => {
                 buy_sell_store.handleSubmit(() => isMounted(), ...args);
@@ -311,23 +314,48 @@ const BuySellForm = props => {
                                     )}
                                 </div>
                                 {buy_sell_store.is_sell_advert && (
-                                    <div className='buy-sell__modal-field--textarea'>
-                                        <Field name='contact_info'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    data-lpignore='true'
-                                                    type='textarea'
-                                                    error={touched.contact_info && errors.contact_info}
-                                                    label={localize('Your contact details')}
-                                                    required
-                                                    has_character_counter
-                                                    initial_character_count={buy_sell_store.contact_info.length}
-                                                    max_characters={300}
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
+                                    <React.Fragment>
+                                        {!payment_method_names && (
+                                            <div className='buy-sell__modal-field--textarea'>
+                                                <Field name='payment_info'>
+                                                    {({ field }) => (
+                                                        <Input
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            type='textarea'
+                                                            error={touched.payment_info && errors.payment_info}
+                                                            hint={localize(
+                                                                'Bank name, account number, beneficiary name'
+                                                            )}
+                                                            is_relative_hint
+                                                            label={localize('Your bank details')}
+                                                            required
+                                                            has_character_counter
+                                                            initial_character_count={buy_sell_store.payment_info.length}
+                                                            max_characters={300}
+                                                        />
+                                                    )}
+                                                </Field>
+                                            </div>
+                                        )}
+                                        <div className='buy-sell__modal-field--textarea'>
+                                            <Field name='contact_info'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='textarea'
+                                                        error={touched.contact_info && errors.contact_info}
+                                                        label={localize('Your contact details')}
+                                                        required
+                                                        has_character_counter
+                                                        initial_character_count={buy_sell_store.contact_info.length}
+                                                        max_characters={300}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                    </React.Fragment>
                                 )}
                             </div>
                         </Form>
@@ -349,6 +377,7 @@ BuySellForm.propTypes = {
     has_payment_info: PropTypes.bool,
     is_buy_advert: PropTypes.bool,
     is_sell_advert: PropTypes.bool,
+    payment_info: PropTypes.string,
     receive_amount: PropTypes.number,
     setFormProps: PropTypes.func,
     setInitialReceiveAmount: PropTypes.func,

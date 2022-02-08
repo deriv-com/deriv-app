@@ -19,6 +19,7 @@ export default class BuySellStore extends BaseStore {
     @observable is_sort_dropdown_open = false;
     @observable is_submit_disabled = true;
     @observable items = [];
+    @observable payment_info = '';
     @observable receive_amount = 0;
     @observable search_results = [];
     @observable search_term = '';
@@ -126,6 +127,7 @@ export default class BuySellStore extends BaseStore {
                 this.setContactInfo(p2p_advertiser_info.contact_info);
             } else {
                 this.setContactInfo('');
+                this.setPaymentInfo('');
             }
         });
     }
@@ -157,6 +159,7 @@ export default class BuySellStore extends BaseStore {
             ...(this.is_sell_advert
                 ? {
                       contact_info: values.contact_info,
+                      payment_info: values.payment_info,
                   }
                 : {}),
         });
@@ -373,6 +376,11 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setItems(items) {
         this.items = items;
+    }
+
+    @action.bound
+    setPaymentInfo(payment_info) {
+        this.payment_info = payment_info;
     }
 
     @action.bound

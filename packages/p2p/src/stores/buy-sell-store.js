@@ -155,11 +155,11 @@ export default class BuySellStore extends BaseStore {
             advert_id: this.advert.id,
             amount: values.amount,
             payment_method_ids: this.payment_method_ids,
+            ...(values.payment_info ? { payment_info: values.payment_info } : {}),
             // Validate extra information for sell adverts.
             ...(this.is_sell_advert
                 ? {
                       contact_info: values.contact_info,
-                      payment_info: values.payment_info,
                   }
                 : {}),
         });

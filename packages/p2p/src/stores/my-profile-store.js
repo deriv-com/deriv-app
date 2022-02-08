@@ -300,9 +300,11 @@ export default class MyProfileStore extends BaseStore {
             p2p_advertiser_payment_methods: 1,
             update: {
                 [this.payment_method_to_edit.ID]: {
-                    values,
+                    ...values,
                 },
             },
+        }).then(() => {
+            this.setShouldShowEditPaymentMethodForm(false);
         });
     }
 

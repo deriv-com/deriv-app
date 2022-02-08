@@ -161,6 +161,27 @@
             }
         }
     }
+    &__payment-methods-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    &__payment-method {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        border: 1px solid var(--border-normal);
+        border-radius: 0.4rem;
+        flex-direction: row;
+        padding: 0 0.8rem;
+        margin: 0.25rem;
+        width: fit-content;
+
+        @include mobile {
+            padding: 0.4rem;
+            font-size: 8px;
+        }
+    }
     &__adverts {
         flex: 1;
         display: flex;
@@ -200,8 +221,8 @@
             grid-template-columns: 3fr 2fr 2.5fr 1fr;
 
             @include mobile {
-                grid-template-columns: repeat(2, 1fr);
-                height: 118px;
+                grid-template-columns: 2fr 1fr;
+                height: 180px;
                 padding: 1.6rem;
                 width: 100vw;
             }

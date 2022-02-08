@@ -57,12 +57,12 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
                             />
                         </Text>
                     </div>
-                    <div className='buy-sell-row__payment-method'>
+                    <div className='advertiser-page__payment-methods-list'>
                         {payment_method_names
                             ? payment_method_names.map((payment_method, key) => {
                                   return (
-                                      <div className='buy-sell-row__payment-method--label' key={key}>
-                                          <Text color='general' size='xs' line-height='l'>
+                                      <div className='advertiser-page__payment-method' key={key}>
+                                          <Text color='general' line-height='l' size='xxxs'>
                                               {payment_method}
                                           </Text>
                                       </div>

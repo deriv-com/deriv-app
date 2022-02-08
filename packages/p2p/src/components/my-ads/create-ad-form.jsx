@@ -90,7 +90,6 @@ const CreateAdForm = () => {
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
-                    payment_info: my_ads_store.payment_info,
                     price_rate: '',
                     type: buy_sell.BUY,
                 }}
@@ -269,49 +268,26 @@ const CreateAdForm = () => {
                                             </Field>
                                         </div>
                                         {is_sell_advert && (
-                                            <React.Fragment>
-                                                <Field name='payment_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            label={
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Your payment details' />
-                                                                </Text>
-                                                            }
-                                                            error={touched.payment_info && errors.payment_info}
-                                                            hint={localize('e.g. your bank/e-wallet account details')}
-                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={my_ads_store.payment_info.length}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
-                                                <Field name='contact_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            label={
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Your contact details' />
-                                                                </Text>
-                                                            }
-                                                            error={touched.contact_info && errors.contact_info}
-                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={my_ads_store.contact_info.length}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </React.Fragment>
+                                            <Field name='contact_info'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='textarea'
+                                                        label={
+                                                            <Text color='less-prominent' size='xs'>
+                                                                <Localize i18n_default_text='Your contact details' />
+                                                            </Text>
+                                                        }
+                                                        error={touched.contact_info && errors.contact_info}
+                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                        initial_character_count={my_ads_store.contact_info.length}
+                                                        required
+                                                        has_character_counter
+                                                        max_characters={300}
+                                                    />
+                                                )}
+                                            </Field>
                                         )}
                                         <Field name='default_advert_description'>
                                             {({ field }) => (

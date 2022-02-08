@@ -21,6 +21,7 @@ import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
+import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -351,6 +352,7 @@ const CreateAdForm = () => {
                 }}
             </Formik>
             <CreateAdErrorModal />
+            <CreateAdAddPaymentMethodModal />
             <Modal
                 className='p2p-my-ads__ad-created'
                 has_close_icon={false}

@@ -6,7 +6,7 @@ import { localize } from 'Components/i18next';
 import AddPaymentMethodForm from './add-payment-method-form.jsx';
 import SelectPaymentMethod from './select-payment-method.jsx';
 
-const AddPaymentMethod = () => {
+const AddPaymentMethod = ({ should_show_page_return = true, should_show_separated_footer }) => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
@@ -18,11 +18,17 @@ const AddPaymentMethod = () => {
 
     return (
         <React.Fragment>
-            <PageReturn
-                onClick={my_profile_store.hideAddPaymentMethodForm}
-                page_title={localize('Add payment method')}
-            />
-            {my_profile_store.selected_payment_method ? <AddPaymentMethodForm /> : <SelectPaymentMethod />}
+            {should_show_page_return && (
+                <PageReturn
+                    onClick={my_profile_store.hideAddPaymentMethodForm}
+                    page_title={localize('Add payment method')}
+                />
+            )}
+            {my_profile_store.selected_payment_method ? (
+                <AddPaymentMethodForm should_show_separated_footer={should_show_separated_footer} />
+            ) : (
+                <SelectPaymentMethod />
+            )}
         </React.Fragment>
     );
 };

@@ -30,6 +30,7 @@ export default class MyAdsStore extends BaseStore {
     @observable item_offset = 0;
     @observable p2p_advert_information = {};
     @observable selected_ad_id = '';
+    @observable should_show_add_payment_method_modal = false;
     @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
 
@@ -406,6 +407,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setSelectedAdId(selected_ad_id) {
         this.selected_ad_id = selected_ad_id;
+    }
+
+    @action.bound
+    setShouldShowAddPaymentMethodModal(should_show_add_payment_method_modal) {
+        this.should_show_add_payment_method_modal = should_show_add_payment_method_modal;
     }
 
     @action.bound

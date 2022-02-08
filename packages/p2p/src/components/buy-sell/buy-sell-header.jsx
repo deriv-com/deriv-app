@@ -66,7 +66,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                         className='buy-sell__header-row--filter'
                         icon='IcFilter'
                         onClick={() => buy_sell_store.setIsFilterModalOpen(true)}
-                        size={42}
+                        size={40}
                     />
                 </div>
             </div>

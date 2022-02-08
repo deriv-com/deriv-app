@@ -201,7 +201,7 @@
 
             @include mobile {
                 grid-template-columns: repeat(2, 1fr);
-                height: 100px;
+                height: 118px;
                 padding: 1.6rem;
                 width: 100vw;
             }
@@ -219,6 +219,10 @@
 
         &-list {
             height: calc(100% - 200px);
+
+            @include mobile {
+                height: calc(100% - 236px);
+            }
         }
 
         &-scrollbar {

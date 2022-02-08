@@ -57,6 +57,19 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
                             />
                         </Text>
                     </div>
+                    <div className='buy-sell-row__payment-method'>
+                        {payment_method_names
+                            ? payment_method_names.map((payment_method, key) => {
+                                  return (
+                                      <div className='buy-sell-row__payment-method--label' key={key}>
+                                          <Text color='general' size='xs' line-height='l'>
+                                              {payment_method}
+                                          </Text>
+                                      </div>
+                                  );
+                              })
+                            : null}
+                    </div>
                 </Table.Cell>
                 {is_my_advert ? (
                     <Table.Cell />

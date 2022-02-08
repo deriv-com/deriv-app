@@ -36,7 +36,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
         local_currency,
         other_user_details,
         payment_info,
-        payment_methods,
         // price, TODO: Uncomment when price is fixed
         purchase_time,
         rate,
@@ -45,7 +44,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         should_highlight_success,
         should_show_order_footer,
         status_string,
-    } = order_store.order_information;
+    } = order_store?.order_information;
 
     const { chat_channel_url } = sendbird_store;
 
@@ -157,12 +156,12 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
-                        {payment_methods ? (
+                        {order_store?.has_order_payment_method_details ? (
                             <Accordion
                                 className='order-details-card__accordion'
                                 icon_close='IcChevronRight'
                                 icon_open='IcChevronDown'
-                                list={payment_methods.map(payment_method => ({
+                                list={order_store?.order_payment_method_details?.map(payment_method => ({
                                     header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
                                     content: (
                                         <PaymentMethodAccordionContent

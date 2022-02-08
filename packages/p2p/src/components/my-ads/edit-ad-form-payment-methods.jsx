@@ -41,12 +41,24 @@ const EditAdFormPaymentMethods = ({ is_sell_advert }) => {
                             style={selected_methods.includes(payment_method.ID) ? style : {}}
                         />
                     ))}
-                    <PaymentMethodCard is_add={true} label={localize('Payment method')} medium onClickAdd={() => {}} />
+                    <PaymentMethodCard
+                        is_add={true}
+                        label={localize('Payment method')}
+                        medium
+                        onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
+                    />
                 </>
             );
         }
 
-        return <PaymentMethodCard is_add={true} label={localize('Payment method')} medium onClickAdd={() => {}} />;
+        return (
+            <PaymentMethodCard
+                is_add={true}
+                label={localize('Payment method')}
+                medium
+                onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
+            />
+        );
     }
 
     return (

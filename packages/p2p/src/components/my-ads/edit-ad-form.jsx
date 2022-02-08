@@ -11,6 +11,7 @@ import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import CreateAdSummary from './create-ad-summary.jsx';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
+import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -310,6 +311,7 @@ const EditAdForm = () => {
                     );
                 }}
             </Formik>
+            <CreateAdAddPaymentMethodModal />
             <Modal
                 className='p2p-my-ads__modal-error'
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}

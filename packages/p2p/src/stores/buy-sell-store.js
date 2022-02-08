@@ -19,7 +19,6 @@ export default class BuySellStore extends BaseStore {
     @observable is_sort_dropdown_open = false;
     @observable is_submit_disabled = true;
     @observable items = [];
-    @observable payment_info = '';
     @observable receive_amount = 0;
     @observable search_results = [];
     @observable search_term = '';
@@ -38,7 +37,7 @@ export default class BuySellStore extends BaseStore {
     initial_values = {
         amount: this.advert?.min_order_amount_limit,
         // For sell orders we require extra information.
-        ...(this.is_sell_advert ? { contact_info: this.contact_info, payment_info: this.payment_info } : {}),
+        ...(this.is_sell_advert ? { contact_info: this.contact_info } : {}),
     };
 
     payment_method_ids = [];
@@ -59,7 +58,7 @@ export default class BuySellStore extends BaseStore {
 
     @computed
     get has_payment_info() {
-        return this.contact_info.length && this.payment_info.length;
+        return this.contact_info.length;
     }
 
     @computed
@@ -125,10 +124,8 @@ export default class BuySellStore extends BaseStore {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
                 this.setContactInfo(p2p_advertiser_info.contact_info);
-                this.setPaymentInfo(p2p_advertiser_info.payment_info);
             } else {
                 this.setContactInfo('');
-                this.setPaymentInfo('');
             }
         });
     }
@@ -160,7 +157,6 @@ export default class BuySellStore extends BaseStore {
             ...(this.is_sell_advert
                 ? {
                       contact_info: values.contact_info,
-                      payment_info: values.payment_info,
                   }
                 : {}),
         });
@@ -380,11 +376,6 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    setPaymentInfo(payment_info) {
-        this.payment_info = payment_info;
-    }
-
-    @action.bound
     setInitialReceiveAmount() {
         this.receive_amount = getRoundedNumber(
             this.advert.min_order_amount_limit * this.advert.price,
@@ -495,7 +486,6 @@ export default class BuySellStore extends BaseStore {
 
         if (this.is_sell_advert) {
             validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
-            validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }
 
         const display_min_amount = formatMoney(this.account_currency, this.advert.min_order_amount_limit, true);
@@ -525,7 +515,6 @@ export default class BuySellStore extends BaseStore {
 
         const mapped_key = {
             contact_info: localize('Contact details'),
-            payment_info: localize('Bank details'),
         };
 
         const errors = {};
@@ -537,8 +526,7 @@ export default class BuySellStore extends BaseStore {
 
             if (error_index !== -1) {
                 switch (key) {
-                    case 'contact_info':
-                    case 'payment_info': {
+                    case 'contact_info': {
                         errors[key] = getInfoMessages(mapped_key[key])[error_index];
                         break;
                     }

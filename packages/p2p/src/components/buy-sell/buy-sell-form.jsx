@@ -87,9 +87,7 @@ const BuySellForm = props => {
                 contact_info: buy_sell_store.contact_info,
             }}
             initialErrors={
-                buy_sell_store.is_sell_advert && !buy_sell_store.has_payment_info
-                    ? { contact_info: true, payment_info: true }
-                    : {}
+                buy_sell_store.is_sell_advert && !buy_sell_store.has_payment_info ? { contact_info: true } : {}
             }
             onSubmit={(...args) => {
                 buy_sell_store.handleSubmit(() => isMounted(), ...args);
@@ -351,7 +349,6 @@ BuySellForm.propTypes = {
     has_payment_info: PropTypes.bool,
     is_buy_advert: PropTypes.bool,
     is_sell_advert: PropTypes.bool,
-    payment_info: PropTypes.string,
     receive_amount: PropTypes.number,
     setFormProps: PropTypes.func,
     setInitialReceiveAmount: PropTypes.func,

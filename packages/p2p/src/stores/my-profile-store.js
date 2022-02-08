@@ -147,7 +147,6 @@ export default class MyProfileStore extends BaseStore {
                 this.setBalanceAvailable(p2p_advertiser_info.balance_available);
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                this.setPaymentInfo(p2p_advertiser_info.payment_info);
             } else if (response.error.code === 'PermissionDenied') {
                 this.root_store.general_store.setIsBlocked(true);
             } else {
@@ -247,7 +246,6 @@ export default class MyProfileStore extends BaseStore {
                 this.setBalanceAvailable(p2p_advertiser_update.balance_available);
                 this.setContactInfo(p2p_advertiser_update.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
-                this.setPaymentInfo(p2p_advertiser_update.payment_info);
                 this.setIsSubmitSuccess(true);
             } else {
                 this.setFormError(response.error);
@@ -425,11 +423,6 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setIsSubmitSuccess(is_submit_success) {
         this.is_submit_success = is_submit_success;
-    }
-
-    @action.bound
-    setPaymentInfo(payment_info) {
-        this.payment_info = payment_info;
     }
 
     @action.bound

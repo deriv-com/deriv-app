@@ -29,7 +29,6 @@ export default class MyAdsStore extends BaseStore {
     @observable is_loading = false;
     @observable item_offset = 0;
     @observable p2p_advert_information = {};
-    @observable payment_info = '';
     @observable selected_ad_id = '';
     @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
@@ -83,12 +82,10 @@ export default class MyAdsStore extends BaseStore {
                 const { p2p_advertiser_info } = response;
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                this.setPaymentInfo(p2p_advertiser_info.payment_info);
                 this.setAvailableBalance(p2p_advertiser_info.balance_available);
             } else {
                 this.setContactInfo('');
                 this.setDefaultAdvertDescription('');
-                this.setPaymentInfo('');
             }
             this.setIsFormLoading(false);
         });
@@ -127,10 +124,6 @@ export default class MyAdsStore extends BaseStore {
 
         if (values.contact_info && is_sell_ad) {
             create_advert.contact_info = values.contact_info;
-        }
-
-        if (values.payment_info && is_sell_ad) {
-            create_advert.payment_info = values.payment_info;
         }
 
         if (values.default_advert_description) {
@@ -228,10 +221,6 @@ export default class MyAdsStore extends BaseStore {
 
         if (values.contact_info && is_sell_ad) {
             update_advert.contact_info = values.contact_info;
-        }
-
-        if (values.payment_info && is_sell_ad) {
-            update_advert.payment_info = values.payment_info;
         }
 
         if (values.default_advert_description) {
@@ -415,11 +404,6 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setPaymentInfo(payment_info) {
-        this.payment_info = payment_info;
-    }
-
-    @action.bound
     setSelectedAdId(selected_ad_id) {
         this.selected_ad_id = selected_ad_id;
     }
@@ -481,7 +465,6 @@ export default class MyAdsStore extends BaseStore {
 
         if (values.type === buy_sell.SELL) {
             validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
-            validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }
 
         const mapped_key = {
@@ -490,7 +473,6 @@ export default class MyAdsStore extends BaseStore {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            payment_info: localize('Payment instructions'),
             price_rate: localize('Fixed rate'),
         };
 
@@ -551,7 +533,6 @@ export default class MyAdsStore extends BaseStore {
             if (error_index !== -1) {
                 switch (key) {
                     case 'contact_info':
-                    case 'payment_info':
                         errors[key] = getContactInfoMessages(mapped_key[key])[error_index];
                         break;
                     case 'default_advert_description':

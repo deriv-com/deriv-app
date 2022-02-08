@@ -76,9 +76,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 .forEach(input => {
                     const input_target = input.connection.targetBlock();
                     const value = input_target.getFieldValue('NUM');
-                    if (isFinite(value) && value.startsWith('0')) {
-                        const new_value = value.replace(/^0+/, '');
-                        input_target.setFieldValue(new_value, 'NUM');
+                    if (value.startsWith('0')) {
+                        const new_value = value.includes('.') ? parseFloat('' + value) : parseInt('' + value);
+                        input_target.setFieldValue(new_value.toString(), 'NUM');
                     }
                 });
         }

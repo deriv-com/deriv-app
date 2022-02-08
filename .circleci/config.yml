@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   k8s: circleci/kubernetes@0.7.0
   slack: circleci/slack@3.4.2
+  coveralls: coveralls/coveralls@1.0.6
 commands:
   git_checkout_from_cache:
     description: "Git checkout and save cache"
@@ -274,8 +275,12 @@ jobs:
       - run:
           name: "Run tests"
           no_output_timeout: 30m
-          command: npm test
-
+          command: npm test:ci
+      - coveralls/upload
+      - store_artifacts:
+          path: coverage
+    environment:
+      NODE_OPTIONS: --max-old-space-size=1024
 workflows:
   release_storybook:
     jobs:

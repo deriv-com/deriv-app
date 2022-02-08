@@ -74,6 +74,7 @@
         "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
         "test:jest": "jest --all --maxWorkers=2",
+        "test:ci": "jest --all --maxWorkers=2 --config=jest.config.ci.js --onlyChanged",
         "test:qa": "cd e2e_tests &&  jest -c ./jest.config.js --maxWorkers=2 --detectOpenHandles",
         "test:performance": "cd e2e_tests &&  jest -c ./jest.config.js --maxWorkers=2 --detectOpenHandles performance",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",

@@ -42,7 +42,7 @@ const PaymentMethodCard = ({
                     size={32}
                 />
 
-                <Text color='prominent' size='xs'>
+                <Text align='center' color='prominent' size='xs'>
                     {label || add_payment_method}
                 </Text>
             </div>

@@ -4,7 +4,7 @@ import CashierContainer from '../cashier-container';
 
 import { routes } from '@deriv/shared';
 
-let mockHistoryPush = jest.fn();
+const mockHistoryPush = jest.fn();
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

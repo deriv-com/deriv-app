@@ -117,11 +117,7 @@ const Cashier = ({
             <AccountPromptDialog />
             <ErrorDialog />
             <div className='cashier'>
-                <PageOverlay
-                    header={getHeaderTitle()}
-                    onClickClose={onClickClose}
-                    is_close_disabled={!!platforms[platform]}
-                >
+                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={!!platforms[platform]}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'

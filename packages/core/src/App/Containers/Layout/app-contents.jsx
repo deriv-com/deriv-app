@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext } from '@deriv/shared';
+import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 
@@ -23,6 +23,7 @@ const AppContents = ({
     is_positions_drawer_on,
     is_route_modal_on,
     notifyAppInstall,
+    platform,
     pageView,
     pushDataLayer,
 }) => {
@@ -88,6 +89,7 @@ const AppContents = ({
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-dashboard': is_dashboard,
+                'app-contents--is-hidden': platforms[platform],
             })}
         >
             <MobileWrapper>{children}</MobileWrapper>
@@ -120,7 +122,7 @@ AppContents.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, gtm, rudderstack, ui }) => ({
+    connect(({ client, common, gtm, rudderstack, ui }) => ({
         is_eu_country: client.is_eu_country,
         is_eu: client.is_eu,
         is_logged_in: client.is_logged_in,
@@ -135,5 +137,6 @@ export default withRouter(
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on: ui.is_route_modal_on,
         notifyAppInstall: ui.notifyAppInstall,
+        platform: common.platform,
     }))(AppContents)
 );

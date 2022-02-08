@@ -151,7 +151,9 @@ const BuySellForm = props => {
                                                             icon={`IcCashier${method}`}
                                                             size={16}
                                                         />
-                                                        {payment_method}
+                                                        <Text as='p' color='general' line_height='m' size='xs'>
+                                                            {payment_method}
+                                                        </Text>
                                                     </div>
                                                 );
                                             }
@@ -163,7 +165,9 @@ const BuySellForm = props => {
                                                         icon='IcCashierEwallet'
                                                         size={16}
                                                     />
-                                                    {payment_method}
+                                                    <Text as='p' color='general' line_height='m' size='xs'>
+                                                        {payment_method}
+                                                    </Text>
                                                 </div>
                                             );
                                         })}

@@ -1,5 +1,6 @@
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
+import { VerifyEmailResponse } from '@deriv/api-types';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;
@@ -45,7 +46,7 @@ export type TCountdownComponent = {
 };
 
 export type TCFDPasswordReset = {
-    sendVerifyEmail: () => Promise<any>;
+    sendVerifyEmail: () => Promise<VerifyEmailResponse>;
     account_type: string;
     account_group: 'real' | 'demo';
     server: string;
@@ -53,27 +54,32 @@ export type TCFDPasswordReset = {
 };
 
 export type TCFDPasswordSuccessMessage = {
-    toggleModal: () => boolean;
+    toggleModal: () => void;
     is_investor: boolean;
 };
 
+export type TMultiStepRefProps = {
+    goNextStep: () => void;
+    goPrevStep: () => void;
+};
+
 export type TCFDPasswordManagerTabContentWrapper = {
-    multi_step_ref: React.MutableRefObject<any>;
+    multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
     steps: Array<{ component: JSX.Element }>;
 };
 
 export type TInvestorPasswordManager = {
     error_message_investor: string;
     is_submit_success_investor: boolean;
-    multi_step_ref: React.MutableRefObject<any>;
+    multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
     onSubmit: (values: any) => Promise<void>;
     setPasswordType: (value: string) => void;
-    toggleModal: () => boolean;
+    toggleModal: () => void;
     validatePassword: (values: { old_password: string; new_password: string; password_type: string }) => void | object;
 };
 
 export type TCFDPasswordManagerTabContent = {
-    toggleModal: () => boolean;
+    toggleModal: () => void;
     selected_login: string;
     email: string;
     setPasswordType: (value: string) => void;
@@ -92,9 +98,9 @@ export type TCFDPasswordManagerModal = {
     platform: 'dxtrade' | 'mt5';
     selected_login: string;
     selected_account: string;
-    toggleModal: () => boolean;
+    toggleModal: () => void;
     selected_account_type: string;
     selected_account_group: 'real' | 'demo';
     selected_server: string;
-    sendVerifyEmail: () => Promise<any>;
+    sendVerifyEmail: () => Promise<VerifyEmailResponse>;
 };

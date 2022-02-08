@@ -175,8 +175,8 @@ const InvestorPasswordManager = ({
         return <CFDPasswordSuccessMessage toggleModal={toggleModal} is_investor />;
     }
 
-    const typeInvestor = 'investor';
-    const initial_values = { old_password: '', new_password: '', password_type: `${typeInvestor}` };
+    const type_investor = 'investor';
+    const initial_values = { old_password: '', new_password: '', password_type: `${type_investor}` };
 
     return (
         <div className='cfd-password-manager__investor-wrapper'>

@@ -72,7 +72,7 @@ const CFDResetPasswordModal = ({
         changed_password_type: '',
     });
 
-    const renderErrorBox = (error: { code: number | string; message: string }) => {
+    const renderErrorBox = (error: TError) => {
         setState({
             ...state,
             error_code: error.code,

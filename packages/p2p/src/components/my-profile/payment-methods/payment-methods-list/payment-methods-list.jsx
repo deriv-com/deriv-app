@@ -57,6 +57,27 @@ const PaymentMethodsList = () => {
                 })}
             </div>
             <Modal
+                is_open={my_profile_store.is_delete_error_modal_open}
+                small
+                has_close_icon={false}
+                title={localize("Something's not right")}
+            >
+                <Modal.Body>
+                    <Text as='p' size='xs' color='prominent'>
+                        {my_profile_store.delete_error_message}
+                    </Text>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        has_effect
+                        text={localize('Ok')}
+                        onClick={() => my_profile_store.setIsDeleteErrorModalOpen(false)}
+                        primary
+                        large
+                    />
+                </Modal.Footer>
+            </Modal>
+            <Modal
                 is_open={my_profile_store.is_confirm_delete_modal_open}
                 small
                 has_close_icon={false}

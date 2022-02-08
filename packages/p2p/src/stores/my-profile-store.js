@@ -14,12 +14,14 @@ export default class MyProfileStore extends BaseStore {
     @observable balance_available = null;
     @observable contact_info = '';
     @observable default_advert_description = '';
+    @observable delete_error_message = '';
     @observable error_message = '';
     @observable form_error = '';
     @observable full_name = '';
     @observable is_button_loading = false;
     @observable is_cancel_add_payment_method_modal_open = false;
     @observable is_confirm_delete_modal_open = false;
+    @observable is_delete_error_modal_open = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
     @observable payment_info = '';
@@ -282,9 +284,12 @@ export default class MyProfileStore extends BaseStore {
             p2p_advertiser_payment_methods: 1,
             delete: [this.payment_method_to_delete.ID],
         }).then(response => {
-            if (response) {
+            this.setIsConfirmDeleteModalOpen(false);
+            if (!response.error) {
                 this.getAdvertiserPaymentMethods();
-                this.setIsConfirmDeleteModalOpen(false);
+            } else {
+                this.setDeleteErrorMessage(response.error.message);
+                this.setIsDeleteErrorModalOpen(true);
             }
         });
     }
@@ -393,6 +398,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setDeleteErrorMessage(delete_error_message) {
+        this.delete_error_message = delete_error_message;
+    }
+
+    @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -415,6 +425,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setIsConfirmDeleteModalOpen(is_confirm_delete_modal_open) {
         this.is_confirm_delete_modal_open = is_confirm_delete_modal_open;
+    }
+
+    @action.bound
+    setIsDeleteErrorModalOpen(is_delete_error_modal_open) {
+        this.is_delete_error_modal_open = is_delete_error_modal_open;
     }
 
     @action.bound

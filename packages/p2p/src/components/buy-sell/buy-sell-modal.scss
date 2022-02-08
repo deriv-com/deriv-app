@@ -71,11 +71,15 @@
     &--sell-payment-methods {
         display: flex;
         flex-wrap: wrap;
-        margin-bottom: 1.6rem;
+        margin: 1.6rem 0 2.4rem;
+        gap: 0.8rem;
 
         .payment-method-card {
             margin-right: 0.8rem;
 
+            &--add {
+                margin: unset;
+            }
             &__body {
                 margin-top: 0.8rem;
             }

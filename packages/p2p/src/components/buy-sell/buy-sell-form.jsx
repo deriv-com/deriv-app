@@ -191,7 +191,13 @@ const BuySellForm = props => {
                                 <div className='buy-sell__modal-line' />
                                 {buy_sell_store.is_sell_advert && (
                                     <div>
-                                        <Text as='p' color='less-prominent' line_height='m' size='xxs'>
+                                        <Text
+                                            as='p'
+                                            className='buy-sell__modal-payment-method--title'
+                                            color='less-prominent'
+                                            line_height='m'
+                                            size='xxs'
+                                        >
                                             <Localize i18n_default_text='Receive payment to' />
                                         </Text>
                                         <Text as='p' color='prominent' line_height='m' size='xxs'>

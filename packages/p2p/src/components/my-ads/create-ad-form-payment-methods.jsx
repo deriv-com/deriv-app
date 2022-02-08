@@ -15,15 +15,31 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert }) => {
         borderWidth: '2px',
     };
 
+    const onClickPaymentMethodItem = value => {
+        if (my_ads_store.payment_method_names.length < 3) {
+            if (!my_ads_store.payment_method_names.includes(value)) {
+                my_ads_store.payment_method_names.push(value);
+                setSelectedMethods([...selected_methods, value]);
+            } else {
+                my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
+                    payment_method_id => payment_method_id !== value
+                );
+                setSelectedMethods(selected_methods.filter(i => i !== value));
+            }
+        }
+    };
+
     const onClickPaymentMethodCard = payment_method => {
-        if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
-            my_ads_store.payment_method_ids.push(payment_method.ID);
-            setSelectedMethods([...selected_methods, payment_method.ID]);
-        } else {
-            my_ads_store.payment_method_ids = my_ads_store.payment_method_ids.filter(
-                payment_method_id => payment_method_id !== payment_method.ID
-            );
-            setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
+        if (my_ads_store.payment_method_ids.length < 3) {
+            if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
+                my_ads_store.payment_method_ids.push(payment_method.ID);
+                setSelectedMethods([...selected_methods, payment_method.ID]);
+            } else {
+                my_ads_store.payment_method_ids = my_ads_store.payment_method_ids.filter(
+                    payment_method_id => payment_method_id !== payment_method.ID
+                );
+                setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
+            }
         }
     };
 
@@ -81,9 +97,10 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert }) => {
                                     </React.Fragment>
                                 }
                                 list_items={my_profile_store.payment_methods_list}
-                                onItemSelection={({ text, value }) =>
-                                    setFieldValue('payment_method', value ? text : '')
-                                }
+                                onItemSelection={({ text, value }) => {
+                                    setFieldValue('payment_method', value ? text : '');
+                                    onClickPaymentMethodItem(value);
+                                }}
                                 required
                                 trailing_icon={<></>}
                                 type='text'

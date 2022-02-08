@@ -35,6 +35,7 @@ export default class MyAdsStore extends BaseStore {
     @observable show_edit_ad_form = false;
 
     payment_method_ids = [];
+    payment_method_names = [];
 
     @action.bound
     getAccountStatus() {
@@ -119,8 +120,13 @@ export default class MyAdsStore extends BaseStore {
             amount: Number(values.offer_amount),
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
-            payment_method: 'bank_transfer', // TODO: Allow for other types of payment_method.
             rate: Number(values.price_rate),
+            ...(this.payment_method_names.length > 0 && !is_sell_ad
+                ? { payment_method_names: this.payment_method_names }
+                : {}),
+            ...(this.payment_method_ids.length > 0 && is_sell_ad
+                ? { payment_method_ids: this.payment_method_ids }
+                : {}),
         };
 
         if (values.contact_info && is_sell_ad) {

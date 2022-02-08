@@ -1,5 +1,4 @@
-import { Field, Formik, FieldProps, FormikHelpers as FormikActions, FormikProps, FormikErrors } from 'formik';
-import PropTypes from 'prop-types';
+import { Field, Formik, FieldProps, FormikHelpers, FormikProps, FormikErrors } from 'formik';
 import React from 'react';
 import {
     AutoHeightWrapper,
@@ -206,7 +205,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         });
     };
 
-    const onSubmitValues = async (values: TFormValues, actions: FormikActions<TFormValues>) => {
+    const onSubmitValues = async (values: TFormValues, actions: FormikHelpers<TFormValues>) => {
         const { document_file, ...uploadables } = values;
 
         actions.setSubmitting(true);
@@ -531,14 +530,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
             }}
         </Formik>
     );
-};
-
-CFDPOA.propTypes = {
-    onCancel: PropTypes.func,
-    onSave: PropTypes.func,
-    onSubmit: PropTypes.func,
-    storeProofOfAddress: PropTypes.func,
-    value: PropTypes.object,
 };
 
 export default CFDPOA;

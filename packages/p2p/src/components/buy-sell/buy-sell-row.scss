@@ -57,15 +57,24 @@
     &__payment-method {
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
-        border: 1px solid var(--border-normal);
-        border-radius: 0.4rem;
-        flex-direction: row;
-        padding: 0 0.8rem;
-        margin: 0.25rem;
-        width: fit-content;
+
+        &--label {
+            align-items: center;
+            border: 1px solid var(--border-normal);
+            border-radius: 0.4rem;
+            flex-direction: row;
+            padding: 0 0.8rem;
+            margin: 0.25rem;
+            width: fit-content;
+        }
 
         @include mobile {
+            align-items: center;
+            border: 1px solid var(--border-normal);
+            border-radius: 0.4rem;
+            flex-direction: row;
+            margin: 0.25rem;
+            width: fit-content;
             padding: 0.8rem;
         }
 

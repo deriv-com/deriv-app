@@ -42,7 +42,7 @@ export type TPasswordResetAndTradingPasswordManager = {
 
 export type TCountdownComponent = {
     count_from: number;
-    onTimeout: (value?: boolean) => void;
+    onTimeout: () => void;
 };
 
 export type TCFDPasswordReset = {

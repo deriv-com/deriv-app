@@ -25,6 +25,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_loading = true;
     @observable is_submit_success = false;
     @observable payment_info = '';
+    @observable payment_method_value = undefined;
     @observable payment_methods_list = [];
     @observable payment_method_to_delete = {};
     @observable payment_method_to_edit = {};
@@ -121,7 +122,7 @@ export default class MyProfileStore extends BaseStore {
                 {
                     account: values?.account,
                     bank_name: values?.bank_name,
-                    method: this.selected_payment_method,
+                    method: this.payment_method_value || this.selected_payment_method,
                     name: values?.name,
                 },
             ],
@@ -203,6 +204,7 @@ export default class MyProfileStore extends BaseStore {
 
     @action.bound
     getSelectedPaymentMethodDetails() {
+        this.setPaymentMethodValue(undefined);
         if (this.available_payment_methods[this.selected_payment_method]) {
             this.setSelectedPaymentMethodDisplayName(
                 this.available_payment_methods[this.selected_payment_method].display_name
@@ -216,6 +218,7 @@ export default class MyProfileStore extends BaseStore {
             const payment_method = Object.entries(this.available_payment_methods).filter(pm => pm.includes(split[0]));
             const filtered_payment_method = Object.entries(payment_method)[0][1][1];
 
+            this.setPaymentMethodValue(payment_method[0][0]);
             this.setSelectedPaymentMethodDisplayName(filtered_payment_method.display_name);
             this.setSelectedPaymentMethodFields(Object.entries(filtered_payment_method.fields));
             this.setSelectedPaymentMethodType(filtered_payment_method.type);
@@ -440,6 +443,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setIsSubmitSuccess(is_submit_success) {
         this.is_submit_success = is_submit_success;
+    }
+
+    @action.bound
+    setPaymentMethodValue(payment_method_value) {
+        this.payment_method_value = payment_method_value;
     }
 
     @action.bound

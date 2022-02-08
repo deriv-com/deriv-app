@@ -27,8 +27,11 @@ const OrderDetailsConfirmModal = ({
     const isMounted = useIsMounted();
     const [error_message, setErrorMessage] = React.useState('');
     const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
+    const [is_checkbox_visible, setIsCheckboxVisible] = React.useState(true);
 
-    const confirmOrderRequest = () => {
+    const confirmOrderRequest = () => {    
+        setIsCheckboxChecked(false);
+        setIsCheckboxVisible(false);
         requestWS({
             p2p_order_confirm: 1,
             id,
@@ -74,30 +77,32 @@ const OrderDetailsConfirmModal = ({
                     )}
                 </Text>
 
-                <Checkbox
-                    className='order-details-card__modal-checkbox'
-                    onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}
-                    defaultChecked={is_checkbox_checked}
-                    label={
-                        is_buy_order_for_user ? (
-                            <Localize
-                                i18n_default_text='I have paid {{amount}} {{currency}}'
-                                values={{
-                                    amount: Number(amount * rate).toFixed(2),
-                                    currency: local_currency,
-                                }}
-                            />
-                        ) : (
-                            <Localize
-                                i18n_default_text='I have received {{amount}} {{currency}}'
-                                values={{
-                                    amount: Number(amount * rate).toFixed(2),
-                                    currency: local_currency,
-                                }}
-                            />
-                        )
-                    }
-                />
+               {is_checkbox_visible && 
+                    <Checkbox
+                        className='order-details-card__modal-checkbox'
+                        onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}
+                        defaultChecked={is_checkbox_checked}
+                        label={
+                            is_buy_order_for_user ? (
+                                <Localize
+                                    i18n_default_text='I have paid {{amount}} {{currency}}'
+                                    values={{
+                                        amount: Number(amount * rate).toFixed(2),
+                                        currency: local_currency,
+                                    }}
+                                />
+                            ) : (
+                                <Localize
+                                    i18n_default_text='I have received {{amount}} {{currency}}'
+                                    values={{
+                                        amount: Number(amount * rate).toFixed(2),
+                                        currency: local_currency,
+                                    }}
+                                />
+                            )
+                        }
+                    />
+                }
             </Modal.Body>
             <Modal.Footer>
                 {error_message && <FormError message={error_message} />}

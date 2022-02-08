@@ -83,16 +83,16 @@ const ModalElement = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    const closeOnEscButton = React.useCallback(e => {
+        if (e.key === 'Escape') {
+            toggleModal?.();
+        }
+    },[toggleModal]);
     React.useEffect(() => {
-        const closeOnEscButton = e => {
-            if (e.key === 'Escape') {
-                toggleModal?.();
-            }
-        };
+
         window.addEventListener('keydown', closeOnEscButton);
         return () => window.removeEventListener('keydown', closeOnEscButton);
-    }, []);
+    }, [closeOnEscButton]);
 
     const rendered_title = typeof renderTitle === 'function' ? renderTitle() : null;
 

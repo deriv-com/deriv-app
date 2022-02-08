@@ -9,8 +9,8 @@
 
     @include mobile {
         height: 4rem;
-        margin: 0.8rem 1.6rem 1rem 0;
-        width: 16rem;
+        width: 4rem;
+        margin: 0.5rem;
 
         .dc-dropdown__display {
             height: 4rem;
@@ -50,9 +50,10 @@
         padding: 0.8rem;
 
         @include mobile {
-            height: 3.2rem;
-            margin: 0.8rem 1.6rem 1rem 0;
-            width: 3.2rem;
+            grid-column: 2;
+            justify-self: center;
+            height: 4rem;
+            width: 4rem;
         }
     }
 }

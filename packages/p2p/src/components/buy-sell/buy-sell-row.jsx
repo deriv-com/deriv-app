@@ -79,7 +79,7 @@ const BuySellRow = ({ row: advert }) => {
                         <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
                             {price_display} {local_currency}
                         </Text>
-                        <Text as='div' color='general' line_height='m' size='xxs'>
+                        <Text as='div' color='less-prominent' line_height='m' size='xxs'>
                             <Localize
                                 i18n_default_text='Limit {{ min_order }}–{{ max_order }} {{ currency }}'
                                 values={{
@@ -90,7 +90,7 @@ const BuySellRow = ({ row: advert }) => {
                             />
                         </Text>
                     </div>
-                    <div>
+                    <div className='buy-sell-row__payment-methods-list'>
                         {payment_method_names
                             ? payment_method_names.map((payment_method, key) => {
                                   return (
@@ -103,6 +103,7 @@ const BuySellRow = ({ row: advert }) => {
                     </div>
                     {!is_my_advert && (
                         <Button
+                            className='buy-sell-row__button'
                             is_disabled={general_store.is_barred}
                             large
                             onClick={() => buy_sell_store.setSelectedAdvert(advert)}

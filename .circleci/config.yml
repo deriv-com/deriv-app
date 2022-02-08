@@ -275,12 +275,11 @@ jobs:
       - run:
           name: "Run tests"
           no_output_timeout: 30m
-          command: npm test:ci
+          command: npm run test:ci
       - coveralls/upload
       - store_artifacts:
           path: coverage
-    environment:
-      NODE_OPTIONS: --max-old-space-size=1024
+
 workflows:
   release_storybook:
     jobs:

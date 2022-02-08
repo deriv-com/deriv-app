@@ -43,9 +43,9 @@ const PaymentMethodsList = () => {
                                 {`${payment_methods_list_method.display_name}s`}
                             </Text>
                             <div className='payment-methods-list__list-body'>
-                                {payment_methods_list.map(each_payment_method => (
+                                {payment_methods_list.map((each_payment_method, each_payment_method_key) => (
                                     <PaymentMethodCard
-                                        key={key}
+                                        key={each_payment_method_key}
                                         large={isDesktop()}
                                         payment_method={each_payment_method}
                                         small={isMobile()}

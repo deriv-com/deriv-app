@@ -202,13 +202,23 @@ export default class MyProfileStore extends BaseStore {
 
     @action.bound
     getSelectedPaymentMethodDetails() {
-        this.setSelectedPaymentMethodDisplayName(
-            this.available_payment_methods[this.selected_payment_method].display_name
-        );
-        this.setSelectedPaymentMethodFields(
-            Object.entries(this.available_payment_methods[this.selected_payment_method].fields)
-        );
-        this.setSelectedPaymentMethodType(this.available_payment_methods[this.selected_payment_method].type);
+        if (this.available_payment_methods[this.selected_payment_method]) {
+            this.setSelectedPaymentMethodDisplayName(
+                this.available_payment_methods[this.selected_payment_method].display_name
+            );
+            this.setSelectedPaymentMethodFields(
+                Object.entries(this.available_payment_methods[this.selected_payment_method].fields)
+            );
+            this.setSelectedPaymentMethodType(this.available_payment_methods[this.selected_payment_method].type);
+        } else {
+            const split = this.selected_payment_method.split('_');
+            const payment_method = Object.entries(this.available_payment_methods).filter(pm => pm.includes(split[0]));
+            const filtered_payment_method = Object.entries(payment_method)[0][1][1];
+
+            this.setSelectedPaymentMethodDisplayName(filtered_payment_method.display_name);
+            this.setSelectedPaymentMethodFields(Object.entries(filtered_payment_method.fields));
+            this.setSelectedPaymentMethodType(filtered_payment_method.type);
+        }
     }
 
     getSettings() {

@@ -20,6 +20,7 @@ export default class MyAdsStore extends BaseStore {
     @observable delete_error_message = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
+    @observable has_missing_payment_methods = false;
     @observable is_ad_created_modal_visible = false;
     @observable is_api_error_modal_visible = false;
     @observable is_delete_modal_open = false;
@@ -27,9 +28,13 @@ export default class MyAdsStore extends BaseStore {
     @observable is_table_loading = false;
     @observable is_loading = false;
     @observable item_offset = 0;
+    @observable p2p_advert_information = {};
     @observable payment_info = '';
     @observable selected_ad_id = '';
     @observable show_ad_form = false;
+    @observable show_edit_ad_form = false;
+
+    payment_method_ids = [];
 
     @action.bound
     getAccountStatus() {
@@ -49,6 +54,22 @@ export default class MyAdsStore extends BaseStore {
         } else {
             this.setIsLoading(false);
         }
+    }
+
+    @action.bound
+    getAdvertInfo() {
+        this.setIsFormLoading(true);
+
+        requestWS({
+            p2p_advert_info: 1,
+            id: this.selected_ad_id,
+        }).then(response => {
+            if (!response.error) {
+                const { p2p_advert_info } = response;
+                this.setP2pAdvertInformation(p2p_advert_info);
+            }
+            this.setIsFormLoading(false);
+        });
     }
 
     @action.bound
@@ -186,6 +207,60 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    onClickEdit(id) {
+        this.setSelectedAdId(id);
+        this.setShowEditAdForm(true);
+        this.getAdvertInfo();
+    }
+
+    @action.bound
+    onClickSaveEditAd(values, { setSubmitting }) {
+        const is_sell_ad = values.type === buy_sell.SELL;
+
+        const update_advert = {
+            p2p_advert_update: 1,
+            remaining_amount: Number(values.offer_amount),
+            max_order_amount: Number(values.max_transaction),
+            min_order_amount: Number(values.min_transaction),
+            payment_method: values.payment_method,
+            rate: Number(values.price_rate),
+        };
+
+        if (values.contact_info && is_sell_ad) {
+            update_advert.contact_info = values.contact_info;
+        }
+
+        if (values.payment_info && is_sell_ad) {
+            update_advert.payment_info = values.payment_info;
+        }
+
+        if (values.default_advert_description) {
+            update_advert.description = values.default_advert_description;
+        }
+
+        requestWS(update_advert).then(response => {
+            // If there's an error, let the user submit the form again.
+            if (response.error) {
+                setSubmitting(false);
+                this.setIsEditErrorModalVisible(true);
+            }
+            this.setShowEditAdForm(false);
+        });
+    }
+
+    @action.bound
+    onClickUpdatePaymentMethods(id) {
+        const { my_profile_store } = this.root_store;
+        requestWS({ p2p_advert_update: 1, id, payment_method: this.payment_method_ids }).then(response => {
+            if (!response.error) {
+                if (my_profile_store.should_show_add_payment_method_form) {
+                    my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                }
+            }
+        });
+    }
+
+    @action.bound
     loadMoreAds({ startIndex }, is_initial_load = false) {
         if (is_initial_load) {
             this.setIsTableLoading(true);
@@ -204,6 +279,7 @@ export default class MyAdsStore extends BaseStore {
                     const { list } = response.p2p_advertiser_adverts;
                     this.setHasMoreItemsToLoad(list.length >= list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
+                    this.setMissingPaymentMethods(!!list.find(payment_method => !payment_method.payment_method_names));
                 } else if (response.error.code === 'PermissionDenied') {
                     this.root_store.general_store.setIsBlocked(true);
                 } else {
@@ -294,6 +370,11 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setMissingPaymentMethods(has_missing_payment_methods) {
+        this.has_missing_payment_methods = has_missing_payment_methods;
+    }
+
+    @action.bound
     setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
     }
@@ -329,6 +410,11 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setP2pAdvertInformation(p2p_advert_information) {
+        this.p2p_advert_information = p2p_advert_information;
+    }
+
+    @action.bound
     setPaymentInfo(payment_info) {
         this.payment_info = payment_info;
     }
@@ -341,6 +427,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setShowAdForm(show_ad_form) {
         this.show_ad_form = show_ad_form;
+    }
+
+    @action.bound
+    setShowEditAdForm(show_edit_ad_form) {
+        this.show_edit_ad_form = show_edit_ad_form;
     }
 
     @action.bound

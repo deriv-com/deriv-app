@@ -9,4 +9,9 @@
             width: 100vw;
         }
     }
+
+    &__navigation {
+        display: flex;
+        justify-content: space-between;
+    }
 }

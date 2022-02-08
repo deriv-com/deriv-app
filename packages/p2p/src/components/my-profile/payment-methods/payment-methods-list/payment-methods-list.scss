@@ -1,0 +1,30 @@
+.payment-methods-list {
+    &__button {
+        margin: 0 0 2.4rem;
+    }
+
+    &__list {
+        &-container {
+            max-width: 67.2rem;
+
+            .dc-dropdown-container {
+                margin-left: 0;
+            }
+        }
+
+        &-header {
+            margin: 0;
+        }
+
+        &-body {
+            display: flex;
+            flex-wrap: wrap;
+
+            .payment-method-card {
+                &--large {
+                    margin-right: 1.6rem;
+                }
+            }
+        }
+    }
+}

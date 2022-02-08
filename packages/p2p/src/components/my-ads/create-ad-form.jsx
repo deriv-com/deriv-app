@@ -20,6 +20,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
+import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -30,7 +31,7 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
-    const { general_store, my_ads_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
 
@@ -51,6 +52,9 @@ const CreateAdForm = () => {
     };
 
     React.useEffect(() => {
+        my_profile_store.getPaymentMethodsList();
+        my_profile_store.getAdvertiserPaymentMethods();
+
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
@@ -60,6 +64,7 @@ const CreateAdForm = () => {
             disposeApiErrorReaction();
             my_ads_store.setApiErrorMessage('');
         };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -334,6 +339,15 @@ const CreateAdForm = () => {
                                                 />
                                             )}
                                         </Field>
+                                        <div className='p2p-my-ads__form-payment-methods--text'>
+                                            <Text color='prominent'>
+                                                <Localize i18n_default_text='Payment methods' />
+                                            </Text>
+                                            <Text color='less-prominent'>
+                                                <Localize i18n_default_text='You may choose up to 3.' />
+                                            </Text>
+                                        </div>
+                                        <CreateAdFormPaymentMethods is_sell_advert={is_sell_advert} />
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
                                                 className='p2p-my-ads__form-button'

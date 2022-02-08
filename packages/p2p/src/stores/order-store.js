@@ -209,6 +209,7 @@ export default class OrderStore {
     setOrderDetails(response) {
         if (!response.error) {
             const { p2p_order_info } = response;
+
             this.setQueryDetails(p2p_order_info);
         } else {
             this.unsubscribeFromCurrentOrder();

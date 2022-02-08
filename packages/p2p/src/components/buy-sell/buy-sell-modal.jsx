@@ -11,13 +11,14 @@ import BuySellForm from './buy-sell-form.jsx';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
+import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 
 const BuySellModalFooter = ({ onCancel, error_message, is_submit_disabled, onSubmit }) => {
     return (
         <React.Fragment>
             {error_message && <FormError message={error_message} />}
             <Button.Group>
-                <Button secondary type='button' onClick={onCancel} large>
+                <Button secondary onClick={onCancel} large>
                     {localize('Cancel')}
                 </Button>
                 <Button is_disabled={is_submit_disabled} primary large onClick={onSubmit}>
@@ -36,7 +37,7 @@ BuySellModalFooter.propTypes = {
 };
 
 const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
-    const { buy_sell_store, general_store, order_store } = useStores();
+    const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
@@ -62,6 +63,8 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         if (!should_show_popup) {
             setErrorMessage(null);
         }
+
+        my_profile_store.setShouldShowAddPaymentMethodForm(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_popup]);
 
@@ -83,25 +86,31 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 page_header_text={modal_title}
                 pageHeaderReturnFn={onCancel}
                 page_footer_parent={page_footer_parent}
-                renderPageFooterChildren={() => (
-                    <BuySellModalFooter
-                        error_message={error_message}
-                        is_submit_disabled={is_submit_disabled}
-                        onCancel={onCancel}
-                        onSubmit={submitForm.current}
-                    />
-                )}
+                renderPageFooterChildren={() =>
+                    !my_profile_store.should_show_add_payment_method_form && (
+                        <BuySellModalFooter
+                            error_message={error_message}
+                            is_submit_disabled={is_submit_disabled}
+                            onCancel={onCancel}
+                            onSubmit={submitForm.current}
+                        />
+                    )
+                }
                 page_footer_className='buy-sell__modal-footer'
             >
-                <Form
-                    advert={selected_ad}
-                    handleClose={onCancel}
-                    handleConfirm={onConfirmClick}
-                    setIsSubmitDisabled={setIsSubmitDisabled}
-                    setErrorMessage={setErrorMessage}
-                    setSubmitForm={setSubmitForm}
-                    setPageFooterParent={setPageFooterParent}
-                />
+                {my_profile_store.should_show_add_payment_method_form ? (
+                    <AddPaymentMethodForm should_show_separated_footer={true} />
+                ) : (
+                    <Form
+                        advert={selected_ad}
+                        handleClose={onCancel}
+                        handleConfirm={onConfirmClick}
+                        setIsSubmitDisabled={setIsSubmitDisabled}
+                        setErrorMessage={setErrorMessage}
+                        setSubmitForm={setSubmitForm}
+                        setPageFooterParent={setPageFooterParent}
+                    />
+                )}
             </MobileFullPageModal>
         );
     }
@@ -119,24 +128,32 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             {/* Parent height - Modal.Header height - Modal.Footer height */}
             <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                 <Modal.Body>
-                    <Form
-                        advert={selected_ad}
-                        handleClose={onCancel}
-                        handleConfirm={onConfirmClick}
-                        setIsSubmitDisabled={setIsSubmitDisabled}
-                        setErrorMessage={setErrorMessage}
-                        setSubmitForm={setSubmitForm}
-                    />
+                    {my_profile_store.should_show_add_payment_method_form ? (
+                        <AddPaymentMethodForm should_show_separated_footer />
+                    ) : (
+                        <Form
+                            advert={selected_ad}
+                            handleClose={onCancel}
+                            handleConfirm={onConfirmClick}
+                            setIsSubmitDisabled={setIsSubmitDisabled}
+                            setErrorMessage={setErrorMessage}
+                            setSubmitForm={setSubmitForm}
+                        />
+                    )}
                 </Modal.Body>
             </ThemedScrollbars>
-            <Modal.Footer has_separator>
-                <BuySellModalFooter
-                    error_message={error_message}
-                    is_submit_disabled={is_submit_disabled}
-                    onCancel={onCancel}
-                    onSubmit={submitForm.current}
-                />
-            </Modal.Footer>
+            {!my_profile_store.should_show_add_payment_method_form && (
+                <Modal.Footer has_separator>
+                    {my_profile_store.should_show_add_payment_method_form ? null : (
+                        <BuySellModalFooter
+                            error_message={error_message}
+                            is_submit_disabled={is_submit_disabled}
+                            onCancel={onCancel}
+                            onSubmit={submitForm.current}
+                        />
+                    )}
+                </Modal.Footer>
+            )}
         </Modal>
     );
 };

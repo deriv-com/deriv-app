@@ -1,0 +1,96 @@
+.payment-method-card {
+    border: 1px solid var(--border-normal);
+    border-radius: 8px;
+    margin: 1.6rem 0;
+    overflow-wrap: break-word;
+    padding: 1.9rem;
+
+    .dc-dropdown__display {
+        border: unset;
+    }
+
+    &--add {
+        align-items: center;
+        border: 1px dotted var(--border-normal);
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 1.6rem 0;
+
+        &-icon {
+            margin-bottom: 0.8rem;
+        }
+    }
+
+    &--large {
+        min-height: 12.8rem;
+        width: 20.8rem;
+    }
+
+    &--medium {
+        min-height: 9.4rem;
+        width: 14.4rem;
+    }
+
+    &--small {
+        min-height: 8.8rem;
+        width: 13.6rem;
+    }
+
+    @include mobile {
+        min-height: 8.8rem;
+        width: 13.6rem;
+    }
+
+    &__ellipsis {
+        cursor: pointer;
+        height: 1rem;
+        width: 0.2rem;
+    }
+
+    &__header {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+
+        .dc-dropdown {
+            border: unset;
+        }
+    }
+
+    &__body {
+        margin-top: 1.1rem;
+    }
+
+    &__icon {
+        border-radius: 2px;
+    }
+
+    &__menu {
+        background-color: var(--general-main-1);
+        display: flex;
+        flex-direction: column;
+        height: 12.8rem;
+        width: 8rem;
+        z-index: 1000;
+
+        &--text {
+            cursor: pointer;
+        }
+    }
+
+    .suffix-icon {
+        left: auto;
+        right: 0;
+    }
+
+    .dc-list--has-suffix-icon {
+        width: 12.8rem;
+    }
+
+    .dc-dropdown-container {
+        min-width: unset;
+    }
+}

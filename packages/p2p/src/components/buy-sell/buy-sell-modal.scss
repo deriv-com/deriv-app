@@ -36,6 +36,55 @@
             }
         }
     }
+
+    &-line {
+        border-top: 1px solid var(--general-section-1);
+        margin: 1.6rem 0;
+        width: 100%;
+    }
+
+    &-payment-method {
+        &--container {
+            align-self: center;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.6rem;
+        }
+
+        &--icon {
+            border-radius: 2px;
+            margin-right: 0.8rem;
+        }
+
+        &--row {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 0.8rem;
+        }
+
+        &--title {
+            margin-bottom: 0.8rem;
+        }
+    }
+
+    &--sell-payment-methods {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 1.6rem 0 2.4rem;
+        gap: 0.8rem;
+
+        .payment-method-card {
+            margin-right: 0.8rem;
+
+            &--add {
+                margin: unset;
+            }
+            &__body {
+                margin-top: 0.8rem;
+            }
+        }
+    }
 }
 
 .buy-sell__modal-content {

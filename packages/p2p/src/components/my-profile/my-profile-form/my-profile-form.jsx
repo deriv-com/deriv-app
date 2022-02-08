@@ -6,19 +6,12 @@ import classNames from 'classnames';
 import { Localize, localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import { useStores } from 'Stores';
-import MyProfileSeparatorContainer from '../my-profile-separator-container';
 
 const MyProfileForm = () => {
     const { my_profile_store } = useStores();
 
     return (
         <div className='my-profile-form'>
-            <MyProfileSeparatorContainer>
-                <Text size='xs' color='prominent' weight='bold'>
-                    <Localize i18n_default_text='Ad template' />
-                </Text>
-                <MyProfileSeparatorContainer.Line has_single_child />
-            </MyProfileSeparatorContainer>
             <Formik
                 enableReinitialize
                 initialValues={{
@@ -32,26 +25,6 @@ const MyProfileForm = () => {
                 {({ dirty, errors, isSubmitting, isValid }) => {
                     return (
                         <Form className='my-profile-form__form'>
-                            <Field name='payment_info'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        type='textarea'
-                                        label={
-                                            <Text color='less-prominent' size='xs'>
-                                                <Localize i18n_default_text='Payment details' />
-                                            </Text>
-                                        }
-                                        error={errors.payment_info}
-                                        hint={localize('e.g. your bank/e-wallet account details')}
-                                        is_relative_hint
-                                        className='my-profile-form__textarea'
-                                        has_character_counter
-                                        initial_character_count={my_profile_store.payment_info.length}
-                                        max_characters={300}
-                                    />
-                                )}
-                            </Field>
                             <Field name='contact_info'>
                                 {({ field }) => (
                                     <Input

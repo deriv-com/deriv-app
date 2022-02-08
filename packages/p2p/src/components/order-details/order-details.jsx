@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ThemedScrollbars } from '@deriv/components';
+import { Accordion, HintBox, Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -11,6 +11,8 @@ import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx'
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
 import { useStores } from 'Stores';
+import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
+import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
@@ -18,8 +20,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
     const {
         account_currency,
         advert_details,
+        advertiser_details,
         amount_display,
         chat_channel_url: order_channel_url,
+        client_details,
         contact_info,
         has_timer_expired,
         id,
@@ -32,6 +36,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         local_currency,
         other_user_details,
         payment_info,
+        payment_methods,
         // price, TODO: Uncomment when price is fixed
         purchase_time,
         rate,
@@ -70,6 +75,17 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
+            <div className='order-details--warning'>
+                <HintBox
+                    icon='IcAlertWarning'
+                    message={
+                        <Text size='xxxs' color='prominent' line_height='xs'>
+                            <Localize i18n_default_text='To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.' />
+                        </Text>
+                    }
+                    is_warn
+                />
+            </div>
             <div className='order-details'>
                 <div className='order-details-card'>
                     <div className='order-details-card__header'>
@@ -141,7 +157,26 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
-                        <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
+                        {payment_methods ? (
+                            <Accordion
+                                className='order-details-card__accordion'
+                                icon_close='IcChevronRight'
+                                icon_open='IcChevronDown'
+                                list={payment_methods.map(payment_method => ({
+                                    header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
+                                    content: (
+                                        <PaymentMethodAccordionContent
+                                            advertiser_details={advertiser_details}
+                                            client_details={client_details}
+                                            is_my_ad={is_my_ad}
+                                            payment_method={payment_method}
+                                        />
+                                    ),
+                                }))}
+                            />
+                        ) : (
+                            <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
+                        )}
                         <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
                         <OrderInfoBlock label={labels.instructions} value={advert_details.description.trim() || '-'} />
                     </ThemedScrollbars>

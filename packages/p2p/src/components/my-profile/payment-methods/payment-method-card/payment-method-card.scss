@@ -40,8 +40,10 @@
     }
 
     @include mobile {
-        min-height: 8.8rem;
-        width: 13.6rem;
+        min-height: 15rem;
+        min-width: 15rem;
+        padding: 1.5rem;
+        margin: 1rem;
     }
 
     &__ellipsis {

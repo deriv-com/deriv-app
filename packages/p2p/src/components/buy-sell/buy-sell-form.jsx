@@ -66,16 +66,16 @@ const BuySellForm = props => {
     );
 
     const onClickPaymentMethodCard = payment_method => {
-        if (buy_sell_store.payment_method_ids.length < 3) {
-            if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
+        if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
+            if (buy_sell_store.payment_method_ids.length < 3) {
                 buy_sell_store.payment_method_ids.push(payment_method.ID);
                 setSelectedMethods([...selected_methods, payment_method.ID]);
-            } else {
-                buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
-                    payment_method_id => payment_method_id !== payment_method.ID
-                );
-                setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
             }
+        } else {
+            buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
+                payment_method_id => payment_method_id !== payment_method.ID
+            );
+            setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
         }
     };
 

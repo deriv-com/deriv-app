@@ -7,7 +7,7 @@ import { localize, Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
-import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
+import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
 
 const QuickAddModal = ({ advert }) => {
     const { my_ads_store, my_profile_store } = useStores();
@@ -139,18 +139,22 @@ const QuickAddModal = ({ advert }) => {
                 pageHeaderReturnFn={() => my_ads_store.hideQuickAddModal()}
                 secondary
                 text={localize('Cancel')}
-                renderPageFooterChildren={() => (
-                    <>
-                        <Button
-                            has_effect
-                            large
-                            onClick={() => my_ads_store.hideQuickAddModal()}
-                            secondary
-                            text={localize('Cancel')}
-                        />
-                        <Button has_effect large onClick={() => {}} primary text={localize('Add')} />
-                    </>
-                )}
+                renderPageFooterChildren={() => {
+                    return (
+                        my_profile_store.advertiser_has_payment_methods && (
+                            <>
+                                <Button
+                                    has_effect
+                                    large
+                                    onClick={() => my_ads_store.hideQuickAddModal()}
+                                    secondary
+                                    text={localize('Cancel')}
+                                />
+                                <Button has_effect large onClick={() => {}} primary text={localize('Add')} />
+                            </>
+                        )
+                    );
+                }}
                 page_footer_className='buy-sell__modal-footer'
             >
                 <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
@@ -174,7 +178,7 @@ const QuickAddModal = ({ advert }) => {
                         </>
                     ))
                 ) : (
-                    <AddPaymentMethodForm />
+                    <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
                 )}
             </MobileFullPageModal>
         );
@@ -237,16 +241,19 @@ const QuickAddModal = ({ advert }) => {
                         ]}
                     />
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        has_effect
-                        large
-                        onClick={() => my_ads_store.hideQuickAddModal()}
-                        secondary
-                        text={localize('Cancel')}
-                    />
-                    <Button has_effect large onClick={() => {}} primary text={localize('Add')} />
-                </Modal.Footer>
+                {my_profile_store.advertiser_has_payment_methods && (
+                    <Modal.Footer>
+                        <Button
+                            has_effect
+                            large
+                            onClick={() => my_ads_store.hideQuickAddModal()}
+                            secondary
+                            text={localize('Cancel')}
+                        />
+
+                        <Button has_effect large onClick={() => {}} primary text={localize('Add')} />
+                    </Modal.Footer>
+                )}
             </Modal>
         );
     }
@@ -282,19 +289,22 @@ const QuickAddModal = ({ advert }) => {
                         </>
                     ))
                 ) : (
-                    <AddPaymentMethodForm />
+                    <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
                 )}
             </Modal.Body>
-            <Modal.Footer>
-                <Button
-                    has_effect
-                    large
-                    onClick={() => my_ads_store.hideQuickAddModal()}
-                    secondary
-                    text={localize('Cancel')}
-                />
-                <Button has_effect large onClick={() => {}} primary text={localize('Add')} />
-            </Modal.Footer>
+            {my_profile_store.advertiser_has_payment_methods && (
+                <Modal.Footer>
+                    <Button
+                        has_effect
+                        large
+                        onClick={() => my_ads_store.hideQuickAddModal()}
+                        secondary
+                        text={localize('Cancel')}
+                    />
+
+                    <Button has_effect large onClick={() => {}} primary text={localize('Add')} />
+                </Modal.Footer>
+            )}
         </Modal>
     );
 };

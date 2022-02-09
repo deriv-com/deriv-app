@@ -45,7 +45,7 @@ const MyAdsTable = () => {
     if (my_ads_store.adverts.length) {
         return (
             <React.Fragment>
-                <QuickAddModal advert={selected_advert} />
+                {selected_advert && <QuickAddModal advert={selected_advert} />}
                 {isDesktop() && my_ads_store.has_missing_payment_methods && (
                     <div className='p2p-my-ads__warning'>
                         <HintBox
@@ -127,7 +127,7 @@ const MyAdsTable = () => {
                 <Modal
                     className='p2p-my-ads__modal-error'
                     has_close_icon={false}
-                    is_open={my_ads_store.activate_deactivate_error_message}
+                    is_open={Boolean(my_ads_store.activate_deactivate_error_message)}
                     small
                     title={localize('Something’s not right')}
                 >

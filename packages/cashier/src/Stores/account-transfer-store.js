@@ -58,7 +58,6 @@ export default class AccountTransferStore {
     @observable account_transfer_amount = '';
     @observable transfer_fee = null;
     @observable transfer_limit = {};
-    @observable onRemount = () => {};
 
     @computed
     get is_account_transfer_visible() {
@@ -100,11 +99,6 @@ export default class AccountTransferStore {
         this.selected_to.balance = balance;
     }
 
-    @action.bound
-    setOnRemount(func) {
-        this.onRemount = func;
-    }
-
     // possible transfers:
     // 1. fiat to crypto & vice versa
     // 2. fiat to mt & vice versa
@@ -112,11 +106,11 @@ export default class AccountTransferStore {
     @action.bound
     async onMountAccountTransfer() {
         const { client, modules } = this.root_store;
-        const { onMountCommon, setLoading } = modules.cashier.general_store;
+        const { onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
         const { active_accounts, is_logged_in } = client;
 
         setLoading(true);
-        this.setOnRemount(this.onMountCommon);
+        setOnRemount(this.onMountAccountTransfer);
         await onMountCommon();
         await this.WS.wait('website_status');
 

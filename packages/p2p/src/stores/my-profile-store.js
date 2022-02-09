@@ -7,6 +7,7 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 
 export default class MyProfileStore extends BaseStore {
     @observable active_tab = my_profile_tabs.MY_STATS;
+    @observable add_payment_method_error_message = '';
     @observable advertiser_info = {};
     @observable advertiser_payment_methods = {};
     @observable advertiser_payment_methods_error = '';
@@ -36,6 +37,7 @@ export default class MyProfileStore extends BaseStore {
     @observable selected_payment_method_fields = [];
     @observable selected_payment_method_type = '';
     @observable should_hide_my_profile_tab = false;
+    @observable should_show_add_payment_method_error_modal = false;
     @observable should_show_add_payment_method_form = false;
     @observable should_show_edit_payment_method_form = false;
 
@@ -129,12 +131,19 @@ export default class MyProfileStore extends BaseStore {
         }).then(response => {
             if (response) {
                 const { my_ads_store } = this.root_store;
+
                 if (my_ads_store.should_show_add_payment_method_modal) {
                     my_ads_store.setShouldShowAddPaymentMethodModal(false);
                 }
 
-                this.setShouldShowAddPaymentMethodForm(false);
-                this.getAdvertiserPaymentMethods();
+                if (response.error) {
+                    this.setAddPaymentMethodErrorMessage(response.error.message);
+                    this.setShouldShowAddPaymentMethodErrorModal(true);
+                } else {
+                    this.setShouldShowAddPaymentMethodForm(false);
+                    this.getAdvertiserPaymentMethods();
+                }
+
                 setSubmitting(false);
             }
         });
@@ -371,6 +380,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setAddPaymentMethodErrorMessage(add_payment_method_error_message) {
+        this.add_payment_method_error_message = add_payment_method_error_message;
+    }
+
+    @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
     }
@@ -503,6 +517,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setShouldHideMyProfileTab(should_hide_my_profile_tab) {
         this.should_hide_my_profile_tab = should_hide_my_profile_tab;
+    }
+
+    @action.bound
+    setShouldShowAddPaymentMethodErrorModal(should_show_add_payment_method_error_modal) {
+        this.should_show_add_payment_method_error_modal = should_show_add_payment_method_error_modal;
     }
 
     @action.bound

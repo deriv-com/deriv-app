@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
-import { Button, Icon, Input, Loading, Text } from '@deriv/components';
+import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal.jsx';
@@ -33,6 +33,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getSelectedPaymentMethodDetails();
+        my_profile_store.setAddPaymentMethodErrorMessage('');
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -125,6 +126,27 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                     );
                 }}
             </Formik>
+            <Modal
+                is_open={my_profile_store.should_show_add_payment_method_error_modal}
+                small
+                has_close_icon={false}
+                title={localize("Something's not right")}
+            >
+                <Modal.Body>
+                    <Text color='prominent' size='xs'>
+                        {my_profile_store.add_payment_method_error_message}
+                    </Text>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        has_effect
+                        text={localize('Ok')}
+                        onClick={() => my_profile_store.setShouldShowAddPaymentMethodErrorModal(false)}
+                        primary
+                        large
+                    />
+                </Modal.Footer>
+            </Modal>
         </React.Fragment>
     );
 };

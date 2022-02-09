@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Formik, Field } from 'formik';
-import { Autocomplete, Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/components';
+import { Autocomplete, Button, Icon, MobileFullPageModal, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -273,7 +273,7 @@ const QuickAddModal = ({ advert }) => {
                         ]}
                     />
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer has_separator>
                     <Button
                         has_effect
                         large
@@ -303,11 +303,13 @@ const QuickAddModal = ({ advert }) => {
             title={modal_title}
             toggleModal={() => my_ads_store.hideQuickAddModal()}
         >
-            <Modal.Body>
-                {my_ads_store.should_show_add_payment_method ? (
+            {my_ads_store.should_show_add_payment_method ? (
+                <Modal.Body>
                     <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
-                ) : (
-                    <>
+                </Modal.Body>
+            ) : (
+                <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
+                    <Modal.Body>
                         <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
                             <PaymentMethodCard
@@ -325,10 +327,10 @@ const QuickAddModal = ({ advert }) => {
                             medium
                             onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
                         />
-                    </>
-                )}
-            </Modal.Body>
-            <Modal.Footer>
+                    </Modal.Body>
+                </ThemedScrollbars>
+            )}
+            <Modal.Footer has_separator={!my_ads_store.should_show_add_payment_method}>
                 {!my_ads_store.should_show_add_payment_method && (
                     <>
                         <Button

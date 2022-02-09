@@ -39,7 +39,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
                 <div className='cashier-recent-transaction__data-wrapper'>
                     <Icon
                         className='cashier-recent-transaction__icon'
-                        icon={transaction_type === 'deposit' ? 'IcCashierAdd' : 'IcCashierMinus'}
+                        icon={transaction_type === 'Deposit' ? 'IcCashierAdd' : 'IcCashierMinus'}
                         size={32}
                     />
                     <div>

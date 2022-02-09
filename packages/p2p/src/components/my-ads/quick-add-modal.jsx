@@ -192,7 +192,7 @@ const QuickAddModal = ({ advert }) => {
                 height='560px'
                 is_open={my_ads_store.is_quick_add_modal_open}
                 title={localize('Add payment methods')}
-                toggleModal={() => {}}
+                toggleModal={() => my_ads_store.hideQuickAddModal()}
             >
                 <Modal.Body>
                     <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
@@ -265,7 +265,7 @@ const QuickAddModal = ({ advert }) => {
             height='560px'
             is_open={my_ads_store.is_quick_add_modal_open}
             title={localize('Add payment methods')}
-            toggleModal={() => {}}
+            toggleModal={() => my_ads_store.hideQuickAddModal()}
         >
             <Modal.Body>
                 <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />

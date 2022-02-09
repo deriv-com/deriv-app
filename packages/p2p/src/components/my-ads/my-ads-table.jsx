@@ -10,6 +10,7 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
+import QuickAddModal from './quick-add-modal.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -24,9 +25,12 @@ const getHeaders = offered_currency => [
 const MyAdsTable = () => {
     const { general_store, my_ads_store } = useStores();
 
+    const [selected_advert, setSelectedAdvert] = React.useState(undefined);
+
     React.useEffect(() => {
         my_ads_store.setAdverts([]);
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -41,6 +45,7 @@ const MyAdsTable = () => {
     if (my_ads_store.adverts.length) {
         return (
             <React.Fragment>
+                {selected_advert && <QuickAddModal advert={selected_advert} />}
                 {isDesktop() && my_ads_store.has_missing_payment_methods && (
                     <div className='p2p-my-ads__warning'>
                         <HintBox
@@ -101,7 +106,7 @@ const MyAdsTable = () => {
                             items={my_ads_store.adverts}
                             keyMapperFn={item => item.id}
                             loadMoreRowsFn={my_ads_store.loadMoreAds}
-                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
+                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} setAdvert={setSelectedAdvert} />}
                         />
                     </Table.Body>
                 </Table>
@@ -122,7 +127,7 @@ const MyAdsTable = () => {
                 <Modal
                     className='p2p-my-ads__modal-error'
                     has_close_icon={false}
-                    is_open={my_ads_store.activate_deactivate_error_message}
+                    is_open={Boolean(my_ads_store.activate_deactivate_error_message)}
                     small
                     title={localize('Something’s not right')}
                 >

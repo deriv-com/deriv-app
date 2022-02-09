@@ -58,7 +58,7 @@ describe('<PaymentAgentList />', () => {
             { text: 'cash', value: 'cash' },
             { text: 'paypal', value: 'paypal' },
         ],
-        verefication_code: '',
+        verification_code: '',
         onChangePaymentMethod: jest.fn(),
         onMount: jest.fn(),
     };

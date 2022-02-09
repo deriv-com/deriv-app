@@ -124,7 +124,7 @@ const CFDDashboard = props => {
         if (index === 1) updated_state.is_demo_tab = true;
         else if (index === 0) updated_state.is_demo_tab = false;
 
-        if (index !== undefined && active_index !== index) {
+        if (active_index !== index) {
             updated_state.active_index = index;
         }
 

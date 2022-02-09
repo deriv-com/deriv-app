@@ -223,7 +223,8 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     getSelectedPaymentMethodDetails() {
         this.setPaymentMethodValue(undefined);
-        if (this.available_payment_methods[this.selected_payment_method]) {
+
+        if (this.selected_payment_method) {
             this.setSelectedPaymentMethodDisplayName(
                 this.available_payment_methods[this.selected_payment_method].display_name
             );
@@ -231,9 +232,10 @@ export default class MyProfileStore extends BaseStore {
                 Object.entries(this.available_payment_methods[this.selected_payment_method].fields)
             );
             this.setSelectedPaymentMethodType(this.available_payment_methods[this.selected_payment_method].type);
-        } else {
-            const split = this.selected_payment_method.split('_');
-            const payment_method = Object.entries(this.available_payment_methods).filter(pm => pm.includes(split[0]));
+        } else if (this.selected_payment_method_display_name) {
+            const payment_method = Object.entries(this.available_payment_methods).filter(
+                pm => pm[1].display_name === this.selected_payment_method_display_name
+            );
             const filtered_payment_method = Object.entries(payment_method)[0][1][1];
 
             this.setPaymentMethodValue(payment_method[0][0]);

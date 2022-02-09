@@ -157,9 +157,8 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
-                        /=
-                        {is_active_order ? (
-                            order_store?.has_order_payment_method_details ? (
+                        {is_active_order &&
+                            (order_store?.has_order_payment_method_details ? (
                                 <Accordion
                                     className='order-details-card__accordion'
                                     icon_close='IcChevronRight'
@@ -178,8 +177,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 />
                             ) : (
                                 <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
-                            )
-                        ) : null}
+                            ))}
                         <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
                         <OrderInfoBlock label={labels.instructions} value={advert_details.description.trim() || '-'} />
                     </ThemedScrollbars>

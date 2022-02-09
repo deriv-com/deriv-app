@@ -27,7 +27,7 @@ const OrderDetailsConfirmModal = ({
     const isMounted = useIsMounted();
     const [error_message, setErrorMessage] = React.useState('');
     const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
-    const [is_process_request, setIsProcessRequest] = React.useState(false); //This state disables the Release amount button during a request
+    const [is_process_request, setIsProcessRequest] = React.useState(false); // This state disables the Release amount button during a request
 
     const confirmOrderRequest = () => {
         setIsProcessRequest(true);

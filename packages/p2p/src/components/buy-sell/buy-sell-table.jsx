@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InfiniteDataList, Loading, Modal, RadioGroup, Table } from '@deriv/components';
+import { InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -57,15 +57,32 @@ const BuySellTable = ({ onScroll }) => {
     if (buy_sell_store.items.length) {
         return (
             <Table className='buy-sell__table'>
-                <Modal name='sort' is_open={buy_sell_store.is_sort_dropdown_open}>
+                <Modal
+                    name='sort'
+                    className='sort'
+                    is_open={buy_sell_store.is_sort_dropdown_open}
+                    height='10rem'
+                    width='80vw'
+                >
                     <RadioGroup
                         name='reason'
+                        className='buy-sell-sort-radiogroup'
                         onToggle={buy_sell_store.handleChange}
                         selected={buy_sell_store.selected_value}
                         required
                     >
                         {buy_sell_store.sort_list.map((list_item, key) => {
-                            return <RadioGroup.Item key={key} value={list_item.value} label={list_item.text} />;
+                            return (
+                                <RadioGroup.Item
+                                    key={key}
+                                    value={list_item.value}
+                                    label={
+                                        <Text color='prominent' size='s'>
+                                            {list_item.text}
+                                        </Text>
+                                    }
+                                />
+                            );
                         })}
                     </RadioGroup>
                 </Modal>

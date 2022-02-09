@@ -25,11 +25,13 @@ export default class MyAdsStore extends BaseStore {
     @observable is_api_error_modal_visible = false;
     @observable is_delete_modal_open = false;
     @observable is_form_loading = false;
+    @observable is_quick_add_modal_open = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
     @observable item_offset = 0;
     @observable p2p_advert_information = {};
     @observable selected_ad_id = '';
+    @observable selected_advert = null;
     @observable should_show_add_payment_method_modal = false;
     @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
@@ -164,6 +166,12 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    hideQuickAddModal() {
+        this.setIsQuickAddModalOpen(false);
+        this.setSelectedAdId(undefined);
+    }
+
+    @action.bound
     onClickActivateDeactivate(id, is_ad_active, setIsAdvertActive) {
         requestWS({ p2p_advert_update: 1, id, is_active: is_ad_active ? 0 : 1 }).then(response => {
             if (response.error) {
@@ -245,9 +253,18 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    onClickUpdatePaymentMethods(id) {
+    onClickUpdatePaymentMethods(id, is_buy_ad) {
         const { my_profile_store } = this.root_store;
-        requestWS({ p2p_advert_update: 1, id, payment_method: this.payment_method_ids }).then(response => {
+        requestWS({
+            p2p_advert_update: 1,
+            id,
+            ...(this.payment_method_names.length > 0 && is_buy_ad
+                ? { payment_method_names: this.payment_method_names }
+                : {}),
+            ...(this.payment_method_ids.length > 0 && !is_buy_ad
+                ? { payment_method_ids: this.payment_method_ids }
+                : {}),
+        }).then(response => {
             if (!response.error) {
                 if (my_profile_store.should_show_add_payment_method_form) {
                     my_profile_store.setShouldShowAddPaymentMethodForm(false);
@@ -299,6 +316,12 @@ export default class MyAdsStore extends BaseStore {
         }
         handleChange(e);
     };
+
+    @action.bound
+    showQuickAddModal(advert) {
+        this.setSelectedAdId(advert);
+        this.setIsQuickAddModalOpen(true);
+    }
 
     @action.bound
     setActivateDeactivateErrorMessage(activate_deactivate_error_message) {
@@ -396,6 +419,11 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setIsQuickAddModalOpen(is_quick_add_modal_open) {
+        this.is_quick_add_modal_open = is_quick_add_modal_open;
+    }
+
+    @action.bound
     setIsTableLoading(is_table_loading) {
         this.is_table_loading = is_table_loading;
     }
@@ -413,6 +441,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setSelectedAdId(selected_ad_id) {
         this.selected_ad_id = selected_ad_id;
+    }
+
+    @action.bound
+    setSelectedAdvert(selected_advert) {
+        this.selected_advert = selected_advert;
     }
 
     @action.bound

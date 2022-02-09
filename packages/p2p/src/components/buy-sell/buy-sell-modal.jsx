@@ -64,7 +64,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             setErrorMessage(null);
         }
 
-        my_profile_store.setShouldShowAddPaymentMethodForm(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_popup]);
 

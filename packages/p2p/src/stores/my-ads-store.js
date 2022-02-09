@@ -32,6 +32,7 @@ export default class MyAdsStore extends BaseStore {
     @observable p2p_advert_information = {};
     @observable selected_ad_id = '';
     @observable selected_advert = null;
+    @observable should_show_add_payment_method = false;
     @observable should_show_add_payment_method_modal = false;
     @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
@@ -254,22 +255,21 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    onClickUpdatePaymentMethods(id, is_buy_ad) {
-        const { my_profile_store } = this.root_store;
+    onClickUpdatePaymentMethods(is_buy_advert) {
         requestWS({
             p2p_advert_update: 1,
-            id,
-            ...(this.payment_method_names.length > 0 && is_buy_ad
+            id: this.selected_ad_id,
+            ...(this.payment_method_names.length > 0 && is_buy_advert
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
-            ...(this.payment_method_ids.length > 0 && !is_buy_ad
+            ...(this.payment_method_ids.length > 0 && !is_buy_advert
                 ? { payment_method_ids: this.payment_method_ids }
                 : {}),
         }).then(response => {
             if (!response.error) {
-                if (my_profile_store.should_show_add_payment_method_form) {
-                    my_profile_store.setShouldShowAddPaymentMethodForm(false);
-                }
+                this.setAdverts([]);
+                this.loadMoreAds({ startIndex: 0 });
+                this.hideQuickAddModal();
             }
         });
     }
@@ -447,6 +447,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setSelectedAdvert(selected_advert) {
         this.selected_advert = selected_advert;
+    }
+
+    @action.bound
+    setShouldShowAddPaymentMethod(should_show_add_payment_method) {
+        this.should_show_add_payment_method = should_show_add_payment_method;
     }
 
     @action.bound

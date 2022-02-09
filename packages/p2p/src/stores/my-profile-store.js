@@ -136,6 +136,10 @@ export default class MyProfileStore extends BaseStore {
                     my_ads_store.setShouldShowAddPaymentMethodModal(false);
                 }
 
+                if (my_ads_store.should_show_add_payment_method) {
+                    my_ads_store.setShouldShowAddPaymentMethod(false);
+                }
+
                 if (response.error) {
                     this.setAddPaymentMethodErrorMessage(response.error.message);
                     this.setShouldShowAddPaymentMethodErrorModal(true);

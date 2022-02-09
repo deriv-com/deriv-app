@@ -118,6 +118,7 @@ const CFDDashboard = props => {
     };
 
     const updateActiveIndex = index => {
+        if (!index) return;
         const updated_state = {};
         // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
         if (index === 1) updated_state.is_demo_tab = true;

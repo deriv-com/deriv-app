@@ -17,7 +17,7 @@ const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_crypto, i
 
     return (
         <div className='cashier__wrapper'>
-            {is_loading && <Loading is_fullscreen data-testid='loader' />}
+            {is_loading && <Loading is_fullscreen />}
             {iframe_url && (
                 <iframe
                     className='cashier__content'

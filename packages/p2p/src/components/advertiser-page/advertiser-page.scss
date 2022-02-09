@@ -193,7 +193,10 @@
             justify-content: center;
 
             @include mobile {
-                justify-content: flex-end;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                margin-top: 1rem;
             }
         }
         &-table {

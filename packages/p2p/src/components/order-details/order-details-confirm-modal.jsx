@@ -45,6 +45,24 @@ const OrderDetailsConfirmModal = ({
             .finally(() => setIsProcessRequest(false));
     };
 
+    let confirm_button_text = null;
+
+    if (is_buy_order_for_user) {
+        confirm_button_text = <Localize i18n_default_text="I've paid" />;
+    } else if (is_process_request) {
+        confirm_button_text = <Loading is_fullscreen={false} />;
+    } else {
+        confirm_button_text = (
+            <Localize
+                i18n_default_text='Release {{amount}} {{currency}}'
+                values={{
+                    amount: amount_display,
+                    currency: account_currency,
+                }}
+            />
+        );
+    }
+
     return (
         <Modal
             className='order-details-confirm-modal'
@@ -119,19 +137,7 @@ const OrderDetailsConfirmModal = ({
                         large
                         onClick={confirmOrderRequest}
                     >
-                        {is_buy_order_for_user ? (
-                            <Localize i18n_default_text="I've paid" />
-                        ) : is_process_request ? (
-                            <Loading is_fullscreen={false} />
-                        ) : (
-                            <Localize
-                                i18n_default_text='Release {{amount}} {{currency}}'
-                                values={{
-                                    amount: amount_display,
-                                    currency: account_currency,
-                                }}
-                            />
-                        )}
+                        {confirm_button_text}
                     </Button>
                 </Button.Group>
             </Modal.Footer>

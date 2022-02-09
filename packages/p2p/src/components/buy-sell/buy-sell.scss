@@ -127,23 +127,26 @@
 }
 
 .dc-radio-group {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    margin: unset;
-
-    .dc-radio-group__item {
+    &.sort-radiogroup {
+        height: 100%;
         display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
         margin: unset;
-        padding: 1.2rem 2.4rem;
-        width: 100%;
+    }
+    .dc-radio-group__item {
+        &.sort-radiogroup {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            margin: unset;
+            padding: 1.2rem 2.4rem;
+            width: 100%;
 
-        &:first-child {
-            border-bottom: 1px solid var(--border-normal);
+            &:first-child {
+                border-bottom: 1px solid var(--border-normal);
+            }
         }
     }
 }

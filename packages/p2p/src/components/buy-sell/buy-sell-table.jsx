@@ -66,7 +66,7 @@ const BuySellTable = ({ onScroll }) => {
                 >
                     <RadioGroup
                         name='reason'
-                        className='buy-sell-sort-radiogroup'
+                        className='sort-radiogroup'
                         onToggle={buy_sell_store.handleChange}
                         selected={buy_sell_store.selected_value}
                         required

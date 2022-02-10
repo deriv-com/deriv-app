@@ -19,4 +19,4 @@ ToolbarWidgets.propTypes = {
     updateGranularity: PropTypes.func,
 };
 
-export default ToolbarWidgets;
+export default React.memo(ToolbarWidgets);

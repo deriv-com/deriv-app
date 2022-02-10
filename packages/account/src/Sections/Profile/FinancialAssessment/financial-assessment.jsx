@@ -980,14 +980,14 @@ FinancialAssessment.propTypes = {
     routeBackInApp: PropTypes.func,
 };
 
-export default connect(({ client, common, ui }) => ({
+export default connect(({ client, common, notifications }) => ({
     is_authentication_needed: client.is_authentication_needed,
     is_financial_account: client.is_financial_account,
     is_svg: client.is_svg,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_virtual: client.is_virtual,
     platform: common.platform,
-    removeNotificationByKey: ui.removeNotificationByKey,
-    removeNotificationMessage: ui.removeNotificationMessage,
+    removeNotificationByKey: notifications.removeNotificationByKey,
+    removeNotificationMessage: notifications.removeNotificationMessage,
     routeBackInApp: common.routeBackInApp,
 }))(withRouter(FinancialAssessment));

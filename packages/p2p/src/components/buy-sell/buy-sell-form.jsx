@@ -36,6 +36,10 @@ const BuySellForm = props => {
 
     React.useEffect(
         () => {
+            my_profile_store.setShouldShowAddPaymentMethodForm(false);
+            my_profile_store.setSelectedPaymentMethod('');
+            my_profile_store.setSelectedPaymentMethodDisplayName('');
+
             const disposeReceiveAmountReaction = reaction(
                 () => buy_sell_store.receive_amount,
                 () => {

@@ -125,6 +125,7 @@ export default class BuySellStore extends BaseStore {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
                 this.setContactInfo(p2p_advertiser_info.contact_info);
+                this.setPaymentInfo(p2p_advertiser_info.payment_info);
             } else {
                 this.setContactInfo('');
                 this.setPaymentInfo('');

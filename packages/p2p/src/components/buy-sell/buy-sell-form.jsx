@@ -64,8 +64,6 @@ const BuySellForm = props => {
 
             return () => {
                 disposeReceiveAmountReaction();
-                buy_sell_store.payment_method_ids = [];
-                buy_sell_store.payment_method_names = [];
             };
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps

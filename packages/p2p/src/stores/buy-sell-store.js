@@ -170,6 +170,7 @@ export default class BuySellStore extends BaseStore {
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);
             this.form_props.handleClose();
+            this.payment_method_ids = [];
         }
 
         if (isMountedFn()) {

@@ -28,6 +28,16 @@ const EditAdFormPaymentMethods = ({ is_sell_advert }) => {
             setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
         }
     };
+
+    React.useEffect(() => {
+        return () => {
+            my_ads_store.payment_method_ids = [];
+            my_ads_store.payment_method_names = [];
+        };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {
             return (

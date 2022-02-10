@@ -634,16 +634,17 @@
     }
 }
 
-.dc-modal-header__title--p2p-my-ads__modal-error {
-    padding: 2.4rem 2.4rem 0 !important;
-}
-
-.dc-modal__container_p2p-my-ads__modal-error {
-    .dc-modal-footer {
-        padding-top: 0 !important;
+.p2p-my-ads__modal-error {
+    .dc-modal-header__title--p2p-my-ads__modal-error {
+        padding: 2.4rem 2.4rem 0 !important;
     }
+    .dc-modal__container_p2p-my-ads__modal-error {
+        .dc-modal-footer {
+            padding-top: 0 !important;
+        }
 
-    .dc-modal-header {
-        padding-bottom: 1rem;
+        .dc-modal-header {
+            padding-bottom: 1rem;
+        }
     }
 }

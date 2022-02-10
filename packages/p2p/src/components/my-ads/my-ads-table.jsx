@@ -29,6 +29,7 @@ const MyAdsTable = () => {
 
     React.useEffect(() => {
         my_ads_store.setAdverts([]);
+        my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -60,6 +60,8 @@ const BuySellForm = props => {
 
             return () => {
                 disposeReceiveAmountReaction();
+                buy_sell_store.payment_method_ids = [];
+                buy_sell_store.payment_method_names = [];
             };
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps
@@ -241,12 +243,9 @@ const BuySellForm = props => {
                                                         key={key}
                                                         medium
                                                         onClickAdd={() => {
-                                                            const method = add_payment_method
-                                                                .trim()
-                                                                .toLowerCase()
-                                                                .replace(/\s+/gm, '_');
-
-                                                            my_profile_store.setSelectedPaymentMethod(method);
+                                                            my_profile_store.setSelectedPaymentMethodDisplayName(
+                                                                add_payment_method
+                                                            );
                                                             my_profile_store.setShouldShowAddPaymentMethodForm(true);
                                                         }}
                                                     />

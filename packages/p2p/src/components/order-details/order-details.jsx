@@ -27,6 +27,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         contact_info,
         has_timer_expired,
         id,
+        is_active_order,
         is_buy_order,
         is_buyer_confirmed_order,
         is_my_ad,
@@ -156,26 +157,27 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
-                        {order_store?.has_order_payment_method_details ? (
-                            <Accordion
-                                className='order-details-card__accordion'
-                                icon_close='IcChevronRight'
-                                icon_open='IcChevronDown'
-                                list={order_store?.order_payment_method_details?.map(payment_method => ({
-                                    header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
-                                    content: (
-                                        <PaymentMethodAccordionContent
-                                            advertiser_details={advertiser_details}
-                                            client_details={client_details}
-                                            is_my_ad={is_my_ad}
-                                            payment_method={payment_method}
-                                        />
-                                    ),
-                                }))}
-                            />
-                        ) : (
-                            <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
-                        )}
+                        {is_active_order &&
+                            (order_store?.has_order_payment_method_details ? (
+                                <Accordion
+                                    className='order-details-card__accordion'
+                                    icon_close='IcChevronRight'
+                                    icon_open='IcChevronDown'
+                                    list={order_store?.order_payment_method_details?.map(payment_method => ({
+                                        header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
+                                        content: (
+                                            <PaymentMethodAccordionContent
+                                                advertiser_details={advertiser_details}
+                                                client_details={client_details}
+                                                is_my_ad={is_my_ad}
+                                                payment_method={payment_method}
+                                            />
+                                        ),
+                                    }))}
+                                />
+                            ) : (
+                                <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
+                            ))}
                         <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
                         <OrderInfoBlock label={labels.instructions} value={advert_details.description.trim() || '-'} />
                     </ThemedScrollbars>

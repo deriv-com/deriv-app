@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { Button, Modal, Text } from '@deriv/components';
+import { Button, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../payment-method-card';
@@ -42,16 +42,34 @@ const PaymentMethodsList = () => {
                             <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
                                 {`${payment_methods_list_method.display_name}s`}
                             </Text>
-                            <div className='payment-methods-list__list-body'>
-                                {payment_methods_list.map((each_payment_method, each_payment_method_key) => (
-                                    <PaymentMethodCard
-                                        key={each_payment_method_key}
-                                        large={isDesktop()}
-                                        payment_method={each_payment_method}
-                                        small={isMobile()}
-                                    />
-                                ))}
-                            </div>
+                            {isDesktop() && (
+                                <div className='payment-methods-list__list-body'>
+                                    {payment_methods_list.map((each_payment_method, each_payment_method_key) => (
+                                        <PaymentMethodCard
+                                            key={each_payment_method_key}
+                                            large={true}
+                                            payment_method={each_payment_method}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                            {isMobile() && (
+                                <ThemedScrollbars
+                                    className='payment-methods-list__list-horizontal'
+                                    has_horizontal={true}
+                                    is_only_horizontal={true}
+                                    is_scrollbar_hidden={true}
+                                    height='200px'
+                                >
+                                    {payment_methods_list.map((each_payment_method, each_payment_method_key) => (
+                                        <PaymentMethodCard
+                                            key={each_payment_method_key}
+                                            payment_method={each_payment_method}
+                                            small={true}
+                                        />
+                                    ))}
+                                </ThemedScrollbars>
+                            )}
                         </React.Fragment>
                     );
                 })}

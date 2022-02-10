@@ -53,6 +53,10 @@ const EditAdForm = () => {
                 page_title={localize('Edit {{ad_type}} ad', { ad_type: type })}
             />
             <Formik
+                initialErrors={{
+                    // Pass one error to ensure Post ad button is disabled initially.
+                    offer_amount: true,
+                }}
                 initialValues={{
                     contact_info,
                     description,
@@ -66,7 +70,7 @@ const EditAdForm = () => {
                 onSubmit={my_ads_store.onClickSaveEditAd}
                 validate={my_ads_store.validateCreateAdForm}
             >
-                {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
+                {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
                     return (
@@ -271,7 +275,6 @@ const EditAdForm = () => {
                                                     initial_character_count={description && description.length}
                                                     has_character_counter
                                                     max_characters={300}
-                                                    required
                                                 />
                                             )}
                                         </Field>
@@ -299,7 +302,7 @@ const EditAdForm = () => {
                                                 has_effect
                                                 primary
                                                 large
-                                                is_disabled={!dirty || isSubmitting || !isValid}
+                                                is_disabled={isSubmitting || !isValid}
                                             >
                                                 <Localize i18n_default_text='Save changes' />
                                             </Button>

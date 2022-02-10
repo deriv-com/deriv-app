@@ -71,14 +71,19 @@
     &--sell-payment-methods {
         display: flex;
         flex-wrap: wrap;
-        margin: 1.6rem 0 2.4rem;
         gap: 0.8rem;
+        margin: 1.6rem 0 2.4rem;
 
         .payment-method-card {
             margin: unset;
 
             &--add {
                 margin: unset;
+
+                @include mobile {
+                    height: 8.8rem;
+                    width: 13.6rem;
+                }
             }
             &__body {
                 margin-top: 0.8rem;

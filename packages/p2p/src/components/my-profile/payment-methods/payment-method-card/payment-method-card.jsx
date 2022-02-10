@@ -103,7 +103,6 @@ const PaymentMethodCard = ({
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>
                     {payment_bank_name || payment_name || payment_account_name}
                 </Text>
-                <br />
                 <Text color='prominent' size='xs'>
                     {payment_account}
                 </Text>

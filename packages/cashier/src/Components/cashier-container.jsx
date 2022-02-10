@@ -1,12 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import 'Sass/cashier-container.scss';
 
 const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_loading }) => {
-    const history = useHistory();
-
     React.useEffect(() => {
         return () => {
             clearIframe();

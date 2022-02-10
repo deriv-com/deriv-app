@@ -136,15 +136,17 @@ const BuySellForm = props => {
                                     </div>
                                 </div>
                                 <div className='buy-sell__modal-payment-method--container'>
-                                    <Text
-                                        as='p'
-                                        className='buy-sell__modal-payment-method--title'
-                                        color='less-prominent'
-                                        line_height='m'
-                                        size='xxs'
-                                    >
-                                        <Localize i18n_default_text='Payment methods' />
-                                    </Text>
+                                    {payment_method_names && (
+                                        <Text
+                                            as='p'
+                                            className='buy-sell__modal-payment-method--title'
+                                            color='less-prominent'
+                                            line_height='m'
+                                            size='xxs'
+                                        >
+                                            <Localize i18n_default_text='Payment methods' />
+                                        </Text>
+                                    )}
                                     {payment_method_names &&
                                         payment_method_names.map((payment_method, key) => {
                                             const method = payment_method.replace(/\s|-/gm, '');

@@ -329,7 +329,7 @@ const QuickAddModal = ({ advert }) => {
                     </Modal.Body>
                 </ThemedScrollbars>
             )}
-            {!my_profile_store.selected_payment_method && (
+            {!my_ads_store.should_show_add_payment_method && (
                 <Modal.Footer has_separator>
                     <Button
                         has_effect
@@ -338,15 +338,25 @@ const QuickAddModal = ({ advert }) => {
                         secondary
                         text={localize('Cancel')}
                     />
-                    {!my_ads_store.should_show_add_payment_method && (
-                        <Button
-                            has_effect
-                            large
-                            onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
-                            primary
-                            text={localize('Add')}
-                        />
-                    )}
+
+                    <Button
+                        has_effect
+                        large
+                        onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
+                        primary
+                        text={localize('Add')}
+                    />
+                </Modal.Footer>
+            )}
+            {!my_profile_store.selected_payment_method && my_ads_store.should_show_add_payment_method && (
+                <Modal.Footer>
+                    <Button
+                        has_effect
+                        large
+                        onClick={my_ads_store.hideQuickAddModal}
+                        secondary
+                        text={localize('Cancel')}
+                    />
                 </Modal.Footer>
             )}
         </Modal>

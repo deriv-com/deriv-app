@@ -412,11 +412,13 @@ const CFDAccountCard = ({
                                         {Object.keys(specs).map((spec_attribute, idx) => (
                                             <tr key={idx} className='cfd-account-card__specs-table-row'>
                                                 <td className='cfd-account-card__specs-table-attribute'>
-                                                    <p className='cfd-account-card--paragraph'>{spec_attribute}</p>
+                                                    <p className='cfd-account-card--paragraph'>
+                                                        {specs[spec_attribute].key()}
+                                                    </p>
                                                 </td>
                                                 <td className='cfd-account-card__specs-table-data'>
                                                     <p className='cfd-account-card--paragraph'>
-                                                        {specs[spec_attribute]}
+                                                        {specs[spec_attribute].value()}
                                                     </p>
                                                 </td>
                                             </tr>

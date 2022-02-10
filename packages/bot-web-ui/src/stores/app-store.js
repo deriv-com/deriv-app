@@ -22,7 +22,7 @@ export default class AppStore {
             main_content.setContainerSize();
             blockly_store.endLoading();
         });
-
+        this.registerReloadOnLanguageChange(this);
         this.registerCurrencyReaction.call(this);
         this.registerOnAccountSwitch.call(this);
         this.registerLandingCompanyChangeReaction.call(this);
@@ -41,7 +41,9 @@ export default class AppStore {
             clearInterval(Blockly.derivWorkspace.save_workspace_interval);
             Blockly.derivWorkspace.dispose();
         }
-
+        if (typeof this.disposeReloadOnLanguageChangeReaction === 'function') {
+            this.disposeReloadOnLanguageChangeReaction();
+        }
         if (typeof this.disposeCurrencyReaction === 'function') {
             this.disposeCurrencyReaction();
         }
@@ -69,7 +71,19 @@ export default class AppStore {
             event.returnValue = true;
         }
     };
-
+    registerReloadOnLanguageChange() {
+        this.disposeReloadOnLanguageChangeReaction = reaction(
+            () => this.root_store.common.current_language,
+            () => {
+                // temporarily added this to refresh just dbot in case of changing language,
+                // otherwise it should change language without refresh.
+                const { pathname } = window.location;
+                const is_bot =
+                    /^\/bot/.test(pathname) || (/^\/(br_)/.test(pathname) && pathname.split('/')[2] === 'bot');
+                if (is_bot) window.location.reload();
+            }
+        );
+    }
     registerCurrencyReaction() {
         // Syncs all trade options blocks' currency with the client's active currency.
         this.disposeCurrencyReaction = reaction(

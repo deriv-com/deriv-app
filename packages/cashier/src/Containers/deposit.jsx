@@ -42,8 +42,6 @@ const Deposit = ({
     setSideNotes,
     tab_index,
 }) => {
-    const is_crypto = !!currency && isCryptocurrency(currency);
-
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
@@ -113,7 +111,6 @@ const Deposit = ({
                 iframe_height={iframe_height}
                 iframe_url={iframe_url}
                 is_loading={is_loading}
-                is_crypto={is_crypto}
                 clearIframe={clearIframe}
             />
         );

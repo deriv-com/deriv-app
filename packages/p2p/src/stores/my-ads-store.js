@@ -254,10 +254,10 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    onClickUpdatePaymentMethods(is_buy_advert) {
+    onClickUpdatePaymentMethods(id, is_buy_advert) {
         requestWS({
             p2p_advert_update: 1,
-            id: this.selected_ad_id,
+            id,
             ...(this.payment_method_names.length > 0 && is_buy_advert
                 ? { payment_method_names: this.payment_method_names }
                 : {}),

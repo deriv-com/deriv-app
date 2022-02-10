@@ -60,7 +60,6 @@ const QuickAddModal = ({ advert }) => {
     };
 
     React.useEffect(() => {
-        my_ads_store.setSelectedAdId(advert.id);
         my_ads_store.setShouldShowAddPaymentMethod(!my_profile_store?.advertiser_has_payment_methods);
 
         return () => {
@@ -97,7 +96,7 @@ const QuickAddModal = ({ advert }) => {
                             <Button
                                 has_effect
                                 large
-                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
+                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                                 primary
                                 text={localize('Add')}
                             />
@@ -179,7 +178,7 @@ const QuickAddModal = ({ advert }) => {
                             <Button
                                 has_effect
                                 large
-                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
+                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                                 primary
                                 text={localize('Add')}
                             />
@@ -284,7 +283,7 @@ const QuickAddModal = ({ advert }) => {
                     <Button
                         has_effect
                         large
-                        onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
+                        onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                         primary
                         text={localize('Add')}
                     />
@@ -341,7 +340,7 @@ const QuickAddModal = ({ advert }) => {
                     <Button
                         has_effect
                         large
-                        onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
+                        onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                         primary
                         text={localize('Add')}
                     />

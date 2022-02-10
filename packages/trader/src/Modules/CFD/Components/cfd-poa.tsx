@@ -307,7 +307,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     } = props;
 
     const { form_error, has_poi, poa_status, resubmit_poa, submitted_poa } = form_state;
-    const isVerified = poa_status === PoaStatusCodes.verified;
 
     const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);
 
@@ -491,7 +490,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                             {poa_status === PoaStatusCodes.pending && (
                                                 <PoaNeedsReview is_description_enabled={false} />
                                             )}
-                                            {isVerified && (
+                                            {poa_status === PoaStatusCodes.verified && (
                                                 <PoaVerified is_description_enabled={false} has_poi={has_poi} />
                                             )}
                                             {poa_status === PoaStatusCodes.expired && (
@@ -502,18 +501,22 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                         </ThemedScrollbars>
                                     )}
                                     <Modal.Footer is_bypassed={isMobile()}>
-                                        {(isVerified || is_form_visible) && (
+                                        {(poa_status === PoaStatusCodes.verified || is_form_visible) && (
                                             <FormSubmitButton
                                                 has_cancel
                                                 cancel_label={localize('Previous')}
                                                 is_disabled={
                                                     isFormDisabled(dirty, errors) ||
-                                                    (!isVerified &&
+                                                    (!(poa_status === PoaStatusCodes.verified) &&
                                                         document_upload.files &&
                                                         document_upload.files.length < 1) ||
                                                     !!document_upload.error_message
                                                 }
-                                                label={isVerified ? localize('Submit') : localize('Next')}
+                                                label={
+                                                    poa_status === PoaStatusCodes.verified
+                                                        ? localize('Submit')
+                                                        : localize('Next')
+                                                }
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}
                                                 form_error={form_error}
@@ -524,7 +527,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                 </Div100vhContainer>
                             </form>
                         )}
-                        ;
                     </AutoHeightWrapper>
                 );
             }}

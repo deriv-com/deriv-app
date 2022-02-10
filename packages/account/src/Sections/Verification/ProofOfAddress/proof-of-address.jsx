@@ -25,9 +25,9 @@ ProofOfAddress.propTypes = {
     refreshNotifications: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, notifications }) => ({
     is_mx_mlt: client.landing_company_shortcode === 'iom' || client.landing_company_shortcode === 'malta',
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
 }))(ProofOfAddress);

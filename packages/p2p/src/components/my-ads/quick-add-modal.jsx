@@ -64,7 +64,6 @@ const QuickAddModal = ({ advert }) => {
         my_ads_store.setShouldShowAddPaymentMethod(!my_profile_store?.advertiser_has_payment_methods);
 
         return () => {
-            my_ads_store.setSelectedAdId('');
             my_ads_store.payment_method_ids = [];
             my_ads_store.payment_method_names = [];
         };

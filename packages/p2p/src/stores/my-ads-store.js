@@ -229,7 +229,6 @@ export default class MyAdsStore extends BaseStore {
         const update_advert = {
             p2p_advert_update: 1,
             id: this.selected_ad_id,
-            remaining_amount: Number(values.offer_amount),
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
             payment_method: values.payment_method,

@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDPOA from '../Components/cfd-poa.jsx';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
-import CFDPOI from '../Components/cfd-poi.jsx';
+import CFDPOI from '../Components/cfd-poi';
 
 const index_lookup = {
     CFDPersonalDetailsForm: 0,
@@ -16,6 +16,7 @@ const index_lookup = {
 };
 
 const CFDFinancialStpRealAccountSignup = props => {
+    const { refreshNotifications } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
@@ -138,8 +139,8 @@ const CFDFinancialStpRealAccountSignup = props => {
     };
 
     React.useEffect(() => {
-        props.refreshNotifications();
-    }, [items]);
+        refreshNotifications();
+    }, [items, refreshNotifications]);
 
     const transform = value => {
         const [result] = props.residence_list.filter(item => item.value === value);
@@ -153,6 +154,7 @@ const CFDFinancialStpRealAccountSignup = props => {
                 setIsLoading(false);
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getCurrent = key => {
@@ -233,17 +235,17 @@ CFDFinancialStpRealAccountSignup.propTypes = {
     toggleModal: PropTypes.func,
 };
 
-export default connect(({ client, modules: { cfd }, ui }) => ({
-    addNotificationByKey: ui.addNotificationMessageByKey,
+export default connect(({ client, modules: { cfd }, notifications }) => ({
+    addNotificationByKey: notifications.addNotificationMessageByKey,
     authentication_status: client.authentication_status,
     get_settings: client.account_settings,
     client_email: client.email,
     is_fully_authenticated: client.is_fully_authenticated,
     landing_company: client.landing_company,
     openPendingDialog: cfd.openPendingDialog,
-    refreshNotifications: client.refreshNotifications,
-    removeNotificationMessage: ui.removeNotificationMessage,
-    removeNotificationByKey: ui.removeNotificationByKey,
+    refreshNotifications: notifications.refreshNotifications,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    removeNotificationByKey: notifications.removeNotificationByKey,
     residence_list: client.residence_list,
     states_list: client.states_list,
     storeProofOfAddress: cfd.storeProofOfAddress,

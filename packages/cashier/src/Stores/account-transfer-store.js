@@ -109,6 +109,7 @@ export default class AccountTransferStore {
         const { onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
         const { active_accounts, is_logged_in } = client;
 
+        setLoading(true);
         setOnRemount(this.onMountAccountTransfer);
         await onMountCommon();
         await this.WS.wait('website_status');

@@ -9,9 +9,9 @@ import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import CreateAdSummary from './create-ad-summary.jsx';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
+import EditAdSummary from './edit-ad-summary.jsx';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -87,7 +87,7 @@ const EditAdForm = () => {
                                 >
                                     <EditAdFormWrapper>
                                         <div className='p2p-my-ads__form-summary'>
-                                            <CreateAdSummary
+                                            <EditAdSummary
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 price_rate={errors.price_rate ? '' : values.price_rate}
                                                 type={values.type}

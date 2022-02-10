@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Money, Table, Text } from '@deriv/components';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
+import { observer } from 'mobx-react-lite';
 
 const MyProfileDetailsTable = () => {
     const { general_store, my_profile_store } = useStores();
@@ -72,4 +73,4 @@ const MyProfileDetailsTable = () => {
     );
 };
 
-export default MyProfileDetailsTable;
+export default observer(MyProfileDetailsTable);

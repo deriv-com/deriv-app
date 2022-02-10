@@ -5,9 +5,8 @@ const MyProfileSeparatorContainer = ({ children }) => <div className='my-profile
 
 const MyProfileSeparatorContainerLine = ({ className, is_invisible }) => (
     <div
-        className={classNames('my-profile-separator-container__line', {
+        className={classNames('my-profile-separator-container__line', className, {
             'my-profile-separator-container__line--invisible': is_invisible,
-            className,
         })}
     />
 );

@@ -34,6 +34,7 @@ const EditAdForm = () => {
         local_currency,
         max_order_amount_display,
         min_order_amount_display,
+        payment_method_names,
         rate_display,
         type,
     } = my_ads_store.p2p_advert_information;
@@ -263,7 +264,10 @@ const EditAdForm = () => {
                                                 <Localize i18n_default_text='You may choose up to 3.' />
                                             </Text>
                                         </div>
-                                        <EditAdFormPaymentMethods is_sell_advert={is_sell_advert} />
+                                        <EditAdFormPaymentMethods
+                                            is_sell_advert={is_sell_advert}
+                                            payment_method_names={payment_method_names}
+                                        />
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
                                                 className='p2p-my-ads__form-button'

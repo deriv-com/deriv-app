@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react-lite';
-import { Autocomplete, Icon, Text } from '@deriv/components';
+import { Autocomplete, Icon, Input, Text } from '@deriv/components';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize, Localize } from 'Components/i18next';
 
-const EditAdFormPaymentMethods = ({ is_sell_advert }) => {
+const EditAdFormPaymentMethods = ({ is_sell_advert, payment_method_names }) => {
     const { my_ads_store, my_profile_store } = useStores();
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
@@ -72,7 +72,30 @@ const EditAdFormPaymentMethods = ({ is_sell_advert }) => {
         );
     }
 
-    return (
+    return payment_method_names ? (
+        payment_method_names.map((payment_method, key) => (
+            <Formik key={key} enableReinitialize initialValues={{}}>
+                <Field name='payment_method'>
+                    {({ field }) => (
+                        <Input
+                            {...field}
+                            className='p2p-my-ads__form-payment-methods--empty'
+                            label={
+                                <React.Fragment>
+                                    <Icon icon='IcAddCircle' size={14} />
+                                    <Text color='less-prominent' size='xs'>
+                                        <Localize i18n_default_text='Add' />
+                                    </Text>
+                                </React.Fragment>
+                            }
+                            value={payment_method}
+                            type='text'
+                        />
+                    )}
+                </Field>
+            </Formik>
+        ))
+    ) : (
         <Formik enableReinitialize initialValues={{ payment_method: '' }}>
             {({ setFieldValue }) => (
                 <Field name='payment_method'>

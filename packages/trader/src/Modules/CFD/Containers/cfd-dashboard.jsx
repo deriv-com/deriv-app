@@ -43,7 +43,7 @@ const CFDDashboard = props => {
     const [is_demo_enabled, setIsDemoEnabled] = React.useState(false);
     const [is_real_enabled, setIsRealEnabled] = React.useState(false);
     const [active_index, setActiveIndex] = React.useState(0);
-    const [is_demo_tab, setIsDemoTab] = React.useState(true);
+    const [is_demo_tab, setIsDemoTab] = React.useState(false);
     const [is_notification_loaded, setIsNotificationLoaded] = React.useState(false);
     const [password_manager, setPasswordManager] = React.useState({
         is_visible: false,

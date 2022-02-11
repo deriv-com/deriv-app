@@ -3,14 +3,13 @@
     border-radius: 8px;
     margin: 1.6rem 0;
     overflow-wrap: break-word;
-    padding: 1.9rem;
+    padding: 1.6rem;
 
     .dc-dropdown__display {
         border: unset;
     }
 
     &--add {
-        align-items: center;
         border: 1px dashed var(--border-normal);
         border-radius: 8px;
         cursor: pointer;
@@ -18,24 +17,33 @@
         flex-direction: column;
         justify-content: center;
         margin: 1.6rem 0;
+        padding: 0.8rem;
 
         &-icon {
             margin-bottom: 0.8rem;
+            width: auto;
+        }
+
+        .dc-text {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
     &--large {
-        min-height: 12.8rem;
+        height: 12.8rem;
         width: 20.8rem;
     }
 
     &--medium {
-        min-height: 9.4rem;
+        height: 9.4rem;
         width: 14.4rem;
     }
 
     &--small {
-        min-height: 8.8rem;
+        height: 8.8rem;
         width: 13.6rem;
     }
 
@@ -64,6 +72,15 @@
 
     &__body {
         margin-top: 1.1rem;
+        display: flex;
+        flex-direction: column;
+
+        .dc-text {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
     &__icon {

@@ -32,16 +32,18 @@ const QuickAddModal = ({ advert }) => {
     };
 
     const onClickPaymentMethodItem = value => {
-        if (!my_ads_store.payment_method_names.includes(value)) {
-            if (my_ads_store.payment_method_names.length < 3) {
-                my_ads_store.payment_method_names.push(value);
-                setSelectedMethods([...selected_methods, value]);
+        if (value) {
+            if (!my_ads_store.payment_method_names.includes(value)) {
+                if (my_ads_store.payment_method_names.length < 3) {
+                    my_ads_store.payment_method_names.push(value);
+                    setSelectedMethods([...selected_methods, value]);
+                }
+            } else {
+                my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
+                    payment_method_id => payment_method_id !== value
+                );
+                setSelectedMethods(selected_methods.filter(i => i !== value));
             }
-        } else {
-            my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
-                payment_method_id => payment_method_id !== value
-            );
-            setSelectedMethods(selected_methods.filter(i => i !== value));
         }
     };
 
@@ -60,11 +62,9 @@ const QuickAddModal = ({ advert }) => {
     };
 
     React.useEffect(() => {
-        my_ads_store.setSelectedAdId(advert.id);
         my_ads_store.setShouldShowAddPaymentMethod(!my_profile_store?.advertiser_has_payment_methods);
 
         return () => {
-            my_ads_store.setSelectedAdId('');
             my_ads_store.payment_method_ids = [];
             my_ads_store.payment_method_names = [];
         };
@@ -98,7 +98,7 @@ const QuickAddModal = ({ advert }) => {
                             <Button
                                 has_effect
                                 large
-                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
+                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                                 primary
                                 text={localize('Add')}
                             />
@@ -180,7 +180,7 @@ const QuickAddModal = ({ advert }) => {
                             <Button
                                 has_effect
                                 large
-                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
+                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                                 primary
                                 text={localize('Add')}
                             />
@@ -285,7 +285,7 @@ const QuickAddModal = ({ advert }) => {
                     <Button
                         has_effect
                         large
-                        onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
+                        onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                         primary
                         text={localize('Add')}
                     />
@@ -297,11 +297,10 @@ const QuickAddModal = ({ advert }) => {
     return (
         <Modal
             className='p2p-my-ads__modal-error'
-            has_close_icon
+            has_close_icon={false}
             height='660px'
             is_open={my_ads_store.is_quick_add_modal_open}
             title={modal_title}
-            toggleModal={my_ads_store.hideQuickAddModal}
         >
             {my_ads_store.should_show_add_payment_method ? (
                 <Modal.Body>
@@ -330,26 +329,36 @@ const QuickAddModal = ({ advert }) => {
                     </Modal.Body>
                 </ThemedScrollbars>
             )}
-            <Modal.Footer has_separator={!my_ads_store.should_show_add_payment_method}>
-                {!my_ads_store.should_show_add_payment_method && (
-                    <>
-                        <Button
-                            has_effect
-                            large
-                            onClick={my_ads_store.hideQuickAddModal}
-                            secondary
-                            text={localize('Cancel')}
-                        />
-                        <Button
-                            has_effect
-                            large
-                            onClick={() => my_ads_store.onClickUpdatePaymentMethods(is_buy_advert)}
-                            primary
-                            text={localize('Add')}
-                        />
-                    </>
-                )}
-            </Modal.Footer>
+            {!my_ads_store.should_show_add_payment_method && (
+                <Modal.Footer has_separator>
+                    <Button
+                        has_effect
+                        large
+                        onClick={my_ads_store.hideQuickAddModal}
+                        secondary
+                        text={localize('Cancel')}
+                    />
+
+                    <Button
+                        has_effect
+                        large
+                        onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
+                        primary
+                        text={localize('Add')}
+                    />
+                </Modal.Footer>
+            )}
+            {!my_profile_store.selected_payment_method && my_ads_store.should_show_add_payment_method && (
+                <Modal.Footer>
+                    <Button
+                        has_effect
+                        large
+                        onClick={my_ads_store.hideQuickAddModal}
+                        secondary
+                        text={localize('Cancel')}
+                    />
+                </Modal.Footer>
+            )}
         </Modal>
     );
 };

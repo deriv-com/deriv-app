@@ -9,9 +9,9 @@ import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import CreateAdSummary from './create-ad-summary.jsx';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
+import EditAdSummary from './edit-ad-summary.jsx';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -34,7 +34,6 @@ const EditAdForm = () => {
         local_currency,
         max_order_amount_display,
         min_order_amount_display,
-        payment_info,
         rate_display,
         type,
     } = my_ads_store.p2p_advert_information;
@@ -63,7 +62,6 @@ const EditAdForm = () => {
                     max_transaction: max_order_amount_display,
                     min_transaction: min_order_amount_display,
                     offer_amount: amount_display,
-                    payment_info,
                     price_rate: rate_display,
                     type,
                 }}
@@ -87,7 +85,7 @@ const EditAdForm = () => {
                                 >
                                     <EditAdFormWrapper>
                                         <div className='p2p-my-ads__form-summary'>
-                                            <CreateAdSummary
+                                            <EditAdSummary
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 price_rate={errors.price_rate ? '' : values.price_rate}
                                                 type={values.type}
@@ -129,7 +127,7 @@ const EditAdForm = () => {
                                                                   })
                                                         }
                                                         is_relative_hint
-                                                        required
+                                                        disabled={true}
                                                     />
                                                 )}
                                             </Field>
@@ -215,27 +213,6 @@ const EditAdForm = () => {
                                         </div>
                                         {is_sell_advert && (
                                             <React.Fragment>
-                                                <Field name='payment_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            label={
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Your payment details' />
-                                                                </Text>
-                                                            }
-                                                            error={touched.payment_info && errors.payment_info}
-                                                            hint={localize('e.g. your bank/e-wallet account details')}
-                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={payment_info.length}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
                                                 <Field name='contact_info'>
                                                     {({ field }) => (
                                                         <Input

@@ -125,6 +125,7 @@ export default class BuySellStore extends BaseStore {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
                 this.setContactInfo(p2p_advertiser_info.contact_info);
+                this.setPaymentInfo(p2p_advertiser_info.payment_info);
             } else {
                 this.setContactInfo('');
                 this.setPaymentInfo('');
@@ -170,6 +171,7 @@ export default class BuySellStore extends BaseStore {
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);
             this.form_props.handleClose();
+            this.payment_method_ids = [];
         }
 
         if (isMountedFn()) {

@@ -1,6 +1,27 @@
 .payment-methods-list {
+    &__modal {
+        @include mobile {
+            height: 80vh;
+            width: 100vw;
+            display: grid;
+            grid-template-rows: 1fr 8rem;
+            padding: 1rem 2rem;
+        }
+    }
     &__button {
         margin: 0 0 2.4rem;
+        @include mobile {
+            grid-row: 2;
+            width: 90vw;
+            height: 5rem;
+            align-self: end;
+            justify-self: center;
+            margin: 0 0 1rem;
+
+            .dc-btn__text {
+                font-size: 16px;
+            }
+        }
     }
 
     &__list {
@@ -9,6 +30,10 @@
 
             .dc-dropdown-container {
                 margin-left: 0;
+            }
+            @include mobile {
+                grid-row: 1;
+                overflow: scroll;
             }
         }
 

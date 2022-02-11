@@ -1,12 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
+import { MobileFullPageModal } from '@deriv/components';
 import AddPaymentMethodForm from './add-payment-method-form.jsx';
 import SelectPaymentMethod from './select-payment-method.jsx';
 
-const AddPaymentMethod = ({ should_show_page_return = true, should_show_separated_footer }) => {
+const AddPaymentMethod = ({ should_show_separated_footer }) => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
@@ -17,19 +17,18 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
     }, []);
 
     return (
-        <React.Fragment>
-            {should_show_page_return && (
-                <PageReturn
-                    onClick={my_profile_store.hideAddPaymentMethodForm}
-                    page_title={localize('Add payment method')}
-                />
-            )}
+        <MobileFullPageModal
+            body_className='add-payment-method__modal'
+            is_modal_open={my_profile_store.should_show_add_payment_method_form}
+            page_header_text={localize('Add payment method')}
+            pageHeaderReturnFn={() => my_profile_store.setShouldShowAddPaymentMethodForm(false)}
+        >
             {my_profile_store.selected_payment_method ? (
                 <AddPaymentMethodForm should_show_separated_footer={should_show_separated_footer} />
             ) : (
                 <SelectPaymentMethod />
             )}
-        </React.Fragment>
+        </MobileFullPageModal>
     );
 };
 

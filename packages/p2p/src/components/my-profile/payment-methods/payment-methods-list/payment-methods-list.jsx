@@ -71,9 +71,20 @@ const PaymentMethodsList = () => {
             <MobileWrapper>
                 <MobileFullPageModal
                     body_className='payment-methods-list__modal'
+                    height_offset='80px'
                     is_modal_open={true}
                     page_header_text={localize('Payment methods')}
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+                    renderPageFooterChildren={() => (
+                        <Button
+                            className='payment-methods-list__button'
+                            large
+                            onClick={() => my_profile_store.setShouldShowAddPaymentMethodForm(true)}
+                            primary
+                        >
+                            <Localize i18n_default_text='Add new' />
+                        </Button>
+                    )}
                 >
                     <div className='payment-methods-list__list-container'>
                         {my_profile_store.payment_methods_list_methods.map((payment_methods_list_method, key) => {
@@ -108,14 +119,6 @@ const PaymentMethodsList = () => {
                             );
                         })}
                     </div>
-                    <Button
-                        className='payment-methods-list__button'
-                        large
-                        onClick={() => my_profile_store.setShouldShowAddPaymentMethodForm(true)}
-                        primary
-                    >
-                        <Localize i18n_default_text='Add new' />
-                    </Button>
                 </MobileFullPageModal>
             </MobileWrapper>
             <Modal

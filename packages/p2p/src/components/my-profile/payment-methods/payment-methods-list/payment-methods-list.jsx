@@ -1,7 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { isDesktop, isMobile } from '@deriv/shared';
-import { Button, MobileFullPageModal, Modal, Text, ThemedScrollbars } from '@deriv/components';
+import {
+    Button,
+    DesktopWrapper,
+    MobileFullPageModal,
+    MobileWrapper,
+    Modal,
+    Text,
+    ThemedScrollbars,
+} from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
@@ -21,7 +28,7 @@ const PaymentMethodsList = () => {
 
     return (
         <>
-            {isDesktop() && (
+            <DesktopWrapper>
                 <div className='payment-methods-list'>
                     <Button
                         className='payment-methods-list__button'
@@ -60,8 +67,8 @@ const PaymentMethodsList = () => {
                         })}
                     </div>
                 </div>
-            )}
-            {isMobile() && (
+            </DesktopWrapper>
+            <MobileWrapper>
                 <MobileFullPageModal
                     body_className='payment-methods-list__modal'
                     is_modal_open={true}
@@ -88,7 +95,6 @@ const PaymentMethodsList = () => {
                                         has_horizontal={true}
                                         is_only_horizontal={true}
                                         is_scrollbar_hidden={true}
-                                        height='200px'
                                     >
                                         {payment_methods_list.map((each_payment_method, each_payment_method_key) => (
                                             <PaymentMethodCard
@@ -111,7 +117,7 @@ const PaymentMethodsList = () => {
                         <Localize i18n_default_text='Add new' />
                     </Button>
                 </MobileFullPageModal>
-            )}
+            </MobileWrapper>
             <Modal
                 is_open={my_profile_store.is_delete_error_modal_open}
                 small

@@ -65,8 +65,8 @@ describe('<RecentTransaction />', () => {
             </Router>
         );
 
-        const view_all_btn = screen.getByText('View all');
-        fireEvent.click(view_all_btn);
+        const view_all_btn_link = screen.getByRole('link', { name: 'View all' });
+        fireEvent.click(view_all_btn_link);
 
         expect(props.setIsCryptoTransactionsVisible).toHaveBeenCalledTimes(1);
     });

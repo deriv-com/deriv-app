@@ -56,7 +56,8 @@ export default class NotificationStore extends BaseStore {
             () => {
                 if (
                     !root_store.client.is_logged_in ||
-                    (root_store.client.landing_companies && Object.keys(root_store.client.landing_companies).length > 0)
+                    (Object.keys(root_store.client.account_status).length > 0 &&
+                        Object.keys(root_store.client.landing_companies).length > 0)
                 ) {
                     this.removeNotifications();
                     this.removeAllNotificationMessages();

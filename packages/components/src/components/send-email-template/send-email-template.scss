@@ -39,4 +39,11 @@
         margin-bottom: 1.6rem;
         width: 100%;
     }
+    &__footer {
+        margin-top: 2.6rem;
+        &-live-chat {
+            color: var(--text-red);
+            cursor: pointer;
+        }
+    }
 }

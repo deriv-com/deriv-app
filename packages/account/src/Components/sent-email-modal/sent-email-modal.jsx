@@ -19,6 +19,11 @@ const getNoEmailContentStrings = () => {
             ),
         },
         {
+            key: 'wrong_typo',
+            icon: 'IcEmailTypo',
+            content: localize('The email address you entered had a mistake or typo (happens to thr best of us).'),
+        },
+        {
             key: 'email_firewall',
             icon: 'IcEmailFirewall',
             content: localize(
@@ -50,6 +55,9 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
                     { identifier_title }
                 );
                 break;
+            case 'Change_Email':
+                subtitle = localize('Check your email and click the link in the email to proceed.');
+                break;
             default:
                 subtitle = localize('Please click on the link in the email to reset your password.');
                 break;
@@ -66,6 +74,7 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
             txt_resend={localize('Resend email')}
             txt_resend_in={localize('Resend email in')}
             onClickSendEmail={onClickSendEmail}
+            closeEmailModal={onClose}
         >
             {getNoEmailContentStrings().map(item => (
                 <div className='sent-email__content' key={item.key}>

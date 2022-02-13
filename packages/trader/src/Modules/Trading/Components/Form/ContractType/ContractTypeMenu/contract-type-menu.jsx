@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import SearchInput from './search-input.jsx';
 import NoResultsMessage from './no-results-message.jsx';
 import { Header } from '../ContractTypeInfo';
-import { getContractCategoryLabel } from '../../../../Helpers/contract-type';
+import { getContractCategoryKey } from '../../../../Helpers/contract-type';
 
 const Dialog = ({
     categories,
@@ -23,9 +23,9 @@ const Dialog = ({
 
     const [input_value, setInputValue] = React.useState('');
 
-    const contract_category = getContractCategoryLabel(categories, item);
-    const selected_item = selected ? { label: selected } : contract_category;
-    const selected_category_contract = !categories?.find(category => category.label === selected_item.label)
+    const contract_category = getContractCategoryKey(categories, item);
+    const selected_item = selected ? { key: selected } : contract_category;
+    const selected_category_contract = !categories?.find(category => category.key === selected_item.key)
         ?.contract_categories.length;
 
     const onChange = e => {
@@ -81,6 +81,7 @@ const Dialog = ({
                             items={categories}
                             selected={selected_item}
                             onChange={onChange}
+                            selectedKey='key'
                         />
                         <div className='dc-vertical-tab__content'>
                             <div className='dc-vertical-tab__action-bar'>{action_bar_items}</div>

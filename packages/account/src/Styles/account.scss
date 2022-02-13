@@ -623,6 +623,10 @@ $MIN_HEIGHT_FLOATING: calc(
             border-radius: $BORDER_RADIUS;
             width: fit-content;
             height: 4rem;
+            cursor: pointer;
+            &:hover {
+                background-color: var(--general-active);
+            }
         }
 
         @include mobile {

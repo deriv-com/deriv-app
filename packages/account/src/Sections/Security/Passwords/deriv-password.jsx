@@ -28,7 +28,10 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
             <div className='account__passwords-wrapper'>
                 <React.Fragment>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                        <Localize i18n_default_text='Your Deriv password is for logging in to your Deriv account.' />
+                        <Localize
+                            i18n_default_text='Use the <0>Deriv password</0>  to log in yo Deriv.com, Deriv Go, Dtrader, SmartTrader, and DBot.'
+                            components={[<strong key={0} />]}
+                        />
                     </Text>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                         <Localize i18n_default_text='Apps you can use with your Deriv login:' />
@@ -72,31 +75,28 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                                     />
                                 </Text>
                             </div>
-                            <div className='account__passwords-linked'>
+                            <div
+                                className='account__passwords-linked'
+                                onClick={() => {
+                                    setIsUnlinkModalOpen(true);
+                                    setIsSentEmailModalOpen(true);
+                                }}
+                            >
                                 {social_identity_provider ? (
                                     <React.Fragment>
                                         <Icon icon={`IcStock${capitalized_identifier}`} size={16} />
                                         <Text size='xs'>
                                             <Localize
-                                                i18n_default_text='Linked with {{identifier_title}}'
+                                                i18n_default_text='Unlink from {{identifier_title}}'
                                                 values={{ identifier_title: capitalized_identifier }}
                                             />
                                         </Text>
+                                        <Icon icon='IcChevronRight' size={16} />
                                     </React.Fragment>
                                 ) : (
                                     ''
                                 )}
                             </div>
-                            <Button
-                                onClick={() => {
-                                    setIsUnlinkModalOpen(true);
-                                    setIsSentEmailModalOpen(true);
-                                }}
-                                type='button'
-                                text={localize('Unlink')}
-                                tertiary
-                                large
-                            />
                         </div>
                     </React.Fragment>
                 ) : (

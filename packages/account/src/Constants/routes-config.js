@@ -77,7 +77,7 @@ const initRoutesConfig = ({ is_dashboard }) => [
                     {
                         path: routes.passwords,
                         component: Passwords,
-                        getTitle: () => localize('Passwords'),
+                        getTitle: () => localize('Email and passwords'),
                     },
                     {
                         path: routes.self_exclusion,

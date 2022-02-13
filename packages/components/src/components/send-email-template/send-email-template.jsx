@@ -2,11 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { PlatformContext } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
 import Text from '../text';
-import Popover from '../popover/popover.jsx';
 
 const SendEmailTemplate = ({
     children,
@@ -18,7 +16,7 @@ const SendEmailTemplate = ({
     title,
     txt_resend,
     txt_resend_in,
-    closeEmailModal,
+    live_chat,
 }) => {
     const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = React.useState(false);
     const [is_resend_btn_disabled, setIsResendBtnDisabled] = React.useState(false);
@@ -58,11 +56,6 @@ const SendEmailTemplate = ({
                 clearInterval(resend_interval);
             }
         }, 1000);
-    };
-
-    const onLiveChatClick = () => {
-        if (closeEmailModal) closeEmailModal();
-        window.LiveChatWidget?.call('maximize');
     };
 
     return (
@@ -105,28 +98,13 @@ const SendEmailTemplate = ({
                             primary
                         />
                     </div>
-                    <div className='send-email-template__footer'>
-                        <Text size='xxs' as='p' align={'center'}>
-                            <Localize
-                                i18n_default_text="Still did'nt get the email? Please contact us via <0>live chat.</0>"
-                                components={[
-                                    <span
-                                        className='send-email-template__footer-live-chat'
-                                        key={0}
-                                        onClick={onLiveChatClick}
-                                    >
-                                        <Popover
-                                            className='send-email-template__footer-live-chat__link'
-                                            classNameBubble='help-centre__tooltip'
-                                            alignment='top'
-                                            message={localize('Live chat')}
-                                            zIndex={9999}
-                                        />
-                                    </span>,
-                                ]}
-                            />
-                        </Text>
-                    </div>
+                    {live_chat && (
+                        <div className='send-email-template__footer'>
+                            <Text size='xxs' as='p' align={'center'}>
+                                {live_chat}
+                            </Text>
+                        </div>
+                    )}
                 </>
             )}
         </div>
@@ -144,6 +122,7 @@ SendEmailTemplate.propTypes = {
     txt_resend_in: PropTypes.string,
     title: PropTypes.string,
     closeEmailModal: PropTypes.func,
+    live_chat: PropTypes.object,
 };
 
 export default SendEmailTemplate;

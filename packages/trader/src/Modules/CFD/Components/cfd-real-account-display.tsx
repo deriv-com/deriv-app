@@ -6,7 +6,7 @@ import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORM
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import { Mt5LoginList, DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
 import { TExistingData } from './props.types.js';
 import { TradingPlatformAccounts } from './props.types';

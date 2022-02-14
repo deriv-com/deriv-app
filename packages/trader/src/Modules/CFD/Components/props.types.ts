@@ -52,7 +52,7 @@ export type TCFDAccountCard = {
     commission_message: string;
     descriptor: string;
     is_hovered?: boolean;
-    existing_data: TExistingData | undefined;
+    existing_data?: TExistingData;
     has_banner?: boolean;
     has_cfd_account: boolean;
     has_cfd_account_error?: boolean;

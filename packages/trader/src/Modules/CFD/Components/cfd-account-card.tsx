@@ -13,7 +13,9 @@ import {
     TCFDAccountCardActionProps,
     TExistingData,
     TCFDAccountCard,
+    TradingPlatformAccounts,
 } from './props.types';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -29,7 +31,7 @@ const account_icons: { [key: string]: TAccountIconValues } = {
     },
 };
 
-const AddTradeServerButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () => void; is_disabled: boolean }>(
+const AddTradeServerButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () => void; is_disabled?: boolean }>(
     ({ onSelectAccount, is_disabled }, ref) => {
         return (
             <div
@@ -193,12 +195,12 @@ const CFDAccountCard = ({
         existing_data &&
         type.category === 'real' &&
         type.type === 'synthetic' &&
-        existing_data?.server_info;
+        (existing_data as DetailsOfEachMT5Loginid)?.server_info;
 
     const is_real_synthetic_account: boolean =
         type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
-    const get_server_region = existing_data?.server_info?.geolocation?.region;
-    const get_server_environment = existing_data?.server_info?.environment;
+    const get_server_region = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.region;
+    const get_server_environment = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.environment;
 
     const ref = React.useRef<HTMLDivElement | null>(null);
     const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
@@ -209,7 +211,7 @@ const CFDAccountCard = ({
         const button_ref_current = button_ref?.current;
         if (existing_data) {
             const show = () => {
-                onHover?.(existing_data.group);
+                onHover?.((existing_data as DetailsOfEachMT5Loginid).group);
             };
 
             ref_current?.addEventListener('mouseenter', show);
@@ -227,10 +229,12 @@ const CFDAccountCard = ({
 
     const getServerName: (value: TExistingData) => string = React.useCallback(server => {
         if (server) {
-            const server_region = server.server_info?.geolocation?.region;
+            const server_region = (server as DetailsOfEachMT5Loginid).server_info?.geolocation?.region;
             if (server_region) {
                 return `${server_region} ${
-                    server?.server_info?.geolocation?.sequence === 1 ? '' : server?.server_info?.geolocation?.sequence
+                    (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence === 1
+                        ? ''
+                        : (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence
                 }`;
             }
         }
@@ -251,9 +255,11 @@ const CFDAccountCard = ({
         return `${type.category}-${type.type}${region_string}${server_number}`;
     };
 
-    const handleClickSwitchAccount: () => void = () => {
-        toggleShouldShowRealAccountsList(true);
-        toggleAccountsDialog(true);
+    const handleClickSwitchAccount = (): void => {
+        if (toggleShouldShowRealAccountsList && toggleAccountsDialog) {
+            toggleShouldShowRealAccountsList(true);
+            toggleAccountsDialog(true);
+        }
     };
 
     const getDxtradeDownloadLink: () => string = () => {
@@ -284,7 +290,7 @@ const CFDAccountCard = ({
                     </td>
                     <td className='cfd-account-card__login-specs-table-data'>
                         <div className='cfd-account-card--paragraph'>
-                            <SpecBox value={existing_data?.server_info?.environment} />
+                            <SpecBox value={(existing_data as DetailsOfEachMT5Loginid)?.server_info?.environment} />
                         </div>
                     </td>
                 </tr>
@@ -294,7 +300,7 @@ const CFDAccountCard = ({
                     </td>
                     <td className='cfd-account-card__login-specs-table-data'>
                         <div className='cfd-account-card--paragraph'>
-                            <SpecBox value={existing_data?.display_login} />
+                            <SpecBox value={(existing_data as TradingPlatformAccounts)?.display_login} />
                         </div>
                     </td>
                 </tr>
@@ -362,9 +368,9 @@ const CFDAccountCard = ({
                                 />
                             </Text>
                         )}
-                        {existing_data?.display_login && is_logged_in && (
+                        {(existing_data as TradingPlatformAccounts)?.display_login && is_logged_in && (
                             <Text color='less-prominent' size='xxxs' line_height='s'>
-                                {existing_data?.display_login}
+                                {(existing_data as TradingPlatformAccounts)?.display_login}
                             </Text>
                         )}
                     </div>
@@ -394,7 +400,7 @@ const CFDAccountCard = ({
                                                                     title,
                                                                     type.category,
                                                                     type.type,
-                                                                    existing_data?.server
+                                                                    (existing_data as DetailsOfEachMT5Loginid)?.server
                                                                 );
                                                             }}
                                                         />
@@ -409,24 +415,25 @@ const CFDAccountCard = ({
                             <div className='cfd-account-card__specs'>
                                 <table className='cfd-account-card__specs-table'>
                                     <tbody>
-                                        {Object.keys(specs).map((spec_attribute, idx) => (
-                                            <tr key={idx} className='cfd-account-card__specs-table-row'>
-                                                <td className='cfd-account-card__specs-table-attribute'>
-                                                    <p className='cfd-account-card--paragraph'>{spec_attribute}</p>
-                                                </td>
-                                                <td className='cfd-account-card__specs-table-data'>
-                                                    <p className='cfd-account-card--paragraph'>
-                                                        {specs[spec_attribute]}
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {typeof specs !== 'undefined' &&
+                                            Object.keys(specs).map((spec_attribute, idx) => (
+                                                <tr key={idx} className='cfd-account-card__specs-table-row'>
+                                                    <td className='cfd-account-card__specs-table-attribute'>
+                                                        <p className='cfd-account-card--paragraph'>{spec_attribute}</p>
+                                                    </td>
+                                                    <td className='cfd-account-card__specs-table-data'>
+                                                        <p className='cfd-account-card--paragraph'>
+                                                            {specs[spec_attribute]}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         {has_server_banner &&
                                             existing_data &&
                                             type.type === 'synthetic' &&
                                             type.category === 'real' && (
                                                 <tr
-                                                    key={existing_data.server}
+                                                    key={(existing_data as DetailsOfEachMT5Loginid).server}
                                                     className='cfd-account-card__specs-table-row'
                                                 >
                                                     <td className='cfd-account-card__specs-table-attribute'>
@@ -479,8 +486,9 @@ const CFDAccountCard = ({
                                         ? getDXTradeWebTerminalLink(type.category)
                                         : getMT5WebTerminalLink({
                                               category: type.category,
-                                              loginid: existing_data.display_login,
-                                              server_name: existing_data?.server_info?.environment,
+                                              loginid: (existing_data as TradingPlatformAccounts).display_login,
+                                              server_name: (existing_data as DetailsOfEachMT5Loginid)?.server_info
+                                                  ?.environment,
                                           })
                                 }
                                 target='_blank'

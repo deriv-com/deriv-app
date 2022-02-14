@@ -379,7 +379,7 @@ export const PersonalDetailsForm = ({
 
         // Not allowing Jersey postcodes with a UK residence.
         if (
-            !regex_checks.address_details.jersey_postcode.test(values.address_postcode) &&
+            !regex_checks.address_details.non_jersey_postcode.test(values.address_postcode) &&
             (is_uk || values.citizen === 'United Kingdom')
         ) {
             errors.address_postcode = localize('Our accounts and services are unavailable for the Jersey postal code');
@@ -1224,7 +1224,7 @@ PersonalDetailsForm.propTypes = {
     history: PropTypes.object,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, notifications }) => ({
     account_settings: client.account_settings,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
@@ -1238,5 +1238,5 @@ export default connect(({ client }) => ({
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
 }))(withRouter(PersonalDetailsForm));

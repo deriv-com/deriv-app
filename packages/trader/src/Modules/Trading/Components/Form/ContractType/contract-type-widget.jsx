@@ -62,7 +62,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
         setItem(nav_clicked_item);
     };
 
-
     const handleVisibility = () => {
         setDialogVisibility(!is_dialog_open);
     };
@@ -142,7 +141,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
 
     const selected_category_contracts = () => {
         const selected_list_category = list_with_category()?.find(
-            categoryItem => categoryItem.label === selected_category
+            categoryItem => categoryItem.key === selected_category
         );
         return (selected_list_category || list_with_category()[0]).contract_categories;
     };

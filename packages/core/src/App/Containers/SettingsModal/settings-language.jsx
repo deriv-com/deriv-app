@@ -1,13 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
 import { Icon, Text } from '@deriv/components';
 import { Localize, getAllowedLanguages } from '@deriv/translations';
-import { changeLanguage } from 'Utils/Language';
-import { connect } from 'Stores/connect';
+import { changeLanguage, currentLanguage } from 'Utils/Language';
 
-const isCurrentLanguage = (lang, current_language) => lang === current_language;
+const isCurrentLanguage = lang => lang === currentLanguage;
 
 const NonClickableLink = ({ children, lang }) => (
     <div
@@ -37,9 +35,7 @@ const LanguageLink = ({ lang }) => (
     </React.Fragment>
 );
 
-const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSettingsModal }) => {
-    const { i18n } = useTranslation();
-
+const LanguageSettings = () => {
     return (
         <div className='settings-language'>
             <div className='settings-language__language-header'>
@@ -58,12 +54,10 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSetti
                             id={`dt_settings_${key}_button`}
                             key={key}
                             onClick={() => {
-                                changeLanguage(key, changeCurrentLanguage);
-                                i18n.changeLanguage(key);
-                                toggleSettingsModal();
+                                changeLanguage(key);
                             }}
                             className={classNames('settings-language__language-link', {
-                                'settings-language__language-link--active': isCurrentLanguage(key, current_language),
+                                'settings-language__language-link--active': isCurrentLanguage(key),
                             })}
                         >
                             <LanguageLink lang={key} key={key} />
@@ -84,8 +78,4 @@ NonClickableLink.propTypes = {
     lang: PropTypes.string,
 };
 
-export default connect(({ common, ui }) => ({
-    changeCurrentLanguage: common.changeCurrentLanguage,
-    current_language: common.current_language,
-    toggleSettingsModal: ui.toggleSettingsModal,
-}))(LanguageSettings);
+export default LanguageSettings;

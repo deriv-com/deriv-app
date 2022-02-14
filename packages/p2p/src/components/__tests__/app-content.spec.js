@@ -10,13 +10,21 @@ jest.mock('Stores', () => ({
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    Tabs: () => <div>Tabs</div>,
+    Tabs: jest.fn(({ children }) => (
+        <div>
+            Tabs<div>{children}</div>
+        </div>
+    )),
     Loading: () => <div>Loading</div>,
 }));
 
 jest.mock('Components/dp2p-blocked', () => jest.fn(() => 'Dp2pBlocked'));
 jest.mock('Components/nickname-form', () => jest.fn(() => 'NicknameForm'));
 jest.mock('Components/verification/verification', () => jest.fn(() => 'Verification'));
+jest.mock('Components/my-ads/my-ads', () => jest.fn(() => 'MyAds'));
+jest.mock('Components/orders/orders', () => jest.fn(() => 'Orders'));
+jest.mock('Components/buy-sell/buy-sell', () => jest.fn(() => 'BuySell'));
+jest.mock('Components/my-profile', () => jest.fn(() => 'MyProfile'));
 
 describe('<AppContent/>', () => {
     const mocked_store_values = {
@@ -27,14 +35,15 @@ describe('<AppContent/>', () => {
         is_advertiser: false,
     };
 
-    it('should load the component when no error status are set', () => {
+    it('should load the Tab component when no error status are set', () => {
         useStores.mockImplementation(() => ({
             general_store: mocked_store_values,
         }));
-        render(<AppContent />);
+        const { queryByTestId } = render(<AppContent />);
         const el_tab = screen.queryByText('Tabs');
 
         expect(el_tab).toBeInTheDocument();
+        expect(queryByTestId('my_profile')).not.toBeInTheDocument();
     });
 
     it('should render the loading component when is_loading state is true', () => {
@@ -87,5 +96,14 @@ describe('<AppContent/>', () => {
 
         expect(el_nickname_form).not.toBeInTheDocument();
         expect(el_dp2p_blocked).toBeInTheDocument();
+    });
+
+    it('should render MyProfile component when is_advertiser state is true', () => {
+        useStores.mockImplementation(() => ({
+            general_store: { ...mocked_store_values, is_advertiser: true },
+        }));
+        const { queryByTestId } = render(<AppContent />);
+
+        expect(queryByTestId('my_profile')).toBeInTheDocument();
     });
 });

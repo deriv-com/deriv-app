@@ -31,7 +31,6 @@ CashierContainer.propTypes = {
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
     clearIframe: PropTypes.func,
-    is_crypto: PropTypes.bool,
     is_loading: PropTypes.bool,
 };
 

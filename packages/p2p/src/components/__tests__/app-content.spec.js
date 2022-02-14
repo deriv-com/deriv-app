@@ -39,11 +39,11 @@ describe('<AppContent/>', () => {
         useStores.mockImplementation(() => ({
             general_store: mocked_store_values,
         }));
-        const { queryByTestId } = render(<AppContent />);
+        render(<AppContent />);
         const el_tab = screen.queryByText('Tabs');
 
         expect(el_tab).toBeInTheDocument();
-        expect(queryByTestId('my_profile')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('my_profile')).not.toBeInTheDocument();
     });
 
     it('should render the loading component when is_loading state is true', () => {
@@ -102,8 +102,8 @@ describe('<AppContent/>', () => {
         useStores.mockImplementation(() => ({
             general_store: { ...mocked_store_values, is_advertiser: true },
         }));
-        const { queryByTestId } = render(<AppContent />);
+        render(<AppContent />);
 
-        expect(queryByTestId('my_profile')).toBeInTheDocument();
+        expect(screen.queryByTestId('my_profile')).toBeInTheDocument();
     });
 });

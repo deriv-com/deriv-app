@@ -1,5 +1,28 @@
 import { localize } from '@deriv/translations';
 
+type TMT5 = {
+    real_synthetic_specs: Record<string, string>;
+    real_financial_specs: Record<string, string>;
+    eu_real_financial_specs: Record<string, string>;
+    real_financial_stp_specs: Record<string, string>;
+    au_real_financial_specs: Record<string, string>;
+    demo_financial_stp_specs: Record<string, string>;
+};
+
+type TDXTrade = {
+    real_synthetic_specs: Record<string, string>;
+    real_financial_specs: Record<string, string>;
+    eu_real_financial_specs: Record<string, string>;
+    au_real_financial_specs: Record<string, string>;
+    demo_financial_stp_specs?: Record<string, string>;
+    real_financial_stp_specs?: Record<string, string>;
+};
+
+export type TSpecifications = {
+    mt5: TMT5;
+    dxtrade: TDXTrade;
+};
+
 const mt5 = {
     real_synthetic_specs: {
         [localize('Leverage')]: localize('Up to 1:1000'),

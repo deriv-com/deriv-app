@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render, screen} from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
 
@@ -287,12 +287,12 @@ describe('ContractTypeMenu', () => {
     };
 
     it('should not show <ContractTypeMenu /> component when it is closed', () => {
-        render(<ContractTypeMenu item={item} list={list} categories={categories}/>);
+        render(<ContractTypeMenu item={item} list={list} categories={categories} />);
         expect(screen.queryByTestId('contract_wrapper')).toBe(null);
     });
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        render(<ContractTypeWidget list={list} value={item.value}/>);
+        render(<ContractTypeWidget list={list} value={item.value} />);
         const dt_contract_dropdown = screen.getByTestId('dt_contract_dropdown');
         fireEvent.click(dt_contract_dropdown);
 
@@ -311,7 +311,7 @@ describe('ContractTypeMenu', () => {
             />
         );
         const input = screen.getByPlaceholderText('Search');
-        fireEvent.change(input, {target: {value: 'rise'}});
+        fireEvent.change(input, { target: { value: 'rise' } });
         expect(input.value).toBe('rise');
     });
 });

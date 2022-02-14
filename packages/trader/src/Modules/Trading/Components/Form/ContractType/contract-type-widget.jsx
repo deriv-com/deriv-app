@@ -21,7 +21,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
         };
     }, [handleClickOutside]);
 
-
     const handleCategoryClick = ({ label }) => setSelectedCategory(label);
 
     const handleSelect = (clicked_item, e) => {

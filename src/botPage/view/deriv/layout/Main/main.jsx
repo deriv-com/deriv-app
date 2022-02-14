@@ -1,19 +1,18 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import Tour from "../../../tour";
 import {
   get as getStorage,
   isDone,
 } from "../../../../../common/utils/storageManager";
 import { updateShowTour } from "../../store/ui-slice";
 import Footer from "../Footer";
+import Header from "../Header";
 import ToolBox from "../ToolBox";
 import SidebarToggle from '../../components/SidebarToggle';
 
 
-const Main = ({api, blockly}) => {
-  const { should_show_tour } = useSelector((state) => state.ui);
+const Main = ({blockly}) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     const days_passed =
@@ -23,17 +22,16 @@ const Main = ({api, blockly}) => {
   }, []);
   return (
     <div className="main">
-      {should_show_tour && <Tour />}
+      <Header />
       <ToolBox blockly={blockly} />
       <SidebarToggle />
-      <Footer api={api} />
+      <Footer/>
     </div>
   );
 };
 
 Main.propTypes = {
-    api: PropTypes.object.isRequired,
     blockly: PropTypes.object.isRequired,
-  }
+}
 export default Main;
 

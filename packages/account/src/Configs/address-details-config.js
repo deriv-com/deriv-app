@@ -119,7 +119,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                         'regular',
                         localize('Our accounts and services are unavailable for the Jersey postal code.'),
                         {
-                            regex: regex_checks.address_details.jersey_postcode,
+                            regex: regex_checks.address_details.non_jersey_postcode,
                         },
                     ],
                 ],

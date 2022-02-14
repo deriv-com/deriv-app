@@ -32,7 +32,7 @@ const ContractUpdateForm = props => {
 
     React.useEffect(() => {
         return () => contract.clearContractUpdateConfigValues();
-    }, []);
+    }, [contract]);
 
     const {
         contract_info,
@@ -113,6 +113,7 @@ const ContractUpdateForm = props => {
         />
     );
 
+    const cancellation_price = getCancellationPrice(contract_info);
     const stop_loss_input = (
         <InputWithCheckbox
             addToast={addToast}
@@ -135,7 +136,6 @@ const ContractUpdateForm = props => {
         />
     );
 
-    const cancellation_price = getCancellationPrice(contract_info);
     const total_profit = getTotalProfit(contract_info);
 
     return (

@@ -16,7 +16,7 @@ import { connect } from 'Stores/connect';
 import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
-import CompareAccountsModal from './compare-accounts-modal.jsx';
+import CompareAccountsModal from './compare-accounts-modal';
 import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal.jsx';
 import CFDPasswordModal from './cfd-password-modal';
@@ -25,8 +25,8 @@ import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';
-import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
-import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
+import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display';
+import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/cfd-dashboard.scss';
 
@@ -118,12 +118,13 @@ const CFDDashboard = props => {
     };
 
     const updateActiveIndex = index => {
+        if (!index) return;
         const updated_state = {};
         // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
         if (index === 1) updated_state.is_demo_tab = true;
         else if (index === 0) updated_state.is_demo_tab = false;
 
-        if (index !== undefined && active_index !== index) {
+        if (active_index !== index) {
             updated_state.active_index = index;
         }
 

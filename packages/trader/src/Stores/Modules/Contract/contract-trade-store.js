@@ -44,7 +44,7 @@ export default class ContractTradeStore extends BaseStore {
         LocalStore.set('contract_trade.granularity', granularity);
         this.granularity = granularity;
         if (this.granularity === 0) {
-            this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
+            this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
         }
     }
 
@@ -125,8 +125,8 @@ export default class ContractTradeStore extends BaseStore {
         this.contracts.push(contract);
         this.contracts_map[contract_id] = contract;
 
-        if (is_tick_contract && this.granularity !== 0 && isDesktop()) {
-            this.root_store.ui.addNotificationMessage(switch_to_tick_chart);
+        if (is_tick_contract && !this.root_store.modules.trade.is_multiplier && this.granularity !== 0 && isDesktop()) {
+            this.root_store.notifications.addNotificationMessage(switch_to_tick_chart);
         }
     }
 
@@ -165,7 +165,7 @@ export default class ContractTradeStore extends BaseStore {
             const contract = this.contracts_map[contract_id];
             contract.populateConfig(response.proposal_open_contract);
             if (response.proposal_open_contract.is_sold) {
-                this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
+                this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
                 contract.cacheProposalOpenContractResponse(response);
             }
         }

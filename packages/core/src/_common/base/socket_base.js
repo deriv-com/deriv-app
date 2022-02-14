@@ -189,13 +189,12 @@ const BinarySocketBase = (() => {
     const cancelCryptoTransaction = transaction_id =>
         deriv_api.send({ cashier_withdrawal_cancel: 1, id: transaction_id });
 
-    const newAccountVirtual = (verification_code, client_password, residence, email_consent, device_data) =>
+    const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
         deriv_api.send({
             new_account_virtual: 1,
             verification_code,
             client_password,
             residence,
-            email_consent,
             ...device_data,
         });
 
@@ -283,6 +282,11 @@ const BinarySocketBase = (() => {
             amount,
             verification_code,
             dry_run,
+        });
+
+    const cryptoConfig = () =>
+        deriv_api.send({
+            crypto_config: 1,
         });
 
     const paymentAgentTransfer = ({ amount, currency, description, transfer_to, dry_run = 0 }) =>
@@ -407,6 +411,7 @@ const BinarySocketBase = (() => {
         cancelContract,
         close,
         cryptoWithdraw,
+        cryptoConfig,
         contractUpdate,
         contractUpdateHistory,
         getFinancialAssessment,

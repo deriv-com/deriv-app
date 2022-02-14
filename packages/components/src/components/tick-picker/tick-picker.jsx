@@ -43,6 +43,7 @@ const TickPicker = ({
 
     React.useEffect(() => {
         if (onValueChange) onValueChange(tick_value);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tick_value]);
 
     const throttledSwipeHandler = throttle(

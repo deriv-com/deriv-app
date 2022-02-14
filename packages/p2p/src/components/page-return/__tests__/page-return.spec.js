@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import PageReturn from '../page-return';
 
 describe('<PageReturn />', () => {
@@ -12,9 +12,7 @@ describe('<PageReturn />', () => {
     it('Should render proper className passed from props', async () => {
         const { container } = render(<PageReturn className={'test'}/>);
 
-        await waitFor(() => {
-            expect(container.firstChild).toHaveClass('page-return test');
-        });
+        expect(await container.firstChild).toHaveClass('page-return test');
     });
 
     it('function passed from props should be called', () => {

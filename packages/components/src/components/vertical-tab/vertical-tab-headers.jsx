@@ -45,8 +45,8 @@ const VerticalTabHeaders = ({
 
     React.useEffect(() => {
         const selected_item = items.find(item => item[selectedKey] === selected[selectedKey]);
-        selected_item?.label && setTop(offsetTop(extra_offset, is_floating, ref, { label: selected_item.label }));
-    }, [selected, is_floating, extra_offset]);
+        if (selected_item?.label) setTop(offsetTop(extra_offset, is_floating, ref, { label: selected_item.label }));
+    }, [selected, is_floating, extra_offset, selectedKey]);
     return (
         <VerticalTabWrapper
             wrapper_ref={ref}

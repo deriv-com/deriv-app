@@ -1,6 +1,5 @@
 import { TrackJS } from 'trackjs';
 import { observer as globalObserver } from '../../common/utils/observer';
-import { getToken } from '../../common/utils/storageManager';
 import { isProduction, isMobile } from '../../common/utils/tools';
 
 const log = (type, ...args) => {

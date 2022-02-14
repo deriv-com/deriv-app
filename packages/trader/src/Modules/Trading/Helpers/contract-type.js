@@ -11,9 +11,9 @@ export const contract_category_icon = {
 };
 
 export const getContractTypeCategoryIcons = () => ({
-    [localize('All')]: 'IcCatAll',
-    [localize('Options')]: 'IcCatOptions',
-    [localize('Multipliers')]: 'IcCatMultiplier',
+    'All': 'IcCatAll',
+    'Options': 'IcCatOptions',
+    'Multipliers': 'IcCatMultiplier',
 });
 
 /**

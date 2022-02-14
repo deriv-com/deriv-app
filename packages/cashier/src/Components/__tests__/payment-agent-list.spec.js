@@ -77,8 +77,12 @@ describe('<PaymentAgentList />', () => {
                 'A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on Deriv.'
             )
         ).toBeInTheDocument();
-        expect(screen.getByText('Deposit')).toBeInTheDocument();
-        expect(screen.getByText('Withdrawal')).toBeInTheDocument();
+        expect(
+            screen.getAllByRole('listitem').find(listitem => listitem.textContent === 'Deposit')
+        ).toBeInTheDocument();
+        expect(
+            screen.getAllByRole('listitem').find(listitem => listitem.textContent === 'Withdrawal')
+        ).toBeInTheDocument();
         expect(screen.getByText('Payment agents')).toBeInTheDocument();
         expect(screen.getByText('Choose a payment agent and contact them for instructions.')).toBeInTheDocument();
         expect(screen.getByText('Ms QA script mbpaULOta')).toBeInTheDocument();

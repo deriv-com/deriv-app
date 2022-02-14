@@ -300,11 +300,9 @@ const CFDRealAccountDisplay = ({
             is_logged_in={is_logged_in}
             existing_data={
                 current_list[
-                    Number(
-                        Object.keys(current_list).find((key: string) =>
-                            key.startsWith(`${platform}.real.financial_stp@`)
-                        )
-                    )
+                    Object.keys(current_list).find((key: string) =>
+                        key.startsWith(`${platform}.real.financial_stp@`)
+                    ) || ''
                 ]
             }
             commission_message={localize('No commission')}
@@ -340,9 +338,7 @@ const CFDRealAccountDisplay = ({
             }}
             existing_data={
                 current_list[
-                    Number(
-                        Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial@`))
-                    )
+                    Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial@`)) || ''
                 ]
             }
             commission_message={localize('No commission')}

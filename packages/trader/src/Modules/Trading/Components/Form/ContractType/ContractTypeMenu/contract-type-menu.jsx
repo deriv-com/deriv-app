@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { VerticalTab, ThemedScrollbars } from '@deriv/components';
+import { Loading, ThemedScrollbars, VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import SearchInput from './search-input.jsx';
 import NoResultsMessage from './no-results-message.jsx';
@@ -18,6 +18,7 @@ const Dialog = ({
     onBackButtonClick,
     onCategoryClick,
     onChangeInput,
+    show_loading,
 }) => {
     const input_ref = React.useRef(null);
 
@@ -50,7 +51,12 @@ const Dialog = ({
         setInputValue('');
         onChangeInput('');
     };
-
+    const renderChildren = () => {
+        if (!is_info_dialog_open) {
+            return <ThemedScrollbars height='calc(100vh - 172px)'>{children}</ThemedScrollbars>;
+        }
+        return children;
+    };
     const action_bar_items = is_info_dialog_open ? (
         <Header title={item.text} onClickGoBack={onBackButtonClick} />
     ) : (
@@ -75,26 +81,27 @@ const Dialog = ({
         >
             <div className='contract-type-dialog' data-testid='contract_wrapper'>
                 <div className='contract-type-dialog__wrapper'>
-                    <VerticalTab.Layout>
-                        <VerticalTab.Headers
-                            header_title={localize('Trade types')}
-                            items={categories}
-                            selected={selected_item}
-                            onChange={onChange}
-                            selectedKey='key'
-                        />
-                        <div className='dc-vertical-tab__content'>
-                            <div className='dc-vertical-tab__action-bar'>{action_bar_items}</div>
-                            <div className='dc-vertical-tab__content-container'>
-                                {selected_category_contract && <NoResultsMessage text={input_value} />}
-                                {!is_info_dialog_open ? (
-                                    <ThemedScrollbars height='calc(100vh - 172px)'>{children}</ThemedScrollbars>
-                                ) : (
-                                    children
-                                )}
+                    {show_loading ? (
+                        <Loading is_fullscreen={false} />
+                    ) : (
+                        <VerticalTab.Layout>
+                            <VerticalTab.Headers
+                                header_title={localize('Trade types')}
+                                items={categories}
+                                selected={selected_item}
+                                onChange={onChange}
+                                selectedKey='key'
+                            />
+
+                            <div className='dc-vertical-tab__content'>
+                                <div className='dc-vertical-tab__action-bar'>{action_bar_items}</div>
+                                <div className='dc-vertical-tab__content-container'>
+                                    {selected_category_contract && <NoResultsMessage text={input_value} />}
+                                    {renderChildren()}
+                                </div>
                             </div>
-                        </div>
-                    </VerticalTab.Layout>
+                        </VerticalTab.Layout>
+                    )}
                 </div>
             </div>
         </CSSTransition>
@@ -104,6 +111,7 @@ const Dialog = ({
 Dialog.propTypes = {
     is_info_dialog_open: PropTypes.bool,
     is_open: PropTypes.bool,
+    show_loading: PropTypes.bool,
     item: PropTypes.object,
     list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     onBackButtonClick: PropTypes.func,

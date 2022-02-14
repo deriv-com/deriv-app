@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import ContractType from './contract-type.jsx';
 import { getContractTypeCategoryIcons } from '../../../Helpers/contract-type';
 
-const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
+const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageChanged }) => {
     const wrapper_ref = React.useRef(null);
     const [is_dialog_open, setDialogVisibility] = React.useState(false);
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
@@ -178,6 +178,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
                 onClose={handleVisibility}
                 onChangeInput={onChangeInput}
                 onCategoryClick={handleCategoryClick}
+                show_loading={languageChanged}
             >
                 {is_info_dialog_open ? (
                     <ContractType.Info

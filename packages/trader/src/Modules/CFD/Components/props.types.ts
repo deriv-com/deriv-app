@@ -67,7 +67,7 @@ export type TCFDAccountCard = {
     is_eu: boolean;
     onHover: (value: string | undefined) => void;
     platform: string;
-    specs: { [key: string]: { key: () => string; value: () => string } };
+    specs: { [key: string]: string };
     title: string;
     type: TType;
     onSelectAccount: () => void;

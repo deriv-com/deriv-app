@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react-lite';
-import { Autocomplete, Icon, Text } from '@deriv/components';
+import { Autocomplete, Icon, Input, Text } from '@deriv/components';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize, Localize } from 'Components/i18next';
@@ -13,6 +13,15 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert }) => {
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
+    };
+
+    const onClickDeletePaymentMethodItem = value => {
+        if (value) {
+            my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
+                payment_method_id => payment_method_id !== value
+            );
+            setSelectedMethods(selected_methods.filter(i => i !== value));
+        }
     };
 
     const onClickPaymentMethodItem = value => {
@@ -85,6 +94,80 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert }) => {
                 medium
                 onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
             />
+        );
+    }
+
+    if (selected_methods?.length > 0) {
+        return (
+            <React.Fragment>
+                {selected_methods.map((payment_method, key) => {
+                    const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
+
+                    return (
+                        <Formik key={key} enableReinitialize initialValues={{}}>
+                            <Field name='payment_method'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='p2p-my-ads__form-payment-methods--empty'
+                                        label={
+                                            <React.Fragment>
+                                                <Icon icon='IcAddCircle' size={14} />
+                                                <Text color='less-prominent' size='xs'>
+                                                    <Localize i18n_default_text='Add' />
+                                                </Text>
+                                            </React.Fragment>
+                                        }
+                                        trailing_icon={
+                                            <Icon
+                                                icon='IcDelete'
+                                                onClick={() => {
+                                                    onClickDeletePaymentMethodItem(payment_method);
+                                                }}
+                                            />
+                                        }
+                                        type='text'
+                                        value={method}
+                                    />
+                                )}
+                            </Field>
+                        </Formik>
+                    );
+                })}
+                {my_ads_store.payment_method_names.length < 3 && (
+                    <Formik enableReinitialize initialValues={{ payment_method: '' }}>
+                        {() => (
+                            <Field name='payment_method'>
+                                {({ field }) => (
+                                    <div className='p2p-my-ads__form-payment-methods--empty'>
+                                        <Autocomplete
+                                            {...field}
+                                            autoComplete='off' // prevent chrome autocomplete
+                                            data-lpignore='true'
+                                            has_updating_list={false}
+                                            label={
+                                                <React.Fragment>
+                                                    <Icon icon='IcAddCircle' size={14} />
+                                                    <Text color='less-prominent' size='xs'>
+                                                        <Localize i18n_default_text='Add' />
+                                                    </Text>
+                                                </React.Fragment>
+                                            }
+                                            list_items={my_profile_store.payment_methods_list}
+                                            onItemSelection={({ value }) => {
+                                                onClickPaymentMethodItem(value);
+                                            }}
+                                            required
+                                            trailing_icon={<></>}
+                                            type='text'
+                                        />
+                                    </div>
+                                )}
+                            </Field>
+                        )}
+                    </Formik>
+                )}
+            </React.Fragment>
         );
     }
 

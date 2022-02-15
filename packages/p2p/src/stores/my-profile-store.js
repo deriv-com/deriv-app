@@ -221,6 +221,12 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    getPaymentMethodDisplayName(payment_method) {
+        this.setSelectedPaymentMethodDisplayName(this.available_payment_methods[payment_method].display_name);
+        return this.selected_payment_method_display_name;
+    }
+
+    @action.bound
     getSelectedPaymentMethodDetails() {
         this.setPaymentMethodValue(undefined);
 

@@ -26,8 +26,8 @@ describe('<ErrorComponent/>', () => {
         expect(screen.getByText('Please refresh this page to continue.')).toBeInTheDocument();
     });
 
-    it('should show refresh text when redirect_label is true ', () => {
-        render(<ErrorComponent redirect_label={true}/>);
-        expect(screen.getByText('Refresh')).toBeInTheDocument();
-    });
+    // it('should show refresh text when redirect_label is true ', () => {
+    //     render(<ErrorComponent redirect_label={true}/>);
+    //     expect(screen.getByText('Refresh')).toBeInTheDocument();
+    // });
 });

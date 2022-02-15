@@ -23,4 +23,5 @@ module.exports = {
         '<rootDir>/coverage/lcov-report',
         '<rootDir>/dist',
     ],
+    testEnvironment: "jsdom",
 };

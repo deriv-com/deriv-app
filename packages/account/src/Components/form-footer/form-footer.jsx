@@ -10,6 +10,7 @@ const FormFooter = ({ children, className }) => {
             className={classNames('account-form__footer', className, {
                 'account-form__footer--dashboard': is_dashboard,
             })}
+            data-testid='form-footer-container'
         >
             {children}
         </div>

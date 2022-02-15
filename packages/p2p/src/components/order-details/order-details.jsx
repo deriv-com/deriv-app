@@ -75,17 +75,19 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
-            <div className='order-details--warning'>
-                <HintBox
-                    icon='IcAlertWarning'
-                    message={
-                        <Text size='xxxs' color='prominent' line_height='xs'>
-                            <Localize i18n_default_text='To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.' />
-                        </Text>
-                    }
-                    is_warn
-                />
-            </div>
+            {is_active_order && (
+                <div className='order-details--warning'>
+                    <HintBox
+                        icon='IcAlertWarning'
+                        message={
+                            <Text size='xxxs' color='prominent' line_height='xs'>
+                                <Localize i18n_default_text='To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.' />
+                            </Text>
+                        }
+                        is_warn
+                    />
+                </div>
+            )}
             <div className='order-details'>
                 <div className='order-details-card'>
                     <div className='order-details-card__header'>
@@ -159,27 +161,53 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         </div>
                         {is_active_order &&
                             (order_store?.has_order_payment_method_details ? (
-                                <Accordion
-                                    className='order-details-card__accordion'
-                                    icon_close='IcChevronRight'
-                                    icon_open='IcChevronDown'
-                                    list={order_store?.order_payment_method_details?.map(payment_method => ({
-                                        header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
-                                        content: (
-                                            <PaymentMethodAccordionContent
-                                                advertiser_details={advertiser_details}
-                                                client_details={client_details}
-                                                is_my_ad={is_my_ad}
-                                                payment_method={payment_method}
-                                            />
-                                        ),
-                                    }))}
-                                />
+                                <>
+                                    <Text size='xs' weight='bold'>
+                                        {labels.payment_details}
+                                    </Text>
+                                    <Accordion
+                                        className='order-details-card__accordion'
+                                        icon_close='IcChevronRight'
+                                        icon_open='IcChevronDown'
+                                        list={order_store?.order_payment_method_details?.map(payment_method => ({
+                                            header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
+                                            content: (
+                                                <PaymentMethodAccordionContent
+                                                    advertiser_details={advertiser_details}
+                                                    client_details={client_details}
+                                                    is_my_ad={is_my_ad}
+                                                    payment_method={payment_method}
+                                                />
+                                            ),
+                                        }))}
+                                    />
+                                </>
                             ) : (
-                                <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
+                                <OrderInfoBlock
+                                    label={
+                                        <Text size='xs' weight='bold'>
+                                            {labels.payment_details}
+                                        </Text>
+                                    }
+                                    value={payment_info || '-'}
+                                />
                             ))}
-                        <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
-                        <OrderInfoBlock label={labels.instructions} value={advert_details.description.trim() || '-'} />
+                        <OrderInfoBlock
+                            label={
+                                <Text size='xs' weight='bold'>
+                                    {labels.contact_details}
+                                </Text>
+                            }
+                            value={contact_info || '-'}
+                        />
+                        <OrderInfoBlock
+                            label={
+                                <Text size='xs' weight='bold'>
+                                    {labels.instructions}
+                                </Text>
+                            }
+                            value={advert_details.description.trim() || '-'}
+                        />
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />

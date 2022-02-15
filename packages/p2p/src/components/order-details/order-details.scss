@@ -12,6 +12,11 @@ $card-width: 456px;
         max-height: $card-height;
     }
 
+    &--body {
+        display: flex;
+        flex-direction: column;
+    }
+
     &--warning {
         margin-bottom: 1.6rem;
 
@@ -51,10 +56,21 @@ $card-width: 456px;
         &-column {
             display: flex;
             flex-direction: column;
+            padding-left: 1.6rem;
         }
         &-row {
             display: flex;
             flex-direction: row;
+        }
+
+        .dc-accordion__item {
+            border: none;
+        }
+
+        .dc-accordion__item-header {
+            border: none;
+            display: flex;
+            justify-content: space-between;
         }
     }
 

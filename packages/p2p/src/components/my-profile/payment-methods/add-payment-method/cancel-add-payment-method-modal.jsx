@@ -36,7 +36,14 @@ const CancelAddPaymentMethodModal = () => {
                 >
                     <Localize i18n_default_text='Cancel' />
                 </Button>
-                <Button large onClick={() => my_profile_store.setSelectedPaymentMethod('')} primary>
+                <Button
+                    large
+                    onClick={() => {
+                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                        my_profile_store.setSelectedPaymentMethod('');
+                    }}
+                    primary
+                >
                     <Localize i18n_default_text='Go back' />
                 </Button>
             </Modal.Footer>

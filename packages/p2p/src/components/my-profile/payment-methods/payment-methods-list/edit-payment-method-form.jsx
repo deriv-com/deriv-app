@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
-import { Button, Input, Loading, Text } from '@deriv/components';
+import { Button, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
@@ -111,6 +111,27 @@ const EditPaymentMethodForm = () => {
                     );
                 }}
             </Formik>
+            <Modal
+                is_open={my_profile_store.should_show_add_payment_method_error_modal}
+                small
+                has_close_icon={false}
+                title={localize("Something's not right")}
+            >
+                <Modal.Body>
+                    <Text color='prominent' size='xs'>
+                        {my_profile_store.add_payment_method_error_message}
+                    </Text>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        has_effect
+                        text={localize('Ok')}
+                        onClick={() => my_profile_store.setShouldShowAddPaymentMethodErrorModal(false)}
+                        primary
+                        large
+                    />
+                </Modal.Footer>
+            </Modal>
         </React.Fragment>
     );
 };

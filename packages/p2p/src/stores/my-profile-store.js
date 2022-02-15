@@ -329,7 +329,7 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    updatePaymentMethod(values) {
+    updatePaymentMethod(values, { setSubmitting }) {
         requestWS({
             p2p_advertiser_payment_methods: 1,
             update: {
@@ -337,8 +337,16 @@ export default class MyProfileStore extends BaseStore {
                     ...values,
                 },
             },
-        }).then(() => {
-            this.setShouldShowEditPaymentMethodForm(false);
+        }).then(response => {
+            if (response.error) {
+                this.setAddPaymentMethodErrorMessage(response.error.message);
+                this.setShouldShowAddPaymentMethodErrorModal(true);
+            } else {
+                this.setShouldShowEditPaymentMethodForm(false);
+                this.getAdvertiserPaymentMethods();
+            }
+
+            setSubmitting(false);
         });
     }
 

@@ -387,6 +387,11 @@
             padding: 1.5rem;
             background-color: var(--general-main-1);
         }
+        @media screen and (max-height: 667px) {
+            .dc-form-submit-button {
+                position: sticky;
+            }
+        }
         & .dc-btn {
             width: 100%;
         }

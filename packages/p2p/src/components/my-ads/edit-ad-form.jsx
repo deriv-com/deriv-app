@@ -273,7 +273,7 @@ const EditAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 secondary
                                                 large
-                                                onClick={() => my_ads_store.setShowAdForm(false)}
+                                                onClick={() => my_ads_store.setShowEditAdForm(false)}
                                                 type='button'
                                             >
                                                 <Localize i18n_default_text='Cancel' />

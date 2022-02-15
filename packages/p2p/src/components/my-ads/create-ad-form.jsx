@@ -42,6 +42,7 @@ const CreateAdForm = () => {
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
 
+    // eslint-disable-next-line no-shadow
     const handleSelectPaymentMethods = selected_methods => {
         setSelectedMethods(selected_methods);
     };

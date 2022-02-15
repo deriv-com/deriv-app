@@ -25,7 +25,7 @@ describe('<ErrorComponent/>', () => {
         expect(screen.getByText('Something’s not right')).toBeInTheDocument();
     });
     it('should show actual message when header message is passed', () => {
-        const header = 'Test Header'
+        const header = 'Test Header';
         render(<ErrorComponent header={header} />);
         expect(screen.getByText(header)).toBeInTheDocument();
     });

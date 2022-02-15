@@ -9,7 +9,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
 import { TExistingData } from './props.types.js';
-import { TradingPlatformAccounts } from './props.types';
+import { TTradingPlatformAccounts } from './props.types';
 
 type TStandPoint = {
     financial_company: string;
@@ -47,15 +47,17 @@ type TCFDRealAccountDisplayProps = {
     landing_companies: LandingCompany;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
     openAccountTransfer: (
-        data: DetailsOfEachMT5Loginid | TradingPlatformAccounts,
+        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     platform: string;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TradingPlatformAccounts }
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
     ) => boolean;
-    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TradingPlatformAccounts };
+    current_list: Array<DetailsOfEachMT5Loginid> & {
+        [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
+    };
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;

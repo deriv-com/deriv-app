@@ -24,7 +24,7 @@ const Contract = ({
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
         underlying_name: getMarketNamesMap()[symbol.toUpperCase()],
     });
-    const prevLang = usePrevious(current_language);
+    const prev_lang = usePrevious(current_language);
     return (
         <React.Fragment>
             <MobileWrapper>
@@ -40,7 +40,7 @@ const Contract = ({
                 name='contract_type'
                 onChange={onChange}
                 value={contract_type}
-                languageChanged={prevLang && prevLang !== current_language}
+                languageChanged={prev_lang && prev_lang !== current_language}
             />
         </React.Fragment>
     );

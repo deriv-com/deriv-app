@@ -40,6 +40,12 @@ const CreateAdForm = () => {
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
 
+    const [selected_methods, setSelectedMethods] = React.useState([]);
+
+    const handleSelectPaymentMethods = selected_methods => {
+        setSelectedMethods(selected_methods);
+    };
+
     const onCheckboxChange = () =>
         (should_not_show_auto_archive_message_again.current = !should_not_show_auto_archive_message_again.current);
 
@@ -324,7 +330,10 @@ const CreateAdForm = () => {
                                                 <Localize i18n_default_text='You may choose up to 3.' />
                                             </Text>
                                         </div>
-                                        <CreateAdFormPaymentMethods is_sell_advert={is_sell_advert} />
+                                        <CreateAdFormPaymentMethods
+                                            onSelectPaymentMethods={handleSelectPaymentMethods}
+                                            is_sell_advert={is_sell_advert}
+                                        />
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
                                                 className='p2p-my-ads__form-button'
@@ -339,7 +348,7 @@ const CreateAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 primary
                                                 large
-                                                is_disabled={isSubmitting || !isValid}
+                                                is_disabled={isSubmitting || !isValid || !selected_methods.length}
                                             >
                                                 <Localize i18n_default_text='Post ad' />
                                             </Button>

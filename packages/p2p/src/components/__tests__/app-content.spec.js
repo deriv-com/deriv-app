@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
-import AppContent from '../app-content';
+import AppContent from '../app-content.jsx';
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),

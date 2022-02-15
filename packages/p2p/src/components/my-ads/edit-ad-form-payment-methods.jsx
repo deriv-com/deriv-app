@@ -15,6 +15,31 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, payment_method_names }) => {
         borderWidth: '2px',
     };
 
+    const onClickDeletePaymentMethodItem = value => {
+        if (value) {
+            my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
+                payment_method_id => payment_method_id !== value
+            );
+            setSelectedMethods(selected_methods.filter(i => i !== value));
+        }
+    };
+
+    const onClickPaymentMethodItem = value => {
+        if (value) {
+            if (!my_ads_store.payment_method_names.includes(value)) {
+                if (my_ads_store.payment_method_names.length < 3) {
+                    my_ads_store.payment_method_names.push(value);
+                    setSelectedMethods([...selected_methods, value]);
+                }
+            } else {
+                my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
+                    payment_method_id => payment_method_id !== value
+                );
+                setSelectedMethods(selected_methods.filter(i => i !== value));
+            }
+        }
+    };
+
     const onClickPaymentMethodCard = payment_method => {
         if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
             if (my_ads_store.payment_method_ids.length < 3) {
@@ -30,6 +55,12 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, payment_method_names }) => {
     };
 
     React.useEffect(() => {
+        payment_method_names.forEach(pm => {
+            my_profile_store.getPaymentMethodValue(pm);
+            selected_methods.push(my_profile_store.payment_method_value);
+            my_ads_store.payment_method_names.push(my_profile_store.payment_method_value);
+        });
+
         return () => {
             my_ads_store.payment_method_ids = [];
             my_ads_store.payment_method_names = [];
@@ -72,30 +103,81 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, payment_method_names }) => {
         );
     }
 
-    return payment_method_names ? (
-        payment_method_names.map((payment_method, key) => (
-            <Formik key={key} enableReinitialize initialValues={{}}>
-                <Field name='payment_method'>
-                    {({ field }) => (
-                        <Input
-                            {...field}
-                            className='p2p-my-ads__form-payment-methods--empty'
-                            label={
-                                <React.Fragment>
-                                    <Icon icon='IcAddCircle' size={14} />
-                                    <Text color='less-prominent' size='xs'>
-                                        <Localize i18n_default_text='Add' />
-                                    </Text>
-                                </React.Fragment>
-                            }
-                            value={payment_method}
-                            type='text'
-                        />
-                    )}
-                </Field>
-            </Formik>
-        ))
-    ) : (
+    if (selected_methods.length > 0) {
+        return (
+            <React.Fragment>
+                {selected_methods.map((payment_method, key) => {
+                    const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
+
+                    return (
+                        <Formik key={key} enableReinitialize initialValues={{}}>
+                            <Field name='payment_method'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='p2p-my-ads__form-payment-methods--empty'
+                                        label={
+                                            <React.Fragment>
+                                                <Icon icon='IcAddCircle' size={14} />
+                                                <Text color='less-prominent' size='xs'>
+                                                    <Localize i18n_default_text='Add' />
+                                                </Text>
+                                            </React.Fragment>
+                                        }
+                                        trailing_icon={
+                                            <Icon
+                                                icon='IcDelete'
+                                                onClick={() => {
+                                                    onClickDeletePaymentMethodItem(payment_method);
+                                                }}
+                                            />
+                                        }
+                                        type='text'
+                                        value={method}
+                                    />
+                                )}
+                            </Field>
+                        </Formik>
+                    );
+                })}
+                {my_ads_store.payment_method_names.length < 3 && (
+                    <Formik enableReinitialize initialValues={{ payment_method: '' }}>
+                        {() => (
+                            <Field name='payment_method'>
+                                {({ field }) => (
+                                    <div className='p2p-my-ads__form-payment-methods--empty'>
+                                        <Autocomplete
+                                            {...field}
+                                            autoComplete='off' // prevent chrome autocomplete
+                                            data-lpignore='true'
+                                            has_updating_list={false}
+                                            label={
+                                                <React.Fragment>
+                                                    <Icon icon='IcAddCircle' size={14} />
+                                                    <Text color='less-prominent' size='xs'>
+                                                        <Localize i18n_default_text='Add' />
+                                                    </Text>
+                                                </React.Fragment>
+                                            }
+                                            list_items={my_profile_store.payment_methods_list}
+                                            onItemSelection={({ value }) => {
+                                                onClickPaymentMethodItem(value);
+                                            }}
+                                            required
+                                            trailing_icon={<></>}
+                                            type='text'
+                                        />
+                                    </div>
+                                )}
+                            </Field>
+                        )}
+                    </Formik>
+                )}
+            </React.Fragment>
+        );
+    }
+
+    return (
         <Formik enableReinitialize initialValues={{ payment_method: '' }}>
             {({ setFieldValue }) => (
                 <Field name='payment_method'>
@@ -115,9 +197,10 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, payment_method_names }) => {
                                     </React.Fragment>
                                 }
                                 list_items={my_profile_store.payment_methods_list}
-                                onItemSelection={({ text, value }) =>
-                                    setFieldValue('payment_method', value ? text : '')
-                                }
+                                onItemSelection={({ text, value }) => {
+                                    setFieldValue('payment_method', value ? text : '');
+                                    onClickPaymentMethodItem(value);
+                                }}
                                 required
                                 trailing_icon={<></>}
                                 type='text'

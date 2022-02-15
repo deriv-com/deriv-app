@@ -231,16 +231,21 @@ export default class MyAdsStore extends BaseStore {
             id: this.selected_ad_id,
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
-            payment_method: values.payment_method,
             rate: Number(values.price_rate),
+            ...(this.payment_method_names.length > 0 && !is_sell_ad
+                ? { payment_method_names: this.payment_method_names }
+                : {}),
+            ...(this.payment_method_ids.length > 0 && is_sell_ad
+                ? { payment_method_ids: this.payment_method_ids }
+                : {}),
         };
 
         if (values.contact_info && is_sell_ad) {
             update_advert.contact_info = values.contact_info;
         }
 
-        if (values.default_advert_description) {
-            update_advert.description = values.default_advert_description;
+        if (values.description) {
+            update_advert.description = values.description;
         }
 
         requestWS(update_advert).then(response => {
@@ -586,6 +591,153 @@ export default class MyAdsStore extends BaseStore {
                         errors[key] = getContactInfoMessages(mapped_key[key])[error_index];
                         break;
                     case 'default_advert_description':
+                        errors[key] = getDefaultAdvertDescriptionMessages(mapped_key[key])[error_index];
+                        break;
+                    case 'offer_amount':
+                        errors[key] = getOfferAmountMessages(mapped_key[key])[error_index];
+                        break;
+                    case 'max_transaction':
+                        errors[key] = getMaxTransactionLimitMessages(mapped_key[key])[error_index];
+                        break;
+                    case 'min_transaction':
+                        errors[key] = getMinTransactionLimitMessages(mapped_key[key])[error_index];
+                        break;
+                    case 'price_rate':
+                        errors[key] = getPriceRateMessages(mapped_key[key])[error_index];
+                        break;
+                    default:
+                        errors[key] = getCommonMessages(mapped_key[key])[error_index];
+                }
+            }
+        });
+
+        if (Object.values(errors).includes('Enter a valid amount')) {
+            Object.entries(errors).forEach(([key, value]) => {
+                errors[key] = value === 'Enter a valid amount' ? value : undefined;
+            });
+        }
+
+        return errors;
+    }
+
+    @action.bound
+    validateEditAdForm(values) {
+        const validations = {
+            description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
+            max_transaction: [
+                v => !!v,
+                v => !isNaN(v),
+                v =>
+                    v > 0 &&
+                    decimalValidator(v) &&
+                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                v => (values.offer_amount ? +v <= values.offer_amount : true),
+                v => (values.min_transaction ? +v >= values.min_transaction : true),
+            ],
+            min_transaction: [
+                v => !!v,
+                v => !isNaN(v),
+                v =>
+                    v > 0 &&
+                    decimalValidator(v) &&
+                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                v => (values.offer_amount ? +v <= values.offer_amount : true),
+                v => (values.max_transaction ? +v <= values.max_transaction : true),
+            ],
+            offer_amount: [
+                v => !!v,
+                v => !isNaN(v),
+                v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
+                v =>
+                    v > 0 &&
+                    decimalValidator(v) &&
+                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                v => (values.min_transaction ? +v >= values.min_transaction : true),
+                v => (values.max_transaction ? +v >= values.max_transaction : true),
+            ],
+            price_rate: [
+                v => !!v,
+                v => !isNaN(v),
+                v =>
+                    v > 0 &&
+                    decimalValidator(v) &&
+                    countDecimalPlaces(v) <= this.root_store.general_store.client.local_currency_config.decimal_places,
+            ],
+        };
+
+        if (values.type === buy_sell.SELL) {
+            validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
+        }
+
+        const mapped_key = {
+            contact_info: localize('Contact details'),
+            description: localize('Instructions'),
+            max_transaction: localize('Max limit'),
+            min_transaction: localize('Min limit'),
+            offer_amount: localize('Amount'),
+            price_rate: localize('Fixed rate'),
+        };
+
+        const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
+
+        const getContactInfoMessages = field_name => [
+            localize('{{field_name}} is required', { field_name }),
+            localize(
+                "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
+                { field_name }
+            ),
+            localize('{{field_name}} has exceeded maximum length', { field_name }),
+        ];
+
+        const getDefaultAdvertDescriptionMessages = field_name => [
+            localize('{{field_name}} has exceeded maximum length', { field_name }),
+            localize(
+                "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
+                { field_name }
+            ),
+        ];
+
+        const getOfferAmountMessages = field_name => [
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
+            localize('Max available amount is {{value}}', { value: this.available_balance }),
+            localize('Enter a valid amount'),
+            localize('{{field_name}} should not be below Min limit', { field_name }),
+            localize('{{field_name}} should not be below Max limit', { field_name }),
+        ];
+
+        const getMaxTransactionLimitMessages = field_name => [
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
+            localize('Enter a valid amount'),
+            localize('{{field_name}} should not exceed Amount', { field_name }),
+            localize('{{field_name}} should not be below Min limit', { field_name }),
+        ];
+
+        const getMinTransactionLimitMessages = field_name => [
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
+            localize('Enter a valid amount'),
+            localize('{{field_name}} should not exceed Amount', { field_name }),
+            localize('{{field_name}} should not exceed Max limit', { field_name }),
+        ];
+
+        const getPriceRateMessages = field_name => [
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
+            localize('Enter a valid amount'),
+        ];
+
+        const errors = {};
+
+        Object.entries(validations).forEach(([key, rules]) => {
+            const error_index = rules.findIndex(v => !v(values[key]));
+            if (error_index !== -1) {
+                switch (key) {
+                    case 'contact_info':
+                        errors[key] = getContactInfoMessages(mapped_key[key])[error_index];
+                        break;
+                    case 'description':
                         errors[key] = getDefaultAdvertDescriptionMessages(mapped_key[key])[error_index];
                         break;
                     case 'offer_amount':

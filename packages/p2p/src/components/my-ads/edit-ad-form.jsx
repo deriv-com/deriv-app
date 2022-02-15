@@ -67,7 +67,7 @@ const EditAdForm = () => {
                     type,
                 }}
                 onSubmit={my_ads_store.onClickSaveEditAd}
-                validate={my_ads_store.validateCreateAdForm}
+                validate={my_ads_store.validateEditAdForm}
             >
                 {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;

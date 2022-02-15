@@ -227,6 +227,16 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    getPaymentMethodValue(payment_method) {
+        const method = Object.entries(this.available_payment_methods).filter(
+            pm => pm[1].display_name === payment_method
+        );
+
+        this.setPaymentMethodValue(method[0][0]);
+        return this.payment_method_value;
+    }
+
+    @action.bound
     getSelectedPaymentMethodDetails() {
         this.setPaymentMethodValue(undefined);
 

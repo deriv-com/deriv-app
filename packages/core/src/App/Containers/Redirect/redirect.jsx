@@ -15,6 +15,7 @@ const Redirect = ({
     setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
+    toggleResetEmailModal,
 }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
@@ -38,6 +39,10 @@ const Redirect = ({
         }
         case 'reset_password': {
             toggleResetPasswordModal(true);
+            break;
+        }
+        case 'request_email': {
+            toggleResetEmailModal(true);
             break;
         }
         case 'trading_platform_mt5_password_reset':
@@ -162,5 +167,6 @@ export default withRouter(
         setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
+        toggleResetEmailModal: ui.toggleResetEmailModal,
     }))(Redirect)
 );

@@ -42,6 +42,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         should_highlight_alert,
         should_highlight_danger,
         should_highlight_success,
+        should_show_lost_funds_banner,
         should_show_order_footer,
         status_string,
     } = order_store?.order_information;
@@ -74,7 +75,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
-            {is_active_order && (
+            {should_show_lost_funds_banner && (
                 <div className='order-details--warning'>
                     <HintBox
                         icon='IcAlertWarning'

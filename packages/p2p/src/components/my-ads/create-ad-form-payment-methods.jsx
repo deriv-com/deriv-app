@@ -6,7 +6,7 @@ import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize, Localize } from 'Components/i18next';
 
-const CreateAdFormPaymentMethods = ({ is_sell_advert }) => {
+const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
@@ -62,6 +62,10 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert }) => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        onSelectPaymentMethods(selected_methods);
+    }, [selected_methods]);
 
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {

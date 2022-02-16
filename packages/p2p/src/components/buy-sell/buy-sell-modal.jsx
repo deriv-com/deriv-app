@@ -49,7 +49,10 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         />
     );
 
-    const onCancel = () => setShouldShowPopup(false);
+    const onCancel = () => {
+        setShouldShowPopup(false);
+        my_profile_store.setShouldShowAddPaymentMethodForm(false);
+    };
 
     const onConfirmClick = order_info => {
         order_store.setOrderId(order_info.id);
@@ -80,7 +83,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 className='buy-sell__modal'
                 height_offset='80px'
                 is_flex
-                is_modal_open={should_show_popup}
+                is_modal_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
                 page_header_className='buy-sell__modal-header'
                 page_header_text={modal_title}
                 pageHeaderReturnFn={onCancel}
@@ -119,7 +122,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             className='buy-sell__modal'
             height={table_type === buy_sell.BUY ? '400px' : '649px'}
             width='456px'
-            is_open={should_show_popup}
+            is_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
             title={modal_title}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}

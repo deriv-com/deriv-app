@@ -11,7 +11,6 @@ export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
     @observable contact_info = '';
     @observable error_message = '';
-    @observable filter_payment_methods = [];
     @observable has_more_items_to_load = false;
     @observable is_filter_modal_loading = false;
     @observable is_filter_modal_open = false;
@@ -40,7 +39,7 @@ export default class BuySellStore extends BaseStore {
         // For sell orders we require extra information.
         ...(this.is_sell_advert ? { contact_info: this.contact_info } : {}),
     };
-
+    filter_payment_methods = [];
     payment_method_ids = [];
     sort_list = [
         { text: localize('Exchange rate (Default)'), value: 'rate' },
@@ -203,6 +202,7 @@ export default class BuySellStore extends BaseStore {
                 limit: general_store.list_item_limit,
                 sort_by: this.sort_by,
                 use_client_limits: this.should_use_client_limits ? 1 : 0,
+                ...(this.filter_payment_methods.length > 0 ? { payment_method: this.filter_payment_methods } : {}),
             }).then(response => {
                 if (!response.error) {
                     // Ignore any responses that don't match our request. This can happen
@@ -265,21 +265,6 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    onChange(e) {
-        const { my_profile_store } = this.root_store;
-
-        let list = my_profile_store.payment_methods_list_values;
-
-        if (list.includes(e.target.value)) {
-            list = list.filter(item => item.value !== e.target.value);
-            this.setFilterPaymentMethods(list);
-        } else {
-            list.push(e.target.value);
-            this.setFilterPaymentMethods(list);
-        }
-    }
-
-    @action.bound
     onChangeTableType(event) {
         this.setTableType(event.target.value);
     }
@@ -333,11 +318,6 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
-    }
-
-    @action.bound
-    setFilterPaymentMethods(filter_payment_methods) {
-        this.filter_payment_methods = filter_payment_methods;
     }
 
     @action.bound
@@ -496,6 +476,7 @@ export default class BuySellStore extends BaseStore {
 
         if (this.is_sell_advert) {
             validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
+            validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }
 
         const display_min_amount = formatMoney(this.account_currency, this.advert.min_order_amount_limit, true);
@@ -525,6 +506,7 @@ export default class BuySellStore extends BaseStore {
 
         const mapped_key = {
             contact_info: localize('Contact details'),
+            payment_info: localize('Bank details'),
         };
 
         const errors = {};
@@ -536,6 +518,7 @@ export default class BuySellStore extends BaseStore {
 
             if (error_index !== -1) {
                 switch (key) {
+                    case 'payment_info':
                     case 'contact_info': {
                         errors[key] = getInfoMessages(mapped_key[key])[error_index];
                         break;

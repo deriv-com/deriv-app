@@ -5,7 +5,6 @@ import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal.jsx';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_profile_store } = useStores();
@@ -44,7 +43,6 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
 
     return (
         <React.Fragment>
-            <CancelAddPaymentMethodModal />
             <Formik
                 enableReinitialize
                 initialValues={{}}

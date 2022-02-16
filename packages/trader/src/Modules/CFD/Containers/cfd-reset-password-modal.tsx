@@ -125,7 +125,7 @@ const CFDResetPasswordModal = ({
         };
 
         WS.tradingPlatformInvestorPasswordReset(request).then((response: { error: TError; password_type: string }) => {
-            if (response.error && response.error.code === 'InvalidToken') {
+            if (response.error && (response.error.code === 'InvalidToken' || response.error.code === 'BadSession')) {
                 renderErrorBox(response.error);
             } else {
                 setState({
@@ -142,10 +142,12 @@ const CFDResetPasswordModal = ({
         return Object.keys(current_list).length !== 0;
     };
 
+    const is_invalid_investor_token = !getIsListFetched() && localStorage.getItem('cfd_reset_password_code');
+
     return (
         <Modal
             className='cfd-reset-password-modal'
-            is_open={is_cfd_reset_password_modal_enabled}
+            is_open={is_cfd_reset_password_modal_enabled && !is_invalid_investor_token}
             toggleModal={() => setCFDPasswordResetModal(false)}
             title={
                 platform === CFD_PLATFORMS.DXTRADE

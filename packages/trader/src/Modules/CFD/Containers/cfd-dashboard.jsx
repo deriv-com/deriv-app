@@ -25,8 +25,8 @@ import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';
-import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
-import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
+import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display';
+import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/cfd-dashboard.scss';
 
@@ -118,12 +118,13 @@ const CFDDashboard = props => {
     };
 
     const updateActiveIndex = index => {
+        if (!index) return;
         const updated_state = {};
         // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
         if (index === 1) updated_state.is_demo_tab = true;
         else if (index === 0) updated_state.is_demo_tab = false;
 
-        if (index !== undefined && active_index !== index) {
+        if (active_index !== index) {
             updated_state.active_index = index;
         }
 

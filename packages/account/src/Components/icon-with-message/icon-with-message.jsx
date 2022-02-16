@@ -37,6 +37,7 @@ const IconWithMessage = ({
                         toggleAccountsDialog();
                     }}
                     className='account__demo-message-button'
+                    data-testid='icon-with-message-button'
                 >
                     {has_real_account ? localize('Switch to real account') : localize('Add a real account')}
                 </Button>

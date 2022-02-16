@@ -55,11 +55,13 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, payment_method_names }) => {
     };
 
     React.useEffect(() => {
-        payment_method_names.forEach(pm => {
-            my_profile_store.getPaymentMethodValue(pm);
-            selected_methods.push(my_profile_store.payment_method_value);
-            my_ads_store.payment_method_names.push(my_profile_store.payment_method_value);
-        });
+        if (payment_method_names) {
+            payment_method_names?.forEach(pm => {
+                my_profile_store.getPaymentMethodValue(pm);
+                selected_methods.push(my_profile_store.payment_method_value);
+                my_ads_store.payment_method_names.push(my_profile_store.payment_method_value);
+            });
+        }
 
         return () => {
             my_ads_store.payment_method_ids = [];

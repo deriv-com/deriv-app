@@ -13,6 +13,7 @@ import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.
 import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
+import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
@@ -20,10 +21,8 @@ const OrderDetails = observer(({ onPageReturn }) => {
     const {
         account_currency,
         advert_details,
-        advertiser_details,
         amount_display,
         chat_channel_url: order_channel_url,
-        client_details,
         contact_info,
         has_timer_expired,
         id,
@@ -159,9 +158,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
+                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                         {is_active_order &&
                             (order_store?.has_order_payment_method_details ? (
-                                <>
+                                <div className='order-details-card--padding'>
                                     <Text size='xs' weight='bold'>
                                         {labels.payment_details}
                                     </Text>
@@ -171,19 +171,13 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                         icon_open='IcChevronDown'
                                         list={order_store?.order_payment_method_details?.map(payment_method => ({
                                             header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
-                                            content: (
-                                                <PaymentMethodAccordionContent
-                                                    advertiser_details={advertiser_details}
-                                                    client_details={client_details}
-                                                    is_my_ad={is_my_ad}
-                                                    payment_method={payment_method}
-                                                />
-                                            ),
+                                            content: <PaymentMethodAccordionContent payment_method={payment_method} />,
                                         }))}
                                     />
-                                </>
+                                </div>
                             ) : (
                                 <OrderInfoBlock
+                                    className='order-details-card--padding'
                                     label={
                                         <Text size='xs' weight='bold'>
                                             {labels.payment_details}
@@ -192,7 +186,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                     value={payment_info || '-'}
                                 />
                             ))}
+                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                         <OrderInfoBlock
+                            className='order-details-card--padding'
                             label={
                                 <Text size='xs' weight='bold'>
                                     {labels.contact_details}
@@ -200,7 +196,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             }
                             value={contact_info || '-'}
                         />
+                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                         <OrderInfoBlock
+                            className='order-details-card--padding'
                             label={
                                 <Text size='xs' weight='bold'>
                                     {labels.instructions}
@@ -208,6 +206,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             }
                             value={advert_details.description.trim() || '-'}
                         />
+                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />

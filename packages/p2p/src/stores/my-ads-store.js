@@ -644,17 +644,18 @@ export default class MyAdsStore extends BaseStore {
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
-            offer_amount: [
-                v => !!v,
-                v => !isNaN(v),
-                v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
-                v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
-                v => (values.min_transaction ? +v >= values.min_transaction : true),
-                v => (values.max_transaction ? +v >= values.max_transaction : true),
-            ],
+            // Offer amount disabled for edit ads
+            // offer_amount: [
+            //     v => !!v,
+            //     v => !isNaN(v),
+            //     v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
+            //     v =>
+            //         v > 0 &&
+            //         decimalValidator(v) &&
+            //         countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+            //     v => (values.min_transaction ? +v >= values.min_transaction : true),
+            //     v => (values.max_transaction ? +v >= values.max_transaction : true),
+            // ],
             price_rate: [
                 v => !!v,
                 v => !isNaN(v),
@@ -697,14 +698,14 @@ export default class MyAdsStore extends BaseStore {
             ),
         ];
 
-        const getOfferAmountMessages = field_name => [
-            localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Max available amount is {{value}}', { value: this.available_balance }),
-            localize('Enter a valid amount'),
-            localize('{{field_name}} should not be below Min limit', { field_name }),
-            localize('{{field_name}} should not be below Max limit', { field_name }),
-        ];
+        // const getOfferAmountMessages = field_name => [
+        //     localize('{{field_name}} is required', { field_name }),
+        //     localize('Enter a valid amount'),
+        //     localize('Max available amount is {{value}}', { value: this.available_balance }),
+        //     localize('Enter a valid amount'),
+        //     localize('{{field_name}} should not be below Min limit', { field_name }),
+        //     localize('{{field_name}} should not be below Max limit', { field_name }),
+        // ];
 
         const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
@@ -740,9 +741,9 @@ export default class MyAdsStore extends BaseStore {
                     case 'description':
                         errors[key] = getDefaultAdvertDescriptionMessages(mapped_key[key])[error_index];
                         break;
-                    case 'offer_amount':
-                        errors[key] = getOfferAmountMessages(mapped_key[key])[error_index];
-                        break;
+                    // case 'offer_amount':
+                    //     errors[key] = getOfferAmountMessages(mapped_key[key])[error_index];
+                    //     break;
                     case 'max_transaction':
                         errors[key] = getMaxTransactionLimitMessages(mapped_key[key])[error_index];
                         break;

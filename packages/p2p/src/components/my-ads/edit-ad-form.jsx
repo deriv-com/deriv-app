@@ -35,14 +35,42 @@ const EditAdForm = () => {
         max_order_amount_display,
         min_order_amount_display,
         payment_method_names,
+        payment_method_details,
         rate_display,
         type,
     } = my_ads_store.p2p_advert_information;
+    const is_buy_advert = type === buy_sell.BUY;
+    const [selected_methods, setSelectedMethods] = React.useState([]);
+
+    const payment_methods_changed = is_buy_advert
+        ? !(
+              selected_methods.every(pm => {
+                  const method = my_profile_store.getPaymentMethodDisplayName(pm);
+                  return payment_method_names.includes(method);
+              }) && selected_methods.length === payment_method_names.length
+          ) && selected_methods.length > 0
+        : !(
+              selected_methods.every(pm => Object.keys(payment_method_details).includes(pm)) &&
+              selected_methods.length === Object.keys(payment_method_details).length
+          ) && selected_methods.length > 0;
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
 
+        if (payment_method_names && !payment_method_details) {
+            payment_method_names?.forEach(pm => {
+                my_profile_store.getPaymentMethodValue(pm);
+                selected_methods.push(my_profile_store.payment_method_value);
+                my_ads_store.payment_method_names.push(my_profile_store.payment_method_value);
+            });
+        }
+        if (payment_method_details) {
+            Object.entries(payment_method_details)?.map(pm => {
+                selected_methods.push(pm[0]);
+                my_ads_store.payment_method_ids.push(pm[0]);
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -53,10 +81,6 @@ const EditAdForm = () => {
                 page_title={localize('Edit {{ad_type}} ad', { ad_type: type })}
             />
             <Formik
-                initialErrors={{
-                    // Pass one error to ensure Post ad button is disabled initially.
-                    offer_amount: true,
-                }}
                 initialValues={{
                     contact_info,
                     description,
@@ -69,9 +93,8 @@ const EditAdForm = () => {
                 onSubmit={my_ads_store.onClickSaveEditAd}
                 validate={my_ads_store.validateEditAdForm}
             >
-                {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
+                {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
-
                     return (
                         <div className='p2p-my-ads__form'>
                             <Form
@@ -267,6 +290,8 @@ const EditAdForm = () => {
                                         <EditAdFormPaymentMethods
                                             is_sell_advert={is_sell_advert}
                                             payment_method_names={payment_method_names}
+                                            selected_methods={selected_methods}
+                                            setSelectedMethods={setSelectedMethods}
                                         />
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
@@ -283,7 +308,9 @@ const EditAdForm = () => {
                                                 has_effect
                                                 primary
                                                 large
-                                                is_disabled={isSubmitting || !isValid}
+                                                is_disabled={
+                                                    isSubmitting || !isValid || (!dirty && !payment_methods_changed)
+                                                }
                                             >
                                                 <Localize i18n_default_text='Save changes' />
                                             </Button>

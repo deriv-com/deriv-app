@@ -6,10 +6,9 @@ import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize, Localize } from 'Components/i18next';
 
-const EditAdFormPaymentMethods = ({ is_sell_advert, payment_method_names }) => {
+const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
 
-    const [selected_methods, setSelectedMethods] = React.useState([]);
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
@@ -55,14 +54,6 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, payment_method_names }) => {
     };
 
     React.useEffect(() => {
-        if (payment_method_names) {
-            payment_method_names?.forEach(pm => {
-                my_profile_store.getPaymentMethodValue(pm);
-                selected_methods.push(my_profile_store.payment_method_value);
-                my_ads_store.payment_method_names.push(my_profile_store.payment_method_value);
-            });
-        }
-
         return () => {
             my_ads_store.payment_method_ids = [];
             my_ads_store.payment_method_names = [];

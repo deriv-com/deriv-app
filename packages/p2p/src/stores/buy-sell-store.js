@@ -476,6 +476,7 @@ export default class BuySellStore extends BaseStore {
 
         if (this.is_sell_advert) {
             validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
+            validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }
 
         const display_min_amount = formatMoney(this.account_currency, this.advert.min_order_amount_limit, true);
@@ -505,6 +506,7 @@ export default class BuySellStore extends BaseStore {
 
         const mapped_key = {
             contact_info: localize('Contact details'),
+            payment_info: localize('Bank details'),
         };
 
         const errors = {};
@@ -516,6 +518,7 @@ export default class BuySellStore extends BaseStore {
 
             if (error_index !== -1) {
                 switch (key) {
+                    case 'payment_info':
                     case 'contact_info': {
                         errors[key] = getInfoMessages(mapped_key[key])[error_index];
                         break;

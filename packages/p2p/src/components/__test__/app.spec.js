@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
 import { setLanguage } from '../i18next';
 import App from '../app';
+import ServerTime from 'Utils/server-time';
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -32,6 +33,12 @@ jest.mock('Utils/websocket', () => ({
     waitWS: (...payload) => Promise.resolve([...payload]),
 }));
 
+jest.mock('Utils/server-time', () => ({
+    init: jest.fn(),
+    get: jest.fn(),
+    getDistanceToServerTime: jest.fn(),
+}));
+
 jest.mock('Components/app-content', () => () => <div>AppContent</div>);
 
 jest.mock('Components/i18next', () => ({
@@ -52,11 +59,15 @@ describe('<App/>', () => {
         websocket_api: {},
     };
 
-    it('should invoke useEffect methods', () => {
-        const use_effect_spy = jest.spyOn(React, 'useEffect');
-        render(<App {...props} />);
+    it('should set store props when rendered for the first time', () => {
+        const { general_store, order_store } = useStores();
+        render(<App {...props} order_id='17' />);
 
-        expect(use_effect_spy).toHaveBeenCalledTimes(1);
+        expect(general_store.setAppProps).toHaveBeenCalled();
+        expect(general_store.setWebsocketInit).toHaveBeenCalled();
+        expect(order_store.setOrderId).toHaveBeenCalledWith('17');
+        expect(general_store.redirectTo).toHaveBeenCalled();
+        expect(ServerTime.init).toHaveBeenCalled();
     });
 
     it('should render appContent component', () => {
@@ -72,22 +83,12 @@ describe('<App/>', () => {
         expect(setLanguage).toHaveBeenCalledWith('ENG');
     });
 
-    it('should redirect to orders when order_id is passed', () => {
-        const { general_store } = useStores();
-        const spied_redirectTo = jest.spyOn(general_store, 'redirectTo');
-        render(<App {...props} order_id='17' />);
-
-        expect(spied_redirectTo).toHaveBeenCalled();
-    });
-
-    it('should remove the is_verifying_p2p status from local storage if it was previously set', () => {
-        localStorage.setItem('is_verifying_p2p', true);
-        const remove_item_spy = jest.spyOn(window.localStorage.__proto__, 'removeItem');
-
-        const mock_history = { location: { pathname: 'verification', push: jest.fn() } };
+    it('should redirect to p2p is verification is present in route', () => {
+        const set_item_spy = jest.spyOn(window.localStorage.__proto__, 'setItem');
+        const mock_history = { location: { pathname: '/verification' }, push: jest.fn() };
         render(<App {...props} history={mock_history} />);
 
-        // expect(set_item_spy).toHaveBeenCalled();
+        expect(set_item_spy).toHaveBeenCalled();
     });
 
     it('should do a hard reload of page', () => {

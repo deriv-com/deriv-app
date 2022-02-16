@@ -29,8 +29,8 @@ const BinarySocketBase = (() => {
         is_down: false,
     };
 
-    const getSocketUrl = language =>
-        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
+    const getSocketUrl = () =>
+        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
 
     const isReady = () => hasReadyState(1);
 
@@ -40,10 +40,10 @@ const BinarySocketBase = (() => {
         binary_socket.close();
     };
 
-    const closeAndOpenNewConnection = (language = getLanguage()) => {
+    const closeAndOpenNewConnection = () => {
         close();
         is_switching_socket = true;
-        openNewConnection(language);
+        openNewConnection();
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
@@ -55,14 +55,14 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
-    const openNewConnection = (language = getLanguage()) => {
+    const openNewConnection = () => {
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
 
         if (isClose()) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(getSocketUrl(language));
+            binary_socket = new WebSocket(getSocketUrl());
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
@@ -189,13 +189,12 @@ const BinarySocketBase = (() => {
     const cancelCryptoTransaction = transaction_id =>
         deriv_api.send({ cashier_withdrawal_cancel: 1, id: transaction_id });
 
-    const newAccountVirtual = (verification_code, client_password, residence, email_consent, device_data) =>
+    const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
         deriv_api.send({
             new_account_virtual: 1,
             verification_code,
             client_password,
             residence,
-            email_consent,
             ...device_data,
         });
 
@@ -383,12 +382,8 @@ const BinarySocketBase = (() => {
         hasReadyState,
         isSiteDown,
         isSiteUpdating,
-        clear: () => {
-            // do nothing.
-        },
-        sendBuffered: () => {
-            // do nothing.
-        },
+        clear: () => {},
+        sendBuffered: () => {},
         getSocket: () => binary_socket,
         get: () => deriv_api,
         getAvailability: () => availability,
@@ -492,7 +487,7 @@ const proxyForAuthorize = obj =>
     new Proxy(obj, {
         get(target, field) {
             if (typeof target[field] !== 'function') {
-                return proxyForAuthorize(target[field]);
+                return proxyForAuthorize(target[field], proxied_socket_base[field]);
             }
             return (...args) => BinarySocketBase.wait('authorize').then(() => target[field](...args));
         },

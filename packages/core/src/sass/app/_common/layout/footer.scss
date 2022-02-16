@@ -33,6 +33,9 @@
 
         &--left {
             margin-right: auto;
+            &:hover {
+                cursor: pointer;
+            }
         }
         /* fix issue with rogue tiny-popover div generated in footer links */
         div {

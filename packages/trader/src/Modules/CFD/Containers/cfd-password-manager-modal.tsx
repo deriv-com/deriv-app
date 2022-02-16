@@ -1,4 +1,4 @@
-import { Field, Form, Formik, FieldProps } from 'formik';
+import { Field, Form, Formik, FieldProps, FormikErrors } from 'formik';
 import React from 'react';
 import {
     Icon,
@@ -38,6 +38,12 @@ import {
     TCFDPasswordManagerModal,
 } from './props.types';
 import RootStore from '../../../Stores/index';
+
+type TFormValues = {
+    old_password: string;
+    new_password: string;
+    password_type: string;
+};
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
@@ -195,7 +201,7 @@ const InvestorPasswordManager = ({
                 {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                     <Form className='cfd-password-manager__investor-form' noValidate>
                         <Field name='old_password'>
-                            {({ field }: FieldProps) => (
+                            {({ field }: FieldProps<string, TFormValues>) => (
                                 <PasswordInput
                                     {...field}
                                     autoComplete='current-password'
@@ -206,7 +212,7 @@ const InvestorPasswordManager = ({
                             )}
                         </Field>
                         <Field name='new_password'>
-                            {({ field }: FieldProps) => (
+                            {({ field }: FieldProps<string, TFormValues>) => (
                                 <PasswordMeter
                                     input={field.value}
                                     has_error={!!(touched.new_password && errors.new_password)}
@@ -284,8 +290,8 @@ const CFDPasswordManagerTabContent = ({
 
     // view height - margin top and bottom of modal - modal title - modal content margin top and bottom - table title
     const container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
-    const validatePassword = (values: { old_password: string; new_password: string; password_type: string }) => {
-        const errors: { new_password?: string; old_password?: string } = {};
+    const validatePassword = (values: TFormValues) => {
+        const errors: FormikErrors<TFormValues> = {};
 
         if (
             !validLength(values.new_password, {

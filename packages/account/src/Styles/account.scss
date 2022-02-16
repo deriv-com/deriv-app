@@ -635,6 +635,20 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 2.4rem 1.8rem 2rem;
         }
     }
+    &__email {
+        &-wrapper {
+            .email-platform {
+                &__content {
+                    margin-top: 3.6rem;
+                    display: flex;
+                    grid-column-gap: 0.8rem;
+                    &__fieldset {
+                        width: 400px;
+                    }
+                }
+            }
+        }
+    }
     &__password-wrapper {
         & .account__scrollbars_container--grid-layout {
             @include mobile {

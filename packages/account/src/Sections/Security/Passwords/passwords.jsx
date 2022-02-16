@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import DerivPassword from './deriv-password.jsx';
+import DerivEmail from './deriv-email.jsx';
 import PasswordsPlatform from './passwords-platform.jsx';
 
 const Passwords = ({
@@ -31,6 +32,7 @@ const Passwords = ({
 
     return (
         <div className='account__passwords'>
+            <DerivEmail email={email}/>
             {/* Todo: remove the condition after Apple social signup is fully functional from BE side */}
             {social_identity_provider === 'apple' ? null : (
                 <DerivPassword

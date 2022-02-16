@@ -29,7 +29,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
         }
 
         return () => removeListeners();
-    }, [item]);
+    }, [item, nodes, onKeyPressed]);
 
     return (
         <div

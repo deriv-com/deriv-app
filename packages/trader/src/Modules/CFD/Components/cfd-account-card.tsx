@@ -6,8 +6,18 @@ import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy';
 import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
+import {
+    TAccountIconValues,
+    TSpecBoxProps,
+    TPasswordBoxProps,
+    TCFDAccountCardActionProps,
+    TExistingData,
+    TCFDAccountCard,
+    TradingPlatformAccounts,
+} from './props.types';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-const account_icons = {
+const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
         synthetic: 'IcMt5SyntheticPlatform',
         financial: 'IcMt5FinancialPlatform',
@@ -21,24 +31,26 @@ const account_icons = {
     },
 };
 
-const AddTradeServerButton = React.forwardRef(({ onSelectAccount, is_disabled }, ref) => {
-    return (
-        <div
-            onClick={is_disabled ? null : onSelectAccount}
-            className={classNames('cfd-account-card__add-server', {
-                'cfd-account-card__add-server--disabled': is_disabled,
-            })}
-            ref={ref}
-        >
-            <span className='cfd-account-card__add-server--icon'>+</span>
-            <Localize i18n_default_text='Add region' />
-        </div>
-    );
-});
+const AddTradeServerButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () => void; is_disabled?: boolean }>(
+    ({ onSelectAccount, is_disabled }, ref) => {
+        return (
+            <div
+                onClick={is_disabled ? () => undefined : onSelectAccount}
+                className={classNames('cfd-account-card__add-server', {
+                    'cfd-account-card__add-server--disabled': is_disabled,
+                })}
+                ref={ref}
+            >
+                <span className='cfd-account-card__add-server--icon'>+</span>
+                <Localize i18n_default_text='Add region' />
+            </div>
+        );
+    }
+);
 
 AddTradeServerButton.displayName = 'AddTradeServerButton';
 
-const SpecBox = ({ value, is_bold }) => (
+const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
     <div className='cfd-account-card__spec-box'>
         <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-account-card__spec-text'>
             {value}
@@ -47,7 +59,7 @@ const SpecBox = ({ value, is_bold }) => (
     </div>
 );
 
-const PasswordBox = ({ platform, onClick }) => (
+const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
     <div className='cfd-account-card__password-box'>
         <div className='cfd-account-card__password-text'>
             <Popover
@@ -92,7 +104,7 @@ const CFDAccountCardAction = ({
     type,
     platform,
     title,
-}) => {
+}: TCFDAccountCardActionProps) => {
     if (
         is_virtual &&
         type.category === 'real' &&
@@ -170,61 +182,66 @@ const CFDAccountCard = ({
     should_show_trade_servers,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
-}) => {
-    const icon = type.type ? <Icon icon={account_icons[type.platform][is_eu ? 'cfd' : type.type]} size={64} /> : null;
-    const has_popular_banner =
+}: TCFDAccountCard) => {
+    const platform_icon = is_eu ? 'cfd' : type.type;
+    const icon: any = type.type ? <Icon icon={account_icons[type.platform][platform_icon]} size={64} /> : null;
+    const has_popular_banner: boolean =
         type.type === 'synthetic' &&
         type.category === 'real' &&
         (platform === CFD_PLATFORMS.MT5 ? !existing_data : true);
-    const has_demo_banner = type.category === 'demo';
+    const has_demo_banner: boolean = type.category === 'demo';
     const has_server_banner =
         is_logged_in &&
         existing_data &&
         type.category === 'real' &&
         type.type === 'synthetic' &&
-        existing_data?.server_info;
+        (existing_data as DetailsOfEachMT5Loginid)?.server_info;
 
-    const is_real_synthetic_account = type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
-    const get_server_region = existing_data?.server_info?.geolocation.region;
-    const get_server_environment = existing_data?.server_info?.environment;
+    const is_real_synthetic_account: boolean =
+        type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
+    const get_server_region = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.region;
+    const get_server_environment = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.environment;
 
-    const ref = React.useRef();
-    const wrapper_ref = React.useRef();
-    const button_ref = React.useRef();
+    const ref = React.useRef<HTMLDivElement | null>(null);
+    const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
+    const button_ref = React.useRef<HTMLDivElement | null>(null);
 
     React.useEffect(() => {
+        const ref_current = ref?.current;
+        const button_ref_current = button_ref?.current;
         if (existing_data) {
             const show = () => {
-                onHover?.(existing_data.group);
+                onHover?.((existing_data as DetailsOfEachMT5Loginid).group);
             };
 
-            ref.current.addEventListener('mouseenter', show);
-            button_ref?.current?.addEventListener('mouseenter', show);
+            ref_current?.addEventListener('mouseenter', show);
+            button_ref_current?.addEventListener('mouseenter', show);
 
             return () => {
-                ref.current.removeEventListener('mouseenter', show);
-                button_ref?.current?.removeEventListener('mouseenter', () => show);
+                ref_current?.removeEventListener('mouseenter', show);
+                button_ref_current?.removeEventListener('mouseenter', () => show);
             };
         }
-        return () => {};
-    }, [onHover]);
+        return () => {
+            // Curly brackets could not be empty due to the sonarcloud code smells
+        };
+    }, [onHover, existing_data]);
 
-    const getServerName = React.useCallback(
-        server => {
-            if (server) {
-                const server_region = server.server_info?.geolocation.region;
-                if (server_region) {
-                    return `${server_region} ${
-                        server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
-                    }`;
-                }
+    const getServerName: (value: TExistingData) => string = React.useCallback(server => {
+        if (server) {
+            const server_region = (server as DetailsOfEachMT5Loginid).server_info?.geolocation?.region;
+            if (server_region) {
+                return `${server_region} ${
+                    (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence === 1
+                        ? ''
+                        : (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence
+                }`;
             }
-            return '';
-        },
-        [existing_data]
-    );
+        }
+        return '';
+    }, []);
 
-    const createFullServerNames = () => {
+    const createFullServerNames: () => string = () => {
         let region_string = '';
         let server_number = '';
         const server_environment = get_server_environment ? get_server_environment.toLowerCase() : '';
@@ -238,12 +255,14 @@ const CFDAccountCard = ({
         return `${type.category}-${type.type}${region_string}${server_number}`;
     };
 
-    const handleClickSwitchAccount = () => {
-        toggleShouldShowRealAccountsList(true);
-        toggleAccountsDialog(true);
+    const handleClickSwitchAccount = (): void => {
+        if (toggleShouldShowRealAccountsList && toggleAccountsDialog) {
+            toggleShouldShowRealAccountsList(true);
+            toggleAccountsDialog(true);
+        }
     };
 
-    const getDxtradeDownloadLink = () => {
+    const getDxtradeDownloadLink: () => string = () => {
         const os = mobileOSDetect();
         if (os === 'iOS') {
             return getPlatformDXTradeDownloadLink('ios');
@@ -252,6 +271,55 @@ const CFDAccountCard = ({
     };
 
     const is_web_terminal_unsupported = isMobile() && platform === CFD_PLATFORMS.DXTRADE;
+    const tbody_content =
+        platform === CFD_PLATFORMS.MT5 ? (
+            <React.Fragment>
+                <tr className='cfd-account-card__login-specs-table-row'>
+                    <td className='cfd-account-card__login-specs-table-attribute'>
+                        <div className='cfd-account-card--paragraph'>{localize('Broker')}</div>
+                    </td>
+                    <td className='cfd-account-card__login-specs-table-data'>
+                        <div className='cfd-account-card--paragraph'>
+                            <SpecBox value={'Deriv Limited'} />
+                        </div>
+                    </td>
+                </tr>
+                <tr className='cfd-account-card__login-specs-table-row'>
+                    <td className='cfd-account-card__login-specs-table-attribute'>
+                        <div className='cfd-account-card--paragraph'>{localize('Server')}</div>
+                    </td>
+                    <td className='cfd-account-card__login-specs-table-data'>
+                        <div className='cfd-account-card--paragraph'>
+                            <SpecBox value={(existing_data as DetailsOfEachMT5Loginid)?.server_info?.environment} />
+                        </div>
+                    </td>
+                </tr>
+                <tr className='cfd-account-card__login-specs-table-row'>
+                    <td className='cfd-account-card__login-specs-table-attribute'>
+                        <div className='cfd-account-card--paragraph'>{localize('Login ID')}</div>
+                    </td>
+                    <td className='cfd-account-card__login-specs-table-data'>
+                        <div className='cfd-account-card--paragraph'>
+                            <SpecBox value={(existing_data as TradingPlatformAccounts)?.display_login} />
+                        </div>
+                    </td>
+                </tr>
+            </React.Fragment>
+        ) : (
+            <React.Fragment>
+                <tr className='cfd-account-card__login-specs-table-row'>
+                    <td className='cfd-account-card__login-specs-table-attribute'>
+                        <div className='cfd-account-card--paragraph'>{localize('Username')}</div>
+                    </td>
+                    <td className='cfd-account-card__login-specs-table-data'>
+                        <div className='cfd-account-card--paragraph'>
+                            <SpecBox value={existing_data?.login} is_bold />
+                        </div>
+                    </td>
+                </tr>
+            </React.Fragment>
+        );
+
     return (
         <div ref={wrapper_ref} className='cfd-account-card__wrapper'>
             <div
@@ -295,14 +363,14 @@ const CFDAccountCard = ({
                                 <Money
                                     amount={existing_data.display_balance}
                                     currency={existing_data.currency}
-                                    has_sign={existing_data.balance < 0}
+                                    has_sign={existing_data.balance && existing_data.balance < 0}
                                     show_currency
                                 />
                             </Text>
                         )}
-                        {existing_data?.display_login && is_logged_in && (
+                        {(existing_data as TradingPlatformAccounts)?.display_login && is_logged_in && (
                             <Text color='less-prominent' size='xxxs' line_height='s'>
-                                {existing_data.display_login}
+                                {(existing_data as TradingPlatformAccounts)?.display_login}
                             </Text>
                         )}
                     </div>
@@ -315,63 +383,7 @@ const CFDAccountCard = ({
                                 <div className='cfd-account-card__login-specs'>
                                     <table className='cfd-account-card__login-specs-table'>
                                         <tbody>
-                                            {platform === CFD_PLATFORMS.MT5 ? (
-                                                <React.Fragment>
-                                                    <tr className='cfd-account-card__login-specs-table-row'>
-                                                        <td className='cfd-account-card__login-specs-table-attribute'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                {localize('Broker')}
-                                                            </div>
-                                                        </td>
-                                                        <td className='cfd-account-card__login-specs-table-data'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox value={'Deriv Limited'} />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className='cfd-account-card__login-specs-table-row'>
-                                                        <td className='cfd-account-card__login-specs-table-attribute'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                {localize('Server')}
-                                                            </div>
-                                                        </td>
-                                                        <td className='cfd-account-card__login-specs-table-data'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox
-                                                                    value={existing_data.server_info.environment}
-                                                                />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className='cfd-account-card__login-specs-table-row'>
-                                                        <td className='cfd-account-card__login-specs-table-attribute'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                {localize('Login ID')}
-                                                            </div>
-                                                        </td>
-                                                        <td className='cfd-account-card__login-specs-table-data'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox value={existing_data.display_login} />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </React.Fragment>
-                                            ) : (
-                                                <React.Fragment>
-                                                    <tr className='cfd-account-card__login-specs-table-row'>
-                                                        <td className='cfd-account-card__login-specs-table-attribute'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                {localize('Username')}
-                                                            </div>
-                                                        </td>
-                                                        <td className='cfd-account-card__login-specs-table-data'>
-                                                            <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox value={existing_data.login} is_bold />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </React.Fragment>
-                                            )}
+                                            {tbody_content}
                                             <tr className='cfd-account-card__login-specs-table-row cfd-account-card__login-specs-table-row--account-id'>
                                                 <td className='cfd-account-card__login-specs-table-attribute'>
                                                     <div className='cfd-account-card--paragraph'>
@@ -384,11 +396,11 @@ const CFDAccountCard = ({
                                                             platform={platform}
                                                             onClick={() => {
                                                                 onPasswordManager(
-                                                                    existing_data.login,
+                                                                    existing_data?.login,
                                                                     title,
                                                                     type.category,
                                                                     type.type,
-                                                                    existing_data.server
+                                                                    (existing_data as DetailsOfEachMT5Loginid)?.server
                                                                 );
                                                             }}
                                                         />
@@ -403,24 +415,25 @@ const CFDAccountCard = ({
                             <div className='cfd-account-card__specs'>
                                 <table className='cfd-account-card__specs-table'>
                                     <tbody>
-                                        {Object.keys(specs).map((spec_attribute, idx) => (
-                                            <tr key={idx} className='cfd-account-card__specs-table-row'>
-                                                <td className='cfd-account-card__specs-table-attribute'>
-                                                    <p className='cfd-account-card--paragraph'>{spec_attribute}</p>
-                                                </td>
-                                                <td className='cfd-account-card__specs-table-data'>
-                                                    <p className='cfd-account-card--paragraph'>
-                                                        {specs[spec_attribute]}
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {typeof specs !== 'undefined' &&
+                                            Object.keys(specs).map((spec_attribute, idx) => (
+                                                <tr key={idx} className='cfd-account-card__specs-table-row'>
+                                                    <td className='cfd-account-card__specs-table-attribute'>
+                                                        <p className='cfd-account-card--paragraph'>{spec_attribute}</p>
+                                                    </td>
+                                                    <td className='cfd-account-card__specs-table-data'>
+                                                        <p className='cfd-account-card--paragraph'>
+                                                            {specs[spec_attribute]}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         {has_server_banner &&
                                             existing_data &&
                                             type.type === 'synthetic' &&
                                             type.category === 'real' && (
                                                 <tr
-                                                    key={existing_data.server}
+                                                    key={(existing_data as DetailsOfEachMT5Loginid).server}
                                                     className='cfd-account-card__specs-table-row'
                                                 >
                                                     <td className='cfd-account-card__specs-table-attribute'>
@@ -473,8 +486,9 @@ const CFDAccountCard = ({
                                         ? getDXTradeWebTerminalLink(type.category)
                                         : getMT5WebTerminalLink({
                                               category: type.category,
-                                              loginid: existing_data.display_login,
-                                              server_name: existing_data.server_info.environment,
+                                              loginid: (existing_data as TradingPlatformAccounts).display_login,
+                                              server_name: (existing_data as DetailsOfEachMT5Loginid)?.server_info
+                                                  ?.environment,
                                           })
                                 }
                                 target='_blank'

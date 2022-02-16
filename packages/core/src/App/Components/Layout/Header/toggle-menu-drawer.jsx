@@ -10,17 +10,7 @@ import getRoutesConfig from 'App/Constants/routes-config';
 import { currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 
-const MenuLink = ({
-    changeCurrentLanguage,
-    link_to,
-    icon,
-    is_active,
-    is_disabled,
-    is_language,
-    suffix_icon,
-    text,
-    onClickLink,
-}) => {
+const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink }) => {
     if (is_language) {
         return (
             <span
@@ -31,7 +21,7 @@ const MenuLink = ({
                 active_class='header__menu-mobile-link--active'
                 onClick={() => {
                     onClickLink();
-                    changeLanguage(link_to, changeCurrentLanguage);
+                    changeLanguage(link_to);
                 }}
             >
                 <Icon className='header__menu-mobile-link-flag-icon' size={32} icon={icon} />
@@ -73,7 +63,6 @@ const MenuLink = ({
 const ToggleMenuDrawer = React.forwardRef(
     (
         {
-            changeCurrentLanguage,
             account_status,
             disableApp,
             enableApp,
@@ -162,7 +151,6 @@ const ToggleMenuDrawer = React.forwardRef(
                             icon={route_config.icon_component}
                             text={route_config.getTitle()}
                             onClickLink={toggleDrawer}
-                            changeCurrentLanguage={changeCurrentLanguage}
                         />
                     </MobileDrawer.Item>
                 );
@@ -196,7 +184,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                             icon={route.icon_component}
                                             text={route.getTitle()}
                                             onClickLink={toggleDrawer}
-                                            changeCurrentLanguage={changeCurrentLanguage}
                                         />
                                     </MobileDrawer.Item>
                                 );
@@ -225,7 +212,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                             link_to={subroute.path}
                                             text={subroute.getTitle()}
                                             onClickLink={toggleDrawer}
-                                            changeCurrentLanguage={changeCurrentLanguage}
                                         />
                                     ))}
                                 </MobileDrawer.SubMenuSection>
@@ -262,7 +248,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                 icon={`IcFlag${lang.replace('_', '-')}`}
                                 text={getAllowedLanguages()[lang]}
                                 onClickLink={toggleDrawer}
-                                changeCurrentLanguage={changeCurrentLanguage}
                             />
                         </MobileDrawer.Item>
                     ))}
@@ -322,7 +307,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 icon='IcTrade'
                                                 text={localize('Trade')}
                                                 onClickLink={toggleDrawer}
-                                                changeCurrentLanguage={changeCurrentLanguage}
                                             />
                                         </MobileDrawer.Item>
                                         {primary_routes_config.map((route_config, idx) =>

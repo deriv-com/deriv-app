@@ -11,22 +11,26 @@ const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
+    const [selected_methods_text, setSelectedMethodsText] = React.useState([]);
 
     const onChange = payment_method => {
         if (!buy_sell_store.filter_payment_methods.includes(payment_method.value)) {
             buy_sell_store.filter_payment_methods.push(payment_method.value);
             setSelectedMethods([...selected_methods, payment_method.value]);
+            setSelectedMethodsText([...selected_methods_text, payment_method.text]);
         } else {
             buy_sell_store.filter_payment_methods = buy_sell_store.filter_payment_methods.filter(
                 payment_method_id => payment_method_id !== payment_method.value
             );
             setSelectedMethods(selected_methods.filter(i => i !== payment_method.value));
+            setSelectedMethodsText(selected_methods_text.filter(i => i !== payment_method.text));
         }
     };
 
     const onClickClear = () => {
         buy_sell_store.filter_payment_methods = [];
         setSelectedMethods([]);
+        setSelectedMethodsText([]);
     };
 
     React.useEffect(() => {
@@ -91,9 +95,9 @@ const FilterModal = () => {
                                 <Text color='prominent' size='xs'>
                                     <Localize i18n_default_text='Payment methods' />
                                 </Text>
-                                {/* <Text color='less-prominent' size='xs'>
-                                    <Localize i18n_default_text='All' />
-                                </Text> */}
+                                <Text color='less-prominent' size='xs'>
+                                    {selected_methods_text.join(', ')}
+                                </Text>
                             </div>
                             <Icon
                                 icon='IcChevronRight'
@@ -131,7 +135,14 @@ const FilterModal = () => {
                     </Button>
                 ) : (
                     <Button.Group>
-                        <Button large secondary onClick={() => buy_sell_store.onClickReset()}>
+                        <Button
+                            large
+                            secondary
+                            onClick={() => {
+                                buy_sell_store.onClickReset();
+                                onClickClear();
+                            }}
+                        >
                             {localize('Reset')}
                         </Button>
                         <Button large primary onClick={() => buy_sell_store.onClickApply()}>

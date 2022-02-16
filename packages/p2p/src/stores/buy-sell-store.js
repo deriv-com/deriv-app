@@ -202,6 +202,7 @@ export default class BuySellStore extends BaseStore {
                 limit: general_store.list_item_limit,
                 sort_by: this.sort_by,
                 use_client_limits: this.should_use_client_limits ? 1 : 0,
+                ...(this.filter_payment_methods.length > 0 ? { payment_method: this.filter_payment_methods } : {}),
             }).then(response => {
                 if (!response.error) {
                     // Ignore any responses that don't match our request. This can happen

@@ -10,6 +10,25 @@ import FilterModalNoResults from './filter-modal-no-results.jsx';
 const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
 
+    const [selected_methods, setSelectedMethods] = React.useState([]);
+
+    const onChange = payment_method => {
+        if (!buy_sell_store.filter_payment_methods.includes(payment_method.value)) {
+            buy_sell_store.filter_payment_methods.push(payment_method.value);
+            setSelectedMethods([...selected_methods, payment_method.value]);
+        } else {
+            buy_sell_store.filter_payment_methods = buy_sell_store.filter_payment_methods.filter(
+                payment_method_id => payment_method_id !== payment_method.value
+            );
+            setSelectedMethods(selected_methods.filter(i => i !== payment_method.value));
+        }
+    };
+
+    const onClickClear = () => {
+        buy_sell_store.filter_payment_methods = [];
+        setSelectedMethods([]);
+    };
+
     React.useEffect(() => {
         buy_sell_store.setShowFilterPaymentMethods(false);
         my_profile_store.getPaymentMethodsList();
@@ -41,8 +60,8 @@ const FilterModal = () => {
                                                 <Checkbox
                                                     key={key}
                                                     label={payment_method.text}
-                                                    onChange={e => buy_sell_store.onChange(e)}
-                                                    // value={payment_method.value}
+                                                    onChange={() => onChange(payment_method)}
+                                                    value={selected_methods.includes(payment_method.value)}
                                                 />
                                             );
                                         })
@@ -53,10 +72,11 @@ const FilterModal = () => {
                                     my_profile_store.payment_methods_list_items.map((payment_method, key) => {
                                         return (
                                             <Checkbox
+                                                name='checkbox'
                                                 key={key}
                                                 label={payment_method.text}
-                                                onChange={e => buy_sell_store.onChange(e)}
-                                                // value={payment_method.value}
+                                                onChange={() => onChange(payment_method)}
+                                                value={selected_methods.includes(payment_method.value)}
                                             />
                                         );
                                     })
@@ -106,12 +126,7 @@ const FilterModal = () => {
             </Modal.Body>
             <Modal.Footer has_separator>
                 {buy_sell_store.show_filter_payment_methods ? (
-                    <Button
-                        className='filter-modal__footer-button'
-                        large
-                        secondary
-                        onClick={() => buy_sell_store.onClickReset()}
-                    >
+                    <Button className='filter-modal__footer-button' large secondary onClick={() => onClickClear()}>
                         <Localize i18n_default_text='Clear' />
                     </Button>
                 ) : (

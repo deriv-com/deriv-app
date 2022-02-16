@@ -11,7 +11,6 @@ export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
     @observable contact_info = '';
     @observable error_message = '';
-    @observable filter_payment_methods = [];
     @observable has_more_items_to_load = false;
     @observable is_filter_modal_loading = false;
     @observable is_filter_modal_open = false;
@@ -40,7 +39,7 @@ export default class BuySellStore extends BaseStore {
         // For sell orders we require extra information.
         ...(this.is_sell_advert ? { contact_info: this.contact_info } : {}),
     };
-
+    filter_payment_methods = [];
     payment_method_ids = [];
     sort_list = [
         { text: localize('Exchange rate (Default)'), value: 'rate' },
@@ -265,21 +264,6 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    onChange(e) {
-        const { my_profile_store } = this.root_store;
-
-        let list = my_profile_store.payment_methods_list_values;
-
-        if (list.includes(e.target.value)) {
-            list = list.filter(item => item.value !== e.target.value);
-            this.setFilterPaymentMethods(list);
-        } else {
-            list.push(e.target.value);
-            this.setFilterPaymentMethods(list);
-        }
-    }
-
-    @action.bound
     onChangeTableType(event) {
         this.setTableType(event.target.value);
     }
@@ -333,11 +317,6 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
-    }
-
-    @action.bound
-    setFilterPaymentMethods(filter_payment_methods) {
-        this.filter_payment_methods = filter_payment_methods;
     }
 
     @action.bound

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
 import { setLanguage } from '../i18next';
-import App from '../app';
+import App from '../app.jsx';
 import ServerTime from 'Utils/server-time';
 
 jest.mock('Stores', () => ({
@@ -39,7 +39,7 @@ jest.mock('Utils/server-time', () => ({
     getDistanceToServerTime: jest.fn(),
 }));
 
-jest.mock('Components/app-content', () => () => <div>AppContent</div>);
+jest.mock('Components/app-content.jsx', () => jest.fn(() => <div>AppContent</div>));
 
 jest.mock('Components/i18next', () => ({
     ...jest.requireActual('Components/i18next'),
@@ -84,7 +84,7 @@ describe('<App/>', () => {
     });
 
     it('should redirect to p2p is verification is present in route', () => {
-        const set_item_spy = jest.spyOn(window.localStorage.__proto__, 'setItem');
+        const set_item_spy = jest.spyOn(Object.getPrototypeOf(localStorage), 'setItem');
         const mock_history = { location: { pathname: '/verification' }, push: jest.fn() };
         render(<App {...props} history={mock_history} />);
 

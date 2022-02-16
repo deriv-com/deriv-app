@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Checkbox, Dialog, Loading, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { Button, Dialog, Loading, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import {
     validPassword,
     getLocation,
@@ -19,7 +19,7 @@ import SignupSeparatorContainer from './signup-separator-container.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
-const signupInitialValues = { password: '', residence: '', email_consent: false };
+const signupInitialValues = { password: '', residence: '' };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
@@ -55,41 +55,19 @@ const validateSignup = (values, residence_list) => {
     return errors;
 };
 
-const AccountSignup = ({
-    enableApp,
-    isModalVisible,
-    clients_country,
-    onSignup,
-    residence_list,
-    isEuCountrySelected,
-}) => {
+const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
     const [pw_input, setPWInput] = React.useState('');
     const [selected_residence, setSelectedResidence] = React.useState('');
-    const [is_eu_resident, setIsEuResident] = React.useState(false);
 
     const updatePassword = new_password => {
         setPWInput(new_password);
     };
 
-    const onResidenceSelection = values => {
-        const residence = values;
-        setSelectedResidence(residence);
-        if (residence) {
-            const selected_country = residence_list.find(
-                item => item.text.toLowerCase() === residence.toLowerCase()
-            ).value;
-            if (isEuCountrySelected(selected_country)) {
-                setIsEuResident(true);
-            } else {
-                setIsEuResident(false);
-            }
-        }
-    };
-
+    const onResidenceSelection = residence => setSelectedResidence(residence);
     // didMount lifecycle hook
     React.useEffect(() => {
         WS.wait('website_status', 'residence_list').then(() => {
@@ -116,10 +94,6 @@ const AccountSignup = ({
             item => item.text.toLowerCase() === values.residence.toLowerCase()
         );
 
-        if (!is_eu_resident) {
-            values.email_consent = true;
-        }
-
         const modded_values = {
             ...values,
             residence: residence_list[index_of_selection].value,
@@ -136,7 +110,6 @@ const AccountSignup = ({
                     initialValues={signupInitialValues}
                     validate={validateSignupPassthrough}
                     onSubmit={onSignupPassthrough}
-                    is_eu_resident={is_eu_resident}
                     residence_list={residence_list}
                 >
                     {({
@@ -188,6 +161,7 @@ const AccountSignup = ({
                                             >
                                                 <PasswordInput
                                                     {...field}
+                                                    autoComplete='new-password'
                                                     className='account-signup__password-field'
                                                     label={localize('Create a password')}
                                                     error={touched.password && errors.password}
@@ -209,26 +183,6 @@ const AccountSignup = ({
                                     <Text as='p' size='xxs' className='account-signup__subtext' align='center'>
                                         <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                     </Text>
-                                    <Field name='email_consent'>
-                                        {({ field }) => (
-                                            <Checkbox
-                                                {...field}
-                                                className={
-                                                    is_eu_resident
-                                                        ? 'account-signup__receive-update-checkbox'
-                                                        : 'account-signup__hidden-checkbox'
-                                                }
-                                                onChange={() => {
-                                                    setFieldValue('email_consent', !values.email_consent);
-                                                }}
-                                                value={values.email_consent}
-                                                label={localize(
-                                                    'I want to receive updates on Deriv products, services, and events.'
-                                                )}
-                                                withTabIndex='0'
-                                            />
-                                        )}
-                                    </Field>
                                     <SignupSeparatorContainer />
                                     {api_error ? (
                                         <React.Fragment>
@@ -293,7 +247,6 @@ const AccountSignupModal = ({
     is_loading,
     is_visible,
     is_logged_in,
-    isEuCountrySelected,
     logout,
     onSignup,
     residence_list,
@@ -320,7 +273,6 @@ const AccountSignupModal = ({
                 onSignup={onSignup}
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
-                isEuCountrySelected={isEuCountrySelected}
                 enableApp={enableApp}
             />
         </Dialog>
@@ -347,6 +299,5 @@ export default connect(({ ui, client }) => ({
     is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,
     clients_country: client.clients_country,
-    isEuCountrySelected: client.isEuCountrySelected,
     logout: client.logout,
 }))(AccountSignupModal);

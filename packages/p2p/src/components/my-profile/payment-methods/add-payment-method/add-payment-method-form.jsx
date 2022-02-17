@@ -106,7 +106,10 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                 <Button
                                     secondary
                                     large
-                                    onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
+                                    onClick={() => {
+                                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                        my_profile_store.setSelectedPaymentMethod('');
+                                    }}
                                     type='button'
                                 >
                                     <Localize i18n_default_text='Cancel' />

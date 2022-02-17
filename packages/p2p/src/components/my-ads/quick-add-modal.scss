@@ -2,5 +2,10 @@
     &--body {
         display: flex;
         flex-direction: column;
+        padding: 1.5rem;
+    }
+
+    &--text {
+        display: flex;
     }
 }

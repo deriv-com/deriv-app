@@ -48,6 +48,12 @@
         }
     }
 
+    &__info {
+        @include mobile {
+            padding: 1rem 0;
+        }
+    }
+
     &__form {
         @include mobile {
             &-element {
@@ -67,12 +73,13 @@
         &-payment-methods {
             &--empty {
                 max-width: 67.2rem;
-                padding: 1.2rem 1.6rem;
+                padding: 1.2rem 0;
             }
 
             &--text {
                 display: flex;
                 flex-direction: column;
+                padding-bottom: 1rem;
             }
         }
 
@@ -107,6 +114,10 @@
             height: calc(100% - 2.4rem - 9.2rem);
             position: absolute;
             width: calc(100% - 4.8rem);
+
+            .dc-input {
+                max-width: 67.2rem;
+            }
 
             @include mobile {
                 height: fit-content;
@@ -554,6 +565,12 @@
         &-button {
             width: auto;
             height: 40px;
+        }
+    }
+
+    &--border {
+        .dc-input {
+            border: 1px dashed var(--border-normal);
         }
     }
 

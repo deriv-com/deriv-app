@@ -28,12 +28,12 @@
     }
     &__header {
         border: 1px solid #2a3052;
-        border-bottom-right-radius: 3px;
+        border-radius: 3px;
         background: #2a3052;
         color: $white;
         font-family: roboto, sans-serif;
         font-weight: 400;
-        padding: 0.4rem 0.4rem 0.4rem 0.7rem;
+        padding: 0.4rem 0.7rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -76,7 +76,7 @@
         & .reset__footer{
             border-top:1px solid #ddd;
             margin-top: 0.5rem;
-            padding: 0.3rem 0.4rem 0.2rem 1rem;
+            padding: 0.4rem 0.7rem;
             width: 100%;
             display:flex;
             justify-content: end;
@@ -111,6 +111,16 @@
         }
         & .ui-widget-content{
             border:unset;
+            &:before{
+                border-top: 1px solid #ddd;
+                margin-top: 1rem;
+                margin-bottom: 0.5rem;
+                padding: 0.3rem 0.4rem 0.2rem 1rem;
+                width: 100%;
+                display: flex;
+                justify-content: end;
+                margin-left: -10px;                      
+            }
         }
         & .ui-dialog-buttonset{
             display: flex;

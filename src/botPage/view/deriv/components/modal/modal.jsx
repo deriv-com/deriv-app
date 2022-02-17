@@ -25,7 +25,8 @@ const Modal = ({ children, title, onClose, action, class_name }) => {
             <button className="modal__header-right-close" onClick={onClose} />
           </div>
         </div>
-        <div className="modal__content">{children}</div>
+        
+        <div className="modal__content">{children}<span className="separator"></span></div>
       </div>
     </div>
   );

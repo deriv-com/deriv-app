@@ -41,8 +41,9 @@ describe('<BuySellRow />', () => {
         isMobile.mockReturnValue(true);
         render(<BuySellRow {...props} />);
 
-        const el_mobile_container = screen.getByTestId('mobile_container');
-        expect(el_mobile_container).toBeInTheDocument();
+        const el_dp2p_buy_sell_row__mobile_container = screen.getByTestId('dp2p-buy-sell-row__mobile_container');
+
+        expect(el_dp2p_buy_sell_row__mobile_container).toBeInTheDocument();
     });
 
     it('Component should be rendered in desktop view', () => {
@@ -58,8 +59,9 @@ describe('<BuySellRow />', () => {
         const props = mockProps();
         render(<BuySellRow {...props} />);
 
-        const el_desktop_container = screen.getByRole('row');
-        expect(el_desktop_container).toBeInTheDocument();
+        const el_dp2p_buy_sel_row__desktop_container = screen.getByRole('row');
+
+        expect(el_dp2p_buy_sel_row__desktop_container).toBeInTheDocument();
     });
 
     it('Component should show slider animation effect', () => {
@@ -75,8 +77,9 @@ describe('<BuySellRow />', () => {
         props.row.id = 'WATCH_THIS_SPACE';
         render(<BuySellRow {...props} />);
 
-        const el_slider_animation = screen.getByTestId('slider_animation_element');
-        expect(el_slider_animation).toBeInTheDocument();
+        const el_dp2p_buy_sel_row__slider_animation = screen.getByTestId('dp2p-buy-sell-row__slider_animation_element');
+
+        expect(el_dp2p_buy_sel_row__slider_animation).toBeInTheDocument();
     });
 
     it("Component should show proper 'no matching ads' text message", () => {
@@ -92,8 +95,9 @@ describe('<BuySellRow />', () => {
         props.row.id = 'NO_MATCH_ROW';
         render(<BuySellRow {...props} />);
 
-        const el_no_matching_ads = screen.getByText('There are no matching ads.');
-        expect(el_no_matching_ads).toBeInTheDocument();
+        const el__dp2p_buy_sel_row__no_matching_ads = screen.getByText('There are no matching ads.');
+
+        expect(el__dp2p_buy_sel_row__no_matching_ads).toBeInTheDocument();
     });
 
     it('on mobile view: showAdvertiserPage func should be called on click on advertiser container, setSelectedAdvert func should be called on click on Buy/Sell button', () => {
@@ -114,10 +118,13 @@ describe('<BuySellRow />', () => {
         isMobile.mockReturnValue(true);
         render(<BuySellRow {...props} />);
 
-        const el_advertiser_container = screen.getByTestId('mobile_advertiser_page_container');
-        const el_sell_btn = screen.getByRole('button', { name: 'Sell USD' });
-        fireEvent.click(el_advertiser_container);
-        fireEvent.click(el_sell_btn);
+        const el_dp2p_buy_sell_row__desktop_advertiser_page__container = screen.getByTestId(
+            'dp2p-buy-sell-row__mobile_advertiser_page_container'
+        );
+        const el_dp2p_buy_sell_row__sell_btn = screen.getByRole('button', { name: 'Sell USD' });
+
+        fireEvent.click(el_dp2p_buy_sell_row__desktop_advertiser_page__container);
+        fireEvent.click(el_dp2p_buy_sell_row__sell_btn);
 
         expect(showAdvertiserPage).toHaveBeenCalledTimes(1);
         expect(setSelectedAdvert).toHaveBeenCalledTimes(1);
@@ -141,10 +148,13 @@ describe('<BuySellRow />', () => {
         isMobile.mockReturnValue(false);
         render(<BuySellRow {...props} />);
 
-        const el_advertiser_container = screen.getByTestId('desktop_advertiser_page_container');
-        const el_sell_btn = screen.getByRole('button', { name: 'Sell USD' });
-        fireEvent.click(el_advertiser_container);
-        fireEvent.click(el_sell_btn);
+        const el_dp2p_buy_sell_row__desktop_advertiser_page__container = screen.getByTestId(
+            'dp2p-buy-sell-row__desktop_advertiser_page_container'
+        );
+        const el_dp2p_buy_sell_row__sell_btn = screen.getByRole('button', { name: 'Sell USD' });
+
+        fireEvent.click(el_dp2p_buy_sell_row__desktop_advertiser_page__container);
+        fireEvent.click(el_dp2p_buy_sell_row__sell_btn);
 
         expect(showAdvertiserPage).toHaveBeenCalledTimes(1);
         expect(setSelectedAdvert).toHaveBeenCalledTimes(1);

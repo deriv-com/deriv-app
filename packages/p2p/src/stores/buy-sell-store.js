@@ -12,6 +12,7 @@ export default class BuySellStore extends BaseStore {
     @observable contact_info = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
+    @observable has_payment_methods = false;
     @observable is_filter_modal_loading = false;
     @observable is_filter_modal_open = false;
     @observable is_loading = true;
@@ -331,6 +332,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setHasPaymentMethods(has_payment_methods) {
+        this.has_payment_methods = has_payment_methods;
+    }
+
+    @action.bound
     setIsFilterModalLoading(is_filter_modal_loading) {
         this.is_filter_modal_loading = is_filter_modal_loading;
     }
@@ -476,7 +482,9 @@ export default class BuySellStore extends BaseStore {
 
         if (this.is_sell_advert) {
             validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
-            validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
+            if (!this.has_payment_methods) {
+                validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
+            }
         }
 
         const display_min_amount = formatMoney(this.account_currency, this.advert.min_order_amount_limit, true);

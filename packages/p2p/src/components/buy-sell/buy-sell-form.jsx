@@ -39,6 +39,7 @@ const BuySellForm = props => {
             my_profile_store.setShouldShowAddPaymentMethodForm(false);
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
+            buy_sell_store.setHasPaymentMethods(!!payment_method_names);
 
             const disposeReceiveAmountReaction = reaction(
                 () => buy_sell_store.receive_amount,
@@ -93,11 +94,7 @@ const BuySellForm = props => {
                 contact_info: buy_sell_store.contact_info,
                 payment_info: buy_sell_store.payment_info,
             }}
-            initialErrors={
-                buy_sell_store.is_sell_advert && !buy_sell_store.has_payment_info
-                    ? { contact_info: true, payment_info: true }
-                    : {}
-            }
+            initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
             onSubmit={(...args) => {
                 buy_sell_store.handleSubmit(() => isMounted(), ...args);
             }}

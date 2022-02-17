@@ -9,7 +9,13 @@ const BuySellFormReceiveAmount = () => {
 
     return (
         <React.Fragment>
-            <Text as='p' color='less-prominent' line_height='m' size='xxs' data-testid='receive/send_label_container'>
+            <Text
+                as='p'
+                color='less-prominent'
+                line_height='m'
+                size='xxs'
+                data-testid='dp2p-buy-sell-form-receive-amount__label_container'
+            >
                 {buy_sell_store?.is_sell_advert ? (
                     <Localize i18n_default_text="You'll receive" />
                 ) : (
@@ -22,7 +28,7 @@ const BuySellFormReceiveAmount = () => {
                 line_height='m'
                 size='xs'
                 weight='bold'
-                data-testid='receive/send_amount_container'
+                data-testid='dp2p-buy-sell-form-receive-amount__amount_container'
             >
                 {getFormattedText(buy_sell_store?.receive_amount, buy_sell_store?.advert?.local_currency)}
             </Text>

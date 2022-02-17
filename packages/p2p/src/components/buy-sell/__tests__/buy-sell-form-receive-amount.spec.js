@@ -24,15 +24,19 @@ describe('<BuySellFormReceiveAmount />', () => {
 
         render(<BuySellFormReceiveAmount />);
 
-        const el_label_container = screen.getByTestId('receive/send_label_container');
-        const el_amount_container = screen.getByTestId('receive/send_amount_container');
-        const el_send = screen.getByText("You'll send");
-        const el_amount = screen.getByText('0.00 USD');
+        const el_dp2p_buy_sell_form_receive_amount__label_container = screen.getByTestId(
+            'dp2p-buy-sell-form-receive-amount__label_container'
+        );
+        const el_dp2p_buy_sell_form_receive_amount__amount_container = screen.getByTestId(
+            'dp2p-buy-sell-form-receive-amount__amount_container'
+        );
+        const el_dp2p_buy_sell_form_receive_amount__send_notification = screen.getByText("You'll send");
+        const el_dp2p_buy_sell_form_receive_amount__amount_notification = screen.getByText('0.00 USD');
 
-        expect(el_label_container).toBeInTheDocument();
-        expect(el_amount_container).toBeInTheDocument();
-        expect(el_send).toBeInTheDocument();
-        expect(el_amount).toBeInTheDocument();
+        expect(el_dp2p_buy_sell_form_receive_amount__label_container).toBeInTheDocument();
+        expect(el_dp2p_buy_sell_form_receive_amount__amount_container).toBeInTheDocument();
+        expect(el_dp2p_buy_sell_form_receive_amount__send_notification).toBeInTheDocument();
+        expect(el_dp2p_buy_sell_form_receive_amount__amount_notification).toBeInTheDocument();
     });
 
     test('Component should render proper message if is_sell_advert prop is true', () => {
@@ -42,7 +46,7 @@ describe('<BuySellFormReceiveAmount />', () => {
 
         render(<BuySellFormReceiveAmount />);
 
-        const el_receive = screen.getByText("You'll receive");
-        expect(el_receive).toBeInTheDocument();
+        const el_dp2p_buy_sell_form_receive_amount__receive = screen.getByText("You'll receive");
+        expect(el_dp2p_buy_sell_form_receive_amount__receive).toBeInTheDocument();
     });
 });

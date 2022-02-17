@@ -31,34 +31,34 @@ const mockUseStores = () => {
     }));
 };
 
+beforeAll(() => mockUseStores());
+
 describe('<BuySellHeader />', () => {
     it('Component should be rendered', () => {
-        mockUseStores();
         render(<BuySellHeader />);
 
-        expect(screen.getByTestId('headerContainer')).toBeInTheDocument();
+        const el_header_container = screen.getByTestId('header_container');
+        expect(el_header_container).toBeInTheDocument();
     });
 
     it('setTableType func should be called when click on buy/sell button', () => {
-        mockUseStores();
         const props = mockProps();
         render(<BuySellHeader {...props} />);
 
-        const buyBtn = screen.getByText('Buy');
-        const sellBtn = screen.getByText('Sell');
-        fireEvent.click(buyBtn);
-        fireEvent.click(sellBtn);
+        const el_buyBtn = screen.getByText('Buy');
+        const el_sellBtn = screen.getByText('Sell');
+        fireEvent.click(el_buyBtn);
+        fireEvent.click(el_sellBtn);
 
         expect(props.setTableType).toHaveBeenCalledTimes(2);
     });
 
     it('setShouldUseClientLimits func should be called when click on checkbox', () => {
-        mockUseStores();
         const props = mockProps();
         render(<BuySellHeader {...props} />);
 
-        const checkbox = screen.getByRole('checkbox');
-        fireEvent.click(checkbox);
+        const el_checkbox = screen.getByRole('checkbox');
+        fireEvent.click(el_checkbox);
 
         expect(setShouldUseClientLimits).toHaveBeenCalledTimes(1);
     });

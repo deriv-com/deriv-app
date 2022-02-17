@@ -52,7 +52,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             className={classNames('buy-sell__header', {
                 'buy-sell__header-position-static': !!buy_sell_store.api_error_message,
             })}
-            data-testid='headerContainer'
+            data-testid='header_container'
         >
             <div className='buy-sell__header-container'>
                 <AnimationWrapper is_visible={is_visible}>

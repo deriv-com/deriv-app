@@ -196,6 +196,13 @@
         }
     }
 
+    &__modal-body {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 1.6rem 0;
+        width: 100vw;
+    }
+
     &__table {
         display: flex;
         flex: 1;

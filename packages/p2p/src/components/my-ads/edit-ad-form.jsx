@@ -39,25 +39,24 @@ const EditAdForm = () => {
         rate_display,
         type,
     } = my_ads_store.p2p_advert_information;
+
     const is_buy_advert = type === buy_sell.BUY;
     const [selected_methods, setSelectedMethods] = React.useState([]);
 
     const payment_methods_changed = is_buy_advert
         ? !(
-              selected_methods.length > 0 &&
-              payment_method_names &&
+              !!payment_method_names &&
               selected_methods?.every(pm => {
                   const method = my_profile_store.getPaymentMethodDisplayName(pm);
                   return payment_method_names.includes(method);
               }) &&
               selected_methods.length === payment_method_names.length
-          ) && selected_methods.length > 0
+          )
         : !(
-              selected_methods.length > 0 &&
-              payment_method_details &&
+              !!payment_method_details &&
               selected_methods.every(pm => Object.keys(payment_method_details).includes(pm)) &&
               selected_methods.length === Object.keys(payment_method_details).length
-          ) && selected_methods.length > 0;
+          );
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -278,7 +277,7 @@ const EditAdForm = () => {
                                                     }
                                                     hint={localize('This information will be visible to everyone.')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                    initial_character_count={description && description.length}
+                                                    initial_character_count={description ? description.length : 0}
                                                     has_character_counter
                                                     max_characters={300}
                                                 />
@@ -316,9 +315,9 @@ const EditAdForm = () => {
                                                 is_disabled={
                                                     isSubmitting ||
                                                     !isValid ||
-                                                    (!dirty &&
-                                                        (payment_method_names || payment_method_details) &&
-                                                        !payment_methods_changed)
+                                                    (!dirty && !payment_methods_changed) ||
+                                                    selected_methods.length === 0 ||
+                                                    !(!!payment_method_names || !!payment_method_details)
                                                 }
                                             >
                                                 <Localize i18n_default_text='Save changes' />

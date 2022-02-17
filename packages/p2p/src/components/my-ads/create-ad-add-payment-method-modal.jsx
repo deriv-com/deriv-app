@@ -42,8 +42,7 @@ const CreateAdAddPaymentMethodModal = () => {
     if (isMobile()) {
         return (
             <MobileFullPageModal
-                body_className='buy-sell__modal-body'
-                className='buy-sell__modal'
+                body_className='p2p-my-ads__modal-body'
                 height_offset='80px'
                 is_flex
                 is_modal_open={my_ads_store.should_show_add_payment_method_modal}

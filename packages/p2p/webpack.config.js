@@ -31,7 +31,7 @@ module.exports = function () {
                 Stores: path.resolve(__dirname, 'src/stores'),
                 ...publisher_utils.getLocalDerivPackageAliases(__dirname, is_publishing),
             },
-            extensions: ['.jsx', '.js'],
+            extensions: ['.js', '.jsx'],
             symlinks: false,
         },
         module: {

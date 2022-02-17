@@ -1,0 +1,394 @@
+.dc-modal__container_cfd-password-modal,
+.dc-mobile-dialog__cfd-password-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 424px;
+
+    form {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 0 2.4rem 1.2rem;
+
+        @include mobile {
+            padding: 0;
+        }
+    }
+    &__description {
+        @include typeface(--small-center-normal-black);
+        color: var(--text-prominent);
+        text-transform: none;
+        margin-top: 1rem;
+        top: 2rem;
+        position: relative;
+        padding: 1.3rem;
+    }
+    &__hint {
+        max-width: 40rem;
+    }
+    &__body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+    .dc-input {
+        &__label {
+            top: 1.2rem;
+            @include mobile {
+                top: 0.9rem;
+                background-color: var(--fill-normal);
+            }
+        }
+    }
+    .dc-password-meter {
+        &__bg {
+            background: var(--general-section-2);
+            @include mobile {
+                background: var(--fill-disabled);
+            }
+        }
+    }
+    .status-dialog {
+        margin-top: 3em;
+    }
+    .cfd-password-reset {
+        @include mobile {
+            flex: 1;
+        }
+    }
+    & .dc-password-meter__container {
+        flex-grow: 1;
+        margin: auto;
+
+        @include mobile {
+            width: calc(100vw - 4.8rem);
+            max-width: 30rem;
+        }
+    }
+    & .mt5-password-field {
+        margin-bottom: 1em;
+        width: 80%;
+    }
+    .input-element {
+        width: 100%;
+    }
+    @include mobile {
+        .cfd-password-modal__content {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 100%;
+            max-height: calc(100% - 6.4rem);
+            padding: 1rem;
+        }
+    }
+    @include tablet-up {
+        .cfd-password-modal__content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-bottom: 2rem;
+
+            &--password-reset {
+                padding: 0 2.5rem;
+            }
+        }
+    }
+}
+.dc-mobile-dialog__mt5-email-sent {
+    padding-bottom: 1rem;
+}
+
+.cfd-password-modal {
+    &__warning {
+        padding: 2.5rem;
+        max-width: 50rem;
+        align-self: center;
+        &-text {
+            border-radius: 0.8rem;
+            padding: 0.8rem;
+            background-color: var(--status-warning);
+        }
+    }
+    &__message {
+        max-width: 32rem;
+        margin: auto;
+        line-height: 1.43;
+    }
+    &__radio {
+        &.dc-radio-group {
+            display: grid;
+            grid-gap: 2rem;
+            margin-top: 0;
+            padding-bottom: 2.4rem;
+        }
+        &.dc-radio-group__item {
+            display: flex;
+            flex-direction: row;
+        }
+    }
+    &__create-password {
+        padding: 0 1.2rem;
+
+        &-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+            margin-top: -2.5rem;
+
+            .dc-icon {
+                margin-left: 1.1rem;
+                flex: none;
+            }
+        }
+        &-title {
+            margin-top: 2.4rem;
+            margin-bottom: 0.8rem;
+        }
+        &-description {
+            max-width: 30rem;
+            margin-bottom: 1.6rem;
+        }
+    }
+    &__change-password-confirmation {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        max-width: 30rem;
+
+        @include desktop {
+            margin-top: -2.5rem;
+        }
+
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .dc-form-submit-button {
+            margin-bottom: 2.2rem;
+        }
+    }
+}
+
+.dc-modal__container_top-up-virtual {
+    width: 384px;
+    min-height: 367px;
+    display: flex;
+    flex-direction: column;
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        padding: 4.8rem 4.2rem;
+        flex-grow: 1;
+        justify-content: space-around;
+        align-items: center;
+    }
+    &__description {
+        text-transform: none;
+    }
+    &--h4 {
+        @include typeface(--small-center-bold-black);
+        text-transform: none;
+        color: var(--text-prominent);
+    }
+    &--balance {
+        @include typeface(--title-center-bold-black);
+        line-height: 1.5;
+        color: var(--text-profit-success);
+    }
+}
+
+.cfd-success-topup {
+    &__heading {
+        @include typeface(--paragraph-center-bold-black);
+        margin: 1.6rem 1.8rem;
+    }
+    &__description {
+        p {
+            @include typeface(--small-center-normal-black);
+            color: var(--text-general);
+            text-transform: none;
+        }
+    }
+}
+
+.cfd-dashboard {
+    &__container {
+        & .dc-popover__target {
+            display: flex;
+        }
+    }
+}
+
+.cfd-verification-email-sent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__title {
+        @include typeface(--title-center-bold-black);
+        margin: 0.8rem 0;
+
+        &--sub {
+            margin-bottom: 0.8rem;
+            margin-top: 3rem;
+        }
+    }
+    &__resend-button {
+        display: block;
+        @include typeface(--paragraph-center-bold-black);
+        color: var(--brand-red-coral);
+        text-decoration: none;
+        margin: 3.2rem 0 0;
+    }
+    & .countdown {
+        margin: 0 0.4rem;
+    }
+}
+
+.cfd-reset-password {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include typeface(--paragraph-left-normal-black);
+    color: var(--text-prominent);
+
+    &__container {
+        display: grid;
+        grid-template-rows: 12rem 7rem;
+        height: 100%;
+        width: 100%;
+        justify-items: center;
+        flex-grow: 1;
+
+        @include mobile {
+            min-height: 24rem;
+            width: calc(100vw - 3.2rem);
+        }
+    }
+    &__heading {
+        @include typeface(--paragraph-center-bold-black);
+        margin: 1.6rem 0 0;
+    }
+    &__hint {
+        @include typeface(--small-left-normal-black);
+        color: var(--text-less-prominent);
+        margin-left: 1.2rem;
+    }
+    &__password-field {
+        margin-bottom: 0.5rem;
+
+        & .dc-input__label {
+            top: 0.9rem;
+        }
+    }
+    &__password-area {
+        @include desktop {
+            width: calc(min(33rem, 100vw));
+            padding: 2.4rem;
+        }
+        @include mobile {
+            width: 100%;
+            max-width: calc(100% - 2.4rem);
+        }
+    }
+    &__error {
+        display: flex;
+        max-width: 38.4rem;
+        min-height: 28.4rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 2rem;
+    }
+    &__description {
+        @include typeface(--paragraph-left-normal-black);
+        color: var(--text-prominent);
+        margin-bottom: 2.4rem;
+
+        &--is-centered {
+            margin-bottom: 2.4rem;
+            max-width: 70%;
+        }
+    }
+    &__confirm-button {
+        margin-top: 2.4rem;
+    }
+    &__success {
+        width: 38.4rem;
+        height: 28.4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 2.4rem 0 2rem;
+
+        @include mobile {
+            width: calc(100vw - 3.2rem);
+            height: 100%;
+        }
+    }
+    @include mobile {
+        & .dc-form-submit-button {
+            all: unset;
+        }
+    }
+}
+
+/** @define poi-icon-row; weak */
+.poi-icon-row {
+    display: flex;
+    margin-bottom: 16px;
+
+    &__icon-container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        color: var(--text-less-prominent);
+
+        &:not(:first-child):not(:last-child) {
+            margin: 0 40px;
+        }
+        p {
+            font-size: var(--text-size-xxs);
+        }
+        p:first-of-type {
+            line-height: 1.5;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+        @include mobile {
+            &:not(:first-child):not(:last-child) {
+                margin: 0;
+            }
+            & .dc-icon {
+                width: 8.8rem;
+                height: auto;
+
+                /* iPhone SE screen width fixes due to UI space restrictions */
+                @media only screen and (max-width: 340px) {
+                    width: 7rem;
+                }
+            }
+            p {
+                line-height: 20px;
+            }
+        }
+    }
+    @include mobile {
+        display: grid;
+        grid-gap: 2.4rem;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-top: 4rem;
+    }
+}

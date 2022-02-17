@@ -37,18 +37,20 @@ describe('<BuySellHeader />', () => {
     it('Component should be rendered', () => {
         render(<BuySellHeader />);
 
-        const el_header_container = screen.getByTestId('header_container');
-        expect(el_header_container).toBeInTheDocument();
+        const el_dp2p_buy_sell__header_container = screen.getByTestId('dp2p-buy-sell__header_container');
+
+        expect(el_dp2p_buy_sell__header_container).toBeInTheDocument();
     });
 
     it('setTableType func should be called when click on buy/sell button', () => {
         const props = mockProps();
         render(<BuySellHeader {...props} />);
 
-        const el_buyBtn = screen.getByText('Buy');
-        const el_sellBtn = screen.getByText('Sell');
-        fireEvent.click(el_buyBtn);
-        fireEvent.click(el_sellBtn);
+        const el_dp2p_buy_sell__buy_button = screen.getByText('Buy');
+        const el_dp2p_buy_sell__sell_button = screen.getByText('Sell');
+
+        fireEvent.click(el_dp2p_buy_sell__buy_button);
+        fireEvent.click(el_dp2p_buy_sell__sell_button);
 
         expect(props.setTableType).toHaveBeenCalledTimes(2);
     });
@@ -57,8 +59,9 @@ describe('<BuySellHeader />', () => {
         const props = mockProps();
         render(<BuySellHeader {...props} />);
 
-        const el_checkbox = screen.getByRole('checkbox');
-        fireEvent.click(el_checkbox);
+        const el_dp2p_buy_sell__checkbox = screen.getByRole('checkbox');
+
+        fireEvent.click(el_dp2p_buy_sell__checkbox);
 
         expect(setShouldUseClientLimits).toHaveBeenCalledTimes(1);
     });

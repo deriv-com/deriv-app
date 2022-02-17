@@ -438,7 +438,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    setClientNotifications(client = {}) {
+    setClientNotifications(client = this.root_store.client) {
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
         const { ui } = this.root_store;

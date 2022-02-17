@@ -100,12 +100,19 @@ const PaymentMethodCard = ({
                 )}
             </div>
             <div className='payment-method-card__body'>
+                {(method === 'BankTransfer' || method === 'Other') && (
+                    <Text color='prominent' size={large ? 'xs' : 'xxs'}>
+                        {payment_method?.display_name}
+                    </Text>
+                )}
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>
                     {payment_bank_name || payment_name || payment_account_name}
                 </Text>
-                <Text color='prominent' size='xs'>
-                    {payment_account}
-                </Text>
+                {method !== 'BankTransfer' && method !== 'Other' && (
+                    <Text color='prominent' size={large ? 'xs' : 'xxs'}>
+                        {payment_account}
+                    </Text>
+                )}
             </div>
         </div>
     );

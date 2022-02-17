@@ -17,7 +17,6 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
-import PageReturn from 'Components/page-return/page-return.jsx';
 import './quick-add-modal.scss';
 
 const QuickAddModal = ({ advert }) => {
@@ -28,14 +27,7 @@ const QuickAddModal = ({ advert }) => {
     const [selected_methods, setSelectedMethods] = React.useState([]);
 
     const is_buy_advert = type === buy_sell.BUY;
-    const modal_title = my_ads_store.should_show_add_payment_method ? (
-        <PageReturn
-            onClick={() => my_ads_store.setShouldShowAddPaymentMethod(false)}
-            page_title={localize('Add payment methods')}
-        />
-    ) : (
-        localize('Add payment methods')
-    );
+
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
@@ -249,7 +241,7 @@ const QuickAddModal = ({ advert }) => {
                 height_offset='80px'
                 is_flex
                 is_modal_open={my_ads_store.is_quick_add_modal_open}
-                page_header_text={modal_title}
+                page_header_text={localize('Add payment methods')}
                 pageHeaderReturnFn={() => my_ads_store.hideQuickAddModal()}
                 secondary
                 text={localize('Cancel')}
@@ -455,7 +447,7 @@ const QuickAddModal = ({ advert }) => {
             has_close_icon={false}
             height='660px'
             is_open={my_ads_store.is_quick_add_modal_open}
-            title={modal_title}
+            title={localize('Add payment methods')}
         >
             {my_ads_store.should_show_add_payment_method ? (
                 <Modal.Body>

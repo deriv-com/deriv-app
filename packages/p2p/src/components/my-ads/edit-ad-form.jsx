@@ -45,6 +45,7 @@ const EditAdForm = () => {
     const payment_methods_changed = is_buy_advert
         ? !(
               selected_methods.length > 0 &&
+              payment_method_names &&
               selected_methods?.every(pm => {
                   const method = my_profile_store.getPaymentMethodDisplayName(pm);
                   return payment_method_names.includes(method);
@@ -53,6 +54,7 @@ const EditAdForm = () => {
           ) && selected_methods.length > 0
         : !(
               selected_methods.length > 0 &&
+              payment_method_details &&
               selected_methods.every(pm => Object.keys(payment_method_details).includes(pm)) &&
               selected_methods.length === Object.keys(payment_method_details).length
           ) && selected_methods.length > 0;

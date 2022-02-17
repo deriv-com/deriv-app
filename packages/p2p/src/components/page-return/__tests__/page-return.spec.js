@@ -6,23 +6,26 @@ describe('<PageReturn />', () => {
     it('Component should be rendered', () => {
         render(<PageReturn />);
 
-        const el_component_container = screen.getByTestId('component_container');
-        expect(el_component_container).toHaveClass('page-return');
+        const el_dp2p_page_return_container = screen.getByTestId('dp2p-page-return_container');
+
+        expect(el_dp2p_page_return_container).toHaveClass('page-return');
     });
 
     it('Should render proper className passed from props', () => {
         render(<PageReturn className={'test'} />);
 
-        const el_component_container = screen.getByTestId('component_container');
-        expect(el_component_container).toHaveClass('page-return test');
+        const el_dp2p_page_return_container = screen.getByTestId('dp2p-page-return_container');
+
+        expect(el_dp2p_page_return_container).toHaveClass('page-return test');
     });
 
     it('function passed from props should be called', () => {
         const mockFunc = jest.fn();
         render(<PageReturn onClick={mockFunc} />);
 
-        const el_icon_container = screen.getByTestId('icon_container');
-        fireEvent.click(el_icon_container);
+        const el_dp2p_page_return__icon_container = screen.getByTestId('dp2p-page-return__icon_container');
+
+        fireEvent.click(el_dp2p_page_return__icon_container);
 
         expect(mockFunc).toHaveBeenCalledTimes(1);
     });
@@ -30,7 +33,8 @@ describe('<PageReturn />', () => {
     it('Should show proper text passed from props', () => {
         render(<PageReturn page_title={'test_title'} />);
 
-        const el_test_title = screen.getByText('test_title');
-        expect(el_test_title).toBeInTheDocument();
+        const el_dp2p_page_return__test_title = screen.getByText('test_title');
+
+        expect(el_dp2p_page_return__test_title).toBeInTheDocument();
     });
 });

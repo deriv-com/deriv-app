@@ -44,12 +44,15 @@ const EditAdForm = () => {
 
     const payment_methods_changed = is_buy_advert
         ? !(
-              selected_methods.every(pm => {
+              selected_methods.length > 0 &&
+              selected_methods?.every(pm => {
                   const method = my_profile_store.getPaymentMethodDisplayName(pm);
                   return payment_method_names.includes(method);
-              }) && selected_methods.length === payment_method_names.length
+              }) &&
+              selected_methods.length === payment_method_names.length
           ) && selected_methods.length > 0
         : !(
+              selected_methods.length > 0 &&
               selected_methods.every(pm => Object.keys(payment_method_details).includes(pm)) &&
               selected_methods.length === Object.keys(payment_method_details).length
           ) && selected_methods.length > 0;
@@ -309,7 +312,11 @@ const EditAdForm = () => {
                                                 primary
                                                 large
                                                 is_disabled={
-                                                    isSubmitting || !isValid || (!dirty && !payment_methods_changed)
+                                                    isSubmitting ||
+                                                    !isValid ||
+                                                    (!dirty &&
+                                                        (payment_method_names || payment_method_details) &&
+                                                        !payment_methods_changed)
                                                 }
                                             >
                                                 <Localize i18n_default_text='Save changes' />

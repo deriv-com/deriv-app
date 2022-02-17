@@ -48,6 +48,7 @@ const FilterModal = () => {
             title={<FilterModalHeader />}
             is_open={buy_sell_store.is_filter_modal_open}
             toggleModal={() => buy_sell_store.setIsFilterModalOpen(false)}
+            width='44rem'
         >
             <Modal.Body>
                 {buy_sell_store.show_filter_payment_methods ? (
@@ -95,9 +96,15 @@ const FilterModal = () => {
                                 <Text color='prominent' size='xs'>
                                     <Localize i18n_default_text='Payment methods' />
                                 </Text>
-                                <Text color='less-prominent' size='xs'>
-                                    {selected_methods_text.join(', ')}
-                                </Text>
+                                {selected_methods_text.length === my_profile_store.payment_methods_list_items.length ? (
+                                    <Text color='less-prominent' size='xs'>
+                                        <Localize i18n_default_text='All' />
+                                    </Text>
+                                ) : (
+                                    <Text color='less-prominent' size='xs'>
+                                        {selected_methods_text.join(', ')}
+                                    </Text>
+                                )}
                             </div>
                             <Icon
                                 icon='IcChevronRight'

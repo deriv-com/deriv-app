@@ -31,7 +31,7 @@ describe('<Verification />', () => {
 
         render(<Verification {...props} />);
 
-        const el_component_container = screen.getByTestId('component_container');
+        const el_component_container = screen.getByTestId('dp2p-verification_container');
         expect(el_component_container).toBeInTheDocument();
     });
 
@@ -44,7 +44,7 @@ describe('<Verification />', () => {
 
         render(<Verification {...props} />);
 
-        const el_verification_wrapper = screen.getByTestId('verification_wrapper');
+        const el_verification_wrapper = screen.getByTestId('dp2p-verification_wrapper');
         expect(el_verification_wrapper).toBeInTheDocument();
     });
 
@@ -56,7 +56,7 @@ describe('<Verification />', () => {
 
         render(<Verification {...props} />);
 
-        const el_Dp2pBlocked_component = screen.getByTestId('component_container');
+        const el_Dp2pBlocked_component = screen.getByTestId('dp2p-blocked_container');
         expect(el_Dp2pBlocked_component).toBeInTheDocument();
     });
 });

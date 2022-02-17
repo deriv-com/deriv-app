@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import AdStatus from '../ad-status.jsx';
 
-describe('<Verification />', () => {
+describe('<AdStatus />', () => {
     it('Component should show proper status if is_active prop is true', () => {
         render(<AdStatus is_active />);
 

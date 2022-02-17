@@ -1,5 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { routes } from '@deriv/shared';
+import { createBrowserHistory } from 'history';
 import { useStores } from 'Stores';
 import { setLanguage } from '../i18next';
 import App from '../app.jsx';
@@ -72,9 +74,8 @@ describe('<App/>', () => {
 
     it('should render appContent component', () => {
         render(<App {...props} />);
-        const el_app_content = screen.queryByText('AppContent');
 
-        expect(el_app_content).toBeInTheDocument();
+        expect(screen.getByText('AppContent')).toBeInTheDocument();
     });
 
     it('should invoke setLanguage function when component renders', () => {
@@ -85,10 +86,12 @@ describe('<App/>', () => {
 
     it('should redirect to p2p is verification is present in route', () => {
         const set_item_spy = jest.spyOn(Object.getPrototypeOf(localStorage), 'setItem');
-        const mock_history = { location: { pathname: '/verification' }, push: jest.fn() };
+        const history = createBrowserHistory();
+        const mock_history = { ...history, location: { pathname: '/verification' } };
         render(<App {...props} history={mock_history} />);
 
         expect(set_item_spy).toHaveBeenCalled();
+        expect(history.location.pathname).toBe(routes.cashier_p2p);
     });
 
     it('should do a hard reload of page', () => {

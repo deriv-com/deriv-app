@@ -2244,13 +2244,17 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &-icon {
                 margin-left: auto;
+                transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+                &--invert {
+                    transform: rotate(180deg);
+                }
             }
         }
         &-open {
             height: auto;
             &-desc {
                 line-height: 2rem;
-                margin: 8px 0px;
+                margin: 8px 0;
                 &-link {
                     color: var(--text-red);
                 }

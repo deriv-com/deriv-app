@@ -200,7 +200,7 @@ export default class ExtendedOrderDetails {
     }
 
     get should_show_lost_funds_banner() {
-        return this.is_pending_order || this.this.is_buyer_confirmed_order;
+        return this.is_pending_order || this.is_buyer_confirmed_order;
     }
 
     get status_string() {

@@ -115,7 +115,11 @@ const QuickAddModal = ({ advert }) => {
                         </>
                     )}
                 >
-                    <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                    <div className='p2p-my-ads__info'>
+                        <Text color='prominent' size='xxs'>
+                            <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                        </Text>
+                    </div>
                     {selected_methods.length > 0 ? (
                         <React.Fragment>
                             {selected_methods.map((payment_method, key) => {
@@ -127,7 +131,6 @@ const QuickAddModal = ({ advert }) => {
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
-                                                    className='p2p-my-ads__form-payment-methods--empty'
                                                     label={
                                                         <React.Fragment>
                                                             <Icon icon='IcAddCircle' size={14} />
@@ -157,7 +160,7 @@ const QuickAddModal = ({ advert }) => {
                                     {() => (
                                         <Field name='payment_method'>
                                             {({ field }) => (
-                                                <div className='p2p-my-ads__form-payment-methods--empty'>
+                                                <div className='p2p-my-ads--border'>
                                                     <Autocomplete
                                                         {...field}
                                                         autoComplete='off' // prevent chrome autocomplete
@@ -191,7 +194,7 @@ const QuickAddModal = ({ advert }) => {
                             {() => (
                                 <Field name='payment_method'>
                                     {({ field }) => (
-                                        <div className='p2p-my-ads__form-payment-methods--empty'>
+                                        <div className='p2p-my-ads--border'>
                                             <Autocomplete
                                                 {...field}
                                                 autoComplete='off' // prevent chrome autocomplete
@@ -219,18 +222,20 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </Formik>
                     )}
-                    <Localize
-                        i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
-                        components={[
-                            <Text key={0} color='less-prominent' size='xxs' />,
-                            <Text
-                                key={1}
-                                color='loss-danger'
-                                size='xxs'
-                                onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
-                            />,
-                        ]}
-                    />
+                    <div className='quick-add-modal--text'>
+                        <Localize
+                            i18n_default_text='<0>Don’t see your payment method?</0>  <1>Add new.</1>'
+                            components={[
+                                <Text key={0} color='less-prominent' size='xxs' />,
+                                <Text
+                                    key={1}
+                                    color='loss-danger'
+                                    size='xxs'
+                                    onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
+                                />,
+                            ]}
+                        />
+                    </div>
                 </MobileFullPageModal>
             );
         }
@@ -270,7 +275,9 @@ const QuickAddModal = ({ advert }) => {
                     <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
                 ) : (
                     <>
-                        <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                        <Text color='prominent' size='xxs'>
+                            <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                        </Text>
                         {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
                             <PaymentMethodCard
                                 is_vertical_ellipsis_visible={false}
@@ -303,7 +310,9 @@ const QuickAddModal = ({ advert }) => {
                 title={localize('Add payment methods')}
             >
                 <Modal.Body>
-                    <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                    <Text color='prominent' size='xxs'>
+                        <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                    </Text>
                     {selected_methods.length > 0 ? (
                         <React.Fragment>
                             {selected_methods.map((payment_method, key) => {
@@ -315,7 +324,6 @@ const QuickAddModal = ({ advert }) => {
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
-                                                    className='p2p-my-ads__form-payment-methods--empty'
                                                     label={
                                                         <React.Fragment>
                                                             <Icon icon='IcAddCircle' size={14} />
@@ -345,7 +353,7 @@ const QuickAddModal = ({ advert }) => {
                                     {() => (
                                         <Field name='payment_method'>
                                             {({ field }) => (
-                                                <div className='p2p-my-ads__form-payment-methods--empty'>
+                                                <div className='p2p-my-ads--border'>
                                                     <Autocomplete
                                                         {...field}
                                                         autoComplete='off' // prevent chrome autocomplete
@@ -379,7 +387,7 @@ const QuickAddModal = ({ advert }) => {
                             {() => (
                                 <Field name='payment_method'>
                                     {({ field }) => (
-                                        <div className='p2p-my-ads__form-payment-methods--empty'>
+                                        <div className='p2p-my-ads--border'>
                                             <Autocomplete
                                                 {...field}
                                                 autoComplete='off' // prevent chrome autocomplete
@@ -456,7 +464,9 @@ const QuickAddModal = ({ advert }) => {
             ) : (
                 <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                     <Modal.Body>
-                        <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                        <Text color='prominent' size='xxs'>
+                            <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                        </Text>
                         {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
                             <PaymentMethodCard
                                 is_vertical_ellipsis_visible={false}

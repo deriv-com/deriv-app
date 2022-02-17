@@ -108,7 +108,6 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
                                 {({ field }) => (
                                     <Input
                                         {...field}
-                                        className='p2p-my-ads__form-payment-methods--empty'
                                         label={
                                             <React.Fragment>
                                                 <Icon icon='IcAddCircle' size={14} />
@@ -138,7 +137,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
                         {() => (
                             <Field name='payment_method'>
                                 {({ field }) => (
-                                    <div className='p2p-my-ads__form-payment-methods--empty'>
+                                    <div className='p2p-my-ads--border'>
                                         <Autocomplete
                                             {...field}
                                             autoComplete='off' // prevent chrome autocomplete
@@ -175,7 +174,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
             {({ setFieldValue }) => (
                 <Field name='payment_method'>
                     {({ field }) => (
-                        <div className='p2p-my-ads__form-payment-methods--empty'>
+                        <div className='p2p-my-ads--border'>
                             <Autocomplete
                                 {...field}
                                 autoComplete='off' // prevent chrome autocomplete

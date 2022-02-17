@@ -6,29 +6,31 @@ describe('<PageReturn />', () => {
     it('Component should be rendered', () => {
         render(<PageReturn />);
 
-        expect(screen.getByTestId('parentContainer')).toHaveClass('page-return');
+        const el_component_container = screen.getByTestId('component_container');
+        expect(el_component_container).toHaveClass('page-return');
     });
 
-    it('Should render proper className passed from props', async () => {
-        render(<PageReturn className={'test'}/>);
+    it('Should render proper className passed from props', () => {
+        render(<PageReturn className={'test'} />);
 
-        expect(await screen.findByTestId('parentContainer')).toHaveClass('page-return test');
+        const el_component_container = screen.getByTestId('component_container');
+        expect(el_component_container).toHaveClass('page-return test');
     });
 
     it('function passed from props should be called', () => {
         const mockFunc = jest.fn();
+        render(<PageReturn onClick={mockFunc} />);
 
-        render(<PageReturn onClick={mockFunc}/>);
-
-        const btn = screen.getByTestId('iconContainer');
-        fireEvent.click(btn);
+        const el_icon_container = screen.getByTestId('icon_container');
+        fireEvent.click(el_icon_container);
 
         expect(mockFunc).toHaveBeenCalledTimes(1);
     });
 
     it('Should show proper text passed from props', () => {
-        render(<PageReturn page_title={'testTitle'}/>);
+        render(<PageReturn page_title={'test_title'} />);
 
-        expect(screen.getByText('testTitle')).toBeInTheDocument();
+        const el_test_title = screen.getByText('test_title');
+        expect(el_test_title).toBeInTheDocument();
     });
 });

@@ -31,8 +31,8 @@ describe('<Verification />', () => {
 
         render(<Verification {...props} />);
 
-        const el_component_container = screen.getByTestId('dp2p-verification_container');
-        expect(el_component_container).toBeInTheDocument();
+        const el_dp2p_verification_container = screen.getByTestId('dp2p-verification_container');
+        expect(el_dp2p_verification_container).toBeInTheDocument();
     });
 
     it('Should show verification wrapper if should_wrap prop is true', () => {
@@ -44,8 +44,8 @@ describe('<Verification />', () => {
 
         render(<Verification {...props} />);
 
-        const el_verification_wrapper = screen.getByTestId('dp2p-verification_wrapper');
-        expect(el_verification_wrapper).toBeInTheDocument();
+        const el_dp2p_verification_wrapper = screen.getByTestId('dp2p-verification_wrapper');
+        expect(el_dp2p_verification_wrapper).toBeInTheDocument();
     });
 
     it('Should render Dp2pBlocked component', () => {
@@ -56,7 +56,7 @@ describe('<Verification />', () => {
 
         render(<Verification {...props} />);
 
-        const el_Dp2pBlocked_component = screen.getByTestId('dp2p-blocked_container');
-        expect(el_Dp2pBlocked_component).toBeInTheDocument();
+        const el_dp2p_Dp2pBlocked_container = screen.getByTestId('dp2p-Dp2pBlocked_container');
+        expect(el_dp2p_Dp2pBlocked_container).toBeInTheDocument();
     });
 });

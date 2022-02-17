@@ -30,7 +30,8 @@ const BuySellTable = ({ onScroll }) => {
     const { buy_sell_store, general_store, my_profile_store } = useStores();
 
     React.useEffect(
-        () =>
+        () => {
+            my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
             reaction(
                 () => buy_sell_store.is_buy,
                 () => {
@@ -42,7 +43,8 @@ const BuySellTable = ({ onScroll }) => {
                     }
                 },
                 { fireImmediately: true }
-            ),
+            );
+        },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );

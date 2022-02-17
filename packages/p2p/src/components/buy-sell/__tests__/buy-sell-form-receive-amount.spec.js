@@ -24,10 +24,15 @@ describe('<BuySellFormReceiveAmount />', () => {
 
         render(<BuySellFormReceiveAmount />);
 
-        expect(screen.getByTestId('receive/send label')).toBeInTheDocument();
-        expect(screen.getByTestId('receive/send amount')).toBeInTheDocument();
-        expect(screen.getByText("You'll send")).toBeInTheDocument();
-        expect(screen.getByText('0.00 USD')).toBeInTheDocument();
+        const el_label_container = screen.getByTestId('receive/send_label_container');
+        const el_amount_container = screen.getByTestId('receive/send_amount_container');
+        const el_send = screen.getByText("You'll send");
+        const el_amount = screen.getByText('0.00 USD');
+
+        expect(el_label_container).toBeInTheDocument();
+        expect(el_amount_container).toBeInTheDocument();
+        expect(el_send).toBeInTheDocument();
+        expect(el_amount).toBeInTheDocument();
     });
 
     test('Component should render proper message if is_sell_advert prop is true', () => {
@@ -37,6 +42,7 @@ describe('<BuySellFormReceiveAmount />', () => {
 
         render(<BuySellFormReceiveAmount />);
 
-        expect(screen.getByText("You'll receive")).toBeInTheDocument();
+        const el_receive = screen.getByText("You'll receive");
+        expect(el_receive).toBeInTheDocument();
     });
 });

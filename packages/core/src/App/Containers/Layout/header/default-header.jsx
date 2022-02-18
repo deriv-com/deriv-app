@@ -58,7 +58,6 @@ const DefaultHeader = ({
     should_allow_authentication,
     toggleAccountsDialog,
     toggleNotifications,
-    changeCurrentLanguage,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
@@ -107,7 +106,6 @@ const DefaultHeader = ({
                     </DesktopWrapper>
                     <MobileWrapper>
                         <ToggleMenuDrawer
-                            changeCurrentLanguage={changeCurrentLanguage}
                             ref={toggle_menu_drawer_ref}
                             should_allow_authentication={should_allow_authentication}
                             account_status={account_status}
@@ -232,7 +230,6 @@ DefaultHeader.propTypes = {
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
-    changeCurrentLanguage: common.changeCurrentLanguage,
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
     account_type: client.account_type,

@@ -70,6 +70,10 @@ export default class MyAdsStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advert_info } = response;
+                if (!p2p_advert_info.payment_method_names)
+                    p2p_advert_info.payment_method_names = this.payment_method_names;
+                if (!p2p_advert_info.payment_method_details)
+                    p2p_advert_info.payment_method_details = this.payment_method_details;
                 this.setP2pAdvertInformation(p2p_advert_info);
             }
             this.setIsFormLoading(false);

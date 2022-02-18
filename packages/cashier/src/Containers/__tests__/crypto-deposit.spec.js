@@ -100,16 +100,16 @@ describe('<CryptoDeposit />', () => {
 
     it('should show proper messages for selected options for ETH, USDC, eUSDT cryptocurrency', () => {
         const checkMessagesForOptions = (currency, token) => {
-            const { container, rerender, unmount } = renderWithRouter(<CryptoDeposit {...props} currency={currency} />);
+            const { rerender, unmount } = renderWithRouter(<CryptoDeposit {...props} currency={currency} />);
             const rerenderAndOpenDropdownOptions = () => {
                 rerender(
                     <Router history={history}>
                         <CryptoDeposit {...props} currency={currency} />
                     </Router>
                 );
-                const dropdown_display = container.querySelector('#dropdown-display');
+                const dropdown_display = screen.getByTestId('dt_dropdown_display');
                 fireEvent.click(dropdown_display);
-                return container.querySelectorAll('.dc-list__item');
+                return screen.getAllByTestId('dt_dc-list_item');
             };
 
             rerenderAndOpenDropdownOptions().forEach(option => {

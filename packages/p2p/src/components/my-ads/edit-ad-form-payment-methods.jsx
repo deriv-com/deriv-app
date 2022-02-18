@@ -101,6 +101,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
             <React.Fragment>
                 {selected_methods.map((payment_method, key) => {
                     const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
+                    const payment_method_icon = method.replace(' ', '');
 
                     return (
                         <Formik key={key} enableReinitialize initialValues={{}}>
@@ -108,13 +109,16 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
                                 {({ field }) => (
                                     <Input
                                         {...field}
-                                        label={
-                                            <React.Fragment>
-                                                <Icon icon='IcAddCircle' size={14} />
-                                                <Text color='less-prominent' size='xs'>
-                                                    <Localize i18n_default_text='Add' />
-                                                </Text>
-                                            </React.Fragment>
+                                        className='quick-add-modal--input'
+                                        leading_icon={
+                                            <Icon
+                                                icon={
+                                                    payment_method_icon === 'BankTransfer' ||
+                                                    payment_method_icon === 'Other'
+                                                        ? `IcCashier${payment_method_icon}`
+                                                        : 'IcCashierEwallet'
+                                                }
+                                            />
                                         }
                                         trailing_icon={
                                             <Icon

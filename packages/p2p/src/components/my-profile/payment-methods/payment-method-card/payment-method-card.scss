@@ -3,7 +3,6 @@
     border-radius: 8px;
     margin: 1.6rem 0;
     overflow-wrap: break-word;
-    padding: 1.6rem;
 
     .dc-dropdown__display {
         border: unset;
@@ -34,16 +33,19 @@
 
     &--large {
         height: 12.8rem;
+        padding: 1.6rem;
         width: 20.8rem;
     }
 
     &--medium {
         height: 9.4rem;
+        padding: 1rem;
         width: 14.4rem;
     }
 
     &--small {
         height: 8.8rem;
+        padding: 1rem;
         width: 13.6rem;
     }
 

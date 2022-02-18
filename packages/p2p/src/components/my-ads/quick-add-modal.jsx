@@ -227,22 +227,6 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </Formik>
                     )}
-                    {selected_methods.length < 3 && (
-                        <div className='quick-add-modal--text'>
-                            <Localize
-                                i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
-                                components={[
-                                    <Text key={0} color='less-prominent' size='xxs' />,
-                                    <Text
-                                        key={1}
-                                        color='loss-danger'
-                                        size='xxs'
-                                        onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
-                                    />,
-                                ]}
-                            />
-                        </div>
-                    )}
                 </MobileFullPageModal>
             );
         }
@@ -428,20 +412,6 @@ const QuickAddModal = ({ advert }) => {
                                 </Field>
                             )}
                         </Formik>
-                    )}
-                    {selected_methods.length < 3 && (
-                        <Localize
-                            i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
-                            components={[
-                                <Text key={0} color='less-prominent' size='xxs' />,
-                                <Text
-                                    key={1}
-                                    color='loss-danger'
-                                    size='xxs'
-                                    onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
-                                />,
-                            ]}
-                        />
                     )}
                 </Modal.Body>
                 <Modal.Footer has_separator>

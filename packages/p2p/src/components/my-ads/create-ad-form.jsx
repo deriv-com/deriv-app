@@ -20,6 +20,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
+import FloatingRate from '../floating-rate';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -35,6 +36,7 @@ const CreateAdForm = () => {
     const os = mobileOSDetect();
 
     const { currency, local_currency_config } = general_store.client;
+    console.log('local_currency_config.currency: ', local_currency_config.currency);
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
 
@@ -107,7 +109,9 @@ const CreateAdForm = () => {
                                 })}
                                 noValidate
                             >
-                                <ThemedScrollbars
+                                <FloatingRate />
+
+                                {/* <ThemedScrollbars
                                     className='p2p-my-ads__form-scrollbar'
                                     is_scrollbar_hidden={isMobile()}
                                 >
@@ -354,7 +358,7 @@ const CreateAdForm = () => {
                                             </Button>
                                         </div>
                                     </CreateAdFormWrapper>
-                                </ThemedScrollbars>
+                                </ThemedScrollbars> */}
                             </Form>
                         </div>
                     );

@@ -22,6 +22,7 @@ const P2PCashier = ({
     platform,
     residence,
     setNotificationCount,
+    setCurrentFocus,
 }) => {
     const [order_id, setOrderId] = React.useState(null);
     const server_time = {
@@ -87,6 +88,7 @@ const P2PCashier = ({
             setOrderId={setQueryOrder}
             should_show_verification={/verification/.test(location.hash)}
             websocket_api={WS}
+            setCurrentFocus={setCurrentFocus}
         />
     );
 };
@@ -104,6 +106,7 @@ P2PCashier.propTypes = {
     platform: PropTypes.any,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
 };
 
 export default withRouter(
@@ -118,5 +121,6 @@ export default withRouter(
         residence: client.residence,
         setNotificationCount: modules.cashier.general_store.setNotificationCount,
         is_mobile: ui.is_mobile,
+        setCurrentFocus: ui.setCurrentFocus,
     }))(P2PCashier)
 );

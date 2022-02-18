@@ -14,6 +14,8 @@ const App = props => {
     const { general_store, order_store } = useStores();
     const { className, history, lang, order_id, server_time, websocket_api } = props;
 
+    console.log('Props in App: ', props);
+
     React.useEffect(() => {
         general_store.setAppProps(props);
         general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);

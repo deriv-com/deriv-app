@@ -109,7 +109,7 @@ describe('<CryptoDeposit />', () => {
                 );
                 const dropdown_display = screen.getByTestId('dt_dropdown_display');
                 fireEvent.click(dropdown_display);
-                return screen.getAllByTestId('dt_dc-list_item');
+                return screen.getAllByTestId('dt_list_item');
             };
 
             rerenderAndOpenDropdownOptions().forEach(option => {

@@ -31,8 +31,8 @@ describe('<OnRampProviderCard />', () => {
         setSelectedProvider: jest.fn(),
     };
 
-    const getIconNames = container => {
-        const icons = container.querySelectorAll('.dc-icon');
+    const getIconNames = () => {
+        const icons = screen.getAllByTestId('dt_svg_icon');
         let icon_names = [];
         icons.forEach(icon => {
             const icon_path = icon.firstChild.getAttribute('xlink:href');
@@ -54,12 +54,12 @@ describe('<OnRampProviderCard />', () => {
     });
 
     it('should show proper icons in dark_mode', () => {
-        const { container } = render(<OnRampProviderCard {...props} is_dark_mode_on />);
+        render(<OnRampProviderCard {...props} is_dark_mode_on />);
 
-        expect(getIconNames(container)).toContain('ic-cashier-changelly-dark');
-        expect(getIconNames(container)).toContain('ic-cashier-fps-dark');
-        expect(getIconNames(container)).toContain('ic-cashier-ali-pay-dark');
-        expect(getIconNames(container)).toContain('ic-cashier-go-pay-dark');
+        expect(getIconNames()).toContain('ic-cashier-changelly-dark');
+        expect(getIconNames()).toContain('ic-cashier-fps-dark');
+        expect(getIconNames()).toContain('ic-cashier-ali-pay-dark');
+        expect(getIconNames()).toContain('ic-cashier-go-pay-dark');
     });
 
     it('should trigger onClick callback, when "Select" button is clicked', () => {

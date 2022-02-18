@@ -93,7 +93,10 @@ const QuickAddModal = ({ advert }) => {
                     is_flex
                     is_modal_open={my_ads_store.is_quick_add_modal_open}
                     page_header_text={localize('Add payment methods')}
-                    pageHeaderReturnFn={() => my_ads_store.hideQuickAddModal()}
+                    pageHeaderReturnFn={() => {
+                        setSelectedMethods([]);
+                        my_ads_store.hideQuickAddModal();
+                    }}
                     secondary
                     text={localize('Cancel')}
                     renderPageFooterChildren={() => (
@@ -101,7 +104,10 @@ const QuickAddModal = ({ advert }) => {
                             <Button
                                 has_effect
                                 large
-                                onClick={() => my_ads_store.hideQuickAddModal()}
+                                onClick={() => {
+                                    setSelectedMethods([]);
+                                    my_ads_store.hideQuickAddModal();
+                                }}
                                 secondary
                                 text={localize('Cancel')}
                             />
@@ -238,7 +244,10 @@ const QuickAddModal = ({ advert }) => {
                 is_flex
                 is_modal_open={my_ads_store.is_quick_add_modal_open}
                 page_header_text={localize('Add payment methods')}
-                pageHeaderReturnFn={() => my_ads_store.hideQuickAddModal()}
+                pageHeaderReturnFn={() => {
+                    setSelectedMethods([]);
+                    my_ads_store.hideQuickAddModal();
+                }}
                 secondary
                 text={localize('Cancel')}
                 renderPageFooterChildren={() =>
@@ -247,7 +256,10 @@ const QuickAddModal = ({ advert }) => {
                             <Button
                                 has_effect
                                 large
-                                onClick={() => my_ads_store.hideQuickAddModal()}
+                                onClick={() => {
+                                    setSelectedMethods([]);
+                                    my_ads_store.hideQuickAddModal();
+                                }}
                                 secondary
                                 text={localize('Cancel')}
                             />
@@ -418,7 +430,10 @@ const QuickAddModal = ({ advert }) => {
                     <Button
                         has_effect
                         large
-                        onClick={() => my_ads_store.hideQuickAddModal()}
+                        onClick={() => {
+                            setSelectedMethods([]);
+                            my_ads_store.hideQuickAddModal();
+                        }}
                         secondary
                         text={localize('Cancel')}
                     />
@@ -477,7 +492,10 @@ const QuickAddModal = ({ advert }) => {
                     <Button
                         has_effect
                         large
-                        onClick={my_ads_store.hideQuickAddModal}
+                        onClick={() => {
+                            setSelectedMethods([]);
+                            my_ads_store.hideQuickAddModal();
+                        }}
                         secondary
                         text={localize('Cancel')}
                     />
@@ -496,7 +514,10 @@ const QuickAddModal = ({ advert }) => {
                     <Button
                         has_effect
                         large
-                        onClick={my_ads_store.hideQuickAddModal}
+                        onClick={() => {
+                            setSelectedMethods([]);
+                            my_ads_store.hideQuickAddModal();
+                        }}
                         secondary
                         text={localize('Cancel')}
                     />

@@ -88,7 +88,11 @@ const PaymentMethodCard = ({
                         ]}
                         onChange={e => {
                             if (e.target.value === 'edit') {
+                                if (method === 'BankTransfer' || method === 'Other') {
+                                    my_profile_store.setSelectedPaymentMethodDisplayName(payment_method?.display_name);
+                                }
                                 my_profile_store.setPaymentMethodToEdit(payment_method);
+                                my_profile_store.getSelectedPaymentMethodDetails();
                                 my_profile_store.setShouldShowEditPaymentMethodForm(true);
                             } else {
                                 my_profile_store.setPaymentMethodToDelete(payment_method);

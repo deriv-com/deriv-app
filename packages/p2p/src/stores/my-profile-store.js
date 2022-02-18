@@ -66,8 +66,17 @@ export default class MyProfileStore extends BaseStore {
     @computed
     get initial_values() {
         const object = {};
-        Object.entries(this.payment_method_info.fields).forEach(payment_method_field => {
-            object[payment_method_field[0]] = payment_method_field[1].value;
+
+        Object.values(this.selected_payment_method_fields).forEach(field => {
+            const filter = Object.entries(this.payment_method_info.fields).filter(
+                payment_method_field => payment_method_field[0] === field[0]
+            );
+
+            if (Object.values(filter).length > 0) {
+                object[field[0]] = Object.values(filter)[0][1].value;
+            } else {
+                object[field[0]] = '';
+            }
         });
 
         return object;

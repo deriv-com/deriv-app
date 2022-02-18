@@ -27,7 +27,6 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         remaining_amount_display,
         type,
     } = advert;
-    // console.log(advert);
 
     // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);

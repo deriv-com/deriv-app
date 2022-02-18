@@ -65,7 +65,7 @@ const EditPaymentMethodForm = () => {
                                     />
                                 )}
                             </Field>
-                            {Object.entries(my_profile_store.payment_method_info.fields).map(
+                            {Object.values(my_profile_store.selected_payment_method_fields).map(
                                 (payment_method_field, key) => {
                                     return (
                                         <Field name={payment_method_field[0]} id={payment_method_field[0]} key={key}>

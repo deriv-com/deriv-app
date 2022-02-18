@@ -36,9 +36,9 @@ describe('<OnRampProviderPopup />', () => {
     };
 
     it('should not render <OnRampProviderPopup /> component', () => {
-        const { container } = render(<OnRampProviderPopup {...props} selected_provider={null} />);
+        render(<OnRampProviderPopup {...props} selected_provider={null} />);
 
-        expect(container.querySelector('.on-ramp__popup')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_on-ramp_popup')).not.toBeInTheDocument();
     });
 
     it('should show loader', () => {

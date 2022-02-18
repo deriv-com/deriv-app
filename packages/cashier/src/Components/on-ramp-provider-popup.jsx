@@ -79,7 +79,7 @@ const OnRampProviderPopup = ({
     }
 
     return (
-        <div className='on-ramp__popup'>
+        <div className='on-ramp__popup' data-testid='dt_on-ramp_popup'>
             {selected_provider.should_show_deposit_address && (
                 <React.Fragment>
                     <div className='on-ramp__popup-deposit'>

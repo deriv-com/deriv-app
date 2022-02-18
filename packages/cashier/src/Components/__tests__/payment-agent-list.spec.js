@@ -63,14 +63,14 @@ describe('<PaymentAgentList />', () => {
         onMount: jest.fn(),
     };
 
-    const history = createBrowserHistory();
+    let history;
+    const renderWithRouter = component => {
+        history = createBrowserHistory();
+        return render(<Router history={history}>{component}</Router>);
+    };
 
     it('should show proper messages, tabs and titles in Deposit tab', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentList {...props} />
-            </Router>
-        );
+        renderWithRouter(<PaymentAgentList {...props} />);
 
         expect(
             screen.getByText(
@@ -97,22 +97,14 @@ describe('<PaymentAgentList />', () => {
     });
 
     it('should show loader in Deposit tab', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentList {...props} is_loading />
-            </Router>
-        );
+        renderWithRouter(<PaymentAgentList {...props} is_loading />);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should trigger onChange callback when the user selects payment agent from the list in Mobile mode', () => {
         isMobile.mockReturnValue(true);
-        render(
-            <Router history={history}>
-                <PaymentAgentList {...props} />
-            </Router>
-        );
+        renderWithRouter(<PaymentAgentList {...props} />);
 
         const select_native = screen.getByRole('combobox');
         fireEvent.change(select_native, {
@@ -130,36 +122,26 @@ describe('<PaymentAgentList />', () => {
             onClickButton: jest.fn(),
         };
 
-        render(
-            <Router history={history}>
-                <PaymentAgentList {...props} error={error} payment_agent_active_tab_index={1} />
-            </Router>
-        );
+        renderWithRouter(<PaymentAgentList {...props} error={error} payment_agent_active_tab_index={1} />);
 
         expect(screen.getByText('PaymentAgentWithdrawError')).toBeInTheDocument();
     });
 
     it('should show "The email has been sent!" message in Withdrawal tab', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentList {...props} payment_agent_active_tab_index={1} />
-            </Router>
-        );
+        renderWithRouter(<PaymentAgentList {...props} payment_agent_active_tab_index={1} />);
 
         expect(screen.getByText('The email has been sent!')).toBeInTheDocument();
     });
 
     it('should show "Payment agent withdraw form" message in Withdrawal tab', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentList
-                    {...props}
-                    is_email_sent={false}
-                    is_payment_agent_withdraw
-                    payment_agent_active_tab_index={1}
-                    verification_code='1234'
-                />
-            </Router>
+        renderWithRouter(
+            <PaymentAgentList
+                {...props}
+                is_email_sent={false}
+                is_payment_agent_withdraw
+                payment_agent_active_tab_index={1}
+                verification_code='1234'
+            />
         );
 
         expect(screen.getByText('Payment agent withdraw form')).toBeInTheDocument();

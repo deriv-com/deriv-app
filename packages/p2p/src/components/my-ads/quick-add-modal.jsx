@@ -106,6 +106,7 @@ const QuickAddModal = ({ advert }) => {
                                 text={localize('Cancel')}
                             />
                             <Button
+                                className='quick-add-modal--button'
                                 has_effect
                                 large
                                 onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
@@ -124,6 +125,7 @@ const QuickAddModal = ({ advert }) => {
                         <React.Fragment>
                             {selected_methods.map((payment_method, key) => {
                                 const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
+                                const payment_method_icon = method.replace(' ', '');
 
                                 return (
                                     <Formik key={key} enableReinitialize initialValues={{}}>
@@ -131,13 +133,16 @@ const QuickAddModal = ({ advert }) => {
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
-                                                    label={
-                                                        <React.Fragment>
-                                                            <Icon icon='IcAddCircle' size={14} />
-                                                            <Text color='less-prominent' size='xs'>
-                                                                <Localize i18n_default_text='Add' />
-                                                            </Text>
-                                                        </React.Fragment>
+                                                    className='quick-add-modal--input'
+                                                    leading_icon={
+                                                        <Icon
+                                                            icon={
+                                                                payment_method_icon === 'BankTransfer' ||
+                                                                payment_method_icon === 'Other'
+                                                                    ? `IcCashier${payment_method_icon}`
+                                                                    : 'IcCashierEwallet'
+                                                            }
+                                                        />
                                                     }
                                                     trailing_icon={
                                                         <Icon
@@ -222,20 +227,22 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </Formik>
                     )}
-                    <div className='quick-add-modal--text'>
-                        <Localize
-                            i18n_default_text='<0>Don’t see your payment method?</0>  <1>Add new.</1>'
-                            components={[
-                                <Text key={0} color='less-prominent' size='xxs' />,
-                                <Text
-                                    key={1}
-                                    color='loss-danger'
-                                    size='xxs'
-                                    onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
-                                />,
-                            ]}
-                        />
-                    </div>
+                    {selected_methods.length < 3 && (
+                        <div className='quick-add-modal--text'>
+                            <Localize
+                                i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                                components={[
+                                    <Text key={0} color='less-prominent' size='xxs' />,
+                                    <Text
+                                        key={1}
+                                        color='loss-danger'
+                                        size='xxs'
+                                        onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
+                                    />,
+                                ]}
+                            />
+                        </div>
+                    )}
                 </MobileFullPageModal>
             );
         }
@@ -261,6 +268,7 @@ const QuickAddModal = ({ advert }) => {
                                 text={localize('Cancel')}
                             />
                             <Button
+                                className='quick-add-modal--button'
                                 has_effect
                                 large
                                 onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
@@ -310,13 +318,16 @@ const QuickAddModal = ({ advert }) => {
                 title={localize('Add payment methods')}
             >
                 <Modal.Body>
-                    <Text color='prominent' size='xxs'>
-                        <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
-                    </Text>
+                    <div className='p2p-my-ads__info'>
+                        <Text color='prominent' size='xxs'>
+                            <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                        </Text>
+                    </div>
                     {selected_methods.length > 0 ? (
                         <React.Fragment>
                             {selected_methods.map((payment_method, key) => {
                                 const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
+                                const payment_method_icon = method.replace(' ', '');
 
                                 return (
                                     <Formik key={key} enableReinitialize initialValues={{}}>
@@ -324,13 +335,16 @@ const QuickAddModal = ({ advert }) => {
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
-                                                    label={
-                                                        <React.Fragment>
-                                                            <Icon icon='IcAddCircle' size={14} />
-                                                            <Text color='less-prominent' size='xs'>
-                                                                <Localize i18n_default_text='Add' />
-                                                            </Text>
-                                                        </React.Fragment>
+                                                    className='quick-add-modal--input'
+                                                    leading_icon={
+                                                        <Icon
+                                                            icon={
+                                                                payment_method_icon === 'BankTransfer' ||
+                                                                payment_method_icon === 'Other'
+                                                                    ? `IcCashier${payment_method_icon}`
+                                                                    : 'IcCashierEwallet'
+                                                            }
+                                                        />
                                                     }
                                                     trailing_icon={
                                                         <Icon
@@ -415,18 +429,20 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </Formik>
                     )}
-                    <Localize
-                        i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
-                        components={[
-                            <Text key={0} color='less-prominent' size='xxs' />,
-                            <Text
-                                key={1}
-                                color='loss-danger'
-                                size='xxs'
-                                onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
-                            />,
-                        ]}
-                    />
+                    {selected_methods.length < 3 && (
+                        <Localize
+                            i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                            components={[
+                                <Text key={0} color='less-prominent' size='xxs' />,
+                                <Text
+                                    key={1}
+                                    color='loss-danger'
+                                    size='xxs'
+                                    onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
+                                />,
+                            ]}
+                        />
+                    )}
                 </Modal.Body>
                 <Modal.Footer has_separator>
                     <Button

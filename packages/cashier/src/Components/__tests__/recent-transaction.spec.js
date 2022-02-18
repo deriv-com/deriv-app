@@ -32,7 +32,11 @@ describe('<RecentTransaction />', () => {
         setIsCryptoTransactionsVisible: jest.fn(),
     };
 
-    const history = createBrowserHistory();
+    let history;
+    const renderWithRouter = component => {
+        history = createBrowserHistory();
+        return render(<Router history={history}>{component}</Router>);
+    };
 
     const getIconName = () => {
         const icon = screen.getByTestId('dt_svg_icon');
@@ -41,11 +45,7 @@ describe('<RecentTransaction />', () => {
     };
 
     it('should show proper messages', () => {
-        render(
-            <Router history={history}>
-                <RecentTransaction {...props} />
-            </Router>
-        );
+        renderWithRouter(<RecentTransaction {...props} />);
 
         expect(screen.getByText('Recent transactions')).toBeInTheDocument();
         expect(screen.getByText('Withdrawal BTC')).toBeInTheDocument();
@@ -59,11 +59,7 @@ describe('<RecentTransaction />', () => {
     });
 
     it('should trigger onClick callback when the user clicks on "View all" button', () => {
-        render(
-            <Router history={history}>
-                <RecentTransaction {...props} />
-            </Router>
-        );
+        renderWithRouter(<RecentTransaction {...props} />);
 
         const view_all_btn_link = screen.getByRole('link', { name: 'View all' });
         fireEvent.click(view_all_btn_link);
@@ -72,36 +68,26 @@ describe('<RecentTransaction />', () => {
     });
 
     it('should show the proper icon when transaction_type is equal to "withdrawal"', () => {
-        const { container } = render(
-            <Router history={history}>
-                <RecentTransaction {...props} />
-            </Router>
-        );
+        renderWithRouter(<RecentTransaction {...props} />);
 
         expect(getIconName()).toBe('ic-cashier-minus');
     });
 
     it('should show the proper icon when transaction_type is equal to "deposit"', () => {
-        const { container } = render(
-            <Router history={history}>
-                <RecentTransaction
-                    {...props}
-                    crypto_transactions={[
-                        { ...props.crypto_transactions[0], transaction_type: 'deposit', status_code: 'PENDING' },
-                    ]}
-                />
-            </Router>
+        renderWithRouter(
+            <RecentTransaction
+                {...props}
+                crypto_transactions={[
+                    { ...props.crypto_transactions[0], transaction_type: 'deposit', status_code: 'PENDING' },
+                ]}
+            />
         );
 
         expect(getIconName()).toBe('ic-cashier-add');
     });
 
     it('should not show "Recent transactions" title if crypto_transactions is an empty array', () => {
-        render(
-            <Router history={history}>
-                <RecentTransaction {...props} crypto_transactions={[]} />
-            </Router>
-        );
+        renderWithRouter(<RecentTransaction {...props} crypto_transactions={[]} />);
 
         expect(screen.queryByText('Recent transactions')).not.toBeInTheDocument();
     });

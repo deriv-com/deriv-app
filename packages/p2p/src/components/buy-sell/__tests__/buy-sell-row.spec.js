@@ -17,7 +17,7 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 const setSelectedAdvert = jest.fn();
 const showAdvertiserPage = jest.fn();
 
-const mockProps = () => ({
+const props = {
     row: {
         advertiser_details: {
             id: '',
@@ -25,7 +25,7 @@ const mockProps = () => ({
         },
         id: '',
     },
-});
+};
 
 describe('<BuySellRow />', () => {
     it('Component should be rendered in mobile view', () => {
@@ -37,8 +37,8 @@ describe('<BuySellRow />', () => {
                 },
             },
         }));
-        const props = mockProps();
         isMobile.mockReturnValue(true);
+
         render(<BuySellRow {...props} />);
 
         const el_dp2p_buy_sell_row__mobile_container = screen.getByTestId('dp2p-buy-sell-row__mobile_container');
@@ -47,7 +47,6 @@ describe('<BuySellRow />', () => {
     });
 
     it('Component should be rendered in desktop view', () => {
-        isMobile.mockReturnValue(false);
         useStores.mockImplementation(() => ({
             buy_sell_store: {},
             general_store: {
@@ -56,7 +55,8 @@ describe('<BuySellRow />', () => {
                 },
             },
         }));
-        const props = mockProps();
+        isMobile.mockReturnValue(false);
+
         render(<BuySellRow {...props} />);
 
         const el_dp2p_buy_sel_row__desktop_container = screen.getByRole('row');
@@ -73,9 +73,8 @@ describe('<BuySellRow />', () => {
                 },
             },
         }));
-        const props = mockProps();
-        props.row.id = 'WATCH_THIS_SPACE';
-        render(<BuySellRow {...props} />);
+
+        render(<BuySellRow {...props} row={{ ...props.row, id: 'WATCH_THIS_SPACE' }} />);
 
         const el_dp2p_buy_sel_row__slider_animation = screen.getByTestId('dp2p-buy-sell-row__slider_animation_element');
 
@@ -91,9 +90,8 @@ describe('<BuySellRow />', () => {
                 },
             },
         }));
-        const props = mockProps();
-        props.row.id = 'NO_MATCH_ROW';
-        render(<BuySellRow {...props} />);
+
+        render(<BuySellRow {...props} row={{ ...props.row, id: 'NO_MATCH_ROW' }} />);
 
         const el__dp2p_buy_sel_row__no_matching_ads = screen.getByText('There are no matching ads.');
 
@@ -113,10 +111,9 @@ describe('<BuySellRow />', () => {
                 isBarred: false,
             },
         }));
-        const props = mockProps();
-        props.row.account_currency = 'USD';
         isMobile.mockReturnValue(true);
-        render(<BuySellRow {...props} />);
+
+        render(<BuySellRow {...props} row={{ ...props.row, account_currency: 'USD' }} />);
 
         const el_dp2p_buy_sell_row__desktop_advertiser_page__container = screen.getByTestId(
             'dp2p-buy-sell-row__mobile_advertiser_page_container'
@@ -143,10 +140,9 @@ describe('<BuySellRow />', () => {
                 isBarred: false,
             },
         }));
-        const props = mockProps();
-        props.row.account_currency = 'USD';
         isMobile.mockReturnValue(false);
-        render(<BuySellRow {...props} />);
+
+        render(<BuySellRow {...props} row={{ ...props.row, account_currency: 'USD' }} />);
 
         const el_dp2p_buy_sell_row__desktop_advertiser_page__container = screen.getByTestId(
             'dp2p-buy-sell-row__desktop_advertiser_page_container'

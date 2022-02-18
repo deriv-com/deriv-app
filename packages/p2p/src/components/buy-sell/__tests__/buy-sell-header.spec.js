@@ -8,11 +8,11 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(),
 }));
 
-const mockProps = () => ({
+const props = {
     is_visible: false,
     setTableType: jest.fn(),
     table_type: '',
-});
+};
 const loadMoreItems = jest.fn();
 const setIsLoading = jest.fn();
 const setItems = jest.fn();
@@ -43,7 +43,6 @@ describe('<BuySellHeader />', () => {
     });
 
     it('setTableType func should be called when click on buy/sell button', () => {
-        const props = mockProps();
         render(<BuySellHeader {...props} />);
 
         const el_dp2p_buy_sell__buy_button = screen.getByText('Buy');
@@ -56,7 +55,6 @@ describe('<BuySellHeader />', () => {
     });
 
     it('setShouldUseClientLimits func should be called when click on checkbox', () => {
-        const props = mockProps();
         render(<BuySellHeader {...props} />);
 
         const el_dp2p_buy_sell__checkbox = screen.getByRole('checkbox');

@@ -33,7 +33,7 @@
         color: $white;
         font-family: roboto, sans-serif;
         font-weight: 400;
-        padding: 0.4rem 0.7rem;
+        padding: 0.4rem 0.3rem 0.4rem 0.7rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -76,7 +76,7 @@
         & .reset__footer{
             border-top:1px solid #ddd;
             margin-top: 0.5rem;
-            padding: 0.4rem 0.7rem;
+            padding: 0.4rem 0.3rem 0.4rem 0.7rem;
             width: 100%;
             display:flex;
             justify-content: end;

@@ -16,7 +16,7 @@ describe('<PageReturn />', () => {
 
         const el_dp2p_page_return_container = screen.getByTestId('dp2p-page-return_container');
 
-        expect(el_dp2p_page_return_container).toHaveClass('page-return test');
+        expect(el_dp2p_page_return_container).toHaveClass('test');
     });
 
     it('function passed from props should be called', () => {

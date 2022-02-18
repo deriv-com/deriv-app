@@ -11,7 +11,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
 
     const validateFields = values => {
         const errors = {};
-        const no_symbols_regex = /^(?!^$|\s+)[A-Za-z0-9\s]{0,}$/;
+        const no_symbols_regex = /^[ A-Za-z0-9_@.+-]*$/g;
         const no_symbols_message = localize('Special characters are not allowed to use.');
 
         if (values.account) {

@@ -91,7 +91,10 @@ const FilterModal = () => {
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        <div className='filter-modal__row'>
+                        <div
+                            className='filter-modal__row filter-modal__select'
+                            onClick={() => buy_sell_store.setShowFilterPaymentMethods(true)}
+                        >
                             <div className='filter-modal__column'>
                                 <Text color='prominent' size='xs'>
                                     <Localize i18n_default_text='Payment methods' />
@@ -101,16 +104,16 @@ const FilterModal = () => {
                                         <Localize i18n_default_text='All' />
                                     </Text>
                                 ) : (
-                                    <Text color='less-prominent' size='xs'>
+                                    <Text
+                                        className='filter-modal__selected-payment-methods'
+                                        color='less-prominent'
+                                        size='xs'
+                                    >
                                         {selected_methods_text.join(', ')}
                                     </Text>
                                 )}
                             </div>
-                            <Icon
-                                icon='IcChevronRight'
-                                onClick={() => buy_sell_store.setShowFilterPaymentMethods(true)}
-                                size={18}
-                            />
+                            <Icon className='filter-modal__arrow' icon='IcChevronRight' size={18} />
                         </div>
                         <div className='filter-modal__row'>
                             <div className='filter-modal__column'>

@@ -34,8 +34,8 @@ describe('<RecentTransaction />', () => {
 
     const history = createBrowserHistory();
 
-    const getIconName = container => {
-        const icon = container.querySelector('.cashier-recent-transaction__icon');
+    const getIconName = () => {
+        const icon = screen.getByTestId('dt_svg_icon');
         const icon_path = icon.firstChild.getAttribute('xlink:href');
         return icon_path.slice(icon_path.indexOf('#') + 1);
     };
@@ -78,7 +78,7 @@ describe('<RecentTransaction />', () => {
             </Router>
         );
 
-        expect(getIconName(container)).toBe('ic-cashier-minus');
+        expect(getIconName()).toBe('ic-cashier-minus');
     });
 
     it('should show the proper icon when transaction_type is equal to "deposit"', () => {
@@ -93,7 +93,7 @@ describe('<RecentTransaction />', () => {
             </Router>
         );
 
-        expect(getIconName(container)).toBe('ic-cashier-add');
+        expect(getIconName()).toBe('ic-cashier-add');
     });
 
     it('should not show "Recent transactions" title if crypto_transactions is an empty array', () => {

@@ -25,7 +25,7 @@ module.exports = function (env) {
             minimizer: MINIMIZERS,
         },
         output: {
-            filename: 'trader/js/[name].js',
+            filename: 'cfd/js/[name].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
             chunkFilename: 'cfd/js/cfd.[name].[contenthash].js',

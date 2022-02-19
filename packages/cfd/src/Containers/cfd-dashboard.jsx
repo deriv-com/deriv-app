@@ -28,7 +28,9 @@ import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pendin
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
-import 'Sass/app/modules/mt5/cfd-dashboard.scss';
+import '../../sass/cfd-dashboard.scss';
+
+/// line 31 must get fixed
 
 const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
     const LoadingComponent = loading_component;

@@ -39,8 +39,8 @@ const htmlInjectConfig = () => ({
 });
 
 const cssConfig = () => ({
-    filename: 'trader/css/trader.main.[contenthash].css',
-    chunkFilename: 'trader/css/trader.[name].[contenthash].css',
+    filename: 'cfd/css/cfd.main.[contenthash].css',
+    chunkFilename: 'cfd/css/cfd.[name].[contenthash].css',
 });
 
 const stylelintConfig = () => ({

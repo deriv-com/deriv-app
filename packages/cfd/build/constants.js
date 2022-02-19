@@ -44,7 +44,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
         ? [
               {
                   test: /\.(js|jsx)$/,
-                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+                  exclude: /node_modules|__tests__|(build\/.*\.js$)/,
                   include: /src/,
                   loader: 'eslint-loader',
                   enforce: 'pre',
@@ -56,7 +56,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
               },
               {
                   test: /\.(ts|tsx)$/,
-                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+                  exclude: /node_modules|__tests__|(build\/.*\.js$)/,
                   include: /src/,
                   loader: 'eslint-loader',
                   enforce: 'pre',
@@ -129,7 +129,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
         ? []
         : [
               new WebpackManifestPlugin({
-                  fileName: 'trader/asset-manifest.json',
+                  fileName: 'cfd/asset-manifest.json',
                   filter: file => file.name !== 'CNAME',
               }),
           ]),

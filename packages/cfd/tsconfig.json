@@ -2,16 +2,9 @@
     "compilerOptions": {
         "paths": {
             "_common/*": ["src/_common/*"],
-            "App/*": ["src/App/*"],
-            "Assets/*": ["src/Assets/*"],
             "Constants/*": ["src/Constants/*"],
-            "Fonts/*": ["src/public/fonts/*"],
-            "Images": ["src/public/images"],
-            "Modules/*": ["src/Modules/*"],
             "Sass/*": ["src/sass/*"],
-            "Services/*": ["src/Services/*"],
             "Stores/*": ["src/Stores/*"],
-            "Translations/*": ["src/public/translations/*"],
             "Utils/*": ["src/Utils/*"]
         },
         "target": "es5",

@@ -34,7 +34,7 @@ import {
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from '@deriv/trader';
+import SuccessDialog from '../_common/success-dialog';
 import '../../sass/cfd.scss';
 import { connect } from 'Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';

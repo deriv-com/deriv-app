@@ -1,5 +1,5 @@
 import React from 'react';
-import SuccessDialog from '@deriv/trader';
+import SuccessDialog from '../_common/success-dialog';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';

@@ -71,9 +71,7 @@ export default Engine =>
         }
 
         getLastDigit() {
-            return new Promise(resolve =>
-                this.getLastTick().then(tick => resolve(getLastDigit(tick)))
-            );
+            return new Promise(resolve => this.getLastTick().then(tick => resolve(getLastDigit(tick))));
         }
 
         getLastDigitList() {

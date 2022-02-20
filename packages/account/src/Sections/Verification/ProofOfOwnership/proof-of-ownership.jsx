@@ -1,8 +1,13 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, FormSubmitErrorMessage, Icon, Text } from '@deriv/components';
+import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
 import ExpandedCard from './ExpandedCard.jsx';
+import FormFooter from '../../../Components/form-footer';
+import FormBody from '../../../Components/form-body';
+import FormSubHeader from '../../../Components/form-sub-header';
+import FormBodySection from '../../../Components/form-body-section';
 
 const ProofOfOwnership = () => {
     const [is_open, setIsOpen] = useState(false);
@@ -18,7 +23,7 @@ const ProofOfOwnership = () => {
             })}
         />
     );
-    const Card = () => (
+    const Card = ({ handleChange, handleBlur, values }) => (
         <div className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}>
             <div className='proof-of-ownership__card-item'>
                 <Icon icon='IcCreditCard' className='proof-of-ownership__card-item-logo' width={64} height={58} />
@@ -34,17 +39,49 @@ const ProofOfOwnership = () => {
                     data-testid={'proof-of-ownership-button'}
                 />
             </div>
-            {is_open && <ExpandedCard />}
+            {is_open && <ExpandedCard handleChange={handleChange} handleBlur={handleBlur} values={values} />}
         </div>
     );
+    const initial_form = {
+        cardNumber: '',
+        cardImgName: '',
+    };
 
+    const handleSubmit = () => {
+        console.log('hello');
+    };
     return (
-        <div className='proof-of-ownership'>
-            <Text size='xs' as='p'>
-                {localize('Please upload the following document.')}
-            </Text>
-            <Card />
-        </div>
+        <Formik initialValues={initial_form} onSubmit={handleSubmit}>
+            {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting }) => (
+                <div className='proof-of-ownership'>
+                    <FormBody>
+                        <FormSubHeader title={localize('Please upload the following document.')} />
+                        <FormBodySection>
+                            <div>
+                                <Card handleChange={handleChange} handleBlur={handleBlur} values={values} />
+                            </div>
+                        </FormBodySection>
+                    </FormBody>
+                    <FormFooter>
+                        {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                        <Button
+                            type='button'
+                            className={classNames('account-form__footer-btn')}
+                            // onClick={() => onClickSubmit(handleSubmit)}
+                            // is_disabled={
+                            //     isSubmitting || !dirty || is_btn_loading || Object.keys(errors).length > 0
+                            // }
+                            has_effect
+                            // is_loading={is_btn_loading}
+                            // is_submit_success={is_submit_success}
+                            text={localize('Next')}
+                            large
+                            primary
+                        />
+                    </FormFooter>
+                </div>
+            )}
+        </Formik>
     );
 };
 

@@ -1243,7 +1243,11 @@ export default class ClientStore extends BaseStore {
             }
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
-                if (search_params?.get('action') === 'reset_password') {
+                if (
+                    ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
+                        search_params?.get('action')
+                    )
+                ) {
                     const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
                     window.location.replace(`${redirect_route}/redirect?${query_string}`);
                 } else {

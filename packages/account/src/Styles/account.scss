@@ -2243,6 +2243,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 1.6rem;
         }
         @include desktop {
+            width: 75%;
             padding: 2.4rem;
         }
 

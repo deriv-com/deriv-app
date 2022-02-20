@@ -2292,7 +2292,16 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include mobile {
                     flex-direction: column;
                 }
-
+                .hidden-input {
+                    height: 4rem;
+                    opacity: 0;
+                    z-index: 10;
+                    position: absolute;
+                    width: 77%;
+                    @include mobile {
+                        width: 70%;
+                    }
+                }
                 &-cardnumber {
                     padding-top: 1.6rem;
                     border: 1px solid #d6dadb;
@@ -2309,6 +2318,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-left: 1rem;
                     display: flex;
                     flex-grow: 2;
+                    position: relative;
                     @include mobile {
                         width: 100% !important;
                         margin-left: 0;

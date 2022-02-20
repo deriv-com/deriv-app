@@ -69,17 +69,7 @@ const ExpandedCard = () => {
                                 }}
                             />
                             <div className='proof-of-ownership__card-open-inputs-photo'>
-                                <Input
-                                    name='cardImgName'
-                                    required
-                                    label={localize('Choose a photo')}
-                                    maxLength={255}
-                                    hint={localize('Accepted formats: pdf, jpeg, jpg, and png. Max file size: 8MB')}
-                                    value={filename}
-                                    readOnly
-                                    color='less-prominent'
-                                />
-                                <FileUploader handleFile={handleUploadedFile} />
+                                <FileUploader handleFile={handleUploadedFile} fileName={filename} />
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import ExpandedCard from './ExpandedCard';
+import ExpandedCard from './ExpandedCard.jsx';
 
 const ProofOfOwnership = () => {
     const [is_open, setIsOpen] = useState(false);
@@ -39,7 +39,7 @@ const ProofOfOwnership = () => {
     );
 
     return (
-        <div className='proof-of-identity'>
+        <div className='proof-of-ownership'>
             <Text size='xs' as='p'>
                 {localize('Please upload the following document.')}
             </Text>

@@ -176,6 +176,7 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-input {
                 margin-bottom: 0;
             }
+
             .dc-dropdown-container {
                 .dc-dropdown__display-text,
                 .dc-list__item-text {
@@ -2223,16 +2224,28 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define proof-of-ownership */
 .proof-of-ownership {
     width: 100%;
-    height: 100%;
+    @include mobile {
+        margin-top: 2.4rem;
+        margin-left: 1.6rem;
+        margin-right: 1.6rem;
+    }
+
     &__card {
-        border: 1px solid var(--general-section-1);
-        border-radius: 4px;
-        width: 71.6rem;
-        height: 10.6rem;
-        padding: 2.4rem;
+        border: 1px solid var(--general-section-5);
+        border-radius: 8px;
         margin-top: 1.6rem;
         display: flex;
         flex-direction: column;
+        @include mobile {
+            overflow-y: auto;
+            width: 100%;
+            flex-direction: column;
+            padding: 1.6rem;
+        }
+        @include desktop {
+            padding: 2.4rem;
+        }
+
         &-item {
             display: flex;
             flex-direction: row;
@@ -2240,30 +2253,44 @@ $MIN_HEIGHT_FLOATING: calc(
             &-text {
                 line-height: 2.4rem;
                 padding-left: 1.6rem;
-                width: 56.1rem;
             }
+
             &-icon {
                 margin-left: auto;
                 transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+                padding: 0;
                 &--invert {
                     transform: rotate(180deg);
                 }
             }
         }
+
         &-open {
             height: auto;
+
             &-desc {
                 line-height: 2rem;
                 margin: 8px 0;
+
                 &-link {
                     color: var(--text-red);
                 }
             }
+
             &-inputs {
                 display: flex;
-                flex-direction: row;
                 align-items: center;
                 margin-top: 3rem;
+                width: 100%;
+
+                @include desktop {
+                    .dc-input {
+                        width: unset;
+                    }
+                }
+                @include mobile {
+                    flex-direction: column;
+                }
 
                 &-cardnumber {
                     padding-top: 1.6rem;
@@ -2271,16 +2298,30 @@ $MIN_HEIGHT_FLOATING: calc(
                     box-sizing: border-box;
                     border-radius: 4px;
                     height: 4rem;
-                    width: 33rem;
+                    flex-grow: 1;
+                    @include mobile {
+                        width: 100% !important;
+                    }
                 }
 
                 &-photo {
                     margin-left: 1rem;
+                    display: flex;
+                    flex-grow: 2;
+                    @include mobile {
+                        width: 100% !important;
+                        margin-left: 0;
+                    }
+                    @include desktop {
+                        .dc-input {
+                            flex-grow: 8;
+                        }
+                    }
+
                     &-btn {
-                        margin: 0 1rem 3.2rem;
+                        margin-left: 1rem;
                         padding: 10px 16px;
                         position: static;
-                        width: 82px;
                         height: 40px;
                     }
                 }

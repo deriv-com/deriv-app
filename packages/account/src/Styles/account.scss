@@ -2226,8 +2226,6 @@ $MIN_HEIGHT_FLOATING: calc(
     width: 100%;
     @include mobile {
         margin-top: 2.4rem;
-        margin-left: 1.6rem;
-        margin-right: 1.6rem;
     }
 
     &__card {
@@ -2243,7 +2241,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 1.6rem;
         }
         @include desktop {
-            width: 75%;
+            width: 80%;
             padding: 2.4rem;
         }
 
@@ -2291,6 +2289,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
                 @include mobile {
                     flex-direction: column;
+                    padding-bottom: 4rem;
                 }
                 .hidden-input {
                     height: 4rem;
@@ -2303,25 +2302,25 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 &-cardnumber {
-                    padding-top: 1.6rem;
                     border: 1px solid #d6dadb;
                     box-sizing: border-box;
                     border-radius: 4px;
                     height: 4rem;
                     flex-grow: 1;
                     @include mobile {
-                        width: 100% !important;
+                        width: 100%;
                     }
                 }
 
                 &-photo {
                     margin-left: 1rem;
                     display: flex;
-                    flex-grow: 2;
+                    flex-grow: 4;
                     position: relative;
                     @include mobile {
-                        width: 100% !important;
+                        width: 100%;
                         margin-left: 0;
+                        margin-top: 1.6rem;
                     }
                     @include desktop {
                         .dc-input {

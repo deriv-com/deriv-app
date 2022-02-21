@@ -135,6 +135,7 @@ export default class MyProfileStore extends BaseStore {
                     account: values?.account,
                     bank_name: values?.bank_name,
                     branch: values?.branch,
+                    instructions: values?.instructions,
                     method: this.payment_method_value || this.selected_payment_method,
                     name: values?.name,
                 },

@@ -11,7 +11,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
 
     const validateFields = values => {
         const errors = {};
-        const no_symbols_regex = /^[ A-Za-z0-9_@.+-]*$/g;
+        const no_symbols_regex = /[a-zA-Z0-9\\.@_+-]$/;
         const no_symbols_message = localize('Special characters are not allowed to use.');
 
         if (values.account) {
@@ -98,7 +98,6 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                         </Field>
                                     );
                                 })}
-
                             <div
                                 className={classNames('add-payment-method-form__buttons', {
                                     'add-payment-method-form__buttons--separated-footer': should_show_separated_footer,

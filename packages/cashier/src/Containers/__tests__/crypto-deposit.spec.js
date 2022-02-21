@@ -107,9 +107,9 @@ describe('<CryptoDeposit />', () => {
                         <CryptoDeposit {...props} currency={currency} />
                     </Router>
                 );
-                const dropdown_display = screen.getByTestId('dt_dropdown_display');
+                const dropdown_display = screen.getByTestId('dti_dropdown_display');
                 fireEvent.click(dropdown_display);
-                return screen.getAllByTestId('dt_list_item');
+                return screen.getAllByTestId('dti_list_item');
             };
 
             rerenderAndOpenDropdownOptions().forEach(option => {

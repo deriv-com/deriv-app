@@ -283,14 +283,16 @@ const QuickAddModal = ({ advert }) => {
                             <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         </Text>
                         {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
-                            <PaymentMethodCard
-                                is_vertical_ellipsis_visible={false}
-                                key={key}
-                                small
-                                onClick={() => onClickPaymentMethodCard(payment_method)}
-                                payment_method={payment_method}
-                                style={selected_methods.includes(payment_method.ID) ? style : {}}
-                            />
+                            <div key={key}>
+                                <PaymentMethodCard
+                                    is_vertical_ellipsis_visible={false}
+                                    key={key}
+                                    small
+                                    onClick={() => onClickPaymentMethodCard(payment_method)}
+                                    payment_method={payment_method}
+                                    style={selected_methods.includes(payment_method.ID) ? style : {}}
+                                />
+                            </div>
                         ))}
                         <PaymentMethodCard
                             is_add={true}

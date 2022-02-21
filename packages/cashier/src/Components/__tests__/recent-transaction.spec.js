@@ -39,7 +39,7 @@ describe('<RecentTransaction />', () => {
     };
 
     const getIconName = () => {
-        const icon = screen.getByTestId('dt_icon');
+        const icon = screen.getByTestId('dti_icon');
         const icon_path = icon.firstChild.getAttribute('xlink:href');
         return icon_path.slice(icon_path.indexOf('#') + 1);
     };

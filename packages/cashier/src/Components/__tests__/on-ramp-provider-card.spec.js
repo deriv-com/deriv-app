@@ -32,7 +32,7 @@ describe('<OnRampProviderCard />', () => {
     };
 
     const getIconNames = () => {
-        const icons = screen.getAllByTestId('dt_icon');
+        const icons = screen.getAllByTestId('dti_icon');
         let icon_names = [];
         icons.forEach(icon => {
             const icon_path = icon.firstChild.getAttribute('xlink:href');

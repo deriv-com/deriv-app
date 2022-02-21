@@ -37,7 +37,7 @@ const Icon = React.forwardRef(
                     'dc-icon--black': color === 'black',
                     'dc-icon--orange': color === 'orange',
                 })}
-                data-testid='dt_icon'
+                data-testid='dti_icon'
                 height={height || size}
                 id={id}
                 width={width || size}

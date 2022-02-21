@@ -1643,7 +1643,7 @@ export default class ClientStore extends BaseStore {
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 
-        if (response?.logout === 1) {
+        if (response.logout === 1) {
             this.cleanUp();
 
             this.root_store.rudderstack.reset();

@@ -127,12 +127,14 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     createPaymentMethod(values, { setSubmitting }) {
         setSubmitting(true);
+
         requestWS({
             p2p_advertiser_payment_methods: 1,
             create: [
                 {
                     account: values?.account,
                     bank_name: values?.bank_name,
+                    branch: values?.branch,
                     method: this.payment_method_value || this.selected_payment_method,
                     name: values?.name,
                 },

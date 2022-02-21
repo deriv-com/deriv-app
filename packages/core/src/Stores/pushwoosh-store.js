@@ -1,4 +1,4 @@
-import { action } from 'mobx';
+import { action, when } from 'mobx';
 import { Pushwoosh } from 'web-push-notifications';
 import { getAppId, urlForCurrentDomain } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -19,6 +19,18 @@ export default class PushwooshStore extends BaseStore {
      */
     @action.bound
     init = () => {
+        let reaction_id;
+        if (!this.root_store.common.is_network_online) {
+            reaction_id = when(
+                () => this.root_store.common.is_network_online,
+                () => {
+                    this.init();
+                }
+            );
+            return;
+        }
+        // canceling the reaction once is_network_online becomes true for the first time:
+        reaction_id?.cancel();
         if (!this.is_applicable && this.has_initialized) return;
 
         this.push_woosh.push([

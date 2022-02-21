@@ -31,6 +31,7 @@ import {
     regex_checks,
     routes,
     WS,
+    useIsMounted,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { withRouter } from 'react-router';
@@ -132,10 +133,10 @@ export const PersonalDetailsForm = ({
 
     const { is_dashboard } = React.useContext(PlatformContext);
 
-    const first_render = React.useRef(true);
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
-        if (first_render.current) {
+        if (isMounted()) {
             const getSettings = async () => {
                 // waits for residence to be populated
                 await WS.wait('get_settings');
@@ -150,10 +151,9 @@ export const PersonalDetailsForm = ({
                 }
             };
             getSettings();
-            first_render.current = false;
         }
         initializeFormValues();
-    }, [account_settings, is_eu, is_mf, first_render.current]);
+    }, [account_settings, is_eu, is_mf]);
 
     React.useEffect(() => {
         let timeout_id;
@@ -298,7 +298,7 @@ export const PersonalDetailsForm = ({
         if (values.tax_identification_number) {
             if (
                 values.tax_identification_number &&
-                !/^(?!^$|\s+)[A-Za-z0-9.\/\s-]{0,25}$/.test(values.tax_identification_number)
+                !/^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/.test(values.tax_identification_number)
             ) {
                 errors.tax_identification_number = localize(
                     'Only letters, numbers, space, hyphen, period, and forward slash are allowed.'
@@ -379,7 +379,7 @@ export const PersonalDetailsForm = ({
 
         // Not allowing Jersey postcodes with a UK residence.
         if (
-            !regex_checks.address_details.jersey_postcode.test(values.address_postcode) &&
+            !regex_checks.address_details.non_jersey_postcode.test(values.address_postcode) &&
             (is_uk || values.citizen === 'United Kingdom')
         ) {
             errors.address_postcode = localize('Our accounts and services are unavailable for the Jersey postal code');
@@ -1224,7 +1224,7 @@ PersonalDetailsForm.propTypes = {
     history: PropTypes.object,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, notifications }) => ({
     account_settings: client.account_settings,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
@@ -1238,5 +1238,5 @@ export default connect(({ client }) => ({
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
 }))(withRouter(PersonalDetailsForm));

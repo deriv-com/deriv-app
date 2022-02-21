@@ -175,13 +175,13 @@ CloseMxMltAccountModal.propTypes = {
     is_close_mx_mlt_account_modal_visible: PropTypes.bool,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, notifications, ui }) => ({
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     country_standpoint: client.country_standpoint,
     can_have_mlt_account: client.can_have_mlt_account,
     has_malta_account: client.has_malta_account,
-    removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
+    removeNotificationMessageByKey: notifications.removeNotificationMessageByKey,
     showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
 }))(CloseMxMltAccountModal);

@@ -4,7 +4,7 @@ import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
-import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
+import { decimalValidator, lengthValidator, textValidator, rangeValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 
 export default class MyAdsStore extends BaseStore {
@@ -30,6 +30,8 @@ export default class MyAdsStore extends BaseStore {
     @observable payment_info = '';
     @observable selected_ad_id = '';
     @observable show_ad_form = false;
+    @observable rate_type = 'float';
+    @observable float_rate_offset_limit = { upper_limit: 6, lower_limit: -3 };
 
     @action.bound
     getAccountStatus() {
@@ -103,6 +105,9 @@ export default class MyAdsStore extends BaseStore {
             payment_method: 'bank_transfer', // TODO: Allow for other types of payment_method.
             rate: Number(values.price_rate),
         };
+
+        console.log('Form data: ', create_advert);
+        return;
 
         if (values.contact_info && is_sell_ad) {
             create_advert.contact_info = values.contact_info;
@@ -217,15 +222,27 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    restrictLength = (e, handleChange) => {
+    restrictLength = (e, handleChange, max_characters = 15) => {
         // typing more than 15 characters will break the layout
         // max doesn't disable typing, so we will use this to restrict length
-        const max_characters = 15;
+        // const max_characters = 15;
         if (e.target.value.length > max_characters) {
             e.target.value = e.target.value.slice(0, max_characters);
             return;
         }
         handleChange(e);
+    };
+
+    @action.bound
+    restrictDecimalPlace = (e, decimal_place, handleChangeCb) => {
+        const pattern = new RegExp(`^[+-]?\\d*(\\.\\d{1,${decimal_place}})?$`);
+        if (pattern.test(e.target.value)) {
+            handleChangeCb(e);
+        } else {
+            const user_input = parseFloat(e.target.value).toFixed(decimal_place);
+            e.target.value = user_input;
+            handleChangeCb(e);
+        }
     };
 
     @action.bound
@@ -276,6 +293,16 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setDefaultAdvertDescription(default_advert_description) {
         this.default_advert_description = default_advert_description;
+    }
+
+    @action.bound
+    setRateType(rate_type) {
+        this.rate_type = rate_type;
+    }
+
+    @action.bound
+    setFloatRateOffsetLimit(rate_offset_limit) {
+        this.float_rate_offset_limit = rate_offset_limit;
     }
 
     @action.bound
@@ -382,9 +409,12 @@ export default class MyAdsStore extends BaseStore {
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= this.root_store.general_store.client.local_currency_config.decimal_places,
+                    this.rate_type != 'float'
+                        ? v > 0 &&
+                          decimalValidator(v) &&
+                          countDecimalPlaces(v) <=
+                              this.root_store.general_store.client.local_currency_config.decimal_places
+                        : true,
             ],
         };
 
@@ -400,7 +430,7 @@ export default class MyAdsStore extends BaseStore {
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
             payment_info: localize('Payment instructions'),
-            price_rate: localize('Fixed rate'),
+            price_rate: this.rate_type ? localize('Floating rate') : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
@@ -458,6 +488,7 @@ export default class MyAdsStore extends BaseStore {
         Object.entries(validations).forEach(([key, rules]) => {
             const error_index = rules.findIndex(v => !v(values[key]));
             if (error_index !== -1) {
+                console.log('error_index: ', error_index);
                 switch (key) {
                     case 'contact_info':
                     case 'payment_info':

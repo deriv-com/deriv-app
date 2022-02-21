@@ -36,7 +36,6 @@ const CreateAdForm = () => {
     const os = mobileOSDetect();
 
     const { currency, local_currency_config } = general_store.client;
-    console.log('local_currency_config.currency: ', local_currency_config.currency);
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
 
@@ -51,6 +50,8 @@ const CreateAdForm = () => {
         my_ads_store.setIsAdCreatedModalVisible(false);
         my_ads_store.setShowAdForm(false);
     };
+
+    const mock_market_feed = '100';
 
     React.useEffect(() => {
         const disposeApiErrorReaction = reaction(
@@ -101,6 +102,8 @@ const CreateAdForm = () => {
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
+                    console.log('Errors in CAD form: ', values, errors, touched);
+
                     return (
                         <div className='p2p-my-ads__form'>
                             <Form
@@ -109,9 +112,7 @@ const CreateAdForm = () => {
                                 })}
                                 noValidate
                             >
-                                <FloatingRate />
-
-                                {/* <ThemedScrollbars
+                                <ThemedScrollbars
                                     className='p2p-my-ads__form-scrollbar'
                                     is_scrollbar_hidden={isMobile()}
                                 >
@@ -139,6 +140,7 @@ const CreateAdForm = () => {
                                         </Field>
                                         <div className='p2p-my-ads__form-summary'>
                                             <CreateAdSummary
+                                                market_feed={my_ads_store.rate_type ? mock_market_feed : null}
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 price_rate={errors.price_rate ? '' : values.price_rate}
                                                 type={values.type}
@@ -188,6 +190,55 @@ const CreateAdForm = () => {
                                                 )}
                                             </Field>
                                             <Field name='price_rate'>
+                                                {({ field }) =>
+                                                    my_ads_store.rate_type === 'float' ? (
+                                                        <FloatingRate
+                                                            class_name='p2p-my-ads__form-field'
+                                                            error_messages={errors.price_rate}
+                                                            exchange_rate={mock_market_feed}
+                                                            fiat_currency={currency}
+                                                            local_currency={local_currency_config.currency}
+                                                            offset={{
+                                                                upper_limit:
+                                                                    my_ads_store.float_rate_offset_limit.upper_limit,
+                                                                lower_limit:
+                                                                    my_ads_store.float_rate_offset_limit.lower_limit,
+                                                            }}
+                                                            required
+                                                            changeHandler={e => {
+                                                                my_ads_store.restrictDecimalPlace(e, 2, handleChange);
+                                                            }}
+                                                            place_holder='Floating rate'
+                                                            {...field}
+                                                        />
+                                                    ) : (
+                                                        <Input
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            type='text'
+                                                            error={touched.price_rate && errors.price_rate}
+                                                            label={localize('Fixed rate (1 {{currency}})', {
+                                                                currency,
+                                                            })}
+                                                            className='p2p-my-ads__form-field'
+                                                            trailing_icon={
+                                                                <Text
+                                                                    color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                    line_height='m'
+                                                                    size={isDesktop() ? 'xxs' : 's'}
+                                                                >
+                                                                    {local_currency_config.currency}
+                                                                </Text>
+                                                            }
+                                                            onChange={e => {
+                                                                my_ads_store.restrictLength(e, handleChange);
+                                                            }}
+                                                            required
+                                                        />
+                                                    )
+                                                }
+                                            </Field>
+                                            {/* <Field name='price_rate'>
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
@@ -213,7 +264,7 @@ const CreateAdForm = () => {
                                                         required
                                                     />
                                                 )}
-                                            </Field>
+                                            </Field> */}
                                         </div>
                                         <div className='p2p-my-ads__form-container'>
                                             <Field name='min_transaction'>
@@ -358,7 +409,7 @@ const CreateAdForm = () => {
                                             </Button>
                                         </div>
                                     </CreateAdFormWrapper>
-                                </ThemedScrollbars> */}
+                                </ThemedScrollbars>
                             </Form>
                         </div>
                     );

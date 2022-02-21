@@ -55,7 +55,6 @@ const InputField = ({
     value,
 }) => {
     const [local_value, setLocalValue] = React.useState();
-
     const Icon = icon;
     const has_error = error_messages && !!error_messages.length;
     const max_is_disabled = max_value && (+value >= +max_value || +local_value >= +max_value);
@@ -124,6 +123,7 @@ const InputField = ({
     };
 
     const incrementValue = (ev, long_press_step) => {
+        console.log('Value inc: ', value);
         if (max_is_disabled) return;
         let increment_value;
 
@@ -144,13 +144,13 @@ const InputField = ({
         } else {
             increment_value = parseFloat(+(current_value || 0) + 1).toFixed(decimal_places);
         }
-
+        console.log('Increment: ', increment_value);
         updateValue(increment_value, !!long_press_step);
     };
 
     const calculateDecrementedValue = long_press_step => {
         let decrement_value;
-
+        console.log('Long ress: ', long_press_step);
         const current_value = local_value || value;
 
         const decimal_places = current_value ? getDecimals(current_value) : 0;
@@ -172,9 +172,15 @@ const InputField = ({
     };
 
     const decrementValue = (ev, long_press_step) => {
-        if (!value || min_is_disabled) return;
+        console.log('Value dec : ', value, min_is_disabled);
+        if (min_is_disabled) {
+            return;
+        }
         const decrement_value = calculateDecrementedValue(long_press_step);
-        if (is_negative_disabled && decrement_value < 0) return;
+        console.log('Decrement: ', decrement_value);
+        if (is_negative_disabled && decrement_value < 0) {
+            return;
+        }
         updateValue(decrement_value, !!long_press_step);
     };
 

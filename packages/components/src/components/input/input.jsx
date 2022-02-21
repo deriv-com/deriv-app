@@ -35,6 +35,8 @@ const Input = React.forwardRef(
     ) => {
         const [counter, setCounter] = React.useState(0);
 
+        // console.log('Change: ', props.onChange);
+
         React.useEffect(() => {
             if (typeof initial_character_count === 'number') {
                 setCounter(initial_character_count);

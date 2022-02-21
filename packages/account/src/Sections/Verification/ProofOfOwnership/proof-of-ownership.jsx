@@ -11,6 +11,7 @@ import FormBodySection from '../../../Components/form-body-section';
 
 const ProofOfOwnership = () => {
     const [is_open, setIsOpen] = useState(false);
+    const [step, setStep] = useState(0);
 
     const onClick = () => setIsOpen(!is_open);
     const icon = (
@@ -23,7 +24,7 @@ const ProofOfOwnership = () => {
             })}
         />
     );
-    const Card = ({ handleChange, handleBlur, values }) => (
+    const Card = ({ handleChange, handleBlur, values, setFieldValue }) => (
         <div className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}>
             <div className='proof-of-ownership__card-item'>
                 <Icon icon='IcCreditCard' className='proof-of-ownership__card-item-logo' width={64} height={58} />
@@ -39,26 +40,42 @@ const ProofOfOwnership = () => {
                     data-testid={'proof-of-ownership-button'}
                 />
             </div>
-            {is_open && <ExpandedCard handleChange={handleChange} handleBlur={handleBlur} values={values} />}
+            {is_open && (
+                <ExpandedCard
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    values={values}
+                    setFieldValue={setFieldValue}
+                />
+            )}
         </div>
     );
     const initial_form = {
         cardNumber: '',
-        cardImgName: '',
+        file: null,
     };
 
     const handleSubmit = () => {
         console.log('hello');
     };
+    const nextStep = () => {
+        setStep(step + 1);
+    };
     return (
         <Formik initialValues={initial_form} onSubmit={handleSubmit}>
-            {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting }) => (
+            {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, setFieldValue }) => (
                 <div className='proof-of-ownership'>
                     <FormBody>
                         <FormSubHeader title={localize('Please upload the following document.')} />
                         <FormBodySection>
                             <div>
-                                <Card handleChange={handleChange} handleBlur={handleBlur} values={values} />
+                                <Card
+                                    step={step}
+                                    handleChange={handleChange}
+                                    handleBlur={handleBlur}
+                                    values={values}
+                                    setFieldValue={setFieldValue}
+                                />
                             </div>
                         </FormBodySection>
                     </FormBody>
@@ -67,7 +84,7 @@ const ProofOfOwnership = () => {
                         <Button
                             type='button'
                             className={classNames('account-form__footer-btn')}
-                            // onClick={() => onClickSubmit(handleSubmit)}
+                            onClick={() => nextStep()}
                             // is_disabled={
                             //     isSubmitting || !dirty || is_btn_loading || Object.keys(errors).length > 0
                             // }

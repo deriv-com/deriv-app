@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
 import FileUploader from './FileUploader.jsx';
-import { Text, Input } from '@deriv/components';
+import { Input, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';
 
-const ExpandedCard = ({ handleChange, handleBlur, values }) => {
-    const [filename, setFileName] = useState('');
+const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
 
-    const handleUploadedFile = event => {
-        setFileName(event.name);
-    };
-    const formatCardNumber = value => {
-        console.log(value);
-        // const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g
-        // const onlyNumbers = value.replace(/[^\d]/g, '')
-
-        // return onlyNumbers.replace(regex, (regex, $1, $2, $3, $4) =>
-        //     [$1, $2, $3, $4].filter(group => !!group).join(' ')
-        // )
+    const handleUploadedFile = file => {
+        setFieldValue('file', file);
     };
 
     return (
@@ -48,17 +38,14 @@ const ExpandedCard = ({ handleChange, handleBlur, values }) => {
                         onBlur={handleBlur}
                         value={values.cardNumber
                             .replace(/\s/g, '')
-                            .replace(/(\d{4})/g, '$1 ')
+                            .replace(/(\w{4})/g, '$1 ')
                             .trim()}
                         name='cardNumber'
-                        maxLength='18'
-                        onKeyDown={e => {
-                            console.log(e.which);
-                        }}
+                        maxLength='19'
                     />
-                    <div className='proof-of-ownership__card-open-inputs-photo'>
-                        <FileUploader handleFile={handleUploadedFile} fileName={filename} />
-                    </div>
+                    <fieldset className='proof-of-ownership__card-open-inputs-photo'>
+                        <FileUploader handleFile={handleUploadedFile} fileName={values?.file?.name} />
+                    </fieldset>
                 </fieldset>
             </div>
             <SampleCreditCardModal

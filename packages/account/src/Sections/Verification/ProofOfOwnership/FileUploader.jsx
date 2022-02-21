@@ -2,11 +2,11 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Input } from '@deriv/components';
 
-const FileUploader = ({ handleFile, fileName }) => {
+const FileUploader = ({ handleFile, fileName, className }) => {
     // Create a reference to the hidden file input element
     const hiddenFileInput = React.useRef(null);
 
-    const handleClick = event => {
+    const handleClick = () => {
         hiddenFileInput.current.click();
     };
 
@@ -15,7 +15,7 @@ const FileUploader = ({ handleFile, fileName }) => {
         handleFile(fileUploaded);
     };
     return (
-        <>
+        <div className={`file-uploader ${className}`}>
             <input
                 type='file'
                 accept={'image/png, image/jpeg, image/jpg, image/gif, application/pdf'}
@@ -32,6 +32,7 @@ const FileUploader = ({ handleFile, fileName }) => {
                 value={fileName}
                 readOnly
                 color='less-prominent'
+                type={'text'}
             />
             <Button
                 className='proof-of-ownership__card-open-inputs-photo-btn'
@@ -39,7 +40,7 @@ const FileUploader = ({ handleFile, fileName }) => {
                 onClick={handleClick}
                 primary
             />
-        </>
+        </div>
     );
 };
 export default FileUploader;

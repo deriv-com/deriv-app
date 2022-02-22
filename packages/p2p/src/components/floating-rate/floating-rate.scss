@@ -97,14 +97,9 @@
 
         &__label {
             position: static;
-            // width: 81px;
-            // height: 14px;
-            // left: 8px;
-            // top: 4px;
 
             /* desktop/extra small/XS - regular */
 
-            font-family: 'IBM Plex Sans';
             font-style: normal;
             font-weight: normal;
             font-size: 10px;
@@ -120,7 +115,7 @@
             flex: none;
             order: 1;
             flex-grow: 0;
-            margin: 0px 0px;
+            margin: 0px;
         }
 
         &__msg {
@@ -131,7 +126,6 @@
 
             /* desktop/small/S - regular */
 
-            font-family: 'IBM Plex Sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -144,7 +138,7 @@
             flex: none;
             order: 2;
             flex-grow: 0;
-            margin: 0px 0px;
+            margin: 0px;
         }
     }
 

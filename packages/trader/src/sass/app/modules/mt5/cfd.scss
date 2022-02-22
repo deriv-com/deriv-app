@@ -91,7 +91,6 @@
             display: flex;
             flex-direction: column;
             width: 100%;
-            max-width: 35rem;
             margin-bottom: 2rem;
 
             &--password-reset {
@@ -309,8 +308,8 @@
         min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
         padding-top: 2rem;
+        margin: 0 auto;
     }
     &__description {
         @include typeface(--paragraph-left-normal-black);

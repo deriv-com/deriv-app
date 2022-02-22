@@ -8,7 +8,6 @@ import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import AdStatus from 'Components/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
-import { waitWS } from 'Utils/websocket';
 
 const MyAdsRowRenderer = observer(({ row: advert }) => {
     const { general_store, my_ads_store } = useStores();
@@ -17,7 +16,6 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         account_currency,
         amount,
         amount_display,
-        days_until_archive,
         id,
         is_active,
         local_currency,
@@ -29,19 +27,13 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         type,
     } = advert;
 
-    // Use separate is_advert_active and days_until_archive_state states to ensure value is updated
-    const [days_until_archive_state, setDaysUntilArchiveState] = React.useState(days_until_archive);
+    // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
     const amount_dealt = amount - remaining_amount;
 
     const onClickActivateDeactivate = () => {
         my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
-        waitWS('p2p_advert_update').then(() => {
-            if (is_active && days_until_archive_state) {
-                setDaysUntilArchiveState(undefined);
-            }
-        });
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
@@ -106,7 +98,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                     />
                                 )}
                             </Text>
-                            <AdStatus days_until_archive={days_until_archive_state} is_active={is_advert_active} />
+                            <AdStatus is_active={!!is_advert_active} />
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
                             <Text color='profit-success' line_height='m' size='xxs'>
@@ -179,7 +171,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 </Table.Cell>
                 <Table.Cell>
                     <div className='p2p-my-ads__table-status'>
-                        <AdStatus days_until_archive={days_until_archive_state} is_active={is_advert_active} />
+                        <AdStatus is_active={!!is_advert_active} />
                     </div>
                 </Table.Cell>
                 {is_popover_actions_visible && (

@@ -50,7 +50,7 @@ export default class CFDStore extends BaseStore {
     @computed
     get account_title() {
         return this.account_type.category
-            ? getMtCompanies()[this.account_type.category][this.account_type.type].title
+            ? getMtCompanies(this.root_store.client.is_eu)[this.account_type.category][this.account_type.type].title
             : '';
     }
 
@@ -77,7 +77,7 @@ export default class CFDStore extends BaseStore {
 
     // eslint-disable-next-line class-methods-use-this
     get mt5_companies() {
-        return getMtCompanies();
+        return getMtCompanies(this.root_store.client.is_eu);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -100,6 +100,7 @@ export default class CFDStore extends BaseStore {
 
     // other platforms can redirect to here using account switcher's `Add` account button
     // so in that case we should open the corresponding account opening modal on load/component update
+    @action.bound
     checkShouldOpenAccount() {
         const account_type = sessionStorage.getItem('open_cfd_account_type');
         if (account_type) {
@@ -342,7 +343,7 @@ export default class CFDStore extends BaseStore {
             this.root_store.client.responseMt5LoginList(mt5_login_list_response);
 
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
-            this.root_store.client.responseTradingServers(await WS.tradingServers());
+            this.root_store.client.responseMT5TradingServers(await WS.tradingServers(CFD_PLATFORMS.MT5));
             this.setCFDNewAccount(response.mt5_new_account);
         } else {
             await this.getAccountStatus(CFD_PLATFORMS.MT5);

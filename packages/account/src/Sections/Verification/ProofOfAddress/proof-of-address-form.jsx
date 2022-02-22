@@ -22,8 +22,6 @@ import {
     validLetterSymbol,
     validLength,
     getLocation,
-    PlatformContext,
-    isDesktop,
     WS,
 } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -71,7 +69,6 @@ const ProofOfAddressForm = ({
     const [form_values, setFormValues] = useStateCallback({});
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
-    const { is_dashboard } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         fetchResidenceList().then(() => {
@@ -86,19 +83,19 @@ const ProofOfAddressForm = ({
                 );
             });
         });
-    }, []);
+    }, [account_settings, fetchResidenceList, fetchStatesList, is_eu, setFormValues]);
 
     const validateFields = values => {
         setFormState({ ...form_state, ...{ should_allow_submit: false } });
         const errors = {};
         const validateValues = validate(errors, values);
 
-        const required_fields = ['address_line_1', 'address_city'];
+        const required_fields = ['address_line_1', 'address_city', 'address_state', 'address_postcode'];
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        const permitted_characters = "- . ' # ; : ( ) , @ /";
+        const permitted_characters = ". , ' : ; ( ) @ # / -";
         const address_validation_message = localize(
-            'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
+            'Use only the following special characters: {{ permitted_characters }}',
             {
                 permitted_characters,
                 interpolation: { escapeValue: false },
@@ -148,7 +145,7 @@ const ProofOfAddressForm = ({
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
         setFormState({ ...form_state, ...{ is_btn_loading: true } });
-        let settings_values = values;
+        let settings_values = { ...values };
 
         if (values.address_state && states_list.length) {
             settings_values.address_state = getLocation(states_list, values.address_state, 'value') || '';
@@ -177,13 +174,8 @@ const ProofOfAddressForm = ({
                             setAPIInitialLoadError(error.message);
                             return;
                         }
-                        const {
-                            address_line_1,
-                            address_line_2,
-                            address_city,
-                            address_state,
-                            address_postcode,
-                        } = get_settings;
+                        const { address_line_1, address_line_2, address_city, address_state, address_postcode } =
+                            get_settings;
 
                         setFormValues(
                             {
@@ -213,10 +205,8 @@ const ProofOfAddressForm = ({
                                         setFormState(
                                             { ...form_state, ...{ is_submit_success: true, is_btn_loading: false } },
                                             () => {
-                                                const {
-                                                    identity,
-                                                    needs_verification,
-                                                } = get_account_status.authentication;
+                                                const { identity, needs_verification } =
+                                                    get_account_status.authentication;
                                                 const has_poi = !(identity && identity.status === 'none');
                                                 // TODO: clean all of this up by simplifying the manually toggled notifications functions
                                                 const needs_poi =
@@ -293,25 +283,16 @@ const ProofOfAddressForm = ({
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
                                 <FormSubHeader
-                                    title={is_dashboard ? localize('1. Address') : localize('Details')}
-                                    subtitle={is_dashboard && '(All fields are required)'}
+                                    title={localize('1. Address')}
+                                    subtitle={localize('(All fields are required)')}
                                 />
                                 <FormBodySection
-                                    has_side_note={is_dashboard}
+                                    has_side_note
                                     side_note={localize(
                                         'An accurate and complete address helps to speed up your verification process.'
                                     )}
                                 >
                                     <div className='account-poa__details-section'>
-                                        {!is_dashboard && (
-                                            <div className='account-poa__details-description'>
-                                                <Text size={isMobile() ? 'xxs' : 'xs'}>
-                                                    {localize(
-                                                        'Please ensure that this address is the same as in your proof of address'
-                                                    )}
-                                                </Text>
-                                            </div>
-                                        )}
                                         <div className='account-poa__details-fields'>
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
@@ -320,7 +301,7 @@ const ProofOfAddressForm = ({
                                                     type='text'
                                                     maxLength={70}
                                                     name='address_line_1'
-                                                    label={localize('First line of address*')}
+                                                    label={localize('First line of address')}
                                                     value={values.address_line_1}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
@@ -348,7 +329,7 @@ const ProofOfAddressForm = ({
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
                                                     name='address_city'
-                                                    label={localize('Town/City*')}
+                                                    label={localize('Town/City')}
                                                     value={values.address_city}
                                                     error={touched.address_city && errors.address_city}
                                                     onChange={handleChange}
@@ -367,7 +348,7 @@ const ProofOfAddressForm = ({
                                                                         data-lpignore='true'
                                                                         autoComplete='new-password' // prevent chrome autocomplete
                                                                         type='text'
-                                                                        label={localize('State/Province (optional)')}
+                                                                        label={localize('State/Province')}
                                                                         error={
                                                                             touched.address_state &&
                                                                             errors.address_state
@@ -380,6 +361,7 @@ const ProofOfAddressForm = ({
                                                                                 true
                                                                             )
                                                                         }
+                                                                        required
                                                                     />
                                                                 )}
                                                             </Field>
@@ -387,7 +369,7 @@ const ProofOfAddressForm = ({
                                                         <MobileWrapper>
                                                             <SelectNative
                                                                 placeholder={localize('Please select')}
-                                                                label={localize('State/Province (optional)')}
+                                                                label={localize('State/Province')}
                                                                 value={values.address_state}
                                                                 list_items={states_list}
                                                                 error={touched.address_state && errors.address_state}
@@ -395,6 +377,7 @@ const ProofOfAddressForm = ({
                                                                 onChange={e =>
                                                                     setFieldValue('address_state', e.target.value, true)
                                                                 }
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -404,11 +387,12 @@ const ProofOfAddressForm = ({
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         name='address_state'
-                                                        label={localize('State/Province (optional)')}
+                                                        label={localize('State/Province')}
                                                         value={values.address_state}
                                                         error={touched.address_state && errors.address_state}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
+                                                        required
                                                     />
                                                 )}
                                             </fieldset>
@@ -418,28 +402,20 @@ const ProofOfAddressForm = ({
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
                                                     name='address_postcode'
-                                                    label={localize('Postal/ZIP code (optional)')}
+                                                    label={localize('Postal/ZIP code')}
                                                     value={values.address_postcode}
                                                     error={touched.address_postcode && errors.address_postcode}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
+                                                    required
                                                 />
                                             </fieldset>
                                         </div>
                                     </div>
                                 </FormBodySection>
 
-                                <FormSubHeader
-                                    title={
-                                        is_dashboard
-                                            ? localize('2. Please upload one of the following:')
-                                            : localize('Please upload one of the following:')
-                                    }
-                                />
-                                <FormBodySection
-                                    has_side_note={is_dashboard && isDesktop()}
-                                    side_note={<UploaderSideNote />}
-                                >
+                                <FormSubHeader title={localize('2. Please upload one of the following:')} />
+                                <FormBodySection has_side_note side_note={<UploaderSideNote />}>
                                     <FileUploaderContainer
                                         onRef={ref => (file_uploader_ref = ref)}
                                         onFileDrop={df =>
@@ -494,12 +470,12 @@ ProofOfAddressForm.propTypes = {
     states_list: PropTypes.array,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, notifications }) => ({
     account_settings: client.account_settings,
     is_eu: client.is_eu,
-    addNotificationByKey: ui.addNotificationMessageByKey,
-    removeNotificationMessage: ui.removeNotificationMessage,
-    removeNotificationByKey: ui.removeNotificationByKey,
+    addNotificationByKey: notifications.addNotificationMessageByKey,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    removeNotificationByKey: notifications.removeNotificationByKey,
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,

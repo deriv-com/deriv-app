@@ -1,8 +1,16 @@
 import { deriv_urls } from './constants';
 
+export const getlangFromUrl = () => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const lang = urlParams.get('lang');
+    return lang;
+};
+
 export const getUrlSmartTrader = () => {
     const { is_staging_deriv_app } = getPlatformFromUrl();
-    const i18n_language = window.localStorage.getItem('i18n_language') || 'en';
+    const url_lang = getlangFromUrl();
+    const i18n_language = window.localStorage.getItem('i18n_language') || url_lang || 'en';
 
     let base_link = '';
 
@@ -15,10 +23,16 @@ export const getUrlSmartTrader = () => {
     return `${base_link}/${i18n_language.toLowerCase()}/trading.html`;
 };
 
+export const getUrlBinaryBot = () => {
+    const { is_deriv_app } = getPlatformFromUrl();
+
+    return is_deriv_app ? deriv_urls.BINARYBOT_PRODUCTION : deriv_urls.BINARYBOT_STAGING;
+};
+
 export const getPlatformFromUrl = (domain = window.location.hostname) => {
     const resolutions = {
-        is_staging_deriv_app: /^staging-app\.deriv\.com$/i.test(domain),
-        is_deriv_app: /^app\.deriv\.com$/i.test(domain),
+        is_staging_deriv_app: /^staging-app\.deriv\.(com|me|be)$/i.test(domain),
+        is_deriv_app: /^app\.deriv\.(com|me|be)$/i.test(domain),
         is_test_link: /^(.*)\.binary\.sx$/i.test(domain),
     };
 

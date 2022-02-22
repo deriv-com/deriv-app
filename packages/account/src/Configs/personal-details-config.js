@@ -31,13 +31,6 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
             rules: [
                 ['req', localize('First name is required.')],
                 ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
-                [
-                    'regular',
-                    localize('Letters, spaces, periods, hyphens and apostrophes only.'),
-                    {
-                        regex: /^[a-zA-Z\s'.-]{2,50}$/,
-                    },
-                ],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
             ],
         },
@@ -47,13 +40,6 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
             rules: [
                 ['req', localize('Last name is required.')],
                 ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
-                [
-                    'regular',
-                    localize('Letters, spaces, periods, hyphens and apostrophes only.'),
-                    {
-                        regex: /^[a-zA-Z\s'.-]{2,50}$/,
-                    },
-                ],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
             ],
         },
@@ -122,9 +108,9 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
                 ],
                 [
                     'regular',
-                    localize('Letters, numbers, spaces, periods, hyphens and slashes only.'),
+                    localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
                     {
-                        regex: /^(?!^$|\s+)[A-Za-z0-9.\/\s-]{0,25}$/,
+                        regex: /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
                     },
                 ],
                 [

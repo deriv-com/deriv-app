@@ -68,7 +68,7 @@ const P2PCashier = ({
     );
 
     if (is_logging_in) {
-        return <Loading is_fullscreen={false} />;
+        return <Loading is_fullscreen />;
     }
 
     return (
@@ -116,7 +116,7 @@ export default withRouter(
         is_virtual: client.is_virtual,
         platform: common.platform,
         residence: client.residence,
-        setNotificationCount: modules.cashier.setNotificationCount,
+        setNotificationCount: modules.cashier.general_store.setNotificationCount,
         is_mobile: ui.is_mobile,
     }))(P2PCashier)
 );

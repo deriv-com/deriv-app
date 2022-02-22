@@ -1,4 +1,4 @@
-import { getUrlSmartTrader } from '../url/helpers';
+import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
 
 export const routes = {
     error404: '/404',
@@ -32,6 +32,7 @@ export const routes = {
     profit: '/reports/profit',
     reports: '/reports',
     root: '/',
+    reset_password: '/',
     redirect: '/redirect',
     settings: '/settings',
     statement: '/reports/statement',
@@ -50,6 +51,7 @@ export const routes = {
     cashier_p2p_verification: '/cashier/p2p/verification',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),
+    binarybot: getUrlBinaryBot(),
     endpoint: '/endpoint',
     complaints_policy: '/complaints-policy',
 

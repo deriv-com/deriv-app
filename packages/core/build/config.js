@@ -1,52 +1,46 @@
 const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { transformContentUrlBase } = require('./helpers');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 const copyConfig = base => {
     const patterns = [
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/css/'),
             to: 'bot/css/',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/media/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/media/'),
             to: 'media',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/*.*'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/'),
             to: 'bot/js/',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist'),
             to: 'js/smartcharts/',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/'),
             to: 'account/js',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/css/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/css/'),
             to: 'account/css',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/js/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/js/'),
             to: 'cashier/js',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/css/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/css/'),
             to: 'cashier/css',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public/**'),
-            to: 'public',
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public'),
+            to: 'cashier/public',
             transformPath(context) {
                 return context.split('node_modules/@deriv/cashier/dist/')[1];
             },
@@ -89,15 +83,17 @@ const copyConfig = base => {
             to: 'favicon.ico',
             toType: 'file',
         },
-        { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
+        { from: path.resolve(__dirname, '../src/public/images/favicons/'), to: 'public/images/favicons' },
         {
-            from: path.resolve(__dirname, '../src/public/images/common/static_images/**'),
+            from: path.resolve(__dirname, '../src/public/images/common/static_images/'),
             to: 'public/images/common',
-            flatten: true,
         },
         // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
-        { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
-        { from: path.resolve(__dirname, '../src/public/images/app/header/**') },
+        {
+            from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/'),
+            to: 'public/images/common/logos/platform_logos/',
+        },
+        { from: path.resolve(__dirname, '../src/public/images/app/header/'), to: 'public/images/app/header/' },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprites'),
             to: 'public/sprites',
@@ -107,8 +103,8 @@ const copyConfig = base => {
             from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
             to: 'manifest.json',
             toType: 'file',
-            transform(content, path) {
-                return transformContentUrlBase(content, path, base);
+            transform(content, transform_path) {
+                return transformContentUrlBase(content, transform_path, base);
             },
         },
     ];
@@ -123,7 +119,26 @@ const copyConfig = base => {
 
 const generateSWConfig = is_release => ({
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
+    exclude: [
+        /CNAME$/,
+        /index\.html$/,
+        /404\.html$/,
+        /^localstorage-sync\.html$/,
+        /\.map$/,
+        /sitemap\.xml$/,
+        /robots\.txt$/,
+        /manifest\.json$/,
+        /^apple-app-site-association/,
+        /^assetlinks.json/,
+        /^.well-known\//,
+        /^account\//,
+        /^js\/smartcharts\//,
+        /^bot\//,
+        /^media\//,
+        /^trader\//,
+        /^cashier\//,
+        /^js\/core\.[a-z_]*-json\./,
+    ],
     skipWaiting: true,
     clientsClaim: true,
     ...(is_release && {
@@ -134,6 +149,14 @@ const generateSWConfig = is_release => ({
 const htmlOutputConfig = is_release => ({
     template: 'index.html',
     filename: 'index.html',
+    meta: is_release
+        ? {
+              versionMetaTAG: {
+                  name: 'version',
+                  content: gitRevisionPlugin.version(),
+              },
+          }
+        : {},
     minify: !is_release
         ? false
         : {

@@ -20,7 +20,7 @@ import {
 } from '@deriv/components';
 import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, toMoment, PlatformContext, routes } from '@deriv/shared';
+import { isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 
@@ -80,10 +80,12 @@ const PersonalDetails = ({
     disabled_items,
     is_svg,
     residence_list,
+    is_virtual,
     is_fully_authenticated,
     account_opening_reason_list,
     onSubmitEnabledChange,
     selected_step_ref,
+    closeRealAccountSignup,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -140,6 +142,15 @@ const PersonalDetails = ({
         return is_svg ? localize('Last name*') : localize('Last name');
     };
 
+    const getFieldHint = field_name => {
+        return (
+            <Localize
+                i18n_default_text='Please enter your {{ field_name }} as in your official identity documents.'
+                values={{ field_name }}
+            />
+        );
+    };
+
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -173,16 +184,23 @@ const PersonalDetails = ({
                                         {'salutation' in props.value && (
                                             <div>
                                                 <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                    <Localize
-                                                        i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.'
-                                                        components={[
-                                                            <Link
-                                                                to={routes.personal_details}
-                                                                key={0}
-                                                                className='link'
-                                                            />,
-                                                        ]}
-                                                    />
+                                                    {is_virtual ? (
+                                                        localize(
+                                                            'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
+                                                        )
+                                                    ) : (
+                                                        <Localize
+                                                            i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.'
+                                                            components={[
+                                                                <Link
+                                                                    to={routes.personal_details}
+                                                                    key={0}
+                                                                    className='link'
+                                                                    onClick={closeRealAccountSignup}
+                                                                />,
+                                                            ]}
+                                                        />
+                                                    )}
                                                 </Text>
                                             </div>
                                         )}
@@ -225,6 +243,7 @@ const PersonalDetails = ({
                                                         ? localize('First name*')
                                                         : localize('First name')
                                                 }
+                                                hint={getFieldHint('first name')}
                                                 disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
                                             />
@@ -234,6 +253,7 @@ const PersonalDetails = ({
                                                 name='last_name'
                                                 required={is_svg || is_dashboard}
                                                 label={getLastNameLabel()}
+                                                hint={getFieldHint('last name')}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
                                             />
@@ -248,6 +268,7 @@ const PersonalDetails = ({
                                                         ? localize('Date of birth*')
                                                         : localize('Date of birth')
                                                 }
+                                                hint={getFieldHint('date of birth')}
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_dashboard ? '' : 'modal_root'}

@@ -31,7 +31,7 @@ const ContractUpdateForm = props => {
 
     React.useEffect(() => {
         return () => contract.clearContractUpdateConfigValues();
-    }, []);
+    }, [contract]);
 
     const {
         contract_info,
@@ -45,10 +45,8 @@ const ContractUpdateForm = props => {
 
     const { buy_price, currency, is_valid_to_cancel, is_sold } = contract_info;
     const { stop_loss, take_profit } = getLimitOrderAmount(contract_info.limit_order);
-    const {
-        contract_update_stop_loss: stop_loss_error,
-        contract_update_take_profit: take_profit_error,
-    } = validation_errors;
+    const { contract_update_stop_loss: stop_loss_error, contract_update_take_profit: take_profit_error } =
+        validation_errors;
     const error_messages = {
         take_profit: has_contract_update_take_profit ? take_profit_error : undefined,
         stop_loss: has_contract_update_stop_loss ? stop_loss_error : undefined,
@@ -114,6 +112,7 @@ const ContractUpdateForm = props => {
         />
     );
 
+    const cancellation_price = getCancellationPrice(contract_info);
     const stop_loss_input = (
         <InputWithCheckbox
             addToast={addToast}
@@ -136,7 +135,6 @@ const ContractUpdateForm = props => {
         />
     );
 
-    const cancellation_price = getCancellationPrice(contract_info);
     const total_profit = getTotalProfit(contract_info);
 
     return (

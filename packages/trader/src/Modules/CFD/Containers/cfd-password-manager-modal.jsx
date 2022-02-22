@@ -28,7 +28,7 @@ import {
 } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
-import TradingPasswordManager from './trading-password-manager.jsx';
+import TradingPasswordManager from './trading-password-manager';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);
@@ -260,6 +260,7 @@ const CFDPasswordManagerTabContent = ({
     multi_step_ref,
     platform,
     onChangeActiveTabIndex,
+    account_group,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
     const [error_message_investor, setErrorMessageInvestor] = React.useState('');
@@ -328,12 +329,22 @@ const CFDPasswordManagerTabContent = ({
         <React.Fragment>
             <DesktopWrapper>
                 <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
-                    <TradingPasswordManager toggleModal={toggleModal} platform={platform} email={email} />
+                    <TradingPasswordManager
+                        toggleModal={toggleModal}
+                        platform={platform}
+                        email={email}
+                        account_group={account_group}
+                    />
                 </ThemedScrollbars>
             </DesktopWrapper>
             <MobileWrapper>
                 <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
-                    <TradingPasswordManager toggleModal={toggleModal} platform={platform} email={email} />
+                    <TradingPasswordManager
+                        toggleModal={toggleModal}
+                        platform={platform}
+                        email={email}
+                        account_group={account_group}
+                    />
                 </Div100vhContainer>
             </MobileWrapper>
         </React.Fragment>
@@ -445,6 +456,7 @@ const CFDPasswordManagerModal = ({
                     multi_step_ref={multi_step_ref}
                     platform={platform}
                     onChangeActiveTabIndex={onChangeActiveTabIndex}
+                    account_group={selected_account_group}
                 />
             ),
         },

@@ -720,25 +720,23 @@
     }
     &__password {
         &-box {
-            display: flex;
-            align-items: center;
-        }
-        &-text {
+            display: grid;
+            grid-template-columns: 1fr 2.4rem;
             border: 1px solid var(--border-normal);
             border-radius: $BORDER_RADIUS;
+        }
+        &-text {
             padding: 0.4rem;
-            font-family: Courier, monospace;
             overflow: hidden;
-            margin-right: 0.4rem;
-            flex: 1;
         }
         &-action {
-            padding: 0;
-            height: auto;
-
-            .dc-text {
-                font-size: var(--text-size-xxxs);
-            }
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            border-left: 1px solid var(--border-normal);
+            border-radius: 0;
+            padding: 0 0 0 0.5rem;
+            overflow: hidden;
         }
         &-tooltip {
             width: 20rem;
@@ -951,6 +949,13 @@
     position: relative;
     width: 100%;
 
+    .dc-modal-footer {
+        position: fixed;
+        padding: unset;
+        bottom: 1.6rem;
+        right: 1.6rem;
+    }
+
     &__form {
         height: 100%;
         display: flex;
@@ -994,7 +999,7 @@
             }
         }
         .dc-form-submit-button {
-            background-color: inherit;
+            background-color: var(--color-white);
         }
     }
     .dc-autocomplete {
@@ -1208,6 +1213,90 @@
     overflow: auto;
 
     &__fields {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+
+        @include mobile {
+            display: unset;
+        }
+
+        .proof-of-identity__container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+
+            @include mobile {
+                width: 100%;
+                padding: 0 1.2rem;
+            }
+
+            .icon {
+                width: 12.8rem;
+                height: 12.8rem;
+                margin: 1.6rem 0 2.4rem 0;
+            }
+            .dc-input__bottom-label {
+                margin: unset;
+            }
+            .btm-spacer {
+                margin-bottom: 1.6rem;
+            }
+            .top-spacer {
+                margin-top: 1.6rem;
+            }
+            .proof-of-identity__header {
+                margin-bottom: 1.6rem;
+            }
+            .proof-of-identity__country-text {
+                text-align: center;
+                margin-bottom: 1.6rem;
+            }
+            .proof-of-identity__inner-container {
+                width: 100%;
+
+                .proof-of-identity__image {
+                    width: 100%;
+                }
+            }
+            .proof-of-identity__fieldset {
+                width: 100%;
+                @include mobile {
+                    margin-bottom: 1.8rem;
+                }
+            }
+            .proof-of-identity__footer {
+                width: 100%;
+                margin-bottom: 8.6em;
+
+                span.dc-text.dc-btn__text {
+                    display: inline-flex;
+                    align-items: center;
+                }
+
+                .back-btn-icon {
+                    margin-right: 0.8rem;
+                }
+
+                .proof-of-identity__submit-button {
+                    margin-left: 0.8rem;
+                }
+            }
+            .proof-of-identity__sample-container {
+                margin-top: 2.4rem;
+            }
+        }
+        .proof-of-identity__footer {
+            display: inline-flex;
+            justify-content: flex-end;
+            width: 45%;
+            @include mobile {
+                width: 95%;
+                margin-top: 8px;
+            }
+        }
         @include mobile {
             position: relative;
         }
@@ -1292,8 +1381,6 @@
     }
     .dc-modal-body {
         text-align: center;
-        padding-top: 0;
-        padding: 3.2rem;
     }
     .dc-modal-footer {
         justify-content: center;
@@ -1327,7 +1414,7 @@
 .dc-modal__container_cfd-success-dialog {
     .success-change__icon-area {
         width: 128px;
-        margin: 2.4rem auto 0;
+        margin: 0 auto;
         position: relative;
 
         &--large .bottom-right-overlay {
@@ -1361,6 +1448,7 @@
     }
     .cfd-account__platform {
         font-style: italic;
+        white-space: nowrap;
     }
 }
 .cfd-personal-details-form-error {

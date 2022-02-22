@@ -1,22 +1,14 @@
-import { action, observable, reaction } from 'mobx';
-import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId } from '@deriv/shared';
+import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, routes, toMoment } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
-import BinarySocket from '_common/base/socket_base';
-import ServerTime from '_common/base/server_time';
+import { action, observable } from 'mobx';
 import { currentLanguage } from 'Utils/Language/index';
+import ServerTime from '_common/base/server_time';
+import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
-import { clientNotifications } from './Helpers/client-notifications';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
-
-        reaction(
-            () => this.app_routing_history.map(i => i.pathname),
-            () => {
-                this.root_store.ui.filterNotificationMessages();
-            }
-        );
     }
 
     @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
@@ -43,6 +35,17 @@ export default class CommonStore extends BaseStore {
     @observable app_router = { history: null };
     @observable app_id = undefined;
     @observable platform = '';
+    @observable selected_contract_type = '';
+
+    @action.bound
+    setSelectedContractType(contract_type) {
+        this.selected_contract_type = contract_type;
+    }
+
+    @action.bound
+    init() {
+        this.setPlatform();
+    }
 
     @action.bound
     checkAppId() {
@@ -53,8 +56,19 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
+    changeCurrentLanguage(new_language) {
+        if (this.current_language !== new_language) {
+            this.current_language = new_language;
+        }
+    }
+
+    @action.bound
     setPlatform() {
-        this.platform = new URL(window.location).searchParams.get('platform');
+        const search = window.location.search;
+        if (search) {
+            const url_params = new URLSearchParams(search);
+            this.platform = url_params.get('platform') || '';
+        }
     }
 
     @action.bound
@@ -66,6 +80,8 @@ export default class CommonStore extends BaseStore {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH' });
+            } else if (ext_url?.indexOf(getUrlBinaryBot()) === 0) {
+                this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else {
                 this.addRouteHistoryItem({ ...location, action: 'PUSH' });
             }
@@ -105,11 +121,12 @@ export default class CommonStore extends BaseStore {
         }
         this.is_network_online = is_online;
 
-        const ui_store = this.root_store.ui;
+        const { addNotificationMessage, client_notifications, removeNotificationMessage } =
+            this.root_store.notifications;
         if (!is_online) {
-            ui_store.addNotificationMessage(clientNotifications().you_are_offline);
+            addNotificationMessage(client_notifications.you_are_offline);
         } else {
-            ui_store.removeNotificationMessage(clientNotifications().you_are_offline);
+            removeNotificationMessage(client_notifications.you_are_offline);
         }
     }
 
@@ -165,13 +182,13 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setServicesError(error) {
+        this.services_error = error;
         if (isMobile()) {
             this.root_store.ui.addToast({
                 content: error.message,
                 type: 'error',
             });
         } else {
-            this.services_error = error;
             this.root_store.ui.toggleServicesErrorModal(true);
         }
     }

@@ -10,7 +10,17 @@ import getRoutesConfig from 'App/Constants/routes-config';
 import { currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 
-const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink }) => {
+const MenuLink = ({
+    changeCurrentLanguage,
+    link_to,
+    icon,
+    is_active,
+    is_disabled,
+    is_language,
+    suffix_icon,
+    text,
+    onClickLink,
+}) => {
     if (is_language) {
         return (
             <span
@@ -21,7 +31,7 @@ const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_i
                 active_class='header__menu-mobile-link--active'
                 onClick={() => {
                     onClickLink();
-                    changeLanguage(link_to);
+                    changeLanguage(link_to, changeCurrentLanguage);
                 }}
             >
                 <Icon className='header__menu-mobile-link-flag-icon' size={32} icon={icon} />
@@ -63,6 +73,7 @@ const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_i
 const ToggleMenuDrawer = React.forwardRef(
     (
         {
+            changeCurrentLanguage,
             account_status,
             disableApp,
             enableApp,
@@ -72,6 +83,7 @@ const ToggleMenuDrawer = React.forwardRef(
             is_p2p_enabled,
             is_payment_agent_transfer_visible,
             is_payment_agent_visible,
+            is_account_transfer_visible,
             is_virtual,
             logoutClient,
             platform_header,
@@ -150,6 +162,7 @@ const ToggleMenuDrawer = React.forwardRef(
                             icon={route_config.icon_component}
                             text={route_config.getTitle()}
                             onClickLink={toggleDrawer}
+                            changeCurrentLanguage={changeCurrentLanguage}
                         />
                     </MobileDrawer.Item>
                 );
@@ -173,7 +186,8 @@ const ToggleMenuDrawer = React.forwardRef(
                                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                                 (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                                (route.path !== routes.cashier_onramp || is_onramp_tab_visible)
+                                (route.path !== routes.cashier_onramp || is_onramp_tab_visible) &&
+                                (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                             ) {
                                 return (
                                     <MobileDrawer.Item key={index}>
@@ -182,6 +196,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             icon={route.icon_component}
                                             text={route.getTitle()}
                                             onClickLink={toggleDrawer}
+                                            changeCurrentLanguage={changeCurrentLanguage}
                                         />
                                     </MobileDrawer.Item>
                                 );
@@ -210,6 +225,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             link_to={subroute.path}
                                             text={subroute.getTitle()}
                                             onClickLink={toggleDrawer}
+                                            changeCurrentLanguage={changeCurrentLanguage}
                                         />
                                     ))}
                                 </MobileDrawer.SubMenuSection>
@@ -246,6 +262,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                 icon={`IcFlag${lang.replace('_', '-')}`}
                                 text={getAllowedLanguages()[lang]}
                                 onClickLink={toggleDrawer}
+                                changeCurrentLanguage={changeCurrentLanguage}
                             />
                         </MobileDrawer.Item>
                     ))}
@@ -305,6 +322,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 icon='IcTrade'
                                                 text={localize('Trade')}
                                                 onClickLink={toggleDrawer}
+                                                changeCurrentLanguage={changeCurrentLanguage}
                                             />
                                         </MobileDrawer.Item>
                                         {primary_routes_config.map((route_config, idx) =>
@@ -334,7 +352,8 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         classNameButton={classNames(
                                                             'header__menu-mobile-link-toggler-button',
                                                             {
-                                                                'header__menu-mobile-link-toggler-button--active': is_dark_mode,
+                                                                'header__menu-mobile-link-toggler-button--active':
+                                                                    is_dark_mode,
                                                             }
                                                         )}
                                                         handleToggle={() => toggleTheme(!is_dark_mode)}
@@ -371,5 +390,5 @@ const ToggleMenuDrawer = React.forwardRef(
         );
     }
 );
-
+ToggleMenuDrawer.displayName = 'ToggleMenuDrawer';
 export default ToggleMenuDrawer;

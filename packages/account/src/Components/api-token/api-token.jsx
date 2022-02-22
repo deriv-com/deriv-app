@@ -187,6 +187,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                     handleBlur,
                                     isSubmitting,
                                     setFieldValue,
+                                    setFieldTouched,
                                 }) => (
                                     <Form noValidate>
                                         <Timeline className='da-api-token__timeline'>
@@ -251,10 +252,13 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 type='text'
-                                                                className='da-api-token__input'
+                                                                className='da-api-token__input dc-input__input-group'
                                                                 label={localize('Token name')}
                                                                 value={values.token_name}
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched('token_name', true);
+                                                                    handleChange(e);
+                                                                }}
                                                                 onBlur={handleBlur}
                                                                 hint={localize(
                                                                     'Length of token name must be between 2 and 32 characters.'
@@ -265,9 +269,13 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                         )}
                                                     </Field>
                                                     <Button
-                                                        className={classNames('da-api-token__button', {
-                                                            'da-api-token__button--success': is_success,
-                                                        })}
+                                                        className={classNames(
+                                                            'dc-btn__button-group',
+                                                            'da-api-token__button',
+                                                            {
+                                                                'da-api-token__button--success': is_success,
+                                                            }
+                                                        )}
                                                         type='submit'
                                                         is_disabled={
                                                             !dirty ||

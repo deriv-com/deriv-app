@@ -1,0 +1,81 @@
+.account-transfer-receipt {
+    &__crypto {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding-top: 2.4rem;
+
+        &--details {
+            display: flex;
+
+            &-wrapper {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                width: 100%;
+                padding: 0 1.8rem;
+                @include desktop {
+                    max-width: 40rem;
+                }
+
+                & .crypto {
+                    &-transferred-icon {
+                        margin: 3.2rem 0;
+                    }
+                    &-transfer {
+                        &-from,
+                        &-to {
+                            border: 1px solid var(--border-normal);
+                            border-radius: $BORDER_RADIUS * 2;
+                            padding: 1.2rem 3.4rem;
+                            width: 100%;
+
+                            &-details {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin-bottom: 0.8rem;
+                                & .dc-text {
+                                    margin-left: 0.8rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &--amount {
+            margin: 1.8rem 0;
+        }
+        &--form-submit {
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem 0 4rem;
+
+                .dc-btn {
+                    &--primary {
+                        margin: 0 auto;
+                        width: 100%;
+                    }
+                    &--secondary {
+                        margin: 2rem auto;
+                    }
+                }
+            }
+        }
+    }
+    &__button {
+        margin: 4rem auto 0 0.8rem;
+        @include mobile {
+            width: 100%;
+        }
+
+        &-statement {
+            margin-right: 0.8rem;
+        }
+    }
+}

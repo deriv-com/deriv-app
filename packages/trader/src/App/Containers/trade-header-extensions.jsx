@@ -15,7 +15,6 @@ const TradeHeaderExtensions = props => {
         onPositionsCancel,
         onPositionsRemove,
         onPositionsSell,
-        onUnmountPositions,
         populateHeaderExtensions,
         setAccountSwitchListener,
         store,
@@ -87,13 +86,11 @@ const TradeHeaderExtensions = props => {
         waitForLogin();
 
         return () => {
-            if (isMobile()) onUnmountPositions();
             populateHeaderExtensions(null);
         };
     }, [
         onMountCashier,
         onMountPositions,
-        onUnmountPositions,
         populateHeader,
         populateHeaderExtensions,
         setAccountSwitchListener,
@@ -122,13 +119,12 @@ export default connect(({ client, modules, ui }) => ({
     onPositionsSell: modules.portfolio.onClickSell,
     onPositionsRemove: modules.portfolio.removePositionById,
     onPositionsCancel: modules.portfolio.onClickCancel,
-    onMountCashier: modules.cashier.onMountCommon,
+    onMountCashier: modules.cashier.general_store.onMountCommon,
     onMountPositions: modules.portfolio.onMount,
-    onUnmountPositions: modules.portfolio.onUnmount,
     active_positions_count: modules.portfolio.active_positions_count,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     populateHeaderExtensions: ui.populateHeaderExtensions,
     toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
-    setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
+    setAccountSwitchListener: modules.cashier.general_store.setAccountSwitchListener,
 }))(TradeHeaderExtensions);

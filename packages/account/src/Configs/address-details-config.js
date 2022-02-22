@@ -1,25 +1,24 @@
 import { localize } from '@deriv/translations';
-import { generateValidationFunction, getDefaultFields, getErrorMessages } from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields, getErrorMessages, regex_checks } from '@deriv/shared';
 
 const address_details_config = ({ account_settings, is_svg }) => {
+    const is_gb = account_settings.country_code === 'gb';
     if (!account_settings) {
         return {};
     }
 
-    return {
+    const base_case = {
         address_line_1: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_1 ?? '',
             rules: [
                 ['req', localize('First line of address is required')],
-                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
-                    localize(
-                        'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
-                    ),
+                    localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]\{\}]{1,70}$/,
+                        regex: regex_checks.address_details.address_line_1,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -29,14 +28,12 @@ const address_details_config = ({ account_settings, is_svg }) => {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
             rules: [
-                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
-                    localize(
-                        'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
-                    ),
+                    localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]\{\}]{0,70}$/,
+                        regex: regex_checks.address_details.address_line_2,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -47,11 +44,12 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_city ?? '',
             rules: [
                 ['req', localize('City is required')],
+                ['length', localize('Only {{max}} characters, please.', { max: 99 }), { max: 99 }],
                 [
                     'regular',
-                    localize('Letters, numbers, spaces, periods, hyphens, apostrophes only'),
+                    localize('Only letters, periods, hyphens, apostrophes, and spaces, please.'),
                     {
-                        regex: /^[A-Za-z0-9\s'.\-]{1,35}$/,
+                        regex: regex_checks.address_details.address_city,
                     },
                 ],
             ],
@@ -65,7 +63,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('State is not in a proper format'),
                     {
-                        regex: /^[\w\s\W'.;,\-]{0,60}$/,
+                        regex: regex_checks.address_details.address_state,
                     },
                 ],
             ],
@@ -87,12 +85,49 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('Letters, numbers, spaces, hyphens only'),
                     {
-                        regex: /^[a-zA-Z0-9\s\-]{0,20}$/,
+                        regex: regex_checks.address_details.address_postcode,
                     },
                 ],
             ],
         },
     };
+
+    if (is_gb) {
+        const gb_case = {
+            ...base_case,
+            address_postcode: {
+                supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+                default_value: account_settings.address_postcode ?? '',
+                rules: [
+                    [
+                        'length',
+                        localize('Please enter a {{field_name}} under {{max_number}} characters.', {
+                            field_name: localize('postal/ZIP code'),
+                            max_number: 20,
+                            interpolation: { escapeValue: false },
+                        }),
+                        { min: 0, max: 20 },
+                    ],
+                    [
+                        'regular',
+                        localize('Letters, numbers, spaces, hyphens only'),
+                        {
+                            regex: regex_checks.address_details.address_postcode,
+                        },
+                    ],
+                    [
+                        'regular',
+                        localize('Our accounts and services are unavailable for the Jersey postal code.'),
+                        {
+                            regex: regex_checks.address_details.non_jersey_postcode,
+                        },
+                    ],
+                ],
+            },
+        };
+        return gb_case;
+    }
+    return base_case;
 };
 
 const addressDetailsConfig = (
@@ -137,7 +172,6 @@ const transformForResidence = (rules, residence) => {
     if (/^(im|gb)$/.test(residence)) {
         rules.address_postcode.rules.splice(0, 0, ['req', localize('Postal/ZIP code is required')]);
     }
-
     return rules;
 };
 

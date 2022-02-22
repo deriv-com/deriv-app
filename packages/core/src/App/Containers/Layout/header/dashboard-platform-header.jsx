@@ -110,6 +110,7 @@ const DashboardPlatformHeader = ({
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
+    is_account_transfer_visible,
     is_settings_modal_on,
     is_virtual,
     location,
@@ -148,6 +149,7 @@ const DashboardPlatformHeader = ({
                         is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                         is_onramp_tab_visible={is_onramp_tab_visible}
                         is_payment_agent_visible={is_payment_agent_visible}
+                        is_account_transfer_visible={is_account_transfer_visible}
                         is_virtual={is_virtual}
                         toggleTheme={setDarkMode}
                         platform_header={getPlatformInformation(app_routing_history).header}
@@ -215,6 +217,7 @@ DashboardPlatformHeader.propTypes = {
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
+    is_account_transfer_visible: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,
@@ -223,7 +226,7 @@ DashboardPlatformHeader.propTypes = {
     toggleNotifications: PropTypes.func,
 };
 
-export default connect(({ client, common, modules, ui }) => ({
+export default connect(({ client, common, modules, notifications, ui }) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
@@ -234,15 +237,16 @@ export default connect(({ client, common, modules, ui }) => ({
     is_dark_mode: ui.is_dark_mode_on,
     is_logged_in: client.is_logged_in,
     is_mt5_allowed: client.is_mt5_allowed,
-    is_notifications_visible: ui.is_notifications_visible,
+    is_notifications_visible: notifications.is_notifications_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_p2p_enabled: modules.cashier.is_p2p_enabled,
-    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
-    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
+    is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
+    is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
+    is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
-    notifications_count: ui.filtered_notifications.length,
+    notifications_count: notifications.filtered_notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
-    toggleNotifications: ui.toggleNotificationsModal,
+    toggleNotifications: notifications.toggleNotificationsModal,
 }))(withRouter(DashboardPlatformHeader));

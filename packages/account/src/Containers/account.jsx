@@ -2,7 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
-import { routes as shared_routes, isMobile, getSelectedRoute, PlatformContext } from '@deriv/shared';
+import {
+    routes as shared_routes,
+    isMobile,
+    matchRoute,
+    getSelectedRoute,
+    platforms,
+    PlatformContext,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
@@ -27,6 +34,66 @@ const AccountLogout = ({ logout, history }) => {
     );
 };
 
+const PageOverlayWrapper = ({
+    is_dashboard,
+    list_groups,
+    logout,
+    onClickClose,
+    platform,
+    selected_route,
+    subroutes,
+}) => {
+    if (isMobile() && selected_route) {
+        return (
+            <PageOverlay
+                header={selected_route.getTitle()}
+                onClickClose={onClickClose}
+                is_close_disabled={!!platforms[platform]}
+            >
+                <selected_route.component component_icon={selected_route.icon_component} />
+            </PageOverlay>
+        );
+    } else if (is_dashboard) {
+        return (
+            <VerticalTab
+                title={selected_route.getTitle()}
+                onClickClose={onClickClose}
+                alignment='center'
+                is_collapsible={false}
+                is_grid
+                is_floating
+                className='dashboard'
+                classNameHeader='account__inset_header'
+                current_path={location.pathname}
+                is_routed
+                is_full_width
+                list={subroutes}
+                list_groups={list_groups}
+                extra_content={is_dashboard && <AccountLogout logout={logout} history={history} />}
+            />
+        );
+    }
+
+    return (
+        <PageOverlay
+            header={localize('Settings')}
+            onClickClose={onClickClose}
+            is_close_disabled={!!platforms[platform]}
+        >
+            <VerticalTab
+                alignment='center'
+                is_floating
+                classNameHeader='account__inset_header'
+                current_path={location.pathname}
+                is_routed
+                is_full_width
+                list={subroutes}
+                list_groups={list_groups}
+            />
+        </PageOverlay>
+    );
+};
+
 const Account = ({
     currency,
     history,
@@ -36,6 +103,7 @@ const Account = ({
     is_visible,
     location,
     logout,
+    platform,
     routeBackInApp,
     routes,
     should_allow_authentication,
@@ -49,7 +117,7 @@ const Account = ({
         label: route_group.getTitle(),
         subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
     }));
-    let selected_content = subroutes.filter(route => route.path === location.pathname)[0];
+    let selected_content = subroutes.find(r => matchRoute(r, location.pathname));
     const onClickClose = React.useCallback(() => routeBackInApp(history), [routeBackInApp, history]);
 
     React.useEffect(() => {
@@ -85,6 +153,7 @@ const Account = ({
     ];
 
     const is_account_limits_route = selected_content.path === routes.account_limits;
+
     if (is_account_limits_route) {
         action_bar_items.push({
             // eslint-disable-next-line react/display-name
@@ -95,45 +164,21 @@ const Account = ({
     if (!is_logged_in && is_logging_in) {
         return <Loading is_fullscreen className='account__initial-loader' />;
     }
+
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
+
     return (
         <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
             <div className='account'>
-                {isMobile() && selected_route ? (
-                    <PageOverlay header={selected_route.getTitle()} onClickClose={onClickClose}>
-                        <selected_route.component component_icon={selected_route.icon_component} />
-                    </PageOverlay>
-                ) : is_dashboard ? (
-                    <VerticalTab
-                        title={selected_route.getTitle()}
-                        onClickClose={onClickClose}
-                        alignment='center'
-                        is_collapsible={false}
-                        is_grid
-                        is_floating
-                        className='dashboard'
-                        classNameHeader='account__inset_header'
-                        current_path={location.pathname}
-                        is_routed
-                        is_full_width
-                        list={subroutes}
-                        list_groups={list_groups}
-                        extra_content={is_dashboard && <AccountLogout logout={logout} history={history} />}
-                    />
-                ) : (
-                    <PageOverlay header={localize('Settings')} onClickClose={onClickClose}>
-                        <VerticalTab
-                            alignment='center'
-                            is_floating
-                            classNameHeader='account__inset_header'
-                            current_path={location.pathname}
-                            is_routed
-                            is_full_width
-                            list={subroutes}
-                            list_groups={list_groups}
-                        />
-                    </PageOverlay>
-                )}
+                <PageOverlayWrapper
+                    is_dashboard={is_dashboard}
+                    list_groups={list_groups}
+                    logout={logout}
+                    onClickClose={onClickClose}
+                    platform={platform}
+                    selected_route={selected_route}
+                    subroutes={subroutes}
+                />
             </div>
         </FadeWrapper>
     );
@@ -148,6 +193,7 @@ Account.propTypes = {
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     logout: PropTypes.func,
+    platform: PropTypes.string,
     routes: PropTypes.arrayOf(PropTypes.object),
     should_allow_authentication: PropTypes.bool,
     toggleAccount: PropTypes.func,
@@ -160,6 +206,7 @@ export default connect(({ client, common, ui }) => ({
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,
+    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
     toggleAccount: ui.toggleAccountSettings,

@@ -10,24 +10,25 @@ const InputWrapper = ({ children, has_footer }) =>
 const Input = React.forwardRef(
     (
         {
+            bottom_label,
             className,
             classNameError,
-            classNameWarn,
             classNameHint,
+            classNameWarn,
             disabled,
             error,
             field_className,
             has_character_counter,
             hint,
-            is_relative_hint,
             initial_character_count,
-            label,
+            input_id,
+            is_relative_hint,
             label_className,
+            label,
             leading_icon,
             max_characters,
             trailing_icon,
             warn,
-            input_id,
             ...props
         },
         ref
@@ -58,6 +59,8 @@ const Input = React.forwardRef(
                     className={classNames('dc-input', className, {
                         'dc-input--disabled': disabled,
                         'dc-input--error': error,
+                        'dc-input--hint': hint,
+                        'dc-input--bottom-label-active': bottom_label,
                     })}
                 >
                     {leading_icon &&
@@ -84,6 +87,7 @@ const Input = React.forwardRef(
                             })}
                             onFocus={props.onFocus}
                             onBlur={props.onBlur}
+                            onPaste={props.onChange}
                             disabled={disabled}
                             data-lpignore={props.type === 'password' ? undefined : true}
                             id={input_id}
@@ -141,6 +145,13 @@ const Input = React.forwardRef(
                         )}
                     </div>
                 )}
+                {bottom_label && !error && (
+                    <div className='dc-input__bottom-label'>
+                        <Text size='xs' color='less-prominent'>
+                            {bottom_label}
+                        </Text>
+                    </div>
+                )}
             </InputWrapper>
         );
     }
@@ -148,6 +159,7 @@ const Input = React.forwardRef(
 
 Input.displayName = 'Input';
 Input.propTypes = {
+    bottom_label: PropTypes.string,
     className: PropTypes.string,
     classNameError: PropTypes.string,
     classNameWarn: PropTypes.string,

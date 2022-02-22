@@ -15,7 +15,7 @@ import { ResetTradingPasswordModal } from '@deriv/account';
 import { connect } from 'Stores/connect';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import MissingRealAccount from './missing-real-account';
-import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal.jsx';
+import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
 import CompareAccountsModal from './compare-accounts-modal';
 import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';

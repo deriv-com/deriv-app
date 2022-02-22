@@ -5,7 +5,7 @@ import { Button, Modal, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getStaticUrl, PlatformContext, toTitleCase } from '@deriv/shared';
 
-const UnlinkSuccessModal = ({ onClose, is_open, social_identity_provider, identifier_title }) => {
+const UnlinkSuccessModal = ({ onClose, is_open, social_identity_provider }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
 
     const onClickButton = () => {
@@ -13,14 +13,12 @@ const UnlinkSuccessModal = ({ onClose, is_open, social_identity_provider, identi
         window.location.href = getStaticUrl('/', { is_dashboard });
     };
 
+    const identifier_title = toTitleCase(social_identity_provider);
+
     return (
         <Modal is_open={is_open} has_close_icon toggleModal={onClose} width='440px'>
             <React.Fragment>
-                <Icon
-                    className='unlink-email-success__modal-icon'
-                    icon={`IcUnlink${toTitleCase(social_identity_provider)}`}
-                    size={128}
-                />
+                <Icon className='unlink-email-success__modal-icon' icon={`IcUnlink${identifier_title}`} size={128} />
                 <Text className='unlink-email-success__modal-title' weight='bold' size='s'>
                     <Localize i18n_default_text='Success!' />
                 </Text>
@@ -42,7 +40,6 @@ UnlinkSuccessModal.prototypes = {
     onClose: PropTypes.func,
     is_open: PropTypes.bool,
     social_identity_provider: PropTypes.string,
-    identifier_title: PropTypes.string,
 };
 
 export default connect(({ client }) => ({

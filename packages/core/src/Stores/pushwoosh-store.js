@@ -18,20 +18,9 @@ export default class PushwooshStore extends BaseStore {
      * Pushes initialize event to pushwoosh
      */
     @action.bound
-    init = () => {
-        let reaction_id;
-        if (!this.root_store.common.is_network_online) {
-            reaction_id = when(
-                () => this.root_store.common.is_network_online,
-                () => {
-                    this.init();
-                }
-            );
-            return;
-        }
-        // canceling the reaction once is_network_online becomes true for the first time:
-        reaction_id?.cancel();
+    init = async () => {
         if (!this.is_applicable && this.has_initialized) return;
+        await when(() => this.root_store.common.is_network_online);
 
         this.push_woosh.push([
             'init',

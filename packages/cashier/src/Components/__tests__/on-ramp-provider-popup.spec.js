@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, getByTestId, render, screen } from '@testing-library/react';
 import OnRampProviderPopup from '../on-ramp-provider-popup';
 
 jest.mock('Stores/connect', () => ({
@@ -113,9 +113,9 @@ describe('<OnRampProviderPopup />', () => {
     });
 
     it('should trigger onClick callback when the user clicks on copy icon', () => {
-        const { container } = render(<OnRampProviderPopup {...props} />);
+        render(<OnRampProviderPopup {...props} />);
 
-        const copy_icon = container.querySelector('.on-ramp__popup-deposit-address-icon');
+        const copy_icon = screen.getByTestId('dti_deposit_address_icon');
         fireEvent.click(copy_icon);
 
         expect(props.onClickCopyDepositAddress).toHaveBeenCalledTimes(1);

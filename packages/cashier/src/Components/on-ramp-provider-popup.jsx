@@ -109,6 +109,7 @@ const OnRampProviderPopup = ({
                                 />
                                 <Icon
                                     className='on-ramp__popup-deposit-address-icon'
+                                    data_testid='dti_deposit_address_icon'
                                     icon={isMobile() ? 'IcCopy' : 'icClipboard'}
                                     size={16}
                                     onClick={onClickCopyDepositAddress}

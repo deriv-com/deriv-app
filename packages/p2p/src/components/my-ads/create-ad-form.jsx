@@ -51,7 +51,7 @@ const CreateAdForm = () => {
         my_ads_store.setShowAdForm(false);
     };
 
-    const mock_market_feed = '100';
+    const mock_market_feed = '100'; // TODO: Will fetch from API
 
     React.useEffect(() => {
         const disposeApiErrorReaction = reaction(
@@ -101,8 +101,6 @@ const CreateAdForm = () => {
             >
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
-
-                    console.log('Errors in CAD form: ', values, errors, touched);
 
                     return (
                         <div className='p2p-my-ads__form'>
@@ -238,33 +236,6 @@ const CreateAdForm = () => {
                                                     )
                                                 }
                                             </Field>
-                                            {/* <Field name='price_rate'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        type='text'
-                                                        error={touched.price_rate && errors.price_rate}
-                                                        label={localize('Fixed rate (1 {{currency}})', {
-                                                            currency,
-                                                        })}
-                                                        className='p2p-my-ads__form-field'
-                                                        trailing_icon={
-                                                            <Text
-                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
-                                                                line_height='m'
-                                                                size={isDesktop() ? 'xxs' : 's'}
-                                                            >
-                                                                {local_currency_config.currency}
-                                                            </Text>
-                                                        }
-                                                        onChange={e => {
-                                                            my_ads_store.restrictLength(e, handleChange);
-                                                        }}
-                                                        required
-                                                    />
-                                                )}
-                                            </Field> */}
                                         </div>
                                         <div className='p2p-my-ads__form-container'>
                                             <Field name='min_transaction'>

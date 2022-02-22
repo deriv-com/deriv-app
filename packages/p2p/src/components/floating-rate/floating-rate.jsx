@@ -7,12 +7,12 @@ import { localize } from 'Components/i18next';
 import './floating-rate.scss';
 
 const FloatingRate = ({
+    changeHandler,
+    class_name,
     exchange_rate,
     error_messages,
     fiat_currency,
     local_currency,
-    class_name,
-    changeHandler,
     offset,
     place_holder,
     ...props
@@ -38,15 +38,16 @@ const FloatingRate = ({
                     is_incrementable
                     is_signed
                     inputmode='decimal'
+                    increment_button_type='button'
                     max_value={offset.upper_limit}
                     min_value={offset.lower_limit}
                     name={name}
-                    required={required}
-                    type='number'
-                    value={value}
                     onChange={changeHandler}
                     placeholder={place_holder}
                     setCurrentFocus={general_store.props.setCurrentFocus}
+                    required={required}
+                    type='number'
+                    value={value}
                 />
                 <div className='floating-rate__mkt-rate'>
                     <span className='floating-rate__mkt-rate__label'> {localize('of the market rate')}</span>
@@ -64,6 +65,17 @@ const FloatingRate = ({
             )}
         </div>
     );
+};
+
+FloatingRate.propTypes = {
+    changeHandler: PropTypes.func,
+    class_name: PropTypes.string,
+    exchange_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    error_messages: PropTypes.string,
+    fiat_currency: PropTypes.string,
+    local_currency: PropTypes.string,
+    offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    place_holder: PropTypes.string,
 };
 
 export default FloatingRate;

@@ -30,8 +30,8 @@ export default class MyAdsStore extends BaseStore {
     @observable payment_info = '';
     @observable selected_ad_id = '';
     @observable show_ad_form = false;
-    @observable rate_type = 'float';
-    @observable float_rate_offset_limit = { upper_limit: 6, lower_limit: -3 };
+    @observable rate_type = 'float'; // TODO: Integrate rate type from API
+    @observable float_rate_offset_limit = { upper_limit: 6, lower_limit: -3 }; // TODO: Integrate offset limits from API
 
     @action.bound
     getAccountStatus() {

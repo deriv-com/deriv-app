@@ -37,6 +37,7 @@ const InputField = ({
     is_signed = false,
     is_unit_at_right = false,
     inputmode,
+    increment_button_type,
     label,
     max_length,
     max_value,
@@ -123,7 +124,6 @@ const InputField = ({
     };
 
     const incrementValue = (ev, long_press_step) => {
-        console.log('Value inc: ', value);
         if (max_is_disabled) return;
         let increment_value;
 
@@ -144,13 +144,11 @@ const InputField = ({
         } else {
             increment_value = parseFloat(+(current_value || 0) + 1).toFixed(decimal_places);
         }
-        console.log('Increment: ', increment_value);
         updateValue(increment_value, !!long_press_step);
     };
 
     const calculateDecrementedValue = long_press_step => {
         let decrement_value;
-        console.log('Long ress: ', long_press_step);
         const current_value = local_value || value;
 
         const decimal_places = current_value ? getDecimals(current_value) : 0;
@@ -172,12 +170,10 @@ const InputField = ({
     };
 
     const decrementValue = (ev, long_press_step) => {
-        console.log('Value dec : ', value, min_is_disabled);
         if (min_is_disabled) {
             return;
         }
         const decrement_value = calculateDecrementedValue(long_press_step);
-        console.log('Decrement: ', decrement_value);
         if (is_negative_disabled && decrement_value < 0) {
             return;
         }
@@ -263,6 +259,7 @@ const InputField = ({
             decrementValue={decrementValue}
             onLongPressEnd={onLongPressEnd}
             is_incrementable_on_long_press={is_incrementable_on_long_press}
+            type={increment_button_type}
         />
     );
 
@@ -344,6 +341,7 @@ InputField.propTypes = {
     is_read_only: PropTypes.bool,
     is_signed: PropTypes.bool,
     is_unit_at_right: PropTypes.bool,
+    increment_button_type: PropTypes.string,
     label: PropTypes.string,
     max_length: PropTypes.number,
     name: PropTypes.string,

@@ -42,7 +42,6 @@ const Button = ({
     renderText,
     ...props
 }) => {
-    console.log('Button props: ', is_submit_success, type, props);
     const classes = classNames(
         'dc-btn',
         {

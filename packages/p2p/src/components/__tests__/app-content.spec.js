@@ -40,9 +40,8 @@ describe('<AppContent/>', () => {
             general_store: mocked_store_values,
         }));
         render(<AppContent />);
-        const el_tab = screen.queryByText('Tabs');
 
-        expect(el_tab).toBeInTheDocument();
+        expect(screen.getByText('Tabs')).toBeInTheDocument();
         expect(screen.queryByTestId('my_profile')).not.toBeInTheDocument();
     });
 
@@ -51,9 +50,8 @@ describe('<AppContent/>', () => {
             general_store: { ...mocked_store_values, is_loading: true },
         }));
         render(<AppContent />);
-        const el_loading = screen.queryByText('Loading');
 
-        expect(el_loading).toBeInTheDocument();
+        expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should render the DP2P blocked component when should_show_dp2p_blocked state is true', () => {
@@ -61,9 +59,8 @@ describe('<AppContent/>', () => {
             general_store: { ...mocked_store_values, should_show_dp2p_blocked: true },
         }));
         render(<AppContent />);
-        const el_dp2p_blocked = screen.queryByText('Dp2pBlocked');
 
-        expect(el_dp2p_blocked).toBeInTheDocument();
+        expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
     });
 
     it('should render the nick-name form component when should_show_popup state is true', () => {
@@ -71,9 +68,8 @@ describe('<AppContent/>', () => {
             general_store: { ...mocked_store_values, should_show_popup: true },
         }));
         render(<AppContent />);
-        const el_nickname_form = screen.queryByText('NicknameForm');
 
-        expect(el_nickname_form).toBeInTheDocument();
+        expect(screen.getByText('NicknameForm')).toBeInTheDocument();
     });
 
     it('should render verification component when should_show_verification state is true', () => {
@@ -81,9 +77,8 @@ describe('<AppContent/>', () => {
             general_store: { ...mocked_store_values, props: { should_show_verification: true } },
         }));
         render(<AppContent />);
-        const el_verification = screen.queryByText('Verification');
 
-        expect(el_verification).toBeInTheDocument();
+        expect(screen.getByText('Verification')).toBeInTheDocument();
     });
 
     it('should render only the first notification component when multiple error status is set', () => {
@@ -91,11 +86,9 @@ describe('<AppContent/>', () => {
             general_store: { ...mocked_store_values, should_show_popup: true, should_show_dp2p_blocked: true },
         }));
         render(<AppContent />);
-        const el_dp2p_blocked = screen.queryByText('Dp2pBlocked');
-        const el_nickname_form = screen.queryByText('NicknameForm');
 
-        expect(el_nickname_form).not.toBeInTheDocument();
-        expect(el_dp2p_blocked).toBeInTheDocument();
+        expect(screen.queryByText('NicknameForm')).not.toBeInTheDocument();
+        expect(screen.queryByText('Dp2pBlocked')).toBeInTheDocument();
     });
 
     it('should render MyProfile component when is_advertiser state is true', () => {
@@ -104,6 +97,6 @@ describe('<AppContent/>', () => {
         }));
         render(<AppContent />);
 
-        expect(screen.queryByTestId('my_profile')).toBeInTheDocument();
+        expect(screen.getByTestId('my_profile')).toBeInTheDocument();
     });
 });

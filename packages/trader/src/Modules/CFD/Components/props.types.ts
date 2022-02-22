@@ -45,7 +45,7 @@ export type TCFDAccountCardActionProps = {
     title: string;
 };
 
-export type TExistingData = DetailsOfEachMT5Loginid | TradingPlatformAccounts;
+export type TExistingData = DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
 
 export type TCFDAccountCard = {
     button_label?: string | JSX.Element;
@@ -82,7 +82,7 @@ export type TCFDAccountCard = {
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
 };
 
-export type TradingPlatformAccounts = {
+export type TTradingPlatformAccounts = {
     account_id?: string;
     /**
      * Account type.

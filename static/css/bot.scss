@@ -45,6 +45,11 @@ body {
     position: absolute;
     height: 100%;
     width: 100%;
+    //fix for safari cooment box by unsetting cordinates
+    & foreignObject body {
+        all: unset;
+        display: block;
+    }
 }
 
 #blocklyArea {
@@ -196,3 +201,5 @@ label {
 .notifyjs-corner {
     z-index: 10001 !important;
 }
+
+

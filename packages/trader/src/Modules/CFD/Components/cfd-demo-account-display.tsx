@@ -66,7 +66,6 @@ const CFDDemoAccountDisplay = ({
     openPasswordManager,
     residence,
 }: TCFDDemoAccountDisplayProps) => {
-
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const openCFDAccount = () => {

@@ -62,6 +62,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         return () => {
             disposeListeners();
             disposeReactions();
+            order_store.setOrderPaymentMethodDetails(undefined);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

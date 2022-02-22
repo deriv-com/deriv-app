@@ -78,7 +78,11 @@ const EditPaymentMethodForm = () => {
                                                     {...field}
                                                     data-lpignore='true'
                                                     error={errors[payment_method_field[0]]}
-                                                    type={payment_method_field[1].type}
+                                                    type={
+                                                        payment_method_field[0] === 'instructions'
+                                                            ? 'textarea'
+                                                            : payment_method_field[1].type
+                                                    }
                                                     label={payment_method_field[1].display_name}
                                                     className='add-payment-method-form__payment-method-field'
                                                     onChange={handleChange}

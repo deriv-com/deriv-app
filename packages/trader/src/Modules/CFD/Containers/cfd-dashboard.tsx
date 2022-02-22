@@ -29,7 +29,7 @@ import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.js
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import RootStore from 'Stores/index';
-import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
 import { History } from 'history';
 
 type TLoadTab = {
@@ -56,15 +56,31 @@ const LoadTab = ({ children, is_loading, loading_component, ...props }: TLoadTab
     return <Tabs {...props}>{children}</Tabs>;
 };
 
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
+type TStandPoint = {
+    financial_company: string;
+    gaming_company: string;
+    iom: boolean;
+    malta: boolean;
+    maltainvest: boolean;
+    svg: boolean;
+};
+
 type TCFDDashboard = {
     account_settings: { residence: string };
     account_status: object;
     beginRealSignupForMt5: () => void;
     country: string;
     createCFDAccount: () => void;
-    current_list: Array<DetailsOfEachMT5Loginid>;
+    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
     dxtrade_accounts_list_error: null;
-    isAccountOfTypeDisabled: (type: string) => number | boolean;
+    isAccountOfTypeDisabled: (
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
+    ) => boolean;
     is_accounts_switcher_on: boolean;
     is_dark_mode_on: boolean;
     is_eu: boolean;
@@ -86,23 +102,23 @@ type TCFDDashboard = {
     has_dxtrade_real_account_error: boolean;
     has_dxtrade_demo_account_error: boolean;
     mt5_disabled_signup_types: {
-        real: string;
-        demo: string;
+        real: boolean;
+        demo: boolean;
     };
     dxtrade_disabled_signup_types: {
-        real: string;
-        demo: string;
+        real: boolean;
+        demo: boolean;
     };
     has_real_account: boolean;
     NotificationMessages: ({ ...props }) => JSX.Element;
     platform: 'mt5' | 'dxtrade';
     openAccountNeededModal: () => void;
     residence: string;
-    residence_list: string[];
-    standpoint: object;
+    residence_list: ResidenceList;
+    standpoint: TStandPoint;
     toggleAccountsDialog: () => void;
     toggleShouldShowRealAccountsList: () => void;
-    can_have_more_real_synthetic_mt5: () => number;
+    can_have_more_real_synthetic_mt5: boolean;
     upgradeable_landing_companies: unknown[];
     is_reset_trading_password_modal_visible: boolean;
     toggleResetTradingPasswordModal: () => void;
@@ -120,11 +136,11 @@ type TCFDDashboard = {
     checkShouldOpenAccount: () => void;
     setCFDPasswordResetModal: (value: boolean) => void;
     disableCFDPasswordModal: () => void;
-    openPasswordModal: () => void;
+    openPasswordModal: (account_type?: TOpenAccountTransferMeta) => void;
     openTopUpModal: () => void;
     history: History;
-    setCurrentAccount: (data: { login: string }, meta: { category: string }) => void;
-    setAccountType: (account_type: string) => void;
+    setCurrentAccount: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
+    setAccountType: (account_type: TOpenAccountTransferMeta) => void;
 };
 
 const CFDDashboard = (props: TCFDDashboard) => {
@@ -137,9 +153,9 @@ const CFDDashboard = (props: TCFDDashboard) => {
         is_visible: boolean;
         selected_login: string;
         selected_account: string;
-        selected_account_type: string;
-        selected_account_group: string;
-        selected_server: string;
+        selected_account_type?: string;
+        selected_account_group?: string;
+        selected_server?: string;
     }>({
         is_visible: false,
         selected_login: '',
@@ -226,9 +242,9 @@ const CFDDashboard = (props: TCFDDashboard) => {
         }
     };
 
-    const openAccountTransfer = (data: { login: string }, meta: { category: string }) => {
+    const openAccountTransfer = (data: DetailsOfEachMT5Loginid, meta: { category: string; type?: string }) => {
         if (meta.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', data.login);
+            sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
             props.disableCFDPasswordModal();
             props.history.push(routes.cashier_acc_transfer);
         } else {
@@ -237,7 +253,13 @@ const CFDDashboard = (props: TCFDDashboard) => {
         }
     };
 
-    const togglePasswordManagerModal = (login: string, title: string, group: string, type: string, server: string) => {
+    const togglePasswordManagerModal = (
+        login?: string,
+        title?: string,
+        group?: string,
+        type?: string,
+        server?: string
+    ) => {
         setPasswordManager(prev_state => ({
             is_visible: !prev_state.is_visible,
             selected_login: typeof login === 'string' ? login : '',
@@ -248,7 +270,7 @@ const CFDDashboard = (props: TCFDDashboard) => {
         }));
     };
 
-    const openRealPasswordModal = (account_type: string) => {
+    const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
         props.setAccountType(account_type);
         props.openPasswordModal();
     };

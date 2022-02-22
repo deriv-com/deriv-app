@@ -6,7 +6,7 @@ import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORM
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import { Mt5LoginList, DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
 import { TExistingData } from './props.types.js';
 
@@ -36,7 +36,7 @@ type TCFDRealAccountDisplayProps = {
     account_settings: GetSettings;
     openAccountNeededModal: (target: string, target_label: string, target_dmt5_label: string) => void;
     standpoint: TStandPoint;
-    is_loading: boolean;
+    is_loading?: boolean;
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
     is_pending_authentication: boolean;
@@ -59,6 +59,7 @@ type TCFDRealAccountDisplayProps = {
     can_have_more_real_synthetic_mt5: boolean;
     residence: string;
     residence_list: ResidenceList;
+    account_status?: object;
 };
 
 const getRealFinancialStpBtnLbl = (

@@ -104,27 +104,28 @@
     &-logout, &-account-switcher{
         background: #aaaaaa4d;
         & .logout-dialog{
-                padding: 0 0.3rem 0 0.6rem;
+               & .unsavedChangesText{
+                       padding: 0.4rem 0.3rem 0.4rem 0.7rem;
+               }
         }
         & .modal__container{
             width: 600px;
         }
         & .ui-widget-content{
-            border:unset;
+           border: unset;
+
             &:before{
-                border-top: 1px solid #ddd;
-                margin-top: 1rem;
-                margin-bottom: 0.5rem;
-                padding: 0.3rem 0.4rem 0.2rem 1rem;
                 width: 100%;
                 display: flex;
-                justify-content: end;
-                margin-left: -10px;                      
+                justify-content: end;  
+                padding-top: 0.7rem;
+                border-top: solid 1px #ddd;
             }
         }
         & .ui-dialog-buttonset{
             display: flex;
             justify-content: flex-end;
+            padding: 0 0.3rem;
         }
         & .button-primary{
             height: 38px;

@@ -26,7 +26,7 @@ const Modal = ({ children, title, onClose, action, class_name }) => {
           </div>
         </div>
         
-        <div className="modal__content">{children}<span className="separator"></span></div>
+        <div className="modal__content">{children}</div>
       </div>
     </div>
   );

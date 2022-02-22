@@ -13,7 +13,7 @@ const AccountSwitchModal = ({is_bot_running,onClose, onAccept}) => (
                 </p>
             </div>
         ):(
-            <div>
+            <div className="unsavedChangesText">
                 <p>
                     {translate('Any unsaved changes will be lost.')}
                 </p>

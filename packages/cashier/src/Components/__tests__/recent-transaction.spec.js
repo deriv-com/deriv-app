@@ -38,12 +38,6 @@ describe('<RecentTransaction />', () => {
         return render(<Router history={history}>{component}</Router>);
     };
 
-    const getIconName = () => {
-        const icon = screen.getByTestId('dti_icon');
-        const icon_path = icon.firstChild.getAttribute('xlink:href');
-        return icon_path.slice(icon_path.indexOf('#') + 1);
-    };
-
     it('should show proper messages', () => {
         renderWithRouter(<RecentTransaction {...props} />);
 
@@ -70,7 +64,7 @@ describe('<RecentTransaction />', () => {
     it('should show the proper icon when transaction_type is equal to "withdrawal"', () => {
         renderWithRouter(<RecentTransaction {...props} />);
 
-        expect(getIconName()).toBe('ic-cashier-minus');
+        expect(screen.getByTestId('dti_icon_cashier_minus')).toBeInTheDocument();
     });
 
     it('should show the proper icon when transaction_type is equal to "deposit"', () => {
@@ -83,7 +77,7 @@ describe('<RecentTransaction />', () => {
             />
         );
 
-        expect(getIconName()).toBe('ic-cashier-add');
+        expect(screen.getByTestId('dti_icon_cashier_add')).toBeInTheDocument();
     });
 
     it('should not show "Recent transactions" title if crypto_transactions is an empty array', () => {

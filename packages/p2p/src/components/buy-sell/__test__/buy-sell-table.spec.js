@@ -1,5 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+import { isDesktop } from '@deriv/shared';
 import { useStores } from 'Stores';
 import BuySellTable from '../buy-sell-table.jsx';
 
@@ -73,6 +74,7 @@ describe('<BuySellTable />', () => {
             buy_sell_store: { ...mocked_buy_sell_store, items: [{ test: 'test' }] },
             general_store: mocked_general_store,
         }));
+        isDesktop.mockReturnValue(true);
         render(<BuySellTable />);
 
         expect(screen.getByText('Advertisers')).toBeInTheDocument();

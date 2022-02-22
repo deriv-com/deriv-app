@@ -26,7 +26,7 @@ Money.propTypes = {
     amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
     currency: PropTypes.string,
-    has_sign: PropTypes.number,
+    has_sign: PropTypes.bool,
     should_format: PropTypes.bool,
     show_currency: PropTypes.bool, // if true, append currency symbol
 };

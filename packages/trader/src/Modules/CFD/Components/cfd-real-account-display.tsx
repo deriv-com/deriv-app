@@ -9,6 +9,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
 import { TExistingData } from './props.types.js';
+import { TTradingPlatformAccounts } from './props.types';
 
 type TStandPoint = {
     financial_company: string;
@@ -45,13 +46,18 @@ type TCFDRealAccountDisplayProps = {
     isFinancialStpCardVisible: () => boolean;
     landing_companies: LandingCompany;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
-    openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
+    openAccountTransfer: (
+        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
+        meta: TOpenAccountTransferMeta
+    ) => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     platform: string;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
     ) => boolean;
-    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
+    current_list: Array<DetailsOfEachMT5Loginid> & {
+        [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
+    };
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
@@ -195,7 +201,11 @@ const CFDRealAccountDisplay = ({
         const real_synthetic_accounts_list = Object.keys(current_list).filter(key =>
             key.startsWith(`${platform}.real.synthetic`)
         );
-        setActiveHover((real_synthetic_accounts_list as Array<string>).findIndex(t => current_list[t].group === name));
+        setActiveHover(
+            (real_synthetic_accounts_list as Array<string>).findIndex(
+                t => (current_list[t] as DetailsOfEachMT5Loginid).group === name
+            )
+        );
     };
 
     const isMT5AccountCardDisabled = (sub_account_type: string) => {

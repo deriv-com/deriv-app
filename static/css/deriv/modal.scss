@@ -76,10 +76,15 @@
         & .reset__footer{
             border-top:1px solid #ddd;
             margin-top: 0.5rem;
-            padding: 0.4rem 0.3rem 0.4rem 0.7rem;
+            padding: 0.4rem 0.4rem 0.3rem;
             width: 100%;
             display:flex;
-            justify-content: end;
+            justify-content: flex-end;
+            @include mobile{
+                .reset__footer{
+                    padding: 0.3rem;
+                }
+            }
             & .button-primary{
                 margin-right: 0;
             }
@@ -104,9 +109,9 @@
     &-logout, &-account-switcher{
         background: #aaaaaa4d;
         & .logout-dialog{
-               & .unsavedChangesText{
-                       padding: 0.4rem 0.3rem 0.4rem 0.7rem;
-               }
+            &__warning-text {
+                padding: 0.4rem 0.3rem 0.4rem 0.7rem;
+            }
         }
         & .modal__container{
             width: 600px;
@@ -117,7 +122,7 @@
             &:before{
                 width: 100%;
                 display: flex;
-                justify-content: end;  
+                justify-content: flex-end;
                 padding-top: 0.7rem;
                 border-top: solid 1px #ddd;
             }

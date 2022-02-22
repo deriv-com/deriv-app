@@ -386,9 +386,9 @@
             width: 100%;
             padding: 1.5rem;
         }
-        @media screen and (max-height: 568px) {
+        @media screen and (max-height: 500px) {
             .dc-form-submit-button {
-                // position: sticky;
+                position: sticky;
             }
         }
         & .dc-btn {

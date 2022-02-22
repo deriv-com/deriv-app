@@ -36,11 +36,6 @@
             color: var(--text-less-prominent) !important;
         }
 
-        // input::placeholder {
-        //     /* Most modern browsers support this now. */
-        //     color: var(--text-less-prominent) !important;
-        // }
-
         &:hover {
             border-color: var(--border-hover);
         }
@@ -90,7 +85,7 @@
         left: 160px;
         top: 0px;
 
-        background: rgba(55, 124, 252, 0.08);
+        background: #377cfc14;
         border-radius: 0px 4px 4px 0px;
 
         /* Inside auto layout */
@@ -109,7 +104,7 @@
 
             /* desktop/extra small/XS - regular */
 
-            font-family: IBM Plex Sans;
+            font-family: 'IBM Plex Sans';
             font-style: normal;
             font-weight: normal;
             font-size: 10px;
@@ -118,7 +113,7 @@
 
             /* light / 2 - general (text) */
 
-            color: #333333;
+            color: $color-black-1;
 
             /* Inside auto layout */
 
@@ -136,16 +131,13 @@
 
             /* desktop/small/S - regular */
 
-            font-family: IBM Plex Sans;
+            font-family: 'IBM Plex Sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
             line-height: 18px;
-            /* identical to box height, or 150% */
 
-            /* light / 2 - general (text) */
-
-            color: #333333;
+            color: $color-black-1;
 
             /* Inside auto layout */
 

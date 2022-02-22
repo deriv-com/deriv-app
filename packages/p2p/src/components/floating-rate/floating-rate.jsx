@@ -1,9 +1,10 @@
-import React from 'react';
-import { useStores } from 'Stores';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { InputField } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
+import { useStores } from 'Stores';
 import './floating-rate.scss';
 
 const FloatingRate = ({
@@ -74,7 +75,7 @@ FloatingRate.propTypes = {
     error_messages: PropTypes.string,
     fiat_currency: PropTypes.string,
     local_currency: PropTypes.string,
-    offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    offset: PropTypes.object,
     place_holder: PropTypes.string,
 };
 

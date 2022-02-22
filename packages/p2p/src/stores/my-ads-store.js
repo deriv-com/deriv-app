@@ -4,7 +4,7 @@ import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
-import { decimalValidator, lengthValidator, textValidator, rangeValidator } from 'Utils/validations';
+import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 
 export default class MyAdsStore extends BaseStore {
@@ -105,9 +105,6 @@ export default class MyAdsStore extends BaseStore {
             payment_method: 'bank_transfer', // TODO: Allow for other types of payment_method.
             rate: Number(values.price_rate),
         };
-
-        console.log('Form data: ', create_advert);
-        return;
 
         if (values.contact_info && is_sell_ad) {
             create_advert.contact_info = values.contact_info;
@@ -409,7 +406,7 @@ export default class MyAdsStore extends BaseStore {
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    this.rate_type != 'float'
+                    this.rate_type !== 'float'
                         ? v > 0 &&
                           decimalValidator(v) &&
                           countDecimalPlaces(v) <=
@@ -488,7 +485,6 @@ export default class MyAdsStore extends BaseStore {
         Object.entries(validations).forEach(([key, rules]) => {
             const error_index = rules.findIndex(v => !v(values[key]));
             if (error_index !== -1) {
-                console.log('error_index: ', error_index);
                 switch (key) {
                     case 'contact_info':
                     case 'payment_info':

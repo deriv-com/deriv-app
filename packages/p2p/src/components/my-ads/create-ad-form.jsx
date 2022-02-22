@@ -89,7 +89,7 @@ const CreateAdForm = () => {
                     min_transaction: '',
                     offer_amount: '',
                     payment_info: my_ads_store.payment_info,
-                    price_rate: '',
+                    price_rate: '-0.01',
                     type: buy_sell.BUY,
                 }}
                 onSubmit={my_ads_store.handleSubmit}
@@ -101,6 +101,15 @@ const CreateAdForm = () => {
             >
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
+
+                    const onChangeAdTypeHandler = user_input => {
+                        setFieldValue('type', user_input);
+                        if (user_input === buy_sell.SELL) {
+                            setFieldValue('price_rate', '0.01');
+                        } else {
+                            setFieldValue('price_rate', '-0.01');
+                        }
+                    };
 
                     return (
                         <div className='p2p-my-ads__form'>
@@ -121,7 +130,7 @@ const CreateAdForm = () => {
                                                     {...field}
                                                     className='p2p-my-ads__form-radio-group'
                                                     name='type'
-                                                    onToggle={event => setFieldValue('type', event.target.value)}
+                                                    onToggle={event => onChangeAdTypeHandler(event.target.value)}
                                                     selected={values.type}
                                                     required
                                                 >

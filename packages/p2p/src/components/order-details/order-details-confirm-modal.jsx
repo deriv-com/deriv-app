@@ -50,17 +50,16 @@ const OrderDetailsConfirmModal = ({
             return <Localize i18n_default_text="I've paid" />;
         } else if (is_process_request) {
             return <Loading is_fullscreen={false} />;
-        } else {
-            return (
-                <Localize
-                    i18n_default_text='Release {{amount}} {{currency}}'
-                    values={{
-                        amount: amount_display,
-                        currency: account_currency,
-                    }}
-                />
-            );
         }
+        return (
+            <Localize
+                i18n_default_text='Release {{amount}} {{currency}}'
+                values={{
+                    amount: amount_display,
+                    currency: account_currency,
+                }}
+            />
+        );
     };
 
     return (

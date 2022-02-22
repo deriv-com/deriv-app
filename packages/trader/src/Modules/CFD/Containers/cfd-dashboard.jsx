@@ -66,7 +66,6 @@ const CFDDashboard = props => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
-        updateActiveIndex();
         props.checkShouldOpenAccount();
 
         if (props.is_logged_in) {
@@ -118,7 +117,7 @@ const CFDDashboard = props => {
     };
 
     const updateActiveIndex = index => {
-        if (!index) return;
+        if (index === undefined) return;
         const updated_state = {};
         // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
         if (index === 1) updated_state.is_demo_tab = true;

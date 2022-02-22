@@ -5,6 +5,7 @@ import { connect } from 'Stores/connect';
 import DerivPassword from './deriv-password.jsx';
 import DerivEmail from './deriv-email.jsx';
 import PasswordsPlatform from './passwords-platform.jsx';
+import UnlinkSuccessModal from '../../../../../core/src/App/Containers/UnlinkEmailModal/unlink-success-modal.jsx';
 
 const Passwords = ({
     email,
@@ -32,7 +33,9 @@ const Passwords = ({
 
     return (
         <div className='account__passwords'>
-            <DerivEmail email={email}/>
+            {/* Todo: remove the condition after unlinking the email without social account is fully functional from BE side */}
+            {is_social_signup && <DerivEmail email={email} social_identity_provider={social_identity_provider} />}
+            <UnlinkSuccessModal />
             <DerivPassword
                 email={email}
                 is_dark_mode_on={is_dark_mode_on}

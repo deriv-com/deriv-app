@@ -1,7 +1,43 @@
+/** @define sent-email; weak */
+.sent-email {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-row-gap: 16px;
+    max-width: 400px;
+    margin: 24px auto 0;
+    color: var(--text-prominent);
+    font-size: var(--text-size-xxs);
+    line-height: 1.5;
+
+    &__content {
+        display: grid;
+        grid-template-columns: 3.2rem auto;
+        grid-gap: 8px;
+
+        .inline-icon {
+            width: 3.2rem;
+            height: 3.2rem;
+            margin-right: 0.8rem;
+        }
+    }
+
+    &__modal {
+        &-close {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem 1rem 3.4rem;
+            cursor: pointer;
+        }
+        &-unlink-title {
+            margin: 0.8rem 2.4rem;
+        }
+    }
+}
 /* @define reset-email */
 .reset-email {
-    margin: 1.6rem 1.6rem 0;
-
+    .dc-dialog__content {
+        margin-bottom: 0;
+    }
     &__email-selection {
         display: flex;
         justify-content: center;
@@ -11,7 +47,7 @@
             margin-bottom: 1.6rem;
         }
         .reset-email__descripton {
-            margin-bottom: 2.6rem;
+            margin-bottom: 2rem;
         }
     }
     &__heading {
@@ -40,9 +76,7 @@
     &__fieldset {
         position: relative;
         width: 100%;
-        .dc-field--error {
-            padding-left: 0;
-        }
+        margin-bottom: 1rem;
     }
     &__email-field {
         /* postcss-bem-linter: ignore */

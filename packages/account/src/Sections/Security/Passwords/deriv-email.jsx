@@ -2,22 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { Button, Text, Input } from '@deriv/components';
-import { WS } from '@deriv/shared';
+import { WS, toTitleCase } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
+import UnlinkAccountModal from 'Components/unlink-account-modal';
 
-const DerivEmail = ({ email }) => {
-    const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
+const DerivEmail = ({ email, social_identity_provider }) => {
+    const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = React.useState(false);
+    const [is_send_email_modal_open, setIsSendEmaliMldalOpen] = React.useState(false);
 
-    const onClickResendEmail = () => {
-        WS.verifyEmail(email, 'request_email');
-        // setIsSentEmailModalOpen(false);
+    const onClickChangeEmail = () => {
+        setIsUnlinkAccountModalOpen(true);
     };
 
     const onClickSendEmail = () => {
         WS.verifyEmail(email, 'request_email');
-        setIsSentEmailModalOpen(true);
+        setIsUnlinkAccountModalOpen(false);
+        setIsSendEmaliMldalOpen(true);
+    };
+
+    const onClickResendEmail = () => {
+        WS.verifyEmail(email, 'request_email');
+        setIsUnlinkAccountModalOpen(false);
     };
 
     return (
@@ -45,9 +52,9 @@ const DerivEmail = ({ email }) => {
                         </fieldset>
                     </Formik>
                     <Button
-                        className='email-change_-button'
+                        className='email-change_button'
                         type='submit'
-                        onClick={onClickSendEmail}
+                        onClick={onClickChangeEmail}
                         has_effect
                         is_disabled={false}
                         is_loading={false}
@@ -56,11 +63,18 @@ const DerivEmail = ({ email }) => {
                         primary
                     />
                 </div>
+                <UnlinkAccountModal
+                    is_open={is_unlink_account_modal_open}
+                    onClose={() => setIsUnlinkAccountModalOpen(false)}
+                    identifier_title={toTitleCase(social_identity_provider)}
+                    onClickSendEmail={onClickSendEmail}
+                />
                 <SentEmailModal
-                    is_open={is_sent_email_modal_open}
-                    onClose={() => setIsSentEmailModalOpen(false)}
+                    is_open={is_send_email_modal_open}
+                    onClose={() => setIsSendEmaliMldalOpen(false)}
                     identifier_title={'Change_Email'}
                     onClickSendEmail={onClickResendEmail}
+                    has_live_chat={true}
                 />
             </div>
         </React.Fragment>

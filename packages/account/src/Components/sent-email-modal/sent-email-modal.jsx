@@ -33,7 +33,7 @@ const getNoEmailContentStrings = () => {
     ];
 };
 
-const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }) => {
+const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail, has_live_chat = false }) => {
     const getSubtitle = () => {
         let subtitle = '';
         switch (identifier_title) {
@@ -70,7 +70,7 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
         window.LiveChatWidget?.call('maximize');
     };
 
-    const live_chat = (
+    const live_chat = has_live_chat ? (
         <Localize
             i18n_default_text="Still did'nt get the email? Please contact us via <0>live chat.</0>"
             components={[
@@ -85,7 +85,7 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
                 </span>,
             ]}
         />
-    );
+    ) : null;
 
     const sent_email_template = (
         <SendEmailTemplate
@@ -157,6 +157,7 @@ SentEmailModal.propTypes = {
     is_unlink_modal: PropTypes.bool,
     onClose: PropTypes.func,
     onClickSendEmail: PropTypes.func,
+    has_live_chat: PropTypes.bool,
 };
 
 export default SentEmailModal;

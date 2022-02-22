@@ -24,6 +24,8 @@ const RealityCheckModal = React.lazy(() =>
 );
 const WelcomeModal = React.lazy(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'));
 
+const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_welcome_modal_visible,
@@ -46,6 +48,9 @@ const AppModals = ({
             break;
         case 'signup':
             ComponentToLoad = <AccountSignupModal />;
+            break;
+        case 'request_email':
+            ComponentToLoad = <ResetEmailModal />;
             break;
         default:
             if (is_set_residence_modal_visible) {

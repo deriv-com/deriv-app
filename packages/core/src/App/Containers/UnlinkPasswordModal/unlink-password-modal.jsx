@@ -85,7 +85,7 @@ const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPas
                                     <Text align='center' as='p' size='xs' className='unlink-password__subtext'>
                                         <Localize
                                             i18n_default_text={
-                                                'Your Deriv account is unlinked from {{social_identity_provider}}. Use your email and password for future log in.'
+                                                'Your Deriv account has been unlinked from your {{social_identity_provider}} account. You can now log in to Deriv using your new email address and password.'
                                             }
                                             values={{
                                                 social_identity_provider: toTitleCase(social_identity_provider),
@@ -103,7 +103,7 @@ const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPas
                                         primary
                                         large
                                     >
-                                        <Localize i18n_default_text='Got it' />
+                                        <Localize i18n_default_text='Login now' />
                                     </Button>
                                 </div>
                             ) : (

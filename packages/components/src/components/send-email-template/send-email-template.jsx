@@ -98,7 +98,7 @@ const SendEmailTemplate = ({
                             primary
                         />
                     </div>
-                    {live_chat && (
+                    {!!live_chat && (
                         <div className='send-email-template__footer'>
                             <Text size='xxs' as='p' align={'center'}>
                                 {live_chat}

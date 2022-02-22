@@ -3,47 +3,63 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Text, Input } from '@deriv/components';
-import { validEmail, getErrorMessages } from '@deriv/shared';
+import { validEmail, getErrorMessages, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { SentEmailModal } from '@deriv/account';
 
-const ResetEmailModal = ({ disableApp, enableApp, is_loading, toggleResetEmailModal, is_visible }) => {
-    // const onResetComplete = (error_msg, actions) => {
-    //     actions.setSubmitting(false);
-    //     // Error would be returned on invalid token (and the like) cases.
-    //     if (error_msg) {
-    //         actions.resetForm({ password: '' });
-    //         actions.setStatus({ error_msg });
-    //         return;
-    //     }
+const ResetEmailModal = ({
+    disableApp,
+    enableApp,
+    is_loading,
+    toggleResetEmailModal,
+    is_visible,
+    verification_code,
+}) => {
+    const [is_send_email_modal_open, setIsSendEmaliModalOpen] = React.useState(false);
+    const [email_request, setEmailRequest] = React.useState(null);
 
-    //     actions.setStatus({ reset_complete: true });
+    const onResetComplete = (error_msg, actions) => {
+        actions.setSubmitting(false);
+        // Error would be returned on invalid token (and the like) cases.
+        if (error_msg) {
+            actions.resetForm({ email: '' });
+            actions.setStatus({ error_msg });
+            return;
+        }
 
-    //     logoutClient().then(() => {
-    //         redirectToLogin(false, getLanguage(), false);
-    //     });
-    // };
+        actions.setStatus({ reset_complete: true });
+    };
 
-    // const handleSubmit = (values, actions) => {
-    // const api_request = {
-    //     reset_password: 1,
-    //     new_password: values.password,
-    //     verification_code,
-    // };
+    const handleSubmit = (values, actions) => {
+        const api_request = {
+            change_email: 'verify',
+            new_email: values.email,
+            verification_code,
+        };
 
-    // WS.resetPassword(api_request).then(async response => {
-    //     if (response.error) {
-    //         onResetComplete(response.error.message, actions);
-    //     } else {
-    //         onResetComplete(null, actions);
-    //     }
-    // });
-    // };
+        setEmailRequest(api_request);
+        setIsSendEmaliModalOpen(true);
+
+        WS.changeEmail(api_request).then(async response => {
+            if (response.error) {
+                onResetComplete(response.error.message, actions);
+            } else {
+                onResetComplete(null, actions);
+                setIsSendEmaliModalOpen(true);
+            }
+        });
+    };
+    const resendEmail = () => {
+        WS.changeEmail(email_request);
+    };
 
     const validateReset = values => {
         const errors = {};
 
-        if (!validEmail(values.email)) {
+        if (!values.email) {
+            errors.email = localize('The email input should not be empty.');
+        } else if (!validEmail(values.email)) {
             errors.email = getErrorMessages().email();
         }
 
@@ -52,25 +68,35 @@ const ResetEmailModal = ({ disableApp, enableApp, is_loading, toggleResetEmailMo
 
     const reset_initial_values = { email: '' };
 
+    if (is_send_email_modal_open) {
+        return (
+            <SentEmailModal
+                is_open={is_send_email_modal_open}
+                onClose={() => setIsSendEmaliModalOpen(false)}
+                identifier_title={'Change_Email'}
+                onClickSendEmail={resendEmail}
+                has_live_chat={true}
+            />
+        );
+    }
+
     return (
-        <Formik
-            initialValues={reset_initial_values}
-            initialStatus={{ reset_complete: false, error_msg: '' }}
-            validate={validateReset}
-            // onSubmit={handleSubmit}
-        >
-            {({ errors, values, touched, isSubmitting, handleChange, setFieldTouched, status }) => (
-                <Dialog
-                    is_visible={is_visible}
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_loading={is_loading}
-                    dismissable={status.error_msg}
-                    onConfirm={() => toggleResetEmailModal(false)}
-                    has_close_icon
-                    is_closed_on_cancel={false}
-                >
-                    <div className='reset-email'>
+        <div className='reset-email'>
+            <Formik
+                initialValues={reset_initial_values}
+                initialStatus={{ reset_complete: false, error_msg: '' }}
+                validate={validateReset}
+                onSubmit={handleSubmit}
+            >
+                {({ errors, values, touched, isSubmitting, handleChange, setFieldTouched, status }) => (
+                    <Dialog
+                        is_visible={is_visible}
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_loading={is_loading}
+                        dismissable={status.error_msg}
+                        onConfirm={() => toggleResetEmailModal(false)}
+                    >
                         <Form>
                             <React.Fragment>
                                 {status.reset_complete ? (
@@ -107,11 +133,7 @@ const ResetEmailModal = ({ disableApp, enableApp, is_loading, toggleResetEmailMo
                                                 value={values.email}
                                                 required
                                                 disabled={false}
-                                                error={
-                                                    touched.email && errors.email
-                                                        ? "The email input couldn'nt be empty"
-                                                        : errors.email
-                                                }
+                                                error={touched.email && errors.email}
                                                 onChange={e => {
                                                     setFieldTouched('email', true);
                                                     handleChange(e);
@@ -142,10 +164,10 @@ const ResetEmailModal = ({ disableApp, enableApp, is_loading, toggleResetEmailMo
                                 )}
                             </React.Fragment>
                         </Form>
-                    </div>
-                </Dialog>
-            )}
-        </Formik>
+                    </Dialog>
+                )}
+            </Formik>
+        </div>
     );
 };
 

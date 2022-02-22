@@ -104,7 +104,7 @@ export default class ClientStore extends BaseStore {
         payment_agent_withdraw: '',
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
-        request_email:'',
+        request_email: '',
     };
     @observable account_limits = {};
 

@@ -14,9 +14,9 @@ export type TCFDDashboardContainer = {
     active_index: number;
     is_dark_mode_on: boolean;
     dxtrade_tokens: {
-        demo: string,
-        real: string
-    }
+        demo: string;
+        real: string;
+    };
 };
 
 export type TMT5AccountOpeningRealFinancialStpModal = {

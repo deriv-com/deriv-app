@@ -52,8 +52,8 @@ export type TCFDAccountCard = {
     commission_message: string;
     descriptor: string;
     dxtrade_tokens: {
-        demo: string,
-        real: string
+        demo: string;
+        real: string;
     };
     is_hovered?: boolean;
     existing_data?: TExistingData;

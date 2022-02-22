@@ -486,7 +486,10 @@ const CFDAccountCardComponent = ({
                                 type='button'
                                 href={
                                     platform === CFD_PLATFORMS.DXTRADE
-                                        ? getDXTradeWebTerminalLink(type.category, dxtrade_tokens[type.category as 'demo'|'real'])
+                                        ? getDXTradeWebTerminalLink(
+                                              type.category,
+                                              dxtrade_tokens[type.category as 'demo' | 'real']
+                                          )
                                         : getMT5WebTerminalLink({
                                               category: type.category,
                                               loginid: (existing_data as TTradingPlatformAccounts).display_login,

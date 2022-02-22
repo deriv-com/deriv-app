@@ -19,20 +19,11 @@ const ThemedScrollbars = ({
 }) => {
     const [hoverRef, isHovered] = useHover(refSetter);
 
-    const cn = classNames('dc-themed-scrollbars test', className, {
-        'dc-themed-scrollbars__autohide': autohide,
-        'dc-themed-scrollbars__autohide--is-hovered': autohide && isHovered,
-        'dc-themed-scrollbars--has-horizontal': has_horizontal,
-        'dc-themed-scrollbars--only-horizontal': is_only_horizontal,
-        'dc-themed-scrollbars--only-horizontal-overlay': is_only_horizontal_overlay,
-        'dc-themed-scrollbars--hidden-scrollbar': is_scrollbar_hidden,
-    });
-
     if (is_bypassed) return children;
     return (
         <div
             ref={hoverRef}
-            className={classNames('dc-themed-scrollbars test', className, {
+            className={classNames('dc-themed-scrollbars', className, {
                 'dc-themed-scrollbars__autohide': autohide,
                 'dc-themed-scrollbars__autohide--is-hovered': autohide && isHovered,
                 'dc-themed-scrollbars--has-horizontal': has_horizontal,

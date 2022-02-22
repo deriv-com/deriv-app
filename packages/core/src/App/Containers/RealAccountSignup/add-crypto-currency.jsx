@@ -75,7 +75,7 @@ const AddCryptoCurrency = ({
                     )}
                     {canAddFiat() && (
                         <React.Fragment>
-                            <ThemedScrollbars className='test' height={'calc(100vh - 23vh)'}>
+                            <ThemedScrollbars>
                                 <CurrencyRadioButtonGroup
                                     id='fiat_currency'
                                     is_fiat
@@ -129,7 +129,7 @@ const AddCryptoCurrency = ({
                     )}
                     {!should_show_fiat_only &&
                         (available_crypto_currencies.length !== 0 ? (
-                            <ThemedScrollbars className={'test'} height={'calc(100vh - 18rem)'}>
+                            <ThemedScrollbars className={'test'} height={'calc(100vh - 23vh)'}>
                                 <CurrencyRadioButtonGroup
                                     id='crypto_currency'
                                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'

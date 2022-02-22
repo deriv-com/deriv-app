@@ -46,7 +46,7 @@ export const getDirection = ticks => {
     return direction;
 };
 
-export const getLastDigit = tick => Number.isInteger(tick) ? tick % 10 : Number(tick.toString().slice(-1));
+export const getLastDigit = tick => (Number.isInteger(tick) ? tick % 10 : Number(tick.toString().slice(-1)));
 
 const getBackoffDelayInMs = (error, delay_index) => {
     const base_delay = 2.5;

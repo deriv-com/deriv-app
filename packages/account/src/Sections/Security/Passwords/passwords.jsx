@@ -31,15 +31,12 @@ const Passwords = ({
 
     return (
         <div className='account__passwords'>
-            {/* Todo: remove the condition after Apple social signup is fully functional from BE side */}
-            {social_identity_provider === 'apple' ? null : (
-                <DerivPassword
-                    email={email}
-                    is_dark_mode_on={is_dark_mode_on}
-                    is_social_signup={is_social_signup}
-                    social_identity_provider={social_identity_provider}
-                />
-            )}
+            <DerivPassword
+                email={email}
+                is_dark_mode_on={is_dark_mode_on}
+                is_social_signup={is_social_signup}
+                social_identity_provider={social_identity_provider}
+            />
             {(mt5_login_list?.length > 0 || !is_mt5_password_not_set) && (
                 <PasswordsPlatform
                     email={email}

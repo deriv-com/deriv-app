@@ -13,7 +13,7 @@ import {
     TCFDAccountCardActionProps,
     TExistingData,
     TCFDAccountCard,
-    TradingPlatformAccounts,
+    TTradingPlatformAccounts,
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
@@ -255,11 +255,9 @@ const CFDAccountCard = ({
         return `${type.category}-${type.type}${region_string}${server_number}`;
     };
 
-    const handleClickSwitchAccount = (): void => {
-        if (toggleShouldShowRealAccountsList && toggleAccountsDialog) {
-            toggleShouldShowRealAccountsList(true);
-            toggleAccountsDialog(true);
-        }
+    const handleClickSwitchAccount: () => void = () => {
+        toggleShouldShowRealAccountsList?.(true);
+        toggleAccountsDialog?.(true);
     };
 
     const getDxtradeDownloadLink: () => string = () => {
@@ -300,7 +298,7 @@ const CFDAccountCard = ({
                     </td>
                     <td className='cfd-account-card__login-specs-table-data'>
                         <div className='cfd-account-card--paragraph'>
-                            <SpecBox value={(existing_data as TradingPlatformAccounts)?.display_login} />
+                            <SpecBox value={(existing_data as TTradingPlatformAccounts)?.display_login} />
                         </div>
                     </td>
                 </tr>
@@ -368,9 +366,9 @@ const CFDAccountCard = ({
                                 />
                             </Text>
                         )}
-                        {(existing_data as TradingPlatformAccounts)?.display_login && is_logged_in && (
+                        {(existing_data as TTradingPlatformAccounts)?.display_login && is_logged_in && (
                             <Text color='less-prominent' size='xxxs' line_height='s'>
-                                {(existing_data as TradingPlatformAccounts)?.display_login}
+                                {(existing_data as TTradingPlatformAccounts)?.display_login}
                             </Text>
                         )}
                     </div>
@@ -419,11 +417,13 @@ const CFDAccountCard = ({
                                             Object.keys(specs).map((spec_attribute, idx) => (
                                                 <tr key={idx} className='cfd-account-card__specs-table-row'>
                                                     <td className='cfd-account-card__specs-table-attribute'>
-                                                        <p className='cfd-account-card--paragraph'>{spec_attribute}</p>
+                                                        <p className='cfd-account-card--paragraph'>
+                                                            {specs[spec_attribute].key()}
+                                                        </p>
                                                     </td>
                                                     <td className='cfd-account-card__specs-table-data'>
                                                         <p className='cfd-account-card--paragraph'>
-                                                            {specs[spec_attribute]}
+                                                            {specs[spec_attribute].value()}
                                                         </p>
                                                     </td>
                                                 </tr>
@@ -486,7 +486,7 @@ const CFDAccountCard = ({
                                         ? getDXTradeWebTerminalLink(type.category)
                                         : getMT5WebTerminalLink({
                                               category: type.category,
-                                              loginid: (existing_data as TradingPlatformAccounts).display_login,
+                                              loginid: (existing_data as TTradingPlatformAccounts).display_login,
                                               server_name: (existing_data as DetailsOfEachMT5Loginid)?.server_info
                                                   ?.environment,
                                           })

@@ -25,6 +25,18 @@ const EditPaymentMethodForm = () => {
             }
         }
 
+        if (values.branch) {
+            if (!no_symbols_regex.test(values.branch)) {
+                errors.branch = no_symbols_message;
+            }
+        }
+
+        if (values.instructions) {
+            if (!no_symbols_regex.test(values.instructions)) {
+                errors.instructions = no_symbols_message;
+            }
+        }
+
         return errors;
     };
 

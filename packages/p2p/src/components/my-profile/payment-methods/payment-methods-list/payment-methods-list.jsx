@@ -38,6 +38,7 @@ const PaymentMethodsList = () => {
                     >
                         <Localize i18n_default_text='Add new' />
                     </Button>
+                    <ThemedScrollbars className='payment-methods-list__list' height={'60vh'}>
                     <div className='payment-methods-list__list-container'>
                         {my_profile_store.payment_methods_list_methods.map((payment_methods_list_method, key) => {
                             const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
@@ -66,6 +67,7 @@ const PaymentMethodsList = () => {
                             );
                         })}
                     </div>
+                    </ThemedScrollbars>
                 </div>
             </DesktopWrapper>
             <MobileWrapper>

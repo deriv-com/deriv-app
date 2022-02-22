@@ -22,23 +22,9 @@ describe('<OnRampProviderCard />', () => {
                 () =>
                     'Your simple access to crypto. Fast and secure way to exchange and purchase cryptocurrencies. 24/7 live chat support.'
             ),
-            getPaymentIcons: jest.fn(() => [
-                { dark: 'IcCashierFpsDark', light: 'IcCashierFpsLight' },
-                { dark: 'IcCashierAliPayDark', light: 'IcCashierAliPayLight' },
-                { dark: 'IcCashierGoPayDark', light: 'IcCashierGoPayLight' },
-            ]),
+            getPaymentIcons: jest.fn(() => [{ dark: 'IcCashierFpsDark', light: 'IcCashierFpsLight' }]),
         },
         setSelectedProvider: jest.fn(),
-    };
-
-    const getIconNames = () => {
-        const icons = screen.getAllByTestId('dti_icon');
-        let icon_names = [];
-        icons.forEach(icon => {
-            const icon_path = icon.firstChild.getAttribute('xlink:href');
-            icon_names.push(icon_path.slice(icon_path.indexOf('#') + 1));
-        });
-        return icon_names;
     };
 
     it('should show proper messages and button', () => {
@@ -56,10 +42,8 @@ describe('<OnRampProviderCard />', () => {
     it('should show proper icons in dark_mode', () => {
         render(<OnRampProviderCard {...props} is_dark_mode_on />);
 
-        expect(getIconNames()).toContain('ic-cashier-changelly-dark');
-        expect(getIconNames()).toContain('ic-cashier-fps-dark');
-        expect(getIconNames()).toContain('ic-cashier-ali-pay-dark');
-        expect(getIconNames()).toContain('ic-cashier-go-pay-dark');
+        expect(screen.getByTestId('dti_provider_icon_dark')).toBeInTheDocument();
+        expect(screen.getByTestId('dti_payment_icon_dark')).toBeInTheDocument();
     });
 
     it('should trigger onClick callback, when "Select" button is clicked', () => {

@@ -11,7 +11,7 @@ import {
     SelectNative,
     Loading,
 } from '@deriv/components';
-import { getSelectedRoute } from '@deriv/shared';
+import { getSelectedRoute, platforms } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/reports.scss';
@@ -22,6 +22,7 @@ const Reports = ({
     is_logging_in,
     is_visible,
     location,
+    platform,
     routeBackInApp,
     routes,
     setTabIndex,
@@ -67,7 +68,11 @@ const Reports = ({
     return (
         <FadeWrapper is_visible={is_visible} className='reports-page-wrapper' keyname='reports-page-wrapper'>
             <div className='reports'>
-                <PageOverlay header={localize('Reports')} onClickClose={onClickClose}>
+                <PageOverlay
+                    header={localize('Reports')}
+                    onClickClose={onClickClose}
+                    is_close_disabled={!!platforms[platform]}
+                >
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
@@ -111,6 +116,7 @@ Reports.propTypes = {
     is_logging_in: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
+    platform: PropTypes.string,
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setTabIndex: PropTypes.func,
@@ -123,6 +129,7 @@ export default connect(({ client, common, ui }) => ({
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_visible: ui.is_reports_visible,
+    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     setVisibilityRealityCheck: client.setVisibilityRealityCheck,
     setTabIndex: ui.setReportsTabIndex,

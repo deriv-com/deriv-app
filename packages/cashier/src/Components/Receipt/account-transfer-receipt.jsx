@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, isMobile, platforms, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/account-transfer-receipt.scss';
@@ -12,6 +12,7 @@ const AccountTransferReceipt = ({
     enableApp,
     history,
     loginid,
+    platform,
     receipt,
     resetAccountTransfer,
     selected_from,
@@ -106,14 +107,16 @@ const AccountTransferReceipt = ({
                 </div>
             </div>
             <div className='account-transfer-receipt__crypto--form-submit'>
-                <Button
-                    className='account-transfer-receipt__button'
-                    has_effect
-                    text={localize('View transaction details')}
-                    onClick={checkAccount}
-                    secondary
-                    large
-                />
+                {!platforms[platform] && (
+                    <Button
+                        className='account-transfer-receipt__button'
+                        has_effect
+                        text={localize('View transaction details')}
+                        onClick={checkAccount}
+                        secondary
+                        large
+                    />
+                )}
                 <Button
                     className='account-transfer-receipt__button'
                     has_effect
@@ -158,6 +161,7 @@ AccountTransferReceipt.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     loginid: PropTypes.string,
+    platform: PropTypes.string,
     receipt: PropTypes.object,
     resetAccountTransfer: PropTypes.func,
     selected_from: PropTypes.object,
@@ -166,14 +170,15 @@ AccountTransferReceipt.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, modules, ui }) => ({
+    connect(({ client, common, modules, ui }) => ({
+        disableApp: ui.disableApp,
+        enableApp: ui.enableApp,
         loginid: client.loginid,
-        switchAccount: client.switchAccount,
+        platform: common.platform,
         receipt: modules.cashier.account_transfer.receipt,
         resetAccountTransfer: modules.cashier.account_transfer.resetAccountTransfer,
         selected_from: modules.cashier.account_transfer.selected_from,
         selected_to: modules.cashier.account_transfer.selected_to,
-        disableApp: ui.disableApp,
-        enableApp: ui.enableApp,
+        switchAccount: client.switchAccount,
     }))(AccountTransferReceipt)
 );

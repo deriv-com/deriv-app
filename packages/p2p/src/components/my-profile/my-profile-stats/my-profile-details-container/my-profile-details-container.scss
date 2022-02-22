@@ -1,6 +1,7 @@
 .my-profile-details-container {
     border: 1px solid var(--general-hover);
     border-radius: 0.8rem;
+    margin-top: 2.4rem;
     padding: 2.4rem;
 
     @include mobile {
@@ -10,5 +11,6 @@
 
     &--table {
         display: flex;
+        justify-content: space-between;
     }
 }

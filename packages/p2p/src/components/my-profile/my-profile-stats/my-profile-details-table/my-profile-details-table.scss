@@ -9,6 +9,8 @@
         flex-direction: column;
         padding-right: 2.4rem;
         white-space: nowrap;
+        height: 4rem;
+        margin-top: 1rem;
 
         @include mobile {
             border-right: unset;
@@ -28,6 +30,7 @@
         display: flex;
         flex-direction: row;
         width: 29.2rem;
+        border: none;
 
         @include mobile {
             flex-direction: column;

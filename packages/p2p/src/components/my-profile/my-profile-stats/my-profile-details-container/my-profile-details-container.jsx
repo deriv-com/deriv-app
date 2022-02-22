@@ -3,6 +3,7 @@ import MyProfileBalance from '../my-profile-balance';
 import MyProfileDetailsTable from '../my-profile-details-table';
 import MyProfileName from '../my-profile-name';
 import { useStores } from 'Stores';
+import './my-profile-details-container.scss';
 
 const MyProfileDetailsContainer = () => {
     const { my_profile_store } = useStores();

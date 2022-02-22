@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Table, Text } from '@deriv/components';
+import { Money, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const MyProfileStatsTable = () => {
-    const { my_profile_store } = useStores();
+    const { my_profile_store, general_store } = useStores();
 
     const {
         buy_completion_rate,
@@ -116,7 +116,7 @@ const MyProfileStatsTable = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {buy_time_avg || '-'}
+                                {buy_time_avg ? `${buy_time_avg} min` : '-'}
                             </Text>
                         </Table.Cell>
                         <Table.Cell className='my-profile-stats-table__cell'>
@@ -134,7 +134,7 @@ const MyProfileStatsTable = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {release_time_avg || '-'}
+                                {release_time_avg ? `${release_time_avg} min` : '-'}
                             </Text>
                         </Table.Cell>
                     </Table.Row>
@@ -160,7 +160,11 @@ const MyProfileStatsTable = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {total_turnover || '-'}
+                                <Money
+                                    amount={total_turnover || '-'}
+                                    currency={general_store.client.currency}
+                                    show_currency
+                                />
                             </Text>
                         </Table.Cell>
                         <Table.Cell className='my-profile-stats-table__cell'>
@@ -222,7 +226,7 @@ const MyProfileStatsTable = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                            {buy_completion_rate ? `${buy_completion_rate} (${buy_orders_count})` : '-'}
+                            {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-stats-table__cell'>
@@ -240,7 +244,7 @@ const MyProfileStatsTable = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                            {sell_completion_rate ? `${sell_completion_rate} (${sell_orders_count})` : '-'}
+                            {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-stats-table__cell'>
@@ -258,7 +262,7 @@ const MyProfileStatsTable = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                            {buy_time_avg || '-'}
+                            {buy_time_avg ? `${buy_time_avg} min` : '-'}
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-stats-table__cell'>
@@ -276,7 +280,7 @@ const MyProfileStatsTable = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                            {release_time_avg || '-'}
+                            {release_time_avg ? `${release_time_avg} min` : '-'}
                         </Text>
                     </Table.Cell>
                 </Table.Row>
@@ -304,7 +308,11 @@ const MyProfileStatsTable = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                            {total_turnover || '-'}
+                            <Money
+                                amount={total_turnover || '-'}
+                                currency={general_store.client.currency}
+                                show_currency
+                            />
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-stats-table__cell'>

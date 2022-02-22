@@ -142,6 +142,15 @@ const PersonalDetails = ({
         return is_svg ? localize('Last name*') : localize('Last name');
     };
 
+    const getFieldHint = field_name => {
+        return (
+            <Localize
+                i18n_default_text='Please enter your {{ field_name }} as in your official identity documents.'
+                values={{ field_name }}
+            />
+        );
+    };
+
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -234,6 +243,7 @@ const PersonalDetails = ({
                                                         ? localize('First name*')
                                                         : localize('First name')
                                                 }
+                                                hint={getFieldHint('first name')}
                                                 disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
                                             />
@@ -243,6 +253,7 @@ const PersonalDetails = ({
                                                 name='last_name'
                                                 required={is_svg || is_dashboard}
                                                 label={getLastNameLabel()}
+                                                hint={getFieldHint('last name')}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
                                             />
@@ -257,6 +268,7 @@ const PersonalDetails = ({
                                                         ? localize('Date of birth*')
                                                         : localize('Date of birth')
                                                 }
+                                                hint={getFieldHint('date of birth')}
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_dashboard ? '' : 'modal_root'}

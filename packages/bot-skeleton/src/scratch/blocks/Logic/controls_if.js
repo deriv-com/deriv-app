@@ -146,6 +146,7 @@ Blockly.Blocks.controls_if = {
 
         let i = 1;
 
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             const input_names = this.getIfInputNames(i);
 

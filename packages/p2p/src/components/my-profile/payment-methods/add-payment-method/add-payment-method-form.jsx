@@ -49,6 +49,14 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
             }
         }
 
+        if (values.name) {
+            if (!no_symbols_regex.test(values.name)) {
+                errors.name = no_symbols_message;
+            } else if (values.name.length > 200) {
+                errors.name = max_characters_error_message;
+            }
+        }
+
         return errors;
     };
 

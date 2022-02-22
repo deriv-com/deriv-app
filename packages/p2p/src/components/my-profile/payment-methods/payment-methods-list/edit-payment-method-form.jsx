@@ -12,28 +12,45 @@ const EditPaymentMethodForm = () => {
         const errors = {};
         const no_symbols_regex = /[a-zA-Z0-9\\\s.@_+-]$/;
         const no_symbols_message = localize('Special characters are not allowed to use.');
+        const max_characters_error_message = localize('This field has exceeded maximum length of 200 characters.');
 
         if (values.account) {
             if (!no_symbols_regex.test(values.account)) {
                 errors.account = no_symbols_message;
+            } else if (values.account.length > 200) {
+                errors.account = max_characters_error_message;
             }
         }
 
         if (values.bank_name) {
             if (!no_symbols_regex.test(values.bank_name)) {
                 errors.bank_name = no_symbols_message;
+            } else if (values.bank_name.length > 200) {
+                errors.bank_name = max_characters_error_message;
             }
         }
 
         if (values.branch) {
             if (!no_symbols_regex.test(values.branch)) {
                 errors.branch = no_symbols_message;
+            } else if (values.branch.length > 200) {
+                errors.branch = max_characters_error_message;
             }
         }
 
         if (values.instructions) {
             if (!no_symbols_regex.test(values.instructions)) {
                 errors.instructions = no_symbols_message;
+            } else if (values.instructions.length > 200) {
+                errors.instructions = max_characters_error_message;
+            }
+        }
+
+        if (values.name) {
+            if (!no_symbols_regex.test(values.name)) {
+                errors.name = no_symbols_message;
+            } else if (values.name.length > 200) {
+                errors.name = max_characters_error_message;
             }
         }
 

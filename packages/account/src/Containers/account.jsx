@@ -48,7 +48,7 @@ const PageOverlayWrapper = ({
             <PageOverlay
                 header={selected_route.getTitle()}
                 onClickClose={onClickClose}
-                is_close_disabled={!!platforms[platform]}
+                is_from_app={!!platforms[platform]}
             >
                 <selected_route.component component_icon={selected_route.icon_component} />
             </PageOverlay>
@@ -75,11 +75,7 @@ const PageOverlayWrapper = ({
     }
 
     return (
-        <PageOverlay
-            header={localize('Settings')}
-            onClickClose={onClickClose}
-            is_close_disabled={!!platforms[platform]}
-        >
+        <PageOverlay header={localize('Settings')} onClickClose={onClickClose} is_from_app={!!platforms[platform]}>
             <VerticalTab
                 alignment='center'
                 is_floating

@@ -71,7 +71,7 @@ const Reports = ({
                 <PageOverlay
                     header={localize('Reports')}
                     onClickClose={onClickClose}
-                    is_close_disabled={!!platforms[platform]}
+                    is_from_app={!!platforms[platform]}
                 >
                     <DesktopWrapper>
                         <VerticalTab

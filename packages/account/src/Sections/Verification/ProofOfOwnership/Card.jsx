@@ -2,6 +2,7 @@ import { Button, Icon, Text } from '@deriv/components';
 import classNames from 'classnames';
 import * as React from 'react';
 import ExpandedCard from './ExpandedCard.jsx';
+import PropTypes from 'prop-types';
 
 const Card = ({ handleChange, handleBlur, values, setFieldValue, index }) => {
     const onClick = () => setIsOpen(!is_open);
@@ -51,3 +52,10 @@ const Card = ({ handleChange, handleBlur, values, setFieldValue, index }) => {
     );
 };
 export default Card;
+Card.propTypes = {
+    handleChange: PropTypes.func,
+    handleBlur: PropTypes.func,
+    values: PropTypes.object,
+    setFieldValue: PropTypes.func,
+    index: PropTypes.string,
+};

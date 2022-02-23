@@ -170,9 +170,11 @@
     "-1005884051": "Wskaźnik ukończenia",
     "-1638172550": "Aby włączyć tę funkcję, musisz wykonać następujące czynności:",
     "-559300364": "Twoja sekcja Kasjer Deriv P2P jest zablokowana",
+    "-674715853": "Your ad exceeds the daily limit",
+    "-744406": "Your ad is not listed on <0>Buy/Sell</0> because the amount exceeds your daily limit of {{limit}} {{currency}}.\n                        <1 /><1 />You can still see your ad on <0>My ads</0>. If you’d like to increase your daily limit, please contact us via <2>live chat</2>.",
+    "-329713179": "Ok",
     "-480724783": "Masz już ogłoszenie z tą stawką",
     "-1072444041": "Aktualizuj ogłoszenie",
-    "-329713179": "Ok",
     "-1561775203": "Kup {{currency}}",
     "-1527285935": "Sprzedaj {{currency}}",
     "-592818187": "Twoje saldo Deriv P2P wynosi {{ dp2p_balance }}",
@@ -226,6 +228,5 @@
     "-750202930": "Aktywne zlecenia",
     "-471540636": "Otrzymano {{amount}} {{currency}}.",
     "-2054589794": "Objęto Cię tymczasowym zakazem korzystania z naszych usług z powodu kilkukrotnych prób anulowania. Spróbuj ponownie po {{date_time}} GMT.",
-    "-1971628122": "W chwili obecnej funkcja nie jest dostępna dla kont z prawdziwymi pieniędzmi prowadzonych w USD.",
     "-930400128": "Aby korzystać z Deriv P2P, musisz wybrać nazwę do wyświetlenia (pseudonim) i zweryfikować swoją tożsamość."
 }

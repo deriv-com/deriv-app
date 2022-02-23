@@ -13,7 +13,6 @@ module.exports = {
         '^Stores$': '<rootDir>/src/stores/index',
         '^Translations/(.*)$': '<rootDir>/src/translations/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
-        '/app-content/': '<rootDir>/src/components/app-context.jsx',
     },
     testPathIgnorePatterns: ['/scripts/', '/translations/', '/crowdin/'],
     coveragePathIgnorePatterns: [

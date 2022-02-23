@@ -88,7 +88,7 @@ describe('<AppContent/>', () => {
         render(<AppContent />);
 
         expect(screen.queryByText('NicknameForm')).not.toBeInTheDocument();
-        expect(screen.queryByText('Dp2pBlocked')).toBeInTheDocument();
+        expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
     });
 
     it('should render MyProfile component when is_advertiser state is true', () => {

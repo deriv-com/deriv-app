@@ -8,7 +8,7 @@ import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
-import {isMobile} from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 
 export const Card = ({ handleChange, handleBlur, values, setFieldValue }) => {
     const onClick = () => setIsOpen(!is_open);
@@ -95,22 +95,22 @@ const ProofOfOwnership = () => {
                 submitForm,
             }) => (
                 <div className='proof-of-ownership'>
-                    <FormBody scroll_offset={getScrollOffset()} >
+                    <FormBody scroll_offset={getScrollOffset()}>
                         <FormSubHeader title={localize('Please upload the following document.')} />
                         <FormBodySection>
                             <fieldset>
-                                    {cards.map((card, index) => {
-                                        return (
-                                            <Card
-                                                key={index}
-                                                step={step}
-                                                handleChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                values={card}
-                                                setFieldValue={setFieldValue}
-                                            />
-                                        );
-                                    })}
+                                {cards.map((card, index) => {
+                                    return (
+                                        <Card
+                                            key={index}
+                                            step={step}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            values={card}
+                                            setFieldValue={setFieldValue}
+                                        />
+                                    );
+                                })}
                             </fieldset>
                         </FormBodySection>
                     </FormBody>

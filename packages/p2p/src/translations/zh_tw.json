@@ -170,9 +170,11 @@
     "-1005884051": "完成速率",
     "-1638172550": "要啟用此功能，您必須完成以下操作：",
     "-559300364": "您的 Deriv P2P 收銀台已鎖定",
+    "-674715853": "Your ad exceeds the daily limit",
+    "-744406": "Your ad is not listed on <0>Buy/Sell</0> because the amount exceeds your daily limit of {{limit}} {{currency}}.\n                        <1 /><1 />You can still see your ad on <0>My ads</0>. If you’d like to increase your daily limit, please contact us via <2>live chat</2>.",
+    "-329713179": "確定",
     "-480724783": "您已經有符合此費率的廣告",
     "-1072444041": "更新廣告",
-    "-329713179": "確定",
     "-1561775203": "買入 {{currency}}",
     "-1527285935": "賣出 {{currency}}",
     "-592818187": "您的 Deriv P2P 餘額是 {{ dp2p_balance }}",
@@ -226,6 +228,5 @@
     "-750202930": "使用中的訂單",
     "-471540636": "我已收到 {{amount}} {{currency}}。",
     "-2054589794": "由於多次嘗試取消，您已被暫時禁止使用我們的服務。請於GMT{{date_time}} 之後重試。",
-    "-1971628122": "當前僅真實美元資金帳戶可用此功能。",
     "-930400128": "要使用 Deriv P2P，您需選擇一個顯示名稱（暱稱）並驗證您的身份。"
 }

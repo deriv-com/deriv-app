@@ -170,9 +170,11 @@
     "-1005884051": "Tasso di completamento",
     "-1638172550": "Per disabilitare questa funzione, completa quanto segue:",
     "-559300364": "La tua cassa Deriv P2P è bloccata",
+    "-674715853": "Your ad exceeds the daily limit",
+    "-744406": "Your ad is not listed on <0>Buy/Sell</0> because the amount exceeds your daily limit of {{limit}} {{currency}}.\n                        <1 /><1 />You can still see your ad on <0>My ads</0>. If you’d like to increase your daily limit, please contact us via <2>live chat</2>.",
+    "-329713179": "Ok",
     "-480724783": "Esiste già un annuncio con questo tasso",
     "-1072444041": "Aggiorna annuncio",
-    "-329713179": "Ok",
     "-1561775203": "Acquista {{currency}}",
     "-1527285935": "Vendi {{currency}}",
     "-592818187": "Il tuo saldo Deriv P2P è {{ dp2p_balance }}",
@@ -226,6 +228,5 @@
     "-750202930": "Ordini attivi",
     "-471540636": "Ho ricevuto {{amount}} {{currency}}.",
     "-2054589794": "Il tuo profilo è stato momentaneamente bloccato e non potrai accedere ai nostri servizi a causa di vari tentativi di annullamento. Riprova nuovamente dopo il giorno {{date_time}} GMT.",
-    "-1971628122": "Al momento, questa opzione è disponibile solo per i conti reali in USD.",
     "-930400128": "Per usare Deriv P2P, scegli un nome visualizzato (ossia un soprannome) e verifica la tua identità."
 }

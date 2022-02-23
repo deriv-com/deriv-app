@@ -1,6 +1,5 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { isDesktop } from '@deriv/shared';
 import { useStores } from 'Stores';
 import BuySellTable from '../buy-sell-table.jsx';
 
@@ -21,22 +20,18 @@ jest.mock('Components/table/table-error.jsx', () => ({
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
-    isDesktop: jest.fn(),
+    isDesktop: jest.fn(() => true),
 }));
-
-const setItems = jest.fn();
-const setIsLoading = jest.fn();
-const loadMoreItems = jest.fn();
 
 const mocked_buy_sell_store = {
     api_error_message: '',
     has_more_items_to_load: false,
     is_loading: false,
     items: [],
-    loadMoreItems,
+    loadMoreItems: jest.fn(),
     rendered_items: [],
-    setItems,
-    setIsLoading,
+    setItems: jest.fn(),
+    setIsLoading: jest.fn(),
 };
 
 const mocked_general_store = {
@@ -78,7 +73,6 @@ describe('<BuySellTable />', () => {
             buy_sell_store: { ...mocked_buy_sell_store, items: [{ test: 'test' }] },
             general_store: mocked_general_store,
         }));
-        isDesktop.mockReturnValue(true);
         render(<BuySellTable />);
 
         expect(screen.getByText('Advertisers')).toBeInTheDocument();

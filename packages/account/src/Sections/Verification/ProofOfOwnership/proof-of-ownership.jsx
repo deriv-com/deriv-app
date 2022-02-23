@@ -1,75 +1,39 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import { Button, FormSubmitErrorMessage, Icon, Text } from '@deriv/components';
+import { Button, FormSubmitErrorMessage } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
-import ExpandedCard from './ExpandedCard.jsx';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
 import { isMobile } from '@deriv/shared';
+import Card from './Card.jsx';
 
-export const Card = ({ handleChange, handleBlur, values, setFieldValue }) => {
-    const onClick = () => setIsOpen(!is_open);
-    const [is_open, setIsOpen] = useState(false);
-    const icon = (
-        <Icon
-            icon={'IcChevronUpBold'}
-            color='black'
-            size={16}
-            className={classNames('proof-of-ownership__card-item-icon', {
-                'proof-of-ownership__card-item-icon--invert': !is_open,
-            })}
-        />
-    );
-    return (
-        <div className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}>
-            <div className='proof-of-ownership__card-item'>
-                <Icon icon='IcCreditCard' className='proof-of-ownership__card-item-logo' width={64} height={58} />
-                <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {localize('Credit/debit card')}
-                </Text>
-                <Button
-                    id='proof-of-ownership'
-                    icon={icon}
-                    className='proof-of-ownership__card-item-icon'
-                    onClick={onClick}
-                    transparent
-                    data-testid={'proof-of-ownership-button'}
-                />
-            </div>
-            {is_open && (
-                <ExpandedCard
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    values={values}
-                    setFieldValue={setFieldValue}
-                />
-            )}
-        </div>
-    );
-};
 const CARDS_COUNT = 10;
 const CARD_VALUE = {
-    cardNumber: '',
-    file: null,
+    static_data: {
+        cardTitle: '',
+        icon: 'IcCreditCard',
+    },
+    data: {
+        cardNumber: '',
+        file: null,
+    },
 };
-const initial_form = {
-    cardsCount: '',
-    cards: [],
+
+const getScrollOffset = () => {
+    if (isMobile()) return '200px';
+    return '80px';
 };
+
 const ProofOfOwnership = () => {
-    const getScrollOffset = () => {
-        if (isMobile()) return '200px';
-        return '80px';
-    };
     const cardsGenerator = () => {
         const cards_arr = [];
         for (let i = 0; i < CARDS_COUNT; i++) {
             cards_arr[i] = CARD_VALUE;
         }
-        return cards_arr;
+        return { cards: cards_arr };
     };
     const [cards] = useState(cardsGenerator());
     const [step, setStep] = useState(0);
@@ -81,7 +45,7 @@ const ProofOfOwnership = () => {
         setStep(step + 1);
     };
     return (
-        <Formik initialValues={initial_form} onSubmit={handleSubmit}>
+        <Formik initialValues={cards} onSubmit={handleSubmit}>
             {({
                 values,
                 errors,
@@ -99,11 +63,11 @@ const ProofOfOwnership = () => {
                         <FormSubHeader title={localize('Please upload the following document.')} />
                         <FormBodySection>
                             <fieldset>
-                                {cards.map((card, index) => {
+                                {values.cards.map((card, index) => {
                                     return (
                                         <Card
-                                            key={index}
-                                            step={step}
+                                            key={card.cardTitle}
+                                            index={index}
                                             handleChange={handleChange}
                                             handleBlur={handleBlur}
                                             values={card}
@@ -115,7 +79,7 @@ const ProofOfOwnership = () => {
                         </FormBodySection>
                     </FormBody>
                     <FormFooter>
-                        {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                        {status?.msg && <FormSubmitErrorMessage message={status?.msg} />}
                         <Button
                             type='submit'
                             className={classNames('account-form__footer-btn')}

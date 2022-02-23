@@ -4,11 +4,11 @@ import { Input, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';
 
-const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue }) => {
+const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue, index }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
 
-    const handleUploadedFile = file => {
-        setFieldValue('file', file);
+    const handleUploadedFile = (name, file) => {
+        setFieldValue(name, file);
     };
 
     return (
@@ -35,12 +35,12 @@ const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue }) => {
                         className='proof-of-ownership__card-open-inputs-cardnumber'
                         type='text'
                         onChange={handleChange}
-                        onBlur={handleBlur}
                         value={values.cardNumber
                             .replace(/\s/g, '')
                             .replace(/(\w{4})/g, '$1 ')
                             .trim()}
-                        name='cardNumber'
+                        onBlur={handleBlur}
+                        name={`cards[${index}].data.cardNumber`}
                         maxLength='19'
                     />
 
@@ -49,6 +49,7 @@ const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue }) => {
                         fileName={values?.file?.name}
                         dataTestID={'file-uploader'}
                         className='proof-of-ownership__card-open-inputs-photo'
+                        name={`cards[${index}].data.file`}
                     />
                 </fieldset>
             </div>

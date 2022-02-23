@@ -66,9 +66,10 @@ const AdvancedDuration = ({
             {expiry_type === 'duration' ? (
                 <>
                     <div className='duration-container'>
-                        {duration_units_list.length > 1 && (
+                        {duration_units_list.length >= 1 && (
                             <Dropdown
-                                classNameDisplay='dc-dropdown__display--no-symbol'
+                                classNameDisplay='dc-dropdown__display--duration'
+                                disabled={false}
                                 id='duration'
                                 is_alignment_left
                                 is_nativepicker={false}

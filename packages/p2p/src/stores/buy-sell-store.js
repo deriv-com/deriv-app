@@ -163,7 +163,6 @@ export default class BuySellStore extends BaseStore {
         const { general_store } = this.root_store;
         const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
         this.setApiErrorMessage('');
-
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
@@ -173,7 +172,7 @@ export default class BuySellStore extends BaseStore {
                 sort_by: this.sort_by,
                 use_client_limits: this.should_use_client_limits ? 1 : 0,
             }).then(response => {
-                if (!response.error) {
+                if (response && !response.error) {
                     // Ignore any responses that don't match our request. This can happen
                     // due to quickly switching between Buy/Sell tabs.
                     if (response.echo_req.counterparty_type === counterparty_type) {
@@ -216,10 +215,10 @@ export default class BuySellStore extends BaseStore {
                             this.setSearchResults([]);
                         }
                     }
-                } else if (response.error.code === 'PermissionDenied') {
+                } else if (response && response.error.code === 'PermissionDenied') {
                     this.root_store.general_store.setIsBlocked(true);
                 } else {
-                    this.setApiErrorMessage(response.error.message);
+                    this.setApiErrorMessage(response?.error.message);
                 }
 
                 this.setIsLoading(false);

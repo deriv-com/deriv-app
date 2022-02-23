@@ -73,6 +73,10 @@ Blockly.JavaScript.math_on_list = block => {
     } else if (operation === 'AVERAGE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+                if (!myList || !myList.length) {
+                    return null;
+                }
+
                 return myList.reduce(function(x, y) { 
                     return x + y; 
                 }) / myList.length;

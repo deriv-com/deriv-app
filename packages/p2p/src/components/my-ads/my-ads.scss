@@ -4,8 +4,6 @@
     flex-direction: column;
 
     @include mobile {
-        margin-top: 1.6rem;
-
         .page-return {
             border-bottom: 2px solid var(--general-section-1);
             margin: unset;

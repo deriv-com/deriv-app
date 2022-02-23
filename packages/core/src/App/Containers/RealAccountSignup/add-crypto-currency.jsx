@@ -129,7 +129,7 @@ const AddCryptoCurrency = ({
                     )}
                     {!should_show_fiat_only &&
                         (available_crypto_currencies.length !== 0 ? (
-                            <ThemedScrollbars className={'crypto_currency_scroll'} height={'calc(100vh - 18rem)'}>
+                            <ThemedScrollbars className={'crypto_currency_scroll'} height={'calc(100vh - 20rem)'}>
                                 <CurrencyRadioButtonGroup
                                     id='crypto_currency'
                                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'

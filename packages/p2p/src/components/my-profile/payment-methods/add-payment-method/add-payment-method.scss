@@ -12,6 +12,10 @@
         cursor: pointer;
     }
 
+    &__footer {
+        display: none;
+    }
+
     &-hint {
         padding: 0.2rem 0 0 1.6rem;
     }
@@ -32,7 +36,7 @@
                 flex-direction: row;
                 justify-content: flex-end;
                 margin-top: auto;
-                padding: 1.6rem;
+                padding-top: 1.6rem;
             }
         }
 
@@ -41,6 +45,8 @@
         }
 
         &__form {
+            display: flex;
+            flex-direction: column;
             width: 100%;
         }
 

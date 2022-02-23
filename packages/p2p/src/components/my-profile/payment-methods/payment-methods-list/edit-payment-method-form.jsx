@@ -82,47 +82,53 @@ const EditPaymentMethodForm = () => {
                 {({ dirty, handleChange, isSubmitting, errors }) => {
                     return (
                         <Form className='add-payment-method-form__form'>
-                            <Field name='choose_payment_method'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        disabled
-                                        type='field'
-                                        label={
-                                            <Text color='prominent' size='xs'>
-                                                <Localize i18n_default_text='Choose your payment method' />
-                                            </Text>
-                                        }
-                                        value={my_profile_store.payment_method_to_edit.display_name}
-                                        required
-                                    />
+                            <div className='add-payment-method-form__form-wrapper'>
+                                <Field name='choose_payment_method'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            disabled
+                                            type='field'
+                                            label={
+                                                <Text color='prominent' size='xs'>
+                                                    <Localize i18n_default_text='Choose your payment method' />
+                                                </Text>
+                                            }
+                                            value={my_profile_store.payment_method_to_edit.display_name}
+                                            required
+                                        />
+                                    )}
+                                </Field>
+                                {Object.values(my_profile_store.selected_payment_method_fields).map(
+                                    (payment_method_field, key) => {
+                                        return (
+                                            <Field
+                                                name={payment_method_field[0]}
+                                                id={payment_method_field[0]}
+                                                key={key}
+                                            >
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        error={errors[payment_method_field[0]]}
+                                                        type={
+                                                            payment_method_field[0] === 'instructions'
+                                                                ? 'textarea'
+                                                                : payment_method_field[1].type
+                                                        }
+                                                        label={payment_method_field[1].display_name}
+                                                        className='add-payment-method-form__payment-method-field'
+                                                        onChange={handleChange}
+                                                        name={payment_method_field[0]}
+                                                        required={!!payment_method_field[1].required}
+                                                    />
+                                                )}
+                                            </Field>
+                                        );
+                                    }
                                 )}
-                            </Field>
-                            {Object.values(my_profile_store.selected_payment_method_fields).map(
-                                (payment_method_field, key) => {
-                                    return (
-                                        <Field name={payment_method_field[0]} id={payment_method_field[0]} key={key}>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    data-lpignore='true'
-                                                    error={errors[payment_method_field[0]]}
-                                                    type={
-                                                        payment_method_field[0] === 'instructions'
-                                                            ? 'textarea'
-                                                            : payment_method_field[1].type
-                                                    }
-                                                    label={payment_method_field[1].display_name}
-                                                    className='add-payment-method-form__payment-method-field'
-                                                    onChange={handleChange}
-                                                    name={payment_method_field[0]}
-                                                    required={!!payment_method_field[1].required}
-                                                />
-                                            )}
-                                        </Field>
-                                    );
-                                }
-                            )}
+                            </div>
                             <div className='add-payment-method-form__buttons'>
                                 <Button
                                     secondary

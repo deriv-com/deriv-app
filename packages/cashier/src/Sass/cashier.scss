@@ -265,6 +265,10 @@
                 width: 100%;
                 height: 4rem;
             }
+
+            .dc-page-overlay__header.dc-page-app__header {
+                top: 0rem;
+            }
         }
 
         &-button {
@@ -312,5 +316,9 @@
                 padding: 0 1rem;
             }
         }
+    }
+
+    &__side-note {
+        min-width: 20rem;
     }
 }

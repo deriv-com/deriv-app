@@ -270,7 +270,7 @@ export default class RunPanelStore {
     }
 
     registerReactions() {
-        const { client, common, ui } = this.root_store.core;
+        const { client, common, notifications } = this.root_store.core;
 
         const registerIsSocketOpenedListener = () => {
             if (common.is_socket_opened) {
@@ -278,7 +278,7 @@ export default class RunPanelStore {
                     () => client.loginid,
                     loginid => {
                         if (loginid && this.is_running) {
-                            ui.addNotificationMessage(switch_account_notification);
+                            notifications.addNotificationMessage(switch_account_notification);
                         }
                         this.dbot.terminateBot();
                         this.unregisterBotListeners();
@@ -462,25 +462,25 @@ export default class RunPanelStore {
 
     @action.bound
     showErrorMessage(data) {
-        const { journal, ui } = this.root_store;
+        const { journal, notifications } = this.root_store;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
             this.toggleDrawer(true);
             this.setActiveTabIndex(run_panel.JOURNAL);
         } else {
-            ui.addNotificationMessage(journalError(this.switchToJournal));
-            ui.removeNotificationMessage({ key: 'bot_error' });
+            notifications.addNotificationMessage(journalError(this.switchToJournal));
+            notifications.removeNotificationMessage({ key: 'bot_error' });
         }
     }
 
     @action.bound
     switchToJournal() {
-        const { journal, ui } = this.root_store;
+        const { journal, notifications } = this.root_store;
         journal.journal_filters.push(message_types.ERROR);
         this.setActiveTabIndex(run_panel.JOURNAL);
         this.toggleDrawer(true);
-        ui.toggleNotificationsModal();
-        ui.removeNotificationByKey({ key: 'bot_error' });
+        notifications.toggleNotificationsModal();
+        notifications.removeNotificationByKey({ key: 'bot_error' });
     }
 
     unregisterBotListeners = () => {

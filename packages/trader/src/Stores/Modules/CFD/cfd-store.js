@@ -37,7 +37,9 @@ export default class CFDStore extends BaseStore {
         reaction(
             () => [this.root_store.client.dxtrade_accounts_list],
             () => {
-                this.loadDxtradeTokens();
+                if (this.root_store.client.dxtrade_accounts_list.length > 0) {
+                    this.loadDxtradeTokens();
+                }
             }
         );
     }
@@ -512,11 +514,6 @@ export default class CFDStore extends BaseStore {
 
     @action.bound
     loadDxtradeTokens() {
-        if (this.root_store.client.dxtrade_accounts_list.length === 0) {
-            this.dxtrade_tokens = { demo: '', real: '' };
-            return;
-        }
-
         ['demo', 'real'].forEach(account_type => {
             const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
                 account => account.account_type === account_type

@@ -15,15 +15,11 @@ const getTopUpConfig = () => {
     };
 };
 
-const getPlatformDXTradeDownloadLink = (platform: string | undefined = undefined) => {
-    switch (platform || OSDetect()) {
-        case 'ios':
-            return DXTRADE_IOS_APP_URL;
-        case 'android':
-            return DXTRADE_ANDROID_APP_URL;
-        default:
-            return getDXTradeWebTerminalLink(); // Web
+const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android') => {
+    if (platform === 'ios') {
+        return DXTRADE_IOS_APP_URL;
     }
+    return DXTRADE_ANDROID_APP_URL;
 };
 
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
@@ -43,7 +39,7 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
     }
 };
 
-const getDXTradeWebTerminalLink = (category?: string, token?: string) => {
+const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     let url = category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
 
     if (token) {

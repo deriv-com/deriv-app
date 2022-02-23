@@ -43,9 +43,13 @@ const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue }) => {
                         name='cardNumber'
                         maxLength='19'
                     />
-                    <fieldset className='proof-of-ownership__card-open-inputs-photo'>
-                        <FileUploader handleFile={handleUploadedFile} fileName={values?.file?.name} />
-                    </fieldset>
+
+                    <FileUploader
+                        handleFile={handleUploadedFile}
+                        fileName={values?.file?.name}
+                        dataTestID={'file-uploader'}
+                        className='proof-of-ownership__card-open-inputs-photo'
+                    />
                 </fieldset>
             </div>
             <SampleCreditCardModal

@@ -2239,6 +2239,7 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define proof-of-ownership */
 .proof-of-ownership {
     width: 100%;
+    overflow: hidden;
     @include mobile {
         margin-top: 2.4rem;
     }
@@ -2253,7 +2254,7 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             flex-direction: column;
             padding: 1.6rem;
-            margin-top:1.6rem;
+            margin-top: 1.6rem;
             margin-bottom: 0.8rem;
         }
         @include desktop {

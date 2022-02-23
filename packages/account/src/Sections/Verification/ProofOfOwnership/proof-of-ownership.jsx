@@ -8,12 +8,11 @@ import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
+import {isMobile} from '@deriv/shared';
 
-const ProofOfOwnership = () => {
-    const [is_open, setIsOpen] = useState(false);
-    const [step, setStep] = useState(0);
-
+export const Card = ({ handleChange, handleBlur, values, setFieldValue }) => {
     const onClick = () => setIsOpen(!is_open);
+    const [is_open, setIsOpen] = useState(false);
     const icon = (
         <Icon
             icon={'IcChevronUpBold'}
@@ -24,7 +23,7 @@ const ProofOfOwnership = () => {
             })}
         />
     );
-    const Card = ({ handleChange, handleBlur, values, setFieldValue }) => (
+    return (
         <div className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}>
             <div className='proof-of-ownership__card-item'>
                 <Icon icon='IcCreditCard' className='proof-of-ownership__card-item-logo' width={64} height={58} />
@@ -50,50 +49,89 @@ const ProofOfOwnership = () => {
             )}
         </div>
     );
-    const initial_form = {
-        cardNumber: '',
-        file: null,
+};
+const CARDS_COUNT = 10;
+const CARD_VALUE = {
+    cardNumber: '',
+    file: null,
+};
+const initial_form = {
+    cardsCount: '',
+    cards: [],
+};
+const ProofOfOwnership = () => {
+    const getScrollOffset = () => {
+        if (isMobile()) return '200px';
+        return '80px';
     };
+    const cardsGenerator = () => {
+        const cards_arr = [];
+        for (let i = 0; i < CARDS_COUNT; i++) {
+            cards_arr[i] = CARD_VALUE;
+        }
+        return cards_arr;
+    };
+    const [cards] = useState(cardsGenerator());
+    const [step, setStep] = useState(0);
 
-    const handleSubmit = () => {
-        console.log('hello');
+    const handleSubmit = e => {
+        console.log('hello', e);
     };
     const nextStep = () => {
         setStep(step + 1);
     };
     return (
         <Formik initialValues={initial_form} onSubmit={handleSubmit}>
-            {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, setFieldValue }) => (
+            {({
+                values,
+                errors,
+                isValid,
+                touched,
+                dirty,
+                handleChange,
+                handleBlur,
+                isSubmitting,
+                setFieldValue,
+                submitForm,
+            }) => (
                 <div className='proof-of-ownership'>
-                    <FormBody>
+                    <FormBody scroll_offset={getScrollOffset()} >
                         <FormSubHeader title={localize('Please upload the following document.')} />
                         <FormBodySection>
-                            <div>
-                                <Card
-                                    step={step}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    values={values}
-                                    setFieldValue={setFieldValue}
-                                />
-                            </div>
+                            <fieldset>
+                                    {cards.map((card, index) => {
+                                        return (
+                                            <Card
+                                                key={index}
+                                                step={step}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                values={card}
+                                                setFieldValue={setFieldValue}
+                                            />
+                                        );
+                                    })}
+                            </fieldset>
                         </FormBodySection>
                     </FormBody>
                     <FormFooter>
                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                         <Button
-                            type='button'
+                            type='submit'
                             className={classNames('account-form__footer-btn')}
-                            onClick={() => nextStep()}
-                            // is_disabled={
-                            //     isSubmitting || !dirty || is_btn_loading || Object.keys(errors).length > 0
-                            // }
+                            onClick={() => {
+                                // submitForm()
+                                nextStep();
+                            }}
+                            is_disabled={!dirty || Object.keys(errors).length > 0}
+                            data-testid={'next-button'}
                             has_effect
                             // is_loading={is_btn_loading}
                             // is_submit_success={is_submit_success}
                             text={localize('Next')}
                             large
                             primary
+                            form={'first-step'}
                         />
                     </FormFooter>
                 </div>

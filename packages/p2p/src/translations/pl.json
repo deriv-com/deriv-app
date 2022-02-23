@@ -228,5 +228,6 @@
     "-750202930": "Aktywne zlecenia",
     "-471540636": "Otrzymano {{amount}} {{currency}}.",
     "-2054589794": "Objęto Cię tymczasowym zakazem korzystania z naszych usług z powodu kilkukrotnych prób anulowania. Spróbuj ponownie po {{date_time}} GMT.",
+    "-1971628122": "This feature is only available for real-money USD accounts right now.",
     "-930400128": "Aby korzystać z Deriv P2P, musisz wybrać nazwę do wyświetlenia (pseudonim) i zweryfikować swoją tożsamość."
 }

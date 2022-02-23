@@ -228,5 +228,6 @@
     "-750202930": "使用中的訂單",
     "-471540636": "我已收到 {{amount}} {{currency}}。",
     "-2054589794": "由於多次嘗試取消，您已被暫時禁止使用我們的服務。請於GMT{{date_time}} 之後重試。",
+    "-1971628122": "This feature is only available for real-money USD accounts right now.",
     "-930400128": "要使用 Deriv P2P，您需選擇一個顯示名稱（暱稱）並驗證您的身份。"
 }

@@ -228,5 +228,6 @@
     "-750202930": "Ordini attivi",
     "-471540636": "Ho ricevuto {{amount}} {{currency}}.",
     "-2054589794": "Il tuo profilo è stato momentaneamente bloccato e non potrai accedere ai nostri servizi a causa di vari tentativi di annullamento. Riprova nuovamente dopo il giorno {{date_time}} GMT.",
+    "-1971628122": "This feature is only available for real-money USD accounts right now.",
     "-930400128": "Per usare Deriv P2P, scegli un nome visualizzato (ossia un soprannome) e verifica la tua identità."
 }

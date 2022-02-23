@@ -228,5 +228,6 @@
     "-750202930": "Pedidos ativos",
     "-471540636": "Eu recebi {{amount}} {{currency}}.",
     "-2054589794": "Você foi temporariamente impedido de usar nossos serviços devido às várias tentativas de cancelamento. Tente novamente após {{date_time}} GMT.",
+    "-1971628122": "This feature is only available for real-money USD accounts right now.",
     "-930400128": "Para usar o Deriv P2P, você precisa escolher um nome de exibição (um apelido) e verificar sua identidade."
 }

@@ -75,7 +75,7 @@ type TCFDDashboard = {
     account_status: object;
     beginRealSignupForMt5: () => void;
     country: string;
-    createCFDAccount: () => void;
+    createCFDAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
     current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
     dxtrade_accounts_list_error: null;
     isAccountOfTypeDisabled: (

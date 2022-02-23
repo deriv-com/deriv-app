@@ -35,9 +35,6 @@ const ThemedScrollbars = ({
                 maxHeight: height || '100%',
                 maxWidth: width || 'none',
                 ...style,
-                ' @media screen and (max-height: 568px)': {
-                    maxHeight: `${height}`,
-                },
             }}
             onScroll={onScroll}
         >

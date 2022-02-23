@@ -68,11 +68,17 @@ export type TCFDPasswordManagerTabContentWrapper = {
     steps: Array<{ component: JSX.Element }>;
 };
 
+type TPasswordManagerModalFormValues = {
+    old_password: string;
+    new_password: string;
+    password_type: string;
+};
+
 export type TInvestorPasswordManager = {
     error_message_investor: string;
     is_submit_success_investor: boolean;
     multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
-    onSubmit: (values: any) => Promise<void>;
+    onSubmit: (values: TPasswordManagerModalFormValues) => Promise<void>;
     setPasswordType: (value: string) => void;
     toggleModal: () => void;
     validatePassword: (values: { old_password: string; new_password: string; password_type: string }) => void | object;
@@ -83,7 +89,7 @@ export type TCFDPasswordManagerTabContent = {
     selected_login: string;
     email: string;
     setPasswordType: (value: string) => void;
-    multi_step_ref: React.MutableRefObject<any>;
+    multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
     platform: 'dxtrade' | 'mt5';
     onChangeActiveTabIndex: (value: number) => void;
     account_group: 'real' | 'demo';

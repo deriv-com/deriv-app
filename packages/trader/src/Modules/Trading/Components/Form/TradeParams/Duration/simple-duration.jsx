@@ -52,7 +52,7 @@ const SimpleDuration = ({
                     current_focus={current_focus}
                     error_messages={validation_errors.duration}
                     name='duration'
-                    label={has_label ? duration_units_list[0].text : null}
+                    label={has_label ? duration_units_list[0]?.text : null}
                     setCurrentFocus={setCurrentFocus}
                     value={getDurationFromUnit(simple_duration_unit)}
                     {...number_input_props}

@@ -16,8 +16,8 @@ describe('<Routes />', () => {
     it('should show error messages when "has_error = true"', () => {
         const history = createBrowserHistory();
         const error = {
-            header:'Something’s not right',
-            message:'Sorry, an error occured while processing your request.',
+            header:'',
+            message:'',
             redirect_label:['test label'],
             redirectOnClick:jest.fn(),
             should_clear_error_on_click:true,

@@ -4,8 +4,9 @@ import PortfolioStore from './Portfolio/portfolio-store';
 import ProfitTableStore from './Profit/profit-store';
 import StatementStore from './Statement/statement-store';
 import TradeStore from './Trading/trade-store';
+import CFDModulesStore from '@deriv/cfd';
 
-export default class ModulesStore {
+export default class ModulesStore extends CFDModulesStore {
     constructor(root_store, core_store) {
         this.cashier = core_store.modules.cashier;
         this.contract_replay = new ContractReplayStore({ root_store });

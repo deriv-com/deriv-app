@@ -1,4 +1,4 @@
-import { CFDStore } from '@deriv/trader';
+import { CFDStore } from '@deriv/cfd';
 import ClientStore from './client-store';
 import ConfigStore from './config-store';
 import UIStore from './ui-store';

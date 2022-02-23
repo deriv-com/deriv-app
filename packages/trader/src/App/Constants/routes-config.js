@@ -7,7 +7,7 @@ import Trade from 'Modules/Trading';
 const ContractDetails = React.lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
 
 // CFD Routes
-const CFD = React.lazy(() => import(/* webpackChunkName: "cfd", webpackPrefetch: true */ 'Modules/CFD'));
+const CFD = React.lazy(() => import(/* webpackChunkName: "cfd", webpackPrefetch: true */ '@deriv/cfd'));
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));

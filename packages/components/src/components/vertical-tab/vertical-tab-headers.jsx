@@ -8,7 +8,6 @@ import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 const offsetTop = (extra_offset, is_floating, ref, selected) => {
     let calculated_offset = 0;
     let item_offset = 0;
-
     const headers = ref.current.querySelectorAll(
         '.dc-vertical-tab__header__link, .dc-vertical-tab__header-group__link'
     );
@@ -38,15 +37,16 @@ const VerticalTabHeaders = ({
     items,
     onChange,
     selected,
+    selectedKey = 'label',
 }) => {
     const ref = React.useRef(null);
     const [top, setTop] = React.useState(0);
     const [should_skip_animation, setShouldSkipAnimation] = React.useState(false);
 
     React.useEffect(() => {
-        setTop(offsetTop(extra_offset, is_floating, ref, selected));
-    }, [selected, is_floating, extra_offset]);
-
+        const selected_item = items.find(item => item[selectedKey] === selected[selectedKey]);
+        if (selected_item?.label) setTop(offsetTop(extra_offset, is_floating, ref, { label: selected_item.label }));
+    }, [selected, is_floating, extra_offset, selectedKey]);
     return (
         <VerticalTabWrapper
             wrapper_ref={ref}
@@ -82,6 +82,7 @@ const VerticalTabHeaders = ({
                                   is_routed={is_routed}
                                   selected={selected}
                                   key={header_idx}
+                                  selectedKey={selectedKey}
                               />
                           ))}
                       </VerticalTabHeaderGroup>
@@ -94,6 +95,7 @@ const VerticalTabHeaders = ({
                           is_routed={is_routed}
                           selected={selected}
                           key={idx}
+                          selectedKey={selectedKey}
                       />
                   ))}
             <span

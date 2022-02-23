@@ -93,7 +93,6 @@ export type TCFDPasswordManagerTabContent = {
     platform: 'dxtrade' | 'mt5';
     onChangeActiveTabIndex: (value: number) => void;
     account_group: 'real' | 'demo';
-    password_type?: string;
 };
 
 export type TCFDPasswordManagerModal = {

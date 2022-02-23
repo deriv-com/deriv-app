@@ -91,7 +91,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 page_header_className='buy-sell__modal-header'
                 page_header_text={modal_title}
                 pageHeaderReturnFn={onCancel}
-                page_footer_parent={page_footer_parent}
+                page_footer_parent={my_profile_store.should_show_add_payment_method_form ? '' : page_footer_parent}
                 renderPageFooterChildren={() =>
                     !my_profile_store.should_show_add_payment_method_form && (
                         <BuySellModalFooter
@@ -102,7 +102,11 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         />
                     )
                 }
-                page_footer_className='buy-sell__modal-footer'
+                page_footer_className={
+                    my_profile_store.should_show_add_payment_method_form
+                        ? 'add-payment-method__footer'
+                        : 'buy-sell__modal-footer'
+                }
             >
                 {my_profile_store.should_show_add_payment_method_form ? (
                     <AddPaymentMethodForm should_show_separated_footer={true} />

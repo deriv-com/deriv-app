@@ -9,6 +9,7 @@ import { requestWS } from 'Utils/websocket';
 
 export default class MyAdsStore extends BaseStore {
     @observable activate_deactivate_error_message = '';
+    @observable advert_details = null;
     @observable adverts = [];
     @observable adverts_archive_period = null;
     @observable api_error = '';
@@ -21,6 +22,7 @@ export default class MyAdsStore extends BaseStore {
     @observable error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_ad_created_modal_visible = false;
+    @observable is_ad_exceeds_daily_limit_modal_open = false;
     @observable is_api_error_modal_visible = false;
     @observable is_delete_modal_open = false;
     @observable is_form_loading = false;
@@ -124,12 +126,17 @@ export default class MyAdsStore extends BaseStore {
                     this.setApiErrorMessage(response.error.message);
                     setSubmitting(false);
                 } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
+                    this.setAdvertDetails(response.p2p_advert_create);
                     setTimeout(() => {
                         if (!this.is_api_error_modal_visible) {
                             this.setIsAdCreatedModalVisible(true);
                         }
                     }, 200);
                 } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
+                    if (!response.p2p_advert_create.is_visible) {
+                        this.setAdvertDetails(response.p2p_advert_create);
+                        this.setIsAdExceedsDailyLimitModalOpen(true);
+                    }
                     this.setShowAdForm(false);
                 }
             });
@@ -234,6 +241,11 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setAdvertDetails(advert_details) {
+        this.advert_details = advert_details;
+    }
+
+    @action.bound
     setAdverts(adverts) {
         this.adverts = adverts;
     }
@@ -296,6 +308,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
+    }
+
+    @action.bound
+    setIsAdExceedsDailyLimitModalOpen(is_ad_exceeds_daily_limit_modal_open) {
+        this.is_ad_exceeds_daily_limit_modal_open = is_ad_exceeds_daily_limit_modal_open;
     }
 
     @action.bound

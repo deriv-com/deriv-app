@@ -84,7 +84,7 @@ describe('<App/>', () => {
         expect(setLanguage).toHaveBeenCalledWith('ENG');
     });
 
-    it('should redirect to p2p is verification is present in route', () => {
+    it('should redirect to p2p if route is /verification', () => {
         const set_item_spy = jest.spyOn(Object.getPrototypeOf(localStorage), 'setItem');
         const history = createBrowserHistory();
         const mock_history = { ...history, location: { pathname: '/verification' } };

@@ -2250,10 +2250,11 @@ $MIN_HEIGHT_FLOATING: calc(
         display: flex;
         flex-direction: column;
         @include mobile {
-            overflow-y: auto;
             width: 100%;
             flex-direction: column;
             padding: 1.6rem;
+            margin-top:1.6rem;
+            margin-bottom: 0.8rem;
         }
         @include desktop {
             width: 80%;

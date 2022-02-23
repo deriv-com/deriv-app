@@ -198,7 +198,7 @@ const BuySellForm = props => {
                                     </div>
                                 </div>
                                 <div className='buy-sell__modal-line' />
-                                {buy_sell_store.is_sell_advert && (
+                                {buy_sell_store.is_sell_advert && payment_method_names && (
                                     <div>
                                         <Text
                                             as='p'

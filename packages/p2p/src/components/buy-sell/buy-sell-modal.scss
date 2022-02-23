@@ -78,8 +78,7 @@
             margin: unset;
 
             @include mobile {
-                height: 8.8rem;
-                min-height: unset;
+                min-height: 8.8rem;
                 min-width: unset;
                 width: 13.6rem;
             }
@@ -88,12 +87,16 @@
                 margin: unset;
 
                 @include mobile {
-                    height: 8.8rem;
+                    min-height: 8.8rem;
                     width: 13.6rem;
                 }
             }
             &__body {
                 margin-top: 0.8rem;
+
+                @include mobile {
+                    margin-top: 0;
+                }
             }
         }
     }

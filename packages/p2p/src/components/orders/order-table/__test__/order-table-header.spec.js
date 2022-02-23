@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import OrderTableHeader from '../order-table-header.jsx';
 import { Table } from '@deriv/components';
-import { useStores } from 'Stores';
+import OrderTableHeader from '../order-table-header.jsx';
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -47,7 +46,6 @@ describe('<OrderTableHeader/>', () => {
 
     it('should contain 7 columns', () => {
         render(<OrderTableHeader />);
-        screen.debug();
         expect(screen.getAllByText('Table head').length).toBe(7);
     });
 });

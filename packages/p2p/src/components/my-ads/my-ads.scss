@@ -289,7 +289,7 @@
         }
         &-row {
             padding: 1.6rem;
-            grid-template-columns: repeat(4, 2fr) 1.5fr;
+            grid-template-columns: repeat(4, 2fr) 1.8fr;
 
             @include mobile {
                 grid-template-columns: unset;

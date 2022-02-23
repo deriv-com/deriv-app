@@ -32,6 +32,7 @@ export const routes = {
     profit: '/reports/profit',
     reports: '/reports',
     root: '/',
+    reset_password: '/',
     redirect: '/redirect',
     settings: '/settings',
     statement: '/reports/statement',

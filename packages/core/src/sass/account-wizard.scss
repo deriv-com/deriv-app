@@ -390,14 +390,16 @@
         & .dc-btn {
             width: 100%;
         }
-        @media screen and (max-height: 640px) {
-            .currency-selector__radio-group--with-margin {
-                margin-bottom: 6rem;
-            }
-        }
     }
 }
 
+.cashier-deposit {
+    @media screen and (max-height: 640px) {
+        .currency-selector__radio-group--with-margin {
+            margin-bottom: 6rem;
+        }
+    }
+}
 /* TODO: [refactor-components] Refactor form subheader to components */
 .account-form {
     &__header {

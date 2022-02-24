@@ -9,7 +9,9 @@ import { localize, Localize } from 'Components/i18next';
 const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
 
-    const [selected_methods, setSelectedMethods] = React.useState([]);
+    const [selected_buy_methods, setSelectedBuyMethods] = React.useState([]);
+    const [selected_sell_methods, setSelectedSellMethods] = React.useState([]);
+
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
@@ -20,7 +22,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
             my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
                 payment_method_id => payment_method_id !== value
             );
-            setSelectedMethods(selected_methods.filter(i => i !== value));
+            setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
         }
     };
 
@@ -29,13 +31,13 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
             if (!my_ads_store.payment_method_names.includes(value)) {
                 if (my_ads_store.payment_method_names.length < 3) {
                     my_ads_store.payment_method_names.push(value);
-                    setSelectedMethods([...selected_methods, value]);
+                    setSelectedBuyMethods([...selected_buy_methods, value]);
                 }
             } else {
                 my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
                     payment_method_id => payment_method_id !== value
                 );
-                setSelectedMethods(selected_methods.filter(i => i !== value));
+                setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
             }
         }
     };
@@ -44,13 +46,13 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
         if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
             if (my_ads_store.payment_method_ids.length < 3) {
                 my_ads_store.payment_method_ids.push(payment_method.ID);
-                setSelectedMethods([...selected_methods, payment_method.ID]);
+                setSelectedSellMethods([...selected_sell_methods, payment_method.ID]);
             }
         } else {
             my_ads_store.payment_method_ids = my_ads_store.payment_method_ids.filter(
                 payment_method_id => payment_method_id !== payment_method.ID
             );
-            setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
+            setSelectedSellMethods(selected_sell_methods.filter(i => i !== payment_method.ID));
         }
     };
 
@@ -64,8 +66,14 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
     }, []);
 
     React.useEffect(() => {
-        onSelectPaymentMethods(selected_methods);
-    }, [selected_methods]);
+        if (is_sell_advert) {
+            onSelectPaymentMethods(selected_sell_methods);
+        } else {
+            onSelectPaymentMethods(selected_buy_methods);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selected_buy_methods, selected_sell_methods]);
 
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {
@@ -78,7 +86,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                             medium
                             onClick={() => onClickPaymentMethodCard(payment_method)}
                             payment_method={payment_method}
-                            style={selected_methods.includes(payment_method.ID) ? style : {}}
+                            style={selected_sell_methods.includes(payment_method.ID) ? style : {}}
                         />
                     ))}
                     <PaymentMethodCard
@@ -101,10 +109,10 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
         );
     }
 
-    if (selected_methods?.length > 0) {
+    if (selected_buy_methods?.length > 0) {
         return (
             <React.Fragment>
-                {selected_methods.map((payment_method, key) => {
+                {selected_buy_methods.map((payment_method, key) => {
                     const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
                     const payment_method_icon = method.replace(' ', '');
 

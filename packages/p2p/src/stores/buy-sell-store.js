@@ -103,7 +103,8 @@ export default class BuySellStore extends BaseStore {
         requestWS({
             p2p_advertiser_info: 1,
         }).then(response => {
-            if (!response.error) {
+            // Added a check to prevent console errors
+            if (response && !response.error) {
                 const { p2p_advertiser_info } = response;
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
@@ -215,6 +216,7 @@ export default class BuySellStore extends BaseStore {
                             this.setSearchResults([]);
                         }
                     }
+                    // Added a check to prevent console errors
                 } else if (response && response.error.code === 'PermissionDenied') {
                     this.root_store.general_store.setIsBlocked(true);
                 } else {
@@ -470,7 +472,8 @@ export default class BuySellStore extends BaseStore {
                     const updateAdvert = () => {
                         requestWS({ p2p_advert_info: 1, id: this.selected_ad_state.id, use_client_limits: 1 }).then(
                             response => {
-                                if (response.error) return;
+                                // Added a check to prevent console errors
+                                if (response && response.error) return;
                                 const { p2p_advert_info } = response;
 
                                 if (this.selected_ad_state?.id === p2p_advert_info.id) {

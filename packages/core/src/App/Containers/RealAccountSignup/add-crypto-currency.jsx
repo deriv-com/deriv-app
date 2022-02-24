@@ -153,7 +153,7 @@ const AddCryptoCurrency = ({
                                 </CurrencyRadioButtonGroup>
                             </ThemedScrollbars>
                         ) : (
-                            <ThemedScrollbars>
+                            <ThemedScrollbars className={'crypto_currency_scroll'}>
                                 <CurrencyRadioButtonGroup
                                     id='crypto_currency'
                                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'

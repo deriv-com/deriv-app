@@ -170,9 +170,11 @@
     "-1005884051": "Tamamlama oranı",
     "-1638172550": "Bu özelliği etkinleştirmek için aşağıdakileri tamamlamanız gerekir:",
     "-559300364": "Deriv P2P kasiyeriniz engellendi",
+    "-674715853": "Your ad exceeds the daily limit",
+    "-744406": "Your ad is not listed on <0>Buy/Sell</0> because the amount exceeds your daily limit of {{limit}} {{currency}}.\n                        <1 /><1 />You can still see your ad on <0>My ads</0>. If you’d like to increase your daily limit, please contact us via <2>live chat</2>.",
+    "-329713179": "Tamam",
     "-480724783": "Bu orana sahip bir ilanınız zaten var",
     "-1072444041": "İlanı güncelle",
-    "-329713179": "Tamam",
     "-1561775203": "Satın al {{currency}}",
     "-1527285935": "Sat {{currency}}",
     "-592818187": "Deriv P2P bakiyeniz: {{ dp2p_balance }}",
@@ -226,6 +228,5 @@
     "-750202930": "Aktif siparişler",
     "-471540636": "{{amount}} {{currency}} aldım.",
     "-2054589794": "Birden fazla iptal girişimi nedeniyle hizmetlerimizi kullanmanız geçici olarak engellendi. {{date_time}} GMT'den sonra tekrar deneyin.",
-    "-1971628122": "Bu özellik yalnızca şu anda gerçek para USD hesapları için kullanılabilir.",
     "-930400128": "Deriv P2P'yi kullanmak için bir ekran adı (takma ad) seçmeniz ve kimliğinizi doğrulamanız gerekir."
 }

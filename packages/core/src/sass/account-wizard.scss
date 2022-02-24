@@ -385,6 +385,7 @@
             bottom: 0;
             width: 100%;
             padding: 1.5rem;
+            background-color: var(--general-main-1);
         }
         & .dc-btn {
             width: 100%;
@@ -438,5 +439,10 @@
         color: var(--text-prominent);
         margin-bottom: 2rem;
         line-height: 1.5;
+    }
+}
+@media screen and (max-height: 568px) {
+    .crypto_currency_scroll {
+        overscroll-behavior: contain;
     }
 }

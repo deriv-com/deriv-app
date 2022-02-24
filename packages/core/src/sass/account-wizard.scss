@@ -441,9 +441,11 @@
         line-height: 1.5;
     }
 }
-@media screen and (max-height: 568px) {
-    .crypto_currency_scroll {
-        height: calc(100vh - 20rem);
-        margin-bottom: 2rem;
+@include mobile {
+    @media screen and (max-height: 568px) {
+        .crypto_currency_scroll {
+            height: calc(100vh - 20rem);
+            margin-bottom: 2rem;
+        }
     }
 }

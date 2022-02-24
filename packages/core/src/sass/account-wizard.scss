@@ -389,6 +389,11 @@
         & .dc-btn {
             width: 100%;
         }
+        @media screen and (max-height: 640px) {
+            .currency-selector__radio-group--with-margin {
+                margin-bottom: 6rem;
+            }
+        }
     }
 }
 

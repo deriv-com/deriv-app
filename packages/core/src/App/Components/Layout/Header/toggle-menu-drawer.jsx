@@ -98,6 +98,12 @@ const ToggleMenuDrawer = React.forwardRef(
         const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
+        const [is_bold_text, setIsBoldText] = React.useState([
+            {id: 0, label: 'Reports', isShowBold: false}, 
+            {id: 1, label: 'Account Settings', isShowBold: false}, 
+            {id: 2, label: 'Cashier', isShowBold: false}, 
+            {id: 3, label: 'Language', isShowBold: false}
+        ]);
 
         const { is_dashboard } = React.useContext(PlatformContext);
 
@@ -149,6 +155,8 @@ const ToggleMenuDrawer = React.forwardRef(
                 )
                 .filter(route => route);
         };
+        
+        const isCurrentSubMenuItem = (submenu_title) => is_bold_text?.filter((item) => item.label === submenu_title)[0];
 
         const getRoutesWithSubMenu = (route_config, idx) => {
             const has_access = route_config.is_authenticated ? is_logged_in : true;
@@ -178,6 +186,9 @@ const ToggleMenuDrawer = React.forwardRef(
                     submenu_title={route_config.getTitle()}
                     submenu_suffix_icon='IcChevronRight'
                     onToggle={expandSubMenu}
+                    is_bold_text={is_bold_text}
+                    is_current_submenu_item={isCurrentSubMenuItem(route_config.getTitle())}
+                    setIsBoldText={setIsBoldText}
                 >
                     {!has_subroutes &&
                         route_config.routes.map((route, index) => {
@@ -252,6 +263,9 @@ const ToggleMenuDrawer = React.forwardRef(
                     submenu_title={localize('Language')}
                     submenu_suffix_icon='IcChevronRight'
                     onToggle={expandSubMenu}
+                    is_bold_text={is_bold_text}
+                    is_current_submenu_item={isCurrentSubMenuItem(localize('Language'))}
+                    setIsBoldText={setIsBoldText}
                 >
                     {Object.keys(getAllowedLanguages()).map((lang, idx) => (
                         <MobileDrawer.Item key={idx}>

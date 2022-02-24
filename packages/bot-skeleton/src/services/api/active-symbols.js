@@ -178,7 +178,7 @@ export default class ActiveSymbols {
             submarket_options.sort(a => (a[1] === 'random_index' ? -1 : 1));
         }
 
-        return this.sortDropdownOptions(submarket_options, this.isSubmarketClosed);
+        return this.sortDropdownOptions(submarket_options.sort(), this.isSubmarketClosed);
     }
 
     getSymbolDropdownOptions(submarket) {

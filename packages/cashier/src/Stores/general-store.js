@@ -335,8 +335,6 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
-
-        // When P2P is not supported and the user tries to navigate to it manually, redirecting him to "cashier-deposit" screen
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
             this.root_store.common.routeTo(
                 this.root_store.modules.cashier.account_prompt_dialog.last_location ?? routes.cashier_deposit

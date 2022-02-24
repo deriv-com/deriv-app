@@ -170,9 +170,11 @@
     "-1005884051": "Tingkat penyelesaian",
     "-1638172550": "Untuk mengaktifkan fitur ini Anda harus menyelesaikan hal berikut ini:",
     "-559300364": "Kasir Deriv P2P Anda dibatalkan",
+    "-674715853": "Your ad exceeds the daily limit",
+    "-744406": "Your ad is not listed on <0>Buy/Sell</0> because the amount exceeds your daily limit of {{limit}} {{currency}}.\n                        <1 /><1 />You can still see your ad on <0>My ads</0>. If you’d like to increase your daily limit, please contact us via <2>live chat</2>.",
+    "-329713179": "Ok",
     "-480724783": "Anda sudah membuat iklan berdasarkan nilai tukar ini",
     "-1072444041": "Perbarui iklan",
-    "-329713179": "Ok",
     "-1561775203": "Beli {{currency}}",
     "-1527285935": "Jual {{currency}}",
     "-592818187": "Saldo Deriv P2P Anda adalah {{ dp2p_balance }}",
@@ -226,6 +228,5 @@
     "-750202930": "Order aktif",
     "-471540636": "Saya telah menerima {{amount}} {{currency}}.",
     "-2054589794": "Anda telah diblokir sementara waktu untuk menggunakan layanan kami berhubung beberapa kali telah melakukan pembatalan transaksi. Coba kembali setelah {{date_time}} GMT.",
-    "-1971628122": "Fitur ini hanya tersedia pada akun uang riil dalam USD.",
     "-930400128": "Untuk menggunakan Deriv P2P, Anda harus memilih nama tampilan (nama panggilan) dan memverifikasi identitas Anda."
 }

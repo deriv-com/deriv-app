@@ -10,6 +10,7 @@ import Text from '../text/text.jsx';
 const MobileFullPageModal = ({
     body_className,
     className,
+    data_testid,
     should_header_stick_body,
     header,
     header_backgound_color,
@@ -36,6 +37,7 @@ const MobileFullPageModal = ({
         is_visible={is_modal_open}
         className={classNames('dc-mobile-full-page-modal', className)}
         keyname={`${className}__wrapper`}
+        data_testid={data_testid}
     >
         <PageOverlay header={header} onClickClose={onClickClose}>
             <Div100vhContainer

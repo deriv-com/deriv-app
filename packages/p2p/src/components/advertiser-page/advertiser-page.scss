@@ -27,14 +27,12 @@
         }
 
         &-name {
-            align-self: center;
             display: flex;
             flex-direction: row;
             height: fit-content;
             width: fit-content;
 
             &--column {
-                align-self: center;
                 display: flex;
                 flex-direction: column;
                 padding-left: 0.8rem;
@@ -94,7 +92,7 @@
         grid-template-columns: repeat(3, 1fr);
         height: 5rem;
         justify-content: space-between;
-        margin: 2rem;
+        margin: 2rem 0;
         width: 100%;
 
         @include mobile {
@@ -105,8 +103,9 @@
 
         &-cell {
             display: grid;
-            min-width: 65px;
+            min-width: 20rem;
             text-align: center;
+            margin-right: 10rem;
 
             @include mobile {
                 min-width: 12rem;
@@ -133,6 +132,7 @@
 
             &-separator {
                 border-right: 1px solid #ededed;
+                margin-right: 2rem;
             }
         }
 
@@ -273,6 +273,14 @@
 
         .data-list__body-wrapper {
             flex: 1;
+        }
+    }
+
+    &-details {
+        &-container {
+            padding: 2.4rem;
+            border: 1px solid var(--general-hover);
+            border-radius: 0.8rem;
         }
     }
 

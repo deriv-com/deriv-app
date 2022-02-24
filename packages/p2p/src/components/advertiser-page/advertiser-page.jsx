@@ -47,35 +47,39 @@ const AdvertiserPage = () => {
                 setShouldShowPopup={advertiser_page_store.setShowAdPopup}
                 table_type={advertiser_page_store.counterparty_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL}
             />
-            <div className='advertiser-page__header-details'>
-                <UserAvatar
-                    nickname={advertiser_page_store.advertiser_details_name}
-                    size={isMobile() ? 32 : 64}
-                    text_size={isMobile() ? 's' : 'sm'}
-                />
-                <div className='advertiser-page__header-name--column'>
-                    <div className='advertiser-page__header-name'>
-                        <Text color='prominent' line-height='m' size='s' weight='bold'>
-                            {advertiser_page_store.advertiser_details_name}
-                        </Text>
-                        {first_name && last_name && (
-                            <div className='advertiser-page__header-real-name'>
-                                <Text color='less-prominent' line_height='xs' size='xs'>
-                                    {`(${first_name} ${last_name})`}
-                                </Text>
-                            </div>
-                        )}
-                    </div>
-                    <TradeBadge
-                        is_poa_verified={full_verification}
-                        is_poi_verified={basic_verification}
-                        trade_count={completed_orders_count}
-                        large
+            <div className='advertiser-page-details-container'>
+                <div className='advertiser-page__header-details'>
+                    <UserAvatar
+                        nickname={advertiser_page_store.advertiser_details_name}
+                        size={isMobile() ? 32 : 64}
+                        text_size={isMobile() ? 's' : 'sm'}
                     />
+                    <div className='advertiser-page__header-name--column'>
+                        <div className='advertiser-page__header-name'>
+                            <Text color='prominent' line-height='m' size='s' weight='bold'>
+                                {advertiser_page_store.advertiser_details_name}
+                            </Text>
+                            {first_name && last_name && (
+                                <div className='advertiser-page__header-real-name'>
+                                    <Text color='less-prominent' line_height='xs' size='xs'>
+                                        {`(${first_name} ${last_name})`}
+                                    </Text>
+                                </div>
+                            )}
+                        </div>
+                        <div className='my-profile-name--row'>
+                            <TradeBadge
+                                is_poa_verified={full_verification}
+                                is_poi_verified={basic_verification}
+                                trade_count={completed_orders_count}
+                                large
+                            />
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <AdvertiserPageStats />
+                <AdvertiserPageStats />
+            </div>
             <AdvertiserPageAdverts />
         </div>
     );

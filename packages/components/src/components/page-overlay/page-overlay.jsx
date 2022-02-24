@@ -25,6 +25,7 @@ const PageOverlay = ({ children, header, id, is_from_app = false, is_open, onCli
                         <div className='dc-page-overlay__header-title'>{header}</div>
                         {!is_from_app && (
                             <div
+                                data-testid='page_overlay_header_close'
                                 className='dc-page-overlay__header-close'
                                 onClick={onClickClose || window.history.back}
                             >

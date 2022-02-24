@@ -11,6 +11,7 @@ import { useStores } from 'Stores';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import QuickAddModal from './quick-add-modal.jsx';
+import AdExceedsDailyLimitModal from './ad-exceeds-daily-limit-modal.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -60,6 +61,7 @@ const MyAdsTable = () => {
                         />
                     </div>
                 )}
+                <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (
                         <Button

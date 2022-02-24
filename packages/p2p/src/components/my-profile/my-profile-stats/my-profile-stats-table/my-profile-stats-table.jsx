@@ -160,11 +160,15 @@ const MyProfileStatsTable = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                <Money
-                                    amount={total_turnover || '-'}
-                                    currency={general_store.client.currency}
-                                    show_currency
-                                />
+                                {total_turnover ? (
+                                    <Money
+                                        amount={total_turnover}
+                                        currency={general_store.client.currency}
+                                        show_currency
+                                    />
+                                ) : (
+                                    '-'
+                                )}
                             </Text>
                         </Table.Cell>
                         <Table.Cell className='my-profile-stats-table__cell'>
@@ -308,11 +312,11 @@ const MyProfileStatsTable = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                            <Money
-                                amount={total_turnover || '-'}
-                                currency={general_store.client.currency}
-                                show_currency
-                            />
+                            {total_turnover ? (
+                                <Money amount={total_turnover} currency={general_store.client.currency} show_currency />
+                            ) : (
+                                '-'
+                            )}
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-stats-table__cell'>

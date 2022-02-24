@@ -441,8 +441,10 @@
         line-height: 1.5;
     }
 }
-@media screen and (max-height: 568px) {
-    .crypto_currency_scroll {
-        overscroll-behavior: contain;
+@include mobile {
+    @media screen and (max-height: 568px) {
+        .crypto_currency_scroll {
+            overscroll-behavior: contain;
+        }
     }
 }

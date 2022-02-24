@@ -9,8 +9,7 @@ jest.mock('@deriv/components', () => ({
 
 describe('<CashierContainer/>', () => {
     const props = {
-        iframe_url:
-            'https://doughflow-test.4x.my/cashier/login.asp?Sportsbook=test&PIN=CR90000010&Lang=en&Password=20192eef9f1c8258354030632a913916fe331c8f&Secret=11eb12e081e93780306d7c8a7483748a&Action=DEPOSIT&udef1=EN&udef2=deriv&theme=light',
+        iframe_url: 'https://www.test_url.com',
         clearIframe: jest.fn(),
     };
 

@@ -3,8 +3,8 @@ import { screen, render,fireEvent } from '@testing-library/react';
 import ErrorComponent from '../error-component';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import { unmountComponentAtNode } from 'react-dom';
 describe('<ErrorComponent/>', () => {
-
     let history;
     const renderWithRouter = component => {
         history = createBrowserHistory();
@@ -19,72 +19,65 @@ describe('<ErrorComponent/>', () => {
             value: { reload: jest.fn() },
         });
     });
+    const props ={
+        redirect_to: ['/testurl'],
+        redirect_label: ['testlabel']
+    }
 
     it('should show the default message when message is not passed', () => {
         const message = '';
-         const redirect_to = ['/testurl'];
-        const redirect_label = ['testlabel'];
-        renderWithRouter(<ErrorComponent redirect_label={redirect_label} redirect_to={redirect_to} message={message} />);
+        renderWithRouter(<ErrorComponent {...props} message={message} />);
         expect(screen.getByText('Sorry, an error occured while processing your request.')).toBeInTheDocument();
     });
 
     it('should show the actual message when message is passed', () => {
         const message = 'This is the error message';
-         const redirect_to = ['/testurl'];
-        const redirect_label = ['testlabel'];
-        renderWithRouter(<ErrorComponent redirect_label={redirect_label} redirect_to={redirect_to} message={message} />);
+        renderWithRouter(<ErrorComponent {...props} message={message} />);
         expect(screen.getByText(message)).toBeInTheDocument();
     });
 
     it('should show refresh message when should_show_refresh is true', () => {
-         const redirect_to = ['/testurl'];
-        const redirect_label = ['testlabel'];
-        renderWithRouter(<ErrorComponent redirect_label={redirect_label} redirect_to={redirect_to} should_show_refresh={true} />);
+        renderWithRouter(<ErrorComponent {...props} should_show_refresh={true} />);
         expect(screen.getByText('Please refresh this page to continue.')).toBeInTheDocument();
     });
-    it('should show refresh message when should_show_refresh is false', () => {
+    it('do not show refresh message when should_show_refresh is false', () => {
         const refreshRequestText = screen.queryByText('Please refresh this page to continue.');
-         const redirect_to = ['/testurl'];
-        const redirect_label = ['testlabel'];
-        renderWithRouter(<ErrorComponent redirect_label={redirect_label} redirect_to={redirect_to} should_show_refresh={false} />);
+        renderWithRouter(<ErrorComponent {...props} should_show_refresh={false} />);
         expect(refreshRequestText).toBeNull();
         //expect(screen.not.getByText('Please refresh this page to continue.')).toBeInTheDocument();
     });
     it('should show default message when header message is not passed', () => {
         const header = '';
-         const redirect_to = ['/testurl'];
-        const redirect_label = ['testlabel'];
-        renderWithRouter(<ErrorComponent redirect_label={redirect_label} redirect_to={redirect_to} header={header} />);
+        renderWithRouter(<ErrorComponent {...props} header={header} />);
         expect(screen.getByText('Something’s not right')).toBeInTheDocument();
     });
     it('should show actual message when header message is passed', () => {
         const header = 'Header Text';
-         const redirect_to = ['/testurl'];
-        const redirect_label = ['testlabel'];
-        renderWithRouter(<ErrorComponent redirect_label={redirect_label} redirect_to={redirect_to} header={header} />);
+        renderWithRouter(<ErrorComponent {...props} header={header} />);
         expect(screen.getByText(header)).toBeInTheDocument();
     });
     it('should refresh the page when redirectOnClick is not passed or empty', () => {
         const redirectOnClick = '';
-         const redirect_to = ['/testurl'];
-        const redirect_label = ['testlabel'];
-        renderWithRouter(<ErrorComponent redirect_label={redirect_label} redirect_to={redirect_to} buttonOnClick={redirectOnClick} />);
+        renderWithRouter(<ErrorComponent {...props} buttonOnClick={redirectOnClick} />);
         reloadFn(); // as defined above..
         expect(window.location.reload).toHaveBeenCalled();
     });
-    it('should call the setError function if the seterror is a function', () => {
+    it('should show the redirect button label as refresh when there is no redirect_label', () => {
+        const redirectOnClick = '';
+        const redirect_to = ['/testurl'];
+        renderWithRouter(<ErrorComponent redirect_to={redirect_to} buttonOnClick={redirectOnClick} />);
+        expect(screen.getByText('Refresh')).toBeInTheDocument();
+    });
+    it('should trigger the history.listen and call the setError function when redirect button get clicked', () => {
         const redirectOnClick = jest.fn();
         const history = createBrowserHistory();
         const setError = jest.fn();
-        const redirect_to = ['/testurl'];
-        const redirect_label = ['testlabel'];
-        const { container,unmount } = render(
+        render(
             <Router history={history}>
-                <ErrorComponent redirect_label={redirect_label} redirect_to={redirect_to} buttonOnClick={redirectOnClick} setError={setError}/>
+                <ErrorComponent {...props} buttonOnClick={redirectOnClick} setError={setError}/>
             </Router>
         );
         fireEvent.click(screen.getByText('testlabel'));
-
         if(typeof setError === 'function'){
             expect(setError).toHaveBeenCalledTimes(1);
         }

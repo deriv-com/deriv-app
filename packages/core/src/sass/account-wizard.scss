@@ -237,6 +237,9 @@
                         margin: 0 auto;
                     }
                 }
+                .currency-selector__radio-group--with-margin {
+                    margin-bottom: 3rem;
+                }
             }
         }
     }
@@ -439,13 +442,5 @@
         color: var(--text-prominent);
         margin-bottom: 2rem;
         line-height: 1.5;
-    }
-}
-@include mobile {
-    @media screen and (max-height: 568px) {
-        .crypto_currency_scroll {
-            height: calc(100vh - 20rem);
-            margin-bottom: 2rem;
-        }
     }
 }

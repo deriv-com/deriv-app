@@ -79,7 +79,7 @@ const OnRampProviderPopup = ({
     }
 
     return (
-        <div className='on-ramp__popup'>
+        <div className='on-ramp__popup' data-testid='dti_on-ramp_popup'>
             {selected_provider.should_show_deposit_address && (
                 <React.Fragment>
                     <div className='on-ramp__popup-deposit'>
@@ -109,6 +109,7 @@ const OnRampProviderPopup = ({
                                 />
                                 <Icon
                                     className='on-ramp__popup-deposit-address-icon'
+                                    data_testid='dti_deposit_address_icon'
                                     icon={isMobile() ? 'IcCopy' : 'icClipboard'}
                                     size={16}
                                     onClick={onClickCopyDepositAddress}

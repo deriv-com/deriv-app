@@ -1,7 +1,7 @@
 import ContractType from '../Helpers/contract-type';
 
 export const onChangeStartDate = async store => {
-    const { contract_type, duration_unit, expiry_time, start_date, symbol } = store;
+    const { contract_type, duration_unit, start_date } = store;
     const server_time = store.root_store.common.server_time;
     let { start_time, expiry_date, expiry_type } = store;
 
@@ -23,6 +23,23 @@ export const onChangeStartDate = async store => {
     const obj_expiry_date = ContractType.getExpiryDate(duration_units_list, expiry_date, expiry_type, start_date);
     expiry_date = obj_expiry_date.expiry_date;
 
+    const obj_duration_min_max = ContractType.getDurationMinMax(contract_type, contract_start_type);
+
+    return {
+        ...obj_contract_start_type,
+        ...obj_duration_units_list,
+        ...obj_duration_min_max,
+        ...obj_duration_unit,
+        ...obj_sessions,
+        ...obj_start_time,
+        ...obj_expiry_date,
+        ...obj_expiry_type,
+    };
+};
+
+export const onChangeExpiry = async store => {
+    const { start_time, expiry_date, expiry_type, expiry_time, start_date, symbol, sessions } = store;
+
     const trading_times = await ContractType.getTradingTimes(expiry_date, symbol);
     const obj_market_open_times = { market_open_times: trading_times.open };
     const obj_market_close_times = { market_close_times: trading_times.close };
@@ -38,18 +55,8 @@ export const onChangeStartDate = async store => {
         start_time
     );
 
-    const obj_duration_min_max = ContractType.getDurationMinMax(contract_type, contract_start_type);
-
     return {
-        ...obj_contract_start_type,
-        ...obj_duration_units_list,
-        ...obj_duration_min_max,
-        ...obj_duration_unit,
-        ...obj_sessions,
-        ...obj_start_time,
-        ...obj_expiry_date,
         ...obj_expiry_time,
-        ...obj_expiry_type,
         ...obj_market_open_times,
         ...obj_market_close_times,
     };

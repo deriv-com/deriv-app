@@ -170,9 +170,11 @@
     "-1005884051": "Taxa de realização",
     "-1638172550": "Para habilitar este recurso, você deve completar o seguinte:",
     "-559300364": "Seu caixa do Deriv P2P está bloqueado",
+    "-674715853": "Your ad exceeds the daily limit",
+    "-744406": "Your ad is not listed on <0>Buy/Sell</0> because the amount exceeds your daily limit of {{limit}} {{currency}}.\n                        <1 /><1 />You can still see your ad on <0>My ads</0>. If you’d like to increase your daily limit, please contact us via <2>live chat</2>.",
+    "-329713179": "Ok",
     "-480724783": "Você já tem um anúncio com esta taxa",
     "-1072444041": "Atualize seu anúncio",
-    "-329713179": "Ok",
     "-1561775203": "Comprar {{currency}}",
     "-1527285935": "Vendas {{currency}}",
     "-592818187": "Seu saldo Deriv P2P é {{ dp2p_balance }}",
@@ -226,6 +228,5 @@
     "-750202930": "Pedidos ativos",
     "-471540636": "Eu recebi {{amount}} {{currency}}.",
     "-2054589794": "Você foi temporariamente impedido de usar nossos serviços devido às várias tentativas de cancelamento. Tente novamente após {{date_time}} GMT.",
-    "-1971628122": "No momento este recurso está disponível apenas para contas reais em dólares.",
     "-930400128": "Para usar o Deriv P2P, você precisa escolher um nome de exibição (um apelido) e verificar sua identidade."
 }

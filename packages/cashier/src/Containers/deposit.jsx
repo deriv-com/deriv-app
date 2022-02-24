@@ -62,7 +62,7 @@ const Deposit = ({
     React.useEffect(() => {
         if (typeof setSideNotes === 'function') {
             if (is_switching || is_deposit) setSideNotes(null);
-            if (isCryptocurrency(currency) && is_deposit && !is_switching) {
+            if (!!currency && isCryptocurrency(currency) && is_deposit && !is_switching) {
                 const side_notes = [
                     ...(crypto_transactions.length ? [<RecentTransaction key={2} />] : []),
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
@@ -102,7 +102,7 @@ const Deposit = ({
         if (error.message) {
             return <Error error={error} />;
         }
-        if (isCryptocurrency(currency)) {
+        if (!!currency && isCryptocurrency(currency)) {
             return <CryptoDeposit />;
         }
 

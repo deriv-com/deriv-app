@@ -19,6 +19,7 @@ export default class MyAdsStore extends BaseStore {
     @observable contact_info = '';
     @observable default_advert_description = '';
     @observable delete_error_message = '';
+    @observable edit_ad_form_error = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
     @observable has_missing_payment_methods = false;
@@ -26,6 +27,7 @@ export default class MyAdsStore extends BaseStore {
     @observable is_ad_exceeds_daily_limit_modal_open = false;
     @observable is_api_error_modal_visible = false;
     @observable is_delete_modal_open = false;
+    @observable is_edit_ad_error_modal_visible = false;
     @observable is_form_loading = false;
     @observable is_quick_add_modal_open = false;
     @observable is_table_loading = false;
@@ -263,9 +265,11 @@ export default class MyAdsStore extends BaseStore {
             // If there's an error, let the user submit the form again.
             if (response.error) {
                 setSubmitting(false);
-                this.setIsEditErrorModalVisible(true);
+                this.setEditAdFormError(response.error.message);
+                this.setIsEditAdErrorModalVisible(true);
+            } else {
+                this.setShowEditAdForm(false);
             }
-            this.setShowEditAdForm(false);
         });
     }
 
@@ -400,6 +404,11 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setEditAdFormError(edit_ad_form_error) {
+        this.edit_ad_form_error = edit_ad_form_error;
+    }
+
+    @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -432,6 +441,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setIsDeleteModalOpen(is_delete_modal_open) {
         this.is_delete_modal_open = is_delete_modal_open;
+    }
+
+    @action.bound
+    setIsEditAdErrorModalVisible(is_edit_ad_error_modal_visible) {
+        this.is_edit_ad_error_modal_visible = is_edit_ad_error_modal_visible;
     }
 
     @action.bound

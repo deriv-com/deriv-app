@@ -61,6 +61,8 @@ const EditAdForm = () => {
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
+        my_ads_store.setIsEditAdErrorModalVisible(false);
+        my_ads_store.setEditAdFormError('');
 
         if (payment_method_names && !payment_method_details) {
             payment_method_names?.forEach(pm => {
@@ -347,7 +349,7 @@ const EditAdForm = () => {
                     <Button
                         has_effect
                         text={localize('Ok')}
-                        onClick={() => my_ads_store.setIsEditErrorModalVisible(false)}
+                        onClick={() => my_ads_store.setIsEditAdErrorModalVisible(false)}
                         primary
                         large
                     />

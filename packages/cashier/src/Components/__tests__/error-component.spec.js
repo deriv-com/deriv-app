@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { screen, render,fireEvent } from '@testing-library/react';
+import { screen, render, fireEvent } from '@testing-library/react';
 import ErrorComponent from '../error-component';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
@@ -19,23 +19,20 @@ describe('<ErrorComponent/>', () => {
             value: { reload: jest.fn() },
         });
     });
-    const props ={
+    const props = {
         redirect_to: ['/testurl'],
-        redirect_label: ['testlabel']
-    }
-
+        redirect_label: ['testlabel'],
+    };
     it('should show the default message when message is not passed', () => {
         const message = '';
         renderWithRouter(<ErrorComponent {...props} message={message} />);
         expect(screen.getByText('Sorry, an error occured while processing your request.')).toBeInTheDocument();
     });
-
     it('should show the actual message when message is passed', () => {
         const message = 'This is the error message';
         renderWithRouter(<ErrorComponent {...props} message={message} />);
         expect(screen.getByText(message)).toBeInTheDocument();
     });
-
     it('should show refresh message when should_show_refresh is true', () => {
         renderWithRouter(<ErrorComponent {...props} should_show_refresh={true} />);
         expect(screen.getByText('Please refresh this page to continue.')).toBeInTheDocument();
@@ -44,7 +41,6 @@ describe('<ErrorComponent/>', () => {
         const refreshRequestText = screen.queryByText('Please refresh this page to continue.');
         renderWithRouter(<ErrorComponent {...props} should_show_refresh={false} />);
         expect(refreshRequestText).toBeNull();
-        //expect(screen.not.getByText('Please refresh this page to continue.')).toBeInTheDocument();
     });
     it('should show default message when header message is not passed', () => {
         const header = '';
@@ -74,11 +70,11 @@ describe('<ErrorComponent/>', () => {
         const setError = jest.fn();
         render(
             <Router history={history}>
-                <ErrorComponent {...props} buttonOnClick={redirectOnClick} setError={setError}/>
+                <ErrorComponent {...props} buttonOnClick={redirectOnClick} setError={setError} />
             </Router>
         );
         fireEvent.click(screen.getByText('testlabel'));
-        if(typeof setError === 'function'){
+        if (typeof setError === 'function') {
             expect(setError).toHaveBeenCalledTimes(1);
         }
     });

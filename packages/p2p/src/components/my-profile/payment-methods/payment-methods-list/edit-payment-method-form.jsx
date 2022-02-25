@@ -11,7 +11,9 @@ const EditPaymentMethodForm = () => {
     const validateFields = values => {
         const errors = {};
         const no_symbols_regex = /^[a-zA-Z0-9\\\s.@_+-]+$/;
-        const no_symbols_message = localize('Special characters are not allowed to use.');
+        const no_symbols_message = localize(
+            'This field can only include letters, numbers, spaces, and any of these symbols: -+._@'
+        );
         const max_characters_error_message = localize('This field has exceeded maximum length of 200 characters.');
 
         if (values.account) {

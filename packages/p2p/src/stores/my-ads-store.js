@@ -29,6 +29,7 @@ export default class MyAdsStore extends BaseStore {
     @observable is_delete_modal_open = false;
     @observable is_edit_ad_error_modal_visible = false;
     @observable is_form_loading = false;
+    @observable is_quick_add_error_modal_open = false;
     @observable is_quick_add_modal_open = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
@@ -40,6 +41,7 @@ export default class MyAdsStore extends BaseStore {
     @observable should_show_add_payment_method_modal = false;
     @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
+    @observable update_payment_methods_error_message = '';
 
     payment_method_ids = [];
     payment_method_names = [];
@@ -289,6 +291,10 @@ export default class MyAdsStore extends BaseStore {
                 this.setAdverts([]);
                 this.loadMoreAds({ startIndex: 0 });
                 this.hideQuickAddModal();
+            } else {
+                this.setUpdatePaymentMethodsErrorMessage(response.error.message);
+                this.setIsQuickAddModalOpen(false);
+                this.setIsQuickAddErrorModalOpen(true);
             }
         });
     }
@@ -459,6 +465,11 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setIsQuickAddErrorModalOpen(is_quick_add_error_modal_open) {
+        this.is_quick_add_error_modal_open = is_quick_add_error_modal_open;
+    }
+
+    @action.bound
     setIsQuickAddModalOpen(is_quick_add_modal_open) {
         this.is_quick_add_modal_open = is_quick_add_modal_open;
     }
@@ -506,6 +517,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
+    }
+
+    @action.bound
+    setUpdatePaymentMethodsErrorMessage(update_payment_methods_error_message) {
+        this.update_payment_methods_error_message = update_payment_methods_error_message;
     }
 
     @action.bound

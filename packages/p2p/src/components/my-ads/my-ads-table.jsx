@@ -137,6 +137,28 @@ const MyAdsTable = () => {
                         />
                     </Modal.Footer>
                 </Modal>
+                <Modal
+                    className='p2p-my-ads__modal-error'
+                    has_close_icon={false}
+                    is_open={my_ads_store.is_quick_add_error_modal_open}
+                    small
+                    title={localize('Something’s not right')}
+                >
+                    <Modal.Body>
+                        <Text as='p' size='xs' color='prominent'>
+                            {my_ads_store.update_payment_methods_error_message}
+                        </Text>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            has_effect
+                            large
+                            onClick={() => my_ads_store.setIsQuickAddErrorModalOpen(false)}
+                            primary
+                            text={localize('Ok')}
+                        />
+                    </Modal.Footer>
+                </Modal>
             </React.Fragment>
         );
     }

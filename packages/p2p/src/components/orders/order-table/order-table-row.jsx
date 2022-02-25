@@ -26,7 +26,6 @@ const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) =
 const OrderRow = ({ style, row: order }) => {
     const getTimeLeft = time => {
         const distance = ServerTime.getDistanceToServerTime(time);
-        console.log('Get distance: ', distance);
         return {
             distance,
             label: distance < 0 ? localize('expired') : secondsToTimer(distance),
@@ -66,11 +65,8 @@ const OrderRow = ({ style, row: order }) => {
     };
 
     React.useEffect(() => {
-        console.log('Effect 2');
         const countDownTimer = () => {
             const { distance, label } = getTimeLeft(order_expiry_milliseconds);
-            console.log('Distance in effect: ', distance, label);
-
             if (distance < 0) {
                 const { client, props } = general_store;
                 setRemainingTime(label);

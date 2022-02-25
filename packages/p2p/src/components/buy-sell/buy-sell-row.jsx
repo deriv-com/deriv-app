@@ -91,15 +91,17 @@ const BuySellRow = ({ row: advert }) => {
                         </Text>
                     </div>
                     <div className='buy-sell-row__payment-methods-list'>
-                        {payment_method_names
-                            ? payment_method_names.map((payment_method, key) => {
-                                  return (
-                                      <div className='buy-sell-row__payment-method' key={key}>
-                                          {payment_method}
-                                      </div>
-                                  );
-                              })
-                            : null}
+                        {payment_method_names ? (
+                            payment_method_names.map((payment_method, key) => {
+                                return (
+                                    <div className='buy-sell-row__payment-method' key={key}>
+                                        {payment_method}
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className='buy-sell-row__payment-method'>-</div>
+                        )}
                     </div>
                     {!is_my_advert && (
                         <Button
@@ -158,17 +160,23 @@ const BuySellRow = ({ row: advert }) => {
             </Table.Cell>
             <Table.Cell>
                 <div className='buy-sell-row__payment-method'>
-                    {payment_method_names
-                        ? payment_method_names.map((payment_method, key) => {
-                              return (
-                                  <div className='buy-sell-row__payment-method--label' key={key}>
-                                      <Text color='general' size='xs' line-height='l'>
-                                          {payment_method}
-                                      </Text>
-                                  </div>
-                              );
-                          })
-                        : null}
+                    {payment_method_names ? (
+                        payment_method_names.map((payment_method, key) => {
+                            return (
+                                <div className='buy-sell-row__payment-method--label' key={key}>
+                                    <Text color='general' size='xs' line-height='l'>
+                                        {payment_method}
+                                    </Text>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <div className='buy-sell-row__payment-method--label'>
+                            <Text color='general' size='xs' line-height='l'>
+                                -
+                            </Text>
+                        </div>
+                    )}
                 </div>
             </Table.Cell>
             {is_my_advert ? (

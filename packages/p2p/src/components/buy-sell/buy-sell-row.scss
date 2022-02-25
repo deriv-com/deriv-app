@@ -2,7 +2,7 @@
     @include mobile {
         border-bottom: 1px solid var(--general-section-1);
         padding: 1.6rem;
-        height: 18.6rem;
+        min-height: 18.6rem;
         display: flex;
         flex-direction: column;
     }

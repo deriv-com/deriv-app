@@ -17,7 +17,7 @@ const BuySellRow = ({ row: advert }) => {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
         // an empty item with an item that holds the same height of the toggle container.
         // Also see: buy-sell-table.jsx
-        return <div style={{ height: '177px' }} />;
+        return <div style={{ height: '140px' }} />;
     }
 
     if (advert.id === 'NO_MATCH_ROW') {

@@ -6,7 +6,6 @@ import { useStores } from 'Stores';
 import MyProfileStatsTable from './my-profile-stats-table';
 import MyProfileSeparatorContainer from '../my-profile-separator-container';
 import { Localize, localize } from 'Components/i18next';
-import { isMobile } from '@deriv/shared';
 import MyProfilePrivacy from './my-profile-privacy';
 
 const MyProfileStats = () => {
@@ -24,7 +23,6 @@ const MyProfileStats = () => {
             >
                 <MyProfileStatsTable />
             </MobileFullPageModal>
-            <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' is_invisible={isMobile()} />
             <DesktopWrapper>
                 <MyProfileStatsTable />
             </DesktopWrapper>

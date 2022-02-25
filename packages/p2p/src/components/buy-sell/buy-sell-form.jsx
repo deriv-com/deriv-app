@@ -100,7 +100,9 @@ const BuySellForm = props => {
             }}
         >
             {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
-                buy_sell_store.form_props.setIsSubmitDisabled(!isValid || isSubmitting);
+                buy_sell_store.form_props.setIsSubmitDisabled(
+                    !isValid || isSubmitting || (buy_sell_store.is_sell_advert && selected_methods.length < 1)
+                );
                 buy_sell_store.form_props.setSubmitForm(submitForm);
 
                 return (

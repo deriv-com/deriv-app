@@ -159,7 +159,7 @@ const OrderRow = ({ style, row: order }) => {
             >
                 <Table.Cell>{order_type}</Table.Cell>
                 <Table.Cell>{id}</Table.Cell>
-                <Table.Cell>{other_user_details?.name}</Table.Cell>
+                <Table.Cell>{other_user_details.name}</Table.Cell>
                 <Table.Cell>
                     <div
                         className={classNames('orders__table-status', {

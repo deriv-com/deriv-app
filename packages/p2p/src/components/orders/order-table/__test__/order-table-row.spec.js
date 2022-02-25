@@ -5,7 +5,7 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { Table } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import OrderRow from '../order-table-row.jsx';
 
 jest.mock('Stores', () => ({
@@ -131,7 +131,9 @@ describe('<OrderRow/>', () => {
         jest.useFakeTimers();
         ServerTime.getDistanceToServerTime.mockReturnValue(-1);
         render(<OrderRow {...props} />);
-        jest.runAllTimers();
+        act(() => {
+            jest.runAllTimers();
+        });
         await waitFor(() => {
             expect(createExtendedOrderDetails).toHaveBeenCalled();
             jest.useRealTimers();

@@ -76,7 +76,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
 
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
     const modal_title = my_profile_store.should_show_add_payment_method_form
-        ? localize('Add a payment method')
+        ? localize('Add payment method')
         : table_type === buy_sell.BUY
         ? localize('Buy {{ currency }}', { currency: selected_ad.account_currency })
         : localize('Sell {{ currency }}', { currency: selected_ad.account_currency });

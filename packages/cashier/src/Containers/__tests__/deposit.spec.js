@@ -98,7 +98,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <CryptoDeposit /> component', () => {
-        render(<Deposit {...props} is_eu currency='BTC' />);
+        render(<Deposit {...props} is_eu currency='BTC' is_crypto />);
 
         expect(screen.getByText('CryptoDeposit')).toBeInTheDocument();
     });
@@ -116,7 +116,7 @@ describe('<Deposit />', () => {
     });
 
     it('should trigger "setSideNotes" callback', () => {
-        render(<Deposit {...props} is_deposit crypto_transactions={[{}]} currency='UST' />);
+        render(<Deposit {...props} is_deposit crypto_transactions={[{}]} currency='UST' is_crypto />);
 
         expect(props.setSideNotes).toHaveBeenCalledTimes(2);
     });

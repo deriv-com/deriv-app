@@ -7,6 +7,13 @@ export const getlangFromUrl = () => {
     return lang;
 };
 
+export const getActionFromUrl = () => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const action = urlParams.get('action');
+    return action;
+};
+
 export const getUrlSmartTrader = () => {
     const { is_staging_deriv_app } = getPlatformFromUrl();
     const url_lang = getlangFromUrl();

@@ -3,12 +3,20 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { getErrorMessages, redirectToLogin, toTitleCase, validPassword, validLength } from '@deriv/shared';
+import {
+    getErrorMessages,
+    redirectToLogin,
+    toTitleCase,
+    validPassword,
+    validLength,
+    getActionFromUrl,
+} from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
 const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPasswordModal, verification_code }) => {
+    const url_action = getActionFromUrl();
     const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
         actions.resetForm({ password: '' });
@@ -23,20 +31,35 @@ const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPas
         actions.setStatus({ reset_complete: true });
     };
 
-    const handleSubmit = (values, actions) => {
-        const api_request = {
-            reset_password: 1,
-            new_password: values.password,
-            verification_code,
-        };
+    const onGetPasswordResponse = (response, actions) => {
+        if (response.error) {
+            onResetComplete(response.error.message, actions);
+        } else {
+            onResetComplete(null, actions);
+        }
+    };
 
-        WS.resetPassword(api_request).then(async response => {
-            if (response.error) {
-                onResetComplete(response.error.message, actions);
-            } else {
-                onResetComplete(null, actions);
-            }
-        });
+    const handleSubmit = (values, actions) => {
+        if (url_action === 'social_email_change') {
+            const api_request = {
+                change_email: 'update',
+                new_email: values.email,
+                new_password: values.password,
+                verification_code,
+            };
+            WS.changeEmail(api_request).then(async response => {
+                onGetPasswordResponse(response, actions);
+            });
+        } else {
+            const api_request = {
+                reset_password: 1,
+                new_password: values.password,
+                verification_code,
+            };
+            WS.resetPassword(api_request).then(async response => {
+                onGetPasswordResponse(response, actions);
+            });
+        }
     };
 
     const validateReset = values => {

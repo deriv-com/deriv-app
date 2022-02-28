@@ -41,6 +41,10 @@ const Redirect = ({
             toggleResetPasswordModal(true);
             break;
         }
+        case 'social_email_change': {
+            toggleResetPasswordModal(true);
+            break;
+        }
         case 'request_email': {
             toggleResetEmailModal(true);
             break;

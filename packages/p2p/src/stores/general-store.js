@@ -47,8 +47,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @computed
-    get setCurrentFocusHandler() {
-        return this.props?.setCurrentFocusHandler || null;
+    get setCurrentFocus() {
+        return this.props?.setCurrentFocus || null;
     }
 
     @computed

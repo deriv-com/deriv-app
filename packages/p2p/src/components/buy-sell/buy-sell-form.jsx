@@ -64,6 +64,7 @@ const BuySellForm = props => {
             buy_sell_store.setInitialReceiveAmount();
 
             return () => {
+                buy_sell_store.payment_method_ids = [];
                 disposeReceiveAmountReaction();
             };
         },

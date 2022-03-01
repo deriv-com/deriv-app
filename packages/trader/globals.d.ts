@@ -8,3 +8,4 @@ declare module '@deriv/p2p';
 declare module '@deriv/trader';
 declare module '@deriv/translations';
 declare module '@deriv/shared';
+declare module '@deriv/cfd';

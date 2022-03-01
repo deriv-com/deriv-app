@@ -1,4 +1,10 @@
-import CFDDashboard from './Containers/cfd-dashboard';
-export * from './Containers/cfd-password-modal';
-export * from './Containers/cfd-server-error-dialog';
-export default CFDDashboard;
+import React from 'react';
+import { makeLazyLoader } from '@deriv/shared';
+import { Loading } from '@deriv/components';
+
+const App = makeLazyLoader(
+    () => import(/* webpackChunkName: "account-app", webpackPreload: true */ './App'),
+    () => <Loading />
+)();
+
+export default App;

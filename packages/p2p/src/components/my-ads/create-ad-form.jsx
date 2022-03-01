@@ -40,11 +40,13 @@ const CreateAdForm = () => {
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
 
-    const [selected_methods, setSelectedMethods] = React.useState([]);
+    const [selected_buy_methods, setSelectedBuyMethods] = React.useState([]);
+
+    const [selected_sell_methods, setSelectedSellMethods] = React.useState([]);
 
     // eslint-disable-next-line no-shadow
-    const handleSelectPaymentMethods = selected_methods => {
-        setSelectedMethods(selected_methods);
+    const handleSelectPaymentMethods = (selected_methods, is_sell_advert) => {
+        is_sell_advert ? setSelectedSellMethods(selected_methods) : setSelectedBuyMethods(selected_methods);
     };
 
     const onCheckboxChange = () =>
@@ -113,6 +115,9 @@ const CreateAdForm = () => {
             >
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
+                    const has_payment_methods = is_sell_advert
+                        ? !!selected_sell_methods.length
+                        : !!selected_buy_methods.length;
 
                     return (
                         <div className='p2p-my-ads__form'>
@@ -335,7 +340,9 @@ const CreateAdForm = () => {
                                             </Text>
                                         </div>
                                         <CreateAdFormPaymentMethods
-                                            onSelectPaymentMethods={handleSelectPaymentMethods}
+                                            onSelectPaymentMethods={payment_methods =>
+                                                handleSelectPaymentMethods(payment_methods, is_sell_advert)
+                                            }
                                             is_sell_advert={is_sell_advert}
                                         />
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
@@ -352,7 +359,7 @@ const CreateAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 primary
                                                 large
-                                                is_disabled={isSubmitting || !isValid || !selected_methods.length}
+                                                is_disabled={isSubmitting || !isValid || !has_payment_methods}
                                             >
                                                 <Localize i18n_default_text='Post ad' />
                                             </Button>

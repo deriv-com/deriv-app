@@ -16,39 +16,15 @@ const SubMenu = ({
     is_bold_text,
     is_current_submenu_item,
     setIsBoldText,
+    is_current_submenu_item_id, 
+    setCurrentSubmenuItemId
 }) => {
     const [is_expanded, setIsExpanded] = React.useState(false);
 
-    console.log('is_current_submenu_item', is_current_submenu_item)
-
-    const default_arr = [
-        {id: 0, label: 'Reports', isShowBold: false}, 
-        {id: 1, label: 'Account Settings', isShowBold: false}, 
-        {id: 2, label: 'Cashier', isShowBold: false}, 
-        {id: 3, label: 'Language', isShowBold: false}
-    ];
-
-    const toggleProperty = (arr, id, propName) => {
-        const idx = arr.findIndex((el) => el.id === id);
-        const oldItem = arr[idx];
-        const newItem = {...oldItem,
-            [propName]: !oldItem[propName]
-        };
-        console.log('newItem', newItem, [
-            ...arr.slice(0, idx),
-            newItem,
-            ...arr.slice(idx + 1)
-        ]);
-
-        return [
-            ...arr.slice(0, idx),
-            newItem,
-            ...arr.slice(idx + 1)
-        ];
-    }
-
     const toggleMenu = () => {
-        setIsBoldText(toggleProperty(default_arr, is_current_submenu_item.id, 'isShowBold'));
+        if(is_current_submenu_item){
+            setCurrentSubmenuItemId(is_current_submenu_item.id);
+        }
         const should_expanded = !is_expanded;
         setIsExpanded(should_expanded);
         if (onToggle) {
@@ -60,7 +36,7 @@ const SubMenu = ({
             <div className={classNames('dc-mobile-drawer__submenu-toggle', submenu_toggle_class)} onClick={toggleMenu}>
                 {submenu_icon && <Icon className='dc-mobile-drawer__submenu-toggle-icon' icon={submenu_icon} />}
                 {submenu_title && (
-                    <Text as='h3' size='xs' weight={is_current_submenu_item.isShowBold ? 'bold' : null}>
+                    <Text as='h3' size='xs' weight={is_current_submenu_item?.isShowBold ? 'bold' : null}>
                         {submenu_title}
                     </Text>
                 )}
@@ -89,7 +65,9 @@ SubMenu.propTypes = {
     submenu_toggle_class: PropTypes.string,
 };
 
-const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_title }) => (
+const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_title }) => {
+
+    return(
     <CSSTransition
         in={is_expanded}
         classNames={{
@@ -119,6 +97,7 @@ const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_t
         </div>
     </CSSTransition>
 );
+}
 
 SubMenuList.propTypes = {
     children: PropTypes.node,

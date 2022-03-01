@@ -20,7 +20,36 @@ const MenuLink = ({
     suffix_icon,
     text,
     onClickLink,
+    isSubMenu,
+    isSubMenu2,
+    cleanBoldItemMenu,
+    is_bold_text,
+    setIsBoldText,
+    is_current_submenu_item_id,
+    setCurrentSubmenuItemId,
 }) => {
+
+    const default_arr = [
+        {id: 0, label: localize('Reports'), isShowBold: false}, 
+        {id: 1, label: localize('Account Settings'), isShowBold: false}, 
+        {id: 2, label: localize('Cashier'), isShowBold: false}, 
+    ];
+
+    const toggleProperty = (arr, id, propName) => {
+        if(id === undefined) return;
+        const idx = arr.findIndex((el) => el.id === id);
+        const oldItem = arr[idx];
+        const newItem = {...oldItem,
+            [propName]: !oldItem[propName]
+        };
+
+        setIsBoldText( [
+            ...arr.slice(0, idx),
+            newItem,
+            ...arr.slice(idx + 1)
+        ]);
+    }
+
     if (is_language) {
         return (
             <span
@@ -61,7 +90,11 @@ const MenuLink = ({
                 'header__menu-mobile-link--active': is_active,
             })}
             active_class='header__menu-mobile-link--active'
-            onClick={onClickLink}
+            onClick={() => {
+                onClickLink();
+                toggleProperty(default_arr, is_current_submenu_item_id, 'isShowBold')
+                cleanBoldItemMenu ? setIsBoldText(default_arr) : null;
+            }}
         >
             <Icon className='header__menu-mobile-link-icon' icon={icon} />
             <span className='header__menu-mobile-link-text'>{text}</span>
@@ -99,11 +132,11 @@ const ToggleMenuDrawer = React.forwardRef(
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
         const [is_bold_text, setIsBoldText] = React.useState([
-            {id: 0, label: 'Reports', isShowBold: false}, 
-            {id: 1, label: 'Account Settings', isShowBold: false}, 
-            {id: 2, label: 'Cashier', isShowBold: false}, 
-            {id: 3, label: 'Language', isShowBold: false}
+            {id: 0, label: localize('Reports'), isShowBold: false}, 
+            {id: 1, label: localize('Account Settings'), isShowBold: false}, 
+            {id: 2, label: localize('Cashier'), isShowBold: false}, 
         ]);
+        const [is_current_submenu_item_id, setCurrentSubmenuItemId] = React.useState(undefined);
 
         const { is_dashboard } = React.useContext(PlatformContext);
 
@@ -189,6 +222,8 @@ const ToggleMenuDrawer = React.forwardRef(
                     is_bold_text={is_bold_text}
                     is_current_submenu_item={isCurrentSubMenuItem(route_config.getTitle())}
                     setIsBoldText={setIsBoldText}
+                    is_current_submenu_item_id={is_current_submenu_item_id}
+                    setCurrentSubmenuItemId={setCurrentSubmenuItemId}
                 >
                     {!has_subroutes &&
                         route_config.routes.map((route, index) => {
@@ -208,6 +243,11 @@ const ToggleMenuDrawer = React.forwardRef(
                                             text={route.getTitle()}
                                             onClickLink={toggleDrawer}
                                             changeCurrentLanguage={changeCurrentLanguage}
+                                            isSubMenu={true} 
+                                            is_bold_text={is_bold_text}
+                                            setIsBoldText={setIsBoldText}
+                                            is_current_submenu_item_id={is_current_submenu_item_id}
+                                            setCurrentSubmenuItemId={setCurrentSubmenuItemId}                   
                                         />
                                     </MobileDrawer.Item>
                                 );
@@ -237,6 +277,11 @@ const ToggleMenuDrawer = React.forwardRef(
                                             text={subroute.getTitle()}
                                             onClickLink={toggleDrawer}
                                             changeCurrentLanguage={changeCurrentLanguage}
+                                            isSubMenu2={true}
+                                            is_bold_text={is_bold_text}
+                                            setIsBoldText={setIsBoldText}
+                                            is_current_submenu_item_id={is_current_submenu_item_id}
+                                            setCurrentSubmenuItemId={setCurrentSubmenuItemId} 
                                         />
                                     ))}
                                 </MobileDrawer.SubMenuSection>
@@ -263,9 +308,6 @@ const ToggleMenuDrawer = React.forwardRef(
                     submenu_title={localize('Language')}
                     submenu_suffix_icon='IcChevronRight'
                     onToggle={expandSubMenu}
-                    is_bold_text={is_bold_text}
-                    is_current_submenu_item={isCurrentSubMenuItem(localize('Language'))}
-                    setIsBoldText={setIsBoldText}
                 >
                     {Object.keys(getAllowedLanguages()).map((lang, idx) => (
                         <MobileDrawer.Item key={idx}>
@@ -323,7 +365,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
                                         })}
                                     >
-                                        {platform_switcher}
+                                        {React.cloneElement(platform_switcher, {qwe:true, setIsBoldText: setIsBoldText, is_bold_text: is_bold_text})}
                                     </MobileDrawer.SubHeader>
                                     <MobileDrawer.Body>
                                         <div
@@ -337,6 +379,9 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 text={localize('Trade')}
                                                 onClickLink={toggleDrawer}
                                                 changeCurrentLanguage={changeCurrentLanguage}
+                                                cleanBoldItemMenu={true}
+                                                is_bold_text={is_bold_text}
+                                                setIsBoldText={setIsBoldText}
                                             />
                                         </MobileDrawer.Item>
                                         {primary_routes_config.map((route_config, idx) =>

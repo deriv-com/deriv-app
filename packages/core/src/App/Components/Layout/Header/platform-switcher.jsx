@@ -8,8 +8,9 @@ import { getPlatformInformation, isMobile } from '@deriv/shared';
 import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';
+import { localize } from '@deriv/translations';
 
-const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }) => {
+const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config, qwe, setIsBoldText, is_bold_text }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const is_close_drawer_fired_ref = React.useRef(false);
@@ -26,6 +27,11 @@ const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }
     const closeDrawer = () => {
         setIsOpen(false);
         is_close_drawer_fired_ref.current = true;
+        setIsBoldText([
+        {id: 0, label: localize('Reports'), isShowBold: false}, 
+        {id: 1, label: localize('Account Settings'), isShowBold: false}, 
+        {id: 2, label: localize('Cashier'), isShowBold: false}, 
+    ]);
     };
 
     return app_routing_history.length === 0 ? (

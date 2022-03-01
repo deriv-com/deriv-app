@@ -1,5 +1,5 @@
 import React from 'react';
-import { action, observable } from 'mobx';
+import { action, observable, computed } from 'mobx';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
@@ -15,6 +15,22 @@ export default class MenuStore extends BaseStore {
             login_only: true,
         },
     ];
+
+    @observable bold_text_menu_items = [];
+
+    @action.bound
+    clean_bold_text_menu_items() {
+        console.log(this.bold_text_menu_items = [
+            {id: 0, label: localize('Reports'), isShowBold: false}, 
+            {id: 1, label: localize('Account Settings'), isShowBold: false}, 
+            {id: 2, label: localize('Cashier'), isShowBold: false}, 
+        ]);
+        return this.bold_text_menu_items = [
+            {id: 0, label: localize('Reports'), isShowBold: false}, 
+            {id: 1, label: localize('Account Settings'), isShowBold: false}, 
+            {id: 2, label: localize('Cashier'), isShowBold: false}, 
+        ];
+    }
 
     @action.bound
     attach(menu) {

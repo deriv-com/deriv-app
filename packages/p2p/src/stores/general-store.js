@@ -30,6 +30,7 @@ export default class GeneralStore extends BaseStore {
     @observable should_show_popup = false;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
+    @observable api_error_message = '';
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -485,6 +486,11 @@ export default class GeneralStore extends BaseStore {
         }
 
         this.setIsLoading(false);
+    }
+
+    @action.bound
+    setApiErrorMessage(api_error_message) {
+        this.api_error_message = api_error_message;
     }
 
     @action.bound

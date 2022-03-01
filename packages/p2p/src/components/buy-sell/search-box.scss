@@ -4,15 +4,11 @@
 
     @include mobile {
         margin: 0.8rem 0 1rem 1.6rem;
-        width: 16rem;
+        width: 95%;
 
         .dc-input {
             height: 4rem;
         }
-    }
-
-    @media (max-width: 320px) {
-        width: 14rem;
     }
 
     &__cross-icon {
@@ -32,6 +28,8 @@
                 width: unset;
 
                 @include mobile {
+                    grid-column: 1;
+                    width: 100%;
                     padding: 0 2.8rem 0 0.4rem;
                 }
             }

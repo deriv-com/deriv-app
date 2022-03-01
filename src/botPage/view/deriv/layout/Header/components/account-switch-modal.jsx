@@ -4,7 +4,7 @@ import { translate } from '../../../../../../common/i18n';
 const AccountSwitchModal = ({is_bot_running,onClose, onAccept}) => (
     <div className="logout-dialog">
         {is_bot_running ?(
-            <div className="logout-content">
+            <div className="logout-dialog__warning-text">
                     <p>
                     {translate('Binary Bot will not place any new trades. Any trades already placed (but not expired) will be completed by our system. Any unsaved changes will be lost.')}
                 </p>

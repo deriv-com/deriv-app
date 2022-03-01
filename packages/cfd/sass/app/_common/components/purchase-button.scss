@@ -1,0 +1,327 @@
+/** @define btn-purchase */
+.btn-purchase {
+    position: relative;
+    background-color: var(--purchase-section-1);
+    overflow: hidden;
+    height: 56px;
+    width: 100%;
+    margin: 5px 0 0;
+    padding: 0;
+    text-align: left;
+    transition: transform 0.25s ease;
+    display: flex;
+    z-index: 1;
+    touch-action: manipulation;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 0;
+    border-radius: $BORDER_RADIUS;
+    outline: 0;
+    font-size: 1rem;
+
+    @include mobile {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin: initial;
+        height: 70px;
+
+        &__top,
+        &__bottom {
+            height: 50%;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        &__top {
+            width: 50%;
+        }
+        &__bottom {
+            width: 40vw; // TODO remove this when find a solution for fill-width inside flex.
+        }
+        &:hover {
+            transform: none !important;
+        }
+        &--disabled,
+        &[disabled] {
+            opacity: 0.32;
+        }
+        &--swoosh {
+            transform: none !important;
+        }
+        &__error {
+            position: absolute;
+            padding: 0.8rem;
+            width: 100%;
+            height: 100%;
+            color: var(--text-colored-background);
+            background-color: var(--status-danger);
+            justify-content: center;
+            align-items: center;
+            line-height: 1.4;
+            z-index: 2;
+            border-radius: $BORDER_RADIUS;
+            max-height: 90px;
+            overflow: hidden;
+            font-weight: bold;
+        }
+    }
+
+    &__icon_wrapper {
+        @extend %inline-icon.white;
+        /* postcss-bem-linter: ignore */
+        .color1-fill {
+            fill: var(--text-colored-background);
+        }
+        /* postcss-bem-linter: ignore */
+        .color2-fill {
+            fill: var(--text-colored-background);
+        }
+        @include mobile {
+            margin-right: 0.5rem;
+        }
+    }
+    &__info {
+        color: var(--text-colored-background);
+        text-align: left;
+        position: relative;
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        padding-left: 10px;
+        height: 56px;
+    }
+    &__info--left {
+        background-color: var(--purchase-main-1);
+        width: 40%;
+        transition: transform linear 0.25s;
+        z-index: 2;
+
+        .btn-purchase__text_wrapper {
+            margin-left: 24px;
+            position: absolute;
+        }
+    }
+    &__info--right {
+        width: 45%;
+        padding-right: 1rem;
+        background-color: transparent;
+        display: flex;
+        justify-content: flex-end;
+
+        .btn-purchase__text {
+            opacity: 1;
+            transition: 0.3s;
+        }
+    }
+    &__effect-detail {
+        position: absolute;
+        background-color: var(--purchase-main-1);
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+        width: 116px;
+        height: 100%;
+        z-index: 1;
+    }
+    &__effect-detail--arrow {
+        content: '';
+        width: 55px;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+        transform: rotate(45deg);
+        height: 100%;
+        background: var(--purchase-main-1);
+        left: 80px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        display: inline-block;
+    }
+    &[disabled]:hover {
+        cursor: initial;
+        transform: none;
+    }
+    &:hover:not(&--disabled):not([disabled]) {
+        transform: translate3d(0, -4px, 0);
+    }
+    &__type-wrapper {
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+        transform: none;
+    }
+    &__shadow-wrapper {
+        position: relative;
+
+        .btn-purchase__box-shadow {
+            position: absolute;
+            width: 100%;
+            bottom: 14px;
+            height: 50%;
+            z-index: 0;
+            opacity: 0.9;
+            box-shadow: 0 16px 14px 0 var(--shadow-menu);
+            transition: opacity 0.25s linear;
+            pointer-events: none;
+        }
+        &--disabled {
+            pointer-events: none;
+
+            &:hover {
+                transform: none;
+            }
+        }
+    }
+    &:active:not(&--disabled):not([disabled]),
+    &:focus:not(&--disabled):not([disabled]) {
+        transform: translate3d(0, -4px, 0);
+    }
+    &--swoosh {
+        transform: translate3d(0, -4px, 0);
+
+        .btn-purchase__type-wrapper {
+            transform: translate3d(55px, 0, 0);
+        }
+        .btn-purchase__effect-detail {
+            transform: scale3d(3, 1, 1);
+
+            &--arrow {
+                transform: translate3d(120px, 0, 0) rotate(45deg);
+            }
+        }
+    }
+    &--1 {
+        background-color: var(--purchase-section-1);
+
+        .btn-purchase__info--left {
+            background-color: var(--purchase-main-1);
+        }
+        .btn-purchase__effect-detail {
+            background: var(--purchase-main-1);
+
+            &--arrow {
+                background: var(--purchase-main-1);
+            }
+        }
+
+        @include mobile {
+            background: var(--purchase-section-1);
+            background: linear-gradient(
+                0deg,
+                var(--purchase-section-1) 0%,
+                var(--purchase-section-1) 50%,
+                var(--purchase-main-1) 50%,
+                var(--purchase-main-1) 100%
+            );
+        }
+    }
+    &--2 {
+        background-color: var(--purchase-section-2);
+
+        .btn-purchase__info--left {
+            background-color: var(--purchase-main-2);
+        }
+        .btn-purchase__effect-detail {
+            background: var(--purchase-main-2);
+
+            &--arrow {
+                background: var(--purchase-main-2);
+            }
+        }
+        @include mobile {
+            background: var(--purchase-section-2);
+            background: linear-gradient(
+                0deg,
+                var(--purchase-section-2) 0%,
+                var(--purchase-section-2) 50%,
+                var(--purchase-main-2) 50%,
+                var(--purchase-main-2) 100%
+            );
+        }
+    }
+    &--disabled,
+    &[disabled] {
+        cursor: default;
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.32);
+            z-index: 4;
+            pointer-events: none;
+        }
+    }
+    &--animated--slide {
+        .btn-purchase__icon_wrapper,
+        .btn-purchase__text_wrapper {
+            @extend .loader;
+        }
+        .btn-purchase__icon,
+        .btn-purchase__text {
+            @extend .loader--loading;
+        }
+        .btn-purchase__icon_wrapper {
+            width: 16px;
+            height: 16px;
+        }
+        .btn-purchase__text_wrapper {
+            width: 56px;
+            height: 8px;
+
+            .btn-purchase__text {
+                display: block;
+            }
+        }
+    }
+    &--animated--fade &__info--right &__text {
+        opacity: 0;
+    }
+    &__shadow-wrapper:hover:after {
+        opacity: 0;
+    }
+    &--multiplier {
+        .btn-purchase__info--left {
+            width: 35%;
+            flex: none;
+        }
+        .btn-purchase__effect-detail--arrow {
+            left: 40px;
+        }
+        &.btn-purchase--swoosh {
+            .btn-purchase {
+                &__effect-detail {
+                    transform: scale3d(5, 1, 1);
+
+                    &--arrow {
+                        transform: translate3d(160px, 0, 0) rotate(45deg);
+                    }
+                }
+                &__type-wrapper {
+                    transform: translate3d(70px, 0, 0);
+                }
+            }
+        }
+        .btn-purchase__effect-detail {
+            width: 72px;
+        }
+        .btn-purchase__top {
+            @include mobile {
+                justify-content: center;
+            }
+        }
+        .trade-container__price-info {
+            @include mobile {
+                justify-content: center;
+            }
+        }
+        @include mobile {
+            &-deal-cancel {
+                height: 64px;
+            }
+        }
+    }
+}

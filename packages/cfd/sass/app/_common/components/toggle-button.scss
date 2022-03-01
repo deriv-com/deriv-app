@@ -1,0 +1,28 @@
+/** @define toggle-button */
+.toggle-button {
+    border-radius: 4px;
+    background-color: var(--state-normal);
+    color: var(--text-general);
+    height: 3.2em;
+    margin: 0;
+    margin-top: 0.8em;
+
+    &:not(:first-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    &:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    &--selected {
+        background-color: var(--state-active);
+        color: var(--text-prominent);
+    }
+}
+
+/** @define toggle-button-group */
+.toggle-button-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(4.4em, 1fr));
+}

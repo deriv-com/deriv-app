@@ -1,0 +1,183 @@
+// Range Slider
+/** @define range-slider */
+.range-slider {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 0 4px;
+    box-sizing: border-box;
+
+    &__label {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 16px;
+        margin-bottom: 4px;
+    }
+    /* overriding firefox shadow pseudo element */
+    &__track[type='range']::-moz-focus-outer {
+        border: 0;
+    }
+    // TODO: remove once we have proper styling for input slider validation error
+    &__error {
+        .range-slider {
+            &__track[type='range'] {
+                // Range Handle Thumb - Chrome / Webkit based browsers
+                &::-webkit-slider-thumb {
+                    background: var(--text-loss-danger);
+                }
+                // Range Handle Thumb - Firefox / Gecko based browsers
+                &::-moz-range-thumb {
+                    background: var(--text-loss-danger);
+                }
+            }
+            &__line {
+                background: var(--text-loss-danger) !important;
+            }
+            &__ticks-step--marked {
+                background: var(--text-loss-danger) !important;
+                border-color: var(--text-loss-danger) !important;
+            }
+        }
+    }
+    &__track[type='range'] {
+        position: relative;
+        // removal of !important is pending refactor in main trading sass file that overrides rules for input els
+        appearance: none !important;
+        width: 100% !important;
+        height: 2px; // !important had to be removed to fix disappearing thumb on MS Edge
+        border-radius: 5px;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        background: var(--state-normal);
+        border: none;
+
+        // Handles Track - MS Edge and IE
+        @supports (-ms-ime-align: auto) {
+            height: 14px;
+            position: relative;
+            top: -6px;
+        }
+        // Range Handle Thumb - Chrome / Webkit based browsers
+        &::-webkit-slider-thumb {
+            @include thumbStyle();
+            background: var(--state-active);
+        }
+        // Range Handle Thumb - Firefox / Gecko based browsers
+        &::-moz-range-thumb {
+            @include thumbStyle();
+            background: var(--state-active);
+        }
+        // Range Handle Thumb - Microsoft Edge
+        &::-ms-thumb {
+            @include thumbStyle();
+            background: var(--state-active);
+        }
+        &:hover,
+        &:focus,
+        &:active {
+            border: 0;
+            outline: none;
+        }
+        &:active,
+        &:focus {
+            box-shadow: none !important;
+        }
+        &::-ms-tooltip {
+            display: none;
+        }
+        &[type='range']::-ms-track {
+            /*example */
+            width: 100%;
+            height: 2px;
+            border-width: 6px 0;
+            background: var(--state-active);
+            border-color: var(--general-section-1);
+            color: var(--state-active);
+        }
+        &[type='range']::-ms-fill-upper {
+            height: 2px;
+            background: var(--state-active);
+        }
+        &[type='range']::-ms-fill-lower {
+            height: 2px;
+            background: var(--state-active);
+        }
+    }
+    &__ticks {
+        width: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        left: 0;
+        top: -3px;
+        height: 0;
+
+        &-step {
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+            transition: box-shadow 0.2s;
+            cursor: pointer;
+            border: 4px solid var(--state-normal);
+            background: var(--state-normal);
+
+            &--active,
+            &--marked {
+                background: var(--state-active);
+                border-color: var(--state-active);
+            }
+            &--marked-hover {
+                background: var(--state-hover);
+                border-color: var(--state-hover);
+            }
+            &--marked:hover:not(&--active) {
+                border-color: var(--state-active) !important;
+            }
+            &--active {
+                visibility: hidden;
+                pointer-events: none;
+
+                &:after {
+                    content: '';
+                    width: 1em;
+                    height: 1em;
+                    position: absolute;
+                    display: block;
+                    top: 0;
+                    border-radius: 50%;
+                    background: var(--state-active);
+                }
+            }
+            &:hover:not(&--active) {
+                background: var(--state-hover);
+                border-color: var(--state-hover);
+                box-shadow: 0 0 0 5px var(--shadow-menu);
+            }
+            &:first-child {
+                margin-left: 0;
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    &__line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2px;
+        pointer-events: none;
+        background: var(--state-active);
+
+        &--fill {
+            background: var(--state-hover);
+        }
+    }
+    &__caption {
+        text-align: center;
+        padding-top: 8px;
+    }
+}

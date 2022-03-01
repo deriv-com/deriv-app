@@ -1,0 +1,56 @@
+/** @define number-selector */
+.number-selector {
+    margin-top: 1.2em;
+    text-align: center;
+
+    &__row:first-child {
+        margin-bottom: 0.8em;
+    }
+    &__selection {
+        width: calc(20% - 4px);
+        height: 24px;
+        border-radius: $BORDER_RADIUS;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        @include typeface(--paragraph-left-normal-black);
+        background-color: var(--state-normal);
+        color: var(--text-general);
+
+        &:not(:first-child) {
+            margin-left: 5px;
+        }
+        &--selected {
+            @include typeface(--paragraph-left-bold-active);
+            background-color: var(--state-active);
+            color: var(--text-prominent);
+        }
+        &:hover:not(&--selected) {
+            cursor: pointer;
+            background-color: var(--state-hover);
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+    @include mobile {
+        margin-top: 0;
+        padding: 0.8rem;
+        border-radius: $BORDER_RADIUS;
+        background-color: var(--fill-normal);
+
+        &__selection {
+            width: calc(20% - 7px);
+            height: 32px;
+            font-size: 1.6rem;
+            background-color: var(--general-section-1);
+
+            &--selected {
+                background-color: var(--state-active);
+            }
+            &:not(:first-child) {
+                margin-left: 0.8rem;
+            }
+        }
+    }
+}

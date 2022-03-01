@@ -1,5 +1,5 @@
 /** @define order-details; weak */
-$card-height: 512px;
+$card-height: 650px;
 $card-width: 456px;
 
 .order-details {
@@ -10,6 +10,29 @@ $card-width: 456px;
     @include tablet-up {
         min-height: $card-height;
         max-height: $card-height;
+    }
+
+    &--body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &--warning {
+        margin-bottom: 1.6rem;
+
+        @include mobile {
+            margin: 1rem 2rem;
+        }
+
+        .dc-hint-box {
+            &__icon {
+                @include mobile {
+                    align-self: flex-start;
+                    min-width: 16px;
+                    min-height: 16px;
+                }
+            }
+        }
     }
 }
 
@@ -27,6 +50,40 @@ $card-width: 456px;
     @include mobile {
         height: 100%;
         width: 100%;
+    }
+
+    &--padding {
+        padding: 1rem 2.4rem;
+    }
+
+    &__accordion {
+        &-column {
+            display: flex;
+            flex-direction: column;
+            padding-left: 1.6rem;
+        }
+        &-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        &-title {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 2rem;
+        }
+
+        .dc-accordion__item {
+            border: none;
+        }
+
+        .dc-accordion__item-header {
+            align-items: center;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+        }
     }
 
     &__header {
@@ -109,9 +166,10 @@ $card-width: 456px;
             word-break: break-word;
         }
     }
+
     &__info {
         @include tablet-up {
-            padding: 1.6rem 2.4rem;
+            padding: 1.6rem 0;
         }
 
         @include mobile {
@@ -132,10 +190,13 @@ $card-width: 456px;
                 word-break: break-word;
             }
         }
+
         &-columns {
             display: flex;
             flex-flow: row nowrap;
+            padding: 0 2.4rem;
         }
+
         &--right,
         &--left {
             display: flex;
@@ -169,6 +230,13 @@ $card-width: 456px;
             margin-left: auto;
         }
     }
+
+    &--line {
+        margin: 0;
+        padding: 0;
+        width: $card-width;
+    }
+
     &__message {
         font-size: var(--text-size-xs);
         line-height: 2rem;

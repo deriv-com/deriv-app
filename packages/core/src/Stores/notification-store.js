@@ -61,6 +61,7 @@ export default class NotificationStore extends BaseStore {
                 ) {
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
+                    this.setClientNotifications();
                     this.handleClientNotifications();
                 }
             }
@@ -335,21 +336,6 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    init() {
-        this.setClientNotifications();
-        reaction(
-            () => [
-                this.root_store.client.is_uk,
-                this.root_store.client.has_malta_account,
-                this.root_store.client.can_have_mlt_account,
-            ],
-            () => {
-                this.setClientNotifications();
-            }
-        );
-    }
-
-    @action.bound
     markNotificationMessage({ key }) {
         this.marked_notifications.push(key);
     }
@@ -431,7 +417,7 @@ export default class NotificationStore extends BaseStore {
                 message = localize(
                     'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
                 );
-            this.setClientNotifications({ resetVirtualBalance: this.resetVirtualBalance, message });
+            this.setClientNotifications({ resetVirtualBalance: this.root_store.client.resetVirtualBalance, message });
             this.addNotificationMessage(this.client_notifications.reset_virtual_balance);
         } else {
             this.removeNotificationByKey({ key: 'reset_virtual_balance' });

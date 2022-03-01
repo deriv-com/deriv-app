@@ -46,7 +46,11 @@ const CreateAdForm = () => {
 
     // eslint-disable-next-line no-shadow
     const handleSelectPaymentMethods = (selected_methods, is_sell_advert) => {
-        is_sell_advert ? setSelectedSellMethods(selected_methods) : setSelectedBuyMethods(selected_methods);
+        if (is_sell_advert) {
+            setSelectedSellMethods(selected_methods)
+        } else {
+            setSelectedBuyMethods(selected_methods)
+        }
     };
 
     const onCheckboxChange = () =>

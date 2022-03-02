@@ -20,7 +20,7 @@ const Reports = ({
     history,
     is_logged_in,
     is_logging_in,
-    is_navigated_from_deriv_go,
+    if_from_derivgo,
     is_visible,
     location,
     routeBackInApp,
@@ -68,11 +68,7 @@ const Reports = ({
     return (
         <FadeWrapper is_visible={is_visible} className='reports-page-wrapper' keyname='reports-page-wrapper'>
             <div className='reports'>
-                <PageOverlay
-                    header={localize('Reports')}
-                    onClickClose={onClickClose}
-                    is_from_app={is_navigated_from_deriv_go}
-                >
+                <PageOverlay header={localize('Reports')} onClickClose={onClickClose} is_from_app={if_from_derivgo}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
@@ -114,7 +110,7 @@ Reports.propTypes = {
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    is_navigated_from_deriv_go: PropTypes.bool,
+    if_from_derivgo: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     routeBackInApp: PropTypes.func,
@@ -128,7 +124,7 @@ Reports.propTypes = {
 export default connect(({ client, common, ui }) => ({
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    is_navigated_from_deriv_go: common.is_navigated_from_deriv_go,
+    if_from_derivgo: common.if_from_derivgo,
     is_visible: ui.is_reports_visible,
     routeBackInApp: common.routeBackInApp,
     setVisibilityRealityCheck: client.setVisibilityRealityCheck,

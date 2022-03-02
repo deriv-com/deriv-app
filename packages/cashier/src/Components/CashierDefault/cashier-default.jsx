@@ -17,7 +17,7 @@ const CashierDefault = ({
     is_dark_mode_on,
     is_landing_company_loaded,
     is_mobile,
-    is_navigated_from_deriv_go,
+    if_from_derivgo,
     is_payment_agent_visible_in_onboarding,
     is_switching,
     onMountCashierDefault,
@@ -155,7 +155,7 @@ const CashierDefault = ({
                         <Localize i18n_default_text='Please note that some payment methods might not be available in your country.' />
                     </Text>
                 </div>
-                {is_mobile && !is_navigated_from_deriv_go && (
+                {is_mobile && !if_from_derivgo && (
                     <div
                         className='cashier-default-header-learn-more'
                         onClick={() => window.open(getStaticUrl('/payment-methods'))}
@@ -193,7 +193,7 @@ CashierDefault.propTypes = {
     is_dark_mode_on: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
     is_mobile: PropTypes.bool,
-    is_navigated_from_deriv_go: PropTypes.bool,
+    if_from_derivgo: PropTypes.bool,
     is_payment_agent_visible_in_onboarding: PropTypes.bool,
     is_switching: PropTypes.bool,
     onMountCashierDefault: PropTypes.func,
@@ -218,7 +218,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_dark_mode_on: ui.is_dark_mode_on,
     is_landing_company_loaded: client.is_landing_company_loaded,
     is_mobile: ui.is_mobile,
-    is_navigated_from_deriv_go: common.is_navigated_from_deriv_go,
+    if_from_derivgo: common.if_from_derivgo,
     is_payment_agent_visible_in_onboarding: modules.cashier.payment_agent.is_payment_agent_visible_in_onboarding,
     is_switching: client.is_switching,
     onMountCashierDefault: modules.cashier.general_store.onMountCashierDefault,

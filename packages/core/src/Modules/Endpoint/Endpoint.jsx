@@ -53,9 +53,9 @@ const Endpoint = () => {
             onSubmit={values => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
-                localStorage.setItem(platform_store.DERIV_DASHBOARD_KEY, values.is_appstore_enabled);
+                localStorage.setItem(platform_store.DERIV_APPSTORE_KEY, values.is_appstore_enabled);
                 localStorage.setItem('debug_service_worker', values.is_debug_service_worker_enabled ? 1 : 0);
-                platform_store.setDerivDashboard(values.is_appstore_enabled);
+                platform_store.setIsAppStore(values.is_appstore_enabled);
                 location.reload();
             }}
         >

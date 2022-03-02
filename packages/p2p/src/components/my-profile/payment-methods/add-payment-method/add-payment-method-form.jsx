@@ -68,7 +68,6 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
 
         return () => {
             my_profile_store.setSelectedPaymentMethod('');
-            my_profile_store.setSelectedPaymentMethodDisplayName('');
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

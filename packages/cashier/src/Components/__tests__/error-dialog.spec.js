@@ -30,4 +30,15 @@ describe('<ErrorDialog />', () => {
         render(<ErrorDialog {...props} should_show={false} confirm_button_text='ok' should_not_show_title='test' />);
         expect(props.reset).toHaveBeenCalled();
     });
+
+    it('should close the dialog', () => {
+        const { container } = render(<ErrorDialog {...props} />);
+        fireEvent.keyDown(container, {
+            key: 'Escape',
+            code: 'Escape',
+            keyCode: 27,
+            charCode: 27,
+        });
+        expect(props.setShouldShow).toHaveBeenCalledTimes(1);
+    });
 });

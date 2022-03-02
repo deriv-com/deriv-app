@@ -60,12 +60,12 @@ commands:
             # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
             - "node_modules"
             - "packages/account/node_modules"
+            - "packages/appstore/node_modules"
             - "packages/bot-skeleton/node_modules"
             - "packages/bot-web-ui/node_modules"
             - "packages/cashier/node_modules"
             - "packages/components/node_modules"
             - "packages/core/node_modules"
-            - "packages/dashboard/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
             - "packages/shared/node_modules"
@@ -79,13 +79,6 @@ commands:
       - run:
           name: "Build all packages"
           command: npm run build
-
-  build_dashboard:
-    description: "Build dashboard"
-    steps:
-      - run:
-          name: "Build all packages for deriv dashboard"
-          command: npm run build:dashboard
 
   build_storybook:
     description: "Build storybook"
@@ -172,14 +165,6 @@ jobs:
       - npm_install_from_cache
       - build
 
-  build_dashboard:
-    docker:
-      - image: circleci/node:14.17.1-stretch
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build_dashboard
-
   release_storybook:
     docker:
       - image: circleci/node:14.17.1-stretch
@@ -215,22 +200,6 @@ jobs:
     environment:
       NODE_ENV: staging
 
-  release_staging_dashboard:
-    docker:
-      - image: circleci/node:14.17.1-stretch
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build_dashboard
-      - versioning:
-          version_name: staging-dashboard
-      - docker_build_push:
-          docker_image_name: deriv-app-dashboard
-          docker_image_latest_tag: latest-staging-dashboard
-      - notify_slack
-    environment:
-      NODE_ENV: staging
-
   release_production:
     docker:
       - image: circleci/node:14.17.1-stretch
@@ -244,22 +213,6 @@ jobs:
           docker_image_latest_tag: latest
       - k8s_deploy:
           k8s_namespace: "deriv-app-production"
-      - notify_slack
-    environment:
-      NODE_ENV: staging
-
-  release_production_dashboard:
-    docker:
-      - image: circleci/node:14.17.1-stretch
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build_dashboard
-      - versioning:
-          version_name: production-dashboard
-      - docker_build_push:
-          docker_image_name: deriv-app-dashboard
-          docker_image_latest_tag: latest
       - notify_slack
     environment:
       NODE_ENV: staging
@@ -294,11 +247,6 @@ workflows:
           filters:
             branches:
               only: /^master$/
-      - release_staging_dashboard:
-          context: binary-frontend-artifact-upload
-          filters:
-            branches:
-              only: /^master$/
 
   release_production:
     jobs:
@@ -309,16 +257,6 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
-
-  release_production_dashboard:
-    jobs:
-      - release_production_dashboard:
-          context: binary-frontend-artifact-upload
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^dashboard-production.*/
 
   test:
     jobs:

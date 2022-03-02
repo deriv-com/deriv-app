@@ -19,9 +19,6 @@ const PageOverlay = ({
     bold_text_menu_items,
     clean_bold_text_menu_items,
 }) => {
-    const onClick = () => {
-        clean_bold_text_menu_items();
-    };
     const page_overlay_ref = React.useRef();
 
     useOnClickOutside(page_overlay_ref, onClickClose, () => is_open && portal_id);
@@ -43,7 +40,7 @@ const PageOverlay = ({
                                 data-testid='page_overlay_header_close'
                                 className='dc-page-overlay__header-close'
                                 onClick={() => {
-                                    onClick();
+                                    clean_bold_text_menu_items();
                                     onClickClose ? onClickClose() : window.history.back();
                                 }}
                             >

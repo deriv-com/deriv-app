@@ -17,6 +17,7 @@ const SubMenu = ({
     setCurrentSubmenuItemId,
 }) => {
     const [is_expanded, setIsExpanded] = React.useState(false);
+
     const toggleMenu = () => {
         if (is_current_submenu_item) {
             setCurrentSubmenuItemId(is_current_submenu_item.id);

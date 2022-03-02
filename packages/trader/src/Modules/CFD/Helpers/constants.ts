@@ -1,7 +1,7 @@
 import { OSDetect } from '@deriv/shared';
 
-const REAL_DXTRADE_URL = 'https://saas-derivqa.prosp.devexperts.com/';
-const DEMO_DXTRADE_URL = 'https://saas-derivqa.prosp.devexperts.com/';
+const REAL_DXTRADE_URL = 'https://saas-derivqa.prosp.devexperts.com';
+const DEMO_DXTRADE_URL = 'https://saas-derivqa.prosp.devexperts.com';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';

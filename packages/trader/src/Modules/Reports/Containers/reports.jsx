@@ -11,7 +11,7 @@ import {
     SelectNative,
     Loading,
 } from '@deriv/components';
-import { getSelectedRoute, platforms } from '@deriv/shared';
+import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/reports.scss';
@@ -20,9 +20,9 @@ const Reports = ({
     history,
     is_logged_in,
     is_logging_in,
+    is_navigated_from_deriv_go,
     is_visible,
     location,
-    platform,
     routeBackInApp,
     routes,
     setTabIndex,
@@ -71,7 +71,7 @@ const Reports = ({
                 <PageOverlay
                     header={localize('Reports')}
                     onClickClose={onClickClose}
-                    is_from_app={!!platforms[platform]}
+                    is_from_app={is_navigated_from_deriv_go}
                 >
                     <DesktopWrapper>
                         <VerticalTab
@@ -114,9 +114,9 @@ Reports.propTypes = {
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    is_navigated_from_deriv_go: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
-    platform: PropTypes.string,
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setTabIndex: PropTypes.func,
@@ -128,8 +128,8 @@ Reports.propTypes = {
 export default connect(({ client, common, ui }) => ({
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    is_navigated_from_deriv_go: common.is_navigated_from_deriv_go,
     is_visible: ui.is_reports_visible,
-    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     setVisibilityRealityCheck: client.setVisibilityRealityCheck,
     setTabIndex: ui.setReportsTabIndex,

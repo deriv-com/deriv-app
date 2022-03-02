@@ -2,14 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
-import {
-    routes as shared_routes,
-    isMobile,
-    matchRoute,
-    getSelectedRoute,
-    platforms,
-    PlatformContext,
-} from '@deriv/shared';
+import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
@@ -36,10 +29,10 @@ const AccountLogout = ({ logout, history }) => {
 
 const PageOverlayWrapper = ({
     is_dashboard,
+    is_navigated_from_deriv_go,
     list_groups,
     logout,
     onClickClose,
-    platform,
     selected_route,
     subroutes,
 }) => {
@@ -48,7 +41,7 @@ const PageOverlayWrapper = ({
             <PageOverlay
                 header={selected_route.getTitle()}
                 onClickClose={onClickClose}
-                is_from_app={!!platforms[platform]}
+                is_from_app={is_navigated_from_deriv_go}
             >
                 <selected_route.component component_icon={selected_route.icon_component} />
             </PageOverlay>
@@ -75,7 +68,7 @@ const PageOverlayWrapper = ({
     }
 
     return (
-        <PageOverlay header={localize('Settings')} onClickClose={onClickClose} is_from_app={!!platforms[platform]}>
+        <PageOverlay header={localize('Settings')} onClickClose={onClickClose} is_from_app={is_navigated_from_deriv_go}>
             <VerticalTab
                 alignment='center'
                 is_floating
@@ -185,11 +178,11 @@ Account.propTypes = {
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    is_navigated_from_deriv_go: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     logout: PropTypes.func,
-    platform: PropTypes.string,
     routes: PropTypes.arrayOf(PropTypes.object),
     should_allow_authentication: PropTypes.bool,
     toggleAccount: PropTypes.func,
@@ -199,10 +192,10 @@ export default connect(({ client, common, ui }) => ({
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    is_navigated_from_deriv_go: common.is_navigated_from_deriv_go,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,
-    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
     toggleAccount: ui.toggleAccountSettings,

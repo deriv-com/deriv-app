@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, isMobile, platforms, routes } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/account-transfer-receipt.scss';
@@ -11,8 +11,8 @@ const AccountTransferReceipt = ({
     disableApp,
     enableApp,
     history,
+    is_navigated_from_deriv_go,
     loginid,
-    platform,
     receipt,
     resetAccountTransfer,
     selected_from,
@@ -107,7 +107,7 @@ const AccountTransferReceipt = ({
                 </div>
             </div>
             <div className='account-transfer-receipt__crypto--form-submit'>
-                {!platforms[platform] && (
+                {!is_navigated_from_deriv_go && (
                     <Button
                         className='account-transfer-receipt__button'
                         has_effect
@@ -160,8 +160,8 @@ const AccountTransferReceipt = ({
 AccountTransferReceipt.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
+    is_navigated_from_deriv_go: PropTypes.bool,
     loginid: PropTypes.string,
-    platform: PropTypes.string,
     receipt: PropTypes.object,
     resetAccountTransfer: PropTypes.func,
     selected_from: PropTypes.object,
@@ -173,8 +173,8 @@ export default withRouter(
     connect(({ client, common, modules, ui }) => ({
         disableApp: ui.disableApp,
         enableApp: ui.enableApp,
+        is_navigated_from_deriv_go: common.is_navigated_from_deriv_go,
         loginid: client.loginid,
-        platform: common.platform,
         receipt: modules.cashier.account_transfer.receipt,
         resetAccountTransfer: modules.cashier.account_transfer.resetAccountTransfer,
         selected_from: modules.cashier.account_transfer.selected_from,

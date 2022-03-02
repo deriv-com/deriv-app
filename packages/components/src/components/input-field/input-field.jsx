@@ -124,7 +124,7 @@ const InputField = ({
         return new_value;
     };
 
-    const incrementValue = (ev, long_press_step, decimal_point_change) => {
+    const incrementValue = (ev, long_press_step) => {
         if (max_is_disabled) return;
         let increment_value;
 
@@ -150,7 +150,7 @@ const InputField = ({
         updateValue(increment_value, !!long_press_step);
     };
 
-    const calculateDecrementedValue = (long_press_step, decimal_point_change) => {
+    const calculateDecrementedValue = long_press_step => {
         let decrement_value;
         const current_value = local_value || value;
 
@@ -174,11 +174,11 @@ const InputField = ({
         return decrement_value;
     };
 
-    const decrementValue = (ev, long_press_step, decimal_point_change) => {
+    const decrementValue = (ev, long_press_step) => {
         if (min_is_disabled) {
             return;
         }
-        const decrement_value = calculateDecrementedValue(long_press_step, decimal_point_change);
+        const decrement_value = calculateDecrementedValue(long_press_step);
         if (is_negative_disabled && decrement_value < 0) {
             return;
         }

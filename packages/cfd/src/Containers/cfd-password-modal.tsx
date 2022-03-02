@@ -35,7 +35,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from '../Components/success-dialog';
-import '../../sass/app/modules/mt5/cfd.scss';
+import '../sass/app/modules/mt5/cfd.scss';
 import { connect } from '../Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 

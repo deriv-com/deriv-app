@@ -13,7 +13,14 @@ const openStatement = (history, resetPaymentAgent) => {
     resetPaymentAgent();
 };
 
-const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPaymentAgent }) => {
+const PaymentAgentReceipt = ({
+    currency,
+    history,
+    is_navigated_from_deriv_go,
+    loginid,
+    receipt,
+    resetPaymentAgent,
+}) => {
     React.useEffect(() => {
         return () => resetPaymentAgent();
     }, [resetPaymentAgent]);
@@ -107,14 +114,16 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
                 </div>
             )}
             <div className='cashier__form-submit'>
-                <Button
-                    className='cashier__form-submit-button'
-                    has_effect
-                    text={localize('View in statement')}
-                    onClick={() => openStatement(history, resetPaymentAgent)}
-                    secondary
-                    large
-                />
+                {!is_navigated_from_deriv_go && (
+                    <Button
+                        className='cashier__form-submit-button'
+                        has_effect
+                        text={localize('View in statement')}
+                        onClick={() => openStatement(history, resetPaymentAgent)}
+                        secondary
+                        large
+                    />
+                )}
                 <Button
                     className='cashier__form-submit-button cashier__done-button'
                     has_effect
@@ -131,14 +140,16 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
 PaymentAgentReceipt.propTypes = {
     currency: PropTypes.string,
     history: PropTypes.object,
+    is_navigated_from_deriv_go: PropTypes.bool,
     loginid: PropTypes.string,
     receipt: PropTypes.object,
     resetPaymentAgent: PropTypes.func,
 };
 
 export default withRouter(
-    connect(({ client, modules }) => ({
+    connect(({ client, common, modules }) => ({
         currency: client.currency,
+        is_navigated_from_deriv_go: common.is_navigated_from_deriv_go,
         loginid: client.loginid,
         receipt: modules.cashier.payment_agent.receipt,
         resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,

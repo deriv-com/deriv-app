@@ -25,6 +25,7 @@ const AccountLimits = ({
     is_switching,
     is_virtual,
     overlay_ref,
+    is_navigated_from_deriv_go,
     setIsOverlayShown: setIsPopupOverlayShown,
     should_bypass_scrollbars,
     should_show_article,
@@ -116,7 +117,9 @@ const AccountLimits = ({
                         'da-account-limits--app-settings': is_app_settings,
                     })}
                 >
-                    {should_show_article && isMobile() && <AccountLimitsArticle />}
+                    {should_show_article && isMobile() && (
+                        <AccountLimitsArticle is_navigated_from_deriv_go={is_navigated_from_deriv_go} />
+                    )}
                     <div className='da-account-limits__table-wrapper'>
                         <ThemedScrollbars is_bypassed={should_bypass_scrollbars || isMobile()}>
                             <table className='da-account-limits__table'>
@@ -343,6 +346,7 @@ AccountLimits.propTypes = {
     is_app_settings: PropTypes.bool,
     getLimits: PropTypes.func.isRequired,
     is_fully_authenticated: PropTypes.bool.isRequired,
+    is_navigated_from_deriv_go: PropTypes.bool,
     is_switching: PropTypes.bool.isRequired,
     is_virtual: PropTypes.bool.isRequired,
     overlay_ref: PropTypes.shape({ current: PropTypes.any }),

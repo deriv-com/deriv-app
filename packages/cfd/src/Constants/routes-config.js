@@ -8,7 +8,6 @@ const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Module
 //CFD Routes
 const CFD = React.lazy(() => import(/* webpackChunkName: "cfd-route" */ '../Containers/index'));
 
-
 // Order matters
 const initRoutesConfig = () => {
     return [

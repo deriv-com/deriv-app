@@ -1,12 +1,12 @@
 import React from 'react';
-import { routes, makeLazyLoader } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
 
 //CFD Routes
-const CFD = React.lazy(() => import(/* webpackChunkName: "404" */ '../Containers/index'));
+const CFD = React.lazy(() => import(/* webpackChunkName: "cfd-route" */ '../Containers/index'));
 
 
 // Order matters

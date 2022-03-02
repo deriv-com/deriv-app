@@ -14,6 +14,11 @@ const Trader = React.lazy(() => {
     return import(/* webpackChunkName: "trader" */ '@deriv/trader');
 });
 
+const CFD = React.lazy(() => {
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
+});
+
 const Account = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "account" */ '@deriv/account');
@@ -406,13 +411,13 @@ const getModules = ({ is_dashboard }) => {
                       routes: [
                           {
                               path: routes.dxtrade,
-                              component: Trader,
+                              component: CFD,
                               getTitle: () => localize('Deriv X'),
                               is_authenticated: false,
                           },
                           {
                               path: routes.mt5,
-                              component: Trader,
+                              component: CFD,
                               getTitle: () => localize('MT5'),
                               is_authenticated: false,
                           },

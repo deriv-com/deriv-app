@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
 
-//CFD Routes
+// CFD Routes
 const CFD = React.lazy(() => import(/* webpackChunkName: "cfd-route" */ '../Containers/index'));
 
 // Order matters

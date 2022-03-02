@@ -48,6 +48,18 @@ const getModules = ({ is_dashboard }) => {
             getTitle: () => localize('Bot'),
         },
         {
+            path: routes.dxtrade,
+            component: props => <CFD {...props} platform='dxtrade' />,
+            // Don't use `Localize` component since native html tag like `option` cannot render them
+            getTitle: () => localize('Deriv X'),
+        },
+        {
+            path: routes.mt5,
+            component: props => <CFD {...props} platform='mt5' />,
+            // Don't use `Localize` component since native html tag like `option` cannot render them
+            getTitle: () => localize('MT5'),
+        },
+        {
             path: routes.dashboard,
             component: Dashboard,
             is_modal: true,
@@ -411,13 +423,13 @@ const getModules = ({ is_dashboard }) => {
                       routes: [
                           {
                               path: routes.dxtrade,
-                              component: CFD,
+                              component: props => <CFD {...props} platform='dxtrade' />,
                               getTitle: () => localize('Deriv X'),
                               is_authenticated: false,
                           },
                           {
                               path: routes.mt5,
-                              component: CFD,
+                              component: props => <CFD {...props} platform='mt5' />,
                               getTitle: () => localize('MT5'),
                               is_authenticated: false,
                           },

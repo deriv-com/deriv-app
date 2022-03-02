@@ -74,7 +74,15 @@ const MenuLink = ({
             }}
         >
             <Icon className='header__menu-mobile-link-icon' icon={icon} />
-            <span className='header__menu-mobile-link-text'>{text}</span>
+            <span
+                className={
+                    window.location.pathname !== '/'
+                        ? 'header__menu-mobile-link-text-regular'
+                        : 'header__menu-mobile-link-text'
+                }
+            >
+                {text}
+            </span>
             {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
         </BinaryLink>
     );
@@ -112,6 +120,7 @@ const ToggleMenuDrawer = React.forwardRef(
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
         const [is_current_submenu_item_id, setCurrentSubmenuItemId] = React.useState(undefined);
+
         const { is_dashboard } = React.useContext(PlatformContext);
 
         React.useEffect(() => {
@@ -185,6 +194,7 @@ const ToggleMenuDrawer = React.forwardRef(
             }
 
             const has_subroutes = route_config.routes.some(route => route.subroutes);
+            console.log('route_config.path', route_config.path);
 
             return (
                 <MobileDrawer.SubMenu

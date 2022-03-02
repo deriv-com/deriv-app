@@ -16,6 +16,7 @@ const SubMenu = ({
     route_config_path,
 }) => {
     const [is_expanded, setIsExpanded] = React.useState(false);
+
     const toggleMenu = () => {
         const should_expanded = !is_expanded;
         setIsExpanded(should_expanded);

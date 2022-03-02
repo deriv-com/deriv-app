@@ -185,6 +185,7 @@ const ToggleMenuDrawer = React.forwardRef(
             }
 
             const has_subroutes = route_config.routes.some(route => route.subroutes);
+
             return (
                 <MobileDrawer.SubMenu
                     key={idx}
@@ -194,11 +195,7 @@ const ToggleMenuDrawer = React.forwardRef(
                     submenu_suffix_icon='IcChevronRight'
                     onToggle={expandSubMenu}
                     is_current_submenu_item={isCurrentSubMenuItem(route_config.path)}
-                    is_current_submenu_item_id={is_current_submenu_item_id}
                     setCurrentSubmenuItemId={setCurrentSubmenuItemId}
-                    bold_text_menu_items={bold_text_menu_items}
-                    clean_bold_text_menu_items={clean_bold_text_menu_items}
-                    toggle_property_menu_items={toggle_property_menu_items}
                 >
                     {!has_subroutes &&
                         route_config.routes.map((route, index) => {
@@ -218,10 +215,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             text={route.getTitle()}
                                             onClickLink={toggleDrawer}
                                             changeCurrentLanguage={changeCurrentLanguage}
-                                            isSubMenu={true}
                                             is_current_submenu_item_id={is_current_submenu_item_id}
-                                            setCurrentSubmenuItemId={setCurrentSubmenuItemId}
-                                            bold_text_menu_items={bold_text_menu_items}
                                             clean_bold_text_menu_items={clean_bold_text_menu_items}
                                             toggle_property_menu_items={toggle_property_menu_items}
                                         />
@@ -253,10 +247,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             text={subroute.getTitle()}
                                             onClickLink={toggleDrawer}
                                             changeCurrentLanguage={changeCurrentLanguage}
-                                            isSubMenu2={true}
                                             is_current_submenu_item_id={is_current_submenu_item_id}
-                                            setCurrentSubmenuItemId={setCurrentSubmenuItemId}
-                                            bold_text_menu_items={bold_text_menu_items}
                                             clean_bold_text_menu_items={clean_bold_text_menu_items}
                                             toggle_property_menu_items={toggle_property_menu_items}
                                         />
@@ -357,7 +348,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 onClickLink={toggleDrawer}
                                                 changeCurrentLanguage={changeCurrentLanguage}
                                                 cleanBoldItemMenu
-                                                bold_text_menu_items={bold_text_menu_items}
                                                 clean_bold_text_menu_items={clean_bold_text_menu_items}
                                                 toggle_property_menu_items={toggle_property_menu_items}
                                             />

@@ -16,7 +16,6 @@ const PageOverlay = ({
     is_open,
     onClickClose,
     portal_id,
-    bold_text_menu_items,
     clean_bold_text_menu_items,
 }) => {
     const page_overlay_ref = React.useRef();
@@ -88,6 +87,5 @@ PageOverlay.propTypes = {
 };
 
 export default connect(({ menu }) => ({
-    bold_text_menu_items: menu.bold_text_menu_items,
     clean_bold_text_menu_items: menu.clean_bold_text_menu_items,
 }))(withRouter(PageOverlay));

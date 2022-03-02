@@ -31,7 +31,7 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
-    const { general_store, my_ads_store } = useStores();
+    const { floating_rate_store, general_store, my_ads_store } = useStores();
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
 
@@ -51,13 +51,13 @@ const CreateAdForm = () => {
         my_ads_store.setShowAdForm(false);
     };
 
-    const mock_market_feed = '100'; // TODO: Will fetch from API
-
     React.useEffect(() => {
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
         );
+
+        floating_rate_store.setP2PConfig();
 
         return () => {
             disposeApiErrorReaction();
@@ -89,7 +89,7 @@ const CreateAdForm = () => {
                     min_transaction: '',
                     offer_amount: '',
                     payment_info: my_ads_store.payment_info,
-                    price_rate: '-0.01',
+                    price_rate: floating_rate_store.rate_type === 'float' ? '-0.01' : '',
                     type: buy_sell.BUY,
                 }}
                 onSubmit={my_ads_store.handleSubmit}
@@ -147,7 +147,11 @@ const CreateAdForm = () => {
                                         </Field>
                                         <div className='p2p-my-ads__form-summary'>
                                             <CreateAdSummary
-                                                market_feed={my_ads_store.rate_type ? mock_market_feed : null}
+                                                market_feed={
+                                                    floating_rate_store.rate_type === 'float'
+                                                        ? floating_rate_store.exchange_rate
+                                                        : null
+                                                }
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 price_rate={errors.price_rate ? '' : values.price_rate}
                                                 type={values.type}
@@ -198,18 +202,18 @@ const CreateAdForm = () => {
                                             </Field>
                                             <Field name='price_rate'>
                                                 {({ field }) =>
-                                                    my_ads_store.rate_type === 'float' ? (
+                                                    floating_rate_store.rate_type === 'float' ? (
                                                         <FloatingRate
                                                             class_name='p2p-my-ads__form-field'
                                                             error_messages={errors.price_rate}
-                                                            exchange_rate={mock_market_feed}
+                                                            exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
                                                             offset={{
                                                                 upper_limit:
-                                                                    my_ads_store.float_rate_offset_limit.upper_limit,
+                                                                    floating_rate_store.float_rate_offset_limit,
                                                                 lower_limit:
-                                                                    my_ads_store.float_rate_offset_limit.lower_limit,
+                                                                    floating_rate_store.float_rate_offset_limit * -1,
                                                             }}
                                                             required
                                                             changeHandler={e => {

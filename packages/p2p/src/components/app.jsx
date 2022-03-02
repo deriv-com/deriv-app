@@ -11,7 +11,7 @@ import { setLanguage } from './i18next';
 import './app.scss';
 
 const App = props => {
-    const { general_store, order_store } = useStores();
+    const { general_store, order_store, floating_rate_store } = useStores();
     const { className, history, lang, order_id, server_time, websocket_api } = props;
 
     React.useEffect(() => {
@@ -43,6 +43,8 @@ const App = props => {
                 general_store.setActiveIndex(general_store.path.my_ads);
             }
         });
+
+        floating_rate_store.setP2PConfig();
 
         return () => general_store.onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps

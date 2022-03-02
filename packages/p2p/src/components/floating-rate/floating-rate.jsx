@@ -32,6 +32,7 @@ const FloatingRate = ({
                         'floating-rate__input',
                         error_messages ? 'floating-rate__input__error_field' : ''
                     )}
+                    decimal_point_change={2}
                     id='floating_rate_input'
                     inline_prefix='%'
                     is_autocomplete_disabled

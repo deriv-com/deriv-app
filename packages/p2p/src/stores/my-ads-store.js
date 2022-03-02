@@ -30,8 +30,6 @@ export default class MyAdsStore extends BaseStore {
     @observable payment_info = '';
     @observable selected_ad_id = '';
     @observable show_ad_form = false;
-    @observable rate_type = 'float'; // TODO: Integrate rate type from API
-    @observable float_rate_offset_limit = { upper_limit: 6, lower_limit: -3 }; // TODO: Integrate offset limits from API
 
     @action.bound
     getAccountStatus() {
@@ -117,7 +115,6 @@ export default class MyAdsStore extends BaseStore {
         if (values.default_advert_description) {
             create_advert.description = values.default_advert_description;
         }
-
         const createAd = () => {
             requestWS(create_advert).then(response => {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads
@@ -293,16 +290,6 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setRateType(rate_type) {
-        this.rate_type = rate_type;
-    }
-
-    @action.bound
-    setFloatRateOffsetLimit(rate_offset_limit) {
-        this.float_rate_offset_limit = rate_offset_limit;
-    }
-
-    @action.bound
     setDeleteErrorMessage(delete_error_message) {
         this.delete_error_message = delete_error_message;
     }
@@ -406,7 +393,7 @@ export default class MyAdsStore extends BaseStore {
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    this.rate_type !== 'float'
+                    this.root_store.floating_rate_store.rate_type !== 'float'
                         ? v > 0 &&
                           decimalValidator(v) &&
                           countDecimalPlaces(v) <=
@@ -427,7 +414,9 @@ export default class MyAdsStore extends BaseStore {
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
             payment_info: localize('Payment instructions'),
-            price_rate: this.rate_type ? localize('Floating rate') : localize('Fixed rate'),
+            price_rate: this.root_store.floating_rate_store.rate_type
+                ? localize('Floating rate')
+                : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];

@@ -7,15 +7,31 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
+const iff = (condition, then, other_wise) => (condition ? then : other_wise);
+
 const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
 
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
-    const display_price_rate = price_rate ? formatMoney(local_currency_config.currency, price_rate, true) : '';
-    const display_total = market_feed
-        ? parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2)
-        : offer_amount && price_rate
+
+    const display_price_rate = iff(
+        market_feed && price_rate,
+        formatMoney(local_currency_config.currency, parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2), true),
+        price_rate
+    )
+        ? formatMoney(local_currency_config.currency, price_rate, true)
+        : '';
+
+    const display_total = iff(
+        market_feed && offer_amount && price_rate,
+        formatMoney(
+            local_currency_config.currency,
+            offer_amount * parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
+            true
+        ),
+        offer_amount && price_rate
+    )
         ? formatMoney(local_currency_config.currency, offer_amount * price_rate, true)
         : '';
 

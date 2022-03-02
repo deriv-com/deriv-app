@@ -18,6 +18,7 @@ const InputField = ({
     current_focus,
     data_tip,
     data_value,
+    decimal_point_change,
     error_messages,
     error_message_alignment,
     fractional_digits,
@@ -123,7 +124,7 @@ const InputField = ({
         return new_value;
     };
 
-    const incrementValue = (ev, long_press_step) => {
+    const incrementValue = (ev, long_press_step, decimal_point_change) => {
         if (max_is_disabled) return;
         let increment_value;
 
@@ -139,15 +140,17 @@ const InputField = ({
 
             increment_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
-            const new_value = parseFloat(+(current_value || 0)) + parseFloat(1 * 10 ** (0 - decimal_places));
-            increment_value = parseFloat(new_value).toFixed(decimal_places);
+            const new_value =
+                parseFloat(+(current_value || 0)) +
+                parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+            increment_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
             increment_value = parseFloat(+(current_value || 0) + 1).toFixed(decimal_places);
         }
         updateValue(increment_value, !!long_press_step);
     };
 
-    const calculateDecrementedValue = long_press_step => {
+    const calculateDecrementedValue = (long_press_step, decimal_point_change) => {
         let decrement_value;
         const current_value = local_value || value;
 
@@ -161,19 +164,21 @@ const InputField = ({
 
             decrement_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
-            const new_value = parseFloat(+(current_value || 0)) - parseFloat(1 * 10 ** (0 - decimal_places));
-            decrement_value = parseFloat(new_value).toFixed(decimal_places);
+            const new_value =
+                parseFloat(+(current_value || 0)) -
+                parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+            decrement_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
             decrement_value = parseFloat(+(current_value || 0) - 1).toFixed(decimal_places);
         }
         return decrement_value;
     };
 
-    const decrementValue = (ev, long_press_step) => {
+    const decrementValue = (ev, long_press_step, decimal_point_change) => {
         if (min_is_disabled) {
             return;
         }
-        const decrement_value = calculateDecrementedValue(long_press_step);
+        const decrement_value = calculateDecrementedValue(long_press_step, decimal_point_change);
         if (is_negative_disabled && decrement_value < 0) {
             return;
         }
@@ -324,6 +329,7 @@ InputField.propTypes = {
     classNamePrefix: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    decimal_point_change: PropTypes.number,
     error_messages: PropTypes.array,
     error_message_alignment: PropTypes.string,
     fractional_digits: PropTypes.number,

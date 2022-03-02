@@ -19,7 +19,7 @@ class RootStore {
         this.order_store = new OrderStore(this);
         this.order_details_store = new OrderDetailsStore(this);
         this.sendbird_store = new SendbirdStore(this);
-        this.floating_rate_store = new FloatingRateStore(this.general_store);
+        this.floating_rate_store = new FloatingRateStore(this);
     }
 }
 

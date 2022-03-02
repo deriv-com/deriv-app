@@ -163,11 +163,11 @@ export const setUrlLanguage = lang => {
 export const getStaticUrl = (
     path = '',
     options = {
-        is_dashboard: false,
+        is_appstore: false,
     },
     is_document = false
 ) => {
-    const host = options.is_dashboard ? deriv_urls.DERIV_DASHBOARD_PRODUCTION : deriv_urls.DERIV_COM_PRODUCTION;
+    const host = options.is_appstore ? deriv_urls.DERIV_DASHBOARD_PRODUCTION : deriv_urls.DERIV_COM_PRODUCTION;
     let lang = default_language?.toLowerCase();
 
     if (lang && lang !== 'en') {

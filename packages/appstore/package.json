@@ -1,7 +1,7 @@
 {
-    "name": "@deriv/dashboard",
+    "name": "@deriv/appstore",
     "version": "0.0.4",
-    "description": "Deriv dashboard",
+    "description": "Deriv Appstore",
     "main": "lib/index.js",
     "private": false,
     "publishConfig": {

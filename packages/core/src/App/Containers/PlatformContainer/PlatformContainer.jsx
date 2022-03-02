@@ -1,16 +1,16 @@
 import React from 'react';
 import { PlatformContext } from '@deriv/shared';
 
-const DERIV_DASHBOARD_KEY = 'is_dashboard';
+const DERIV_DASHBOARD_KEY = 'is_appstore';
 
 const PlatformContainer = ({ ...props }) => {
-    const is_dashboard = window.localStorage.getItem(DERIV_DASHBOARD_KEY)
+    const is_appstore = window.localStorage.getItem(DERIV_DASHBOARD_KEY)
         ? window.localStorage.getItem(DERIV_DASHBOARD_KEY) === 'true'
-        : process.env.IS_DASHBOARD;
-    const [deriv_dashboard, setDerivDashboard] = React.useState(is_dashboard);
+        : process.env.IS_APPSTORE;
+    const [deriv_dashboard, setDerivDashboard] = React.useState(is_appstore);
 
     const platform_store = {
-        is_dashboard: deriv_dashboard,
+        is_appstore: deriv_dashboard,
         setDerivDashboard,
         DERIV_DASHBOARD_KEY,
     };

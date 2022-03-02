@@ -55,7 +55,7 @@
         "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis ;}; f",
         "build": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build $2 ;}; f",
         "build:publish": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
-        "build:dashboard": "export IS_DASHBOARD=true && npm run build && export IS_DASHBOARD=",
+        "build:appstore": "export IS_APPSTORE=true && npm run build && export IS_APPSTORE=",
         "build:local": "f () { lerna exec --scope @deriv/trader --scope @deriv/bot-web-ui --parallel -- npm run build $1 ;}; f",
         "build:travis": "lerna exec --scope @deriv/shared --scope @deriv/components --scope @deriv/translations  --scope @deriv/cashier --scope @deriv/account --scope @deriv/p2p -- npm run build:travis",
         "build:prod": "export NODE_ENV=staging && npm run build && export NODE_ENV=",

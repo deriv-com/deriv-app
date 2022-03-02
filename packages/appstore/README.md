@@ -1,5 +1,5 @@
 <h1 align="center">
-  @deriv/dashboard
+  @deriv/appstore
 </h1>
 
 **In this docuemnt**
@@ -43,17 +43,17 @@
 2.  **To build publish file:**
 
     ```sh
-    npm run build:publish dashboard
+    npm run build:publish appstore
     ```
 
 3.  **Libary usage:**
 
     ```JS
         import React from 'react'
-        import Dashboard from '@deriv/dashboard';
+        import Appstore from '@deriv/appstore';
 
         const Component = ({client, ServerTIme, ui, WS, config}) => {
-            return <Dashboard client={client} server_time={ServerTime} ui={ui} ws={WS} config={config} />;
+            return <Appstore client={client} server_time={ServerTime} ui={ui} ws={WS} config={config} />;
         }
 
 

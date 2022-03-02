@@ -122,7 +122,7 @@
 /packages/publisher/**/*                                        @nijil-binary
 
 # ==============================================================
-#  deriv-app/dashboard
+#  deriv-app/appstore
 # ==============================================================
 
-/packages/dashboard/**/*                                        @matin-binary @akmal-binary
+/packages/appstore/**/*                                        @matin-binary @balakrishna-binary @njazuli-deriv

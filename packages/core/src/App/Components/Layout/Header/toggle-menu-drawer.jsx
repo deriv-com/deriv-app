@@ -64,7 +64,15 @@ const MenuLink = ({
             onClick={onClickLink}
         >
             <Icon className='header__menu-mobile-link-icon' icon={icon} />
-            <span className='header__menu-mobile-link-text'>{text}</span>
+            <span
+                className={
+                    window.location.pathname !== '/'
+                        ? 'header__menu-mobile-link-text-regular'
+                        : 'header__menu-mobile-link-text'
+                }
+            >
+                {text}
+            </span>
             {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
         </BinaryLink>
     );
@@ -178,6 +186,7 @@ const ToggleMenuDrawer = React.forwardRef(
                     submenu_title={route_config.getTitle()}
                     submenu_suffix_icon='IcChevronRight'
                     onToggle={expandSubMenu}
+                    route_config_path={route_config.path}
                 >
                     {!has_subroutes &&
                         route_config.routes.map((route, index) => {
@@ -337,9 +346,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     toggleTheme(!is_dark_mode);
                                                 }}
                                             >
-                                                <div
-                                                    className={classNames('header__menu-mobile-link')}
-                                                >
+                                                <div className={classNames('header__menu-mobile-link')}>
                                                     <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
                                                     <span className='header__menu-mobile-link-text'>
                                                         {localize('Dark theme')}

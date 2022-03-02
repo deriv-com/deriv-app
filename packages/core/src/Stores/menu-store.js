@@ -5,6 +5,11 @@ import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import BaseStore from './base-store';
 
+const primary_array_menu_items = [
+    { id: 0, route_path: '/reports', isShowBold: false },
+    { id: 1, route_path: '/account', isShowBold: false },
+    { id: 2, route_path: '/cashier', isShowBold: false },
+];
 export default class MenuStore extends BaseStore {
     @observable extensions = [
         {
@@ -16,21 +21,21 @@ export default class MenuStore extends BaseStore {
         },
     ];
 
-    @observable bold_text_menu_items = [];
+    @observable bold_text_menu_items = primary_array_menu_items;
 
     @action.bound
     clean_bold_text_menu_items() {
-        console.log(this.bold_text_menu_items = [
-            {id: 0, label: localize('Reports'), isShowBold: false}, 
-            {id: 1, label: localize('Account Settings'), isShowBold: false}, 
-            {id: 2, label: localize('Cashier'), isShowBold: false}, 
-        ]);
-        return this.bold_text_menu_items = [
-            {id: 0, label: localize('Reports'), isShowBold: false}, 
-            {id: 1, label: localize('Account Settings'), isShowBold: false}, 
-            {id: 2, label: localize('Cashier'), isShowBold: false}, 
-        ];
+        return (this.bold_text_menu_items = primary_array_menu_items);
     }
+
+    @action.bound
+    toggle_property_menu_items = (id, propName, arr = primary_array_menu_items) => {
+        if (id === undefined) return;
+        const idx = arr.findIndex(el => el.id === id);
+        const oldItem = arr[idx];
+        const newItem = { ...oldItem, [propName]: !oldItem[propName] };
+        return (this.bold_text_menu_items = [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)]);
+    };
 
     @action.bound
     attach(menu) {

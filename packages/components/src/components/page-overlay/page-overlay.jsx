@@ -8,10 +8,20 @@ import { useOnClickOutside } from '../../hooks';
 import { connect } from 'Stores/connect';
 import { withRouter } from 'react-router-dom';
 
-const PageOverlay = ({ children, header, id, is_from_app = false, is_open, onClickClose, portal_id, bold_text_menu_items, clean_bold_text_menu_items }) => {
+const PageOverlay = ({
+    children,
+    header,
+    id,
+    is_from_app = false,
+    is_open,
+    onClickClose,
+    portal_id,
+    bold_text_menu_items,
+    clean_bold_text_menu_items,
+}) => {
     const onClick = () => {
         clean_bold_text_menu_items();
-}
+    };
     const page_overlay_ref = React.useRef();
 
     useOnClickOutside(page_overlay_ref, onClickClose, () => is_open && portal_id);
@@ -32,9 +42,9 @@ const PageOverlay = ({ children, header, id, is_from_app = false, is_open, onCli
                             <div
                                 data-testid='page_overlay_header_close'
                                 className='dc-page-overlay__header-close'
-                                onClick={()=> {
-                                    onClick(); 
-                                    onClickClose ? onClickClose() : window.history.back()
+                                onClick={() => {
+                                    onClick();
+                                    onClickClose ? onClickClose() : window.history.back();
                                 }}
                             >
                                 <Icon icon='IcCross' />
@@ -84,4 +94,3 @@ export default connect(({ menu }) => ({
     bold_text_menu_items: menu.bold_text_menu_items,
     clean_bold_text_menu_items: menu.clean_bold_text_menu_items,
 }))(withRouter(PageOverlay));
-;

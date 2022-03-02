@@ -13,16 +13,12 @@ const SubMenu = ({
     submenu_icon,
     submenu_title,
     submenu_suffix_icon,
-    is_bold_text,
     is_current_submenu_item,
-    setIsBoldText,
-    is_current_submenu_item_id, 
-    setCurrentSubmenuItemId
+    setCurrentSubmenuItemId,
 }) => {
     const [is_expanded, setIsExpanded] = React.useState(false);
-
     const toggleMenu = () => {
-        if(is_current_submenu_item){
+        if (is_current_submenu_item) {
             setCurrentSubmenuItemId(is_current_submenu_item.id);
         }
         const should_expanded = !is_expanded;
@@ -65,9 +61,7 @@ SubMenu.propTypes = {
     submenu_toggle_class: PropTypes.string,
 };
 
-const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_title }) => {
-
-    return(
+const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_title }) => (
     <CSSTransition
         in={is_expanded}
         classNames={{
@@ -97,7 +91,6 @@ const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_t
         </div>
     </CSSTransition>
 );
-}
 
 SubMenuList.propTypes = {
     children: PropTypes.node,

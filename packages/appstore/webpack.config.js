@@ -1,13 +1,9 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const publisher_utils = require('@deriv/publisher/utils');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
-const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 
 module.exports = function () {
     return {
@@ -19,7 +15,7 @@ module.exports = function () {
             path: path.resolve(__dirname, 'lib'),
             filename: 'index.js',
             libraryExport: 'default',
-            library: '@deriv/dashboard',
+            library: '@deriv/appstore',
             libraryTarget: 'umd',
         },
         resolve: {
@@ -31,7 +27,6 @@ module.exports = function () {
                 Stores: path.resolve(__dirname, 'src/stores'),
                 Types: path.resolve(__dirname, 'src/types'),
                 Utils: path.resolve(__dirname, 'src/utils'),
-                ...publisher_utils.getLocalDerivPackageAliases(__dirname, is_publishing),
             },
             extensions: ['.ts', '.tsx', '.js'],
         },
@@ -75,14 +70,6 @@ module.exports = function () {
                     test: /\.(sc|sa|c)ss$/,
                     use: [
                         'style-loader',
-                        ...(is_publishing
-                            ? [
-                                  {
-                                      loader: MiniCssExtractPlugin.loader,
-                                  },
-                                  '@deriv/publisher/utils/css-unit-loader.js',
-                              ]
-                            : []),
                         {
                             loader: 'css-loader',
                             options: {
@@ -117,12 +104,6 @@ module.exports = function () {
                 },
             ],
         },
-        plugins: [
-            // TODO: bundle dashboard assets with webpack visibility and add contenthash
-            // to thier filename like other packages to avoid caching issue.
-            ...(is_publishing ? [new MiniCssExtractPlugin({ filename: 'main.css' })] : []),
-            // ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
-        ],
         optimization: {
             minimize: is_release,
             minimizer: is_release
@@ -131,24 +112,19 @@ module.exports = function () {
                           test: /\.js$/,
                           parallel: 2,
                       }),
-                      new CssMinimizerPlugin()
+                      new CssMinimizerPlugin(),
                   ]
                 : [],
         },
         devtool: is_release ? undefined : 'eval-cheap-module-source-map',
         externals: [
             {
-                ...publisher_utils.getLocalDerivPackageExternals(__dirname, is_publishing, {
-                    // Include these in both published (Binary Static) and non-published (Deriv.app) builds.
-                    react: true,
-                    'react-dom': true,
-
-                    // Only include these in Binary Static as it doesn't have these dependencies.
-                    classnames: !is_publishing,
-                    mobx: !is_publishing,
-                    'react-router': !is_publishing,
-                    'react-router-dom': !is_publishing,
-                }),
+                react: true,
+                'react-dom': true,
+                classnames: true,
+                mobx: true,
+                'react-router': true,
+                'react-router-dom': true,
             },
         ],
     };

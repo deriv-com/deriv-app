@@ -14,7 +14,6 @@
         "node": "^14.17.1"
     },
     "scripts": {
-        "test:typecheck": "tsc --noEmit --preserveWatchOutput",
         "build": "rimraf lib && webpack --progress",
         "build:publish": "npm run publish_prepare; deriv-publisher postpublish",
         "build:travis": "rimraf lib && webpack",

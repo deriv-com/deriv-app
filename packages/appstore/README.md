@@ -160,7 +160,7 @@ In general, try to append any new types to these files before creating a new `*.
 
 ## Types vs Interfaces
 
-With the latest typescript version, functionalities and capabilities of both types and interfaces become more similar. Hence for dashboard project, here are the cases when to use types or interfaces
+With the latest typescript version, functionalities and capabilities of both types and interfaces become more similar. Hence for appstore project, here are the cases when to use types or interfaces
 
 Do use types to typecheck react proptypes object
 
@@ -220,7 +220,7 @@ type TInstruments = {
 
 ## Gotchas
 
-In @deriv/dashboard we no longer use a `connect` function to inject props into our components, instead, we use hooks for everything (`useStores`). In addition, if you're rendering observables you will have to wrap your component in an `observer` call imported from `mobx-react-lite` to ensure the stores and UI are synchronised (i.e. it will re-render when an observable change).
+In @deriv/appstore we no longer use a `connect` function to inject props into our components, instead, we use hooks for everything (`useStores`). In addition, if you're rendering observables you will have to wrap your component in an `observer` call imported from `mobx-react-lite` to ensure the stores and UI are synchronised (i.e. it will re-render when an observable change).
 
 A couple of things to remember:
 

@@ -8,7 +8,7 @@ module.exports = function (env) {
         context: path.resolve(__dirname, '../'),
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
-            cfd: path.resolve(__dirname, '../src', 'index.js'),
+            cfd: path.resolve(__dirname, '../src', 'index.tsx'),
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

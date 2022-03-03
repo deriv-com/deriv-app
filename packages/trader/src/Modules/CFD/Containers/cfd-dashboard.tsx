@@ -35,10 +35,10 @@ import { History } from 'history';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
-      label?: string;
-      hash?: string;
+        label?: string;
+        hash?: string;
     }
-  };
+}
 
 type TLoadTab = {
     children: React.ReactNode;

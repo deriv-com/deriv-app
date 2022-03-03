@@ -2,7 +2,7 @@
     "name": "@deriv/appstore",
     "version": "0.0.4",
     "description": "Deriv Appstore",
-    "main": "lib/index.js",
+    "main": "lib/appstore/js/index.js",
     "private": false,
     "publishConfig": {
         "access": "public"

@@ -94,7 +94,7 @@ const Endpoint = () => {
                             <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
                                 <Checkbox
                                     {...field}
-                                    label='Enable Dashboard'
+                                    label='Enable Appstore'
                                     value={values.is_appstore_enabled}
                                     onChange={e => {
                                         handleChange(e);

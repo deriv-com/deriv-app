@@ -1,8 +1,7 @@
 {
     "compilerOptions": {
-        /* Visit https://aka.ms/tsconfig.json to read more about this file */
-        "target": "es2020",
-        "module": "es2020",
+        "target": "es5",
+        "module": "esnext",
         "jsx": "react",
         "sourceMap": true,
         "removeComments": true,

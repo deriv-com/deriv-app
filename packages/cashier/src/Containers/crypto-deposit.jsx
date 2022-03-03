@@ -199,7 +199,7 @@ const CryptoDeposit = ({
                             (currency === 'ETH' && option_list_value === option_list[4].value) ||
                             (['USDC', 'eUSDT'].includes(currency) && option_list_value === option_list[3].value)) && (
                             <>
-                                <QRCode className='qrcode' value={deposit_address} size={160} />
+                                <QRCode className='qrcode' value={deposit_address} size={160} includeMargin />
                                 <div className='crypto-deposit__clipboard-wrapper'>
                                     <Text
                                         className='crypto-deposit__address-hash'

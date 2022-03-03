@@ -38,6 +38,8 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const amount_dealt = amount - remaining_amount;
     const is_buy_advert = type === buy_sell.BUY;
 
+    const enable_action_point = rate_type === 'fixed' && floating_rate_store.change_ad_alert;
+
     const onClickActivateDeactivate = () => {
         my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
     };
@@ -248,10 +250,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     <Table.Cell>
                         <div className='p2p-my-ads__table-status'>
                             <AdStatus is_active={!!is_advert_active} />
-                            <Icon icon='IcAlertWarning' size={16} />
-                            {/* {rate_type === 'fixed' && floating_rate_store.change_ad_alert && (
-                                <Icon icon='IcAlertWarning' size={16} />
-                            )} */}
+                            {enable_action_point && (
+                                <Icon
+                                    icon='IcAlertWarning'
+                                    size={16}
+                                    className='p2p-my-ads__table-status__action-point'
+                                />
+                            )}
                         </div>
                     </Table.Cell>
                     {is_popover_actions_visible && (
@@ -285,7 +290,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     </Popover>
                                 </div>
                             )}
-                            {!is_advert_active && (
+                            {(!is_advert_active || enable_action_point) && (
                                 <div onClick={onClickEdit}>
                                     <Popover
                                         alignment='bottom'

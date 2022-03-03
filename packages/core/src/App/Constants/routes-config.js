@@ -29,9 +29,9 @@ const Bot = React.lazy(() => {
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });
 
-const Dashboard = React.lazy(() => {
+const AppStore = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "dashboard" */ 'Modules/Dashboard');
+    return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
 });
 
 const getModules = ({ is_appstore }) => {
@@ -44,44 +44,44 @@ const getModules = ({ is_appstore }) => {
         },
         {
             path: routes.dashboard,
-            component: Dashboard,
+            component: AppStore,
             is_modal: true,
             getTitle: () => localize('Dashboard'),
             routes: [
                 {
                     path: routes.home,
-                    component: Dashboard,
+                    component: AppStore,
                     icon_component: 'IcUserOutline',
                     getTitle: () => localize('Home'),
                 },
                 {
                     path: routes.my_apps,
-                    component: Dashboard,
+                    component: AppStore,
                     is_modal: true,
                     icon_component: 'IcUserOutline',
                     getTitle: () => localize('My Apps'),
                 },
                 {
                     path: routes.explore,
-                    component: Dashboard,
+                    component: AppStore,
                     icon_component: 'IcWalletExplore',
                     getTitle: () => localize('Explore'),
                 },
                 {
                     path: routes.about_us,
-                    component: Dashboard,
+                    component: AppStore,
                     getTitle: () => localize('About Us'),
                 },
                 {
                     path: routes.resources,
-                    component: Dashboard,
+                    component: AppStore,
                     getTitle: () => localize('Resources'),
                 },
             ],
         },
         {
             path: routes.wallets,
-            component: Dashboard,
+            component: AppStore,
             is_modal: true,
             icon_component: 'IcWalletWallets',
             getTitle: () => localize('Wallets'),
@@ -110,7 +110,7 @@ const getModules = ({ is_appstore }) => {
         },
         {
             path: routes.platforms,
-            component: Dashboard,
+            component: AppStore,
             is_modal: true,
             icon_component: 'IcWalletPlatforms',
             getTitle: () => localize('Platforms'),
@@ -159,7 +159,7 @@ const getModules = ({ is_appstore }) => {
         },
         {
             path: routes.trade_types,
-            component: Dashboard,
+            component: AppStore,
             is_modal: true,
             icon_component: 'IcWalletTradeTypes',
             getTitle: () => localize('Trade Types'),
@@ -183,7 +183,7 @@ const getModules = ({ is_appstore }) => {
         },
         {
             path: routes.markets,
-            component: Dashboard,
+            component: AppStore,
             is_modal: true,
             icon_component: 'IcWalletMarkets',
             getTitle: () => localize('Markets'),
@@ -374,27 +374,27 @@ const getModules = ({ is_appstore }) => {
             ...(is_appstore
                 ? {
                       path: routes.dashboard,
-                      component: Dashboard,
+                      component: AppStore,
                       getTitle: () => localize('Dashboard'),
                       routes: [
                           {
                               path: routes.explore,
-                              component: Dashboard,
+                              component: AppStore,
                               getTitle: () => localize('Explore'),
                           },
                           {
                               path: routes.about_us,
-                              component: Dashboard,
+                              component: AppStore,
                               getTitle: () => localize('About Us'),
                           },
                           {
                               path: routes.resources,
-                              component: Dashboard,
+                              component: AppStore,
                               getTitle: () => localize('Resources'),
                           },
                           {
                               path: routes.platform_dmt5_synthetic,
-                              component: Dashboard,
+                              component: AppStore,
                               getTitle: () => localize('DMT5 Synthetic'),
                           },
                       ],

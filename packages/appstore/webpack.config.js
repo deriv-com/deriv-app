@@ -8,15 +8,16 @@ const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 module.exports = function () {
     return {
         entry: {
-            index: path.resolve(__dirname, 'src', 'index.ts'),
+            index: path.resolve(__dirname, 'src', 'index.tsx'),
         },
         mode: is_release ? 'production' : 'development',
         output: {
             path: path.resolve(__dirname, 'lib'),
-            filename: 'index.js',
+            filename: 'appstore/js/[name].js',
             libraryExport: 'default',
             library: '@deriv/appstore',
             libraryTarget: 'umd',
+            chunkFilename: 'appstore/js/appstore.[name].[contenthash].js',
         },
         resolve: {
             alias: {
@@ -123,8 +124,13 @@ module.exports = function () {
                 'react-dom': true,
                 classnames: true,
                 mobx: true,
+                'mobx-react-lite': true,
                 'react-router': true,
                 'react-router-dom': true,
+                '@deriv/shared': true,
+                '@deriv/components': true,
+                '@deriv/translations': true,
+                '@deriv/account': true,
             },
         ],
     };

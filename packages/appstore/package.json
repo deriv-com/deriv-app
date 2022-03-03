@@ -15,7 +15,6 @@
     },
     "scripts": {
         "build": "rimraf lib && webpack --progress",
-        "build:publish": "npm run publish_prepare; deriv-publisher postpublish",
         "build:travis": "rimraf lib && webpack",
         "serve": "rimraf lib && concurrently \"cross-env BUILD_MODE='serve' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
         "start": "rimraf lib && npm run test && npm run serve",
@@ -24,8 +23,6 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "publish_package": "npm run publish_prepare && npm publish; deriv-publisher postpublish",
-        "publish_prepare": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --progress",
         "test:eslint": "eslint \"./src/**/*.?(ts|tsx)\""
     },
     "author": "",

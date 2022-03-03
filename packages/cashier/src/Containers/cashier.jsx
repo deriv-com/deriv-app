@@ -28,7 +28,7 @@ const Cashier = ({
     is_loading,
     is_logged_in,
     is_logging_in,
-    if_from_derivgo,
+    is_from_derivgo,
     is_onramp_tab_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
@@ -117,7 +117,7 @@ const Cashier = ({
             <AccountPromptDialog />
             <ErrorDialog />
             <div className='cashier'>
-                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={if_from_derivgo}>
+                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
@@ -187,7 +187,7 @@ Cashier.propTypes = {
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    if_from_derivgo: PropTypes.bool,
+    is_from_derivgo: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
@@ -214,7 +214,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_loading: modules.cashier.general_store.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    if_from_derivgo: common.if_from_derivgo,
+    is_from_derivgo: common.is_from_derivgo,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,

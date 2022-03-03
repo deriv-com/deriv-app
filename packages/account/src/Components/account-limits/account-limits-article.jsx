@@ -4,13 +4,13 @@ import { StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import AccountArticle from 'Components/article/article.jsx';
 
-const AccountLimitsArticle = ({ if_from_derivgo }) => {
+const AccountLimitsArticle = ({ is_from_derivgo }) => {
     const getDescription = () => {
         const description = [
             <Localize key={0} i18n_default_text='These are default limits that we apply to your accounts.' />,
         ];
 
-        if (!if_from_derivgo) {
+        if (!is_from_derivgo) {
             description.push(
                 <Localize
                     key={1}
@@ -26,7 +26,7 @@ const AccountLimitsArticle = ({ if_from_derivgo }) => {
 };
 
 AccountLimitsArticle.propTypes = {
-    if_from_derivgo: PropTypes.bool,
+    is_from_derivgo: PropTypes.bool,
 };
 
 export default AccountLimitsArticle;

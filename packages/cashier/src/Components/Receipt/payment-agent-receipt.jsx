@@ -13,7 +13,7 @@ const openStatement = (history, resetPaymentAgent) => {
     resetPaymentAgent();
 };
 
-const PaymentAgentReceipt = ({ currency, history, if_from_derivgo, loginid, receipt, resetPaymentAgent }) => {
+const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, loginid, receipt, resetPaymentAgent }) => {
     React.useEffect(() => {
         return () => resetPaymentAgent();
     }, [resetPaymentAgent]);
@@ -107,7 +107,7 @@ const PaymentAgentReceipt = ({ currency, history, if_from_derivgo, loginid, rece
                 </div>
             )}
             <div className='cashier__form-submit'>
-                {!if_from_derivgo && (
+                {!is_from_derivgo && (
                     <Button
                         className='cashier__form-submit-button'
                         has_effect
@@ -133,7 +133,7 @@ const PaymentAgentReceipt = ({ currency, history, if_from_derivgo, loginid, rece
 PaymentAgentReceipt.propTypes = {
     currency: PropTypes.string,
     history: PropTypes.object,
-    if_from_derivgo: PropTypes.bool,
+    is_from_derivgo: PropTypes.bool,
     loginid: PropTypes.string,
     receipt: PropTypes.object,
     resetPaymentAgent: PropTypes.func,
@@ -142,7 +142,7 @@ PaymentAgentReceipt.propTypes = {
 export default withRouter(
     connect(({ client, common, modules }) => ({
         currency: client.currency,
-        if_from_derivgo: common.if_from_derivgo,
+        is_from_derivgo: common.is_from_derivgo,
         loginid: client.loginid,
         receipt: modules.cashier.payment_agent.receipt,
         resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,

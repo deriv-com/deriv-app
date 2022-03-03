@@ -11,7 +11,7 @@ const AccountTransferReceipt = ({
     disableApp,
     enableApp,
     history,
-    if_from_derivgo,
+    is_from_derivgo,
     loginid,
     receipt,
     resetAccountTransfer,
@@ -107,7 +107,7 @@ const AccountTransferReceipt = ({
                 </div>
             </div>
             <div className='account-transfer-receipt__crypto--form-submit'>
-                {!if_from_derivgo && (
+                {!is_from_derivgo && (
                     <Button
                         className='account-transfer-receipt__button'
                         has_effect
@@ -160,7 +160,7 @@ const AccountTransferReceipt = ({
 AccountTransferReceipt.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
-    if_from_derivgo: PropTypes.bool,
+    is_from_derivgo: PropTypes.bool,
     loginid: PropTypes.string,
     receipt: PropTypes.object,
     resetAccountTransfer: PropTypes.func,
@@ -173,7 +173,7 @@ export default withRouter(
     connect(({ client, common, modules, ui }) => ({
         disableApp: ui.disableApp,
         enableApp: ui.enableApp,
-        if_from_derivgo: common.if_from_derivgo,
+        is_from_derivgo: common.is_from_derivgo,
         loginid: client.loginid,
         receipt: modules.cashier.account_transfer.receipt,
         resetAccountTransfer: modules.cashier.account_transfer.resetAccountTransfer,

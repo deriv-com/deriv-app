@@ -29,7 +29,7 @@ const AccountLogout = ({ logout, history }) => {
 
 const PageOverlayWrapper = ({
     is_dashboard,
-    if_from_derivgo,
+    is_from_derivgo,
     list_groups,
     logout,
     onClickClose,
@@ -38,7 +38,7 @@ const PageOverlayWrapper = ({
 }) => {
     if (isMobile() && selected_route) {
         return (
-            <PageOverlay header={selected_route.getTitle()} onClickClose={onClickClose} is_from_app={if_from_derivgo}>
+            <PageOverlay header={selected_route.getTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                 <selected_route.component component_icon={selected_route.icon_component} />
             </PageOverlay>
         );
@@ -64,7 +64,7 @@ const PageOverlayWrapper = ({
     }
 
     return (
-        <PageOverlay header={localize('Settings')} onClickClose={onClickClose} is_from_app={if_from_derivgo}>
+        <PageOverlay header={localize('Settings')} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
             <VerticalTab
                 alignment='center'
                 is_floating
@@ -174,7 +174,7 @@ Account.propTypes = {
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    if_from_derivgo: PropTypes.bool,
+    is_from_derivgo: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
@@ -188,7 +188,7 @@ export default connect(({ client, common, ui }) => ({
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    if_from_derivgo: common.if_from_derivgo,
+    is_from_derivgo: common.is_from_derivgo,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,

@@ -6,7 +6,7 @@ export default connect(({ client, common, ui }) => ({
     currency: client.currency,
     getLimits: client.getLimits,
     is_fully_authenticated: client.is_fully_authenticated,
-    if_from_derivgo: common.if_from_derivgo,
+    is_from_derivgo: common.is_from_derivgo,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
     should_show_article: true,

@@ -72,7 +72,7 @@ export default class CommonStore extends BaseStore {
     }
 
     @computed
-    get if_from_derivgo() {
+    get is_from_derivgo() {
         return platforms[this.platform]?.platform_name === platforms.derivgo.platform_name;
     }
 

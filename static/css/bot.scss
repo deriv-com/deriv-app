@@ -49,6 +49,10 @@ body {
     width: 100%;
 }
 
+.blocklyWidgetDiv {
+    z-index: 100;
+}
+
 #blocklyArea {
     height: calc(100% - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
 }
@@ -196,5 +200,5 @@ label {
 }
 
 .notifyjs-corner {
-    z-index: 10001 !important;
+    z-index: 998 !important;
 }

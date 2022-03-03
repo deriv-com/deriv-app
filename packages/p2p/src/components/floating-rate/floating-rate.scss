@@ -97,20 +97,9 @@
 
         &__label {
             position: static;
-
-            /* desktop/extra small/XS - regular */
-
             font-style: normal;
-            font-weight: normal;
-            font-size: 10px;
-            line-height: 14px;
-            /* identical to box height, or 140% */
-
-            /* light / 2 - general (text) */
 
             color: $color-black-1;
-
-            /* Inside auto layout */
 
             flex: none;
             order: 1;
@@ -124,16 +113,7 @@
             left: 8px;
             top: 18px;
 
-            /* desktop/small/S - regular */
-
             font-style: normal;
-            font-weight: normal;
-            font-size: 12px;
-            line-height: 18px;
-
-            color: $color-black-1;
-
-            /* Inside auto layout */
 
             flex: none;
             order: 2;
@@ -144,21 +124,12 @@
 
     &__hint {
         padding-left: 1rem;
-        font-size: 1.2rem;
-        color: $color-blue-4;
-        font-weight: 400;
         text-transform: none;
-        line-height: 1.25;
     }
 
     &__error_message {
         padding-left: 1rem;
-        font-size: 1.2rem;
-        color: var(--text-loss-danger);
-        font-weight: 400;
         text-transform: none;
-        text-align: left;
-        line-height: 1.25;
     }
 }
 

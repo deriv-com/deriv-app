@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { InputField } from '@deriv/components';
+import { InputField, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './floating-rate.scss';
 
 const FloatingRate = ({
-    changeHandler,
+    change_handler,
     class_name,
     exchange_rate,
     error_messages,
@@ -24,14 +24,13 @@ const FloatingRate = ({
 
     return (
         <div className={classNames(class_name, 'floating-rate')}>
-            <section className={classNames('floating-rate__field', isMobile() ? 'mobile-layout' : '')}>
+            <section className={classNames('floating-rate__field', { 'mobile-layout': isMobile() })}>
                 <InputField
                     ariaLabel='Floating rate'
                     classNameInlinePrefix='floating-rate__percent'
-                    classNameInput={classNames(
-                        'floating-rate__input',
-                        error_messages ? 'floating-rate__input__error_field' : ''
-                    )}
+                    classNameInput={classNames('floating-rate__input', {
+                        'floating-rate__input__error_field': error_messages,
+                    })}
                     decimal_point_change={2}
                     id='floating_rate_input'
                     inline_prefix='%'
@@ -44,7 +43,7 @@ const FloatingRate = ({
                     max_value={offset.upper_limit}
                     min_value={offset.lower_limit}
                     name={name}
-                    onChange={changeHandler}
+                    onChange={change_handler}
                     placeholder={place_holder}
                     setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
@@ -52,25 +51,50 @@ const FloatingRate = ({
                     value={value}
                 />
                 <div className='floating-rate__mkt-rate'>
-                    <span className='floating-rate__mkt-rate__label'> {localize('of the market rate')}</span>
-                    <span className='floating-rate__mkt-rate__msg'>
+                    <Text
+                        as='span'
+                        size='xxxxs'
+                        color='prominent'
+                        weight='lighter'
+                        line_height='xxs'
+                        className='floating-rate__mkt-rate__label'
+                    >
+                        {localize('of the market rate')}
+                    </Text>
+                    <Text
+                        as='span'
+                        size='xxxs'
+                        color='prominent'
+                        weight='normal'
+                        line_height='xxs'
+                        className='floating-rate__mkt-rate__msg'
+                    >
                         {localize('1')} {fiat_currency} = {exchange_rate} {local_currency}
-                    </span>
+                    </Text>
                 </div>
             </section>
             {error_messages ? (
-                <div className='floating-rate__error_message'>{error_messages}</div>
+                <Text
+                    as='div'
+                    size='xxs'
+                    color='loss-danger'
+                    weight='bold'
+                    line_height='xs'
+                    className='floating-rate__error_message'
+                >
+                    {error_messages}
+                </Text>
             ) : (
-                <div className='floating-rate__hint'>
+                <Text as='div' size='xxs' color='blue' weight='bold' line_height='xs' className='floating-rate__hint'>
                     {localize('Your rate is')} = {market_feed} {local_currency}
-                </div>
+                </Text>
             )}
         </div>
     );
 };
 
 FloatingRate.propTypes = {
-    changeHandler: PropTypes.func,
+    change_handler: PropTypes.func,
     class_name: PropTypes.string,
     exchange_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     error_messages: PropTypes.string,

@@ -43,7 +43,7 @@ export default class FloatingRateStore extends BaseStore {
                 const { p2p_config } = response.website_status;
                 this.setFixedRateAdvertStatus(p2p_config.fixed_rate_adverts);
                 this.setFloatingRateAdvertStatus(p2p_config.float_rate_adverts);
-                this.setFoatRateOffsetLimit(p2p_config.float_rate_offset_limit); // TODO: Remove hardcoded fallback condition
+                this.setFoatRateOffsetLimit(p2p_config.float_rate_offset_limit);
                 this.setFixedRateAdvertsEndDate(p2p_config.fixed_rate_adverts_end_date || null);
                 this.setApiErrorMessage(null);
             }

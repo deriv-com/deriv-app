@@ -39,6 +39,12 @@ import {
 } from './props.types';
 import RootStore from '../../../Stores/index';
 
+declare module 'react' {
+    interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
+        label?: string;
+    }
+}
+
 type TFormValues = {
     old_password: string;
     new_password: string;
@@ -377,13 +383,13 @@ const CFDPasswordManagerTabContent = ({
     return (
         <Tabs active_index={active_tab_index} onTabItemClick={updateAccountTabIndex} top>
             <div
-                data-label={localize('{{platform}} password', {
+                label={localize('{{platform}} password', {
                     platform: getCFDPlatformLabel(platform),
                 })}
             >
                 {trading_password_manager}
             </div>
-            <div data-label={localize('Investor password')}>
+            <div label={localize('Investor password')}>
                 <DesktopWrapper>
                     <ThemedScrollbars height={container_height}>
                         <InvestorPasswordManager

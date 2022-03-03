@@ -33,6 +33,13 @@ import RootStore from 'Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
 import { History } from 'history';
 
+declare module 'react' {
+    interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
+      label?: string;
+      hash?: string;
+    }
+  };
+
 type TLoadTab = {
     children: React.ReactNode;
     is_loading: boolean;
@@ -444,7 +451,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 should_update_hash
                             >
                                 {is_real_enabled && (
-                                    <div data-label={localize('Real account')} data-hash='real'>
+                                    <div label={localize('Real account')} hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
                                                 <MissingRealAccount
@@ -495,7 +502,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                     </div>
                                 )}
                                 {is_demo_enabled && (
-                                    <div data-label={localize('Demo account')} data-hash='demo'>
+                                    <div label={localize('Demo account')} hash='demo'>
                                         <CFDDemoAccountDisplay
                                             is_eu={is_eu}
                                             is_eu_country={is_eu_country}

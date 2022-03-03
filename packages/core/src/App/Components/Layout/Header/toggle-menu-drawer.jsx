@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
+import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import { routes, PlatformContext } from '@deriv/shared';
 import { localize, getAllowedLanguages } from '@deriv/translations';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
@@ -9,7 +9,6 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import Text from '../../../../../../components/src/components/text/text';
 
 const MenuLink = ({
     changeCurrentLanguage,

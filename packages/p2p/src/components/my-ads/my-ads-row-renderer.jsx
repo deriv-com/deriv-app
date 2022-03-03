@@ -23,10 +23,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         min_order_amount_display,
         payment_method_names,
         price_display,
+        rate_type,
         remaining_amount,
         remaining_amount_display,
         type,
     } = advert;
+
+    console.log('Row: ', { ...advert });
 
     // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
@@ -245,7 +248,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     <Table.Cell>
                         <div className='p2p-my-ads__table-status'>
                             <AdStatus is_active={!!is_advert_active} />
-                            {floating_rate_store.rate_type === 'float' && <Icon icon='IcAlertWarning' size={16} />}
+                            <Icon icon='IcAlertWarning' size={16} />
+                            {/* {rate_type === 'fixed' && floating_rate_store.change_ad_alert && (
+                                <Icon icon='IcAlertWarning' size={16} />
+                            )} */}
                         </div>
                     </Table.Cell>
                     {is_popover_actions_visible && (

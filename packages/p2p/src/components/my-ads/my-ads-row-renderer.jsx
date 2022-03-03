@@ -10,7 +10,7 @@ import AdStatus from 'Components/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
 
 const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
-    const { general_store, my_ads_store, my_profile_store } = useStores();
+    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
 
     const {
         account_currency,
@@ -115,6 +115,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     )}
                                 </Text>
                                 <AdStatus is_active={!!is_advert_active} />
+                                {floating_rate_store.rate_type === 'float' && <Icon icon='IcAlertWarning' />}
                             </div>
                             <div className='p2p-my-ads__table-row-details'>
                                 <Text color='profit-success' line_height='m' size='xxs'>
@@ -244,6 +245,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     <Table.Cell>
                         <div className='p2p-my-ads__table-status'>
                             <AdStatus is_active={!!is_advert_active} />
+                            {floating_rate_store.rate_type === 'float' && <Icon icon='IcAlertWarning' size={16} />}
                         </div>
                     </Table.Cell>
                     {is_popover_actions_visible && (

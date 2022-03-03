@@ -24,7 +24,7 @@ const getHeaders = offered_currency => [
 ];
 
 const MyAdsTable = () => {
-    const { general_store, my_ads_store } = useStores();
+    const { floating_rate_store, general_store, my_ads_store } = useStores();
 
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
 
@@ -48,13 +48,19 @@ const MyAdsTable = () => {
         return (
             <React.Fragment>
                 {selected_advert && <QuickAddModal advert={selected_advert} />}
-                {my_ads_store.has_missing_payment_methods && (
+                {(my_ads_store.has_missing_payment_methods || floating_rate_store.change_ad_alert) && (
                     <div className='p2p-my-ads__warning'>
                         <HintBox
                             icon='IcAlertWarning'
                             message={
                                 <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                    <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
+                                    {floating_rate_store.change_ad_alert ? (
+                                        <Localize
+                                            i18n_default_text={`Floating rates are enabled for ${general_store.client.local_currency_config.currency}. Ads with fixed rates will be deactivated. Switch to floating ratyes by ${floating_rate_store.fixed_rate_adverts_end_date}`}
+                                        />
+                                    ) : (
+                                        <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
+                                    )}
                                 </Text>
                             }
                             is_warn

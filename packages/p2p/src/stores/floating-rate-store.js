@@ -7,7 +7,9 @@ export default class FloatingRateStore extends BaseStore {
     @observable float_rate_adverts_status;
     @observable float_rate_offset_limit;
     @observable fixed_rate_adverts_end_date;
-    @observable exchange_rate = '100'; // TODO: Remove hardcoded value
+    @observable exchange_rate;
+    @observable change_ad_alert;
+    @observable api_error_message = '';
 
     @action.bound
     setFixedRateAdvertStatus(fixed_rate_advert_status) {
@@ -30,17 +32,27 @@ export default class FloatingRateStore extends BaseStore {
     }
 
     @action.bound
+    setChangeAdAlert(is_alert_set) {
+        this.change_ad_alert = is_alert_set;
+    }
+
+    @action.bound
+    setApiErrorMessage(api_error_message) {
+        this.api_error_message = api_error_message;
+    }
+
+    @action.bound
     setP2PConfig() {
         requestWS({ website_status: 1 }).then(response => {
             if (!!response && response.error) {
-                this.root_store.general_store.setApiErrorMessage(response.error.message);
+                this.setApiErrorMessage(response.error.message);
             } else {
                 const { p2p_config } = response.website_status;
-                this.setFixedRateAdvertStatus(p2p_config.fixed_rate_adverts || 'disabled');
-                this.setFloatingRateAdvertStatus(p2p_config.float_rate_adverts || 'enabled');
-                this.setFoatRateOffsetLimit(p2p_config.float_rate_offset_limit || 3); // TODO: Remove hardcoded fallback condition
+                this.setFixedRateAdvertStatus(p2p_config.fixed_rate_adverts);
+                this.setFloatingRateAdvertStatus(p2p_config.float_rate_adverts);
+                this.setFoatRateOffsetLimit(p2p_config.float_rate_offset_limit); // TODO: Remove hardcoded fallback condition
                 this.setFixedRateAdvertsEndDate(p2p_config.fixed_rate_adverts_end_date || null);
-                this.root_store.general_store.setApiErrorMessage(null);
+                this.setApiErrorMessage(null);
             }
         });
     }
@@ -50,15 +62,16 @@ export default class FloatingRateStore extends BaseStore {
         const pay_load = {
             exchange_rates: 1,
             base_currency: fiat_currency,
+            subscribe: 1,
             local_currency,
         };
         requestWS(pay_load).then(response => {
             if (!!response && response.error) {
-                this.root_storegeneral_store.setApiErrorMessage(response.error.message);
+                this.setApiErrorMessage(response.error.message);
             } else {
                 const { rates } = response.exchange_rates;
                 this.exchange_rate = rates[local_currency] || '100';
-                this.root_store.general_store.setApiErrorMessage(null);
+                this.setApiErrorMessage(null);
             }
         });
     }

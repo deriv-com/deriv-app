@@ -73,10 +73,12 @@ const CreateAdForm = () => {
         );
 
         floating_rate_store.setP2PConfig();
+        floating_rate_store.setExchangeRate();
 
         return () => {
             disposeApiErrorReaction();
             my_ads_store.setApiErrorMessage('');
+            floating_rate_store.setApiErrorMessage('');
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

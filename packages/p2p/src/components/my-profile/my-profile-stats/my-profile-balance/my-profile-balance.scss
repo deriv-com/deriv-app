@@ -5,4 +5,9 @@
     &__amount {
         margin-right: 0.8rem;
     }
+
+    &__mobile {
+        display: flex;
+        flex-direction: column;
+    }
 }

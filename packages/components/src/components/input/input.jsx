@@ -59,6 +59,7 @@ const Input = React.forwardRef(
                     className={classNames('dc-input', className, {
                         'dc-input--disabled': disabled,
                         'dc-input--error': error,
+                        'dc-input--hint': hint,
                         'dc-input--bottom-label-active': bottom_label,
                     })}
                 >

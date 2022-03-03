@@ -9,6 +9,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
+import Text from '../../../../../../components/src/components/text/text';
 
 const MenuLink = ({
     changeCurrentLanguage,
@@ -64,15 +65,9 @@ const MenuLink = ({
             onClick={onClickLink}
         >
             <Icon className='header__menu-mobile-link-icon' icon={icon} />
-            <span
-                className={
-                    window.location.pathname !== '/'
-                        ? 'header__menu-mobile-link-text-regular'
-                        : 'header__menu-mobile-link-text'
-                }
-            >
+            <Text as='h3' size='xs' weight={window.location.pathname === '/' ? 'bold' : null}>
                 {text}
-            </span>
+            </Text>
             {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
         </BinaryLink>
     );

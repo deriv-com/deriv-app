@@ -1,0 +1,177 @@
+.floating-rate {
+    display: flex;
+    flex-direction: column;
+    &__field {
+        display: flex;
+    }
+    &__input {
+        height: 40px;
+        align-self: center;
+        appearance: none;
+        box-sizing: border-box;
+        border-radius: $BORDER_RADIUS;
+        color: var(--text-general);
+        border: 1px solid var(--border-normal);
+        background-image: none;
+        input::-webkit-input-placeholder {
+            /* WebKit, Blink, Edge */
+            color: var(--text-less-prominent) !important;
+        }
+        input:-moz-placeholder {
+            /* Mozilla Firefox 4 to 18 */
+            color: var(--text-less-prominent) !important;
+            opacity: 1;
+        }
+        input::-moz-placeholder {
+            /* Mozilla Firefox 19+ */
+            color: var(--text-less-prominent) !important;
+            opacity: 1;
+        }
+        input:-ms-input-placeholder {
+            /* Internet Explorer 10-11 */
+            color: var(--text-less-prominent) !important;
+        }
+        input::-ms-input-placeholder {
+            /* Microsoft Edge */
+            color: var(--text-less-prominent) !important;
+        }
+
+        &:hover {
+            border-color: var(--border-hover);
+        }
+        &:active,
+        &:focus {
+            border-color: var(--border-active);
+        }
+
+        &__error_field {
+            color: $color-red-1;
+            border-color: $color-red;
+        }
+    }
+
+    &__percent {
+        position: absolute;
+        height: 3.2rem;
+        right: 4rem;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        background: transparent;
+        border-color: transparent;
+        z-index: 2;
+        color: inherit;
+
+        &--symbol {
+            font-size: 1.4rem;
+            line-height: 1.5;
+            padding-top: 0.7rem;
+        }
+        &:before {
+            @include typeface(--paragraph-center-normal-black);
+            color: inherit;
+        }
+    }
+
+    &__mkt-rate {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 2px 8px;
+
+        position: static;
+        height: 40px;
+        left: 160px;
+        top: 0px;
+
+        background: #377cfc14;
+        border-radius: 0px 4px 4px 0px;
+
+        /* Inside auto layout */
+
+        flex: none;
+        order: 1;
+        align-self: stretch;
+        flex-grow: 1;
+
+        &__label {
+            position: static;
+
+            /* desktop/extra small/XS - regular */
+
+            font-style: normal;
+            font-weight: normal;
+            font-size: 10px;
+            line-height: 14px;
+            /* identical to box height, or 140% */
+
+            /* light / 2 - general (text) */
+
+            color: $color-black-1;
+
+            /* Inside auto layout */
+
+            flex: none;
+            order: 1;
+            flex-grow: 0;
+            margin: 0px;
+        }
+
+        &__msg {
+            position: static;
+            height: 18px;
+            left: 8px;
+            top: 18px;
+
+            /* desktop/small/S - regular */
+
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 18px;
+
+            color: $color-black-1;
+
+            /* Inside auto layout */
+
+            flex: none;
+            order: 2;
+            flex-grow: 0;
+            margin: 0px;
+        }
+    }
+
+    &__hint {
+        padding-left: 1rem;
+        font-size: 1.2rem;
+        color: $color-blue-4;
+        font-weight: 400;
+        text-transform: none;
+        line-height: 1.25;
+    }
+
+    &__error_message {
+        padding-left: 1rem;
+        font-size: 1.2rem;
+        color: var(--text-loss-danger);
+        font-weight: 400;
+        text-transform: none;
+        text-align: left;
+        line-height: 1.25;
+    }
+}
+
+.dc-input-wrapper__button,
+button.dc-input-wrapper__button {
+    top: 0.6rem;
+}
+
+.dc-input-field {
+    margin: unset;
+}
+
+.mobile-layout {
+    display: flex;
+    flex-direction: column;
+}

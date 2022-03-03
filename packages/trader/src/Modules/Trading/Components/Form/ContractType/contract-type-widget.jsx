@@ -5,15 +5,26 @@ import { localize } from '@deriv/translations';
 import ContractType from './contract-type.jsx';
 import { getContractTypeCategoryIcons } from '../../../Helpers/contract-type';
 
-const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
+const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageChanged }) => {
     const wrapper_ref = React.useRef(null);
     const [is_dialog_open, setDialogVisibility] = React.useState(false);
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
-    const [internal_list, setInternalList] = React.useState(list);
     const [selected_category, setSelectedCategory] = React.useState(null);
     const [search_query, setSearchQuery] = React.useState('');
     const [item, setItem] = React.useState(null);
     const [selected_item, setSelectedItem] = React.useState(null);
+
+    const handleClickOutside = React.useCallback(
+        event => {
+            if (isMobile()) return;
+            if (wrapper_ref && !wrapper_ref.current?.contains(event.target)) {
+                setDialogVisibility(false);
+                setInfoDialogVisibility(false);
+                setItem({ ...item, value });
+            }
+        },
+        [item, value]
+    );
 
     React.useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -22,14 +33,9 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
         };
     }, [handleClickOutside]);
 
-    React.useEffect(() => {
-        if (list.length !== internal_list.length) {
-            // reset internal list state when contracts list is changed in store (on contracts_for response)
-            setInternalList(list);
-        }
-    }, [list, internal_list]);
-
-    const handleCategoryClick = ({ label }) => setSelectedCategory(label);
+    const handleCategoryClick = ({ key }) => {
+        setSelectedCategory(key);
+    };
 
     const handleSelect = (clicked_item, e) => {
         if (e.target.id !== 'info-icon') {
@@ -55,18 +61,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
     const handleNavigationClick = nav_clicked_item => {
         setItem(nav_clicked_item);
     };
-
-    const handleClickOutside = React.useCallback(
-        event => {
-            if (isMobile()) return;
-            if (wrapper_ref && !wrapper_ref.current?.contains(event.target)) {
-                setDialogVisibility(false);
-                setInfoDialogVisibility(false);
-                setItem({ ...item, value });
-            }
-        },
-        [item, value]
-    );
 
     const handleVisibility = () => {
         setDialogVisibility(!is_dialog_open);
@@ -98,6 +92,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
             categories.push({
                 label: localize('All'),
                 contract_categories: [...list],
+                key: 'All',
             });
         }
 
@@ -106,6 +101,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
                 label: localize('Multipliers'),
                 contract_categories: multipliers_category,
                 component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
+                key: 'Multipliers',
             });
         }
 
@@ -113,6 +109,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
             categories.push({
                 label: localize('Options'),
                 contract_categories: options_category,
+                key: 'Options',
             });
         }
 
@@ -121,7 +118,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
                 (aray, x) => [...aray, ...x.contract_types],
                 []
             );
-            contract_category.icon = contract_type_category_icon[contract_category.label];
+            contract_category.icon = contract_type_category_icon[contract_category.key];
 
             if (search_query) {
                 contract_category.contract_categories = contract_category.contract_categories
@@ -144,7 +141,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
 
     const selected_category_contracts = () => {
         const selected_list_category = list_with_category()?.find(
-            categoryItem => categoryItem.label === selected_category
+            categoryItem => categoryItem.key === selected_category
         );
         return (selected_list_category || list_with_category()[0]).contract_categories;
     };
@@ -175,12 +172,13 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange }) => {
                 is_open={is_dialog_open}
                 item={item || { value }}
                 categories={list_with_category()}
-                list={internal_list}
-                selected={selected_category || list_with_category()[0]?.label}
+                list={list}
+                selected={selected_category || list_with_category()[0]?.key}
                 onBackButtonClick={onBackButtonClick}
                 onClose={handleVisibility}
                 onChangeInput={onChangeInput}
                 onCategoryClick={handleCategoryClick}
+                show_loading={languageChanged}
             >
                 {is_info_dialog_open ? (
                     <ContractType.Info

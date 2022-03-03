@@ -6,6 +6,10 @@
             display: flex;
             align-items: center;
             margin-top: 1.6rem;
+
+            @include mobile {
+                justify-content: space-between;
+            }
         }
 
         &-button {

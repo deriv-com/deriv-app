@@ -5,7 +5,11 @@ import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
 
 const NotificationBanner = ({ className, header, message, primary_btn, secondary_btn, img_src, img_alt, onClose }) => (
-    <div className={classNames('notification-banner', `notification-banner__${className}`)}>
+    <div
+        className={classNames('notification-banner', {
+            [`notification-banner__${className}`]: className,
+        })}
+    >
         <div className='notification-banner--left'>
             <Text as='h4' size={isMobile() ? 'xs' : 's'} weight='bold' className='notification-banner__title'>
                 {header}

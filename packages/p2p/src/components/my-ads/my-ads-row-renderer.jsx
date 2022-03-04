@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HorizontalSwipe, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
+import { when } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -45,12 +46,19 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id);
-    const onClickSwitchAd = () => !general_store.is_barred && my_ads_store.setIsSwitchModalOpen(id);
+    const onClickSwitchAd = () => !general_store.is_barred && my_ads_store.setIsSwitchModalOpen(true);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
+        const disposeLoadEditFormReaction = when(
+            () => floating_rate_store.is_switch_ad_rate,
+            () => {
+                my_ads_store.onClickEdit(id);
+            }
+        );
+        return () => disposeLoadEditFormReaction();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -290,8 +298,19 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     </Popover>
                                 </div>
                             )}
-                            {(!is_advert_active || enable_action_point) && (
+                            {!is_advert_active && (
                                 <div onClick={onClickEdit}>
+                                    <Popover
+                                        alignment='bottom'
+                                        className='p2p-my-ads__table-popovers__edit'
+                                        message={localize('Edit')}
+                                    >
+                                        <Icon icon='IcEdit' size={16} />
+                                    </Popover>
+                                </div>
+                            )}
+                            {is_advert_active && enable_action_point && (
+                                <div onClick={onClickSwitchAd}>
                                     <Popover
                                         alignment='bottom'
                                         className='p2p-my-ads__table-popovers__edit'

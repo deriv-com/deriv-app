@@ -46,15 +46,15 @@ export default class MyAdsStore extends BaseStore {
     @observable show_edit_ad_form = false;
     @observable update_payment_methods_error_message = '';
 
-    constructor() {
-        reaction(
-            () => this.is_switch_ad_rate,
-            () => {
-                this.setShowEditAdForm(true);
-                this.getAdvertInfo();
-            }
-        );
-    }
+    // constructor() {
+    //     reaction(
+    //         () => this.is_switch_ad_rate,
+    //         () => {
+    //             this.setShowEditAdForm(true);
+    //             this.getAdvertInfo();
+    //         }
+    //     );
+    // }
 
     payment_method_ids = [];
     payment_method_names = [];
@@ -511,8 +511,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setIsSwitchModalOpen(is_switch_modal_open, ad_id = null) {
-        this.setSelectedAdId(ad_id);
+    setIsSwitchModalOpen(is_switch_modal_open) {
         this.is_switch_modal_open = is_switch_modal_open;
     }
 

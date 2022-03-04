@@ -5,7 +5,7 @@ const MyAdsFloatingRateSwitchModal = () => {
     const { my_ads_store } = useStores();
 
     const onClickDoLater = () => {
-        my_ads_store.setIsSwitchModalOpen(false, null);
+        my_ads_store.setIsSwitchModalOpen(false);
         my_ads_store.setShouldSwitchAdRate(false);
     };
 

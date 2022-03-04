@@ -5,13 +5,11 @@ import { Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 
 const WalletBanner: React.FC = () => {
-    const { config_store } = useStores();
+    const { config } = useStores();
 
     return (
         <div className='wallet-banner'>
-            <img
-                src={`${config_store.asset_path}/images/wallet-banner-${isDesktop() ? 'desktop' : 'responsive'}.svg`}
-            />
+            <img src={`${config.asset_path}/images/wallet-banner-${isDesktop() ? 'desktop' : 'responsive'}.svg`} />
             <div className='wallet-banner--column'>
                 <Text align='center' className='wallet-banner--text' color='prominent' size='s' weight='bold'>
                     <Localize i18n_default_text='Activate your first wallet to start trading' />

@@ -88,7 +88,9 @@ const CFDPasswordForm = ({ ...props }) => (
 );
 
 const CFDPasswordModal = () => {
-    const { client_store, cfd_store, ui_store } = useStores();
+    const { client, ui } = useStores();
+    // TODO: add cfd to store
+    const cfd: any = {};
     const {
         account_title,
         account_type,
@@ -98,10 +100,10 @@ const CFDPasswordModal = () => {
         is_cfd_password_modal_enabled,
         setError,
         setCFDSuccessDialog,
-    } = cfd_store;
+    } = cfd;
 
-    const { email_address } = client_store;
-    const { enableGetPasswordModal } = ui_store;
+    const { email_address } = client;
+    const { enableGetPasswordModal } = ui;
 
     const validatePassword = (values: { password: string }) => {
         const errors: {

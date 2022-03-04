@@ -6,8 +6,8 @@ import { localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 
 const ClearFundsModal: React.FC = () => {
-    const { ui_store } = useStores();
-    const { is_clear_funds_modal_open, toggleClearFundsModal } = ui_store;
+    const { ui } = useStores();
+    const { is_clear_funds_modal_open, toggleClearFundsModal } = ui;
 
     const closeModal = () => {
         toggleClearFundsModal();

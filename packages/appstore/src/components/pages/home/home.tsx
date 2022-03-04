@@ -9,20 +9,20 @@ import getRoutesConfig from 'Constants/routes-config';
 
 const Home: React.FC = () => {
     const history = useHistory();
-    const { config_store, ui_store } = useStores();
+    const { config, ui } = useStores();
 
     const sidebarItems = [
-        config_store.routes.my_apps,
-        config_store.routes.explore,
+        config.routes.my_apps,
+        config.routes.explore,
         '-',
-        config_store.routes.wallets,
-        config_store.routes.platforms,
-        config_store.routes.trade_types,
-        config_store.routes.markets,
+        config.routes.wallets,
+        config.routes.platforms,
+        config.routes.trade_types,
+        config.routes.markets,
     ];
     const routes = getRoutesConfig({
-        consumer_routes: config_store.routes,
-        Page404: ui_store.components.Page404,
+        consumer_routes: config.routes,
+        Page404: ui.components.Page404,
     })[0].routes?.filter(route => {
         return route.path && sidebarItems.includes(route.path);
     });

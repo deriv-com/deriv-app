@@ -125,7 +125,6 @@ module.exports = function () {
                 'react-dom': true,
                 classnames: true,
                 mobx: true,
-                'mobx-react-lite': true,
                 'react-router': true,
                 'react-router-dom': true,
                 '@deriv/shared': true,

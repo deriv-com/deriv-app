@@ -5,7 +5,7 @@ import { useStores } from 'Stores';
 import { TTradeModalBody } from '../trade-modal-types';
 
 const TradeModalBody: React.FC<TTradeModalBody> = ({ launch_apps, qrcode_data }) => {
-    const { config_store } = useStores();
+    const { config } = useStores();
     return (
         <div className='dw-trade-modal__body'>
             <Text as='p' className='dw-trade-modal__body--subtitle' size='xs'>
@@ -25,7 +25,7 @@ const TradeModalBody: React.FC<TTradeModalBody> = ({ launch_apps, qrcode_data })
                 </Text>
             </div>
             <div className='dw-trade-modal__qrcode'>
-                <img src={`${config_store.asset_path}/images/${qrcode_data.filename}`} />
+                <img src={`${config.asset_path}/images/${qrcode_data.filename}`} />
                 <Text size='xxs'>{qrcode_data.subtitle}</Text>
             </div>
         </div>

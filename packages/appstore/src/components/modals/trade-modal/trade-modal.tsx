@@ -7,8 +7,8 @@ import TradeModalBody from './trade-modal-body';
 import { TTradeModal } from './trade-modal-types';
 
 const TradeModal: React.FC<TTradeModal> = ({ balance, icon, launch_apps, qrcode_data, title }) => {
-    const { ui_store } = useStores();
-    const { is_trade_modal_open, toggleTradeModal } = ui_store;
+    const { ui } = useStores();
+    const { is_trade_modal_open, toggleTradeModal } = ui;
 
     const closeModal = () => {
         toggleTradeModal();

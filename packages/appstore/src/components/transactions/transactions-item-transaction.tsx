@@ -26,7 +26,7 @@ type TProps = {
 };
 
 const TransactionsItemTransaction: React.FC<TProps> = ({ transaction }) => {
-    const { client_store } = useStores();
+    const { client } = useStores();
 
     return (
         <div className='dw-transactions__transaction'>
@@ -51,7 +51,7 @@ const TransactionsItemTransaction: React.FC<TProps> = ({ transaction }) => {
                             'dw-transactions__transaction-amount--positive': transaction.amount > 0,
                             'dw-transactions__transaction-amount--negative': transaction.amount < 0,
                         })}
-                        currency={client_store.currency}
+                        currency={client.currency}
                         show_currency
                     />
                 </Text>
@@ -59,7 +59,7 @@ const TransactionsItemTransaction: React.FC<TProps> = ({ transaction }) => {
                     <Localize
                         i18n_default_text='Balance: {{ balance_amount }}'
                         values={{
-                            balance_amount: getFormattedText(transaction.balance_after, client_store.currency),
+                            balance_amount: getFormattedText(transaction.balance_after, client.currency),
                         }}
                     />
                 </Text>

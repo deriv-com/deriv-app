@@ -4,8 +4,8 @@ import { AddressDetails } from '@deriv/account';
 import { useStores } from 'Stores';
 
 const AddressDetailsForm: React.FC = props => {
-    const { client_store } = useStores();
-    const { states_list, fetchStatesList, residence } = client_store;
+    const { client } = useStores();
+    const { states_list, fetchStatesList, residence } = client;
 
     return (
         <AddressDetails

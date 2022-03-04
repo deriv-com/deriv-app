@@ -339,7 +339,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
 };
 
 const AccountWizardWrapper: React.FC = () => {
-    const { client_store, ui_store } = useStores();
+    const { client, ui } = useStores();
     const {
         account_settings,
         is_fully_authenticated,
@@ -356,8 +356,8 @@ const AccountWizardWrapper: React.FC = () => {
         fetchFinancialAssessment,
         financial_assessment,
         has_wallet_account,
-    } = client_store;
-    const { real_account_signup_target } = ui_store;
+    } = client;
+    const { real_account_signup_target } = ui;
     const [is_cancel_visible, setIsCancelVisisible] = React.useState(false);
     const [is_new_wallet_modal_visible, setIsNewWalletModalVisible] = React.useState(false);
 

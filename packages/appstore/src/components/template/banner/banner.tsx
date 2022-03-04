@@ -5,13 +5,13 @@ import Frame from 'Components/elements/frame';
 import { useStores } from 'Stores';
 
 const Banner: React.FC<TBannerProps> = ({ bg_image_url, type, title }) => {
-    const { config_store } = useStores();
+    const { config } = useStores();
 
     return (
         <div className='dw-banner'>
             <div className='dw-banner__frame'>
                 <Frame
-                    src={`${config_store.asset_path}/images/${bg_image_url}`}
+                    src={`${config.asset_path}/images/${bg_image_url}`}
                     alt={bg_image_url.split('/')[bg_image_url.split('/').length - 1]}
                 />
                 <div className='dw-banner__container'>

@@ -6,12 +6,12 @@ import Frame from 'Components/elements/frame';
 import { useStores } from 'Stores';
 
 const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, title, subtitle }) => {
-    const { config_store } = useStores();
+    const { config } = useStores();
 
     return (
         <div className='dw-you-might-like__card'>
             <Frame
-                src={`${config_store.asset_path}/images/${bg_image_url}`}
+                src={`${config.asset_path}/images/${bg_image_url}`}
                 alt={bg_image_url.split('/')[bg_image_url.split('/').length - 1]}
                 className='dw-you-might-like__card-image'
             />

@@ -4,10 +4,9 @@ import { CurrencySelector } from '@deriv/account';
 import { useStores } from 'Stores';
 
 const CurrencySelectorForm: React.FC = props => {
-    const { client_store, ui_store } = useStores();
-    const { currencies_list, currency, has_active_real_account, upgradeable_currencies, has_wallet_account } =
-        client_store;
-    const { real_account_signup, resetRealAccountSignupParams } = ui_store;
+    const { client, ui } = useStores();
+    const { currencies_list, currency, has_active_real_account, upgradeable_currencies, has_wallet_account } = client;
+    const { real_account_signup, resetRealAccountSignupParams } = ui;
 
     return (
         <CurrencySelector

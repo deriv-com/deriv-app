@@ -5,23 +5,21 @@ import { Text } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 
 const TradeBadge = ({ is_poa_verified = false, is_poi_verified = false, large = false, trade_count }) => {
-    if (trade_count < 100) {
-        return null;
-    }
-
     return (
         <React.Fragment>
-            <div
-                className={classNames('trade-badge', {
-                    'trade-badge--large': large,
-                    'trade-badge--gold': trade_count >= 100 && trade_count < 250,
-                    'trade-badge--green': trade_count >= 250,
-                })}
-            >
-                <Text color='colored-background' size='xxxs'>
-                    {`${trade_count >= 250 ? '250+' : '100+'} ${large ? localize('trades') : ''}`}
-                </Text>
-            </div>
+            {trade_count > 100 ? (
+                <div
+                    className={classNames('trade-badge', {
+                        'trade-badge--large': large,
+                        'trade-badge--gold': trade_count >= 100 && trade_count < 250,
+                        'trade-badge--green': trade_count >= 250,
+                    })}
+                >
+                    <Text color='colored-background' size='xxxs'>
+                        {`${trade_count >= 250 ? '250+' : '100+'} ${large ? localize('trades') : ''}`}
+                    </Text>
+                </div>
+            ) : null}
             {is_poi_verified ? (
                 <div
                     className={classNames('trade-badge', {
@@ -57,5 +55,8 @@ const TradeBadge = ({ is_poa_verified = false, is_poi_verified = false, large = 
 export default TradeBadge;
 
 TradeBadge.propTypes = {
+    is_poa_verified: PropTypes.bool,
+    is_poi_verified: PropTypes.bool,
+    large: PropTypes.bool,
     trade_count: PropTypes.number,
 };

@@ -16,7 +16,7 @@ import './advertiser-page.scss';
 const AdvertiserPage = () => {
     const { advertiser_page_store } = useStores();
 
-    const { basic_verification, completed_orders_count, first_name, full_verification, last_name } =
+    const { basic_verification, first_name, full_verification, last_name, total_orders_count } =
         advertiser_page_store.advertiser_info;
 
     React.useEffect(() => {
@@ -69,9 +69,9 @@ const AdvertiserPage = () => {
                         </div>
                         <div className='my-profile-name--row'>
                             <TradeBadge
-                                is_poa_verified={full_verification}
-                                is_poi_verified={basic_verification}
-                                trade_count={completed_orders_count}
+                                is_poa_verified={!!full_verification}
+                                is_poi_verified={!!basic_verification}
+                                trade_count={total_orders_count}
                                 large
                             />
                         </div>

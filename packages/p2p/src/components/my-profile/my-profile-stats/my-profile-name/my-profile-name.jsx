@@ -10,7 +10,7 @@ import MyProfilePrivacy from '../my-profile-privacy';
 const MyProfileName = () => {
     const { general_store, my_profile_store } = useStores();
 
-    const { basic_verification, completed_orders_count, full_verification } = my_profile_store.advertiser_info;
+    const { basic_verification, full_verification, total_orders_count } = my_profile_store.advertiser_info;
 
     return (
         <div className='my-profile-name'>
@@ -28,9 +28,9 @@ const MyProfileName = () => {
                         </Text>
                         <div className='my-profile-name--row'>
                             <TradeBadge
-                                is_poa_verified={full_verification}
-                                is_poi_verified={basic_verification}
-                                trade_count={completed_orders_count}
+                                is_poa_verified={!!full_verification}
+                                is_poi_verified={!!basic_verification}
+                                trade_count={total_orders_count}
                                 large
                             />
                         </div>

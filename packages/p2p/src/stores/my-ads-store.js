@@ -12,6 +12,7 @@ export default class MyAdsStore extends BaseStore {
     @observable advert_details = null;
     @observable adverts = [];
     @observable adverts_archive_period = null;
+
     @observable api_error = '';
     @observable api_error_message = '';
     @observable api_table_error_message = '';
@@ -33,6 +34,8 @@ export default class MyAdsStore extends BaseStore {
     @observable is_quick_add_modal_open = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
+    @observable is_switch_ad_rate = false;
+    @observable is_switch_modal_open = false;
     @observable item_offset = 0;
     @observable p2p_advert_information = {};
     @observable selected_ad_id = '';
@@ -42,6 +45,16 @@ export default class MyAdsStore extends BaseStore {
     @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
     @observable update_payment_methods_error_message = '';
+
+    constructor() {
+        reaction(
+            () => this.is_switch_ad_rate,
+            () => {
+                this.setShowEditAdForm(true);
+                this.getAdvertInfo();
+            }
+        );
+    }
 
     payment_method_ids = [];
     payment_method_names = [];
@@ -490,6 +503,17 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setIsQuickAddModalOpen(is_quick_add_modal_open) {
         this.is_quick_add_modal_open = is_quick_add_modal_open;
+    }
+
+    @action.bound
+    setShouldSwitchAdRate(is_switch_ad_rate) {
+        this.is_switch_ad_rate = is_switch_ad_rate;
+    }
+
+    @action.bound
+    setIsSwitchModalOpen(is_switch_modal_open, ad_id = null) {
+        this.setSelectedAdId(ad_id);
+        this.is_switch_modal_open = is_switch_modal_open;
     }
 
     @action.bound

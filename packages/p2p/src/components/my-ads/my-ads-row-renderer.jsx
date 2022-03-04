@@ -38,19 +38,19 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const amount_dealt = amount - remaining_amount;
     const is_buy_advert = type === buy_sell.BUY;
 
-    const enable_action_point = rate_type === 'fixed' && floating_rate_store.change_ad_alert;
-
+    // const enable_action_point = rate_type === 'fixed' && floating_rate_store.change_ad_alert;
+    const enable_action_point = true;
     const onClickActivateDeactivate = () => {
         my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id);
+    const onClickSwitchAd = () => !general_store.is_barred && my_ads_store.setIsSwitchModalOpen(id);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

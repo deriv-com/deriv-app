@@ -22,7 +22,7 @@ const EditAdFormWrapper = ({ children }) => {
 };
 
 const EditAdForm = () => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const { floating_rate_store, my_ads_store, my_profile_store } = useStores();
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
 
@@ -37,6 +37,7 @@ const EditAdForm = () => {
         payment_method_names,
         payment_method_details,
         rate_display,
+        rate_type,
         type,
     } = my_ads_store.p2p_advert_information;
 
@@ -162,31 +163,53 @@ const EditAdForm = () => {
                                                 )}
                                             </Field>
                                             <Field name='price_rate'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        type='text'
-                                                        error={touched.price_rate && errors.price_rate}
-                                                        label={localize('Fixed rate (1 {{account_currency}})', {
-                                                            account_currency,
-                                                        })}
-                                                        className='p2p-my-ads__form-field'
-                                                        trailing_icon={
-                                                            <Text
-                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
-                                                                line_height='m'
-                                                                size={isDesktop() ? 'xxs' : 's'}
-                                                            >
-                                                                {local_currency}
-                                                            </Text>
-                                                        }
-                                                        onChange={e => {
-                                                            my_ads_store.restrictLength(e, handleChange);
-                                                        }}
-                                                        required
-                                                    />
-                                                )}
+                                                {({ field }) =>
+                                                    rate_type === 'float' ? (
+                                                        <FloatingRate
+                                                            class_name='p2p-my-ads__form-field'
+                                                            error_messages={errors.price_rate}
+                                                            exchange_rate={floating_rate_store.exchange_rate}
+                                                            fiat_currency={account_currency}
+                                                            local_currency={local_currency}
+                                                            offset={{
+                                                                upper_limit:
+                                                                    floating_rate_store.float_rate_offset_limit,
+                                                                lower_limit:
+                                                                    floating_rate_store.float_rate_offset_limit * -1,
+                                                            }}
+                                                            required
+                                                            changeHandler={e => {
+                                                                my_ads_store.restrictDecimalPlace(e, 2, handleChange);
+                                                            }}
+                                                            place_holder='Floating rate'
+                                                            {...field}
+                                                        />
+                                                    ) : (
+                                                        <Input
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            type='text'
+                                                            error={touched.price_rate && errors.price_rate}
+                                                            label={localize('Fixed rate (1 {{account_currency}})', {
+                                                                account_currency,
+                                                            })}
+                                                            className='p2p-my-ads__form-field'
+                                                            trailing_icon={
+                                                                <Text
+                                                                    color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                    line_height='m'
+                                                                    size={isDesktop() ? 'xxs' : 's'}
+                                                                >
+                                                                    {local_currency}
+                                                                </Text>
+                                                            }
+                                                            onChange={e => {
+                                                                my_ads_store.restrictLength(e, handleChange);
+                                                            }}
+                                                            required
+                                                        />
+                                                    )
+                                                }
                                             </Field>
                                         </div>
                                         <div className='p2p-my-ads__form-container'>

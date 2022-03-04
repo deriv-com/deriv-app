@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import Frame from 'Components/elements/frame';
-import { useStores } from 'Stores';
 
-const Banner: React.FC<TBannerProps> = ({ bg_image_url, type, title }) => {
-    const { config } = useStores();
-
+const Banner: React.FC<TBannerProps> = ({ type, title }) => {
     return (
         <div className='dw-banner'>
             <div className='dw-banner__frame'>
-                <Frame alt={bg_image_url.split('/')[bg_image_url.split('/').length - 1]} />
                 <div className='dw-banner__container'>
                     <Text size='m' color='colored-background' line_height='xs'>
                         {type}

@@ -5,7 +5,6 @@ import { useStores } from 'Stores';
 import { TTradeModalBody } from '../trade-modal-types';
 
 const TradeModalBody: React.FC<TTradeModalBody> = ({ launch_apps, qrcode_data }) => {
-    const { config } = useStores();
     return (
         <div className='dw-trade-modal__body'>
             <Text as='p' className='dw-trade-modal__body--subtitle' size='xs'>

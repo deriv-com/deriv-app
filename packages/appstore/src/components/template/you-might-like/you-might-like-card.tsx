@@ -2,18 +2,10 @@ import * as React from 'react';
 import { Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
-import Frame from 'Components/elements/frame';
-import { useStores } from 'Stores';
 
-const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, title, subtitle }) => {
-    const { config } = useStores();
-
+const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ title, subtitle }) => {
     return (
         <div className='dw-you-might-like__card'>
-            <Frame
-                alt={bg_image_url.split('/')[bg_image_url.split('/').length - 1]}
-                className='dw-you-might-like__card-image'
-            />
             <Text weight='bold' line_height='l'>
                 {localize(title)}
             </Text>

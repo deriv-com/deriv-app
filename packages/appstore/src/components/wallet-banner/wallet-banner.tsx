@@ -1,12 +1,8 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { useStores } from 'Stores';
 
 const WalletBanner: React.FC = () => {
-    const { config } = useStores();
-
     return (
         <div className='wallet-banner'>
             <div className='wallet-banner--column'>

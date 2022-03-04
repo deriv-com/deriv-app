@@ -54,4 +54,7 @@ export const routes = {
     binarybot: getUrlBinaryBot(),
     endpoint: '/endpoint',
     complaints_policy: '/complaints-policy',
+
+    // Appstore
+    trading_hub: '/trading-hub',
 };

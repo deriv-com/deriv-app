@@ -4,7 +4,7 @@ import * as React from 'react';
 import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
 
-const Card = ({ handleChange, handleBlur, values, setFieldValue, index }) => {
+const Card = ({ type, handleChange, handleBlur, values, setFieldValue, index }) => {
     const onClick = () => setIsOpen(!is_open);
     const [is_open, setIsOpen] = React.useState(false);
     const icon = (
@@ -17,17 +17,27 @@ const Card = ({ handleChange, handleBlur, values, setFieldValue, index }) => {
             })}
         />
     );
+
+    const paymentMethodIcons = {
+        credit_debit_card: 'IcCreditCard',
+        e_wallet: 'IcEwallet',
+        zingPay: 'IcZingpay',
+        online_naira: 'IcOnlineNaira',
+        beyonic: 'IcBeyonic',
+        bank_transfer: 'IcBankTransfer',
+        other: 'IcOtherPaymentMethod',
+    };
     return (
         <div className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}>
             <div className='proof-of-ownership__card-item'>
                 <Icon
-                    icon={values.static_data.icon}
+                    icon={paymentMethodIcons[type]}
                     className='proof-of-ownership__card-item-logo'
                     width={64}
                     height={58}
                 />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {values.static_data.cardTitle || 'Credit/debit card'}{' '}
+                    {values.payment_method || 'Credit/debit card'}{' '}
                     {/** TODO: || method is temporary, should be removed */}
                 </Text>
                 <Button
@@ -57,5 +67,5 @@ Card.propTypes = {
     handleBlur: PropTypes.func,
     values: PropTypes.object,
     setFieldValue: PropTypes.func,
-    index: PropTypes.string,
+    index: PropTypes.number,
 };

@@ -25,7 +25,6 @@ const TradeModalBody: React.FC<TTradeModalBody> = ({ launch_apps, qrcode_data })
                 </Text>
             </div>
             <div className='dw-trade-modal__qrcode'>
-                <img src={`${config.asset_path}/images/${qrcode_data.filename}`} />
                 <Text size='xxs'>{qrcode_data.subtitle}</Text>
             </div>
         </div>

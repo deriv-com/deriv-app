@@ -1,7 +1,6 @@
 import ConfigStore from 'src/stores/config-store';
 
 export type TConfigProps = {
-    asset_path: string;
     has_router: boolean;
     routes: ConfigStore['routes'];
 };

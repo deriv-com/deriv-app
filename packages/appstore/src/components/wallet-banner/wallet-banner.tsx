@@ -9,7 +9,6 @@ const WalletBanner: React.FC = () => {
 
     return (
         <div className='wallet-banner'>
-            <img src={`${config.asset_path}/images/wallet-banner-${isDesktop() ? 'desktop' : 'responsive'}.svg`} />
             <div className='wallet-banner--column'>
                 <Text align='center' className='wallet-banner--text' color='prominent' size='s' weight='bold'>
                     <Localize i18n_default_text='Activate your first wallet to start trading' />

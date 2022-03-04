@@ -3,7 +3,6 @@ import BaseStore from './base-store';
 
 export default class ConfigStore extends BaseStore {
     public has_router = false;
-    public asset_path = '';
     public routes = {
         trading_hub: '/trading-hub',
         my_apps: '/my-apps',
@@ -41,7 +40,6 @@ export default class ConfigStore extends BaseStore {
 
     public setConfig(config: TConfigProps): void {
         this.has_router = config.has_router;
-        this.asset_path = config.asset_path;
         this.routes = config.routes;
     }
 }

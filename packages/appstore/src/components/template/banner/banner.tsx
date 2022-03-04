@@ -10,10 +10,7 @@ const Banner: React.FC<TBannerProps> = ({ bg_image_url, type, title }) => {
     return (
         <div className='dw-banner'>
             <div className='dw-banner__frame'>
-                <Frame
-                    src={`${config.asset_path}/images/${bg_image_url}`}
-                    alt={bg_image_url.split('/')[bg_image_url.split('/').length - 1]}
-                />
+                <Frame alt={bg_image_url.split('/')[bg_image_url.split('/').length - 1]} />
                 <div className='dw-banner__container'>
                     <Text size='m' color='colored-background' line_height='xs'>
                         {type}

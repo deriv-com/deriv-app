@@ -69,9 +69,11 @@ const POISubmission = ({
         if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
             switch (identity_last_attempt.service) {
                 case service_code.idv: {
-                    if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
-                        if (submission_status !== submission_status_code.complete)
-                            setSubmissionStatus(submission_status_code.selecting);
+                    if (
+                        (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) &&
+                        submission_status !== submission_status_code.complete
+                    ) {
+                        setSubmissionStatus(submission_status_code.selecting);
                     } else {
                         setSubmissionService(service_code.manual);
                         setSubmissionStatus(submission_status_code.submitting);
@@ -79,9 +81,8 @@ const POISubmission = ({
                     break;
                 }
                 case service_code.onfido: {
-                    if (Number(onfido.submissions_left) > 0) {
-                        if (submission_status !== submission_status_code.complete)
-                            setSubmissionStatus(submission_status_code.selecting);
+                    if (Number(onfido.submissions_left) > 0 && submission_status !== submission_status_code.complete) {
+                        setSubmissionStatus(submission_status_code.selecting);
                     } else {
                         setSubmissionService(service_code.manual);
                     }

@@ -56,31 +56,6 @@
             return <Appstore client={client} server_time={ServerTime} ui={ui} ws={WS} config={config} />;
         }
 
-
-        Component.propTypes = {
-            client: PropTypes.shape({
-                is_logged_in: PropTypes.bool.isRequired,
-                loginid: PropTypes.string.isRequired,
-            }).isRequired,
-            config: {
-                asset_path: PropTypes.string.isRequired,
-                has_router: PropTypes.bool.isRequired,
-                routes: PropTypes.shape({
-                    home: PropTypes.string.isRequired,
-                    about_us: PropTypes.string.isRequired,
-                    explore: PropTypes.string.isRequired,
-                    resources: PropTypes.string.isRequired,
-                }).isRequired,
-            },
-            ui: PropTypes.shape({
-                height_offset: PropTypes.string,
-                is_dark_mode_on: PropTypes.bool.isRequired,
-                language: PropTypes.string.isRequired,
-                components: PropTypes.shape({
-                    Page404: any,
-                }).isRequired,
-            }).isRequired,
-
     };
 
     ```

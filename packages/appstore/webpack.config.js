@@ -13,7 +13,7 @@ module.exports = function () {
         },
         mode: is_release ? 'production' : 'development',
         output: {
-            path: path.resolve(__dirname, 'lib'),
+            path: path.resolve(__dirname, 'dist'),
             filename: 'appstore/js/[name].js',
             libraryExport: 'default',
             library: '@deriv/appstore',

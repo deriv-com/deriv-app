@@ -2,22 +2,22 @@
     "name": "@deriv/appstore",
     "version": "0.0.4",
     "description": "Deriv Appstore",
-    "main": "lib/appstore/js/index.js",
+    "main": "dist/appstore/js/index.js",
     "private": false,
     "publishConfig": {
         "access": "public"
     },
     "files": [
-        "lib"
+        "dist"
     ],
     "engines": {
         "node": "^14.17.1"
     },
     "scripts": {
-        "build": "rimraf lib && webpack --progress",
-        "build:travis": "rimraf lib && webpack",
-        "serve": "rimraf lib && concurrently \"cross-env BUILD_MODE='serve' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
-        "start": "rimraf lib && npm run test && npm run serve",
+        "build": "rimraf dist && webpack --progress",
+        "build:travis": "rimraf dist && webpack",
+        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "start": "rimraf dist && npm run test && npm run serve",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",

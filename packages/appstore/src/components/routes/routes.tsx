@@ -9,7 +9,7 @@ import { TRoute } from 'Types';
 import RoutesWrapper from './routes-wrapper';
 
 const Routes: React.FC = () => {
-    const { ui, config } = useStores();
+    const { config } = useStores();
 
     return (
         <React.Suspense
@@ -25,14 +25,8 @@ const Routes: React.FC = () => {
                 <Switch>
                     {getRoutesConfig({
                         consumer_routes: config.routes,
-                        Page404: ui.components.Page404,
                     }).map((route: TRoute, idx: number) => (
-                        <RouteWithSubroutes
-                            key={idx}
-                            Component404={ui.components.Page404}
-                            should_redirect_login
-                            {...route}
-                        />
+                        <RouteWithSubroutes key={idx} should_redirect_login {...route} />
                     ))}
                 </Switch>
             </RoutesWrapper>

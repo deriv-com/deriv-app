@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Money, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { Localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const MyProfileStatsTable = () => {
@@ -19,6 +19,9 @@ const MyProfileStatsTable = () => {
         total_orders_count,
         total_turnover,
     } = my_profile_store.advertiser_info;
+
+    const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '< 1';
+    const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
 
     if (isMobile()) {
         return (
@@ -116,7 +119,11 @@ const MyProfileStatsTable = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {buy_time_avg ? `${buy_time_avg} min` : '-'}
+                                {buy_time_avg
+                                    ? localize('{{- avg_buy_time_in_minutes}} min', {
+                                          avg_buy_time_in_minutes,
+                                      })
+                                    : '-'}
                             </Text>
                         </Table.Cell>
                         <Table.Cell className='my-profile-stats-table__cell'>
@@ -134,7 +141,11 @@ const MyProfileStatsTable = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {release_time_avg ? `${release_time_avg} min` : '-'}
+                                {release_time_avg
+                                    ? localize('{{- avg_release_time_in_minutes}} min', {
+                                          avg_release_time_in_minutes,
+                                      })
+                                    : '-'}
                             </Text>
                         </Table.Cell>
                     </Table.Row>
@@ -266,7 +277,11 @@ const MyProfileStatsTable = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                            {buy_time_avg ? `${buy_time_avg} min` : '-'}
+                            {buy_time_avg
+                                ? localize('{{- avg_buy_time_in_minutes}} min', {
+                                      avg_buy_time_in_minutes,
+                                  })
+                                : '-'}
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-stats-table__cell'>
@@ -284,7 +299,11 @@ const MyProfileStatsTable = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                            {release_time_avg ? `${release_time_avg} min` : '-'}
+                            {release_time_avg
+                                ? localize('{{- avg_release_time_in_minutes}} min', {
+                                      avg_release_time_in_minutes,
+                                  })
+                                : '-'}
                         </Text>
                     </Table.Cell>
                 </Table.Row>

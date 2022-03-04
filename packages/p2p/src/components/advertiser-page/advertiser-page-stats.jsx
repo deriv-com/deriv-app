@@ -112,7 +112,7 @@ const AdvertiserPageStats = () => {
                                 />
                             </Text>
                             <Text align='center' color='prominent' size='s' weight='bold'>
-                                {release_time_avg
+                                {buy_time_avg
                                     ? localize('{{- avg_buy_time_in_minutes}} min', {
                                           avg_buy_time_in_minutes,
                                       })
@@ -243,7 +243,7 @@ const AdvertiserPageStats = () => {
                             />
                         </Text>
                         <Text color='prominent' size='m' weight='bold'>
-                            {release_time_avg
+                            {buy_time_avg
                                 ? localize('{{- avg_buy_time_in_minutes}} min', {
                                       avg_buy_time_in_minutes,
                                   })

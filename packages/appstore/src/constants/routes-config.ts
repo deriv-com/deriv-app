@@ -1,15 +1,16 @@
 import { localize } from '@deriv/translations';
-import { TRoute, TRoutesProps } from 'Types';
+import ConfigStore from 'src/stores/config-store';
+import { TRoute } from 'Types';
 
 type TRoutesConfig = {
-    consumer_routes: TRoutesProps;
+    consumer_routes: ConfigStore['routes'];
 };
 
 // 1. Order matters! Put more specific consumer_routes at the top.
 // 2. Don't use `Localize` component since native html tag like `option` cannot render them
 const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
     {
-        path: consumer_routes.home,
+        path: consumer_routes.trading_hub,
         component: () => null,
         is_modal: true,
         getTitle: () => localize('Tradinghub'),

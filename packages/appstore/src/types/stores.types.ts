@@ -1,15 +1,7 @@
-import { TConfigProps, TRoutesProps } from 'Types';
-
-export type TConfigStore = {
-    asset_path: string;
-    has_router: boolean;
-    redirect_404?: string;
-    routes: TRoutesProps;
-    setConfig: (config: TConfigProps) => void;
-};
+import ConfigStore from 'src/stores/config-store';
 
 export type TRootStore = {
     ui: any;
     client: any;
-    config: TConfigStore;
+    config: ConfigStore;
 };

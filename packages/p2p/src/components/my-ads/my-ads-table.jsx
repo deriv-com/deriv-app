@@ -29,7 +29,6 @@ const MyAdsTable = () => {
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
 
     React.useEffect(() => {
-        my_ads_store.getWebsiteStatus();
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);

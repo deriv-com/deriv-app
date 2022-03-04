@@ -26,11 +26,12 @@ const Redirect = ({
     switch (url_params.get('action')) {
         case 'signup': {
             if (is_appstore) {
-                history.push({
-                    pathname: routes.dashboard,
-                    search: url_query_string,
-                });
-                redirected_to_route = true;
+                // TODO: redirect
+                // history.push({
+                //     pathname: routes.dashboard,
+                //     search: url_query_string,
+                // });
+                // redirected_to_route = true;
             }
             sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);

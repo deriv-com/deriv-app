@@ -123,19 +123,14 @@ const MINIMIZERS = !IS_RELEASE
       ];
 
 const plugins = ({ base, is_test_env, env }) => {
-    let is_appstore = false;
     let is_qawolf = false;
 
-    if (env.IS_APPSTORE) {
-        is_appstore = !!JSON.parse(env.IS_APPSTORE);
-    }
     if (env.IS_QAWOLF) {
         is_qawolf = !!JSON.parse(env.IS_QAWOLF);
     }
 
     return [
         new DefinePlugin({
-            'process.env.IS_APPSTORE': is_appstore,
             'process.env.IS_QAWOLF': is_qawolf,
         }),
         new CleanWebpackPlugin(),

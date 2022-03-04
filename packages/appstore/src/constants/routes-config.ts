@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import TradingHub from 'Components/trading-hub';
 import ConfigStore from 'src/stores/config-store';
 import { TRoute } from 'Types';
 
@@ -11,8 +12,7 @@ type TRoutesConfig = {
 const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
     {
         path: consumer_routes.trading_hub,
-        component: () => null,
-        is_modal: true,
+        component: TradingHub,
         getTitle: () => localize('Tradinghub'),
     },
 ];

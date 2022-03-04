@@ -5,7 +5,7 @@ export default class ConfigStore extends BaseStore {
     public has_router = false;
     public asset_path = '';
     public routes = {
-        trading_hub: '/',
+        trading_hub: '/trading-hub',
         my_apps: '/my-apps',
         explore: '/explore',
         about_us: '/about-us',

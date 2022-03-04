@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import TradingHub from 'Components/trading-hub';
-import ConfigStore from 'src/stores/config-store';
+import ConfigStore from 'Stores/config-store';
 import { TRoute } from 'Types';
 
 type TRoutesConfig = {

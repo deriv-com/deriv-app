@@ -1,4 +1,4 @@
-import ConfigStore from 'src/stores/config-store';
+import ConfigStore from 'Stores/config-store';
 
 export type TConfigProps = {
     has_router: boolean;

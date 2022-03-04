@@ -29,11 +29,13 @@
     "license": "ISC",
     "dependencies": {
         "@deriv/account": "^1.0.0",
+        "@deriv/api-types": "1.0.48",
         "@deriv/components": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
         "classnames": "^2.2.6",
+        "formik": "^2.1.4",
         "mobx": "^5.15.7",
         "mobx-react-lite": "^2.2.2",
         "object.fromentries": "^2.0.0",
@@ -42,7 +44,6 @@
         "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
-        "@deriv/api-types": "1.0.48",
         "@deriv/publisher": "^0.0.1-beta4",
         "@types/classnames": "^2.2.11",
         "@types/object.fromentries": "^2.0.0",

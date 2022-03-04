@@ -35,7 +35,6 @@
   },
   "homepage": "https://github.com/binary-com/deriv-app",
   "devDependencies": {
-    "@deriv/api-types": "1.0.48",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "chai": "^4.2.0",
@@ -85,6 +84,7 @@
   },
   "dependencies": {
     "@deriv/account": "^1.0.0",
+    "@deriv/api-types": "1.0.48",
     "@deriv/components": "^1.0.0",
     "@deriv/deriv-api": "^1.0.8",
     "@deriv/deriv-charts": "^0.5.1",

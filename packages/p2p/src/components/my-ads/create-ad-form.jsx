@@ -97,6 +97,8 @@ const CreateAdForm = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [my_ads_store.is_ad_created_modal_visible]);
 
+    console.log('Rate_type: ', floating_rate_store.rate_type);
+
     return (
         <React.Fragment>
             <Formik

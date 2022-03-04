@@ -507,6 +507,7 @@ export default class MyAdsStore extends BaseStore {
 
     @action.bound
     setShouldSwitchAdRate(is_switch_ad_rate) {
+        console.log('Called SetShould switch rate');
         this.is_switch_ad_rate = is_switch_ad_rate;
     }
 

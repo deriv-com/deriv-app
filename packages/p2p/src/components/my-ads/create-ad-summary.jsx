@@ -15,25 +15,27 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
 
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
 
-    const display_price_rate = iff(
-        market_feed && price_rate,
-        formatMoney(local_currency_config.currency, parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2), true),
-        price_rate
-    )
-        ? formatMoney(local_currency_config.currency, price_rate, true)
-        : '';
+    const display_price_rate =
+        market_feed && price_rate
+            ? formatMoney(
+                  local_currency_config.currency,
+                  parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
+                  true
+              )
+            : iff(price_rate, formatMoney(local_currency_config.currency, price_rate, true), '');
 
-    const display_total = iff(
-        market_feed && offer_amount && price_rate,
-        formatMoney(
-            local_currency_config.currency,
-            offer_amount * parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
-            true
-        ),
-        offer_amount && price_rate
-    )
-        ? formatMoney(local_currency_config.currency, offer_amount * price_rate, true)
-        : '';
+    const display_total =
+        market_feed && offer_amount && price_rate
+            ? formatMoney(
+                  local_currency_config.currency,
+                  offer_amount * parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
+                  true
+              )
+            : iff(
+                  offer_amount && price_rate,
+                  formatMoney(local_currency_config.currency, offer_amount * price_rate, true),
+                  ''
+              );
 
     if (offer_amount) {
         const components = [<Text key={0} weight='bold' size='xs' color='less-prominent' />];

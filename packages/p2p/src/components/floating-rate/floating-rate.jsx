@@ -22,6 +22,8 @@ const FloatingRate = ({
     const { name, value, required } = props;
     const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)).toFixed(2) : exchange_rate;
 
+    console.log('Exchange_rate: ', exchange_rate);
+
     return (
         <div className={classNames(class_name, 'floating-rate')}>
             <section className={classNames('floating-rate__field', isMobile() ? 'mobile-layout' : '')}>

@@ -53,7 +53,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
         const disposeLoadEditFormReaction = when(
-            () => floating_rate_store.is_switch_ad_rate,
+            () => my_ads_store.is_switch_ad_rate,
             () => {
                 my_ads_store.onClickEdit(id);
             }

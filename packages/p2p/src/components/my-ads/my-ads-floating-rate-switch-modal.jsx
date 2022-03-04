@@ -1,5 +1,8 @@
-import { Modal } from '@deriv/components';
 import React from 'react';
+import { Localize } from 'Components/i18next';
+import { Button, Modal } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 
 const MyAdsFloatingRateSwitchModal = () => {
     const { my_ads_store } = useStores();

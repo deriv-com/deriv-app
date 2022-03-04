@@ -188,7 +188,9 @@ export default class NotificationStore extends BaseStore {
         const malta_account = landing_company_shortcode === 'maltainvest';
         const virtual_account = landing_company_shortcode === 'virtual';
         const is_website_up = website_status.site_status === 'up';
-        const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(this.client_notifications.trustpilot.key);
+        const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
+            this.client_notifications.trustpilot.key
+        );
 
         let has_missing_required_field;
 
@@ -483,9 +485,7 @@ export default class NotificationStore extends BaseStore {
                 key: 'trustpilot',
                 header: localize('Enjoy using Deriv?'),
                 header_popup: localize('We’d love to hear your thoughts'),
-                message: localize(
-                    'Drop your review on Trustpilot.'
-                ),
+                message: localize('Drop your review on Trustpilot.'),
                 message_popup: localize('Drop your review on Trustpilot.'),
                 action: {
                     onClick: () => {

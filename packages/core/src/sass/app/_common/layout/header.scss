@@ -191,7 +191,7 @@
                 }
             }
             .header__icon {
-                @extend %inline-icon.active;
+                @extend %inline-icon, .active;
             }
         }
     }

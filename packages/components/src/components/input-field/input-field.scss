@@ -60,7 +60,7 @@ button.dc-input-wrapper {
             cursor: pointer;
 
             & ~ .dc-input-wrapper__input {
-                @extend .input:hover;
+                @extend .input, :hover;
             }
         }
         &:disabled:hover {

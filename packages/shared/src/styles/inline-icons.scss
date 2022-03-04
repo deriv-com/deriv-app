@@ -4,7 +4,7 @@
 
     e.g. style icon on parent hover:
         a:hover .inline-icon {
-            @extend %inline-icon.active;
+            @extend %inline-icon, .active;
         }
 */
 

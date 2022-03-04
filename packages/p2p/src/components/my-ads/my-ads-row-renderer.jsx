@@ -23,7 +23,6 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         min_order_amount_display,
         payment_method_names,
         price_display,
-        rate_type,
         remaining_amount,
         remaining_amount_display,
         type,
@@ -115,7 +114,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         />
                                     )}
                                 </Text>
-                                {rate_type === 'fixed' || !payment_method_names ? (
+                                {!payment_method_names ? (
                                     <div className='p2p-my-ads__table-status-warning'>
                                         <div style={{ marginRight: '0.8rem' }}>
                                             <AdStatus is_active={!!is_advert_active} />
@@ -257,7 +256,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         </div>
                     </Table.Cell>
                     <Table.Cell>
-                        {rate_type === 'fixed' || !payment_method_names ? (
+                        {!payment_method_names ? (
                             <div className='p2p-my-ads__table-status-warning'>
                                 <AdStatus is_active={!!is_advert_active} />
                                 <Icon

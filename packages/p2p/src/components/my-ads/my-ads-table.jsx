@@ -67,7 +67,7 @@ const MyAdsTable = () => {
                         message={
                             <Text as='p' size='xxxs' color='prominent' line_height='xs'>
                                 <Localize
-                                    i18n_default_text={`Floating rates are enabled for ${general_store.client.currency}. Ads with fixed rates will be deactivated. Switch to floating rates by 30.03.2022`}
+                                    i18n_default_text={`Floating rates are enabled for ${general_store.client.local_currency_config.currency}. Ads with fixed rates will be deactivated. Switch to floating rates by`}
                                 />
                             </Text>
                         }

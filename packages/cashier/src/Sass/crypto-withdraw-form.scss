@@ -24,6 +24,11 @@
     }
     &__icon {
         margin-top: 2.4rem;
+
+        &__iphone_se_polyfill {
+            height: 64px;
+            width: 64px;
+        }
     }
     &__percentage-selector {
         margin-bottom: 1.6rem;

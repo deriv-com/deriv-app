@@ -25,6 +25,7 @@
             "Constants/*": ["src/constants/*"],
             "Services/*": ["src/services/*"],
             "Stores/*": ["src/stores/*"],
+            "Stores": ["src/stores/index"],
             "Types": ["src/types"],
             "Utils": ["src/utils"]
         },

@@ -29,6 +29,7 @@ const MyAdsTable = () => {
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
 
     React.useEffect(() => {
+        my_ads_store.getWebsiteStatus();
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
@@ -61,6 +62,19 @@ const MyAdsTable = () => {
                         />
                     </div>
                 )}
+                <div className='p2p-my-ads__warning'>
+                    <HintBox
+                        icon='IcAlertWarning'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                <Localize
+                                    i18n_default_text={`Floating rates are enabled for ${general_store.client.currency}. Ads with fixed rates will be deactivated. Switch to floating rates by 30.03.2022`}
+                                />
+                            </Text>
+                        }
+                        is_warn
+                    />
+                </div>
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (

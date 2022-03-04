@@ -435,6 +435,25 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
         });
 };
 
+const compareAccountsData = ({
+    landing_companies,
+    is_logged_in,
+    show_eu_related,
+    platform,
+    residence,
+    is_uk,
+}: TCompareAccountsDataParams) => {
+    const is_australian = residence === 'au';
+    return filterAvailableAccounts(
+        landing_companies,
+        getAccounts({ landing_companies, platform, is_logged_in, is_uk }),
+        is_logged_in,
+        show_eu_related,
+        platform,
+        is_australian
+    );
+};
+
 const CFDCompareAccountHint = ({
     platform,
     show_risk_message,
@@ -531,25 +550,6 @@ const CFDCompareAccountHint = ({
                     );
                 })}
         </div>
-    );
-};
-
-const compareAccountsData = ({
-    landing_companies,
-    is_logged_in,
-    show_eu_related,
-    platform,
-    residence,
-    is_uk,
-}: TCompareAccountsDataParams) => {
-    const is_australian = residence === 'au';
-    return filterAvailableAccounts(
-        landing_companies,
-        getAccounts({ landing_companies, platform, is_logged_in, is_uk }),
-        is_logged_in,
-        show_eu_related,
-        platform,
-        is_australian
     );
 };
 

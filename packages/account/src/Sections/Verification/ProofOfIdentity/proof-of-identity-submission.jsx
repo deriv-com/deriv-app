@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi-country-selector';
@@ -69,7 +70,8 @@ const POISubmission = ({
             switch (identity_last_attempt.service) {
                 case service_code.idv: {
                     if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
-                        setSubmissionStatus(submission_status_code.selecting);
+                        if (submission_status !== submission_status_code.complete)
+                            setSubmissionStatus(submission_status_code.selecting);
                     } else {
                         setSubmissionService(service_code.manual);
                         setSubmissionStatus(submission_status_code.submitting);
@@ -78,7 +80,8 @@ const POISubmission = ({
                 }
                 case service_code.onfido: {
                     if (Number(onfido.submissions_left) > 0) {
-                        setSubmissionStatus(submission_status_code.selecting);
+                        if (submission_status !== submission_status_code.complete)
+                            setSubmissionStatus(submission_status_code.selecting);
                     } else {
                         setSubmissionService(service_code.manual);
                     }

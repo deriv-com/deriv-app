@@ -379,6 +379,7 @@ const Dropdown = ({
                     )}
                     <div
                         className={dropdownDisplayClassName()}
+                        data-testid='dti_dropdown_display'
                         tabIndex={isSingleOption() ? '-1' : '0'}
                         onClick={handleVisibility}
                         onKeyDown={onKeyPressed}

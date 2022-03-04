@@ -1,7 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { useStores } from 'Stores';
 import { TTradeModalBody } from '../trade-modal-types';
 
 const TradeModalBody: React.FC<TTradeModalBody> = ({ launch_apps, qrcode_data }) => {

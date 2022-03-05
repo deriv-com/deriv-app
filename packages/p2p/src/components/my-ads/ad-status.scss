@@ -4,11 +4,7 @@
         border-radius: 1.6rem;
         padding: 0.2rem 1.6rem;
         text-align: center;
-        width: 8.8rem;
-
-        @include mobile {
-            margin-bottom: 0.8rem;
-        }
+        width: 7.4rem;
     }
 
     &--inactive {
@@ -17,9 +13,5 @@
         padding: 0.1rem 1.2rem;
         text-align: center;
         width: 8.8rem;
-
-        @include mobile {
-            margin-bottom: 0.8rem;
-        }
     }
 }

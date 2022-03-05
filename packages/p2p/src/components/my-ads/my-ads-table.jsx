@@ -9,6 +9,7 @@ import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
+import MyAdsFloatingRateSwitchModal from './my-ads-floating-rate-switch-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import QuickAddModal from './quick-add-modal.jsx';
 import AdExceedsDailyLimitModal from './ad-exceeds-daily-limit-modal.jsx';
@@ -24,7 +25,7 @@ const getHeaders = offered_currency => [
 ];
 
 const MyAdsTable = () => {
-    const { general_store, my_ads_store } = useStores();
+    const { floating_rate_store, general_store, my_ads_store } = useStores();
 
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
 
@@ -55,6 +56,21 @@ const MyAdsTable = () => {
                             message={
                                 <Text as='p' size='xxxs' color='prominent' line_height='xs'>
                                     <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
+                                </Text>
+                            }
+                            is_warn
+                        />
+                    </div>
+                )}
+                {floating_rate_store.change_ad_alert && (
+                    <div className='p2p-my-ads__warning'>
+                        <HintBox
+                            icon='IcAlertWarning'
+                            message={
+                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                    <Localize
+                                        i18n_default_text={`Floating rates are enabled for ${general_store.client.local_currency_config.currency}. Ads with fixed rates will be deactivated. Switch to floating rates by ${floating_rate_store.fixed_rate_adverts_end_date}`}
+                                    />
                                 </Text>
                             }
                             is_warn
@@ -115,6 +131,7 @@ const MyAdsTable = () => {
                     </div>
                 )}
                 <MyAdsDeleteModal />
+                <MyAdsFloatingRateSwitchModal />
                 <Modal
                     className='p2p-my-ads__modal-error'
                     has_close_icon={false}

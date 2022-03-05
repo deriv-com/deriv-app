@@ -100,7 +100,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             <Text color='less-prominent' line_height='m' size='xxs'>
                                 <Localize i18n_default_text='Ad ID {{advert_id}} ' values={{ advert_id: id }} />
                             </Text>
-                            <div className='p2p-my-ads__table-row-details'>
+                            <div className='p2p-my-ads__table-row__type-and-status'>
                                 <Text line_height='m' size='s' weight='bold'>
                                     {is_buy_advert ? (
                                         <Localize
@@ -114,7 +114,21 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         />
                                     )}
                                 </Text>
-                                <AdStatus is_active={!!is_advert_active} />
+                                {!payment_method_names ? (
+                                    <div className='p2p-my-ads__table-status-warning'>
+                                        <div style={{ marginRight: '0.8rem' }}>
+                                            <AdStatus is_active={!!is_advert_active} />
+                                        </div>
+
+                                        <Icon
+                                            icon='IcAlertWarning'
+                                            size={16}
+                                            className='cfd-dashboard__maintenance-icon'
+                                        />
+                                    </div>
+                                ) : (
+                                    <AdStatus is_active={!!is_advert_active} />
+                                )}
                             </div>
                             <div className='p2p-my-ads__table-row-details'>
                                 <Text color='profit-success' line_height='m' size='xxs'>
@@ -242,9 +256,20 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         </div>
                     </Table.Cell>
                     <Table.Cell>
-                        <div className='p2p-my-ads__table-status'>
-                            <AdStatus is_active={!!is_advert_active} />
-                        </div>
+                        {!payment_method_names ? (
+                            <div className='p2p-my-ads__table-status-warning'>
+                                <AdStatus is_active={!!is_advert_active} />
+                                <Icon
+                                    icon='IcAlertWarning'
+                                    size={isMobile() ? 28 : 16}
+                                    className='cfd-dashboard__maintenance-icon'
+                                />
+                            </div>
+                        ) : (
+                            <div className='p2p-my-ads__table-status'>
+                                <AdStatus is_active={!!is_advert_active} />
+                            </div>
+                        )}
                     </Table.Cell>
                     {is_popover_actions_visible && (
                         <div className='p2p-my-ads__table-popovers'>

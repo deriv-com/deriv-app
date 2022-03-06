@@ -5,7 +5,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Formik, FormikHelpers as FormikActions } from 'formik';
 import React from 'react';
-import RootStore from '../Stores/index';
+import RootStore from '../Stores';
 import { connect } from '../Stores/connect';
 
 type TCFDAuthenticationStatusProps = {

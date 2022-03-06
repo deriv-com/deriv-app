@@ -13,8 +13,8 @@ import {
     redirectToLogin,
 } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { connect } from '../Stores/connect';
+import { getMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');

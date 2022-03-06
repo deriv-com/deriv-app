@@ -8,8 +8,7 @@ import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
-import { TExistingData } from './props.types.js';
-import { TTradingPlatformAccounts } from './props.types';
+import { TTradingPlatformAccounts, TExistingData } from './props.types';
 
 type TStandPoint = {
     financial_company: string;

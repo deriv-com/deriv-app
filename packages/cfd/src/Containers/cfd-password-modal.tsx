@@ -9,7 +9,7 @@ import {
     LandingCompany,
     Mt5NewAccount,
 } from '@deriv/api-types';
-import RootStore from '../Stores/index';
+import RootStore from '../Stores';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,

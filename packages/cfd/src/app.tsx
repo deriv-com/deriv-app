@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Routes from './Containers/routes';
 import CFDDashboard from './Containers';
-import CFDPasswordModal from './Containers';
-import CFDServerErrorDialog from './Containers';
 import { MobxContentProvider } from './Stores/connect';
 import initStore from './init-store'; // eslint-disable-line import/extensions
 
@@ -17,8 +15,6 @@ const App = ({ passthrough }: any) => {
         <MobxContentProvider store={root_store}>
             <React.Fragment>
                 <Routes />
-                <CFDPasswordModal />
-                <CFDServerErrorDialog />
                 <CFDDashboard />
             </React.Fragment>
         </MobxContentProvider>

@@ -36,15 +36,7 @@ const Error = Loadable({
     },
 });
 
-const Routes = ({
-    error,
-    has_error,
-    history,
-    is_logged_in,
-    is_logging_in,
-    passthrough,
-    setPromptHandler,
-}) => {
+const Routes = ({ error, has_error, history, is_logged_in, is_logging_in, passthrough, setPromptHandler }) => {
     React.useEffect(() => {
         if (setPromptHandler) {
             setPromptHandler(true, (route_to, action) => {

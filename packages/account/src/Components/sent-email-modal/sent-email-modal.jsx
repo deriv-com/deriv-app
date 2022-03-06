@@ -33,7 +33,14 @@ const getNoEmailContentStrings = () => {
     ];
 };
 
-const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail, has_live_chat = false }) => {
+const SentEmailModal = ({
+    identifier_title,
+    is_open,
+    onClose,
+    onClickSendEmail,
+    has_live_chat = false,
+    modal_mode = false,
+}) => {
     const getSubtitle = () => {
         let subtitle = '';
         switch (identifier_title) {
@@ -110,7 +117,7 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail, 
         </SendEmailTemplate>
     );
 
-    if (isMobile()) {
+    if (isMobile() && !modal_mode) {
         return (
             <MobileDialog
                 portal_element_id='modal_root'
@@ -158,6 +165,7 @@ SentEmailModal.propTypes = {
     onClose: PropTypes.func,
     onClickSendEmail: PropTypes.func,
     has_live_chat: PropTypes.bool,
+    modal_mode: PropTypes.bool,
 };
 
 export default SentEmailModal;

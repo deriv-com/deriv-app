@@ -68,11 +68,11 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                                     size='xs'
                                     weight='lighter'
                                 >
-                                    <Localize
+                                    {/* <Localize
                                         i18n_default_text="You're using your {{identifier_title}} account to log in to your Deriv account. To change your login method into using a username and password, click the <0>Unlink</0> button."
                                         components={[<strong key={0} />]}
                                         values={{ identifier_title: capitalized_identifier }}
-                                    />
+                                    /> */}
                                 </Text>
                             </div>
                             <div
@@ -132,6 +132,7 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                     onClose={() => setIsSentEmailModalOpen(false)}
                     identifier_title={capitalized_identifier}
                     onClickSendEmail={onClickSendEmail}
+                    modal_mode={true}
                 />
             </div>
         </React.Fragment>

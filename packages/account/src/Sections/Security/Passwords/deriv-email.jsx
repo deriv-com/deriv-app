@@ -75,6 +75,7 @@ const DerivEmail = ({ email, social_identity_provider }) => {
                     identifier_title={'Change_Email'}
                     onClickSendEmail={onClickResendEmail}
                     has_live_chat={true}
+                    modal_mode={true}
                 />
             </div>
         </React.Fragment>

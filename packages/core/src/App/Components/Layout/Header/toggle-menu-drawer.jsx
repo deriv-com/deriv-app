@@ -337,9 +337,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     toggleTheme(!is_dark_mode);
                                                 }}
                                             >
-                                                <div
-                                                    className={classNames('header__menu-mobile-link')}
-                                                >
+                                                <div className={classNames('header__menu-mobile-link')}>
                                                     <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
                                                     <span className='header__menu-mobile-link-text'>
                                                         {localize('Dark theme')}

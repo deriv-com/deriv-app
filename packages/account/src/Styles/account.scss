@@ -558,7 +558,6 @@ $MIN_HEIGHT_FLOATING: calc(
             .passwords-social-buttons {
                 display: flex;
                 flex-wrap: wrap;
-                gap: 0.8rem;
             }
 
             @include mobile {
@@ -643,6 +642,10 @@ $MIN_HEIGHT_FLOATING: calc(
                     display: flex;
                     grid-column-gap: 0.8rem;
                     &__fieldset {
+                        @include mobile {
+                            width: inherit;
+                            max-width: 400px;
+                        }
                         width: 400px;
                     }
                 }

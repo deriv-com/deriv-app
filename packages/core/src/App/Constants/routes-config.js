@@ -263,7 +263,7 @@ const getModules = ({ is_dashboard }) => {
                         {
                             path: routes.passwords,
                             component: Account,
-                            getTitle: () => localize('Passwords'),
+                            getTitle: () => localize('Email and passwords'),
                         },
                         {
                             path: routes.self_exclusion,

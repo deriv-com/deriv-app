@@ -15,7 +15,13 @@ import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
-const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPasswordModal, verification_code }) => {
+const UnlinkPassword = ({
+    logoutClient,
+    social_identity_provider,
+    toggleResetPasswordModal,
+    verification_code,
+    email,
+}) => {
     const url_action = getActionFromUrl();
     const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
@@ -43,7 +49,7 @@ const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPas
         if (url_action === 'social_email_change') {
             const api_request = {
                 change_email: 'update',
-                new_email: values.email,
+                new_email: email,
                 new_password: values.password,
                 verification_code,
             };
@@ -231,6 +237,7 @@ UnlinkPasswordModal.propTypes = {
 };
 
 export default connect(({ ui, client }) => ({
+    email: client.email,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,

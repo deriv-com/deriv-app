@@ -31,6 +31,14 @@ const copyConfig = base => {
             to: 'account/css',
         },
         {
+            from: path.resolve(__dirname, '../node_modules/@deriv/cfd/dist/cfd/js/'),
+            to: 'cfd/js',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/cfd/dist/cfd/css/'),
+            to: 'cfd/css',
+        },
+        {
             from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/js/'),
             to: 'cashier/js',
         },

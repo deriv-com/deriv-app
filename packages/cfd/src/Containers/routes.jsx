@@ -37,7 +37,6 @@ const Error = Loadable({
 });
 
 const Routes = ({
-    onUnmountPortfolio,
     error,
     has_error,
     history,
@@ -45,7 +44,6 @@ const Routes = ({
     is_logging_in,
     passthrough,
     setPromptHandler,
-    setTradeMountingPolicy,
 }) => {
     React.useEffect(() => {
         if (setPromptHandler) {
@@ -68,11 +66,6 @@ const Routes = ({
                         },
                     ],
                     action,
-                    callback: has_match => {
-                        if (has_match) {
-                            onUnmountPortfolio();
-                        }
-                    },
                 });
 
                 return tradePageMountingMiddleware({
@@ -83,7 +76,6 @@ const Routes = ({
                         { from: [routes.trade], to: [routes.contract] },
                     ],
                     action,
-                    callback: setTradeMountingPolicy,
                 });
             });
         }
@@ -93,10 +85,6 @@ const Routes = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    React.useEffect(() => {
-        return () => onUnmountPortfolio();
-    }, [onUnmountPortfolio]);
 
     if (has_error) return <Error {...error} />;
 
@@ -111,19 +99,16 @@ Routes.propTypes = {
     is_logging_in: PropTypes.bool,
     passthrough: PropTypes.object,
     setPromptHandler: PropTypes.func,
-    setTradeMountingPolicy: PropTypes.func,
 };
 
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
-    connect(({ client, common, modules, ui }) => ({
-        onUnmountPortfolio: modules.portfolio.onUnmount,
+    connect(({ client, common, ui }) => ({
         error: common.error,
         has_error: common.has_error,
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,
         setPromptHandler: ui.setPromptHandler,
-        setTradeMountingPolicy: modules.trade.setSkipPrePostLifecycle,
     }))(Routes)
 );

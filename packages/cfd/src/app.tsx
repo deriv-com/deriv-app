@@ -17,8 +17,8 @@ const App = ({ passthrough }: any) => {
         <MobxContentProvider store={root_store}>
             <React.Fragment>
                 <Routes />
-                <CFDServerErrorDialog />
                 <CFDPasswordModal />
+                <CFDServerErrorDialog />
                 <CFDDashboard />
             </React.Fragment>
         </MobxContentProvider>

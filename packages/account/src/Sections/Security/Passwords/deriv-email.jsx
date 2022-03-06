@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import { Button, Text, Input } from '@deriv/components';
 import { WS, toTitleCase } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { Button, Text, Input } from '@deriv/components';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import UnlinkAccountModal from 'Components/unlink-account-modal';

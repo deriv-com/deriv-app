@@ -1386,8 +1386,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
-/** @define unlink-email-success; weak */
-.unlink-email-success,
+/** @define unlink-account; weak */
 .unlink-account {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
@@ -1526,6 +1525,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
+
 /** @define connected-apps; weak */
 .connected-apps {
     width: 100%;

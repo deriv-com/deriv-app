@@ -53,7 +53,7 @@
                 width: 100vw;
                 margin-top: 4rem;
                 @media screen and (max-height: 568px) {
-                    height: inherit;
+                    height: inherit !important;
                 }
 
                 .dc-collapsible {

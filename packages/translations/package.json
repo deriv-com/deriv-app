@@ -11,7 +11,7 @@
         "url": "git+https://github.com/binary-com/deriv-app.git"
     },
     "engines": {
-        "node": "^16.14.0"
+        "node": "14.x"
     },
     "scripts": {
         "test": "mocha ./scripts/**/**.spec.js",

@@ -1243,7 +1243,11 @@ export default class ClientStore extends BaseStore {
             }
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
-                if (search_params?.get('action') === 'reset_password') {
+                const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
+                    search_params?.get('action')
+                );
+
+                if (has_action) {
                     const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
                     window.location.replace(`${redirect_route}/redirect?${query_string}`);
                 } else {
@@ -1643,7 +1647,7 @@ export default class ClientStore extends BaseStore {
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 
-        if (response.logout === 1) {
+        if (response?.logout === 1) {
             this.cleanUp();
 
             this.root_store.rudderstack.reset();

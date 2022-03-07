@@ -104,8 +104,7 @@ Before running or contribute to this project, you need to have the setup of the 
 
 | Package name   | Docs                                                                                                                | Version                                                                                                                                  |
 | :------------- | :------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| `Appstore`     | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/appstore/README.md)     |
--
+| `Appstore`     | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/appstore/README.md)     | -                                                                                                                                        |
 | `Bot`          | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/bot/README.md)          | -                                                                                                                                        |
 | `Components`   | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/components/README.md)   | -                                                                                                                                        |
 | `Core`         | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/core/README.md)         | -                                                                                                                                        |

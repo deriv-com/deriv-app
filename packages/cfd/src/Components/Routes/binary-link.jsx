@@ -1,15 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { findRouteByPath, normalizePath } from './helpers';
+import { PlatformContext } from '@deriv/shared';
 import getRoutesConfig from '../../Constants/routes-config';
+import { findRouteByPath, normalizePath } from './helpers';
 
-// TODO: solve circular dependency problem
-// when binary link is imported into components present in routes config
-// or into their descendants
 const BinaryLink = ({ active_class, to, children, ...props }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const path = normalizePath(to);
-    const route = findRouteByPath(path, getRoutesConfig());
+    const route = findRouteByPath(path, getRoutesConfig({ is_dashboard }));
 
     if (!route) {
         throw new Error(`Route not found: ${to}`);

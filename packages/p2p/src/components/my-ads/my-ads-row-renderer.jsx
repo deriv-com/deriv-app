@@ -10,7 +10,7 @@ import AdStatus from 'Components/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
 
 const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
-    const { general_store, my_ads_store, my_profile_store } = useStores();
+    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
 
     const {
         account_currency,
@@ -23,6 +23,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         min_order_amount_display,
         payment_method_names,
         price_display,
+        rate_type,
         remaining_amount,
         remaining_amount_display,
         type,
@@ -33,6 +34,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
 
     const amount_dealt = amount - remaining_amount;
+    const enable_action_point = rate_type === 'fixed' && floating_rate_store.change_ad_alert;
     const is_buy_advert = type === buy_sell.BUY;
 
     const onClickActivateDeactivate = () => {
@@ -40,6 +42,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id);
+    const onClickSwitchAd = () => !general_store.is_barred && my_ads_store.setIsSwitchModalOpen(true, id);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 
@@ -256,7 +259,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         </div>
                     </Table.Cell>
                     <Table.Cell>
-                        {!payment_method_names ? (
+                        {!payment_method_names || enable_action_point ? (
                             <div className='p2p-my-ads__table-status-warning'>
                                 <AdStatus is_active={!!is_advert_active} />
                                 <Icon
@@ -304,6 +307,17 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             )}
                             {!is_advert_active && (
                                 <div onClick={onClickEdit}>
+                                    <Popover
+                                        alignment='bottom'
+                                        className='p2p-my-ads__table-popovers__edit'
+                                        message={localize('Edit')}
+                                    >
+                                        <Icon icon='IcEdit' size={16} />
+                                    </Popover>
+                                </div>
+                            )}
+                            {!!is_advert_active && enable_action_point && (
+                                <div onClick={onClickSwitchAd}>
                                     <Popover
                                         alignment='bottom'
                                         className='p2p-my-ads__table-popovers__edit'

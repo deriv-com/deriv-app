@@ -33,6 +33,8 @@ export default class MyAdsStore extends BaseStore {
     @observable is_quick_add_modal_open = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
+    @observable is_switch_ad_rate = false;
+    @observable is_switch_modal_open = false;
     @observable item_offset = 0;
     @observable p2p_advert_information = {};
     @observable selected_ad_id = '';
@@ -517,6 +519,22 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
+    }
+
+    @action.bound
+    setIsSwitchModalOpen(is_switch_modal_open, app_id) {
+        this.setSelectedAdId(app_id);
+        this.is_switch_modal_open = is_switch_modal_open;
+    }
+
+    @action.bound
+    setShouldSwitchAdRate(is_switch_ad_rate) {
+        this.is_switch_ad_rate = is_switch_ad_rate;
+        if (is_switch_ad_rate) {
+            this.setShowEditAdForm(true);
+            this.getAdvertInfo();
+        }
+        this.setIsSwitchModalOpen(false, null);
     }
 
     @action.bound

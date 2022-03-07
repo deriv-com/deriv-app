@@ -7,18 +7,16 @@ export default class FloatingRateStore extends BaseStore {
     @observable float_rate_adverts_status;
     @observable float_rate_offset_limit;
     @observable fixed_rate_adverts_end_date;
-    @observable exchange_rate = '100';
+    @observable exchange_rate;
     @observable change_ad_alert;
     @observable api_error_message = '';
     @action.bound
     setFixedRateAdvertStatus(fixed_rate_advert_status) {
-        // this.fixed_rate_adverts_status = fixed_rate_advert_status;
-        this.fixed_rate_adverts_status = 'disabled';
+        this.fixed_rate_adverts_status = fixed_rate_advert_status;
     }
     @action.bound
     setFloatingRateAdvertStatus(floating_rate_advert_status) {
-        // this.floating_rate_advert_status = floating_rate_advert_status;
-        this.floating_rate_advert_status = 'enabled';
+        this.floating_rate_advert_status = floating_rate_advert_status;
     }
     @action.bound
     setFoatRateOffsetLimit(offset_limit) {

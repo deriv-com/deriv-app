@@ -9,7 +9,6 @@ import RecentTransaction from 'Components/recent-transaction.jsx';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import PercentageSelector from '../percentage-selector';
 import 'Sass/crypto-withdraw-form.scss';
-import classNames from 'classnames';
 
 const MIN_ADDRESS_LENGTH = 25;
 const MAX_ADDRESS_LENGTH = 64;
@@ -92,9 +91,7 @@ const CryptoWithdrawForm = ({
             <Icon
                 icon={`IcCurrency-${account_platform_icon.toLowerCase()}`}
                 size={isMobile() ? 64 : 128}
-                className={classNames('crypto-withdraw-form__icon', {
-                    'crypto-withdraw-form__icon__iphone_se_polyfill': isMobile(),
-                })}
+                className='crypto-withdraw-form__icon'
             />
             {isMobile() && <Header currency={currency} />}
             <Formik

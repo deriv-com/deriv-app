@@ -58,7 +58,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     is_left_swipe
                     right_hidden_component={
                         <React.Fragment>
-                            {!is_advert_active && (
+                            {!is_advert_active && !enable_action_point && (
                                 <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
                                     <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
                                 </div>
@@ -309,7 +309,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     </Popover>
                                 </div>
                             )}
-                            {!is_advert_active && (
+                            {!is_advert_active && !enable_action_point && (
                                 <div onClick={onClickEdit}>
                                     <Popover
                                         alignment='bottom'

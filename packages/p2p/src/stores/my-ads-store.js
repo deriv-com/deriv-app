@@ -72,21 +72,24 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     getAdvertInfo() {
         this.setIsFormLoading(true);
-
         requestWS({
             p2p_advert_info: 1,
             id: this.selected_ad_id,
-        }).then(response => {
-            if (!response.error) {
-                const { p2p_advert_info } = response;
-                if (!p2p_advert_info.payment_method_names)
-                    p2p_advert_info.payment_method_names = this.payment_method_names;
-                if (!p2p_advert_info.payment_method_details)
-                    p2p_advert_info.payment_method_details = this.payment_method_details;
-                this.setP2pAdvertInformation(p2p_advert_info);
-            }
-            this.setIsFormLoading(false);
-        });
+        })
+            .then(response => {
+                if (!response.error) {
+                    const { p2p_advert_info } = response;
+                    if (!p2p_advert_info.payment_method_names)
+                        p2p_advert_info.payment_method_names = this.payment_method_names;
+                    if (!p2p_advert_info.payment_method_details)
+                        p2p_advert_info.payment_method_details = this.payment_method_details;
+                    this.setP2pAdvertInformation(p2p_advert_info);
+                }
+            })
+            .finally(() => {
+                this.setIsFormLoading(false);
+                this.setIsSwitchModalOpen(false, null);
+            });
     }
 
     @action.bound
@@ -546,10 +549,9 @@ export default class MyAdsStore extends BaseStore {
     setShouldSwitchAdRate(is_switch_ad_rate) {
         this.is_switch_ad_rate = is_switch_ad_rate;
         if (is_switch_ad_rate) {
-            this.setShowEditAdForm(true);
             this.getAdvertInfo();
+            this.setShowEditAdForm(true);
         }
-        this.setIsSwitchModalOpen(false, null);
     }
 
     @action.bound

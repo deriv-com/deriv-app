@@ -178,7 +178,7 @@ export default class ActiveSymbols {
             submarket_options.sort(a => (a[1] === 'random_index' ? -1 : 1));
         }
 
-        return this.sortDropdownOptions(submarket_options.sort(), this.isSubmarketClosed);
+        return this.sortDropdownOptions(submarket_options, this.isSubmarketClosed);
     }
 
     getSymbolDropdownOptions(submarket) {
@@ -248,7 +248,7 @@ export default class ActiveSymbols {
 
     sortDropdownOptions = (dropdown_options, closedFunc) => {
         const options = [...dropdown_options];
-
+        
         options.sort((a, b) => {
             const is_a_closed = closedFunc.call(this, a[1]);
             const is_b_closed = closedFunc.call(this, b[1]);
@@ -260,7 +260,6 @@ export default class ActiveSymbols {
             }
             return -1;
         });
-
-        return options;
+        return options.sort();
     };
 }

@@ -35,4 +35,10 @@
             width: 100%;
         }
     }
+
+    .crypto-withdraw-form.scss {
+        @media screen and (max-height: 568px) {
+            height: inherit;
+        }
+    }
 }

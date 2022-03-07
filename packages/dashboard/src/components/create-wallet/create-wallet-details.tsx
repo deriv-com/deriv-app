@@ -1,5 +1,7 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
+import WalletRadioButtonGroup from './wallet-radio-button-group';
+import WalletRadioButton from './wallet-radio-button';
 
 type TProps = {
     content: Array<{ light: string; dark: string }>;
@@ -14,15 +16,15 @@ const CreateWalletDetails: React.FC<TProps> = ({ content, is_dark_mode_on, title
             <Text align='left' size='s' weight='bold'>
                 {title}
             </Text>
-            <div className='create-wallet-detail__icon-array'>
+            <WalletRadioButtonGroup className='create-wallet-detail__icon-array' item_count={content.length}>
                 {content?.map((icon, index) => {
                     return (
                         <div key={`${icon}${index}`} className='create-wallet-detail__icon'>
-                            <Icon icon={is_dark_mode_on ? icon.dark : icon.light} width={64} height={40} />
+                            <WalletRadioButton icon={is_dark_mode_on ? icon.dark : icon.light} />
                         </div>
                     );
                 })}
-            </div>
+            </WalletRadioButtonGroup>
         </div>
     );
 };

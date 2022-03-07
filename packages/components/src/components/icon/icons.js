@@ -1,5 +1,6 @@
 // auto-generated file. DO NOT MODIFY.
 
+import './appstore/ic-appstore-check.svg';
 import './appstore/ic-appstore-wallet-aud-light.svg';
 import './appstore/ic-appstore-wallet-bitcoin-light.svg';
 import './appstore/ic-appstore-wallet-ethereum-light.svg';

@@ -22,16 +22,18 @@ const CreateWallet: React.FC = () => {
                     </Text>
                 </div>
                 <ThemedScrollbars className='create-wallet-scroll'>
-                    {Providers.wallets?.map((wallet, index) => {
-                        return (
-                            <CreateWalletDetails
-                                key={index.toString()}
-                                content={wallet.content}
-                                is_dark_mode_on={is_dark_mode_on}
-                                title={wallet.title}
-                            />
-                        );
-                    })}
+                    <div className='create-wallet-details'>
+                        {Providers.wallets?.map((wallet, index) => {
+                            return (
+                                <CreateWalletDetails
+                                    key={index.toString()}
+                                    content={wallet.content}
+                                    is_dark_mode_on={is_dark_mode_on}
+                                    title={wallet.title}
+                                />
+                            );
+                        })}
+                    </div>
                 </ThemedScrollbars>
             </div>
         </div>

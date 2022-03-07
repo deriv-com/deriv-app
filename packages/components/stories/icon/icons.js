@@ -3,6 +3,7 @@
 export const icons =
 {
     'appstore': [
+        'IcAppstoreCheck',
         'IcAppstoreWalletAudLight',
         'IcAppstoreWalletBitcoinLight',
         'IcAppstoreWalletEthereumLight',

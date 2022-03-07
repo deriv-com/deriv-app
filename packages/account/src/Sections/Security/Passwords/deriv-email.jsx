@@ -8,12 +8,17 @@ import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import UnlinkAccountModal from 'Components/unlink-account-modal';
 
-const DerivEmail = ({ email, social_identity_provider }) => {
+const DerivEmail = ({ email, social_identity_provider, is_social_signup }) => {
     const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = React.useState(false);
     const [is_send_email_modal_open, setIsSendEmaliMldalOpen] = React.useState(false);
 
     const onClickChangeEmail = () => {
-        setIsUnlinkAccountModalOpen(true);
+        if (is_social_signup) {
+            setIsUnlinkAccountModalOpen(true);
+        } else {
+            WS.verifyEmail(email, 'request_email');
+            setIsSendEmaliMldalOpen(true);
+        }
     };
 
     const onClickSendEmail = () => {

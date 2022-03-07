@@ -35,9 +35,4 @@
             width: 100%;
         }
     }
-    .cashier__wrapper {
-        @media screen and (max-height: 568px) {
-            height: inherit;
-        }
-    }
 }

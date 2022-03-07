@@ -35,6 +35,7 @@ const FileUploader = ({ handleFile, fileName, className, dataTestID, name }) => 
                 readOnly
                 color='less-prominent'
                 type={'text'}
+                tabIndex={'-1'}
             />
             <Button
                 className='proof-of-ownership__card-open-inputs-photo-btn'

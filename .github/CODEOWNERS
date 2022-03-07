@@ -125,4 +125,4 @@
 #  deriv-app/appstore
 # ==============================================================
 
-/packages/appstore/**/*                                        @matin-binary @balakrishna-binary @njazuli-deriv @bahar-fs
+/packages/appstore/**/*                                         @matin-binary @balakrishna-binary @njazuli-deriv @bahar-fs

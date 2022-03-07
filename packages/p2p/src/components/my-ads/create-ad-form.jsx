@@ -28,7 +28,6 @@ const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
         return <Div100vhContainer height_offset='auto'>{children}</Div100vhContainer>;
     }
-
     return children;
 };
 
@@ -96,8 +95,6 @@ const CreateAdForm = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [my_ads_store.is_ad_created_modal_visible]);
-
-    console.log('Rate_type: ', floating_rate_store.rate_type);
 
     return (
         <React.Fragment>
@@ -236,7 +233,7 @@ const CreateAdForm = () => {
                                                                     floating_rate_store.float_rate_offset_limit * -1,
                                                             }}
                                                             required
-                                                            changeHandler={e => {
+                                                            change_handler={e => {
                                                                 my_ads_store.restrictDecimalPlace(e, 2, handleChange);
                                                             }}
                                                             place_holder='Floating rate'

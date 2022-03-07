@@ -46,22 +46,8 @@ export default class MyAdsStore extends BaseStore {
     @observable show_edit_ad_form = false;
     @observable update_payment_methods_error_message = '';
 
-    // constructor() {
-    //     reaction(
-    //         () => this.is_switch_ad_rate,
-    //         () => {
-    //             this.setShowEditAdForm(true);
-    //             this.getAdvertInfo();
-    //         }
-    //     );
-    // }
-
     payment_method_ids = [];
     payment_method_names = [];
-
-    checkForFixedRateAds(ads_list) {
-        return ads_list.some(ad => ad.rate_type === 'fixed');
-    }
 
     @action.bound
     getAccountStatus() {
@@ -336,7 +322,7 @@ export default class MyAdsStore extends BaseStore {
                     this.setAdverts(this.adverts.concat(list));
                     this.setMissingPaymentMethods(!!list.find(payment_method => !payment_method.payment_method_names));
                     if (this.root_store.floating_rate_store.rate_type === 'float') {
-                        this.root_store.floating_rate_store.setChangeAdAlert(this.checkForFixedRateAds(list));
+                        this.root_store.floating_rate_store.setChangeAdAlert(checkForFixedRateAds(list));
                     }
                 } else if (response.error.code === 'PermissionDenied') {
                     this.root_store.general_store.setIsBlocked(true);
@@ -506,17 +492,6 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setShouldSwitchAdRate(is_switch_ad_rate) {
-        console.log('Called SetShould switch rate');
-        this.is_switch_ad_rate = is_switch_ad_rate;
-    }
-
-    @action.bound
-    setIsSwitchModalOpen(is_switch_modal_open) {
-        this.is_switch_modal_open = is_switch_modal_open;
-    }
-
-    @action.bound
     setIsTableLoading(is_table_loading) {
         this.is_table_loading = is_table_loading;
     }
@@ -559,6 +534,22 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
+    }
+
+    @action.bound
+    setIsSwitchModalOpen(is_switch_modal_open, app_id) {
+        this.setSelectedAdId(app_id);
+        this.is_switch_modal_open = is_switch_modal_open;
+    }
+
+    @action.bound
+    setShouldSwitchAdRate(is_switch_ad_rate) {
+        this.is_switch_ad_rate = is_switch_ad_rate;
+        if (is_switch_ad_rate) {
+            this.setShowEditAdForm(true);
+            this.getAdvertInfo();
+        }
+        this.setIsSwitchModalOpen(false, null);
     }
 
     @action.bound
@@ -867,3 +858,7 @@ export default class MyAdsStore extends BaseStore {
         return errors;
     }
 }
+
+const checkForFixedRateAds = ads_list => {
+    return ads_list.some(ad => ad.rate_type === 'fixed');
+};

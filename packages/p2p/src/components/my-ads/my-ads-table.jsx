@@ -68,6 +68,25 @@ const MyAdsTable = () => {
                         />
                     </div>
                 )}
+                {floating_rate_store.change_ad_alert && (
+                    <div className='p2p-my-ads__warning'>
+                        <HintBox
+                            icon='IcAlertWarning'
+                            message={
+                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                    <Localize
+                                        i18n_default_text={`Floating rates are enabled for ${
+                                            general_store.client.local_currency_config.currency || '-'
+                                        }. Ads with fixed rates will be deactivated. Switch to floating rates by ${
+                                            floating_rate_store.fixed_rate_adverts_end_date || '-'
+                                        }`}
+                                    />
+                                </Text>
+                            }
+                            is_warn
+                        />
+                    </div>
+                )}
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (

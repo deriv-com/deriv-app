@@ -98,7 +98,7 @@ const getAccounts: TGetAccounts = ({ landing_companies, platform, is_logged_in, 
 
     return [
         {
-            attribute: localize('Account currency demmit'),
+            attribute: localize('Account currency'),
             mt5: {
                 synthetic: localize('USD'),
                 synthetic_eu: localize('EUR'),

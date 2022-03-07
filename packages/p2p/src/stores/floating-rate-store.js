@@ -11,6 +11,14 @@ export default class FloatingRateStore extends BaseStore {
     @observable change_ad_alert;
     @observable api_error_message = '';
 
+    @computed
+    get rate_type() {
+        if (this.fixed_rate_adverts_status === 'enabled') {
+            return 'fixed';
+        }
+        return 'float';
+    }
+
     @action.bound
     setFixedRateAdvertStatus(fixed_rate_advert_status) {
         this.fixed_rate_adverts_status = fixed_rate_advert_status;
@@ -68,13 +76,5 @@ export default class FloatingRateStore extends BaseStore {
                 this.setApiErrorMessage(null);
             }
         });
-    }
-
-    @computed
-    get rate_type() {
-        if (this.fixed_rate_adverts_status === 'enabled') {
-            return 'fixed';
-        }
-        return 'float';
     }
 }

@@ -52,6 +52,9 @@
             @include mobile {
                 width: 100vw;
                 margin-top: 4rem;
+                @media screen and (max-height: 568px) {
+                    height: inherit;
+                }
 
                 .dc-collapsible {
                     position: relative;
@@ -64,9 +67,6 @@
                 .cashier__wrapper {
                     width: calc(100% - 3.2rem);
                     margin: 0 1.6rem;
-                    @media screen and (max-height: 568px) {
-                        height: inherit;
-                    }
 
                     &-error {
                         display: flex;

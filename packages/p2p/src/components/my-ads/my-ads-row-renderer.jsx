@@ -64,6 +64,11 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
                                 </div>
                             )}
+                            {!!is_advert_active && enable_action_point && (
+                                <div className='p2p-my-ads__table-popovers__edit' onClick={onClickSwitchAd}>
+                                    <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
+                                </div>
+                            )}
                             {is_advert_active ? (
                                 <div className='p2p-my-ads__table-popovers__activate'>
                                     <Icon

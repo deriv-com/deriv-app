@@ -48,10 +48,6 @@ export default class MyAdsStore extends BaseStore {
     payment_method_ids = [];
     payment_method_names = [];
 
-    checkForFixedRateAds(ads_list) {
-        return ads_list.some(ad => ad.rate_type === 'fixed');
-    }
-
     @action.bound
     getAccountStatus() {
         this.setIsLoading(true);
@@ -326,7 +322,7 @@ export default class MyAdsStore extends BaseStore {
                     this.setAdverts(this.adverts.concat(list));
                     this.setMissingPaymentMethods(!!list.find(payment_method => !payment_method.payment_method_names));
                     if (this.root_store.floating_rate_store.rate_type === 'float') {
-                        this.root_store.floating_rate_store.setChangeAdAlert(this.checkForFixedRateAds(list));
+                        this.root_store.floating_rate_store.setChangeAdAlert(checkForFixedRateAds(list));
                     }
                 } else if (response.error.code === 'PermissionDenied') {
                     this.root_store.general_store.setIsBlocked(true);
@@ -844,3 +840,7 @@ export default class MyAdsStore extends BaseStore {
         return errors;
     }
 }
+
+const checkForFixedRateAds = ads_list => {
+    return ads_list.some(ad => ad.rate_type === 'fixed');
+};

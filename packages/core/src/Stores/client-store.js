@@ -107,6 +107,11 @@ export default class ClientStore extends BaseStore {
         request_email: '',
         social_email_change: '',
     };
+
+    @observable new_email = {
+        social_email_change: '',
+    };
+
     @observable account_limits = {};
 
     @observable self_exclusion = {};
@@ -1813,6 +1818,16 @@ export default class ClientStore extends BaseStore {
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
             this.fetchResidenceList(); // Prefetch for use in account signup process
+        }
+    }
+
+    @action.bound
+    setNewEmail(email, action) {
+        this.new_email[action] = email;
+        if (email) {
+            LocalStore.set(`new_email.${action}`, email);
+        } else {
+            LocalStore.remove(`new_email.${email}`);
         }
     }
 

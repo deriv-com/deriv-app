@@ -10,6 +10,7 @@ const Redirect = ({
     history,
     currency,
     setVerificationCode,
+    setNewEmail,
     hasAnyRealAccount,
     openRealAccountSignup,
     setResetTradingPasswordModalOpen,
@@ -23,7 +24,7 @@ const Redirect = ({
     const { is_dashboard } = React.useContext(PlatformContext);
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
-
+    setNewEmail(url_params.get('email'), url_params.get('action'));
     switch (url_params.get('action')) {
         case 'signup': {
             if (is_dashboard) {
@@ -157,6 +158,7 @@ Redirect.propTypes = {
     history: PropTypes.object,
     setResetTradingPasswordModalOpen: PropTypes.func,
     setVerificationCode: PropTypes.func,
+    setNewEmail: PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
 };
@@ -165,6 +167,7 @@ export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
         setVerificationCode: client.setVerificationCode,
+        setNewEmail: client.setNewEmail,
         fetchResidenceList: client.fetchResidenceList,
         hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,

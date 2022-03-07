@@ -20,7 +20,7 @@ const UnlinkPassword = ({
     social_identity_provider,
     toggleResetPasswordModal,
     verification_code,
-    email,
+    new_email,
 }) => {
     const url_action = getActionFromUrl();
     const onResetComplete = (error_msg, actions) => {
@@ -49,10 +49,11 @@ const UnlinkPassword = ({
         if (url_action === 'social_email_change') {
             const api_request = {
                 change_email: 'update',
-                new_email: email,
+                new_email,
                 new_password: values.password,
                 verification_code,
             };
+
             WS.changeEmail(api_request).then(async response => {
                 onGetPasswordResponse(response, actions);
             });
@@ -208,6 +209,7 @@ const UnlinkPasswordModal = ({
     toggleResetPasswordModal,
     reset_verification_code,
     unlink_verification_code,
+    new_email,
 }) => {
     return (
         <Dialog
@@ -222,6 +224,7 @@ const UnlinkPasswordModal = ({
                 social_identity_provider={social_identity_provider}
                 toggleResetPasswordModal={toggleResetPasswordModal}
                 verification_code={social_identity_provider ? unlink_verification_code : reset_verification_code}
+                new_email={new_email}
             />
         </Dialog>
     );
@@ -236,10 +239,12 @@ UnlinkPasswordModal.propTypes = {
     toggleResetPasswordModal: PropTypes.func,
     reset_verification_code: PropTypes.string,
     unlink_verification_code: PropTypes.string,
+    new_email: PropTypes.string,
 };
 
 export default connect(({ ui, client }) => ({
     email: client.email,
+    new_email: client.new_email.social_email_change,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,

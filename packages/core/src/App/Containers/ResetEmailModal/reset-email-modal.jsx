@@ -39,7 +39,6 @@ const ResetEmailModal = ({
         };
 
         setEmailRequest(api_request);
-        setIsSendEmaliModalOpen(true);
 
         WS.changeEmail(api_request).then(async response => {
             if (response.error) {

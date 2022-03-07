@@ -206,7 +206,8 @@ const UnlinkPasswordModal = ({
     logoutClient,
     social_identity_provider,
     toggleResetPasswordModal,
-    verification_code,
+    reset_verification_code,
+    unlink_verification_code,
 }) => {
     return (
         <Dialog
@@ -220,7 +221,7 @@ const UnlinkPasswordModal = ({
                 logoutClient={logoutClient}
                 social_identity_provider={social_identity_provider}
                 toggleResetPasswordModal={toggleResetPasswordModal}
-                verification_code={verification_code}
+                verification_code={social_identity_provider ? unlink_verification_code : reset_verification_code}
             />
         </Dialog>
     );
@@ -233,7 +234,8 @@ UnlinkPasswordModal.propTypes = {
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
-    verification_code: PropTypes.string,
+    reset_verification_code: PropTypes.string,
+    unlink_verification_code: PropTypes.string,
 };
 
 export default connect(({ ui, client }) => ({
@@ -245,5 +247,6 @@ export default connect(({ ui, client }) => ({
     logoutClient: client.logout,
     social_identity_provider: client.social_identity_provider,
     toggleResetPasswordModal: ui.toggleResetPasswordModal,
-    verification_code: client.verification_code.reset_password,
+    reset_verification_code: client.verification_code.reset_password,
+    unlink_verification_code: client.verification_code.social_email_change,
 }))(UnlinkPasswordModal);

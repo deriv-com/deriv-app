@@ -139,6 +139,7 @@ export default class MyAdsStore extends BaseStore {
             amount: Number(values.offer_amount),
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
+            rate_type: this.root_store.floating_rate_store.rate_type,
             rate: Number(values.price_rate),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
@@ -251,6 +252,7 @@ export default class MyAdsStore extends BaseStore {
             id: this.selected_ad_id,
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
+            rate_type: this.root_store.floating_rate_store.rate_type,
             rate: Number(values.price_rate),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }

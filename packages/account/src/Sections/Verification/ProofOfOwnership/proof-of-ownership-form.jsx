@@ -10,14 +10,19 @@ import FormBodySection from '../../../Components/form-body-section';
 import { isMobile } from '@deriv/shared';
 import Card from './Card.jsx';
 
-const getScrollOffset = () => {
+const getScrollOffset = (itemsCount = 0) => {
     if (isMobile()) return '200px';
+    if (itemsCount <= 2) return '0px';
     return '80px';
 };
 
 const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
+    const initValues = {};
+    initValues.data = cards.map(item => {
+        return { id: item.id, file: null };
+    });
     return (
-        <Formik initialValues={cards} onSubmit={handleSubmit}>
+        <Formik initialValues={initValues} onSubmit={handleSubmit}>
             {({
                 values,
                 errors,
@@ -31,19 +36,19 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
                 // submitForm,
             }) => (
                 <div className='proof-of-ownership'>
-                    <FormBody scroll_offset={getScrollOffset()}>
+                    <FormBody scroll_offset={getScrollOffset(cards.length)}>
                         <FormSubHeader title={localize('Please upload the following document(s).')} />
                         <FormBodySection>
                             <fieldset>
-                                {values.map((card, index) => {
+                                {cards.map((card, index) => {
                                     return (
                                         <Card
-                                            type={card.payment_method_identifier}
                                             key={card.id}
                                             index={index}
                                             handleChange={handleChange}
                                             handleBlur={handleBlur}
-                                            values={card}
+                                            values={values}
+                                            card={card}
                                             setFieldValue={setFieldValue}
                                         />
                                     );

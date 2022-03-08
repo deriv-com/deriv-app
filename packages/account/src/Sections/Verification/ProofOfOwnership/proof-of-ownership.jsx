@@ -15,7 +15,7 @@ import POOSubmitted from 'Components/poo-submitted';
 // };
 
 // TODO: get real ownership object from get_account_status call
-const ownership = {
+const ownership_temp = {
     requests: [
         {
             creation_time: '3 o clock',
@@ -63,7 +63,7 @@ const ownership = {
     status: 'pending',
 };
 
-const ProofOfOwnership = () => {
+const ProofOfOwnership = ({ ownership = ownership_temp }) => {
     const [cards] = useState(ownership.requests);
     const [status] = useState(ownership.status);
     const [step, setStep] = useState(0);

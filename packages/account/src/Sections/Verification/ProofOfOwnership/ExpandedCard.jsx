@@ -10,7 +10,6 @@ const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue, index }
     const handleUploadedFile = (name, file) => {
         setFieldValue(name, file);
     };
-
     return (
         <>
             <div>
@@ -35,21 +34,21 @@ const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue, index }
                         className='proof-of-ownership__card-open-inputs-cardnumber'
                         type='text'
                         onChange={handleChange}
-                        value={''
+                        is_disabled='true'
+                        value={'123412xxxxxx1234'
                             .replace(/\s/g, '')
                             .replace(/(\w{4})/g, '$1 ')
                             .trim()}
                         onBlur={handleBlur}
-                        name={`cards[${index}].data.cardNumber`}
                         maxLength='19'
                     />
 
                     <FileUploader
                         handleFile={handleUploadedFile}
-                        fileName={values?.file?.name}
-                        dataTestID={'file-uploader'}
+                        fileName={values?.data?.[index]?.file?.name}
+                        dataTestID={`uploader-${values?.data?.[index]?.id}`}
                         className='proof-of-ownership__card-open-inputs-photo'
-                        name={`cards[${index}].data.file`}
+                        name={`data[${index}].file`}
                     />
                 </fieldset>
             </div>

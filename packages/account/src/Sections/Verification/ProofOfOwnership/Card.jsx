@@ -4,7 +4,7 @@ import * as React from 'react';
 import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
 
-const Card = ({ type, handleChange, handleBlur, values, setFieldValue, index }) => {
+const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index }) => {
     const onClick = () => setIsOpen(!is_open);
     const [is_open, setIsOpen] = React.useState(false);
     const icon = (
@@ -28,16 +28,19 @@ const Card = ({ type, handleChange, handleBlur, values, setFieldValue, index }) 
         other: 'IcOtherPaymentMethod',
     };
     return (
-        <div className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}>
+        <div
+            className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}
+            data-testid={card.id}
+        >
             <div className='proof-of-ownership__card-item'>
                 <Icon
-                    icon={paymentMethodIcons[type]}
+                    icon={paymentMethodIcons[card.payment_method_identifier]}
                     className='proof-of-ownership__card-item-logo'
                     width={64}
                     height={58}
                 />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {values.payment_method || 'Credit/debit card'}{' '}
+                    {card?.payment_method || 'Credit/debit card'}{' '}
                     {/** TODO: || method is temporary, should be removed */}
                 </Text>
                 <Button
@@ -53,7 +56,7 @@ const Card = ({ type, handleChange, handleBlur, values, setFieldValue, index }) 
                 <ExpandedCard
                     handleChange={handleChange}
                     handleBlur={handleBlur}
-                    values={values.data}
+                    values={values}
                     setFieldValue={setFieldValue}
                     index={index}
                 />

@@ -253,6 +253,7 @@ export const help_content_config = public_path => {
             { type: BLOCK },
         ],
         trade_definition_tradeoptions: [{ type: TEXT }, { type: BLOCK }],
+        trade_definition_multiplier: [{ type: TEXT }, { type: TEXT }, { type: TEXT }, { type: TEXT }],
         before_purchase: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }],
         during_purchase: [
             { type: TEXT },

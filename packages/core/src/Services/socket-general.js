@@ -190,6 +190,7 @@ const BinarySocketGeneral = (() => {
                         'p2p_advertiser_info',
                         'portfolio',
                         'proposal_open_contract',
+                        'change_email',
                     ].includes(msg_type)
                 ) {
                     return;

@@ -12,9 +12,9 @@ const ResetEmailModal = ({
     disableApp,
     enableApp,
     is_loading,
-    toggleResetEmailModal,
     is_visible,
     verification_code,
+    toggleResetEmailModal,
 }) => {
     const [is_send_email_modal_open, setIsSendEmaliModalOpen] = React.useState(false);
     const [email_request, setEmailRequest] = React.useState(null);
@@ -49,6 +49,7 @@ const ResetEmailModal = ({
             }
         });
     };
+
     const resendEmail = () => {
         WS.changeEmail(email_request);
     };
@@ -81,22 +82,23 @@ const ResetEmailModal = ({
     }
 
     return (
-        <div className='reset-email'>
-            <Formik
-                initialValues={reset_initial_values}
-                initialStatus={{ reset_complete: false, error_msg: '' }}
-                validate={validateReset}
-                onSubmit={handleSubmit}
-            >
-                {({ errors, values, touched, isSubmitting, handleChange, setFieldTouched, status }) => (
-                    <Dialog
-                        is_visible={is_visible}
-                        disableApp={disableApp}
-                        enableApp={enableApp}
-                        is_loading={is_loading}
-                        dismissable={status.error_msg}
-                        onConfirm={() => toggleResetEmailModal(false)}
-                    >
+        <Formik
+            initialValues={reset_initial_values}
+            initialStatus={{ reset_complete: false, error_msg: '' }}
+            validate={validateReset}
+            onSubmit={handleSubmit}
+        >
+            {({ errors, values, touched, isSubmitting, handleChange, setFieldTouched, status }) => (
+                <Dialog
+                    is_visible={is_visible}
+                    disableApp={disableApp}
+                    enableApp={enableApp}
+                    is_loading={is_loading}
+                    dismissable={status.error_msg}
+                    onConfirm={() => toggleResetEmailModal(false)}
+                    is_closed_on_cancel={false}
+                >
+                    <div className='reset-email'>
                         <Form>
                             <React.Fragment>
                                 {status.reset_complete ? (
@@ -128,12 +130,11 @@ const ResetEmailModal = ({
                                                 type='text'
                                                 name='email'
                                                 id={'email'}
-                                                // label={localize('Email address')}
                                                 placeholder={localize('Email address')}
                                                 value={values.email}
                                                 required
                                                 disabled={false}
-                                                error={touched.email && errors.email}
+                                                error={(touched.email && errors.email) || status.error_msg}
                                                 onChange={e => {
                                                     setFieldTouched('email', true);
                                                     handleChange(e);
@@ -164,10 +165,10 @@ const ResetEmailModal = ({
                                 )}
                             </React.Fragment>
                         </Form>
-                    </Dialog>
-                )}
-            </Formik>
-        </div>
+                    </div>
+                </Dialog>
+            )}
+        </Formik>
     );
 };
 

@@ -373,9 +373,7 @@ const BinarySocketBase = (() => {
             name: 'test real labuan financial stp',
         });
 
-    const changeEmail = api_request => {
-        deriv_api.send(api_request);
-    };
+    const changeEmail = api_request => deriv_api.send(api_request);
 
     return {
         init,

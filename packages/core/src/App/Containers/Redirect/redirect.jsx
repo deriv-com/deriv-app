@@ -161,6 +161,7 @@ Redirect.propTypes = {
     setNewEmail: PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
+    toggleResetEmailModal: PropTypes.func,
 };
 
 export default withRouter(

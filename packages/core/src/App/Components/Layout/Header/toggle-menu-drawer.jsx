@@ -99,15 +99,15 @@ const ToggleMenuDrawer = React.forwardRef(
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
-        const { is_dashboard } = React.useContext(PlatformContext);
+        const { is_appstore } = React.useContext(PlatformContext);
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_dashboard });
+                const routes_config = getRoutesConfig({ is_appstore });
                 let primary_routes = [];
                 let secondary_routes = [];
 
-                if (is_dashboard) {
+                if (is_appstore) {
                     primary_routes = [
                         routes.my_apps,
                         routes.explore,
@@ -129,7 +129,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_dashboard, account_status, should_allow_authentication]);
+        }, [is_appstore, account_status, should_allow_authentication]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);
@@ -274,14 +274,14 @@ const ToggleMenuDrawer = React.forwardRef(
             <React.Fragment>
                 <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
                     <Icon
-                        icon={is_dashboard && !is_logged_in ? 'IcHamburgerWhite' : 'IcHamburger'}
+                        icon={is_appstore && !is_logged_in ? 'IcHamburgerWhite' : 'IcHamburger'}
                         width='16px'
                         height='16px'
                         className='header__mobile-drawer-icon'
                     />
                 </a>
                 <MobileDrawer
-                    alignment={is_dashboard ? 'right' : 'left'}
+                    alignment={is_appstore ? 'right' : 'left'}
                     icon_class='header__menu-toggle'
                     is_open={is_open}
                     toggle={toggleDrawer}
@@ -289,20 +289,20 @@ const ToggleMenuDrawer = React.forwardRef(
                     enableApp={enableApp}
                     disableApp={disableApp}
                     title={title || title === '' ? title : localize('Menu')}
-                    livechat={is_dashboard ? null : <LiveChat is_mobile_drawer />}
+                    livechat={is_appstore ? null : <LiveChat is_mobile_drawer />}
                     height='100vh'
                     width='295px'
                 >
                     <Div100vhContainer height_offset='40px'>
                         <div className='header__menu-mobile-body-wrapper'>
-                            {is_dashboard && (
+                            {is_appstore && (
                                 <MobileDrawer.Body>
                                     {primary_routes_config.map((route_config, idx) =>
                                         getRoutesWithSubMenu(route_config, idx)
                                     )}
                                 </MobileDrawer.Body>
                             )}
-                            {!is_dashboard && (
+                            {!is_appstore && (
                                 <React.Fragment>
                                     <MobileDrawer.SubHeader
                                         className={classNames({
@@ -337,11 +337,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     toggleTheme(!is_dark_mode);
                                                 }}
                                             >
-                                                <div
-                                                    className={classNames('header__menu-mobile-link', {
-                                                        'header__menu-mobile-link--active': is_dark_mode,
-                                                    })}
-                                                >
+                                                <div className={classNames('header__menu-mobile-link')}>
                                                     <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
                                                     <span className='header__menu-mobile-link-text'>
                                                         {localize('Dark theme')}

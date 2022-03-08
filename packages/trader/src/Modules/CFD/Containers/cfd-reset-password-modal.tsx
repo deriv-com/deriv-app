@@ -1,5 +1,5 @@
-import { Formik } from 'formik';
-import * as PropTypes from 'prop-types';
+import { Formik, FormikHelpers } from 'formik';
+import RootStore from 'Stores/index';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
@@ -14,9 +14,10 @@ import {
 } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 
-const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }) => {
+const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
     const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
@@ -26,11 +27,13 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }) => {
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
         login = current_list[`mt5.${group}.${type}@${server}`].login;
-        title = getMtCompanies(is_eu)[group][type].title;
+        title = getMtCompanies(is_eu)[group as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].title;
     } else if (current_list) {
-        [server, group, type] = Object.keys(current_list).pop().split('.');
+        [server, group, type] = (Object.keys(current_list).pop() as string).split('.');
         login = current_list[`mt5.${group}.${type}@${server}`]?.login ?? '';
-        title = getMtCompanies(is_eu)?.[group]?.[type]?.title ?? '';
+        title =
+            getMtCompanies(is_eu)?.[group as keyof TMtCompanies]?.[type as keyof TMtCompanies['demo' | 'real']]
+                ?.title ?? '';
     } else {
         // Set a default intent
         login = '';
@@ -54,8 +57,14 @@ const CFDResetPasswordModal = ({
     platform,
     setCFDPasswordResetModal,
     history,
-}) => {
-    const [state, setState] = React.useState({
+}: TCFDResetPasswordModal) => {
+    const [state, setState] = React.useState<{
+        error_code: string | number | undefined;
+        has_error: boolean;
+        error_message: string | undefined;
+        is_finished: boolean;
+        changed_password_type: string;
+    }>({
         error_code: undefined,
         has_error: false,
         error_message: undefined,
@@ -63,7 +72,7 @@ const CFDResetPasswordModal = ({
         changed_password_type: '',
     });
 
-    const renderErrorBox = error => {
+    const renderErrorBox = (error: TError) => {
         setState({
             ...state,
             error_code: error.code,
@@ -77,8 +86,8 @@ const CFDResetPasswordModal = ({
         localStorage.removeItem('cfd_reset_password_code');
         history.push(`${routes.mt5}`);
     };
-    const validatePassword = values => {
-        const errors = {};
+    const validatePassword = (values: { new_password: string }) => {
+        const errors: { new_password?: string } = {};
 
         if (
             !validLength(values.new_password, {
@@ -99,7 +108,13 @@ const CFDResetPasswordModal = ({
 
         return errors;
     };
-    const resetPassword = (values, password_type, login, actions) => {
+
+    const resetPassword = (
+        values: { new_password: string },
+        password_type: string,
+        login: string,
+        actions: FormikHelpers<{ new_password: string }>
+    ) => {
         const { setSubmitting } = actions;
         setSubmitting(true);
         const request = {
@@ -109,7 +124,7 @@ const CFDResetPasswordModal = ({
             verification_code: localStorage.getItem('cfd_reset_password_code'),
         };
 
-        WS.tradingPlatformInvestorPasswordReset(request).then(response => {
+        WS.tradingPlatformInvestorPasswordReset(request).then((response: { error: TError; password_type: string }) => {
             if (response.error && (response.error.code === 'InvalidToken' || response.error.code === 'BadSession')) {
                 renderErrorBox(response.error);
             } else {
@@ -160,7 +175,7 @@ const CFDResetPasswordModal = ({
                                                     has_error={!!(touched.new_password && errors.new_password)}
                                                     custom_feedback_messages={getErrorMessages().password_warnings}
                                                 >
-                                                    {({ has_warning }) => (
+                                                    {({ has_warning }: { has_warning: boolean }) => (
                                                         <PasswordInput
                                                             autoComplete='new-password'
                                                             className='cfd-reset-password__password-field'
@@ -255,17 +270,9 @@ const CFDResetPasswordModal = ({
     );
 };
 
-CFDResetPasswordModal.propTypes = {
-    email: PropTypes.string,
-    is_eu: PropTypes.bool,
-    is_cfd_reset_password_modal_enabled: PropTypes.any,
-    setCFDPasswordResetModal: PropTypes.any,
-    current_list: PropTypes.any,
-};
-
 export default React.memo(
     withRouter(
-        connect(({ modules: { cfd }, client }) => ({
+        connect(({ modules: { cfd }, client }: RootStore) => ({
             email: client.email,
             is_eu: client.is_eu,
             is_cfd_reset_password_modal_enabled: cfd.is_cfd_reset_password_modal_enabled,

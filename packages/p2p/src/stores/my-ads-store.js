@@ -136,6 +136,7 @@ export default class MyAdsStore extends BaseStore {
             amount: Number(values.offer_amount),
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
+            rate_type: this.root_store.floating_rate_store.rate_type,
             rate: Number(values.price_rate),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
@@ -152,6 +153,8 @@ export default class MyAdsStore extends BaseStore {
         if (values.default_advert_description) {
             create_advert.description = values.default_advert_description;
         }
+        console.log('Data to save: ', create_advert);
+        return;
         const createAd = () => {
             requestWS(create_advert).then(response => {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads

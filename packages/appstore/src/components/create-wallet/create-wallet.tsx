@@ -7,8 +7,8 @@ import CreateWalletDetails from './create-wallet-details';
 import Providers from './create-wallet-provider';
 
 const CreateWallet: React.FC = () => {
-    const { ui_store } = useStores();
-    const { is_dark_mode_on } = ui_store;
+    const { ui } = useStores();
+    const { is_dark_mode_on } = ui;
 
     return (
         <div className='create-wallet'>

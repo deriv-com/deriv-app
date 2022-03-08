@@ -72,7 +72,7 @@ const CreateAdForm = () => {
         );
 
         floating_rate_store.setP2PConfig();
-        floating_rate_store.setExchangeRate();
+        floating_rate_store.setExchangeRate(currency, local_currency_config.currency);
 
         return () => {
             disposeApiErrorReaction();

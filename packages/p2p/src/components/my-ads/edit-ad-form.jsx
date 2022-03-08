@@ -66,6 +66,8 @@ const EditAdForm = () => {
         my_ads_store.setIsEditAdErrorModalVisible(false);
         my_ads_store.setEditAdFormError('');
         floating_rate_store.setApiErrorMessage('');
+        floating_rate_store.setP2PConfig();
+        floating_rate_store.setExchangeRate(account_currency, local_currency);
 
         if (payment_method_names && !payment_method_details) {
             payment_method_names?.forEach(pm => {

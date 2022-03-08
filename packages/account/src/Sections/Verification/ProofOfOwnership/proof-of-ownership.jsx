@@ -2,18 +2,6 @@ import React, { useState } from 'react';
 import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
 import POOSubmitted from 'Components/poo-submitted';
 
-// const CARDS_COUNT = 10;
-// const CARD_VALUE = {
-//     static_data: {
-//         cardTitle: '',
-//         icon: 'IcCreditCard',
-//     },
-//     data: {
-//         cardNumber: '',
-//         file: null,
-//     },
-// };
-
 // TODO: get real ownership object from get_account_status call
 const ownership_temp = {
     requests: [
@@ -76,15 +64,7 @@ const ProofOfOwnership = ({ ownership = ownership_temp }) => {
         setStep(step + 1);
     };
     if (status === 'pending' && cards.length) {
-        return (
-            <ProofOfOwnershipForm
-                // cards_count={CARDS_COUNT}
-                // cards_value={CARD_VALUE}
-                cards={cards}
-                handleSubmit={handleSubmit}
-                nextStep={nextStep}
-            />
-        );
+        return <ProofOfOwnershipForm cards={cards} handleSubmit={handleSubmit} nextStep={nextStep} />;
     }
     // TODO: add screen for approved POO (status === 'none')
     if (status === 'none') {

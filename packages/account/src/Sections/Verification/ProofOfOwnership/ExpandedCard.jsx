@@ -35,7 +35,7 @@ const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue, index }
                         className='proof-of-ownership__card-open-inputs-cardnumber'
                         type='text'
                         onChange={handleChange}
-                        value={values.cardNumber
+                        value={''
                             .replace(/\s/g, '')
                             .replace(/(\w{4})/g, '$1 ')
                             .trim()}

@@ -1,107 +1,96 @@
-import classNames from 'classnames';
 import React, { useState } from 'react';
-import { Button, FormSubmitErrorMessage } from '@deriv/components';
-import { Formik } from 'formik';
-import { localize } from '@deriv/translations';
-import FormFooter from '../../../Components/form-footer';
-import FormBody from '../../../Components/form-body';
-import FormSubHeader from '../../../Components/form-sub-header';
-import FormBodySection from '../../../Components/form-body-section';
-import { isMobile } from '@deriv/shared';
-import Card from './Card.jsx';
+import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
+import POOSubmitted from 'Components/poo-submitted';
 
-const CARDS_COUNT = 10;
-const CARD_VALUE = {
-    static_data: {
-        cardTitle: '',
-        icon: 'IcCreditCard',
-    },
-    data: {
-        cardNumber: '',
-        file: null,
-    },
-};
+// const CARDS_COUNT = 10;
+// const CARD_VALUE = {
+//     static_data: {
+//         cardTitle: '',
+//         icon: 'IcCreditCard',
+//     },
+//     data: {
+//         cardNumber: '',
+//         file: null,
+//     },
+// };
 
-const getScrollOffset = () => {
-    if (isMobile()) return '200px';
-    return '80px';
+// TODO: get real ownership object from get_account_status call
+const ownership = {
+    requests: [
+        {
+            creation_time: '3 o clock',
+            id: 'abc1234',
+            payment_method: 'E-wallet',
+            payment_method_identifier: 'e_wallet',
+        },
+        {
+            creation_time: '4 o clock',
+            id: 'abc1235',
+            payment_method: 'ZingPay',
+            payment_method_identifier: 'zingPay',
+        },
+        {
+            creation_time: '5 o clock',
+            id: 'abc1236',
+            payment_method: 'OnlineNaira',
+            payment_method_identifier: 'online_naira',
+        },
+        {
+            creation_time: '6 o clock',
+            id: 'abc1237',
+            payment_method: 'Beyonic',
+            payment_method_identifier: 'beyonic',
+        },
+        {
+            creation_time: '7 o clock',
+            id: 'abc1238',
+            payment_method: 'Bank Transfer/Bank Wire ',
+            payment_method_identifier: 'bank_transfer',
+        },
+        {
+            creation_time: '8 o clock',
+            id: 'abc1239',
+            payment_method: '[Payment method name]',
+            payment_method_identifier: 'other',
+        },
+        {
+            creation_time: '9 o clock',
+            id: 'abc12340',
+            payment_method: 'Credit / Debit card',
+            payment_method_identifier: 'credit_debit_card',
+        },
+    ],
+    status: 'pending',
 };
 
 const ProofOfOwnership = () => {
-    const cardsGenerator = () => {
-        const cards_arr = [];
-        for (let i = 0; i < CARDS_COUNT; i++) {
-            cards_arr[i] = CARD_VALUE;
-        }
-        return { cards: cards_arr };
-    };
-    const [cards] = useState(cardsGenerator());
+    const [cards] = useState(ownership.requests);
+    const [status] = useState(ownership.status);
     const [step, setStep] = useState(0);
 
     const handleSubmit = e => {
+        // eslint-disable-next-line no-console
         console.log('hello', e);
     };
     const nextStep = () => {
         setStep(step + 1);
     };
-    return (
-        <Formik initialValues={cards} onSubmit={handleSubmit}>
-            {({
-                values,
-                errors,
-                isValid,
-                touched,
-                dirty,
-                handleChange,
-                handleBlur,
-                isSubmitting,
-                setFieldValue,
-                submitForm,
-            }) => (
-                <div className='proof-of-ownership'>
-                    <FormBody scroll_offset={getScrollOffset()}>
-                        <FormSubHeader title={localize('Please upload the following document.')} />
-                        <FormBodySection>
-                            <fieldset>
-                                {values.cards.map((card, index) => {
-                                    return (
-                                        <Card
-                                            key={card.cardTitle}
-                                            index={index}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            values={card}
-                                            setFieldValue={setFieldValue}
-                                        />
-                                    );
-                                })}
-                            </fieldset>
-                        </FormBodySection>
-                    </FormBody>
-                    <FormFooter>
-                        {status?.msg && <FormSubmitErrorMessage message={status?.msg} />}
-                        <Button
-                            type='submit'
-                            className={classNames('account-form__footer-btn')}
-                            onClick={() => {
-                                // submitForm()
-                                nextStep();
-                            }}
-                            is_disabled={!dirty || Object.keys(errors).length > 0}
-                            data-testid={'next-button'}
-                            has_effect
-                            // is_loading={is_btn_loading}
-                            // is_submit_success={is_submit_success}
-                            text={localize('Next')}
-                            large
-                            primary
-                            form={'first-step'}
-                        />
-                    </FormFooter>
-                </div>
-            )}
-        </Formik>
-    );
+    if (status === 'pending' && cards.length) {
+        return (
+            <ProofOfOwnershipForm
+                // cards_count={CARDS_COUNT}
+                // cards_value={CARD_VALUE}
+                cards={cards}
+                handleSubmit={handleSubmit}
+                nextStep={nextStep}
+            />
+        );
+    }
+    // TODO: add screen for approved POO (status === 'none')
+    if (status === 'none') {
+        return null;
+    }
+    return <POOSubmitted />;
 };
 
 export default ProofOfOwnership;

@@ -406,15 +406,9 @@
                     }
                 }
 
-                .p2p-my-ads__table__payment-method--label .dc-text {
-                    color: var(--text-disabled);
-                }
-
-                @include mobile {
-                    .dc-text {
-                        &:not(.ad-status--inactive) {
-                            color: var(--text-disabled);
-                        }
+                .dc-text {
+                    &:not(.ad-status--inactive) {
+                        color: var(--text-disabled);
                     }
                 }
             }

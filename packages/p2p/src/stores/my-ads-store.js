@@ -153,8 +153,7 @@ export default class MyAdsStore extends BaseStore {
         if (values.default_advert_description) {
             create_advert.description = values.default_advert_description;
         }
-        console.log('Data to save: ', create_advert);
-        return;
+
         const createAd = () => {
             requestWS(create_advert).then(response => {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads

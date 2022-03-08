@@ -37,4 +37,5 @@ export { default as totimestamp } from './totimestamp';
 export { default as trade_again } from './trade_again';
 export { default as trade_definition } from './trade_definition';
 export { default as trade_definition_tradeoptions } from './trade_definition_tradeoptions';
+export { default as trade_definition_multiplier } from './trade_definition_multiplier';
 export { default as variables_set } from './variables_set';

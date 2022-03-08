@@ -1,3 +1,5 @@
+import { isEuCountry } from '../location';
+
 export const showDigitalOptionsUnavailableError = (showError, message) => {
     const { title, text, link } = message;
     showError({
@@ -9,4 +11,12 @@ export const showDigitalOptionsUnavailableError = (showError, message) => {
         redirect_to: '/mt5',
         should_clear_error_on_click: true,
     });
+};
+
+export const isEuResidenceWithOnlyVRTC = (residence, accounts) => {
+    return (
+        isEuCountry(residence) &&
+        accounts?.length === 1 &&
+        accounts.every(acc => acc.landing_company_shortcode === 'virtual')
+    );
 };

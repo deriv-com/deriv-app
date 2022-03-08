@@ -1,5 +1,5 @@
 import { action, reaction } from 'mobx';
-import { showDigitalOptionsUnavailableError } from '@deriv/shared';
+import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
@@ -201,7 +201,11 @@ export default class AppStore {
     };
 
     showDigitalOptionsMaltainvestError = (client, common) => {
-        if (client.has_maltainvest_account || client.is_options_blocked) {
+        if (
+            client.has_maltainvest_account ||
+            isEuResidenceWithOnlyVRTC(client.residence, client.active_accounts) ||
+            client.is_options_blocked
+        ) {
             showDigitalOptionsUnavailableError(common.showError, {
                 text: localize(
                     'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'

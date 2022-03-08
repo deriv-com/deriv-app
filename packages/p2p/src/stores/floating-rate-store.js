@@ -13,10 +13,10 @@ export default class FloatingRateStore extends BaseStore {
 
     @computed
     get rate_type() {
-        if (this.fixed_rate_adverts_status === 'enabled') {
-            return 'fixed';
+        if (this.float_rate_adverts_status === 'enabled') {
+            return 'float';
         }
-        return 'float';
+        return 'fixed';
     }
 
     @action.bound
@@ -25,7 +25,7 @@ export default class FloatingRateStore extends BaseStore {
     }
     @action.bound
     setFloatingRateAdvertStatus(floating_rate_advert_status) {
-        this.floating_rate_advert_status = floating_rate_advert_status;
+        this.float_rate_adverts_status = floating_rate_advert_status;
     }
     @action.bound
     setFoatRateOffsetLimit(offset_limit) {

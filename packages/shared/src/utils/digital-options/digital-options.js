@@ -13,10 +13,9 @@ export const showDigitalOptionsUnavailableError = (showError, message) => {
     });
 };
 
-export const isEuResidenceWithOnlyVRTC = (residence, accounts) => {
+export const isEuResidenceWithOnlyVRTC = (accounts) => {
     return (
-        isEuCountry(residence) &&
         accounts?.length === 1 &&
-        accounts.every(acc => acc.landing_company_shortcode === 'virtual')
+        accounts.every(acc => isEuCountry(acc.residence) && acc.landing_company_shortcode === 'virtual')
     );
 };

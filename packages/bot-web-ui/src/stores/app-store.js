@@ -26,6 +26,7 @@ export default class AppStore {
         this.registerCurrencyReaction.call(this);
         this.registerOnAccountSwitch.call(this);
         this.registerLandingCompanyChangeReaction.call(this);
+        this.registerResidenceChangeReaction.call(this);
 
         window.addEventListener('click', this.onClickOutsideBlockly);
         window.addEventListener('beforeunload', this.onBeforeUnload);
@@ -52,6 +53,9 @@ export default class AppStore {
         }
         if (typeof this.disposeLandingCompanyChangeReaction === 'function') {
             this.disposeLandingCompanyChangeReaction();
+        }
+        if (typeof this.disposeResidenceChangeReaction === 'function') {
+            this.disposeResidenceChangeReaction();
         }
 
         window.removeEventListener('click', this.onClickOutsideBlockly);
@@ -145,6 +149,30 @@ export default class AppStore {
                     (!client.is_logged_in && client.is_eu_country) ||
                     client.has_maltainvest_account ||
                     isEuResidenceWithOnlyVRTC(client.residence, client.active_accounts) ||
+                    client.is_options_blocked
+                ) {
+                    showDigitalOptionsUnavailableError(common.showError, {
+                        text: localize(
+                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                        ),
+                        title: localize('DBot is not available for this account'),
+                        link: localize('Go to DMT5 dashboard'),
+                    });
+                }
+            }
+        );
+    }
+
+    registerResidenceChangeReaction() {
+        const { client, common } = this.root_store.core;
+
+        this.disposeResidenceChangeReaction = reaction(
+            () => client.account_settings.country_code,
+            () => {
+                if (
+                    (!client.is_logged_in && client.is_eu_country) ||
+                    client.has_maltainvest_account ||
+                    isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
                 ) {
                     showDigitalOptionsUnavailableError(common.showError, {

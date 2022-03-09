@@ -93,7 +93,12 @@ export default class AppStore {
 
                 const trade_options_blocks = Blockly.derivWorkspace
                     .getAllBlocks()
-                    .filter(b => b.type === 'trade_definition_tradeoptions');
+                    .filter(
+                        b =>
+                            b.type === 'trade_definition_tradeoptions' ||
+                            b.type === 'trade_definition_multiplier' ||
+                            (b.isDescendantOf('trade_definition_multiplier') && b.category_ === 'trade_parameters')
+                    );
 
                 trade_options_blocks.forEach(trade_options_block => trade_options_block.setCurrency(currency));
             }
@@ -135,8 +140,8 @@ export default class AppStore {
 
         this.disposeLandingCompanyChangeReaction = reaction(
             () => client.landing_company_shortcode,
-            landing_company_shortcode => {
-                if (landing_company_shortcode === 'maltainvest' || client.is_options_blocked) {
+            () => {
+                if (client.has_maltainvest_account || client.is_options_blocked) {
                     showDigitalOptionsUnavailableError(common.showError, {
                         text: localize(
                             'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
@@ -159,18 +164,22 @@ export default class AppStore {
             quick_strategy,
             load_modal,
             blockly_store,
+            summary_card,
         } = this.root_store;
         const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
         const { startLoading, endLoading } = blockly_store;
+        const { populateConfig, setContractUpdateConfig } = summary_card;
 
         this.dbot_store = {
             is_mobile: false,
             client,
             flyout,
+            populateConfig,
             toolbar,
             save_modal,
             startLoading,
+            setContractUpdateConfig,
             endLoading,
             toggleStrategyModal,
             handleFileChange,
@@ -192,7 +201,7 @@ export default class AppStore {
     };
 
     showDigitalOptionsMaltainvestError = (client, common) => {
-        if (client.landing_company_shortcode === 'maltainvest' || client.is_options_blocked) {
+        if (client.has_maltainvest_account || client.is_options_blocked) {
             showDigitalOptionsUnavailableError(common.showError, {
                 text: localize(
                     'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'

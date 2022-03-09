@@ -65,7 +65,7 @@ export default class FloatingRateStore extends BaseStore {
             exchange_rates: 1,
             base_currency: fiat_currency,
             subscribe: 1,
-            local_currency,
+            target_currency: local_currency,
         };
         requestWS(pay_load).then(response => {
             if (!!response && response.error) {

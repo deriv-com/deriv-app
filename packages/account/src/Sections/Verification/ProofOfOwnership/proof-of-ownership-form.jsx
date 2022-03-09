@@ -15,14 +15,33 @@ const getScrollOffset = (itemsCount = 0) => {
     if (itemsCount <= 2) return '0px';
     return '80px';
 };
+const validateFields = values => {
+    const errors = {};
+    errors.data = [];
+    values.data.map((item, index) => {
+        if (item?.file?.type && !/image\/(jpe?g|pdf|png)$/.test(item?.file?.type)) {
+            errors.data[index] = {};
+            errors.data[index].file = localize(
+                "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
+            );
+        }
+        if (item?.file?.size / 1024 > 8000) {
+            errors.data[index] = {};
+            errors.data[index].file = localize(
+                'That file is too big (only up to 8MB allowed). Please upload another file.'
+            );
+        }
+    });
 
+    return errors;
+};
 const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
     const initValues = {};
     initValues.data = cards.map(item => {
         return { id: item.id, file: null };
     });
     return (
-        <Formik initialValues={initValues} onSubmit={handleSubmit}>
+        <Formik initialValues={initValues} onSubmit={handleSubmit} validate={validateFields}>
             {({
                 values,
                 errors,
@@ -43,6 +62,7 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
                                     return (
                                         <Card
                                             key={card.id}
+                                            error={errors?.data?.[index]}
                                             index={index}
                                             handleChange={handleChange}
                                             handleBlur={handleBlur}
@@ -65,8 +85,8 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
                                 nextStep();
                             }}
                             is_disabled={(() => {
-                                const filesAvailable = values.data.some(item => item.file !== null);
-                                return !filesAvailable || Object.keys(errors).length > 0;
+                                const filesAvailable = values.data.some(item => item.file);
+                                return !filesAvailable || errors?.data?.length > 0;
                             })()}
                             data-testid={'next-button'}
                             has_effect

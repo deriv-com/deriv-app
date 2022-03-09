@@ -4,7 +4,7 @@ import * as React from 'react';
 import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
 
-const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index }) => {
+const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error }) => {
     const onClick = () => setIsOpen(!is_open);
     const [is_open, setIsOpen] = React.useState(false);
     const icon = (
@@ -59,6 +59,7 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index }) 
                     values={values}
                     setFieldValue={setFieldValue}
                     index={index}
+                    error={error}
                 />
             )}
         </div>

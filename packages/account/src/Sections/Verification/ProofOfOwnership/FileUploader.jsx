@@ -2,7 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Input } from '@deriv/components';
 
-const FileUploader = ({ handleFile, fileName, className, dataTestID, name }) => {
+const FileUploader = ({ handleFile, fileName, className, dataTestID, name, error }) => {
     // Create a reference to the hidden file input element
     const hiddenFileInput = React.useRef(null);
 
@@ -36,6 +36,7 @@ const FileUploader = ({ handleFile, fileName, className, dataTestID, name }) => 
                 color='less-prominent'
                 type={'text'}
                 tabIndex={'-1'}
+                error={error}
             />
             <Button
                 className='proof-of-ownership__card-open-inputs-photo-btn'

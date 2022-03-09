@@ -4,7 +4,7 @@ import { Input, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';
 
-const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue, index }) => {
+const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue, index, error }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
 
     const handleUploadedFile = (name, file) => {
@@ -49,6 +49,7 @@ const ExpandedCard = ({ handleChange, handleBlur, values, setFieldValue, index }
                         dataTestID={`uploader-${values?.data?.[index]?.id}`}
                         className='proof-of-ownership__card-open-inputs-photo'
                         name={`data[${index}].file`}
+                        error={error?.file}
                     />
                 </fieldset>
             </div>

@@ -16,14 +16,16 @@ const FilterModal = () => {
     const onChange = payment_method => {
         if (!buy_sell_store.filter_payment_methods.includes(payment_method.value)) {
             buy_sell_store.filter_payment_methods.push(payment_method.value);
-            setSelectedMethods([...selected_methods, payment_method.value]);
-            setSelectedMethodsText([...selected_methods_text, payment_method.text]);
+            setSelectedMethods(prev_selected_methods => [...prev_selected_methods, payment_method.value]);
+            setSelectedMethodsText(prev_selected_methods_text => [...prev_selected_methods_text, payment_method.text]);
         } else {
             buy_sell_store.filter_payment_methods = buy_sell_store.filter_payment_methods.filter(
                 payment_method_id => payment_method_id !== payment_method.value
             );
-            setSelectedMethods(selected_methods.filter(i => i !== payment_method.value));
-            setSelectedMethodsText(selected_methods_text.filter(i => i !== payment_method.text));
+            setSelectedMethods(prev_selected_methods => prev_selected_methods.filter(i => i !== payment_method.value));
+            setSelectedMethodsText(prev_selected_methods_text =>
+                prev_selected_methods_text.filter(i => i !== payment_method.text)
+            );
         }
     };
 
@@ -31,11 +33,18 @@ const FilterModal = () => {
         buy_sell_store.filter_payment_methods = [];
         setSelectedMethods([]);
         setSelectedMethodsText([]);
+        buy_sell_store.setSelectedPaymentMethodValue([]);
+        buy_sell_store.setSelectedPaymentMethodText([]);
     };
 
     React.useEffect(() => {
         buy_sell_store.setShowFilterPaymentMethods(false);
         my_profile_store.getPaymentMethodsList();
+
+        if (buy_sell_store.selected_payment_method_value.length) {
+            setSelectedMethods(buy_sell_store.selected_payment_method_value);
+            setSelectedMethodsText(buy_sell_store.selected_payment_method_text);
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -155,7 +164,11 @@ const FilterModal = () => {
                         >
                             {localize('Reset')}
                         </Button>
-                        <Button large primary onClick={() => buy_sell_store.onClickApply()}>
+                        <Button
+                            large
+                            primary
+                            onClick={() => buy_sell_store.onClickApply(selected_methods, selected_methods_text)}
+                        >
                             {localize('Apply')}
                         </Button>
                     </Button.Group>

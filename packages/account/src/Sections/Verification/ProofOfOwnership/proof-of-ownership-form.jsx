@@ -28,7 +28,6 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
                 errors,
                 // isValid,
                 // touched,
-                dirty,
                 handleChange,
                 handleBlur,
                 // isSubmitting,
@@ -65,7 +64,10 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
                                 // submitForm()
                                 nextStep();
                             }}
-                            is_disabled={!dirty || Object.keys(errors).length > 0}
+                            is_disabled={(() => {
+                                const filesAvailable = values.data.some(item => item.file !== null);
+                                return !filesAvailable || Object.keys(errors).length > 0;
+                            })()}
                             data-testid={'next-button'}
                             has_effect
                             // is_loading={is_btn_loading}

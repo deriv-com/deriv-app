@@ -85,8 +85,8 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
                                 nextStep();
                             }}
                             is_disabled={(() => {
-                                const filesAvailable = values.data.some(item => item.file);
-                                return !filesAvailable || errors?.data?.length > 0;
+                                const emptyFiles = values.data.some(item => !item?.file);
+                                return emptyFiles || errors?.data?.length > 0;
                             })()}
                             data-testid={'next-button'}
                             has_effect

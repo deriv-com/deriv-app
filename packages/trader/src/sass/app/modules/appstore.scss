@@ -1,9 +1,9 @@
-.product-card{
+.product-card {
     width: 200px;
     height: 120px;
     border-radius: 8px;
     overflow: hidden;
-    
+
     @include mobile {
         width: 144px;
         height: 96px;
@@ -12,7 +12,7 @@
     &__trade-type {
         position: relative;
 
-        &--body{
+        &--body {
             padding: 16px;
             background-repeat: no-repeat;
             background-size: cover;
@@ -24,13 +24,13 @@
                 padding: 12px 13px 6px 16px;
             }
 
-            &--check{
+            &--check {
                 position: absolute;
                 top: 8px;
                 right: 8px;
             }
 
-            &--header{
+            &--header {
                 font-size: 12px;
                 line-height: 18px;
                 font-weight: 700;
@@ -43,11 +43,11 @@
                 }
             }
 
-            &--second-row{
+            &--second-row {
                 display: flex;
                 flex-direction: row;
 
-                &--icon{
+                &--icon {
                     margin-right: 8px;
 
                     @include mobile {
@@ -55,8 +55,8 @@
                         height: 24px;
                     }
                 }
-                
-                p{
+
+                p {
                     font-size: 10px;
                     line-height: 14px;
                     font-weight: 700;
@@ -76,14 +76,14 @@
         position: relative;
         border-radius: 8px;
 
-        &--check{
+        &--check {
             position: absolute;
             top: 8px;
             right: 8px;
             border-radius: 50%;
         }
 
-        &--body{
+        &--body {
             display: flex;
             flex-direction: row;
             padding: 14px 16px;
@@ -92,7 +92,7 @@
                 padding: 17px 11px 17px 16px;
             }
 
-            &--icon{
+            &--icon {
                 margin-right: 16px;
 
                 @include mobile {
@@ -102,11 +102,11 @@
                 }
             }
 
-            &--details{
+            &--details {
                 display: flex;
                 flex-direction: column;
 
-                &--header{
+                &--header {
                     font-weight: bold;
                     font-size: 14px;
                     line-height: 20px;
@@ -118,7 +118,7 @@
                     }
                 }
 
-                &--description{
+                &--description {
                     font-weight: normal;
                     font-size: 12px;
                     line-height: 18px;

@@ -1,0 +1,76 @@
+{
+    "name": "@deriv/appstore",
+    "version": "0.0.4",
+    "description": "Deriv Appstore",
+    "main": "dist/appstore/js/index.js",
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist"
+    ],
+    "engines": {
+        "node": "^14.17.1"
+    },
+    "scripts": {
+        "build": "rimraf dist && webpack --progress",
+        "build:travis": "rimraf dist && webpack",
+        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "start": "rimraf dist && npm run test && npm run serve",
+        "deploy": "echo \"No deploy specified\"",
+        "deploy:clean": "echo \"No deploy:clean specified\"",
+        "deploy:folder": "echo \"No deploy:folder specified\"",
+        "deploy:staging": "echo \"No deploy:staging specified\"",
+        "deploy:production": "echo \"No deploy:production specified\"",
+        "test:eslint": "eslint \"./src/**/*.?(ts|tsx)\""
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@deriv/account": "^1.0.0",
+        "@deriv/api-types": "1.0.48",
+        "@deriv/components": "^1.0.0",
+        "@deriv/shared": "^1.0.0",
+        "@deriv/trader": "^3.8.0",
+        "@deriv/translations": "^1.0.0",
+        "classnames": "^2.2.6",
+        "formik": "^2.1.4",
+        "mobx": "^5.15.7",
+        "mobx-react-lite": "^2.2.2",
+        "object.fromentries": "^2.0.0",
+        "prop-types": "^15.7.2",
+        "react-router": "^5.2.0",
+        "react-router-dom": "^5.2.0"
+    },
+    "devDependencies": {
+        "@deriv/publisher": "^0.0.1-beta4",
+        "@types/classnames": "^2.2.11",
+        "@types/object.fromentries": "^2.0.0",
+        "@types/react-router-dom": "^5.1.6",
+        "babel-core": "^6.26.3",
+        "babel-loader": "^8.1.0",
+        "chai": "^4.2.0",
+        "concurrently": "^5.3.0",
+        "cross-env": "^5.2.0",
+        "css-loader": "^5.0.1",
+        "fork-ts-checker-webpack-plugin": "^6.5.0",
+        "lint-staged": "^10.4.0",
+        "mini-css-extract-plugin": "^1.3.4",
+        "node-sass": "^4.12.0",
+        "css-minimizer-webpack-plugin": "^3.0.1",
+        "postcss-loader": "^6.1.1",
+        "postcss-preset-env": "^6.7.0",
+        "postcss-scss": "^4.0.0",
+        "resolve-url-loader": "^3.1.2",
+        "sass-loader": "^10.1.1",
+        "sass-resources-loader": "^2.1.1",
+        "source-map-loader": "^1.1.2",
+        "style-loader": "^1.2.1",
+        "terser-webpack-plugin": "^5.1.1",
+        "typescript": "^4.5.4",
+        "webpack": "^5.46.0",
+        "webpack-bundle-analyzer": "^4.3.0",
+        "webpack-cli": "^4.7.2"
+    }
+}

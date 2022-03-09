@@ -23,7 +23,7 @@ const BuySell = () => {
 
     React.useEffect(() => {
         const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
-        const disposeAdvertIntervalReaction = buy_sell_store.registerAÎdvertIntervalReaction();
+        const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
 
         return () => {
             disposeIsListedReaction();
@@ -87,7 +87,7 @@ const BuySell = () => {
             />
             <RateChangedModal
                 local_currency={local_currency}
-                should_show_rate_changed_popup={false}
+                should_show_rate_changed_popup={true}
                 setShouldShowRateChangedPopup={null}
             />
         </div>

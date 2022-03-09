@@ -5,8 +5,11 @@
     left: 256px;
     top: 0px;
     background: var(--general-main-1);
-    border-right: 2px solid var(--general-section-1);
-    border-bottom: 2px solid var(--general-section-1);
+
+    @include desktop {
+        border-right: 2px solid var(--general-section-1);
+        border-bottom: 2px solid var(--general-section-1);
+    }
 
     &-container {
         margin: 4.8rem 2.4rem;
@@ -77,10 +80,8 @@
     }
     &-button {
         cursor: pointer;
+        position: relative;
 
-        &--selected {
-            position: relative;
-        }
         &__icon {
             &__border {
                 border-radius: 4px;

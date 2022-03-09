@@ -14,12 +14,7 @@ const WalletRadioButton: React.FC<TProps> = ({ icon }) => {
     };
 
     return (
-        <div
-            className={classNames('wallet-radio-button', {
-                'wallet-radio-button--selected': is_wallet_selected,
-            })}
-            onClick={onWalletClicked}
-        >
+        <div className='wallet-radio-button' onClick={onWalletClicked}>
             {is_wallet_selected && <Icon icon='IcAppstoreCheck' className='wallet-radio-icon' />}
             <Icon
                 className={classNames('wallet-radio-button__icon__border', {

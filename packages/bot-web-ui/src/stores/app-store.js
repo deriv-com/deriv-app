@@ -22,7 +22,7 @@ export default class AppStore {
             main_content.setContainerSize();
             blockly_store.endLoading();
         });
-
+        this.registerReloadOnLanguageChange(this);
         this.registerCurrencyReaction.call(this);
         this.registerOnAccountSwitch.call(this);
         this.registerLandingCompanyChangeReaction.call(this);
@@ -41,7 +41,9 @@ export default class AppStore {
             clearInterval(Blockly.derivWorkspace.save_workspace_interval);
             Blockly.derivWorkspace.dispose();
         }
-
+        if (typeof this.disposeReloadOnLanguageChangeReaction === 'function') {
+            this.disposeReloadOnLanguageChangeReaction();
+        }
         if (typeof this.disposeCurrencyReaction === 'function') {
             this.disposeCurrencyReaction();
         }
@@ -69,7 +71,19 @@ export default class AppStore {
             event.returnValue = true;
         }
     };
-
+    registerReloadOnLanguageChange() {
+        this.disposeReloadOnLanguageChangeReaction = reaction(
+            () => this.root_store.common.current_language,
+            () => {
+                // temporarily added this to refresh just dbot in case of changing language,
+                // otherwise it should change language without refresh.
+                const { pathname } = window.location;
+                const is_bot =
+                    /^\/bot/.test(pathname) || (/^\/(br_)/.test(pathname) && pathname.split('/')[2] === 'bot');
+                if (is_bot) window.location.reload();
+            }
+        );
+    }
     registerCurrencyReaction() {
         // Syncs all trade options blocks' currency with the client's active currency.
         this.disposeCurrencyReaction = reaction(
@@ -79,7 +93,12 @@ export default class AppStore {
 
                 const trade_options_blocks = Blockly.derivWorkspace
                     .getAllBlocks()
-                    .filter(b => b.type === 'trade_definition_tradeoptions');
+                    .filter(
+                        b =>
+                            b.type === 'trade_definition_tradeoptions' ||
+                            b.type === 'trade_definition_multiplier' ||
+                            (b.isDescendantOf('trade_definition_multiplier') && b.category_ === 'trade_parameters')
+                    );
 
                 trade_options_blocks.forEach(trade_options_block => trade_options_block.setCurrency(currency));
             }
@@ -121,8 +140,8 @@ export default class AppStore {
 
         this.disposeLandingCompanyChangeReaction = reaction(
             () => client.landing_company_shortcode,
-            landing_company_shortcode => {
-                if (landing_company_shortcode === 'maltainvest' || client.is_options_blocked) {
+            () => {
+                if (client.has_maltainvest_account || client.is_options_blocked) {
                     showDigitalOptionsUnavailableError(common.showError, {
                         text: localize(
                             'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
@@ -145,18 +164,22 @@ export default class AppStore {
             quick_strategy,
             load_modal,
             blockly_store,
+            summary_card,
         } = this.root_store;
         const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
         const { startLoading, endLoading } = blockly_store;
+        const { populateConfig, setContractUpdateConfig } = summary_card;
 
         this.dbot_store = {
             is_mobile: false,
             client,
             flyout,
+            populateConfig,
             toolbar,
             save_modal,
             startLoading,
+            setContractUpdateConfig,
             endLoading,
             toggleStrategyModal,
             handleFileChange,
@@ -178,7 +201,7 @@ export default class AppStore {
     };
 
     showDigitalOptionsMaltainvestError = (client, common) => {
-        if (client.landing_company_shortcode === 'maltainvest' || client.is_options_blocked) {
+        if (client.has_maltainvest_account || client.is_options_blocked) {
             showDigitalOptionsUnavailableError(common.showError, {
                 text: localize(
                     'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'

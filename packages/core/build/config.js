@@ -49,6 +49,10 @@ const copyConfig = base => {
             from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/trader'),
             to: 'trader',
         },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/appstore/dist/appstore'),
+            to: 'appstore',
+        },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
         {
             from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),
@@ -103,8 +107,8 @@ const copyConfig = base => {
             from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
             to: 'manifest.json',
             toType: 'file',
-            transform(content, path) {
-                return transformContentUrlBase(content, path, base);
+            transform(content, transform_path) {
+                return transformContentUrlBase(content, transform_path, base);
             },
         },
     ];
@@ -153,7 +157,7 @@ const htmlOutputConfig = is_release => ({
         ? {
               versionMetaTAG: {
                   name: 'version',
-                  content: gitRevisionPlugin.branch(),
+                  content: gitRevisionPlugin.version(),
               },
           }
         : {},

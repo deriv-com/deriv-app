@@ -2351,6 +2351,10 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &-img {
         padding: 2.4rem 0;
+        @include mobile {
+            width: 100%;
+            height: auto;
+        }
     }
 }
 

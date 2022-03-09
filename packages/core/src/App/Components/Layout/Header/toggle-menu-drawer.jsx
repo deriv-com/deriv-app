@@ -21,7 +21,6 @@ const MenuLink = ({
     text,
     onClickLink,
 }) => {
-    console.log(window.location.pathname, text);
     if (is_language) {
         return (
             <span

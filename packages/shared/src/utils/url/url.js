@@ -160,14 +160,10 @@ export const setUrlLanguage = lang => {
     default_language = lang;
 };
 
-export const getStaticUrl = (
-    path = '',
-    options = {
-        is_dashboard: false,
-    },
-    is_document = false
-) => {
-    const host = options.is_dashboard ? deriv_urls.DERIV_DASHBOARD_PRODUCTION : deriv_urls.DERIV_COM_PRODUCTION;
+// TODO: cleanup options param usage
+// eslint-disable-next-line no-unused-vars
+export const getStaticUrl = (path = '', _options = {}, is_document = false) => {
+    const host = deriv_urls.DERIV_COM_PRODUCTION;
     let lang = default_language?.toLowerCase();
 
     if (lang && lang !== 'en') {

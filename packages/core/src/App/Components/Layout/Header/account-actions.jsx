@@ -34,7 +34,7 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
     }) => {
-        const { is_dashboard } = React.useContext(PlatformContext);
+        const { is_appstore } = React.useContext(PlatformContext);
 
         if (is_logged_in) {
             return (
@@ -126,7 +126,7 @@ const AccountActions = React.memo(
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />
-                <SignupButton className='acc-info__button' is_dashboard={is_dashboard} />
+                <SignupButton className='acc-info__button' is_appstore={is_appstore} />
             </React.Fragment>
         );
     }

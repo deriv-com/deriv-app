@@ -13,7 +13,7 @@ export const showDigitalOptionsUnavailableError = (showError, message) => {
     });
 };
 
-export const isEuResidenceWithOnlyVRTC = (accounts) => {
+export const isEuResidenceWithOnlyVRTC = accounts => {
     return (
         accounts?.length === 1 &&
         accounts.every(acc => isEuCountry(acc.residence) && acc.landing_company_shortcode === 'virtual')

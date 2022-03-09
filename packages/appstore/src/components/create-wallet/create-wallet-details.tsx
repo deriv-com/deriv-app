@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import WalletRadioButtonGroup from './wallet-radio-button-group';
-import WalletRadioButton from './wallet-radio-button';
+import { WalletRadioButton, WalletRadioButtonGroup } from 'Components/wallet-radio-button';
 
 type TProps = {
     content: Array<{ light: string; dark: string }>;
@@ -20,7 +19,7 @@ const CreateWalletDetails: React.FC<TProps> = ({ content, is_dark_mode_on, title
                 {content?.map((icon, index) => {
                     return (
                         <div key={`${icon}${index}`} className='create-wallet-detail__icon'>
-                            <WalletRadioButton icon={is_dark_mode_on ? icon.dark : icon.light} />
+                            <WalletRadioButton icon={is_dark_mode_on ? icon.dark : icon.light} is_disabled={false} />
                         </div>
                     );
                 })}

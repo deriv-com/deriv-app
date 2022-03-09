@@ -260,6 +260,6 @@ export default class ActiveSymbols {
             }
             return -1;
         });
-        return options.sort();
+        return options;
     };
 }

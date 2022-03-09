@@ -64,7 +64,12 @@ const MenuLink = ({
             onClick={onClickLink}
         >
             <Icon className='header__menu-mobile-link-icon' icon={icon} />
-            <Text as='h3' size='xs' weight={window.location.pathname === '/' ? 'bold' : null}>
+            <Text
+                className='header__menu-mobile-link-text'
+                as='h3'
+                size='xs'
+                weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
+            >
                 {text}
             </Text>
             {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}

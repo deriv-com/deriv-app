@@ -12,16 +12,18 @@ import BuySellHeader from './buy-sell-header.jsx';
 import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
 import FilterModal from './filter-modal';
+import RateChangedModal from './rate-changed-modal.jsx';
 import './buy-sell.scss';
 
 const BuySell = () => {
-    const { buy_sell_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
+    const local_currency = general_store.client.local_currency_config.currency;
     const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
     const previous_scroll_top = React.useRef(0);
 
     React.useEffect(() => {
         const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
-        const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
+        const disposeAdvertIntervalReaction = buy_sell_store.registerAÎdvertIntervalReaction();
 
         return () => {
             disposeIsListedReaction();
@@ -62,7 +64,6 @@ const BuySell = () => {
             </React.Fragment>
         );
     }
-
     return (
         <div className='buy-sell'>
             <FilterModal />
@@ -84,6 +85,11 @@ const BuySell = () => {
                 setShouldShowPopup={buy_sell_store.setShouldShowPopup}
                 table_type={buy_sell_store.table_type}
             />
+            <RateChangedModal
+                local_currency={local_currency}
+                should_show_rate_changed_popup={false}
+                setShouldShowRateChangedPopup={null}
+            />
         </div>
     );
 };
@@ -94,6 +100,7 @@ BuySell.propTypes = {
     hideVerification: PropTypes.func,
     is_submit_disabled: PropTypes.bool,
     navigate: PropTypes.func,
+    local_currency: PropTypes.string,
     onCancelClick: PropTypes.func,
     onChangeTableType: PropTypes.func,
     onConfirmClick: PropTypes.func,
@@ -102,6 +109,8 @@ BuySell.propTypes = {
     setErrorMessage: PropTypes.func,
     setIsSubmitDisabled: PropTypes.func,
     setSelectedAdvert: PropTypes.func,
+    setShouldShowRateChangedPopup: PropTypes.func,
+    should_show_rate_changed_popup: PropTypes.bool,
     should_show_popup: PropTypes.bool,
     should_show_verification: PropTypes.bool,
     show_advertiser_page: PropTypes.bool,

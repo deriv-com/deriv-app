@@ -82,7 +82,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         icon='IcAlertWarning'
                         message={
                             <Text size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text='To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.' />
+                                <Localize i18n_default_text="Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead." />
                             </Text>
                         }
                         is_warn

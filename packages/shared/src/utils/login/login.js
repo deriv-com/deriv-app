@@ -15,8 +15,8 @@ export const redirectToLogin = (is_logged_in, language, has_params = true, redir
     }
 };
 
-export const redirectToSignUp = ({ is_dashboard }) => {
-    window.open(getStaticUrl('/signup/', { is_dashboard }));
+export const redirectToSignUp = ({ is_appstore }) => {
+    window.open(getStaticUrl('/signup/', { is_appstore }));
 };
 
 export const loginUrl = ({ language }) => {

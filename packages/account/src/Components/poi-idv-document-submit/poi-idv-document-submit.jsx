@@ -29,14 +29,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         // NOTE: This is a temporary filter. Remove after backend handles this from their side
         const document_types = Object.keys(document_data);
         const filtered_documents = ['gh', 'ng'].includes(country_code)
-            ? document_types.filter(d => {
-                  // For Ghana, exclude voter_id document
-                  if (country_code === 'gh') {
-                      return d !== 'voter_id';
-                  }
-                  // For Nigeria exclude voter_id, nin and nin_slip. Temporarily removal
-                  return !['voter_id', 'nin', 'nin_slip'].includes(d);
-              })
+            ? document_types.filter(d => d !== 'voter_id')
             : document_types;
 
         setDocumentList(

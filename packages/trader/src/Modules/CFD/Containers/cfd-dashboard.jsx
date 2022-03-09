@@ -19,10 +19,10 @@ import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-f
 import CompareAccountsModal from './compare-accounts-modal';
 import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal.jsx';
+import CFDResetPasswordModal from './cfd-reset-password-modal';
 import CFDPasswordModal from './cfd-password-modal';
 import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
-import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display';

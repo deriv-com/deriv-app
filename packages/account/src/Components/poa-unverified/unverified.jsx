@@ -5,7 +5,7 @@ import { Localize, localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const Unverified = () => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     return (
         <IconMessageContent
             message={localize('We could not verify your proof of address')}
@@ -19,7 +19,7 @@ export const Unverified = () => {
                     // ]}
                 />
             }
-            icon={<Icon icon={is_dashboard ? 'IcPoaErrorDashboard' : 'IcPoaError'} size={128} />}
+            icon={<Icon icon={is_appstore ? 'IcPoaErrorDashboard' : 'IcPoaError'} size={128} />}
         />
     );
 };

@@ -22,7 +22,7 @@ const RateChangedModal = ({ local_currency, should_show_rate_changed_popup, setS
         </div>
 
         <div className='rate-changed-modal__button'>
-            <Button onClick={setShouldShowRateChangedPopup} text={localize('Try again')} primary large />
+            <Button onClick={setShouldShowRateChangedPopup(false)} text={localize('Try again')} primary large />
         </div>
     </Modal>
 );

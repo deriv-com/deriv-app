@@ -21,6 +21,7 @@ const MenuLink = ({
     text,
     onClickLink,
 }) => {
+    console.log(window.location.pathname, text);
     if (is_language) {
         return (
             <span
@@ -65,7 +66,7 @@ const MenuLink = ({
         >
             <Icon className='header__menu-mobile-link-icon' icon={icon} />
             <Text
-                className='header__menu-mobile-link-text'
+                className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
                 as='h3'
                 size='xs'
                 weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}

@@ -27,6 +27,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
+import ProductCard from '../Components/product-card';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/cfd-dashboard.scss';
 
@@ -271,6 +272,59 @@ const CFDDashboard = props => {
     if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
     if ((is_logged_in && !landing_companies) || is_loading) return <Loading />;
 
+    // dummy product card data
+    const platform_data = [
+        {
+            platform_name: 'Deriv MT5',
+            icon_title: 'icBrandDmt5',
+            description: 'Trade on Deriv MT5 (DMT5), the all-in-one FX and CFD trading platform.',
+            checked: true,
+        },
+        {
+            platform_name: 'Deriv X',
+            icon_title: 'icBrandDxtrade',
+            description: 'Trade FX and CFDs on a customisable, easy-to-use trading platform.',
+            checked: false,
+        },
+    ];
+    const tradetype = [
+        {
+            type: 'CFDs',
+            icon_title: 'icAppstoreMultipliersTradeType',
+            description: 'Trade with leverage and tight spreads for better returns on successful trades.',
+            checked: false,
+            bg_image_title: 'appstore_cfds_trade_type_bg',
+        },
+        {
+            type: 'Multipliers',
+            icon_title: 'icAppstoreCfdsTradeType',
+            description: 'Combine the upside of CFDs with the simplicity of options.',
+            checked: false,
+            bg_image_title: 'appstore_multipliers_trade_type_bg',
+        },
+        {
+            type: 'Options',
+            icon_title: 'icAppstoreOptionTradeType',
+            description: 'Earn fixed payouts by predicting an asset price movement.',
+            checked: true,
+            bg_image_title: 'appstore_options_trade_type_bg',
+        },
+    ];
+
+    const trade_type_wrapper_div = {
+        width: '472px',
+        height: 'auto',
+        padding: '24px',
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    };
+
+    const marginSetting = {
+        marginRight: '8px',
+        marginBottom: '8px',
+    };
+
     return (
         <React.Fragment>
             {is_mt5_allowed || platform === CFD_PLATFORMS.DXTRADE || !is_logged_in ? (
@@ -504,6 +558,23 @@ const CFDDashboard = props => {
                             is_loading={is_loading}
                             verification_code={verification_code}
                         />
+
+                        {/* dummy code for product card */}
+                        <div style={trade_type_wrapper_div}>
+                            {platform_data.map((item, idx) => (
+                                <div style={marginSetting} key={idx}>
+                                    <ProductCard product_card={false} platform_details={item} />
+                                </div>
+                            ))}
+                        </div>
+
+                        <div style={trade_type_wrapper_div}>
+                            {tradetype.map((item, idx) => (
+                                <div style={marginSetting} key={idx}>
+                                    <ProductCard product_card={true} trade_type_details={item} />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             ) : (

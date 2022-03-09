@@ -2,6 +2,13 @@
 
 export const icons =
 {
+    'appstore': [
+        'IcAppstoreCfdsTradeType',
+        'IcAppstoreCheckedTransparent',
+        'IcAppstoreChecked',
+        'IcAppstoreMultipliersTradeType',
+        'IcAppstoreOptionTradeType'
+    ],
     'brand': [
         'IcBrandBinarybot',
         'IcBrandDbot',

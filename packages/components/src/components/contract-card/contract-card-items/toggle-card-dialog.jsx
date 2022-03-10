@@ -16,9 +16,10 @@ let ContractUpdateFormWrapper;
 
 const ToggleCardDialog = ({
     addToast,
-    contract_id,
     connectWithContractUpdate,
+    contract_id,
     current_focus,
+    error_message_alignment,
     getCardLabels,
     getContractById,
     is_valid_to_cancel,
@@ -37,8 +38,10 @@ const ToggleCardDialog = ({
     const toggle_ref = React.useRef();
     const dialog_ref = React.useRef();
     const contract = getContractById(contract_id);
-    ContractUpdateFormWrapper =
-        ContractUpdateFormWrapper || connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
+
+    React.useEffect(() => {
+        ContractUpdateFormWrapper = connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
+    }, [connectWithContractUpdate]);
 
     React.useEffect(() => {
         if (is_visible && toggle_ref?.current && dialog_ref?.current) {
@@ -53,8 +56,12 @@ const ToggleCardDialog = ({
                 icon_bound_top -= target_bound?.height - icon_bound.height;
             }
 
+            if (right + target_bound?.width > body_bound.width) {
+                setLeft(right - target_bound?.width - 16);
+            } else {
+                setLeft(right - 16);
+            }
             setTop(icon_bound_top);
-            setLeft(right - 16);
         }
     }, [is_visible]);
 
@@ -103,7 +110,7 @@ const ToggleCardDialog = ({
         should_show_cancellation_warning && isDesktop() ? (
             <Popover
                 alignment='right'
-                classNameBubble='trade-container__popover'
+                classNameBubble='dc-contract-card-dialog__popover'
                 is_bubble_hover_enabled
                 margin={2}
                 zIndex={2}
@@ -136,20 +143,23 @@ const ToggleCardDialog = ({
                     onClose={toggleDialogWrapper}
                     wrapper_classname='contract-update'
                 >
-                    <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
-                        <ContractUpdateFormWrapper
-                            addToast={addToast}
-                            current_focus={current_focus}
-                            getCardLabels={getCardLabels}
-                            getContractById={getContractById}
-                            onMouseLeave={onMouseLeave}
-                            removeToast={removeToast}
-                            contract={contract}
-                            setCurrentFocus={setCurrentFocus}
-                            status={status}
-                            toggleDialog={toggleDialogWrapper}
-                        />
-                    </Div100vhContainer>
+                    {ContractUpdateFormWrapper && (
+                        <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
+                            <ContractUpdateFormWrapper
+                                addToast={addToast}
+                                contract={contract}
+                                current_focus={current_focus}
+                                error_message_alignment={error_message_alignment}
+                                getCardLabels={getCardLabels}
+                                getContractById={getContractById}
+                                onMouseLeave={onMouseLeave}
+                                removeToast={removeToast}
+                                setCurrentFocus={setCurrentFocus}
+                                status={status}
+                                toggleDialog={toggleDialogWrapper}
+                            />
+                        </Div100vhContainer>
+                    )}
                 </MobileDialog>
             </MobileWrapper>
             <DesktopWrapper>
@@ -161,17 +171,21 @@ const ToggleCardDialog = ({
                     toggle_ref={toggle_ref}
                     toggleDialog={toggleDialogWrapper}
                 >
-                    <ContractUpdateFormWrapper
-                        addToast={addToast}
-                        current_focus={current_focus}
-                        getCardLabels={getCardLabels}
-                        getContractById={getContractById}
-                        onMouseLeave={onMouseLeave}
-                        removeToast={removeToast}
-                        contract={contract}
-                        setCurrentFocus={setCurrentFocus}
-                        toggleDialog={toggleDialogWrapper}
-                    />
+                    {ContractUpdateFormWrapper && (
+                        <ContractUpdateFormWrapper
+                            addToast={addToast}
+                            contract={contract}
+                            current_focus={current_focus}
+                            error_message_alignment={error_message_alignment}
+                            getCardLabels={getCardLabels}
+                            getContractById={getContractById}
+                            onMouseLeave={onMouseLeave}
+                            removeToast={removeToast}
+                            setCurrentFocus={setCurrentFocus}
+                            status={status}
+                            toggleDialog={toggleDialogWrapper}
+                        />
+                    )}
                 </ContractCardDialog>
             </DesktopWrapper>
         </div>
@@ -182,8 +196,10 @@ ToggleCardDialog.displayName = 'ToggleCardDialog';
 
 ToggleCardDialog.propTypes = {
     addToast: PropTypes.func,
+    connectWithContractUpdate: PropTypes.func,
     contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     current_focus: PropTypes.string,
+    error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_valid_to_cancel: PropTypes.bool,
@@ -193,7 +209,6 @@ ToggleCardDialog.propTypes = {
     should_show_cancellation_warning: PropTypes.bool,
     status: PropTypes.string,
     toggleCancellationWarning: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
 };
 
 export default React.memo(ToggleCardDialog);

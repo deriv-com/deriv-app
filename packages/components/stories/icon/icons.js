@@ -2,6 +2,19 @@
 
 export const icons = {
     appstore: [
+        'IcAppstoreCheck',
+        'IcAppstoreWalletAudLight',
+        'IcAppstoreWalletBitcoinLight',
+        'IcAppstoreWalletEthereumLight',
+        'IcAppstoreWalletEurLight',
+        'IcAppstoreWalletEusdtLight',
+        'IcAppstoreWalletGbpLight',
+        'IcAppstoreWalletLitecoinLight',
+        'IcAppstoreWalletP2pLight',
+        'IcAppstoreWalletPaLight',
+        'IcAppstoreWalletUsdLight',
+        'IcAppstoreWalletUsdcLight',
+        'IcAppstoreWalletUsdtLight',
         'IcAppstoreCfdsTradeType',
         'IcAppstoreCheckedTransparent',
         'IcAppstoreChecked',

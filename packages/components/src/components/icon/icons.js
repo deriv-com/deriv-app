@@ -1,5 +1,18 @@
 // auto-generated file. DO NOT MODIFY.
 
+import './appstore/ic-appstore-check.svg';
+import './appstore/ic-appstore-wallet-aud-light.svg';
+import './appstore/ic-appstore-wallet-bitcoin-light.svg';
+import './appstore/ic-appstore-wallet-ethereum-light.svg';
+import './appstore/ic-appstore-wallet-eur-light.svg';
+import './appstore/ic-appstore-wallet-eusdt-light.svg';
+import './appstore/ic-appstore-wallet-gbp-light.svg';
+import './appstore/ic-appstore-wallet-litecoin-light.svg';
+import './appstore/ic-appstore-wallet-p2p-light.svg';
+import './appstore/ic-appstore-wallet-pa-light.svg';
+import './appstore/ic-appstore-wallet-usd-light.svg';
+import './appstore/ic-appstore-wallet-usdc-light.svg';
+import './appstore/ic-appstore-wallet-usdt-light.svg';
 import './appstore/ic-appstore-cfds-trade-type.svg';
 import './appstore/ic-appstore-checked-transparent.svg';
 import './appstore/ic-appstore-checked.svg';

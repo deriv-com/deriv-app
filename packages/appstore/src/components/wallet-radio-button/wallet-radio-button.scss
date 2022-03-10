@@ -38,10 +38,10 @@
 
         &__icon {
             &__border {
-                border-radius: 4px;
+                border-radius: $BORDER_RADIUS;
 
                 &--red {
-                    border: 2px solid #ff444f;
+                    border: 2px solid var(--brand-red-coral);
                 }
             }
         }

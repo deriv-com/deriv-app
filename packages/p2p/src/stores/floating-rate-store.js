@@ -44,7 +44,7 @@ export default class FloatingRateStore extends BaseStore {
         this.api_error_message = api_error_message;
     }
     @action.bound
-    setP2PConfig() {
+    setFloatingRateConfig() {
         requestWS({ website_status: 1 }).then(response => {
             if (!!response && response.error) {
                 this.setApiErrorMessage(response.error.message);

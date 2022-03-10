@@ -5,6 +5,7 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
+import PaymentMethods from './payment-methods';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
@@ -14,7 +15,7 @@ const MyProfileContent = () => {
     } else if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
     } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {
-        return null; // TODO: Update to <PaymentMethods />
+        return <PaymentMethods />;
     }
     return <MyProfileStats />;
 };

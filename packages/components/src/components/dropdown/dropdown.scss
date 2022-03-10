@@ -68,13 +68,15 @@
                 display: inline-block;
             }
         }
+        &--duration {
+            border: none !important;
+            .dc-dropdown__display-text {
+                color: var(--text-general) !important;
+                padding: 0 !important;
+            }
+        }
         &--has-symbol {
             justify-content: unset;
-        }
-        &--no-symbol {
-            .dc-dropdown__display-text {
-                padding: unset;
-            }
         }
         &--no-border {
             border-color: var(--fill-normal);

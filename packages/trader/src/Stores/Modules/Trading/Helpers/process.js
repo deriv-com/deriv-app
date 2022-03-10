@@ -3,18 +3,29 @@ import * as ContractType from '../Actions/contract-type';
 import * as Duration from '../Actions/duration';
 import * as StartDate from '../Actions/start-date';
 
-export const processTradeParams = async (store, new_state) => {
+const processInSequence = async (store, functions) => {
     const snapshot = store.getSnapshot();
-    const functions = getMethodsList(store, new_state);
-
     // To make sure that every function is invoked and affects the snapshot respectively, we have to use for instead of forEach
     for (let i = 0; i < functions.length; i++) {
         // Shallow copy with Object.assign is good enough to extend the snapshot with new state
         // we don't need deep extension here, since each function in functions array composes a property of the store completely
         Object.assign(snapshot, await functions[i](snapshot)); // eslint-disable-line no-await-in-loop
     }
+    store.updateStore({
+        ...snapshot,
+    });
+};
 
-    return snapshot;
+export const processTradeParams = async (store, new_state) => {
+    const functions = getMethodsList(store, new_state);
+    await processInSequence(store, functions);
+
+    const duration_functions = getExpiryMethodsList();
+    await processInSequence(store, duration_functions);
+
+    store.updateStore({
+        is_trade_enabled: true,
+    });
 };
 
 const getMethodsList = (store, new_state) => [
@@ -29,3 +40,5 @@ const getMethodsList = (store, new_state) => [
         ? [Duration.onChangeContractType]
         : []),
 ];
+
+const getExpiryMethodsList = () => [StartDate.onChangeExpiry];

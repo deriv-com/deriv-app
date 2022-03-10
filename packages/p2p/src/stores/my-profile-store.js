@@ -7,6 +7,7 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 
 export default class MyProfileStore extends BaseStore {
     @observable active_tab = my_profile_tabs.MY_STATS;
+    @observable add_payment_method_error_message = '';
     @observable advertiser_info = {};
     @observable advertiser_payment_methods = {};
     @observable advertiser_payment_methods_error = '';
@@ -14,24 +15,155 @@ export default class MyProfileStore extends BaseStore {
     @observable balance_available = null;
     @observable contact_info = '';
     @observable default_advert_description = '';
+    @observable delete_error_message = '';
     @observable error_message = '';
     @observable form_error = '';
     @observable full_name = '';
     @observable is_button_loading = false;
     @observable is_cancel_add_payment_method_modal_open = false;
     @observable is_confirm_delete_modal_open = false;
+    @observable is_delete_error_modal_open = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
     @observable payment_info = '';
+    @observable payment_method_value = undefined;
+    @observable payment_methods_list = [];
     @observable payment_method_to_delete = {};
     @observable payment_method_to_edit = {};
+    @observable search_results = [];
+    @observable search_term = '';
     @observable selected_payment_method = '';
     @observable selected_payment_method_display_name = '';
     @observable selected_payment_method_fields = [];
     @observable selected_payment_method_type = '';
     @observable should_hide_my_profile_tab = false;
+    @observable should_show_add_payment_method_error_modal = false;
     @observable should_show_add_payment_method_form = false;
     @observable should_show_edit_payment_method_form = false;
+
+    @computed
+    get advertiser_has_payment_methods() {
+        return !!Object.keys(this.advertiser_payment_methods).length;
+    }
+
+    @computed
+    get advertiser_payment_methods_list() {
+        const list = [];
+
+        Object.entries(this.advertiser_payment_methods).forEach(key => {
+            list.push({
+                ID: key[0],
+                is_enabled: key[1].is_enabled,
+                fields: key[1].fields,
+                method: key[1].method,
+                display_name: key[1].display_name,
+            });
+        });
+
+        return list;
+    }
+
+    @computed
+    get initial_values() {
+        const object = {};
+
+        Object.values(this.selected_payment_method_fields).forEach(field => {
+            const filter = Object.entries(this.payment_method_info.fields).filter(
+                payment_method_field => payment_method_field[0] === field[0]
+            );
+
+            if (Object.values(filter).length > 0) {
+                object[field[0]] = Object.values(filter)[0][1].value;
+            } else {
+                object[field[0]] = '';
+            }
+        });
+
+        return object;
+    }
+
+    @computed
+    get payment_method_info() {
+        return this.advertiser_payment_methods_list.filter(method => method.ID === this.payment_method_to_edit.ID)[0];
+    }
+
+    @computed
+    get payment_methods_list_items() {
+        const list_items = [];
+
+        Object.entries(this.available_payment_methods).forEach(key => {
+            list_items.push({ text: key[1].display_name, value: key[0] });
+        });
+
+        return list_items;
+    }
+
+    @computed
+    get payment_methods_list_methods() {
+        const methods = [];
+
+        Object.entries(this.advertiser_payment_methods).forEach(key => {
+            if (methods.every(e => e.method !== key[1].method)) {
+                if (key[1].method === 'other' || key[1].method === 'bank_transfer') {
+                    methods.push({ method: key[1].method, display_name: key[1].display_name });
+                } else if (methods.every(e => e.method !== 'e_wallet')) {
+                    methods.push({ method: 'e_wallet', display_name: 'E-wallet' });
+                }
+            }
+        });
+
+        return methods;
+    }
+
+    @computed
+    get payment_methods_list_values() {
+        const list = [];
+
+        Object.entries(this.available_payment_methods).forEach(key => list.push(key[0]));
+
+        return list;
+    }
+
+    @action.bound
+    createPaymentMethod(values, { setSubmitting }) {
+        setSubmitting(true);
+
+        requestWS({
+            p2p_advertiser_payment_methods: 1,
+            create: [
+                {
+                    account: values?.account,
+                    bank_name: values?.bank_name,
+                    branch: values?.branch,
+                    instructions: values?.instructions,
+                    method: this.payment_method_value || this.selected_payment_method,
+                    name: values?.name,
+                },
+            ],
+        }).then(response => {
+            if (response) {
+                const { my_ads_store } = this.root_store;
+
+                if (my_ads_store.should_show_add_payment_method_modal) {
+                    my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                }
+
+                if (my_ads_store.should_show_add_payment_method) {
+                    my_ads_store.setShouldShowAddPaymentMethod(false);
+                }
+
+                if (response.error) {
+                    this.setAddPaymentMethodErrorMessage(response.error.message);
+                    this.setShouldShowAddPaymentMethodErrorModal(true);
+                } else {
+                    this.setShouldShowAddPaymentMethodForm(false);
+                    this.getAdvertiserPaymentMethods();
+                }
+
+                setSubmitting(false);
+            }
+        });
+    }
 
     @computed
     get advertiser_has_payment_methods() {
@@ -111,6 +243,7 @@ export default class MyProfileStore extends BaseStore {
             }
         });
     }
+
     @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
@@ -124,7 +257,6 @@ export default class MyProfileStore extends BaseStore {
                 this.setBalanceAvailable(p2p_advertiser_info.balance_available);
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                this.setPaymentInfo(p2p_advertiser_info.payment_info);
             } else if (response.error.code === 'PermissionDenied') {
                 this.root_store.general_store.setIsBlocked(true);
             } else {
@@ -133,6 +265,7 @@ export default class MyProfileStore extends BaseStore {
             this.setIsLoading(false);
         });
     }
+
     @action.bound
     getAdvertiserPaymentMethods() {
         requestWS({
@@ -145,25 +278,78 @@ export default class MyProfileStore extends BaseStore {
             }
         });
     }
+
     @action.bound
     getPaymentMethodsList() {
         requestWS({
             p2p_payment_methods: 1,
         }).then(response => {
             const { p2p_payment_methods } = response;
+            const list = [];
+            const list_items = [];
             this.setAvailablePaymentMethods(p2p_payment_methods);
+
+            if (this.search_term) {
+                Object.entries(this.available_payment_methods).forEach(key => {
+                    if (key[1].display_name.toLowerCase().includes(this.search_term.toLowerCase().trim()))
+                        list_items.push({ text: key[1].display_name, value: key[0] });
+                });
+            }
+
+            Object.entries(this.available_payment_methods).forEach(key => {
+                list.push({ text: key[1].display_name, value: key[0] });
+            });
+            this.setPaymentMethodsList(list);
+
+            if (list_items.length) {
+                this.setSearchResults(list_items);
+            } else {
+                this.setSearchResults([]);
+            }
         });
     }
+
+    @action.bound
+    getPaymentMethodDisplayName(payment_method) {
+        this.setSelectedPaymentMethodDisplayName(this.available_payment_methods[payment_method].display_name);
+        return this.selected_payment_method_display_name;
+    }
+
+    @action.bound
+    getPaymentMethodValue(payment_method) {
+        const method = Object.entries(this.available_payment_methods).filter(
+            pm => pm[1].display_name === payment_method
+        );
+
+        this.setPaymentMethodValue(method[0][0]);
+        return this.payment_method_value;
+    }
+
     @action.bound
     getSelectedPaymentMethodDetails() {
-        this.setSelectedPaymentMethodDisplayName(
-            this.available_payment_methods[this.selected_payment_method].display_name
-        );
-        this.setSelectedPaymentMethodFields(
-            Object.entries(this.available_payment_methods[this.selected_payment_method].fields)
-        );
-        this.setSelectedPaymentMethodType(this.available_payment_methods[this.selected_payment_method].type);
+        this.setPaymentMethodValue(undefined);
+
+        if (this.selected_payment_method) {
+            this.setSelectedPaymentMethodDisplayName(
+                this.available_payment_methods[this.selected_payment_method].display_name
+            );
+            this.setSelectedPaymentMethodFields(
+                Object.entries(this.available_payment_methods[this.selected_payment_method].fields)
+            );
+            this.setSelectedPaymentMethodType(this.available_payment_methods[this.selected_payment_method].type);
+        } else if (this.selected_payment_method_display_name) {
+            const payment_method = Object.entries(this.available_payment_methods).filter(
+                pm => pm[1].display_name === this.selected_payment_method_display_name
+            );
+            const filtered_payment_method = Object.entries(payment_method)[0][1][1];
+
+            this.setPaymentMethodValue(payment_method[0][0]);
+            this.setSelectedPaymentMethodDisplayName(filtered_payment_method.display_name);
+            this.setSelectedPaymentMethodFields(Object.entries(filtered_payment_method.fields));
+            this.setSelectedPaymentMethodType(filtered_payment_method.type);
+        }
     }
+
     getSettings() {
         requestWS({ get_settings: 1 }).then(response => {
             const { get_settings } = response;
@@ -187,7 +373,6 @@ export default class MyProfileStore extends BaseStore {
                 this.setBalanceAvailable(p2p_advertiser_update.balance_available);
                 this.setContactInfo(p2p_advertiser_update.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
-                this.setPaymentInfo(p2p_advertiser_update.payment_info);
                 this.setIsSubmitSuccess(true);
             } else {
                 this.setFormError(response.error);
@@ -210,36 +395,58 @@ export default class MyProfileStore extends BaseStore {
             }
         });
     }
+
     @action.bound
     hideAddPaymentMethodForm() {
         this.setShouldShowAddPaymentMethodForm(false);
     }
+
     @action.bound
     onClickDelete() {
         requestWS({
             p2p_advertiser_payment_methods: 1,
             delete: [this.payment_method_to_delete.ID],
         }).then(response => {
-            if (response) {
+            this.setIsConfirmDeleteModalOpen(false);
+            if (!response.error) {
                 this.getAdvertiserPaymentMethods();
-                this.setIsConfirmDeleteModalOpen(false);
+            } else {
+                this.setDeleteErrorMessage(response.error.message);
+                this.setIsDeleteErrorModalOpen(true);
             }
         });
     }
+
     @action.bound
     showAddPaymentMethodForm() {
         this.setShouldShowAddPaymentMethodForm(true);
     }
+
     @action.bound
-    updatePaymentMethod(values) {
+    updatePaymentMethod(values, { setSubmitting }) {
         requestWS({
             p2p_advertiser_payment_methods: 1,
             update: {
                 [this.payment_method_to_edit.ID]: {
-                    values,
+                    ...values,
                 },
             },
+        }).then(response => {
+            if (response.error) {
+                this.setAddPaymentMethodErrorMessage(response.error.message);
+                this.setShouldShowAddPaymentMethodErrorModal(true);
+            } else {
+                this.setShouldShowEditPaymentMethodForm(false);
+                this.getAdvertiserPaymentMethods();
+            }
+
+            setSubmitting(false);
         });
+    }
+
+    @action.bound
+    setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {
+        this.should_show_add_payment_method_form = should_show_add_payment_method_form;
     }
 
     validateForm = values => {
@@ -248,12 +455,15 @@ export default class MyProfileStore extends BaseStore {
             default_advert_description: [v => textValidator(v)],
             payment_info: [v => textValidator(v)],
         };
+
         const mapped_key = {
             contact_info: localize('Contact details'),
             default_advert_description: localize('Instructions'),
             payment_info: localize('Payment details'),
         };
+
         const errors = {};
+
         const getErrorMessages = field_name => [
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
@@ -286,6 +496,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setActiveTab(active_tab) {
         this.active_tab = active_tab;
+    }
+
+    @action.bound
+    setAddPaymentMethodErrorMessage(add_payment_method_error_message) {
+        this.add_payment_method_error_message = add_payment_method_error_message;
     }
 
     @action.bound
@@ -324,6 +539,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setDeleteErrorMessage(delete_error_message) {
+        this.delete_error_message = delete_error_message;
+    }
+
+    @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -349,6 +569,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setIsDeleteErrorModalOpen(is_delete_error_modal_open) {
+        this.is_delete_error_modal_open = is_delete_error_modal_open;
+    }
+
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
@@ -359,8 +584,13 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    setPaymentInfo(payment_info) {
-        this.payment_info = payment_info;
+    setPaymentMethodValue(payment_method_value) {
+        this.payment_method_value = payment_method_value;
+    }
+
+    @action.bound
+    setPaymentMethodsList(payment_methods_list) {
+        this.payment_methods_list = payment_methods_list;
     }
 
     @action.bound
@@ -371,6 +601,16 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setPaymentMethodToEdit(payment_method_to_edit) {
         this.payment_method_to_edit = payment_method_to_edit;
+    }
+
+    @action.bound
+    setSearchResults(search_results) {
+        this.search_results = search_results;
+    }
+
+    @action.bound
+    setSearchTerm(search_term) {
+        this.search_term = search_term;
     }
 
     @action.bound
@@ -396,6 +636,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setShouldHideMyProfileTab(should_hide_my_profile_tab) {
         this.should_hide_my_profile_tab = should_hide_my_profile_tab;
+    }
+
+    @action.bound
+    setShouldShowAddPaymentMethodErrorModal(should_show_add_payment_method_error_modal) {
+        this.should_show_add_payment_method_error_modal = should_show_add_payment_method_error_modal;
     }
 
     @action.bound

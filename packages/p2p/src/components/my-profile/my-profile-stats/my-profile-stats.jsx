@@ -8,7 +8,7 @@ import MyProfileSeparatorContainer from '../my-profile-separator-container';
 import { Localize, localize } from 'Components/i18next';
 import MyProfilePrivacy from './my-profile-privacy';
 
-const MyProfileStats = () => {
+const MyStats = () => {
     const { my_profile_store } = useStores();
     const [should_show_stats_and_ratings, setShouldShowStatsAndRatings] = React.useState(false);
 
@@ -61,4 +61,4 @@ const MyProfileStats = () => {
     );
 };
 
-export default observer(MyProfileStats);
+export default observer(MyStats);

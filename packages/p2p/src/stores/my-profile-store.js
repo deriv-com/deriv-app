@@ -165,85 +165,6 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
-    @computed
-    get advertiser_has_payment_methods() {
-        return !!Object.keys(this.advertiser_payment_methods).length;
-    }
-    @computed
-    get advertiser_payment_methods_list() {
-        const list = [];
-        Object.entries(this.advertiser_payment_methods).forEach(key => {
-            list.push({
-                ID: key[0],
-                is_enabled: key[1].is_enabled,
-                fields: key[1].fields,
-                method: key[1].method,
-                display_name: key[1].display_name,
-            });
-        });
-        return list;
-    }
-    @computed
-    get initial_values() {
-        const object = {};
-        Object.entries(this.payment_method_info.fields).forEach(payment_method_field => {
-            object[payment_method_field[0]] = payment_method_field[1].value;
-        });
-        return object;
-    }
-    @computed
-    get payment_method_info() {
-        return this.advertiser_payment_methods_list.filter(method => method.ID === this.payment_method_to_edit.ID)[0];
-    }
-    @computed
-    get payment_methods_list_items() {
-        const list_items = [];
-        Object.entries(this.available_payment_methods).forEach(key => {
-            list_items.push({ text: key[1].display_name, value: key[0] });
-        });
-        return list_items;
-    }
-    @computed
-    get payment_methods_list_methods() {
-        const methods = [];
-        Object.entries(this.advertiser_payment_methods).forEach(key => {
-            if (methods.length) {
-                if (methods.some(e => e.method !== key[1].method)) {
-                    methods.push({ method: key[1].method, display_name: key[1].display_name });
-                }
-            } else {
-                methods.push({ method: key[1].method, display_name: key[1].display_name });
-            }
-        });
-        return methods;
-    }
-    @computed
-    get payment_methods_list_values() {
-        const list = [];
-        Object.entries(this.available_payment_methods).forEach(key => list.push(key[0]));
-        return list;
-    }
-    @action.bound
-    createPaymentMethod(values, { setSubmitting }) {
-        setSubmitting(true);
-        requestWS({
-            p2p_advertiser_payment_methods: 1,
-            create: [
-                {
-                    account: values.account,
-                    bank_name: values.bank_name,
-                    method: this.selected_payment_method,
-                },
-            ],
-        }).then(response => {
-            if (response) {
-                this.setShouldShowAddPaymentMethodForm(false);
-                this.getAdvertiserPaymentMethods();
-                setSubmitting(false);
-            }
-        });
-    }
-
     @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
@@ -442,11 +363,6 @@ export default class MyProfileStore extends BaseStore {
 
             setSubmitting(false);
         });
-    }
-
-    @action.bound
-    setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {
-        this.should_show_add_payment_method_form = should_show_add_payment_method_form;
     }
 
     validateForm = values => {

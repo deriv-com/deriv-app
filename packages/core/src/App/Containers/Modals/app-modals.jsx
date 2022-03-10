@@ -31,6 +31,8 @@ const WelcomeModal = React.lazy(() => import(/* webpackChunkName: "welcome-modal
 
 const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
 
+const SuccessModal = React.lazy(() => import(/* webpackChunkName: "email-success-modal"  */ '../SuccessEmailModal'));
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_welcome_modal_visible,
@@ -59,6 +61,9 @@ const AppModals = ({
             break;
         case 'social_email_change':
             ComponentToLoad = <UnlinkPasswordModal />;
+            break;
+        case 'success_email_change':
+            ComponentToLoad = <SuccessModal />;
             break;
         default:
             if (is_set_residence_modal_visible) {

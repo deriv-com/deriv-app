@@ -51,3 +51,35 @@
         }
     }
 }
+
+.change-email-success {
+    &__modal {
+        &-content {
+            display: grid;
+            grid-gap: 8px;
+        }
+        &-close {
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: 1.2rem;
+            cursor: pointer;
+        }
+        &-title {
+            margin: 0.8rem 2.4rem;
+            text-align: center;
+        }
+        &-description {
+            text-align: center;
+        }
+        &-icon {
+            text-align: center;
+            margin-top: 1.6rem;
+            padding-top: 0;
+            padding-bottom: 1.6rem;
+            align-self: center;
+        }
+    }
+    &__footer {
+        justify-content: center;
+    }
+}

@@ -37,7 +37,7 @@ const ResetEmailModal = ({
             change_email: 'verify',
             new_email: values.email,
             verification_code,
-            ...(is_social_signup && { social_signup: true}),
+            ...(is_social_signup && { social_signup: true }),
         };
 
         setEmailRequest(api_request);

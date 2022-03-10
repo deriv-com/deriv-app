@@ -166,13 +166,13 @@ const StakeLossAndLimitsInputs = () => {
 const SessionAndLoginLimitsInputs = () => {
     const { is_mlt, is_mx, is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, setFieldValue, values } = useFormikContext();
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <React.Fragment>
             <SectionTitle
                 title={<Localize i18n_default_text='Your session and login limits' />}
-                has_border_line={is_dashboard}
+                has_border_line={is_appstore}
             />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
@@ -310,13 +310,13 @@ const SessionAndLoginLimitsInputs = () => {
 const MaximumAccountBalanceAndOpenPositionsInputs = () => {
     const { currency_display, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values } = useFormikContext();
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <React.Fragment>
             <SectionTitle
                 title={<Localize i18n_default_text='Your maximum account balance and open positions' />}
-                has_border_line={is_dashboard}
+                has_border_line={is_appstore}
             />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
@@ -369,7 +369,7 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
 const MaximumDepositLimitInputs = () => {
     const { currency, is_mlt, is_mf, is_mx, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values } = useFormikContext();
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const should_render = is_mlt || is_mf || is_mx;
 
     if (!should_render) {
@@ -380,7 +380,7 @@ const MaximumDepositLimitInputs = () => {
         <React.Fragment>
             <SectionTitle
                 title={<Localize i18n_default_text='Your maximum deposit limit' />}
-                has_border_line={is_dashboard}
+                has_border_line={is_appstore}
             />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
@@ -461,13 +461,13 @@ const MaximumDepositLimitInputs = () => {
 };
 
 const SelfExclusionInputs = () => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const { footer_ref, goToConfirm, is_app_settings } = React.useContext(SelfExclusionContext);
     const { dirty, isSubmitting, isValid, values } = useFormikContext();
     const versions = {
         // Global settings for account for DWallet.
         dwallet: {
-            condition: !!is_dashboard,
+            condition: !!is_appstore,
             components: [
                 SessionAndLoginLimitsInputs,
                 MaximumAccountBalanceAndOpenPositionsInputs,
@@ -482,7 +482,7 @@ const SelfExclusionInputs = () => {
         },
         // Legacy Deriv.app, i.e. non-DWallet user accessing app.deriv.com/account/self-exclusion.
         deriv_app: {
-            condition: !!(!is_dashboard && !is_app_settings),
+            condition: !!(!is_appstore && !is_app_settings),
             components: [
                 StakeLossAndLimitsInputs,
                 SessionAndLoginLimitsInputs,

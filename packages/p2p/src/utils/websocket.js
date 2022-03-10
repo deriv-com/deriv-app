@@ -27,6 +27,7 @@ export const requestWS = async request => {
         await populateInitialResponses();
         return ws.send(request);
     }
+    return null;
 };
 
 export const subscribeWS = (request, callbacks) =>

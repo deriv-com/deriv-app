@@ -97,8 +97,8 @@
 
         @include mobile {
             grid-template-columns: repeat(2, 1fr);
-            margin: 1.6rem;
-            width: 100vw;
+            margin: 0.6rem;
+            width: 90vw;
         }
 
         &-cell {
@@ -133,6 +133,10 @@
             &-separator {
                 border-right: 1px solid #ededed;
                 margin-right: 2rem;
+
+                @include mobile {
+                    margin: 0px 3rem 0 -4rem;
+                }
             }
         }
 

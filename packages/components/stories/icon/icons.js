@@ -1,6 +1,13 @@
 // auto-generated file. DO NOT MODIFY.
 
 export const icons = {
+    appstore: [
+        'IcAppstoreCfdsTradeType',
+        'IcAppstoreCheckedTransparent',
+        'IcAppstoreChecked',
+        'IcAppstoreMultipliersTradeType',
+        'IcAppstoreOptionTradeType',
+    ],
     brand: [
         'IcBrandBinarybot',
         'IcBrandDbot',

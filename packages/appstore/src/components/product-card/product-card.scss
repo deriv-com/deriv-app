@@ -1,0 +1,135 @@
+.product-card {
+    width: 20rem;
+    height: 12rem;
+    border-radius: 0.8rem;
+    overflow: hidden;
+
+    @include mobile {
+        width: 14.4rem;
+        height: 9.6rem;
+    }
+}
+
+.product-card-trade-type {
+    position: relative;
+
+    &__wrapper {
+        padding: 1.6rem;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        @include mobile {
+            padding: 1.2rem 1.3rem 0.6rem 1.6rem;
+        }
+
+        &--check {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+        }
+
+        &--header {
+            font-size: 1.2rem;
+            line-height: 1.8rem;
+            font-weight: 700;
+            color: $color-white;
+            margin-bottom: 0.8rem;
+
+            @include mobile {
+                font-size: 1rem;
+                line-height: 1.4rem;
+            }
+        }
+
+        &__second-row {
+            display: flex;
+            flex-direction: row;
+
+            &--icon {
+                margin-right: 0.8rem;
+
+                @include mobile {
+                    width: 2.4rem;
+                    height: 2.4rem;
+                }
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.4rem;
+                font-weight: 700;
+                color: $color-white;
+
+                @include mobile {
+                    font-size: 0.8rem;
+                    line-height: 1.2rem;
+                }
+            }
+        }
+    }
+}
+
+.product-card-platform {
+    border: 0.1rem solid var(--general-active);
+    position: relative;
+    border-radius: 0.8rem;
+
+    &--check {
+        position: absolute;
+        top: 0.8rem;
+        right: 0.8rem;
+        border-radius: 50%;
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-direction: row;
+        padding: 1.4rem 1.6rem;
+
+        @include mobile {
+            padding: 1.7rem 1.1rem 1.7rem 1.6rem;
+        }
+
+        &--icon {
+            margin-right: 1.6rem;
+
+            @include mobile {
+                margin-right: 1.2rem;
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
+
+        &__block {
+            display: flex;
+            flex-direction: column;
+
+            &--header {
+                font-weight: bold;
+                font-size: 1.4rem;
+                line-height: 2rem;
+                color: var(--text-general);
+
+                @include mobile {
+                    font-size: 1rem;
+                    line-height: 1.4rem;
+                }
+            }
+
+            &--description {
+                font-weight: normal;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+                color: var(--text-less-prominent);
+
+                @include mobile {
+                    font-size: 0.8rem;
+                    line-height: 1.2rem;
+                }
+            }
+        }
+    }
+}

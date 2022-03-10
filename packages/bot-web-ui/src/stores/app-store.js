@@ -14,7 +14,6 @@ export default class AppStore {
     onMount() {
         const { blockly_store, core, main_content } = this.root_store;
         const { client, common, ui } = core;
-
         this.showDigitalOptionsMaltainvestError(client, common);
 
         blockly_store.startLoading();
@@ -116,7 +115,6 @@ export default class AppStore {
             () => client.switch_broadcast,
             switch_broadcast => {
                 if (!switch_broadcast) return;
-
                 this.showDigitalOptionsMaltainvestError(client, common);
 
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
@@ -148,7 +146,7 @@ export default class AppStore {
                 if (
                     (!client.is_logged_in && client.is_eu_country) ||
                     client.has_maltainvest_account ||
-                    isEuResidenceWithOnlyVRTC(client.residence, client.active_accounts) ||
+                    isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
                 ) {
                     showDigitalOptionsUnavailableError(common.showError, {
@@ -237,7 +235,7 @@ export default class AppStore {
         if (
             (!client.is_logged_in && client.is_eu_country) ||
             client.has_maltainvest_account ||
-            isEuResidenceWithOnlyVRTC(client.residence, client.active_accounts) ||
+            isEuResidenceWithOnlyVRTC(client.active_accounts) ||
             client.is_options_blocked
         ) {
             showDigitalOptionsUnavailableError(common.showError, {

@@ -114,21 +114,14 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         />
                                     )}
                                 </Text>
-                                {!payment_method_names ? (
-                                    <div className='p2p-my-ads__table-status-warning'>
-                                        <div style={{ marginRight: '0.8rem' }}>
-                                            <AdStatus is_active={!!is_advert_active} />
-                                        </div>
-
-                                        <Icon
-                                            icon='IcAlertWarning'
-                                            size={16}
-                                            className='cfd-dashboard__maintenance-icon'
-                                        />
+                                {/* TODO: add conditions to show/not to show warning icon */}
+                                <div className='p2p-my-ads__table-status-warning'>
+                                    <div style={{ marginRight: '0.8rem' }}>
+                                        <AdStatus is_active={!!is_advert_active} />
                                     </div>
-                                ) : (
-                                    <AdStatus is_active={!!is_advert_active} />
-                                )}
+                                    <Icon icon='IcAlertWarning' size={16} className='cfd-dashboard__maintenance-icon' />
+                                </div>
+                                <AdStatus is_active={!!is_advert_active} />
                             </div>
                             <div className='p2p-my-ads__table-row-details'>
                                 <Text color='profit-success' line_height='m' size='xxs'>
@@ -256,20 +249,18 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         </div>
                     </Table.Cell>
                     <Table.Cell>
-                        {!payment_method_names ? (
-                            <div className='p2p-my-ads__table-status-warning'>
-                                <AdStatus is_active={!!is_advert_active} />
-                                <Icon
-                                    icon='IcAlertWarning'
-                                    size={isMobile() ? 28 : 16}
-                                    className='cfd-dashboard__maintenance-icon'
-                                />
-                            </div>
-                        ) : (
-                            <div className='p2p-my-ads__table-status'>
-                                <AdStatus is_active={!!is_advert_active} />
-                            </div>
-                        )}
+                        {/* TODO: add condition to show/not to show warning icon */}
+                        <div className='p2p-my-ads__table-status-warning'>
+                            <AdStatus is_active={!!is_advert_active} />
+                            <Icon
+                                icon='IcAlertWarning'
+                                size={isMobile() ? 28 : 16}
+                                className='cfd-dashboard__maintenance-icon'
+                            />
+                        </div>
+                        <div className='p2p-my-ads__table-status'>
+                            <AdStatus is_active={!!is_advert_active} />
+                        </div>
                     </Table.Cell>
                     {is_popover_actions_visible && (
                         <div className='p2p-my-ads__table-popovers'>

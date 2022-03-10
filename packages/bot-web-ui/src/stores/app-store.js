@@ -226,7 +226,7 @@ export default class AppStore {
         if (document.querySelector('.injectionDiv')) {
             const path = event.path || (event.composedPath && event.composedPath());
             const is_click_outside_blockly = !path.some(el => el.classList && el.classList.contains('injectionDiv'));
-    
+
             if (is_click_outside_blockly) {
                 Blockly?.hideChaff(/* allowToolbox */ false);
             }

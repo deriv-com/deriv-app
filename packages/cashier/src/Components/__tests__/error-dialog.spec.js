@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { __esModule } from '@babel/preset-typescript';
 import ErrorDialog from '../error-dialog';
 
 jest.mock('Stores/connect', () => ({

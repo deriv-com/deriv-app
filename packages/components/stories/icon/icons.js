@@ -15,6 +15,11 @@ export const icons = {
         'IcAppstoreWalletUsdLight',
         'IcAppstoreWalletUsdcLight',
         'IcAppstoreWalletUsdtLight',
+        'IcAppstoreCfdsTradeType',
+        'IcAppstoreCheckedTransparent',
+        'IcAppstoreChecked',
+        'IcAppstoreMultipliersTradeType',
+        'IcAppstoreOptionTradeType',
     ],
     brand: [
         'IcBrandBinarybot',

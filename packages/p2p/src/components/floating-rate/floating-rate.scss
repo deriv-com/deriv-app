@@ -13,28 +13,6 @@
         color: var(--text-general);
         border: 1px solid var(--border-normal);
         background-image: none;
-        input::-webkit-input-placeholder {
-            /* WebKit, Blink, Edge */
-            color: var(--text-less-prominent) !important;
-        }
-        input:-moz-placeholder {
-            /* Mozilla Firefox 4 to 18 */
-            color: var(--text-less-prominent) !important;
-            opacity: 1;
-        }
-        input::-moz-placeholder {
-            /* Mozilla Firefox 19+ */
-            color: var(--text-less-prominent) !important;
-            opacity: 1;
-        }
-        input:-ms-input-placeholder {
-            /* Internet Explorer 10-11 */
-            color: var(--text-less-prominent) !important;
-        }
-        input::-ms-input-placeholder {
-            /* Microsoft Edge */
-            color: var(--text-less-prominent) !important;
-        }
 
         &:hover {
             border-color: var(--border-hover);

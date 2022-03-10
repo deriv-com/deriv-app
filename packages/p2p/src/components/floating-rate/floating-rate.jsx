@@ -9,7 +9,7 @@ import './floating-rate.scss';
 
 const FloatingRate = ({
     change_handler,
-    class_name,
+    className,
     exchange_rate,
     error_messages,
     fiat_currency,
@@ -23,7 +23,7 @@ const FloatingRate = ({
     const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)).toFixed(2) : exchange_rate;
 
     return (
-        <div className={classNames(class_name, 'floating-rate')}>
+        <div className={classNames(className, 'floating-rate')}>
             <section className={classNames('floating-rate__field', { 'mobile-layout': isMobile() })}>
                 <InputField
                     ariaLabel='Floating rate'
@@ -95,7 +95,7 @@ const FloatingRate = ({
 
 FloatingRate.propTypes = {
     change_handler: PropTypes.func,
-    class_name: PropTypes.string,
+    className: PropTypes.string,
     exchange_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     error_messages: PropTypes.string,
     fiat_currency: PropTypes.string,

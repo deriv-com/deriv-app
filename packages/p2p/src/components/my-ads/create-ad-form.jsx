@@ -221,7 +221,7 @@ const CreateAdForm = () => {
                                                 {({ field }) =>
                                                     floating_rate_store.rate_type === 'float' ? (
                                                         <FloatingRate
-                                                            class_name='p2p-my-ads__form-field'
+                                                            className='p2p-my-ads__form-field'
                                                             error_messages={errors.price_rate}
                                                             exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}

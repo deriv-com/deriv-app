@@ -54,17 +54,15 @@ const ownership_temp = {
 const ProofOfOwnership = ({ ownership = ownership_temp }) => {
     const [cards] = useState(ownership.requests);
     const [status] = useState(ownership.status);
-    const [step, setStep] = useState(0);
 
     const handleSubmit = e => {
         // eslint-disable-next-line no-console
+        e.preventDefault();
         console.log('hello', e);
     };
-    const nextStep = () => {
-        setStep(step + 1);
-    };
+
     if (status === 'pending' && cards.length) {
-        return <ProofOfOwnershipForm cards={cards} handleSubmit={handleSubmit} nextStep={nextStep} />;
+        return <ProofOfOwnershipForm cards={cards} handleSubmit={handleSubmit} />;
     }
     // TODO: add screen for approved POO (status === 'none')
     if (status === 'none') {

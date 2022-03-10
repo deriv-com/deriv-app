@@ -13,7 +13,7 @@ import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
@@ -113,7 +113,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                             onClick={() => {
                                                 if (data.timeout)
                                                     linear_progress_container_ref.current.removeTimeoutSession();
-                                                data.action.onClick({ is_dashboard });
+                                                data.action.onClick({ is_appstore });
                                             }}
                                             text={data.action.text}
                                             secondary

@@ -15,6 +15,7 @@ const ResetEmailModal = ({
     is_visible,
     verification_code,
     toggleResetEmailModal,
+    is_social_signup,
 }) => {
     const [is_send_email_modal_open, setIsSendEmaliModalOpen] = React.useState(false);
     const [email_request, setEmailRequest] = React.useState(null);
@@ -36,6 +37,7 @@ const ResetEmailModal = ({
             change_email: 'verify',
             new_email: values.email,
             verification_code,
+            ...(is_social_signup && { social_signup: true}),
         };
 
         setEmailRequest(api_request);
@@ -189,4 +191,5 @@ export default connect(({ ui, client }) => ({
     logoutClient: client.logout,
     toggleResetEmailModal: ui.toggleResetEmailModal,
     verification_code: client.verification_code.request_email,
+    is_social_signup: client.is_social_signup,
 }))(ResetEmailModal);

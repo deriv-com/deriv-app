@@ -28,17 +28,17 @@ const PlatformCard = ({ platform_name, icon_title, description, checked }: TProd
     return (
         <>
             {checked && (
-                <div className='product-card__platform--check'>
+                <div className='product-card-platform--check'>
                     <Icon icon='icAppstoreCheckedTransparent' />
                 </div>
             )}
-            <div className='product-card__platform--body'>
+            <div className='product-card-platform__wrapper'>
                 <div>
-                    <Icon icon={icon_title} width='32' height='32' className='product-card__platform--body--icon' />
+                    <Icon icon={icon_title} width='32' height='32' className='product-card-platform__wrapper--icon' />
                 </div>
-                <div className='product-card__platform--body--details'>
-                    <p className='product-card__platform--body--details--header'>{platform_name}</p>
-                    <p className='product-card__platform--body--details--description'>{description}</p>
+                <div className='product-card-platform__wrapper__block'>
+                    <p className='product-card-platform__wrapper__block--header'>{platform_name}</p>
+                    <p className='product-card-platform__wrapper__block--description'>{description}</p>
                 </div>
             </div>
         </>
@@ -52,21 +52,21 @@ const TradeTypeCard = ({ type, icon_title, description, checked, bg_image_title 
     };
 
     return (
-        <div style={bg_url_style} className='product-card__trade-type--body'>
+        <div style={bg_url_style} className='product-card-trade-type__wrapper'>
             {checked && (
-                <div className='product-card__trade-type--body--check'>
+                <div className='product-card-trade-type__wrapper--check'>
                     <Icon icon='icAppstoreChecked' />
                 </div>
             )}
 
-            <p className='product-card__trade-type--body--header'>{type}</p>
-            <div className='product-card__trade-type--body--second-row'>
+            <p className='product-card-trade-type__wrapper--header'>{type}</p>
+            <div className='product-card-trade-type__wrapper__second-row'>
                 <div>
                     <Icon
                         icon={icon_title}
                         width='32'
                         height='32'
-                        className='product-card__trade-type--body--second-row--icon'
+                        className='product-card-trade-type__wrapper__second-row--icon'
                     />
                 </div>
                 <p>{description}</p>
@@ -76,7 +76,7 @@ const TradeTypeCard = ({ type, icon_title, description, checked, bg_image_title 
 };
 
 const ProductCard = ({ product_card, platform_details, trade_type_details }: TProductCardType) => {
-    const card_type = product_card ? 'product-card__trade-type' : 'product-card__platform';
+    const card_type = product_card ? 'product-card-trade-type' : 'product-card-platform';
     const platform_component = (
         <PlatformCard
             platform_name={platform_details?.platform_name}

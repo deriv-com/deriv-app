@@ -7,7 +7,7 @@ type TProps = {
     is_disabled: boolean;
 };
 
-const WalletRadioButton: React.FC<TProps> = ({ icon, is_disabled }) => {
+const WalletRadioButton = ({ icon, is_disabled }: TProps) => {
     const [is_wallet_selected, setIsWalletSelected] = React.useState(false);
 
     const onWalletClicked = () => {

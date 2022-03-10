@@ -8,7 +8,7 @@ type TProps = {
     item_count: number;
 };
 
-const WalletRadioButtonGroup: React.FC<TProps> = ({ className, children, item_count }) => {
+const WalletRadioButtonGroup = ({ className, children, item_count }: TProps) => {
     return (
         <div className={className}>
             <div

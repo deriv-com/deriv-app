@@ -22,9 +22,9 @@ const built_in_wallets = [
 ];
 
 const wallets = [
-    { title: localize('Fiat currency wallets'), content: fiat_wallets },
-    { title: localize('Cryptocurrency wallets'), content: crypto_wallets },
-    { title: localize('Deriv P2P and Payment agents wallets'), content: built_in_wallets },
+    { getTitle: () => localize('Fiat currency wallets'), content: fiat_wallets },
+    { getTitle: () => localize('Cryptocurrency wallets'), content: crypto_wallets },
+    { getTitle: () => localize('Deriv P2P and Payment agents wallets'), content: built_in_wallets },
 ];
 
 export default {

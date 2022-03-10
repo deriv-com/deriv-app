@@ -9,7 +9,7 @@ type TProps = {
     key: string;
 };
 
-const CreateWalletDetails: React.FC<TProps> = ({ content, is_dark_mode_on, title }) => {
+const CreateWalletDetails = ({ content, is_dark_mode_on, title }: TProps) => {
     return (
         <div key={title} className='create-wallet-detail'>
             <Text align='left' size='s' weight='bold'>

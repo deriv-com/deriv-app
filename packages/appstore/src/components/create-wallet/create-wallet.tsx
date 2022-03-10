@@ -6,7 +6,7 @@ import { useStores } from 'Stores';
 import CreateWalletDetails from './create-wallet-details';
 import Providers from './create-wallet-provider';
 
-const CreateWallet: React.FC = () => {
+const CreateWallet = () => {
     const { ui } = useStores();
     const { is_dark_mode_on } = ui;
 
@@ -24,12 +24,13 @@ const CreateWallet: React.FC = () => {
                 <ThemedScrollbars className='create-wallet-scroll'>
                     <div className='create-wallet-details'>
                         {Providers.wallets?.map((wallet, index) => {
+                            // TODO: Shouuld replaced with get_account_type result once the BE method get ready
                             return (
                                 <CreateWalletDetails
                                     key={index.toString()}
                                     content={wallet.content}
                                     is_dark_mode_on={is_dark_mode_on}
-                                    title={wallet.title}
+                                    title={wallet.getTitle()}
                                 />
                             );
                         })}

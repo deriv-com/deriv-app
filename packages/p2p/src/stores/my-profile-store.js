@@ -207,7 +207,7 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_payment_methods: 1,
         }).then(response => {
-            if (!!response) {
+            if (response) {
                 const { p2p_payment_methods } = response;
                 const list = [];
                 const list_items = [];

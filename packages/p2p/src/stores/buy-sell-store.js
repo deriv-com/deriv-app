@@ -123,7 +123,7 @@ export default class BuySellStore extends BaseStore {
             p2p_advertiser_info: 1,
         }).then(response => {
             // Added a check to prevent console errors
-            if (!!response) {
+            if (response) {
                 if (!response.error) {
                     const { p2p_advertiser_info } = response;
                     this.setContactInfo(p2p_advertiser_info.contact_info);
@@ -207,7 +207,7 @@ export default class BuySellStore extends BaseStore {
                 use_client_limits: this.should_use_client_limits ? 1 : 0,
                 ...(this.filter_payment_methods.length > 0 ? { payment_method: this.filter_payment_methods } : {}),
             }).then(response => {
-                if (!!response) {
+                if (response) {
                     if (!response.error) {
                         // Ignore any responses that don't match our request. This can happen
                         // due to quickly switching between Buy/Sell tabs.

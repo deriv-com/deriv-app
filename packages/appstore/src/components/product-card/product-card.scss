@@ -1,0 +1,135 @@
+.product-card {
+    width: 200px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+
+    @include mobile {
+        width: 144px;
+        height: 96px;
+    }
+
+    &__trade-type {
+        position: relative;
+
+        &--body {
+            padding: 16px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+
+            @include mobile {
+                padding: 12px 13px 6px 16px;
+            }
+
+            &--check {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+            }
+
+            &--header {
+                font-size: 12px;
+                line-height: 18px;
+                font-weight: 700;
+                color: $color-white;
+                margin-bottom: 8px;
+
+                @include mobile {
+                    font-size: 10px;
+                    line-height: 14px;
+                }
+            }
+
+            &--second-row {
+                display: flex;
+                flex-direction: row;
+
+                &--icon {
+                    margin-right: 8px;
+
+                    @include mobile {
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
+
+                p {
+                    font-size: 10px;
+                    line-height: 14px;
+                    font-weight: 700;
+                    color: $color-white;
+
+                    @include mobile {
+                        font-size: 8px;
+                        line-height: 12px;
+                    }
+                }
+            }
+        }
+    }
+
+    &__platform {
+        border: 1px solid var(--general-active);
+        position: relative;
+        border-radius: 8px;
+
+        &--check {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            border-radius: 50%;
+        }
+
+        &--body {
+            display: flex;
+            flex-direction: row;
+            padding: 14px 16px;
+
+            @include mobile {
+                padding: 17px 11px 17px 16px;
+            }
+
+            &--icon {
+                margin-right: 16px;
+
+                @include mobile {
+                    margin-right: 12px;
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+
+            &--details {
+                display: flex;
+                flex-direction: column;
+
+                &--header {
+                    font-weight: bold;
+                    font-size: 14px;
+                    line-height: 20px;
+                    color: var(--text-general);
+
+                    @include mobile {
+                        font-size: 10px;
+                        line-height: 14px;
+                    }
+                }
+
+                &--description {
+                    font-weight: normal;
+                    font-size: 12px;
+                    line-height: 18px;
+                    color: var(--text-less-prominent);
+
+                    @include mobile {
+                        font-size: 8px;
+                        line-height: 12px;
+                    }
+                }
+            }
+        }
+    }
+}

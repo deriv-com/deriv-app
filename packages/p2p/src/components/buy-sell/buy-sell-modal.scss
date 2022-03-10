@@ -40,11 +40,10 @@
     }
 
     &-hintbox {
-        padding: 0 2.4rem;
-
+        margin: -2.4rem 0 2.4rem;
+        
         @include mobile {
-            margin-bottom: 2.4rem;
-            padding: unset;
+            margin: 0 0 2.4rem;
         }
 
         .dc-hint-box {

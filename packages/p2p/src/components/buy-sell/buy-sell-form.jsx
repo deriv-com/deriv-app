@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Icon, Input, Text } from '@deriv/components';
+import { HintBox, Icon, Input, Text } from '@deriv/components';
 import { getRoundedNumber, getFormattedText, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -109,7 +109,18 @@ const BuySellForm = props => {
                 buy_sell_store.form_props.setSubmitForm(submitForm);
 
                 return (
-                    <React.Fragment>
+                    <div>
+                        <div className='buy-sell__modal-hintbox'>
+                            <HintBox
+                                icon='IcAlertInfo'
+                                message={
+                                    <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                        <Localize i18n_default_text="If the market rate changes from the rate shown here, we won't be able to process your order." />
+                                    </Text>
+                                }
+                                is_info
+                            />
+                        </div>
                         <Form noValidate>
                             <div className='buy-sell__modal-content'>
                                 <div className='buy-sell__modal-field-wrapper'>
@@ -366,7 +377,7 @@ const BuySellForm = props => {
                                 )}
                             </div>
                         </Form>
-                    </React.Fragment>
+                    </div>
                 );
             }}
         </Formik>

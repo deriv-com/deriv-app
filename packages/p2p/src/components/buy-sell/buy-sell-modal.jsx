@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, HintBox, Text, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState } from '@deriv/components';
+import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
@@ -109,32 +109,19 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         : 'buy-sell__modal-footer'
                 }
             >
-                <>
-                    <div className='buy-sell__modal-hintbox'>
-                        <HintBox
-                            icon='IcAlertInfo'
-                            message={
-                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                    <Localize i18n_default_text="If the market rate changes from the rate shown here, we won't be able to process your order." />
-                                </Text>
-                            }
-                            is_info
-                        />
-                    </div>
-                    {my_profile_store.should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm should_show_separated_footer={true} />
-                    ) : (
-                        <Form
-                            advert={selected_ad}
-                            handleClose={onCancel}
-                            handleConfirm={onConfirmClick}
-                            setIsSubmitDisabled={setIsSubmitDisabled}
-                            setErrorMessage={setErrorMessage}
-                            setSubmitForm={setSubmitForm}
-                            setPageFooterParent={setPageFooterParent}
-                        />
-                    )}
-                </>
+                {my_profile_store.should_show_add_payment_method_form ? (
+                    <AddPaymentMethodForm should_show_separated_footer={true} />
+                ) : (
+                    <Form
+                        advert={selected_ad}
+                        handleClose={onCancel}
+                        handleConfirm={onConfirmClick}
+                        setIsSubmitDisabled={setIsSubmitDisabled}
+                        setErrorMessage={setErrorMessage}
+                        setSubmitForm={setSubmitForm}
+                        setPageFooterParent={setPageFooterParent}
+                    />
+                )}
             </MobileFullPageModal>
         );
     }
@@ -142,24 +129,13 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     return (
         <Modal
             className='buy-sell__modal'
-            height={table_type === buy_sell.BUY ? '400px' : '649px'}
+            height={'100%'}
             width='456px'
             is_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
             title={modal_title}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}
         >
-            <div className='buy-sell__modal-hintbox'>
-                <HintBox
-                    icon='IcAlertInfo'
-                    message={
-                        <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                            <Localize i18n_default_text="If the market rate changes from the rate shown here, we won't be able to process your order." />
-                        </Text>
-                    }
-                    is_info
-                />
-            </div>
             {/* Parent height - Modal.Header height - Modal.Footer height */}
             <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                 <Modal.Body>

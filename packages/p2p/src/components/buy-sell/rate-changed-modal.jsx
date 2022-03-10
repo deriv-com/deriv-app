@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
@@ -26,5 +27,11 @@ const RateChangedModal = ({ local_currency, should_show_rate_changed_popup, setS
         </div>
     </Modal>
 );
+
+RateChangedModal.propTypes = {
+    local_currency: PropTypes.string,
+    should_show_rate_changed_popup: PropTypes.bool,
+    setShouldShowRateChangedPopup: PropTypes.func,
+};
 
 export default RateChangedModal;

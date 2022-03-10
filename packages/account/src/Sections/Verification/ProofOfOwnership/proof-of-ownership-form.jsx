@@ -35,13 +35,13 @@ const validateFields = values => {
 
     return errors;
 };
-const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
+const ProofOfOwnershipForm = ({ cards, handleSubmit }) => {
     const initValues = {};
     initValues.data = cards.map(item => {
         return { id: item.id, file: null };
     });
     return (
-        <Formik initialValues={initValues} onSubmit={handleSubmit} validate={validateFields}>
+        <Formik initialValues={initValues} validate={validateFields}>
             {({
                 values,
                 errors,
@@ -53,7 +53,7 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
                 setFieldValue,
                 // submitForm,
             }) => (
-                <div className='proof-of-ownership'>
+                <form className='proof-of-ownership' onSubmit={handleSubmit}>
                     <FormBody scroll_offset={getScrollOffset(cards.length)}>
                         <FormSubHeader title={localize('Please upload the following document(s).')} />
                         <FormBodySection>
@@ -80,10 +80,6 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
                         <Button
                             type='submit'
                             className={classNames('account-form__footer-btn')}
-                            onClick={() => {
-                                // submitForm()
-                                nextStep();
-                            }}
                             is_disabled={(() => {
                                 const emptyFiles = values.data.some(item => !item?.file);
                                 return emptyFiles || errors?.data?.length > 0;
@@ -98,7 +94,7 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, nextStep }) => {
                             form={'first-step'}
                         />
                     </FormFooter>
-                </div>
+                </form>
             )}
         </Formik>
     );

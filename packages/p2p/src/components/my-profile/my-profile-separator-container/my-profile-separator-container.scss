@@ -4,6 +4,10 @@
     flex-direction: row;
     width: 100%;
 
+    @include mobile {
+        justify-content: space-between;
+    }
+
     &__line {
         background-color: var(--general-section-1);
         flex: 1;

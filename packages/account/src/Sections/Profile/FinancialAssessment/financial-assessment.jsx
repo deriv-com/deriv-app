@@ -187,7 +187,7 @@ const FinancialAssessment = ({
     routeBackInApp,
 }) => {
     const history = useHistory();
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_confirmation_visible, setIsConfirmationVisible] = React.useState(false);
     const [has_trading_experience, setHasTradingExperience] = React.useState(false);
@@ -296,13 +296,13 @@ const FinancialAssessment = ({
     };
 
     const getScrollOffset = () => {
-        if (isMobile()) return is_dashboard ? '160px' : '200px';
+        if (isMobile()) return is_appstore ? '160px' : '200px';
         return '80px';
     };
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
-    if (is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
+    if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
     if (isMobile() && is_authentication_needed && is_submit_success)
         return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
 
@@ -347,10 +347,10 @@ const FinancialAssessment = ({
                     dirty,
                 }) => (
                     <>
-                        {!is_dashboard && isMobile() && is_confirmation_visible && (
+                        {!is_appstore && isMobile() && is_confirmation_visible && (
                             <ConfirmationPage toggleModal={toggleConfirmationModal} onSubmit={handleSubmit} />
                         )}
-                        {(isDesktop() || is_dashboard) && (
+                        {(isDesktop() || is_appstore) && (
                             <ConfirmationModal
                                 is_visible={is_confirmation_visible}
                                 toggleModal={toggleConfirmationModal}
@@ -366,7 +366,7 @@ const FinancialAssessment = ({
                                         subtitle={`(${localize('All fields are required')})`}
                                     />
                                     <FormBodySection
-                                        has_side_note={is_dashboard}
+                                        has_side_note={is_appstore}
                                         side_note={localize(
                                             'We’re legally obliged to ask for your financial information.'
                                         )}
@@ -635,7 +635,7 @@ const FinancialAssessment = ({
                                                 subtitle={`(${localize('All fields are required')})`}
                                             />
                                             <FormBodySection
-                                                has_side_note={is_dashboard}
+                                                has_side_note={is_appstore}
                                                 side_note={localize('Tell us about your trading experience.')}
                                             >
                                                 <fieldset className='account-form__fieldset'>
@@ -933,7 +933,7 @@ const FinancialAssessment = ({
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {isMobile() && !is_dashboard && (
+                                    {isMobile() && !is_appstore && (
                                         <Text
                                             align='center'
                                             size='xxs'
@@ -954,7 +954,7 @@ const FinancialAssessment = ({
                                         has_effect
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
-                                        text={is_dashboard ? localize('Save') : localize('Submit')}
+                                        text={is_appstore ? localize('Save') : localize('Submit')}
                                         large
                                         primary
                                     />

@@ -29,7 +29,7 @@ const AppContents = ({
 }) => {
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 
@@ -88,7 +88,7 @@ const AppContents = ({
                 'app-contents--is-mobile': isMobile(),
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
-                'app-contents--is-dashboard': is_dashboard,
+                'app-contents--is-dashboard': is_appstore,
                 'app-contents--is-hidden': platforms[platform],
             })}
         >

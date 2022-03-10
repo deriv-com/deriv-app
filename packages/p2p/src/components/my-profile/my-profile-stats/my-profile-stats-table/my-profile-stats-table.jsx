@@ -49,64 +49,6 @@ const MyProfileStatsTable = () => {
                         <Table.Cell className='my-profile-stats-table__cell'>
                             <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
                                 <Localize
-                                    i18n_default_text='Sell Completion  <0>30d</0>'
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            className='my-profile-stats-table--italic'
-                                            color='less-prominent'
-                                            size='xxxs'
-                                        />,
-                                    ]}
-                                />
-                            </Text>
-                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {sell_completion_rate ? `${sell_completion_rate} (${sell_orders_count})` : '-'}
-                            </Text>
-                        </Table.Cell>
-                    </Table.Row>
-                    <Table.Row className='my-profile-stats-table--mobile'>
-                        <Table.Cell className='my-profile-stats-table__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
-                                <Localize
-                                    i18n_default_text='Buy Completion  <0>30d</0>'
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            className='my-profile-stats-table--italic'
-                                            color='less-prominent'
-                                            size='xxxs'
-                                        />,
-                                    ]}
-                                />
-                            </Text>
-                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {buy_completion_rate ? `${buy_completion_rate} (${buy_orders_count})` : '-'}
-                            </Text>
-                        </Table.Cell>
-                        <Table.Cell className='my-profile-stats-table__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
-                                <Localize
-                                    i18n_default_text='Sell Completion  <0>30d</0>'
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            className='my-profile-stats-table--italic'
-                                            color='less-prominent'
-                                            size='xxxs'
-                                        />,
-                                    ]}
-                                />
-                            </Text>
-                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {sell_completion_rate ? `${sell_completion_rate} (${sell_orders_count})` : '-'}
-                            </Text>
-                        </Table.Cell>
-                    </Table.Row>
-                    <Table.Row className='my-profile-stats-table--mobile'>
-                        <Table.Cell className='my-profile-stats-table__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
-                                <Localize
                                     i18n_default_text='Avg pay time  <0>30d</0>'
                                     components={[
                                         <Text
@@ -124,6 +66,26 @@ const MyProfileStatsTable = () => {
                                           avg_buy_time_in_minutes,
                                       })
                                     : '-'}
+                            </Text>
+                        </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className='my-profile-stats-table--mobile'>
+                        <Table.Cell className='my-profile-stats-table__cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize
+                                    i18n_default_text='Sell Completion  <0>30d</0>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            className='my-profile-stats-table--italic'
+                                            color='less-prominent'
+                                            size='xxxs'
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                                {sell_completion_rate ? `${sell_completion_rate} (${sell_orders_count})` : '-'}
                             </Text>
                         </Table.Cell>
                         <Table.Cell className='my-profile-stats-table__cell'>
@@ -184,6 +146,16 @@ const MyProfileStatsTable = () => {
                         </Table.Cell>
                         <Table.Cell className='my-profile-stats-table__cell'>
                             <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize i18n_default_text='Trade partners' />
+                            </Text>
+                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                                {partner_count || '0'}
+                            </Text>
+                        </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className='my-profile-stats-table--mobile'>
+                        <Table.Cell className='my-profile-stats-table__cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
                                 <Localize
                                     i18n_default_text='Total orders  <0>30d</0> | <1>lifetime</1>'
                                     components={[
@@ -204,16 +176,6 @@ const MyProfileStatsTable = () => {
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
                                 {total_orders_count || '0'}
-                            </Text>
-                        </Table.Cell>
-                    </Table.Row>
-                    <Table.Row className='my-profile-stats-table--mobile'>
-                        <Table.Cell className='my-profile-stats-table__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
-                                <Localize i18n_default_text='Trade partners' />
-                            </Text>
-                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {partner_count || '0'}
                             </Text>
                         </Table.Cell>
                     </Table.Row>

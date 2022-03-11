@@ -87,8 +87,8 @@ const BuySell = () => {
             />
             <RateChangedModal
                 local_currency={local_currency}
-                should_show_rate_changed_popup={false}
-                setShouldShowRateChangedPopup={() => {}}
+                should_show_rate_changed_popup={buy_sell_store.should_show_rate_changed_popup}
+                setShouldShowRateChangedPopup={buy_sell_store.setShouldShowRateChangedPopup}
             />
         </div>
     );

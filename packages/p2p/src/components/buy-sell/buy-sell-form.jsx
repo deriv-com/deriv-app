@@ -15,6 +15,7 @@ const BuySellForm = props => {
     const { advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
+    const [exchange_rate_on_mount, setExchangeRateOnMount] = React.useState(buy_sell_store.exchange_rate);
     buy_sell_store.setFormProps(props);
 
     const { setPageFooterParent } = props;
@@ -36,6 +37,7 @@ const BuySellForm = props => {
 
     React.useEffect(
         () => {
+            setExchangeRateOnMount(buy_sell_store.exchange_rate);
             my_profile_store.setShouldShowAddPaymentMethodForm(false);
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
@@ -97,7 +99,12 @@ const BuySellForm = props => {
             }}
             initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
             onSubmit={(...args) => {
-                buy_sell_store.handleSubmit(() => isMounted(), ...args);
+                if (exchange_rate_on_mount !== buy_sell_store.exchange_rate) {
+                    buy_sell_store.setShouldShowPopup(false);
+                    buy_sell_store.setShouldShowRateChangedPopup(true);
+                } else {
+                    buy_sell_store.handleSubmit(() => isMounted(), ...args);
+                }
             }}
         >
             {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {

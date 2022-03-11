@@ -11,6 +11,7 @@ export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
     @observable contact_info = '';
     @observable error_message = '';
+    @observable exchange_rate = 0;
     @observable has_more_items_to_load = false;
     @observable has_payment_methods = false;
     @observable is_filter_modal_loading = false;
@@ -26,6 +27,7 @@ export default class BuySellStore extends BaseStore {
     @observable selected_ad_state = {};
     @observable selected_value = 'rate';
     @observable should_show_popup = false;
+    @observable should_show_rate_changed_popup = false;
     @observable should_show_verification = false;
     @observable should_use_client_limits = false;
     @observable show_advertiser_page = false;
@@ -131,6 +133,15 @@ export default class BuySellStore extends BaseStore {
                 this.setPaymentInfo('');
             }
         });
+    }
+
+    @action.bound
+    async getExchangeRate(from_currency, to_currency) {
+        const response = await requestWS({
+            exchange_rates: 1,
+            base_currency: from_currency,
+        });
+        this.setExchangeRate(response.exchange_rates.rates[to_currency]);
     }
 
     @action.bound
@@ -322,6 +333,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setExchangeRate(exchange_rate) {
+        this.exchange_rate = exchange_rate;
+    }
+
+    @action.bound
     setFormProps(props) {
         this.form_props = props;
     }
@@ -407,6 +423,11 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setShouldShowPopup(should_show_popup) {
         this.should_show_popup = should_show_popup;
+    }
+
+    @action.bound
+    setShouldShowRateChangedPopup(should_show_rate_changed_popup) {
+        this.should_show_rate_changed_popup = should_show_rate_changed_popup;
     }
 
     @action.bound

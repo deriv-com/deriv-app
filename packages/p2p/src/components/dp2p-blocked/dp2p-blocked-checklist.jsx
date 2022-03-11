@@ -22,7 +22,7 @@ const Dp2pBlockedChecklist = () => {
         ];
 
         return (
-            <div className='dp2p-blocked__checklist-container'>
+            <div className='dp2p-blocked__checklist-container' data-testid='dp2p-blocked_checklist'>
                 <Checklist className='dp2p-blocked__checklist' items={checklist_items} />
             </div>
         );

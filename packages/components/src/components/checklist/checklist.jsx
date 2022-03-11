@@ -17,7 +17,11 @@ const ItemStatus = ({ status, onClick, button_text }) => {
         case 'action':
         default:
             return (
-                <div className='dc-checklist__item-status--action' onClick={onClick}>
+                <div
+                    className='dc-checklist__item-status--action'
+                    onClick={onClick}
+                    data-testid='action_icArrowRightBold'
+                >
                     <Icon icon='IcArrowRightBold' color='active' />
                 </div>
             );
@@ -38,6 +42,7 @@ const Checklist = ({ items, className, itemClassName }) => (
                 className={classNames('dc-checklist__item', itemClassName, {
                     'dc-checklist__item--disabled': item.is_disabled,
                 })}
+                data-testid='checklist'
             >
                 <div className='dc-checklist__item-text'>{item.content}</div>
                 <div

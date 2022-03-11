@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import AccountLimitsFooterPortal from '../account-limits-footer';
-import AccountLimitsContext from '../account-limits-context';
+
 jest.mock('react', () => {
     const ActualReact = jest.requireActual('react');
     return {
@@ -21,7 +21,7 @@ describe('<AccountLimitsFooterPortal/>', () => {
         });
     });
 
-    afterEach(() => {
+    afterAll(() => {
         ReactDOM.createPortal.mockClear();
     });
 

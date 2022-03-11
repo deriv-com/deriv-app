@@ -10,19 +10,19 @@ jest.mock('@deriv/shared', () => ({
 
 describe('<AccountLimitsExtraInfo/>', () => {
     it('should render AccountLimitsExtraInfo component', () => {
-        render(<AccountLimitsExtraInfo message='Lorem Epsom'/>);
+        render(<AccountLimitsExtraInfo message='Lorem Epsom' />);
         expect(screen.getByText('Lorem Epsom')).toBeInTheDocument();
     });
 
     it('should render PopoverComponent if isMobile is false', () => {
         isMobile.mockReturnValue(false);
-        const {container} = render(<AccountLimitsExtraInfo message='Lorem Epsom'/>);
+        const { container } = render(<AccountLimitsExtraInfo message='Lorem Epsom' />);
         expect(container.getElementsByClassName('da-account-limits__popover').length).toBe(1);
     });
-    
+
     it('should pass props to PopoverComponent if isMobile is false', () => {
         isMobile.mockReturnValue(false);
-        const {container} = render(<AccountLimitsExtraInfo message='Lorem Epsom' className='test_class'/>);
+        const { container } = render(<AccountLimitsExtraInfo message='Lorem Epsom' className='test_class' />);
         expect(container.getElementsByClassName('test_class').length).toBe(1);
     });
 });

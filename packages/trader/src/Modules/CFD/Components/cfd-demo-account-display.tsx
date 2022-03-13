@@ -68,9 +68,7 @@ const CFDDemoAccountDisplay = ({
     openPasswordManager,
     residence,
 }: TCFDDemoAccountDisplayProps) => {
-    console.log('current_list', current_list);
-
-    const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+    const accountCardTitle = is_eu_country ? localize('CFDs') : localize('Financial');
 
     const openCFDAccount = () => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
@@ -84,11 +82,10 @@ const CFDDemoAccountDisplay = ({
     };
 
     const financial_specs = React.useMemo(() => {
-        const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
         if (residence === 'au') {
             return specifications[platform as keyof TSpecifications].au_real_financial_specs;
         }
-        if (should_show_eu) {
+        if (is_eu_country) {
             return specifications[platform as keyof TSpecifications].eu_real_financial_specs;
         }
         return specifications[platform as keyof TSpecifications].real_financial_specs;
@@ -151,10 +148,10 @@ const CFDDemoAccountDisplay = ({
             {isFinancialCardVisible() && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
-                    title={is_eu_user ? localize('CFDs') : localize('Financial')}
+                    title={accountCardTitle}
                     is_disabled={has_cfd_account_error}
                     is_logged_in={is_logged_in}
-                    is_eu={is_eu_user}
+                    is_eu={is_eu_country}
                     type={{
                         category: 'demo',
                         type: 'financial',
@@ -184,7 +181,7 @@ const CFDDemoAccountDisplay = ({
                         )
                     }
                     platform={platform}
-                    descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
+                    descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_country)}
                     specs={financial_specs}
                     has_banner
                 />

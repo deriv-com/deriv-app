@@ -205,6 +205,24 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         });
     };
 
+    const poaStatusSwitch = (poa_status: boolean) => {
+        switch (poa_status) {
+            case poa_status === PoaStatusCodes.pending:
+                return <PoaNeedsReview is_description_enabled={false} />;
+
+            case poa_status === PoaStatusCodes.verified:
+                return <PoaVerified is_description_enabled={false} has_poi={has_poi} />;
+            case poa_status === PoaStatusCodes.expired:
+                return <PoaExpired onClick={handleResubmit} />;
+
+            case poa_status === PoaStatusCodes.rejected || poa_status === PoaStatusCodes.suspected:
+                return <PoaUnverified />;
+
+            default:
+                return;
+        }
+    };
+
     const onSubmitValues = async (values: TFormValues, actions: FormikHelpers<TFormValues>) => {
         const { document_file, ...uploadables } = values;
 
@@ -487,17 +505,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                             {submitted_poa && (
                                                 <PoaSubmitted is_description_enabled={false} has_poi={has_poi} />
                                             )}
-                                            {poa_status === PoaStatusCodes.pending && (
-                                                <PoaNeedsReview is_description_enabled={false} />
-                                            )}
-                                            {poa_status === PoaStatusCodes.verified && (
-                                                <PoaVerified is_description_enabled={false} has_poi={has_poi} />
-                                            )}
-                                            {poa_status === PoaStatusCodes.expired && (
-                                                <PoaExpired onClick={handleResubmit} />
-                                            )}
-                                            {(poa_status === PoaStatusCodes.rejected ||
-                                                poa_status === PoaStatusCodes.suspected) && <PoaUnverified />}
+                                            {poaStatusSwitch(poa_status)}
                                         </ThemedScrollbars>
                                     )}
                                     <Modal.Footer is_bypassed={isMobile()}>

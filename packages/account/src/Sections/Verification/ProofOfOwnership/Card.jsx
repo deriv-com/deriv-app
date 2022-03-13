@@ -5,7 +5,10 @@ import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
 
 const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error }) => {
-    const onClick = () => setIsOpen(!is_open);
+    const onClick = e => {
+        e.preventDefault();
+        setIsOpen(!is_open);
+    };
     const [is_open, setIsOpen] = React.useState(false);
     const icon = (
         <Icon

@@ -2243,7 +2243,6 @@ $MIN_HEIGHT_FLOATING: calc(
     @include mobile {
         margin-top: 2.4rem;
     }
-
     &__card {
         border: 1px solid var(--general-section-5);
         border-radius: 8px;
@@ -2261,7 +2260,9 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 80%;
             padding: 2.4rem;
         }
-
+        &-open-desc-link {
+            cursor: pointer;
+        }
         &-item {
             display: flex;
             flex-direction: row;

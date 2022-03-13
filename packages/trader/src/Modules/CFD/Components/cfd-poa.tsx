@@ -205,7 +205,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         });
     };
 
-    const poaStatusSwitch = (poa_status: boolean) => {
+    const poaStatusSwitch = () => {
         switch (poa_status) {
             case poa_status === PoaStatusCodes.pending:
                 return <PoaNeedsReview is_description_enabled={false} />;
@@ -508,7 +508,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                             {submitted_poa && (
                                                 <PoaSubmitted is_description_enabled={false} has_poi={has_poi} />
                                             )}
-                                            {poaStatusSwitch(poa_status)}
+                                            {poaStatusSwitch()}
                                         </ThemedScrollbars>
                                     )}
                                     <Modal.Footer is_bypassed={isMobile()}>

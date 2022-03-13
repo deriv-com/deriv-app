@@ -215,7 +215,10 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
             case poa_status === PoaStatusCodes.expired:
                 return <PoaExpired onClick={handleResubmit} />;
 
-            case poa_status === PoaStatusCodes.rejected || poa_status === PoaStatusCodes.suspected:
+            case poa_status === PoaStatusCodes.rejected:
+                return <PoaUnverified />;
+
+            case poa_status === PoaStatusCodes.suspected:
                 return <PoaUnverified />;
 
             default:

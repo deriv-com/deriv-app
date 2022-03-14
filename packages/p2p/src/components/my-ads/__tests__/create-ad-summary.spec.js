@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, screen, render } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import { useStores } from 'Stores';
 import CreateAdSummary from '../create-ad-summary.jsx';
 

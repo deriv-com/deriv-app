@@ -13,21 +13,17 @@ const sleep = (observer, arg = 1) => {
         () => {}
     );
 };
-export default class Interface {
-    constructor($scope) {
-        this.tradeEngine = new TradeEngine($scope);
-        this.api = $scope.api;
-        this.observer = $scope.observer;
-        this.$scope = $scope;
-    }
 
-    getInterface() {
+const Interface = $scope => {
+    const tradeEngine = new TradeEngine($scope);
+    const { observer } = $scope;
+    const getInterface = () => {
         return {
-            ...getBotInterface(this.tradeEngine),
-            ...getToolsInterface(this.tradeEngine),
-            getTicksInterface: getTicksInterface(this.tradeEngine),
-            watch: (...args) => this.tradeEngine.watch(...args),
-            sleep: (...args) => sleep(this.observer, ...args),
+            ...getBotInterface(tradeEngine),
+            ...getToolsInterface(tradeEngine),
+            getTicksInterface: getTicksInterface(tradeEngine),
+            watch: (...args) => tradeEngine.watch(...args),
+            sleep: (...args) => sleep(observer, ...args),
             alert: (...args) => alert(...args), // eslint-disable-line no-alert
             prompt: (...args) => prompt(...args), // eslint-disable-line no-alert
             console: {
@@ -37,5 +33,8 @@ export default class Interface {
                 },
             },
         };
-    }
-}
+    };
+    return { tradeEngine, observer, getInterface };
+};
+
+export default Interface;

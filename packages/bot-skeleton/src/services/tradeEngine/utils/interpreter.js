@@ -38,7 +38,7 @@ export default class Interpreter {
 
     init() {
         this.$scope = createScope();
-        this.bot = new Interface(this.$scope);
+        this.bot = Interface(this.$scope);
         this.stopped = false;
         this.$scope.observer.register('REVERT', watchName =>
             this.revert(watchName === 'before' ? this.beforeState : this.duringState)

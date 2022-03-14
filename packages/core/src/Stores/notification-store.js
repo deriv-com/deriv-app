@@ -431,7 +431,7 @@ export default class NotificationStore extends BaseStore {
                 message = localize(
                     'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
                 );
-            this.setClientNotifications({ resetVirtualBalance: this.resetVirtualBalance, message });
+            this.setClientNotifications({ resetVirtualBalance: this.root_store.client.resetVirtualBalance, message });
             this.addNotificationMessage(this.client_notifications.reset_virtual_balance);
         } else {
             this.removeNotificationByKey({ key: 'reset_virtual_balance' });

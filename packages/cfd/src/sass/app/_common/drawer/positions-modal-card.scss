@@ -1,0 +1,259 @@
+/** @define positions-modal-card; weak */
+
+.positions-modal-card {
+    $positions-modal-card: &;
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    position: relative;
+    padding: 0.8rem;
+    color: var(--text-general);
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+
+    &__result {
+        &--enter,
+        &--exit {
+            opacity: 0;
+        }
+        &--enter-done {
+            opacity: 1;
+        }
+    }
+    &__caption {
+        font-size: 1.6em;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.25s ease;
+        cursor: pointer;
+        width: 100%;
+
+        &--won {
+            color: var(--text-profit-success);
+        }
+        &--lost {
+            color: var(--text-loss-danger);
+        }
+        &-wrapper {
+            cursor: pointer;
+            width: 100%;
+            grid-row: 1 / -1;
+            align-self: center;
+            justify-self: center;
+            text-decoration: none;
+        }
+    }
+    &__icon {
+        margin-left: 4px;
+    }
+    &__wrapper {
+        margin: 0.8rem;
+        border-radius: $BORDER_RADIUS;
+        transition: transform 0.25s ease, opacity 0.25s linear;
+        position: relative;
+        background: var(--general-main-1);
+        border: 1px solid var(--border-disabled);
+    }
+    &__grid {
+        display: grid;
+
+        &-header {
+            border-bottom: 1px solid var(--general-section-1);
+            grid-template-columns: 1fr 1fr 1fr;
+            padding-bottom: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        &-body {
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto;
+            display: grid;
+        }
+        &-underlying-trade {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        &-profit-payout {
+            grid-template-columns: 1fr 1fr;
+            display: grid;
+            grid-row: 1 / 2;
+            grid-column: 1 / 2;
+            padding: 8px 0;
+            border-radius: $BORDER_RADIUS;
+        }
+        &-price-payout {
+            display: grid;
+            grid-row: 2 / 3;
+            grid-column: 1 / 2;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    &__progress {
+        justify-self: end;
+        align-self: center;
+        grid-row: 1 / 3;
+        grid-column: 2 / 3;
+    }
+    &__sell-button {
+        justify-self: end;
+        align-self: center;
+
+        .dc-btn--sell {
+            height: 3.2rem !important;
+        }
+    }
+    &__purchase,
+    &__payout {
+        &-label {
+            text-transform: none;
+            white-space: nowrap;
+            max-width: 90px;
+        }
+        &-value {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 4px 0 8px;
+        }
+        &-price {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    &__type {
+        font-size: 1.2rem;
+        display: flex;
+        justify-content: flex-start;
+        font-weight: bold;
+
+        /* postcss-bem-linter: ignore */
+        .category-type {
+            .color1-fill {
+                fill: var(--brand-red-coral);
+            }
+            .color2-fill {
+                fill: var(--brand-secondary);
+            }
+        }
+    }
+    &__symbol {
+        margin-left: 0.5rem;
+        /* iPhone SE screen height fixes due to UI space restrictions */
+        @media only screen and (max-height: 480px) {
+            font-size: 0.9rem;
+        }
+    }
+    &__indicative {
+        font-size: 1.2rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        color: var(--text-general);
+
+        &-label {
+            font-size: 0.8rem;
+            font-weight: normal;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            max-width: 90px;
+            color: var(--text-general);
+        }
+        &--movement {
+            margin-left: 2px;
+            width: 16px;
+            height: 16px;
+
+            &-complete,
+            &-complete:after {
+                display: none;
+            }
+            &:after {
+                content: '';
+                width: 16px;
+            }
+        }
+    }
+    &__remaining-time {
+        font-size: 1.2em;
+        color: var(--text-general);
+    }
+    &__timer {
+        margin: 0.2rem auto;
+    }
+    &__profit-loss {
+        font-size: 1.2rem;
+        text-align: center;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+
+        &-label {
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            font-weight: normal;
+            white-space: nowrap;
+            max-width: 90px;
+            color: var(--text-general);
+            /* iPhone SE screen height fixes due to UI space restrictions */
+            @media only screen and (max-height: 480px) {
+                font-size: 0.8rem;
+            }
+        }
+        &--is-crypto {
+            margin-left: -6px;
+        }
+        &--negative {
+            color: var(--text-loss-danger);
+
+            &:before {
+                content: '-';
+                color: inherit;
+            }
+        }
+        &--positive {
+            color: var(--text-profit-success);
+
+            &:before {
+                content: '+';
+                color: inherit;
+            }
+        }
+    }
+    &__underlying-name {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    &--multiplier {
+        .dc-contract-card {
+            &__grid-items {
+                grid-template-columns: 1fr 1fr 1fr;
+                padding: 1.2rem 0rem;
+            }
+            &__deal-cancel-fee,
+            &__buy-price,
+            &__stop-loss {
+                order: 1;
+            }
+        }
+        .dc-contract-card__sell-button {
+            border-top: 0rem;
+        }
+    }
+}
+
+/** @define dc-remaining-time; weak */
+.dc-remaining-time {
+    display: inline;
+
+    @include mobile {
+        font-size: 0.9rem;
+    }
+}

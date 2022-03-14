@@ -1,0 +1,797 @@
+/** @define app-contents; weak */
+.app-contents {
+    &--show-positions-drawer:not(&--is-mobile) {
+        .trade-container {
+            .chart-container {
+                width: 100%;
+
+                .sc-navigation-widget,
+                .cq-top-ui-widgets,
+                .sc-toolbar-widget,
+                .stx-panel-control {
+                    transform: translate3d(248px, 0, 0);
+                }
+                .cq-chart-controls {
+                    transform: translate3d(130px, 0, 0) !important;
+                }
+                .cq-bottom-ui-widgets {
+                    .digits__container {
+                        transform: translate3d(130px, 0, 0) !important;
+                    }
+                }
+                .cq-chart-control-left {
+                    .cq-chart-controls {
+                        transform: translate3d(248px, 0, 0) !important;
+                    }
+                    .cq-bottom-ui-widgets {
+                        .digits__container {
+                            transform: translate3d(170px, 40px, 0) !important;
+                        }
+                    }
+                }
+                &__loader {
+                    .barspinner {
+                        transform: translate3d(130px, 0, 0) !important;
+                    }
+                }
+            }
+        }
+    }
+    &--is-mobile {
+        .top-widgets-portal {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            z-index: 1;
+
+            .recent-trade-info {
+                min-width: 8rem;
+                line-height: 2.4rem;
+                margin-left: 0.8rem;
+            }
+        }
+        .cq-chart-title {
+            > .cq-menu-btn {
+                padding: 0.4rem;
+                user-select: none;
+                -webkit-touch-callout: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+        & .contract-details-wrapper + .smartcharts-undefined {
+            & .cq-symbols-display {
+                display: none;
+            }
+        }
+    }
+}
+
+$FLOATING_HEADER_HEIGHT: 41px;
+/** @define trade-container; weak */
+.trade-container {
+    position: relative;
+    padding: 0.8em 1.2em;
+    display: flex;
+    min-height: calc(100vh - 84px);
+    overflow: hidden;
+
+    &__replay {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        height: calc(100vh - 108px - #{$FLOATING_HEADER_HEIGHT + 12px});
+        padding-bottom: 2.4rem;
+
+        .contract-drawer {
+            /* prettier-ignore */
+            height: calc(100% + 2.4rem);
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+            z-index: 1;
+            overflow: hidden;
+            min-width: 240px;
+
+            &-wrapper {
+                z-index: 4;
+            }
+
+            .dc-contract-card {
+                margin: 0.8rem 0;
+                &__sell-button {
+                    &--exit {
+                        display: none;
+                    }
+                }
+            }
+
+            @include mobile {
+                z-index: 4;
+                height: auto;
+                border-bottom-right-radius: $BORDER_RADIUS;
+                border-top-right-radius: $BORDER_RADIUS;
+                width: calc(100% - 1.6rem);
+                margin-left: 0.8rem;
+                transition: none;
+
+                &__mobile-wrapper {
+                    position: relative;
+                }
+                &--with-collapsible-btn {
+                    overflow: visible;
+                    position: relative;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+
+                    & .dc-contract-card {
+                        margin-top: 0;
+                    }
+                }
+                &__transition {
+                    &-enter,
+                    &-exit {
+                        transition: transform 0.25s linear;
+                    }
+                }
+                & .dc-contract-card {
+                    &__grid-underlying-trade {
+                        grid-template-columns: 2fr 1fr !important;
+                    }
+                    &__underlying-name {
+                        max-width: none;
+                    }
+                }
+                &--is-multiplier {
+                    & .dc-contract-card {
+                        &__body-wrapper {
+                            flex-direction: column;
+                            padding-top: 0.4rem;
+                        }
+                        &-items-wrapper {
+                            grid-template-columns: 1fr 1fr 1fr;
+                            grid-gap: 0.4rem;
+                            padding-bottom: 0.4rem;
+                            border-bottom: 1px solid var(--general-section-1);
+                            min-height: 80px;
+
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                min-height: unset;
+                            }
+                        }
+                        &-item {
+                            &__total-profit-loss {
+                                flex-direction: row;
+                                margin: 0 auto;
+
+                                & .contract-card-item__header {
+                                    font-size: 1.2rem !important;
+
+                                    @media (max-width: 320px) and (max-height: 480px) {
+                                        font-size: 1rem !important;
+                                    }
+                                }
+                            }
+                            &__header,
+                            &__body {
+                                font-size: 1.2rem;
+                            }
+                            &__body--loss {
+                                padding-left: 0.4rem;
+                            }
+                            &:nth-child(1) {
+                                order: 0;
+                            }
+                            &:nth-child(3),
+                            &:nth-child(5) {
+                                order: 2;
+                            }
+                            &:nth-child(6) {
+                                order: 6;
+                            }
+                            @media only screen and (max-width: 320px) {
+                                &__header {
+                                    font-size: 1rem;
+                                }
+                            }
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                &__body {
+                                    font-size: 1rem;
+                                }
+                            }
+                        }
+                        @media (max-width: 320px) and (max-height: 480px) {
+                            &__symbol,
+                            &__type {
+                                font-size: 1rem;
+                            }
+                            &__sell-button {
+                                padding-top: 0.4rem;
+
+                                & .dc-btn {
+                                    height: 2.6rem;
+
+                                    &__text {
+                                        font-size: 1rem;
+                                    }
+                                }
+                            }
+                            &__footer {
+                                margin-bottom: 0;
+                            }
+                        }
+
+                        &__sell-button {
+                            &--has-cancel-btn {
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                            }
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                & .dc-btn--cancel {
+                                    & .dc-btn__text {
+                                        align-items: center;
+                                    }
+                                    & .dc-remaining-time {
+                                        font-size: 1rem;
+                                        padding-top: 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    &.contract-drawer--with-collapsible-btn {
+                        & .dc-contract-card {
+                            &__indicative--movement {
+                                margin-top: 2px;
+                            }
+                        }
+                    }
+                    & .dc-contract-card__grid-underlying-trade,
+                    & .dc-contract-card__footer-wrapper {
+                        grid-template-columns: 1fr 1fr 0.7fr;
+
+                        @media only screen and (max-height: 480px) {
+                            grid-template-columns: 1fr 1fr;
+                        }
+                    }
+                    @media only screen and (max-height: 480px) {
+                        & .dc-contract-card__body-wrapper {
+                            padding-top: 0.2rem;
+                        }
+                    }
+
+                    &-sold {
+                        &.contract-drawer--with-collapsible-btn {
+                            & .dc-contract-card-item {
+                                &__total-profit-loss {
+                                    flex-direction: column;
+                                }
+                                &__body--profit {
+                                    font-size: 1.6rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .replay-chart__container {
+            width: 100%;
+            position: relative;
+            margin-left: 24px;
+
+            .smartcharts {
+                left: 0;
+                border-radius: $BORDER_RADIUS;
+
+                .ciq-chart {
+                    .cq-top-ui-widgets,
+                    & .info-box {
+                        transition: transform 0.25s ease;
+
+                        .cq-symbols-display {
+                            z-index: 1;
+
+                            &.ciq-disabled {
+                                display: none;
+                            }
+                        }
+                        .info-box-container {
+                            transform: none;
+                            opacity: 1;
+                            left: 1px;
+
+                            .chart-close-btn {
+                                display: none;
+                            }
+                        }
+                    }
+                    .sc-toolbar-widget,
+                    .stx-panel-control,
+                    .sc-navigation-widget {
+                        transition: transform 0.25s ease;
+                    }
+                    .ciq-asset-information {
+                        top: 75px;
+                    }
+                    .stx_jump_today.home > svg {
+                        top: 10px;
+                        left: 8px;
+                        padding: 0;
+                        position: absolute;
+                    }
+                    .cq-bottom-ui-widgets {
+                        bottom: 30px !important;
+
+                        .digits {
+                            margin-right: 0;
+
+                            &__container {
+                                transition: transform 0.25s ease;
+                            }
+                        }
+                    }
+                }
+
+                /* postcss-bem-linter: ignore */
+                &-mobile {
+                    /* TODO: Remove this override once the issue is fixed in smartcharts */
+                    .stx-holder.stx-panel-chart {
+                        z-index: 14;
+
+                        .cq-inchart-holder {
+                            z-index: 107;
+                            position: relative;
+                        }
+                    }
+
+                    .cq-context {
+                        height: 100%;
+                    }
+                }
+            }
+
+            &-swipeable-wrapper {
+                .dc-swipeable__item {
+                    margin-left: 0.8rem;
+                    width: calc(100vw - 1.6rem);
+                }
+            }
+
+            @include mobile {
+                height: 100%;
+                width: calc(100% - 1.6rem);
+                margin-left: 0.8rem;
+            }
+        }
+        @include mobile {
+            display: flex;
+            flex-direction: column-reverse;
+            height: 100%;
+            padding-bottom: 0;
+            position: relative;
+
+            #dt_contract_drawer_audit {
+                flex: 1;
+                overflow: auto;
+            }
+
+            & .contract-audit-card {
+                height: calc(100% - 1rem);
+                &__container {
+                    height: 100%;
+                }
+            }
+        }
+    }
+    @include mobile {
+        flex-direction: column;
+        min-height: calc(100vh - 48px);
+        padding: 0;
+    }
+}
+
+/** @define mobile-wrapper; weak */
+.mobile-wrapper {
+    padding: 0 0.8rem;
+    display: flex;
+    flex-direction: column;
+    height: 212px;
+    position: relative;
+
+    &__content-loader {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        bottom: -0.8rem;
+
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+/** @define chart-container; weak */
+.chart-container {
+    width: 100%;
+    position: relative;
+
+    &__wrapper {
+        position: fixed;
+        top: calc(#{$HEADER_HEIGHT} + 2px);
+        // charts width is 100% - sidebar width - sidebar margin - .trade-container padding
+        width: calc(100% - 240px - 1.6rem - 2.4rem);
+        height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+    }
+    &__loader {
+        position: absolute;
+        height: calc(100% - 68px);
+        width: calc(100% - 12px);
+        top: 54px;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: $BORDER_RADIUS;
+        background-color: var(--general-main-1);
+
+        .initial-loader {
+            pointer-events: none;
+        }
+        .barspinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            width: 100%;
+            height: 18px;
+        }
+        & + .smartcharts {
+            visibility: hidden;
+            pointer-events: none;
+
+            .chart-marker-line__wrapper,
+            .cq-chart-controls,
+            .cq-symbols-display,
+            .cq-bottom-ui-widgets,
+            .cq-inchart-subholder {
+                display: none;
+            }
+        }
+    }
+    // smartchart library style fixes
+    .smartcharts-mobile {
+        .sc-categorical-display {
+            height: calc(100% - 8px) !important;
+        }
+        .ciq-chart {
+            padding: 0 0.8rem;
+        }
+    }
+    .cq-context {
+        top: 0;
+        left: 0;
+        z-index: 0;
+
+        div.ciq-chart {
+            height: 100%;
+            box-shadow: none;
+
+            div.cq-last-digits {
+                bottom: 15px;
+                left: calc(45% - 150px);
+            }
+            .info-box div.cq-chart-controls {
+                box-shadow: none;
+            }
+            // TODO: enable asset information
+            // div.ciq-asset-information {
+            //     z-index: 0;
+            //     top: 0;
+            //     left: 0;
+            // }
+            div.stx_jump_today.home > svg {
+                top: 10px;
+                left: 8px;
+                padding: 0;
+                position: absolute;
+            }
+            div.stx-marker {
+                z-index: 2;
+
+                &:not(.chart-marker-line) {
+                    animation: fadeIn 0.2s;
+                }
+            }
+        }
+        div.cq-chart-control-left {
+            .cq-top-ui-widgets {
+                width: calc(100% - 9em);
+            }
+        }
+    }
+    div.debug-text {
+        display: none;
+    }
+    .cq-chart-control-left {
+        .cq-chart-controls,
+        .sc-toolbar-widget,
+        .stx-panel-control,
+        .sc-navigation-widget {
+            transform: translate3d(0, 0, 0);
+            transition: transform 0.25s ease;
+        }
+        .cq-top-ui-widgets {
+            left: 9em;
+
+            .info-box {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+    }
+    .ciq-chart {
+        .cq-top-ui-widgets,
+        & .info-box {
+            transition: transform 0.25s ease;
+
+            .cq-symbols-display {
+                z-index: 1;
+
+                &.ciq-disabled {
+                    display: none;
+                }
+                @include mobile {
+                    top: 0.8rem;
+                    left: 0.8rem;
+                    min-width: 170px;
+                    max-width: 260px;
+                    width: auto;
+
+                    .cq-menu-btn {
+                        padding: 0.2rem;
+                    }
+                    .cq-symbol-select-btn {
+                        padding: 0.3rem 0.9rem;
+
+                        .cq-symbol-dropdown {
+                            transform: scale(1);
+                            margin-left: auto;
+                        }
+                        .cq-symbol {
+                            font-size: 1.2rem;
+                        }
+                        .cq-chart-price {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+        .cq-chart-controls {
+            transition: max-width 0.25s ease, transform 0.25s ease;
+        }
+        .sc-navigation-widget,
+        .stx-panel-control {
+            transition: transform 0.25s ease;
+        }
+        .sc-toolbar-widget {
+            transition: transform 0.25s ease;
+
+            @include mobile {
+                background: transparent;
+                border-width: 0;
+                bottom: 2.8rem;
+
+                /* postcss-bem-linter: ignore */
+                .sc-chart-mode,
+                .sc-studies {
+                    background: var(--general-section-1);
+                    padding: 0.4rem 0.2rem;
+                    width: 4rem;
+                    height: 4rem;
+                    display: flex;
+                    border-radius: 50%;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0.8rem;
+                    opacity: 0.75;
+
+                    &__menu {
+                        &__timeperiod {
+                            top: 0.8rem;
+                            left: 0.8rem;
+                        }
+                        & > .ic-icon {
+                            top: 0.6rem;
+                        }
+                    }
+                }
+            }
+        }
+        &--screenshot {
+            .sc-toolbar-widget,
+            .stx-panel-control,
+            .sc-navigation-widget,
+            .cq-top-ui-widgets {
+                transform: translate3d(0, 0, 0) !important;
+            }
+        }
+    }
+    .chartContainer {
+        background: transparent;
+        min-height: 100%;
+    }
+}
+
+/** @define sidebar; weak; */
+.sidebar {
+    &__container {
+        position: relative;
+        margin: 0.8rem 0 0.8rem 1.6rem;
+        width: $SIDEBAR_WIDTH;
+        z-index: 5;
+    }
+    &__items {
+        opacity: 1;
+        transform: none;
+        position: relative;
+        min-height: 460px;
+        width: $SIDEBAR_WIDTH;
+
+        &:after {
+            transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+            opacity: 0;
+            position: absolute;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            content: '';
+            background-color: var(--overlay-outside-dialog);
+        }
+        &--market-closed {
+            & .dc-tooltip--with-label {
+                display: none;
+            }
+            & .dc-tooltip--with-label:before,
+            .dc-tooltip--with-label:after {
+                display: none;
+            }
+        }
+    }
+}
+
+// TODO: improve handling of rendering markets dropdown via portals from smartcharts library
+/** @define smartcharts-portal; weak */
+.smartcharts-portal {
+    @include mobile {
+        &--open {
+            .smartcharts {
+                z-index: 9999;
+            }
+        }
+    }
+}
+
+/** @define contract; weak */
+.contract {
+    // TODO: Remove below if redundant
+    &-update {
+        /* postcss-bem-linter: ignore */
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+
+            /* postcss-bem-linter: ignore */
+            & .dc-tooltip:before,
+            & .dc-tooltip:after {
+                display: none;
+            }
+            /* postcss-bem-linter: ignore */
+            & .dc-contract-card-dialog__button {
+                display: flex;
+                align-items: flex-end;
+            }
+        }
+    }
+    &--enter {
+        transform: translate3d(calc(100% + 1.6em), 0, 0);
+        opacity: 0;
+    }
+    &--exit {
+        transform: translate3d(calc(100% + 1.6em), 0, 0);
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+/** @define smartcharts; weak */
+/* postcss-bem-linter: ignore */
+.smartcharts {
+    &-dark,
+    &-light {
+        @include mobile {
+            /* postcss-bem-linter: ignore */
+            .cq-menu-dropdown-enter-done {
+                margin-top: 0;
+
+                /* postcss-bem-linter: ignore */
+                .icon-close-menu {
+                    opacity: 1;
+                    pointer-events: auto;
+                    top: 8px;
+                }
+            }
+            .cq-dialog-portal {
+                /* postcss-bem-linter: ignore */
+                .cq-dialog {
+                    max-width: calc(100% - 36px);
+                }
+            }
+            /** @define ciq-chart-type; weak */
+            .sc-chart-type {
+                &__item {
+                    /* postcss-bem-linter: ignore */
+                    .sc-tooltip,
+                    .dc-tooltip {
+                        display: none;
+                    }
+                }
+            }
+            /** @define ciq-chart-mode; weak */
+            .sc-chart-mode {
+                /* postcss-bem-linter: ignore */
+                &__section__item {
+                    /* postcss-bem-linter: ignore */
+                    .sc-interval {
+                        display: grid;
+                        padding: 1.6rem;
+                        grid-template-columns: 1fr;
+
+                        /* postcss-bem-linter: ignore */
+                        &__content {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 1fr;
+                            padding-top: 16px;
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &__item {
+                            width: 100% !important;
+                            margin: 0;
+
+                            /* postcss-bem-linter: ignore */
+                            .sc-tooltip,
+                            .dc-tooltip {
+                                display: none;
+                            }
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &__info {
+                            margin-top: 0.4rem;
+                            padding-left: 0.2rem;
+                        }
+                    }
+                }
+            }
+            /** @define cq-top-ui-widgets; weak */
+            .cq-top-ui-widgets {
+                z-index: 15 !important;
+            }
+        }
+    }
+    /* TODO: Remove this override once the issue is fixed in smartcharts */
+    /* postcss-bem-linter: ignore */
+    @at-root body.theme--light & .chart-line.horizontal .title-wrapper {
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.001) 30%,
+            var(--general-main-1) 50%,
+            rgba(255, 255, 255, 0.001) 75%
+        );
+    }
+}

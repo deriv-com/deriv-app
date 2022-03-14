@@ -1,0 +1,131 @@
+$header-height: 4em;
+
+.contract-drawer {
+    width: $POSITIONS_DRAWER_WIDTH;
+    // removing 2px below for borders
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 4));
+    z-index: 2;
+    padding: 0 0.8rem;
+    box-sizing: border-box;
+    will-change: transform, opacity;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: $BORDER_RADIUS;
+    border: 1px solid var(--general-section-1);
+    background: var(--general-section-1);
+    color: var(--text-prominent);
+
+    svg {
+        @extend %inline-icon;
+    }
+    h2 {
+        margin-left: 8px;
+        text-transform: none;
+        color: var(--text-prominent);
+    }
+    .currency-badge {
+        margin-bottom: 5px;
+    }
+    &--contract-mode {
+        &:before {
+            background: var(--general-section-1);
+            content: '';
+            position: absolute;
+            top: 38px;
+            left: -3px;
+            width: calc(100% + 6px);
+            height: calc(100% - 32px);
+            filter: blur(3px);
+        }
+    }
+    &__heading {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0.5em;
+        margin-left: -8px;
+        @include typeface(--title-left-bold-black);
+        color: var(--text-general);
+
+        &-btn {
+            padding: 4px 8px 0;
+            margin-bottom: -4px;
+            cursor: pointer;
+            border-radius: $BORDER_RADIUS;
+            background: var(--general-section-1);
+
+            &:hover {
+                background: var(--general-hover);
+            }
+        }
+    }
+    &__icon {
+        margin-right: 16px;
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+
+        @include desktop {
+            height: 100%;
+        }
+    }
+}
+
+/** @define .contract-card; weak */
+.contract-card {
+    &__market-closed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0;
+        background-image: var(--contract-gradient-danger);
+        z-index: 1000;
+
+        &__title {
+            margin-bottom: 1rem;
+        }
+        &--loading {
+            display: none;
+        }
+        &--disabled {
+            cursor: not-allowed;
+        }
+        &--hidden {
+            opacity: 0;
+        }
+    }
+    &__footer {
+        margin-bottom: 0.5rem;
+        padding: 0 0.4rem;
+
+        &-wrapper {
+            @include typeface(--small-center-normal-black);
+            color: var(--text-prominent);
+            padding: 0.8rem 0.8rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    &__sell-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease, opacity 0.25s linear;
+        border-top: 1px solid var(--general-section-1);
+
+        .dc-btn--sell,
+        .dc-btn--cancel {
+            height: 2.4rem;
+
+            @include mobile {
+                height: 3.2rem;
+            }
+        }
+    }
+}

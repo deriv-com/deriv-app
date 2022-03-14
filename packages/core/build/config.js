@@ -50,6 +50,10 @@ const copyConfig = base => {
             to: 'trader',
         },
         {
+            from: path.resolve(__dirname, '../node_modules/@deriv/cfd/dist/cfd'),
+            to: 'cfd',
+        },
+        {
             from: path.resolve(__dirname, '../node_modules/@deriv/appstore/dist/appstore'),
             to: 'appstore',
         },

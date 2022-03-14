@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "paths": {
+            "_common/*": ["./src/_common/*"],
+            "Constants/*": ["./src/Constants/*"],
+            "Components/*": ["./src/Components/*"],
+            "Containers/*": ["./src/Containers/*"],
+            "Modules/*": ["./src/Modules/*"],
+            "Sass/*": ["./src/sass/*"],
+            "Stores/*": ["./src/Stores/*"],
+            "Utils/*": ["./src/Utils/*"]
+        },
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "baseUrl": "./",
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "skipDefaultLibCheck": true
+    },
+    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"],
+    "exclude": ["**/*.js", "**/*.jsx"]
+}

@@ -98,7 +98,7 @@ describe('<CreateAdForm />', () => {
         const el_dp2p_create_ad_form_checkbox = screen.getByRole('checkbox');
 
         fireEvent.click(el_dp2p_create_ad_form_checkbox);
-        expect(el_dp2p_create_ad_form_checkbox).toHaveAttribute('checked', '');
+        expect(el_dp2p_create_ad_form_checkbox).toBeChecked(false);
     });
 
     it('setIsAdCreatedModalVisible func should be called after clicking `Ok` button', () => {

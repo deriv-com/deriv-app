@@ -51,6 +51,32 @@ const AdvertiserPageStats = () => {
                         <Table.Cell className='advertiser-page__stats-cell'>
                             <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
                                 <Localize
+                                    i18n_default_text='Avg. pay time  <0>30d</0>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            className='advertiser-page__italic'
+                                            color='less-prominent'
+                                            size='xxxs'
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                            <Text align='left' color='prominent' size='xs' weight='bold'>
+                                {buy_time_avg
+                                    ? localize('{{- avg_buy_time_in_minutes}} min', {
+                                          avg_buy_time_in_minutes,
+                                      })
+                                    : '-'}
+                            </Text>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table>
+                <Table className='advertiser-page__stats--wrapper'>
+                    <Table.Row className='advertiser-page__stats'>
+                        <Table.Cell className='advertiser-page__stats-cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize
                                     i18n_default_text='Sell Completion  <0>30d</0>'
                                     components={[
                                         <Text
@@ -64,6 +90,29 @@ const AdvertiserPageStats = () => {
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
                                 {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
+                            </Text>
+                        </Table.Cell>
+                        <div className='advertiser-page__stats-cell-separator' />
+                        <Table.Cell className='advertiser-page__stats-cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize
+                                    i18n_default_text='Avg. release time  <0>30d</0>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            className='advertiser-page__italic'
+                                            color='less-prominent'
+                                            size='xxxs'
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                            <Text align='left' color='prominent' size='xs' weight='bold'>
+                                {release_time_avg
+                                    ? localize('{{- avg_release_time_in_minutes}} min', {
+                                          avg_release_time_in_minutes,
+                                      })
+                                    : '-'}
                             </Text>
                         </Table.Cell>
                     </Table.Row>
@@ -94,55 +143,6 @@ const AdvertiserPageStats = () => {
                                 ) : (
                                     '-'
                                 )}
-                            </Text>
-                        </Table.Cell>
-                        <div className='advertiser-page__stats-cell-separator' />
-                        <Table.Cell className='advertiser-page__stats-cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
-                                <Localize
-                                    i18n_default_text='Avg. pay time  <0>30d</0>'
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            className='advertiser-page__italic'
-                                            color='less-prominent'
-                                            size='xxxs'
-                                        />,
-                                    ]}
-                                />
-                            </Text>
-                            <Text align='left' color='prominent' size='xs' weight='bold'>
-                                {buy_time_avg
-                                    ? localize('{{- avg_buy_time_in_minutes}} min', {
-                                          avg_buy_time_in_minutes,
-                                      })
-                                    : '-'}
-                            </Text>
-                        </Table.Cell>
-                    </Table.Row>
-                </Table>
-                <Table className='advertiser-page__stats--wrapper'>
-                    <Table.Row className='advertiser-page__stats'>
-                        <Table.Cell className='advertiser-page__stats-cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
-                                <Localize
-                                    i18n_default_text='Avg. release time  <0>30d</0>'
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            className='advertiser-page__italic'
-                                            color='less-prominent'
-                                            size='xxxs'
-                                        />,
-                                    ]}
-                                />
-                            </Text>
-                            <Text align='left' color='prominent' size='xs' weight='bold'>
-                                {release_time_avg
-                                    ? localize('{{- avg_release_time_in_minutes}} min', {
-                                          avg_release_time_in_minutes,
-                                      })
-                                    : '-'}
                             </Text>
                         </Table.Cell>
                         <div className='advertiser-page__stats-cell-separator' />

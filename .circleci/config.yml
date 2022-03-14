@@ -326,6 +326,7 @@ workflows:
   test:
     jobs:
       - build_and_test:
+          context: binary-frontend-artifact-upload
           filters:
             branches:
               ignore:

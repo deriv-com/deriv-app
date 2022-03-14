@@ -255,12 +255,12 @@
     "-1192446042": "Se sua reclamação não estiver listada aqui, entre em contato com nossa equipe de Suporte ao Cliente.",
     "-573132778": "Reclamar",
     "-792338456": "Qual é a sua reclamação?",
+    "-1392383387": "Eu paguei",
     "-567498463": "Confirme o pagamento?",
     "-1485778481": "Você recebeu o pagamento?",
     "-403938778": "Por favor confirme somente após verificar seu banco ou conta da carteira eletrônica para ter certeza de que recebeu o pagamento.",
     "-2000877952": "Eu recebi {{amount}} {{currency}}",
     "-563116612": "Ainda não paguei",
-    "-1392383387": "Eu paguei",
     "-418870584": "Cancelar pedido",
     "-727273667": "Reclamar",
     "-2016990049": "Pedido de Venda de {{offered_currency}}",
@@ -273,6 +273,5 @@
     "-750202930": "Pedidos ativos",
     "-471540636": "Eu recebi {{amount}} {{currency}}.",
     "-2054589794": "Você foi temporariamente impedido de usar nossos serviços devido às várias tentativas de cancelamento. Tente novamente após {{date_time}} GMT.",
-    "-1971628122": "No momento este recurso está disponível apenas para contas reais em dólares.",
     "-930400128": "Para usar o Deriv P2P, você precisa escolher um nome de exibição (um apelido) e verificar sua identidade."
 }

@@ -16,6 +16,7 @@ const SendEmailTemplate = ({
     title,
     txt_resend,
     txt_resend_in,
+    live_chat,
 }) => {
     const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = React.useState(false);
     const [is_resend_btn_disabled, setIsResendBtnDisabled] = React.useState(false);
@@ -97,6 +98,13 @@ const SendEmailTemplate = ({
                             primary
                         />
                     </div>
+                    {!!live_chat && (
+                        <div className='send-email-template__footer'>
+                            <Text size='xxs' as='p' align={'center'}>
+                                {live_chat}
+                            </Text>
+                        </div>
+                    )}
                 </>
             )}
         </div>
@@ -113,6 +121,8 @@ SendEmailTemplate.propTypes = {
     txt_resend: PropTypes.string,
     txt_resend_in: PropTypes.string,
     title: PropTypes.string,
+    closeEmailModal: PropTypes.func,
+    live_chat: PropTypes.object,
 };
 
 export default SendEmailTemplate;

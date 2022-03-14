@@ -95,7 +95,7 @@ const getModules = ({ is_appstore }) => {
                         {
                             path: routes.passwords,
                             component: Account,
-                            getTitle: () => localize('Passwords'),
+                            getTitle: () => localize('Email and passwords'),
                         },
                         {
                             path: routes.self_exclusion,

@@ -1,0 +1,30 @@
+.payment-agent-withdrawal-justification-form {
+    &__btn-back {
+        border: none;
+        .dc-btn__text {
+            color: var(--brand-red-coral);
+        }
+    }
+
+    &__input {
+        margin-bottom: 0.6rem;
+    }
+
+    &__text {
+        margin: 2.4rem 0;
+    }
+
+    .dc-input__field[type='textarea'] {
+        height: 18.6rem;
+        resize: vertical;
+    }
+}
+
+.payment-agent-withdrawal-justification-confirmation {
+    &__request-received-icon {
+        margin-top: 3rem;
+    }
+    &__title {
+        margin: 0 0 1.6rem;
+    }
+}

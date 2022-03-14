@@ -111,6 +111,7 @@ export const icons = {
         'IcCashierPromptPayLight',
         'IcCashierQrCodeDark',
         'IcCashierQrCodeLight',
+        'IcCashierRequestReceived',
         'IcCashierSendEmail',
         'IcCashierSepaDark',
         'IcCashierSepaLight',

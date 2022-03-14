@@ -55,7 +55,7 @@ const AppContent = () => {
                 <MyAds />
             </div>
             {general_store.is_advertiser && (
-                <div label={localize('My profile')}>
+                <div label={localize('My profile')} data-testid='my_profile'>
                     <MyProfile />
                 </div>
             )}

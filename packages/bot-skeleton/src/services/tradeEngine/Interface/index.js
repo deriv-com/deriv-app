@@ -1,5 +1,5 @@
-import TicksInterface from './TicksInterface';
-import ToolsInterface from './ToolsInterface';
+import getToolsInterface from './ToolsInterface';
+import getTicksInterface from './TicksInterface';
 import TradeEngine from '../trade';
 import { createDetails } from '../utils/helpers';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -9,23 +9,19 @@ import { observer as globalObserver } from '../../../utils/observer';
  * @namespace Bot
  */
 
-export default class Interface extends ToolsInterface(TicksInterface(class {})) {
+export default class Interface {
     constructor($scope) {
-        super();
         this.tradeEngine = new TradeEngine($scope);
         this.api = $scope.api;
         this.observer = $scope.observer;
         this.$scope = $scope;
     }
 
-    getInterface(name = 'Global') {
-        if (name === 'Bot') {
-            return {
-                ...this.getBotInterface(),
-                ...this.getToolsInterface(),
-            };
-        }
+    getInterface() {
         return {
+            ...this.getBotInterface(),
+            ...getToolsInterface(this.tradeEngine),
+            getTicksInterface: getTicksInterface(this.tradeEngine),
             watch: (...args) => this.tradeEngine.watch(...args),
             sleep: (...args) => this.sleep(...args),
             alert: (...args) => alert(...args), // eslint-disable-line no-alert

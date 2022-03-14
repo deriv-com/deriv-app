@@ -1,14 +1,13 @@
-export default Interface =>
-    class extends Interface {
-        getTicksInterface() {
-            return {
-                getLastTick: (...args) => this.tradeEngine.getLastTick(...args),
-                getLastDigit: (...args) => this.tradeEngine.getLastDigit(...args),
-                getTicks: (...args) => this.tradeEngine.getTicks(...args),
-                checkDirection: (...args) => this.tradeEngine.checkDirection(...args),
-                getOhlcFromEnd: (...args) => this.tradeEngine.getOhlcFromEnd(...args),
-                getOhlc: (...args) => this.tradeEngine.getOhlc(...args),
-                getLastDigitList: (...args) => this.tradeEngine.getLastDigitList(...args),
-            };
-        }
+const getTicksInterface = tradeEngine => {
+    return {
+        getLastTick: (...args) => tradeEngine.getLastTick(...args),
+        getLastDigit: (...args) => tradeEngine.getLastDigit(...args),
+        getTicks: (...args) => tradeEngine.getTicks(...args),
+        checkDirection: (...args) => tradeEngine.checkDirection(...args),
+        getOhlcFromEnd: (...args) => tradeEngine.getOhlcFromEnd(...args),
+        getOhlc: (...args) => tradeEngine.getOhlc(...args),
+        getLastDigitList: (...args) => tradeEngine.getLastDigitList(...args),
     };
+};
+
+export default getTicksInterface;

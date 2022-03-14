@@ -47,9 +47,9 @@ export default class Interpreter {
 
     run(code) {
         const initFunc = (interpreter, scope) => {
-            const bot_interface = this.bot.getInterface('Bot');
-            const ticks_interface = this.bot.getTicksInterface();
-            const { alert, prompt, sleep, console: custom_console } = this.bot.getInterface();
+            const bot_interface = this.bot.getInterface();
+            const { getTicksInterface, alert, prompt, sleep, console: custom_console } = bot_interface;
+            const ticks_interface = getTicksInterface;
 
             interpreter.setProperty(scope, 'console', interpreter.nativeToPseudo(custom_console));
             interpreter.setProperty(scope, 'alert', interpreter.nativeToPseudo(alert));

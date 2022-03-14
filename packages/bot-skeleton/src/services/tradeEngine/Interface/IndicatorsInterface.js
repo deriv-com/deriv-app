@@ -10,25 +10,23 @@ import {
     macdArray as macda,
 } from '@deriv/indicators';
 
-export default Interface =>
-    class extends Interface {
-        getIndicatorsInterface() {
-            return {
-                sma: (input, periods) => this.decorate(sma, input, { periods }),
-                smaa: (input, periods) => this.decorate(smaa, input, { periods }),
-                ema: (input, periods) => this.decorate(ema, input, { periods }),
-                emaa: (input, periods) => this.decorate(emaa, input, { periods }),
-                rsi: (input, periods) => this.decorate(rsi, input, { periods }),
-                rsia: (input, periods) => this.decorate(rsia, input, { periods }),
-                bb: (input, config, field) => this.decorate(bb, input, config)[field],
-                bba: (input, config, field) => this.decorate(bba, input, config).map(r => r[field]),
-                macda: (input, config, field) => this.decorate(macda, input, config).map(r => r[field]),
-            };
-        }
+const decorate = (f, input, tradeEngine, config, ...args) => {
+    const pipSize = tradeEngine.getPipSize();
+    return f(input, { pipSize, ...config }, ...args);
+};
 
-        decorate(f, input, config, ...args) {
-            const pipSize = this.tradeEngine.getPipSize();
-
-            return f(input, { pipSize, ...config }, ...args);
-        }
+const getIndicatorsInterface = tradeEngine => {
+    return {
+        sma: (input, periods) => decorate(sma, input, tradeEngine, { periods }),
+        smaa: (input, periods) => decorate(smaa, input, tradeEngine, { periods }),
+        ema: (input, periods) => decorate(ema, input, tradeEngine, { periods }),
+        emaa: (input, periods) => decorate(emaa, input, tradeEngine, { periods }),
+        rsi: (input, periods) => decorate(rsi, input, tradeEngine, { periods }),
+        rsia: (input, periods) => decorate(rsia, input, tradeEngine, { periods }),
+        bb: (input, config, field) => decorate(bb, input, tradeEngine, config)[field],
+        bba: (input, config, field) => decorate(bba, input, tradeEngine, config).map(r => r[field]),
+        macda: (input, config, field) => decorate(macda, input, tradeEngine, config).map(r => r[field]),
     };
+};
+
+export default getIndicatorsInterface;

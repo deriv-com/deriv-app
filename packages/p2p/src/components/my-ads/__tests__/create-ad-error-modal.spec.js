@@ -24,7 +24,7 @@ describe('<CreateAdErrorModal />', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    it('Component should be rendered', () => {
+    it('Should render default header if no error_code, func should be called when click on `ok` button', () => {
         useStores.mockImplementation(() => ({
             my_ads_store: mocked_my_ads_store,
         }));
@@ -38,7 +38,7 @@ describe('<CreateAdErrorModal />', () => {
         expect(mocked_my_ads_store.setIsApiErrorModalVisible).toHaveBeenCalledWith(false);
     });
 
-    it('Component should be rendered', () => {
+    it('Should render proper error header and description depends on error_code, func should be called when click on `ok` button', () => {
         useStores.mockImplementation(() => ({
             my_ads_store: {
                 ...mocked_my_ads_store,
@@ -61,7 +61,7 @@ describe('<CreateAdErrorModal />', () => {
         expect(mocked_my_ads_store.setIsApiErrorModalVisible).toHaveBeenCalledWith(false);
     });
 
-    it('Component should be rendered', () => {
+    it('Should render proper error header and description depends on error_code, func should be called when click on `ok` button', () => {
         useStores.mockImplementation(() => ({
             my_ads_store: {
                 ...mocked_my_ads_store,

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Checkbox, Modal, Text } from '@deriv/components';
+import { Button, Checkbox, Loading, Modal, Text } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
@@ -27,18 +27,39 @@ const OrderDetailsConfirmModal = ({
     const isMounted = useIsMounted();
     const [error_message, setErrorMessage] = React.useState('');
     const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
+    const [is_process_request, setIsProcessRequest] = React.useState(false); // This state disables the Release amount button during a request
 
     const confirmOrderRequest = () => {
+        setIsProcessRequest(true);
         requestWS({
             p2p_order_confirm: 1,
             id,
-        }).then(response => {
-            if (isMounted()) {
-                if (response.error) {
-                    setErrorMessage(response.error.message);
+        })
+            .then(response => {
+                if (isMounted()) {
+                    if (response.error) {
+                        setErrorMessage(response.error.message);
+                    }
                 }
-            }
-        });
+            })
+            .finally(() => setIsProcessRequest(false));
+    };
+
+    const getConfirmButtonText = () => {
+        if (is_buy_order_for_user) {
+            return <Localize i18n_default_text="I've paid" />;
+        } else if (is_process_request) {
+            return <Loading is_fullscreen={false} />;
+        }
+        return (
+            <Localize
+                i18n_default_text='Release {{amount}} {{currency}}'
+                values={{
+                    amount: amount_display,
+                    currency: account_currency,
+                }}
+            />
+        );
     };
 
     return (
@@ -109,18 +130,13 @@ const OrderDetailsConfirmModal = ({
                             <Localize i18n_default_text='Cancel' />
                         )}
                     </Button>
-                    <Button is_disabled={!is_checkbox_checked} primary large onClick={confirmOrderRequest}>
-                        {is_buy_order_for_user ? (
-                            <Localize i18n_default_text="I've paid" />
-                        ) : (
-                            <Localize
-                                i18n_default_text='Release {{amount}} {{currency}}'
-                                values={{
-                                    amount: amount_display,
-                                    currency: account_currency,
-                                }}
-                            />
-                        )}
+                    <Button
+                        is_disabled={!is_checkbox_checked || is_process_request}
+                        primary
+                        large
+                        onClick={confirmOrderRequest}
+                    >
+                        {getConfirmButtonText()}
                     </Button>
                 </Button.Group>
             </Modal.Footer>

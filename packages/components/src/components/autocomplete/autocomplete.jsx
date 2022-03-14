@@ -34,6 +34,7 @@ const Autocomplete = React.memo(props => {
         className,
         dropdown_offset,
         error,
+        has_updating_list = true,
         input_id,
         is_alignment_top,
         list_items,
@@ -62,9 +63,11 @@ const Autocomplete = React.memo(props => {
     let scroll_top_position = null;
 
     React.useEffect(() => {
-        setFilteredItems(list_items);
-        setActiveIndex(null);
-        setInputValue('');
+        if (has_updating_list) {
+            setFilteredItems(list_items);
+            setActiveIndex(null);
+            setInputValue('');
+        }
     }, [list_items]);
 
     React.useEffect(() => {
@@ -257,14 +260,18 @@ const Autocomplete = React.memo(props => {
                         typeof onItemSelection === 'function' ? value : input_value
                     }
                     trailing_icon={
-                        <Icon
-                            icon='IcChevronDown'
-                            className={{
-                                'dc-autocomplete__trailing-icon': true,
-                                'dc-autocomplete__trailing-icon--opened': should_show_list,
-                                'dc-autocomplete__trailing-icon--disabled': other_props.disabled,
-                            }}
-                        />
+                        other_props.trailing_icon ? (
+                            other_props.trailing_icon
+                        ) : (
+                            <Icon
+                                icon='IcChevronDown'
+                                className={{
+                                    'dc-autocomplete__trailing-icon': true,
+                                    'dc-autocomplete__trailing-icon--opened': should_show_list,
+                                    'dc-autocomplete__trailing-icon--disabled': other_props.disabled,
+                                }}
+                            />
+                        )
                     }
                 />
             </div>

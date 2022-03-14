@@ -180,12 +180,17 @@ export default class NotificationStore extends BaseStore {
             landing_company_shortcode,
             loginid,
             obj_total_balance,
+            website_status,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const virtual_account = landing_company_shortcode === 'virtual';
+        const is_website_up = website_status.site_status === 'up';
+        const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
+            this.client_notifications.trustpilot.key
+        );
 
         let has_missing_required_field;
 
@@ -317,6 +322,10 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.dp2p);
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
+                }
+
+                if (is_website_up && !has_trustpilot) {
+                    this.addNotificationMessage(this.client_notifications.trustpilot);
                 }
 
                 if (is_tnc_needed) {
@@ -495,6 +504,28 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Go to live chat'),
                 },
                 type: 'warning',
+            },
+            trustpilot: {
+                key: 'trustpilot',
+                header: localize('Enjoy using Deriv?'),
+                header_popup: localize('We’d love to hear your thoughts'),
+                message: localize('Drop your review on Trustpilot.'),
+                message_popup: localize('Drop your review on Trustpilot.'),
+                action: {
+                    onClick: () => {
+                        window.open('https://www.trustpilot.com/evaluate/deriv.com', '_blank');
+                        this.removeNotificationByKey({ key: this.client_notifications.trustpilot.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.trustpilot.key,
+                            should_show_again: false,
+                        });
+                    },
+                    text: localize('Go to Trustpilot'),
+                },
+                img_src: getUrlBase('/public/images/common/trustpilot_banner.png'),
+                img_alt: 'Trustpilot',
+                className: 'trustpilot',
+                type: 'trustpilot',
             },
             close_mx_mlt_account: {
                 key: 'close_mx_mlt_account',

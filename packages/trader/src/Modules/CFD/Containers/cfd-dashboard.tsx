@@ -18,19 +18,42 @@ import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
 import CompareAccountsModal from './compare-accounts-modal';
 import CFDDashboardContainer from './cfd-dashboard-container';
-import CFDPasswordManagerModal from './cfd-password-manager-modal.jsx';
-import CFDResetPasswordModal from './cfd-reset-password-modal';
+import CFDPasswordManagerModal from './cfd-password-manager-modal';
 import CFDPasswordModal from './cfd-password-modal';
 import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
+import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/cfd-dashboard.scss';
+import RootStore from 'Stores/index';
+import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
+import { History } from 'history';
 
-const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
+declare module 'react' {
+    interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
+        label?: string;
+        hash?: string;
+    }
+}
+
+type TLoadTab = {
+    children: React.ReactNode;
+    is_loading: boolean;
+    loading_component: () => JSX.Element;
+    active_index: number;
+    top: boolean;
+    center: boolean;
+    is_logged_in: boolean;
+    onTabItemClick: (index: number) => void;
+    should_update_hash: boolean;
+    landing_companies?: LandingCompany;
+};
+
+const LoadTab = ({ children, is_loading, loading_component, ...props }: TLoadTab) => {
     const LoadingComponent = loading_component;
     if (is_loading) {
         return <LoadingComponent />;
@@ -39,13 +62,107 @@ const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
     return <Tabs {...props}>{children}</Tabs>;
 };
 
-const CFDDashboard = props => {
-    const [is_demo_enabled, setIsDemoEnabled] = React.useState(false);
-    const [is_real_enabled, setIsRealEnabled] = React.useState(false);
-    const [active_index, setActiveIndex] = React.useState(0);
-    const [is_demo_tab, setIsDemoTab] = React.useState(true);
-    const [is_notification_loaded, setIsNotificationLoaded] = React.useState(false);
-    const [password_manager, setPasswordManager] = React.useState({
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
+type TStandPoint = {
+    financial_company: string;
+    gaming_company: string;
+    iom: boolean;
+    malta: boolean;
+    maltainvest: boolean;
+    svg: boolean;
+};
+
+type TCFDDashboardProps = {
+    account_settings: { residence: string };
+    account_status: object;
+    beginRealSignupForMt5: () => void;
+    country: string;
+    createCFDAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
+    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
+    dxtrade_accounts_list_error: null;
+    isAccountOfTypeDisabled: (
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
+    ) => boolean;
+    is_accounts_switcher_on: boolean;
+    is_dark_mode_on: boolean;
+    is_eu: boolean;
+    is_eu_country: boolean;
+    is_fully_authenticated: boolean;
+    is_loading: boolean;
+    is_logged_in: boolean;
+    is_logging_in: boolean;
+    is_mt5_allowed: boolean;
+    is_dxtrade_allowed: boolean;
+    is_pending_authentication: boolean;
+    is_virtual: boolean;
+    landing_companies: LandingCompany;
+    has_malta_account: boolean;
+    has_maltainvest_account: boolean;
+    has_cfd_account: boolean;
+    has_mt5_real_account_error: boolean;
+    has_mt5_demo_account_error: boolean;
+    has_dxtrade_real_account_error: boolean;
+    has_dxtrade_demo_account_error: boolean;
+    mt5_disabled_signup_types: {
+        real: boolean;
+        demo: boolean;
+    };
+    dxtrade_disabled_signup_types: {
+        real: boolean;
+        demo: boolean;
+    };
+    has_real_account: boolean;
+    NotificationMessages: ({ ...props }) => JSX.Element;
+    platform: 'mt5' | 'dxtrade';
+    openAccountNeededModal: () => void;
+    residence: string;
+    residence_list: ResidenceList;
+    standpoint: TStandPoint;
+    toggleAccountsDialog: () => void;
+    toggleShouldShowRealAccountsList: () => void;
+    can_have_more_real_synthetic_mt5: boolean;
+    upgradeable_landing_companies: unknown[];
+    is_reset_trading_password_modal_visible: boolean;
+    toggleResetTradingPasswordModal: () => void;
+    enableApp: () => void;
+    disableApp: () => void;
+    mt5_verification_code: object;
+    dxtrade_verification_code: object;
+    onMount: () => void;
+    onUnmount: () => void;
+    location: {
+        state: string;
+        pathname: string;
+        hash: string;
+    };
+    checkShouldOpenAccount: () => void;
+    setCFDPasswordResetModal: (value: boolean) => void;
+    disableCFDPasswordModal: () => void;
+    openPasswordModal: (account_type?: TOpenAccountTransferMeta) => void;
+    openTopUpModal: () => void;
+    history: History;
+    setCurrentAccount: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
+    setAccountType: (account_type: TOpenAccountTransferMeta) => void;
+};
+
+const CFDDashboard = (props: TCFDDashboardProps) => {
+    const [is_demo_enabled, setIsDemoEnabled] = React.useState<boolean>(false);
+    const [is_real_enabled, setIsRealEnabled] = React.useState<boolean>(false);
+    const [active_index, setActiveIndex] = React.useState<number>(0);
+    const [is_demo_tab, setIsDemoTab] = React.useState<boolean>(true);
+    const [is_notification_loaded, setIsNotificationLoaded] = React.useState<boolean>(false);
+    const [password_manager, setPasswordManager] = React.useState<{
+        is_visible: boolean;
+        selected_login: string;
+        selected_account: string;
+        selected_account_type?: string;
+        selected_account_group?: string;
+        selected_server?: string;
+    }>({
         is_visible: false,
         selected_login: '',
         selected_account: '',
@@ -117,9 +234,9 @@ const CFDDashboard = props => {
         setIsNotificationLoaded(true);
     };
 
-    const updateActiveIndex = index => {
+    const updateActiveIndex = (index?: number) => {
         if (!index) return;
-        const updated_state = {};
+        const updated_state: { is_demo_tab?: boolean; active_index?: number } = {};
         // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
         if (index === 1) updated_state.is_demo_tab = true;
         else if (index === 0) updated_state.is_demo_tab = false;
@@ -129,14 +246,14 @@ const CFDDashboard = props => {
         }
 
         if (!isEmptyObject(updated_state)) {
-            setActiveIndex(updated_state.active_index);
-            setIsDemoTab(updated_state.is_demo_tab);
+            setActiveIndex(updated_state.active_index as number);
+            setIsDemoTab(updated_state.is_demo_tab as boolean);
         }
     };
 
-    const openAccountTransfer = (data, meta) => {
+    const openAccountTransfer = (data: DetailsOfEachMT5Loginid, meta: { category: string; type?: string }) => {
         if (meta.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', data.login);
+            sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
             props.disableCFDPasswordModal();
             props.history.push(routes.cashier_acc_transfer);
         } else {
@@ -145,7 +262,13 @@ const CFDDashboard = props => {
         }
     };
 
-    const togglePasswordManagerModal = (login, title, group, type, server) => {
+    const togglePasswordManagerModal = (
+        login?: string,
+        title?: string,
+        group?: string,
+        type?: string,
+        server?: string
+    ) => {
         setPasswordManager(prev_state => ({
             is_visible: !prev_state.is_visible,
             selected_login: typeof login === 'string' ? login : '',
@@ -156,12 +279,12 @@ const CFDDashboard = props => {
         }));
     };
 
-    const openRealPasswordModal = account_type => {
+    const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
         props.setAccountType(account_type);
         props.openPasswordModal();
     };
 
-    const isSyntheticCardVisible = account_category => {
+    const isSyntheticCardVisible = (account_category: string) => {
         const { current_list, platform, is_eu, is_eu_country, landing_companies, is_logged_in } = props;
         const has_synthetic_account = Object.keys(current_list).some(key =>
             key.startsWith(`${platform}.${account_category}.synthetic`)
@@ -328,7 +451,7 @@ const CFDDashboard = props => {
                                 should_update_hash
                             >
                                 {is_real_enabled && (
-                                    <div label={localize('Real account')} data-hash='real'>
+                                    <div label={localize('Real account')} hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
                                                 <MissingRealAccount
@@ -379,7 +502,7 @@ const CFDDashboard = props => {
                                     </div>
                                 )}
                                 {is_demo_enabled && (
-                                    <div label={localize('Demo account')} data-hash='demo'>
+                                    <div label={localize('Demo account')} hash='demo'>
                                         <CFDDemoAccountDisplay
                                             is_eu={is_eu}
                                             is_eu_country={is_eu_country}
@@ -529,7 +652,7 @@ const CFDDashboard = props => {
 };
 
 export default withRouter(
-    connect(({ client, modules, ui }) => ({
+    connect(({ client, modules, ui }: RootStore) => ({
         beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,

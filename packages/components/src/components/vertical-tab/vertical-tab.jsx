@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { matchRoute } from '@deriv/shared';
 import VerticalTabContentContainer from './vertical-tab-content-container.jsx';
 import VerticalTabHeader from './vertical-tab-header.jsx';
 import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
@@ -16,7 +17,7 @@ const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCu
     if (typeof selected_index === 'undefined') {
         index = is_routed
             ? Math.max(
-                  list.indexOf(list.find(item => item.path === current_path) || list.find(item => item.default)),
+                  list.indexOf(list.find(item => matchRoute(item, current_path)) || list.find(item => item.default)),
                   0
               )
             : 0;
@@ -51,6 +52,7 @@ const VerticalTab = ({
     list_groups,
     onClickClose,
     setVerticalTabIndex,
+    side_note_class_name,
     tab_headers_note,
     title,
     vertical_tab_index,
@@ -74,7 +76,7 @@ const VerticalTab = ({
             setCurrTabIndex,
             setVerticalTabIndex,
         });
-    }, [vertical_tab_index, list]);
+    }, [vertical_tab_index, list, setVerticalTabIndex, is_routed, current_path]);
 
     return (
         <div
@@ -134,6 +136,7 @@ const VerticalTab = ({
                 items={list}
                 selected={list[curr_tab_index] || list[0]}
                 is_routed={is_routed}
+                side_note_class_name={side_note_class_name}
             />
         </div>
     );
@@ -180,6 +183,7 @@ VerticalTab.propTypes = {
     tab_headers_note: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     selected_index: PropTypes.number,
     setVerticalTabIndex: PropTypes.func,
+    side_note_class_name: PropTypes.string,
     vertical_tab_index: PropTypes.number,
 };
 

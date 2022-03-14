@@ -30,22 +30,6 @@
             margin-left: unset;
         }
     }
-    &__receive-update-checkbox {
-        & .dc-checkbox__box {
-            align-self: flex-start;
-            margin: 0.1rem 0.8rem 0;
-        }
-        & .dc-checkbox__label {
-            font-size: 1.2rem;
-            line-height: 1.5;
-        }
-        @include mobile {
-            margin-bottom: 3rem;
-        }
-    }
-    &__hidden-checkbox {
-        visibility: hidden;
-    }
     &__residence-selection,
     &__password-selection {
         display: flex;
@@ -63,7 +47,7 @@
         @include mobile {
             width: calc(95vw - 20px);
             height: 100%;
-            padding: 2rem 4rem;
+            padding: 6rem 4rem;
             background-color: var(--general-main-2);
         }
     }
@@ -77,7 +61,7 @@
             margin-bottom: 2.5rem;
         }
         @include mobile {
-            height: 85%;
+            height: 100%;
             & .dc-select-native {
                 margin-bottom: 4.8rem;
             }
@@ -86,11 +70,12 @@
     &__password-selection {
         .account-signup__heading {
             padding-top: 1.5rem;
-            margin-bottom: 3.3rem;
+            margin-bottom: 4.3rem;
 
             @include mobile {
                 padding-top: 0;
                 text-align: center;
+                margin-top: -3rem;
             }
         }
         & .dc-password-meter__container {
@@ -114,6 +99,10 @@
     }
     &__heading {
         margin-bottom: 0.8rem;
+        @include mobile {
+            margin-bottom: 0;
+            margin-top: -7rem;
+        }
     }
     &__text {
         text-align: center;
@@ -174,7 +163,12 @@
         left: 50%;
         transform: translate(-50%);
         margin: 0;
-        background-color: var(--general-main-2);
         text-align: center;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 450px) {
+    .account-signup__password-selection {
+        height: calc(100% + 8rem);
     }
 }

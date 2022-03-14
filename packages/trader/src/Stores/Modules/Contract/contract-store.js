@@ -6,8 +6,8 @@ import {
     isDigitContract,
     getDigitInfo,
     getDisplayStatus,
+    WS,
 } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
 import { createChartMarkers } from './Helpers/chart-markers';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
 import { getChartConfig, getContractUpdateConfig, getEndTime } from './Helpers/logic';
@@ -86,6 +86,11 @@ export default class ContractStore extends BaseStore {
             extendObservable(this.digits_info, getDigitInfo(this.digits_info, this.contract_info));
         }
 
+        // force to sell the expired contract, in order to remove from portfolio
+        if (+contract_info.is_settleable === 1 && !contract_info.is_sold) {
+            WS.send({ sell_expired: 1 });
+        }
+
         const is_multiplier = isMultiplierContract(this.contract_info.contract_type);
 
         if (is_multiplier && contract_info.contract_id && contract_info.limit_order) {
@@ -114,7 +119,9 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     populateContractUpdateHistory({ contract_update_history }) {
-        this.root_store.modules.contract_replay.contract_store.contract_update_history = contract_update_history;
+        this.root_store.modules.contract_replay.contract_store.contract_update_history = contract_update_history.sort(
+            (a, b) => b.order_date - a.order_date
+        );
     }
 
     updateBarriersArray(contract_info, is_dark_mode) {

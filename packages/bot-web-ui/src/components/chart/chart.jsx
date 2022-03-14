@@ -30,6 +30,7 @@ const Chart = ({
     wsForgetStream,
     wsSendRequest,
     wsSubscribe,
+    getMarketsOrder,
 }) => {
     // bottomWidgets = ({ digits, tick }) => (
     //     <ChartBottomWidgets digits={digits} tick={tick} />
@@ -69,6 +70,7 @@ const Chart = ({
             symbol={symbol}
             topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
             isConnectionOpened={is_socket_opened}
+            getMarketsOrder={getMarketsOrder}
             // clearChart={false}
             // importedLayout={chart_layout}
             // onExportLayout={this.props.exportLayout}
@@ -95,6 +97,7 @@ Chart.PropTypes = {
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,
     wsSubscribe: PropTypes.func,
+    getMarketsOrder: PropTypes.func,
 };
 
 export default connect(({ chart_store, common, ui }) => ({
@@ -126,6 +129,5 @@ export default connect(({ chart_store, common, ui }) => ({
     wsForgetStream: chart_store.wsForgetStream,
     wsSendRequest: chart_store.wsSendRequest,
     wsSubscribe: chart_store.wsSubscribe,
-    // should_refresh   : modules.trade.should_refresh_active_symbols,
-    // resetRefresh     : modules.trade.resetRefresh,
+    getMarketsOrder: chart_store.getMarketsOrder,
 }))(Chart);

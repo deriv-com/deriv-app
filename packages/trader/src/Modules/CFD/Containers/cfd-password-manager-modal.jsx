@@ -1,13 +1,9 @@
-import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import {
     Icon,
     Modal,
     Tabs,
-    PasswordInput,
-    PasswordMeter,
     Button,
     DesktopWrapper,
     Div100vhContainer,
@@ -19,9 +15,18 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { routes, isMobile, validLength, validPassword, getErrorMessages, CFD_PLATFORMS } from '@deriv/shared';
+import {
+    isMobile,
+    validLength,
+    validPassword,
+    getErrorMessages,
+    getCFDPlatformLabel,
+    CFD_PLATFORMS,
+} from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
+import TradingPasswordManager from './trading-password-manager';
+import InvestorPasswordManager from './investor-password-manager.jsx';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);
@@ -120,212 +125,21 @@ const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server
     );
 };
 
-const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }) => (
-    <div className='cfd-password-manager__success'>
-        <Icon icon='IcPasswordUpdated' size={128} />
-        <Text as='p' size='xxs' align='center'>
-            {is_investor ? (
-                <Localize i18n_default_text='Your investor password has been changed.' />
-            ) : (
-                <Localize i18n_default_text='Your password has been changed.' />
-            )}
-        </Text>
-        <Button onClick={toggleModal} className='cfd-password-manager__success-btn' primary large>
-            <p className='dc-btn__text'>{localize('OK')}</p>
-        </Button>
-    </div>
-);
-
 const CFDPasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='cfd-password-manager' lbl_previous={localize('Back')} />
 );
 
-const TradingPasswordManager = ({ status, platform, is_dxtrade_allowed }) => {
-    const is_existing_user = status?.includes('trading_password_required');
-
-    return (
-        <div className='cfd-password-manager__trading-password-wrapper'>
-            <Icon icon='IcMt5OnePassword' size='128' />
-            <Text as='p' align='center' size='s' weight='bold'>
-                {is_existing_user ? (
-                    <Localize
-                        i18n_default_text='Trading password — a new, easy way to sign in to your {{platform}} accounts'
-                        values={{
-                            platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
-                        }}
-                    />
-                ) : (
-                    <Localize
-                        i18n_default_text='You have a trading password for {{platform}}'
-                        values={{
-                            platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
-                        }}
-                    />
-                )}
-            </Text>
-            <Text as='p' align='center' className='mt5-password-manager__trading-password-text' size='xs'>
-                {!is_existing_user && (
-                    <React.Fragment>
-                        {is_dxtrade_allowed ? (
-                            <Localize
-                                i18n_default_text='Use your trading password to sign in to any of your {{platform1}} (and {{platform2}}) accounts.'
-                                values={{
-                                    platform1: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
-                                    platform2: platform === CFD_PLATFORMS.MT5 ? 'Deriv X' : 'DMT5',
-                                }}
-                            />
-                        ) : (
-                            <Localize i18n_default_text='Use your trading password to sign in to any of your DMT5 accounts.' />
-                        )}
-                    </React.Fragment>
-                )}
-                {is_existing_user && (
-                    <React.Fragment>
-                        {is_dxtrade_allowed ? (
-                            <Localize
-                                i18n_default_text='A trading password is used to sign in to any of your {{platform1}} (and {{platform2}}) accounts.'
-                                values={{
-                                    platform1: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
-                                    platform2: platform === CFD_PLATFORMS.MT5 ? 'Deriv X' : 'DMT5',
-                                }}
-                            />
-                        ) : (
-                            <Localize i18n_default_text='A trading password is used to sign in to any of your DMT5 accounts.' />
-                        )}
-                    </React.Fragment>
-                )}
-            </Text>
-            <NavLink
-                to={routes.passwords}
-                className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_cfd-reset-password-modal__button'
-            >
-                <Text size='xs' weight='bold' color='colored-background'>
-                    {is_existing_user && <Localize i18n_default_text='Set trading password' />}
-                    {!is_existing_user && <Localize i18n_default_text='Manage trading password' />}
-                </Text>
-            </NavLink>
-        </div>
-    );
-};
-
-const InvestorPasswordManager = ({
-    error_message_investor,
-    is_submit_success_investor,
-    multi_step_ref,
-    onSubmit,
-    setPasswordType,
-    toggleModal,
-    validatePassword,
-}) => {
-    if (is_submit_success_investor) {
-        return <CFDPasswordSuccessMessage toggleModal={toggleModal} is_investor />;
-    }
-
-    const initial_values = { old_password: '', new_password: '', password_type: 'investor' };
-
-    return (
-        <div className='cfd-password-manager__investor-wrapper'>
-            <Text as='p' size='xs' className='cfd-password-manager--paragraph'>
-                <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
-            </Text>
-            <Text as='p' size='xs' className='cfd-password-manager--paragraph'>
-                <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
-            </Text>
-            {error_message_investor && (
-                <Text as='p' color='loss-danger' size='xs' className='cfd-password-manager--error-message'>
-                    {error_message_investor}
-                </Text>
-            )}
-            <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
-                {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
-                    <Form className='cfd-password-manager__investor-form' noValidate>
-                        <Field name='old_password'>
-                            {({ field }) => (
-                                <PasswordInput
-                                    {...field}
-                                    autoComplete='current-password'
-                                    label={localize('Current investor password')}
-                                    error={touched.old_password && errors.old_password}
-                                    required
-                                />
-                            )}
-                        </Field>
-                        <Field name='new_password'>
-                            {({ field }) => (
-                                <PasswordMeter
-                                    input={field.value}
-                                    has_error={!!(touched.new_password && errors.new_password)}
-                                    custom_feedback_messages={getErrorMessages().password_warnings}
-                                >
-                                    {({ has_warning }) => (
-                                        <PasswordInput
-                                            {...field}
-                                            autoComplete='new-password'
-                                            label={localize('New investor password')}
-                                            hint={
-                                                !has_warning &&
-                                                localize(
-                                                    'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
-                                                )
-                                            }
-                                            error={touched.new_password && errors.new_password}
-                                            onChange={e => {
-                                                setFieldTouched('new_password', true, true);
-                                                field.onChange(e);
-                                            }}
-                                            className='cfd-password-manager__new-password'
-                                            required
-                                        />
-                                    )}
-                                </PasswordMeter>
-                            )}
-                        </Field>
-                        <div className='cfd-password-manager__actions'>
-                            <Button
-                                className='cfd-password-manager--button'
-                                is_disabled={
-                                    isSubmitting ||
-                                    !values.old_password ||
-                                    !values.new_password ||
-                                    Object.keys(errors).length > 0
-                                }
-                                is_loading={isSubmitting}
-                                text={localize('Change investor password')}
-                                primary
-                                large
-                            />
-                            <Button
-                                className='cfd-password-manager--button'
-                                type='button'
-                                onClick={() => {
-                                    setPasswordType('investor');
-                                    multi_step_ref.current?.goNextStep();
-                                }}
-                                text={localize('Create or reset investor password')}
-                                tertiary
-                                large
-                            />
-                        </div>
-                    </Form>
-                )}
-            </Formik>
-        </div>
-    );
-};
-
 const CFDPasswordManagerTabContent = ({
-    is_dxtrade_allowed,
     toggleModal,
     selected_login,
     email,
     setPasswordType,
     multi_step_ref,
-    account_status,
     platform,
+    onChangeActiveTabIndex,
+    account_group,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
-    const [error_message_main, setErrorMessageMain] = React.useState('');
-    const [is_submit_success_main, setSubmitSuccessMain] = React.useState(false);
     const [error_message_investor, setErrorMessageInvestor] = React.useState('');
     const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState(false);
 
@@ -356,22 +170,13 @@ const CFDPasswordManagerTabContent = ({
 
         return errors;
     };
-    const showError = (section, error_message) => {
-        if (section === 'main') {
-            setErrorMessageMain(error_message);
-        } else {
-            setErrorMessageInvestor(error_message);
-        }
+    const showError = error_message => {
+        setErrorMessageInvestor(error_message);
     };
 
-    const hideError = section => {
-        if (section === 'main') {
-            setErrorMessageMain('');
-            setSubmitSuccessMain(true);
-        } else {
-            setErrorMessageInvestor('');
-            setSubmitSuccessInvestor(true);
-        }
+    const hideError = () => {
+        setErrorMessageInvestor('');
+        setSubmitSuccessInvestor(true);
     };
 
     const onSubmit = React.useCallback(
@@ -382,9 +187,9 @@ const CFDPasswordManagerTabContent = ({
 
             const error = await CFDStore.changePassword({ login: selected_login, ...values });
             if (error) {
-                showError(values.password_type, error);
+                showError(error);
             } else {
-                hideError(values.password_type);
+                hideError();
             }
         },
         [selected_login]
@@ -392,8 +197,7 @@ const CFDPasswordManagerTabContent = ({
 
     const updateAccountTabIndex = index => {
         setActiveTabIndex(index);
-        setErrorMessageMain('');
-        setSubmitSuccessMain(false);
+        onChangeActiveTabIndex(index);
         setErrorMessageInvestor('');
         setSubmitSuccessInvestor(false);
     };
@@ -403,25 +207,20 @@ const CFDPasswordManagerTabContent = ({
             <DesktopWrapper>
                 <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
                     <TradingPasswordManager
-                        status={account_status.status}
+                        toggleModal={toggleModal}
                         platform={platform}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
+                        email={email}
+                        account_group={account_group}
                     />
                 </ThemedScrollbars>
             </DesktopWrapper>
             <MobileWrapper>
                 <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
                     <TradingPasswordManager
-                        is_submit_success_main={is_submit_success_main}
                         toggleModal={toggleModal}
-                        onSubmit={onSubmit}
-                        validatePassword={validatePassword}
-                        error_message_main={error_message_main}
-                        setPasswordType={setPasswordType}
-                        multi_step_ref={multi_step_ref}
-                        status={account_status.status}
                         platform={platform}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
+                        email={email}
+                        account_group={account_group}
                     />
                 </Div100vhContainer>
             </MobileWrapper>
@@ -432,7 +231,13 @@ const CFDPasswordManagerTabContent = ({
 
     return (
         <Tabs active_index={active_tab_index} onTabItemClick={updateAccountTabIndex} top>
-            <div label={localize('Trading password')}>{trading_password_manager}</div>
+            <div
+                label={localize('{{platform}} password', {
+                    platform: getCFDPlatformLabel(platform),
+                })}
+            >
+                {trading_password_manager}
+            </div>
             <div label={localize('Investor password')}>
                 <DesktopWrapper>
                     <ThemedScrollbars height={password_container_height}>
@@ -466,11 +271,9 @@ const CFDPasswordManagerTabContent = ({
 };
 
 const CFDPasswordManagerModal = ({
-    account_status,
     enableApp,
     email,
     disableApp,
-    is_dxtrade_allowed,
     is_visible,
     platform,
     selected_login,
@@ -482,24 +285,55 @@ const CFDPasswordManagerModal = ({
     sendVerifyEmail,
 }) => {
     const multi_step_ref = React.useRef();
+    const [index, setIndex] = React.useState(0);
 
     const [password_type, setPasswordType] = React.useState('main');
 
     if (!selected_login) return null;
 
+    const getTitle = i => {
+        if (i === 0) {
+            return localize('Manage {{platform}} password', {
+                platform: getCFDPlatformLabel(platform),
+            });
+        }
+        return selected_account_group === 'real'
+            ? localize('Manage {{platform}} Real {{account_title}} account password', {
+                  platform: getCFDPlatformLabel(platform),
+                  account_title: selected_account,
+              })
+            : localize('Manage {{platform}} Demo {{account_title}} account password', {
+                  platform: getCFDPlatformLabel(platform),
+                  account_title: selected_account,
+              });
+    };
+
+    const getHeader = i => {
+        if (i === 0) {
+            return localize('Manage {{platform}} password', {
+                platform: getCFDPlatformLabel(platform),
+            });
+        }
+        return localize('Manage password');
+    };
+
+    const onChangeActiveTabIndex = i => {
+        setIndex(i);
+    };
+
     const steps = [
         {
             component: (
                 <CFDPasswordManagerTabContent
-                    account_status={account_status}
                     email={email}
                     selected_login={selected_login}
                     toggleModal={toggleModal}
                     password_type={password_type}
                     setPasswordType={setPasswordType}
                     multi_step_ref={multi_step_ref}
-                    is_dxtrade_allowed={is_dxtrade_allowed}
                     platform={platform}
+                    onChangeActiveTabIndex={onChangeActiveTabIndex}
+                    account_group={selected_account_group}
                 />
             ),
         },
@@ -524,20 +358,11 @@ const CFDPasswordManagerModal = ({
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_visible}
-                    title={
-                        selected_account_group === 'real'
-                            ? localize('Manage {{platform}} Real {{account_title}} account password', {
-                                  platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
-                                  account_title: selected_account,
-                              })
-                            : localize('Manage {{platform}} Demo {{account_title}} account password', {
-                                  platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
-                                  account_title: selected_account,
-                              })
-                    }
+                    title={getTitle(index)}
                     toggleModal={toggleModal}
                     height='688px'
                     width='904px'
+                    should_header_stick_body={false}
                 >
                     <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                 </Modal>
@@ -546,7 +371,7 @@ const CFDPasswordManagerModal = ({
                 <PageOverlay
                     is_open={is_visible}
                     portal_id='deriv_app'
-                    header={localize('Manage password')}
+                    header={getHeader(index)}
                     onClickClose={toggleModal}
                 >
                     <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
@@ -558,7 +383,6 @@ const CFDPasswordManagerModal = ({
 
 CFDPasswordManagerModal.propTypes = {
     email: PropTypes.string,
-    is_dxtrade_allowed: PropTypes.bool,
     is_visible: PropTypes.bool,
     selected_account: PropTypes.string,
     selected_server: PropTypes.string,
@@ -568,8 +392,6 @@ CFDPasswordManagerModal.propTypes = {
 };
 
 export default connect(({ modules: { cfd }, client, ui }) => ({
-    account_status: client.account_status,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
     email: client.email,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,

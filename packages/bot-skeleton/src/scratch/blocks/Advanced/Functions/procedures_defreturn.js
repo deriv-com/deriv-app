@@ -86,7 +86,6 @@ Blockly.Blocks.procedures_defreturn = {
     getVars: Blockly.Blocks.procedures_defnoreturn.getVars,
     getVarModels: Blockly.Blocks.procedures_defnoreturn.getVarModels,
     renameVarById: Blockly.Blocks.procedures_defnoreturn.renameVarById,
-    updateVarName: Blockly.Blocks.procedures_defnoreturn.updateVarName,
     displayRenamedVar: Blockly.Blocks.procedures_defnoreturn.displayRenamedVar,
     customContextMenu: Blockly.Blocks.procedures_defnoreturn.customContextMenu,
     callType: 'procedures_callreturn',

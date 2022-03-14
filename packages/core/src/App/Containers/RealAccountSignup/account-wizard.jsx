@@ -12,12 +12,13 @@ import AcceptRiskForm from './accept-risk-form.jsx';
 import { getItems } from './account-wizard-form';
 import 'Sass/details-form.scss';
 
-const StepperHeader = ({ has_target, has_real_account, has_currency, items, getCurrentStep, getTotalSteps }) => {
+const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps }) => {
     const step = getCurrentStep() - 1;
-    const step_title = items[step].header.title;
+    const step_title = items[step].header ? items[step].header.title : '';
+
     return (
         <React.Fragment>
-            {(!has_real_account || has_target) && has_currency && (
+            {(!has_real_account || has_target) && (
                 <React.Fragment>
                     <DesktopWrapper>
                         <FormProgress steps={items} current_step={step} />
@@ -44,20 +45,6 @@ const StepperHeader = ({ has_target, has_real_account, has_currency, items, getC
                     </MobileWrapper>
                 </React.Fragment>
             )}
-            <DesktopWrapper>
-                {has_real_account && (!has_target || !has_currency) && (
-                    <div className='account-wizard__set-currency'>
-                        {!has_currency && (
-                            <p>
-                                <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
-                            </p>
-                        )}
-                        <Text as='h2' weight='bold' align='center'>
-                            <Localize i18n_default_text='Please choose your currency' />
-                        </Text>
-                    </div>
-                )}
-            </DesktopWrapper>
         </React.Fragment>
     );
 };
@@ -69,7 +56,6 @@ const AccountWizard = props => {
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
-    const is_financial_risk_accepted_ref = React.useRef(false);
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -149,7 +135,14 @@ const AccountWizard = props => {
         return state_items
             .map(item => item.form_value)
             .reduce((obj, item) => {
-                const values = fromEntries(new Map(Object.entries(item)));
+                const original_form_values = fromEntries(new Map(Object.entries(item)));
+                const values = Object.keys(original_form_values).reduce((acc, current) => {
+                    acc[current] =
+                        typeof original_form_values[current] === 'string'
+                            ? original_form_values[current].trim()
+                            : original_form_values[current];
+                    return acc;
+                }, {});
                 if (values.date_of_birth) {
                     values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
                 }
@@ -193,26 +186,27 @@ const AccountWizard = props => {
         clearError();
     };
 
-    const submitForm = () => {
-        const clone = { ...form_values() };
+    const submitForm = (payload = undefined) => {
+        let clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
 
-        if (is_financial_risk_accepted_ref.current) {
-            clone.accept_risk = 1;
+        if (payload) {
+            clone = {
+                ...clone,
+                ...payload,
+            };
         }
 
         return props.realAccountSignup(clone);
     };
-
-    const setAccountCurrency = () => props.setAccountCurrency(form_values().currency);
 
     const updateValue = (index, value, setSubmitting, goToNextStep) => {
         saveFormData(index, value);
         clearError();
 
         // Check if account wizard is not finished
-        if ((!props.has_currency && props.has_real_account) || index + 1 >= state_items.length) {
-            createRealAccount(setSubmitting);
+        if (index + 1 >= state_items.length) {
+            createRealAccount();
         } else {
             goToNextStep();
         }
@@ -241,47 +235,42 @@ const AccountWizard = props => {
         return properties;
     };
 
-    const createRealAccount = setSubmitting => {
+    const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
-        if (props.has_real_account && !props.has_currency) {
-            setAccountCurrency()
-                .then(response => {
-                    props.onFinishSuccess(response.echo_req.set_account_currency.toLowerCase());
-                })
-                .catch(error_message => {
-                    setFormError(error_message);
-                    setSubmitting(false);
-                })
-                .finally(() => props.setLoading(false));
-        } else {
-            submitForm()
-                .then(response => {
-                    if (props.real_account_signup_target === 'maltainvest') {
-                        props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
-                    } else if (props.real_account_signup_target === 'samoa') {
-                        props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
-                    } else {
-                        props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
-                    }
-                })
-                .catch(error => {
-                    if (error.code === 'show risk disclaimer') {
-                        setShouldAcceptFinancialRisk(true);
-                    } else {
-                        props.onError(error, state_items);
-                    }
-                })
-                .finally(() => props.setLoading(false));
-        }
+        submitForm(payload)
+            .then(response => {
+                props.setIsRiskWarningVisible(false);
+                if (props.real_account_signup_target === 'maltainvest') {
+                    props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
+                } else if (props.real_account_signup_target === 'samoa') {
+                    props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
+                } else {
+                    props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                }
+            })
+            .catch(error => {
+                if (error.code === 'show risk disclaimer') {
+                    props.setIsRiskWarningVisible(true);
+                    setShouldAcceptFinancialRisk(true);
+                } else {
+                    props.onError(error, state_items);
+                }
+            })
+            .finally(() => props.setLoading(false));
     };
 
     const onAcceptRisk = () => {
-        is_financial_risk_accepted_ref.current = true;
-        createRealAccount();
+        createRealAccount({ accept_risk: 1 });
+    };
+    const onDeclineRisk = () => {
+        props.onClose();
+        props.setIsRiskWarningVisible(false);
     };
 
     if (props.is_loading) return <LoadingModal />;
-    if (should_accept_financial_risk) return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={props.onClose} />;
+    if (should_accept_financial_risk) {
+        return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
+    }
     if (!mounted) return null;
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
@@ -294,6 +283,8 @@ const AccountWizard = props => {
                     onSubmit={updateValue}
                     onCancel={prevStep}
                     onSave={saveFormData}
+                    closeRealAccountSignup={props.closeRealAccountSignup}
+                    is_virtual={props.is_virtual}
                     has_currency={props.has_currency}
                     form_error={form_error}
                     {...passthrough}
@@ -310,6 +301,7 @@ const AccountWizard = props => {
                     items={state_items}
                     has_currency={props.has_currency}
                     has_target={props.real_account_signup_target !== 'manage'}
+                    setIsRiskWarningVisible={props.setIsRiskWarningVisible}
                 />
             );
         }
@@ -342,25 +334,24 @@ AccountWizard.propTypes = {
     realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,
-    setAccountCurrency: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, notifications, ui }) => ({
     account_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
     realAccountSignup: client.realAccountSignup,
+    closeRealAccountSignup: ui.closeRealAccountSignup,
+    is_virtual: client.is_virtual,
     has_real_account: client.has_active_real_account,
     upgrade_info: client.upgrade_info,
     real_account_signup_target: ui.real_account_signup_target,
     has_currency: !!client.currency,
-    setAccountCurrency: client.setAccountCurrency,
     residence: client.residence,
     residence_list: client.residence_list,
     states_list: client.states_list,
     fetchStatesList: client.fetchStatesList,
     fetchResidenceList: client.fetchResidenceList,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
-    needs_financial_assessment: client.needs_financial_assessment,
     financial_assessment: client.financial_assessment,
 }))(AccountWizard);

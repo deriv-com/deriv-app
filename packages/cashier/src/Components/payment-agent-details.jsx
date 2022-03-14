@@ -2,18 +2,28 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
+import 'Sass/payment-agent-details.scss';
 
 const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
+    const detail = Array.isArray(children) ? children : children.split(',');
     return (
-        <div className='payment-agent__accordion-content-line'>
-            <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
-            <a
-                className='payment-agent__contact cashier__paragraph'
-                href={`${action ? `${action}:` : ''}${children}`}
-                {...rest}
-            >
-                {children}
-            </a>
+        <div className='payment-agent-details__accordion-content-line'>
+            <div>
+                <Icon icon={`Ic${icon}`} className='payment-agent-details__accordion-content-icon' color='secondary' />
+            </div>
+            <div>
+                {detail.map((child, id) => (
+                    <a
+                        key={id}
+                        className='payment-agent-details__contact cashier__paragraph'
+                        href={`${action ? `${action}:` : ''}${child}`}
+                        {...rest}
+                    >
+                        {child}
+                        {id === detail.length - 1 ? '' : ', '}
+                    </a>
+                ))}
+            </div>
         </div>
     );
 };
@@ -27,17 +37,20 @@ Detail.propTypes = {
     value: PropTypes.string,
 };
 
-const PaymentAgentDetails = ({ className, payment_agent_phone, payment_agent_url, payment_agent_email }) => {
+const PaymentAgentDetails = ({ className, payment_agent_phones, payment_agent_urls, payment_agent_email }) => {
+    //  TODO: Once telephone, url removed from paymentagent_list.list we can remove isArray conditions and only use the array
     return (
-        <div className={classNames('payment-agent__accordion-content', className)}>
-            {payment_agent_phone && (
+        <div className={classNames('payment-agent-details__accordion-content', className)}>
+            {payment_agent_phones && (
                 <Detail action='tel' icon='Phone'>
-                    {payment_agent_phone}
+                    {Array.isArray(payment_agent_phones)
+                        ? payment_agent_phones.map(phone => phone.phone_number)
+                        : payment_agent_phones}
                 </Detail>
             )}
-            {payment_agent_url && (
+            {payment_agent_urls && (
                 <Detail icon='Website' target='_blank' rel='noopener noreferrer'>
-                    {payment_agent_url}
+                    {Array.isArray(payment_agent_urls) ? payment_agent_urls.map(url => url.url) : payment_agent_urls}
                 </Detail>
             )}
             {payment_agent_email && (

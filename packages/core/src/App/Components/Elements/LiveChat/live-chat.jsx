@@ -60,45 +60,47 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 const { loginid, email, landing_company_shortcode, currency, residence, first_name, last_name } =
                     client_information || {};
 
-                client_first_name = first_name ?? '';
-                client_last_name = last_name ?? '';
+                client_first_name = first_name ?? ' ';
+                client_last_name = last_name ?? ' ';
 
                 /* the session variables are sent to CS team dashboard to notify user has logged in
                 and also acts as custom variables to trigger targeted engagement */
-                const session_variables = {
-                    is_logged_in: !!is_logged_in,
-                    loginid: loginid ?? '',
-                    landing_company_shortcode: landing_company_shortcode ?? '',
-                    currency: currency ?? '',
-                    residence: residence ?? '',
-                    email: email ?? '',
-                    utm_source: utm_source ?? '',
-                    utm_medium: utm_medium ?? '',
-                    utm_campaign: utm_campaign ?? '',
-                };
-                window.LiveChatWidget.call('set_session_variables', session_variables);
+                if (window.LiveChatWidget) {
+                    const session_variables = {
+                        is_logged_in: !!is_logged_in,
+                        loginid: loginid ?? ' ',
+                        landing_company_shortcode: landing_company_shortcode ?? ' ',
+                        currency: currency ?? ' ',
+                        residence: residence ?? ' ',
+                        email: email ?? ' ',
+                        utm_source: utm_source ?? ' ',
+                        utm_medium: utm_medium ?? ' ',
+                        utm_campaign: utm_campaign ?? ' ',
+                    };
+                    window.LiveChatWidget.call('set_session_variables', session_variables);
 
-                if (is_logged_in) {
-                    // client logged in
-                    // prepfill name and email
-                    window.LiveChatWidget.call('set_customer_email', session_variables.email);
-                    window.LiveChatWidget.call('set_customer_name', `${client_first_name} ${client_last_name}`);
-
-                    // prefill name and email fields after chat has ended
-                    window.LC_API.on_chat_ended = () => {
+                    if (is_logged_in) {
+                        // client logged in
+                        // prepfill name and email
                         window.LiveChatWidget.call('set_customer_email', session_variables.email);
                         window.LiveChatWidget.call('set_customer_name', `${client_first_name} ${client_last_name}`);
-                    };
-                } else {
-                    // client not logged in
-                    // clear name and email fields
-                    window.LiveChatWidget.call('set_customer_email', ' ');
-                    window.LiveChatWidget.call('set_customer_name', ' ');
-                    // clear name and email fields after chat has ended
-                    window.LC_API.on_chat_ended = () => {
+
+                        // prefill name and email fields after chat has ended
+                        window.LC_API.on_chat_ended = () => {
+                            window.LiveChatWidget.call('set_customer_email', session_variables.email);
+                            window.LiveChatWidget.call('set_customer_name', `${client_first_name} ${client_last_name}`);
+                        };
+                    } else {
+                        // client not logged in
+                        // clear name and email fields
                         window.LiveChatWidget.call('set_customer_email', ' ');
                         window.LiveChatWidget.call('set_customer_name', ' ');
-                    };
+                        // clear name and email fields after chat has ended
+                        window.LC_API.on_chat_ended = () => {
+                            window.LiveChatWidget.call('set_customer_email', ' ');
+                            window.LiveChatWidget.call('set_customer_name', ' ');
+                        };
+                    }
                 }
             });
         }
@@ -140,7 +142,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                         <div
                             className='livechat gtm-deriv-livechat'
                             onClick={() => {
-                                window.LiveChatWidget.call('maximize');
+                                window.LiveChatWidget?.call('maximize');
                             }}
                         >
                             <div className='livechat__icon-wrapper'>
@@ -151,7 +153,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                     ) : (
                         <div
                             onClick={() => {
-                                window.LiveChatWidget.call('maximize');
+                                window.LiveChatWidget?.call('maximize');
                             }}
                         >
                             <Popover
@@ -159,6 +161,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                                 classNameBubble='help-centre__tooltip'
                                 alignment='top'
                                 message={localize('Live chat')}
+                                zIndex={9999}
                             >
                                 <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
                             </Popover>

@@ -1,4 +1,4 @@
-import { getCurrencyName } from '@deriv/shared';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 
 const template = (string, content) => {
     let to_replace = content;
@@ -54,6 +54,7 @@ const copyToClipboard = text => {
     document.execCommand('copy');
     textField.remove();
 };
+// TODO: [duplicate_code] - Move this to shared package
 // eu countries to support
 const eu_countries = [
     'it',
@@ -87,6 +88,7 @@ const eu_countries = [
     'gb',
     'mt',
 ];
+// TODO: [duplicate_code] - Move this to shared package
 // check if client is from EU
 const isEuCountry = country => eu_countries.includes(country);
 
@@ -96,7 +98,7 @@ const getAccountText = account => {
     if (account.is_dxtrade || account.is_mt) {
         account_text = account.text;
     } else {
-        account_text = getCurrencyName(account.text);
+        account_text = getCurrencyDisplayCode(account.text);
     }
 
     return account_text;

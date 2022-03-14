@@ -19,18 +19,19 @@ const Redirect = ({
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
 
     switch (url_params.get('action')) {
         case 'signup': {
-            if (is_dashboard) {
-                history.push({
-                    pathname: routes.dashboard,
-                    search: url_query_string,
-                });
-                redirected_to_route = true;
+            if (is_appstore) {
+                // TODO: redirect
+                // history.push({
+                //     pathname: routes.dashboard,
+                //     search: url_query_string,
+                // });
+                // redirected_to_route = true;
             }
             sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);
@@ -40,7 +41,53 @@ const Redirect = ({
             toggleResetPasswordModal(true);
             break;
         }
-        case 'trading_platform_password_reset': {
+        case 'trading_platform_mt5_password_reset':
+        case 'trading_platform_dxtrade_password_reset': {
+            const redirect_to = url_params.get('redirect_to');
+
+            if (redirect_to) {
+                let pathname = '';
+                let hash = '';
+                switch (redirect_to) {
+                    case '1':
+                        pathname = routes.mt5;
+                        break;
+                    case '10':
+                        pathname = routes.mt5;
+                        hash = 'real';
+                        break;
+                    case '11':
+                        pathname = routes.mt5;
+                        hash = 'demo';
+                        break;
+                    case '2':
+                        pathname = routes.dxtrade;
+                        break;
+                    case '20':
+                        pathname = routes.dxtrade;
+                        hash = 'real';
+                        break;
+                    case '21':
+                        pathname = routes.dxtrade;
+                        hash = 'demo';
+                        break;
+                    case '3':
+                        pathname = routes.passwords;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (pathname) {
+                    history.push({
+                        pathname,
+                        hash,
+                        search: url_query_string,
+                    });
+                    redirected_to_route = true;
+                }
+            }
+
             setResetTradingPasswordModalOpen(true);
             break;
         }
@@ -82,6 +129,7 @@ const Redirect = ({
             redirected_to_route = true;
             break;
         }
+
         default:
             break;
     }

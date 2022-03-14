@@ -1,7 +1,6 @@
 import { action, observable } from 'mobx';
-import { routes, isEmptyObject, isForwardStarting } from '@deriv/shared';
+import { routes, isEmptyObject, isForwardStarting, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';
 import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore from '../../base-store';
@@ -219,7 +218,7 @@ export default class ContractReplayStore extends BaseStore {
                         ...response.error,
                     });
                 } else {
-                    this.root_store.ui.addNotificationMessage(contractCancelled());
+                    this.root_store.notifications.addNotificationMessage(contractCancelled());
                 }
             });
         }
@@ -250,7 +249,7 @@ export default class ContractReplayStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.ui.addNotificationMessage(
+            this.root_store.notifications.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for)
             );
         }

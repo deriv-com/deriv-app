@@ -6,6 +6,7 @@ import Wizard from 'Components/wizard';
 import Button from 'Components/button';
 import { FlexWrapper, ButtonWrapper, Text } from '../button/shared-style';
 import Theme from '../shared/theme';
+import notes from './README.md';
 
 const stories = storiesOf('Wizard', module);
 
@@ -80,16 +81,22 @@ const StepThree = props => {
     );
 };
 
-stories.add('Basic Usage', () => {
-    return (
-        <Theme is_dark={boolean('Theme', false)}>
-            <FlexWrapper>
-                <Wizard>
-                    <StepOne />
-                    <StepTwo />
-                    <StepThree />
-                </Wizard>
-            </FlexWrapper>
-        </Theme>
-    );
-});
+stories.add(
+    'Basic Usage',
+    () => {
+        return (
+            <Theme is_dark={boolean('Theme', false)}>
+                <FlexWrapper>
+                    <Wizard>
+                        <StepOne />
+                        <StepTwo />
+                        <StepThree />
+                    </Wizard>
+                </FlexWrapper>
+            </Theme>
+        );
+    },
+    {
+        notes,
+    }
+);

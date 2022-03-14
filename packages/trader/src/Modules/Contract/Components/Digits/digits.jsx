@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { toJS } from 'mobx';
-import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Popover, Text } from '@deriv/components';
 import { isMobile, useIsMounted } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { isContractElapsed } from 'Stores/Modules/Contract/Helpers/logic';
@@ -145,9 +145,9 @@ const Digits = React.memo(props => {
                         keyname='digits__digit-spot'
                     >
                         {is_trade_page && (
-                            <span className='digits__digit-spot-value'>
+                            <Text size='xs' align='center' className='digits__digit-spot-value'>
                                 <Localize i18n_default_text='Tick {{current_tick}} - ' values={{ current_tick }} />
-                            </span>
+                            </Text>
                         )}
                         <DigitSpot
                             current_spot={spot}

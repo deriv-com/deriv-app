@@ -319,12 +319,12 @@ const currency_symbols = {
     GBP: '\u00A3',
     JPY: '\u00A5',
     USD: '\u0024',
-    BTC: '\u0042',
+    BTC: '\u20bf',
     BCH: '\ue901',
     ETH: '\u0045',
     ETC: '\ue900',
-    LTC: '\u004c',
-    UST: '\ue903',
+    LTC: '\u0141',
+    UST: '\u20ae',
 };
 
 const NonTickContract = RawMarkerMaker(

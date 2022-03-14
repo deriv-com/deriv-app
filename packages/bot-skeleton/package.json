@@ -29,12 +29,12 @@
         "eslint-config-binary": "^1.0.2",
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
-        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-import": "^2.23.4",
         "chai": "^4.2.0",
         "deep-diff": "^1.0.2"
     },
     "dependencies": {
-        "@deriv/deriv-api": "^1.0.7",
+        "@deriv/deriv-api": "^1.0.8",
         "@deriv/indicators": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",
@@ -42,7 +42,7 @@
         "blockly": "3.20191014.4",
         "file-saver": "^2.0.2",
         "immutable": "^3.8.2",
-        "js-interpreter": "^2.1.0",
+        "@deriv/js-interpreter": "^3.0.0",
         "localforage": "^1.9.0",
         "lz-string": "^1.4.4",
         "redux": "^4.0.1",

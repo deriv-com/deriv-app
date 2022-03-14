@@ -1,82 +1,79 @@
 const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { transformContentUrlBase } = require('./helpers');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 const copyConfig = base => {
     const patterns = [
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css*'),
-            to: 'css/',
-            flatten: true,
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/css/'),
+            to: 'bot/css/',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/media/**'),
-            to: 'js/bot/media',
-            flatten: true,
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/media/'),
+            to: 'media',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/dashboard/lib/assets/images'),
-            to: 'js/dashboard/assets/images',
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/'),
+            to: 'bot/js/',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/*.*'),
-            to: 'js/bot/',
-            flatten: true,
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/smartcharts/**'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist'),
             to: 'js/smartcharts/',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/smartcharts.css*'),
-            to: 'css/',
-            flatten: true,
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/public/**'),
-            to: 'public',
-            transformPath(context) {
-                return context.split('node_modules/@deriv/trader/dist/')[1];
-            },
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/js/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/'),
             to: 'account/js',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/css/**'),
-            to: 'account/css/',
-            flatten: true,
+            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/css/'),
+            to: 'account/css',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/**'),
-            to: 'js',
-            flatten: true,
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/js/'),
+            to: 'cashier/js',
         },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/css/**'), to: 'css', flatten: true },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/*.*'), to: 'js', flatten: true },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/public/**'),
-            to: 'public',
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/css/'),
+            to: 'cashier/css',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public'),
+            to: 'cashier/public',
             transformPath(context) {
                 return context.split('node_modules/@deriv/cashier/dist/')[1];
             },
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'),
-            to: 'js',
-            flatten: true,
+            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/trader'),
+            to: 'trader',
         },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js', flatten: true },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/translations/src/translations/*.*'),
-            to: 'public/i18n',
-            flatten: true,
+            from: path.resolve(__dirname, '../node_modules/@deriv/appstore/dist/appstore'),
+            to: 'appstore',
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),
+            to: '.well-known/apple-app-site-association',
+            toType: 'file',
+        },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/assetslinks.json'),
+            to: '.well-known/assetlinks.json',
+            toType: 'file',
+        },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),
+            to: 'apple-app-site-association',
+            toType: 'file',
+        },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/assetslinks.json'),
+            to: 'assetlinks.json',
+            toType: 'file',
+        },
         { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
         {
             from: path.resolve(__dirname, '../src/root_files/localstorage-sync.html'),
@@ -90,26 +87,28 @@ const copyConfig = base => {
             to: 'favicon.ico',
             toType: 'file',
         },
-        { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
+        { from: path.resolve(__dirname, '../src/public/images/favicons/'), to: 'public/images/favicons' },
         {
-            from: path.resolve(__dirname, '../src/public/images/common/static_images/**'),
+            from: path.resolve(__dirname, '../src/public/images/common/static_images/'),
             to: 'public/images/common',
-            flatten: true,
         },
         // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
-        { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
-        { from: path.resolve(__dirname, '../src/public/images/app/header/**') },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprite'),
-            to: 'public/images/sprite',
+            from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/'),
+            to: 'public/images/common/logos/platform_logos/',
+        },
+        { from: path.resolve(__dirname, '../src/public/images/app/header/'), to: 'public/images/app/header/' },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprites'),
+            to: 'public/sprites',
             toType: 'dir',
         },
         {
             from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
             to: 'manifest.json',
             toType: 'file',
-            transform(content, path) {
-                return transformContentUrlBase(content, path, base);
+            transform(content, transform_path) {
+                return transformContentUrlBase(content, transform_path, base);
             },
         },
     ];
@@ -124,7 +123,26 @@ const copyConfig = base => {
 
 const generateSWConfig = is_release => ({
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
+    exclude: [
+        /CNAME$/,
+        /index\.html$/,
+        /404\.html$/,
+        /^localstorage-sync\.html$/,
+        /\.map$/,
+        /sitemap\.xml$/,
+        /robots\.txt$/,
+        /manifest\.json$/,
+        /^apple-app-site-association/,
+        /^assetlinks.json/,
+        /^.well-known\//,
+        /^account\//,
+        /^js\/smartcharts\//,
+        /^bot\//,
+        /^media\//,
+        /^trader\//,
+        /^cashier\//,
+        /^js\/core\.[a-z_]*-json\./,
+    ],
     skipWaiting: true,
     clientsClaim: true,
     ...(is_release && {
@@ -135,6 +153,14 @@ const generateSWConfig = is_release => ({
 const htmlOutputConfig = is_release => ({
     template: 'index.html',
     filename: 'index.html',
+    meta: is_release
+        ? {
+              versionMetaTAG: {
+                  name: 'version',
+                  content: gitRevisionPlugin.version(),
+              },
+          }
+        : {},
     minify: !is_release
         ? false
         : {
@@ -147,8 +173,6 @@ const htmlOutputConfig = is_release => ({
 
 const htmlInjectConfig = () => ({
     links: [
-        'css/smartcharts.css',
-        'css/bot-web-ui.main.css',
         {
             path: 'manifest.json',
             attributes: {
@@ -178,7 +202,10 @@ const htmlPreloadConfig = () => ({
     fileWhitelist: [/\.css$/],
 });
 
-const cssConfig = () => ({ filename: 'css/core[name].main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
+const cssConfig = () => ({
+    filename: 'css/core.[name].[contenthash].main.css',
+    chunkFilename: 'css/core.chunk.[name].[contenthash].css',
+});
 
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),

@@ -23,7 +23,7 @@ const DummyComponent = props => (
 
 | Name          | Type                | Default   | Description                           |
 | ------------- | ------------------- | --------- | ------------------------------------- |
-| list          | [{header, contant}] | []        | Array containing the list of objects. |
+| list          | [{header, content}] | []        | Array containing the list of objects. |
 | className     | {string}            | null      | Accordion wrapper class.              |
 
 

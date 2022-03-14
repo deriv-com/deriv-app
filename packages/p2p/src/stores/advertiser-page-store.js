@@ -67,7 +67,6 @@ export default class AdvertiserPageStore extends BaseStore {
                 advertiser_id: this.advertiser_details_id,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
-                use_client_limits: 1,
             }).then(response => {
                 if (response.error) {
                     this.setErrorMessage(response.error);

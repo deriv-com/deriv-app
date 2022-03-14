@@ -29,7 +29,7 @@ const file_loaders = [
     {
         loader: 'file-loader',
         options: {
-            name: '[path][name].[ext]',
+            name: '[path][name].[contenthash].[ext]',
         },
     },
 ];
@@ -38,7 +38,8 @@ const svg_file_loaders = [
     {
         loader: 'file-loader',
         options: {
-            name: '[path][name].[ext]',
+            name: '[path][name].[contenthash].[ext]',
+            outputPath: 'cashier',
         },
     },
 ];

@@ -16,12 +16,15 @@ const AccountInfo = React.lazy(() =>
 const AccountActions = React.memo(
     ({
         acc_switcher_disabled_message,
+        account_type,
         balance,
         currency,
+        country_standpoint,
         disableApp,
         enableApp,
         is_acc_switcher_on,
         is_acc_switcher_disabled,
+        is_eu,
         is_logged_in,
         is_notifications_visible,
         is_virtual,
@@ -31,7 +34,7 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
     }) => {
-        const { is_dashboard } = React.useContext(PlatformContext);
+        const { is_appstore } = React.useContext(PlatformContext);
 
         if (is_logged_in) {
             return (
@@ -45,14 +48,17 @@ const AccountActions = React.memo(
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                account_type={account_type}
                                 balance={
                                     typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
                                 is_disabled={is_acc_switcher_disabled}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
+                                is_eu={is_eu}
                                 is_virtual={is_virtual}
                                 currency={currency}
+                                country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />
@@ -80,12 +86,15 @@ const AccountActions = React.memo(
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                account_type={account_type}
                                 balance={
                                     typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
                                 is_disabled={is_acc_switcher_disabled}
+                                is_eu={is_eu}
                                 is_virtual={is_virtual}
                                 currency={currency}
+                                country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />
@@ -93,7 +102,7 @@ const AccountActions = React.memo(
                         {!is_virtual && !currency && (
                             <div className='set-currency'>
                                 <Button
-                                    onClick={openRealAccountSignup}
+                                    onClick={() => openRealAccountSignup('set_currency')}
                                     has_effect
                                     type='button'
                                     text={localize('Set currency')}
@@ -117,7 +126,7 @@ const AccountActions = React.memo(
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />
-                <SignupButton className='acc-info__button' is_dashboard={is_dashboard} />
+                <SignupButton className='acc-info__button' is_appstore={is_appstore} />
             </React.Fragment>
         );
     }
@@ -127,11 +136,13 @@ AccountActions.displayName = 'AccountActions';
 
 AccountActions.propTypes = {
     acc_switcher_disabled_message: PropTypes.any,
+    account_type: PropTypes.string,
     balance: PropTypes.any,
     currency: PropTypes.any,
     is_acc_switcher_disabled: PropTypes.any,
     disableApp: PropTypes.any,
     enableApp: PropTypes.any,
+    country_standpoint: PropTypes.object,
     is_acc_switcher_on: PropTypes.any,
     is_logged_in: PropTypes.any,
     is_notifications_visible: PropTypes.any,

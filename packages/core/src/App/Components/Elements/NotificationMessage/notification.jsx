@@ -7,10 +7,14 @@ import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import NotificationBanner from './notification-banner.jsx';
 import { default_delay, types } from './constants';
+import NotificationPromo from './notification-promo.jsx';
 import { BinaryLink } from '../../Routes';
+import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const linear_progress_container_ref = React.useRef(null);
+    const { is_appstore } = React.useContext(PlatformContext);
+
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
 
@@ -29,12 +33,46 @@ const Notification = ({ data, removeNotificationMessage }) => {
         case 'news':
             return (
                 <NotificationBanner
+                    className={data.className}
                     header={data.header}
                     message={data.message}
                     primary_btn={data.primary_btn}
-                    secondary_btn={{ ...data.secondary_btn, ...{ onClick: destroy } }}
+                    secondary_btn={data.secondary_btn}
                     img_src={data.img_src}
                     img_alt={data.img_alt}
+                    onClose={destroy}
+                />
+            );
+        case 'trustpilot':
+            return (
+                <NotificationBanner
+                    className={data.className}
+                    header={data.header_popup}
+                    message={data.message_popup}
+                    secondary_btn={data.action}
+                    img_src={data.img_src}
+                    img_alt={data.img_alt}
+                    onClose={destroy}
+                />
+            );
+        case 'close_mx_mlt':
+            return (
+                <NotificationCloseMxMlt
+                    header={data.header}
+                    message={data.message}
+                    secondary_btn={data.secondary_btn}
+                    img_src={data.img_src}
+                    img_alt={data.img_alt}
+                    onClose={destroy}
+                />
+            );
+        case 'promotions':
+            return (
+                <NotificationPromo
+                    cta_btn={data.cta_btn}
+                    img_alt={data.img_alt}
+                    img_src={data.img_src}
+                    message={data.message}
                     onClose={destroy}
                 />
             );
@@ -61,6 +99,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                 timeout={data.timeout}
                                 action={data.action.onClick}
                                 render={data.timeoutMessage}
+                                should_store_in_session={true}
+                                session_id={data.key}
+                                ref={linear_progress_container_ref}
                             />
                         )}
                         <p className='notification__text-body'>{data.message}</p>
@@ -83,7 +124,11 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                     ) : (
                                         <Button
                                             className='notification__cta-button'
-                                            onClick={() => data.action.onClick({ is_dashboard })}
+                                            onClick={() => {
+                                                if (data.timeout)
+                                                    linear_progress_container_ref.current.removeTimeoutSession();
+                                                data.action.onClick({ is_appstore });
+                                            }}
                                             text={data.action.text}
                                             secondary
                                             renderText={text => (
@@ -119,7 +164,17 @@ Notification.propTypes = {
         message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         should_hide_close_btn: PropTypes.bool,
         size: PropTypes.oneOf(['small']),
-        type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'news', 'announce']).isRequired,
+        type: PropTypes.oneOf([
+            'warning',
+            'info',
+            'success',
+            'danger',
+            'contract_sold',
+            'news',
+            'announce',
+            'promotions',
+            'close_mx_mlt',
+        ]).isRequired,
     }),
     removeNotificationMessage: PropTypes.func,
 };

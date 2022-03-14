@@ -45,14 +45,18 @@ export const getSortedCFDList = account_list => {
 
 export const isDemo = account => account.account_type === 'demo';
 
-export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts, trading_servers, platform) => {
+export const getCFDConfig = (
+    market_type,
+    landing_company,
+    existing_cfd_accounts,
+    mt5_trading_servers,
+    platform,
+    is_eu
+) => {
     const cfd_config = [];
+
     if (landing_company) {
         Object.keys(landing_company).forEach(company => {
-            if (['gaming', 'synthetic', 'financial'].indexOf(company) === -1 && platform === CFD_PLATFORMS.DXTRADE) {
-                return;
-            }
-
             let has_account = existing_cfd_accounts.find(account => {
                 const account_market_type = account.market_type === 'synthetic' ? 'gaming' : account.market_type;
                 if (platform === CFD_PLATFORMS.DXTRADE) {
@@ -60,22 +64,21 @@ export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts
                 }
                 return account.sub_account_type === company && account_market_type === market_type;
             });
-
             if (has_account && platform === CFD_PLATFORMS.MT5) {
-                const number_market_type_available = trading_servers.filter(
-                    s => s.supported_accounts.includes(market_type) && !s.disabled
-                ).length;
+                const number_market_type_available = mt5_trading_servers.filter(s => {
+                    const server_market_type = s.market_type === 'synthetic' ? 'gaming' : s.market_type;
+                    return market_type === server_market_type && !s.disabled;
+                }).length;
                 if (number_market_type_available && has_account.account_type === 'real') {
                     has_account = false;
                 }
             }
-
             if (!has_account) {
                 const type = getCFDAccountKey({ market_type, sub_account_type: company, platform });
                 if (type) {
                     cfd_config.push({
-                        icon: getCFDAccount({ market_type, sub_account_type: company, platform }),
-                        title: getCFDAccountDisplay({ market_type, sub_account_type: company, platform }),
+                        icon: getCFDAccount({ market_type, sub_account_type: company, platform, is_eu }),
+                        title: getCFDAccountDisplay({ market_type, sub_account_type: company, platform, is_eu }),
                         type,
                     });
                 }

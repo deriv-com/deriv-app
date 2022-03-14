@@ -25,11 +25,17 @@ export default class OrderStore {
     @observable is_loading = false;
     @observable orders = [];
     @observable order_id = null;
+    @observable order_payment_method_details = null;
     @observable order_rerender_timeout = null;
 
     interval;
     order_info_subscription = {};
     previous_orders = [];
+
+    @computed
+    get has_order_payment_method_details() {
+        return !!this.order_payment_method_details;
+    }
 
     @computed
     get order_information() {
@@ -71,7 +77,9 @@ export default class OrderStore {
                 this.setCancellationLimit(p2p_config.cancellation_limit);
             }
 
-            setShouldShowCancelModal(true);
+            if (typeof setShouldShowCancelModal === 'function') {
+                setShouldShowCancelModal(true);
+            }
         });
     }
 
@@ -204,9 +212,15 @@ export default class OrderStore {
     }
 
     @action.bound
+    setOrderPaymentMethodDetails(order_payment_method_details) {
+        this.order_payment_method_details = order_payment_method_details;
+    }
+
+    @action.bound
     setOrderDetails(response) {
         if (!response.error) {
             const { p2p_order_info } = response;
+
             this.setQueryDetails(p2p_order_info);
         } else {
             this.unsubscribeFromCurrentOrder();
@@ -244,7 +258,9 @@ export default class OrderStore {
             general_store.props.server_time
         );
         this.setOrderId(order_information.id); // Sets the id in URL
-
+        if (order_information?.payment_method_details) {
+            this.setOrderPaymentMethodDetails(Object.values(order_information?.payment_method_details));
+        }
         // When viewing specific order, update its read state in localStorage.
         const { notifications } = this.root_store.general_store.getLocalStorageSettingsForLoginId();
 

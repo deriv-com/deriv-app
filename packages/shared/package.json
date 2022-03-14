@@ -11,6 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/binary-com/deriv-app.git"
   },
+  "engines": {
+    "node": "^14.17.1"
+  },
   "scripts": {
     "start": "echo \"No start specified\"",
     "serve": "echo \"No serve specified\"",
@@ -26,13 +29,8 @@
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"
   },
-  "peerDependencies": {
-    "moment": "^2.24.0"
-  },
   "devDependencies": {
-    "babel-jest": "^26.5.2",
     "chai": "^4.2.0",
-    "jest": "^26.4.2",
     "jsdom": "^16.2.1",
     "moment": "^2.24.0"
   },
@@ -41,6 +39,8 @@
     "extend": "^3.0.2",
     "js-cookie": "^2.2.1",
     "object.fromentries": "^2.0.0",
-    "react": "^16.13.1"
+    "react": "^16.14.0",
+    "moment": "^2.24.0",
+    "react-loadable": "^5.5.0"
   }
 }

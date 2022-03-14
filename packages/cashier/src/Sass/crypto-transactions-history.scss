@@ -1,0 +1,189 @@
+.crypto-transactions-history {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.6rem;
+        @include mobile {
+            display: block;
+            margin: 1.6rem;
+        }
+    }
+    &__back {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .dc-text {
+            margin-left: 0.8rem;
+            width: max-content;
+            @include mobile {
+                margin-left: 2.2rem;
+            }
+        }
+    }
+    &__table {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        @include mobile {
+            padding: 1.6rem;
+        }
+
+        &-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+
+            @include desktop {
+                min-height: 72vh;
+                .data-list,
+                .data-list__body-wrapper {
+                    flex: 1;
+                }
+            }
+        }
+        &-row {
+            padding: 1.6rem;
+            grid-template-columns: repeat(6, 1fr) 0.5fr;
+            border: 0;
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+                border-radius: 0.8rem;
+                background-color: var(--general-section-1);
+            }
+
+            .dc-table__cell:not(.crypto-transactions-history__table-confirm) {
+                @include desktop {
+                    margin-right: 1.6rem;
+                }
+            }
+        }
+        &-cell {
+            margin-bottom: 0.8rem;
+        }
+        &-type {
+            text-transform: capitalize;
+            @include mobile {
+                margin-left: 1.2rem;
+                flex: 1;
+            }
+
+            .dc-text {
+                margin-left: 0.8rem;
+            }
+        }
+        &-amount {
+            @include mobile {
+                margin-bottom: 0.8rem;
+            }
+        }
+        &-hash {
+            @include mobile {
+                margin-bottom: 0.8rem;
+            }
+
+            a {
+                text-decoration: none;
+            }
+        }
+        &-time {
+            @include mobile {
+                margin-bottom: 0.8rem;
+            }
+        }
+        &-status {
+            @include mobile {
+                display: flex;
+                align-items: center;
+            }
+            &-code {
+                width: 1rem;
+                height: 1rem;
+                margin-right: 0.8rem;
+                border-radius: 50%;
+                background-color: var(--status-warning);
+                @include mobile {
+                    width: 0.8rem;
+                    height: 0.8rem;
+                }
+
+                &-in-process {
+                    background-color: var(--status-warning);
+                }
+                &-in-review {
+                    background-color: var(--status-warning);
+                }
+                &-successful {
+                    background-color: var(--status-success);
+                }
+                &-unsuccessful {
+                    background-color: var(--status-danger);
+                }
+            }
+            .dc-popover__target {
+                display: flex;
+                align-items: center;
+            }
+        }
+        &-popover {
+            cursor: pointer;
+
+            a {
+                text-decoration: none;
+            }
+        }
+        &-confirm {
+            justify-content: center;
+            grid-column: 5 / 9;
+
+            div {
+                display: flex;
+                align-items: center;
+                margin: 0.2rem 3.2rem;
+            }
+            .dc-btn {
+                margin-right: 0.8rem;
+            }
+        }
+        &-action {
+            @include desktop {
+                justify-content: center;
+            }
+        }
+    }
+    &__data-list {
+        flex: 1;
+
+        &__data-list-body {
+            flex: 1;
+        }
+        .data-list__body-wrapper {
+            flex: 1;
+        }
+    }
+    &__bullet {
+        background-color: var(--text-general);
+        border-radius: 100%;
+        margin: 0 0.8rem;
+        width: 0.4rem;
+        height: 0.4rem;
+        margin-bottom: 0.2rem;
+        display: inline-block;
+    }
+    &__empty-text {
+        position: absolute;
+        top: 20%;
+        left: 10%;
+        width: 50%;
+        margin: auto;
+        @include mobile {
+            position: static;
+        }
+    }
+}

@@ -35,27 +35,11 @@ module.exports = function () {
                             options: {
                                 extract: true,
                                 spriteFilename: svgPath => {
-                                    if (svgPath.includes('components/icon/common')) {
-                                        return 'common.svg';
-                                    }
-                                    if (svgPath.includes('components/icon/currency')) {
-                                        return 'currency.svg';
-                                    }
-                                    if (svgPath.includes('components/icon/flag')) {
-                                        return 'flag.svg';
-                                    }
-                                    if (svgPath.includes('components/icon/mt5')) {
-                                        return 'mt5.svg';
-                                    }
-                                    if (svgPath.includes('components/icon/tradetype')) {
-                                        return 'tradetype.svg';
-                                    }
-                                    if (svgPath.includes('components/icon/underlying')) {
-                                        return 'underlying.svg';
-                                    }
-                                    return 'common.svg';
+                                    const category = /components\/icon\/([\w-]*)/.exec(svgPath)[1];
+
+                                    return category ? `${category}.[contenthash].svg` : 'common.[contenthash].svg';
                                 },
-                                publicPath: '/icon/sprite/',
+                                publicPath: '/icon/sprites/',
                             },
                         },
                         {
@@ -94,5 +78,5 @@ module.exports = function () {
             },
             /^@deriv\/shared\/.+$/,
         ],
-    }
+    };
 };

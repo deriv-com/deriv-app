@@ -6,7 +6,6 @@ import { FileDropzone, Icon, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     isMobile,
-    PlatformContext,
     compressImageFiles,
     readFiles,
     getSupportedFiles,
@@ -15,14 +14,11 @@ import {
 } from '@deriv/shared';
 
 const UploadMessage = () => {
-    const { is_dashboard } = React.useContext(PlatformContext);
     return (
         <React.Fragment>
             <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />
             <div className='dc-file-dropzone__message-subtitle'>
-                {is_dashboard && isMobile()
-                    ? localize('Tap here to upload (JPEG  JPG  PNG  PDF  GIF)')
-                    : localize('Drop file (JPEG  JPG  PNG  PDF  GIF) or click here to upload')}
+                {isMobile() ? localize('Click here to upload') : localize('Drop file or click here to upload')}
             </div>
         </React.Fragment>
     );
@@ -43,8 +39,8 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
     };
 
     const handleRejectedFiles = files => {
-        const is_file_too_large = files.length > 0 && files[0].size > max_document_size;
-        const supported_files = files.filter(file => getSupportedFiles(file.name));
+        const is_file_too_large = files.length > 0 && files[0].file.size > max_document_size;
+        const supported_files = files.filter(each_file => getSupportedFiles(each_file.file.name));
         const error_message =
             is_file_too_large && supported_files.length > 0
                 ? localize('File size should be 8MB or less')
@@ -122,6 +118,8 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
         </React.Fragment>
     );
 });
+
+FileUploader.displayName = 'FileUploader';
 
 FileUploader.propTypes = {
     onFileDrop: PropTypes.func,

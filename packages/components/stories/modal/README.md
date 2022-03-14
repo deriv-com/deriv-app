@@ -30,7 +30,7 @@ const DummyComponent = props => (
 | Name                    | Type                   | Default       | Description                                                               |
 | ----------------------- | ---------------------- | ------------- | ------------------------------------------------------------------------- |
 | id                      | {string}               | null          | `id` for the modal                                                        |
-| has_close_icon          | {boolean}              | `true`        | Defines whether the modal has close icon or not                           |
+| has\_close\_icon        | {boolean}              | `true`        | Defines whether the modal has close icon or not                           |
 | header                  | {string}               | null          | Header for the modal                                                      |
 | height                  | {string}               | null          | Height of the modal                                                       |
 | width                   | {string}               | null          | Width of the modal                                                        |

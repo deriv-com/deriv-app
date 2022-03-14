@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ThemedScrollbars } from '@deriv/components';
-import { formatMiliseconds } from '@deriv/shared';
+import { formatMilliseconds } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import ChatMessageReceipt from 'Components/orders/chat/chat-message-receipt.jsx';
 import ChatMessageText from 'Components/orders/chat/chat-message-text.jsx';
@@ -46,7 +46,7 @@ const ChatMessages = observer(() => {
             >
                 {sendbird_store.chat_messages.map(chat_message => {
                     const is_my_message = chat_message.sender_user_id === sendbird_store.chat_info.user_id;
-                    const message_date = formatMiliseconds(chat_message.created_at, 'MMMM D, YYYY');
+                    const message_date = formatMilliseconds(chat_message.created_at, 'MMMM D, YYYY');
                     const message_colour = is_my_message ? 'colored-background' : 'general';
                     const should_render_date = current_date !== message_date && Boolean((current_date = message_date));
 
@@ -92,7 +92,7 @@ const ChatMessages = observer(() => {
                                     ))}
                                 <div className={`order-chat__messages-item-timestamp`}>
                                     <Text color='less-prominent' line_height='s' size='xxxs'>
-                                        {formatMiliseconds(chat_message.created_at, 'HH:mm')}
+                                        {formatMilliseconds(chat_message.created_at, 'HH:mm', true)}
                                     </Text>
                                     {is_my_message && (
                                         <ChatMessageReceipt

@@ -9,15 +9,15 @@ const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const output = {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bot-web-ui.main.js',
-    chunkFilename: 'bot.[name].[contenthash].js',
+    filename: 'bot/js/bot-web-ui.main.js',
+    chunkFilename: 'bot/js/bot.[name].[contenthash].js',
     libraryExport: 'default',
     library: '@deriv/bot-web-ui',
     libraryTarget: 'umd',
 };
 
 module.exports = function (env, argv) {
-    const base = env && env.base && !env.base ? `/${env.base}/` : '/';
+    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
 
     return {
         entry: [path.join(__dirname, 'src', 'app', 'app.js')],
@@ -39,7 +39,7 @@ module.exports = function (env, argv) {
                     test: /\.m?js/,
                     include: /node_modules/,
                     resolve: {
-                      fullySpecified: false,
+                        fullySpecified: false,
                     },
                 },
                 {
@@ -117,9 +117,14 @@ module.exports = function (env, argv) {
         },
         plugins: [
             new CleanWebpackPlugin(),
-            new MiniCssExtractPlugin({ filename: 'bot-web-ui.main.css' }),
+            new MiniCssExtractPlugin({
+                filename: 'bot/css/bot.main.[contenthash].css',
+                chunkFilename: 'bot/css/bot.[name].[contenthash].css',
+            }),
             new StyleLintPlugin({ fix: true }),
-            new CopyWebpackPlugin({ patterns: [{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'media' }] }),
+            new CopyWebpackPlugin({
+                patterns: [{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'bot/media' }],
+            }),
             new SpriteLoaderPlugin(),
         ],
         externals: [

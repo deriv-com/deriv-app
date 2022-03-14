@@ -1,4 +1,4 @@
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import { buildCurrenciesList, getDefaultCurrency } from '../Helpers/currency';
 
 export const getCurrenciesAsync = async currency => {

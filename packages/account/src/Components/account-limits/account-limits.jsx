@@ -32,7 +32,7 @@ const AccountLimits = ({
     const isMounted = useIsMounted();
     const [is_loading, setLoading] = React.useState(false);
     const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         if (is_virtual) {
@@ -67,10 +67,10 @@ const AccountLimits = ({
         return (
             <div
                 className={classNames('account__demo-message-wrapper', {
-                    'account__demo-message-wrapper-dashboard': is_dashboard,
+                    'account__demo-message-wrapper-dashboard': is_appstore,
                 })}
             >
-                <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
+                <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
             </div>
         );
     }
@@ -232,25 +232,30 @@ const AccountLimits = ({
                                         </thead>
                                         <tbody>
                                             {is_fully_authenticated ? (
-                                                <React.Fragment>
-                                                    <Text size='xxs' color='prominent'>
-                                                        {localize(
-                                                            'Your account is fully authenticated and your withdrawal limits have been lifted.'
-                                                        )}
-                                                    </Text>
-                                                </React.Fragment>
+                                                <tr>
+                                                    <AccountLimitsTableCell>
+                                                        <React.Fragment>
+                                                            <Text size='xxs' color='prominent'>
+                                                                {localize(
+                                                                    'Your account is fully authenticated and your withdrawal limits have been lifted.'
+                                                                )}
+                                                            </Text>
+                                                        </React.Fragment>
+                                                    </AccountLimitsTableCell>
+                                                    <AccountLimitsTableCell />
+                                                </tr>
                                             ) : (
                                                 <React.Fragment>
                                                     <tr>
                                                         <AccountLimitsTableCell>
                                                             <Localize
                                                                 i18n_default_text={
-                                                                    is_dashboard
+                                                                    is_appstore
                                                                         ? 'Total withdrawal limit'
                                                                         : 'Total withdrawal allowed'
                                                                 }
                                                             />
-                                                            {is_dashboard && !is_fully_authenticated && (
+                                                            {is_appstore && !is_fully_authenticated && (
                                                                 <React.Fragment>
                                                                     <Text
                                                                         size={isMobile() ? 'xxxs' : 'xxs'}
@@ -306,7 +311,7 @@ const AccountLimits = ({
                                             )}
                                         </tbody>
                                     </table>
-                                    {!is_dashboard ||
+                                    {!is_appstore ||
                                         (isMobile() && (
                                             <div className='da-account-limits__text-container'>
                                                 <Text as='p' size='xxs' color='less-prominent' line_height='xs'>

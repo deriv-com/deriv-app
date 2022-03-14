@@ -85,6 +85,14 @@ const TradeAnimation = ({
     info_direction,
     toggleAnimationInfoModal,
 }) => {
+    const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
+    React.useEffect(() => {
+        if (is_button_disabled) {
+            setTimeout(() => {
+                updateIsButtonDisabled(false);
+            }, 1000);
+        }
+    }, [is_button_disabled]);
     const status_classes = ['', '', ''];
     let progress_status =
         contract_stage -
@@ -110,12 +118,19 @@ const TradeAnimation = ({
         <div className={classNames('animation__wrapper', className)}>
             {info_direction === 'left' && <AnimationInfo toggleAnimationInfoModal={toggleAnimationInfoModal} />}
             <Button
-                is_disabled={is_stop_button_disabled}
+                is_disabled={is_stop_button_disabled || is_button_disabled}
                 className='animation__button'
                 id={is_stop_button_visible ? 'db-animation__stop-button' : 'db-animation__run-button'}
                 text={is_stop_button_visible ? localize('Stop') : localize('Run')}
                 icon={<Icon icon={is_stop_button_visible ? 'IcPause' : 'IcPlay'} color='active' />}
-                onClick={is_stop_button_visible ? onStopButtonClick : onRunButtonClick}
+                onClick={() => {
+                    updateIsButtonDisabled(true);
+                    if (is_stop_button_visible) {
+                        onStopButtonClick();
+                        return;
+                    }
+                    onRunButtonClick();
+                }}
                 has_effect
                 {...(is_stop_button_visible ? { primary: true } : { green: true })}
             />

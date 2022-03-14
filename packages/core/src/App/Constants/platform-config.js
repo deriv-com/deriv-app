@@ -21,7 +21,7 @@ const platform_config = [
         icon: 'IcBrandDmt5',
         title: () => localize('DMT5'),
         name: 'DMT5',
-        description: () => localize('Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'),
+        description: () => localize('Trade on Deriv MT5 (DMT5), the all-in-one FX and CFD trading platform.'),
         link_to: routes.mt5,
     },
     {
@@ -35,8 +35,18 @@ const platform_config = [
         icon: 'IcBrandSmarttrader',
         title: () => localize('SmartTrader'),
         name: 'SmartTrader',
-        description: () => localize('Trade the world’s markets with our popular user-friendly platform'),
+        description: () => localize('Trade the world’s markets with our popular user-friendly platform.'),
         href: routes.smarttrader,
+    },
+    {
+        icon: 'IcBrandBinarybot',
+        title: () => localize('Binary Bot'),
+        name: 'Binary Bot',
+        description: () =>
+            localize(
+                'Our classic “drag-and-drop” tool for creating trading bots, featuring pop-up trading charts, for advanced users.'
+            ),
+        href: routes.binarybot,
     },
 ];
 

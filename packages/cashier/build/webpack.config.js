@@ -9,7 +9,13 @@ module.exports = function (env, argv) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             cashier: path.resolve(__dirname, '../src', 'index.js'),
-            'cashier-store': path.resolve(__dirname, '../src', 'Stores/Cashier/cashier-store'),
+            'cashier-store': path.resolve(__dirname, '../src', 'Stores/cashier-store'),
+            'account-transfer': 'Containers/account-transfer',
+            deposit: 'Containers/deposit',
+            'on-ramp': 'Containers/on-ramp',
+            'payment-agent': 'Containers/payment-agent',
+            'payment-agent-transfer': 'Containers/payment-agent-transfer',
+            withdrawal: 'Containers/withdrawal',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -26,10 +32,10 @@ module.exports = function (env, argv) {
             minimizer: MINIMIZERS,
         },
         output: {
-            filename: 'js/[name].js',
+            filename: 'cashier/js/[name].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
-            chunkFilename: 'js/cashier.[name].[contenthash].js',
+            chunkFilename: 'cashier/js/cashier.[name].[contenthash].js',
             libraryExport: 'default',
             library: '@deriv/cashier',
             libraryTarget: 'umd',

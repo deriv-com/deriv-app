@@ -6,19 +6,9 @@ const { EOL } = require('os');
 const path = require('path');
 const fs = require('fs');
 
-const entries_object = require('./icons.js');
+const { getFileNameFromPath, getPascalCase } = require('./helper');
 
-function getPascalCase(str) {
-    if (!str) return '';
-    return (
-        String(str)
-            .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '$')
-            .replace(/[^_A-Za-z0-9]+/g, '$')
-            .replace(/([a-z])([A-Z])/g, (m, a, b) => `${a}$${b}`)
-            // .toLowerCase()
-            .replace(/(\$)(\w?)/g, (m, a, b) => b.toUpperCase())
-    );
-}
+const entries_object = require('./icons.js');
 
 function buildIcons() {
     console.info('Build icons starting.');
@@ -37,7 +27,7 @@ function buildIcons() {
         if (!categories[dirname]) {
             categories[dirname] = [];
         }
-        const icon_name = getPascalCase(pathname.match(/([^/]*)\/*$/)[1].replace('.svg', ''));
+        const icon_name = getPascalCase(getFileNameFromPath(pathname));
         categories[dirname].push(icon_name);
 
         buffer.push(`import './${pathname}.svg';`);

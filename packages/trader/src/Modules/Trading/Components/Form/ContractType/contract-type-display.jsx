@@ -7,10 +7,11 @@ import { findContractCategory } from '../../../Helpers/contract-type';
 
 const Display = ({ is_open, list, name, onClick, value }) => {
     const getDisplayText = () =>
-        findContractCategory(list, { value }).contract_types.find(item => item.value === value).text;
+        findContractCategory(list, { value })?.contract_types.find(item => item.value === value).text;
 
     return (
         <div
+            data-testid='dt_contract_dropdown'
             className={classNames('contract-type-widget__display', {
                 'contract-type-widget__display--clicked': is_open,
             })}

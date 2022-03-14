@@ -327,7 +327,7 @@ class Common {
 
     async blockExternals() {
         await this.page.route('**/*', route => {
-            return /(livechatinc|datadog|smarttrader)/.test(route.request().url()) ? route.abort() : route.continue();
+            return /(livechatinc|smarttrader)/.test(route.request().url()) ? route.abort() : route.continue();
         });
     }
 

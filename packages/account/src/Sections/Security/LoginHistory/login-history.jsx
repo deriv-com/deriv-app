@@ -3,10 +3,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import Bowser from 'bowser';
-import { convertDateFormat, isMobile, isDesktop, PlatformContext } from '@deriv/shared';
+import { convertDateFormat, isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const API_FETCH_LIMIT = 50;
@@ -45,9 +44,9 @@ const getFields = () => ({
 });
 
 const LoginHistoryContent = ({ data }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     if (isMobile()) {
-        return renderList(getFields(), data, is_dashboard);
+        return renderList(getFields(), data, is_appstore);
     }
     return renderTable(getFields(), data);
 };
@@ -83,14 +82,14 @@ const renderTable = (fields, login_history) => (
     </Table>
 );
 
-const renderList = (fields, login_history, is_dashboard) => {
+const renderList = (fields, login_history, is_appstore) => {
     return (
         <Table className='login-history__list'>
             <Table.Body>
                 {login_history.map(item => (
                     <div
                         className={classNames('login-history__list__wrapper', {
-                            'login-history__list__wrapper--dashboard': is_dashboard,
+                            'login-history__list__wrapper--dashboard': is_appstore,
                         })}
                         key={item.id}
                     >
@@ -98,7 +97,7 @@ const renderList = (fields, login_history, is_dashboard) => {
                             <Table.Cell className='login-history__list__row__cell'>
                                 <ListCell title={fields.date} text={item.date} />
                             </Table.Cell>
-                            {is_dashboard && isMobile() && (
+                            {is_appstore && isMobile() && (
                                 <Table.Cell className='login-history__list__row__cell'>
                                     <ListCell
                                         className='login-history__list__row__cell--action'
@@ -117,7 +116,7 @@ const renderList = (fields, login_history, is_dashboard) => {
                                     text={item.browser}
                                 />
                             </Table.Cell>
-                            {is_dashboard && isMobile() ? (
+                            {is_appstore && isMobile() ? (
                                 <Table.Cell className='login-history__list__row__cell'>
                                     <ListCell title={fields.status} text={item.status} right />
                                 </Table.Cell>
@@ -139,7 +138,7 @@ const renderList = (fields, login_history, is_dashboard) => {
                                     text={item.ip}
                                 />
                             </Table.Cell>
-                            {!is_dashboard ||
+                            {!is_appstore ||
                                 (isDesktop() && (
                                     <Table.Cell className='login-history__list__row__cell'>
                                         <ListCell title={fields.status} text={item.status} />

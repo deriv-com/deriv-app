@@ -10,6 +10,9 @@
     "files": [
         "lib"
     ],
+    "engines": {
+        "node": "^14.17.1"
+    },
     "scripts": {
         "test": "mocha ./scripts/**/**.spec.js",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
@@ -30,21 +33,22 @@
     "dependencies": {
         "@deriv/components": "^1.0.0",
         "@deriv/shared": "^1.0.0",
+        "@testing-library/react": "^12.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",
         "formik": "^2.1.4",
-        "i18next": "^18.0.0",
+        "i18next": "^20.3.2",
         "lodash.debounce": "^4.0.8",
         "mobx": "^5.15.7",
         "mobx-react-lite": "^2.2.2",
         "prop-types": "^15.7.2",
-        "react": "^16.13.1",
+        "react": "^16.14.0",
         "react-content-loader": "^4.3.2",
-        "react-dom": "^16.13.1",
-        "react-i18next": "^11.0.0",
+        "react-dom": "^16.14.0",
+        "react-i18next": "^11.11.0",
         "react-svg-loader": "^3.0.3",
         "react-transition-group": "^4.3.0",
-        "sendbird": "^3.0.137"
+        "sendbird": "~3.0.137"
     },
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -61,36 +65,35 @@
         "@deriv/publisher": "0.0.1-beta4",
         "babel-core": "^6.26.3",
         "babel-eslint": "^10.1.0",
-        "babel-jest": "^26.5.2",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
         "commander": "^3.0.2",
-        "copy-webpack-plugin": "^6.2.0",
+        "copy-webpack-plugin": "^9.0.1",
         "cross-env": "^5.2.0",
         "css-hot-loader": "^1.4.4",
         "css-loader": "^5.0.1",
-        "eslint-plugin-prettier": "^3.3.1",
-        "eslint-config-prettier": "^7.2.0",
+        "css-minimizer-webpack-plugin": "^3.0.1",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
+        "eslint-config-prettier": "^7.2.0",
+        "eslint-plugin-import": "^2.23.4",
+        "eslint-plugin-prettier": "^3.3.1",
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
-        "eslint-plugin-import": "^2.22.1",
         "glob": "^7.1.5",
         "lint-staged": "^10.4.0",
         "mini-css-extract-plugin": "^1.3.4",
         "mocha": "^7.1.1",
         "node-sass": "^4.12.0",
-        "optimize-css-assets-webpack-plugin": "^5.0.4",
-        "postcss-loader": "^4.1.0",
+        "postcss-loader": "^6.1.1",
         "postcss-preset-env": "^6.7.0",
-        "postcss-scss": "^3.0.4",
+        "postcss-scss": "^4.0.0",
         "sass-loader": "^10.1.1",
         "sass-resources-loader": "^2.1.1",
         "style-loader": "^1.2.1",
         "terser-webpack-plugin": "^5.1.1",
-        "webpack": "^5.14.0",
+        "webpack": "^5.46.0",
         "webpack-bundle-analyzer": "^4.3.0",
-        "webpack-cli": "^4.3.1"
+        "webpack-cli": "^4.7.2"
     }
 }

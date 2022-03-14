@@ -1,9 +1,11 @@
+import React from 'react';
 import { observable, action, reaction, computed, runInAction } from 'mobx';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
+import { isSafari, mobileOSDetect } from '@deriv/shared';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -21,7 +23,6 @@ export default class RunPanelStore {
     @observable is_drawer_open = true;
     @observable is_dialog_open = false;
     @observable is_sell_requested = false;
-    @observable is_run_button_disabled = false;
 
     run_id = '';
 
@@ -72,7 +73,7 @@ export default class RunPanelStore {
 
     @computed
     get is_stop_button_disabled() {
-        return this.contract_stage === contract_stages.IS_STOPPING;
+        return [contract_stages.PURCHASE_SENT, contract_stages.IS_STOPPING].includes(this.contract_stage);
     }
 
     @computed
@@ -85,28 +86,26 @@ export default class RunPanelStore {
             (journal.unfiltered_messages.length === 0 && transactions.elements.length === 0)
         );
     }
-    @action.bound
-    setIsRunButtonDisabled(is_run_button_disabled) {
-        this.is_run_button_disabled = is_run_button_disabled;
-    }
 
     @action.bound
     async onRunButtonClick() {
-        if (this.is_run_button_disabled) {
-            return;
-        }
-        this.setIsRunButtonDisabled(true);
-        setTimeout(() => {
-            this.setIsRunButtonDisabled(false);
-        }, 200);
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
+        const is_ios = mobileOSDetect() === 'iOS';
 
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
             this.showLoginDialog();
             return;
         }
+
+        /**
+         * Due to Apple's policy on cellular data usage in ios audioElement.play() should be initially called on
+         * user action(e.g click/touch) to be downloaded, otherwise throws an error. Also it should be called
+         * syncronously, so keep above await.
+         */
+        if (is_ios || isSafari()) this.preloadAudio();
+
         await self_exclusion.checkRestriction();
         if (!self_exclusion.should_bot_run) {
             self_exclusion.setIsRestricted(true);
@@ -140,8 +139,21 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
+        const { is_multiplier } = this.root_store.summary_card;
+
+        if (is_multiplier) {
+            this.showStopMultiplierContractDialog();
+        } else {
+            this.stopBot();
+        }
+    }
+
+    @action.bound
+    stopBot() {
         const { ui } = this.root_store.core;
+
         this.dbot.stopBot();
+
         ui.setPromptHandler(false);
 
         if (this.error_type) {
@@ -208,6 +220,44 @@ export default class RunPanelStore {
     }
 
     @action.bound
+    showStopMultiplierContractDialog() {
+        const { summary_card, core } = this.root_store;
+        const { ui } = core;
+
+        this.onOkButtonClick = () => {
+            ui.setPromptHandler(false);
+            this.dbot.terminateBot();
+            this.onCloseDialog();
+            summary_card.clear();
+        };
+        this.onCancelButtonClick = () => {
+            this.onClickSell();
+            this.stopBot();
+            this.onCloseDialog();
+        };
+        this.dialog_options = {
+            title: localize('Keep your current contract?'),
+            message: (
+                <Localize
+                    i18n_default_text='Would you like to keep your current contract or close it? If you decide to keep it running, you can check and close it later on the <0>Reports</0> page.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='/reports/positions'
+                        />,
+                    ]}
+                />
+            ),
+            ok_button_text: localize('Keep my contract'),
+            cancel_button_text: localize('Close my contract'),
+        };
+        this.is_dialog_open = true;
+    }
+
+    @action.bound
     showLoginDialog() {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
@@ -256,6 +306,17 @@ export default class RunPanelStore {
         this.is_dialog_open = true;
     }
 
+    @action.bound
+    showContractUpdateErrorDialog(message) {
+        this.onOkButtonClick = this.onCloseDialog;
+        this.onCancelButtonClick = undefined;
+        this.dialog_options = {
+            title: localize('Contract Update Error'),
+            message: localize(message),
+        };
+        this.is_dialog_open = true;
+    }
+
     registerBotListeners() {
         const { summary_card, transactions } = this.root_store;
 
@@ -272,7 +333,7 @@ export default class RunPanelStore {
     }
 
     registerReactions() {
-        const { client, common, ui } = this.root_store.core;
+        const { client, common, notifications } = this.root_store.core;
 
         const registerIsSocketOpenedListener = () => {
             if (common.is_socket_opened) {
@@ -280,7 +341,7 @@ export default class RunPanelStore {
                     () => client.loginid,
                     loginid => {
                         if (loginid && this.is_running) {
-                            ui.addNotificationMessage(switch_account_notification);
+                            notifications.addNotificationMessage(switch_account_notification);
                         }
                         this.dbot.terminateBot();
                         this.unregisterBotListeners();
@@ -344,7 +405,7 @@ export default class RunPanelStore {
 
     @action.bound
     onBotStopEvent() {
-        const { self_exclusion } = this.root_store;
+        const { self_exclusion, summary_card } = this.root_store;
         const { ui } = this.root_store.core;
         const indicateBotStopped = () => {
             this.error_type = undefined;
@@ -383,6 +444,8 @@ export default class RunPanelStore {
         }
 
         this.setHasOpenContract(false);
+
+        summary_card.clearContractUpdateConfigValues();
 
         // listen for new version update
         const listen_new_version = new Event('ListenPWAUpdate');
@@ -423,15 +486,19 @@ export default class RunPanelStore {
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
                 break;
             }
-            default: {
-                this.setContractStage(contract_stages.NOT_RUNNING);
+            default:
                 break;
-            }
         }
     }
 
     @action.bound
     onClickSell() {
+        const { is_multiplier } = this.root_store.summary_card;
+
+        if (is_multiplier) {
+            this.setContractStage(contract_stages.IS_STOPPING);
+        }
+
         this.dbot.interpreter.bot.getBotInterface().sellAtMarket();
     }
 
@@ -464,25 +531,25 @@ export default class RunPanelStore {
 
     @action.bound
     showErrorMessage(data) {
-        const { journal, ui } = this.root_store;
+        const { journal, notifications } = this.root_store;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
             this.toggleDrawer(true);
             this.setActiveTabIndex(run_panel.JOURNAL);
         } else {
-            ui.addNotificationMessage(journalError(this.switchToJournal));
-            ui.removeNotificationMessage({ key: 'bot_error' });
+            notifications.addNotificationMessage(journalError(this.switchToJournal));
+            notifications.removeNotificationMessage({ key: 'bot_error' });
         }
     }
 
     @action.bound
     switchToJournal() {
-        const { journal, ui } = this.root_store;
+        const { journal, notifications } = this.root_store;
         journal.journal_filters.push(message_types.ERROR);
         this.setActiveTabIndex(run_panel.JOURNAL);
         this.toggleDrawer(true);
-        ui.toggleNotificationsModal();
-        ui.removeNotificationByKey({ key: 'bot_error' });
+        notifications.toggleNotificationsModal();
+        notifications.removeNotificationByKey({ key: 'bot_error' });
     }
 
     unregisterBotListeners = () => {
@@ -539,5 +606,20 @@ export default class RunPanelStore {
         const { client } = this.root_store.core;
         await client.logout();
         this.setActiveTabIndex(run_panel.SUMMARY);
+    }
+
+    preloadAudio() {
+        const strategy_sounds = this.dbot.getStrategySounds();
+
+        strategy_sounds.forEach(sound => {
+            const audioElement = document.getElementById(sound);
+
+            audioElement.muted = true;
+            audioElement.play().catch(() => {
+                // suppressing abort error, thrown on immediate .pause()
+            });
+            audioElement.pause();
+            audioElement.muted = false;
+        });
     }
 }

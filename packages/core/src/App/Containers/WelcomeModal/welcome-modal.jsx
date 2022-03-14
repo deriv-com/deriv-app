@@ -1,32 +1,21 @@
 import React from 'react';
-import { withRouter } from 'react-router';
 import { connect } from 'Stores/connect';
-import { Modal, ThemedScrollbars } from '@deriv/components';
-import Welcome from './welcome.jsx';
+import WelcomeModal1 from './welcome-modal-1.jsx';
+import WelcomeModal2 from './welcome-modal-2.jsx';
 
-const WelcomeModal = props => {
-    const { toggleWelcomeModal, history, toggleShouldShowMultipliersOnboarding } = props;
-    const switchPlatform = React.useCallback(
-        ({ route, should_show_multiplier } = {}) => {
-            toggleWelcomeModal({ is_visible: false, should_persist: true });
-            if (route) history.push(route);
-            if (should_show_multiplier) toggleShouldShowMultipliersOnboarding(true);
-        },
-        [toggleWelcomeModal, history, toggleShouldShowMultipliersOnboarding]
-    );
+const WelcomeModal = ({ is_eu, landing_companies, residence }) => {
+    const is_excluded_from_cr_onboarding = ['au', 'sg', 'no'].includes(residence);
+    const shortcode = landing_companies?.financial_company?.shortcode || landing_companies?.gaming_company?.shortcode;
 
-    return (
-        <Modal width='760px' className='welcome' is_open has_close_icon={false} has_outer_content>
-            <ThemedScrollbars height={700}>
-                <Welcome switchPlatform={switchPlatform} />
-            </ThemedScrollbars>
-        </Modal>
-    );
+    if ((shortcode === 'svg' && !is_excluded_from_cr_onboarding) || is_eu) {
+        return <WelcomeModal1 />;
+    }
+
+    return <WelcomeModal2 />;
 };
 
-export default withRouter(
-    connect(({ ui }) => ({
-        toggleWelcomeModal: ui.toggleWelcomeModal,
-        toggleShouldShowMultipliersOnboarding: ui.toggleShouldShowMultipliersOnboarding,
-    }))(WelcomeModal)
-);
+export default connect(({ client }) => ({
+    residence: client.residence,
+    landing_companies: client.landing_companies,
+    is_eu: client.is_eu,
+}))(WelcomeModal);

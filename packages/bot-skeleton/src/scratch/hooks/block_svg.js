@@ -99,12 +99,15 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     // Option to disable/enable block.
     if (this.workspace.options.disable) {
         const restricted_parents = block.restricted_parents || [];
+        const is_trade_parameter = this.type.includes('trade_definition_') && !this.isMovable();
+
         const disable_option = {
             text: this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled:
-                !this.disabled ||
-                restricted_parents.length === 0 ||
-                restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
+                !is_trade_parameter &&
+                (!this.disabled ||
+                    restricted_parents.length === 0 ||
+                    restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent))),
             callback: () => {
                 const group = Blockly.Events.getGroup();
                 if (!group) {
@@ -151,6 +154,13 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
             });
         }
     }
+
+    // Disable/Enable stack buttons. If target - last block in stack buttons will be hidden.
+    if (block.nextConnection?.targetConnection) {
+        menu_options.push(Blockly.ContextMenu.blockEnableOption(block, e));
+        menu_options.push(Blockly.ContextMenu.blockDisableOption(block, e));
+    }
+
     // Allow the block to add or modify menu_options.
     if (this.customContextMenu) {
         this.customContextMenu(menu_options);
@@ -235,7 +245,13 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
 
     // Show/hide the inputs.
-    this.inputList.forEach(input => render_list.push(...input.setVisible(!collapsed)));
+    this.inputList.forEach(input => {
+        render_list.push(...input.setVisible(!collapsed));
+
+        // Hide empty rounded inputs
+        if (collapsed && input.type === 1 && !input.connection.targetConnection && input.outlinePath)
+            input.outlinePath.style.visibility = 'hidden';
+    });
 
     if (collapsed) {
         this.getIcons()

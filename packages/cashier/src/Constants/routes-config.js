@@ -29,14 +29,14 @@ const initRoutesConfig = () => [
                 path: routes.cashier_deposit,
                 component: Deposit,
                 getTitle: () => localize('Deposit'),
-                icon_component: 'IcWalletAdd',
+                icon_component: 'IcCashierAdd',
                 default: true,
             },
             {
                 path: routes.cashier_withdrawal,
                 component: Withdrawal,
                 getTitle: () => localize('Withdrawal'),
-                icon_component: 'IcWalletMinus',
+                icon_component: 'IcCashierMinus',
             },
             {
                 path: routes.cashier_pa,
@@ -59,13 +59,13 @@ const initRoutesConfig = () => [
             {
                 path: routes.cashier_p2p,
                 component: P2PCashier,
-                getTitle: () => localize('DP2P'),
+                getTitle: () => localize('Deriv P2P'),
                 icon_component: 'IcDp2p',
             },
             {
                 path: routes.cashier_p2p_verification,
                 component: P2PCashier,
-                getTitle: () => localize('DP2P'),
+                getTitle: () => localize('Deriv P2P'),
                 icon_component: 'IcDp2p',
                 is_invisible: true,
             },
@@ -85,9 +85,9 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_dashboard }) => {
+const getRoutesConfig = ({ is_appstore }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_dashboard });
+        routesConfig = initRoutesConfig({ is_appstore });
         routesConfig.push(route_default);
     }
     return routesConfig;

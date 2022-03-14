@@ -1,7 +1,6 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, runInAction } from 'mobx';
-import { toMoment } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
+import { toMoment, WS } from '@deriv/shared';
 
 import { formatStatementTransaction } from './Helpers/format-response';
 import getDateBoundaries from '../Profit/Helpers/format-request';
@@ -187,7 +186,7 @@ export default class StatementStore extends BaseStore {
         this.loadAccountStatistics();
     }
 
-    /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay 
+    /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay
     as we change tab or click on any contract for later references as discussed with UI/UX and QA */
     @action.bound
     onUnmount() {

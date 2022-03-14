@@ -54,6 +54,9 @@
                     background-color: var(--fill-normal);
                 }
             }
+            .dc-field--error {
+                font-size: 1.1rem;
+            }
             @include desktop {
                 /* To get rid of ugly chrome autofill shadow dom-applied background color */
                 &__field {
@@ -149,7 +152,6 @@
             width: unset;
             margin: 0 2.4rem;
             line-height: 20px;
-            color: var(--text-less-prominent);
         }
     }
 }

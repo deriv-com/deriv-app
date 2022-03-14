@@ -23,7 +23,7 @@ const SelfExclusion = ({
     footer_ref,
     is_app_settings,
     is_cr,
-    is_dashboard,
+    is_appstore,
     is_eu,
     is_mf,
     is_mlt,
@@ -293,7 +293,7 @@ const SelfExclusion = ({
     const backFromConfirmLimits = () => setState({ is_confirm_page: false, submit_error_message: '' });
 
     const objectValuesToString = object => {
-        Object.keys(object).forEach(item => {
+        Object.keys(object || {}).forEach(item => {
             object[item] = `${object[item]}`;
         });
 
@@ -361,7 +361,7 @@ const SelfExclusion = ({
     };
 
     if (is_virtual) {
-        return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
+        return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
     }
 
     if (state.is_loading || is_switching) {

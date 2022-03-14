@@ -34,7 +34,7 @@ const Tabs = ({
     const active_tab_ref = React.useRef();
     const tabs_wrapper_ref = React.useRef();
     const pushHash = hash => {
-        history.replace(`${history.location.pathname}#${hash}`);
+        history.replace(`${history.location.pathname}${window.location.search}#${hash}`);
     };
 
     const setActiveLineStyle = React.useCallback(() => {
@@ -59,7 +59,7 @@ const Tabs = ({
         if (should_update_hash) {
             // if hash is in url, find which tab index correlates to it
             const hash = location.hash.slice(1);
-            const hash_index = children.findIndex(child => child.props && child.props['data-hash'] === hash);
+            const hash_index = children.findIndex(child => child && child.props && child.props['data-hash'] === hash);
             const has_hash = hash_index > -1;
 
             if (has_hash) {
@@ -92,6 +92,7 @@ const Tabs = ({
         if (active_index >= 0 && active_index !== active_tab_index) {
             setActiveTabIndex(active_index);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_index]);
 
     const onClickTabItem = index => {

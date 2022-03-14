@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
-import { runIrreversibleEvents } from '../../../utils';
+import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
@@ -21,7 +21,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 duration_unit: '%1',
                 duration_value: '%2',
             }),
-            message1: `${is_stake ? localize('Stake') : localize('Payout')}: %1 %2`,
+            message1: `${is_stake ? localize('Stake') : localize('Payout')}: %1 %2 %3`,
             args0: [
                 {
                     type: 'field_dropdown',
@@ -31,6 +31,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type: 'input_value',
                     name: 'DURATION',
+                    check: 'Number',
                 },
             ],
             args1: [
@@ -43,6 +44,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     type: 'input_value',
                     name: 'AMOUNT',
                     check: 'Number',
+                },
+                {
+                    type: 'field_label',
+                    name: 'AMOUNT_LIMITS',
+                    text: '',
                 },
             ],
             colour: Blockly.Colours.Special1.colour,
@@ -63,15 +69,22 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
-            return;
+        if (event.type === 'change') {
+            const selected_block = this.workspace.getBlockById(event.blockId);
+            selected_block?.parentBlock_?.inputList
+                .filter(item => ['DURATION', 'AMOUNT'].includes(item.name))
+                .forEach(input => {
+                    const input_target = input.connection.targetBlock();
+                    const value = input_target.getFieldValue('NUM');
+                    if (value.startsWith('0')) {
+                        const new_value = value.includes('.') ? parseFloat(`${value}`) : parseInt(`${value}`);
+                        input_target.setFieldValue(new_value.toString(), 'NUM');
+                    }
+                });
         }
 
-        if (
-            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            event.type === Blockly.Events.END_DRAG
-        ) {
-            this.setCurrency();
+        if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
+            return;
         }
 
         const trade_definition_block = this.workspace
@@ -89,6 +102,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         }
 
         this.selected_symbol = market_block.getFieldValue('SYMBOL_LIST');
+        this.selected_market = market_block.getFieldValue('MARKET_LIST');
         this.selected_trade_type_category = trade_type_block.getFieldValue('TRADETYPECAT_LIST');
         this.selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
         this.selected_duration = this.getFieldValue('DURATIONTYPE_LIST');
@@ -96,6 +110,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.getFieldValue('BARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[0][1],
             this.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[1][1],
         ];
+
+        if (
+            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
+            event.type === Blockly.Events.END_DRAG
+        ) {
+            this.setCurrency();
+            this.updateAmountLimits();
+        }
 
         const is_load_event = /^dbot-load/.test(event.group);
 
@@ -105,6 +127,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateBarrierInputs(false, false);
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
+                this.updateAmountLimits();
             } else {
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
@@ -141,6 +164,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.enforceSingleBarrierType(true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
+                this.updateAmountLimits();
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
@@ -148,6 +172,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 const fake_creation_event = new Blockly.Events.Create(this);
                 fake_creation_event.recordUndo = false;
                 Blockly.Events.fire(fake_creation_event);
+            } else if (this.selected_trade_type === 'multiplier') {
+                this.updateDurationInput(false, false);
             }
         }
     },
@@ -201,37 +227,116 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             }
         });
     },
+    updateAmountLimits() {
+        const { account_limits } = ApiHelpers.instance;
+        const { currency, landing_company_shortcode } = DBotStore.instance.client;
+        account_limits.getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
+            if (!this.getField('AMOUNT_LIMITS')) {
+                return;
+            }
+            this.amount_limits = limits;
+            const { max_payout, min_stake } = limits;
+            if (max_payout && min_stake) {
+                runIrreversibleEvents(() => {
+                    this.setFieldValue(
+                        localize('(min: {{min_stake}} - max: {{max_payout}})', {
+                            min_stake,
+                            max_payout,
+                        }),
+                        'AMOUNT_LIMITS'
+                    );
+                });
+            }
+        });
+    },
     updateDurationInput(should_use_default_unit, should_update_value) {
         const { contracts_for } = ApiHelpers.instance;
 
-        contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
-            // Keep duration in memory so we can later reference them for validation
-            this.durations = durations;
+        if (this.selected_trade_type === 'multiplier' && this.isDescendantOf('trade_definition')) {
+            runIrreversibleEvents(() => {
+                runGroupedEvents(false, () => {
+                    const multiplier_block = this.workspace.newBlock('trade_definition_multiplier');
+                    multiplier_block.initSvg();
+                    multiplier_block.render();
 
-            const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');
-            const duration_input = this.getInput('DURATION');
-            const duration_options = durations.map(duration => [duration.display, duration.unit]);
+                    const trade_definition_block = this.workspace.getTradeDefinitionBlock();
+                    const parent_connection = trade_definition_block.getInput('SUBMARKET').connection;
+                    const child_connection = multiplier_block.previousConnection;
+                    parent_connection.connect(child_connection);
 
-            if (duration_field_dropdown) {
-                duration_field_dropdown.updateOptions(duration_options, {
+                    const stake_input = multiplier_block.getInput('AMOUNT');
+
+                    const stake_shadow_block = this.workspace.newBlock('math_number_positive');
+                    stake_shadow_block.setShadow(true);
+                    stake_shadow_block.setFieldValue(1, 'NUM');
+                    stake_shadow_block.outputConnection.connect(stake_input.connection);
+                    stake_shadow_block.initSvg();
+                    stake_shadow_block.render();
+
+                    const take_profit_block = this.workspace.newBlock('multiplier_take_profit');
+                    const take_profit_input = take_profit_block.getInput('AMOUNT');
+
+                    const take_profit_shadow_block = this.workspace.newBlock('math_number_positive');
+                    take_profit_shadow_block.setShadow(true);
+                    take_profit_shadow_block.setFieldValue(0, 'NUM');
+                    take_profit_shadow_block.outputConnection.connect(take_profit_input.connection);
+                    take_profit_shadow_block.initSvg();
+                    take_profit_shadow_block.render();
+
+                    multiplier_block
+                        .getLastConnectionInStatement('MULTIPLIER_PARAMS')
+                        .connect(take_profit_block.previousConnection);
+                    take_profit_block.initSvg();
+                    take_profit_block.render();
+
+                    const stop_loss_block = this.workspace.newBlock('multiplier_stop_loss');
+                    const stop_loss_input = stop_loss_block.getInput('AMOUNT');
+
+                    const stop_loss_shadow_block = this.workspace.newBlock('math_number_positive');
+                    stop_loss_shadow_block.setShadow(true);
+                    stop_loss_shadow_block.setFieldValue(0, 'NUM');
+                    stop_loss_shadow_block.outputConnection.connect(stop_loss_input.connection);
+                    stop_loss_shadow_block.initSvg();
+                    stop_loss_shadow_block.render();
+
+                    multiplier_block
+                        .getLastConnectionInStatement('MULTIPLIER_PARAMS')
+                        .connect(stop_loss_block.previousConnection);
+                    stop_loss_block.initSvg();
+                    stop_loss_block.render();
+
+                    this.dispose();
+                    Blockly.derivWorkspace.cleanUp();
+                });
+            });
+        } else {
+            contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
+                // Keep duration in memory so we can later reference them for validation
+                this.durations = durations;
+
+                const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');
+                const duration_input = this.getInput('DURATION');
+                const duration_options = durations.map(duration => [duration.display, duration.unit]);
+
+                duration_field_dropdown?.updateOptions(duration_options, {
                     default_value: should_use_default_unit ? undefined : duration_field_dropdown.getValue(),
                 });
-            }
 
-            if (should_update_value && duration_input && duration_input.connection) {
-                const target_block = duration_input.connection.targetBlock();
+                if (should_update_value && duration_input && duration_input.connection) {
+                    const target_block = duration_input.connection.targetBlock();
 
-                if (target_block && target_block.isShadow()) {
-                    const min_duration = durations.find(d => d.unit === this.selected_duration);
+                    if (target_block && target_block.isShadow()) {
+                        const min_duration = durations.find(duration => duration.unit === this.selected_duration);
 
-                    if (min_duration) {
-                        runIrreversibleEvents(() => {
-                            target_block.setFieldValue(min_duration.min, 'NUM');
-                        });
+                        if (min_duration) {
+                            runIrreversibleEvents(() => {
+                                target_block.setFieldValue(min_duration.min, 'NUM');
+                            });
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     },
     updateBarrierInputs(should_use_default_type, should_use_default_values) {
         const { contracts_for } = ApiHelpers.instance;
@@ -368,6 +473,20 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         return {
             AMOUNT: input => {
                 const input_number = Number(input);
+                const max_payout = this.amount_limits?.max_payout;
+                const min_stake = this.amount_limits?.min_stake;
+                if (min_stake && input_number < min_stake) {
+                    this.error_message = localize("Please enter a stake amount that's at least {{min_stake}}.", {
+                        min_stake,
+                    });
+                    return input_number < min_stake;
+                }
+                if (max_payout && input_number > max_payout) {
+                    this.error_message = localize("Please enter a payout amount that's lower than {{max_payout}}.", {
+                        max_payout,
+                    });
+                    return input_number > max_payout;
+                }
                 this.error_message = localize('Amount must be a positive number.');
                 return !isNaN(input_number) && input_number <= 0;
             },

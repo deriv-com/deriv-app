@@ -35,12 +35,15 @@ class DBot {
                     if (is_mobile) {
                         workspaceScale = 0.7;
                     } else {
-                        const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                        const scratch_div_width = document.getElementById('scratch_div')?.offsetWidth;
                         const zoom_scale = scratch_div_width / window_width / 1.5;
                         workspaceScale = zoom_scale;
                     }
                 }
                 const el_scratch_div = document.getElementById('scratch_div');
+                if (!el_scratch_div) {
+                    return;
+                }
                 this.workspace = Blockly.inject(el_scratch_div, {
                     grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                     media: `${__webpack_public_path__}media/`,
@@ -68,18 +71,21 @@ class DBot {
 
                 // Push main.xml to workspace and reset the undo stack.
                 this.workspace.current_strategy_id = Blockly.utils.genUid();
-                let strategy_to_load = main_xml;
+                Blockly.derivWorkspace.strategy_to_load = main_xml;
                 let file_name = config.default_file_name;
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
-                    strategy_to_load = latest_file.xml;
+                    Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
                     file_name = latest_file.name;
                     Blockly.derivWorkspace.current_strategy_id = latest_file.id;
                 }
 
                 const event_group = `dbot-load${Date.now()}`;
                 Blockly.Events.setGroup(event_group);
-                Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+                Blockly.Xml.domToWorkspace(
+                    Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                    this.workspace
+                );
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);
@@ -237,11 +243,21 @@ class DBot {
 
         top_blocks.forEach(block => {
             if (!block.isMainBlock() && !block.isIndependentBlock()) {
-                block.setDisabled(true);
+                this.disableBlocksRecursively(block);
             }
         });
 
         return true;
+    }
+
+    /**
+     * Disable blocks and their optional children.
+     */
+    disableBlocksRecursively(block) {
+        block.setDisabled(true);
+        if (block.nextConnection?.targetConnection) {
+            this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
+        }
     }
 
     /**
@@ -288,7 +304,7 @@ class DBot {
     }
 
     unHighlightAllBlocks() {
-        this.workspace.getAllBlocks().forEach(block => block.setErrorHighlighted(false));
+        this.workspace?.getAllBlocks().forEach(block => block.setErrorHighlighted(false));
     }
 
     /**
@@ -303,8 +319,7 @@ class DBot {
                     'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
-        }
-        if (!isAllRequiredBlocksEnabled(this.workspace)) {
+        } else if (!isAllRequiredBlocksEnabled(this.workspace)) {
             error = new Error(
                 localize(
                     'One or more mandatory blocks are disabled in your workspace. Please enable the required block(s) and then try again.'
@@ -459,6 +474,25 @@ class DBot {
                 }
             }
         });
+    }
+
+    /**
+     * Checks whether the workspace contains non-silent notification blocks. Returns array of names for audio files to be played.
+     */
+    getStrategySounds() {
+        const all_blocks = this.workspace.getAllBlocks();
+        const notify_blocks = all_blocks.filter(block => block.type === 'notify');
+        const strategy_sounds = [];
+
+        notify_blocks.forEach(block => {
+            const selected_sound = block.inputList[0].fieldRow[3].value_;
+
+            if (selected_sound !== 'silent') {
+                strategy_sounds.push(selected_sound);
+            }
+        });
+
+        return strategy_sounds;
     }
 
     static handleDragOver(event) {

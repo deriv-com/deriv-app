@@ -2,15 +2,15 @@ const path = require('path');
 const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 const { openChromeBasedOnPlatform } = require('./helpers');
 
-module.exports = function (env, argv) {
-    console.log(`Building application for ${env.IS_DASHBOARD === 'true' ? 'Deriv Dashboard' : 'Deriv App'}...`);
-    const base = env && env.base && env.base !== true ? '/' + env.base + '/' : '/';
+module.exports = function (env) {
+    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
     const sub_path = env && env.open && env.open !== true ? env.open : '';
     const is_qawolf = env && env.IS_QAWOLF && JSON.parse(env.IS_QAWOLF);
 
     return {
         context: path.resolve(__dirname, '../src'),
         devServer: {
+            publicPath: base,
             open: openChromeBasedOnPlatform(process.platform),
             openPage: sub_path,
             host: is_qawolf ? 'localhost' : 'localhost.binary.sx',
@@ -30,6 +30,7 @@ module.exports = function (env, argv) {
         resolve: {
             alias: ALIASES,
             extensions: ['.js', '.jsx'],
+            symlinks: true,
         },
         optimization: {
             minimize: IS_RELEASE,
@@ -66,5 +67,8 @@ module.exports = function (env, argv) {
             is_test_env: false,
             env,
         }),
+        snapshot: {
+            managedPaths: [],
+        },
     };
 };

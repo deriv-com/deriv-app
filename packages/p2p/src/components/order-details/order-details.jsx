@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ThemedScrollbars } from '@deriv/components';
+import { Accordion, HintBox, Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -11,6 +11,9 @@ import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx'
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
 import { useStores } from 'Stores';
+import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
+import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
+import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
@@ -23,6 +26,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         contact_info,
         has_timer_expired,
         id,
+        is_active_order,
         is_buy_order,
         is_buyer_confirmed_order,
         is_my_ad,
@@ -32,19 +36,18 @@ const OrderDetails = observer(({ onPageReturn }) => {
         local_currency,
         other_user_details,
         payment_info,
-        price,
+        // price, TODO: Uncomment when price is fixed
         purchase_time,
         rate,
         should_highlight_alert,
         should_highlight_danger,
         should_highlight_success,
+        should_show_lost_funds_banner,
         should_show_order_footer,
         status_string,
-    } = order_store.order_information;
+    } = order_store?.order_information;
 
     const { chat_channel_url } = sendbird_store;
-
-    const has_full_name = other_user_details.first_name && other_user_details.last_name;
 
     React.useEffect(() => {
         const disposeListeners = sendbird_store.registerEventListeners();
@@ -59,6 +62,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         return () => {
             disposeListeners();
             disposeReactions();
+            order_store.setOrderPaymentMethodDetails(undefined);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -72,6 +76,19 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
+            {should_show_lost_funds_banner && (
+                <div className='order-details--warning'>
+                    <HintBox
+                        icon='IcAlertWarning'
+                        message={
+                            <Text size='xxxs' color='prominent' line_height='xs'>
+                                <Localize i18n_default_text='To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.' />
+                            </Text>
+                        }
+                        is_warn
+                    />
+                </div>
+            )}
             <div className='order-details'>
                 <div className='order-details-card'>
                     <div className='order-details-card__header'>
@@ -94,7 +111,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
                                 <div className='order-details-card__header-amount'>
-                                    {getFormattedText(price, local_currency)}
+                                    {getFormattedText(amount_display * rate, local_currency)}
                                 </div>
                             )}
                             <div className='order-details-card__header-id'>
@@ -109,31 +126,18 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         <div className='order-details-card__info-columns'>
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
-                                    label={labels.other_party_role}
+                                    label={labels.counterparty_nickname_label}
                                     value={
-                                        <React.Fragment>
-                                            <Text
-                                                size={has_full_name ? 's' : 'xs'}
-                                                color='prominent'
-                                                line_height='m'
-                                                weight={has_full_name && 'bold'}
-                                            >
-                                                {other_user_details.name}
-                                            </Text>
-
-                                            {has_full_name && (
-                                                <Text size='xs' line_height='xs'>
-                                                    {` ${other_user_details.first_name} ${other_user_details.last_name}`}
-                                                </Text>
-                                            )}
-                                        </React.Fragment>
+                                        <Text size='xs' line_height='m'>
+                                            {other_user_details.name}
+                                        </Text>
                                     }
                                 />
                             </div>
                             <div className='order-details-card__info--right'>
                                 <OrderInfoBlock
-                                    label={localize('Rate (1 {{ account_currency }})', { account_currency })}
-                                    value={getFormattedText(rate, local_currency)}
+                                    label={labels.counterparty_real_name_label}
+                                    value={`${other_user_details.first_name} ${other_user_details.last_name}`}
                                 />
                             </div>
                         </div>
@@ -141,20 +145,70 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.left_send_or_receive}
-                                    value={getFormattedText(price, local_currency)}
+                                    value={getFormattedText(amount_display * rate, local_currency)}
                                 />
-                                <OrderInfoBlock label={localize('Time')} value={purchase_time} />
+                                <OrderInfoBlock
+                                    label={localize('Rate (1 {{ account_currency }})', { account_currency })}
+                                    value={getFormattedText(rate, local_currency)}
+                                />
                             </div>
                             <div className='order-details-card__info--right'>
                                 <OrderInfoBlock
                                     label={labels.right_send_or_receive}
                                     value={`${amount_display} ${account_currency}`}
                                 />
+                                <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
-                        <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
-                        <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
-                        <OrderInfoBlock label={labels.instructions} value={advert_details.description.trim() || '-'} />
+                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                        {is_active_order &&
+                            (order_store?.has_order_payment_method_details ? (
+                                <div className='order-details-card--padding'>
+                                    <Text size='xs' weight='bold'>
+                                        {labels.payment_details}
+                                    </Text>
+                                    <Accordion
+                                        className='order-details-card__accordion'
+                                        icon_close='IcChevronRight'
+                                        icon_open='IcChevronDown'
+                                        list={order_store?.order_payment_method_details?.map(payment_method => ({
+                                            header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
+                                            content: <PaymentMethodAccordionContent payment_method={payment_method} />,
+                                        }))}
+                                    />
+                                </div>
+                            ) : (
+                                <OrderInfoBlock
+                                    className='order-details-card--padding'
+                                    label={
+                                        <Text size='xs' weight='bold'>
+                                            {labels.payment_details}
+                                        </Text>
+                                    }
+                                    value={payment_info || '-'}
+                                />
+                            ))}
+                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                        <OrderInfoBlock
+                            className='order-details-card--padding'
+                            label={
+                                <Text size='xs' weight='bold'>
+                                    {labels.contact_details}
+                                </Text>
+                            }
+                            value={contact_info || '-'}
+                        />
+                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                        <OrderInfoBlock
+                            className='order-details-card--padding'
+                            label={
+                                <Text size='xs' weight='bold'>
+                                    {labels.instructions}
+                                </Text>
+                            }
+                            value={advert_details.description.trim() || '-'}
+                        />
+                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />

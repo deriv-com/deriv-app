@@ -172,7 +172,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__counter {
-            margin-left: 1rem;
+            margin-left: 10rem;
         }
         &--active &__link {
             color: var(--text-prominent);
@@ -223,7 +223,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &-side-note {
-            max-width: 256px;
+            min-width: 25.6rem;
             margin-left: 2.4rem;
 
             &-item {
@@ -233,7 +233,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 color: var(--text-general);
                 font-size: var(--text-size-xxs);
                 line-height: 1.5;
-                margin-bottom: 1rem;
+                margin-bottom: 2.4rem;
+                width: 25.6rem;
             }
         }
         &.dc-vertical-tab:not(.dc-vertical-tab--full-screen) {

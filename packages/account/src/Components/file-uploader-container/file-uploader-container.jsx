@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { PlatformContext, isDesktop } from '@deriv/shared';
+import { PlatformContext, isDesktop, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import FileUploader from './file-uploader.jsx';
 
 const FileProperties = () => {
@@ -39,7 +38,7 @@ const FileProperties = () => {
 };
 
 const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const ref = React.useRef();
 
     const getSocketFunc = getSocket ?? WS.getSocket;
@@ -50,7 +49,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
         }
         return () => onRef(undefined);
     }, [onRef, ref]);
-    if (is_dashboard && isDesktop()) {
+    if (is_appstore && isDesktop()) {
         return (
             <div className='account-poa__upload-section account-poa__upload-section-dashboard'>
                 <div className='account-poa__upload-file account-poa__upload-file-dashboard'>
@@ -66,69 +65,57 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
         <div className='account-poa__upload-section'>
             {is_description_enabled && (
                 <ul className='account-poa__upload-list'>
-                    {!is_dashboard && (
-                        <li className='account-poa__upload-box'>
-                            <Icon icon='IcUtility' className='account-poa__upload-icon' size={20} />
-                            <div className='account-poa__upload-item'>
-                                <Localize i18n_default_text='A recent utility bill (e.g. electricity, water, gas, phone or internet)' />
-                            </div>
-                        </li>
-                    )}
                     <li className='account-poa__upload-box'>
-                        {is_dashboard ? (
-                            <Icon icon='IcBankDashboard' className='account-poa__upload-icon' size={24} />
-                        ) : (
-                            <Icon icon='IcBank' className='account-poa__upload-icon' size={20} />
-                        )}
-                        <div className='account-poa__upload-item'>
-                            <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address' />
-                        </div>
-                    </li>
-                    <li className='account-poa__upload-box'>
-                        {is_dashboard ? (
-                            <Icon icon='IcPoaFileWithAddress' className='account-poa__upload-icon' size={24} />
-                        ) : (
-                            <Icon icon='IcUser' className='account-poa__upload-icon' size={20} />
-                        )}
-                        <div className='account-poa__upload-item'>
-                            <Localize i18n_default_text='Issued under your name with your current address' />
-                        </div>
-                    </li>
-                    <li className='account-poa__upload-box'>
-                        {is_dashboard ? (
+                        {is_appstore ? (
                             <Icon icon='IcPoaFileEightMb' className='account-poa__upload-icon' size={24} />
                         ) : (
-                            <Icon icon='IcLessThanEight' className='account-poa__upload-icon' size={20} />
+                            <Icon icon='IcLessThanEight' className='account-poa__upload-icon' size={24} />
                         )}
                         <div className='account-poa__upload-item'>
                             <Localize i18n_default_text='Less than 8MB' />
                         </div>
                     </li>
                     <li className='account-poa__upload-box'>
-                        {is_dashboard ? (
+                        <Icon icon='IcImage' className='account-poa__upload-icon' size={24} />
+                        <div className='account-poa__upload-item'>
+                            <Localize i18n_default_text='JPEG JPG PNG PDF GIF' />
+                        </div>
+                    </li>
+                    <li className='account-poa__upload-box'>
+                        {is_appstore ? (
                             <Icon icon='IcPoaFileTime' className='account-poa__upload-icon' size={24} />
                         ) : (
-                            <Icon icon='IcClock' className='account-poa__upload-icon' size={20} />
+                            <Icon icon='IcClock' className='account-poa__upload-icon' size={24} />
                         )}
                         <div className='account-poa__upload-item'>
                             <Localize i18n_default_text='1 - 6 months old' />
                         </div>
                     </li>
                     <li className='account-poa__upload-box'>
-                        {is_dashboard ? (
+                        {is_appstore ? (
                             <Icon icon='IcPoaFileClear' className='account-poa__upload-icon' size={24} />
                         ) : (
-                            <Icon icon='IcEye' className='account-poa__upload-icon' size={20} />
+                            <Icon icon='IcEye' className='account-poa__upload-icon' size={24} />
                         )}
                         <div className='account-poa__upload-item'>
                             <Localize i18n_default_text='A clear colour photo or scanned image' />
+                        </div>
+                    </li>
+                    <li className='account-poa__upload-box'>
+                        {is_appstore ? (
+                            <Icon icon='IcPoaFileWithAddress' className='account-poa__upload-icon' size={24} />
+                        ) : (
+                            <Icon icon='IcUser' className='account-poa__upload-icon' size={24} />
+                        )}
+                        <div className='account-poa__upload-item'>
+                            <Localize i18n_default_text='Issued under your name with your current address' />
                         </div>
                     </li>
                 </ul>
             )}
             <div
                 className={classNames('account-poa__upload-file', {
-                    'account-poa__upload-file--dashboard': isDesktop() && is_dashboard,
+                    'account-poa__upload-file--dashboard': isDesktop() && is_appstore,
                 })}
             >
                 <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />

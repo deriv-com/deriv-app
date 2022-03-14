@@ -1,0 +1,18 @@
+.radio-group-component {
+    .dc-radio-group__item {
+        flex: none;
+    }
+}
+
+.relative-datepicker-component {
+    input {
+        // opacity: 1;
+    }
+}
+
+.vertical-tabs-component {
+    padding: 3.2rem;
+    background-color: var(--overlay-outside-dialog);
+    flex: none;
+    width: 500px;
+}

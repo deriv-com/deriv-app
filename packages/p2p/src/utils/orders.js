@@ -199,6 +199,10 @@ export default class ExtendedOrderDetails {
         return this.is_pending_order || this.is_ongoing_order;
     }
 
+    get should_show_lost_funds_banner() {
+        return this.is_pending_order || this.is_buyer_confirmed_order;
+    }
+
     get status_string() {
         // Finalised orders, should take precedence over is_expired_order/has_timer_expired.
         if (this.is_completed_order || this.is_dispute_completed_order) {
@@ -249,7 +253,8 @@ export default class ExtendedOrderDetails {
         if (this.is_buy_order) {
             if (this.is_my_ad) {
                 return {
-                    other_party_role: localize('Buyer'),
+                    counterparty_nickname_label: localize("Buyer's nickname"),
+                    counterparty_real_name_label: localize("Buyer's real name"),
                     left_send_or_receive: localize('Receive'),
                     right_send_or_receive: localize('Send'),
                     payment_details: localize('Your payment details'),
@@ -263,7 +268,8 @@ export default class ExtendedOrderDetails {
             }
 
             return {
-                other_party_role: localize('Seller'),
+                counterparty_nickname_label: localize("Seller's nickname"),
+                counterparty_real_name_label: localize("Seller's real name"),
                 left_send_or_receive: localize('Send'),
                 right_send_or_receive: localize('Receive'),
                 payment_details: localize("Seller's payment details"),
@@ -279,7 +285,8 @@ export default class ExtendedOrderDetails {
         // !this.is_buy_order
         if (this.is_my_ad) {
             return {
-                other_party_role: localize('Seller'),
+                counterparty_nickname_label: localize("Seller's nickname"),
+                counterparty_real_name_label: localize("Seller's real name"),
                 left_send_or_receive: localize('Send'),
                 right_send_or_receive: localize('Receive'),
                 payment_details: localize("Seller's payment details"),
@@ -293,7 +300,8 @@ export default class ExtendedOrderDetails {
         }
 
         return {
-            other_party_role: localize('Buyer'),
+            counterparty_nickname_label: localize("Buyer's nickname"),
+            counterparty_real_name_label: localize("Buyer's real name"),
             left_send_or_receive: localize('Receive'),
             right_send_or_receive: localize('Send'),
             payment_details: localize('Your payment details'),
@@ -319,11 +327,11 @@ export default class ExtendedOrderDetails {
     }
 
     get order_purchase_datetime() {
-        return getFormattedDateString(new Date(convertToMillis(this.order_details.created_time)));
+        return getFormattedDateString(new Date(convertToMillis(this.order_details.created_time)), true);
     }
 
     get purchase_time() {
-        return getFormattedDateString(new Date(convertToMillis(this.order_details.created_time)));
+        return getFormattedDateString(new Date(convertToMillis(this.order_details.created_time)), true);
     }
 }
 

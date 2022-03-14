@@ -2,10 +2,9 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Text, usePrevious } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { Text } from '@deriv/components';
+import { useIsMounted, WS, convertTimeFormat } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import { isMarketClosed } from 'Stores/Modules/Trading/Helpers/active-symbols';
 
@@ -51,10 +50,8 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
     const [is_loading, setLoading] = React.useState(true);
 
-    const prev_symbol = usePrevious(symbol);
-
     React.useEffect(() => {
-        if (!is_main_page || (is_main_page && isMarketClosed(active_symbols, symbol) && prev_symbol)) {
+        if (!is_main_page || (is_main_page && isMarketClosed(active_symbols, symbol))) {
             setLoading(true);
             // eslint-disable-next-line consistent-return
             const whenMarketOpens = async (days_offset, target_symbol) => {
@@ -92,6 +89,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
 
             whenMarketOpens(0, symbol);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [symbol]);
 
     React.useEffect(() => {
@@ -110,11 +108,11 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
                 clearTimeout(timer);
             }
         };
-    }, [time_left, when_market_opens]);
+    }, [time_left, when_market_opens, onMarketOpen, is_main_page]);
 
     React.useEffect(() => {
         if (!is_loading) setIsTimerLoading(false);
-    }, [is_loading]);
+    }, [is_loading, setIsTimerLoading]);
 
     let timer_components = '';
 
@@ -130,14 +128,8 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
     const { opening_time, days_offset } = when_market_opens;
     let opening_time_banner = null;
     if (opening_time) {
+        const formatted_opening_time = convertTimeFormat(opening_time);
         const target_date = moment(new Date()).add(days_offset, 'days');
-        const opening_time_moment_obj = moment(opening_time, 'HH:mm');
-        const opening_time_hour = opening_time_moment_obj.format('HH');
-        const opening_time_min = opening_time_moment_obj.format('mm');
-        const formatted_opening_time =
-            Number(opening_time_hour) > 11
-                ? `${Number(opening_time_hour) % 12}:${opening_time_min} pm`
-                : `${Number(opening_time_hour)}:${opening_time_min} am`;
         const opening_date = target_date.format('DD MMM YYYY');
         const opening_day = target_date.format('dddd');
         opening_time_banner = (
@@ -152,7 +144,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
             >
                 <Localize
                     i18n_default_text='{{formatted_opening_time}} (GMT) on {{opening_day}},<0></0> {{opening_date}}.'
-                    components={[<br key={0} />]}
+                    components={[<div key={0} />]}
                     values={{
                         formatted_opening_time,
                         opening_day,

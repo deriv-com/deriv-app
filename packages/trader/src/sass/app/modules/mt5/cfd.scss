@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    max-width: 424px;
 
     form {
         flex-grow: 1;
@@ -55,6 +56,11 @@
     .status-dialog {
         margin-top: 3em;
     }
+    .cfd-password-reset {
+        @include mobile {
+            flex: 1;
+        }
+    }
     & .dc-password-meter__container {
         flex-grow: 1;
         margin: auto;
@@ -77,7 +83,7 @@
             overflow-x: hidden;
             height: 100%;
             max-height: calc(100% - 6.4rem);
-            padding: 2rem;
+            padding: 1rem;
         }
     }
     @include tablet-up {
@@ -85,7 +91,6 @@
             display: flex;
             flex-direction: column;
             width: 100%;
-            max-width: 35rem;
             margin-bottom: 2rem;
 
             &--password-reset {
@@ -99,6 +104,16 @@
 }
 
 .cfd-password-modal {
+    &__warning {
+        padding: 2.5rem;
+        max-width: 50rem;
+        align-self: center;
+        &-text {
+            border-radius: 0.8rem;
+            padding: 0.8rem;
+            background-color: var(--status-warning);
+        }
+    }
     &__message {
         max-width: 32rem;
         margin: auto;
@@ -114,6 +129,49 @@
         &.dc-radio-group__item {
             display: flex;
             flex-direction: row;
+        }
+    }
+    &__create-password {
+        padding: 0 1.2rem;
+
+        &-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+            margin-top: -2.5rem;
+
+            .dc-icon {
+                margin-left: 1.1rem;
+                flex: none;
+            }
+        }
+        &-title {
+            margin-top: 2.4rem;
+            margin-bottom: 0.8rem;
+        }
+        &-description {
+            max-width: 30rem;
+            margin-bottom: 1.6rem;
+        }
+    }
+    &__change-password-confirmation {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        max-width: 30rem;
+
+        @include desktop {
+            margin-top: -2.5rem;
+        }
+
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .dc-form-submit-button {
+            margin-bottom: 2.2rem;
         }
     }
 }
@@ -250,8 +308,8 @@
         min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
         padding-top: 2rem;
+        margin: 0 auto;
     }
     &__description {
         @include typeface(--paragraph-left-normal-black);
@@ -284,18 +342,6 @@
         & .dc-form-submit-button {
             all: unset;
         }
-    }
-}
-
-.mt5-trading-password-required {
-    display: grid;
-    grid-auto-rows: auto;
-    grid-gap: 1.2rem;
-    justify-items: center;
-    margin: 2.4rem;
-    @include tablet-up {
-        max-width: 364px;
-        margin: 0 3.2rem 3.2rem;
     }
 }
 

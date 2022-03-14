@@ -6,22 +6,52 @@ import { CSSTransition } from 'react-transition-group';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
 import Text from '../text';
+import { useOnClickOutside } from '../../hooks';
 
 const Dialog = ({
     disableApp,
+    dismissable,
     enableApp,
     is_closed_on_cancel,
     is_closed_on_confirm,
     is_visible,
     onCancel,
+    onClose,
     onConfirm,
+    onEscapeButtonCancel,
     ...other_props
 }) => {
+    const {
+        cancel_button_text,
+        className,
+        children,
+        confirm_button_text,
+        is_loading,
+        is_mobile_full_width = true,
+        is_content_centered,
+        portal_element_id,
+        title,
+        has_close_icon,
+    } = other_props;
+
+    const wrapper_ref = React.useRef();
+
     React.useEffect(() => {
         if (is_visible && !!disableApp) {
             disableApp();
         }
     }, [is_visible, disableApp]);
+
+    React.useEffect(() => {
+        const close = e => {
+            if (e.key === 'Escape') {
+                onEscapeButtonCancel?.();
+            }
+        };
+        window.addEventListener('keydown', close);
+        return () => window.removeEventListener('keydown', close);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleCancel = () => {
         if (is_closed_on_cancel && enableApp) {
@@ -37,18 +67,19 @@ const Dialog = ({
         onConfirm();
     };
 
-    const {
-        cancel_button_text,
-        className,
-        children,
-        confirm_button_text,
-        is_loading,
-        is_mobile_full_width = true,
-        is_content_centered,
-        portal_element_id,
-        title,
-        has_close_icon,
-    } = other_props;
+    const handleClose = () => {
+        if (onClose) {
+            onClose();
+        } else if (onCancel) {
+            handleCancel();
+        } else {
+            handleConfirm();
+        }
+    };
+
+    const validateClickOutside = () => dismissable || (has_close_icon && is_visible && is_closed_on_cancel);
+
+    useOnClickOutside(wrapper_ref, handleClose, validateClickOutside);
 
     const content_classes = classNames('dc-dialog__content', {
         'dc-dialog__content--centered': is_content_centered,
@@ -77,19 +108,26 @@ const Dialog = ({
                     className={classNames('dc-dialog__dialog', {
                         'dc-dialog__dialog--has-margin': !is_mobile_full_width,
                     })}
+                    ref={wrapper_ref}
                 >
-                    <div className='dc-dialog__header-wrapper'>
-                        {!!title && (
-                            <Text as='h1' color='prominent' weight='bold' className='dc-dialog__header'>
-                                {title}
-                            </Text>
-                        )}
-                        {has_close_icon && (
-                            <div onClick={onCancel ? handleCancel : handleConfirm} className='dc-dialog__header--close'>
-                                <Icon icon='IcCross' />
-                            </div>
-                        )}
-                    </div>
+                    {(title || has_close_icon) && (
+                        <div
+                            className={classNames('dc-dialog__header-wrapper', {
+                                'dc-dialog__header-wrapper--end': !title,
+                            })}
+                        >
+                            {!!title && (
+                                <Text as='h1' color='prominent' weight='bold' className='dc-dialog__header--title'>
+                                    {title}
+                                </Text>
+                            )}
+                            {has_close_icon && (
+                                <div onClick={handleClose} className='dc-dialog__header--close'>
+                                    <Icon icon='IcCross' />
+                                </div>
+                            )}
+                        </div>
+                    )}
                     {is_text ? (
                         <Text as='p' size='xs' styles={{ lineHeight: '1.43' }} className={content_classes}>
                             {children}
@@ -149,6 +187,7 @@ Dialog.propTypes = {
     is_mobile_full_width: PropTypes.bool,
     is_visible: PropTypes.bool,
     onCancel: PropTypes.func,
+    onEscapeButtonCancel: PropTypes.func,
     onConfirm: PropTypes.func,
     portal_element_id: PropTypes.string,
     title: PropTypes.string,

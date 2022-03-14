@@ -36,114 +36,14 @@
 # ================================================
 
 #  akmal-binary
-#  ali-fs
-#  amirghadimi-fs
-#  ashkanx
 #  bahar-fs
 #  balakrishna-binary
 #  carol-binary
-#  mahdiaryayi-fs
+#  matin-binary
 #  mehrzad-fs
-#  mustofa-binary
-#  negar-binary
-#  negarn
 #  nijil-binary
-#  reza-fs
-#  sara-fs
-#  zaki-binary
-
-
-
-######################################################################################################
-#
-#  Team structure and memberships
-#  ------------------------------
-#
-#  This section is here just because the GitHub UI is too hard to navigate and audit.
-#
-#  Any changes to team structure or memberships must first be made in this file and only then
-#  implemented in the GitHub UI.
-#######################################################################################################
-
-
-# ==============================================================
-#  binary-com/deriv-account
-# ==============================================================
-#  Used for approving all relevant changes to Account
-#
-#   - reza-fs
-#   - zaki-binary
-
-# ==============================================================
-#  binary-com/deriv-bot
-# ==============================================================
-#  Used for approving all relevant changes to Bot
-#
-#   - bahar-fs
-#   - carol-binary
-#   - mehrzad-fs
-#   - nijil-binary
-#   - negarn
-
-# ==============================================================
-#  binary-com/deriv-core
-# ==============================================================
-#  Used for approving all relevant changes to Core
-#
-#   - balakrishna-binary
-
-
-# ==============================================================
-#  binary-com/deriv-p2p
-# ==============================================================
-#  Used for approving all relevant changes to P2P
-#
-#   - mustofa-binary
-#   - negarn
-
-
-# ==============================================================
-#  binary-com/deriv-shared
-# ==============================================================
-#  Used for approving all relevant changes to Shared/Components
-#
-#   - akmal-binary
-#   - ali-fs
-#   - amirghadimi-fs
-#   - balakrishna-binary
-#   - reza-fs
-#   - sara-fs
-#   - zaki-binary
-
-
-# ==============================================================
-#  binary-com/deriv-trader
-# ==============================================================
-#  Used for approving all relevant changes to Trader
-#
-#   - akmal-binary
-#   - ali-fs
-#   - amirghadimi-fs
-#   - balakrishna-binary
-#   - mahdiaryayi-fs
-#   - negarn
-#   - reza-fs
-#   - zaki-binary
-
-# ==============================================================
-#  binary-com/deriv-publisher
-# ==============================================================
-#  Used for approving all relevant changes to Publisher
-#
-#   - reza-fs
-
-# ==============================================================
-#  binary-com/deriv-dashboard
-# ==============================================================
-#  Used for approving all relevant changes to Dashboard
-#
-#   - mustofa-binary
-
+#  njazuli-deriv
+#  yashim-deriv
 
 ######################################################################################################
 #
@@ -163,7 +63,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @ashkanx @negarn
+*                                                               @matin-binary @nijil-binary @mehrzad-fs @balakrishna-binary 
 
 
 
@@ -171,7 +71,7 @@
 #  deriv-app/account
 # ==============================================================
 
-/packages/account/**/*                                          @binary-com/deriv-account
+/packages/account/**/*                                          @yashim-deriv
 
 
 
@@ -179,41 +79,39 @@
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot-skeleton/**/*                                     @binary-com/deriv-bot
-/packages/bot-web-ui/**/*                                       @binary-com/deriv-bot
-
+/packages/bot-skeleton/**/*                                     @mehrzad-fs
+/packages/bot-web-ui/**/*                                       @mehrzad-fs
+/packages/indicators/**/*                                       @mehrzad-fs
 
 
 # ==============================================================
 #  deriv-app/core
 # ==============================================================
 
-/packages/core/**/*                                             @binary-com/deriv-core
-
+/packages/core/**/*                                             @balakrishna-binary @matin-binary 
+/packages/shared/**/*                                           @balakrishna-binary @matin-binary 
+/packages/components/**/*                                       @balakrishna-binary @matin-binary 
+/packages/translations/**/*                                     @balakrishna-binary @matin-binary 
 
 
 # ==============================================================
 #  deriv-app/p2p
 # ==============================================================
 
-/packages/p2p/**/*                                              @binary-com/deriv-p2p
-
+/packages/p2p/**/*                                              @carol-binary @nijil-binary
 
 
 # ==============================================================
-#  deriv-app/shared
+#  deriv-app/cashier
 # ==============================================================
 
-/packages/shared/**/*                                           @binary-com/deriv-shared
-/packages/components/**/*                                       @binary-com/deriv-shared
-
-
+/packages/cashier/**/*                                          @bahar-fs @nijil-binary
 
 # ==============================================================
 #  deriv-app/trader
 # ==============================================================
 
-/packages/trader/**/*                                           @binary-com/deriv-trader
+/packages/trader/**/*                                           @matin-binary @balakrishna-binary @akmal-binary 
 
 
 
@@ -221,12 +119,10 @@
 #  deriv-app/publisher
 # ==============================================================
 
-/packages/publisher/**/*                                        @binary-com/deriv-publisher
-
-
+/packages/publisher/**/*                                        @nijil-binary
 
 # ==============================================================
-#  deriv-app/dashboard
+#  deriv-app/appstore
 # ==============================================================
 
-/packages/dashboard/**/*                                        @binary-com/deriv-dashboard
+/packages/appstore/**/*                                         @matin-binary @balakrishna-binary @njazuli-deriv @bahar-fs

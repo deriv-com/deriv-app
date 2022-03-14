@@ -7,7 +7,6 @@ export const general_messages = {
             if (is_logged_in) return localize('Welcome to your Deriv X dashboard');
             return localize('Welcome to Deriv X');
         } else if (platform === CFD_PLATFORMS.MT5) {
-            if (is_logged_in) return localize('Welcome to your Deriv MT5 (DMT5) dashboard');
             return localize('Welcome to Deriv MT5 (DMT5) dashboard');
         }
         return localize('');
@@ -17,6 +16,21 @@ export const general_messages = {
             return localize('Run Deriv X on your browser or download the mobile app');
         else if (platform === CFD_PLATFORMS.MT5)
             return localize('Run MT5 from your browser or download the MT5 app for your devices');
+        return '';
+    },
+    getFinancialAccountDescriptor: (platform, is_eu) => {
+        if (platform === CFD_PLATFORMS.DXTRADE) {
+            return localize('Trade forex, commodities and cryptocurrencies at high leverage.');
+        } else if (platform === CFD_PLATFORMS.MT5) {
+            if (is_eu) {
+                return localize(
+                    'Trade CFDs on forex, stocks, stock indices, synthetic indices, and commodities with leverage.'
+                );
+            }
+            return localize(
+                'Trade major (standard and micro-lots) and minor currency pairs, stocks, stock indices, commodities, and cryptocurrencies with high leverage.'
+            );
+        }
         return '';
     },
 };

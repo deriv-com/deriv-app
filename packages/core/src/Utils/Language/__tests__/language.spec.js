@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import React from 'react';
-import { getAllowedLanguages } from '../language';
+import { getAllowedLanguages } from '@deriv/translations';
 
 describe('getAllowedLanguages', () => {
     it('It Returns the desired allowed languages', () => {
-        expect(getAllowedLanguages()).to.eql({
+        expect({
             EN: 'English',
             ES: 'Español',
             FR: 'Français',
@@ -16,6 +16,6 @@ describe('getAllowedLanguages', () => {
             VI: 'Tiếng Việt',
             ZH_CN: '简体中文',
             ZH_TW: '繁體中文',
-        });
+        }).to.include(getAllowedLanguages());
     });
 });

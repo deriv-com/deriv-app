@@ -78,7 +78,7 @@
         --text-general: #{$color-black-1};
         --text-less-prominent: #{$color-grey-1};
         --text-prominent: #{$color-black-1};
-        --text-disabled: #{$color-grey-6};
+        --text-disabled: #{$color-grey-1};
         --text-loss-danger: #{$color-red-1};
         --text-profit-success: #{$color-green-1};
         --text-warning: #{$color-yellow};
@@ -118,8 +118,10 @@
         --state-hover: #{$color-grey-4};
         --state-active: #{$color-grey-5};
         --state-disabled: #{$color-grey-3};
+        --checkbox-disabled-grey: #{$color-grey-6};
         // Border
         --border-normal: #{$color-grey-5};
+        --border-normal-1: #{$color-grey-5};
         --border-hover: #{$color-grey-1};
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
@@ -226,6 +228,7 @@
         --state-disabled: #{$color-black-4};
         // Border
         --border-normal: #{$color-black-8};
+        --border-normal-1: #{$color-grey-5};
         --border-hover: #{$color-grey-7};
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);

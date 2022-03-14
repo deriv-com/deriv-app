@@ -3,28 +3,27 @@ import { PropTypes } from 'prop-types';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import ContinueTradingButton from 'Components/poa-continue-trading-button';
 import PoaButton from 'Components/poa-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const UploadComplete = ({ needs_poa, is_description_enabled, redirect_button }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }) => {
+    const { is_appstore } = React.useContext(PlatformContext);
     const message = localize('Your proof of identity was submitted successfully');
     if (!needs_poa) {
         return (
             <IconMessageContent
                 message={message}
-                text={localize('Your document is being reviewed, please check back in 1-3 days.')}
+                text={localize('We’ll review your document and notify you of its status within 1 to 2 hours.')}
                 icon={
-                    is_dashboard ? (
+                    is_appstore ? (
                         <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
                     ) : (
                         <Icon icon='IcPoiVerified' size={128} />
                     )
                 }
-                className={is_dashboard && 'account-management-dashboard'}
+                className={is_appstore && 'account-management-dashboard'}
             >
-                {is_description_enabled && <ContinueTradingButton />}
+                {!is_from_external && redirect_button}
             </IconMessageContent>
         );
     }
@@ -32,28 +31,26 @@ export const UploadComplete = ({ needs_poa, is_description_enabled, redirect_but
         <IconMessageContent
             message={message}
             icon={
-                is_dashboard ? (
+                is_appstore ? (
                     <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
                 ) : (
                     <Icon icon='IcPoiVerified' size={128} />
                 )
             }
-            className={is_dashboard && 'account-management-dashboard'}
+            className={is_appstore && 'account-management-dashboard'}
         >
-            {is_description_enabled && (
-                <React.Fragment>
-                    <div className='account-management__text-container'>
-                        <Text align='center' size='xs' as={is_dashboard ? 'span' : 'p'}>
-                            {localize('Your document is being reviewed, please check back in 1-3 days.')}
-                        </Text>
-                        <Text align='center' size='xs' as={is_dashboard ? 'span' : 'p'}>
-                            {localize('You must also submit a proof of address.')}
-                        </Text>
-                    </div>
-                    <PoaButton />
-                </React.Fragment>
-            )}
-            {redirect_button}
+            <React.Fragment>
+                <div className='account-management__text-container'>
+                    <Text align='center' size='xs' as={is_appstore ? 'span' : 'p'}>
+                        {localize('Your document is being reviewed, please check back in 1-3 days.')}
+                    </Text>
+                    <Text align='center' size='xs' as={is_appstore ? 'span' : 'p'}>
+                        {localize('You must also submit a proof of address.')}
+                    </Text>
+                </div>
+                <PoaButton />
+            </React.Fragment>
+            {!is_from_external && redirect_button}
         </IconMessageContent>
     );
 };

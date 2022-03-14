@@ -40,6 +40,7 @@ const ChangeAccountCurrency = ({
             }}
         />
     );
+
     const non_fiat_mesage = (
         <Localize
             i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { WS } from 'Services';
+import { WS } from '@deriv/shared';
 import { PromiseClass } from './utility';
 
 let clock_started = false;

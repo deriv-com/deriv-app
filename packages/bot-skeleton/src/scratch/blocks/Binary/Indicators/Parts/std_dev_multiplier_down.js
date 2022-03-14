@@ -17,6 +17,9 @@ Blockly.Blocks.std_dev_multiplier_down = {
             previousStatement: null,
             nextStatement: null,
         });
+
+        this.setMovable(false);
+        this.setDeletable(false);
     },
     onchange: Blockly.Blocks.input_list.onchange,
     allowed_parents: ['bb_statement', 'bba_statement'],

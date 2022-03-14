@@ -34,7 +34,7 @@ const DummyComponent = props => (
 | ------------------ | -------------------------------- | ------------------- | ----------------------------------------- |
 | list_items         | [string] \| [object<text,value>] | []                  | Suggestion list                           |
 | list_height        | {string}                         | null                | Height of the suggestion list element.    |
-| not_found_text     | {string}                         | 'No results found'  | Text to show if no item found             |
+| not\_found\_text   | {string}                         | 'No results found'  | Text to show if no item found             |
 | onHideDropdownList | {function}                       | undefined           | Function triggers when the dropdown hides.|
 | onItemSelection    | {function}                       | undefined           | Function returns the selected element.    |
 

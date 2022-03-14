@@ -1,7 +1,7 @@
 const moment = require('moment');
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
-const getStaticHash = require('_common/utility.js').getStaticHash;
+const getStaticHash = require('_common/utility').getStaticHash;
 const LocalStore = require('@deriv/shared').LocalStore;
 
 /*
@@ -27,7 +27,6 @@ const SocketCache = (() => {
     const config = {
         payout_currencies: { expire: 120 },
         proposal_open_contract: { expire: 10 },
-        active_symbols: { expire: 10 },
         contracts_for: { expire: 10 },
         exchange_rates: { expire: 60 },
         trading_times: { expire: 120 },

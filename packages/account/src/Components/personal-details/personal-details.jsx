@@ -18,8 +18,9 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
+import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, toMoment, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 
@@ -79,13 +80,15 @@ const PersonalDetails = ({
     disabled_items,
     is_svg,
     residence_list,
+    is_virtual,
     is_fully_authenticated,
     account_opening_reason_list,
     onSubmitEnabledChange,
     selected_step_ref,
+    closeRealAccountSignup,
     ...props
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
@@ -135,8 +138,17 @@ const PersonalDetails = ({
     };
 
     const getLastNameLabel = () => {
-        if (is_dashboard) return localize('Family name*');
+        if (is_appstore) return localize('Family name*');
         return is_svg ? localize('Last name*') : localize('Last name');
+    };
+
+    const getFieldHint = field_name => {
+        return (
+            <Localize
+                i18n_default_text='Please enter your {{ field_name }} as in your official identity documents.'
+                values={{ field_name }}
+            />
+        );
     };
 
     return (
@@ -155,7 +167,7 @@ const PersonalDetails = ({
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
-                                    {is_dashboard && (
+                                    {is_appstore && (
                                         <div className='details-form__sub-header'>
                                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                 {localize(
@@ -164,11 +176,35 @@ const PersonalDetails = ({
                                             </Text>
                                         </div>
                                     )}
+
                                     <div
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
-                                        {!is_dashboard && (
+                                        {'salutation' in props.value && (
+                                            <div>
+                                                <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
+                                                    {is_virtual ? (
+                                                        localize(
+                                                            'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
+                                                        )
+                                                    ) : (
+                                                        <Localize
+                                                            i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.'
+                                                            components={[
+                                                                <Link
+                                                                    to={routes.personal_details}
+                                                                    key={0}
+                                                                    className='link'
+                                                                    onClick={closeRealAccountSignup}
+                                                                />,
+                                                            ]}
+                                                        />
+                                                    )}
+                                                </Text>
+                                            </div>
+                                        )}
+                                        {!is_appstore && (
                                             <FormSubHeader
                                                 title={
                                                     'salutation' in props.value
@@ -201,12 +237,13 @@ const PersonalDetails = ({
                                         {'first_name' in props.value && (
                                             <FormInputField
                                                 name='first_name'
-                                                required={is_svg || is_dashboard}
+                                                required={is_svg || is_appstore}
                                                 label={
-                                                    is_svg || is_dashboard
+                                                    is_svg || is_appstore
                                                         ? localize('First name*')
                                                         : localize('First name')
                                                 }
+                                                hint={getFieldHint('first name')}
                                                 disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
                                             />
@@ -214,25 +251,27 @@ const PersonalDetails = ({
                                         {'last_name' in props.value && (
                                             <FormInputField
                                                 name='last_name'
-                                                required={is_svg || is_dashboard}
+                                                required={is_svg || is_appstore}
                                                 label={getLastNameLabel()}
+                                                hint={getFieldHint('last name')}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
                                             />
                                         )}
-                                        {!is_dashboard && <FormSubHeader title={localize('Other details')} />}
+                                        {!is_appstore && <FormSubHeader title={localize('Other details')} />}
                                         {'date_of_birth' in props.value && (
                                             <DateOfBirthField
                                                 name='date_of_birth'
-                                                required={is_svg || is_dashboard}
+                                                required={is_svg || is_appstore}
                                                 label={
-                                                    is_svg || is_dashboard
+                                                    is_svg || is_appstore
                                                         ? localize('Date of birth*')
                                                         : localize('Date of birth')
                                                 }
+                                                hint={getFieldHint('date of birth')}
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
-                                                portal_id={is_dashboard ? '' : 'modal_root'}
+                                                portal_id={is_appstore ? '' : 'modal_root'}
                                             />
                                         )}
                                         {'place_of_birth' in props.value && (
@@ -341,12 +380,12 @@ const PersonalDetails = ({
                                             <FormInputField
                                                 name='phone'
                                                 label={
-                                                    is_svg || is_dashboard
+                                                    is_svg || is_appstore
                                                         ? localize('Phone number*')
                                                         : localize('Phone number')
                                                 }
                                                 placeholder={
-                                                    is_svg || is_dashboard
+                                                    is_svg || is_appstore
                                                         ? localize('Phone number*')
                                                         : localize('Phone number')
                                                 }

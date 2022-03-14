@@ -27,8 +27,8 @@ module.exports = function (source, map) {
         const replace = components
             .map(
                 c => `
-import ${c} from '@deriv/trader/dist/js/${c}';
-${checkExists(c) ? `import '@deriv/trader/dist/css/${c}.css';` : ''}
+import ${c} from '@deriv/trader/dist/trader/js/${c}';
+${checkExists(c) ? `import '@deriv/trader/dist/trader/css/${c}.css';` : ''}
         `
             )
             .join('\n');

@@ -1,7 +1,7 @@
 import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const personal_details_config = ({ residence_list, account_settings, is_dashboard }) => {
+const personal_details_config = ({ residence_list, account_settings, is_appstore }) => {
     if (!residence_list || !account_settings) {
         return {};
     }
@@ -18,29 +18,29 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
         account_opening_reason: {
             supported_in: ['iom', 'malta', 'maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
-            rules: [['req', localize('Account opening reason is required')]],
+            rules: [['req', localize('Account opening reason is required.')]],
         },
         salutation: {
             supported_in: ['iom', 'malta', 'maltainvest'],
             default_value: account_settings.salutation ?? '',
-            rules: [['req', localize('Salutation is required')]],
+            rules: [['req', localize('Salutation is required.')]],
         },
         first_name: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.first_name ?? '',
             rules: [
-                ['req', localize('First name is required')],
+                ['req', localize('First name is required.')],
+                ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
-                ['length', localize('First name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
             ],
         },
         last_name: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.last_name ?? '',
             rules: [
-                ['req', localize('Last name is required')],
+                ['req', localize('Last name is required.')],
+                ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
-                ['length', localize('Last name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
             ],
         },
         date_of_birth: {
@@ -49,7 +49,7 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
                 ? toMoment(account_settings.date_of_birth).format('YYYY-MM-DD')
                 : '',
             rules: [
-                ['req', localize('Date of birth is required')],
+                ['req', localize('Date of birth is required.')],
                 [
                     v => toMoment(v).isValid() && toMoment(v).isBefore(toMoment().subtract(18, 'years')),
                     localize('You must be 18 years old and above.'),
@@ -61,7 +61,7 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
             default_value: account_settings.place_of_birth
                 ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
                 : '',
-            rules: [['req', localize('Place of birth is required')]],
+            rules: [['req', localize('Place of birth is required.')]],
         },
         citizen: {
             supported_in: ['iom', 'malta', 'maltainvest'],
@@ -74,7 +74,7 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.phone ?? '',
             rules: [
-                ['req', localize('Phone is required')],
+                ['req', localize('Phone is required.')],
                 ['phone', localize('Phone is not in a proper format.')],
                 [
                     value => {
@@ -94,18 +94,30 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
                 ? residence_list.find(item => item.value === account_settings.tax_residence)?.text
                 : '',
             supported_in: ['maltainvest'],
-            rules: [['req', localize('Tax residence is required')]],
+            rules: [['req', localize('Tax residence is required.')]],
         },
         tax_identification_number: {
             default_value: account_settings.tax_identification_number ?? '',
             supported_in: ['maltainvest'],
             rules: [
-                ['req', localize('Tax Identification Number is required')],
+                ['req', localize('Tax Identification Number is required.')],
+                [
+                    'length',
+                    localize("Tax Identification Number can't be longer than 25 characters."),
+                    { min: 0, max: 25 },
+                ],
+                [
+                    'regular',
+                    localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
+                    {
+                        regex: /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
+                    },
+                ],
                 [
                     (value, options, { tax_residence }) => {
                         return !!tax_residence;
                     },
-                    localize('Please fill in Tax residence'),
+                    localize('Please fill in Tax residence.'),
                 ],
                 [
                     (value, options, { tax_residence }) => {
@@ -125,12 +137,12 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
         tax_identification_confirm: {
             default_value: false,
             supported_in: ['maltainvest'],
-            rules: [['confirm', localize('Please confirm your tax information')]],
+            rules: [['confirm', localize('Please confirm your tax information.')]],
         },
     };
 
     const getConfig = () => {
-        if (is_dashboard) {
+        if (is_appstore) {
             const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
             return Object.keys(config).reduce((new_config, key) => {
                 if (allowed_fields.includes(key)) {
@@ -148,15 +160,13 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
 const personalDetailsConfig = (
     { upgrade_info, real_account_signup_target, residence_list, account_settings },
     PersonalDetails,
-    is_dashboard = false
+    is_appstore = false
 ) => {
-    const [config, disabled_items] = personal_details_config({ residence_list, account_settings, is_dashboard });
+    const [config, disabled_items] = personal_details_config({ residence_list, account_settings, is_appstore });
     return {
         header: {
-            active_title: is_dashboard
-                ? localize('A few personal details')
-                : localize('Complete your personal details'),
-            title: is_dashboard ? localize('PERSONAL') : localize('Personal details'),
+            active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),
+            title: is_appstore ? localize('PERSONAL') : localize('Personal details'),
         },
         body: PersonalDetails,
         form_value: getDefaultFields(real_account_signup_target, config),

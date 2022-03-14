@@ -2,10 +2,9 @@ import React from 'react';
 import { Div100vhContainer, Modal, RadioGroup, Popover, usePreventIOSZoom } from '@deriv/components';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
-import { WS } from 'Services/ws-methods';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { useIsMounted } from '@deriv/shared';
+import { useIsMounted, WS } from '@deriv/shared';
 
 const MultiplierOptionsModal = ({ is_open, enableApp, disableApp, toggleModal }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps

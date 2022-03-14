@@ -16,13 +16,15 @@ import FilterComponent from '../Components/filter-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
-const DetailsComponent = ({ message = '' }) => {
+const DetailsComponent = ({ message = '', action_type = '' }) => {
+    const address_hash_match = /:\s([0-9a-zA-Z]+.{25,28})/gm.exec(message.split(/,\s/)[0]);
+    const address_hash = address_hash_match?.[1];
     const blockchain_hash_match = /:\s([0-9a-zA-Z]+.{25,34})/gm.exec(message.split(/,\s/)[1]);
     const blockchain_hash = blockchain_hash_match?.[1];
 
     let messages = [message];
 
-    if (blockchain_hash) {
+    if (address_hash || blockchain_hash) {
         const lines = message.split(/,\s/);
         messages = lines.map((text, index) => {
             if (index !== lines.length - 1) {
@@ -40,6 +42,9 @@ const DetailsComponent = ({ message = '' }) => {
                         {text}
                         {blockchain_hash && index === messages.length - 1 && (
                             <Clipboard text_copy={blockchain_hash} popoverAlignment='top' />
+                        )}
+                        {address_hash && action_type === 'withdrawal' && index === messages.length - 1 && (
+                            <Clipboard text_copy={address_hash} popoverAlignment='top' />
                         )}
                     </div>
                 );
@@ -91,7 +96,7 @@ const getRowAction = row_obj => {
     }
 
     if (action?.message) {
-        action.component = <DetailsComponent message={action.message} />;
+        action.component = <DetailsComponent message={action.message} action_type={row_obj.action_type} />;
     }
 
     return action;
@@ -200,7 +205,6 @@ const Statement = ({
                                     content_loader={ReportsTableRowLoader}
                                     data_source={data}
                                     getRowAction={row => getRowAction(row)}
-                                    getRowSize={() => 63}
                                     onScroll={handleScroll}
                                     passthrough={{
                                         isTopUp: item => is_virtual && item.action === 'Deposit',

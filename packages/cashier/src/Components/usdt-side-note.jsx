@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import 'Sass/usdt-side-note.scss';
 
 const USDTSideNote = ({ type }) => {
     const [is_modal_open, setModalOpen] = React.useState(false);
@@ -12,7 +13,8 @@ const USDTSideNote = ({ type }) => {
     return (
         <div className='cashier__usdt-side-note'>
             <Text as='h2' weight='bold' color='prominent'>
-                <Localize i18n_default_text='About Tether' />
+                {type === 'eusdt' && <Localize i18n_default_text='About Tether (Ethereum)' />}
+                {type === 'usdt' && <Localize i18n_default_text='About Tether (Omni)' />}
             </Text>
             {type === 'eusdt' && (
                 <Text as='p' size='xxs'>

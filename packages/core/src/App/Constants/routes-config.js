@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { getUrlBase, routes } from '@deriv/shared';
+import { makeLazyLoader, routes } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { makeLazyLoader } from '_common/lazy-load';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
@@ -10,34 +10,16 @@ import Endpoint from 'Modules/Endpoint';
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 const Trader = React.lazy(() => {
-    const el_head = document.querySelector('head');
-    const el_main_css = document.createElement('link');
-    el_main_css.href = getUrlBase('/css/trader.main.css');
-    el_main_css.rel = 'stylesheet';
-    el_main_css.type = 'text/css';
-    el_head.appendChild(el_main_css);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "trader" */ '@deriv/trader');
 });
 
 const Account = React.lazy(() => {
-    const el_head = document.querySelector('head');
-    const el_main_css = document.createElement('link');
-    el_main_css.href = getUrlBase('/account/css/account.css');
-    el_main_css.rel = 'stylesheet';
-    el_main_css.type = 'text/css';
-    el_head.appendChild(el_main_css);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "account" */ '@deriv/account');
 });
 
 const Cashier = React.lazy(() => {
-    const el_head = document.querySelector('head');
-    const el_main_css = document.createElement('link');
-    el_main_css.href = getUrlBase('/css/cashier.css');
-    el_main_css.rel = 'stylesheet';
-    el_main_css.type = 'text/css';
-    el_head.appendChild(el_main_css);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
 });
@@ -47,186 +29,18 @@ const Bot = React.lazy(() => {
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });
 
-const Dashboard = React.lazy(() => {
+const AppStore = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "dashboard" */ 'Modules/Dashboard');
+    return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
 });
 
-const getModules = ({ is_dashboard }) => {
+const getModules = ({ is_appstore }) => {
     const modules = [
         {
             path: routes.bot,
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Bot'),
-        },
-        {
-            path: routes.dashboard,
-            component: Dashboard,
-            is_modal: true,
-            getTitle: () => localize('Dashboard'),
-            routes: [
-                {
-                    path: routes.home,
-                    component: Dashboard,
-                    icon_component: 'IcUserOutline',
-                    getTitle: () => localize('Home'),
-                },
-                {
-                    path: routes.my_apps,
-                    component: Dashboard,
-                    is_modal: true,
-                    icon_component: 'IcUserOutline',
-                    getTitle: () => localize('My Apps'),
-                },
-                {
-                    path: routes.explore,
-                    component: Dashboard,
-                    icon_component: 'IcWalletExplore',
-                    getTitle: () => localize('Explore'),
-                },
-                {
-                    path: routes.about_us,
-                    component: Dashboard,
-                    getTitle: () => localize('About Us'),
-                },
-                {
-                    path: routes.resources,
-                    component: Dashboard,
-                    getTitle: () => localize('Resources'),
-                },
-            ],
-        },
-        {
-            path: routes.wallets,
-            component: Dashboard,
-            is_modal: true,
-            icon_component: 'IcWalletWallets',
-            getTitle: () => localize('Wallets'),
-            routes: [
-                {
-                    getTitle: () => localize('Credit/Debit Cards'),
-                    // path: routes.wallets_cards,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('E-wallet'),
-                    // path: routes.wallets_ewallet,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('Cryptocurrency'),
-                    // path: routes.wallets_crypto,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('Bank Wire'),
-                    // path: routes.wallets_bank,
-                    path: routes.explore,
-                },
-            ],
-        },
-        {
-            path: routes.platforms,
-            component: Dashboard,
-            is_modal: true,
-            icon_component: 'IcWalletPlatforms',
-            getTitle: () => localize('Platforms'),
-            routes: [
-                {
-                    default: true,
-                    getTitle: () => localize('DMT5'),
-                    path: routes.platform_dmt5,
-                },
-                {
-                    default: true,
-                    getTitle: () => localize('DMT5 Financial STP'),
-                    path: routes.platform_dmt5_financial_stp,
-                },
-                {
-                    default: true,
-                    getTitle: () => localize('DMT5 Financial'),
-                    path: routes.platform_dmt5_financial,
-                },
-                {
-                    default: true,
-                    getTitle: () => localize('DMT5 Synthetic'),
-                    path: routes.platform_dmt5_synthetic,
-                },
-                {
-                    getTitle: () => localize('DTrader'),
-                    // path: routes.platform_dtrader,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('DBot'),
-                    // path: routes.platform_dbot,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('SmartTrader'),
-                    // path: routes.platform_smarttrader,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('Binary Bot'),
-                    // path: routes.platform_binarybot,
-                    path: routes.explore,
-                },
-            ],
-        },
-        {
-            path: routes.trade_types,
-            component: Dashboard,
-            is_modal: true,
-            icon_component: 'IcWalletTradeTypes',
-            getTitle: () => localize('Trade Types'),
-            routes: [
-                {
-                    getTitle: () => localize('CFDs'),
-                    // path: routes.trade_types_cfds,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('Multipliers'),
-                    // path: routes.trade_types_multipliers,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('Options'),
-                    // path: routes.trade_types_options,
-                    path: routes.explore,
-                },
-            ],
-        },
-        {
-            path: routes.markets,
-            component: Dashboard,
-            is_modal: true,
-            icon_component: 'IcWalletMarkets',
-            getTitle: () => localize('Markets'),
-            routes: [
-                {
-                    getTitle: () => localize('Forex'),
-                    // path: routes.markets_forex,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('Synthetic Indices'),
-                    // path: routes.markets_synthetic,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('Stock Indices'),
-                    // path: routes.markets_stock,
-                    path: routes.explore,
-                },
-                {
-                    getTitle: () => localize('Commodities'),
-                    // path: routes.markets_commodities,
-                    path: routes.explore,
-                },
-            ],
         },
         {
             path: routes.account_deactivated,
@@ -334,14 +148,14 @@ const getModules = ({ is_dashboard }) => {
                     path: routes.cashier_deposit,
                     component: Cashier,
                     getTitle: () => localize('Deposit'),
-                    icon_component: 'IcWalletAdd',
+                    icon_component: 'IcCashierAdd',
                     default: true,
                 },
                 {
                     path: routes.cashier_withdrawal,
                     component: Cashier,
                     getTitle: () => localize('Withdrawal'),
-                    icon_component: 'IcWalletMinus',
+                    icon_component: 'IcCashierMinus',
                 },
                 {
                     path: routes.cashier_pa,
@@ -364,13 +178,13 @@ const getModules = ({ is_dashboard }) => {
                 {
                     path: routes.cashier_p2p,
                     component: Cashier,
-                    getTitle: () => localize('DP2P'),
+                    getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
                 },
                 {
                     path: routes.cashier_p2p_verification,
                     component: Cashier,
-                    getTitle: () => localize('DP2P'),
+                    getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
                     is_invisible: true,
                 },
@@ -381,104 +195,88 @@ const getModules = ({ is_dashboard }) => {
                     getTitle: () => localize('Fiat onramp'),
                     icon_component: 'IcCashierOnRamp',
                 },
+                {
+                    path: routes.cashier_crypto_transactions,
+                    component: Cashier,
+                    is_invisible: true,
+                },
             ],
         },
         {
-            ...(is_dashboard
-                ? {
-                      path: routes.dashboard,
-                      component: Dashboard,
-                      getTitle: () => localize('Dashboard'),
-                      routes: [
-                          {
-                              path: routes.explore,
-                              component: Dashboard,
-                              getTitle: () => localize('Explore'),
-                          },
-                          {
-                              path: routes.about_us,
-                              component: Dashboard,
-                              getTitle: () => localize('About Us'),
-                          },
-                          {
-                              path: routes.resources,
-                              component: Dashboard,
-                              getTitle: () => localize('Resources'),
-                          },
-                          {
-                              path: routes.platform_dmt5_synthetic,
-                              component: Dashboard,
-                              getTitle: () => localize('DMT5 Synthetic'),
-                          },
-                      ],
-                  }
-                : {
-                      path: routes.root,
-                      component: Trader,
-                      getTitle: () => localize('Trader'),
-                      routes: [
-                          {
-                              path: routes.dxtrade,
-                              component: Trader,
-                              getTitle: () => localize('Deriv X'),
-                              is_authenticated: false,
-                          },
-                          {
-                              path: routes.mt5,
-                              component: Trader,
-                              getTitle: () => localize('MT5'),
-                              is_authenticated: false,
-                          },
-                          {
-                              path: routes.reports,
-                              component: Trader,
-                              getTitle: () => localize('Reports'),
-                              icon_component: 'IcReports',
-                              is_authenticated: true,
-                              routes: [
-                                  {
-                                      path: routes.positions,
-                                      component: Trader,
-                                      getTitle: () => localize('Open positions'),
-                                      icon_component: 'IcOpenPositions',
-                                      default: true,
-                                  },
-                                  {
-                                      path: routes.profit,
-                                      component: Trader,
-                                      getTitle: () => localize('Profit table'),
-                                      icon_component: 'IcProfitTable',
-                                  },
-                                  {
-                                      path: routes.statement,
-                                      component: Trader,
-                                      getTitle: () => localize('Statement'),
-                                      icon_component: 'IcStatement',
-                                  },
-                              ],
-                          },
-                          {
-                              path: routes.contract,
-                              component: Trader,
-                              getTitle: () => localize('Contract Details'),
-                              is_authenticated: true,
-                          },
-                          { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
-                      ],
-                  }),
+            path: routes.root,
+            component: Trader,
+            getTitle: () => localize('Trader'),
+            routes: [
+                {
+                    path: routes.dxtrade,
+                    component: Trader,
+                    getTitle: () => localize('Deriv X'),
+                    is_authenticated: false,
+                },
+                {
+                    path: routes.mt5,
+                    component: Trader,
+                    getTitle: () => localize('MT5'),
+                    is_authenticated: false,
+                },
+                {
+                    path: routes.reports,
+                    component: Trader,
+                    getTitle: () => localize('Reports'),
+                    icon_component: 'IcReports',
+                    is_authenticated: true,
+                    routes: [
+                        {
+                            path: routes.positions,
+                            component: Trader,
+                            getTitle: () => localize('Open positions'),
+                            icon_component: 'IcOpenPositions',
+                            default: true,
+                        },
+                        {
+                            path: routes.profit,
+                            component: Trader,
+                            getTitle: () => localize('Profit table'),
+                            icon_component: 'IcProfitTable',
+                        },
+                        {
+                            path: routes.statement,
+                            component: Trader,
+                            getTitle: () => localize('Statement'),
+                            icon_component: 'IcStatement',
+                        },
+                    ],
+                },
+                {
+                    path: routes.contract,
+                    component: Trader,
+                    getTitle: () => localize('Contract Details'),
+                    is_authenticated: true,
+                },
+                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
+            ],
         },
     ];
+
+    if (is_appstore) {
+        modules.unshift({
+            path: routes.trading_hub,
+            component: AppStore,
+            getTitle: () => localize('Trading hub'),
+        });
+    }
 
     return modules;
 };
 
-const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
-    import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')
+const lazyLoadComplaintsPolicy = makeLazyLoader(
+    () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
+    () => <Loading />
 );
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_dashboard }) => [
+const initRoutesConfig = ({ is_appstore }) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
@@ -489,7 +287,7 @@ const initRoutesConfig = ({ is_dashboard }) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_dashboard }),
+    ...getModules({ is_appstore }),
 ];
 
 let routesConfig;
@@ -498,9 +296,9 @@ let routesConfig;
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_dashboard = true }) => {
+const getRoutesConfig = ({ is_appstore = true }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_dashboard });
+        routesConfig = initRoutesConfig({ is_appstore });
         routesConfig.push(route_default);
     }
     return routesConfig;

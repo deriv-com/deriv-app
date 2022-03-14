@@ -76,7 +76,7 @@
                 border-top: 1px solid var(--general-main-1);
             }
         }
-        &--wrapper {
+        &--wrapper:not(.data-list__item--dynamic-height-wrapper) {
             height: 100%;
         }
     }

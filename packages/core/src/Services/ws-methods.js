@@ -1,5 +1,5 @@
 import BinarySocket from '_common/base/socket_base';
-import { trackJSNetworkMonitor } from './trackjs';
+import { trackJSNetworkMonitor } from '@deriv/shared';
 
 const WS = BinarySocket;
 

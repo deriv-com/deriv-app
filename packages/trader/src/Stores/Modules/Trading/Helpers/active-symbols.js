@@ -1,7 +1,6 @@
 import { flow } from 'mobx';
-import { LocalStore, redirectToLogin } from '@deriv/shared';
+import { LocalStore, redirectToLogin, WS } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 
 export const showUnavailableLocationError = flow(function* (showError, is_logged_in) {
     const website_status = yield WS.wait('website_status');
@@ -23,6 +22,36 @@ export const showUnavailableLocationError = flow(function* (showError, is_logged
         header,
         redirect_label: localize('Log in'),
         redirectOnClick: () => redirectToLogin(is_logged_in, getLanguage()),
+        should_show_refresh: false,
+    });
+});
+
+export const showMxMltUnavailableError = flow(function* (showError, can_have_mlt_account, can_have_mx_account) {
+    const get_settings = yield WS.wait('get_settings');
+    const residence_list = yield WS.residenceList();
+
+    const clients_country_code = get_settings.get_settings.country_code;
+    const clients_country_text = (
+        residence_list.residence_list.find(obj_country => obj_country.value === clients_country_code) || {}
+    ).text;
+
+    let header;
+
+    if (can_have_mlt_account) {
+        header = localize("Unfortunately, trading options isn't possible in your country");
+    } else if (clients_country_text || can_have_mx_account) {
+        header = localize('Sorry, trading is unavailable in {{clients_country}}.', {
+            clients_country: clients_country_text,
+        });
+    } else {
+        header = localize('Sorry, trading is unavailable in your current location.');
+    }
+
+    showError({
+        message: ' ',
+        header,
+        redirect_label: null,
+        redirectOnClick: () => ({}),
         should_show_refresh: false,
     });
 });

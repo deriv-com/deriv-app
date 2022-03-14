@@ -29,8 +29,8 @@ const BinarySocketBase = (() => {
         is_down: false,
     };
 
-    const getSocketUrl = () =>
-        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
+    const getSocketUrl = language =>
+        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
 
     const isReady = () => hasReadyState(1);
 
@@ -40,10 +40,10 @@ const BinarySocketBase = (() => {
         binary_socket.close();
     };
 
-    const closeAndOpenNewConnection = () => {
+    const closeAndOpenNewConnection = (language = getLanguage()) => {
         close();
         is_switching_socket = true;
-        openNewConnection();
+        openNewConnection(language);
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
@@ -55,14 +55,14 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
-    const openNewConnection = () => {
+    const openNewConnection = (language = getLanguage()) => {
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
 
         if (isClose()) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(getSocketUrl());
+            binary_socket = new WebSocket(getSocketUrl(language));
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
@@ -180,13 +180,21 @@ const BinarySocketBase = (() => {
 
     const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
-    const newAccountVirtual = (verification_code, client_password, residence, email_consent, device_data) =>
+    const cashierPayments = ({ provider, transaction_type }) =>
+        deriv_api.send({ cashier_payments: 1, provider, transaction_type });
+
+    const subscribeCashierPayments = cb =>
+        subscribe({ cashier_payments: 1, provider: 'crypto', transaction_type: 'all' }, cb);
+
+    const cancelCryptoTransaction = transaction_id =>
+        deriv_api.send({ cashier_withdrawal_cancel: 1, id: transaction_id });
+
+    const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
         deriv_api.send({
             new_account_virtual: 1,
             verification_code,
             client_password,
             residence,
-            email_consent,
             ...device_data,
         });
 
@@ -221,7 +229,7 @@ const BinarySocketBase = (() => {
     const statement = (limit, offset, other_properties) =>
         deriv_api.send({ statement: 1, description: 1, limit, offset, ...other_properties });
 
-    const verifyEmail = (email, type) => deriv_api.send({ verify_email: email, type });
+    const verifyEmail = (email, type, payload = {}) => deriv_api.send({ verify_email: email, type, ...payload });
 
     const tradingPlatformPasswordChange = payload =>
         deriv_api.send({
@@ -250,6 +258,11 @@ const BinarySocketBase = (() => {
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
 
+    const allPaymentAgentList = country => deriv_api.send({ paymentagent_list: country });
+
+    const paymentAgentDetails = (passthrough, req_id) =>
+        deriv_api.send({ paymentagent_details: 1, passthrough, req_id });
+
     const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code, dry_run = 0 }) =>
         deriv_api.send({
             amount,
@@ -258,6 +271,22 @@ const BinarySocketBase = (() => {
             paymentagent_withdraw: 1,
             dry_run,
             paymentagent_loginid: loginid,
+        });
+
+    const cryptoWithdraw = ({ address, amount, verification_code, dry_run = 0 }) =>
+        deriv_api.send({
+            cashier: 'withdraw',
+            provider: 'crypto',
+            type: 'api',
+            address,
+            amount,
+            verification_code,
+            dry_run,
+        });
+
+    const cryptoConfig = () =>
+        deriv_api.send({
+            crypto_config: 1,
         });
 
     const paymentAgentTransfer = ({ amount, currency, description, transfer_to, dry_run = 0 }) =>
@@ -318,7 +347,7 @@ const BinarySocketBase = (() => {
 
     const realityCheck = () => deriv_api.send({ reality_check: 1 });
 
-    const tradingServers = () => deriv_api.send({ platform: 'mt5', trading_servers: 1 });
+    const tradingServers = platform => deriv_api.send({ platform, trading_servers: 1 });
 
     const tradingPlatformAccountsList = platform =>
         deriv_api.send({
@@ -353,8 +382,12 @@ const BinarySocketBase = (() => {
         hasReadyState,
         isSiteDown,
         isSiteUpdating,
-        clear: () => {},
-        sendBuffered: () => {},
+        clear: () => {
+            // do nothing.
+        },
+        sendBuffered: () => {
+            // do nothing.
+        },
         getSocket: () => binary_socket,
         get: () => deriv_api,
         getAvailability: () => availability,
@@ -376,8 +409,13 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
+        cashierPayments,
+        subscribeCashierPayments,
+        cancelCryptoTransaction,
         cancelContract,
         close,
+        cryptoWithdraw,
+        cryptoConfig,
         contractUpdate,
         contractUpdateHistory,
         getFinancialAssessment,
@@ -396,6 +434,8 @@ const BinarySocketBase = (() => {
         tradingPlatformInvestorPasswordReset,
         activeSymbols,
         paymentAgentList,
+        allPaymentAgentList,
+        paymentAgentDetails,
         paymentAgentWithdraw,
         paymentAgentTransfer,
         setAccountCurrency,
@@ -451,7 +491,7 @@ const proxyForAuthorize = obj =>
     new Proxy(obj, {
         get(target, field) {
             if (typeof target[field] !== 'function') {
-                return proxyForAuthorize(target[field], proxied_socket_base[field]);
+                return proxyForAuthorize(target[field]);
             }
             return (...args) => BinarySocketBase.wait('authorize').then(() => target[field](...args));
         },

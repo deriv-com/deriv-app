@@ -30,18 +30,20 @@ const getFilteredItems = (val, list, should_filter_by_char) => {
 };
 const Autocomplete = React.memo(props => {
     const {
+        autoComplete,
         className,
         dropdown_offset,
-        onItemSelection,
-        value,
-        list_items,
-        autoComplete,
-        onHideDropdownList,
-        onScrollStop,
-        list_portal_id,
-        is_alignment_top,
-        should_filter_by_char,
+        error,
+        has_updating_list = true,
         input_id,
+        is_alignment_top,
+        list_items,
+        list_portal_id,
+        onHideDropdownList,
+        onItemSelection,
+        onScrollStop,
+        should_filter_by_char,
+        value,
         ...other_props
     } = props;
 
@@ -61,9 +63,11 @@ const Autocomplete = React.memo(props => {
     let scroll_top_position = null;
 
     React.useEffect(() => {
-        setFilteredItems(list_items);
-        setActiveIndex(null);
-        setInputValue('');
+        if (has_updating_list) {
+            setFilteredItems(list_items);
+            setActiveIndex(null);
+            setInputValue('');
+        }
     }, [list_items]);
 
     React.useEffect(() => {
@@ -240,6 +244,7 @@ const Autocomplete = React.memo(props => {
                 <Input
                     {...other_props}
                     className='dc-autocomplete__field'
+                    error={error}
                     autoComplete={autoComplete}
                     onKeyDown={onKeyPressed}
                     onInput={filterList}
@@ -255,14 +260,18 @@ const Autocomplete = React.memo(props => {
                         typeof onItemSelection === 'function' ? value : input_value
                     }
                     trailing_icon={
-                        <Icon
-                            icon='IcChevronDown'
-                            className={{
-                                'dc-autocomplete__trailing-icon': true,
-                                'dc-autocomplete__trailing-icon--opened': should_show_list,
-                                'dc-autocomplete__trailing-icon--disabled': other_props.disabled,
-                            }}
-                        />
+                        other_props.trailing_icon ? (
+                            other_props.trailing_icon
+                        ) : (
+                            <Icon
+                                icon='IcChevronDown'
+                                className={{
+                                    'dc-autocomplete__trailing-icon': true,
+                                    'dc-autocomplete__trailing-icon--opened': should_show_list,
+                                    'dc-autocomplete__trailing-icon--disabled': other_props.disabled,
+                                }}
+                            />
+                        )
                     }
                 />
             </div>

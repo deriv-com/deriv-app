@@ -51,6 +51,9 @@ export const isContractElapsed = (contract_info, tick) => {
     return false;
 };
 
+export const isEndedBeforeCancellationExpired = contract_info =>
+    !!(contract_info.cancellation && getEndTime(contract_info) < contract_info.cancellation.date_expiry);
+
 export const isSoldBeforeStart = contract_info =>
     contract_info.sell_time && +contract_info.sell_time < +contract_info.date_start;
 

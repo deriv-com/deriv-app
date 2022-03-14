@@ -28,7 +28,7 @@
         height: 100%;
 
         &-title {
-            height: 18px;
+            min-height: 1.8rem;
             margin-bottom: 4px;
             @include typeface(--small-center-bold-black, none);
         }
@@ -329,5 +329,14 @@
 
     .dc-modal-body {
         padding: 2.4rem 1.2rem 2.4rem 2.4rem;
+    }
+}
+
+.dc-dialog {
+    &__button {
+        @include mobile {
+            flex-basis: 100%;
+            margin-left: unset;
+        }
     }
 }

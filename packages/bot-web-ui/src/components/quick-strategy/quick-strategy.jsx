@@ -167,7 +167,11 @@ const QuickStrategyForm = ({
                                     )}
                                 </Field>
                             </div>
-                            <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
+                            <div
+                                className={classNames('quick-strategy__form-row', {
+                                    'quick-strategy__form-row--multiple': !is_mobile,
+                                })}
+                            >
                                 <Field name='quick-strategy__duration-unit'>
                                     {({ field }) => (
                                         <>
@@ -242,7 +246,11 @@ const QuickStrategyForm = ({
                                     )}
                                 </Field>
                             </div>
-                            <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
+                            <div
+                                className={classNames('quick-strategy__form-row', {
+                                    'quick-strategy__form-row--multiple': !is_mobile,
+                                })}
+                            >
                                 <Field name='quick-strategy__stake'>
                                     {({ field }) => (
                                         <Input
@@ -310,7 +318,11 @@ const QuickStrategyForm = ({
                                     )}
                                 </Field>
                             </div>
-                            <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
+                            <div
+                                className={classNames('quick-strategy__form-row', {
+                                    'quick-strategy__form-row--multiple': !is_mobile,
+                                })}
+                            >
                                 <Field name='quick-strategy__size'>
                                     {({ field }) => (
                                         <Input
@@ -464,10 +476,12 @@ const ContentRenderer = props => {
         setCurrentFocus,
         selected_duration_unit,
     } = props;
-    const symbol_dropdown_options = symbol_dropdown.map(symbol => ({
-        component: <MarketOption symbol={symbol} />,
-        ...symbol,
-    }));
+    const symbol_dropdown_options = symbol_dropdown
+        .map(symbol => ({
+            component: <MarketOption symbol={symbol} />,
+            ...symbol,
+        }))
+        .filter(option => option.group !== 'Cryptocurrencies'); // Until Crypto enabled for Dbot
     const trade_type_dropdown_options = trade_type_dropdown.map(trade_type => ({
         component: <TradeTypeOption trade_type={trade_type} />,
         ...trade_type,
@@ -532,7 +546,7 @@ const QuickStrategy = props => {
                     className='modal--strategy'
                     is_open={is_strategy_modal_open}
                     toggleModal={toggleStrategyModal}
-                    width={'460px'}
+                    width={'540px'}
                 >
                     <div className='modal__content'>
                         <ContentRenderer {...props} />

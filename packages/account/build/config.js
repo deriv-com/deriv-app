@@ -1,4 +1,4 @@
-const cssConfig = () => ({ filename: 'css/[name].css', chunkFilename: 'css/[name].[contenthash].css' });
+const cssConfig = () => ({ filename: 'account/css/[name].css', chunkFilename: 'account/css/[name].[contenthash].css' });
 
 module.exports = {
     cssConfig,

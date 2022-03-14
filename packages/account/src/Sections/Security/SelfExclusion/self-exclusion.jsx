@@ -1,12 +1,11 @@
 import React from 'react';
-import { PlatformContext } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
+import { PlatformContext, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import SelfExclusionComponent from 'Components/self-exclusion/self-exclusion.jsx';
 
 const SelfExclusion = props => {
-    const { is_dashboard } = React.useContext(PlatformContext);
-    return <SelfExclusionComponent is_dashboard={is_dashboard} {...props} />;
+    const { is_appstore } = React.useContext(PlatformContext);
+    return <SelfExclusionComponent is_appstore={is_appstore} {...props} />;
 };
 
 export default connect(({ client, ui }) => ({

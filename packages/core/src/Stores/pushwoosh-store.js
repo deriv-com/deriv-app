@@ -1,4 +1,4 @@
-import { action } from 'mobx';
+import { action, when } from 'mobx';
 import { Pushwoosh } from 'web-push-notifications';
 import { getAppId, urlForCurrentDomain } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -18,8 +18,9 @@ export default class PushwooshStore extends BaseStore {
      * Pushes initialize event to pushwoosh
      */
     @action.bound
-    init = () => {
+    init = async () => {
         if (!this.is_applicable && this.has_initialized) return;
+        await when(() => this.root_store.common.is_network_online);
 
         this.push_woosh.push([
             'init',
@@ -29,7 +30,6 @@ export default class PushwooshStore extends BaseStore {
                 safariWebsitePushID: 'web.com.deriv',
                 defaultNotificationTitle: 'Deriv.com',
                 defaultNotificationImage: urlForCurrentDomain('https://deriv.com/favicons/favicon-192x192.png'),
-                autoSubscribe: true,
                 serviceWorkerUrl: '/service-worker.js',
             },
         ]);

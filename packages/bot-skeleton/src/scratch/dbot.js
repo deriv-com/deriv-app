@@ -127,12 +127,12 @@ class DBot {
     runBot() {
         try {
             const code = this.generateCode();
-
             if (this.interpreter !== null) {
                 this.interpreter = null;
             }
 
-            this.interpreter = new Interpreter();
+            this.interpreter = Interpreter();
+
             this.interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
                 this.stopBot();

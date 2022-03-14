@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, queryByAttribute, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ProofOfOwnership from '../proof-of-ownership.jsx';
 import React from 'react';
@@ -93,5 +93,23 @@ describe('proof of ownership', () => {
         expect(screen.getByTestId('next-button', { exact: true }))
             .toBeInTheDocument()
             .toBeEnabled();
+    });
+    it('should render example modal for each card', () => {
+        const getById = queryByAttribute.bind(null, 'id');
+        const { container } = render(<ProofOfOwnership ownership={ownership_temp} />);
+        const element = screen.getAllByTestId('proof-of-ownership-button', { exact: true });
+        ownership_temp.requests.forEach(async (req, index) => {
+            fireEvent.click(element[index]);
+            const { getByText } = within(screen.getAllByTestId(req.id)[0]);
+            expect(getByText('See example', { exact: true })).toBeInTheDocument();
+            const example = getByText('See example', { exact: true });
+            fireEvent.click(example);
+            expect(screen.getByAltText('creditcardsample', { exact: true })).toBeInTheDocument();
+            await waitFor(() => {
+                const modal = getById(container, 'modal_root');
+                // eslint-disable-next-line testing-library/prefer-screen-queries
+                fireEvent.click(modal.getByRole('button'));
+            });
+        });
     });
 });

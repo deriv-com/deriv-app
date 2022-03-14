@@ -47,14 +47,14 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
                                 list_items={supported_banks}
                                 value={selected_bank === 0 ? '' : selected_bank.toString()}
                                 label={selected_bank === 0 ? localize('All payment agents') : localize('Type')}
-                                onChange={e => {
+                                onChange={e =>
                                     onChangePaymentMethod({
                                         target: {
                                             name: 'payment_methods',
                                             value: e.target.value ? e.target.value.toLowerCase() : 0,
                                         },
-                                    });
-                                }}
+                                    })
+                                }
                                 use_text={false}
                             />
                         </MobileWrapper>

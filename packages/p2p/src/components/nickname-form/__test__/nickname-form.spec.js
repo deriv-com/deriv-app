@@ -1,14 +1,13 @@
 import React from 'react';
 import { useStores } from 'Stores';
-// import { isMobile } from '@deriv/shared';
-import { Button, Input, Icon, Modal, Text } from '@deriv/components';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import NicknameForm from '../nickname-form.jsx';
 
 const mock_general_store = {
     onNicknamePopupClose: jest.fn(),
     createAdvertiser: jest.fn(),
     validatePopup: jest.fn(),
+    setNicknameError: jest.fn(),
     nickname_error: false,
 };
 
@@ -33,10 +32,33 @@ describe('<NicknameForm/>', () => {
     it('closes the popup if close icon is clicked', () => {
         const { general_store } = useStores();
         render(<NicknameForm />);
-        console.log(screen.debug());
         fireEvent.click(screen.getByTestId('icon_close'));
+
         expect(general_store.onNicknamePopupClose).toHaveBeenCalled();
     });
 
-    it('');
+    it('should disable only the Subit button when empty form is present', () => {
+        render(<NicknameForm />);
+
+        expect(screen.getByRole('button', { name: 'Confirm' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled();
+    });
+
+    it('shoucl submit data when valid data is present in the form', async () => {
+        const { general_store } = useStores();
+        render(<NicknameForm />);
+        fireEvent.input(screen.getByLabelText(/nickname/i), { target: { value: 'P2P Test' } });
+        fireEvent.click(screen.getByRole('button', { name: /Confirm/i }));
+
+        await waitFor(() => expect(general_store.createAdvertiser).toHaveBeenCalledWith('P2P Test'));
+    });
+
+    it('should close popup if Cancel button is clicked', () => {
+        const { general_store } = useStores();
+        render(<NicknameForm />);
+        fireEvent.input(screen.getByLabelText(/nickname/i), { target: { value: 'P2P Test' } });
+        fireEvent.click(screen.getByRole('button', { name: /Cancel/i }));
+
+        expect(general_store.onNicknamePopupClose).toHaveBeenCalled();
+    });
 });

@@ -25,7 +25,7 @@ beforeEach(() => {
 
 const textMatcher = text => {
     return screen.getByText((content, node) => {
-        const hasText = node => node.textContent === text;
+        const hasText = element => element.textContent === text;
         const nodeHasText = hasText(node);
         const childrenDontHaveText = Array.from(node.children).every(child => !hasText(child));
 

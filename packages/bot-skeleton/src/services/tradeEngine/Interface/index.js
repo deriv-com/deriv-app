@@ -1,14 +1,18 @@
 import getToolsInterface from './ToolsInterface';
 import getTicksInterface from './TicksInterface';
+import getBotInterface from './BotInterface';
 import TradeEngine from '../trade';
-import { createDetails } from '../utils/helpers';
-import { observer as globalObserver } from '../../../utils/observer';
 
-/**
- * Bot - Bot Module
- * @namespace Bot
- */
-
+const sleep = (observer, arg = 1) => {
+    return new Promise(
+        r =>
+            setTimeout(() => {
+                r();
+                setTimeout(() => observer.emit('CONTINUE'), 0);
+            }, arg * 1000),
+        () => {}
+    );
+};
 export default class Interface {
     constructor($scope) {
         this.tradeEngine = new TradeEngine($scope);
@@ -19,11 +23,11 @@ export default class Interface {
 
     getInterface() {
         return {
-            ...this.getBotInterface(),
+            ...getBotInterface(this.tradeEngine),
             ...getToolsInterface(this.tradeEngine),
             getTicksInterface: getTicksInterface(this.tradeEngine),
             watch: (...args) => this.tradeEngine.watch(...args),
-            sleep: (...args) => this.sleep(...args),
+            sleep: (...args) => sleep(this.observer, ...args),
             alert: (...args) => alert(...args), // eslint-disable-line no-alert
             prompt: (...args) => prompt(...args), // eslint-disable-line no-alert
             console: {
@@ -33,48 +37,5 @@ export default class Interface {
                 },
             },
         };
-    }
-
-    getBotInterface() {
-        const getDetail = i => createDetails(this.tradeEngine.data.contract)[i];
-
-        return {
-            init: (...args) => this.tradeEngine.init(...args),
-            start: (...args) => this.tradeEngine.start(...args),
-            stop: (...args) => this.tradeEngine.stop(...args),
-            purchase: contract_type => this.tradeEngine.purchase(contract_type),
-            getAskPrice: contract_type => Number(this.getProposal(contract_type).ask_price),
-            getPayout: contract_type => Number(this.getProposal(contract_type).payout),
-            getPurchaseReference: () => this.tradeEngine.getPurchaseReference(),
-            isSellAvailable: () => this.tradeEngine.isSellAtMarketAvailable(),
-            sellAtMarket: () => this.tradeEngine.sellAtMarket(),
-            getSellPrice: () => this.getSellPrice(),
-            isResult: result => getDetail(10) === result,
-            isTradeAgain: result => globalObserver.emit('bot.trade_again', result),
-            readDetails: i => getDetail(i - 1),
-        };
-    }
-
-    sleep(arg = 1) {
-        return new Promise(
-            r =>
-                setTimeout(() => {
-                    r();
-                    setTimeout(() => this.observer.emit('CONTINUE'), 0);
-                }, arg * 1000),
-            () => {}
-        );
-    }
-
-    getProposal(contract_type) {
-        return this.tradeEngine.data.proposals.find(
-            proposal =>
-                proposal.contract_type === contract_type &&
-                proposal.purchase_reference === this.tradeEngine.getPurchaseReference()
-        );
-    }
-
-    getSellPrice() {
-        return this.tradeEngine.getSellPrice();
     }
 }

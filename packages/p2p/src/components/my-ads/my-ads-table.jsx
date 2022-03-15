@@ -27,6 +27,7 @@ const MyAdsTable = () => {
     const { general_store, my_ads_store } = useStores();
 
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
+    const local_currency = general_store.client.local_currency_config.currency;
 
     React.useEffect(() => {
         my_ads_store.setAdverts([]);
@@ -67,7 +68,10 @@ const MyAdsTable = () => {
                         message={
                             <Text as='p' size='xxxs' color='prominent' line_height='xs'>
                                 <Localize
-                                    i18n_default_text={`Floating rates are enabled for ${general_store.client.local_currency_config.currency}. Ads with fixed rates will be deactivated. Switch to floating rates by`}
+                                    i18n_default_text={
+                                        'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by'
+                                    }
+                                    values={{ local_currency }}
                                 />
                             </Text>
                         }

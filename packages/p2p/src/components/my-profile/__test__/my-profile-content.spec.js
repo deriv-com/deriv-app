@@ -45,14 +45,14 @@ describe('<MyProfileContent/>', () => {
         expect(screen.getByText('Payment methods')).toBeInTheDocument();
     });
 
-    it('should render Profile status screen for any other non mathching values',()=>{
+    it('should render Profile status screen for any other non mathching values', () => {
         useStores.mockImplementation(() => ({
-            my_profile_store: { ...mock_profile_store, active_tab: 'stat'},
+            my_profile_store: { ...mock_profile_store, active_tab: 'stat' },
         }));
         render(<MyProfileContent />);
 
         expect(screen.getByText('My Profile Stats')).toBeInTheDocument();
-    })
+    });
 
     it('should render loading screen', () => {
         useStores.mockImplementation(() => ({

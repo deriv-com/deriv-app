@@ -57,7 +57,7 @@ const MobileFullPageModal = ({
                     >
                         {pageHeaderReturnFn && (
                             <div className='dc-mobile-full-page-modal__header-return'>
-                                <Icon icon='IcArrowLeftBold' onClick={pageHeaderReturnFn} size={16} />
+                                <Icon icon='IcArrowLeftBold' onClick={pageHeaderReturnFn} size={16} data-testid='IcArrowLeftBold'/>
                             </div>
                         )}
                         {renderPageHeader && renderPageHeader()}

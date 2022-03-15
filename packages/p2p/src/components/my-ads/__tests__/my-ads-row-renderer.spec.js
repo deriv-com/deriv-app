@@ -143,6 +143,6 @@ describe('<CreateAdErrorModal />', () => {
         expect(mocked_my_ads_store.onClickDelete).toHaveBeenCalledWith('test');
 
         fireEvent.mouseLeave(el_dp2p_my_ads_row_renderer_container);
-        expect(screen.queryByTestId('p2p-my-ads-row-renderer_popovers-container')).toBeNull();
+        expect(screen.queryByTestId('p2p-my-ads-row-renderer_popovers-container')).not.toBeInTheDocument();
     });
 });

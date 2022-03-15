@@ -184,7 +184,11 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
 
     return (
         <>
-            <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+            <div
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                data-testid='dp2p-my-ads-row-renderer_container'
+            >
                 <Table.Row
                     className={classNames('p2p-my-ads__table-row', {
                         'p2p-my-ads__table-row-disabled': !is_advert_active,
@@ -247,7 +251,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         </div>
                     </Table.Cell>
                     {is_popover_actions_visible && (
-                        <div className='p2p-my-ads__table-popovers'>
+                        <div
+                            className='p2p-my-ads__table-popovers'
+                            data-testid='p2p-my-ads-row-renderer_popovers-container'
+                        >
                             {is_advert_active ? (
                                 <div onClick={onClickActivateDeactivate}>
                                     <Popover
@@ -263,7 +270,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     </Popover>
                                 </div>
                             ) : (
-                                <div onClick={onClickActivateDeactivate}>
+                                <div
+                                    onClick={onClickActivateDeactivate}
+                                    data-testid='p2p-my-ads-row-renderer_de/activate-popover'
+                                >
                                     <Popover
                                         alignment='bottom'
                                         className='p2p-my-ads__table-popovers__activate'
@@ -278,7 +288,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 </div>
                             )}
                             {!is_advert_active && (
-                                <div onClick={onClickEdit}>
+                                <div onClick={onClickEdit} data-testid='dp2p-my-ads-row-renderer_edit-popover'>
                                     <Popover
                                         alignment='bottom'
                                         className='p2p-my-ads__table-popovers__edit'
@@ -288,7 +298,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     </Popover>
                                 </div>
                             )}
-                            <div onClick={onClickDelete}>
+                            <div onClick={onClickDelete} data-testid='dp2p-my-ads-row-renderer_delete-popover'>
                                 <Popover
                                     alignment='bottom'
                                     className='p2p-my-ads__table-popovers__delete'

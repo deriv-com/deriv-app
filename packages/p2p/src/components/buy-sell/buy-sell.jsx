@@ -11,6 +11,7 @@ import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
 import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
+import FilterModal from './filter-modal';
 import './buy-sell.scss';
 
 const BuySell = () => {
@@ -64,6 +65,7 @@ const BuySell = () => {
 
     return (
         <div className='buy-sell'>
+            <FilterModal />
             <BuySellHeader
                 is_visible={is_toggle_visible}
                 table_type={buy_sell_store.table_type}

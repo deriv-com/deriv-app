@@ -56,7 +56,7 @@ const validateSignup = (values, residence_list) => {
 };
 
 const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
@@ -206,7 +206,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                                     primary
                                                     text={localize('Create new account')}
                                                     type='button'
-                                                    onClick={() => redirectToSignUp({ is_dashboard })}
+                                                    onClick={() => redirectToSignUp({ is_appstore })}
                                                 />
                                             </div>
                                         </React.Fragment>

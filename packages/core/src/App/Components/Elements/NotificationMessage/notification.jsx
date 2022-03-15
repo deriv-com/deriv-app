@@ -13,7 +13,7 @@ import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
@@ -33,9 +33,23 @@ const Notification = ({ data, removeNotificationMessage }) => {
         case 'news':
             return (
                 <NotificationBanner
+                    className={data.className}
                     header={data.header}
                     message={data.message}
                     primary_btn={data.primary_btn}
+                    secondary_btn={data.secondary_btn}
+                    img_src={data.img_src}
+                    img_alt={data.img_alt}
+                    onClose={destroy}
+                />
+            );
+        case 'trustpilot':
+            return (
+                <NotificationBanner
+                    className={data.className}
+                    header={data.header_popup}
+                    message={data.message_popup}
+                    secondary_btn={data.action}
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     onClose={destroy}
@@ -113,7 +127,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                             onClick={() => {
                                                 if (data.timeout)
                                                     linear_progress_container_ref.current.removeTimeoutSession();
-                                                data.action.onClick({ is_dashboard });
+                                                data.action.onClick({ is_appstore });
                                             }}
                                             text={data.action.text}
                                             secondary

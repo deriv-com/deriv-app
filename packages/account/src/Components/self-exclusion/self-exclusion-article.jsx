@@ -9,12 +9,12 @@ import SelfExclusionContext from './self-exclusion-context';
 const SelfExclusionArticle = () => {
     const { is_app_settings, toggleArticle, is_eu, is_uk } = React.useContext(SelfExclusionContext);
     const { is_deriv_crypto } = React.useContext(PlatformContext);
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     return (
         <AccountArticle
             title={localize('Trading limits and self-exclusion')}
             descriptions={
-                is_dashboard && isDesktop()
+                is_appstore && isDesktop()
                     ? selfExclusionArticleItems({ is_eu, is_uk, is_deriv_crypto, is_app_settings })
                     : [
                           is_eu ? (
@@ -30,7 +30,7 @@ const SelfExclusionArticle = () => {
                           ),
                       ]
             }
-            {...((!is_dashboard || isMobile()) && { onClickLearnMore: toggleArticle })}
+            {...((!is_appstore || isMobile()) && { onClickLearnMore: toggleArticle })}
         />
     );
 };

@@ -7,14 +7,14 @@ import PoaButton from 'Components/poa-button';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const Verified = ({ needs_poa, redirect_button, is_from_external }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const message = localize('Your proof of identity is verified');
     if (!needs_poa) {
         return (
             <IconMessageContent
                 message={message}
                 icon={
-                    is_dashboard ? (
+                    is_appstore ? (
                         <Icon icon='IcPoaVerifiedDashboard' height={128} width={237} />
                     ) : (
                         <Icon icon='IcPoaVerified' size={128} />
@@ -30,7 +30,7 @@ export const Verified = ({ needs_poa, redirect_button, is_from_external }) => {
         <IconMessageContent
             message={message}
             icon={
-                is_dashboard ? (
+                is_appstore ? (
                     <Icon icon='IcPoaVerifiedDashboard' height={128} width={237} />
                 ) : (
                     <Icon icon='IcPoaVerified' size={128} />

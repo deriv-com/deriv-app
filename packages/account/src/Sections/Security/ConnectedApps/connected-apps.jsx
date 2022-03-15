@@ -17,7 +17,7 @@ import ErrorComponent from 'Components/error-component';
 import GetConnectedAppsColumnsTemplate from './data-table-template.jsx';
 
 const ConnectedApps = () => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setLoading] = React.useState(true);
     const [is_modal_open, setModalVisibility] = React.useState(false);
     const [selected_app_id, setAppId] = React.useState(null);
@@ -61,13 +61,13 @@ const ConnectedApps = () => {
                     <DataList.Cell row={row} column={columns_map.name} />
                     <DataList.Cell row={row} column={columns_map.scopes} />
                 </div>
-                <div className={is_dashboard ? 'data-list__col--dashboard' : 'data-list__col--small'}>
+                <div className={is_appstore ? 'data-list__col--dashboard' : 'data-list__col--small'}>
                     <DataList.Cell row={row} column={columns_map.last_used} />
-                    <DataList.Cell row={row} column={columns_map.app_id} is_footer={!is_dashboard} />
+                    <DataList.Cell row={row} column={columns_map.app_id} is_footer={!is_appstore} />
                 </div>
             </div>
         ),
-        [columns_map, is_dashboard]
+        [columns_map, is_appstore]
     );
 
     const handleRevokeAccess = React.useCallback(() => {
@@ -88,7 +88,7 @@ const ConnectedApps = () => {
     return (
         <section
             className={classNames('connected-apps__wrapper', {
-                'connected-apps__wrapper--dashboard': is_dashboard,
+                'connected-apps__wrapper--dashboard': is_appstore,
             })}
         >
             <Text color='prominent' weight='bold' as='p' className='connected-apps__title'>
@@ -110,7 +110,7 @@ const ConnectedApps = () => {
                         <DataList
                             className='connected-apps'
                             data_source={connected_apps}
-                            row_gap={is_dashboard ? 16 : 10}
+                            row_gap={is_appstore ? 16 : 10}
                             rowRenderer={mobileRowRenderer}
                         />
                     </MobileWrapper>
@@ -120,7 +120,7 @@ const ConnectedApps = () => {
                 <Modal.Body>
                     <div className='connected-app-modal'>
                         <Icon
-                            icon={is_dashboard ? 'IcAccountTrashCanDashboard' : 'IcAccountTrashCan'}
+                            icon={is_appstore ? 'IcAccountTrashCanDashboard' : 'IcAccountTrashCan'}
                             size={128}
                             className='connected-app-modal__icon'
                         />
@@ -129,7 +129,7 @@ const ConnectedApps = () => {
                         </Text>
                         <div
                             className={classNames('connected-app-modal__confirmation', {
-                                'connected-app-modal__confirmation-dashboard': is_dashboard,
+                                'connected-app-modal__confirmation-dashboard': is_appstore,
                             })}
                         >
                             <Button secondary onClick={handleToggleModal}>

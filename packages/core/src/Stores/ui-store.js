@@ -525,7 +525,7 @@ export default class UIStore extends BaseStore {
     toggleUpdateEmailModal(state_change = !this.is_update_email_modal_visible) {
         this.is_update_email_modal_visible = state_change;
     }
-    
+
     @action.bound
     setResetTradingPasswordModalOpen(is_reset_trading_password_modal_visible) {
         this.is_reset_trading_password_modal_visible = is_reset_trading_password_modal_visible;

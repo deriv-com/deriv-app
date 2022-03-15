@@ -1,14 +1,11 @@
-import Cookies from 'js-cookie';
-import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import moment from 'moment';
 import {
-    redirectToLogin,
     getPropertyValue,
-    getUrlSmartTrader,
     getUrlBinaryBot,
+    getUrlSmartTrader,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
+    redirectToLogin,
     setCurrencies,
     State,
     toMoment,
@@ -19,15 +16,17 @@ import {
     routes,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
+import Cookies from 'js-cookie';
+import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
+import moment from 'moment';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 import BaseStore from './base-store';
-import { getClientAccountType, getAccountTitle } from './Helpers/client';
+import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
-import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const LANGUAGE_KEY = 'i18n_language';
@@ -66,14 +65,13 @@ export default class ClientStore extends BaseStore {
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
-    // TODO: Temporary variable. Remove after MX account closure has finished.
-    @observable client_notifications = clientNotifications;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
     // mt_financial_company: {}
     // mt_gaming_company: {}
     @observable landing_companies = {};
+
     // All possible landing companies of user between all
     @observable standpoint = {
         iom: false,
@@ -83,6 +81,7 @@ export default class ClientStore extends BaseStore {
         gaming_company: false,
         financial_company: false,
     };
+
     @observable upgradeable_landing_companies = [];
     @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable mt5_login_list = [];
@@ -112,20 +111,29 @@ export default class ClientStore extends BaseStore {
     @observable new_email = {
         system_email_change: '',
     };
+    
+    @observable account_limits = {}
     @observable account_limits = {};
+
     @observable self_exclusion = {};
+
     @observable local_currency_config = {
         currency: '',
         decimal_places: undefined,
     };
     @observable has_cookie_account = false;
+
     @observable financial_assessment = null;
+
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
+
     is_mt5_account_list_updated = false;
+
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
+
         reaction(
             () => [
                 this.is_logged_in,
@@ -146,6 +154,7 @@ export default class ClientStore extends BaseStore {
             () => this.root_store.ui.closeRealAccountSignup()
         );
     }
+
     @computed
     get balance() {
         if (isEmptyObject(this.accounts)) return undefined;
@@ -153,6 +162,7 @@ export default class ClientStore extends BaseStore {
             ? this.accounts[this.loginid].balance.toString()
             : undefined;
     }
+
     @computed
     get is_reality_check_visible() {
         if (!this.loginid || !this.landing_company) {
@@ -160,6 +170,7 @@ export default class ClientStore extends BaseStore {
         }
         return !!(this.has_reality_check && !this.reality_check_dismissed);
     }
+
     @computed
     get is_svg() {
         if (!this.landing_company_shortcode) {
@@ -167,35 +178,43 @@ export default class ClientStore extends BaseStore {
         }
         return this.landing_company_shortcode === 'svg' || this.landing_company_shortcode === 'costarica';
     }
+
     @computed
     get reality_check_duration() {
         return this.has_reality_check ? this.reality_check_dur || +LocalStore.get('reality_check_duration') : undefined;
     }
+
     @computed
     get reality_check_dismissed() {
         return this.has_reality_check
             ? this.is_reality_check_dismissed || JSON.parse(LocalStore.get('reality_check_dismissed') || false)
             : undefined;
     }
+
     @computed
     get has_active_real_account() {
         return this.active_accounts.some(acc => acc.is_virtual === 0);
     }
+
     @computed
     get has_maltainvest_account() {
         return this.active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
     }
+
     @computed
     get has_malta_account() {
         return this.active_accounts.some(acc => acc.landing_company_shortcode === 'malta');
     }
+
     hasAnyRealAccount = () => {
         return this.account_list.some(acc => acc.is_virtual === 0);
     };
+
     @computed
     get has_any_real_account() {
         return this.hasAnyRealAccount();
     }
+
     @computed
     get first_switchable_real_loginid() {
         const result = this.active_accounts.find(
@@ -203,6 +222,7 @@ export default class ClientStore extends BaseStore {
         );
         return result.loginid || undefined;
     }
+
     @computed
     get can_change_fiat_currency() {
         const has_no_mt5 = !this.has_real_mt5_login;
@@ -211,6 +231,7 @@ export default class ClientStore extends BaseStore {
         const has_account_criteria = has_no_transaction && has_no_mt5 && has_no_dxtrade;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
     }
+
     @computed
     get legal_allowed_currencies() {
         const getDefaultAllowedCurrencies = () => {
@@ -222,6 +243,7 @@ export default class ClientStore extends BaseStore {
             }
             return [];
         };
+
         if (!this.landing_companies || !this.root_store.ui) return [];
         if (!this.root_store.ui.real_account_signup_target) {
             return getDefaultAllowedCurrencies();
@@ -233,11 +255,14 @@ export default class ClientStore extends BaseStore {
             return this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+
         if (this.landing_companies[`${target}_company`]) {
             return this.landing_companies[`${target}_company`].legal_allowed_currencies;
         }
+
         return getDefaultAllowedCurrencies();
     }
+
     @computed
     get upgradeable_currencies() {
         if (!this.legal_allowed_currencies || !this.website_status.currencies_config) return [];
@@ -246,6 +271,7 @@ export default class ClientStore extends BaseStore {
             ...this.website_status.currencies_config[currency],
         }));
     }
+
     @computed
     get current_currency_type() {
         if (this.account_type === 'virtual') return 'virtual';
@@ -256,20 +282,25 @@ export default class ClientStore extends BaseStore {
         ) {
             return this.website_status.currencies_config[this.currency].type;
         }
+
         return undefined;
     }
+
     @computed
     get available_crypto_currencies() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
             acc.push(item.currency);
             return acc;
         }, []);
+
         return this.upgradeable_currencies.filter(acc => !values.includes(acc.value) && acc.type === 'crypto');
     }
+
     @computed
     get has_iom_account() {
         return this.active_accounts.some(acc => acc.landing_company_shortcode === 'iom');
     }
+
     @computed
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
@@ -280,6 +311,7 @@ export default class ClientStore extends BaseStore {
         }, []);
         return !!this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat').length;
     }
+
     @computed
     get current_fiat_currency() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
@@ -288,10 +320,12 @@ export default class ClientStore extends BaseStore {
             }
             return acc;
         }, []);
+
         return this.has_fiat
             ? this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat')[0].value
             : undefined;
     }
+
     // return the landing company object that belongs to the current client by matching shortcode
     // note that it will be undefined for logged out and virtual clients
     @computed
@@ -303,10 +337,12 @@ export default class ClientStore extends BaseStore {
             );
         return landing_company ? this.landing_companies[landing_company] : undefined;
     }
+
     @computed
     get account_list() {
         return this.all_loginids.map(id => this.getAccountInfo(id)).filter(account => account);
     }
+
     @computed
     get has_real_mt5_login() {
         return this.mt5_login_list.some(account => account.account_type === 'real');
@@ -537,11 +573,14 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_eu() {
         if (!this.landing_companies) return false;
-        const { gaming_company, financial_company } = this.landing_companies;
+        const { gaming_company, financial_company, mt_gaming_company } = this.landing_companies;
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
-        return financial_shortcode || gaming_shortcode
-            ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode)
+        const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
+        return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
+            ? eu_shortcode_regex.test(financial_shortcode) ||
+                  eu_shortcode_regex.test(gaming_shortcode) ||
+                  eu_shortcode_regex.test(mt_gaming_shortcode)
             : eu_excluded_regex.test(this.residence);
     }
 
@@ -570,31 +609,6 @@ export default class ClientStore extends BaseStore {
             this.is_eu && !result.is_uk && !result.is_france && !result.is_belgium && !result.is_other_eu;
 
         return result;
-    }
-
-    @computed
-    get custom_notifications() {
-        const notification_content = {
-            mx_mlt_notification: {
-                header: () => {
-                    if (this.has_malta_account || this.can_have_mlt_account) {
-                        return localize('Your Options account is scheduled to be closed');
-                    } else if (this.is_uk) {
-                        return localize('Your Gaming account is scheduled to be closed');
-                    }
-                    return localize('Your account is scheduled to be closed');
-                },
-                main: () => {
-                    if (this.has_malta_account || this.can_have_mlt_account) {
-                        return localize('Withdraw all funds from your Options account.');
-                    } else if (this.is_uk) {
-                        return localize('Please withdraw all your funds as soon as possible.');
-                    }
-                    return localize('Please proceed to withdraw your funds before 30 November 2021.');
-                },
-            },
-        };
-        return notification_content;
     }
 
     // Manual list of MLT countries during MLT/MX account removal.
@@ -1062,10 +1076,10 @@ export default class ClientStore extends BaseStore {
             LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
         }
         this.selectCurrency(currency);
-        this.root_store.ui.removeNotificationMessage({
+        this.root_store.notifications.removeNotificationMessage({
             key: 'currency',
         });
-        this.root_store.ui.removeNotificationByKey({
+        this.root_store.notifications.removeNotificationByKey({
             key: 'currency',
         });
         await this.init();
@@ -1134,16 +1148,6 @@ export default class ClientStore extends BaseStore {
         return filtered_list.length > 0 && filtered_list.every(acc => acc.is_disabled);
     };
 
-    getRiskAssessment = () => {
-        if (!this.account_status) return false;
-
-        const status = this.account_status?.status;
-
-        return this.isAccountOfType('financial')
-            ? /(financial_assessment|trading_experience)_not_complete/.test(status)
-            : /financial_assessment_not_complete/.test(status);
-    };
-
     shouldCompleteTax = () => {
         if (!this.isAccountOfType('financial')) return false;
 
@@ -1175,37 +1179,25 @@ export default class ClientStore extends BaseStore {
     async switchAccount(loginid) {
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
-        this.root_store.ui.removeNotifications(true);
-        this.root_store.ui.removeAllNotificationMessages(true);
+        this.root_store.notifications.removeNotifications(true);
+        this.root_store.notifications.removeAllNotificationMessages(true);
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
 
     @action.bound
     async resetVirtualBalance() {
-        this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
-        this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
+        this.root_store.notifications.removeNotificationByKey({ key: 'reset_virtual_balance' });
+        this.root_store.notifications.removeNotificationMessage({
+            key: 'reset_virtual_balance',
+            should_show_again: true,
+        });
         await WS.authorized.topupVirtual();
     }
 
     @action.bound
     switchEndSignal() {
         this.switch_broadcast = false;
-    }
-
-    @action.bound
-    refreshNotifications() {
-        this.root_store.ui.removeNotifications(true);
-        this.root_store.ui.removeAllNotificationMessages();
-        const client = this.accounts[this.loginid];
-        const { has_missing_required_field } = handleClientNotifications(
-            client,
-            this,
-            this.root_store.ui,
-            this.root_store.modules.cashier,
-            this.root_store.common
-        );
-        this.setHasMissingRequiredField(has_missing_required_field);
     }
 
     /**
@@ -1240,7 +1232,7 @@ export default class ClientStore extends BaseStore {
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
-        let client = this.accounts[this.loginid];
+        const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed
@@ -1259,7 +1251,11 @@ export default class ClientStore extends BaseStore {
             }
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
-                if (search_params?.get('action') === 'reset_password') {
+                const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
+                    search_params?.get('action')
+                );
+
+                if (has_action) {
                     const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
                     window.location.replace(`${redirect_route}/redirect?${query_string}`);
                 } else {
@@ -1274,37 +1270,6 @@ export default class ClientStore extends BaseStore {
                 window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
             }
         }
-
-        /**
-         * Set up reaction for account_settings, account_status, is_p2p_visible
-         */
-        reaction(
-            () => [
-                this.account_settings,
-                this.account_status,
-                this.landing_companies,
-                this.root_store.modules?.cashier?.general_store?.is_p2p_visible,
-                this.root_store.common?.selected_contract_type,
-                this.is_eu,
-            ],
-            () => {
-                client = this.accounts[this.loginid];
-                if (Object.keys(this.landing_companies).length > 0) {
-                    this.root_store.ui.removeNotifications();
-                    this.root_store.ui.removeAllNotificationMessages();
-                    const { has_missing_required_field } = handleClientNotifications(
-                        client,
-                        this,
-                        this.root_store.ui,
-                        this.root_store.modules.cashier,
-                        this.root_store.common
-                    );
-                    if (client && !client.is_virtual) {
-                        this.setHasMissingRequiredField(has_missing_required_field);
-                    }
-                }
-            }
-        );
 
         this.selectCurrency('');
 
@@ -1351,7 +1316,7 @@ export default class ClientStore extends BaseStore {
     responseWebsiteStatus(response) {
         this.website_status = response.website_status;
         if (this.website_status.message && this.website_status.message.length) {
-            this.root_store.ui.addNotificationMessage({
+            this.root_store.notifications.addNotificationMessage({
                 key: 'maintenance',
                 header: localize('Site is being updated'),
                 message: localize(this.website_status.message),
@@ -1359,7 +1324,7 @@ export default class ClientStore extends BaseStore {
                 is_persistent: true,
             });
         } else {
-            this.root_store.ui.removeNotificationMessage({
+            this.root_store.notifications.removeNotificationMessage({
                 key: 'maintenance',
             });
         }
@@ -1420,11 +1385,6 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setSwitched(switched) {
         this.switched = switched;
-    }
-
-    @action.bound
-    setHasMissingRequiredField(has_missing_required_field) {
-        this.has_missing_required_field = has_missing_required_field;
     }
 
     /**
@@ -1502,7 +1462,7 @@ export default class ClientStore extends BaseStore {
 
     handleNotFoundLoginId() {
         // Logout if the switched_account doesn't belong to any loginid.
-        this.root_store.ui.addNotificationMessage({
+        this.root_store.notifications.addNotificationMessage({
             message: localize('Could not switch to default account.'),
             type: 'danger',
         });
@@ -1523,7 +1483,7 @@ export default class ClientStore extends BaseStore {
             }
 
             // Send a toast message to let the user know we can't switch his account.
-            this.root_store.ui.addNotificationMessage({
+            this.root_store.notifications.addNotificationMessage({
                 message: localize('Switching to default account.'),
                 type: 'info',
             });
@@ -1575,8 +1535,8 @@ export default class ClientStore extends BaseStore {
             () => {
                 // Remove real account notifications upon switching to virtual
                 if (this.accounts[this.switched]?.is_virtual) {
-                    this.root_store.ui.removeNotifications(true);
-                    this.root_store.ui.removeAllNotificationMessages();
+                    this.root_store.notifications.removeNotifications(true);
+                    this.root_store.notifications.removeAllNotificationMessages();
                 }
 
                 this.switchAccountHandler();
@@ -1585,39 +1545,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    resetVirtualBalanceNotification(loginid) {
-        if (!this.is_logged_in) return;
-        if (!this.accounts[loginid].is_virtual) return;
-        const min_reset_limit = 1000;
-        const max_reset_limit = 999000;
-        const balance = parseInt(this.accounts[loginid].balance);
-
-        // Display notification message to user with virtual account to reset their balance
-        // if the balance is less than equals to 1000 or more than equals to 999000
-        if (balance <= min_reset_limit || balance >= max_reset_limit) {
-            let message = localize(
-                'Your demo account balance is low. Reset your balance to continue trading from your demo account.'
-            );
-            if (balance >= max_reset_limit)
-                message = localize(
-                    'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
-                );
-            this.root_store.ui.addNotificationMessage(
-                clientNotifications({}, { resetVirtualBalance: this.resetVirtualBalance, message })
-                    .reset_virtual_balance
-            );
-        } else {
-            this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
-            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
-        }
-    }
-
-    @action.bound
     setBalanceActiveAccount(obj_balance) {
         if (this.accounts[obj_balance?.loginid] && obj_balance.loginid === this.loginid) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
             if (this.accounts[obj_balance.loginid].is_virtual) {
-                this.resetVirtualBalanceNotification(obj_balance.loginid);
+                this.root_store.notifications.resetVirtualBalanceNotification(obj_balance.loginid);
             }
             this.resetLocalStorageValues(this.loginid);
         }
@@ -1713,7 +1645,7 @@ export default class ClientStore extends BaseStore {
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
-        this.root_store.ui.removeAllNotificationMessages(true);
+        this.root_store.notifications.removeAllNotificationMessages(true);
         this.syncWithLegacyPlatforms(this.loginid, this.accounts);
         this.cleanupRealityCheck();
     }
@@ -1723,7 +1655,7 @@ export default class ClientStore extends BaseStore {
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 
-        if (response.logout === 1) {
+        if (response?.logout === 1) {
             this.cleanUp();
 
             this.root_store.rudderstack.reset();
@@ -1891,16 +1823,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setNewEmail(email, action) {
-        this.new_email[action] = email;
-        if (email) {
-            LocalStore.set(`new_email.${action}`, email);
-        } else {
-            LocalStore.remove(`new_email.${email}`);
-        }
-    }
-
-    @action.bound
     setDeviceData() {
         setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
     }
@@ -1964,35 +1886,33 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence, email_consent }, cb) {
+    onSignup({ password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
-        if (email_consent === undefined) return;
-        email_consent = email_consent ? 1 : 0;
-        WS.newAccountVirtual(
-            this.verification_code.signup,
-            password,
-            residence,
-            email_consent,
-            this.getSignupParams()
-        ).then(async response => {
-            if (response.error) {
-                cb(response.error.message);
-            } else {
-                cb();
-                // Initialize client store with new user login
-                const { client_id, currency, oauth_token } = response.new_account_virtual;
-                await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
+        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
+            async response => {
+                if (response.error) {
+                    cb(response.error.message);
+                } else {
+                    cb();
+                    // Initialize client store with new user login
+                    const { client_id, currency, oauth_token } = response.new_account_virtual;
+                    await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
-                // GTM Signup event
-                this.root_store.gtm.pushDataLayer({
-                    event: 'virtual_signup',
-                });
+                    // GTM Signup event
+                    this.root_store.gtm.pushDataLayer({
+                        event: 'virtual_signup',
+                    });
 
-                if (!this.country_standpoint.is_france && !this.country_standpoint.is_belgium && residence !== 'im') {
-                    this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                    if (
+                        !this.country_standpoint.is_france &&
+                        !this.country_standpoint.is_belgium &&
+                        residence !== 'im'
+                    ) {
+                        this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                    }
                 }
             }
-        });
+        );
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {

@@ -50,7 +50,9 @@ Blockly.Blocks.math_on_list = {
     },
     getRequiredValueInputs() {
         return {
-            LIST: null,
+            LIST: input => {
+                return input !== 'list';
+            },
         };
     },
 };
@@ -63,13 +65,13 @@ Blockly.JavaScript.math_on_list = block => {
 
     if (operation === 'SUM') {
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_MEMBER) || '[]';
-        code = `([${list}]).reduce(function(x, y) { return x + y; })`;
+        code = `(${list} || [0]).reduce(function(x, y) { return x + y; })`;
     } else if (operation === 'MIN') {
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_COMMA) || '[]';
-        code = `Math.min.apply(null, [${list}])`;
+        code = `Math.min.apply(null, (${list} || [0]))`;
     } else if (operation === 'MAX') {
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_COMMA) || '[]';
-        code = `Math.max.apply(null, [${list}])`;
+        code = `Math.max.apply(null, (${list} || [0]))`;
     } else if (operation === 'AVERAGE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
@@ -84,7 +86,7 @@ Blockly.JavaScript.math_on_list = block => {
         ]);
 
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
-        code = `${functionName}([${list}])`;
+        code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MEDIAN') {
         const functionName = Blockly.JavaScript.provideFunction_('mathMedian', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
@@ -106,7 +108,7 @@ Blockly.JavaScript.math_on_list = block => {
         ]);
 
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
-        code = `${functionName}([${list}])`;
+        code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MODE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathModes', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(values) {
@@ -145,7 +147,7 @@ Blockly.JavaScript.math_on_list = block => {
         ]);
 
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
-        code = `${functionName}([${list}])`;
+        code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'ANTIMODE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathAntiMode', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(values) {
@@ -188,7 +190,7 @@ Blockly.JavaScript.math_on_list = block => {
         ]);
 
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
-        code = `${functionName}([${list}])`;
+        code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'STD_DEV') {
         const functionName = Blockly.JavaScript.provideFunction_('mathStandardDeviation', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(numbers) {
@@ -211,7 +213,7 @@ Blockly.JavaScript.math_on_list = block => {
         ]);
 
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
-        code = `${functionName}([${list}])`;
+        code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'RANDOM') {
         const functionName = Blockly.JavaScript.provideFunction_('mathRandomList', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
@@ -221,7 +223,7 @@ Blockly.JavaScript.math_on_list = block => {
         ]);
 
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
-        code = `${functionName}([${list}])`;
+        code = `${functionName}((${list} || [0]))`;
     }
 
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];

@@ -56,9 +56,8 @@ const ProofOfOwnership = ({ ownership = ownership_temp }) => {
     const [status] = useState(ownership.status);
 
     const handleSubmit = e => {
-        // eslint-disable-next-line no-console
         e.preventDefault();
-        console.log('hello', e);
+        // TODO: submit logic
     };
 
     if (status === 'pending' && cards.length) {

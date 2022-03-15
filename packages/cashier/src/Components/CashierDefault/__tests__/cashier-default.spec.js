@@ -141,7 +141,7 @@ describe('<CashierDefault />', () => {
         );
         fireEvent.click(deposit_crypto_detail_div);
 
-        expect(props.setDepositTarget).Times(1);
+        expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
     });
 

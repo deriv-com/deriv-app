@@ -110,7 +110,7 @@ const AccountLimits = ({
 
     return (
         <AccountLimitsContext.Provider value={context_value}>
-            <section className='da-account-limits__wrapper'>
+            <section className='da-account-limits__wrapper' data-testid='account_limits_data'>
                 <div
                     className={classNames('da-account-limits', {
                         'da-account-limits--app-settings': is_app_settings,

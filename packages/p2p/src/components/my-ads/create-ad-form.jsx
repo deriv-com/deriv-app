@@ -115,7 +115,7 @@ const CreateAdForm = () => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
                     return (
-                        <div className='p2p-my-ads__form'>
+                        <div className='p2p-my-ads__form' data-testid='dp2p-create-ad-form_container'>
                             <Form
                                 className={classNames('p2p-my-ads__form-element', {
                                     'p2p-my-ads__form-element--ios': is_sell_advert && os === 'iOS',

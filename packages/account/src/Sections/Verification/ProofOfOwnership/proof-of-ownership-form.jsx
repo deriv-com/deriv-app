@@ -60,16 +60,23 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit }) => {
                             <fieldset>
                                 {cards.map((card, index) => {
                                     return (
-                                        <Card
-                                            key={card.id}
-                                            error={errors?.data?.[index]}
-                                            index={index}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            values={values}
-                                            card={card}
-                                            setFieldValue={setFieldValue}
-                                        />
+                                        <div className='proof-of-ownership__form-content' key={card.id}>
+                                            <div className='proof-of-ownership__progress'>
+                                                <div className='proof-of-ownership__progress-number'>{index + 1}</div>
+                                                {index !== cards.length - 1 && (
+                                                    <div className='proof-of-ownership__progress-bar' />
+                                                )}
+                                            </div>
+                                            <Card
+                                                error={errors?.data?.[index]}
+                                                index={index}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                values={values}
+                                                card={card}
+                                                setFieldValue={setFieldValue}
+                                            />
+                                        </div>
                                     );
                                 })}
                             </fieldset>

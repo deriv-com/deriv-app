@@ -33,9 +33,23 @@ const Notification = ({ data, removeNotificationMessage }) => {
         case 'news':
             return (
                 <NotificationBanner
+                    className={data.className}
                     header={data.header}
                     message={data.message}
                     primary_btn={data.primary_btn}
+                    secondary_btn={data.secondary_btn}
+                    img_src={data.img_src}
+                    img_alt={data.img_alt}
+                    onClose={destroy}
+                />
+            );
+        case 'trustpilot':
+            return (
+                <NotificationBanner
+                    className={data.className}
+                    header={data.header_popup}
+                    message={data.message_popup}
+                    secondary_btn={data.action}
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     onClose={destroy}

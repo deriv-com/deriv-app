@@ -1,9 +1,10 @@
 import React from 'react';
 import { Loading, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
+import { Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
@@ -16,8 +17,10 @@ import './advertiser-page.scss';
 const AdvertiserPage = () => {
     const { advertiser_page_store } = useStores();
 
-    const { basic_verification, first_name, full_verification, last_name, total_orders_count } =
+    const { basic_verification, created_time, first_name, full_verification, last_name, total_orders_count } =
         advertiser_page_store.advertiser_info;
+
+    const joined_since = daysSince(created_time);
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
@@ -67,6 +70,12 @@ const AdvertiserPage = () => {
                                 </div>
                             )}
                         </div>
+                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                            <Localize
+                                i18n_default_text='Joined {{days_since_joined}}d'
+                                values={{ days_since_joined: joined_since }}
+                            />
+                        </Text>
                         <div className='my-profile-name--row'>
                             <TradeBadge
                                 is_poa_verified={!!full_verification}

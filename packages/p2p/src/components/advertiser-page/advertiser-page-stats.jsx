@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Money, Table, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { daysSince, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -32,7 +32,7 @@ const AdvertiserPageStats = () => {
                         <Table.Cell className='advertiser-page__stats-cell'>
                             <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
                                 <Localize
-                                    i18n_default_text='Buy Completion  <0>30d</0>'
+                                    i18n_default_text='Buy completion  <0>30d</0>'
                                     components={[
                                         <Text
                                             key={0}
@@ -77,7 +77,7 @@ const AdvertiserPageStats = () => {
                         <Table.Cell className='advertiser-page__stats-cell'>
                             <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
                                 <Localize
-                                    i18n_default_text='Sell Completion  <0>30d</0>'
+                                    i18n_default_text='Sell completion  <0>30d</0>'
                                     components={[
                                         <Text
                                             key={0}
@@ -167,7 +167,7 @@ const AdvertiserPageStats = () => {
                     <Table.Cell className='advertiser-page__stats-cell'>
                         <Text as='p' color='less-prominent' line_height='m' size='xs'>
                             <Localize
-                                i18n_default_text='Buy Completion  <0>30d</0>'
+                                i18n_default_text='Buy completion  <0>30d</0>'
                                 components={[
                                     <Text
                                         key={0}
@@ -186,7 +186,7 @@ const AdvertiserPageStats = () => {
                     <Table.Cell className='advertiser-page__stats-cell'>
                         <Text as='p' color='less-prominent' line_height='m' size='xs'>
                             <Localize
-                                i18n_default_text='Sell Completion  <0>30d</0>'
+                                i18n_default_text='Sell completion  <0>30d</0>'
                                 components={[
                                     <Text
                                         key={0}

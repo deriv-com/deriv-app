@@ -31,7 +31,7 @@ const MyProfileStatsTable = () => {
                         <Table.Cell className='my-profile-stats-table__cell'>
                             <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
                                 <Localize
-                                    i18n_default_text='Buy Completion  <0>30d</0>'
+                                    i18n_default_text='Buy completion  <0>30d</0>'
                                     components={[
                                         <Text
                                             key={0}
@@ -43,7 +43,7 @@ const MyProfileStatsTable = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {buy_completion_rate ? `${buy_completion_rate} (${buy_orders_count})` : '-'}
+                                {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
                             </Text>
                         </Table.Cell>
                         <Table.Cell className='my-profile-stats-table__cell'>
@@ -73,7 +73,7 @@ const MyProfileStatsTable = () => {
                         <Table.Cell className='my-profile-stats-table__cell'>
                             <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
                                 <Localize
-                                    i18n_default_text='Sell Completion  <0>30d</0>'
+                                    i18n_default_text='Sell completion  <0>30d</0>'
                                     components={[
                                         <Text
                                             key={0}
@@ -85,7 +85,7 @@ const MyProfileStatsTable = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {sell_completion_rate ? `${sell_completion_rate} (${sell_orders_count})` : '-'}
+                                {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
                             </Text>
                         </Table.Cell>
                         <Table.Cell className='my-profile-stats-table__cell'>
@@ -191,7 +191,7 @@ const MyProfileStatsTable = () => {
                     <Table.Cell className='my-profile-stats-table__cell'>
                         <Text as='p' color='less-prominent' line_height='m' size='xs'>
                             <Localize
-                                i18n_default_text='Buy Completion  <0>30d</0>'
+                                i18n_default_text='Buy completion  <0>30d</0>'
                                 components={[
                                     <Text
                                         key={0}
@@ -209,7 +209,7 @@ const MyProfileStatsTable = () => {
                     <Table.Cell className='my-profile-stats-table__cell'>
                         <Text as='p' color='less-prominent' line_height='m' size='xs'>
                             <Localize
-                                i18n_default_text='Sell Completion  <0>30d</0>'
+                                i18n_default_text='Sell completion  <0>30d</0>'
                                 components={[
                                     <Text
                                         key={0}

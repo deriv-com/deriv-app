@@ -12,5 +12,10 @@
     &--table {
         display: flex;
         justify-content: space-between;
+
+        @include mobile {
+            flex-direction: column;
+            gap: 1rem;
+        }
     }
 }

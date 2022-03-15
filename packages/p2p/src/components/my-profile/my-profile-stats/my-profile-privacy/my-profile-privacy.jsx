@@ -20,7 +20,7 @@ const MyProfilePrivacy = () => {
                     <Localize i18n_default_text='Show my real name' />
                 </Text>
                 <Text color='less-prominent' size='xxxs'>
-                    {`(${my_profile_store.full_name})`}
+                    {`${my_profile_store.full_name}`}
                 </Text>
             </div>
             <ToggleSwitch

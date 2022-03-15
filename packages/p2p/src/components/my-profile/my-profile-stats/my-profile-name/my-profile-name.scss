@@ -8,17 +8,18 @@
         margin: 0 0 2.4rem;
     }
 
-    &__avatar {
-        margin-right: 0.8rem;
-    }
-
     &--column {
         display: flex;
         flex-direction: column;
     }
 
     &__name {
+        padding-left: 0.8rem;
         width: 100%;
+
+        @include mobile {
+            width: unset;
+        }
     }
 
     &--privacy {

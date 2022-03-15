@@ -58,5 +58,11 @@
             width: 672px;
             padding: 1.6rem 2.4rem;
         }
+
+        &-button {
+            @include mobile {
+                width: 93vw;
+            }
+        }
     }
 }

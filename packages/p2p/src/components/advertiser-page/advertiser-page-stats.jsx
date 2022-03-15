@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Money, Table, Text } from '@deriv/components';
-import { daysSince, isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';

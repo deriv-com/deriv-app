@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Button, Input, MobileFullPageModal, Text } from '@deriv/components';
+import { Button, DesktopWrapper, Input, MobileFullPageModal, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer, Observer } from 'mobx-react-lite';
 import classNames from 'classnames';

@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text, Button } from '@deriv/components';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 

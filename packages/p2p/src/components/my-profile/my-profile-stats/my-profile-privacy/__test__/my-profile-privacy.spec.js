@@ -1,5 +1,6 @@
 import React from 'react';
 import { useStores } from 'Stores';
+import { isDesktop } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import MyProfilePrivacy from '../my-profile-privacy.jsx';
 
@@ -17,6 +18,21 @@ jest.mock('Stores', () => ({
         general_store: { ...mock_general_store },
         my_profile_store: { ...mock_profile_store },
     })),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isDesktop: jest.fn(() => true),
+}));
+
+const mockTextComponent = jest.fn();
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Text: jest.fn(props => {
+        mockTextComponent(props);
+        // eslint-disable-next-line testing-library/no-node-access
+        return <div>{props.children}</div>;
+    }),
 }));
 
 describe('<MyProfilePrivacy/>', () => {
@@ -49,5 +65,16 @@ describe('<MyProfilePrivacy/>', () => {
         fireEvent.click(screen.getByRole('checkbox'));
 
         expect(my_profile_store.handleToggle).toHaveBeenCalled();
+    });
+
+    it('should render text with a smaller size for mobile view', () => {
+        isDesktop.mockImplementation(() => false);
+        render(<MyProfilePrivacy />);
+
+        expect(mockTextComponent).toHaveBeenCalledWith(
+            expect.objectContaining({
+                size: 'xxs',
+            })
+        );
     });
 });

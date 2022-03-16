@@ -1,6 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+import { formatMoney, isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import AccountLimits from '../account-limits';
+import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -17,7 +19,15 @@ jest.mock('@deriv/components', () => {
     };
 });
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(),
+    isDesktop: jest.fn(),
+    formatMoney: jest.fn(),
+}));
+
 jest.mock('Components/demo-message', () => jest.fn(() => 'mockedDemoMessage'));
+jest.mock('Components/load-error-message', () => jest.fn(() => 'mockedLoadErrorMessage'));
 
 describe('<AccountLimits/>', () => {
     const props = {
@@ -112,8 +122,166 @@ describe('<AccountLimits/>', () => {
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
+    it('should render DemoMessage component if is_virtual is true', () => {
+        const { container } = render(<AccountLimits {...props} is_virtual />);
+        expect(container.firstChild).toHaveClass('account__demo-message-wrapper');
+
+        expect(screen.getByText('mockedDemoMessage')).toBeInTheDocument();
+    });
+    it('should render LoadErrorMessage component if there is api_initial_load_error', () => {
+        render(
+            <AccountLimits {...props} account_limits={{ api_initial_load_error: 'error in fetching data from API' }} />
+        );
+        expect(screen.getByText('mockedLoadErrorMessage')).toBeInTheDocument();
+    });
     it('should render AccountLimits component', () => {
         render(<AccountLimits {...props} />);
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
+    });
+
+    it('should render Loading component if is_loading is true', () => {
+        render(<AccountLimits {...props} />);
+        expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
+    });
+
+    it('should render AccountLimitsArticle component if should_show_article is true and isMobile', () => {
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+        render(<AccountLimits {...props} should_show_article />);
+        expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
+    });
+
+    it('should not render AccountLimitsArticle component if should_show_article is false', () => {
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+        render(<AccountLimits {...props} should_show_article={false} />);
+        expect(screen.queryByText('/account limits/i')).not.toBeInTheDocument();
+    });
+    it('should render Trading limits - Item table and its contents properly', () => {
+        render(<AccountLimits {...props} />);
+        expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
+
+        expect(
+            screen.getByRole('columnheader', {
+                name: /trading limits \- item/i,
+            })
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('cell', {
+                name: /\*maximum number of open positions/i,
+            })
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('cell', {
+                name: /\*maximum account cash balance/i,
+            })
+        ).toBeInTheDocument();
+    });
+
+    it('should render Maximum number of open positions- table cell and its contents properly', () => {
+        render(<AccountLimits {...props} />);
+        expect(
+            screen.getByRole('cell', {
+                name: /\*maximum number of open positions/i,
+            })
+        ).toBeInTheDocument();
+        const { open_positions } = props.account_limits;
+        expect(
+            screen.getByRole('cell', {
+                name: open_positions,
+            })
+        ).toBeInTheDocument();
+    });
+
+    it('should call formatMoney', () => {
+        render(<AccountLimits {...props} />);
+        const { account_balance } = props.account_limits;
+        expect(formatMoney).toHaveBeenCalledWith(props.currency, account_balance, true);
+    });
+
+    it('should render Trading limits - Item table and its contents properly', () => {
+        render(<AccountLimits {...props} />);
+        expect(screen.queryByTestId('trading_daily_turnover_table')).toBeInTheDocument();
+        expect(
+            screen.getByRole('columnheader', {
+                name: /trading limits \- maximum daily turnover/i,
+            })
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('cell', {
+                name: /commodities/i,
+            })
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('cell', {
+                name: /stock indices/i,
+            })
+        ).toBeInTheDocument();
+    });
+
+    it('should not render withdrawal_limits_table is_app_settings is true', () => {
+        render(<AccountLimits {...props} is_app_settings />);
+        expect(screen.queryByTestId('withdrawal_limits_table')).not.toBeInTheDocument();
+    });
+
+    it('should render withdrawal_limits_table is_app_settings is false', () => {
+        render(<AccountLimits {...props} />);
+        expect(screen.queryByTestId('withdrawal_limits_table')).toBeInTheDocument();
+        expect(
+            screen.getByRole('columnheader', {
+                name: /withdrawal limits/i,
+            })
+        ).toBeInTheDocument();
+    });
+    it('withdrawal_limits_table should have a Limits header if is_fully_authenticated is true', () => {
+        render(<AccountLimits {...props} />);
+        expect(screen.getByTestId('withdrawal_limits_table')).toHaveTextContent('Limit');
+    });
+    it('show show withdrawal limit lifted message if is_fully_authenticated is true', () => {
+        render(<AccountLimits {...props} />);
+
+        expect(
+            screen.getByRole('cell', {
+                name: /your account is fully authenticated and your withdrawal limits have been lifted\./i,
+            })
+        ).toBeInTheDocument();
+    });
+
+    it('withdrawal_limits_table should show `Total withdrawal limit` if is_fully_authenticated is false and is_appstore is true', () => {
+        render(
+            <PlatformContext.Provider value={{ is_appstore: true }}>
+                <BrowserRouter>
+                    <AccountLimits {...props} is_fully_authenticated={false} />
+                </BrowserRouter>
+            </PlatformContext.Provider>
+        );
+        expect(screen.getByText(/total withdrawal limit/i)).toBeInTheDocument();
+    });
+    it('withdrawal_limits_table should show `Total withdrawal allowed` if is_fully_authenticated is false and is_appstore is true', () => {
+        render(
+            <PlatformContext.Provider value={{ is_appstore: false }}>
+                <AccountLimits {...props} is_fully_authenticated={false} />
+            </PlatformContext.Provider>
+        );
+        expect(screen.getByText(/total withdrawal allowed/i)).toBeInTheDocument();
+    });
+
+    it('withdrawal_limits_table should show the verfiy button if is_fully_authenticated is false and is_appstore is true', () => {
+        render(
+            <PlatformContext.Provider value={{ is_appstore: true }}>
+                <BrowserRouter>
+                    <AccountLimits {...props} is_fully_authenticated={false} />
+                </BrowserRouter>
+            </PlatformContext.Provider>
+        );
+        expect(screen.getByText(/to increase limit please verify your identity/i)).toBeInTheDocument();
+
+        expect(
+            screen
+                .getByRole('link', {
+                    name: /verify/i,
+                })
+                .closest('a')
+        ).toHaveAttribute('href', '/account/proof-of-identity');
     });
 });

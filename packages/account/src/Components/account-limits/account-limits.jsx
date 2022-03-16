@@ -70,7 +70,7 @@ const AccountLimits = ({
                     'account__demo-message-wrapper-dashboard': is_appstore,
                 })}
             >
-                <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
+                <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />
             </div>
         );
     }
@@ -119,7 +119,7 @@ const AccountLimits = ({
                     {should_show_article && isMobile() && <AccountLimitsArticle />}
                     <div className='da-account-limits__table-wrapper'>
                         <ThemedScrollbars is_bypassed={should_bypass_scrollbars || isMobile()}>
-                            <table className='da-account-limits__table'>
+                            <table className='da-account-limits__table' data-testid='trading_limit_item_table'>
                                 <thead>
                                     <tr>
                                         <AccountLimitsTableHeader>
@@ -185,7 +185,7 @@ const AccountLimits = ({
                                     </tr>
                                 </tbody>
                             </table>
-                            <table className='da-account-limits__table'>
+                            <table className='da-account-limits__table' data-testid='trading_daily_turnover_table'>
                                 <thead>
                                     <tr>
                                         <AccountLimitsTableHeader
@@ -217,7 +217,7 @@ const AccountLimits = ({
                             {/* We only show "Withdrawal Limits" on account-wide settings pages. */}
                             {!is_app_settings && (
                                 <React.Fragment>
-                                    <table className='da-account-limits__table'>
+                                    <table className='da-account-limits__table' data-testid='withdrawal_limits_table'>
                                         <thead>
                                             <tr>
                                                 <AccountLimitsTableHeader>

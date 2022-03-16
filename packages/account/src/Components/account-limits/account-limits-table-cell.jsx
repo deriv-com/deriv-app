@@ -16,7 +16,14 @@ const AccountLimitsTableCell = ({ align, children, is_hint, renderExtraInfo }) =
                 data-testid='account_limit_table_cell'
             >
                 {children && (
-                    <Text align={align} as='p' color='prominent' size={text_size} line_height='m' data-testid='account_limit_table_cell_text'>
+                    <Text
+                        align={align}
+                        as='p'
+                        color='prominent'
+                        size={text_size}
+                        line_height='m'
+                        data-testid='account_limit_table_cell_text'
+                    >
                         {children}
                     </Text>
                 )}

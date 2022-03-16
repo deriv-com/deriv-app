@@ -54,7 +54,7 @@ const Verification = ({ should_wrap }) => {
 
     return (
         <VerificationWrapper should_wrap={should_wrap}>
-            <div className='dp2p-verification' data-testid='dp2p_verification_container'>
+            <div className='dp2p-verification' data-testid='dp2p-verification_container'>
                 <Icon icon='IcCashierSendEmail' className='dp2p-verification__icon' size={102} />
                 <div className='dp2p-verification__text'>
                     <div className='dp2p-verification__text-title'>

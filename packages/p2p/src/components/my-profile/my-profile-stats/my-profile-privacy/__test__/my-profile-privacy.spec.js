@@ -46,8 +46,8 @@ describe('<MyProfilePrivacy/>', () => {
     it('should trigger handleToggle method on toggling the input', () => {
         const { my_profile_store } = useStores();
         render(<MyProfilePrivacy />);
-        console.log(screen.debug());
         fireEvent.click(screen.getByRole('checkbox'));
+        
         expect(my_profile_store.handleToggle).toHaveBeenCalled();
     });
 });

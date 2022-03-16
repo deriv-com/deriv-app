@@ -16,6 +16,7 @@ const VerificationWrapper = ({ should_wrap, children }) => {
                 className={classNames('dp2p-verification__wrapper', {
                     'dp2p-verification__wrapper--mobile': isMobile(),
                 })}
+                data-testid='dp2p-verification_wrapper'
             >
                 {children}
             </div>

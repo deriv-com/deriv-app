@@ -13,7 +13,7 @@ const GoToPersonalDetailsButton = ({ anchor, from, text }) => (
 );
 
 export const MissingPersonalDetails = ({ has_invalid_postal_code, from }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     if (has_invalid_postal_code)
         return (
             <IconMessageContent
@@ -33,7 +33,7 @@ export const MissingPersonalDetails = ({ has_invalid_postal_code, from }) => {
             message={localize('Your personal details are missing')}
             text={localize('Please complete your personal details before you verify your identity.')}
             icon={
-                <Icon icon={is_dashboard ? 'IcAccountMissingDetailsDashboard' : 'IcAccountMissingDetails'} size={128} />
+                <Icon icon={is_appstore ? 'IcAccountMissingDetailsDashboard' : 'IcAccountMissingDetails'} size={128} />
             }
         >
             <GoToPersonalDetailsButton from={from} />

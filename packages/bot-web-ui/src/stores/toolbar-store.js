@@ -46,7 +46,7 @@ export default class ToolbarStore {
 
         const { run_panel } = this.root_store;
         if (run_panel.is_running) {
-            this.root_store.run_panel.onStopButtonClick();
+            this.root_store.run_panel.stopBot();
         }
     }
 

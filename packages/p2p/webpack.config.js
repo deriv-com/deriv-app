@@ -31,6 +31,7 @@ module.exports = function () {
                 Stores: path.resolve(__dirname, 'src/stores'),
                 ...publisher_utils.getLocalDerivPackageAliases(__dirname, is_publishing),
             },
+            extensions: ['.js', '.jsx'],
             symlinks: false,
         },
         module: {
@@ -126,7 +127,7 @@ module.exports = function () {
                           test: /\.js$/,
                           parallel: 2,
                       }),
-                      new CssMinimizerPlugin()
+                      new CssMinimizerPlugin(),
                   ]
                 : [],
         },

@@ -16,9 +16,9 @@ describe('<ErrorDialog />', () => {
         reset: jest.fn(),
         setShouldShow: jest.fn(),
         should_show: true,
-        should_not_show_title: '',
+        should_not_show_title: false,
     };
-    it('should show the error component if error', () => {
+    it('should show the error component if error and trigger onClick callback when the client clicks Retry button', () => {
         render(<ErrorDialog {...props} />);
         expect(screen.getByText('This is the error message.')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument();
@@ -27,7 +27,7 @@ describe('<ErrorDialog />', () => {
         expect(props.setShouldShow).toBeCalled();
     });
     it('should invoke reset function', () => {
-        render(<ErrorDialog {...props} should_show={false} confirm_button_text='ok' should_not_show_title='test' />);
+        render(<ErrorDialog {...props} should_show={false} />);
         expect(props.reset).toHaveBeenCalled();
     });
 

@@ -44,7 +44,7 @@ const MyProfileBalance = () => {
                     button_text={localize('Got it')}
                     is_open={is_balance_tooltip_open}
                     message={localize(
-                        'Deriv P2P balance = deposits that can’t be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)'
+                        "Deriv P2P balance = deposits that can't be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)"
                     )}
                     setIsOpen={setIsBalanceTooltipOpen}
                     title={localize('Available balance')}

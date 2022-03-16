@@ -47,7 +47,7 @@ describe('<MyProfilePrivacy/>', () => {
         const { my_profile_store } = useStores();
         render(<MyProfilePrivacy />);
         fireEvent.click(screen.getByRole('checkbox'));
-        
+
         expect(my_profile_store.handleToggle).toHaveBeenCalled();
     });
 });

@@ -179,14 +179,14 @@ const htmlInjectConfig = () => ({
                 rel: 'manifest',
             },
         },
-        {
-            path: 'public/images/favicons',
-            glob: '*',
-            globPath: path.resolve(__dirname, '../src/public/images/favicons'),
-            attributes: {
-                rel: 'icon',
-            },
-        },
+        // {
+        //     path: 'public/images/favicons',
+        //     glob: '*',
+        //     globPath: path.resolve(__dirname, '../src/public/images/favicons'),
+        //     attributes: {
+        //         rel: 'icon',
+        //     },
+        // },
     ],
     append: false,
 });

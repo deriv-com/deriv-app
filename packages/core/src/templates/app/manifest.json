@@ -8,14 +8,19 @@
 
     "icons": [
         {
-            "src": "{root_url}public/images/common/logos/platform_logos/ic_platform_deriv_192x192.png",
-            "type": "image/png",
-            "sizes": "192x192"
-        },
-        {
             "src": "{root_url}public/images/common/logos/platform_logos/ic_platform_deriv_512x512.png",
             "type": "image/png",
             "sizes": "512x512"
+        },
+        {
+            "src": "{root_url}public/images/favicons/favicon.ico",
+            "type": "image/x-icon",
+            "sizes": "64x64 32x32 24x24 16x16"
+        },
+        {
+            "src": "{root_url}public/images/favicons/favicon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
         }
     ],
     "background_color": "#2a3052",

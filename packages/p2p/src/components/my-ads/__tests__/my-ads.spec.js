@@ -94,7 +94,7 @@ describe('<MyAds />', () => {
         }));
         render(<MyAds />);
 
-        const el_dp2p_verification_container = screen.getByTestId('dp2p_verification_container');
+        const el_dp2p_verification_container = screen.getByTestId('dp2p-verification_container');
         expect(el_dp2p_verification_container).toBeInTheDocument();
     });
 });

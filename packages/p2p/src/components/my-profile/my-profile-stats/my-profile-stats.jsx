@@ -51,7 +51,7 @@ const MyStats = () => {
                     onClick={() => my_profile_store.setActiveTab(my_profile_tabs.AD_TEMPLATE)}
                 >
                     <Text color='prominent' size='xxs'>
-                        <Localize i18n_default_text='Ad template' />
+                        <Localize i18n_default_text='Ad details' />
                     </Text>
                     <Icon icon='IcChevronRight' />
                 </div>

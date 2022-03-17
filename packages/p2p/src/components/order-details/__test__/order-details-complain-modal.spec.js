@@ -45,7 +45,7 @@ describe('<OrderDetailsComplainModal/>', () => {
 
     it('should submit the complain when complain is provided as input', () => {
         requestWS.mockResolvedValue({ value: 'P2P Test' });
-        render(<OrderDetailsComplainModal should_show_complain_modal hideComplainOrderModal={jest.fn()}/>);
+        render(<OrderDetailsComplainModal should_show_complain_modal hideComplainOrderModal={jest.fn()} />);
         fireEvent.click(screen.getAllByRole('radio')[1]);
         fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
 

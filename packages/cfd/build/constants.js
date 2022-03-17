@@ -33,7 +33,6 @@ const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const ALIASES = {
     _common: path.resolve(__dirname, '../src/_common'),
-    Assets: path.resolve(__dirname, '../src/Assets'),
     Constants: path.resolve(__dirname, '../src/Constants'),
     Components: path.resolve(__dirname, '../src/Components'),
     Containers: path.resolve(__dirname, '../src/Containers'),
@@ -122,8 +121,6 @@ const MINIMIZERS = !IS_RELEASE
 
 const plugins = (base, is_test_env, is_mocha_only) => [
     new CleanWebpackPlugin(),
-    // new HtmlWebPackPlugin(htmlOutputConfig()),
-    // new HtmlWebpackTagsPlugin(htmlInjectConfig()),
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),

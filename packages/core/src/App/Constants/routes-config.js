@@ -50,13 +50,11 @@ const getModules = ({ is_appstore }) => {
         {
             path: routes.dxtrade,
             component: props => <CFD {...props} platform='dxtrade' />,
-            // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Deriv X'),
         },
         {
             path: routes.mt5,
             component: props => <CFD {...props} platform='mt5' />,
-            // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('MT5'),
         },
         {

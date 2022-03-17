@@ -22,6 +22,10 @@ const populateInitialResponses = async () => {
 };
 
 export const requestWS = async request => {
+    // Added a check to proceed only if ws is available
+    if (ws === undefined) {
+        return null;
+    }
     await populateInitialResponses();
     return ws.send(request);
 };

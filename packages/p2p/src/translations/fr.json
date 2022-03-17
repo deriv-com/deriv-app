@@ -255,12 +255,12 @@
     "-1192446042": "Si votre réclamation n'est pas répertoriée ici, veuillez contacter notre équipe Service client.",
     "-573132778": "Plainte",
     "-792338456": "Quelle est votre plainte?",
+    "-1392383387": "J'ai payé",
     "-567498463": "Confirmez le paiement?",
     "-1485778481": "Avez-vous reçu un paiement?",
     "-403938778": "Veuillez confirmer uniquement après avoir vérifié votre compte bancaire ou votre portefeuille électronique pour vous assurer que vous avez reçu le paiement.",
     "-2000877952": "J'ai reçu {{amount}}{{currency}}",
     "-563116612": "Je n'ai pas encore payé",
-    "-1392383387": "J'ai payé",
     "-418870584": "Annuler l'ordre",
     "-727273667": "Se plaindre",
     "-2016990049": "Vendre ordre {{offered_currency}}",
@@ -273,6 +273,5 @@
     "-750202930": "Trades actifs",
     "-471540636": "J'ai reçu {{amount}}{{currency}}.",
     "-2054589794": "Vous avez été temporairement interdit d'utiliser nos services en raison de plusieurs tentatives d'annulation. Réessayez après {{date_time}} GMT.",
-    "-1971628122": "Cette fonction n'est pour l'instant disponible que pour les comptes en argent réel en USD.",
     "-930400128": "Pour utiliser Deriv P2P, vous devez choisir un nom d'affichage (un surnom) et vérifier votre identité."
 }

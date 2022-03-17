@@ -51,7 +51,8 @@ const ChooseCurrency = ({
     const getReorderedCryptoCurrencies = () => {
         const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
             legal_allowed_currencies,
-            all_payment_agent_list
+            all_payment_agent_list,
+            account_list
         );
 
         const reorderCryptoCurrencies = should_show_all_available_currencies
@@ -138,7 +139,9 @@ const ChooseCurrency = ({
                                     second_line_label={currency.second_line_label}
                                     onClick={currency.onClick}
                                     selected={
-                                        deposit_target === routes.cashier_pa ? !currency.has_payment_agent : false
+                                        currency.is_disabled || deposit_target === routes.cashier_pa
+                                            ? !currency.has_payment_agent
+                                            : false
                                     }
                                 />
                             ))}
@@ -172,17 +175,17 @@ ChooseCurrency.propTypes = {
 
 export default connect(({ client, modules, ui }) => ({
     account_list: client.account_list,
-    all_payment_agent_list: modules.cashier.all_payment_agent_list,
+    all_payment_agent_list: modules.cashier.payment_agent.all_payment_agent_list,
     available_crypto_currencies: client.available_crypto_currencies,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     continueRouteAfterChooseCrypto: ui.continueRouteAfterChooseCrypto,
     currency_title: client.currency,
-    deposit_target: modules.cashier.deposit_target,
+    deposit_target: modules.cashier.general_store.deposit_target,
     has_fiat: client.has_fiat,
     legal_allowed_currencies: client.upgradeable_currencies,
     openRealAccountSignup: ui.openRealAccountSignup,
     setShouldShowCancel: ui.setShouldShowCancel,
     switchAccount: client.switchAccount,
-    should_show_all_available_currencies: modules.cashier.should_show_all_available_currencies,
-    setShouldShowAllAvailableCurrencies: modules.cashier.setShouldShowAllAvailableCurrencies,
+    should_show_all_available_currencies: modules.cashier.general_store.should_show_all_available_currencies,
+    setShouldShowAllAvailableCurrencies: modules.cashier.general_store.setShouldShowAllAvailableCurrencies,
 }))(ChooseCurrency);

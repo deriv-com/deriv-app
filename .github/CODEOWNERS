@@ -39,12 +39,10 @@
 #  bahar-fs
 #  balakrishna-binary
 #  carol-binary
-#  mahdiaryayi-fs
 #  matin-binary
 #  mehrzad-fs
 #  nijil-binary
-#  reza-fs
-#  nikolai-deriv
+#  njazuli-deriv
 #  yashim-deriv
 
 ######################################################################################################
@@ -65,7 +63,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @matin-binary @nijil-binary @reza-fs @mehrzad-fs @balakrishna-binary 
+*                                                               @matin-binary @nijil-binary @mehrzad-fs @balakrishna-binary 
 
 
 
@@ -73,7 +71,7 @@
 #  deriv-app/account
 # ==============================================================
 
-/packages/account/**/*                                         @reza-fs @yashim-deriv
+/packages/account/**/*                                          @yashim-deriv
 
 
 
@@ -81,19 +79,19 @@
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot-skeleton/**/*                                     @mehrzad-fs @nikolai-deriv
-/packages/bot-web-ui/**/*                                       @mehrzad-fs @nikolai-deriv
-/packages/indicators/**/*                                       @mehrzad-fs @nikolai-deriv
+/packages/bot-skeleton/**/*                                     @mehrzad-fs
+/packages/bot-web-ui/**/*                                       @mehrzad-fs
+/packages/indicators/**/*                                       @mehrzad-fs
 
 
 # ==============================================================
 #  deriv-app/core
 # ==============================================================
 
-/packages/core/**/*                                             @balakrishna-binary @reza-fs @matin-binary @mahdiaryayi-fs
-/packages/shared/**/*                                           @balakrishna-binary @reza-fs @matin-binary @mahdiaryayi-fs
-/packages/components/**/*                                       @balakrishna-binary @reza-fs @matin-binary @mahdiaryayi-fs
-/packages/translations/**/*                                     @balakrishna-binary @reza-fs @matin-binary @mahdiaryayi-fs
+/packages/core/**/*                                             @balakrishna-binary @matin-binary 
+/packages/shared/**/*                                           @balakrishna-binary @matin-binary 
+/packages/components/**/*                                       @balakrishna-binary @matin-binary 
+/packages/translations/**/*                                     @balakrishna-binary @matin-binary 
 
 
 # ==============================================================
@@ -107,13 +105,13 @@
 #  deriv-app/cashier
 # ==============================================================
 
-/packages/cashier/**/*                                           @bahar-fs @nijil-binary
+/packages/cashier/**/*                                          @bahar-fs @nijil-binary
 
 # ==============================================================
 #  deriv-app/trader
 # ==============================================================
 
-/packages/trader/**/*                                           @matin-binary @balakrishna-binary @akmal-binary @mahdiaryayi-fs
+/packages/trader/**/*                                           @matin-binary @balakrishna-binary @akmal-binary 
 
 
 
@@ -121,10 +119,10 @@
 #  deriv-app/publisher
 # ==============================================================
 
-/packages/publisher/**/*                                        @reza-fs @nijil-binary
+/packages/publisher/**/*                                        @nijil-binary
 
 # ==============================================================
-#  deriv-app/dashboard
+#  deriv-app/appstore
 # ==============================================================
 
-/packages/dashboard/**/*                                         @matin-binary @akmal-binary
+/packages/appstore/**/*                                         @matin-binary @balakrishna-binary @njazuli-deriv @bahar-fs

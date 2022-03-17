@@ -1,20 +1,6 @@
 .my-profile-header {
-    display: flex;
     align-items: center;
-    margin: 2.4rem 0;
-
-    @include mobile {
-        margin: 0 0 2.4rem;
-    }
-
-    &__avatar {
-        margin-right: 0.8rem;
-    }
-
-    &-details {
-        display: flex;
-    }
-    &-name {
-        align-self: center;
-    }
+    display: flex;
+    height: 3.5rem;
+    width: 45rem;
 }

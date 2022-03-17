@@ -1,6 +1,8 @@
 const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { transformContentUrlBase } = require('./helpers');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 const copyConfig = base => {
     const patterns = [
@@ -46,6 +48,10 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/trader'),
             to: 'trader',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/appstore/dist/appstore'),
+            to: 'appstore',
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
         {
@@ -101,8 +107,8 @@ const copyConfig = base => {
             from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
             to: 'manifest.json',
             toType: 'file',
-            transform(content, path) {
-                return transformContentUrlBase(content, path, base);
+            transform(content, transform_path) {
+                return transformContentUrlBase(content, transform_path, base);
             },
         },
     ];
@@ -147,6 +153,14 @@ const generateSWConfig = is_release => ({
 const htmlOutputConfig = is_release => ({
     template: 'index.html',
     filename: 'index.html',
+    meta: is_release
+        ? {
+              versionMetaTAG: {
+                  name: 'version',
+                  content: gitRevisionPlugin.version(),
+              },
+          }
+        : {},
     minify: !is_release
         ? false
         : {

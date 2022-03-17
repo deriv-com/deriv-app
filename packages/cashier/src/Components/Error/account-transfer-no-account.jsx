@@ -2,11 +2,12 @@ import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import 'Sass/account-transfer-no-account.scss';
 
 const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }) => (
     <div className='cashier__wrapper cashier__no-balance'>
         <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
-        <Text as='h2' weight='bold' align='center' className='withdraw__header'>
+        <Text as='h2' weight='bold' align='center'>
             <Localize i18n_default_text='You need at least two accounts' />
         </Text>
         <Text as='p' size='xs' line_height='s' align='center' className='cashier__text'>
@@ -16,7 +17,7 @@ const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }) 
                 <Localize i18n_default_text='Please create another Deriv or DMT5 account.' />
             )}
         </Text>
-        <Button className='cashier__button' primary large onClick={toggleAccountsDialog}>
+        <Button className='account-transfer-no-account__button' primary large onClick={toggleAccountsDialog}>
             <Localize i18n_default_text='Create account' />
         </Button>
     </div>

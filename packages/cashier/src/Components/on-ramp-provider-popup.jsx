@@ -63,13 +63,13 @@ const OnRampProviderPopup = ({
     if (should_show_dialog) {
         return (
             <div className='on-ramp__popup-no-deposit-address'>
-                <div className='on-ramp__popup-no-deposit-address-text'>
+                <Text size='xs' className='on-ramp__popup-no-deposit-address-text'>
                     {api_error ? (
                         <Localize i18n_default_text='Please go to the Deposit page to get an address.' />
                     ) : (
                         <Localize i18n_default_text='Please go to the Deposit page to generate an address. Then come back here to continue with your transaction.' />
                     )}
-                </div>
+                </Text>
                 <Button.Group className='on-ramp__popup-no-deposit-address-buttons'>
                     <Button text={localize('Cancel')} onClick={() => setIsOnRampModalOpen(false)} secondary large />
                     <Button text={localize('Go to Deposit page')} onClick={onClickGoToDepositPage} primary large />
@@ -79,7 +79,7 @@ const OnRampProviderPopup = ({
     }
 
     return (
-        <div className='on-ramp__popup'>
+        <div className='on-ramp__popup' data-testid='dti_on-ramp_popup'>
             {selected_provider.should_show_deposit_address && (
                 <React.Fragment>
                     <div className='on-ramp__popup-deposit'>
@@ -109,6 +109,7 @@ const OnRampProviderPopup = ({
                                 />
                                 <Icon
                                     className='on-ramp__popup-deposit-address-icon'
+                                    data_testid='dti_deposit_address_icon'
                                     icon={isMobile() ? 'IcCopy' : 'icClipboard'}
                                     size={16}
                                     onClick={onClickCopyDepositAddress}

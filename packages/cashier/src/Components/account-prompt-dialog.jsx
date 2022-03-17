@@ -15,7 +15,7 @@ const AccountPromptDialog = ({
     onConfirm,
     should_show,
 }) => {
-    React.useEffect(continueRoute, [is_confirmed, last_location]);
+    React.useEffect(continueRoute, [is_confirmed, last_location, continueRoute]);
 
     const non_crypto_accounts = accounts_list.filter(x => !x.is_crypto);
     const non_crypto_currency = non_crypto_accounts.map(x => x.currency)[0];
@@ -56,7 +56,7 @@ AccountPromptDialog.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    accounts_list: modules.cashier.config.account_transfer.accounts_list,
+    accounts_list: modules.cashier.account_transfer.accounts_list,
     continueRoute: modules.cashier.account_prompt_dialog.continueRoute,
     currency: client.currency,
     is_confirmed: modules.cashier.account_prompt_dialog.is_confirmed,

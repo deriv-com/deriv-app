@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import 'Sass/funds-protection.scss';
 
 const FundsProtection = ({ submitFundsProtection }) => {
     return (
@@ -40,5 +41,5 @@ FundsProtection.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    submitFundsProtection: modules.cashier.submitFundsProtection,
+    submitFundsProtection: modules.cashier.deposit.submitFundsProtection,
 }))(FundsProtection);

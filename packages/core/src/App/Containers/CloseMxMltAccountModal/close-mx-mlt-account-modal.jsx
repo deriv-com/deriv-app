@@ -53,10 +53,7 @@ export const CloseMxMltAccountContent = ({
     const OptionsAccountClosedText = () => {
         if (country_standpoint.is_united_kingdom) {
             return (
-                <Localize
-                    i18n_default_text='Please proceed to withdraw all your funds from your Gaming account before <0>30 November 2021.</0>'
-                    components={[<strong key={0} />]}
-                />
+                <Localize i18n_default_text='You’ll lose access to your Gaming account when it gets closed, so make sure to withdraw your funds as soon as possible.' />
             );
         } else if (has_malta_account || can_have_mlt_account) {
             return (
@@ -178,13 +175,13 @@ CloseMxMltAccountModal.propTypes = {
     is_close_mx_mlt_account_modal_visible: PropTypes.bool,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, notifications, ui }) => ({
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     country_standpoint: client.country_standpoint,
     can_have_mlt_account: client.can_have_mlt_account,
     has_malta_account: client.has_malta_account,
-    removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
+    removeNotificationMessageByKey: notifications.removeNotificationMessageByKey,
     showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
 }))(CloseMxMltAccountModal);

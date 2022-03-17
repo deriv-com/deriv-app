@@ -17,6 +17,7 @@
         display: flex;
         align-items: center;
         cursor: pointer;
+
         .dc-text {
             margin-left: 0.8rem;
             width: max-content;
@@ -32,10 +33,12 @@
         @include mobile {
             padding: 1.6rem;
         }
+
         &-body {
             flex: 1;
             display: flex;
             flex-direction: column;
+
             @include desktop {
                 min-height: 72vh;
                 .data-list,
@@ -48,16 +51,17 @@
             padding: 1.6rem;
             grid-template-columns: repeat(6, 1fr) 0.5fr;
             border: 0;
-            .dc-table__cell:not(.crypto-transactions-history__table-confirm) {
-                @include desktop {
-                    margin-right: 1.6rem;
-                }
-            }
             @include mobile {
                 display: flex;
                 flex-direction: column;
                 border-radius: 0.8rem;
                 background-color: var(--general-section-1);
+            }
+
+            .dc-table__cell:not(.crypto-transactions-history__table-confirm) {
+                @include desktop {
+                    margin-right: 1.6rem;
+                }
             }
         }
         &-cell {
@@ -69,6 +73,7 @@
                 margin-left: 1.2rem;
                 flex: 1;
             }
+
             .dc-text {
                 margin-left: 0.8rem;
             }
@@ -79,11 +84,12 @@
             }
         }
         &-hash {
-            a {
-                text-decoration: none;
-            }
             @include mobile {
                 margin-bottom: 0.8rem;
+            }
+
+            a {
+                text-decoration: none;
             }
         }
         &-time {
@@ -106,6 +112,7 @@
                     width: 0.8rem;
                     height: 0.8rem;
                 }
+
                 &-in-process {
                     background-color: var(--status-warning);
                 }
@@ -126,6 +133,7 @@
         }
         &-popover {
             cursor: pointer;
+
             a {
                 text-decoration: none;
             }
@@ -133,6 +141,7 @@
         &-confirm {
             justify-content: center;
             grid-column: 5 / 9;
+
             div {
                 display: flex;
                 align-items: center;
@@ -154,7 +163,6 @@
         &__data-list-body {
             flex: 1;
         }
-
         .data-list__body-wrapper {
             flex: 1;
         }

@@ -6,8 +6,9 @@ import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
+import 'Sass/crypto-fiat-converter.scss';
 
-const Timer = props => {
+const Timer = ({ onComplete }) => {
     const initial_time = 60;
     const [remaining_time, setRemainingTime] = React.useState(initial_time);
 
@@ -18,13 +19,13 @@ const Timer = props => {
     }, 1000);
     React.useEffect(() => {
         if (remaining_time === 0) {
-            props.onComplete();
+            onComplete();
             setRemainingTime(initial_time);
         }
-    });
+    }, [onComplete, remaining_time]);
 
     return (
-        <Text as='p' size='xs' className='timer'>
+        <Text as='p' size='xs' color='less-prominent' className='timer'>
             <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time }} />
         </Text>
     );
@@ -67,7 +68,7 @@ const CryptoFiatConverter = ({
     }, [from_currency]);
 
     return (
-        <div className='crypto-fiat-converter-form'>
+        <div className='crypto-fiat-converter'>
             <Field name='converter_from_amount' validate={validateFromAmount}>
                 {({ field }) => (
                     <Input
@@ -86,6 +87,7 @@ const CryptoFiatConverter = ({
                         autoComplete='off'
                         required
                         hint={hint}
+                        classNameHint='crypto-fiat-converter__hint'
                     />
                 )}
             </Field>
@@ -93,7 +95,11 @@ const CryptoFiatConverter = ({
                 {arrow_icon_direction === 'right' ? <Icon icon='IcArrowDownBold' /> : <Icon icon='IcArrowUpBold' />}
             </MobileWrapper>
             <DesktopWrapper>
-                {arrow_icon_direction === 'right' ? <Icon icon='IcArrowRightBold' /> : <Icon icon='IcArrowLeftBold' />}
+                {arrow_icon_direction === 'right' ? (
+                    <Icon icon='IcArrowRightBold' id='arrow_right_bold' />
+                ) : (
+                    <Icon icon='IcArrowLeftBold' id='arrow_left_bold' />
+                )}
             </DesktopWrapper>
             <Field name='converter_to_amount' validate={validateToAmount}>
                 {({ field }) => (
@@ -113,6 +119,7 @@ const CryptoFiatConverter = ({
                             value={converter_to_amount}
                             autoComplete='off'
                             hint={localize('Approximate value')}
+                            classNameHint='crypto-fiat-converter__hint'
                         />
                         {is_timer_visible && (
                             <Timer
@@ -152,12 +159,9 @@ CryptoFiatConverter.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    converter_from_amount: modules.cashier.converter_from_amount,
-    converter_from_error: modules.cashier.converter_from_error,
-    converter_to_error: modules.cashier.converter_to_error,
-    converter_to_amount: modules.cashier.converter_to_amount,
-    is_timer_visible: modules.cashier.is_timer_visible,
-    onChangeConverterFromAmount: modules.cashier.onChangeConverterFromAmount,
-    onChangeConverterToAmount: modules.cashier.onChangeConverterToAmount,
-    resetConverter: modules.cashier.resetConverter,
+    converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
+    converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
+    converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
+    converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
+    is_timer_visible: modules.cashier.crypto_fiat_converter.is_timer_visible,
 }))(CryptoFiatConverter);

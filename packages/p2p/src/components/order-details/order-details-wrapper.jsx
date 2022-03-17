@@ -12,6 +12,7 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
     return isMobile() ? (
         <MobileFullPageModal
             className='order-details'
+            body_className='order-details--body'
             height_offset='80px'
             is_flex
             is_modal_open

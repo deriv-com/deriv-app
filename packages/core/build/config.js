@@ -180,11 +180,15 @@ const htmlInjectConfig = () => ({
             },
         },
         {
-            path: 'public/images/favicons',
-            glob: '*',
-            globPath: path.resolve(__dirname, '../src/public/images/favicons'),
+            path: 'public/images/favicons/favicon.ico',
             attributes: {
                 rel: 'icon',
+            },
+        },
+        {
+            path: 'public/images/favicons/favicon-192.png',
+            attributes: {
+                rel: 'apple-touch-icon',
             },
         },
     ],

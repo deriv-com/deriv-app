@@ -40,15 +40,12 @@ const OrderDetailsComplainModal = ({
     const [dispute_reason, setDisputeReason] = React.useState('');
     const [error_message, setErrorMessage] = React.useState('');
 
-    console.log('Error message: ', error_message);
-
     const disputeOrderRequest = () => {
         requestWS({
             p2p_order_dispute: 1,
             id,
             dispute_reason,
         }).then(response => {
-            console.log('Response: ', response);
             if (isMounted()) {
                 if (response.error) {
                     setErrorMessage(response.error.message);

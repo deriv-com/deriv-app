@@ -255,12 +255,12 @@
     "-1192446042": "Nếu khiếu nại của bạn không được liệt kê ở đây, vui lòng liên hệ với nhóm Hỗ trợ khách hàng của chúng tôi.",
     "-573132778": "Khiếu nại",
     "-792338456": "Khiếu nại của bạn là gì?",
+    "-1392383387": "Tôi đã thanh toán",
     "-567498463": "Xác nhận thanh toán?",
     "-1485778481": "Bạn đã nhận được thanh toán chưa?",
     "-403938778": "Vui lòng chỉ xác nhận sau khi đã kiểm tra tài khoản ngân hàng hoặc ví điện tử của bạn để chắc chắn bạn đã nhận khoản thanh toán.",
     "-2000877952": "Tôi đã nhận {{amount}} {{currency}}",
     "-563116612": "Tôi chưa thanh toán",
-    "-1392383387": "Tôi đã thanh toán",
     "-418870584": "Hủy đơn hàng",
     "-727273667": "Khiếu nại",
     "-2016990049": "Bán {{offered_currency}} lệnh",
@@ -273,6 +273,5 @@
     "-750202930": "Đơn hàng đang hoạt động",
     "-471540636": "Tôi đã nhận {{amount}} {{currency}}.",
     "-2054589794": "Bạn đã tạm thời bị cấm sử dụng dịch vụ của chúng tôi do nhiều lần hủy. Hãy thử lại sau {{date_time}} GMT.",
-    "-1971628122": "Tính năng này hiện giờ chỉ khả dụng cho các tài khoản USD tiền-thực.",
     "-930400128": "Để sử dụng Deriv P2P, bạn cần chọn tên hiển thị (một biệt danh) và xác minh danh tính của mình."
 }

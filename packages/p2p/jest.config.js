@@ -4,8 +4,8 @@ module.exports = {
     ...baseConfigForPackages,
     clearMocks: true,
     moduleNameMapper: {
-        "\\.s(c|a)ss$": "<rootDir>/../../__mocks__/styleMock.js",
-        "^.+\\.svg$": "<rootDir>/../../__mocks__/styleMock.js",
+        '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
+        '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
         '^Assets/(.*)$': '<rootDir>/src/assets/$1',
         '^Components/(.*)$': '<rootDir>/src/components/$1',
         '^Constants/(.*)$': '<rootDir>/src/constants/$1',

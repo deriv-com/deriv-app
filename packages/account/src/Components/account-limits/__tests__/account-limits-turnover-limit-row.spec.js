@@ -4,16 +4,6 @@ import { formatMoney } from '@deriv/shared';
 import AccountLimitsTurnoverLimitRow from '../account-limits-turnover-limit-row';
 import AccountLimitsContext from '../account-limits-context';
 
-jest.mock('react', () => {
-    const ActualReact = jest.requireActual('react');
-    return {
-        ...ActualReact,
-        useContext: () => ({
-            currency: 'AUD',
-        }),
-    };
-});
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     formatMoney: jest.fn(),

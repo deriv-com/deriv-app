@@ -4,7 +4,7 @@ import { screen, render } from '@testing-library/react';
 import AccountLimitsContext from '../account-limits-context';
 import AccountLimitsFooterPortal from '../account-limits-footer';
 
-const Component = () => (
+const AccountLimitsFooterPortalComponent = () => (
     <AccountLimitsContext.Provider
         value={{
             footer_ref: <div data-testid='mocked_footer_ref'></div>,
@@ -17,8 +17,8 @@ const Component = () => (
 
 describe('<AccountLimitsFooterPortal/>', () => {
     beforeAll(() => {
-        ReactDOM.createPortal = jest.fn(element => {
-            return element;
+        ReactDOM.createPortal = jest.fn(component => {
+            return component;
         });
     });
 
@@ -27,16 +27,16 @@ describe('<AccountLimitsFooterPortal/>', () => {
     });
 
     it('should render AccountLimitsFooterPortal component', () => {
-        render(<Component />);
+        render(<AccountLimitsFooterPortalComponent />);
         expect(screen.getByText(/learn more about account limits/i)).toBeInTheDocument();
     });
     it('should render anchor tag', () => {
-        render(<Component />);
+        render(<AccountLimitsFooterPortalComponent />);
         expect(screen.getAllByTestId('footer_text').length).toBe(1);
     });
 
     it('should render AppSettings.Footer components correctly', () => {
-        const { container } = render(<Component />);
+        const { container } = render(<AccountLimitsFooterPortalComponent />);
         expect(container.getElementsByClassName('dc-app-settings__footer').length).toBe(1);
     });
 });

@@ -6,8 +6,8 @@ import AccountLimitsContext from '../account-limits-context';
 
 describe('<AccountLimitsOverlay/>', () => {
     beforeAll(() => {
-        ReactDOM.createPortal = jest.fn(element => {
-            return element;
+        ReactDOM.createPortal = jest.fn(component => {
+            return component;
         });
     });
 

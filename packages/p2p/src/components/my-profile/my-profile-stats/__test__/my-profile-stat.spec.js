@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useStores } from 'Stores';
 import { isMobile } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import MyStats from '../my-profile-stats.jsx';

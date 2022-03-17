@@ -76,7 +76,7 @@ const ResetEmailModal = ({
                 identifier_title={'Change_Email'}
                 onClickSendEmail={resendEmail}
                 has_live_chat={true}
-                modal_mode={true}
+                is_modal_on_mobile={true}
             />
         );
     }

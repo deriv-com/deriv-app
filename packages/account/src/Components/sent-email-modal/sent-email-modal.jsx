@@ -21,7 +21,7 @@ const getNoEmailContentStrings = () => {
         {
             key: 'wrong_typo',
             icon: 'IcEmailTypo',
-            content: localize('The email address you entered had a mistake or typo (happens to thr best of us).'),
+            content: localize('The email address you entered had a mistake or typo (happens to the best of us).'),
         },
         {
             key: 'email_firewall',
@@ -39,7 +39,7 @@ const SentEmailModal = ({
     onClose,
     onClickSendEmail,
     has_live_chat = false,
-    modal_mode = false,
+    is_modal_on_mobile = false,
 }) => {
     const getSubtitle = () => {
         let subtitle = '';
@@ -79,7 +79,7 @@ const SentEmailModal = ({
 
     const live_chat = has_live_chat ? (
         <Localize
-            i18n_default_text="Still did'nt get the email? Please contact us via <0>live chat.</0>"
+            i18n_default_text="Still didn't get the email? Please contact us via <0>live chat.</0>"
             components={[
                 <span className='send-email-template__footer-live-chat' key={0} onClick={onLiveChatClick}>
                     <Popover
@@ -117,7 +117,7 @@ const SentEmailModal = ({
         </SendEmailTemplate>
     );
 
-    if (isMobile() && !modal_mode) {
+    if (isMobile() && !is_modal_on_mobile) {
         return (
             <MobileDialog
                 portal_element_id='modal_root'
@@ -165,7 +165,7 @@ SentEmailModal.propTypes = {
     onClose: PropTypes.func,
     onClickSendEmail: PropTypes.func,
     has_live_chat: PropTypes.bool,
-    modal_mode: PropTypes.bool,
+    is_modal_on_mobile: PropTypes.bool,
 };
 
 export default SentEmailModal;

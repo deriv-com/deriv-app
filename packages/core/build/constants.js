@@ -86,7 +86,7 @@ const rules = (is_test_env = false) => [
     },
     {
         test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
-        exclude: /node_modules/,
+        exclude: /node_modules|public\/images\/favicons/,
         use: file_loaders,
     },
     {

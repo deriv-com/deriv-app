@@ -9,6 +9,11 @@ const ContractDetails = React.lazy(() => import(/* webpackChunkName: "contract" 
 // CFD Routes
 const CFD = React.lazy(() => import(/* webpackChunkName: "cfd", webpackPrefetch: true */ 'Modules/CFD'));
 
+// Playground Routes
+const Playground = React.lazy(() =>
+    import(/* webpackChunkName: "playground", webpackPrefetch: true */ 'Modules/Playground')
+);
+
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
@@ -39,6 +44,13 @@ const initRoutesConfig = () => {
             // eslint-disable-next-line react/display-name
             component: props => <CFD {...props} platform='mt5' />,
             getTitle: () => localize('MT5'),
+            is_authenticated: false,
+        },
+        {
+            path: routes.playground,
+            component: props => <Playground {...props} />,
+            // Don't use `Localize` component since native html tag like `option` cannot render them
+            getTitle: () => localize('NJs playground'),
             is_authenticated: false,
         },
         {

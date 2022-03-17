@@ -1,10 +1,17 @@
 // auto-generated file. DO NOT MODIFY.
 
+import './appstore/ic-appstore-app-card-default-background.svg';
 import './appstore/ic-appstore-cfds-trade-type.svg';
+import './appstore/ic-appstore-checked-red-bg.svg';
 import './appstore/ic-appstore-checked-transparent.svg';
 import './appstore/ic-appstore-checked.svg';
 import './appstore/ic-appstore-multipliers-trade-type.svg';
 import './appstore/ic-appstore-option-trade-type.svg';
+import './appstore/ic-appstore-wallet-card-placeholder-dark-red-line.svg';
+import './appstore/ic-appstore-wallet-card-placeholder-dark.svg';
+import './appstore/ic-appstore-wallet-card-placeholder-light-red-line.svg';
+import './appstore/ic-appstore-wallet-card-placeholder-light.svg';
+import './appstore/ic-appstore-wallet-card-xs-background.svg';
 import './brand/ic-brand-binarybot.svg';
 import './brand/ic-brand-dbot.svg';
 import './brand/ic-brand-deriv-apps.svg';

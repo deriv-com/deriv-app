@@ -1,135 +1,506 @@
 .product-card {
-    width: 200px;
-    height: 120px;
-    border-radius: 8px;
+    width: 20rem;
+    height: 12rem;
+    border-radius: 0.8rem;
     overflow: hidden;
 
     @include mobile {
-        width: 144px;
-        height: 96px;
+        width: 14.4rem;
+        height: 9.6rem;
     }
+}
 
-    &__trade-type {
-        position: relative;
+.product-card-trade-type {
+    position: relative;
 
-        &--body {
-            padding: 16px;
-            background-repeat: no-repeat;
-            background-size: cover;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+    &__wrapper {
+        padding: 1.6rem;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
 
-            @include mobile {
-                padding: 12px 13px 6px 16px;
-            }
-
-            &--check {
-                position: absolute;
-                top: 8px;
-                right: 8px;
-            }
-
-            &--header {
-                font-size: 12px;
-                line-height: 18px;
-                font-weight: 700;
-                color: $color-white;
-                margin-bottom: 8px;
-
-                @include mobile {
-                    font-size: 10px;
-                    line-height: 14px;
-                }
-            }
-
-            &--second-row {
-                display: flex;
-                flex-direction: row;
-
-                &--icon {
-                    margin-right: 8px;
-
-                    @include mobile {
-                        width: 24px;
-                        height: 24px;
-                    }
-                }
-
-                p {
-                    font-size: 10px;
-                    line-height: 14px;
-                    font-weight: 700;
-                    color: $color-white;
-
-                    @include mobile {
-                        font-size: 8px;
-                        line-height: 12px;
-                    }
-                }
-            }
+        @include mobile {
+            padding: 1.2rem 1.3rem 0.6rem 1.6rem;
         }
-    }
-
-    &__platform {
-        border: 1px solid var(--general-active);
-        position: relative;
-        border-radius: 8px;
 
         &--check {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            border-radius: 50%;
+            top: 0.8rem;
+            right: 0.8rem;
         }
 
-        &--body {
-            display: flex;
-            flex-direction: row;
-            padding: 14px 16px;
+        &--header {
+            font-size: 1.2rem;
+            line-height: 1.8rem;
+            font-weight: 700;
+            color: $color-white;
+            margin-bottom: 0.8rem;
 
             @include mobile {
-                padding: 17px 11px 17px 16px;
+                font-size: 1rem;
+                line-height: 1.4rem;
             }
+        }
+
+        &__second-row {
+            display: flex;
+            flex-direction: row;
 
             &--icon {
-                margin-right: 16px;
+                margin-right: 0.8rem;
 
                 @include mobile {
-                    margin-right: 12px;
-                    width: 24px;
-                    height: 24px;
+                    width: 2.4rem;
+                    height: 2.4rem;
                 }
             }
 
-            &--details {
+            p {
+                font-size: 1rem;
+                line-height: 1.4rem;
+                font-weight: 700;
+                color: $color-white;
+
+                @include mobile {
+                    font-size: 0.8rem;
+                    line-height: 1.2rem;
+                }
+            }
+        }
+    }
+}
+
+.product-card-platform {
+    border: 0.1rem solid var(--general-active);
+    position: relative;
+    border-radius: 0.8rem;
+
+    &--check {
+        position: absolute;
+        top: 0.8rem;
+        right: 0.8rem;
+        border-radius: 50%;
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-direction: row;
+        padding: 1.4rem 1.6rem;
+
+        @include mobile {
+            padding: 1.7rem 1.1rem 1.7rem 1.6rem;
+        }
+
+        &--icon {
+            margin-right: 1.6rem;
+
+            @include mobile {
+                margin-right: 1.2rem;
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
+
+        &__block {
+            display: flex;
+            flex-direction: column;
+
+            &--header {
+                font-weight: bold;
+                font-size: 1.4rem;
+                line-height: 2rem;
+                color: var(--text-general);
+
+                @include mobile {
+                    font-size: 1rem;
+                    line-height: 1.4rem;
+                }
+            }
+
+            &--description {
+                font-weight: normal;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+                color: var(--text-less-prominent);
+
+                @include mobile {
+                    font-size: 0.8rem;
+                    line-height: 1.2rem;
+                }
+            }
+        }
+    }
+}
+
+.appstore-app-card-old {
+    width: 24rem;
+    height: 14.4rem;
+    border-radius: 0.8rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+
+    @include mobile {
+        width: 21.6rem;
+        height: 12.8rem;
+    }
+
+    &__block {
+        padding: 1.6rem;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 3;
+
+        &--checked {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.16) 100%);
+        }
+
+        @include mobile {
+            padding: 16px;
+        }
+
+        &:hover {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.16) 100%);
+        }
+
+        &__badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-bottom-left-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            line-height: 1.4rem;
+            padding: 0.4rem 0.8rem;
+            color: $color-white;
+            z-index: 2;
+
+            &--demo {
+                background-color: $color-green;
+            }
+
+            &--real {
+                background-color: $color-red;
+            }
+        }
+
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            height: 100%;
+
+            &--icon {
+                z-index: 3;
+                border-radius: 6px;
+                overflow: hidden;
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+
+            &--text {
+                display: flex;
+                font-weight: normal;
+                font-size: 1.4rem;
+                line-height: 2rem;
+                z-index: 3;
+
+                @include mobile {
+                }
+            }
+        }
+    }
+
+    &--checked-border {
+        border: 2px solid $color-red;
+    }
+
+    &--checked {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &--dark {
+        background-color: $color-black-3;
+    }
+
+    &__background {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+        z-index: 0;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+.appstore-app-card {
+    border-radius: 0.8rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 5;
+
+    &--faded {
+        opacity: 0.72;
+    }
+
+    &--disabled {
+        opacity: 0.32;
+    }
+
+    &--hovered {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        width: 100%;
+        height: 64px;
+        z-index: 6;
+        opacity: 1 !important;
+
+        &--light {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.16) 100%);
+        }
+
+        &--dark {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.16) 100%);
+        }
+    }
+
+    &--large {
+        width: 24rem;
+        height: 14.4rem;
+
+        @include mobile {
+            width: 21.6rem;
+            height: 12.8rem;
+        }
+    }
+
+    &--medium {
+        width: 20rem;
+        height: 12rem;
+
+        @include mobile {
+            width: 16rem;
+            height: 9.6rem;
+        }
+    }
+
+    &--small {
+        width: 6.4rem;
+        height: 4rem;
+    }
+
+    &--checked-border {
+        border: 2px solid $color-red;
+    }
+
+    &--checked {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+    }
+
+    &--appcard-placeholder {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        background-color: $color-black-1;
+    }
+
+    &__badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-bottom-left-radius: 8px;
+        font-weight: bold;
+        font-size: 1rem;
+        line-height: 1.4rem;
+        padding: 0.4rem 0.8rem;
+        z-index: 2;
+
+        &--default {
+            background-color: $color-grey-5;
+            color: $color-black-1;
+        }
+
+        &--demo {
+            background-color: $color-green;
+            color: $color-white;
+        }
+
+        &--real {
+            background-color: $color-red;
+            color: $color-white;
+        }
+    }
+
+    &__background {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+        z-index: 0;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__block {
+        width: 100%;
+        height: 100%;
+        display: flex;
+
+        &--linked {
+            z-index: 3;
+
+            &__wrapper {
                 display: flex;
                 flex-direction: column;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                height: 100%;
 
-                &--header {
-                    font-weight: bold;
-                    font-size: 14px;
-                    line-height: 20px;
-                    color: var(--text-general);
+                &--large {
+                    padding: 1.6rem;
+                }
 
-                    @include mobile {
-                        font-size: 10px;
-                        line-height: 14px;
+                &--medium {
+                    padding: 0.8rem;
+                }
+
+                &--small {
+                    padding: 0.8rem 2rem;
+                }
+
+                &__icon-wrapper {
+                    display: flex;
+
+                    &--app {
+                        width: 2.4rem;
+                        height: 2.4rem;
+                        border-radius: 0.4rem;
+                        overflow: hidden;
+                    }
+
+                    &--wallet {
+                        width: 4rem;
+                        height: 2.4rem;
+                        border-radius: 0.4rem;
+                        margin-left: 0.8rem;
+                        overflow: hidden;
+                        position: relative;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 0.2rem 0.4rem;
+
+                        &__wallet-icon {
+                            background: $color-black-1;
+                        }
                     }
                 }
 
-                &--description {
-                    font-weight: normal;
-                    font-size: 12px;
-                    line-height: 18px;
-                    color: var(--text-less-prominent);
+                &__details-wrapper {
+                    display: flex;
+                    flex-direction: column;
 
-                    @include mobile {
-                        font-size: 8px;
-                        line-height: 12px;
+                    &--first-row {
+                        font-weight: 400;
+                        font-size: 1rem;
+                        line-height: 1.4rem;
+                        color: var(--text-general);
+                    }
+
+                    &--second-row {
+                        font-weight: 400;
+                        font-size: 1rem;
+                        line-height: 1.4rem;
+                        color: var(--text-less-prominent);
+                    }
+
+                    &--third-row {
+                        font-weight: 700;
+                        font-size: 1.4rem;
+                        line-height: 2rem;
+                        color: var(--text-prominent);
                     }
                 }
             }
         }
+
+        &--unlinked {
+            z-index: 3;
+
+            &__wrapper {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                height: 100%;
+
+                &--large {
+                    padding: 1.6rem;
+                }
+
+                &--medium {
+                    padding: 0.8rem;
+                }
+
+                &--small {
+                    padding: 0.8rem 2rem;
+                }
+
+                &--icon {
+                    z-index: 3;
+                    border-radius: 6px;
+                    overflow: hidden;
+                    width: 2.4rem;
+                    height: 2.4rem;
+                }
+
+                &--text {
+                    display: flex;
+                    font-weight: normal;
+                    font-size: 1.4rem;
+                    line-height: 2rem;
+                    z-index: 3;
+                    color: var(--text-prominent);
+
+                    @include mobile {
+                        font-size: 1.2rem;
+                        line-height: 1.8rem;
+                    }
+                }
+            }
+        }
+    }
+
+    //dark mode on or off
+    &--dark {
+        background-color: $color-black-3;
     }
 }

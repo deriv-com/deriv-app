@@ -14,9 +14,66 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     isMobile: jest.fn(() => false),
 }));
 
+const mocked_advertiser_page_store = {
+    setFormErrorMessage: jest.fn(),
+};
+
+const mocked_buy_sell_store = {
+    account_currency: 'USD',
+    advert: {
+        advertiser_details: {
+            name: 'test',
+        },
+        description: 'test',
+        local_currency: 'test',
+        payment_methods_names: ['test1'],
+        price: 10,
+    },
+    contact_info: 'test',
+    form_props: {
+        setIsSubmitDisabled: jest.fn(() => [false, () => {}]),
+        setSubmitForm: jest.fn(),
+    },
+    is_sell_advert: false,
+    payment_info: 'test',
+    setFormProps: jest.fn(),
+    setHasPaymentMethods: jest.fn(),
+    setInitialReceiveAmount: jest.fn(),
+};
+
+const mocked_my_profile_store = {
+    getPaymentMethodsList: jest.fn(),
+    getSelectedPaymentMethodDetails: jest.fn(),
+    selected_payment_method_display_name: 'test',
+    setAddPaymentMethodErrorMessage: jest.fn(),
+    setIsCancelAddPaymentMethodModalOpen: jest.fn(),
+    setSelectedPaymentMethod: jest.fn(),
+    setSelectedPaymentMethodDisplayName: jest.fn(),
+    setShouldShowAddPaymentMethodForm: jest.fn(),
+    should_show_add_payment_method_form: true,
+};
+
+const mocked_general_store = {
+    nickname: 'test',
+    props: {
+        modal_root_id: '123',
+    },
+    redirectTo: jest.fn(),
+};
+
+const mocked_order_store = {
+    setOrderId: jest.fn(),
+};
+
+useStores.mockImplementation(() => ({
+    advertiser_page_store: mocked_advertiser_page_store,
+    buy_sell_store: mocked_buy_sell_store,
+    my_profile_store: mocked_my_profile_store,
+    general_store: mocked_general_store,
+    order_store: mocked_order_store,
+}));
+
 const setShouldShowPopup = jest.fn();
-const setOrderId = jest.fn();
-const redirectTo = jest.fn();
 
 const props = {
     selected_ad: {
@@ -36,69 +93,62 @@ describe('<BuySellModal />', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    const mockedUseStores = useStores.mockImplementation(() => ({
-        advertiser_page_store: {
-            setFormErrorMessage: jest.fn(),
-        },
-        buy_sell_store: {
-            advert: {
-                advertiser_details: {
-                    name: 'test'
-                },
-                description: '',
-            },
-            form_props: {
-                setIsSubmitDisabled: jest.fn(),
-                setSubmitForm: jest.fn(),
-            },
-            is_sell_advert: false,
-            setFormProps: jest.fn(),
-            setInitialReceiveAmount: jest.fn(),
-        },
-        general_store: {
-            nickname: 'test',
-            props: {
-                modal_root_id: '123',
-            },
-            redirectTo,
-        },
-        order_store: {
-            setOrderId,
-        }
-    }));
-
-    beforeAll(() => mockedUseStores());
-
     it('Proper component should be rendered on desktop view', () => {
+        useStores.mockImplementation(() => ({
+            advertiser_page_store: mocked_advertiser_page_store,
+            buy_sell_store: mocked_buy_sell_store,
+            my_profile_store: mocked_my_profile_store,
+            general_store: mocked_general_store,
+            order_store: mocked_order_store,
+        }));
         render(<BuySellModal {...props} />);
 
         expect(screen.getByTestId('dp2p-buy-sell-modal_container')).toBeInTheDocument();
     });
 
     it('Proper component should be rendered on mobile view', () => {
-        isMobile.mockReturnValue(true)
+        useStores.mockImplementation(() => ({
+            advertiser_page_store: mocked_advertiser_page_store,
+            buy_sell_store: mocked_buy_sell_store,
+            my_profile_store: mocked_my_profile_store,
+            general_store: mocked_general_store,
+            order_store: mocked_order_store,
+        }));
+        isMobile.mockReturnValue(true);
         render(<BuySellModal {...props} />);
 
         expect(screen.getByTestId('dp2p-mobile-full-page-modal_container')).toBeInTheDocument();
     });
 
     it('Order confirmation must be cancelled when click on Cancel button', () => {
-        isMobile.mockReturnValue(true)
+        useStores.mockImplementation(() => ({
+            advertiser_page_store: mocked_advertiser_page_store,
+            buy_sell_store: mocked_buy_sell_store,
+            my_profile_store: { ...mocked_my_profile_store, should_show_add_payment_method_form: false },
+            general_store: mocked_general_store,
+            order_store: mocked_order_store,
+        }));
         render(<BuySellModal {...props} />);
 
         fireEvent.click(screen.getByText('Cancel'));
-
         expect(setShouldShowPopup).toHaveBeenCalledWith(false);
+        expect(mocked_my_profile_store.setShouldShowAddPaymentMethodForm).toHaveBeenCalledWith(false);
     });
 
-    it('Order confirmation must be confirmed when click on Confirm button', () => {
-        isMobile.mockReturnValue(true)
+    it('Order confirmation must be cancelled when click on Cancel button', () => {
+        useStores.mockImplementation(() => ({
+            advertiser_page_store: mocked_advertiser_page_store,
+            buy_sell_store: { ...mocked_buy_sell_store, receive_amount: 100 },
+            my_profile_store: { ...mocked_my_profile_store, should_show_add_payment_method_form: false },
+            general_store: mocked_general_store,
+            order_store: mocked_order_store,
+        }));
         render(<BuySellModal {...props} />);
 
         fireEvent.click(screen.getByText('Confirm'));
 
-        // expect(setOrderId).toHaveBeenCalledWith();
-        // expect(redirectTo).toHaveBeenCalledWith();
-        // expect(setShouldShowPopup).toHaveBeenCalledWith(false);
+        expect(mocked_order_store.setOrderId).toHaveBeenCalled();
+        expect(mocked_general_store.redirectTo).toHaveBeenCalled();
+        expect(setShouldShowPopup).toHaveBeenCalledWith(false);
     });
 });

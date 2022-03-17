@@ -7,7 +7,12 @@
 
     &--no-tabs {
         margin-top: calc(4rem + 4.4rem);
+
+        @include mobile {
+            margin-top: unset;
+        }
     }
+
     &-icon {
         margin-bottom: 2.4rem;
     }

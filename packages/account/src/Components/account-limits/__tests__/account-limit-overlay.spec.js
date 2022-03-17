@@ -3,16 +3,6 @@ import ReactDOM from 'react-dom';
 import { fireEvent, screen, render } from '@testing-library/react';
 import AccountLimitsOverlay from '../account-limits-overlay';
 import AccountLimitsContext from '../account-limits-context';
-jest.mock('react', () => {
-    const ActualReact = jest.requireActual('react');
-    return {
-        ...ActualReact,
-        useContext: () => ({
-            overlay_ref: <div data-testid='mocked_overlay_ref'></div>,
-            toggleOverlay: jest.fn(),
-        }),
-    };
-});
 
 describe('<AccountLimitsOverlay/>', () => {
     beforeAll(() => {

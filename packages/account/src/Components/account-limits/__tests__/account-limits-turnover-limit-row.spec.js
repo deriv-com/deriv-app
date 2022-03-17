@@ -18,37 +18,42 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     formatMoney: jest.fn(),
 }));
-const { currency } = React.useContext(AccountLimitsContext);
+const AccountLimitsTurnoverLimitRowComponent = props => (
+    <AccountLimitsContext.Provider value={{ currency: 'AUD' }}>
+        <AccountLimitsTurnoverLimitRow {...props}></AccountLimitsTurnoverLimitRow>
+    </AccountLimitsContext.Provider>
+);
 
 describe('<AccountLimitsTurnoverLimitRow/>', () => {
     const props = {
         collection: [{ name: 'Major Pairs', payout_limit: 20000, profile_name: 'medium_risk', turnover_limit: 100000 }],
     };
     it('should render AccountLimitsTurnoverLimitRow component', () => {
-        render(<AccountLimitsTurnoverLimitRow {...props} />, {
+        render(<AccountLimitsTurnoverLimitRowComponent {...props} />, {
             container: document.body.appendChild(document.createElement('tbody')),
         });
         expect(screen.queryByTestId('account-limits-turnover-limit-row')).toBeInTheDocument();
     });
 
     it('should return null if collection is empty array', () => {
-        render(<AccountLimitsTurnoverLimitRow />, {
+        render(<AccountLimitsTurnoverLimitRowComponent />, {
             container: document.body.appendChild(document.createElement('tbody')),
         });
         expect(screen.queryByTestId('account-limits-turnover-limit-row')).not.toBeInTheDocument();
     });
 
     it('should display title and item name', () => {
-        render(<AccountLimitsTurnoverLimitRow {...props} title='Forex' />, {
+        render(<AccountLimitsTurnoverLimitRowComponent {...props} title='Forex' />, {
             container: document.body.appendChild(document.createElement('tbody')),
         });
         expect(screen.getByText(/Forex - Major Pairs/i)).toBeInTheDocument();
     });
 
     it('should call formatMoney function', () => {
-        render(<AccountLimitsTurnoverLimitRow {...props} />, {
+        render(<AccountLimitsTurnoverLimitRowComponent {...props} />, {
             container: document.body.appendChild(document.createElement('tbody')),
         });
-        expect(formatMoney).toHaveBeenCalledWith(currency, 100000, true);
+
+        expect(formatMoney).toHaveBeenCalledWith('AUD', 100000, true);
     });
 });

@@ -3,13 +3,7 @@
     "version": "0.0.4",
     "description": "Deriv Appstore",
     "main": "dist/appstore/js/index.js",
-    "private": false,
-    "publishConfig": {
-        "access": "public"
-    },
-    "files": [
-        "dist"
-    ],
+    "private": true,
     "engines": {
         "node": "^14.17.1"
     },
@@ -23,14 +17,17 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "test:eslint": "eslint \"./src/**/*.?(ts|tsx)\""
+        "test:eslint": "eslint \"./src/**/*.?(ts|tsx)\"",
+        "storybook": "start-storybook -p 6006",
+        "storybook:build": "build-storybook --output-dir .out"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "Deriv",
+    "license": "Apache-2.0",
     "dependencies": {
         "@deriv/account": "^1.0.0",
         "@deriv/api-types": "1.0.48",
         "@deriv/components": "^1.0.0",
+        "@deriv/deriv-components": "npm:@deriv/components",
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
@@ -40,11 +37,24 @@
         "mobx-react-lite": "^2.2.2",
         "object.fromentries": "^2.0.0",
         "prop-types": "^15.7.2",
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
+        "react-inlinesvg": "^2.3.0",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
         "@deriv/publisher": "^0.0.1-beta4",
+        "@storybook/addon-actions": "^5.2.4",
+        "@storybook/addon-info": "^5.2.4",
+        "@storybook/addon-knobs": "^5.2.4",
+        "@storybook/addon-links": "^5.2.4",
+        "@storybook/addon-notes": "^5.2.4",
+        "@storybook/addon-viewport": "^5.3.9",
+        "@storybook/addons": "^5.2.4",
+        "@storybook/react": "^5.2.4",
+        "@storybook/source-loader": "^5.2.4",
+        "@storybook/storybook-deployer": "^2.8.1",
         "@types/classnames": "^2.2.11",
         "@types/object.fromentries": "^2.0.0",
         "@types/react-router-dom": "^5.1.6",

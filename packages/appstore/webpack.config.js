@@ -1,5 +1,6 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -133,6 +134,6 @@ module.exports = function () {
                 '@deriv/account': true,
             },
         ],
-        plugins: [new ForkTsCheckerWebpackPlugin()],
+        plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
     };
 };

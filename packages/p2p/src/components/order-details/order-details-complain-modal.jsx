@@ -40,7 +40,7 @@ const OrderDetailsComplainModal = ({
     const [dispute_reason, setDisputeReason] = React.useState('');
     const [error_message, setErrorMessage] = React.useState('');
 
-    console.log("Error message: ",error_message)
+    console.log('Error message: ', error_message);
 
     const disputeOrderRequest = () => {
         requestWS({
@@ -48,7 +48,7 @@ const OrderDetailsComplainModal = ({
             id,
             dispute_reason,
         }).then(response => {
-            console.log("Response: ",response)
+            console.log('Response: ', response);
             if (isMounted()) {
                 if (response.error) {
                     setErrorMessage(response.error.message);

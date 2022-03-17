@@ -82,21 +82,21 @@ const copyConfig = base => {
         },
         { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
         { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
-        {
-            from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'),
-            to: 'favicon.ico',
-            toType: 'file',
-        },
-        { from: path.resolve(__dirname, '../src/public/images/favicons/'), to: 'public/images/favicons' },
+        // {
+        //     from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'),
+        //     to: 'favicon.ico',
+        //     toType: 'file',
+        // },
+        // { from: path.resolve(__dirname, '../src/public/images/favicons/'), to: 'public/images/favicons' },
         {
             from: path.resolve(__dirname, '../src/public/images/common/static_images/'),
             to: 'public/images/common',
         },
         // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
-        {
-            from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/'),
-            to: 'public/images/common/logos/platform_logos/',
-        },
+        // {
+        //     from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/'),
+        //     to: 'public/images/common/logos/platform_logos/',
+        // },
         { from: path.resolve(__dirname, '../src/public/images/app/header/'), to: 'public/images/app/header/' },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprites'),
@@ -179,14 +179,20 @@ const htmlInjectConfig = () => ({
                 rel: 'manifest',
             },
         },
-        // {
-        //     path: 'public/images/favicons',
-        //     glob: '*',
-        //     globPath: path.resolve(__dirname, '../src/public/images/favicons'),
-        //     attributes: {
-        //         rel: 'icon',
-        //     },
-        // },
+        {
+            path: 'public/images/favicons/favicon.ico',
+            globPath: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'),
+            attributes: {
+                rel: 'icon',
+            },
+        },
+        {
+            path: 'public/images/favicons/favicon-192.png',
+            globPath: path.resolve(__dirname, '../src/public/images/favicons/favicon-192.png'),
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+        },
     ],
     append: false,
 });

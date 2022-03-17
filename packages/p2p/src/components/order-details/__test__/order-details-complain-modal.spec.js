@@ -43,15 +43,6 @@ describe('<OrderDetailsComplainModal/>', () => {
         expect(screen.getByRole('button', { name: /Submit/i })).toBeDisabled();
     });
 
-    it('should submit the complain when complain is provided as input', () => {
-        requestWS.mockResolvedValue({ value: 'P2P Test' });
-        render(<OrderDetailsComplainModal should_show_complain_modal />);
-        fireEvent.click(screen.getAllByRole('radio')[1]);
-        fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
-
-        expect(requestWS).toHaveBeenCalled();
-    });
-
     it('should display error message when error response is received', async () => {
         requestWS.mockResolvedValue({ error: { message: 'Some error' } });
         render(<OrderDetailsComplainModal should_show_complain_modal hideComplainOrderModal={jest.fn()} />);
@@ -65,6 +56,15 @@ describe('<OrderDetailsComplainModal/>', () => {
         await waitFor(() => {
             expect(screen.getByText('Some error')).toBeInTheDocument();
         });
+    });
+
+    it('should submit the complain when complain is provided as input', () => {
+        requestWS.mockResolvedValue({ value: 'P2P Test' });
+        render(<OrderDetailsComplainModal should_show_complain_modal />);
+        fireEvent.click(screen.getAllByRole('radio')[1]);
+        fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+
+        expect(requestWS).toHaveBeenCalled();
     });
 
     it('should render the mobile view', () => {

@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { screen, render } from '@testing-library/react';
+import AccountLimitsContext from '../account-limits-context';
 import AccountLimitsFooterPortal from '../account-limits-footer';
 
-jest.mock('react', () => {
-    const ActualReact = jest.requireActual('react');
-    return {
-        ...ActualReact,
-        useContext: () => ({
+const Component = () => (
+    <AccountLimitsContext.Provider
+        value={{
             footer_ref: <div data-testid='mocked_footer_ref'></div>,
             toggleOverlay: jest.fn(),
-        }),
-    };
-});
+        }}
+    >
+        <AccountLimitsFooterPortal />
+    </AccountLimitsContext.Provider>
+);
 
 describe('<AccountLimitsFooterPortal/>', () => {
     beforeAll(() => {
@@ -26,16 +27,16 @@ describe('<AccountLimitsFooterPortal/>', () => {
     });
 
     it('should render AccountLimitsFooterPortal component', () => {
-        render(<AccountLimitsFooterPortal />);
-        expect(screen.getByText('Learn more about account limits')).toBeInTheDocument();
+        render(<Component />);
+        expect(screen.getByText(/learn more about account limits/i)).toBeInTheDocument();
     });
     it('should render anchor tag', () => {
-        render(<AccountLimitsFooterPortal />);
+        render(<Component />);
         expect(screen.getAllByTestId('footer_text').length).toBe(1);
     });
 
     it('should render AppSettings.Footer components correctly', () => {
-        const { container } = render(<AccountLimitsFooterPortal />);
+        const { container } = render(<Component />);
         expect(container.getElementsByClassName('dc-app-settings__footer').length).toBe(1);
     });
 });

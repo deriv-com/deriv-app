@@ -42,7 +42,7 @@ describe('<AccountLimitsTurnoverLimitRow/>', () => {
         render(<AccountLimitsTurnoverLimitRow {...props} title='Forex' />, {
             container: document.body.appendChild(document.createElement('tbody')),
         });
-        expect(screen.getByText('Forex - Major Pairs')).toBeInTheDocument();
+        expect(screen.getByText(/Forex - Major Pairs/i)).toBeInTheDocument();
     });
 
     it('should call formatMoney function', () => {

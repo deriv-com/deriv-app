@@ -257,7 +257,8 @@ describe('<AccountLimits/>', () => {
         );
         expect(screen.getByText(/total withdrawal limit/i)).toBeInTheDocument();
     });
-    it('withdrawal_limits_table should show `Total withdrawal allowed` if is_fully_authenticated is false and is_appstore is true', () => {
+
+    it('withdrawal_limits_table should show `Total withdrawal allowed` when is_fully_authenticated is false and is_appstore is true', () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <AccountLimits {...props} is_fully_authenticated={false} />
@@ -266,7 +267,7 @@ describe('<AccountLimits/>', () => {
         expect(screen.getByText(/total withdrawal allowed/i)).toBeInTheDocument();
     });
 
-    it('withdrawal_limits_table should show the verfiy button if is_fully_authenticated is false and is_appstore is true', () => {
+    it('withdrawal_limits_table should show the verfiy button when is_fully_authenticated is false and is_appstore is true', () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
                 <BrowserRouter>
@@ -283,5 +284,53 @@ describe('<AccountLimits/>', () => {
                 })
                 .closest('a')
         ).toHaveAttribute('href', '/account/proof-of-identity');
+        const { num_of_days_limit } = props.account_limits;
+        expect(formatMoney).toHaveBeenCalledWith(props.currency, num_of_days_limit, true);
+    });
+
+    it('withdrawal_limits_table should show total withdrawn and withdrawn remaining details', () => {
+        render(
+            <PlatformContext.Provider value={{ is_appstore: true }}>
+                <BrowserRouter>
+                    <AccountLimits {...props} is_fully_authenticated={false} />
+                </BrowserRouter>
+            </PlatformContext.Provider>
+        );
+        const { withdrawal_since_inception_monetary, remainder } = props.account_limits;
+
+        expect(screen.getByText(/total withdrawn/i)).toBeInTheDocument();
+        expect(formatMoney).toHaveBeenCalledWith(props.currency, withdrawal_since_inception_monetary, true);
+
+        expect(screen.getByText(/maximum withdrawal remaining/i)).toBeInTheDocument();
+        expect(formatMoney).toHaveBeenCalledWith(props.currency, remainder, true);
+    });
+
+    it('should show limit_notice message when is_appstore is true and is_fully_authenticated is false', () => {
+        render(
+            <PlatformContext.Provider value={{ is_appstore: true }}>
+                <BrowserRouter>
+                    <AccountLimits {...props} is_fully_authenticated={false} />
+                </BrowserRouter>
+            </PlatformContext.Provider>
+        );
+        expect(screen.getByText(/stated limits are subject to change without prior notice\./i)).toBeInTheDocument();
+    });
+
+    it('should show AccountLimitsArticle when should_show_article and isDesktop is true', () => {
+        isDesktop.mockReturnValue(true);
+        isMobile.mockReturnValue(false);
+        render(<AccountLimits {...props} should_show_article />);
+        expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
+        expect(screen.getByText(/these are default limits that we apply to your accounts\./i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/to learn more about trading limits and how they apply, please go to the/i)
+        ).toBeInTheDocument();
+        expect(
+            screen
+                .getByRole('link', {
+                    name: /help centre/i,
+                })
+                .closest('a')
+        ).toHaveAttribute('href', 'https://deriv.com/help-centre');
     });
 });

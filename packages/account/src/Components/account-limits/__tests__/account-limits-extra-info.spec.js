@@ -11,7 +11,7 @@ jest.mock('@deriv/shared', () => ({
 describe('<AccountLimitsExtraInfo/>', () => {
     it('should render AccountLimitsExtraInfo component', () => {
         render(<AccountLimitsExtraInfo message='Lorem Epsom' />);
-        expect(screen.getByText('Lorem Epsom')).toBeInTheDocument();
+        expect(screen.getByText(/lorem epsom/i)).toBeInTheDocument();
     });
 
     it('should render PopoverComponent if isMobile is false', () => {

@@ -5,12 +5,20 @@ import AccountLimitsArticle from '../account-limits-article';
 describe('<AccountLimitsArticle/>', () => {
     it('should render AccountLimitsArticle component', () => {
         render(<AccountLimitsArticle />);
-        expect(screen.getByText('Account limits')).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', {
+                name: /account limits/i,
+            })
+        ).toBeInTheDocument();
     });
 
     it('should show the descriptions for the account limit', () => {
         render(<AccountLimitsArticle />);
-        expect(screen.getByText('These are default limits that we apply to your accounts.')).toBeInTheDocument();
+        expect(screen.getByText(/these are default limits that we apply to your accounts\./i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/to learn more about trading limits and how they apply, please go to the/i)
+        ).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: /help centre\./i })).toBeInTheDocument();
     });
 
     it('should go to help-centre page if the Help Centre link on the text is clicked', () => {

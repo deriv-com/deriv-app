@@ -200,6 +200,7 @@ const htmlPreloadConfig = () => ({
         return 'script';
     },
     fileWhitelist: [/\.css$/],
+    fileBlacklist: [/\.png$/],
 });
 
 const cssConfig = () => ({

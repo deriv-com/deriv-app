@@ -33,6 +33,7 @@ const mocked_buy_sell_store = {
     rendered_items: [],
     setItems: jest.fn(),
     setIsLoading: jest.fn(),
+    sort_list: [],
 };
 
 const mocked_general_store = {
@@ -41,10 +42,16 @@ const mocked_general_store = {
     },
 };
 
+const mocked_my_profile_store = {
+    getAdvertiserPaymentMethods: jest.fn(),
+    setIsCancelAddPaymentMethodModalOpen: jest.fn(),
+};
+
 describe('<BuySellTable />', () => {
     it('Should render empty component if items prop is empty', () => {
         useStores.mockImplementation(() => ({
             buy_sell_store: mocked_buy_sell_store,
+            my_profile_store: mocked_my_profile_store,
         }));
         render(<BuySellTable />);
 
@@ -54,6 +61,7 @@ describe('<BuySellTable />', () => {
     it('Should render Loading component if is_loading is true', () => {
         useStores.mockImplementation(() => ({
             buy_sell_store: { ...mocked_buy_sell_store, is_loading: true },
+            my_profile_store: mocked_my_profile_store,
         }));
         render(<BuySellTable />);
 
@@ -63,6 +71,7 @@ describe('<BuySellTable />', () => {
     it('Should render TableError component if has an api_error_message', () => {
         useStores.mockImplementation(() => ({
             buy_sell_store: { ...mocked_buy_sell_store, api_error_message: 'test' },
+            my_profile_store: mocked_my_profile_store,
         }));
         render(<BuySellTable />);
 
@@ -73,6 +82,7 @@ describe('<BuySellTable />', () => {
         useStores.mockImplementation(() => ({
             buy_sell_store: { ...mocked_buy_sell_store, items: [{ test: 'test' }] },
             general_store: mocked_general_store,
+            my_profile_store: mocked_my_profile_store,
         }));
         isDesktop.mockReturnValue(true);
         render(<BuySellTable />);

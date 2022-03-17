@@ -1,17 +1,17 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { isMobile } from '@deriv/shared';
 import { createPortal } from 'react-dom';
+import { isMobile } from '@deriv/shared';
 import Popup from '../popup.jsx';
-
-jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
-    isMobile: jest.fn(),
-}));
 
 jest.mock('react-dom', () => ({
     ...jest.requireActual('react-dom'),
     createPortal: jest.fn(),
+}));
+
+jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
+    isMobile: jest.fn(),
 }));
 
 describe('<Popup />', () => {
@@ -23,7 +23,7 @@ describe('<Popup />', () => {
     });
 
     it('Portal must be created if component should be rendered in mobile view', () => {
-        createPortal.mockReturnValueOnce(<div data-testid='dp2p-popup_mobile-container'></div>);
+        createPortal.mockReturnValueOnce(<div data-testid='dp2p-popup_mobile-container' />);
         isMobile.mockReturnValueOnce(true);
         render(<Popup />);
 

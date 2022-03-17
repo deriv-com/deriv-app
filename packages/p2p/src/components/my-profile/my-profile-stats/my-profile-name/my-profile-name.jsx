@@ -31,10 +31,14 @@ const MyProfileName = () => {
                             {general_store.nickname}
                         </Text>
                         <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                            <Localize
-                                i18n_default_text='Joined {{days_since_joined}}d'
-                                values={{ days_since_joined: joined_since }}
-                            />
+                            {joined_since > 0 ? (
+                                <Localize
+                                    i18n_default_text='Joined {{days_since_joined}}d'
+                                    values={{ days_since_joined: joined_since }}
+                                />
+                            ) : (
+                                <Localize i18n_default_text='Joined today' />
+                            )}
                         </Text>
                         <div className='my-profile-name--row'>
                             <TradeBadge

@@ -1,0 +1,107 @@
+/** @define contract-type-widget; weak */
+.contract-type-widget {
+    position: relative;
+    z-index: 2;
+    border-radius: 4px;
+    transition: transform 0.3s, opacity 0.3s;
+    color: var(--text-prominent);
+    background: var(--fill-normal);
+    border: 1px solid var(--fill-normal);
+
+    &__display {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row;
+        padding: 1.6rem;
+
+        /* postcss-bem-linter: ignore */
+        span[name='contract_type'] {
+            @include typeface(--paragraph-left-normal-black);
+            color: var(--text-prominent);
+            font-weight: bold;
+            vertical-align: middle;
+            padding-left: 0.4em;
+        }
+        &:hover,
+        &:focus {
+            border-color: var(--border-hover);
+            outline: none;
+        }
+        &--clicked {
+            border-color: var(--border-active);
+
+            .contract-type-widget__select-arrow {
+                transform: rotate(-90deg);
+            }
+        }
+    }
+    &__select-arrow {
+        display: inline-block;
+        font-style: normal;
+        vertical-align: baseline;
+        text-align: center;
+        text-transform: none;
+        text-rendering: optimizeLegibility;
+        position: absolute;
+        pointer-events: none;
+        top: 37%;
+        left: 0.6em;
+        line-height: 1;
+        transition: transform 0.25s ease;
+        transform: rotate(90deg);
+        transform-origin: 45% 45;
+        color: var(--text-prominent);
+        @extend %inline-icon;
+    }
+    &__icon-wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 1.2em;
+
+        /* postcss-bem-linter: ignore */
+        .category-wrapper {
+            margin: 0 0.2em;
+            background-color: var(--general-section-1);
+
+            /* postcss-bem-linter: ignore */
+            .category-type {
+                /* postcss-bem-linter: ignore */
+                .transparent {
+                    fill: var(--general-section-1);
+                }
+                /* postcss-bem-linter: ignore */
+                .color1-fill {
+                    fill: var(--brand-red-coral);
+                }
+                /* postcss-bem-linter: ignore */
+                .color2-fill {
+                    fill: var(--brand-secondary);
+                }
+            }
+        }
+    }
+    &:hover {
+        border-color: var(--border-hover);
+    }
+    &:active,
+    &:focus,
+    &--show {
+        outline: none;
+        border-radius: 4px;
+        border-color: var(--border-active);
+    }
+    @include mobile {
+        margin-bottom: 0.8rem;
+        height: 4rem;
+
+        &--multiplier {
+            margin-bottom: 0.6rem;
+        }
+        .contract-type-widget__display {
+            padding: 0.8rem;
+        }
+    }
+}

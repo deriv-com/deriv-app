@@ -1,0 +1,101 @@
+/** @define contract-type-dialog; */
+.contract-type-dialog {
+    right: 0.4em;
+    width: 100%;
+    pointer-events: none;
+    position: absolute;
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s;
+    user-select: none;
+    opacity: 0;
+    height: 0;
+    z-index: 999;
+
+    &__wrapper {
+        position: absolute;
+        width: 290px;
+        right: calc(100% + 10px);
+        top: -66px;
+        display: grid;
+        grid-auto-columns: 1fr;
+        z-index: 2;
+        border-radius: 4px;
+        background: var(--general-main-2);
+        box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        min-width: 560px;
+        height: 680px;
+        max-height: calc(100vh - 100px);
+        overflow: hidden;
+
+        /* postcss-bem-linter: ignore */
+        .dc-vertical-tab {
+            max-height: 680px;
+        }
+        /* postcss-bem-linter: ignore */
+        .dc-vertical-tab__action-bar {
+            flex-flow: row;
+            border-bottom: 2px solid var(--general-section-1);
+            height: 56px;
+            width: 320px;
+
+            /* postcss-bem-linter: ignore */
+            .dc-input {
+                margin-bottom: 0;
+
+                /* postcss-bem-linter: ignore */
+                &__field {
+                    padding: 0.8rem 1.2rem 0.8rem 3.6rem;
+                    height: 3.2rem;
+
+                    /* postcss-bem-linter: ignore */
+                    &::-moz-placeholder {
+                        line-height: 16px;
+                    }
+                }
+                /* postcss-bem-linter: ignore */
+                &__leading-icon {
+                    top: 0.8rem;
+                }
+                /* postcss-bem-linter: ignore */
+                &__trailing-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+        /* postcss-bem-linter: ignore */
+        .dc-vertical-tab__content {
+            padding: 0 !important;
+
+            /* postcss-bem-linter: ignore */
+            &-container {
+                max-height: calc(100% - 56px);
+                height: calc(100% - 56px);
+            }
+        }
+        /* postcss-bem-linter: ignore */
+        .dc-vertical-tab__tab {
+            min-width: 240px;
+
+            /* postcss-bem-linter: ignore */
+            .dc-vertical-tab__header-title {
+                height: 56px;
+            }
+        }
+        /* postcss-bem-linter: ignore */
+        .contract-type-info__wrapper {
+            height: calc(100% - 2.4rem - 18px);
+        }
+    }
+    &--enter,
+    &--exit {
+        transform: translate3d(20%, 0, 0);
+        pointer-events: none;
+        opacity: 0;
+        height: 0;
+    }
+    &--enterDone {
+        transform: translate3d(0, 0, 0);
+        max-height: 100%;
+        opacity: 1;
+        pointer-events: auto;
+    }
+}

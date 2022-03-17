@@ -1,0 +1,115 @@
+/** @define positions-toggle; weak */
+.positions-toggle {
+    position: relative;
+    text-decoration: none;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.8rem;
+
+    &__icon {
+        margin-bottom: 0.5em;
+        height: 1.6rem;
+        width: 1.6rem;
+    }
+    &:before {
+        content: '';
+        width: 0.2rem;
+        height: 0.2rem;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 0.8rem;
+        right: 1.5rem;
+        display: block;
+        transition: transform 0.25s ease;
+        transform: translate3d(0, 0, 0);
+        background-color: var(--text-prominent);
+    }
+    &--active {
+        background: none !important;
+
+        &:before {
+            transform: translate3d(0, 50px, 0);
+        }
+        .positions-toggle__icon {
+            margin-bottom: 0;
+        }
+        @include desktop {
+            &:after {
+                transform: translate3d(0, 4px, 0);
+            }
+        }
+    }
+    &--has-count:after {
+        content: attr(data-count);
+        width: 14px;
+        height: 14px;
+        font-size: 0.9rem;
+        border-radius: 50%;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 2px;
+        right: 0;
+        background-color: var(--brand-red-coral);
+        color: $color-white;
+    }
+    @include mobile {
+        padding: 0 1.2rem;
+        height: inherit;
+
+        &--has-count:after {
+            top: -4px;
+            right: 4px;
+        }
+        .positions-toggle__icon {
+            margin: 0;
+        }
+        &:before {
+            display: none;
+        }
+    }
+}
+
+/** @define positions-modal; weak */
+.positions-modal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &__body {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.6rem;
+        height: 50px;
+    }
+    &__title {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        color: var(--text-general);
+        line-height: 1.5;
+
+        &-icon {
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-right: 0.4rem;
+        }
+    }
+    &__footer {
+        height: 72px;
+        width: 100%;
+
+        &-btn {
+            margin: 1.6rem 0.8rem;
+            width: calc(100% - 1.6rem);
+        }
+    }
+}

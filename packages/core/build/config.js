@@ -132,7 +132,6 @@ const generateSWConfig = is_release => ({
         /sitemap\.xml$/,
         /robots\.txt$/,
         /manifest\.json$/,
-        /^public\/images\/favicons\//,
         /^apple-app-site-association/,
         /^assetlinks.json/,
         /^.well-known\//,
@@ -181,12 +180,94 @@ const htmlInjectConfig = () => ({
             },
         },
         {
-            path: 'public/images/favicons/',
-            glob: '*',
-            globPath: 'public/images/favicons/',
             attributes: {
                 rel: 'icon',
             },
+            path: 'public/images/favicons/favicon.ico',
+        },
+        {
+            attributes: {
+                rel: 'icon',
+            },
+            path: 'public/images/favicons/favicon-16.png',
+        },
+        {
+            attributes: {
+                rel: 'icon',
+            },
+            path: 'public/images/favicons/favicon-32.png',
+        },
+        {
+            attributes: {
+                rel: 'icon',
+            },
+            path: 'public/images/favicons/favicon-96.png',
+        },
+        {
+            attributes: {
+                rel: 'icon',
+            },
+            path: 'public/images/favicons/favicon-160.png',
+        },
+        {
+            attributes: {
+                rel: 'icon',
+            },
+            path: 'public/images/favicons/favicon-192.png',
+        },
+        {
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+            path: 'public/images/favicons/apple-touch-icon-57.png',
+        },
+        {
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+            path: 'public/images/favicons/apple-touch-icon-60.png',
+        },
+        {
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+            path: 'public/images/favicons/apple-touch-icon-72.png',
+        },
+        {
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+            path: 'public/images/favicons/apple-touch-icon-76.png',
+        },
+        {
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+            path: 'public/images/favicons/apple-touch-icon-114.png',
+        },
+        {
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+            path: 'public/images/favicons/apple-touch-icon-120.png',
+        },
+        {
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+            path: 'public/images/favicons/apple-touch-icon-144.png',
+        },
+        {
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+            path: 'public/images/favicons/apple-touch-icon-152.png',
+        },
+        {
+            attributes: {
+                rel: 'apple-touch-icon',
+            },
+            path: 'public/images/favicons/apple-touch-icon-180.png',
         },
     ],
     append: false,

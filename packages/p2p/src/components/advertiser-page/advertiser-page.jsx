@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, Loading, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
+import { Loading, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -51,110 +51,54 @@ const AdvertiserPage = () => {
                 setShouldShowPopup={advertiser_page_store.setShowAdPopup}
                 table_type={advertiser_page_store.counterparty_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL}
             />
-            <DesktopWrapper>
-                <PageReturn
-                    className='buy-sell__advertiser-page-return'
-                    onClick={buy_sell_store.hideAdvertiserPage}
-                    page_title={localize("Advertiser's page")}
-                />
-                <div className='advertiser-page-details-container'>
-                    <div className='advertiser-page__header-details'>
-                        <UserAvatar
-                            nickname={advertiser_page_store.advertiser_details_name}
-                            size={isMobile() ? 32 : 64}
-                            text_size={isMobile() ? 's' : 'sm'}
-                        />
-                        <div className='advertiser-page__header-name--column'>
-                            <div className='advertiser-page__header-name'>
-                                <Text color='prominent' line-height='m' size='s' weight='bold'>
-                                    {advertiser_page_store.advertiser_details_name}
-                                </Text>
-                                {first_name && last_name && (
-                                    <div className='advertiser-page__header-real-name'>
-                                        <Text color='less-prominent' line_height='xs' size='xs'>
-                                            {`(${first_name} ${last_name})`}
-                                        </Text>
-                                    </div>
-                                )}
-                            </div>
-                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                {joined_since > 0 ? (
-                                    <Localize
-                                        i18n_default_text='Joined {{days_since_joined}}d'
-                                        values={{ days_since_joined: joined_since }}
-                                    />
-                                ) : (
-                                    <Localize i18n_default_text='Joined today' />
-                                )}
+            <PageReturn
+                className='buy-sell__advertiser-page-return'
+                onClick={buy_sell_store.hideAdvertiserPage}
+                page_title={localize("Advertiser's page")}
+            />
+            <div className='advertiser-page-details-container'>
+                <div className='advertiser-page__header-details'>
+                    <UserAvatar
+                        nickname={advertiser_page_store.advertiser_details_name}
+                        size={isMobile() ? 32 : 64}
+                        text_size={isMobile() ? 's' : 'sm'}
+                    />
+                    <div className='advertiser-page__header-name--column'>
+                        <div className='advertiser-page__header-name'>
+                            <Text color='prominent' line-height='m' size='s' weight='bold'>
+                                {advertiser_page_store.advertiser_details_name}
                             </Text>
-                            <div className='my-profile-name--row'>
-                                <TradeBadge
-                                    is_poa_verified={!!full_verification}
-                                    is_poi_verified={!!basic_verification}
-                                    trade_count={total_orders_count}
-                                    large
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <AdvertiserPageStats />
-                </div>
-                <AdvertiserPageAdverts />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileFullPageModal
-                    body_className='advertiser-page'
-                    height_offset='80px'
-                    is_flex
-                    is_modal_open={true}
-                    page_header_text={localize("Advertiser's page")}
-                    pageHeaderReturnFn={buy_sell_store.hideAdvertiserPage}
-                >
-                    <div className='advertiser-page-details-container'>
-                        <div className='advertiser-page__header-details'>
-                            <UserAvatar
-                                nickname={advertiser_page_store.advertiser_details_name}
-                                size={isMobile() ? 32 : 64}
-                                text_size={isMobile() ? 's' : 'sm'}
-                            />
-                            <div className='advertiser-page__header-name--column'>
-                                <div className='advertiser-page__header-name'>
-                                    <Text color='prominent' line-height='m' size='s' weight='bold'>
-                                        {advertiser_page_store.advertiser_details_name}
+                            {first_name && last_name && (
+                                <div className='advertiser-page__header-real-name'>
+                                    <Text color='less-prominent' line_height='xs' size='xs'>
+                                        {`(${first_name} ${last_name})`}
                                     </Text>
-                                    {first_name && last_name && (
-                                        <div className='advertiser-page__header-real-name'>
-                                            <Text color='less-prominent' line_height='xs' size='xs'>
-                                                {`(${first_name} ${last_name})`}
-                                            </Text>
-                                        </div>
-                                    )}
                                 </div>
-                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                    {joined_since > 0 ? (
-                                        <Localize
-                                            i18n_default_text='Joined {{days_since_joined}}d'
-                                            values={{ days_since_joined: joined_since }}
-                                        />
-                                    ) : (
-                                        <Localize i18n_default_text='Joined today' />
-                                    )}
-                                </Text>
-                                <div className='my-profile-name--row'>
-                                    <TradeBadge
-                                        is_poa_verified={!!full_verification}
-                                        is_poi_verified={!!basic_verification}
-                                        trade_count={total_orders_count}
-                                        large
-                                    />
-                                </div>
-                            </div>
+                            )}
                         </div>
-                        <AdvertiserPageStats />
+                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                            {joined_since > 0 ? (
+                                <Localize
+                                    i18n_default_text='Joined {{days_since_joined}}d'
+                                    values={{ days_since_joined: joined_since }}
+                                />
+                            ) : (
+                                <Localize i18n_default_text='Joined today' />
+                            )}
+                        </Text>
+                        <div className='my-profile-name--row'>
+                            <TradeBadge
+                                is_poa_verified={!!full_verification}
+                                is_poi_verified={!!basic_verification}
+                                trade_count={total_orders_count}
+                                large
+                            />
+                        </div>
                     </div>
-                    <AdvertiserPageAdverts />
-                </MobileFullPageModal>
-            </MobileWrapper>
+                </div>
+                <AdvertiserPageStats />
+            </div>
+            <AdvertiserPageAdverts />
         </div>
     );
 };

@@ -280,12 +280,6 @@
         }
     }
 
-    .dc-tabs__list--header-fit-content {
-        @include mobile {
-            position: fixed;
-        }
-    }
-
     .dc-tabs__content {
         @include mobile {
             position: fixed;

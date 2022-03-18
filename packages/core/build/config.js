@@ -87,7 +87,7 @@ const copyConfig = base => {
             to: 'favicon.ico',
             toType: 'file',
         },
-        { from: path.resolve(__dirname, '../src/public/images/favicons/'), to: 'public/' },
+        { from: path.resolve(__dirname, '../src/public/images/favicons/'), to: 'public/images/favicons/' },
         {
             from: path.resolve(__dirname, '../src/public/images/common/static_images/'),
             to: 'public/images/common',
@@ -132,7 +132,7 @@ const generateSWConfig = is_release => ({
         /sitemap\.xml$/,
         /robots\.txt$/,
         /manifest\.json$/,
-        /^public\//,
+        /^public\/images\/favicons\//,
         /^apple-app-site-association/,
         /^assetlinks.json/,
         /^.well-known\//,
@@ -181,13 +181,13 @@ const htmlInjectConfig = () => ({
             },
         },
         {
-            path: 'favicon.ico',
+            path: 'images/favicons/favicon.ico',
             attributes: {
                 rel: 'icon',
             },
         },
         {
-            path: 'favicon-192.png',
+            path: 'images/favicons/favicon-192.png',
             attributes: {
                 rel: 'apple-touch-icon',
             },

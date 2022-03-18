@@ -1,26 +1,7 @@
 // auto-generated file. DO NOT MODIFY.
 
 export const icons = {
-    appstore: [
-        'IcAppstoreCheck',
-        'IcAppstoreWalletAudLight',
-        'IcAppstoreWalletBitcoinLight',
-        'IcAppstoreWalletEthereumLight',
-        'IcAppstoreWalletEurLight',
-        'IcAppstoreWalletEusdtLight',
-        'IcAppstoreWalletGbpLight',
-        'IcAppstoreWalletLitecoinLight',
-        'IcAppstoreWalletP2pLight',
-        'IcAppstoreWalletPaLight',
-        'IcAppstoreWalletUsdLight',
-        'IcAppstoreWalletUsdcLight',
-        'IcAppstoreWalletUsdtLight',
-        'IcAppstoreCfdsTradeType',
-        'IcAppstoreCheckedTransparent',
-        'IcAppstoreChecked',
-        'IcAppstoreMultipliersTradeType',
-        'IcAppstoreOptionTradeType',
-    ],
+    appstore: ['IcAppstoreWalletDefault', 'IcAppstoreWalletDemo', 'IcAppstoreWalletSmall'],
     brand: [
         'IcBrandBinarybot',
         'IcBrandDbot',

@@ -55,9 +55,12 @@ export const getDirection = ticks => {
 };
 
 export const getLastDigit = tick => {
-    const num = Number(tick).toFixed(2);
-    return num[num.length - 1];
-};
+    let number_string = tick;
+    if (typeof number_string === 'number') {
+        number_string = String(number_string);
+    }
+    return number_string[number_string.length - 1];
+}
 
 const getBackoffDelayInMs = (error, delay_index) => {
     const base_delay = 2.5;

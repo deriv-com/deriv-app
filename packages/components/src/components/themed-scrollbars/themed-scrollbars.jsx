@@ -37,6 +37,7 @@ const ThemedScrollbars = ({
                 ...style,
             }}
             onScroll={onScroll}
+            data-testid='components-themed-scrollbars_container'
         >
             {children}
         </div>

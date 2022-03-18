@@ -1,3 +1,6 @@
+const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin-v6');
+
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
     // `mode` has a value of 'DEVELOPMENT' or 'PRODUCTION'
@@ -38,6 +41,18 @@ module.exports = async ({ config, mode }) => {
             },
         },
     });
+
+    config.plugins.push(
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, '../../components/lib/icon/sprites'),
+                    to: 'public/sprites',
+                    toType: 'dir',
+                },
+            ],
+        })
+    );
 
     // Return the altered config
     return config;

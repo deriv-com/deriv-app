@@ -1,8 +1,107 @@
 // auto-generated file. DO NOT MODIFY.
 
-export const icons = {
-    appstore: ['IcAppstoreWalletDefault', 'IcAppstoreWalletDemo', 'IcAppstoreWalletSmall'],
-    brand: [
+export const icons =
+{
+    'appstore': [
+        'IcAppstore1foryouDark',
+        'IcAppstore1foryouLight',
+        'IcAppstoreAdvcashDark',
+        'IcAppstoreAdvcashLight',
+        'IcAppstoreAirtmDark',
+        'IcAppstoreAirtmLight',
+        'IcAppstoreAstropayDark',
+        'IcAppstoreAstropayLight',
+        'IcAppstoreAudDark',
+        'IcAppstoreAudLight',
+        'IcAppstoreBankWireDark',
+        'IcAppstoreBankWireLight',
+        'IcAppstoreBanxaDark',
+        'IcAppstoreBanxaLight',
+        'IcAppstoreBeyonicDark',
+        'IcAppstoreBeyonicLight',
+        'IcAppstoreBitcoinDark',
+        'IcAppstoreBitcoinLight',
+        'IcAppstoreBoletoDark',
+        'IcAppstoreBoletoLight',
+        'IcAppstoreChangellyDark',
+        'IcAppstoreChangellyLight',
+        'IcAppstoreCimbniagaDark',
+        'IcAppstoreCreditCardLight',
+        'IcAppstoreCreditCardsDark',
+        'IcAppstoreCreditCardsLight',
+        'IcAppstoreDemoDark',
+        'IcAppstoreDemoLight',
+        'IcAppstoreDerivP2pDark',
+        'IcAppstoreDerivP2pLight',
+        'IcAppstoreDinersClubDark',
+        'IcAppstoreDinersClubLight',
+        'IcAppstoreEthereumDark',
+        'IcAppstoreEthereumLight',
+        'IcAppstoreEurDark',
+        'IcAppstoreEurLight',
+        'IcAppstoreFasapayDark',
+        'IcAppstoreFasapayLight',
+        'IcAppstoreGbpDark',
+        'IcAppstoreGbpLight',
+        'IcAppstoreHelp2payDark',
+        'IcAppstoreHelp2payLight',
+        'IcAppstoreJcbDark',
+        'IcAppstoreJcbLight',
+        'IcAppstoreJetonDark',
+        'IcAppstoreJetonLight',
+        'IcAppstoreLitecoinDark',
+        'IcAppstoreLitecoinLight',
+        'IcAppstoreMaestroDark',
+        'IcAppstoreMaestroLight',
+        'IcAppstoreMastercardDark',
+        'IcAppstoreMastercardLight',
+        'IcAppstoreNetellerDark',
+        'IcAppstoreNetellerLight',
+        'IcAppstoreNganluongDark',
+        'IcAppstoreNganluongLight',
+        'IcAppstoreOnlinenairaDark',
+        'IcAppstoreOnlinenairaLight',
+        'IcAppstoreOxxoDark',
+        'IcAppstoreOxxoLight',
+        'IcAppstorePayLivreDark',
+        'IcAppstorePayLivreLight',
+        'IcAppstorePaymentAgentDark',
+        'IcAppstorePaymentAgentLight',
+        'IcAppstorePaysafeCardDark',
+        'IcAppstorePaysafeCardLight',
+        'IcAppstorePaytrust88Dark',
+        'IcAppstorePaytrust88Light',
+        'IcAppstorePerfectMoneyDark',
+        'IcAppstorePerfectMoneyLight',
+        'IcAppstoreSkrillDark',
+        'IcAppstoreSkrillLight',
+        'IcAppstoreSpeiDark',
+        'IcAppstoreSpeiLight',
+        'IcAppstoreSticpayDark',
+        'IcAppstoreSticpayLight',
+        'IcAppstoreTetherDark',
+        'IcAppstoreTetherLight',
+        'IcAppstoreTrustlyDark',
+        'IcAppstoreTrustlyLight',
+        'IcAppstoreUsdCoinDark',
+        'IcAppstoreUsdCoinLight',
+        'IcAppstoreUsdDark',
+        'IcAppstoreUsdLight',
+        'IcAppstoreVisaDark',
+        'IcAppstoreVisaElectronDark',
+        'IcAppstoreVisaElectronLight',
+        'IcAppstoreVisaLight',
+        'IcAppstoreWalletDefault',
+        'IcAppstoreWalletDemo',
+        'IcAppstoreWalletSmall',
+        'IcAppstoreWebmoneyDark',
+        'IcAppstoreWebmoneyLight',
+        'IcAppstoreWechatPayDark',
+        'IcAppstoreWechatPayLight',
+        'IcAppstoreZingpayDark',
+        'IcAppstoreZingpayLight'
+    ],
+    'brand': [
         'IcBrandBinarybot',
         'IcBrandDbot',
         'IcBrandDerivApps',
@@ -13,9 +112,9 @@ export const icons = {
         'IcBrandDmt5',
         'IcBrandDtrader',
         'IcBrandDxtrade',
-        'IcBrandSmarttrader',
+        'IcBrandSmarttrader'
     ],
-    cashier: [
+    'cashier': [
         'IcCashierAdd',
         'IcCashierAirTmDark',
         'IcCashierAirTmLight',
@@ -139,9 +238,9 @@ export const icons = {
         'IcCashierXanpoolLight',
         'IcCashierXanpoolSmallDark',
         'IcCashierXanpoolSmallLight',
-        'IcCashier',
+        'IcCashier'
     ],
-    common: [
+    'common': [
         'IcAccountError',
         'IcAccountLimits',
         'IcAccountMissingDetailsDashboard',
@@ -382,9 +481,9 @@ export const icons = {
         'IcWindows',
         'IcWip',
         'IcZoomIn',
-        'IcZoomOut',
+        'IcZoomOut'
     ],
-    contract: [
+    'contract': [
         'IcContractBarrier',
         'IcContractBuyPrice',
         'IcContractCommission',
@@ -398,9 +497,9 @@ export const icons = {
         'IcContractSafeguard',
         'IcContractStartTimeCircle',
         'IcContractStartTime',
-        'IcContractTarget',
+        'IcContractTarget'
     ],
-    currency: [
+    'currency': [
         'IcCurrencyAud',
         'IcCurrencyBch',
         'IcCurrencyBtc',
@@ -420,9 +519,9 @@ export const icons = {
         'IcCurrencyUsdc',
         'IcCurrencyUsdk',
         'IcCurrencyUst',
-        'IcCurrencyVirtual',
+        'IcCurrencyVirtual'
     ],
-    dxtrade: [
+    'dxtrade': [
         'IcDxtradeDeviceDesktopLight',
         'IcDxtradeDeviceDesktop',
         'IcDxtradeDeviceLaptopLight',
@@ -435,9 +534,9 @@ export const icons = {
         'IcDxtradeFinancial',
         'IcDxtradeOnePassword',
         'IcDxtradeSyntheticPlatform',
-        'IcDxtradeSynthetic',
+        'IcDxtradeSynthetic'
     ],
-    flag: [
+    'flag': [
         'IcFlagDe',
         'IcFlagEn',
         'IcFlagEs',
@@ -451,9 +550,9 @@ export const icons = {
         'IcFlagUk',
         'IcFlagVi',
         'IcFlagZhCn',
-        'IcFlagZhTw',
+        'IcFlagZhTw'
     ],
-    mt5: [
+    'mt5': [
         'IcMt5CfdPlatform',
         'IcMt5Cfds',
         'IcMt5DeviceDesktop',
@@ -477,9 +576,9 @@ export const icons = {
         'IcMt5SyntheticIndices',
         'IcMt5SyntheticPlatform',
         'IcMt5Synthetic',
-        'IcMt5TradeTypes',
+        'IcMt5TradeTypes'
     ],
-    option: [
+    'option': [
         'IcOptionCallPutReset',
         'IcOptionCallPutSpread',
         'IcOptionCloseToLow',
@@ -495,9 +594,9 @@ export const icons = {
         'IcOptionRaiseFall',
         'IcOptionStayinGoesout',
         'IcOptionTouchNotouch',
-        'IcOptionUpDownAsian',
+        'IcOptionUpDownAsian'
     ],
-    stock: [
+    'stock': [
         'IcStockAdidasSalomon',
         'IcStockAlibaba',
         'IcStockAlphabet',
@@ -545,9 +644,9 @@ export const icons = {
         'IcStockVisa',
         'IcStockWallMart',
         'IcStockWaltDisney',
-        'IcStockZoom',
+        'IcStockZoom'
     ],
-    tradetype: [
+    'tradetype': [
         'IcTradetypeAsiand',
         'IcTradetypeAsianu',
         'IcTradetypeCallBarrier',
@@ -580,9 +679,9 @@ export const icons = {
         'IcTradetypeRunlow',
         'IcTradetypeTickhigh',
         'IcTradetypeTicklow',
-        'IcTradetypeUpordown',
+        'IcTradetypeUpordown'
     ],
-    underlying: [
+    'underlying': [
         'IcUnderlying1HZ100V',
         'IcUnderlying1HZ10V',
         'IcUnderlying1HZ200V',
@@ -737,9 +836,9 @@ export const icons = {
         'IcUnderlyingWLDEUR',
         'IcUnderlyingWLDGBP',
         'IcUnderlyingWLDUSD',
-        'IcUnderlyingWLDXAU',
+        'IcUnderlyingWLDXAU'
     ],
-    wallet: [
+    'wallet': [
         'IcWalletClearFunds',
         'IcWalletCreditDebitDark',
         'IcWalletCreditDebitLight',
@@ -773,6 +872,6 @@ export const icons = {
         'IcWalletWebmoneyLight',
         'IcWalletWebmoney',
         'IcWalletZingpayDark',
-        'IcWalletZingpayLight',
-    ],
-};
+        'IcWalletZingpayLight'
+    ]
+}

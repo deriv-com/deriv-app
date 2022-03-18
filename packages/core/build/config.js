@@ -187,104 +187,28 @@ const htmlInjectConfig = () => ({
                 rel: 'icon',
             },
         },
-        {
-            path: 'public/images/favicons/favicon-16.png',
+        ...[
+            { name: 'favicon', rel: 'icon', size: '16' },
+            { name: 'favicon', rel: 'icon', size: '32' },
+            { name: 'favicon', rel: 'icon', size: '96' },
+            { name: 'favicon', rel: 'icon', size: '160' },
+            { name: 'favicon', rel: 'icon', size: '192' },
+            { name: 'apple-touch-icon', size: '57' },
+            { name: 'apple-touch-icon', size: '60' },
+            { name: 'apple-touch-icon', size: '72' },
+            { name: 'apple-touch-icon', size: '76' },
+            { name: 'apple-touch-icon', size: '114' },
+            { name: 'apple-touch-icon', size: '120' },
+            { name: 'apple-touch-icon', size: '144' },
+            { name: 'apple-touch-icon', size: '152' },
+            { name: 'apple-touch-icon', size: '180' },
+        ].map(({ name, rel, size }) => ({
+            path: `public/images/favicons/${name}-${size}.png`,
             attributes: {
-                rel: 'icon',
-                sizes: '16x16',
+                rel: rel || name,
+                sizes: `${size}x${size}`,
             },
-        },
-        {
-            path: 'public/images/favicons/favicon-32.png',
-            attributes: {
-                rel: 'icon',
-                sizes: '32x32',
-            },
-        },
-        {
-            path: 'public/images/favicons/favicon-96.png',
-            attributes: {
-                rel: 'icon',
-                sizes: '96x96',
-            },
-        },
-        {
-            path: 'public/images/favicons/favicon-160.png',
-            attributes: {
-                rel: 'icon',
-                sizes: '160x160',
-            },
-        },
-        {
-            path: 'public/images/favicons/favicon-192.png',
-            attributes: {
-                rel: 'icon',
-                sizes: '192x192',
-            },
-        },
-        {
-            path: 'public/images/favicons/apple-touch-icon-57.png',
-            attributes: {
-                rel: 'apple-touch-icon',
-                sizes: '57x57',
-            },
-        },
-        {
-            path: 'public/images/favicons/apple-touch-icon-60.png',
-            attributes: {
-                rel: 'apple-touch-icon',
-                sizes: '60x60',
-            },
-        },
-        {
-            path: 'public/images/favicons/apple-touch-icon-72.png',
-            attributes: {
-                rel: 'apple-touch-icon',
-                sizes: '72x72',
-            },
-        },
-        {
-            path: 'public/images/favicons/apple-touch-icon-76.png',
-            attributes: {
-                rel: 'apple-touch-icon',
-                sizes: '76x76',
-            },
-        },
-        {
-            path: 'public/images/favicons/apple-touch-icon-114.png',
-            attributes: {
-                rel: 'apple-touch-icon',
-                sizes: '114x114',
-            },
-        },
-        {
-            path: 'public/images/favicons/apple-touch-icon-120.png',
-            attributes: {
-                rel: 'apple-touch-icon',
-                sizes: '120x120',
-            },
-        },
-        {
-            path: 'public/images/favicons/apple-touch-icon-144.png',
-            attributes: {
-                rel: 'apple-touch-icon',
-                sizes: '144x144',
-            },
-        },
-        {
-            path: 'public/images/favicons/apple-touch-icon-152.png',
-            attributes: {
-                rel: 'apple-touch-icon',
-                sizes: '152x152',
-            },
-        },
-        {
-            path: 'public/images/favicons/apple-touch-icon-180.png',
-            attributes: {
-                rel: 'apple-touch-icon',
-                sizes: '180x180',
-            },
-        },
+        })),
     ],
     append: false,
 });

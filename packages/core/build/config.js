@@ -183,7 +183,7 @@ const htmlInjectConfig = () => ({
         {
             path: 'public/images/favicons/',
             glob: '*',
-            globPath: path.resolve(__dirname, '../src/public/images/favicons/'),
+            globPath: 'public/images/favicons/',
             attributes: {
                 rel: 'icon',
             },

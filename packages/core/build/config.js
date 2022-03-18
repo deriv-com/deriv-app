@@ -132,6 +132,7 @@ const generateSWConfig = is_release => ({
         /sitemap\.xml$/,
         /robots\.txt$/,
         /manifest\.json$/,
+        /^public\/images\/favicons\//,
         /^apple-app-site-association/,
         /^assetlinks.json/,
         /^.well-known\//,

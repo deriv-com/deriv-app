@@ -181,13 +181,13 @@ const htmlInjectConfig = () => ({
             },
         },
         {
-            path: 'images/favicons/favicon.ico',
+            path: 'public/images/favicons/favicon.ico',
             attributes: {
                 rel: 'icon',
             },
         },
         {
-            path: 'images/favicons/favicon-192.png',
+            path: 'public/images/favicons/favicon-192.png',
             attributes: {
                 rel: 'apple-touch-icon',
             },

@@ -95,8 +95,8 @@ import ZingpayDark from 'Assets/svgs/wallet/zingpay-dark.svg';
 import ZingpayLight from 'Assets/svgs/wallet/zingpay-light.svg';
 
 const Icons = {
-    OneforyouDark,
-    OneforyouLight,
+    '1foryouDark': OneforyouDark,
+    '1foryouLight': OneforyouLight,
     AdvcashDark,
     AdvcashLight,
     AirtmDark,

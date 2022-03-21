@@ -12,13 +12,14 @@ const AdvertiserPageStats = () => {
 
     const {
         buy_completion_rate,
+        buy_orders_amount,
         buy_orders_count,
         buy_time_avg,
         partner_count,
         release_time_avg,
         sell_completion_rate,
+        sell_orders_amount,
         sell_orders_count,
-        total_turnover,
     } = advertiser_page_store.advertiser_info;
 
     const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '< 1';
@@ -134,9 +135,9 @@ const AdvertiserPageStats = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {total_turnover ? (
+                                {buy_orders_amount && sell_orders_amount ? (
                                     <Money
-                                        amount={total_turnover}
+                                        amount={buy_orders_amount + sell_orders_amount}
                                         currency={general_store.client.currency}
                                         show_currency
                                     />
@@ -217,8 +218,12 @@ const AdvertiserPageStats = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='m' weight='bold'>
-                            {total_turnover ? (
-                                <Money amount={total_turnover} currency={general_store.client.currency} show_currency />
+                            {buy_orders_amount && sell_orders_amount ? (
+                                <Money
+                                    amount={buy_orders_amount + sell_orders_amount}
+                                    currency={general_store.client.currency}
+                                    show_currency
+                                />
                             ) : (
                                 '-'
                             )}

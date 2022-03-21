@@ -60,7 +60,10 @@ const POISubmission = ({
 
     const handleBack = () => setSubmissionStatus(submission_status_code.selecting);
 
-    const getCountryFromResidence = country_code => residence_list.find(residence => residence.value === country_code);
+    const getCountryFromResidence = React.useCallback(
+        country_code => residence_list.find(residence => residence.value === country_code),
+        [residence_list]
+    );
 
     React.useEffect(() => {
         if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
@@ -94,7 +97,14 @@ const POISubmission = ({
         } else {
             setSubmissionStatus(submission_status_code.selecting);
         }
-    }, []);
+    }, [
+        allow_poi_resubmission,
+        getCountryFromResidence,
+        has_require_submission,
+        identity_last_attempt,
+        idv.submissions_left,
+        onfido.submissions_left,
+    ]);
 
     switch (submission_status) {
         case submission_status_code.selecting: {

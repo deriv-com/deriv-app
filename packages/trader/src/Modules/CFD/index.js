@@ -1,3 +1,5 @@
-export CFDPasswordModal from './Containers/cfd-password-modal.jsx';
-export CFDServerErrorDialog from './Containers/cfd-server-error-dialog.jsx';
-export default from './Containers/cfd-dashboard.jsx';
+import CFDDashboard from './Containers/cfd-dashboard';
+
+export CFDPasswordModal from './Containers/cfd-password-modal';
+export CFDServerErrorDialog from './Containers/cfd-server-error-dialog';
+export default CFDDashboard;

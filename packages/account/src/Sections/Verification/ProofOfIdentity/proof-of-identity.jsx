@@ -42,7 +42,7 @@ const ProofOfIdentity = ({
     );
 };
 
-export default connect(({ client, common }) => ({
+export default connect(({ client, common, notifications }) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     fetchResidenceList: client.fetchResidenceList,
@@ -50,7 +50,7 @@ export default connect(({ client, common }) => ({
     is_virtual: client.is_virtual,
     is_mx_mlt: client.landing_company_shortcode === 'iom' || client.landing_company_shortcode === 'malta',
     is_nigeria: client.residence === 'ng',
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
 }))(withRouter(ProofOfIdentity));

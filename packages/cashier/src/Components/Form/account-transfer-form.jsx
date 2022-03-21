@@ -11,7 +11,7 @@ import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
 import PercentageSelector from '../percentage-selector';
 import RecentTransaction from '../recent-transaction.jsx';
-import '../../Sass/account-transfer.scss';
+import 'Sass/account-transfer-form.scss';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;
@@ -26,12 +26,12 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
                 <div>
                     <Icon
                         icon={account.platform_icon || `IcCurrency-${account.currency.toLowerCase()}`}
-                        className='account-transfer__currency-icon'
+                        className='account-transfer-form__currency-icon'
                     />
                 </div>
             )}
 
-            <div className='account-transfer__currency-wrapper'>
+            <div className='account-transfer-form__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
                     {account.is_dxtrade || account.is_mt ? account.text : getCurrencyName(account.currency)}
                 </Text>
@@ -47,7 +47,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
                 </Text>
             )}
 
-            <span className='account-transfer__balance'>
+            <span className='account-transfer-form__balance'>
                 <Money
                     amount={account.balance}
                     currency={account.currency}
@@ -60,9 +60,9 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 };
 
 const AccountTransferBullet = ({ children }) => (
-    <div className='account-transfer__bullet-wrapper'>
-        <div className='account-transfer__bullet' />
-        <span>{children}</span>
+    <div className='account-transfer-form__bullet-wrapper'>
+        <div className='account-transfer-form__bullet' />
+        <Text size='xxs'>{children}</Text>
     </div>
 );
 
@@ -132,13 +132,13 @@ const AccountTransferNote = ({
     };
 
     return (
-        <div className='account-transfer__notes'>
+        <div className='account-transfer-form__notes'>
             <DesktopWrapper>
                 <Text
                     as='h2'
                     color='prominent'
                     weight='bold'
-                    className='cashier__header account-transfer__notes-header'
+                    className='cashier__header account-transfer-form__notes-header'
                 >
                     <Localize i18n_default_text='Notes' />
                 </Text>
@@ -208,6 +208,8 @@ const AccountTransferForm = ({
     is_dark_mode_on,
     minimum_fee,
     mt5_login_list,
+    onChangeConverterFromAmount,
+    onChangeConverterToAmount,
     onChangeTransferFrom,
     onChangeTransferTo,
     onMount,
@@ -323,13 +325,11 @@ const AccountTransferForm = ({
             if (!is_selected_from) {
                 const is_selected_from_mt = selected_from.is_mt && account.is_mt;
                 const is_selected_from_dxtrade = selected_from.is_dxtrade && account.is_dxtrade;
-                const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
 
                 // cannot transfer to MT account from MT
-                // cannot transfer to crypto account from crypto
                 // cannot transfer to Dxtrade account from Dxtrade
 
-                const is_disabled = is_selected_from_mt || is_selected_from_crypto || is_selected_from_dxtrade;
+                const is_disabled = is_selected_from_mt || is_selected_from_dxtrade;
 
                 getAccounts('to', account).push({
                     text,
@@ -405,7 +405,7 @@ const AccountTransferForm = ({
     }, [selected_to, selected_from, account_limits]);
 
     return (
-        <div className='cashier__wrapper account-transfer__wrapper'>
+        <div className='cashier__wrapper account-transfer-form__wrapper'>
             <Text
                 as='h2'
                 color='prominent'
@@ -435,10 +435,10 @@ const AccountTransferForm = ({
                             </div>
                         ) : (
                             <Form>
-                                <div className='cashier__drop-down-wrapper account-transfer__drop-down-wrapper'>
+                                <div className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'>
                                     <Dropdown
                                         id='transfer_from'
-                                        className='cashier__drop-down account-transfer__drop-down'
+                                        className='account-transfer-form__drop-down'
                                         classNameDisplay='cashier__drop-down-display'
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
@@ -460,12 +460,12 @@ const AccountTransferForm = ({
                                     />
                                     <Dropdown
                                         id='transfer_to'
-                                        className='cashier__drop-down account-transfer__drop-down account-transfer__drop-down--to-dropdown'
+                                        className='account-transfer-form__drop-down account-transfer-form__drop-down--to-dropdown'
                                         classNameDisplay='cashier__drop-down-display'
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
                                         classNameLabel='cashier__drop-down-label'
-                                        classNameHint='cashier__hint'
+                                        classNameHint='account-transfer-form__hint'
                                         is_large
                                         label={localize('To')}
                                         list={to_accounts}
@@ -493,8 +493,8 @@ const AccountTransferForm = ({
                                                     setAccountTransferAmount(e.target.value);
                                                     setFieldTouched('amount', true, false);
                                                 }}
-                                                className='cashier__input dc-input--no-placeholder account-transfer__input'
-                                                classNameHint='cashier__hint'
+                                                className='cashier__input dc-input--no-placeholder account-transfer-form__input'
+                                                classNameHint='account-transfer-form__hint'
                                                 type='text'
                                                 label={localize('Amount')}
                                                 error={touched.amount && errors.amount ? errors.amount : ''}
@@ -541,7 +541,7 @@ const AccountTransferForm = ({
                                     </Field>
                                 ) : (
                                     <div>
-                                        <div className='crypto-account-transfer__percentage-selector'>
+                                        <div className='account-transfer-form__crypto--percentage-selector'>
                                             <PercentageSelector
                                                 amount={+selected_from.balance}
                                                 currency={selected_from.currency}
@@ -578,19 +578,17 @@ const AccountTransferForm = ({
                                                     ''
                                                 )
                                             }
+                                            onChangeConverterFromAmount={onChangeConverterFromAmount}
+                                            onChangeConverterToAmount={onChangeConverterToAmount}
+                                            resetConverter={resetConverter}
                                             validateFromAmount={validateTransferFromAmount}
                                             validateToAmount={validateTransferToAmount}
                                         />
                                     </div>
                                 )}
-                                <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
+                                <div className='cashier__form-submit account-transfer-form__form-submit'>
                                     <Button
-                                        className={classNames({
-                                            'cashier__form-submit-button':
-                                                selected_from.currency === selected_to.currency,
-                                            'cashier__account-transfer__form-submit-button':
-                                                selected_from.currency !== selected_to.currency,
-                                        })}
+                                        className='account-transfer-form__submit-button'
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
@@ -646,6 +644,8 @@ AccountTransferForm.propTypes = {
     error: PropTypes.object,
     is_crypto: PropTypes.bool,
     minimum_fee: PropTypes.string,
+    onChangeConverterFromAmount: PropTypes.func,
+    onChangeConverterToAmount: PropTypes.func,
     onChangeTransferFrom: PropTypes.func,
     onChangeTransferTo: PropTypes.func,
     onMount: PropTypes.func,
@@ -667,33 +667,35 @@ AccountTransferForm.propTypes = {
 
 export default connect(({ client, modules, ui }) => ({
     account_limits: client.account_limits,
-    accounts_list: modules.cashier.config.account_transfer.accounts_list,
-    account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
-    converter_from_amount: modules.cashier.converter_from_amount,
-    converter_from_error: modules.cashier.converter_from_error,
-    converter_to_amount: modules.cashier.converter_to_amount,
-    converter_to_error: modules.cashier.converter_to_error,
+    accounts_list: modules.cashier.account_transfer.accounts_list,
+    account_transfer_amount: modules.cashier.account_transfer.account_transfer_amount,
+    converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
+    converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
+    converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
+    converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    is_crypto: modules.cashier.is_crypto,
+    is_crypto: modules.cashier.general_store.is_crypto,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
-    minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
+    minimum_fee: modules.cashier.account_transfer.minimum_fee,
     mt5_login_list: client.mt5_login_list,
-    onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
-    onChangeTransferTo: modules.cashier.onChangeTransferTo,
+    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
+    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
+    onChangeTransferFrom: modules.cashier.account_transfer.onChangeTransferFrom,
+    onChangeTransferTo: modules.cashier.account_transfer.onChangeTransferTo,
     onMount: client.getLimits,
-    percentage: modules.cashier.percentage,
-    resetConverter: modules.cashier.resetConverter,
+    percentage: modules.cashier.general_store.percentage,
+    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    requestTransferBetweenAccounts: modules.cashier.requestTransferBetweenAccounts,
-    setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
-    setErrorMessage: modules.cashier.setErrorMessage,
-    selected_from: modules.cashier.config.account_transfer.selected_from,
-    selected_to: modules.cashier.config.account_transfer.selected_to,
-    setTransferPercentageSelectorResult: modules.cashier.setTransferPercentageSelectorResult,
-    should_percentage_reset: modules.cashier.should_percentage_reset,
-    transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
-    transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
-    validateTransferFromAmount: modules.cashier.validateTransferFromAmount,
-    validateTransferToAmount: modules.cashier.validateTransferToAmount,
+    requestTransferBetweenAccounts: modules.cashier.account_transfer.requestTransferBetweenAccounts,
+    setAccountTransferAmount: modules.cashier.account_transfer.setAccountTransferAmount,
+    setErrorMessage: modules.cashier.account_transfer.error.setErrorMessage,
+    selected_from: modules.cashier.account_transfer.selected_from,
+    selected_to: modules.cashier.account_transfer.selected_to,
+    setTransferPercentageSelectorResult: modules.cashier.account_transfer.setTransferPercentageSelectorResult,
+    should_percentage_reset: modules.cashier.general_store.should_percentage_reset,
+    transfer_fee: modules.cashier.account_transfer.transfer_fee,
+    transfer_limit: modules.cashier.account_transfer.transfer_limit,
+    validateTransferFromAmount: modules.cashier.account_transfer.validateTransferFromAmount,
+    validateTransferToAmount: modules.cashier.account_transfer.validateTransferToAmount,
 }))(AccountTransferForm);

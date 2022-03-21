@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
 import { Icon, ThemedScrollbars, Input, Text } from '@deriv/components';
-import { help_content_config } from '@deriv/bot-skeleton';
+import { help_content_config } from 'Utils/help-content/help-content.config';
 import { connect } from 'Stores/connect';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents';
@@ -23,7 +23,7 @@ const SearchResult = ({ search_term, total_result }) => (
 );
 
 const FlyoutContent = props => {
-    const flyout_ref = React.createRef();
+    const flyout_ref = React.useRef();
     const {
         flyout_content,
         active_helper,

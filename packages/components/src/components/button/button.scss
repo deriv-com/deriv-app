@@ -66,6 +66,9 @@
     &--circular {
         border-radius: 100px;
     }
+    &--transparent {
+        background: transparent;
+    }
     &--primary {
         background: var(--button-primary-default);
         color: var(--text-colored-background);
@@ -224,6 +227,9 @@
         .dc-btn + .dc-btn {
             margin-left: 8px;
         }
+    }
+    &__button-group {
+        border-radius: 0 4px 4px 0;
     }
     /* TODO: confirm this button with designer are we still using this? */
     /* postcss-bem-linter: ignore */

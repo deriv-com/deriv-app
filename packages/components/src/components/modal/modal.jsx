@@ -70,15 +70,31 @@ const ModalElement = ({
     useOnClickOutside(wrapper_ref, closeModal, validateClickOutside);
 
     React.useEffect(() => {
-        el_ref.current.classList.add('dc-modal');
-        modal_root_ref.current.appendChild(el_ref.current);
+        const local_el_ref = el_ref;
+        const local_modal_root_ref = modal_root_ref;
+
+        local_el_ref.current.classList.add('dc-modal');
+        local_modal_root_ref.current.appendChild(local_el_ref.current);
         if (typeof onMount === 'function') onMount();
 
         return () => {
-            modal_root_ref.current.removeChild(el_ref.current);
+            local_modal_root_ref.current.removeChild(local_el_ref.current);
             if (typeof onUnmount === 'function') onUnmount();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    const closeOnEscButton = React.useCallback(
+        e => {
+            if (e.key === 'Escape') {
+                toggleModal?.();
+            }
+        },
+        [toggleModal]
+    );
+    React.useEffect(() => {
+        window.addEventListener('keydown', closeOnEscButton);
+        return () => window.removeEventListener('keydown', closeOnEscButton);
+    }, [closeOnEscButton]);
 
     const rendered_title = typeof renderTitle === 'function' ? renderTitle() : null;
 
@@ -147,7 +163,7 @@ const ModalElement = ({
                         </div>
                     )}
                     {has_close_icon && (
-                        <div onClick={toggleModal} className='dc-modal-header__close'>
+                        <div onClick={toggleModal} className='dc-modal-header__close' role='button'>
                             <Icon icon='IcCross' color={close_icon_color} />
                         </div>
                     )}

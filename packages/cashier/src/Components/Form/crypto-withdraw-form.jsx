@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import PercentageSelector from '../percentage-selector';
-import '../../Sass/withdraw.scss';
+import 'Sass/crypto-withdraw-form.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
 const MAX_ADDRESS_LENGTH = 64;
@@ -48,11 +48,14 @@ const CryptoWithdrawForm = ({
     currency,
     current_fiat_currency,
     is_loading,
+    onChangeConverterFromAmount,
+    onChangeConverterToAmount,
     onMountWithdraw,
     percentage,
     percentageSelectorSelectionStatus,
     recentTransactionOnMount,
     requestWithdraw,
+    resetConverter,
     setBlockchainAddress,
     setWithdrawPercentageSelectorResult,
     should_percentage_reset,
@@ -83,11 +86,13 @@ const CryptoWithdrawForm = ({
     if (is_loading) return <Loading />;
 
     return (
-        <div className='cashier__wrapper withdraw__wrapper'>
+        <div className='cashier__wrapper'>
             {!isMobile() && <Header currency={currency} />}
-            <div className='withdraw__form-icon'>
-                <Icon icon={`IcCurrency-${account_platform_icon.toLowerCase()}`} size={isMobile() ? 64 : 128} />
-            </div>
+            <Icon
+                icon={`IcCurrency-${account_platform_icon.toLowerCase()}`}
+                size={isMobile() ? 64 : 128}
+                className='crypto-withdraw-form__icon'
+            />
             {isMobile() && <Header currency={currency} />}
             <Formik
                 initialValues={{
@@ -95,7 +100,7 @@ const CryptoWithdrawForm = ({
                 }}
             >
                 {({ errors, isSubmitting, touched, setFieldTouched, handleChange, values }) => (
-                    <div className='withdraw__form'>
+                    <div className='crypto-withdraw-form'>
                         <Field name='address' validate={validateAddress}>
                             {({ field }) => (
                                 <Input
@@ -121,40 +126,43 @@ const CryptoWithdrawForm = ({
                                 />
                             )}
                         </Field>
-                        <div className='withdraw__percentage-selector'>
-                            <PercentageSelector
-                                amount={+balance}
-                                currency={currency}
-                                getCalculatedAmount={setWithdrawPercentageSelectorResult}
-                                percentage={percentage}
-                                should_percentage_reset={should_percentage_reset}
-                            />
-                        </div>
-                        <div className='withdraw__crypto-fiat-converter'>
+                        <div>
+                            <div className='crypto-withdraw-form__percentage-selector'>
+                                <PercentageSelector
+                                    amount={+balance}
+                                    currency={currency}
+                                    getCalculatedAmount={setWithdrawPercentageSelectorResult}
+                                    percentage={percentage}
+                                    should_percentage_reset={should_percentage_reset}
+                                />
+                            </div>
                             <CryptoFiatConverter
                                 from_currency={crypto_currency}
+                                onChangeConverterFromAmount={onChangeConverterFromAmount}
+                                onChangeConverterToAmount={onChangeConverterToAmount}
+                                resetConverter={resetConverter}
                                 to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}
                             />
-                        </div>
-                        <div className='withdraw__form-submit'>
-                            <Button
-                                className='cashier__form-submit-button'
-                                is_disabled={
-                                    validateAddress(values.address) ||
-                                    !!converter_from_error ||
-                                    !!converter_to_error ||
-                                    isSubmitting ||
-                                    !blockchain_address
-                                }
-                                type='submit'
-                                primary
-                                large
-                                onClick={() => requestWithdraw(verification_code)}
-                            >
-                                <Localize i18n_default_text='Withdraw' />
-                            </Button>
+                            <div className='crypto-withdraw-form__submit'>
+                                <Button
+                                    className='cashier__form-submit-button'
+                                    is_disabled={
+                                        !!validateAddress(values.address) ||
+                                        !!converter_from_error ||
+                                        !!converter_to_error ||
+                                        isSubmitting ||
+                                        !blockchain_address
+                                    }
+                                    type='submit'
+                                    primary
+                                    large
+                                    onClick={() => requestWithdraw(verification_code)}
+                                >
+                                    <Localize i18n_default_text='Withdraw' />
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -177,11 +185,14 @@ CryptoWithdrawForm.propTypes = {
     currency: PropTypes.string,
     current_fiat_currency: PropTypes.string,
     is_loading: PropTypes.bool,
+    onChangeConverterFromAmount: PropTypes.func,
+    onChangeConverterToAmount: PropTypes.func,
     onMountWithdraw: PropTypes.func,
     percentage: PropTypes.number,
     percentageSelectorSelectionStatus: PropTypes.func,
-    requestWithdraw: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
+    requestWithdraw: PropTypes.func,
+    resetConverter: PropTypes.func,
     setBlockchainAddress: PropTypes.func,
     setWithdrawPercentageSelectorResult: PropTypes.func,
     should_percentage_reset: PropTypes.bool,
@@ -191,25 +202,28 @@ CryptoWithdrawForm.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    account_platform_icon: modules.cashier.account_platform_icon,
+    account_platform_icon: modules.cashier.withdraw.account_platform_icon,
     balance: client.balance,
-    blockchain_address: modules.cashier.blockchain_address,
-    converter_from_error: modules.cashier.converter_from_error,
-    converter_to_error: modules.cashier.converter_to_error,
+    blockchain_address: modules.cashier.withdraw.blockchain_address,
+    converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
+    converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
     crypto_currency: client.currency,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
-    is_loading: modules.cashier.is_loading,
-    onMountWithdraw: modules.cashier.onMountWithdraw,
-    percentage: modules.cashier.percentage,
-    percentageSelectorSelectionStatus: modules.cashier.percentageSelectorSelectionStatus,
-    requestWithdraw: modules.cashier.requestWithdraw,
+    is_loading: modules.cashier.general_store.is_loading,
+    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
+    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
+    onMountWithdraw: modules.cashier.withdraw.onMountCryptoWithdraw,
+    percentage: modules.cashier.general_store.percentage,
+    percentageSelectorSelectionStatus: modules.cashier.general_store.percentageSelectorSelectionStatus,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    setBlockchainAddress: modules.cashier.setBlockchainAddress,
-    setWithdrawPercentageSelectorResult: modules.cashier.setWithdrawPercentageSelectorResult,
-    should_percentage_reset: modules.cashier.should_percentage_reset,
-    validateWithdrawFromAmount: modules.cashier.validateWithdrawFromAmount,
-    validateWithdrawToAmount: modules.cashier.validateWithdrawToAmount,
+    requestWithdraw: modules.cashier.withdraw.requestWithdraw,
+    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
+    setBlockchainAddress: modules.cashier.withdraw.setBlockchainAddress,
+    setWithdrawPercentageSelectorResult: modules.cashier.withdraw.setWithdrawPercentageSelectorResult,
+    should_percentage_reset: modules.cashier.general_store.should_percentage_reset,
+    validateWithdrawFromAmount: modules.cashier.withdraw.validateWithdrawFromAmount,
+    validateWithdrawToAmount: modules.cashier.withdraw.validateWithdrawToAmount,
     verification_code: client.verification_code.payment_withdraw,
 }))(CryptoWithdrawForm);

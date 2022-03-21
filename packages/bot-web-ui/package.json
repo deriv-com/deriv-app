@@ -20,7 +20,7 @@
   "scripts": {
     "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && webpack --progress --watch",
-    "build": "f () { npm run build:skeleton && webpack --progress --env base $1 ;}; f",
+    "build": "f () { npm run build:skeleton && webpack --progress --env base=$1 ;}; f",
     "build:skeleton": "lerna exec --scope @deriv/bot-skeleton -- npm run build",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:mocha",
@@ -65,7 +65,7 @@
   "dependencies": {
     "@deriv/bot-skeleton": "^1.0.0",
     "@deriv/components": "^1.0.0",
-    "@deriv/deriv-charts": "^0.4.1",
+    "@deriv/deriv-charts": "^0.5.1",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "classnames": "^2.2.6",

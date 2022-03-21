@@ -18,21 +18,15 @@ import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Prel
 const LoggedInHeader = ({ is_dark_mode }) => {
     const history = useHistory();
 
+    const getDesktopHeaderLogo = () => (!is_dark_mode ? <DerivLogoLight /> : <DerivLogoDark />);
+
+    const getMobileHeaderLogo = () => (!is_dark_mode ? <DerivLogoLightMobile /> : <DerivLogoDarkMobile />);
+
     return (
         <header className='dashboard-header dashboard-header--logged-in'>
             <div className='dashboard-header__left'>
                 <div onClick={() => history.push(routes.dashboard)}>
-                    {isDesktop() ? (
-                        !is_dark_mode ? (
-                            <DerivLogoLight />
-                        ) : (
-                            <DerivLogoDark />
-                        )
-                    ) : !is_dark_mode ? (
-                        <DerivLogoLightMobile />
-                    ) : (
-                        <DerivLogoDarkMobile />
-                    )}
+                    {isDesktop() ? getDesktopHeaderLogo() : getMobileHeaderLogo()}
                 </div>
             </div>
             <div className='dashboard-header__right--logged-in'>
@@ -55,7 +49,7 @@ const LoggedInHeader = ({ is_dark_mode }) => {
 
 const LoggedOutHeader = () => {
     const history = useHistory();
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <header className='dashboard-header dashboard-header--logged-out'>
@@ -94,7 +88,7 @@ const LoggedOutHeader = () => {
                         className='dashboard-header__right--create-button'
                         primary
                         text={localize('Create free demo account')}
-                        onClick={() => redirectToSignUp({ is_dashboard })}
+                        onClick={() => redirectToSignUp({ is_appstore })}
                     />
                 </Button.Group>
                 {isMobile() && (

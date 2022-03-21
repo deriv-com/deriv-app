@@ -35,7 +35,8 @@ const getStringsFromXmlFile = input => {
 const getTranslatableFiles = () => {
     const packages_with_translations = [
         'account',
-        'appstore',
+        // TODO: add appstore package once it's done and merged
+        // 'appstore',
         'cashier',
         'bot-web-ui',
         'core',

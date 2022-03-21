@@ -3,9 +3,27 @@
 export const icons =
 {
     'appstore': [
+        'IcAppstoreCfdsTradeType',
+        'IcAppstoreCheck',
+        'IcAppstoreCheckedTransparent',
+        'IcAppstoreChecked',
+        'IcAppstoreMultipliersTradeType',
+        'IcAppstoreOptionTradeType',
+        'IcAppstoreWalletAudLight',
+        'IcAppstoreWalletBitcoinLight',
         'IcAppstoreWalletDefault',
         'IcAppstoreWalletDemo',
-        'IcAppstoreWalletSmall'
+        'IcAppstoreWalletEthereumLight',
+        'IcAppstoreWalletEurLight',
+        'IcAppstoreWalletEusdtLight',
+        'IcAppstoreWalletGbpLight',
+        'IcAppstoreWalletLitecoinLight',
+        'IcAppstoreWalletP2pLight',
+        'IcAppstoreWalletPaLight',
+        'IcAppstoreWalletSmall',
+        'IcAppstoreWalletUsdLight',
+        'IcAppstoreWalletUsdcLight',
+        'IcAppstoreWalletUsdtLight'
     ],
     'brand': [
         'IcBrandBinarybot',

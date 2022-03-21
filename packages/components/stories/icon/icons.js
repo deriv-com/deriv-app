@@ -166,6 +166,7 @@ export const icons =
         'IcAlertDanger',
         'IcAlertInfo',
         'IcAlertSuccess',
+        'IcAlertTrustpilot',
         'IcAlertWarning',
         'IcAmplifier',
         'IcArchive',

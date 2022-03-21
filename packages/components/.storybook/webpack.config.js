@@ -1,5 +1,5 @@
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin-v6');
 
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {

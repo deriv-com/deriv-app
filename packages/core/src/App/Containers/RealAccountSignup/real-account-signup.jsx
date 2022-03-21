@@ -389,14 +389,8 @@ const RealAccountSignup = ({
 
     // set title and body of the modal
     const { title: Title, body: ModalContent } = modal_content[getActiveModalIndex()];
-    const {
-        account_wizard,
-        add_or_manage_account,
-        finished_set_currency,
-        status_dialog,
-        set_currency,
-        signup_error,
-    } = modal_pages_indices;
+    const { account_wizard, add_or_manage_account, finished_set_currency, status_dialog, set_currency, signup_error } =
+        modal_pages_indices;
 
     const has_close_icon = [account_wizard, add_or_manage_account, set_currency, signup_error].includes(
         getActiveModalIndex()

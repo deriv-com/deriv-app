@@ -1,8 +1,8 @@
 import React from 'react';
 import { useStores } from 'Stores';
+import ServerTime from 'Utils/server-time';
 import { render, screen } from '@testing-library/react';
 import OrderDetailsTimer from '../order-details-timer.jsx';
-import ServerTime from 'Utils/server-time';
 
 const mock_order_info = {
     order_expiry_milliseconds: 0,

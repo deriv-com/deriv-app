@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
 const FlyoutText = props => {
@@ -7,13 +8,13 @@ const FlyoutText = props => {
 
     return (
         <Text as='p' size='xs' styles={{ lineHeight: '1.3em' }}>
-            {text}
+            {localize(text)}
         </Text>
     );
 };
 
 FlyoutText.propTypes = {
-    text: PropTypes.oneOfType(PropTypes.string, PropTypes.object),
+    text: PropTypes.string,
 };
 
 export default FlyoutText;

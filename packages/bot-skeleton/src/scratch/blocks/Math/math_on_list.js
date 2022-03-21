@@ -50,9 +50,7 @@ Blockly.Blocks.math_on_list = {
     },
     getRequiredValueInputs() {
         return {
-            LIST: input => {
-                return input !== 'list';
-            },
+            LIST: null,
         };
     },
 };

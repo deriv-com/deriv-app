@@ -30,7 +30,6 @@ const MultiplierCardBody = ({
     connectWithContractUpdate,
     currency,
     current_focus,
-    error_message_alignment,
     getCardLabels,
     getContractById,
     has_progress_slider,
@@ -112,7 +111,6 @@ const MultiplierCardBody = ({
                             connectWithContractUpdate={connectWithContractUpdate}
                             contract_id={contract_info.contract_id}
                             current_focus={current_focus}
-                            error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             is_valid_to_cancel={is_valid_to_cancel}
@@ -154,7 +152,6 @@ const ContractCardBody = ({
     contract_update,
     currency,
     current_focus,
-    error_message_alignment,
     getCardLabels,
     getContractById,
     has_progress_slider,
@@ -162,11 +159,11 @@ const ContractCardBody = ({
     is_multiplier,
     is_sold,
     onMouseLeave,
-    removeToast,
+    status,
     server_time,
+    removeToast,
     setCurrentFocus,
     should_show_cancellation_warning,
-    status,
     toggleCancellationWarning,
 }) => {
     const indicative = getIndicativePrice(contract_info);
@@ -193,7 +190,6 @@ const ContractCardBody = ({
             contract_update={contract_update}
             currency={currency}
             current_focus={current_focus}
-            error_message_alignment={error_message_alignment}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             has_progress_slider={has_progress_slider}
@@ -281,12 +277,8 @@ const ContractCardBody = ({
 
 ContractCardBody.propTypes = {
     addToast: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
     contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
     currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_mobile: PropTypes.bool,
@@ -296,7 +288,6 @@ ContractCardBody.propTypes = {
     removeToast: PropTypes.func,
     server_time: PropTypes.object,
     setCurrentFocus: PropTypes.func,
-    should_show_cancellation_warning: PropTypes.bool,
     status: PropTypes.string,
     toggleCancellationWarning: PropTypes.func,
 };

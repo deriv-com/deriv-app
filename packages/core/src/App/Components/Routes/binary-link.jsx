@@ -12,9 +12,9 @@ import getRoutesConfig from '../../Constants/routes-config';
 // or into their descendants
 const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...props }) => {
     const platform_context = React.useContext(PlatformContext);
-    const is_appstore = platform_context?.is_appstore;
+    const is_dashboard = platform_context?.is_dashboard;
     const path = normalizePath(to);
-    const route = findRouteByPath(path, getRoutesConfig({ is_appstore }));
+    const route = findRouteByPath(path, getRoutesConfig({ is_dashboard }));
 
     if (!route && to) {
         throw new Error(`Route not found: ${to}`);

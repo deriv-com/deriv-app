@@ -6,7 +6,7 @@ import { Localize } from '../i18next';
 
 const Dp2pBlocked = () => {
     return (
-        <div className='dp2p-blocked' data-testid='dp2p-Dp2pBlocked_container'>
+        <div className='dp2p-blocked'>
             <Icon icon='IcCashierDp2pBlocked' size={128} />
             <Text className='dp2p-blocked__title' color='prominent' line_height='m' size='s' weight='bold'>
                 <Localize i18n_default_text='Your Deriv P2P cashier is blocked' />

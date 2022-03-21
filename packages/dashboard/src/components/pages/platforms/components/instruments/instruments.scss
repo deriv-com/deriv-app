@@ -1,0 +1,57 @@
+.dw-instruments {
+    &__title {
+        margin-bottom: 2.4rem;
+    }
+    &__market {
+        padding: 4rem 0;
+        border-top: 1px solid var(--general-section-1);
+
+        &:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+        &:last-child {
+            padding-bottom: 0;
+        }
+        &-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+        &-icon {
+            margin-right: 1.6rem;
+        }
+        &-title {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    &__submarket {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 4rem;
+
+        &-title {
+            margin-bottom: 0.8rem;
+        }
+        &-subtitle {
+            margin-bottom: 2.4rem;
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    &__symbol {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
+        grid-gap: 2.4rem;
+
+        &-item {
+            display: flex;
+            align-items: center;
+        }
+        &-icon {
+            margin-right: 0.8rem;
+        }
+    }
+}

@@ -37,6 +37,7 @@ const App = props => {
 
         waitWS('authorize').then(() => {
             general_store.onMount();
+
             if (localStorage.getItem('is_verifying_p2p')) {
                 localStorage.removeItem('is_verifying_p2p');
                 general_store.setActiveIndex(general_store.path.my_ads);

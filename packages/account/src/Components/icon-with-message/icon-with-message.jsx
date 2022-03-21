@@ -14,10 +14,10 @@ const IconWithMessage = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
-        <div className={classNames('da-icon-with-message', { 'da-icon-with-message-full-width': is_appstore })}>
+        <div className={classNames('da-icon-with-message', { 'da-icon-with-message-full-width': is_dashboard })}>
             <Icon icon={icon} size={128} />
             <Text
                 className='da-icon-with-message__text'

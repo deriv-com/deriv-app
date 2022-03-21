@@ -42,7 +42,7 @@ const getTranslatableFiles = () => {
         'trader',
         'bot-skeleton',
     ];
-    const globs = ['**/*.js', '**/*.jsx', '**/xml/*.xml'];
+    const globs = ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx', '**/xml/*.xml'];
     const file_paths = [];
 
     for (let i = 0; i < packages_with_translations.length; i++) {

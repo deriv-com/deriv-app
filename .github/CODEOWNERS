@@ -42,7 +42,7 @@
 #  matin-binary
 #  mehrzad-fs
 #  nijil-binary
-#  nikolai-deriv
+#  njazuli-deriv
 #  yashim-deriv
 
 ######################################################################################################
@@ -79,9 +79,9 @@
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot-skeleton/**/*                                     @mehrzad-fs @nikolai-deriv
-/packages/bot-web-ui/**/*                                       @mehrzad-fs @nikolai-deriv
-/packages/indicators/**/*                                       @mehrzad-fs @nikolai-deriv
+/packages/bot-skeleton/**/*                                     @mehrzad-fs
+/packages/bot-web-ui/**/*                                       @mehrzad-fs
+/packages/indicators/**/*                                       @mehrzad-fs
 
 
 # ==============================================================
@@ -122,7 +122,7 @@
 /packages/publisher/**/*                                        @nijil-binary
 
 # ==============================================================
-#  deriv-app/dashboard
+#  deriv-app/appstore
 # ==============================================================
 
-/packages/dashboard/**/*                                        @matin-binary @akmal-binary
+/packages/appstore/**/*                                         @matin-binary @balakrishna-binary @njazuli-deriv @bahar-fs

@@ -255,12 +255,12 @@
     "-1192446042": "Se il tuo reclamo non appare in questo elenco, contatta l'assistenza clienti.",
     "-573132778": "Reclami",
     "-792338456": "In cosa consiste il tuo reclamo?",
+    "-1392383387": "Ho pagato",
     "-567498463": "Confermi il pagamento?",
     "-1485778481": "Hai ricevuto un pagamento?",
     "-403938778": "Conferma solo dopo aver controllato di aver ricevuto il pagamento su conto bancario o del portafoglio elettronico.",
     "-2000877952": "Ho ricevuto {{amount}} {{currency}}",
     "-563116612": "Non ho ancora pagato",
-    "-1392383387": "Ho pagato",
     "-418870584": "Annulla l'ordine",
     "-727273667": "Invia reclamo",
     "-2016990049": "Vendi ordine in {{offered_currency}}",
@@ -273,6 +273,5 @@
     "-750202930": "Ordini attivi",
     "-471540636": "Ho ricevuto {{amount}} {{currency}}.",
     "-2054589794": "Il tuo profilo è stato momentaneamente bloccato e non potrai accedere ai nostri servizi a causa di vari tentativi di annullamento. Riprova nuovamente dopo il giorno {{date_time}} GMT.",
-    "-1971628122": "Al momento, questa opzione è disponibile solo per i conti reali in USD.",
     "-930400128": "Per usare Deriv P2P, scegli un nome visualizzato (ossia un soprannome) e verifica la tua identità."
 }

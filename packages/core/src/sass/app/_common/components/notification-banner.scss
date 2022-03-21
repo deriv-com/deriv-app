@@ -26,10 +26,6 @@
         padding: 1.6rem 0 1.6rem 1.6rem;
         width: 50%;
         min-width: 210px;
-
-        @include mobile {
-            min-width: unset;
-        }
     }
     &--right {
         position: relative;
@@ -66,6 +62,14 @@
         border-top-right-radius: $BORDER_RADIUS;
         border-bottom-right-radius: $BORDER_RADIUS;
         z-index: 11;
+
+        .notification-banner__trustpilot & {
+            max-width: 13.8rem;
+
+            @include mobile {
+                max-width: 11rem;
+            }
+        }
     }
     &__img {
         position: absolute;
@@ -93,7 +97,7 @@
 
     @include mobile {
         height: 100%;
-        max-height: 11.8rem;
+        max-height: 13.8rem;
         width: calc(100vw - 1.6rem);
         left: 0.8rem;
         top: -0.2rem;

@@ -177,6 +177,65 @@ const Playground = ({ props, is_dark_mode_on }) => {
         },
     ];
 
+    const linked_appcard_small = [
+        {
+            checked: true,
+            account_type: 'Real',
+            size: 'small',
+            linked: true,
+            app_card_details: {
+                app_name: 'Deriv MT5 Synthetics Large Checked',
+                wallet_name: 'Demo USD wallet',
+                wallet_icon_name: 'icAppstoreDemoWallet',
+                currency_name: 'USD',
+                balance: 10,
+            },
+        },
+        {
+            account_type: 'Real',
+            size: 'small',
+            linked: true,
+            app_card_details: {
+                app_name: 'Deriv MT5 Synthetics Large Normal',
+                app_icon_name: 'icDxtradeSynthetic',
+                wallet_name: 'Demo USD wallet',
+                wallet_icon_name: 'icAppstoreDemoWallet',
+                currency_name: 'USD',
+                balance: 10,
+            },
+        },
+        {
+            checked: false,
+            faded: true,
+            account_type: 'Real',
+            size: 'small',
+            linked: true,
+            app_card_details: {
+                app_name: 'Deriv MT5 Synthetics Large Faded',
+                app_icon_name: 'icDxtradeSynthetic',
+                wallet_name: 'Demo USD wallet',
+                wallet_icon_name: 'icAppstoreDemoWallet',
+                currency_name: 'USD',
+                balance: 10,
+            },
+        },
+        {
+            checked: false,
+            disabled: true,
+            account_type: 'Real',
+            size: 'small',
+            linked: true,
+            app_card_details: {
+                app_name: 'Deriv MT5 Synthetics Large Disabled',
+                app_icon_name: 'icDxtradeSynthetic',
+                wallet_name: 'Demo USD wallet',
+                wallet_icon_name: 'icAppstoreDemoWallet',
+                currency_name: 'USD',
+                balance: 10,
+            },
+        },
+    ];
+
     // unlinked appcard
 
     const unlinked_appcard_large = [
@@ -280,8 +339,50 @@ const Playground = ({ props, is_dark_mode_on }) => {
         },
     ];
 
+    const unlinked_appcard_small = [
+        {
+            account_type: 'Real',
+            checked: true,
+            size: 'small',
+            linked: false,
+            app_card_details: {
+                app_name: 'Deriv MT5 Checked',
+                app_icon_name: 'icDxtradeSynthetic',
+            },
+        },
+        {
+            account_type: 'Demo',
+            size: 'small',
+            linked: false,
+            app_card_details: {
+                app_name: 'Deriv MT5 Normal',
+                app_icon_name: 'icDxtradeSynthetic',
+            },
+        },
+        {
+            account_type: 'Demo',
+            faded: true,
+            size: 'small',
+            linked: false,
+            app_card_details: {
+                app_name: 'Deriv MT5 Faded',
+                app_icon_name: 'icDxtradeSynthetic',
+            },
+        },
+        {
+            account_type: 'Real',
+            disabled: true,
+            size: 'small',
+            linked: false,
+            app_card_details: {
+                app_name: 'Deriv MT5 Disabled',
+                app_icon_name: 'icDxtradeSynthetic',
+            },
+        },
+    ];
+
     return (
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '20px', overflow: 'scroll', height: '100%' }}>
             <p>{props}</p>
             <h2 style={{ fontSize: '30px', marginBottom: '40px', textAlign: 'center' }}>
                 Appstore component playground
@@ -361,6 +462,42 @@ const Playground = ({ props, is_dark_mode_on }) => {
             <p>Unlinked App card Medium</p>
             <div style={trade_type_wrapper_div}>
                 {unlinked_appcard_medium.map((item, idx) => (
+                    <div style={marginSetting} key={idx}>
+                        <AppstoreAppCard
+                            account_type={item.account_type}
+                            checked={item.checked}
+                            dark={is_dark_mode_on}
+                            size={item.size}
+                            linked={item.linked}
+                            app_card_details={item.app_card_details}
+                            faded={item.faded}
+                            disabled={item.disabled}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            <p>Unlinked App card Small</p>
+            <div style={trade_type_wrapper_div}>
+                {unlinked_appcard_small.map((item, idx) => (
+                    <div style={marginSetting} key={idx}>
+                        <AppstoreAppCard
+                            account_type={item.account_type}
+                            checked={item.checked}
+                            dark={is_dark_mode_on}
+                            size={item.size}
+                            linked={item.linked}
+                            app_card_details={item.app_card_details}
+                            faded={item.faded}
+                            disabled={item.disabled}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            <p>Linked App card Small</p>
+            <div style={trade_type_wrapper_div}>
+                {linked_appcard_small.map((item, idx) => (
                     <div style={marginSetting} key={idx}>
                         <AppstoreAppCard
                             account_type={item.account_type}

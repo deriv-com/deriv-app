@@ -1,5 +1,6 @@
 // auto-generated file. DO NOT MODIFY.
 
+import './appstore/ic-appstore-app-card-default-background-small.svg';
 import './appstore/ic-appstore-app-card-default-background.svg';
 import './appstore/ic-appstore-cfds-trade-type.svg';
 import './appstore/ic-appstore-checked-red-bg.svg';

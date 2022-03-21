@@ -3,6 +3,7 @@
 export const icons =
 {
     'appstore': [
+        'IcAppstoreAppCardDefaultBackgroundSmall',
         'IcAppstoreAppCardDefaultBackground',
         'IcAppstoreCfdsTradeType',
         'IcAppstoreCheckedRedBg',

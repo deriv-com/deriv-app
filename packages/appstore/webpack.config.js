@@ -7,6 +7,30 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
+const svg_loaders = [
+    {
+        loader: 'babel-loader',
+        options: {
+            cacheDirectory: true,
+            rootMode: 'upward',
+        },
+    },
+    {
+        loader: 'react-svg-loader',
+        options: {
+            jsx: true,
+            svgo: {
+                plugins: [
+                    { removeTitle: false },
+                    { removeUselessStrokeAndFill: false },
+                    { removeUknownsAndDefaults: false },
+                ],
+                floatPrecision: 2,
+            },
+        },
+    },
+];
+
 module.exports = function () {
     return {
         entry: {
@@ -104,6 +128,11 @@ module.exports = function () {
                             },
                         },
                     ],
+                },
+                {
+                    test: /\.svg$/,
+                    exclude: /node_modules|public\//,
+                    use: svg_loaders,
                 },
             ],
         },

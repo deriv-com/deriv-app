@@ -5,11 +5,11 @@ import { PlatformContext } from '@deriv/shared';
 import IconMessageContent from 'Components/icon-message-content';
 
 const UnsupportedIconRow = () => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     return (
         <div className='poi-icon-row'>
             <div className='poi-icon-row__icon-container'>
-                <Icon icon={is_dashboard ? 'IcIdentityCardDashboard' : 'IcIdentityCard'} size={90} />
+                <Icon icon={is_appstore ? 'IcIdentityCardDashboard' : 'IcIdentityCard'} size={90} />
                 <Text color='prominent' as='p'>
                     {localize('Identity card')}
                 </Text>
@@ -18,7 +18,7 @@ const UnsupportedIconRow = () => {
                 </Text>
             </div>
             <div className='poi-icon-row__icon-container'>
-                <Icon icon={is_dashboard ? 'IcDrivingLicenseDashboard' : 'IcDrivingLicense'} size={90} />
+                <Icon icon={is_appstore ? 'IcDrivingLicenseDashboard' : 'IcDrivingLicense'} size={90} />
                 <Text color='prominent' as='p'>
                     {localize('Driving license')}
                 </Text>
@@ -27,7 +27,7 @@ const UnsupportedIconRow = () => {
                 </Text>
             </div>
             <div className='poi-icon-row__icon-container'>
-                <Icon icon={is_dashboard ? 'IcPassportDashboard' : 'IcPassport'} size={90} />
+                <Icon icon={is_appstore ? 'IcPassportDashboard' : 'IcPassport'} size={90} />
                 <Text color='prominent' as='p'>
                     {localize('Passport')}
                 </Text>
@@ -40,7 +40,7 @@ const UnsupportedIconRow = () => {
 };
 
 const Unsupported = () => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     return (
         <IconMessageContent
             message={localize('Verify your identity')}
@@ -52,7 +52,7 @@ const Unsupported = () => {
                     ]}
                 />
             }
-            className={is_dashboard && 'dashboard'}
+            className={is_appstore && 'dashboard'}
             icon_row={<UnsupportedIconRow />}
         />
     );

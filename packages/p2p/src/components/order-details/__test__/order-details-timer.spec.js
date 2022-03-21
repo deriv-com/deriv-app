@@ -44,11 +44,11 @@ describe('<OrderDetailsTimer/>', () => {
         expect(screen.queryByText('Time left')).not.toBeInTheDocument();
     });
 
-    it('should invoke clearInterval method when timer expires',()=>{
-        const spiedClearIntervalFn = jest.spyOn(global,'clearInterval')
-        ServerTime.getDistanceToServerTime.mockReturnValue(-1)
+    it('should invoke clearInterval method when timer expires', () => {
+        const spiedClearIntervalFn = jest.spyOn(global, 'clearInterval');
+        ServerTime.getDistanceToServerTime.mockReturnValue(-1);
         render(<OrderDetailsTimer />);
 
-        expect(spiedClearIntervalFn).toHaveBeenCalled()
-    })
+        expect(spiedClearIntervalFn).toHaveBeenCalled();
+    });
 });

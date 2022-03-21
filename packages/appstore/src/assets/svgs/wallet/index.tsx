@@ -192,9 +192,7 @@ const Icons = {
 };
 
 const WalletIcon = ({ icon }: { icon: string }) => {
-    const Icon: any = Icons[icon as keyof typeof Icons];
-
-    console.log(Icon);
+    const Icon = Icons[icon as keyof typeof Icons] as React.ElementType;
 
     return Icon ? <Icon /> : null;
 };

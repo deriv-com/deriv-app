@@ -210,7 +210,7 @@ Blockly.ContextMenu.blockDetachOption = function (block) {
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.blockDisableOption = function (block) {
+Blockly.ContextMenu.blockDisableStack = function (block) {
     const checkAreSomeEnabled = (block_, enabledArr = []) => {
         enabledArr.push(!block_.disabled);
         return block_.nextConnection?.targetConnection
@@ -243,15 +243,12 @@ Blockly.ContextMenu.blockDisableOption = function (block) {
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.blockEnableOption = function (block) {
+Blockly.ContextMenu.blockEnableStack = function (block) {
     const checkAreSomeDisabled = (block_, disabledArr = []) => {
-        if (block_.restricted_parents?.some(restricted_parent => block_.isDescendantOf(restricted_parent))) {
-            disabledArr.push(block_.disabled);
-            return block_.nextConnection?.targetConnection
-                ? checkAreSomeDisabled(block_.nextConnection?.targetConnection.sourceBlock_, disabledArr)
-                : disabledArr.includes(true);
-        }
-        return false;
+        disabledArr.push(block_.disabled);
+        return block_.nextConnection?.targetConnection
+            ? checkAreSomeDisabled(block_.nextConnection?.targetConnection.sourceBlock_, disabledArr)
+            : disabledArr.includes(true);
     };
     const enabled = checkAreSomeDisabled(block);
 

@@ -11,6 +11,7 @@ import MyProfile from './my-profile';
 import NicknameForm from './nickname-form';
 import Orders from './orders/orders.jsx';
 import TemporarilyBarredHint from './temporarily-barred-hint';
+import UnsupportedAccount from './unsupported-account';
 import Verification from './verification/verification.jsx';
 
 const AppContent = () => {
@@ -18,6 +19,10 @@ const AppContent = () => {
 
     if (general_store.is_loading) {
         return <Loading is_fullscreen={false} />;
+    }
+
+    if (general_store.is_unsupported_account) {
+        return <UnsupportedAccount />;
     }
 
     if (general_store.should_show_dp2p_blocked) {
@@ -55,7 +60,7 @@ const AppContent = () => {
                 <MyAds />
             </div>
             {general_store.is_advertiser && (
-                <div label={localize('My profile')} data-testid='my_profile'>
+                <div label={localize('My profile')}>
                     <MyProfile />
                 </div>
             )}

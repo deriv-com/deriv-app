@@ -5,8 +5,8 @@ import DashboardPlatformHeader from './dashboard-platform-header.jsx';
 import DashboardHeader from './dashboard-header.jsx';
 
 const Header = () => {
-    const { is_appstore } = React.useContext(PlatformContext);
-    if (is_appstore) {
+    const { is_dashboard } = React.useContext(PlatformContext);
+    if (is_dashboard) {
         /**
          * The below line will implement when the new domain myapps.deriv.com added.
          */

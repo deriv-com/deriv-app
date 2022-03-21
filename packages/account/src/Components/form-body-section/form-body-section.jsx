@@ -5,12 +5,12 @@ import { Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 
 const FormBodySection = ({ children, has_side_note, side_note }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     if (has_side_note) {
         return (
             <div
                 data-testid='side-note-container'
-                className={classNames('account-form__section', { 'account-form__section--dashboard': is_appstore })}
+                className={classNames('account-form__section', { 'account-form__section--dashboard': is_dashboard })}
             >
                 <div className='account-form__section-side-note'>
                     {typeof side_note === 'string' ? (

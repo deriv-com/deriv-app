@@ -38,7 +38,7 @@ const CurrencySelector = ({
     is_eu,
     ...props
 }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
@@ -91,7 +91,7 @@ const CurrencySelector = ({
     }, [is_bypass_step]);
 
     const getHeightOffset = () => {
-        if (is_appstore) {
+        if (is_dashboard) {
             return '222px';
         } else if (!has_currency && has_real_account) {
             return '89px';
@@ -222,7 +222,7 @@ const CurrencySelector = ({
                                     }
                                     is_disabled={isSubmitDisabled(values)}
                                     is_center={false}
-                                    is_absolute={set_currency || is_appstore}
+                                    is_absolute={set_currency || is_dashboard}
                                     label={getSubmitLabel()}
                                     {...(has_cancel
                                         ? {
@@ -247,7 +247,7 @@ CurrencySelector.propTypes = {
     has_real_account: PropTypes.bool,
     onSubmit: PropTypes.func,
     value: PropTypes.any,
-    is_appstore: PropTypes.bool,
+    is_dashboard: PropTypes.bool,
     real_account_signup_target: PropTypes.string,
     is_dxtrade_allowed: PropTypes.bool,
     is_eu: PropTypes.bool,

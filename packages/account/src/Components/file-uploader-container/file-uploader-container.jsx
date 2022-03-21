@@ -38,7 +38,7 @@ const FileProperties = () => {
 };
 
 const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const ref = React.useRef();
 
     const getSocketFunc = getSocket ?? WS.getSocket;
@@ -49,7 +49,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
         }
         return () => onRef(undefined);
     }, [onRef, ref]);
-    if (is_appstore && isDesktop()) {
+    if (is_dashboard && isDesktop()) {
         return (
             <div className='account-poa__upload-section account-poa__upload-section-dashboard'>
                 <div className='account-poa__upload-file account-poa__upload-file-dashboard'>
@@ -66,7 +66,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
             {is_description_enabled && (
                 <ul className='account-poa__upload-list'>
                     <li className='account-poa__upload-box'>
-                        {is_appstore ? (
+                        {is_dashboard ? (
                             <Icon icon='IcPoaFileEightMb' className='account-poa__upload-icon' size={24} />
                         ) : (
                             <Icon icon='IcLessThanEight' className='account-poa__upload-icon' size={24} />
@@ -82,7 +82,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
                         </div>
                     </li>
                     <li className='account-poa__upload-box'>
-                        {is_appstore ? (
+                        {is_dashboard ? (
                             <Icon icon='IcPoaFileTime' className='account-poa__upload-icon' size={24} />
                         ) : (
                             <Icon icon='IcClock' className='account-poa__upload-icon' size={24} />
@@ -92,7 +92,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
                         </div>
                     </li>
                     <li className='account-poa__upload-box'>
-                        {is_appstore ? (
+                        {is_dashboard ? (
                             <Icon icon='IcPoaFileClear' className='account-poa__upload-icon' size={24} />
                         ) : (
                             <Icon icon='IcEye' className='account-poa__upload-icon' size={24} />
@@ -102,7 +102,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
                         </div>
                     </li>
                     <li className='account-poa__upload-box'>
-                        {is_appstore ? (
+                        {is_dashboard ? (
                             <Icon icon='IcPoaFileWithAddress' className='account-poa__upload-icon' size={24} />
                         ) : (
                             <Icon icon='IcUser' className='account-poa__upload-icon' size={24} />
@@ -115,7 +115,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
             )}
             <div
                 className={classNames('account-poa__upload-file', {
-                    'account-poa__upload-file--dashboard': isDesktop() && is_appstore,
+                    'account-poa__upload-file--dashboard': isDesktop() && is_dashboard,
                 })}
             >
                 <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />

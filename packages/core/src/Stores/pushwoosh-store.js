@@ -1,4 +1,4 @@
-import { action, when } from 'mobx';
+import { action } from 'mobx';
 import { Pushwoosh } from 'web-push-notifications';
 import { getAppId, urlForCurrentDomain } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -18,9 +18,8 @@ export default class PushwooshStore extends BaseStore {
      * Pushes initialize event to pushwoosh
      */
     @action.bound
-    init = async () => {
+    init = () => {
         if (!this.is_applicable && this.has_initialized) return;
-        await when(() => this.root_store.common.is_network_online);
 
         this.push_woosh.push([
             'init',

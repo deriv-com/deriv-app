@@ -4,8 +4,8 @@ import { connect } from 'Stores/connect';
 import SelfExclusionComponent from 'Components/self-exclusion/self-exclusion.jsx';
 
 const SelfExclusion = props => {
-    const { is_appstore } = React.useContext(PlatformContext);
-    return <SelfExclusionComponent is_appstore={is_appstore} {...props} />;
+    const { is_dashboard } = React.useContext(PlatformContext);
+    return <SelfExclusionComponent is_dashboard={is_dashboard} {...props} />;
 };
 
 export default connect(({ client, ui }) => ({

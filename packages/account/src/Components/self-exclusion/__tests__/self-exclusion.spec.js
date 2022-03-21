@@ -59,7 +59,6 @@ beforeEach(() => {
 });
 
 describe('<SelfExclusion />', () => {
-
     it('should render SelfExclusion component for virtual account', async () => {
         mockProps.is_virtual = true;
 
@@ -71,7 +70,6 @@ describe('<SelfExclusion />', () => {
     });
 
     it('should render SelfExclusion component', async () => {
-
         await act(async () => {
             render(<SelfExclusion {...mockProps} />);
         });
@@ -84,7 +82,6 @@ describe('<SelfExclusion />', () => {
     });
 
     it('should render SelfExclusion component with error', async () => {
-
         mockProps.ws.authorized.getSelfExclusion = () =>
             Promise.resolve({
                 error: { message: 'Test getSelfExclusion response error' },
@@ -98,7 +95,6 @@ describe('<SelfExclusion />', () => {
     });
 
     it('Should trigger session_duration_limit input and show error if the value is greater than 60480', async () => {
-
         await act(async () => {
             render(<SelfExclusion {...mockProps} />);
         });
@@ -110,11 +106,12 @@ describe('<SelfExclusion />', () => {
             fireEvent.change(session_duration_limit_input, { target: { value: '60481' } });
         });
 
-        expect(screen.getByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')).toBeInTheDocument();
+        expect(
+            screen.getByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
+        ).toBeInTheDocument();
     });
 
     it('Should trigger exclude_until input and show error depends on input value', async () => {
-        
         Date.now = jest.fn(() => new Date('2022-02-03'));
 
         await act(async () => {
@@ -122,7 +119,7 @@ describe('<SelfExclusion />', () => {
         });
 
         const inputs = await screen.findAllByRole('textbox');
-        const exclude_until_input = inputs.find( input => input.name === 'exclude_until');
+        const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
 
         await act(async () => {
             fireEvent.change(exclude_until_input, { target: { value: '2021-04-13' } });
@@ -137,6 +134,6 @@ describe('<SelfExclusion />', () => {
         await act(async () => {
             fireEvent.change(exclude_until_input, { target: { value: '2028-04-13' } });
         });
-        expect(screen.getByText('Exclude time cannot be for more than five years.')).toBeInTheDocument(); 
+        expect(screen.getByText('Exclude time cannot be for more than five years.')).toBeInTheDocument();
     });
 });

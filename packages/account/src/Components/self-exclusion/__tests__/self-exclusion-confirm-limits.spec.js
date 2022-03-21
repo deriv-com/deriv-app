@@ -20,7 +20,6 @@ beforeEach(() => {
 
 describe('<SelfExclusionConfirmLimits />', () => {
     it('should render SelfExclusionConfirmLimits component', () => {
-
         render(
             <SelfExclusionContext.Provider value={mockContext}>
                 <SelfExclusionConfirmLimits />
@@ -28,13 +27,14 @@ describe('<SelfExclusionConfirmLimits />', () => {
         );
 
         expect(screen.getByText('Save new limits?')).toBeInTheDocument();
-        expect(screen.getByText('Remember: You cannot log in to your account until the selected date.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Remember: You cannot log in to your account until the selected date.')
+        ).toBeInTheDocument();
         expect(screen.getByText('No, review my limits')).toBeInTheDocument();
         expect(screen.getByText('Yes, log me out immediately')).toBeInTheDocument();
     });
 
     it('should render SelfExclusionConfirmLimits component with loading status of submit button', () => {
-
         useFormikContextMock.mockReturnValue({
             handleSubmit: jest.fn(),
             isSubmitting: true,
@@ -47,13 +47,14 @@ describe('<SelfExclusionConfirmLimits />', () => {
         );
 
         expect(screen.getByText('Save new limits?')).toBeInTheDocument();
-        expect(screen.getByText('Remember: You cannot log in to your account until the selected date.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Remember: You cannot log in to your account until the selected date.')
+        ).toBeInTheDocument();
         expect(screen.getByText('No, review my limits')).toBeInTheDocument();
         expect(screen.queryByText('Yes, log me out immediately')).not.toBeInTheDocument();
     });
 
     it('Should trigger click on the button', () => {
-        
         const handleSubmit = useFormikContextMock().handleSubmit;
         const backToReview = mockContext.backToReview;
 

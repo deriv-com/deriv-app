@@ -5,15 +5,13 @@ import SelfExclusionContext from '../self-exclusion-context';
 import { Formik } from 'formik';
 import * as formik from 'formik';
 
+let mockContext = {};
 
-let mockContext = {}
-
-jest.mock('../self-exclusion-footer', () => () => (<div>SelfExclusionFooter</div>));
-
+jest.mock('../self-exclusion-footer', () => () => <div>SelfExclusionFooter</div>);
 
 const useFormikContextMock = jest.spyOn(formik, 'useFormikContext');
 
-beforeEach(() =>{
+beforeEach(() => {
     mockContext = {
         is_appstore: false,
         is_eu: false,
@@ -29,7 +27,7 @@ beforeEach(() =>{
         is_tablet: false,
         session_duration_digits: 0,
     };
-    useFormikContextMock.mockReturnValue({ 
+    useFormikContextMock.mockReturnValue({
         values: {},
         isSubmitting: false,
         isValid: false,
@@ -39,13 +37,11 @@ beforeEach(() =>{
         handleChange: jest.fn(),
         setFieldValue: jest.fn(),
     });
-})
+});
 
 describe('<SelfExclusionInputs />', () => {
-
     it('should render SelfExclusionFooter instead of Next Button', () => {
-
-        mockContext.footer_ref = true
+        mockContext.footer_ref = true;
 
         render(
             <Formik>
@@ -53,14 +49,13 @@ describe('<SelfExclusionInputs />', () => {
                     <SelfExclusionInputs />
                 </SelfExclusionContext.Provider>
             </Formik>
-        )
+        );
 
-        expect(screen.getByText('SelfExclusionFooter')).toBeInTheDocument()
+        expect(screen.getByText('SelfExclusionFooter')).toBeInTheDocument();
     });
 
     it('should render "Next" button and trigger click', () => {
-
-        useFormikContextMock.mockReturnValue({ 
+        useFormikContextMock.mockReturnValue({
             values: {},
             isSubmitting: false,
             isValid: true,
@@ -71,7 +66,7 @@ describe('<SelfExclusionInputs />', () => {
             setFieldValue: jest.fn(),
         });
 
-        const onClick = mockContext.goToConfirm
+        const onClick = mockContext.goToConfirm;
 
         render(
             <Formik>
@@ -79,9 +74,9 @@ describe('<SelfExclusionInputs />', () => {
                     <SelfExclusionInputs />
                 </SelfExclusionContext.Provider>
             </Formik>
-        )
-        
-        expect(screen.queryByText('SelfExclusionFooter')).not.toBeInTheDocument()
+        );
+
+        expect(screen.queryByText('SelfExclusionFooter')).not.toBeInTheDocument();
         const btn = screen.getByRole('button');
         expect(btn).toBeInTheDocument();
         expect(btn).toHaveTextContent('Next');
@@ -90,10 +85,9 @@ describe('<SelfExclusionInputs />', () => {
     });
 
     it('should render SelfExclusionInputs component with options and should render "Next" button and trigger click', () => {
+        mockContext.is_mlt = true;
 
-        mockContext.is_mlt = true
-
-        useFormikContextMock.mockReturnValue({ 
+        useFormikContextMock.mockReturnValue({
             values: {
                 max_turnover: 99,
                 max_losses: 13,
@@ -119,7 +113,7 @@ describe('<SelfExclusionInputs />', () => {
             setFieldValue: jest.fn(),
         });
 
-        const onClick = mockContext.goToConfirm
+        const onClick = mockContext.goToConfirm;
 
         render(
             <Formik>
@@ -127,23 +121,30 @@ describe('<SelfExclusionInputs />', () => {
                     <SelfExclusionInputs />
                 </SelfExclusionContext.Provider>
             </Formik>
-        )
+        );
 
-        const arrCurrency = screen.getAllByText(/test currency/)
-        expect(arrCurrency.length).toBeGreaterThan(0)
-        expect(screen.getByText('Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.')).toBeInTheDocument()
-        expect(screen.getByText(/If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/)).toBeInTheDocument()
-        
+        const arrCurrency = screen.getAllByText(/test currency/);
+        expect(arrCurrency.length).toBeGreaterThan(0);
+        expect(
+            screen.getByText(
+                'Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.'
+            )
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                /If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/
+            )
+        ).toBeInTheDocument();
+
         const btn = screen.getByRole('button');
         expect(btn).toBeInTheDocument();
         expect(btn).toHaveTextContent('Next');
         fireEvent.click(btn);
-        expect(onClick).toHaveBeenCalledTimes(1)
+        expect(onClick).toHaveBeenCalledTimes(1);
     });
 
     it('Should trigger handleChange callback when the input field changes in StakeLossAndLimitsInputs', () => {
-
-        const handleChange = useFormikContextMock().handleChange
+        const handleChange = useFormikContextMock().handleChange;
 
         const { container } = render(
             <Formik>
@@ -151,17 +152,16 @@ describe('<SelfExclusionInputs />', () => {
                     <SelfExclusionInputs />
                 </SelfExclusionContext.Provider>
             </Formik>
-        )
+        );
 
-        const inputEl = container.querySelector(`input[name="max_turnover"]`)
+        const inputEl = container.querySelector(`input[name="max_turnover"]`);
         expect(inputEl).toBeInTheDocument();
-        fireEvent.change(inputEl, {target: {value: 200}});
-        expect(handleChange).toHaveBeenCalledTimes(1)
+        fireEvent.change(inputEl, { target: { value: 200 } });
+        expect(handleChange).toHaveBeenCalledTimes(1);
     });
 
     it('Should trigger handleChange callback when the input field changes in SessionAndLoginLimitsInputs', () => {
-
-        const handleChange = useFormikContextMock().handleChange
+        const handleChange = useFormikContextMock().handleChange;
 
         const { container } = render(
             <Formik>
@@ -169,17 +169,16 @@ describe('<SelfExclusionInputs />', () => {
                     <SelfExclusionInputs />
                 </SelfExclusionContext.Provider>
             </Formik>
-        )
+        );
 
         const inputEl = container.querySelector(`input[name="session_duration_limit"]`);
         expect(inputEl).toBeInTheDocument();
-        fireEvent.change(inputEl, {target: {value: 500}});
+        fireEvent.change(inputEl, { target: { value: 500 } });
         expect(handleChange).toHaveBeenCalledTimes(1);
     });
 
     it('Should trigger handleChange callback when the input field changes in MaximumAccountBalanceAndOpenPositionsInputs', () => {
-
-        const handleChange = useFormikContextMock().handleChange
+        const handleChange = useFormikContextMock().handleChange;
 
         const { container } = render(
             <Formik>
@@ -187,19 +186,18 @@ describe('<SelfExclusionInputs />', () => {
                     <SelfExclusionInputs />
                 </SelfExclusionContext.Provider>
             </Formik>
-        )
+        );
 
-        const inputEl = container.querySelector(`input[name="max_balance"]`)
+        const inputEl = container.querySelector(`input[name="max_balance"]`);
         expect(inputEl).toBeInTheDocument();
-        fireEvent.change(inputEl, {target: {value: 900}});
+        fireEvent.change(inputEl, { target: { value: 900 } });
         expect(handleChange).toHaveBeenCalledTimes(1);
         expect(inputEl.value).toBe('900');
     });
 
     it('Should trigger handleChange callback when the input field changes in MaximumDepositLimitInputs', () => {
-
-        const handleChange = useFormikContextMock().handleChange
-        mockContext.is_mlt = true
+        const handleChange = useFormikContextMock().handleChange;
+        mockContext.is_mlt = true;
 
         const { container } = render(
             <Formik>
@@ -207,18 +205,16 @@ describe('<SelfExclusionInputs />', () => {
                     <SelfExclusionInputs />
                 </SelfExclusionContext.Provider>
             </Formik>
-        )
+        );
 
         const inputEl = container.querySelector(`input[name="max_deposit"]`);
         expect(inputEl).toBeInTheDocument();
-        fireEvent.change(inputEl, {target: {value: 700}});
+        fireEvent.change(inputEl, { target: { value: 700 } });
         expect(handleChange).toHaveBeenCalledTimes(1);
         expect(inputEl.value).toBe('700');
-
     });
-    
-    it('Should trigger onChange callback when the date field changes in SessionAndLoginLimitsInputs', () => {
 
+    it('Should trigger onChange callback when the date field changes in SessionAndLoginLimitsInputs', () => {
         const onChange = useFormikContextMock().setFieldValue;
 
         const { container } = render(
@@ -227,7 +223,7 @@ describe('<SelfExclusionInputs />', () => {
                     <SelfExclusionInputs />
                 </SelfExclusionContext.Provider>
             </Formik>
-        )
+        );
 
         const input_exclude_date = container.querySelector(`input[name="exclude_until"]`);
         expect(input_exclude_date).toBeInTheDocument();

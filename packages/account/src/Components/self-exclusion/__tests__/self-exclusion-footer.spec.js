@@ -27,7 +27,6 @@ beforeEach(() => {
 });
 
 describe('<SelfExclusionFooter />', () => {
-
     it('should not render SelfExclusionFooter component', () => {
         mockContext.footer_ref = null;
 
@@ -41,7 +40,6 @@ describe('<SelfExclusionFooter />', () => {
     });
 
     it('should render SelfExclusionFooter component', () => {
-
         render(
             <Formik>
                 <SelfExclusionContext.Provider value={mockContext}>
@@ -54,7 +52,6 @@ describe('<SelfExclusionFooter />', () => {
     });
 
     it('Should trigger click on the button', () => {
-        
         const onClick = mockContext.goToConfirm;
 
         render(

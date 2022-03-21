@@ -11,8 +11,8 @@
 
         @include mobile {
             border-bottom: 1px solid var(--general-section-1);
-            margin-bottom: unset;
-            padding-bottom: 1.2rem;
+            margin: unset;
+            padding: 1.2rem 0;
 
             .page-return__button {
                 padding: 0 1.6rem;

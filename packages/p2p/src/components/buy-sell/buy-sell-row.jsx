@@ -92,7 +92,7 @@ const BuySellRow = ({ row: advert }) => {
                         </Text>
                         <Text as='div' color='less-prominent' line_height='m' size='xxs'>
                             <Localize
-                                i18n_default_text='Limit {{ min_order }}–{{ max_order }} {{ currency }}'
+                                i18n_default_text='Limits {{ min_order }}–{{ max_order }} {{ currency }}'
                                 values={{
                                     min_order: min_order_amount_limit_display,
                                     max_order: max_order_amount_limit_display,

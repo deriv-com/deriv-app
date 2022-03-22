@@ -2,6 +2,7 @@ import { action, observable } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
 import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
@@ -323,7 +324,7 @@ export default class MyAdsStore extends BaseStore {
                     this.setHasMoreItemsToLoad(list.length >= list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
                     this.setMissingPaymentMethods(!!list.find(payment_method => !payment_method.payment_method_names));
-                    if (this.root_store.floating_rate_store.rate_type === 'float') {
+                    if (this.root_store.floating_rate_store.rate_type === ad_type.FLOAT) {
                         this.root_store.floating_rate_store.setChangeAdAlert(checkForFixedRateAds(list));
                     }
                 } else if (response.error.code === 'PermissionDenied') {
@@ -598,7 +599,7 @@ export default class MyAdsStore extends BaseStore {
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    this.root_store.floating_rate_store.rate_type !== 'float'
+                    this.root_store.floating_rate_store.rate_type !== ad_type.FLOAT
                         ? v > 0 &&
                           decimalValidator(v) &&
                           countDecimalPlaces(v) <=

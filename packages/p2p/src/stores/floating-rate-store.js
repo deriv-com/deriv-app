@@ -1,4 +1,5 @@
 import { action, computed, observable } from 'mobx';
+import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import { requestWS } from 'Utils/websocket';
 
@@ -14,9 +15,9 @@ export default class FloatingRateStore extends BaseStore {
     @computed
     get rate_type() {
         if (this.float_rate_adverts_status === 'enabled') {
-            return 'float';
+            return ad_type.FLOAT;
         }
-        return 'fixed';
+        return ad_type.FIXED;
     }
 
     @action.bound

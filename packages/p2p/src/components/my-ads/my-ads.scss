@@ -246,6 +246,11 @@
         &-price {
             color: var(--text-profit-success);
             font-weight: bold;
+
+            .display-layout {
+                display: flex;
+                flex-direction: column;
+            }
         }
         &-popovers {
             background-color: var(--general-main-1);

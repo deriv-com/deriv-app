@@ -59,7 +59,7 @@ const MyAdsTable = () => {
                                         <Localize
                                             i18n_default_text={`Floating rates are enabled for ${
                                                 general_store.client.local_currency_config.currency || '-'
-                                            }. Ads with fixed rates will be deactivated. Switch to floating ratyes by ${
+                                            }. Ads with fixed rates will be deactivated. Switch to floating rates by ${
                                                 floating_rate_store.fixed_rate_adverts_end_date || '-'
                                             }`}
                                         />

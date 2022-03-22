@@ -27,7 +27,6 @@ describe('<PoaButton/>', () => {
 
     it('should navigate to proof_of_address page on clicking the text', () => {
         renderWithRouter(<PoaButton custom_text='Lorem epsom' />);
-
         const poa_button_text = screen.getByTestId('poa_button_text');
         expect(poa_button_text.closest('a')).toHaveAttribute('href', '/account/proof-of-address');
         fireEvent.click(poa_button_text);

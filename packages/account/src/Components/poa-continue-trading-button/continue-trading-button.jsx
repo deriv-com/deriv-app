@@ -7,5 +7,5 @@ export const ContinueTradingButton = () => (
         <Text className='dc-btn__text' as='p' weight='bold' data-testid='continue_btn_text'>
             {localize('Continue trading')}
         </Text>
-    </ButtonLink >
+    </ButtonLink>
 );

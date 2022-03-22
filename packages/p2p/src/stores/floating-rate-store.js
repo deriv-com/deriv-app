@@ -1,4 +1,5 @@
 import { action, computed, observable } from 'mobx';
+import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import { requestWS } from 'Utils/websocket';
 
@@ -10,13 +11,12 @@ export default class FloatingRateStore extends BaseStore {
     @observable exchange_rate;
     @observable change_ad_alert;
     @observable api_error_message = '';
-
     @computed
     get rate_type() {
         if (this.float_rate_adverts_status === 'enabled') {
-            return 'float';
+            return ad_type.FLOAT;
         }
-        return 'fixed';
+        return ad_type.FIXED;
     }
 
     @action.bound
@@ -44,7 +44,7 @@ export default class FloatingRateStore extends BaseStore {
         this.api_error_message = api_error_message;
     }
     @action.bound
-    setFloatingRateConfig() {
+    setP2PConfig() {
         requestWS({ website_status: 1 }).then(response => {
             if (!!response && response.error) {
                 this.setApiErrorMessage(response.error.message);
@@ -65,7 +65,7 @@ export default class FloatingRateStore extends BaseStore {
             exchange_rates: 1,
             base_currency: fiat_currency,
             subscribe: 1,
-            local_currency,
+            target_currency: local_currency,
         };
         requestWS(pay_load).then(response => {
             if (!!response && response.error) {

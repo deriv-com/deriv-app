@@ -53,9 +53,9 @@ const FloatingRate = ({
                 <div className='floating-rate__mkt-rate'>
                     <Text
                         as='span'
-                        size='xxxxs'
+                        size='xxxs'
                         color='prominent'
-                        weight='lighter'
+                        weight='normal'
                         line_height='xxs'
                         className='floating-rate__mkt-rate__label'
                     >
@@ -63,10 +63,10 @@ const FloatingRate = ({
                     </Text>
                     <Text
                         as='span'
-                        size='xxxs'
+                        size='xs'
                         color='prominent'
                         weight='normal'
-                        line_height='xxs'
+                        line_height='xs'
                         className='floating-rate__mkt-rate__msg'
                     >
                         {localize('1')} {fiat_currency} = {exchange_rate} {local_currency}
@@ -78,14 +78,14 @@ const FloatingRate = ({
                     as='div'
                     size='xxs'
                     color='loss-danger'
-                    weight='bold'
+                    weight='normal'
                     line_height='xs'
                     className='floating-rate__error_message'
                 >
                     {error_messages}
                 </Text>
             ) : (
-                <Text as='div' size='xxs' color='blue' weight='bold' line_height='xs' className='floating-rate__hint'>
+                <Text as='div' size='xxs' color='blue' weight='normal' line_height='xs' className='floating-rate__hint'>
                     {localize('Your rate is')} = {market_feed} {local_currency}
                 </Text>
             )}

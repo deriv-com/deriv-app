@@ -1,0 +1,406 @@
+.appstore-app-card {
+    position: relative;
+    cursor: pointer;
+    z-index: 5;
+
+    &--normal-size {
+        border-radius: 0.8rem;
+        overflow: hidden;
+    }
+
+    &--s-size {
+        border-radius: 0.4rem;
+    }
+
+    &--faded {
+        opacity: 0.72;
+    }
+
+    &--disabled {
+        opacity: 0.32;
+    }
+
+    &--hovered {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        width: 100%;
+        height: 64px;
+        z-index: 6;
+        opacity: 1 !important;
+
+        &--light {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.16) 100%);
+        }
+
+        &--dark {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.16) 100%);
+        }
+    }
+
+    &--hovered-small {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        width: 100%;
+        height: 20px;
+        z-index: 6;
+        opacity: 1 !important;
+        border-radius: 0.3rem;
+
+        &--light {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.16) 100%);
+        }
+
+        &--dark {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.16) 100%);
+        }
+    }
+
+    &--large {
+        width: 24rem;
+        height: 14.4rem;
+
+        @include mobile {
+            width: 21.6rem;
+            height: 12.8rem;
+        }
+    }
+
+    &--medium {
+        width: 20rem;
+        height: 12rem;
+
+        @include mobile {
+            width: 16rem;
+            height: 9.6rem;
+        }
+    }
+
+    &--small {
+        width: 6.4rem;
+        height: 4rem;
+    }
+
+    &--checked-border {
+        border: 2px solid $color-red;
+    }
+
+    &--checked {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+    }
+
+    &--checked-border-small {
+        border: 1px solid $color-red;
+    }
+
+    &--checked-small {
+        z-index: 3;
+        position: absolute;
+        top: -4px;
+        right: -4px;
+    }
+
+    &--appcard-placeholder {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        background-color: $color-black-1;
+    }
+
+    &__badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-bottom-left-radius: 8px;
+        font-weight: bold;
+        font-size: 1rem;
+        line-height: 1.4rem;
+        padding: 0.4rem 0.8rem;
+        z-index: 2;
+
+        &--default {
+            background-color: $color-grey-5;
+            color: $color-black-1;
+        }
+
+        &--demo {
+            background-color: $color-green;
+            color: $color-white;
+        }
+
+        &--real {
+            background-color: $color-red;
+            color: $color-white;
+        }
+
+        @include mobile {
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            line-height: 1.2rem;
+        }
+    }
+
+    &__background {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+        z-index: 0;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__small-block-wrapper {
+        width: 100%;
+        height: 100%;
+        border-radius: 0.4rem;
+        position: relative;
+
+        &__main-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &--background {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                overflow: hidden;
+                z-index: 0;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                border-radius: 0.4rem;
+
+                svg {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+
+        &--linked {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 40rem;
+
+            &__app-icon-wrapper {
+                position: absolute;
+                left: -2px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
+
+            &__wallet-icon-wrapper {
+                position: absolute;
+                right: -2px;
+                margin-left: 4px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
+
+            &__wallet-icon-wrapper-checked {
+                right: -4px !important;
+            }
+        }
+
+        &--unlinked {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 4rem;
+        }
+    }
+
+    &__block {
+        width: 100%;
+        height: 100%;
+        display: flex;
+
+        &--linked {
+            z-index: 3;
+
+            &__wrapper {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                height: 100%;
+
+                &--large {
+                    padding: 1.6rem;
+                    width: 100%;
+                }
+
+                &--medium {
+                    padding: 0.8rem;
+                    width: 100%;
+                }
+
+                &--small {
+                    padding: 0.8rem 0;
+                    width: 100%;
+                }
+
+                &__icon-wrapper {
+                    display: flex;
+
+                    &--app {
+                        width: 2.4rem;
+                        height: 2.4rem;
+                        border-radius: 0.4rem;
+                        overflow: hidden;
+                    }
+
+                    &--wallet {
+                        width: 4rem;
+                        height: 2.4rem;
+                        border-radius: 0.4rem;
+                        margin-left: 0.8rem;
+                        overflow: hidden;
+                        position: relative;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 0.2rem 0.4rem;
+
+                        &__wallet-icon {
+                            background: $color-black-1;
+                        }
+                    }
+
+                    @include mobile {
+                        &--wallet {
+                            margin-left: 0.4rem;
+                        }
+                    }
+                }
+
+                &__details-wrapper {
+                    display: flex;
+                    flex-direction: column;
+
+                    &--first-row {
+                        font-weight: 400;
+                        font-size: 1rem;
+                        line-height: 1.4rem;
+                        color: var(--text-general);
+                    }
+
+                    &--second-row {
+                        font-weight: 400;
+                        font-size: 1rem;
+                        line-height: 1.4rem;
+                        color: var(--text-less-prominent);
+                    }
+
+                    &--third-row {
+                        font-weight: 700;
+                        font-size: 1.4rem;
+                        line-height: 2rem;
+                        color: var(--text-prominent);
+                    }
+                }
+
+                @include mobile {
+                    flex-wrap: nowrap;
+
+                    &__details-wrapper {
+                        &--first-row {
+                            font-size: 0.8rem;
+                            line-height: 1.2rem;
+                        }
+
+                        &--second-row {
+                            font-size: 0.8rem;
+                            line-height: 1.2rem;
+                        }
+
+                        &--third-row {
+                            font-size: 1.2rem;
+                            line-height: 1.8rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        &--unlinked {
+            z-index: 3;
+
+            &__wrapper {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                height: 100%;
+
+                &--large {
+                    padding: 1.6rem;
+                    width: 100%;
+                }
+
+                &--medium {
+                    padding: 0.8rem;
+                    width: 100%;
+                }
+
+                &--small {
+                    padding: 0.8rem 2rem;
+                    width: 100%;
+                }
+
+                &--icon {
+                    z-index: 3;
+                    border-radius: 6px;
+                    overflow: hidden;
+                    width: 2.4rem;
+                    height: 2.4rem;
+                }
+
+                &--text {
+                    display: flex;
+                    font-weight: normal;
+                    font-size: 1.4rem;
+                    line-height: 2rem;
+                    z-index: 3;
+                    color: var(--text-prominent);
+
+                    @include mobile {
+                        font-size: 1.2rem;
+                        line-height: 1.8rem;
+                    }
+                }
+            }
+        }
+    }
+
+    //dark mode on or off
+    &--dark {
+        background-color: $color-black-3;
+    }
+}

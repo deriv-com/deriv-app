@@ -44,21 +44,6 @@ export default class FloatingRateStore extends BaseStore {
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
     }
-    @action.bound
-    setP2PConfig() {
-        requestWS({ website_status: 1 }).then(response => {
-            if (!!response && response.error) {
-                this.setApiErrorMessage(response.error.message);
-            } else {
-                const { p2p_config } = response.website_status;
-                this.setFixedRateAdvertStatus(p2p_config.fixed_rate_adverts);
-                this.setFloatingRateAdvertStatus(p2p_config.float_rate_adverts);
-                this.setFoatRateOffsetLimit(p2p_config.float_rate_offset_limit);
-                this.setFixedRateAdvertsEndDate(p2p_config.fixed_rate_adverts_end_date || null);
-                this.setApiErrorMessage(null);
-            }
-        });
-    }
 
     @action.bound
     setExchangeRate(fiat_currency, local_currency) {

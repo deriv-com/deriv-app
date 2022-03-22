@@ -1,6 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
+// TODO: remove ts-ignore once deriv-components tsc is fixed
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { Text } from '@deriv/deriv-components';
 import WalletIcon from 'Assets/svgs/wallet';
 

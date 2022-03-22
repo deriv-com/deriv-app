@@ -5,24 +5,45 @@ import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
 
 const AccountSignupModal = React.lazy(() =>
-    import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal')
+    componentLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
 );
 const CloseMxMltAccountModal = React.lazy(() =>
-    import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal')
+    componentLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
 );
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
-    import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal')
+    componentLoader(() =>
+        import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal')
+    )
 );
 const RedirectToLoginModal = React.lazy(() =>
-    import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal')
+    componentLoader(() => import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal'))
 );
 const SetResidenceModal = React.lazy(() =>
-    import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
+    componentLoader(() => import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal'))
 );
 const RealityCheckModal = React.lazy(() =>
-    import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal')
+    componentLoader(() => import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal'))
 );
-const WelcomeModal = React.lazy(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'));
+const WelcomeModal = React.lazy(() =>
+    componentLoader(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'))
+);
+
+export function componentLoader(lazyComponent, attempts = 3, interval = 1500) {
+    return new Promise((resolve, reject) => {
+        lazyComponent()
+            .then(resolve)
+            .catch(error => {
+                // let us retry after 1500 ms
+                setTimeout(() => {
+                    if (attempts === 1) {
+                        reject(error);
+                        return;
+                    }
+                    componentLoader(lazyComponent, attempts - 1, interval).then(resolve, reject);
+                }, interval);
+            });
+    });
+}
 
 const AppModals = ({
     is_account_needed_modal_on,

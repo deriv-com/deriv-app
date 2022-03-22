@@ -112,7 +112,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                             <DesktopWrapper>
                                 <Footer />
                             </DesktopWrapper>
-                            <AppModals />
+                            <ErrorBoundary>
+                                <AppModals />
+                            </ErrorBoundary>
                             <SmartTraderIFrame />
                             <BinaryBotIFrame />
                             <AppToastMessages />

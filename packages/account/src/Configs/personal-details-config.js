@@ -64,7 +64,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             rules: [['req', localize('Place of birth is required.')]],
         },
         citizen: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.citizen
                 ? residence_list.find(item => item.value === account_settings.citizen)?.text
                 : '',

@@ -358,6 +358,10 @@
                 align-items: center;
                 height: 100%;
             }
+
+            &__wallet-icon-wrapper-checked {
+                right: -4px !important;
+            }
         }
 
         &--unlinked {

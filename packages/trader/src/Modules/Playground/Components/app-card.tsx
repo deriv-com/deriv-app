@@ -5,6 +5,7 @@ import { Icon } from '@deriv/components';
 type TAppCardDetails = {
     size?: string;
     dark?: boolean;
+    checked?: boolean;
     app_name?: string;
     app_icon_name?: string;
 };
@@ -38,11 +39,19 @@ const LinkedAppCard = ({
     balance,
     size,
     dark,
+    checked,
 }: TLinkedAppCard) => {
     const size_el = size && `appstore-app-card__block--linked__wrapper--${size}`;
     const wallet_placeholder_icon = dark
         ? 'icAppstoreWalletCardPlaceholderDark'
         : 'icAppstoreWalletCardPlaceholderLight';
+
+    const checked_wallet_icon =
+        checked && 'appstore-app-card__small-block-wrapper--linked__wallet-icon-wrapper-checked';
+
+    /* eslint-disable */
+    console.log(size + ' - ' + checked);
+    /* eslint-enable */
 
     return (
         <div className={classNames('appstore-app-card__block--linked', size_el)}>
@@ -56,7 +65,12 @@ const LinkedAppCard = ({
                                 <div className='appstore-app-card--appcard-placeholder'>&nbsp;</div>
                             )}
                         </div>
-                        <div className='appstore-app-card__small-block-wrapper--linked__wallet-icon-wrapper'>
+                        <div
+                            className={classNames(
+                                'appstore-app-card__small-block-wrapper--linked__wallet-icon-wrapper',
+                                checked_wallet_icon
+                            )}
+                        >
                             {wallet_icon_name ? (
                                 <Icon
                                     icon={wallet_icon_name}
@@ -153,7 +167,7 @@ const UnlinkedAppcard = ({ app_name, app_icon_name, size }: TUnlinkedAppCard) =>
     );
 };
 
-const AppCard = ({ app_card_details, size, dark, linked }: TCFDAppCard) => {
+const AppCard = ({ app_card_details, size, dark, linked, checked }: TCFDAppCard) => {
     return (
         <>
             {linked ? (
@@ -166,6 +180,7 @@ const AppCard = ({ app_card_details, size, dark, linked }: TCFDAppCard) => {
                     balance={app_card_details?.balance}
                     size={size}
                     dark={dark}
+                    checked={checked}
                 />
             ) : (
                 <UnlinkedAppcard
@@ -284,7 +299,13 @@ const AppstoreAppCard = ({
                                 </div>
                             )}
 
-                            <AppCard app_card_details={app_card_details} size={size} dark={dark} linked={linked} />
+                            <AppCard
+                                app_card_details={app_card_details}
+                                size={size}
+                                dark={dark}
+                                linked={linked}
+                                checked={checked}
+                            />
                         </div>
 
                         {/* checked */}

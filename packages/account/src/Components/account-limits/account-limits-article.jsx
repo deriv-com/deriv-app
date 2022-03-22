@@ -12,7 +12,7 @@ const AccountLimitsArticle = () => {
                 <Localize
                     key={1}
                     i18n_default_text='To learn more about trading limits and how they apply, please go to the <0>Help Centre.</0>'
-                    components={[<StaticUrl key={0} className='link' href='/help-centre' />]}
+                    components={[<StaticUrl key={0} className='link' href='/help-centre/trading/#trading-limits' />]}
                 />,
             ]}
         />

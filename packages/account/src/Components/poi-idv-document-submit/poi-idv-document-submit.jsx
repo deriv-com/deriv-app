@@ -35,7 +35,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                       return d !== 'voter_id';
                   }
                   // For Nigeria exclude voter_id, nin and nin_slip. Temporarily removal
-                  return !['voter_id', 'nin', 'nin_slip'].includes(d);
+                  return !['voter_id', 'nin'].includes(d);
               })
             : document_types;
 

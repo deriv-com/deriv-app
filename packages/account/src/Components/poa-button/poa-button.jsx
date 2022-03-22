@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 
 export const PoaButton = ({ custom_text = localize('Submit proof of address') }) => (
     <ButtonLink className='account-management__button' to={routes.proof_of_address}>
-        <Text className='dc-btn__text' as='p' weight='bold'>
+        <Text className='dc-btn__text' as='p' weight='bold' data-testid='poa_button_text'>
             {custom_text}
         </Text>
     </ButtonLink>

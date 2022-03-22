@@ -22,8 +22,6 @@ const MyProfileStatsTable = () => {
         total_turnover,
     } = my_profile_store.advertiser_info;
 
-    console.log(my_profile_store.advertiser_info);
-
     const [show_lifetime_turnover_value, setShowLifetimeTurnoverValue] = React.useState(false);
     const [show_lifetime_order_value, setShowLifetimeOrderValue] = React.useState(false);
 
@@ -150,7 +148,7 @@ const MyProfileStatsTable = () => {
                                     />
                                 ) : (
                                     <Money
-                                        amount={buy_orders_amount + sell_orders_amount}
+                                        amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
                                         currency={general_store.client.currency}
                                         show_currency
                                     />
@@ -190,7 +188,9 @@ const MyProfileStatsTable = () => {
                                 />
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                                {show_lifetime_order_value ? buy_orders_count + sell_orders_count : total_orders_count}
+                                {show_lifetime_order_value
+                                    ? total_orders_count
+                                    : Number(buy_orders_count) + Number(sell_orders_count)}
                             </Text>
                         </Table.Cell>
                     </Table.Row>
@@ -314,7 +314,7 @@ const MyProfileStatsTable = () => {
                                 <Money amount={total_turnover} currency={general_store.client.currency} show_currency />
                             ) : (
                                 <Money
-                                    amount={buy_orders_amount + sell_orders_amount}
+                                    amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
                                     currency={general_store.client.currency}
                                     show_currency
                                 />
@@ -322,7 +322,7 @@ const MyProfileStatsTable = () => {
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-stats-table__cell'>
-                        <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
                             <Localize
                                 i18n_default_text='Total orders  <0>30d</0> | <1>lifetime</1>'
                                 components={[
@@ -344,7 +344,9 @@ const MyProfileStatsTable = () => {
                             />
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
-                            {show_lifetime_order_value ? buy_orders_count + sell_orders_count : total_orders_count}
+                            {show_lifetime_order_value
+                                ? total_orders_count
+                                : Number(buy_orders_count) + Number(sell_orders_count)}
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-stats-table__cell'>

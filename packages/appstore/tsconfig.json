@@ -21,6 +21,7 @@
         "moduleResolution": "node",
         "baseUrl": "./",
         "paths": {
+            "Assets/*": ["src/assets/*"],
             "Components/*": ["src/components/*"],
             "Constants/*": ["src/constants/*"],
             "Services/*": ["src/services/*"],
@@ -34,6 +35,6 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+    "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/declarations.d.ts"],
     "exclude": ["**/*.js", "**/*.jsx"]
 }

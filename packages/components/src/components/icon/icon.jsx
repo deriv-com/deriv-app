@@ -18,6 +18,7 @@ const Icon = React.forwardRef(
             onMouseEnter,
             onMouseLeave,
             size = 16,
+            style,
             width,
         },
         ref
@@ -59,11 +60,12 @@ const Icon = React.forwardRef(
                 onMouseLeave={onMouseLeave}
                 ref={ref}
                 style={
-                    custom_color
+                    style ||
+                    (custom_color
                         ? {
                               '--fill-color1': custom_color,
                           }
-                        : undefined
+                        : undefined)
                 }
             >
                 <use xlinkHref={`${getUrlBase(`/public/sprites/${filename}.svg`)}#${sprite_id}`} />

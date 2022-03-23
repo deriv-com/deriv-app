@@ -48,7 +48,7 @@ export default class GeneralStore extends BaseStore {
 
     @computed
     get setCurrentFocus() {
-        return this.props?.setCurrentFocus || null;
+        return this.props?.setCurrentFocus;
     }
 
     @computed
@@ -377,6 +377,23 @@ export default class GeneralStore extends BaseStore {
 
         order_store.setIsLoading(true);
         this.order_table_type = order_table_type;
+    }
+
+    @action.bound
+    setP2PConfig() {
+        const { floating_rate_store } = this.root_store;
+        requestWS({ website_status: 1 }).then(response => {
+            if (!!response && response.error) {
+                floating_rate_store.setApiErrorMessage(response.error.message);
+            } else {
+                const { p2p_config } = response.website_status;
+                floating_rate_store.setFixedRateAdvertStatus(p2p_config.fixed_rate_adverts);
+                floating_rate_store.setFloatingRateAdvertStatus(p2p_config.float_rate_adverts);
+                floating_rate_store.setFoatRateOffsetLimit(p2p_config.float_rate_offset_limit);
+                floating_rate_store.setFixedRateAdvertsEndDate(p2p_config.fixed_rate_adverts_end_date || null);
+                floating_rate_store.setApiErrorMessage(null);
+            }
+        });
     }
 
     @action.bound

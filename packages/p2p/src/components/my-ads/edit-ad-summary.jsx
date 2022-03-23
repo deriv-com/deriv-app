@@ -7,14 +7,34 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
-const EditAdSummary = ({ offer_amount, price_rate, type }) => {
+const iff = (condition, then, other_wise) => (condition ? then : other_wise);
+
+const EditAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
 
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
-    const display_price_rate = price_rate ? formatMoney(local_currency_config.currency, price_rate, true) : '';
+    const display_price_rate =
+        market_feed && price_rate
+            ? formatMoney(
+                  local_currency_config.currency,
+                  parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
+                  true
+              )
+            : iff(price_rate, formatMoney(local_currency_config.currency, price_rate, true), '');
+
     const display_total =
-        offer_amount && price_rate ? formatMoney(local_currency_config.currency, offer_amount * price_rate, true) : '';
+        market_feed && offer_amount && price_rate
+            ? formatMoney(
+                  local_currency_config.currency,
+                  offer_amount * parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
+                  true
+              )
+            : iff(
+                  offer_amount && price_rate,
+                  formatMoney(local_currency_config.currency, offer_amount * price_rate, true),
+                  ''
+              );
 
     if (offer_amount) {
         const components = [<Text key={0} weight='bold' size='xs' color='less-prominent' />];
@@ -75,6 +95,7 @@ const EditAdSummary = ({ offer_amount, price_rate, type }) => {
 EditAdSummary.propTypes = {
     offer_amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     price_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    market_feed: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     type: PropTypes.string,
 };
 

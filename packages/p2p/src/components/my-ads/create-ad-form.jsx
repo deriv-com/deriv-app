@@ -17,6 +17,7 @@ import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { buy_sell } from 'Constants/buy-sell';
+import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
@@ -71,7 +72,7 @@ const CreateAdForm = () => {
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
         );
 
-        floating_rate_store.setP2PConfig();
+        general_store.setP2PConfig();
         floating_rate_store.setExchangeRate(currency, local_currency_config.currency);
 
         return () => {
@@ -106,7 +107,7 @@ const CreateAdForm = () => {
                     min_transaction: '',
                     offer_amount: '',
                     payment_info: my_ads_store.payment_info,
-                    price_rate: floating_rate_store.rate_type === 'float' ? '-0.01' : '',
+                    price_rate: floating_rate_store.rate_type === ad_type.FLOAT ? '-0.01' : '',
                     type: buy_sell.BUY,
                 }}
                 onSubmit={my_ads_store.handleSubmit}
@@ -165,7 +166,7 @@ const CreateAdForm = () => {
                                         <div className='p2p-my-ads__form-summary'>
                                             <CreateAdSummary
                                                 market_feed={
-                                                    floating_rate_store.rate_type === 'float'
+                                                    floating_rate_store.rate_type === ad_type.FLOAT
                                                         ? floating_rate_store.exchange_rate
                                                         : null
                                                 }
@@ -219,18 +220,21 @@ const CreateAdForm = () => {
                                             </Field>
                                             <Field name='price_rate'>
                                                 {({ field }) =>
-                                                    floating_rate_store.rate_type === 'float' ? (
+                                                    floating_rate_store.rate_type === ad_type.FLOAT ? (
                                                         <FloatingRate
-                                                            class_name='p2p-my-ads__form-field'
+                                                            className='p2p-my-ads__form-field'
                                                             error_messages={errors.price_rate}
                                                             exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
                                                             offset={{
-                                                                upper_limit:
-                                                                    floating_rate_store.float_rate_offset_limit,
+                                                                upper_limit: parseInt(
+                                                                    floating_rate_store.float_rate_offset_limit
+                                                                ),
                                                                 lower_limit:
-                                                                    floating_rate_store.float_rate_offset_limit * -1,
+                                                                    parseInt(
+                                                                        floating_rate_store.float_rate_offset_limit
+                                                                    ) * -1,
                                                             }}
                                                             required
                                                             change_handler={e => {

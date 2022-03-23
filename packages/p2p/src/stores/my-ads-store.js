@@ -2,9 +2,10 @@ import { action, observable } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
-import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
+import { decimalValidator, lengthValidator, rangeValidator, textValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 
 export default class MyAdsStore extends BaseStore {
@@ -88,7 +89,8 @@ export default class MyAdsStore extends BaseStore {
             })
             .finally(() => {
                 this.setIsFormLoading(false);
-                if (this.root_store.floating_rate_store.rate_type === 'float') this.setIsSwitchModalOpen(false, null);
+                if (this.root_store.floating_rate_store.rate_type === 'float')
+                    this.setIsSwitchModalOpen(false, this.selected_ad_id);
             });
     }
 
@@ -156,6 +158,7 @@ export default class MyAdsStore extends BaseStore {
         if (values.default_advert_description) {
             create_advert.description = values.default_advert_description;
         }
+
         const createAd = () => {
             requestWS(create_advert).then(response => {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads
@@ -312,22 +315,22 @@ export default class MyAdsStore extends BaseStore {
             this.setIsTableLoading(true);
             this.setApiErrorMessage('');
         }
-
-        const { list_item_limit } = this.root_store.general_store;
-
+        const { floating_rate_store, general_store } = this.root_store;
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_adverts: 1,
                 offset: startIndex,
-                limit: list_item_limit,
+                limit: general_store.list_item_limit,
             }).then(response => {
                 if (!response.error) {
                     const { list } = response.p2p_advertiser_adverts;
-                    this.setHasMoreItemsToLoad(list.length >= list_item_limit);
+                    this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
                     this.setMissingPaymentMethods(!!list.find(payment_method => !payment_method.payment_method_names));
-                    if (this.root_store.floating_rate_store.rate_type === 'float') {
-                        this.root_store.floating_rate_store.setChangeAdAlert(checkForFixedRateAds(list));
+                    if (floating_rate_store.rate_type === ad_type.FLOAT) {
+                        floating_rate_store.setChangeAdAlert(checkForFixedRateAds(list));
+                    } else if (floating_rate_store.rate_type === ad_type.FIXED) {
+                        floating_rate_store.setChangeAdAlert(checkForFloatRateAds(list));
                     }
                 } else if (response.error.code === 'PermissionDenied') {
                     this.root_store.general_store.setIsBlocked(true);
@@ -563,6 +566,7 @@ export default class MyAdsStore extends BaseStore {
 
     @action.bound
     validateCreateAdForm(values) {
+        const { general_store, floating_rate_store } = this.root_store;
         const validations = {
             default_advert_description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
@@ -571,7 +575,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
@@ -581,7 +585,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -592,7 +596,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
@@ -600,11 +604,15 @@ export default class MyAdsStore extends BaseStore {
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    this.root_store.floating_rate_store.rate_type !== 'float'
+                    floating_rate_store.rate_type === ad_type.FIXED
                         ? v > 0 &&
                           decimalValidator(v) &&
                           countDecimalPlaces(v) <=
                               this.root_store.general_store.client.local_currency_config.decimal_places
+                        : true,
+                v =>
+                    floating_rate_store.rate_type === ad_type.FLOAT
+                        ? rangeValidator(v, parseInt(this.root_store.floating_rate_store.float_rate_offset_limit))
                         : true,
             ],
         };
@@ -673,6 +681,9 @@ export default class MyAdsStore extends BaseStore {
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
+            localize("Enter a value thats's within -{{limit}}% to {{limit}}%", {
+                limit: this.root_store.floating_rate_store.float_rate_offset_limit,
+            }),
         ];
 
         const errors = {};
@@ -716,6 +727,7 @@ export default class MyAdsStore extends BaseStore {
 
     @action.bound
     validateEditAdForm(values) {
+        const { general_store, floating_rate_store } = this.root_store;
         const validations = {
             description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
@@ -724,7 +736,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
@@ -734,7 +746,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -754,9 +766,16 @@ export default class MyAdsStore extends BaseStore {
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= this.root_store.general_store.client.local_currency_config.decimal_places,
+                    floating_rate_store.rate_type === ad_type.FIXED
+                        ? v > 0 &&
+                          decimalValidator(v) &&
+                          countDecimalPlaces(v) <=
+                              this.root_store.general_store.client.local_currency_config.decimal_places
+                        : true,
+                v =>
+                    floating_rate_store.rate_type === ad_type.FLOAT
+                        ? rangeValidator(v, parseInt(this.root_store.floating_rate_store.float_rate_offset_limit))
+                        : true,
             ],
         };
 
@@ -821,6 +840,9 @@ export default class MyAdsStore extends BaseStore {
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
+            localize("Enter a value thats's within -{{limit}}% to {{limit}}%", {
+                limit: this.root_store.floating_rate_store.float_rate_offset_limit,
+            }),
         ];
 
         const errors = {};
@@ -865,4 +887,8 @@ export default class MyAdsStore extends BaseStore {
 
 const checkForFixedRateAds = ads_list => {
     return ads_list.some(ad => ad.rate_type === 'fixed');
+};
+
+const checkForFloatRateAds = ads_list => {
+    return ads_list.some(ad => ad.rate_type === 'float');
 };

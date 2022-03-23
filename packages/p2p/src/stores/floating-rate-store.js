@@ -1,4 +1,5 @@
 import { action, computed, observable } from 'mobx';
+import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import { requestWS } from 'Utils/websocket';
 
@@ -9,14 +10,20 @@ export default class FloatingRateStore extends BaseStore {
     @observable fixed_rate_adverts_end_date;
     @observable exchange_rate;
     @observable change_ad_alert;
+    @observable is_loading;
     @observable api_error_message = '';
 
     @computed
     get rate_type() {
         if (this.float_rate_adverts_status === 'enabled') {
-            return 'float';
+            return ad_type.FLOAT;
         }
-        return 'fixed';
+        return ad_type.FIXED;
+    }
+
+    @computed
+    get reached_target_date() {
+        return new Date().getTime() <= new Date(this.fixed_rate_adverts_end_date).getTime();
     }
 
     @action.bound
@@ -44,37 +51,29 @@ export default class FloatingRateStore extends BaseStore {
         this.api_error_message = api_error_message;
     }
     @action.bound
-    setP2PConfig() {
-        requestWS({ website_status: 1 }).then(response => {
-            if (!!response && response.error) {
-                this.setApiErrorMessage(response.error.message);
-            } else {
-                const { p2p_config } = response.website_status;
-                this.setFixedRateAdvertStatus(p2p_config.fixed_rate_adverts);
-                this.setFloatingRateAdvertStatus(p2p_config.float_rate_adverts);
-                this.setFoatRateOffsetLimit(p2p_config.float_rate_offset_limit);
-                this.setFixedRateAdvertsEndDate(p2p_config.fixed_rate_adverts_end_date || null);
-                this.setApiErrorMessage(null);
-            }
-        });
+    setIsLoading(state) {
+        this.is_loading = state;
     }
 
     @action.bound
     setExchangeRate(fiat_currency, local_currency) {
+        this.setIsLoading(true);
         const pay_load = {
             exchange_rates: 1,
             base_currency: fiat_currency,
             subscribe: 1,
             target_currency: local_currency,
         };
-        requestWS(pay_load).then(response => {
-            if (!!response && response.error) {
-                this.setApiErrorMessage(response.error.message);
-            } else {
-                const { rates } = response.exchange_rates;
-                this.exchange_rate = rates[local_currency];
-                this.setApiErrorMessage(null);
-            }
-        });
+        requestWS(pay_load)
+            .then(response => {
+                if (!!response && response.error) {
+                    this.setApiErrorMessage(response.error.message);
+                } else {
+                    const { rates } = response.exchange_rates;
+                    this.exchange_rate = rates[local_currency];
+                    this.setApiErrorMessage(null);
+                }
+            })
+            .finally(() => this.setIsLoading(false));
     }
 }

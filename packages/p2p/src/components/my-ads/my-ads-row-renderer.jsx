@@ -6,8 +6,10 @@ import { isMobile, formatMoney } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import { ad_type } from 'Constants/floating-rate';
 import AdStatus from 'Components/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
+import AdType from './ad-type.jsx';
 
 const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
@@ -23,6 +25,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         min_order_amount_display,
         payment_method_names,
         price_display,
+        rate_display,
         rate_type,
         remaining_amount,
         remaining_amount_display,
@@ -222,7 +225,15 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         {min_order_amount_display}-{max_order_amount_display} {account_currency}
                     </Table.Cell>
                     <Table.Cell className='p2p-my-ads__table-price'>
-                        {price_display} {local_currency}
+                        <div className='display-layout'>
+                            {price_display} {local_currency}
+                            {rate_type === ad_type.FLOAT && (
+                                <AdType
+                                    float_rate={rate_display}
+                                    className='p2p-my-ads__table__payment-method--label'
+                                />
+                            )}
+                        </div>
                     </Table.Cell>
                     <Table.Cell className='p2p-my-ads__table-available'>
                         <ProgressIndicator

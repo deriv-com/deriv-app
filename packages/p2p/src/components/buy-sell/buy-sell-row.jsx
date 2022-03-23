@@ -9,6 +9,7 @@ import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
 import './buy-sell-row.scss';
+import TradeBadge from '../trade-badge';
 
 const BuySellRow = ({ row: advert }) => {
     const { buy_sell_store, general_store } = useStores();
@@ -33,6 +34,7 @@ const BuySellRow = ({ row: advert }) => {
 
     const {
         account_currency,
+        advertiser_details,
         counterparty_type,
         local_currency,
         max_order_amount_limit_display,
@@ -54,9 +56,18 @@ const BuySellRow = ({ row: advert }) => {
                 >
                     <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
                     <div className='buy-sell-row__advertiser-name'>
-                        <Text size='xs' line_height='m' color='general' weight='bold'>
-                            {advertiser_name}
-                        </Text>
+                        <div className='buy-sell__cell--container__row'>
+                            <Text
+                                className='buy-sell-row__advertiser-name--text'
+                                size='xs'
+                                line_height='m'
+                                color='general'
+                                weight='bold'
+                            >
+                                {advertiser_name}
+                            </Text>
+                            <TradeBadge trade_count={advertiser_details.completed_orders_count} />
+                        </div>
                         {advert.advertiser_details.total_completion_rate ? (
                             <Text color='less-prominent' size='xxs'>
                                 <Localize
@@ -81,7 +92,7 @@ const BuySellRow = ({ row: advert }) => {
                         </Text>
                         <Text as='div' color='less-prominent' line_height='m' size='xxs'>
                             <Localize
-                                i18n_default_text='Limit {{ min_order }}–{{ max_order }} {{ currency }}'
+                                i18n_default_text='Limits {{ min_order }}–{{ max_order }} {{ currency }}'
                                 values={{
                                     min_order: min_order_amount_limit_display,
                                     max_order: max_order_amount_limit_display,
@@ -132,12 +143,15 @@ const BuySellRow = ({ row: advert }) => {
                 >
                     <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
                     <div className='buy-sell__cell--container'>
-                        <div
-                            className={classNames({
-                                'buy-sell__name': !general_store.is_barred,
-                            })}
-                        >
-                            {advertiser_name}
+                        <div className='buy-sell__cell--container__row'>
+                            <div
+                                className={classNames({
+                                    'buy-sell__name': !general_store.is_barred,
+                                })}
+                            >
+                                {advertiser_name}
+                            </div>
+                            <TradeBadge trade_count={advertiser_details.completed_orders_count} />
                         </div>
                         {!!advert.advertiser_details.total_completion_rate && (
                             <Text color='less-prominent' size='xxs'>

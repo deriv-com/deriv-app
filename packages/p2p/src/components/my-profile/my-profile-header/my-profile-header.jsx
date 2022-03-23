@@ -11,7 +11,7 @@ const MyProfileHeader = () => {
 
     const getMyProfileTabFilters = () => [
         {
-            text: localize('My stats'),
+            text: localize('Stats and ratings'),
             value: my_profile_tabs.MY_STATS,
         },
         {

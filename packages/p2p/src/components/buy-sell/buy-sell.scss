@@ -11,8 +11,8 @@
 
         @include mobile {
             border-bottom: 1px solid var(--general-section-1);
-            margin-bottom: unset;
-            padding-bottom: 1.2rem;
+            margin: unset;
+            padding: 1.2rem 0;
 
             .page-return__button {
                 padding: 0 1.6rem;
@@ -100,10 +100,17 @@
             display: flex;
             flex-direction: column;
             margin-left: 0.8rem;
+
+            &__row {
+                display: flex;
+                flex-direction: row;
+            }
         }
     }
 
     &__name {
+        padding-right: 0.4rem;
+
         &:hover {
             color: var(--brand-red-coral);
             text-decoration: underline;

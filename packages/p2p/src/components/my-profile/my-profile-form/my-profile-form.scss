@@ -53,10 +53,14 @@
         }
 
         @include tablet-up {
-            position: fixed;
             bottom: 36px;
-            width: 672px;
             padding: 1.6rem 2.4rem;
+        }
+
+        &-button {
+            @include mobile {
+                width: 93vw;
+            }
         }
     }
 }

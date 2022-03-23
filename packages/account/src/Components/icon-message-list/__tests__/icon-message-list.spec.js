@@ -31,7 +31,7 @@ describe('<IconMessageList/>', () => {
         expect(screen.getByText(/Sample Text2/i)).toBeInTheDocument();
     });
 
-    it('should show show_more_btn and first 3 msgs when the message_list is more than 3', () => {
+    it('should show first 3 msgs and show_more_btn when the message_list is more than 3', () => {
         render(<IconMessageList message_list={messages_list} />);
         expect(screen.getByText(/sample text1/i)).toBeInTheDocument();
         expect(screen.getByText(/sample text2/i)).toBeInTheDocument();
@@ -42,14 +42,6 @@ describe('<IconMessageList/>', () => {
                 name: /show more/i,
             })
         ).toBeInTheDocument();
-    });
-
-    it('should call setShowMore when show_more btn is clicked', () => {
-        const setShowMore = jest.fn();
-        jest.spyOn(React, 'useState').mockImplementation(show_more => [show_more, setShowMore]);
-        render(<IconMessageList message_list={messages_list} />);
-        fireEvent.click(screen.getByRole('button', { name: /show more/i }));
-        expect(setShowMore).toHaveBeenCalledWith(true);
     });
 
     it('should show all messages and show_less_btn when show_more btn is clicked', () => {

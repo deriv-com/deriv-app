@@ -298,7 +298,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const isFinancialCardVisible = () => {
-
         return (
             !is_logged_in ||
             isLandingCompanyEnabled({
@@ -310,7 +309,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const isFinancialStpCardVisible = () => {
-
         // Hiding card for logged out EU users
         if (!is_logged_in && is_eu_country) return false;
 
@@ -391,21 +389,23 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
     if ((is_logged_in && !landing_companies) || is_loading) return <Loading />;
 
-    const disabled_demo_signup = (platform === CFD_PLATFORMS.MT5) ? 
-                                    mt5_disabled_signup_types.demo : 
-                                    dxtrade_disabled_signup_types.demo || !!dxtrade_accounts_list_error;
+    const disabled_demo_signup =
+        platform === CFD_PLATFORMS.MT5
+            ? mt5_disabled_signup_types.demo
+            : dxtrade_disabled_signup_types.demo || !!dxtrade_accounts_list_error;
 
-    const disabled_real_signup = (platform === CFD_PLATFORMS.MT5) ?
-                                    mt5_disabled_signup_types.real
-                                    : dxtrade_disabled_signup_types.real || !!dxtrade_accounts_list_error;
+    const disabled_real_signup =
+        platform === CFD_PLATFORMS.MT5
+            ? mt5_disabled_signup_types.real
+            : dxtrade_disabled_signup_types.real || !!dxtrade_accounts_list_error;
 
-    const ios_download = (platform === CFD_PLATFORMS.MT5)
-                            ? getPlatformMt5DownloadLink('ios')
-                            : getPlatformDXTradeDownloadLink('ios');
+    const ios_download =
+        platform === CFD_PLATFORMS.MT5 ? getPlatformMt5DownloadLink('ios') : getPlatformDXTradeDownloadLink('ios');
 
-    const android_download = (platform === CFD_PLATFORMS.MT5)
-                                ? getPlatformMt5DownloadLink('android')
-                                : getPlatformDXTradeDownloadLink('android')
+    const android_download =
+        platform === CFD_PLATFORMS.MT5
+            ? getPlatformMt5DownloadLink('android')
+            : getPlatformDXTradeDownloadLink('android');
 
     return (
         <React.Fragment>
@@ -479,9 +479,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}
                                                 has_malta_account={has_malta_account}
-                                                has_cfd_account_error={
-                                                    disabled_real_signup
-                                                }
+                                                has_cfd_account_error={disabled_real_signup}
                                                 openAccountNeededModal={openAccountNeededModal}
                                                 current_list={current_list}
                                                 account_status={account_status}
@@ -518,9 +516,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             is_eu_country={is_eu_country}
                                             is_logged_in={is_logged_in}
                                             has_maltainvest_account={has_maltainvest_account}
-                                            has_cfd_account_error={
-                                                disabled_demo_signup
-                                            }
+                                            has_cfd_account_error={disabled_demo_signup}
                                             openAccountNeededModal={openAccountNeededModal}
                                             standpoint={standpoint}
                                             is_loading={is_loading}
@@ -589,22 +585,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                         )}
                                     </div>
                                     <div className='cfd-dashboard__download-center-options--mobile-links'>
-                                        <a
-                                            href={
-                                                android_download
-                                            }
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                        >
+                                        <a href={android_download} target='_blank' rel='noopener noreferrer'>
                                             <Icon icon='IcInstallationGoogle' width={135} height={40} />
                                         </a>
-                                        <a
-                                            href={
-                                                ios_download
-                                            }
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                        >
+                                        <a href={ios_download} target='_blank' rel='noopener noreferrer'>
                                             <Icon icon='IcInstallationApple' width={135} height={40} />
                                         </a>
                                     </div>

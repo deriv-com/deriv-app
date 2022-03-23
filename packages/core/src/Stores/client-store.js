@@ -965,9 +965,9 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = true;
             });
-            
-            // Checking if the logged in user has an undefined or missing 
-            // client.accounts localstorage variable. If it is the case, 
+
+            // Checking if the logged in user has an undefined or missing
+            // client.accounts localstorage variable. If it is the case,
             // add the value again.
             if (is_logged_in && !has_client_accounts) {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));

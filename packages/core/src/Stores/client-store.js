@@ -960,7 +960,7 @@ export default class ClientStore extends BaseStore {
         return new Promise(resolve => {
             let client_accounts;
             const is_logged_in = !!localStorage.getItem('active_loginid');
-            const has_client_accounts = !!localStorage.getItem(storage_key);
+            const has_client_accounts = !!LocalStore.get(storage_key);
 
             runInAction(() => {
                 this.is_populating_account_list = true;
@@ -971,6 +971,7 @@ export default class ClientStore extends BaseStore {
             // add the value again.
             if (is_logged_in && !has_client_accounts) {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
+                LocalStore.set(storage_key, JSON.stringify(this.accounts));
             }
 
             try {

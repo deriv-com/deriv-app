@@ -48,7 +48,7 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
                     <div className='advertiser-page__cell-limit'>
                         <Text size='xxs' line_height='m'>
                             <Localize
-                                i18n_default_text='Limit {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
+                                i18n_default_text='Limits {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
                                 values={{
                                     min_order_amount_limit_display,
                                     max_order_amount_limit_display,

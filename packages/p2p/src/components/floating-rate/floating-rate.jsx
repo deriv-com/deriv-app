@@ -79,7 +79,7 @@ const FloatingRate = ({
                     size='xxs'
                     color='loss-danger'
                     weight='normal'
-                    line_height='xs'
+                    line_height='s'
                     className='floating-rate__error_message'
                 >
                     {error_messages}

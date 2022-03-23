@@ -20,6 +20,11 @@ export default class FloatingRateStore extends BaseStore {
         return ad_type.FIXED;
     }
 
+    @computed
+    get reached_target_date() {
+        return new Date().getTime() <= new Date(this.fixed_rate_adverts_end_date).getTime();
+    }
+
     @action.bound
     setFixedRateAdvertStatus(fixed_rate_advert_status) {
         this.fixed_rate_adverts_status = fixed_rate_advert_status;
@@ -30,7 +35,8 @@ export default class FloatingRateStore extends BaseStore {
     }
     @action.bound
     setFoatRateOffsetLimit(offset_limit) {
-        this.float_rate_offset_limit = offset_limit;
+        // this.float_rate_offset_limit = offset_limit;
+        this.float_rate_offset_limit = '5'
     }
     @action.bound
     setFixedRateAdvertsEndDate(end_date) {

@@ -228,10 +228,13 @@ const CreateAdForm = () => {
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
                                                             offset={{
-                                                                upper_limit:
-                                                                    floating_rate_store.float_rate_offset_limit,
+                                                                upper_limit: parseInt(
+                                                                    floating_rate_store.float_rate_offset_limit
+                                                                ),
                                                                 lower_limit:
-                                                                    floating_rate_store.float_rate_offset_limit * -1,
+                                                                    parseInt(
+                                                                        floating_rate_store.float_rate_offset_limit
+                                                                    ) * -1,
                                                             }}
                                                             required
                                                             change_handler={e => {

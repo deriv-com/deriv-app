@@ -1000,7 +1000,7 @@ export default class ClientStore extends BaseStore {
                 })
                 .catch(error => {
                     // eslint-disable-next-line no-console
-                    console.error('Something went wrong when regisering a real account: ', error);
+                    console.error('Something went wrong while registering a real account: ', error);
                 });
         });
     }

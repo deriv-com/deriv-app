@@ -18,7 +18,7 @@ const MyStats = () => {
                 height_offset='80px'
                 is_flex
                 is_modal_open={should_show_stats_and_ratings}
-                page_header_text={localize('Stats and ratings')}
+                page_header_text={localize('Stats')}
                 pageHeaderReturnFn={() => setShouldShowStatsAndRatings(false)}
             >
                 <MyProfileStatsTable />
@@ -31,7 +31,7 @@ const MyStats = () => {
                 <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
                 <div className='my-profile__navigation' onClick={() => setShouldShowStatsAndRatings(true)}>
                     <Text color='prominent' size='xxs'>
-                        <Localize i18n_default_text='Stats and ratings' />
+                        <Localize i18n_default_text='Stats' />
                     </Text>
                     <Icon icon='IcChevronRight' />
                 </div>

@@ -1252,8 +1252,9 @@ export default class ClientStore extends BaseStore {
                     if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
                         // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
                         window.location.replace(`/redirect?${query_string}`);
+                    } else {
+                        window.location.replace(`${redirect_route}/redirect?${query_string}`);
                     }
-                    window.location.replace(`${redirect_route}/redirect?${query_string}`);
                 } else {
                     window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
                 }

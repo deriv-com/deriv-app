@@ -958,40 +958,49 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async accountRealReaction(response) {
         return new Promise(resolve => {
+            let client_accounts;
+            const is_logged_in = !!localStorage.getItem('active_loginid');
+            const has_client_accounts = !!localStorage.getItem(storage_key);
+
             runInAction(() => {
                 this.is_populating_account_list = true;
             });
-            const is_logged_in = !!localStorage.getItem('active_loginid');
-            const has_client_accounts = !!localStorage.getItem(storage_key);
+            
+            // Checking if the logged in user has an undefined or missing 
+            // client.accounts localstorage variable. If it is the case, 
+            // add the value again.
             if (is_logged_in && !has_client_accounts) {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
             }
 
-            let client_accounts;
             try {
                 client_accounts = JSON.parse(LocalStore.get(storage_key));
-            } catch (e) {
-                console.error('Something went wrong, an invalid value has been attemped to be parsed by json (client.accounts) ', e);
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.error('JSON parse failed, invalid value (client.accounts): ', error);
             }
 
             const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
-            BinarySocket.authorize(oauth_token).then(authorize_response => {
-                const new_data = {};
-                new_data.token = oauth_token;
-                new_data.residence = authorize_response.authorize.country;
-                new_data.currency = authorize_response.authorize.currency;
-                new_data.is_virtual = authorize_response.authorize.is_virtual;
-                new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
-                new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
-                runInAction(() => (client_accounts[client_id] = new_data));
-                this.setLoginInformation(client_accounts, client_id);
-                WS.authorized.storage.getSettings().then(get_settings_response => {
-                    this.setAccountSettings(get_settings_response.get_settings);
-                    resolve();
+            BinarySocket.authorize(oauth_token)
+                .then(authorize_response => {
+                    const new_data = {};
+                    new_data.token = oauth_token;
+                    new_data.residence = authorize_response.authorize.country;
+                    new_data.currency = authorize_response.authorize.currency;
+                    new_data.is_virtual = authorize_response.authorize.is_virtual;
+                    new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
+                    new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
+                    runInAction(() => (client_accounts[client_id] = new_data));
+                    this.setLoginInformation(client_accounts, client_id);
+                    WS.authorized.storage.getSettings().then(get_settings_response => {
+                        this.setAccountSettings(get_settings_response.get_settings);
+                        resolve();
+                    });
+                })
+                .catch(error => {
+                    // eslint-disable-next-line no-console
+                    console.error('Something went wrong when regisering a real account: ', error);
                 });
-            }).catch((e) => {
-                console.log('Something went wrong when regisering a real account ', e);
-            });
         });
     }
 

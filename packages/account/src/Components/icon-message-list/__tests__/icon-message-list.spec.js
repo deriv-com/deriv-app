@@ -22,8 +22,8 @@ describe('<IconMessageList/>', () => {
         expect(screen.getByTestId('mocked_icon')).toBeInTheDocument();
     });
     it('should show message passed to the component', () => {
-        render(<IconMessageList message={'Lorem Epsom'} />);
-        expect(screen.getByText(/lorem epsom/i)).toBeInTheDocument();
+        render(<IconMessageList message={'Lorem Ipsom'} />);
+        expect(screen.getByText(/lorem ipsom/i)).toBeInTheDocument();
     });
     it('when the length of message_list is less than 3, it should show messages with icon ', () => {
         render(<IconMessageList message_list={['Sample Text1', 'Sample Text2']} />);

@@ -53,5 +53,5 @@ const Unsupported = ({ country_code, ...props }) => {
             </Timeline.Item>
         </Timeline>
     );
-}
+};
 export default Unsupported;

@@ -137,7 +137,7 @@ const AdvertiserPageStats = () => {
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
                                 {buy_orders_amount && sell_orders_amount ? (
                                     <Money
-                                        amount={buy_orders_amount + sell_orders_amount}
+                                        amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
                                         currency={general_store.client.currency}
                                         show_currency
                                     />
@@ -220,7 +220,7 @@ const AdvertiserPageStats = () => {
                         <Text as='p' color='prominent' line_height='m' size='m' weight='bold'>
                             {buy_orders_amount && sell_orders_amount ? (
                                 <Money
-                                    amount={buy_orders_amount + sell_orders_amount}
+                                    amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
                                     currency={general_store.client.currency}
                                     show_currency
                                 />

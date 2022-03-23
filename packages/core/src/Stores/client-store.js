@@ -961,7 +961,19 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = true;
             });
-            const client_accounts = JSON.parse(LocalStore.get(storage_key));
+            const is_logged_in = !!localStorage.getItem('active_loginid');
+            const has_client_accounts = !!localStorage.getItem(storage_key);
+            if (is_logged_in && !has_client_accounts) {
+                localStorage.setItem(storage_key, JSON.stringify(this.accounts));
+            }
+
+            let client_accounts;
+            try {
+                client_accounts = JSON.parse(LocalStore.get(storage_key));
+            } catch (e) {
+                console.error('Something went wrong, an invalid value has been attemped to be parsed by json (client.accounts) ', e);
+            }
+
             const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
             BinarySocket.authorize(oauth_token).then(authorize_response => {
                 const new_data = {};
@@ -971,13 +983,14 @@ export default class ClientStore extends BaseStore {
                 new_data.is_virtual = authorize_response.authorize.is_virtual;
                 new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
                 new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
-
                 runInAction(() => (client_accounts[client_id] = new_data));
                 this.setLoginInformation(client_accounts, client_id);
                 WS.authorized.storage.getSettings().then(get_settings_response => {
                     this.setAccountSettings(get_settings_response.get_settings);
                     resolve();
                 });
+            }).catch((e) => {
+                console.log('Something went wrong when regisering a real account ', e);
             });
         });
     }

@@ -285,7 +285,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const isSyntheticCardVisible = (account_category: string) => {
-        const { current_list, platform, is_eu, is_eu_country, landing_companies, is_logged_in } = props;
         const has_synthetic_account = Object.keys(current_list).some(key =>
             key.startsWith(`${platform}.${account_category}.synthetic`)
         );
@@ -299,7 +298,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const isFinancialCardVisible = () => {
-        const { platform, landing_companies, is_logged_in } = props;
 
         return (
             !is_logged_in ||
@@ -312,7 +310,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const isFinancialStpCardVisible = () => {
-        const { platform, landing_companies, is_logged_in, is_eu_country } = props;
 
         // Hiding card for logged out EU users
         if (!is_logged_in && is_eu_country) return false;
@@ -394,6 +391,22 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
     if ((is_logged_in && !landing_companies) || is_loading) return <Loading />;
 
+    const disabled_demo_signup = (platform === CFD_PLATFORMS.MT5) ? 
+                                    mt5_disabled_signup_types.demo : 
+                                    dxtrade_disabled_signup_types.demo || !!dxtrade_accounts_list_error;
+
+    const disabled_real_signup = (platform === CFD_PLATFORMS.MT5) ?
+                                    mt5_disabled_signup_types.real
+                                    : dxtrade_disabled_signup_types.real || !!dxtrade_accounts_list_error;
+
+    const ios_download = (platform === CFD_PLATFORMS.MT5)
+                            ? getPlatformMt5DownloadLink('ios')
+                            : getPlatformDXTradeDownloadLink('ios');
+
+    const android_download = (platform === CFD_PLATFORMS.MT5)
+                                ? getPlatformMt5DownloadLink('android')
+                                : getPlatformDXTradeDownloadLink('android')
+
     return (
         <React.Fragment>
             {is_mt5_allowed || platform === CFD_PLATFORMS.DXTRADE || !is_logged_in ? (
@@ -467,10 +480,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 has_maltainvest_account={has_maltainvest_account}
                                                 has_malta_account={has_malta_account}
                                                 has_cfd_account_error={
-                                                    platform === CFD_PLATFORMS.MT5
-                                                        ? mt5_disabled_signup_types.real
-                                                        : dxtrade_disabled_signup_types.real ||
-                                                          !!dxtrade_accounts_list_error
+                                                    disabled_real_signup
                                                 }
                                                 openAccountNeededModal={openAccountNeededModal}
                                                 current_list={current_list}
@@ -509,10 +519,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             is_logged_in={is_logged_in}
                                             has_maltainvest_account={has_maltainvest_account}
                                             has_cfd_account_error={
-                                                platform === CFD_PLATFORMS.MT5
-                                                    ? mt5_disabled_signup_types.demo
-                                                    : dxtrade_disabled_signup_types.demo ||
-                                                      !!dxtrade_accounts_list_error
+                                                disabled_demo_signup
                                             }
                                             openAccountNeededModal={openAccountNeededModal}
                                             standpoint={standpoint}
@@ -584,9 +591,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                     <div className='cfd-dashboard__download-center-options--mobile-links'>
                                         <a
                                             href={
-                                                platform === CFD_PLATFORMS.MT5
-                                                    ? getPlatformMt5DownloadLink('android')
-                                                    : getPlatformDXTradeDownloadLink('android')
+                                                android_download
                                             }
                                             target='_blank'
                                             rel='noopener noreferrer'
@@ -595,9 +600,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                         </a>
                                         <a
                                             href={
-                                                platform === CFD_PLATFORMS.MT5
-                                                    ? getPlatformMt5DownloadLink('ios')
-                                                    : getPlatformDXTradeDownloadLink('ios')
+                                                ios_download
                                             }
                                             target='_blank'
                                             rel='noopener noreferrer'

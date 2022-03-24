@@ -46,7 +46,7 @@ const SelectPaymentMethod = () => {
                                 <Text key={0} color='less-prominent' size='xxs' />,
                                 <Text
                                     key={1}
-                                    className='link link--loss-danger'
+                                    className='link'
                                     size='xxs'
                                     onClick={() => my_profile_store.setSelectedPaymentMethod('other')}
                                 />,

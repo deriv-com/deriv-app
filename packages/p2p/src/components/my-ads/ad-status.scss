@@ -8,8 +8,8 @@
     }
 
     &--inactive {
-        border: 1px solid var(--status-danger);
-        border-radius: 0.2rem;
+        background: rgba(236, 63, 63, 0.16);
+        border-radius: 1.6rem;
         padding: 0.1rem 1.2rem;
         text-align: center;
         width: 8.8rem;

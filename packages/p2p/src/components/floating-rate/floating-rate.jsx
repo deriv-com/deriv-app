@@ -15,7 +15,7 @@ const FloatingRate = ({
     fiat_currency,
     local_currency,
     offset,
-    place_holder,
+    placeholder,
     ...props
 }) => {
     const { general_store } = useStores();
@@ -44,7 +44,7 @@ const FloatingRate = ({
                     min_value={offset.lower_limit}
                     name={name}
                     onChange={change_handler}
-                    placeholder={place_holder}
+                    placeholder={placeholder}
                     setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
                     type='number'
@@ -85,7 +85,14 @@ const FloatingRate = ({
                     {error_messages}
                 </Text>
             ) : (
-                <Text as='div' size='xxs' color='blue' weight='normal' line_height='xs' className='floating-rate__hint'>
+                <Text
+                    as='div'
+                    size='xxs'
+                    color='status-info-blue'
+                    weight='normal'
+                    line_height='xs'
+                    className='floating-rate__hint'
+                >
                     {localize('Your rate is')} = {market_feed} {local_currency}
                 </Text>
             )}
@@ -101,7 +108,7 @@ FloatingRate.propTypes = {
     fiat_currency: PropTypes.string,
     local_currency: PropTypes.string,
     offset: PropTypes.object,
-    place_holder: PropTypes.string,
+    placeholder: PropTypes.string,
 };
 
 export default FloatingRate;

@@ -100,16 +100,11 @@ const wallet_card_data: TWalletCardData = {
 
 const fiat_wallets = ['aud', 'eur', 'gbp', 'usd'];
 
-const getPascalCase = (str: string) => {
-    if (!str) return '';
-    return (
-        String(str)
-            .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '$')
-            .replace(/[^_A-Za-z0-9]+/g, '$')
-            .replace(/([a-z])([A-Z])/g, (_m, a, b) => `${a}$${b}`)
-            // .toLowerCase()
-            .replace(/(\$)(\w?)/g, (_m, _a, b) => b.toUpperCase())
-    );
+const snakeToPascal = (string: string) => {
+    return string
+        .split('_')
+        .map(substr => substr.charAt(0).toUpperCase() + substr.slice(1))
+        .join('');
 };
 
 const CardText = ({ balance, currency, demo, wallet_name }: CardText) => {
@@ -148,7 +143,7 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
         return demo || wallet_name === 'demo' ? 'IcAppstoreWalletDemo' : 'IcAppstoreWalletDefault';
     };
 
-    const name = getPascalCase(wallet_name?.replace('_', '-') || '');
+    const name = snakeToPascal(wallet_name || '');
 
     const wallet_logo = `${name}${dark ? 'Dark' : 'Light'}`;
 

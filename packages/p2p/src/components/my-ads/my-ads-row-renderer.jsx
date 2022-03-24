@@ -331,8 +331,8 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     </Popover>
                                 </div>
                             )}
-                            {!!is_advert_active && enable_action_point && (
-                                <div onClick={onClickSwitchAd}>
+                            {!!is_advert_active && (
+                                <div onClick={enable_action_point ? onClickSwitchAd : onClickEdit}>
                                     <Popover
                                         alignment='bottom'
                                         className='p2p-my-ads__table-popovers__edit'

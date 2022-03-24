@@ -41,6 +41,7 @@
         "babel-eslint": "^10.1.0",
         "babel-loader": "^8.1.0",
         "copy-webpack-plugin": "^9.0.1",
+        "copy-webpack-plugin-v6": "npm:copy-webpack-plugin@6",
         "cross-env": "^5.2.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",

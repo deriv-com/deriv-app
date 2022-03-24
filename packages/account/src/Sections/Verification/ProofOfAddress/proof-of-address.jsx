@@ -6,8 +6,8 @@ import DemoMessage from 'Components/demo-message';
 import ProofOfAddressContainer from './proof-of-address-container.jsx';
 
 const ProofOfAddress = ({ is_virtual, is_mx_mlt, is_switching, refreshNotifications }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
-    if (is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={true} />;
+    const { is_appstore } = React.useContext(PlatformContext);
+    if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={true} />;
 
     return (
         <ProofOfAddressContainer

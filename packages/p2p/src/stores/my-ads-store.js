@@ -89,7 +89,7 @@ export default class MyAdsStore extends BaseStore {
             })
             .finally(() => {
                 this.setIsFormLoading(false);
-                    this.setIsSwitchModalOpen(false, this.selected_ad_id);
+                this.setIsSwitchModalOpen(false, this.selected_ad_id);
             });
     }
 
@@ -281,7 +281,7 @@ export default class MyAdsStore extends BaseStore {
             } else {
                 this.setShowEditAdForm(false);
             }
-        })
+        });
     }
 
     @action.bound

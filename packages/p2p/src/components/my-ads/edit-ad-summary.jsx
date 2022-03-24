@@ -37,7 +37,7 @@ const EditAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
               );
 
     if (offer_amount) {
-        const components = [<Text key={0} weight='bold' size='xs' color='less-prominent' />];
+        const components = [<Text key={0} weight='bold' size='xs' color='less-prominent' />,<Text key={1} weight='normal' size='xs' color='status-info-blue' />,];
         const values = { target_amount: display_offer_amount, target_currency: currency };
 
         if (price_rate) {
@@ -50,7 +50,7 @@ const EditAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
             if (type === buy_sell.BUY) {
                 return (
                     <Localize
-                        i18n_default_text="You're editing an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }} {{local_currency}}/{{ target_currency }})"
+                        i18n_default_text="You're editing an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
                         components={components}
                         values={values}
                     />
@@ -59,7 +59,7 @@ const EditAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
 
             return (
                 <Localize
-                    i18n_default_text="You're editing an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }} {{local_currency}}/{{ target_currency }})"
+                    i18n_default_text="You're editing an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
                     components={components}
                     values={values}
                 />

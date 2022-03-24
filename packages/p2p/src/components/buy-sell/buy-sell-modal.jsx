@@ -68,8 +68,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         }
         buy_sell_store.getExchangeRate(
             general_store.client.currency,
-            // general_store.client.local_currency_config.currency
-            'AUD'
+            general_store.client.local_currency_config.currency
         );
         my_profile_store.setShouldShowAddPaymentMethodForm(false);
         my_profile_store.setSelectedPaymentMethod('');

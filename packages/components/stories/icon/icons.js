@@ -2,14 +2,23 @@
 
 export const icons = {
     appstore: [
+        'IcAppstoreAppCardDefaultBackgroundSmall',
+        'IcAppstoreAppCardDefaultBackground',
         'IcAppstoreCfdsTradeType',
         'IcAppstoreCheck',
+        'IcAppstoreCheckedRedBg',
         'IcAppstoreCheckedTransparent',
         'IcAppstoreChecked',
         'IcAppstoreMultipliersTradeType',
         'IcAppstoreOptionTradeType',
+        'IcAppstoreSkeletonCardBorder',
         'IcAppstoreWalletAudLight',
         'IcAppstoreWalletBitcoinLight',
+        'IcAppstoreWalletCardPlaceholderDarkRedLine',
+        'IcAppstoreWalletCardPlaceholderDark',
+        'IcAppstoreWalletCardPlaceholderLightRedLine',
+        'IcAppstoreWalletCardPlaceholderLight',
+        'IcAppstoreWalletCardXsBackground',
         'IcAppstoreWalletDefault',
         'IcAppstoreWalletDemo',
         'IcAppstoreWalletEthereumLight',

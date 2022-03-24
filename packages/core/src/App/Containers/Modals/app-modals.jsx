@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
+import { componentLoader } from '@deriv/shared';
 
 const AccountSignupModal = React.lazy(() =>
     componentLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -27,23 +28,6 @@ const RealityCheckModal = React.lazy(() =>
 const WelcomeModal = React.lazy(() =>
     componentLoader(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'))
 );
-
-export function componentLoader(lazyComponent, attempts = 3, interval = 1500) {
-    return new Promise((resolve, reject) => {
-        lazyComponent()
-            .then(resolve)
-            .catch(error => {
-                // let us retry after 1500 ms
-                setTimeout(() => {
-                    if (attempts === 1) {
-                        reject(error);
-                        return;
-                    }
-                    componentLoader(lazyComponent, attempts - 1, interval).then(resolve, reject);
-                }, interval);
-            });
-    });
-}
 
 const AppModals = ({
     is_account_needed_modal_on,

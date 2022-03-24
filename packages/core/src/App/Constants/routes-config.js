@@ -1,38 +1,48 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { makeLazyLoader, routes } from '@deriv/shared';
+import { makeLazyLoader, routes, componentLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes
-const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
+const Page404 = React.lazy(() => componentLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
-const Trader = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "trader" */ '@deriv/trader');
-});
+const Trader = React.lazy(() =>
+    componentLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "trader" */ '@deriv/trader');
+    })
+);
 
-const Account = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "account" */ '@deriv/account');
-});
+const Account = React.lazy(() =>
+    componentLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "account" */ '@deriv/account');
+    })
+);
 
-const Cashier = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
-});
+const Cashier = React.lazy(() =>
+    componentLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
+    })
+);
 
-const Bot = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
-});
+const Bot = React.lazy(() =>
+    componentLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
+    })
+);
 
-const AppStore = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
-});
+const AppStore = React.lazy(() =>
+    componentLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
+    })
+);
 
 const getModules = ({ is_appstore }) => {
     const modules = [
@@ -270,7 +280,7 @@ const getModules = ({ is_appstore }) => {
 };
 
 const lazyLoadComplaintsPolicy = makeLazyLoader(
-    () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
+    () => componentLoader(() => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')),
     () => <Loading />
 );
 

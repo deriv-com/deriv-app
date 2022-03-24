@@ -38,7 +38,7 @@ const EditAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
 
     if (offer_amount) {
         const components = [
-            <Text key={0} weight='bold' size='xs' color='less-prominent' />,
+            <Text key={0} weight='bold' size='xs' color='status-info-blue' />,
             <Text key={1} weight='normal' size='xs' color='status-info-blue' />,
         ];
         const values = { target_amount: display_offer_amount, target_currency: currency };

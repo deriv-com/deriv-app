@@ -743,11 +743,7 @@ export const PersonalDetailsForm = ({
                                                                 data-lpignore='true'
                                                                 autoComplete='new-password' // prevent chrome autocomplete
                                                                 type='text'
-                                                                label={
-                                                                    is_eu
-                                                                        ? localize('Citizenship*')
-                                                                        : localize('Citizenship')
-                                                                }
+                                                                label={localize('Citizenship*')}
                                                                 error={errors.citizen}
                                                                 disabled={!isChangeableField('citizen')}
                                                                 list_items={residence_list}
@@ -764,11 +760,7 @@ export const PersonalDetailsForm = ({
                                                     <MobileWrapper>
                                                         <SelectNative
                                                             placeholder={localize('Please select')}
-                                                            label={
-                                                                is_eu
-                                                                    ? localize('Citizenship*')
-                                                                    : localize('Citizenship')
-                                                            }
+                                                            label={localize('Citizenship*')}
                                                             id={'citizen_ship'}
                                                             required={is_eu}
                                                             disabled={!isChangeableField('citizen')}

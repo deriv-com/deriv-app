@@ -336,7 +336,7 @@ const PersonalDetails = ({
                                                                 data-lpignore='true'
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 type='text'
-                                                                label={localize('Citizenship')}
+                                                                label={localize('Citizenship*')}
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={
                                                                     (props.value.citizen && is_fully_authenticated) ||
@@ -352,13 +352,13 @@ const PersonalDetails = ({
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Citizenship')}
+                                                                placeholder={localize('Citizenship*')}
                                                                 name={field.name}
                                                                 disabled={
                                                                     (props.value.citizen && is_fully_authenticated) ||
                                                                     disabled_items.includes('citizen')
                                                                 }
-                                                                label={localize('Citizenship')}
+                                                                label={localize('Citizenship*')}
                                                                 list_items={residence_list}
                                                                 value={values.citizen}
                                                                 use_text={true}

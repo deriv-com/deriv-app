@@ -85,7 +85,14 @@ const FloatingRate = ({
                     {error_messages}
                 </Text>
             ) : (
-                <Text as='div' size='xxs' color='blue' weight='normal' line_height='xs' className='floating-rate__hint'>
+                <Text
+                    as='div'
+                    size='xxs'
+                    color='status-info-blue'
+                    weight='normal'
+                    line_height='xs'
+                    className='floating-rate__hint'
+                >
                     {localize('Your rate is')} = {market_feed} {local_currency}
                 </Text>
             )}

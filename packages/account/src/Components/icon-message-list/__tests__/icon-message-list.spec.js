@@ -7,7 +7,7 @@ jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {
         ...original_module,
-        Icon: jest.fn(() => <div data-testid='mocked_icon'></div>),
+        Icon: jest.fn(props => <div data-testid='mocked_icon'>{props.icon}</div>),
     };
 });
 describe('<IconMessageList/>', () => {
@@ -25,10 +25,11 @@ describe('<IconMessageList/>', () => {
         render(<IconMessageList message={'Lorem Ipsom'} />);
         expect(screen.getByText(/lorem ipsom/i)).toBeInTheDocument();
     });
-    it('when the length of message_list is less than 3, it should show messages with icon ', () => {
+    it('when the length of message_list is less than 3, it should show messages with icons ', () => {
         render(<IconMessageList message_list={['Sample Text1', 'Sample Text2']} />);
         expect(screen.getByText(/Sample Text1/i)).toBeInTheDocument();
         expect(screen.getByText(/Sample Text2/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/icclosecircle/i).length).toBe(2);
     });
 
     it('should show first 3 msgs and show_more_btn when the message_list is more than 3', () => {
@@ -42,6 +43,11 @@ describe('<IconMessageList/>', () => {
                 name: /show more/i,
             })
         ).toBeInTheDocument();
+        expect(
+            screen.queryByRole('button', {
+                name: /show less/i,
+            })
+        ).not.toBeInTheDocument();
     });
 
     it('should show all messages and show_less_btn when show_more btn is clicked', () => {

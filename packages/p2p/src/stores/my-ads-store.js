@@ -89,7 +89,6 @@ export default class MyAdsStore extends BaseStore {
             })
             .finally(() => {
                 this.setIsFormLoading(false);
-                if (this.root_store.floating_rate_store.rate_type === 'float')
                     this.setIsSwitchModalOpen(false, this.selected_ad_id);
             });
     }
@@ -282,7 +281,7 @@ export default class MyAdsStore extends BaseStore {
             } else {
                 this.setShowEditAdForm(false);
             }
-        });
+        })
     }
 
     @action.bound

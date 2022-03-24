@@ -169,13 +169,11 @@ export default class MyProfileStore extends BaseStore {
     getAdvertiserInfo() {
         this.setIsLoading(true);
         this.setErrorMessage('');
-
         requestWS({
             p2p_advertiser_info: 1,
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
-
                 this.setAdvertiserInfo(p2p_advertiser_info);
                 this.setBalanceAvailable(p2p_advertiser_info.balance_available);
                 this.setContactInfo(p2p_advertiser_info.contact_info);
@@ -278,7 +276,6 @@ export default class MyProfileStore extends BaseStore {
     getSettings() {
         requestWS({ get_settings: 1 }).then(response => {
             const { get_settings } = response;
-
             if (!response.error) {
                 this.setFullName(`${get_settings.first_name} ${get_settings.last_name}`);
             } else {
@@ -286,7 +283,6 @@ export default class MyProfileStore extends BaseStore {
             }
         });
     }
-
     @action.bound
     handleSubmit(values) {
         requestWS({
@@ -297,7 +293,6 @@ export default class MyProfileStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_update } = response;
-
                 this.setBalanceAvailable(p2p_advertiser_update.balance_available);
                 this.setContactInfo(p2p_advertiser_update.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
@@ -305,13 +300,11 @@ export default class MyProfileStore extends BaseStore {
             } else {
                 this.setFormError(response.error);
             }
-
             setTimeout(() => {
                 this.setIsSubmitSuccess(false);
             }, 3000);
         });
     }
-
     @action.bound
     handleToggle() {
         requestWS({

@@ -278,7 +278,7 @@ export const PersonalDetailsForm = ({
             'address_city',
             'citizen',
         ];
-      
+
         if (is_mf) {
             const required_tax_fields = ['tax_residence', 'tax_identification_number'];
             required_fields.push(...required_tax_fields);
@@ -1172,7 +1172,8 @@ export const PersonalDetailsForm = ({
                                                   (!is_svg && errors.place_of_birth) ||
                                                   (!is_svg && !values.place_of_birth) ||
                                                   // (errors.account_opening_reason || !values.account_opening_reason) ||
-                                                  (errors.citizen || !values.citizen) ||
+                                                  errors.citizen ||
+                                                  !values.citizen ||
                                                   errors.address_line_1 ||
                                                   !values.address_line_1 ||
                                                   errors.address_line_2 ||

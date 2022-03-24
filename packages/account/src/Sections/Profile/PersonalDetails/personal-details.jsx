@@ -276,10 +276,9 @@ export const PersonalDetailsForm = ({
             // 'account_opening_reason',
             'address_line_1',
             'address_city',
+            'citizen',
         ];
-        if (is_eu) {
-            required_fields.push('citizen');
-        }
+      
         if (is_mf) {
             const required_tax_fields = ['tax_residence', 'tax_identification_number'];
             required_fields.push(...required_tax_fields);
@@ -750,8 +749,8 @@ export const PersonalDetailsForm = ({
                                                                 onItemSelection={({ value, text }) =>
                                                                     setFieldValue('citizen', value ? text : '', true)
                                                                 }
-                                                                id={'password'}
-                                                                required={is_eu}
+                                                                id={'citizen_ship'}
+                                                                required
                                                             />
                                                         )}
                                                     </Field>
@@ -761,8 +760,8 @@ export const PersonalDetailsForm = ({
                                                         <SelectNative
                                                             placeholder={localize('Please select')}
                                                             label={localize('Citizenship*')}
-                                                            id={'citizen_ship'}
-                                                            required={is_eu}
+                                                            id={'citizen_ship_mobile'}
+                                                            required
                                                             disabled={!isChangeableField('citizen')}
                                                             value={values.citizen}
                                                             list_items={residence_list}
@@ -1173,6 +1172,7 @@ export const PersonalDetailsForm = ({
                                                   (!is_svg && errors.place_of_birth) ||
                                                   (!is_svg && !values.place_of_birth) ||
                                                   // (errors.account_opening_reason || !values.account_opening_reason) ||
+                                                  (errors.citizen || !values.citizen) ||
                                                   errors.address_line_1 ||
                                                   !values.address_line_1 ||
                                                   errors.address_line_2 ||

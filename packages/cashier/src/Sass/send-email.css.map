@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACK,AAAD,kBAAQ,CAAC;EACL,aAAa,EAAE,IAAI;CACtB;;AACA,AAAD,iBAAO,CAAC;EACJ,UAAU,EAAE,IAAI;EAChB,aAAa,EAAE,MAAM;CAKxB;;AAPA,AAIG,iBAJG,GAID,QAAQ,CAAC;EACP,aAAa,EAAE,GAAG;CACrB;;AAEJ,AAAD,0BAAgB,CAAC;EACb,MAAM,EAAE,WAAW;CACtB",
+    "sources": [
+        "send-email.scss"
+    ],
+    "names": [],
+    "file": "send-email.css"
+}

@@ -1,0 +1,35 @@
+.dw-facts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 4rem;
+}
+
+.dw-facts__item {
+  padding: 0 2.4rem;
+  border-left: 1px solid var(--general-section-1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dw-facts__item:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.dw-facts__item-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 1.6rem 0;
+}
+/*# sourceMappingURL=facts.css.map */

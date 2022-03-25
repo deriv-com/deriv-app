@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,UAAU,CAAC;EACP,OAAO,EAAE,IAAI;EACb,MAAM,EAAE,SAAS;EACjB,KAAK,EAAE,GAAG;EACV,eAAe,EAAE,MAAM;EACvB,WAAW,EAAE,MAAM;CACtB;;AACD,AAAA,MAAM,CAAC;EACH,SAAS,EAAE,KAAK;EAChB,KAAK,EAAE,mBAAmB;EAC1B,UAAU,EAAE,KAAK;EACjB,aAAa,EAAE,IAAI;EACnB,KAAK,EAAE,GAAG;CACb",
+    "sources": [
+        "label.stories.scss"
+    ],
+    "names": [],
+    "file": "label.stories.css"
+}

@@ -1,0 +1,108 @@
+/** Slideout Animation */
+@-webkit-keyframes SlideIn {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    height: auto;
+    max-height: 100vh;
+  }
+}
+@keyframes SlideIn {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    height: auto;
+    max-height: 100vh;
+  }
+}
+
+@-webkit-keyframes SlideOut {
+  from {
+    opacity: 1;
+    max-height: 100vh;
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+  }
+}
+
+@keyframes SlideOut {
+  from {
+    opacity: 1;
+    max-height: 100vh;
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+  }
+}
+
+.dc-collapsible {
+  padding: 0.8rem;
+  border-radius: 0.4rem;
+  background-color: var(--general-section-1);
+}
+
+.dc-collapsible--has-collapsible-btn {
+  padding-top: 0;
+}
+
+.dc-collapsible--has-title {
+  padding-bottom: 0;
+}
+
+.dc-collapsible__button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 32px;
+}
+
+.dc-collapsible__icon {
+  -webkit-transition: -webkit-transform 0.3s ease-in-out;
+  transition: -webkit-transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
+}
+
+.dc-collapsible__icon--top {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.dc-collapsible__icon--top.dc-collapsible__icon--is-open {
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+
+.dc-collapsible__icon--bottom.dc-collapsible__icon--is-open {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.dc-collapsible__item--collapsed {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  margin: initial !important;
+  padding: initial !important;
+}
+
+.dc-collapsible__title {
+  margin-left: 0;
+  margin-right: auto;
+}
+/*# sourceMappingURL=collapsible.css.map */

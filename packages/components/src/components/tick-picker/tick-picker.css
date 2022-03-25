@@ -1,0 +1,83 @@
+.dc-tick-picker {
+  width: 100%;
+  max-width: 300px;
+  height: 328px;
+  background-color: inherit;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.dc-tick-picker div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dc-tick-picker__calculation {
+  margin-bottom: 28px;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.dc-tick-picker__calculation .dc-tick-picker__holder {
+  color: var(--purchase-main-2);
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  margin: 0 1.4rem;
+}
+
+.dc-tick-picker__calculation .operator {
+  background-color: var(--general-section-2);
+  width: 48px;
+  height: 48px;
+}
+
+.dc-tick-picker__calculation .operator .dc-btn__text {
+  -webkit-transform: scale(2);
+          transform: scale(2);
+}
+
+.dc-tick-picker__submit-wrapper {
+  margin-bottom: 1.6rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.dc-tick-picker__submit-wrapper button {
+  background-color: var(--general-section-2);
+  height: 48px;
+  width: 112px;
+}
+
+.dc-tick-picker__submit-wrapper button span {
+  color: var(--text-prominent);
+  font-size: 1.6rem;
+}
+
+.dc-tick-picker__submit-wrapper--is-disabled {
+  pointer-events: none;
+}
+
+.dc-tick-picker__submit-wrapper--is-disabled .dc-btn {
+  background-color: var(--general-disabled);
+}
+/*# sourceMappingURL=tick-picker.css.map */

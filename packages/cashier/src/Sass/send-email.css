@@ -1,0 +1,17 @@
+.send-email__space {
+  margin-bottom: 1rem;
+}
+
+.send-email__icon {
+  margin-top: 8rem;
+  margin-bottom: 1.6rem;
+}
+
+.send-email__icon + .dc-text {
+  margin-bottom: 8px;
+}
+
+.send-email__verify-button {
+  margin: 3.2rem auto;
+}
+/*# sourceMappingURL=send-email.css.map */

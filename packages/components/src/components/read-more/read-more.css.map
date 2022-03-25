@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACK,AAAD,qBAAS,CAAC;EACN,KAAK,EAAE,oBAAoB;EAC3B,WAAW,EAAE,uBAAuB;CACvC;;AACA,AAAD,qBAAS,CAAC;EACN,eAAe,EAAE,SAAS;CAC7B",
+    "sources": [
+        "read-more.scss"
+    ],
+    "names": [],
+    "file": "read-more.css"
+}

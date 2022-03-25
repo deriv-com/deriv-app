@@ -1,0 +1,27 @@
+.notify__item-button {
+  margin-top: 8px;
+  height: 2.8rem !important;
+  margin-left: 100%;
+  -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+}
+
+.notify__item-button .btn__text {
+  font-size: var(--text-size-xxs);
+}
+
+.notify__item-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.notify__item-message {
+  margin-left: 8px;
+  font-size: var(--text-size-xxs);
+  line-height: 1.2;
+}
+/*# sourceMappingURL=notify-item.css.map */

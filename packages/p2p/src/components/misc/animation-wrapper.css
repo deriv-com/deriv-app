@@ -1,0 +1,26 @@
+.animation-wrapper-enter {
+  -webkit-transform: scale3d(1, 0, 1);
+          transform: scale3d(1, 0, 1);
+  opacity: 0;
+}
+
+.animation-wrapper-enter-done {
+  -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+  opacity: 1;
+}
+
+.animation-wrapper-exit {
+  -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+  opacity: 1;
+}
+
+.animation-wrapper-exit-done {
+  display: none;
+  -webkit-transform: scale3d(1, 0, 1);
+          transform: scale3d(1, 0, 1);
+  opacity: 0;
+  height: 0px;
+}
+/*# sourceMappingURL=animation-wrapper.css.map */

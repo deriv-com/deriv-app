@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,wBAAwB;AACxB,AAAA,UAAU,CAAC;EACP,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,MAAM;EACvB,WAAW,EAAE,MAAM;EACnB,MAAM,EAAE,KAAK;EACb,KAAK,EAAE,IAAI;EACX,UAAU,EAAE,MAAM;EAClB,KAAK,EAAE,8BAA8B;CACxC",
+    "sources": [
+        "error-boundary.scss"
+    ],
+    "names": [],
+    "file": "error-boundary.css"
+}

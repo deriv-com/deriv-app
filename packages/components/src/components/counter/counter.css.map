@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,WAAW,CAAC;EACR,WAAW,EAAE,MAAM;EACnB,UAAU,EAAE,oBAAoB;EAChC,aAAa,EAAE,MAAM;EACrB,KAAK,EAAE,8BAA8B;EACrC,OAAO,EAAE,WAAW;EACpB,SAAS,EAAE,IAAI;EACf,WAAW,EAAE,IAAI;EACjB,eAAe,EAAE,MAAM;EACvB,WAAW,EAAE,CAAC;EACd,OAAO,EAAE,OAAO;CACnB",
+    "sources": [
+        "counter.scss"
+    ],
+    "names": [],
+    "file": "counter.css"
+}

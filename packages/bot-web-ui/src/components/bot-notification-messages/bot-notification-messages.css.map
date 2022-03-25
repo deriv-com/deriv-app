@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,wBAAwB,CAAC;EACrB,QAAQ,EAAE,QAAQ;EAClB,GAAG,EAAE,IAAI;EACT,IAAI,EAAE,CAAC;EACP,KAAK,EAAE,kBAAkB;EACzB,MAAM,EAAE,iBAAiB;CAU5B;;AAfD,AAOI,wBAPoB,CAOpB,sBAAsB,CAAC;EACnB,UAAU,EAAE,yCAAyC;CACxD;;AACA,AACG,uCADY,CACZ,sBAAsB,CAAC;EACnB,SAAS,EAAE,+BAA+B;CAC7C",
+    "sources": [
+        "bot-notification-messages.scss"
+    ],
+    "names": [],
+    "file": "bot-notification-messages.css"
+}

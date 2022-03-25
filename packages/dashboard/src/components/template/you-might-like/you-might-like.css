@@ -1,0 +1,37 @@
+.dw-you-might-like {
+  background-color: var(--general-hover);
+}
+
+.dw-you-might-like__wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dw-you-might-like__card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-width: 29.6rem;
+  margin-right: 2.4rem;
+  border-radius: 10px;
+}
+
+.dw-you-might-like__card-image {
+  margin-bottom: 1.6rem;
+  margin-top: 4rem;
+  height: 15rem;
+}
+
+.dw-you-might-like__line {
+  width: 93.6rem;
+  height: 1px;
+  border: 1px solid var(--general-section-1);
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+/*# sourceMappingURL=you-might-like.css.map */

@@ -1,0 +1,47 @@
+/** @define dc-progress-bar */
+.dc-progress-bar__container {
+  height: 2.4rem;
+  width: 12rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.dc-progress-bar--danger {
+  background-color: var(--status-danger);
+}
+
+.dc-progress-bar--warning {
+  background-color: var(--status-warning);
+}
+
+.dc-progress-bar--normal {
+  background-color: var(--status-success);
+}
+
+.dc-progress-bar__bar {
+  height: 100%;
+  position: absolute;
+  left: 0;
+}
+
+.dc-progress-bar__empty {
+  width: 100%;
+  position: absolute;
+  opacity: 0.16;
+  height: 100%;
+}
+
+.dc-progress-bar__label {
+  z-index: 2;
+}
+/*# sourceMappingURL=progress-bar.css.map */

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACK,AAAD,wCAAQ,CAAC;EACL,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,MAAM;EACtB,cAAc,EAAE,MAAM;CACzB",
+    "sources": [
+        "payment-method-accordion-content.scss"
+    ],
+    "names": [],
+    "file": "payment-method-accordion-content.css"
+}

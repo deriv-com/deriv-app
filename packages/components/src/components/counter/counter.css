@@ -1,0 +1,19 @@
+.dc-counter {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: var(--status-danger);
+  border-radius: 0.8rem;
+  color: var(--text-colored-background);
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-size: 1rem;
+  font-weight: bold;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  line-height: 1;
+  padding: 3px 5px;
+}
+/*# sourceMappingURL=counter.css.map */

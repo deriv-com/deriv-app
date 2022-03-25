@@ -1,0 +1,23 @@
+.bot-footer-extensions {
+  display: inline;
+}
+
+.bot-footer-extensions__button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: var(--text-size-xs);
+  padding: 0.8rem;
+  cursor: pointer;
+  height: 100%;
+}
+
+.bot-footer-extensions__button--active {
+  border-bottom: 0.2rem solid var(--brand-red-coral);
+  font-weight: 700;
+  padding-bottom: 0.6rem;
+}
+/*# sourceMappingURL=bot-footer-extensions.css.map */

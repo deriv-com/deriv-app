@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACK,AAAD,gBAAO,CAAC;EACJ,aAAa,EAAE,MAAM;CACxB;;AACA,AAAD,kBAAS,CAAC;EACN,gBAAgB,EAAE,mBAAmB;EACrC,aAAa,EAAE,IAAI;EACnB,YAAY,EAAE,MAAM;EACpB,KAAK,EAAE,MAAM;EACb,MAAM,EAAE,MAAM;EACd,IAAI,EAAE,IAAI;EACV,UAAU,EAAE,MAAM;CAMrB;;AAJI,AAAD,0BAAS,CAAC;EACN,OAAO,EAAE,IAAI;EACb,aAAa,EAAE,MAAM;CACxB",
+    "sources": [
+        "side-note.scss"
+    ],
+    "names": [],
+    "file": "side-note.css"
+}

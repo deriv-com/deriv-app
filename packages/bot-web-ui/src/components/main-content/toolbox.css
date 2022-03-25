@@ -1,0 +1,193 @@
+.db-toolbox {
+  height: var(--bot-content-height) !important;
+  top: 10.4rem !important;
+  width: 25.6rem !important;
+}
+
+.db-toolbox__search {
+  padding: 0.8rem;
+  height: 5rem;
+}
+
+.db-toolbox__search-field {
+  margin-bottom: 0 !important;
+}
+
+.db-toolbox__search-field input::-ms-clear {
+  display: none;
+}
+
+.db-toolbox__search-field .dc-input {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.db-toolbox__search-field .dc-input__field {
+  width: unset;
+  height: 3.2rem;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  padding: 0.8rem;
+}
+
+.db-toolbox__search-field .dc-input__leading-icon {
+  position: unset;
+  pointer-events: unset;
+  margin-left: 0.8rem;
+  cursor: pointer;
+}
+
+.db-toolbox__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  z-index: 1;
+  visibility: visible;
+}
+
+.db-toolbox__header {
+  padding: 8px;
+  position: relative;
+  font-weight: bold;
+  font-size: 1.6em;
+  background-color: var(--general-section-1);
+  text-align: center;
+}
+
+.db-toolbox__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.db-toolbox__item:hover {
+  background-color: var(--general-hover);
+}
+
+.db-toolbox__category-arrow {
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.db-toolbox__category-arrow--active {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.db-toolbox__category-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.db-toolbox__category-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-item-align: center;
+      align-self: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 10px;
+  width: 100%;
+}
+
+.db-toolbox__description {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.db-toolbox__icon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-item-align: center;
+      align-self: center;
+  margin-right: 10px;
+}
+
+.db-toolbox__icon > svg {
+  height: 25px;
+  width: 25px;
+}
+
+.db-toolbox__label {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.db-toolbox__row {
+  cursor: pointer;
+  border-top: 1px solid var(--general-section-1);
+}
+
+.db-toolbox__row .db-toolbox__category--selected {
+  background-color: var(--general-active);
+}
+
+.db-toolbox__row:last-of-type {
+  border-bottom: 1px solid var(--general-section-1);
+}
+
+.db-toolbox__button.dc-btn {
+  margin: 16px auto;
+  padding: 0;
+  width: 152px;
+  height: 32px;
+  color: var(--text-colored-background);
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.db-toolbox__sub-category-row {
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.db-toolbox__sub-category-row:hover {
+  background-color: var(--general-hover);
+}
+
+.loader {
+  border: 1px solid var(--general-active);
+  border-top: 1px solid var(--brand-secondary);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  -webkit-animation: spin 1s linear infinite;
+          animation: spin 1s linear infinite;
+}
+/*# sourceMappingURL=toolbox.css.map */

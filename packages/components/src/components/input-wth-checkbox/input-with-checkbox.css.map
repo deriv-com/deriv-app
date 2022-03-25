@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,+BAA+B;AAC/B,AAAA,iBAAiB,CAAC;EACd,QAAQ,EAAE,QAAQ;CAOrB;;AALI,AAAD,yBAAS,CAAC;EACN,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,aAAa;EAC9B,WAAW,EAAE,MAAM;CACtB",
+    "sources": [
+        "input-with-checkbox.scss"
+    ],
+    "names": [],
+    "file": "input-with-checkbox.css"
+}

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,cAAc,CAAC;EACX,UAAU,EAAE,IAAI;EAChB,SAAS,EAAE,MAAM;EACjB,KAAK,EAAE,mBAAmB;CAC7B",
+    "sources": [
+        "dropdown-list.stories.scss"
+    ],
+    "names": [],
+    "file": "dropdown-list.stories.css"
+}

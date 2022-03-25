@@ -1,0 +1,128 @@
+.filter-modal__column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+@media (max-width: 450px) {
+  .filter-modal__column {
+    width: 80%;
+  }
+}
+
+.filter-modal__select {
+  cursor: pointer;
+}
+
+.filter-modal__arrow {
+  min-width: 1.8rem;
+  min-height: 1.8rem;
+}
+
+.filter-modal__selected-payment-methods {
+  max-width: 350px;
+  max-height: 45px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 450px) {
+  .filter-modal__selected-payment-methods {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 400px) {
+  .filter-modal__selected-payment-methods {
+    max-width: 250px;
+  }
+}
+
+.filter-modal__footer-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.filter-modal__row {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-bottom: 2px solid var(--general-section-1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  min-height: 8rem;
+  padding: 0 2.4rem;
+}
+
+@media (max-width: 375px) {
+  .filter-modal__row {
+    padding: 0 0 0 1.5rem;
+    -webkit-box-pack: initial;
+        -ms-flex-pack: initial;
+            justify-content: initial;
+  }
+}
+
+.filter-modal__toggle {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-items: flex-start;
+  -webkit-transform: scale(0.5) translateX(-50%);
+          transform: scale(0.5) translateX(-50%);
+}
+
+.filter-modal__toggle-button {
+  top: 3px;
+}
+
+.filter-modal__toggle-button--on {
+  left: calc(100% - 4px);
+}
+
+.filter-modal__toggle-label {
+  height: 2.4rem;
+  width: 4.5rem;
+}
+
+.filter-modal__checkbox-container {
+  height: 36rem;
+}
+
+.dc-modal__container_payment-methods .dc-modal-header {
+  border-bottom: 2px solid var(--general-section-1);
+  height: 5.6rem;
+}
+
+.dc-modal__container_payment-methods .dc-modal-header__title {
+  padding: 1.6rem 3.2rem;
+}
+
+.dc-modal__container_payment-methods .dc-modal-body {
+  padding: 0;
+  min-width: 33rem;
+}
+
+.dc-modal__container_payment-methods .dc-checkbox {
+  min-height: 4.9rem;
+  padding: 0 1.6rem;
+}
+/*# sourceMappingURL=filter-modal.css.map */

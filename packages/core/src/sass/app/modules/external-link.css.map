@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,gBAAgB,CAAC;EACb,OAAO,EAAE,KAAK;CACjB",
+    "sources": [
+        "external-link.scss"
+    ],
+    "names": [],
+    "file": "external-link.css"
+}

@@ -1,0 +1,11 @@
+/** @define page-404 */
+.page-404__image {
+  margin-right: 1.6rem;
+}
+
+@media screen and (max-width: 758px) {
+  .page-404__image {
+    margin: 0;
+  }
+}
+/*# sourceMappingURL=page-404.css.map */

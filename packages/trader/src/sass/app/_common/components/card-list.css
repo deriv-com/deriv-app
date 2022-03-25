@@ -1,0 +1,20 @@
+/** @define card-list */
+.card-list {
+  overflow: auto;
+}
+
+.card-list .card-list__card {
+  display: block;
+  text-decoration: none;
+  max-width: 450px;
+  margin: 0.6em auto;
+  border-radius: 4px;
+  background-color: var(--general-main-2);
+  border: 1px solid var(--general-main-2);
+  color: var(--text-prominent);
+}
+
+.card-list .card-list__card-link {
+  cursor: pointer;
+}
+/*# sourceMappingURL=card-list.css.map */

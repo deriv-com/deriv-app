@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACI,oCADgC,CAChC,cAAc,CAAC;EACX,WAAW,EAAE,CAAC;CACjB;;AAHL,AAII,oCAJgC,CAIhC,MAAM,CAAC;EACH,WAAW,EAAE,IAAI;CACpB;;AANL,AAOI,oCAPgC,CAOhC,CAAC;AAPL,oCAAoC,CAQhC,YAAY,CAAC;EACT,aAAa,EAAE,IAAI;CACtB;;AAVL,AAWI,oCAXgC,CAWhC,YAAY,CAAC;EACT,WAAW,EAAE,IAAI;EACjB,UAAU,EAAE,MAAM;CACrB",
+    "sources": [
+        "usdt-side-note.scss"
+    ],
+    "names": [],
+    "file": "usdt-side-note.css"
+}

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,sBAAsB,CAAC;EACnB,OAAO,EAAE,MAAM;CAgBlB;;AAdI,AAAD,8BAAS,CAAC;EACN,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,MAAM;EACnB,SAAS,EAAE,mBAAmB;EAC9B,OAAO,EAAE,MAAM;EACf,MAAM,EAAE,OAAO;EACf,MAAM,EAAE,IAAI;CAOf;;AALI,AAAD,sCAAS,CAAC;EACN,aAAa,EAAE,MAAM,CAAC,KAAK,CAAC,sBAAsB;EAClD,WAAW,EAAE,GAAG;EAChB,cAAc,EAAE,MAAM;CACzB",
+    "sources": [
+        "bot-footer-extensions.scss"
+    ],
+    "names": [],
+    "file": "bot-footer-extensions.css"
+}

@@ -1,0 +1,86 @@
+.dw-trade-modal__body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.dw-trade-modal__body--apps {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  margin-bottom: 3.2rem;
+  padding: 0 2.2rem;
+}
+
+.dw-trade-modal__body--apps-item {
+  width: 8.5rem;
+  border-radius: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.dw-trade-modal__body--apps-item:hover {
+  cursor: pointer;
+}
+
+.dw-trade-modal__body--apps-item span {
+  margin-top: 0.4rem;
+}
+
+.dw-trade-modal__body--subtitle {
+  margin: 2.4rem 0;
+}
+
+.dw-trade-modal__mobile {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid var(--border-normal);
+  line-height: 0.1rem;
+  margin-bottom: 4.2rem;
+}
+
+.dw-trade-modal__mobile-text {
+  background: var(--general-main-2);
+  padding: 0.8rem;
+  line-height: unset;
+}
+
+.dw-trade-modal__qrcode {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.dw-trade-modal__qrcode img {
+  width: 6.4rem;
+  margin-bottom: 0.8rem;
+}
+/*# sourceMappingURL=trade-modal-body.css.map */

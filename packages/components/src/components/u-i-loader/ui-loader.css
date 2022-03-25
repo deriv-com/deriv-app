@@ -1,0 +1,114 @@
+/* Loading Spinner */
+/** @define block-ui */
+.block-ui {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0.2em;
+  right: 0;
+  bottom: 0;
+  width: calc(100% - 4px);
+  height: 100%;
+  background: var(--overlay-inside-dialog);
+}
+
+.block-ui__loading {
+  position: absolute;
+  top: calc(50% - 22px);
+  left: calc(50% - 16px);
+  z-index: 11;
+}
+
+.block-ui__loading-spinner {
+  position: relative;
+  margin: 0 auto;
+  width: 4.2em;
+}
+
+.block-ui__loading-spinner:before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+.block-ui__loading-spinner-circular {
+  -webkit-animation: rotate 2s linear infinite;
+          animation: rotate 2s linear infinite;
+  height: 100%;
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.block-ui__loading-spinner-path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  -webkit-animation: dash 1.5s ease-in-out infinite, colorRed 6s ease-in-out infinite;
+          animation: dash 1.5s ease-in-out infinite, colorRed 6s ease-in-out infinite;
+  stroke-linecap: round;
+}
+
+/* Spinner Loader Animation */
+@-webkit-keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+@-webkit-keyframes colorRed {
+  100%,
+  0% {
+    stroke: var(--brand-red-coral);
+  }
+}
+
+@keyframes colorRed {
+  100%,
+  0% {
+    stroke: var(--brand-red-coral);
+  }
+}
+/*# sourceMappingURL=ui-loader.css.map */

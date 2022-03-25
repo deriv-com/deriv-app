@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,sBAAsB,CAAC;EACnB,WAAW,EAAE,MAAM;EACnB,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,MAAM;CAazB;;AAXI,AAAD,8BAAS,CAAC;EACN,UAAU,EAAE,MAAM;CACrB;;AAEA,AAAD,4BAAO,CAAC;EACJ,UAAU,EAAE,OAAO;CACtB;;AAEA,AAAD,4BAAO,CAAC;EACJ,MAAM,EAAE,eAAe;CAC1B",
+    "sources": [
+        "payment-methods-empty.scss"
+    ],
+    "names": [],
+    "file": "payment-methods-empty.css"
+}

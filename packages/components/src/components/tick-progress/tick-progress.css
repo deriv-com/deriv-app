@@ -1,0 +1,17 @@
+.dc-tick-progress {
+  display: -ms-grid;
+  display: grid;
+  grid-gap: 0.8rem;
+}
+
+.dc-tick-progress__tick {
+  border-radius: 50%;
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: var(--fill-disabled);
+}
+
+.dc-tick-progress__tick--on {
+  background-color: var(--brand-secondary);
+}
+/*# sourceMappingURL=tick-progress.css.map */

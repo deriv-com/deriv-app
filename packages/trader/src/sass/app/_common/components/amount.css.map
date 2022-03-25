@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACK,AAAD,eAAS,CAAC;EACN,KAAK,EAAE,0BAA0B;CACpC;;AACA,AAAD,aAAO,CAAC;EACJ,KAAK,EAAE,uBAAuB;CACjC",
+    "sources": [
+        "amount.scss"
+    ],
+    "names": [],
+    "file": "amount.css"
+}

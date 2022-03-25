@@ -1,0 +1,41 @@
+.dc-circular-progress {
+  position: relative;
+  line-height: 0;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.dc-circular-progress__bar {
+  -webkit-transform: scaleX(-1) rotate(-90deg);
+          transform: scaleX(-1) rotate(-90deg);
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+  -webkit-transition: stroke-dashoffset 1s;
+  transition: stroke-dashoffset 1s;
+  stroke: var(--brand-secondary);
+}
+
+.dc-circular-progress__bar--warning {
+  stroke: var(--status-warning);
+}
+
+.dc-circular-progress__bar--danger {
+  stroke: var(--status-danger);
+}
+
+.dc-circular-progress--clockwise {
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
+
+.dc-circular-progress__icon {
+  position: absolute;
+  width: 1.6rem;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+/*# sourceMappingURL=circular-progress.css.map */

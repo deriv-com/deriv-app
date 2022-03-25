@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,6BAA6B;AAC7B,AAAA,eAAe,CAAC;EACZ,QAAQ,EAAE,QAAQ;EAClB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,MAAM;EACvB,WAAW,EAAE,QAAQ;EACrB,MAAM,EAAE,GAAG;CACd",
+    "sources": [
+        "bottom-widgets.scss"
+    ],
+    "names": [],
+    "file": "bottom-widgets.css"
+}

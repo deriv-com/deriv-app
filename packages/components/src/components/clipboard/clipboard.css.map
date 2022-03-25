@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,aAAa,CAAC;EACV,MAAM,EAAE,OAAO;CAClB",
+    "sources": [
+        "clipboard.scss"
+    ],
+    "names": [],
+    "file": "clipboard.css"
+}

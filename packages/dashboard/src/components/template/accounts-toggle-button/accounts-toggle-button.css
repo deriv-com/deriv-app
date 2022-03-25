@@ -1,0 +1,27 @@
+.button-toggle__container {
+  display: inline-block;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 0.8rem;
+  background-color: var(--general-section-1);
+  border-radius: 0.8rem;
+}
+
+.button-toggle__items .dc-button-menu__wrapper {
+  background-color: unset !important;
+}
+
+.button-toggle__items .dc-button-menu__button {
+  width: 9.6rem;
+  height: 3.2rem;
+}
+
+.button-toggle__items .dc-button-menu__button span {
+  font-size: var(--text-size-s);
+}
+
+.button-toggle__items .dc-button-menu--highlight {
+  background-color: var(--state-normal);
+}
+/*# sourceMappingURL=accounts-toggle-button.css.map */

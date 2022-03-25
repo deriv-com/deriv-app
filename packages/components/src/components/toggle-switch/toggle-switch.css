@@ -1,0 +1,53 @@
+.dc-toggle-switch {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+.dc-toggle-switch__label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  cursor: pointer;
+  width: 100px;
+  height: 50px;
+  background: var(--general-disabled);
+  border-radius: 100px;
+  position: relative;
+  -webkit-transition: background-color 0.25s;
+  transition: background-color 0.25s;
+}
+
+.dc-toggle-switch__label:active .dc-toggle-switch__button {
+  width: 55%;
+}
+
+.dc-toggle-switch__button {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  width: 37%;
+  height: 75%;
+  border-radius: 50%;
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
+  background: var(--text-colored-background);
+}
+
+.dc-toggle-switch:checked + .dc-toggle-switch__label {
+  background: var(--text-profit-success);
+}
+
+.dc-toggle-switch:checked + .dc-toggle-switch__label .dc-toggle-switch__button {
+  left: calc(100% - 8px);
+  -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+}
+/*# sourceMappingURL=toggle-switch.css.map */

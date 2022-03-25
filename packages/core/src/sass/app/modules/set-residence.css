@@ -1,0 +1,60 @@
+/* @define set-residence */
+.set-residence {
+  margin: 1.6rem 1.6rem 0;
+}
+
+.set-residence__residence-selection {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: nowrap column;
+          flex-flow: nowrap column;
+}
+
+.set-residence__heading {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 3.3rem;
+}
+
+.set-residence__text {
+  text-align: center;
+  margin-bottom: 3.3rem;
+}
+
+.set-residence__subtext {
+  margin: 0 0 2.4rem;
+  max-width: 90%;
+}
+
+.set-residence__btn {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  margin: 0;
+  background-color: var(--button-primary-default);
+  font-weight: bold;
+  color: var(--text-colored-background);
+  margin-bottom: -16px;
+}
+
+.set-residence__btn:hover {
+  background-color: var(--button-primary-hover);
+}
+
+.set-residence__btn--disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+.set-residence__residence-field {
+  width: 30rem;
+}
+/*# sourceMappingURL=set-residence.css.map */

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,SAAS,CAAC;EACN,MAAM,EAAE,GAAG,CAAC,KAAK,CAAC,oBAAoB;EACtC,UAAU,EAAE,CAAC,CAAC,GAAG,CAAC,IAAI,CAAC,CAAC,CAAC,kBAAkB;EAC3C,UAAU,EAAE,KAAK;EACjB,KAAK,EAAE,IAAI;CACd",
+    "sources": [
+        "frame.scss"
+    ],
+    "names": [],
+    "file": "frame.css"
+}

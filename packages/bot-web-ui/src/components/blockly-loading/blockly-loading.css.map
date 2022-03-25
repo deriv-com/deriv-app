@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACK,AAAD,aAAU,CAAC;EACP,QAAQ,EAAE,KAAK;EACf,OAAO,EAAE,OAAO;EAChB,GAAG,EAAE,CAAC;EACN,MAAM,EAAE,CAAC;EACT,gBAAgB,EAAE,6BAA6B;EAC/C,cAAc,EAAE,IAAI;CACvB",
+    "sources": [
+        "blockly-loading.scss"
+    ],
+    "names": [],
+    "file": "blockly-loading.css"
+}

@@ -1,0 +1,22 @@
+.dw-empty-state {
+  margin-top: 5.6rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.dw-empty-state__content {
+  margin-top: 2.4rem;
+}
+
+.dw-empty-state__content :last-child {
+  margin-top: 0.8rem;
+}
+/*# sourceMappingURL=empty-state.css.map */

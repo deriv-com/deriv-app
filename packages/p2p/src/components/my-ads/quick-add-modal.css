@@ -1,0 +1,25 @@
+.quick-add-modal--body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 1.5rem;
+}
+
+.quick-add-modal--button {
+  margin-left: 0.5rem;
+}
+
+.quick-add-modal--input {
+  padding: 0 2rem;
+}
+
+.quick-add-modal--text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+/*# sourceMappingURL=quick-add-modal.css.map */

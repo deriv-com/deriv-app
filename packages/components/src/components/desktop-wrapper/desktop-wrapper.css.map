@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "desktop-wrapper.scss"
+    ],
+    "names": [],
+    "file": "desktop-wrapper.css"
+}

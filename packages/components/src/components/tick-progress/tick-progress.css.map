@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,iBAAiB,CAAC;EACd,OAAO,EAAE,IAAI;EACb,QAAQ,EAAE,MAAM;CAYnB;;AAVI,AAAD,uBAAO,CAAC;EACJ,aAAa,EAAE,GAAG;EAClB,KAAK,EAAE,MAAM;EACb,MAAM,EAAE,MAAM;EACd,gBAAgB,EAAE,oBAAoB;CAKzC;;AAHI,AAAD,2BAAK,CAAC;EACF,gBAAgB,EAAE,sBAAsB;CAC3C",
+    "sources": [
+        "tick-progress.scss"
+    ],
+    "names": [],
+    "file": "tick-progress.css"
+}

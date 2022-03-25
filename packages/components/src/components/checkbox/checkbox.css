@@ -1,0 +1,62 @@
+.dc-checkbox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  cursor: pointer;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dc-checkbox__input {
+  display: none;
+}
+
+.dc-checkbox__box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 16px;
+  height: 16px;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  margin: 0 8px;
+  border-radius: 2px;
+  -ms-flex-item-align: center;
+      align-self: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 2px solid var(--text-less-prominent);
+  outline: none !important;
+}
+
+.dc-checkbox__box--active {
+  border: none;
+  background-color: var(--brand-red-coral);
+}
+
+.dc-checkbox--active {
+  border: none;
+  background-color: var(--brand-red-coral);
+}
+
+.dc-checkbox--disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+.dc-checkbox--grey-disabled {
+  background-color: var(--checkbox-disabled-grey);
+}
+/*# sourceMappingURL=checkbox.css.map */

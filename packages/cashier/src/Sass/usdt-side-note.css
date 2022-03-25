@@ -1,0 +1,18 @@
+.dc-modal__container_usdt-note-modal .dc-modal-body {
+  padding-top: 0;
+}
+
+.dc-modal__container_usdt-note-modal .title {
+  font-weight: bold;
+}
+
+.dc-modal__container_usdt-note-modal p,
+.dc-modal__container_usdt-note-modal .description {
+  margin-bottom: 1rem;
+}
+
+.dc-modal__container_usdt-note-modal .description {
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+}
+/*# sourceMappingURL=usdt-side-note.css.map */

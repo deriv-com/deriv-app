@@ -1,0 +1,36 @@
+.dw-instruments {
+  margin-top: 4rem;
+}
+
+.dw-instruments__container {
+  margin-top: 2.4rem;
+}
+
+.dw-instruments__pair-wrapper {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 3.6rem;
+  margin-top: 3rem;
+  margin-bottom: 4.4rem;
+}
+
+.dw-instruments__pair {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dw-instruments__pair-icon {
+  margin-right: 1.6rem;
+}
+
+.dw-instruments__line {
+  width: 93.6rem;
+  height: 1px;
+  border: 1px solid var(--general-section-1);
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+/*# sourceMappingURL=instruments.css.map */

@@ -1,0 +1,63 @@
+/* @define dc-carousel */
+.dc-carousel {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  -ms-grid-column-align: center;
+      justify-self: center;
+}
+
+.dc-carousel__row {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 2rem 22.7rem 2rem;
+      grid-template-columns: 2rem 22.7rem 2rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow-x: scroll;
+}
+
+.dc-carousel__body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  opacity: 1;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+
+.dc-carousel__footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 1rem;
+}
+
+.dc-carousel__circle {
+  background-color: var(--text-prominent);
+  opacity: 0.5;
+  margin: 0.5rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dc-carousel__circle--is-active {
+  opacity: 1;
+}
+/*# sourceMappingURL=mobile-carousel.css.map */

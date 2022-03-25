@@ -1,0 +1,32 @@
+.modal-login-prompt {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 80%;
+  color: var(--text-general);
+}
+
+.modal-login-prompt h2 {
+  margin-bottom: 8px;
+}
+
+.modal-login-prompt p {
+  font-size: var(--text-size-xs);
+  line-height: 20px;
+  margin: 8px 0 16px;
+}
+
+.modal-login-prompt .dc-btn {
+  margin: 8px 4px;
+}
+/*# sourceMappingURL=modal-login-prompt.css.map */

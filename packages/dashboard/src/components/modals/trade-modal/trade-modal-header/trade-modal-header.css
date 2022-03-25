@@ -1,0 +1,40 @@
+.dw-trade-modal__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: var(--general-section-2);
+  padding: 1.6rem;
+}
+
+.dw-trade-modal__header--left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dw-trade-modal__header--icon-close {
+  position: absolute;
+  top: 1.8rem;
+  right: 1.8rem;
+}
+
+.dw-trade-modal__header--icon-close:hover {
+  cursor: pointer;
+}
+
+.dw-trade-modal__header--icon-logo {
+  position: absolute;
+  top: 2.6rem;
+  right: 5.6rem;
+}
+/*# sourceMappingURL=trade-modal-header.css.map */

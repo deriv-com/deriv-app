@@ -1,0 +1,12 @@
+@media only screen and (max-width: 800px) {
+  .page-error-storybook .dc-page-error__container {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+}
+
+.page-error-storybook-image {
+  width: 400px;
+  height: auto;
+}
+/*# sourceMappingURL=styles.css.map */

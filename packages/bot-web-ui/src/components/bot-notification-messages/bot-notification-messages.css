@@ -1,0 +1,20 @@
+.notifications-container {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  width: calc(100vw - 30px);
+  height: calc(100% - 65px);
+}
+
+.notifications-container .notification-messages {
+  -webkit-transition: opacity 0.25s linear, -webkit-transform 0.3s ease;
+  transition: opacity 0.25s linear, -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.25s linear;
+  transition: transform 0.3s ease, opacity 0.25s linear, -webkit-transform 0.3s ease;
+}
+
+.notifications-container--is-panel-open .notification-messages {
+  -webkit-transform: translate3d(calc(-350px), 0, 0);
+          transform: translate3d(calc(-350px), 0, 0);
+}
+/*# sourceMappingURL=bot-notification-messages.css.map */

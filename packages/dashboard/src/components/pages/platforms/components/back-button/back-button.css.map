@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,QAAQ,CAAC;EACL,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,MAAM;EACnB,aAAa,EAAE,MAAM;EACrB,MAAM,EAAE,OAAO;CAKlB;;AAHI,AAAD,cAAO,CAAC;EACJ,YAAY,EAAE,MAAM;CACvB",
+    "sources": [
+        "back-button.scss"
+    ],
+    "names": [],
+    "file": "back-button.css"
+}

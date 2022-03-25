@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,yBAAyB,CAAC;EACtB,OAAO,EAAE,IAAI;EACb,SAAS,EAAE,CAAC;EACZ,eAAe,EAAE,MAAM;EACvB,WAAW,EAAE,MAAM;CACtB",
+    "sources": [
+        "unsupported-account.scss"
+    ],
+    "names": [],
+    "file": "unsupported-account.css"
+}

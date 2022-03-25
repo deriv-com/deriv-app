@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,gBAAgB,CAAC;EACb,MAAM,EAAE,IAAI;CACf",
+    "sources": [
+        "temp-my-apps.scss"
+    ],
+    "names": [],
+    "file": "temp-my-apps.css"
+}

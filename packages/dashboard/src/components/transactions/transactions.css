@@ -1,0 +1,116 @@
+.dw-transactions {
+  background-color: var(--general-main-1);
+  margin-top: 10px;
+  height: 500px;
+  width: 100%;
+}
+
+.dw-transactions__header {
+  background-color: var(--general-main-1);
+  padding: 1.2rem 1.6rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.dw-transactions__heading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: var(--general-section-2);
+  height: 38px;
+}
+
+.dw-transactions__heading > * {
+  margin: auto 1.5rem 0.8rem;
+}
+
+.dw-transactions__transaction {
+  background-color: var(--general-main-1);
+  border-bottom: 1px solid var(--general-section-2);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 68px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 1.6rem;
+}
+
+.dw-transactions__transaction-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.dw-transactions__transaction-right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.dw-transactions__transaction-amount--positive {
+  color: var(--status-success);
+}
+
+.dw-transactions__transaction-amount--positive:before {
+  content: '+';
+}
+
+.dw-transactions__transaction-amount--negative {
+  color: var(--status-danger);
+}
+
+.dw-transactions__transaction-amount--negative:before {
+  content: '-';
+}
+
+.dw-transactions__transaction-icon {
+  margin-right: 0.8rem;
+}
+
+.dw-transactions__transactions {
+  height: 100%;
+  width: 100%;
+}
+
+.dw-transactions__filter-dropdown {
+  min-width: 10.4rem;
+}
+
+.dw-transactions__filter-dropdown .dc-dropdown__display {
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 0 1rem;
+}
+
+.dw-transactions__filter-dropdown .dc-dropdown__display-text {
+  padding-left: 0.8rem;
+}
+
+.dw-transactions__filter-dropdown .suffix-icon {
+  position: initial;
+  left: unset;
+}
+/*# sourceMappingURL=transactions.css.map */

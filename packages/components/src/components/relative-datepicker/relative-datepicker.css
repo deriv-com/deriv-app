@@ -1,0 +1,22 @@
+.dc-relative-datepicker {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 16px;
+  position: relative;
+}
+
+.dc-relative-datepicker__span {
+  width: 100%;
+  cursor: pointer;
+}
+
+.dc-relative-datepicker__input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+/*# sourceMappingURL=relative-datepicker.css.map */

@@ -1,0 +1,34 @@
+/** @define no-results-found; weak */
+.no-results-found {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 2.4rem 0.8rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  text-align: center;
+}
+
+.no-results-found__title {
+  font-size: var(--text-size-xs);
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: center;
+  margin-bottom: 0.8rem;
+  color: var(--text-general);
+}
+
+.no-results-found__subtitle {
+  letter-spacing: normal;
+  margin: 0;
+}
+/*# sourceMappingURL=contract-type-no-result.css.map */

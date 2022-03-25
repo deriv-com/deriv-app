@@ -1,0 +1,152 @@
+.dc-carousel {
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.dc-carousel--mt5 {
+  -webkit-box-pack: unset;
+      -ms-flex-pack: unset;
+          justify-content: unset;
+}
+
+.dc-carousel__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.dc-carousel__box {
+  overflow: hidden;
+}
+
+.dc-carousel__box--mt5 {
+  margin: 0 -1.4rem;
+}
+
+.dc-carousel__wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-transition: -webkit-transform 0.3s linear;
+  transition: -webkit-transform 0.3s linear;
+  transition: transform 0.3s linear;
+  transition: transform 0.3s linear, -webkit-transform 0.3s linear;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 0.5rem 0;
+  height: 100%;
+}
+
+.dc-carousel__wrapper--mt5 {
+  padding-top: unset;
+}
+
+.dc-carousel__card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding-bottom: 0.8rem;
+}
+
+.dc-carousel__nav {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding: 0 2.4rem;
+  overflow: hidden;
+  margin-bottom: 2.4rem;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.dc-carousel__nav--upper {
+  margin-bottom: 0;
+}
+
+.dc-carousel__nav-list {
+  display: inline-block;
+  text-align: center;
+  margin: 0 auto;
+  position: relative;
+}
+
+.dc-carousel__nav--lower {
+  margin-bottom: 0;
+}
+
+.dc-carousel__nav-item {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 0.8rem;
+  cursor: pointer;
+}
+
+.dc-carousel__nav-item--active {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: initial;
+  -webkit-transition: -webkit-transform 0.3s linear;
+  transition: -webkit-transform 0.3s linear;
+  transition: transform 0.3s linear;
+  transition: transform 0.3s linear, -webkit-transform 0.3s linear;
+}
+
+.dc-carousel__icon {
+  cursor: pointer;
+}
+
+.dc-carousel__icon--left {
+  position: relative;
+  right: 5.2rem;
+}
+
+.dc-carousel__icon--mt5 {
+  background: var(--icon-grey-background);
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  padding-top: 1rem;
+  line-height: 6rem;
+  text-align: center;
+}
+/*# sourceMappingURL=carousel.css.map */

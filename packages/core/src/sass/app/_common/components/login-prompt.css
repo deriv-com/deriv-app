@@ -1,0 +1,34 @@
+/** @define login-prompt */
+.login-prompt {
+  height: calc(100vh - 84px);
+  margin: 0 2em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.login-prompt__icon {
+  height: 6.4em;
+  width: 6.4em;
+  margin-bottom: 1em;
+}
+
+.login-prompt__icon-svg {
+  height: 100%;
+  width: 100%;
+}
+
+.login-prompt__message {
+  font-size: 1.4em;
+}
+/*# sourceMappingURL=login-prompt.css.map */

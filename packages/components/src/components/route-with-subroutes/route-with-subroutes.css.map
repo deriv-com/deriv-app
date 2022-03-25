@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "route-with-subroutes.scss"
+    ],
+    "names": [],
+    "file": "route-with-subroutes.css"
+}

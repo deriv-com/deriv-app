@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,sBAAsB,CAAC;EACnB,UAAU,EAAE,IAAI;EAChB,SAAS,EAAE,MAAM;EACjB,KAAK,EAAE,mBAAmB;CAC7B;;AACD,AAAA,OAAO,CAAC;EACJ,MAAM,EAAE,GAAG;CACd",
+    "sources": [
+        "fade-wrapper.stories.scss"
+    ],
+    "names": [],
+    "file": "fade-wrapper.stories.css"
+}

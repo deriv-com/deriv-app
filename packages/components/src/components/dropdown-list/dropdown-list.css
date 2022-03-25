@@ -1,0 +1,87 @@
+.dc-dropdown-list {
+  position: absolute;
+  margin-top: 4px;
+  border-radius: 4px;
+  z-index: 1;
+  -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
+          box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
+  -webkit-transform-origin: top;
+          transform-origin: top;
+  -webkit-transition: opacity 0.25s linear, -webkit-transform 0.25s ease;
+  transition: opacity 0.25s linear, -webkit-transform 0.25s ease;
+  transition: transform 0.25s ease, opacity 0.25s linear;
+  transition: transform 0.25s ease, opacity 0.25s linear, -webkit-transform 0.25s ease;
+  -webkit-transform: scale(1, 0);
+          transform: scale(1, 0);
+  cursor: pointer;
+  background-color: var(--state-normal);
+}
+
+.dc-dropdown-list--enter, .dc-dropdown-list--exit {
+  -webkit-transform: scale(1, 0);
+          transform: scale(1, 0);
+  opacity: 0;
+}
+
+.dc-dropdown-list--enter-done {
+  -webkit-transform: scale(1, 1);
+          transform: scale(1, 1);
+  opacity: 1;
+}
+
+.dc-dropdown-list__group-header {
+  padding: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--brand-red-coral);
+  height: 3.6rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.dc-dropdown-list__item {
+  min-height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 1rem 1.6rem;
+  font-size: 1.4rem;
+  color: var(--text-general);
+}
+
+.dc-dropdown-list__item:hover {
+  background-color: var(--state-hover);
+}
+
+.dc-dropdown-list__item--active {
+  background-color: var(--state-active);
+}
+
+.dc-dropdown-list__item-icon {
+  margin-right: 8px;
+}
+
+.dc-dropdown-list__item--disabled {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.dc-dropdown-list__separator {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: calc(100% - 3.2rem);
+  border-bottom: 1px solid var(--border-normal);
+  margin: 1.6rem;
+}
+/*# sourceMappingURL=dropdown-list.css.map */

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,kCAAkC;AAClC,AAAA,oBAAoB,CAAC;EACjB,OAAO,EAAE,SAAS;EAClB,KAAK,EAAE,qBAAqB;EAC5B,WAAW,EAAE,IAAI;EACjB,KAAK,EAAE,IAAI;EACX,UAAU,EAAE,MAAM;EAClB,WAAW,EAAE,GAAG;EAChB,SAAS,EAAE,KAAK;EAChB,SAAS,EAAE,kBAAkB;CAChC",
+    "sources": [
+        "account-deactivated.scss"
+    ],
+    "names": [],
+    "file": "account-deactivated.css"
+}

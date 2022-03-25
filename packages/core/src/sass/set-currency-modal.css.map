@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACI,8BAD0B,CAC1B,kBAAkB,CAAC;EACf,YAAY,EAAE,IAAI;CACrB",
+    "sources": [
+        "set-currency-modal.scss"
+    ],
+    "names": [],
+    "file": "set-currency-modal.css"
+}

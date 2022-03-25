@@ -1,0 +1,23 @@
+.side-note__text {
+  margin-bottom: 0.8rem;
+}
+
+.side-note__bullet {
+  background-color: var(--text-general);
+  border-radius: 100%;
+  margin-right: 0.8rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
+  margin-top: 0.8rem;
+}
+
+.side-note__bullet-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 1.1rem;
+}
+/*# sourceMappingURL=side-note.css.map */

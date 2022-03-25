@@ -1,0 +1,30 @@
+.dc-horizontal-swipe {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dc-horizontal-swipe--left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  left: 0;
+  position: absolute;
+}
+
+.dc-horizontal-swipe--main {
+  background: var(--general-main-1);
+  -webkit-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+  width: 100vw;
+  z-index: 1000;
+}
+
+.dc-horizontal-swipe--right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  right: 0;
+}
+/*# sourceMappingURL=horizontal-swipe.css.map */

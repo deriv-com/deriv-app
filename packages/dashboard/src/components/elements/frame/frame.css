@@ -1,0 +1,9 @@
+.dw-frame {
+  border: 1px solid var(--border-normal);
+  -webkit-box-shadow: 0 4px 16px 0 var(--shadow-menu);
+          box-shadow: 0 4px 16px 0 var(--shadow-menu);
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+}
+/*# sourceMappingURL=frame.css.map */

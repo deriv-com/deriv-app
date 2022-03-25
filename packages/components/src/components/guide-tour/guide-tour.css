@@ -1,0 +1,65 @@
+.dc-guide-tour__tooltip {
+  background-color: var(--general-main-1);
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  padding: 2.4rem;
+  text-align: left;
+  width: 36rem;
+}
+
+.dc-guide-tour__tooltip p {
+  padding: 0.8rem 0 0;
+}
+
+.dc-guide-tour__tooltip__buttons {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.dc-guide-tour__tooltip__buttons .dc-btn {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+
+.dc-guide-tour__tooltip__buttons--hidden {
+  display: none;
+}
+
+.dc-guide-tour__tooltip__footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.dc-guide-tour__tooltip__progress {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: auto 0;
+}
+
+.dc-guide-tour__tooltip__circle {
+  background-color: var(--general-section-1);
+  border-radius: 50%;
+  height: 0.8rem;
+  margin-right: 0.8rem;
+  width: 0.8rem;
+}
+
+.dc-guide-tour__tooltip__circle--active {
+  background-color: var(--brand-red-coral);
+}
+/*# sourceMappingURL=guide-tour.css.map */

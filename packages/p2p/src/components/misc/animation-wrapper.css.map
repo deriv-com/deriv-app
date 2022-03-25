@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACK,AAAD,wBAAO,CAAC;EACJ,SAAS,EAAE,gBAAgB;EAC3B,OAAO,EAAE,CAAC;CAMb;;AAJI,AAAD,6BAAM,CAAC;EACH,SAAS,EAAE,gBAAgB;EAC3B,OAAO,EAAE,CAAC;CACb;;AAEJ,AAAD,uBAAM,CAAC;EACH,SAAS,EAAE,gBAAgB;EAC3B,OAAO,EAAE,CAAC;CAQb;;AANI,AAAD,4BAAM,CAAC;EACH,OAAO,EAAE,IAAI;EACb,SAAS,EAAE,gBAAgB;EAC3B,OAAO,EAAE,CAAC;EACV,MAAM,EAAE,GAAG;CACd",
+    "sources": [
+        "animation-wrapper.scss"
+    ],
+    "names": [],
+    "file": "animation-wrapper.css"
+}

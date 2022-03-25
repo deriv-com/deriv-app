@@ -1,0 +1,27 @@
+.bot__chart-container {
+  position: relative;
+  top: 0;
+}
+
+.bot__chart-container-wrapper {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  background-color: var(--general-main-1);
+}
+
+.bot__chart-container .cq-context div.ciq-chart div.stx_jump_today.home > svg {
+  top: 10px;
+  left: 8px;
+  padding: 0;
+  position: absolute;
+}
+
+.bot__chart-container .injectionDiv {
+  display: none;
+}
+
+.bot__chart-container .cq-dialog-portal {
+  position: absolute;
+}
+/*# sourceMappingURL=chart.css.map */

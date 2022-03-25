@@ -1,0 +1,98 @@
+.dc-form-progress {
+  width: 100%;
+}
+
+.dc-form-progress__header {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-bottom: 3.2rem;
+}
+
+.dc-form-progress__header > h2 {
+  text-transform: none;
+  margin: 2rem 0 0;
+}
+
+.dc-form-progress__step {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 6rem;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  width: 160px;
+  z-index: 2;
+}
+
+.dc-form-progress__step .identifier {
+  border-radius: 50%;
+  display: block;
+  width: 24px;
+  background-color: var(--text-less-prominent);
+  border: 1px solid var(--text-less-prominent);
+}
+
+.dc-form-progress__step .identifier--active {
+  background-color: var(--brand-red-coral) !important;
+  border: 1px solid var(--brand-red-coral) !important;
+}
+
+.dc-form-progress__steps {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 20px;
+  position: relative;
+}
+
+.dc-form-progress__steps--before {
+  bottom: 0;
+  content: '';
+  left: 0;
+  margin: 0 auto;
+  /* this centers the line to the full width specified */
+  position: absolute;
+  /* positioning must be absolute here, and relative positioning must be applied to the parent */
+  right: 0;
+  top: 1.7rem;
+  border-top: 2px solid var(--text-less-prominent);
+}
+
+.dc-form-progress__steps--after {
+  border-top: 2px solid var(--brand-red-coral);
+  bottom: 0;
+  content: '';
+  left: 0;
+  margin: 0 auto;
+  /* this centers the line to the full width specified */
+  position: absolute;
+  /* positioning must be absolute here, and relative positioning must be applied to the parent */
+  top: 1.7rem;
+  -webkit-transition: width 0.3s ease;
+  transition: width 0.3s ease;
+}
+/*# sourceMappingURL=form-progress.css.map */

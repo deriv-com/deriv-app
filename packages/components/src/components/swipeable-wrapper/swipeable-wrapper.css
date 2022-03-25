@@ -1,0 +1,52 @@
+.dc-swipeable {
+  position: relative;
+  height: 100%;
+}
+
+.dc-swipeable__view {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-transition: -webkit-transform 0.1s linear;
+  transition: -webkit-transform 0.1s linear;
+  transition: transform 0.1s linear;
+  transition: transform 0.1s linear, -webkit-transform 0.1s linear;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  height: inherit;
+}
+
+.dc-swipeable__item {
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  width: 100vw;
+}
+
+.dc-swipeable__item--is-disabled .dc-swipeable__view {
+  -webkit-transform: translateX(-100vw);
+          transform: translateX(-100vw);
+  -webkit-transition: none;
+  transition: none;
+}
+
+.dc-swipeable__nav {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  z-index: 3;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 1.6rem 0.8rem;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+/*# sourceMappingURL=swipeable-wrapper.css.map */

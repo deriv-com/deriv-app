@@ -1,0 +1,42 @@
+.dw-indices {
+  margin-top: 4rem;
+}
+
+.dw-indices__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-top: 4rem;
+}
+
+.dw-indices__pair-wrapper {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 2.4rem;
+  margin-top: 2.4rem;
+}
+
+.dw-indices__indice {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dw-indices__indice-icon {
+  margin-right: 0.8rem;
+}
+
+.dw-indices__line {
+  width: 93.6rem;
+  height: 1px;
+  border: 1px solid var(--general-section-1);
+  margin-top: 4rem;
+  margin-bottom: 0;
+}
+/*# sourceMappingURL=indices.css.map */

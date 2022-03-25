@@ -1,0 +1,94 @@
+.dw-get {
+  margin-bottom: 2.8rem;
+}
+
+.dw-get__icon {
+  margin-right: 2.4rem;
+}
+
+.dw-get__wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dw-get__full-width {
+  width: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dw-get__header {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1.6rem;
+}
+
+.dw-get__header--left {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dw-get__header-center {
+  margin: 0 1.6rem;
+}
+
+.dw-get__share {
+  cursor: pointer;
+}
+
+.dw-get__trade {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 1.6rem 0;
+}
+
+.dw-get__item {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-right: 1.6rem;
+}
+
+.dw-get__item:last-child {
+  margin-right: 0;
+}
+
+.dw-get__item-wrapper {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 0 2.4rem;
+  border-left: 1px solid var(--general-section-1);
+}
+
+.dw-get__item-wrapper:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.dw-get__item-title {
+  margin-bottom: 0.8rem;
+}
+
+.dw-get__item-icon {
+  margin-right: 0.8rem;
+}
+
+.dw-get__item-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+/*# sourceMappingURL=get-section.css.map */

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACK,AAAD,oCAAS,CAAC;EACN,UAAU,EAAE,MAAM;CACrB",
+    "sources": [
+        "account-transfer-no-account.scss"
+    ],
+    "names": [],
+    "file": "account-transfer-no-account.css"
+}

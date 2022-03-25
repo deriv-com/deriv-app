@@ -1,0 +1,24 @@
+.download__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+  padding-left: 16px;
+  border: solid 1px var(--general-section-1);
+}
+
+.download__icon {
+  -ms-flex-item-align: left;
+      -ms-grid-row-align: left;
+      align-self: left;
+  width: 16px;
+  height: 16px;
+}
+
+.download__button {
+  background-color: transparent;
+  width: 23px;
+  height: 16px !important;
+  padding: 0 !important;
+}
+/*# sourceMappingURL=download.css.map */

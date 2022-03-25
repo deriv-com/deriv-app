@@ -1,0 +1,9 @@
+.dc-read-more__toggle {
+  color: var(--status-danger);
+  font-weight: var(--text-weight-bold);
+}
+
+.dc-read-more__dialog {
+  text-decoration: underline;
+}
+/*# sourceMappingURL=read-more.css.map */

@@ -1,0 +1,122 @@
+/** @define contract-type-dialog; */
+.contract-type-dialog {
+  right: 0.4em;
+  width: 100%;
+  pointer-events: none;
+  position: absolute;
+  -webkit-transition: opacity 0.3s, -webkit-transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: opacity 0.3s, -webkit-transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s, -webkit-transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  opacity: 0;
+  height: 0;
+  z-index: 999;
+}
+
+.contract-type-dialog__wrapper {
+  position: absolute;
+  width: 290px;
+  right: calc(100% + 10px);
+  top: -66px;
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  z-index: 2;
+  border-radius: 4px;
+  background: var(--general-main-2);
+  -webkit-box-shadow: 0 2px 8px 0 var(--shadow-menu);
+          box-shadow: 0 2px 8px 0 var(--shadow-menu);
+  min-width: 560px;
+  height: 680px;
+  max-height: calc(100vh - 100px);
+  overflow: hidden;
+  /* postcss-bem-linter: ignore */
+  /* postcss-bem-linter: ignore */
+  /* postcss-bem-linter: ignore */
+  /* postcss-bem-linter: ignore */
+  /* postcss-bem-linter: ignore */
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab {
+  max-height: 680px;
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__action-bar {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row;
+          flex-flow: row;
+  border-bottom: 2px solid var(--general-section-1);
+  height: 56px;
+  width: 320px;
+  /* postcss-bem-linter: ignore */
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__action-bar .dc-input {
+  margin-bottom: 0;
+  /* postcss-bem-linter: ignore */
+  /* postcss-bem-linter: ignore */
+  /* postcss-bem-linter: ignore */
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__action-bar .dc-input__field {
+  padding: 0.8rem 1.2rem 0.8rem 3.6rem;
+  height: 3.2rem;
+  /* postcss-bem-linter: ignore */
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__action-bar .dc-input__field::-moz-placeholder {
+  line-height: 16px;
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__action-bar .dc-input__leading-icon {
+  top: 0.8rem;
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__action-bar .dc-input__trailing-icon {
+  cursor: pointer;
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__content {
+  padding: 0 !important;
+  /* postcss-bem-linter: ignore */
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__content-container {
+  max-height: calc(100% - 56px);
+  height: calc(100% - 56px);
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__tab {
+  min-width: 240px;
+  /* postcss-bem-linter: ignore */
+}
+
+.contract-type-dialog__wrapper .dc-vertical-tab__tab .dc-vertical-tab__header-title {
+  height: 56px;
+}
+
+.contract-type-dialog__wrapper .contract-type-info__wrapper {
+  height: calc(100% - 2.4rem - 18px);
+}
+
+.contract-type-dialog--enter, .contract-type-dialog--exit {
+  -webkit-transform: translate3d(20%, 0, 0);
+          transform: translate3d(20%, 0, 0);
+  pointer-events: none;
+  opacity: 0;
+  height: 0;
+}
+
+.contract-type-dialog--enterDone {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  max-height: 100%;
+  opacity: 1;
+  pointer-events: auto;
+}
+/*# sourceMappingURL=contract-type-dialog.css.map */

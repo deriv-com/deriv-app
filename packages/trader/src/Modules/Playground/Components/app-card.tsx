@@ -7,12 +7,12 @@ type TAppCardDetails = {
     dark?: boolean;
     checked?: boolean;
     app_name?: string;
-    app_icon_name?: string;
+    app_icon?: string;
 };
 
 type TLinkedAppCard = TAppCardDetails & {
     wallet_name?: string;
-    wallet_icon_name?: string;
+    wallet_icon?: string;
     currency_name?: string;
     balance?: number;
 };
@@ -32,9 +32,9 @@ type TCFDAppCard = {
 
 const LinkedAppCard = ({
     app_name,
-    app_icon_name,
+    app_icon,
     wallet_name,
-    wallet_icon_name,
+    wallet_icon,
     currency_name,
     balance,
     size,
@@ -49,18 +49,14 @@ const LinkedAppCard = ({
     const checked_wallet_icon =
         checked && 'appstore-app-card__small-block-wrapper--linked__wallet-icon-wrapper-checked';
 
-    /* eslint-disable */
-    console.log(size + ' - ' + checked);
-    /* eslint-enable */
-
     return (
         <div className={classNames('appstore-app-card__block--linked', size_el)}>
             <>
                 {size === 'small' ? (
                     <div className='appstore-app-card__small-block-wrapper--linked'>
                         <div className='appstore-app-card__small-block-wrapper--linked__app-icon-wrapper'>
-                            {app_icon_name ? (
-                                <Icon icon={app_icon_name} width='24' height='24' />
+                            {app_icon ? (
+                                <Icon icon={app_icon} width='24' height='24' />
                             ) : (
                                 <div className='appstore-app-card--appcard-placeholder'>&nbsp;</div>
                             )}
@@ -71,9 +67,9 @@ const LinkedAppCard = ({
                                 checked_wallet_icon
                             )}
                         >
-                            {wallet_icon_name ? (
+                            {wallet_icon ? (
                                 <Icon
-                                    icon={wallet_icon_name}
+                                    icon={wallet_icon}
                                     width='40'
                                     height='24'
                                     className='appstore-app-card__block--linked__wrapper__icon-wrapper--wallet__wallet-icon'
@@ -90,8 +86,8 @@ const LinkedAppCard = ({
                         <div className='appstore-app-card__block--linked__wrapper__icon-wrapper'>
                             <div className='appstore-app-card__block--linked__wrapper__icon-wrapper--app'>
                                 <>
-                                    {app_icon_name ? (
-                                        <Icon icon={app_icon_name} width='24' height='24' />
+                                    {app_icon ? (
+                                        <Icon icon={app_icon} width='24' height='24' />
                                     ) : (
                                         <div className='appstore-app-card--appcard-placeholder'>&nbsp;</div>
                                     )}
@@ -99,9 +95,9 @@ const LinkedAppCard = ({
                             </div>
                             <div className='appstore-app-card__block--linked__wrapper__icon-wrapper--wallet'>
                                 <>
-                                    {wallet_icon_name ? (
+                                    {wallet_icon ? (
                                         <Icon
-                                            icon={wallet_icon_name}
+                                            icon={wallet_icon}
                                             width='32'
                                             height='20'
                                             className='appstore-app-card__block--linked__wrapper__icon-wrapper--wallet__wallet-icon'
@@ -132,7 +128,7 @@ const LinkedAppCard = ({
     );
 };
 
-const UnlinkedAppcard = ({ app_name, app_icon_name, size }: TUnlinkedAppCard) => {
+const UnlinkedAppcard = ({ app_name, app_icon, size }: TUnlinkedAppCard) => {
     const size_el = size && `appstore-app-card__block--unlinked__wrapper--${size}`;
 
     return (
@@ -141,8 +137,8 @@ const UnlinkedAppcard = ({ app_name, app_icon_name, size }: TUnlinkedAppCard) =>
                 {size === 'small' ? (
                     <div className='appstore-app-card__small-block-wrapper--unlinked'>
                         <>
-                            {app_icon_name ? (
-                                <Icon icon={app_icon_name} width='24' height='24' />
+                            {app_icon ? (
+                                <Icon icon={app_icon} width='24' height='24' />
                             ) : (
                                 <div className='appstore-app-card--appcard-placeholder'>&nbsp;</div>
                             )}
@@ -152,8 +148,8 @@ const UnlinkedAppcard = ({ app_name, app_icon_name, size }: TUnlinkedAppCard) =>
                     <div className='appstore-app-card__block--unlinked__wrapper'>
                         <div className='appstore-app-card__block--unlinked__wrapper--icon'>
                             <>
-                                {app_icon_name ? (
-                                    <Icon icon={app_icon_name} width='24' height='24' />
+                                {app_icon ? (
+                                    <Icon icon={app_icon} width='24' height='24' />
                                 ) : (
                                     <div className='appstore-app-card--appcard-placeholder'>&nbsp;</div>
                                 )}
@@ -173,9 +169,9 @@ const AppCard = ({ app_card_details, size, dark, linked, checked }: TCFDAppCard)
             {linked ? (
                 <LinkedAppCard
                     app_name={app_card_details?.app_name}
-                    app_icon_name={app_card_details?.app_icon_name}
+                    app_icon={app_card_details?.app_icon}
                     wallet_name={app_card_details?.wallet_name}
-                    wallet_icon_name={app_card_details?.wallet_icon_name}
+                    wallet_icon={app_card_details?.wallet_icon}
                     currency_name={app_card_details?.currency_name}
                     balance={app_card_details?.balance}
                     size={size}
@@ -186,7 +182,7 @@ const AppCard = ({ app_card_details, size, dark, linked, checked }: TCFDAppCard)
                 <UnlinkedAppcard
                     size={size}
                     app_name={app_card_details?.app_name}
-                    app_icon_name={app_card_details?.app_icon_name}
+                    app_icon={app_card_details?.app_icon}
                 />
             )}
         </>

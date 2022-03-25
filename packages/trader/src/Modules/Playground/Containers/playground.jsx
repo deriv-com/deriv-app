@@ -68,7 +68,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Checked',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -79,9 +79,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: true,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Normal',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -94,9 +94,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: true,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Faded',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -109,9 +109,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: true,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Disabled',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -127,7 +127,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Checked',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -138,9 +138,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: true,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Normal',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -153,9 +153,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: true,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Faded',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -168,9 +168,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: true,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Disabled',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -186,7 +186,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Checked',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -197,9 +197,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: true,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Normal',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -212,9 +212,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: true,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Faded',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -227,9 +227,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: true,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Disabled',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -247,7 +247,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Checked',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -258,9 +258,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Normal',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -273,9 +273,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Faded',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -288,9 +288,9 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Synthetics Large Disabled',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
                 wallet_name: 'Demo USD wallet',
-                wallet_icon_name: 'icAppstoreDemoWallet',
+                wallet_icon: 'icAppstoreDemoWallet',
                 currency_name: 'USD',
                 balance: 10,
             },
@@ -305,7 +305,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Checked',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
             },
         },
         {
@@ -314,7 +314,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Normal',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
             },
         },
         {
@@ -324,7 +324,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Faded',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
             },
         },
         {
@@ -334,7 +334,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Disabled',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
             },
         },
     ];
@@ -347,7 +347,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Checked',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
             },
         },
         {
@@ -356,7 +356,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Normal',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
             },
         },
         {
@@ -366,7 +366,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Faded',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
             },
         },
         {
@@ -376,7 +376,7 @@ const Playground = ({ props, is_dark_mode_on }) => {
             linked: false,
             app_card_details: {
                 app_name: 'Deriv MT5 Disabled',
-                app_icon_name: 'icDxtradeSynthetic',
+                app_icon: 'icDxtradeSynthetic',
             },
         },
     ];

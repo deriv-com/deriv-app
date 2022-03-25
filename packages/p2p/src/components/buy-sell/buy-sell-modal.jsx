@@ -86,6 +86,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             <MobileFullPageModal
                 body_className='buy-sell__modal-body'
                 className='buy-sell__modal'
+                data_testid='dp2p-mobile-full-page-modal_container'
                 height_offset='80px'
                 is_flex
                 is_modal_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
@@ -135,6 +136,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             title={modal_title}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}
+            data_testid='dp2p-buy-sell-modal_container'
         >
             {/* Parent height - Modal.Header height - Modal.Footer height */}
             <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>

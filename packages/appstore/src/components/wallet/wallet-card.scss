@@ -1,0 +1,176 @@
+.wallet-card {
+    $parent: &;
+    box-sizing: border-box;
+    position: relative;
+
+    &__background {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+        z-index: 0;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__card-content {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        box-sizing: border-box;
+        border-radius: inherit;
+
+        &:not(.disabled *):hover {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.16) 100%);
+        }
+    }
+
+    &--dark {
+        * {
+            color: #ffffff !important;
+        }
+
+        #{$parent}__card-content:not(.disabled *):hover,
+        #{$parent}__card-content {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.16) 100%);
+        }
+    }
+
+    &--active {
+        outline: 2px solid #ff444f;
+
+        #{$parent}__card-content {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.16) 100%);
+        }
+    }
+    &__active-icon {
+        position: absolute;
+        z-index: 2;
+        top: -4px;
+        right: -4px;
+        width: 16px;
+        height: 16px;
+    }
+
+    &--faded {
+        opacity: 0.72;
+    }
+
+    &--disabled {
+        opacity: 0.32;
+    }
+
+    &__logo {
+        width: 64px;
+        height: 40px;
+        border-radius: 4px;
+
+        &--placeholder {
+            background-color: #333;
+        }
+    }
+
+    &--small {
+        height: 40px;
+        width: 64px;
+        border-radius: 4px;
+        box-sizing: border-box;
+
+        #{$parent}__background {
+            border-radius: inherit;
+        }
+
+        #{$parent}__card-content {
+            padding: 5px 8px;
+        }
+
+        #{$parent}__logo {
+            width: 48px;
+            height: 30px;
+            border-radius: 3px;
+        }
+    }
+
+    &--medium {
+        width: 200px;
+        height: 120px;
+        border-radius: 8px;
+        box-sizing: border-box;
+
+        #{$parent}__background {
+            border-radius: inherit;
+        }
+
+        #{$parent}__card-content {
+            padding: 8px;
+        }
+
+        @media (max-width: 992px) {
+            width: 160px;
+            height: 96px;
+        }
+
+        #{$parent}__logo {
+            @media (max-width: 992px) {
+                width: 48px;
+                height: 30px;
+                border-radius: 3px;
+            }
+        }
+    }
+
+    &--large {
+        width: 240px;
+        height: 144px;
+        border-radius: 8px;
+        box-sizing: border-box;
+
+        #{$parent}__background {
+            border-radius: inherit;
+        }
+
+        #{$parent}__card-content {
+            padding: 16px;
+        }
+
+        @media (max-width: 992px) {
+            width: 216px;
+            height: 128px;
+        }
+    }
+
+    &:not(&--small) {
+        #{$parent}__active-icon {
+            top: calc(50% - 32px / 2);
+            right: calc(50% - 32px / 2);
+            width: 32px;
+            height: 32px;
+        }
+
+        #{$parent}__logo--aud,
+        #{$parent}__logo--eur,
+        #{$parent}__logo--gbp,
+        #{$parent}__logo--usd {
+            position: relative;
+            top: -4px;
+            left: -16px;
+
+            @media (max-width: 992px) {
+                top: -3px;
+                left: -12px;
+            }
+        }
+    }
+}

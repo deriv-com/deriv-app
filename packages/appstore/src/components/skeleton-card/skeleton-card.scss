@@ -1,0 +1,25 @@
+.skeleton-card {
+    width: 20rem;
+    height: 12rem;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__label {
+        color: var(--general-active);
+    }
+}

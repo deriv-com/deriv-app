@@ -1,4 +1,4 @@
-export const componentLoader = (lazyComponent, attempts = 2, interval = 1500) => {
+export const moduleLoader = (lazyComponent, attempts = 2, interval = 1500) => {
     return new Promise((resolve, reject) => {
         lazyComponent()
             .then(resolve)
@@ -9,7 +9,7 @@ export const componentLoader = (lazyComponent, attempts = 2, interval = 1500) =>
                         reject(error);
                         return;
                     }
-                    componentLoader(lazyComponent, attempts - 1, interval).then(resolve, reject);
+                    moduleLoader(lazyComponent, attempts - 1, interval).then(resolve, reject);
                 }, interval);
             });
     });

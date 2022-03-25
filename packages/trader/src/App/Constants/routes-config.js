@@ -1,23 +1,23 @@
 import React from 'react';
-import { routes, makeLazyLoader, componentLoader } from '@deriv/shared';
+import { routes, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 
 const ContractDetails = React.lazy(() =>
-    componentLoader(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'))
+    moduleLoader(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'))
 );
 
 // CFD Routes
 const CFD = React.lazy(() =>
-    componentLoader(() => import(/* webpackChunkName: "cfd", webpackPrefetch: true */ 'Modules/CFD'))
+    moduleLoader(() => import(/* webpackChunkName: "cfd", webpackPrefetch: true */ 'Modules/CFD'))
 );
 
 // Error Routes
-const Page404 = React.lazy(() => componentLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
+const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
 const lazyLoadReportComponent = makeLazyLoader(
-    () => componentLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports')),
+    () => moduleLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports')),
     () => <Loading />
 );
 

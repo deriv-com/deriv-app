@@ -1,44 +1,44 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { makeLazyLoader, routes, componentLoader } from '@deriv/shared';
+import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes
-const Page404 = React.lazy(() => componentLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
+const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
 const Trader = React.lazy(() =>
-    componentLoader(() => {
+    moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "trader" */ '@deriv/trader');
     })
 );
 
 const Account = React.lazy(() =>
-    componentLoader(() => {
+    moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "account" */ '@deriv/account');
     })
 );
 
 const Cashier = React.lazy(() =>
-    componentLoader(() => {
+    moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
     })
 );
 
 const Bot = React.lazy(() =>
-    componentLoader(() => {
+    moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
     })
 );
 
 const AppStore = React.lazy(() =>
-    componentLoader(() => {
+    moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
     })
@@ -280,7 +280,7 @@ const getModules = ({ is_appstore }) => {
 };
 
 const lazyLoadComplaintsPolicy = makeLazyLoader(
-    () => componentLoader(() => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')),
+    () => moduleLoader(() => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')),
     () => <Loading />
 );
 

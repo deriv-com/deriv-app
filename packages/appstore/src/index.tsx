@@ -1,9 +1,9 @@
 import React from 'react';
-import { makeLazyLoader, componentLoader } from '@deriv/shared';
+import { makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 
 const App = makeLazyLoader(
-    () => componentLoader(() => import(/* webpackChunkName: "appstore", webpackPreload: true */ './components/app')),
+    () => moduleLoader(() => import(/* webpackChunkName: "appstore", webpackPreload: true */ './components/app')),
     () => <Loading />
 )();
 

@@ -3,30 +3,28 @@ import { useLocation } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
-import { componentLoader } from '@deriv/shared';
+import { moduleLoader } from '@deriv/shared';
 
 const AccountSignupModal = React.lazy(() =>
-    componentLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
 );
 const CloseMxMltAccountModal = React.lazy(() =>
-    componentLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
+    moduleLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
 );
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
-    componentLoader(() =>
-        import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal')
-    )
+    moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
 );
 const RedirectToLoginModal = React.lazy(() =>
-    componentLoader(() => import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal'))
+    moduleLoader(() => import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal'))
 );
 const SetResidenceModal = React.lazy(() =>
-    componentLoader(() => import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal'))
+    moduleLoader(() => import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal'))
 );
 const RealityCheckModal = React.lazy(() =>
-    componentLoader(() => import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal'))
+    moduleLoader(() => import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal'))
 );
 const WelcomeModal = React.lazy(() =>
-    componentLoader(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'))
+    moduleLoader(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'))
 );
 
 const AppModals = ({

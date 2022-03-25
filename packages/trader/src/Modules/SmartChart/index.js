@@ -1,7 +1,7 @@
 import React from 'react';
-import { getUrlBase, componentLoader } from '@deriv/shared';
+import { getUrlBase, moduleLoader } from '@deriv/shared';
 
-const Module = componentLoader(() =>
+const Module = moduleLoader(() =>
     import(/* webpackChunkName: "smart_chart", webpackPreload: true */ '@deriv/deriv-charts')
 );
 

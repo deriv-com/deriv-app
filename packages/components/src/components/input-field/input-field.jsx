@@ -329,7 +329,7 @@ InputField.propTypes = {
     classNamePrefix: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
-    decimal_point_change: PropTypes.number,
+    decimal_point_change: PropTypes.number, // Specify which decimal point must be updated when the increment/decrement button is pressed
     error_messages: PropTypes.array,
     error_message_alignment: PropTypes.string,
     fractional_digits: PropTypes.number,

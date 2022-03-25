@@ -122,10 +122,12 @@ const CreateAdForm = () => {
 
                     const onChangeAdTypeHandler = user_input => {
                         setFieldValue('type', user_input);
-                        if (user_input === buy_sell.SELL) {
-                            setFieldValue('price_rate', '0.01');
-                        } else {
-                            setFieldValue('price_rate', '-0.01');
+                        if (floating_rate_store.rate_type === ad_type.FLOAT) {
+                            if (user_input === buy_sell.SELL) {
+                                setFieldValue('price_rate', '0.01');
+                            } else {
+                                setFieldValue('price_rate', '-0.01');
+                            }
                         }
                     };
 

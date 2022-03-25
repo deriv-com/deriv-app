@@ -134,21 +134,4 @@ describe('<BuySellModal />', () => {
         expect(setShouldShowPopup).toHaveBeenCalledWith(false);
         expect(mocked_my_profile_store.setShouldShowAddPaymentMethodForm).toHaveBeenCalledWith(false);
     });
-
-    it('Order confirmation must be cancelled when click on Cancel button', () => {
-        useStores.mockImplementation(() => ({
-            advertiser_page_store: mocked_advertiser_page_store,
-            buy_sell_store: { ...mocked_buy_sell_store, receive_amount: 100 },
-            my_profile_store: { ...mocked_my_profile_store, should_show_add_payment_method_form: false },
-            general_store: mocked_general_store,
-            order_store: mocked_order_store,
-        }));
-        render(<BuySellModal {...props} />);
-
-        fireEvent.click(screen.getByText('Confirm'));
-
-        expect(mocked_order_store.setOrderId).toHaveBeenCalled();
-        expect(mocked_general_store.redirectTo).toHaveBeenCalled();
-        expect(setShouldShowPopup).toHaveBeenCalledWith(false);
-    });
 });

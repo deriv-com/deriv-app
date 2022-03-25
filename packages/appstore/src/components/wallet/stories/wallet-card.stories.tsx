@@ -168,19 +168,6 @@ DefaultLightSmall.args = {
     wallet_name: '[Name]',
 };
 
-export const DefaultLightLargeWithoutBalance = Template.bind({});
-DefaultLightLargeWithoutBalance.args = {
-    active: false,
-    balance: '',
-    currency: undefined,
-    dark: false,
-    demo: undefined,
-    disabled: false,
-    faded: false,
-    size: 'large',
-    wallet_name: '[Name]',
-};
-
 export const DefaultLightMediumWithoutBalance = Template.bind({});
 DefaultLightMediumWithoutBalance.args = {
     active: false,
@@ -191,58 +178,6 @@ DefaultLightMediumWithoutBalance.args = {
     disabled: false,
     faded: false,
     size: 'medium',
-    wallet_name: '[Name]',
-};
-
-export const DefaultDarkLarge = Template.bind({});
-DefaultDarkLarge.args = {
-    active: false,
-    balance: '0.00',
-    currency: '[Currency]',
-    dark: true,
-    demo: undefined,
-    disabled: false,
-    faded: false,
-    size: 'large',
-    wallet_name: '[Name]',
-};
-
-export const DefaultDarkMedium = Template.bind({});
-DefaultDarkMedium.args = {
-    active: false,
-    balance: '0.00',
-    currency: '[Currency]',
-    dark: true,
-    demo: undefined,
-    disabled: false,
-    faded: false,
-    size: 'medium',
-    wallet_name: '[Name]',
-};
-
-export const DefaultDarkSmall = Template.bind({});
-DefaultDarkSmall.args = {
-    active: false,
-    balance: '0.00',
-    currency: '[Currency]',
-    dark: true,
-    demo: undefined,
-    disabled: false,
-    faded: false,
-    size: 'small',
-    wallet_name: '[Name]',
-};
-
-export const DefaultDarkLargeWithoutBalance = Template.bind({});
-DefaultDarkLargeWithoutBalance.args = {
-    active: false,
-    balance: '',
-    currency: undefined,
-    dark: true,
-    demo: undefined,
-    disabled: false,
-    faded: false,
-    size: 'large',
     wallet_name: '[Name]',
 };
 
@@ -259,12 +194,12 @@ DefaultDarkMediumWithoutBalance.args = {
     wallet_name: '[Name]',
 };
 
-export const FiatCurrencyDarkLarge = Template.bind({});
-FiatCurrencyDarkLarge.args = {
+export const FiatCurrencyLightLarge = Template.bind({});
+FiatCurrencyLightLarge.args = {
     active: false,
     balance: '50.00',
     currency: undefined,
-    dark: true,
+    dark: false,
     demo: undefined,
     disabled: false,
     faded: false,
@@ -272,16 +207,68 @@ FiatCurrencyDarkLarge.args = {
     wallet_name: 'usd',
 };
 
-export const DemoDarkLarge = Template.bind({});
-DemoDarkLarge.args = {
+export const FiatCurrencyLightSmall = Template.bind({});
+FiatCurrencyLightSmall.args = {
     active: false,
-    balance: '0.00',
+    balance: '50.00',
     currency: undefined,
-    dark: true,
+    dark: false,
+    demo: undefined,
+    disabled: false,
+    faded: false,
+    size: 'small',
+    wallet_name: 'usd',
+};
+
+export const CryptoCurrencyLightLarge = Template.bind({});
+CryptoCurrencyLightLarge.args = {
+    active: false,
+    balance: '50.00',
+    currency: '[Currency]',
+    dark: false,
     demo: undefined,
     disabled: false,
     faded: false,
     size: 'large',
+    wallet_name: 'bitcoin',
+};
+
+export const CryptoCurrencyLightSmall = Template.bind({});
+CryptoCurrencyLightSmall.args = {
+    active: false,
+    balance: '50.00',
+    currency: 'BTC',
+    dark: false,
+    demo: undefined,
+    disabled: false,
+    faded: false,
+    size: 'small',
+    wallet_name: 'bitcoin',
+};
+
+export const DemoLightLarge = Template.bind({});
+DemoLightLarge.args = {
+    active: false,
+    balance: '0.00',
+    currency: undefined,
+    dark: false,
+    demo: undefined,
+    disabled: false,
+    faded: false,
+    size: 'large',
+    wallet_name: 'demo',
+};
+
+export const DemoLightSmall = Template.bind({});
+DemoLightSmall.args = {
+    active: false,
+    balance: '0.00',
+    currency: undefined,
+    dark: false,
+    demo: undefined,
+    disabled: false,
+    faded: false,
+    size: 'small',
     wallet_name: 'demo',
 };
 

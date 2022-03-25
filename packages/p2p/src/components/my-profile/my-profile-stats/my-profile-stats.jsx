@@ -1,33 +1,40 @@
 import React from 'react';
-import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
-import MyProfileBalance from './my-profile-balance';
-import MyProfilePrivacy from './my-profile-privacy';
 import MyProfileStatsTable from './my-profile-stats-table';
-import MyProfileName from './my-profile-name';
 import MyProfileSeparatorContainer from '../my-profile-separator-container';
-import { Localize } from 'Components/i18next';
-import { isMobile } from '@deriv/shared';
+import { Localize, localize } from 'Components/i18next';
+import MyProfilePrivacy from './my-profile-privacy';
 
 const MyStats = () => {
     const { my_profile_store } = useStores();
+    const [should_show_stats_and_ratings, setShouldShowStatsAndRatings] = React.useState(false);
 
     return (
         <React.Fragment>
-            <MyProfileName />
+            <MobileFullPageModal
+                height_offset='80px'
+                is_flex
+                is_modal_open={should_show_stats_and_ratings}
+                page_header_text={localize('Stats')}
+                pageHeaderReturnFn={() => setShouldShowStatsAndRatings(false)}
+            >
+                <MyProfileStatsTable />
+            </MobileFullPageModal>
             <DesktopWrapper>
-                <MyProfileBalance />
+                <MyProfileStatsTable />
             </DesktopWrapper>
-            <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' is_invisible={isMobile()} />
-            <MyProfileStatsTable />
             <MobileWrapper>
+                <MyProfilePrivacy />
                 <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
-                <MyProfileBalance />
-                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
-            </MobileWrapper>
-            <MyProfilePrivacy />
-            <MobileWrapper>
+                <div className='my-profile__navigation' onClick={() => setShouldShowStatsAndRatings(true)}>
+                    <Text color='prominent' size='xxs'>
+                        <Localize i18n_default_text='Stats' />
+                    </Text>
+                    <Icon icon='IcChevronRight' />
+                </div>
                 <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
                 <div
                     className='my-profile__navigation'
@@ -44,7 +51,7 @@ const MyStats = () => {
                     onClick={() => my_profile_store.setActiveTab(my_profile_tabs.AD_TEMPLATE)}
                 >
                     <Text color='prominent' size='xxs'>
-                        <Localize i18n_default_text='Ad template' />
+                        <Localize i18n_default_text='Ad details' />
                     </Text>
                     <Icon icon='IcChevronRight' />
                 </div>
@@ -54,4 +61,4 @@ const MyStats = () => {
     );
 };
 
-export default MyStats;
+export default observer(MyStats);

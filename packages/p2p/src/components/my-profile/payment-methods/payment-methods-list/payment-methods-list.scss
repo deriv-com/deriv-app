@@ -1,8 +1,10 @@
 .payment-methods-list {
     &__modal {
         @include mobile {
-            display: grid;
+            display: flex;
+            flex-direction: column;
             grid-template-rows: 1fr 8rem;
+            height: 73vh;
             overflow-x: hidden;
             padding: 1rem 2rem;
             width: 100vw;

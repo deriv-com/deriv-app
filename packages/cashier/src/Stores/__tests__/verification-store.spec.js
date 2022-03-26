@@ -65,7 +65,6 @@ describe('VerificationStore', () => {
         expect(verification_store.resend_timeout).toBe('20');
     });
     it('should clear verification timeout', () => {
-        jest.spyOn(global, 'clearTimeout');
         verification_store.setTimeoutButton('123');
         verification_store.clearTimeoutVerification();
 
@@ -113,22 +112,22 @@ describe('VerificationStore', () => {
     });
     it('should set an error message when there is an error in response_verify_email with custom error code', async () => {
         verification_store.WS.verifyEmail.mockResolvedValue({
-            error: { code: 'error_code', message: 'ERROR' },
+            error: { code: 'error_code', message: 'CUSTOM_ERROR' },
         });
         await verification_store.sendVerificationEmail();
 
-        expect(verification_store.error.message).toBe('ERROR');
+        expect(verification_store.error.message).toBe('CUSTOM_ERROR');
     });
     it('should resend verification email', () => {
-        verification_store.WS.verifyEmail.mockResolvedValue({});
         const spySendVerificationEmail = jest.spyOn(verification_store, 'sendVerificationEmail');
+        verification_store.WS.verifyEmail.mockResolvedValue({});
         verification_store.resendVerificationEmail();
 
         expect(spySendVerificationEmail).toHaveBeenCalled();
     });
     it('should not resend verification email, if resend_timeout less then 60', () => {
-        verification_store.setResendTimeout(1);
         const spySendVerificationEmail = jest.spyOn(verification_store, 'sendVerificationEmail');
+        verification_store.setResendTimeout(1);
         verification_store.resendVerificationEmail();
 
         expect(spySendVerificationEmail).not.toHaveBeenCalled();
@@ -142,11 +141,17 @@ describe('VerificationStore', () => {
         expect(clearInterval).toHaveBeenCalled();
     });
     it('should clear verification', () => {
+        const spyClearTimeoutVerification = jest.spyOn(verification_store, 'clearTimeoutVerification');
+        const spySetResendTimeout = jest.spyOn(verification_store, 'setResendTimeout');
+        const spySetErrorMessage = jest.spyOn(verification_store.error, 'setErrorMessage');
         verification_store.clearVerification();
 
+        expect(spyClearTimeoutVerification).toHaveBeenCalledTimes(1);
         expect(verification_store.is_button_clicked).toBeFalse();
         expect(verification_store.is_email_sent).toBeFalse();
         expect(verification_store.is_resend_clicked).toBeFalse();
+        expect(spySetResendTimeout).toHaveBeenCalledWith(60);
+        expect(spySetErrorMessage).toHaveBeenCalledWith('', null, null);
         expect(verification_store.root_store.client.setVerificationCode).toHaveBeenCalledWith(
             '',
             'payment_agent_withdraw'

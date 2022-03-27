@@ -59,6 +59,77 @@ const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
     </div>
 );
 
+const ExistingData = ({ existing_data, commission_message, is_logged_in, type, onClickFund, has_cfd_account, onSelectAccount, is_web_terminal_unsupported, platform, getDxtradeDownloadLink }: any) => {
+    return (
+        <React.Fragment>
+    {((!existing_data && commission_message) || !is_logged_in) && (
+        <div className='cfd-account-card__commission'>
+            <Text as='p' color='general' size='xs' styles={{ margin: '1.6rem auto' }}>
+                {commission_message}
+            </Text>
+        </div>
+    )
+    }
+
+    {existing_data && is_logged_in && (
+        <div className='cfd-account-card__manage'>
+            <Button onClick={() => onClickFund(existing_data)} type='button' secondary>
+                {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
+                {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
+            </Button>
+        </div>
+    )
+    }
+
+    {!existing_data && has_cfd_account && (
+        <Button
+            className='cfd-account-card__account-selection'
+            onClick={onSelectAccount}
+            type='button'
+        >
+            <Localize i18n_default_text='Select' />
+        </Button>
+    )
+}
+    
+    {existing_data && is_logged_in && !is_web_terminal_unsupported && (
+        <a
+            className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+            type='button'
+            href={
+                platform === CFD_PLATFORMS.DXTRADE
+                    ? getDXTradeWebTerminalLink(type.category)
+                    : getMT5WebTerminalLink({
+                          category: type.category,
+                          loginid: (existing_data as TTradingPlatformAccounts).display_login,
+                          server_name: (existing_data as DetailsOfEachMT5Loginid)?.server_info
+                              ?.environment,
+                      })
+            }
+            target='_blank'
+            rel='noopener noreferrer'
+        >
+            <Localize i18n_default_text='Trade on web terminal' />
+        </a>
+    )
+        }
+    
+    {existing_data && is_logged_in && is_web_terminal_unsupported && (
+        <a
+            className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+            type='button'
+            href={getDxtradeDownloadLink()}
+            target='_blank'
+            rel='noopener noreferrer'
+        >
+            <Localize i18n_default_text='Download the app' />
+        </a>
+    )
+}
+    </React.Fragment>
+    );
+}
+
 const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
     <div className='cfd-account-card__password-box'>
         <div className='cfd-account-card__password-text'>
@@ -453,76 +524,23 @@ const CFDAccountCard = ({
                             </div>
                         )}
 
-                        {((!existing_data && commission_message) || !is_logged_in) && (
-                            <div className='cfd-account-card__commission'>
-                                <Text as='p' color='general' size='xs' styles={{ margin: '1.6rem auto' }}>
-                                    {commission_message}
-                                </Text>
-                            </div>
-                        )}
-                        {existing_data && is_logged_in && (
-                            <div className='cfd-account-card__manage'>
-                                <Button onClick={() => onClickFund(existing_data)} type='button' secondary>
-                                    {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
-                                    {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
-                                </Button>
-                            </div>
-                        )}
-                        {!existing_data && has_cfd_account && (
-                            <Button
-                                className='cfd-account-card__account-selection'
-                                onClick={onSelectAccount}
-                                type='button'
-                            >
-                                <Localize i18n_default_text='Select' />
-                            </Button>
-                        )}
-                        {existing_data && is_logged_in && !is_web_terminal_unsupported && (
-                            <a
-                                className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                                type='button'
-                                href={
-                                    platform === CFD_PLATFORMS.DXTRADE
-                                        ? getDXTradeWebTerminalLink(type.category)
-                                        : getMT5WebTerminalLink({
-                                              category: type.category,
-                                              loginid: (existing_data as TTradingPlatformAccounts).display_login,
-                                              server_name: (existing_data as DetailsOfEachMT5Loginid)?.server_info
-                                                  ?.environment,
-                                          })
-                                }
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <Localize i18n_default_text='Trade on web terminal' />
-                            </a>
-                        )}
-                        {existing_data && is_logged_in && is_web_terminal_unsupported && (
-                            <a
-                                className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                                type='button'
-                                href={getDxtradeDownloadLink()}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <Localize i18n_default_text='Download the app' />
-                            </a>
-                        )}
-                        {!existing_data && !has_cfd_account && is_logged_in && (
-                            <CFDAccountCardAction
-                                button_label={button_label}
-                                handleClickSwitchAccount={handleClickSwitchAccount}
-                                has_real_account={has_real_account}
-                                is_accounts_switcher_on={is_accounts_switcher_on}
-                                is_button_primary={is_button_primary}
-                                is_disabled={is_disabled}
-                                is_virtual={is_virtual}
-                                onSelectAccount={onSelectAccount}
-                                type={type}
-                                platform={platform}
-                                title={title}
-                            />
-                        )}
+                        <ExistingData existing_data={existing_data} commission_message={commission_message} is_logged_in={is_logged_in} type={type} onClickFund={onClickFund} has_cfd_account={has_cfd_account} onSelectAccount={onSelectAccount} is_web_terminal_unsupported={is_web_terminal_unsupported} platform={platform} getDxtradeDownloadLink={getDxtradeDownloadLink} />
+
+{!existing_data && !has_cfd_account && is_logged_in && (
+        <CFDAccountCardAction
+            button_label={button_label}
+            handleClickSwitchAccount={handleClickSwitchAccount}
+            has_real_account={has_real_account}
+            is_accounts_switcher_on={is_accounts_switcher_on}
+            is_button_primary={is_button_primary}
+            is_disabled={is_disabled}
+            is_virtual={is_virtual}
+            onSelectAccount={onSelectAccount}
+            type={type}
+            platform={platform}
+            title={title}
+        />
+    )}
                     </div>
                 </div>
                 <React.Fragment>

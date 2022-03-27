@@ -39,6 +39,7 @@ const getTranslatableFiles = () => {
         'cashier',
         'bot-web-ui',
         'core',
+        'cfd',
         'trader',
         'bot-skeleton',
     ];

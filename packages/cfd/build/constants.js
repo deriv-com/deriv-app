@@ -16,7 +16,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const {
     copyConfig,
     cssConfig,
-    // htmlInjectConfig,
     // htmlOutputConfig,
     stylelintConfig,
 } = require('./config');

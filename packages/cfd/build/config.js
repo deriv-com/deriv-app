@@ -24,20 +24,6 @@ const htmlOutputConfig = () => ({
           },
 });
 
-const htmlInjectConfig = () => ({
-    links: [
-        {
-            path: 'public/images/favicons',
-            glob: '*',
-            globPath: path.resolve(__dirname, '../src/public/images/favicons'),
-            attributes: {
-                rel: 'icon',
-            },
-        },
-    ],
-    append: false,
-});
-
 const cssConfig = () => ({
     filename: 'cfd/css/cfd.main.[contenthash].css',
     chunkFilename: 'cfd/css/cfd.[name].[contenthash].css',
@@ -52,7 +38,6 @@ const stylelintConfig = () => ({
 
 module.exports = {
     htmlOutputConfig,
-    htmlInjectConfig,
     cssConfig,
     stylelintConfig,
     generateSWConfig,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Text, ThemedScrollbars, Div100vhContainer } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled, PlatformContext } from '@deriv/shared';
+import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 
 type TCFDAttributeDescriberProps = {

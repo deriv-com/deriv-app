@@ -3,7 +3,6 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { OpenPositions, ProfitTable, Statement, Reports } from '../Containers';
 
-
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
 

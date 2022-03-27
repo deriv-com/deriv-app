@@ -14,6 +14,11 @@ const Trader = React.lazy(() => {
     return import(/* webpackChunkName: "trader" */ '@deriv/trader');
 });
 
+const Reports = React.lazy(() => {
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "reports" */ '@deriv/reports');
+});
+
 const Account = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "account" */ '@deriv/account');
@@ -41,6 +46,34 @@ const getModules = ({ is_appstore }) => {
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Bot'),
+        },
+        {
+            path: routes.reports,
+            component: Reports,
+            getTitle: () => localize('Reports'),
+            icon_component: 'IcReports',
+            is_authenticated: true,
+            routes: [
+                {
+                    path: routes.positions,
+                    component: Reports,
+                    getTitle: () => localize('Open positions'),
+                    icon_component: 'IcOpenPositions',
+                    default: true,
+                },
+                {
+                    path: routes.profit,
+                    component: Reports,
+                    getTitle: () => localize('Profit table'),
+                    icon_component: 'IcProfitTable',
+                },
+                {
+                    path: routes.statement,
+                    component: Reports,
+                    getTitle: () => localize('Statement'),
+                    icon_component: 'IcStatement',
+                },
+            ],
         },
         {
             path: routes.account_deactivated,
@@ -218,34 +251,6 @@ const getModules = ({ is_appstore }) => {
                     component: Trader,
                     getTitle: () => localize('MT5'),
                     is_authenticated: false,
-                },
-                {
-                    path: routes.reports,
-                    component: Trader,
-                    getTitle: () => localize('Reports'),
-                    icon_component: 'IcReports',
-                    is_authenticated: true,
-                    routes: [
-                        {
-                            path: routes.positions,
-                            component: Trader,
-                            getTitle: () => localize('Open positions'),
-                            icon_component: 'IcOpenPositions',
-                            default: true,
-                        },
-                        {
-                            path: routes.profit,
-                            component: Trader,
-                            getTitle: () => localize('Profit table'),
-                            icon_component: 'IcProfitTable',
-                        },
-                        {
-                            path: routes.statement,
-                            component: Trader,
-                            getTitle: () => localize('Statement'),
-                            icon_component: 'IcStatement',
-                        },
-                    ],
                 },
                 {
                     path: routes.contract,

@@ -50,6 +50,10 @@ const copyConfig = base => {
             to: 'trader',
         },
         {
+            from: path.resolve(__dirname, '../node_modules/@deriv/reports/dist/reports'),
+            to: 'reports',
+        },
+        {
             from: path.resolve(__dirname, '../node_modules/@deriv/appstore/dist/appstore'),
             to: 'appstore',
         },
@@ -140,6 +144,7 @@ const generateSWConfig = is_release => ({
         /^bot\//,
         /^media\//,
         /^trader\//,
+        /^reports\//,
         /^cashier\//,
         /^js\/core\.[a-z_]*-json\./,
     ],

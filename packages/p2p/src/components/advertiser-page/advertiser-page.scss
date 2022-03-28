@@ -5,9 +5,9 @@
 
     &__header {
         display: flex;
+        flex-direction: column;
         height: fit-content;
         justify-content: space-between;
-        width: 657px;
 
         @include mobile {
             padding-top: 1.6rem;
@@ -27,16 +27,22 @@
         }
 
         &-name {
-            align-self: center;
             display: flex;
-            flex-flow: column;
+            flex-direction: row;
             height: fit-content;
             width: fit-content;
-            margin-left: 0.8rem;
+
+            &--column {
+                display: flex;
+                flex-direction: column;
+                padding-left: 0.8rem;
+            }
         }
+
         &-real-name {
             margin-top: 0.4rem;
             max-width: 500px;
+            padding-left: 0.8rem;
         }
         &-verification {
             align-items: center;
@@ -71,6 +77,10 @@
         overflow-x: auto;
     }
 
+    &__italic {
+        font-style: italic;
+    }
+
     &__modal {
         @include mobile {
             max-width: 100vw;
@@ -80,22 +90,23 @@
     &__stats {
         border-bottom: none;
         display: flex;
-        grid-template-columns: repeat(3, 1fr) 2fr 1fr;
-        grid-template-rows: 46px;
+        grid-template-columns: repeat(3, 1fr);
         height: 5rem;
         justify-content: space-between;
-        margin: 2.4rem 0 2.4rem 2.9rem;
-        width: 58.8rem;
+        margin: 2rem 0;
+        width: 100%;
 
         @include mobile {
-            margin: 2.4rem 0;
-            width: 100vw;
+            grid-template-columns: repeat(2, 1fr);
+            margin: 0.6rem;
+            width: 90vw;
         }
 
         &-cell {
             display: grid;
-            min-width: 65px;
+            min-width: 20rem;
             text-align: center;
+            margin-right: 10rem;
 
             @include mobile {
                 min-width: 12rem;
@@ -122,6 +133,11 @@
 
             &-separator {
                 border-right: 1px solid #ededed;
+                margin-right: 2rem;
+
+                @include mobile {
+                    margin: 0px 3rem 0 -4rem;
+                }
             }
         }
 
@@ -152,6 +168,7 @@
             padding-top: 0.8rem;
         }
     }
+
     &__popover {
         &-icon {
             margin: 1.6rem 0.8rem 1.6rem 2.4rem;
@@ -159,6 +176,27 @@
             @include mobile {
                 margin: 1.6rem 1rem;
             }
+        }
+    }
+    &__payment-methods-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    &__payment-method {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        border: 1px solid var(--border-normal);
+        border-radius: 0.4rem;
+        flex-direction: row;
+        padding: 0 0.8rem;
+        margin: 0.25rem;
+        width: fit-content;
+
+        @include mobile {
+            padding: 0.4rem;
+            font-size: 8px;
         }
     }
     &__adverts {
@@ -172,19 +210,21 @@
             justify-content: center;
 
             @include mobile {
-                justify-content: flex-end;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                margin-top: 1rem;
             }
         }
         &-table {
             display: flex;
             flex: 1;
             flex-direction: column;
-            width: 657px;
 
             @include mobile {
                 display: flex;
                 flex-flow: column;
-                margin-top: 4rem;
+                margin-top: 1rem;
                 width: 100vw;
             }
 
@@ -197,11 +237,11 @@
 
         &-table_row {
             padding: 1.6rem;
-            grid-template-columns: 3fr 2fr 1fr;
+            grid-template-columns: 3fr 2fr 2.5fr 1fr;
 
             @include mobile {
-                grid-template-columns: repeat(2, 1fr);
-                height: 100px;
+                grid-template-columns: 2fr 1fr;
+                min-height: 105px;
                 padding: 1.6rem;
                 width: 100vw;
             }
@@ -219,6 +259,10 @@
 
         &-list {
             height: calc(100% - 200px);
+
+            @include mobile {
+                height: calc(100% - 236px);
+            }
         }
 
         &-scrollbar {
@@ -227,19 +271,12 @@
             }
 
             position: absolute;
-            width: 657px;
 
             @include mobile {
                 bottom: 0;
                 max-height: calc(100vh - 440px) !important;
                 position: fixed;
             }
-        }
-    }
-
-    .dc-tabs__list--header-fit-content {
-        @include mobile {
-            position: fixed;
         }
     }
 
@@ -262,6 +299,14 @@
 
         .data-list__body-wrapper {
             flex: 1;
+        }
+    }
+
+    &-details {
+        &-container {
+            padding: 2.4rem;
+            border: 1px solid var(--general-hover);
+            border-radius: 0.8rem;
         }
     }
 

@@ -52,6 +52,9 @@
             @include mobile {
                 width: 100vw;
                 margin-top: 4rem;
+                @media screen and (max-height: 568px) {
+                    height: inherit !important;
+                }
 
                 .dc-collapsible {
                     position: relative;
@@ -265,6 +268,10 @@
                 width: 100%;
                 height: 4rem;
             }
+
+            .dc-page-overlay__header.dc-page-app__header {
+                top: 0rem;
+            }
         }
 
         &-button {
@@ -312,5 +319,9 @@
                 padding: 0 1rem;
             }
         }
+    }
+
+    &__side-note {
+        min-width: 20rem;
     }
 }

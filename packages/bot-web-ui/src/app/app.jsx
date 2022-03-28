@@ -27,7 +27,8 @@ const App = ({ passthrough }) => {
 
     React.useEffect(() => {
         showDigitalOptionsMaltainvestError(core.client, common);
-    }, [core.client.is_options_blocked]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [core.client.is_options_blocked, core.client.account_settings.country_code]);
 
     React.useEffect(() => {
         GTM.init(root_store_instance.current);

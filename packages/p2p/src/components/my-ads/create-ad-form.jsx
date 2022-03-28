@@ -20,6 +20,8 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
+import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
+import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -30,13 +32,20 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
-    const { general_store, my_ads_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
 
     const { currency, local_currency_config } = general_store.client;
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
+
+    const [selected_methods, setSelectedMethods] = React.useState([]);
+
+    // eslint-disable-next-line no-shadow
+    const handleSelectPaymentMethods = selected_methods => {
+        setSelectedMethods(selected_methods);
+    };
 
     const onCheckboxChange = () =>
         (should_not_show_auto_archive_message_again.current = !should_not_show_auto_archive_message_again.current);
@@ -47,10 +56,16 @@ const CreateAdForm = () => {
             JSON.stringify(should_not_show_auto_archive_message_again.current)
         );
         my_ads_store.setIsAdCreatedModalVisible(false);
+        if (!my_ads_store.advert_details.is_visible) {
+            my_ads_store.setIsAdExceedsDailyLimitModalOpen(true);
+        }
         my_ads_store.setShowAdForm(false);
     };
 
     React.useEffect(() => {
+        my_profile_store.getPaymentMethodsList();
+        my_profile_store.getAdvertiserPaymentMethods();
+
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
@@ -60,6 +75,7 @@ const CreateAdForm = () => {
             disposeApiErrorReaction();
             my_ads_store.setApiErrorMessage('');
         };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -85,7 +101,6 @@ const CreateAdForm = () => {
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
-                    payment_info: my_ads_store.payment_info,
                     price_rate: '',
                     type: buy_sell.BUY,
                 }}
@@ -264,49 +279,26 @@ const CreateAdForm = () => {
                                             </Field>
                                         </div>
                                         {is_sell_advert && (
-                                            <React.Fragment>
-                                                <Field name='payment_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            label={
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Your payment details' />
-                                                                </Text>
-                                                            }
-                                                            error={touched.payment_info && errors.payment_info}
-                                                            hint={localize('e.g. your bank/e-wallet account details')}
-                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={my_ads_store.payment_info.length}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
-                                                <Field name='contact_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            label={
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Your contact details' />
-                                                                </Text>
-                                                            }
-                                                            error={touched.contact_info && errors.contact_info}
-                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={my_ads_store.contact_info.length}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </React.Fragment>
+                                            <Field name='contact_info'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='textarea'
+                                                        label={
+                                                            <Text color='less-prominent' size='xs'>
+                                                                <Localize i18n_default_text='Your contact details' />
+                                                            </Text>
+                                                        }
+                                                        error={touched.contact_info && errors.contact_info}
+                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                        initial_character_count={my_ads_store.contact_info.length}
+                                                        required
+                                                        has_character_counter
+                                                        max_characters={300}
+                                                    />
+                                                )}
+                                            </Field>
                                         )}
                                         <Field name='default_advert_description'>
                                             {({ field }) => (
@@ -334,6 +326,18 @@ const CreateAdForm = () => {
                                                 />
                                             )}
                                         </Field>
+                                        <div className='p2p-my-ads__form-payment-methods--text'>
+                                            <Text color='prominent'>
+                                                <Localize i18n_default_text='Payment methods' />
+                                            </Text>
+                                            <Text color='less-prominent'>
+                                                <Localize i18n_default_text='You may choose up to 3.' />
+                                            </Text>
+                                        </div>
+                                        <CreateAdFormPaymentMethods
+                                            onSelectPaymentMethods={handleSelectPaymentMethods}
+                                            is_sell_advert={is_sell_advert}
+                                        />
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                             <Button
                                                 className='p2p-my-ads__form-button'
@@ -348,7 +352,7 @@ const CreateAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 primary
                                                 large
-                                                is_disabled={isSubmitting || !isValid}
+                                                is_disabled={isSubmitting || !isValid || !selected_methods.length}
                                             >
                                                 <Localize i18n_default_text='Post ad' />
                                             </Button>
@@ -361,6 +365,7 @@ const CreateAdForm = () => {
                 }}
             </Formik>
             <CreateAdErrorModal />
+            <CreateAdAddPaymentMethodModal />
             <Modal
                 className='p2p-my-ads__ad-created'
                 has_close_icon={false}

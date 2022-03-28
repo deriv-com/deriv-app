@@ -1,0 +1,18 @@
+.my-profile-balance {
+    &__amount {
+        margin-right: 0.8rem;
+    }
+
+    &--column {
+        flex-direction: column;
+    }
+
+    &--icon {
+        margin-left: 0.4rem;
+    }
+
+    &--row {
+        display: flex;
+        flex-direction: row;
+    }
+}

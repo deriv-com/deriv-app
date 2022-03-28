@@ -1,0 +1,45 @@
+.my-profile-details-table {
+    display: flex;
+    flex-direction: row;
+
+    @include mobile {
+        gap: 20vw;
+        width: 100vw;
+    }
+
+    &--cell {
+        align-items: flex-start;
+        border-right: 1px solid var(--general-section-2);
+        display: flex;
+        flex-direction: column;
+        padding-right: 2.4rem;
+        white-space: nowrap;
+        height: 4rem;
+        margin-top: 1rem;
+
+        @include mobile {
+            border-right: unset;
+        }
+
+        &:nth-child(2) {
+            border-right: unset;
+            padding-left: 2.4rem;
+
+            @include mobile {
+                padding-left: unset;
+            }
+        }
+    }
+
+    &--row {
+        display: flex;
+        flex-direction: row;
+        width: 29.2rem;
+        border: none;
+
+        @include mobile {
+            flex-direction: column;
+            width: unset;
+        }
+    }
+}

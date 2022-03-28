@@ -17,8 +17,11 @@ export const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
     'app.deriv.com': 16929,
-    'myapps.deriv.com': 1411, // TODO: we need to create a new one
+    'staging-app.deriv.com': 16303,
     'app.deriv.me': 1411,
+    'staging-app.deriv.me': 1411, // TODO: setup staging for deriv.me
+    'app.deriv.be': 30767,
+    'staging-app.deriv.be': 31186,
     'binary.com': 1,
 };
 
@@ -39,6 +42,7 @@ export const getAppId = () => {
     let app_id = null;
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
+    const current_domain = getCurrentProductionDomain();
 
     if (config_app_id) {
         app_id = config_app_id;
@@ -47,12 +51,11 @@ export const getAppId = () => {
         app_id = user_app_id;
     } else if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
+        app_id = isBot() ? 19112 : domain_app_ids[current_domain] || 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        const current_domain = getCurrentProductionDomain();
         app_id = (isBot() ? 19111 : domain_app_ids[current_domain]) || 16929;
     }
     return app_id;

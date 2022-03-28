@@ -27,9 +27,10 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
 
     React.useEffect(() => {
         // NOTE: This is a temporary filter. Remove after backend handles this from their side
+        const document_types = Object.keys(document_data);
         const filtered_documents = ['gh', 'ng'].includes(country_code)
-            ? Object.keys(document_data).filter(d => d !== 'voter_id')
-            : Object.keys(document_data);
+            ? document_types.filter(d => d !== 'voter_id')
+            : document_types;
 
         setDocumentList(
             filtered_documents.map(key => {

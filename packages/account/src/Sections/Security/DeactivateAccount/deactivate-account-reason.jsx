@@ -76,7 +76,7 @@ const character_limit_no = 110;
 const max_allowed_reasons = 3;
 
 const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dxtrade_accounts_list }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const [is_account_deactivated, setIsAccountDeactivated] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
     const [is_modal_open, setIsModalOpen] = React.useState(false);
@@ -123,6 +123,7 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
     React.useEffect(() => {
         if (total_checkbox_checked === max_allowed_reasons) setIsCheckboxDisabled(true);
         else if (is_checkbox_disabled) setIsCheckboxDisabled(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [total_checkbox_checked]);
 
     const handleChangeCheckbox = (values, name, setFieldValue) => {
@@ -197,7 +198,7 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
     return (
         <div
             className={classNames('deactivate-account-reasons', {
-                'deactivate-account-reasons--dashboard': is_dashboard,
+                'deactivate-account-reasons--dashboard': is_appstore,
             })}
         >
             <Text weight='bold' size='xs' className='deactivate-account-reasons__title' as='p'>

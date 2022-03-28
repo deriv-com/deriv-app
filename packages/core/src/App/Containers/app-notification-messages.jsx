@@ -76,6 +76,7 @@ const AppNotificationMessages = ({
     has_iom_account,
     has_malta_account,
     is_logged_in,
+    should_show_popups,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
@@ -90,20 +91,30 @@ const AppNotificationMessages = ({
                 setStyle({ top: bounds.top + 8 });
             }
         }
-    }, [is_mt5, notifications_ref, stopNotificationLoading]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_mt5, notifications_ref]);
 
     const notifications = notification_messages.filter(message => {
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
-            ? ['unwelcome', 'contract_sold', 'dp2p', 'install_pwa', 'tnc', 'deriv_go', 'close_mx_mlt_account'].includes(
-                  message.key
-              )
+            ? [
+                  'unwelcome',
+                  'contract_sold',
+                  'dp2p',
+                  'install_pwa',
+                  'tnc',
+                  'deriv_go',
+                  'close_mx_mlt_account',
+                  'trustpilot',
+              ].includes(message.key)
             : true;
         return is_not_marked_notification && is_non_hidden_notification;
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     const notifications_sublist = notifications.slice(0, notifications_limit);
+
+    if (!should_show_popups) return null;
 
     return notifications_sublist.length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
@@ -149,13 +160,14 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
 };
 
-export default connect(({ ui, client }) => ({
-    marked_notifications: ui.marked_notifications,
-    notification_messages: ui.notification_messages,
-    removeNotificationMessage: ui.removeNotificationMessage,
-    markNotificationMessage: ui.markNotificationMessage,
+export default connect(({ client, notifications }) => ({
+    marked_notifications: notifications.marked_notifications,
+    notification_messages: notifications.notification_messages,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    markNotificationMessage: notifications.markNotificationMessage,
     landing_company_shortcode: client.landing_company_shortcode,
     has_iom_account: client.has_iom_account,
     has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,
+    should_show_popups: notifications.should_show_popups,
 }))(AppNotificationMessages);

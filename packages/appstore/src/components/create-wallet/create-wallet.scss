@@ -15,6 +15,16 @@
         margin: 4.8rem 2.4rem;
     }
 
+    &-title {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &-back {
+        margin-right: 1rem;
+        margin-top: 1rem;
+    }
+
     &-scroll {
         &::-webkit-scrollbar {
             display: none;

@@ -63,7 +63,7 @@ const CreateAdAddPaymentMethodModal = () => {
             is_open={my_ads_store.should_show_add_payment_method_modal}
             title={localize('Choose payment method')}
         >
-            <Modal.Body>
+            <Modal.Body className={my_profile_store.selected_payment_method && 'p2p-my-ads__modal-body--scroll'}>
                 <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
             </Modal.Body>
             {!my_profile_store.selected_payment_method && (

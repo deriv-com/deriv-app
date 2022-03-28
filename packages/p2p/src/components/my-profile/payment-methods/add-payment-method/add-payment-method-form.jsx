@@ -57,6 +57,14 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
             }
         }
 
+        if (values.bank_code) {
+            if (!no_symbols_regex.test(values.bank_code)) {
+                errors.bank_code = no_symbols_message;
+            } else if (values.bank_code.length > 200) {
+                errors.bank_code = max_characters_error_message;
+            }
+        }
+
         return errors;
     };
 
@@ -114,34 +122,38 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                         />
                                     )}
                                 </Field>
-                                {my_profile_store.selected_payment_method_fields &&
-                                    my_profile_store.selected_payment_method_fields.map((payment_method_field, key) => {
-                                        return (
-                                            <Field
-                                                name={payment_method_field[0]}
-                                                id={payment_method_field[0]}
-                                                key={key}
-                                            >
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        error={errors[payment_method_field[0]]}
-                                                        type={
-                                                            payment_method_field[0] === 'instructions'
-                                                                ? 'textarea'
-                                                                : payment_method_field[1].type
-                                                        }
-                                                        label={payment_method_field[1].display_name}
-                                                        className='add-payment-method-form__payment-method-field'
-                                                        onChange={handleChange}
+                                <div>
+                                    {my_profile_store.selected_payment_method_fields &&
+                                        my_profile_store.selected_payment_method_fields.map(
+                                            (payment_method_field, key) => {
+                                                return (
+                                                    <Field
                                                         name={payment_method_field[0]}
-                                                        required={!!payment_method_field[1].required}
-                                                    />
-                                                )}
-                                            </Field>
-                                        );
-                                    })}
+                                                        id={payment_method_field[0]}
+                                                        key={key}
+                                                    >
+                                                        {({ field }) => (
+                                                            <Input
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                error={errors[payment_method_field[0]]}
+                                                                type={
+                                                                    payment_method_field[0] === 'instructions'
+                                                                        ? 'textarea'
+                                                                        : payment_method_field[1].type
+                                                                }
+                                                                label={payment_method_field[1].display_name}
+                                                                className='add-payment-method-form__payment-method-field'
+                                                                onChange={handleChange}
+                                                                name={payment_method_field[0]}
+                                                                required={!!payment_method_field[1].required}
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                );
+                                            }
+                                        )}
+                                </div>
                             </div>
                             <div
                                 className={classNames('add-payment-method-form__buttons', {

@@ -10,6 +10,7 @@ const Native = ({
     display_format,
     name,
     error,
+    hint,
     label,
     max_date,
     min_date,
@@ -45,6 +46,7 @@ const Native = ({
             className={classNames('dc-input', {
                 'dc-input--disabled': disabled,
                 'dc-input--error': error,
+                'dc-input--hint': hint,
             })}
         >
             <div className='dc-datepicker__display'>
@@ -115,6 +117,13 @@ const Native = ({
                 <Text size='xxs' styles={{ color: 'var(--brand-red-coral)' }} className='dc-datepicker__error'>
                     {error}
                 </Text>
+            )}
+            {!error && hint && (
+                <div className='dc-datepicker__hint'>
+                    <Text as='p' color='less-prominent' size='xxs'>
+                        {hint}
+                    </Text>
+                </div>
             )}
         </div>
     );

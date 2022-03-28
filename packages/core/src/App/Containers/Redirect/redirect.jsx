@@ -19,18 +19,19 @@ const Redirect = ({
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
 
     switch (url_params.get('action')) {
         case 'signup': {
-            if (is_dashboard) {
-                history.push({
-                    pathname: routes.dashboard,
-                    search: url_query_string,
-                });
-                redirected_to_route = true;
+            if (is_appstore) {
+                // TODO: redirect
+                // history.push({
+                //     pathname: routes.dashboard,
+                //     search: url_query_string,
+                // });
+                // redirected_to_route = true;
             }
             sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);

@@ -173,8 +173,8 @@ const DatePicker = React.memo(props => {
         display_format,
         error,
         footer,
-        label,
         has_range_selection,
+        label,
         mode,
         max_date,
         min_date,
@@ -201,6 +201,7 @@ const DatePicker = React.memo(props => {
                     placeholder={placeholder}
                     value={getCalendarValue(date)} // native picker accepts date format yyyy-mm-dd
                     disabled={disabled}
+                    {...common_props}
                 />
             </MobileWrapper>
             <DesktopWrapper>

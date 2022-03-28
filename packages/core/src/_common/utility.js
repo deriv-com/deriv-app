@@ -52,6 +52,7 @@ const copyToClipboard = text => {
     document.execCommand('copy');
     textField.remove();
 };
+// TODO: [duplicate_code] - Move this to shared package
 // eu countries to support
 const eu_countries = [
     'it',
@@ -85,6 +86,7 @@ const eu_countries = [
     'gb',
     'mt',
 ];
+// TODO: [duplicate_code] - Move this to shared package
 // check if client is from EU
 const isEuCountry = country => eu_countries.includes(country);
 // countries where synthetics are not offered

@@ -189,10 +189,10 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
                 )}
             </div>
             <div className='transactions__cell transactions__profit'>
-                {contract && contract.profit ? (
+                {contract?.is_completed ? (
                     <div
                         className={classNames({
-                            'transactions__profit--win': contract.profit > 0,
+                            'transactions__profit--win': contract.profit >= 0,
                             'transactions__profit--loss': contract.profit < 0,
                         })}
                     >

@@ -2,21 +2,20 @@ const isBrowser = () => typeof window !== 'undefined';
 
 const deriv_com_url = 'deriv.com';
 const deriv_me_url = 'deriv.me';
+const deriv_be_url = 'deriv.be';
 
-const supported_domains = [deriv_com_url, deriv_me_url];
+const supported_domains = [deriv_com_url, deriv_me_url, deriv_be_url];
 const domain_url_initial = isBrowser() && window.location.hostname.split('app.')[1];
 const domain_url = supported_domains.includes(domain_url_initial) ? domain_url_initial : deriv_com_url;
 
 export const deriv_urls = Object.freeze({
     DERIV_HOST_NAME: domain_url,
     DERIV_COM_PRODUCTION: `https://${domain_url}`,
-    DERIV_COM_STAGING: 'https://staging.deriv.com',
-    DERIV_DASHBOARD_PRODUCTION: `https://myapps.${domain_url}`,
-    DERIV_DASHBOARD_STAGING: 'https://staging-myapps.deriv.com',
+    DERIV_COM_STAGING: `https://staging.${domain_url}`,
     DERIV_APP_PRODUCTION: `https://app.${domain_url}`,
-    DERIV_APP_STAGING: 'https://staging-app.deriv.com',
+    DERIV_APP_STAGING: `https://staging-app.${domain_url}`,
     SMARTTRADER_PRODUCTION: `https://smarttrader.${domain_url}`,
-    SMARTTRADER_STAGING: 'https://staging-smarttrader.deriv.com',
+    SMARTTRADER_STAGING: `https://staging-smarttrader.${domain_url}`,
     BINARYBOT_PRODUCTION: `https://bot.${domain_url}`,
-    BINARYBOT_STAGING: 'https://staging-bot.deriv.com',
+    BINARYBOT_STAGING: `https://staging-bot.${domain_url}`,
 });

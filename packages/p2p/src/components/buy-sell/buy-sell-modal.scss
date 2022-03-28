@@ -1,4 +1,6 @@
 .buy-sell__modal {
+    opacity: 1 !important;
+
     &-body {
         padding: 1.6rem;
         position: relative;
@@ -33,6 +35,70 @@
 
             > .dc-input {
                 margin-top: 1rem; // Compensate for label.
+            }
+        }
+    }
+
+    &-line {
+        border-top: 1px solid var(--general-section-1);
+        margin: 1.6rem 0;
+        width: 100%;
+    }
+
+    &-payment-method {
+        &--container {
+            align-self: center;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.6rem;
+        }
+
+        &--icon {
+            border-radius: 2px;
+            margin-right: 0.8rem;
+        }
+
+        &--row {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 0.8rem;
+        }
+
+        &--title {
+            margin-bottom: 0.8rem;
+        }
+    }
+
+    &--sell-payment-methods {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin: 1.6rem 0 2.4rem;
+
+        .payment-method-card {
+            margin: unset;
+
+            @include mobile {
+                min-height: 8.8rem;
+                min-width: unset;
+                width: 13.6rem;
+            }
+
+            &--add {
+                margin: unset;
+
+                @include mobile {
+                    min-height: 8.8rem;
+                    width: 13.6rem;
+                }
+            }
+            &__body {
+                margin-top: 0.8rem;
+
+                @include mobile {
+                    margin-top: 0;
+                }
             }
         }
     }

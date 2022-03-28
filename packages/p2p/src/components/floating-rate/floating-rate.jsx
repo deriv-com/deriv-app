@@ -29,7 +29,7 @@ const FloatingRate = ({
                     ariaLabel='Floating rate'
                     classNameInlinePrefix='floating-rate__percent'
                     classNameInput={classNames('floating-rate__input', {
-                        'floating-rate__input--error-field': error_messages,
+                        'floating-rate__input--error': error_messages,
                     })}
                     decimal_point_change={2}
                     id='floating_rate_input'
@@ -57,7 +57,7 @@ const FloatingRate = ({
                         color='prominent'
                         weight='normal'
                         line_height='xxs'
-                        className='floating-rate__mkt-rate--label'
+                        className='floating-rate__mkt-rate-label'
                     >
                         {localize('of the market rate')}
                     </Text>
@@ -67,7 +67,7 @@ const FloatingRate = ({
                         color='prominent'
                         weight='normal'
                         line_height='xs'
-                        className='floating-rate__mkt-rate--msg'
+                        className='floating-rate__mkt-rate-msg'
                     >
                         {localize('1')} {fiat_currency} = {exchange_rate} {local_currency}
                     </Text>

@@ -21,7 +21,7 @@
             border-color: var(--border-active);
         }
 
-        &--error-field {
+        &--error {
             color: $color-red-1;
             border-color: $color-red;
         }
@@ -68,7 +68,7 @@
         flex-grow: 1;
         gap: 0.2rem;
 
-        &--label {
+        &-label {
             position: static;
             font-style: normal;
             color: $color-black-1;
@@ -78,7 +78,7 @@
             margin: 0px;
         }
 
-        &--msg {
+        &-msg {
             position: static;
             height: 18px;
             left: 8px;

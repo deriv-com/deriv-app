@@ -48,6 +48,7 @@ const CreateWallet = ({ is_dark_mode_on, setShouldShowFiat, should_show_fiat }: 
                                     key={index.toString()}
                                     content={wallet.content}
                                     is_dark_mode_on={is_dark_mode_on}
+                                    should_show_fiat={should_show_fiat}
                                     title={wallet.getTitle()}
                                 />
                             );

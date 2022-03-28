@@ -3,23 +3,29 @@ import { Text } from '@deriv/components';
 import { WalletRadioButton, WalletRadioButtonGroup } from 'Components/wallet-radio-button';
 
 type TProps = {
-    content: Array<{ light: string; dark: string }>;
-    is_dark_mode_on: boolean;
-    title: string;
+    content: Array<any>;
     key: string;
+    is_dark_mode_on: boolean;
+    should_show_fiat: boolean;
+    title: string;
 };
 
-const CreateWalletDetails = ({ content, is_dark_mode_on, title }: TProps) => {
+const CreateWalletDetails = ({ content, is_dark_mode_on, should_show_fiat, title }: TProps) => {
     return (
         <div key={title} className='create-wallet-detail'>
             <Text align='left' size='s' weight='bold'>
                 {title}
             </Text>
             <WalletRadioButtonGroup className='create-wallet-detail__icon-array' item_count={content.length}>
-                {content?.map((icon, index) => {
+                {content?.map((wallet_name, index) => {
                     return (
-                        <div key={`${icon}${index}`} className='create-wallet-detail__icon'>
-                            <WalletRadioButton icon={is_dark_mode_on ? icon.dark : icon.light} is_disabled={false} />
+                        <div key={`${wallet_name}${index}`} className='create-wallet-detail__icon'>
+                            <WalletRadioButton
+                                wallet_name={wallet_name}
+                                is_dark_mode_on={is_dark_mode_on}
+                                is_disabled={false}
+                                should_show_fiat={should_show_fiat}
+                            />
                         </div>
                     );
                 })}

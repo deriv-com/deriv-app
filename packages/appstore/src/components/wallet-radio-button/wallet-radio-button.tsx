@@ -1,13 +1,16 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import classNames from 'classnames';
+import WalletCard from 'Components/wallet';
 
 type TProps = {
-    icon: string;
+    is_dark_mode_on: boolean;
     is_disabled: boolean;
+    should_show_fiat: boolean;
+    wallet_name: any;
 };
 
-const WalletRadioButton = ({ icon, is_disabled }: TProps) => {
+const WalletRadioButton = ({ is_dark_mode_on, is_disabled, should_show_fiat, wallet_name }: TProps) => {
     const [is_wallet_selected, setIsWalletSelected] = React.useState(false);
 
     const onWalletClicked = () => {
@@ -20,14 +23,25 @@ const WalletRadioButton = ({ icon, is_disabled }: TProps) => {
             onClick={onWalletClicked}
         >
             {is_wallet_selected && <Icon icon='IcAppstoreCheck' className='wallet-radio-icon' />}
-            <Icon
-                className={classNames('wallet-radio-button__icon__border', {
-                    'wallet-radio-button__icon__border--red': is_wallet_selected,
-                })}
-                icon={icon}
-                width={64}
-                height={40}
-            />
+            {should_show_fiat && (
+                <Icon
+                    className={classNames('wallet-radio-button__icon__border', {
+                        'wallet-radio-button__icon__border--red': is_wallet_selected,
+                    })}
+                    icon={is_dark_mode_on ? wallet_name.dark : wallet_name.light}
+                    width={64}
+                    height={40}
+                />
+            )}
+            {!should_show_fiat && (
+                <div
+                    className={classNames('wallet-radio-button__icon__border', {
+                        'wallet-radio-button__icon__border--red': is_wallet_selected,
+                    })}
+                >
+                    <WalletCard size='small' wallet_name={wallet_name} />
+                </div>
+            )}
         </div>
     );
 };

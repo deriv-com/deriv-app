@@ -1,25 +1,10 @@
 import { localize } from '@deriv/translations';
 
-const fiat_currencies = [
-    { light: 'IcAppstoreWalletAudLight', dark: 'IcAppstoreWalletAudLight' },
-    { light: 'IcAppstoreWalletEurLight', dark: 'IcAppstoreWalletEurLight' },
-    { light: 'IcAppstoreWalletGbpLight', dark: 'IcAppstoreWalletGbpLight' },
-    { light: 'IcAppstoreWalletUsdLight', dark: 'IcAppstoreWalletUsdLight' },
-];
+const fiat_currencies = ['aud', 'eur', 'gbp', 'usd'];
 
-const crypto_wallets = [
-    { light: 'IcAppstoreWalletBitcoinLight', dark: 'IcAppstoreWalletBitcoinLight' },
-    { light: 'IcAppstoreWalletEthereumLight', dark: 'IcAppstoreWalletEthereumLight' },
-    { light: 'IcAppstoreWalletLitecoinLight', dark: 'IcAppstoreWalletLitecoinLight' },
-    { light: 'IcAppstoreWalletEusdtLight', dark: 'IcAppstoreWalletEusdtLight' },
-    { light: 'IcAppstoreWalletUsdtLight', dark: 'IcAppstoreWalletUsdtLight' },
-    { light: 'IcAppstoreWalletUsdcLight', dark: 'IcAppstoreWalletUsdcLight' },
-];
+const crypto_wallets = ['bitcoin', 'ethereum', 'litecoin', 'tether', 'usd_coin'];
 
-const built_in_wallets = [
-    { light: 'IcAppstoreWalletP2pLight', dark: 'IcAppstoreWalletP2pLight' },
-    { light: 'IcAppstoreWalletPaLight', dark: 'IcAppstoreWalletPaLight' },
-];
+const built_in_wallets = ['deriv_p2p', 'payment_agent'];
 
 const e_wallets = [
     { light: 'IcAppstoreWalletAudLight', dark: 'IcAppstoreWalletAudLight' },

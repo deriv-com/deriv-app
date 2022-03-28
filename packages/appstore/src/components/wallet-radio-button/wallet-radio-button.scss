@@ -24,9 +24,11 @@
 .wallet-radio {
     &-icon {
         position: absolute;
+        z-index: 10;
         top: -4px;
         right: -4px;
     }
+
     &-button {
         cursor: pointer;
         position: relative;

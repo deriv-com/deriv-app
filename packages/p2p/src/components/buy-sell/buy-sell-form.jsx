@@ -101,7 +101,7 @@ const BuySellForm = props => {
             onSubmit={(...args) => {
                 if (exchange_rate_on_mount !== buy_sell_store.exchange_rate) {
                     buy_sell_store.setShouldShowPopup(false);
-                    buy_sell_store.setShouldShowRateChangedPopup(true);
+                    buy_sell_store.setShowRateChangedPopup(true);
                 } else {
                     buy_sell_store.handleSubmit(() => isMounted(), ...args);
                 }
@@ -116,7 +116,7 @@ const BuySellForm = props => {
                 buy_sell_store.form_props.setSubmitForm(submitForm);
 
                 return (
-                    <div>
+                    <React.Fragment>
                         <div className='buy-sell__modal-hintbox'>
                             <HintBox
                                 icon='IcAlertInfo'
@@ -384,7 +384,7 @@ const BuySellForm = props => {
                                 )}
                             </div>
                         </Form>
-                    </div>
+                    </React.Fragment>
                 );
             }}
         </Formik>

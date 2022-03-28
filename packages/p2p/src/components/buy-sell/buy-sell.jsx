@@ -87,8 +87,8 @@ const BuySell = () => {
             />
             <RateChangedModal
                 local_currency={local_currency}
-                should_show_rate_changed_popup={buy_sell_store.should_show_rate_changed_popup}
-                setShouldShowRateChangedPopup={buy_sell_store.setShouldShowRateChangedPopup}
+                show_rate_changed_popup={buy_sell_store.show_rate_changed_popup}
+                setShowRateChangedPopup={buy_sell_store.setShowRateChangedPopup}
             />
         </div>
     );
@@ -109,8 +109,8 @@ BuySell.propTypes = {
     setErrorMessage: PropTypes.func,
     setIsSubmitDisabled: PropTypes.func,
     setSelectedAdvert: PropTypes.func,
-    setShouldShowRateChangedPopup: PropTypes.func,
-    should_show_rate_changed_popup: PropTypes.bool,
+    setShowRateChangedPopup: PropTypes.func,
+    show_rate_changed_popup: PropTypes.bool,
     should_show_popup: PropTypes.bool,
     should_show_verification: PropTypes.bool,
     show_advertiser_page: PropTypes.bool,

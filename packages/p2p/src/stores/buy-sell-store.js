@@ -27,7 +27,7 @@ export default class BuySellStore extends BaseStore {
     @observable selected_ad_state = {};
     @observable selected_value = 'rate';
     @observable should_show_popup = false;
-    @observable should_show_rate_changed_popup = false;
+    @observable show_rate_changed_popup = false;
     @observable should_show_verification = false;
     @observable should_use_client_limits = false;
     @observable show_advertiser_page = false;
@@ -426,8 +426,8 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    setShouldShowRateChangedPopup(should_show_rate_changed_popup) {
-        this.should_show_rate_changed_popup = should_show_rate_changed_popup;
+    setShowRateChangedPopup(show_rate_changed_popup) {
+        this.show_rate_changed_popup = show_rate_changed_popup;
     }
 
     @action.bound

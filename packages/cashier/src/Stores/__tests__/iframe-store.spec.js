@@ -1,12 +1,13 @@
 import IframeStore from '../iframe-store';
 
-let WS;
-let root_store;
-let iframe_store;
+let iframe_store, root_store, WS;
 
 beforeEach(() => {
     WS = {};
     root_store = {
+        client: {
+            setVerificationCode: jest.fn(),
+        },
         modules: {
             cashier: {
                 general_store: {
@@ -18,9 +19,6 @@ beforeEach(() => {
         ui: {
             is_dark_mode_on: true,
             is_mobile: false,
-        },
-        client: {
-            setVerificationCode: jest.fn(),
         },
     };
     iframe_store = new IframeStore({ WS, root_store });

@@ -29,7 +29,7 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                 <React.Fragment>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                         <Localize
-                            i18n_default_text='Use the <0>Deriv password</0>  to log in to Deriv.com, Deriv Go, Dtrader, SmartTrader, and DBot.'
+                            i18n_default_text='Use the <0>Deriv password</0> to log in to Deriv.com, Deriv Go, Dtrader, SmartTrader, and DBot.'
                             components={[<strong key={0} />]}
                         />
                     </Text>
@@ -135,7 +135,7 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                     onClose={() => setIsSentEmailModalOpen(false)}
                     identifier_title={capitalized_identifier}
                     onClickSendEmail={onClickSendEmail}
-                    is_modal_on_mobile={true}
+                    is_modal_when_mobile={true}
                 />
             </div>
         </React.Fragment>

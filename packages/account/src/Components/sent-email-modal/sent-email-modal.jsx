@@ -39,7 +39,7 @@ const SentEmailModal = ({
     onClose,
     onClickSendEmail,
     has_live_chat = false,
-    is_modal_on_mobile = false,
+    is_modal_when_mobile = false,
 }) => {
     const getSubtitle = () => {
         let subtitle = '';
@@ -117,7 +117,7 @@ const SentEmailModal = ({
         </SendEmailTemplate>
     );
 
-    if (isMobile() && !is_modal_on_mobile) {
+    if (isMobile() && !is_modal_when_mobile) {
         return (
             <MobileDialog
                 portal_element_id='modal_root'
@@ -165,7 +165,7 @@ SentEmailModal.propTypes = {
     onClose: PropTypes.func,
     onClickSendEmail: PropTypes.func,
     has_live_chat: PropTypes.bool,
-    is_modal_on_mobile: PropTypes.bool,
+    is_modal_when_mobile: PropTypes.bool,
 };
 
 export default SentEmailModal;

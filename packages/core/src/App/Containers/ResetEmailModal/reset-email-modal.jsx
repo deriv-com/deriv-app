@@ -16,7 +16,7 @@ const ResetEmailModal = ({
     verification_code,
     toggleResetEmailModal,
 }) => {
-    const [is_send_email_modal_open, setIsSendEmaliModalOpen] = React.useState(false);
+    const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
     const [email_request, setEmailRequest] = React.useState(null);
 
     const onResetComplete = (error_msg, actions) => {
@@ -45,7 +45,7 @@ const ResetEmailModal = ({
                 onResetComplete(response.error.message, actions);
             } else {
                 onResetComplete(null, actions);
-                setIsSendEmaliModalOpen(true);
+                setIsSendEmailModalOpen(true);
             }
         });
     };
@@ -72,11 +72,11 @@ const ResetEmailModal = ({
         return (
             <SentEmailModal
                 is_open={is_send_email_modal_open}
-                onClose={() => setIsSendEmaliModalOpen(false)}
+                onClose={() => setIsSendEmailModalOpen(false)}
                 identifier_title={'Change_Email'}
                 onClickSendEmail={resendEmail}
                 has_live_chat={true}
-                is_modal_on_mobile={true}
+                is_modal_when_mobile={true}
             />
         );
     }

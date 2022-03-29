@@ -8,12 +8,12 @@ import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 
 const DerivEmail = ({ email }) => {
-    const [is_send_email_modal_open, setIsSendEmaliModalOpen] = React.useState(false);
+    const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
 
     const onClickChangeEmail = () => {
         // Todo: will add the condition to check if it's social account and wants to be unlinked
         WS.verifyEmail(email, 'request_email');
-        setIsSendEmaliModalOpen(true);
+        setIsSendEmailModalOpen(true);
     };
 
     const onClickResendEmail = () => {
@@ -58,11 +58,11 @@ const DerivEmail = ({ email }) => {
                 </div>
                 <SentEmailModal
                     is_open={is_send_email_modal_open}
-                    onClose={() => setIsSendEmaliModalOpen(false)}
+                    onClose={() => setIsSendEmailModalOpen(false)}
                     identifier_title={'Change_Email'}
                     onClickSendEmail={onClickResendEmail}
                     has_live_chat={true}
-                    is_modal_on_mobile={true}
+                    is_modal_when_mobile={true}
                 />
             </div>
         </React.Fragment>

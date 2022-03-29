@@ -10,7 +10,7 @@ describe('<P2PEmpty/>', () => {
             </P2pEmpty>
         );
 
-        expect(screen.getByText('P2P Test')).toBeInTheDocument()
-        expect(screen.getByTestId('test_child')).toBeInTheDocument()
+        expect(screen.getByText('P2P Test')).toBeInTheDocument();
+        expect(screen.getByTestId('test_child')).toBeInTheDocument();
     });
 });

@@ -1,8 +1,6 @@
 import VerificationStore from '../verification-store';
 
-let WS;
-let root_store;
-let verification_store;
+let root_store, verification_store, WS;
 
 beforeEach(() => {
     WS = {

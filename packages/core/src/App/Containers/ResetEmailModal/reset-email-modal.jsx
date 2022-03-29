@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Text, Input } from '@deriv/components';
-import { validEmail, getErrorMessages, WS } from '@deriv/shared';
+import { validEmail, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { SentEmailModal } from '@deriv/account';
+import { WS } from 'Services';
 
 const ResetEmailModal = ({
     disableApp,
@@ -78,7 +79,7 @@ const ResetEmailModal = ({
                 identifier_title={'Change_Email'}
                 onClickSendEmail={resendEmail}
                 has_live_chat={true}
-                modal_mode={true}
+                is_modal_when_mobile={true}
             />
         );
     }

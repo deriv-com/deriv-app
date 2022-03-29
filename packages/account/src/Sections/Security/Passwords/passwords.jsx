@@ -32,7 +32,6 @@ const Passwords = ({
 
     return (
         <div className='account__passwords'>
-            {/* Todo: remove the condition after unlinking the email without social account is fully functional from BE side */}
             <DerivEmail
                 email={email}
                 social_identity_provider={social_identity_provider}

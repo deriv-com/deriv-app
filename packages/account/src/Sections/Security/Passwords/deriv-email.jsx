@@ -10,26 +10,25 @@ import UnlinkAccountModal from 'Components/unlink-account-modal';
 
 const DerivEmail = ({ email, social_identity_provider, is_social_signup }) => {
     const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = React.useState(false);
-    const [is_send_email_modal_open, setIsSendEmaliMldalOpen] = React.useState(false);
+    const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
 
     const onClickChangeEmail = () => {
         if (is_social_signup) {
             setIsUnlinkAccountModalOpen(true);
         } else {
             WS.verifyEmail(email, 'request_email');
-            setIsSendEmaliMldalOpen(true);
+            setIsSendEmailModalOpen(true);
         }
     };
 
     const onClickSendEmail = () => {
         WS.verifyEmail(email, 'request_email');
         setIsUnlinkAccountModalOpen(false);
-        setIsSendEmaliMldalOpen(true);
+        setIsSendEmailModalOpen(true);
     };
 
     const onClickResendEmail = () => {
         WS.verifyEmail(email, 'request_email');
-        setIsUnlinkAccountModalOpen(false);
     };
 
     return (
@@ -76,11 +75,11 @@ const DerivEmail = ({ email, social_identity_provider, is_social_signup }) => {
                 />
                 <SentEmailModal
                     is_open={is_send_email_modal_open}
-                    onClose={() => setIsSendEmaliMldalOpen(false)}
+                    onClose={() => setIsSendEmailModalOpen(false)}
                     identifier_title={'Change_Email'}
                     onClickSendEmail={onClickResendEmail}
                     has_live_chat={true}
-                    modal_mode={true}
+                    is_modal_when_mobile={true}
                 />
             </div>
         </React.Fragment>

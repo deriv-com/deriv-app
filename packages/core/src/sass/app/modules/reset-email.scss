@@ -52,7 +52,10 @@
     }
 }
 
+.change-email-update,
 .change-email-success {
+    display: grid;
+    padding: 3.2rem 0;
     &__modal {
         &-content {
             display: grid;
@@ -72,6 +75,7 @@
             text-align: center;
         }
         &-icon {
+            width: 100%;
             text-align: center;
             margin-top: 1.6rem;
             padding-top: 0;

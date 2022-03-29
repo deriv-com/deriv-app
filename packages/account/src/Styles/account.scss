@@ -644,9 +644,9 @@ $MIN_HEIGHT_FLOATING: calc(
                     &__fieldset {
                         @include mobile {
                             width: inherit;
-                            max-width: 400px;
+                            max-width: 40rem;
                         }
-                        width: 400px;
+                        width: 40rem;
                     }
                 }
             }

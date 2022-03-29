@@ -37,7 +37,7 @@ export default class UIStore extends BaseStore {
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
     @observable is_reset_email_modal_visible = false;
-    @observable is_success_email_modal_visible = false;
+    @observable is_update_email_modal_visible = false;
     @observable is_reset_trading_password_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
@@ -522,8 +522,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleSuccessEmailModal(state_change = !this.is_success_email_modal_visible) {
-        this.is_success_email_modal_visible = state_change;
+    toggleUpdateEmailModal(state_change = !this.is_update_email_modal_visible) {
+        this.is_update_email_modal_visible = state_change;
     }
 
     @action.bound

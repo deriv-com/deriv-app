@@ -47,11 +47,6 @@ export default class GeneralStore extends BaseStore {
     }
 
     @computed
-    get setCurrentFocus() {
-        return this.props?.setCurrentFocus;
-    }
-
-    @computed
     get blocked_until_date_time() {
         return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), false, true);
     }

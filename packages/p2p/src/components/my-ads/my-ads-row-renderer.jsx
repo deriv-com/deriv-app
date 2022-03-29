@@ -56,11 +56,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     is_left_swipe
                     right_hidden_component={
                         <React.Fragment>
-                            {!is_advert_active && (
-                                <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
-                                    <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
-                                </div>
-                            )}
+                            <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
+                                <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
+                            </div>
                             {is_advert_active ? (
                                 <div className='p2p-my-ads__table-popovers__activate'>
                                     <Icon
@@ -90,7 +88,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             </div>
                         </React.Fragment>
                     }
-                    right_hidden_component_width={is_advert_active ? '12rem' : '18rem'}
+                    right_hidden_component_width='18rem'
                     visible_component={
                         <Table.Row
                             className={classNames('p2p-my-ads__table-row', {

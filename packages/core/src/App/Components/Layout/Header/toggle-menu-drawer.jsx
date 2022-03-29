@@ -265,7 +265,7 @@ const ToggleMenuDrawer = React.forwardRef(
                         <MobileDrawer.Item key={idx}>
                             <MenuLink
                                 is_language
-                                is_active={currentLanguage === lang}
+                                is_active={localStorage.getItem('i18n_language') === lang}
                                 link_to={lang}
                                 icon={`IcFlag${lang.replace('_', '-')}`}
                                 text={getAllowedLanguages()[lang]}

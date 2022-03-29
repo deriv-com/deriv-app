@@ -7,33 +7,37 @@ const crypto_wallets = ['bitcoin', 'ethereum', 'litecoin', 'tether', 'usd_coin']
 const built_in_wallets = ['deriv_p2p', 'payment_agent'];
 
 const e_wallets = [
-    { light: 'IcAppstoreWalletAudLight', dark: 'IcAppstoreWalletAudLight' },
-    { light: 'IcAppstoreWalletEurLight', dark: 'IcAppstoreWalletEurLight' },
-    { light: 'IcAppstoreWalletGbpLight', dark: 'IcAppstoreWalletGbpLight' },
-    { light: 'IcAppstoreWalletUsdLight', dark: 'IcAppstoreWalletUsdLight' },
-    { light: 'IcAppstoreWalletAudLight', dark: 'IcAppstoreWalletAudLight' },
-    { light: 'IcAppstoreWalletEurLight', dark: 'IcAppstoreWalletEurLight' },
-    { light: 'IcAppstoreWalletGbpLight', dark: 'IcAppstoreWalletGbpLight' },
-    { light: 'IcAppstoreWalletUsdLight', dark: 'IcAppstoreWalletUsdLight' },
-    { light: 'IcAppstoreWalletAudLight', dark: 'IcAppstoreWalletAudLight' },
-    { light: 'IcAppstoreWalletEurLight', dark: 'IcAppstoreWalletEurLight' },
-    { light: 'IcAppstoreWalletGbpLight', dark: 'IcAppstoreWalletGbpLight' },
-    { light: 'IcAppstoreWalletUsdLight', dark: 'IcAppstoreWalletUsdLight' },
+    { light: 'IcCashierAirTmLight', dark: 'IcCashierAirTmDark' },
+    { light: 'IcWalletFasapayLight', dark: 'IcWalletFasapayDark' },
+    { light: 'IcWalletJetonLight', dark: 'IcWalletJetonDark' },
+    { light: 'IcAppstoreBoletoLight', dark: 'IcAppstoreBoletoDark' },
+    { light: 'IcWalletNetellerLight', dark: 'IcWalletNetellerDark' },
+    { light: 'IcCashierPayLivreLight', dark: 'IcCashierPayLivreDark' },
+    { light: 'IcAppstorePaysafeCardLight', dark: 'IcAppstorePaysafeCardDark' },
+    { light: 'IcCashierOnlineNairaLight', dark: 'IcCashierOnlineNairaDark' },
+    { light: 'IcCashierPerfectMoneyLight', dark: 'IcCashierPerfectMoneyDark' },
+    { light: 'IcWalletSkrillLight', dark: 'IcWalletSkrillDark' },
+    { light: 'IcWalletSticpayLight', dark: 'IcWalletSticpayDark' },
+    { light: 'IcAppstoreAstropayLight', dark: 'IcAppstoreAstropayDark' },
+    { light: 'IcAppstoreWechatPayLight', dark: 'IcAppstoreWechatPayDark' },
+    { light: 'IcWalletWebmoneyLight', dark: 'IcWalletWebmoneyLight' },
+    { light: 'IcAppstoreBeyonicLight', dark: 'IcAppstoreBeyonicDark' },
+    { light: 'IcAppstoreOneforyouLight', dark: 'IcAppstoreOneforyouDark' },
+    { light: 'IcAppstoreAdvcashLight', dark: 'IcAppstoreAdvcashDark' },
 ];
 
 const bankwire = [
-    { light: 'IcAppstoreWalletBitcoinLight', dark: 'IcAppstoreWalletBitcoinLight' },
-    { light: 'IcAppstoreWalletEthereumLight', dark: 'IcAppstoreWalletEthereumLight' },
-    { light: 'IcAppstoreWalletLitecoinLight', dark: 'IcAppstoreWalletLitecoinLight' },
-    { light: 'IcAppstoreWalletEusdtLight', dark: 'IcAppstoreWalletEusdtLight' },
-    { light: 'IcAppstoreWalletUsdtLight', dark: 'IcAppstoreWalletUsdtLight' },
-    { light: 'IcAppstoreWalletUsdcLight', dark: 'IcAppstoreWalletUsdcLight' },
+    { light: 'IcCashierInstantBankTransferLight', dark: 'IcCashierInstantBankTransferDark' },
+    { light: 'IcWalletPaytrustLight', dark: 'IcWalletPaytrustDark' },
+    { light: 'IcCashierNganLoungLight', dark: 'IcCashierNganLoungDark' },
+    { light: 'IcCashierHelpToPayLight', dark: 'IcCashierHelpToPayDark' },
+    { light: 'IcWalletZingpayLight', dark: 'IcWalletZingpayDark' },
+    { light: 'IcAppstoreTrustlyLight', dark: 'IcAppstoreTrustlyDark' },
+    { light: 'IcAppstoreOxxoLight', dark: 'IcAppstoreOxxoDark' },
+    { light: 'IcAppstoreSpeiLight', dark: 'IcAppstoreSpeiDark' },
 ];
 
-const credit_debit_card = [
-    { light: 'IcAppstoreWalletP2pLight', dark: 'IcAppstoreWalletP2pLight' },
-    { light: 'IcAppstoreWalletPaLight', dark: 'IcAppstoreWalletPaLight' },
-];
+const credit_debit_card = [{ light: 'IcWalletCreditDebitLight', dark: 'IcWalletCreditDebitDark' }];
 
 const wallets_header_info = {
     getTitle: () => localize('Create a wallet'),

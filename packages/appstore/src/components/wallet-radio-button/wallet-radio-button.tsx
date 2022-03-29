@@ -14,12 +14,18 @@ const WalletRadioButton = ({ is_dark_mode_on, is_disabled, should_show_fiat, wal
     const [is_wallet_selected, setIsWalletSelected] = React.useState(false);
 
     const onWalletClicked = () => {
-        setIsWalletSelected(!is_wallet_selected);
+        if (!should_show_fiat) {
+            setIsWalletSelected(!is_wallet_selected);
+        }
     };
 
     return (
         <div
-            className={classNames('wallet-radio-button', { 'wallet-radio-button--disabled': is_disabled })}
+            className={classNames(
+                'wallet-radio-button',
+                { 'wallet-radio-button--disabled': is_disabled },
+                { 'wallet-radio-button__pointer': !should_show_fiat }
+            )}
             onClick={onWalletClicked}
         >
             {is_wallet_selected && <Icon icon='IcAppstoreCheck' className='wallet-radio-icon' />}

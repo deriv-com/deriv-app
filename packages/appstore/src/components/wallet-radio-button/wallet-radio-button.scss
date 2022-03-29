@@ -30,8 +30,11 @@
     }
 
     &-button {
-        cursor: pointer;
         position: relative;
+
+        &__pointer {
+            cursor: pointer;
+        }
 
         &--disabled {
             pointer-events: none;
@@ -40,6 +43,7 @@
 
         &__icon {
             &__border {
+                border: 2px solid transparent;
                 border-radius: $BORDER_RADIUS;
 
                 &--red {

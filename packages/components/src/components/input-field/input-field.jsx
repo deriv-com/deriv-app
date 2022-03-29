@@ -141,8 +141,7 @@ const InputField = ({
             increment_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
             const new_value =
-                parseFloat(current_value || 0) +
-                parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+                parseFloat(current_value || 0) + parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
             increment_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
             increment_value = parseFloat((current_value || 0) + 1).toFixed(decimal_places);
@@ -165,8 +164,7 @@ const InputField = ({
             decrement_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
             const new_value =
-                parseFloat(current_value || 0) -
-                parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+                parseFloat(current_value || 0) - parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
             decrement_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
             decrement_value = parseFloat((current_value || 0) - 1).toFixed(decimal_places);

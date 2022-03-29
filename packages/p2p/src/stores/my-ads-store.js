@@ -24,7 +24,6 @@ export default class MyAdsStore extends BaseStore {
     @observable has_more_items_to_load = false;
     @observable has_missing_payment_methods = false;
     @observable is_ad_created_modal_visible = false;
-    @observable is_ad_exceeds_daily_limit_modal_open = false;
     @observable is_api_error_modal_visible = false;
     @observable is_delete_modal_open = false;
     @observable is_edit_ad_error_modal_visible = false;
@@ -167,7 +166,6 @@ export default class MyAdsStore extends BaseStore {
                 } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
                     if (!response.p2p_advert_create.is_visible) {
                         this.setAdvertDetails(response.p2p_advert_create);
-                        this.setIsAdExceedsDailyLimitModalOpen(true);
                     }
                     this.setShowAdForm(false);
                 }
@@ -432,11 +430,6 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
-    }
-
-    @action.bound
-    setIsAdExceedsDailyLimitModalOpen(is_ad_exceeds_daily_limit_modal_open) {
-        this.is_ad_exceeds_daily_limit_modal_open = is_ad_exceeds_daily_limit_modal_open;
     }
 
     @action.bound

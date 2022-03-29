@@ -36,10 +36,10 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
             </MobileFullPageModal>
         </div>
     ) : (
-        <div data-testid='order-details-wrapper-desktop'>
+        <React.Fragment>
             <PageReturn onClick={onPageReturn} page_title={page_title} />
             {children}
-        </div>
+        </React.Fragment>
     );
 };
 

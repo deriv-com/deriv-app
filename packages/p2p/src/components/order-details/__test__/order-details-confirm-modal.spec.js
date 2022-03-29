@@ -1,5 +1,5 @@
 import React from 'react';
-import { act,fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { requestWS } from 'Utils/websocket';
 import OrderDetailsConfirmModal from '../order-details-confirm-modal.jsx';
 
@@ -12,7 +12,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('Utils/websocket', () => ({
     ...jest.requireActual('Utils/websocket'),
-    requestWS: jest.fn().mockResolvedValue({ error: { message: "P2P Error" } }),
+    requestWS: jest.fn().mockResolvedValue({ error: { message: 'P2P Error' } }),
 }));
 
 describe('<OrderDetailsConfirmModal/>', () => {
@@ -75,11 +75,11 @@ describe('<OrderDetailsConfirmModal/>', () => {
 
     it('should show error message when error response is received', async () => {
         render(<OrderDetailsConfirmModal should_show_confirm_modal order_information={mock_props} />);
-            fireEvent.click(screen.getByRole('checkbox'));
+        fireEvent.click(screen.getByRole('checkbox'));
         act(() => {
             fireEvent.click(screen.getByRole('button', { name: 'Release 20 USD' }));
         });
-        
+
         await waitFor(() => {
             expect(requestWS).toHaveBeenCalled();
         });

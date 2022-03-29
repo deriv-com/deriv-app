@@ -21,7 +21,6 @@ beforeEach(() => {
         },
     };
     verification_store = new VerificationStore({ WS, root_store });
-    jest.useFakeTimers();
 });
 
 describe('VerificationStore', () => {
@@ -63,13 +62,16 @@ describe('VerificationStore', () => {
         expect(verification_store.resend_timeout).toBe('20');
     });
     it('should clear verification timeout', () => {
+        jest.useFakeTimers();
         verification_store.setTimeoutButton('123');
         verification_store.clearTimeoutVerification();
 
         expect(clearTimeout).toHaveBeenCalledTimes(1);
         expect(clearTimeout).toHaveBeenCalledWith('123');
+        jest.useRealTimers();
     });
     it('should set verification timeout', () => {
+        jest.useFakeTimers();
         const spyClearTimeoutVerification = jest.spyOn(verification_store, 'clearTimeoutVerification');
         const spyClearVerification = jest.spyOn(verification_store, 'clearVerification');
         verification_store.setTimeoutVerification();
@@ -79,6 +81,7 @@ describe('VerificationStore', () => {
         expect(setTimeout).toHaveBeenCalledTimes(1);
         expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 3600000);
         expect(spyClearVerification).toHaveBeenCalledTimes(1);
+        jest.useRealTimers();
     });
     it('should not send an email if is_button_clicked="true"', async () => {
         verification_store.WS.verifyEmail.mockResolvedValue({});
@@ -131,12 +134,14 @@ describe('VerificationStore', () => {
         expect(spySendVerificationEmail).not.toHaveBeenCalled();
     });
     it('should run clearInterval in setCountDownResendVerification function when resend_timeout === 1 ', () => {
+        jest.useFakeTimers();
         verification_store.setCountDownResendVerification();
         jest.runAllTimers();
 
         expect(setInterval).toHaveBeenLastCalledWith(expect.any(Function), 1000);
         expect(verification_store.resend_timeout).toBe(60);
         expect(clearInterval).toHaveBeenCalled();
+        jest.useRealTimers();
     });
     it('should clear verification', () => {
         const spyClearTimeoutVerification = jest.spyOn(verification_store, 'clearTimeoutVerification');

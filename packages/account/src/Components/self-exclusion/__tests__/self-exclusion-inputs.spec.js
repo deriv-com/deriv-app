@@ -84,7 +84,7 @@ describe('<SelfExclusionInputs />', () => {
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 
-    it('should render SelfExclusionInputs component with options and should render "Next" button and trigger click', () => {
+    it('should render SelfExclusionInputs component with options mlt and should render "Next" button and trigger click', () => {
         mockContext.is_mlt = true;
 
         useFormikContextMock.mockReturnValue({
@@ -135,12 +135,69 @@ describe('<SelfExclusionInputs />', () => {
                 /If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/
             )
         ).toBeInTheDocument();
+        expect(
+            screen.queryByText(/To self-exclude from all online gambling companies licensed in Great Britain, go to/)
+        ).not.toBeInTheDocument();
 
         const btn = screen.getByRole('button');
         expect(btn).toBeInTheDocument();
         expect(btn).toHaveTextContent('Next');
         fireEvent.click(btn);
         expect(onClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should render SelfExclusionInputs component with options mx', () => {
+        mockContext.is_mx = true;
+
+        useFormikContextMock.mockReturnValue({
+            values: {
+                max_turnover: 99,
+                max_losses: 13,
+                max_7day_turnover: 70,
+                max_7day_losses: 50,
+                max_30day_turnover: 999,
+                max_30day_losses: 999,
+                session_duration_limit: 0,
+                timeout_until: 0,
+                exclude_until: 1,
+                max_balance: 9999,
+                max_open_bets: 13,
+                max_deposit: 99,
+                max_7day_deposit: 777,
+                max_30day_deposit: 999,
+            },
+            isSubmitting: false,
+            isValid: true,
+            dirty: true,
+            errors: {},
+            handleBlur: jest.fn(),
+            handleChange: jest.fn(),
+            setFieldValue: jest.fn(),
+        });
+
+        render(
+            <Formik>
+                <SelfExclusionContext.Provider value={mockContext}>
+                    <SelfExclusionInputs />
+                </SelfExclusionContext.Provider>
+            </Formik>
+        );
+
+        const arrCurrency = screen.getAllByText(/test currency/);
+        expect(arrCurrency.length).toBeGreaterThan(0);
+        expect(
+            screen.getByText(
+                'Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.'
+            )
+        ).toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                /If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/
+            )
+        ).not.toBeInTheDocument();
+        expect(
+            screen.getByText(/To self-exclude from all online gambling companies licensed in Great Britain, go to/)
+        ).toBeInTheDocument();
     });
 
     it('Should trigger handleChange callback when the input field changes in StakeLossAndLimitsInputs', () => {

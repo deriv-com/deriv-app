@@ -5,20 +5,20 @@ import SelfExclusionContext from '../self-exclusion-context';
 
 jest.mock('../self-exclusion-confirm-page', () => () => <div>SelfExclusionConfirmPage</div>);
 jest.mock('../self-exclusion-inputs', () => () => <div>SelfExclusionInputs</div>);
-let mockContext = {};
-
-beforeEach(() => {
-    mockContext = {
-        state: {
-            self_exclusions: {},
-            is_confirm_page: false,
-        },
-        validateFields: jest.fn(),
-        handleSubmit: jest.fn(),
-    };
-});
 
 describe('<SelfExclusionForm />', () => {
+    let mockContext = {};
+
+    beforeEach(() => {
+        mockContext = {
+            state: {
+                self_exclusions: {},
+                is_confirm_page: false,
+            },
+            validateFields: jest.fn(),
+            handleSubmit: jest.fn(),
+        };
+    });
     it('should render SelfExclusionForm component with SelfExclusionInputs', () => {
         render(
             <SelfExclusionContext.Provider value={mockContext}>

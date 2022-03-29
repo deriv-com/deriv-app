@@ -4,32 +4,30 @@ import SelfExclusionConfirmPage from '../self-exclusion-confirm-page';
 import SelfExclusionContext from '../self-exclusion-context';
 import * as formik from 'formik';
 
-let mockContext = {};
-
 jest.mock('../self-exclusion-confirm-limits', () => () => <div>SelfExclusionConfirmLimits</div>);
 
 const useFormikContextMock = jest.spyOn(formik, 'useFormikContext');
 
-beforeEach(() => {
-    mockContext = {
-        backFromConfirmLimits: jest.fn(),
-        currency: 'test currency',
-        currency_display: 'test currency',
-        exclusion_texts: {},
-        is_eu: false,
-        state: {
-            show_confirm: false,
-            submit_error_message: 'Submit error message',
-            changed_attributes: [],
-        },
-    };
-    useFormikContextMock.mockReturnValue({
-        values: {},
-        isSubmitting: false,
-    });
-});
-
 describe('<SelfExclusionConfirmPage />', () => {
+    let mockContext = {};
+    beforeEach(() => {
+        mockContext = {
+            backFromConfirmLimits: jest.fn(),
+            currency: 'test currency',
+            currency_display: 'test currency',
+            exclusion_texts: {},
+            is_eu: false,
+            state: {
+                show_confirm: false,
+                submit_error_message: 'Submit error message',
+                changed_attributes: [],
+            },
+        };
+        useFormikContextMock.mockReturnValue({
+            values: {},
+            isSubmitting: false,
+        });
+    });
     it('should not render SelfExclusionConfirmPage component', () => {
         mockContext.state.show_confirm = true;
 

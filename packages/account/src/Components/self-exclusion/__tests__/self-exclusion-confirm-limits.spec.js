@@ -4,21 +4,20 @@ import SelfExclusionConfirmLimits from '../self-exclusion-confirm-limits';
 import SelfExclusionContext from '../self-exclusion-context';
 import * as formik from 'formik';
 
-let mockContext = {};
-
 const useFormikContextMock = jest.spyOn(formik, 'useFormikContext');
 
-beforeEach(() => {
-    mockContext = {
-        backToReview: jest.fn(),
-    };
-    useFormikContextMock.mockReturnValue({
-        handleSubmit: jest.fn(),
-        isSubmitting: false,
-    });
-});
-
 describe('<SelfExclusionConfirmLimits />', () => {
+    let mockContext = {};
+    beforeEach(() => {
+        mockContext = {
+            backToReview: jest.fn(),
+        };
+        useFormikContextMock.mockReturnValue({
+            handleSubmit: jest.fn(),
+            isSubmitting: false,
+        });
+    });
+
     it('should render SelfExclusionConfirmLimits component', () => {
         render(
             <SelfExclusionContext.Provider value={mockContext}>

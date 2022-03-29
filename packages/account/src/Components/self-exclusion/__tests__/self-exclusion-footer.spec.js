@@ -8,25 +8,23 @@ import * as formik from 'formik';
 const portalRoot = document.createElement('div');
 document.body.appendChild(portalRoot);
 
-let mockContext = {};
-
 const useFormikContextMock = jest.spyOn(formik, 'useFormikContext');
 
-beforeEach(() => {
-    mockContext = {
-        footer_ref: portalRoot,
-        goToConfirm: jest.fn(),
-        toggleArticle: jest.fn(),
-    };
-    useFormikContextMock.mockReturnValue({
-        dirty: true,
-        isSubmitting: false,
-        isValid: true,
-        values: [],
-    });
-});
-
 describe('<SelfExclusionFooter />', () => {
+    let mockContext = {};
+    beforeEach(() => {
+        mockContext = {
+            footer_ref: portalRoot,
+            goToConfirm: jest.fn(),
+            toggleArticle: jest.fn(),
+        };
+        useFormikContextMock.mockReturnValue({
+            dirty: true,
+            isSubmitting: false,
+            isValid: true,
+            values: [],
+        });
+    });
     it('should not render SelfExclusionFooter component', () => {
         mockContext.footer_ref = null;
 

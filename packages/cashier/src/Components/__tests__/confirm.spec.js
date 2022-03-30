@@ -1,7 +1,7 @@
 import React from 'react';
+import { Money } from '@deriv/components';
 import { fireEvent, render, screen } from '@testing-library/react';
 import Confirm from '../confirm';
-import Money from '../../../../components/src/components/money/money';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -19,7 +19,7 @@ describe('<Confirm />', () => {
     afterAll(() => {
         document.body.removeChild(modal_root_el);
     });
-    const mockProps = {
+    const props = {
         data: [
             { key: 'pa', label: 'Payment agent', value: 'Payment Agent of CR90000561 (Created from Script)' },
             { key: 'amount', label: 'Amount', value: <Money amount='100' currency='USD' show_currency /> },
@@ -31,7 +31,7 @@ describe('<Confirm />', () => {
     };
 
     it('should show proper icon, header, messages and buttons', () => {
-        render(<Confirm {...mockProps} />);
+        render(<Confirm {...props} />);
 
         expect(screen.getByTestId('dti_confirm_details_icon')).toBeInTheDocument();
         expect(
@@ -49,24 +49,24 @@ describe('<Confirm />', () => {
     });
 
     it('should trigger onClick callback when the client clicks on Back button', () => {
-        render(<Confirm {...mockProps} />);
+        render(<Confirm {...props} />);
 
         const el_back_btn = screen.getByRole('button', { name: 'Back' });
         fireEvent.click(el_back_btn);
-        expect(mockProps.onClickBack).toHaveBeenCalledTimes(1);
+        expect(props.onClickBack).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger onClick callback when the client clicks on Confirm button', () => {
-        render(<Confirm {...mockProps} />);
+        render(<Confirm {...props} />);
 
         const el_confirm_btn = screen.getByRole('button', { name: 'Confirm' });
         fireEvent.click(el_confirm_btn);
-        expect(mockProps.onClickConfirm).toHaveBeenCalledTimes(1);
+        expect(props.onClickConfirm).toHaveBeenCalledTimes(1);
     });
 
     it('should show error message', () => {
-        render(<Confirm {...mockProps} error={{ message: 'Error meesage' }} />);
+        render(<Confirm {...props} error={{ message: 'Error message' }} />);
 
-        expect(screen.getByText('Error meesage')).toBeInTheDocument();
+        expect(screen.getByText('Error message')).toBeInTheDocument();
     });
 });

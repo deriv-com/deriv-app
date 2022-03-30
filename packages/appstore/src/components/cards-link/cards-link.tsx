@@ -21,12 +21,12 @@ const CardsLink = ({ app_card, wallet_card, is_linked }: TCardsLinkDetails) => {
                             wallet_card && !app_card && 'unlinked-cards__wallet-card--overlap'
                         }`}
                     >
-                        {wallet_card ? wallet_card : <AppStoreSkeletonCard label='Wallet' />}
+                        {wallet_card || <AppStoreSkeletonCard label='Wallet' />}
                     </div>
                     <div className='unlinked-cards__app-card'>
                         <div className='unlinked-cards__app-card__link-element'>
-                            <div className='unlinked-cards__app-card__link-element__horizontal-line'></div>
-                            <div className='unlinked-cards__app-card__link-element__vertical-line'></div>
+                            <div className='unlinked-cards__app-card__link-element__horizontal-line'/>
+                            <div className='unlinked-cards__app-card__link-element__vertical-line'/>
                             <Icon
                                 icon='IcAppstoreLinkWallet'
                                 width='11.45'
@@ -34,7 +34,7 @@ const CardsLink = ({ app_card, wallet_card, is_linked }: TCardsLinkDetails) => {
                                 className='unlinked-cards__app-card__link-element__link-icon'
                             />
                         </div>
-                        {app_card ? app_card : <AppStoreSkeletonCard label='App' />}
+                        {app_card || <AppStoreSkeletonCard label='App' />}
                     </div>
                 </div>
             )}

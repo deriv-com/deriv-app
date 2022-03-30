@@ -38,7 +38,7 @@ const DerivEmail = ({ email }) => {
                                 type='text'
                                 name='email'
                                 id={'email'}
-                                label={localize('Email address*')}
+                                label={localize('Email address')}
                                 value={email}
                                 disabled={true}
                             />

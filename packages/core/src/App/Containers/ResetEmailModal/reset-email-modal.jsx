@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Text, Input } from '@deriv/components';
-import { validEmail, getErrorMessages, WS } from '@deriv/shared';
+import { validEmail, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { SentEmailModal } from '@deriv/account';
+import { WS } from 'Services';
 
 const ResetEmailModal = ({
     disableApp,
@@ -29,6 +30,8 @@ const ResetEmailModal = ({
         }
 
         actions.setStatus({ reset_complete: true });
+        setIsSendEmailModalOpen(true);
+        toggleResetEmailModal(false);
     };
 
     const handleSubmit = (values, actions) => {
@@ -45,7 +48,6 @@ const ResetEmailModal = ({
                 onResetComplete(response.error.message, actions);
             } else {
                 onResetComplete(null, actions);
-                setIsSendEmailModalOpen(true);
             }
         });
     };

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import TradingHub from 'Components/trading-hub';
+import TradingHub from 'Modules/trading-hub';
 import ConfigStore from 'Stores/config-store';
 import { TRoute } from 'Types';
 

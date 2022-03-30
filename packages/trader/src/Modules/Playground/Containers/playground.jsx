@@ -2,7 +2,9 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'Stores/connect';
 import ProductCard from '../Components/product-card';
+import TradeTypeCard from '../Components/trade-type-card';
 import AppstoreAppCard from '../Components/app-card';
+import ProductCardModal from '../Components/product-card-modal';
 
 const Playground = ({ props, is_dark_mode_on }) => {
     // dummy product card data
@@ -400,7 +402,13 @@ const Playground = ({ props, is_dark_mode_on }) => {
             <div style={trade_type_wrapper_div}>
                 {tradetype.map((item, idx) => (
                     <div style={marginSetting} key={idx}>
-                        <ProductCard product_card={true} trade_type_details={item} />
+                        <TradeTypeCard
+                            type={item.type}
+                            icon_title={item.icon_title}
+                            description={item.description}
+                            checked={item.checked}
+                            bg_image_title={item.bg_image_title}
+                        />
                     </div>
                 ))}
             </div>
@@ -511,6 +519,11 @@ const Playground = ({ props, is_dark_mode_on }) => {
                         />
                     </div>
                 ))}
+            </div>
+
+            <p>Product card modal</p>
+            <div style={trade_type_wrapper_div}>
+                <ProductCardModal />
             </div>
         </div>
     );

@@ -164,7 +164,7 @@ const PersonalDetails = ({
             {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
-                        <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
+                        <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside} data-testid='personal-details-form'>
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
                                     {is_appstore && (
@@ -246,6 +246,7 @@ const PersonalDetails = ({
                                                 hint={getFieldHint('first name')}
                                                 disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
+                                                data-testid='first_name'
                                             />
                                         )}
                                         {'last_name' in props.value && (
@@ -256,6 +257,7 @@ const PersonalDetails = ({
                                                 hint={getFieldHint('last name')}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
+                                                data-testid='last_name'
                                             />
                                         )}
                                         {!is_appstore && <FormSubHeader title={localize('Other details')} />}
@@ -272,6 +274,7 @@ const PersonalDetails = ({
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_appstore ? '' : 'modal_root'}
+                                                data-testid="date_of_birth"
                                             />
                                         )}
                                         {'place_of_birth' in props.value && (
@@ -296,6 +299,7 @@ const PersonalDetails = ({
                                                                     )
                                                                 }
                                                                 required
+                                                                data-testid='place_of_birth'
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -320,6 +324,7 @@ const PersonalDetails = ({
                                                                 list_portal_id='modal_root'
                                                                 required
                                                                 should_hide_disabled_options={false}
+                                                                data-testid='place_of_birth_mobile'
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -348,6 +353,7 @@ const PersonalDetails = ({
                                                                 }
                                                                 list_portal_id='modal_root'
                                                                 required
+                                                                data-testid='citizenship'
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -370,6 +376,7 @@ const PersonalDetails = ({
                                                                 {...field}
                                                                 required
                                                                 should_hide_disabled_options={false}
+                                                                data-testid='citizenship_mobile'
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -390,6 +397,7 @@ const PersonalDetails = ({
                                                         : localize('Phone number')
                                                 }
                                                 maxLength={50}
+                                                data-testid='phone'
                                             />
                                         )}
                                         {('tax_residence' in props.value ||
@@ -420,6 +428,7 @@ const PersonalDetails = ({
                                                                             )
                                                                         }
                                                                         list_portal_id='modal_root'
+                                                                        data-testid='tax_residence'
                                                                     />
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
@@ -444,6 +453,7 @@ const PersonalDetails = ({
                                                                         }}
                                                                         {...field}
                                                                         required
+                                                                        data-testid='tax_residence_mobile'
                                                                     />
                                                                 </MobileWrapper>
                                                                 <div
@@ -528,11 +538,11 @@ const PersonalDetails = ({
                                                         label={localize(
                                                             'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
                                                         )}
-                                                        renderlabel={title => (
-                                                            <Text size='xs' line_height='s'>
-                                                                {title}
-                                                            </Text>
-                                                        )}
+                                                            // renderlabel={title => (
+                                                            //     <Text size='xs' line_height='s'>
+                                                            //         {title}  
+                                                            //     </Text>
+                                                            // )}   
                                                         withTabIndex='0'
                                                     />
                                                 )}
@@ -563,6 +573,7 @@ const PersonalDetails = ({
                                                                     {...field}
                                                                     list_portal_id='modal_root'
                                                                     required
+                                                                    data_testid='account_opening_reason'
                                                                 />
                                                             </DesktopWrapper>
                                                             <MobileWrapper>
@@ -586,6 +597,7 @@ const PersonalDetails = ({
                                                                     }}
                                                                     {...field}
                                                                     required
+                                                                    data-testid='account_opening_reason_mobile'
                                                                 />
                                                             </MobileWrapper>
                                                         </React.Fragment>

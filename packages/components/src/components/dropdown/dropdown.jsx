@@ -199,6 +199,7 @@ const Dropdown = ({
     suffix_icon,
     onChange,
     value,
+    data_testid,
 }) => {
     const dropdown_ref = React.useRef();
     const native_select_ref = React.useRef();
@@ -361,6 +362,7 @@ const Dropdown = ({
                 readOnly='readonly'
                 type='hidden'
                 value={value || 0}
+                data-testid={data_testid}
             />
             <div ref={wrapper_ref} className={containerClassName()}>
                 <div

@@ -52,6 +52,9 @@
             @include mobile {
                 width: 100vw;
                 margin-top: 4rem;
+                @media screen and (max-height: 568px) {
+                    height: inherit !important;
+                }
 
                 .dc-collapsible {
                     position: relative;

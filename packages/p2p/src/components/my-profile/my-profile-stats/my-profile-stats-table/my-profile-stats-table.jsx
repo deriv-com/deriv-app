@@ -1,92 +1,365 @@
 import * as React from 'react';
-import { Icon, PopoverMobile, Table, Text } from '@deriv/components';
+import { Money, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { localize, Localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const MyProfileStatsTable = () => {
-    const { general_store, my_profile_store } = useStores();
-    const [is_statistics_tooltip_open, setIsStatisticsTooltipOpen] = React.useState(false);
+    const { my_profile_store, general_store } = useStores();
 
-    const { daily_buy, daily_buy_limit, daily_sell, daily_sell_limit, total_orders_count } =
-        my_profile_store.advertiser_info;
+    const {
+        buy_completion_rate,
+        buy_orders_amount,
+        buy_orders_count,
+        buy_time_avg,
+        partner_count,
+        release_time_avg,
+        sell_completion_rate,
+        sell_orders_amount,
+        sell_orders_count,
+        total_orders_count,
+        total_turnover,
+    } = my_profile_store.advertiser_info;
+
+    const [show_lifetime_turnover_value, setShowLifetimeTurnoverValue] = React.useState(false);
+    const [show_lifetime_order_value, setShowLifetimeOrderValue] = React.useState(false);
+
+    const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '< 1';
+    const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
+
+    if (isMobile()) {
+        return (
+            <React.Fragment>
+                <Table>
+                    <Table.Row className='my-profile-stats-table--mobile'>
+                        <Table.Cell className='my-profile-stats-table__cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize
+                                    i18n_default_text='Buy completion  <0>30d</0>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            className='my-profile-stats-table--italic'
+                                            color='less-prominent'
+                                            size='xxxs'
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                                {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
+                            </Text>
+                        </Table.Cell>
+                        <Table.Cell className='my-profile-stats-table__cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize
+                                    i18n_default_text='Avg pay time  <0>30d</0>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            className='my-profile-stats-table--italic'
+                                            color='less-prominent'
+                                            size='xxxs'
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                                {buy_time_avg
+                                    ? localize('{{- avg_buy_time_in_minutes}} min', {
+                                          avg_buy_time_in_minutes,
+                                      })
+                                    : '-'}
+                            </Text>
+                        </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className='my-profile-stats-table--mobile'>
+                        <Table.Cell className='my-profile-stats-table__cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize
+                                    i18n_default_text='Sell completion  <0>30d</0>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            className='my-profile-stats-table--italic'
+                                            color='less-prominent'
+                                            size='xxxs'
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                                {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
+                            </Text>
+                        </Table.Cell>
+                        <Table.Cell className='my-profile-stats-table__cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize
+                                    i18n_default_text='Avg release time  <0>30d</0>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            className='my-profile-stats-table--italic'
+                                            color='less-prominent'
+                                            size='xxxs'
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                                {release_time_avg
+                                    ? localize('{{- avg_release_time_in_minutes}} min', {
+                                          avg_release_time_in_minutes,
+                                      })
+                                    : '-'}
+                            </Text>
+                        </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className='my-profile-stats-table--mobile'>
+                        <Table.Cell className='my-profile-stats-table__cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                                <Localize
+                                    i18n_default_text='Trade volume  <0>30d</0> | <1>lifetime</1>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            className='my-profile-stats-table--pointer'
+                                            color={show_lifetime_turnover_value ? 'loss-danger' : 'less-prominent'}
+                                            onClick={() => setShowLifetimeTurnoverValue(!show_lifetime_turnover_value)}
+                                            size='xxxs'
+                                        />,
+                                        <Text
+                                            key={0}
+                                            className='my-profile-stats-table--pointer'
+                                            color={show_lifetime_turnover_value ? 'less-prominent' : 'loss-danger'}
+                                            onClick={() => setShowLifetimeTurnoverValue(!show_lifetime_turnover_value)}
+                                            size='xxxs'
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                                {show_lifetime_turnover_value ? (
+                                    <Money
+                                        amount={total_turnover}
+                                        currency={general_store.client.currency}
+                                        show_currency
+                                    />
+                                ) : (
+                                    <Money
+                                        amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
+                                        currency={general_store.client.currency}
+                                        show_currency
+                                    />
+                                )}
+                            </Text>
+                        </Table.Cell>
+                        <Table.Cell className='my-profile-stats-table__cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize i18n_default_text='Trade partners' />
+                            </Text>
+                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                                {partner_count || '0'}
+                            </Text>
+                        </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className='my-profile-stats-table--mobile'>
+                        <Table.Cell className='my-profile-stats-table__cell'>
+                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                                <Localize
+                                    i18n_default_text='Total orders  <0>30d</0> | <1>lifetime</1>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            className='my-profile-stats-table--pointer'
+                                            color={show_lifetime_order_value ? 'loss-danger' : 'less-prominent'}
+                                            onClick={() => setShowLifetimeOrderValue(!show_lifetime_order_value)}
+                                            size='xxxs'
+                                        />,
+                                        <Text
+                                            key={0}
+                                            className='my-profile-stats-table--pointer'
+                                            color={show_lifetime_order_value ? 'less-prominent' : 'loss-danger'}
+                                            onClick={() => setShowLifetimeOrderValue(!show_lifetime_order_value)}
+                                            size='xxxs'
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                                {show_lifetime_order_value
+                                    ? total_orders_count
+                                    : Number(buy_orders_count) + Number(sell_orders_count)}
+                            </Text>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table>
+            </React.Fragment>
+        );
+    }
 
     return (
-        <Table>
-            <Table.Row className='my-profile-stats-table'>
-                <Table.Cell className='my-profile-stats-table__cell'>
-                    <Text size={isMobile() ? 'xxxs' : 'xxs'} color='less-prominent' line_height='m' as='p'>
-                        <Localize i18n_default_text='Total orders' />
-                    </Text>
-                    <Text color='prominent' weight='bold' line_height='l' as='p' size={isMobile() ? 'xs' : 'xs'}>
-                        {total_orders_count || '-'}
-                    </Text>
-                </Table.Cell>
-                {isMobile() ? (
+        <React.Fragment>
+            <Table>
+                <Table.Row className='my-profile-stats-table'>
                     <Table.Cell className='my-profile-stats-table__cell'>
-                        <Text size='xxxs' color='less-prominent' line_height='m' as='p'>
+                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
                             <Localize
-                                i18n_default_text='Buy / Sell ({{currency}})'
-                                values={{ currency: general_store.client.currency }}
+                                i18n_default_text='Buy completion  <0>30d</0>'
+                                components={[
+                                    <Text
+                                        key={0}
+                                        className='my-profile-stats-table--italic'
+                                        color='less-prominent'
+                                        size='xs'
+                                    />,
+                                ]}
                             />
                         </Text>
-                        <Text color='prominent' weight='bold' line_height='l' as='p' size='xs'>
-                            {daily_buy || '-'}/{daily_sell || '-'}
+                        <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
                         </Text>
                     </Table.Cell>
-                ) : (
-                    <React.Fragment>
-                        <Table.Cell className='my-profile-stats-table__cell'>
-                            <Text size='xxs' color='less-prominent' line_height='m' as='p'>
-                                <Localize
-                                    i18n_default_text='Buy ({{currency}})'
-                                    values={{ currency: general_store.client.currency }}
+                    <Table.Cell className='my-profile-stats-table__cell'>
+                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                            <Localize
+                                i18n_default_text='Sell completion  <0>30d</0>'
+                                components={[
+                                    <Text
+                                        key={0}
+                                        className='my-profile-stats-table--italic'
+                                        color='less-prominent'
+                                        size='xs'
+                                    />,
+                                ]}
+                            />
+                        </Text>
+                        <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
+                        </Text>
+                    </Table.Cell>
+                    <Table.Cell className='my-profile-stats-table__cell'>
+                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                            <Localize
+                                i18n_default_text='Avg pay time  <0>30d</0>'
+                                components={[
+                                    <Text
+                                        key={0}
+                                        className='my-profile-stats-table--italic'
+                                        color='less-prominent'
+                                        size='xs'
+                                    />,
+                                ]}
+                            />
+                        </Text>
+                        <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            {buy_time_avg
+                                ? localize('{{- avg_buy_time_in_minutes}} min', {
+                                      avg_buy_time_in_minutes,
+                                  })
+                                : '-'}
+                        </Text>
+                    </Table.Cell>
+                    <Table.Cell className='my-profile-stats-table__cell'>
+                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                            <Localize
+                                i18n_default_text='Avg release time  <0>30d</0>'
+                                components={[
+                                    <Text
+                                        key={0}
+                                        className='my-profile-stats-table--italic'
+                                        color='less-prominent'
+                                        size='xs'
+                                    />,
+                                ]}
+                            />
+                        </Text>
+                        <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            {release_time_avg
+                                ? localize('{{- avg_release_time_in_minutes}} min', {
+                                      avg_release_time_in_minutes,
+                                  })
+                                : '-'}
+                        </Text>
+                    </Table.Cell>
+                </Table.Row>
+            </Table>
+            <Table className='my-profile-stats-table--second'>
+                <Table.Row className='my-profile-stats-table'>
+                    <Table.Cell className='my-profile-stats-table__cell'>
+                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                            <Localize
+                                i18n_default_text='Trade volume  <0>30d</0> | <1>lifetime</1>'
+                                components={[
+                                    <Text
+                                        key={0}
+                                        className='my-profile-stats-table--pointer'
+                                        color={show_lifetime_turnover_value ? 'loss-danger' : 'less-prominent'}
+                                        onClick={() => setShowLifetimeTurnoverValue(!show_lifetime_turnover_value)}
+                                        size='xs'
+                                    />,
+                                    <Text
+                                        key={0}
+                                        className='my-profile-stats-table--pointer'
+                                        color={show_lifetime_turnover_value ? 'less-prominent' : 'loss-danger'}
+                                        onClick={() => setShowLifetimeTurnoverValue(!show_lifetime_turnover_value)}
+                                        size='xs'
+                                    />,
+                                ]}
+                            />
+                        </Text>
+                        <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            {show_lifetime_turnover_value ? (
+                                <Money amount={total_turnover} currency={general_store.client.currency} show_currency />
+                            ) : (
+                                <Money
+                                    amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
+                                    currency={general_store.client.currency}
+                                    show_currency
                                 />
-                            </Text>
-                            <Text color='prominent' weight='bold' line_height='l' as='p' size='xs'>
-                                {daily_buy || '0'}
-                            </Text>
-                        </Table.Cell>
-                        <Table.Cell className='my-profile-stats-table__cell'>
-                            <Text size='xxs' color='less-prominent' line_height='m' as='p'>
-                                <Localize
-                                    i18n_default_text='Sell ({{currency}})'
-                                    values={{ currency: general_store.client.currency }}
-                                />
-                            </Text>
-                            <Text color='prominent' weight='bold' line_height='l' as='p' size='xs'>
-                                {daily_sell || '-'}
-                            </Text>
-                        </Table.Cell>
-                    </React.Fragment>
-                )}
-                <Table.Cell className='my-profile-stats-table__cell'>
-                    <Text size={isMobile() ? 'xxxs' : 'xxs'} color='less-prominent' line_height='m' as='p'>
-                        <Localize
-                            i18n_default_text='Buy / Sell limit ({{currency}})'
-                            values={{ currency: general_store.client.currency }}
-                        />
-                    </Text>
-                    <Text color='prominent' weight='bold' line_height='m' as='p' size={isMobile() ? 'xs' : 'xs'}>
-                        {daily_buy_limit && daily_sell_limit
-                            ? `${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}`
-                            : '-'}
-                    </Text>
-                </Table.Cell>
-                <div className='my-profile-stats-table__popover'>
-                    <PopoverMobile
-                        className='my-profile__stats-popover'
-                        button_text={localize('Got it')}
-                        is_open={is_statistics_tooltip_open}
-                        message={localize('Your Buy/Sell limit resets at 00:00 GMT daily.')}
-                        setIsOpen={setIsStatisticsTooltipOpen}
-                    >
-                        <Icon icon='IcInfoOutline' size={16} />
-                    </PopoverMobile>
-                </div>
-            </Table.Row>
-        </Table>
+                            )}
+                        </Text>
+                    </Table.Cell>
+                    <Table.Cell className='my-profile-stats-table__cell'>
+                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                            <Localize
+                                i18n_default_text='Total orders  <0>30d</0> | <1>lifetime</1>'
+                                components={[
+                                    <Text
+                                        key={0}
+                                        className='my-profile-stats-table--pointer'
+                                        color={show_lifetime_order_value ? 'loss-danger' : 'less-prominent'}
+                                        onClick={() => setShowLifetimeOrderValue(!show_lifetime_order_value)}
+                                        size='xs'
+                                    />,
+                                    <Text
+                                        key={0}
+                                        className='my-profile-stats-table--pointer'
+                                        color={show_lifetime_order_value ? 'less-prominent' : 'loss-danger'}
+                                        onClick={() => setShowLifetimeOrderValue(!show_lifetime_order_value)}
+                                        size='xs'
+                                    />,
+                                ]}
+                            />
+                        </Text>
+                        <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            {show_lifetime_order_value
+                                ? total_orders_count
+                                : Number(buy_orders_count) + Number(sell_orders_count)}
+                        </Text>
+                    </Table.Cell>
+                    <Table.Cell className='my-profile-stats-table__cell'>
+                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                            <Localize i18n_default_text='Trade partners' />
+                        </Text>
+                        <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            {partner_count || '0'}
+                        </Text>
+                    </Table.Cell>
+                </Table.Row>
+            </Table>
+        </React.Fragment>
     );
 };
 

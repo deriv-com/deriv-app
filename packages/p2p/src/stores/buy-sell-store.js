@@ -11,7 +11,6 @@ export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
     @observable contact_info = '';
     @observable error_message = '';
-    @observable exchange_rate = 0;
     @observable has_more_items_to_load = false;
     @observable has_payment_methods = false;
     @observable is_filter_modal_loading = false;
@@ -134,15 +133,6 @@ export default class BuySellStore extends BaseStore {
                 this.setPaymentInfo('');
             }
         });
-    }
-
-    @action.bound
-    async getExchangeRate(from_currency, to_currency) {
-        const response = await requestWS({
-            exchange_rates: 1,
-            base_currency: from_currency,
-        });
-        this.setExchangeRate(response.exchange_rates.rates[to_currency]);
     }
 
     @action.bound
@@ -331,11 +321,6 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
-    }
-
-    @action.bound
-    setExchangeRate(exchange_rate) {
-        this.exchange_rate = exchange_rate;
     }
 
     @action.bound

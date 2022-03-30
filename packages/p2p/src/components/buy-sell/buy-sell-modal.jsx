@@ -66,10 +66,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         if (!should_show_popup) {
             setErrorMessage(null);
         }
-        buy_sell_store.getExchangeRate(
-            general_store.client.currency,
-            general_store.client.local_currency_config.currency
-        );
         my_profile_store.setShouldShowAddPaymentMethodForm(false);
         my_profile_store.setSelectedPaymentMethod('');
         my_profile_store.setSelectedPaymentMethodDisplayName('');

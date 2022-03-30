@@ -6,6 +6,7 @@ import { getRoundedNumber, getFormattedText, isDesktop, isMobile, useIsMounted }
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
+import { requestWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
@@ -15,11 +16,12 @@ const BuySellForm = props => {
     const { advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
-    const [exchange_rate_on_mount, setExchangeRateOnMount] = React.useState(buy_sell_store.exchange_rate);
+    const [market_rate_on_mount, setMarketRateOnMount] = React.useState(null);
     buy_sell_store.setFormProps(props);
 
     const { setPageFooterParent } = props;
     const {
+        account_currency,
         advertiser_details,
         description,
         local_currency,
@@ -35,9 +37,19 @@ const BuySellForm = props => {
         borderWidth: '2px',
     };
 
+    React.useEffect(() => {
+        requestWS({
+            exchange_rates: 1,
+            base_currency: account_currency,
+        }).then(response => {
+            setMarketRateOnMount(response.exchange_rates.rates[local_currency]);
+        });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     React.useEffect(
         () => {
-            setExchangeRateOnMount(buy_sell_store.exchange_rate);
             my_profile_store.setShouldShowAddPaymentMethodForm(false);
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
@@ -98,8 +110,12 @@ const BuySellForm = props => {
                 payment_info: buy_sell_store.payment_info,
             }}
             initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
-            onSubmit={(...args) => {
-                if (exchange_rate_on_mount !== buy_sell_store.exchange_rate) {
+            onSubmit={async (...args) => {
+                const updated_market_rate = await requestWS({
+                    exchange_rates: 1,
+                    base_currency: account_currency,
+                });
+                if (market_rate_on_mount !== updated_market_rate.exchange_rates.rates[local_currency]) {
                     buy_sell_store.setShouldShowPopup(false);
                     buy_sell_store.setShowRateChangedPopup(true);
                 } else {

@@ -17,7 +17,6 @@ import './buy-sell.scss';
 
 const BuySell = () => {
     const { buy_sell_store, general_store } = useStores();
-    const local_currency = general_store.client.local_currency_config.currency;
     const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
     const previous_scroll_top = React.useRef(0);
 
@@ -31,6 +30,12 @@ const BuySell = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    let local_currency = '';
+
+    if (general_store?.client?.local_currency_config?.currency) {
+        local_currency = general_store.client.local_currency_config.currency;
+    }
 
     const onScroll = event => {
         if (!buy_sell_store.show_advertiser_page) {

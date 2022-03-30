@@ -16,7 +16,11 @@ const CardsLink = ({ app_card, wallet_card, is_linked }: TCardsLinkDetails) => {
             {' '}
             {(!is_linked || !wallet_card || !app_card) && (
                 <div className='unlinked-cards' data-testid='unlinked-cards'>
-                    <div className={`unlinked-cards__wallet-card ${wallet_card && !app_card && 'unlinked-cards__wallet-card--overlap'}`}>
+                    <div
+                        className={`unlinked-cards__wallet-card ${
+                            wallet_card && !app_card && 'unlinked-cards__wallet-card--overlap'
+                        }`}
+                    >
                         {wallet_card ? wallet_card : <AppStoreSkeletonCard label='Wallet' />}
                     </div>
                     <div className='unlinked-cards__app-card'>
@@ -38,7 +42,7 @@ const CardsLink = ({ app_card, wallet_card, is_linked }: TCardsLinkDetails) => {
                 <div className='linked-cards' data-testid='linked-cards'>
                     {wallet_card}
                     <div className='linked-cards__link-element'>
-                        <Icon icon='IcAppstoreLinkedWallets' width='9.5' height='13.27'/>
+                        <Icon icon='IcAppstoreLinkedWallets' width='9.5' height='13.27' />
                     </div>
                     <div className='linked-cards__app-card'>{app_card}</div>
                 </div>

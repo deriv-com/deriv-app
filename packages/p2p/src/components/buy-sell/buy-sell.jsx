@@ -55,11 +55,6 @@ const BuySell = () => {
     if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
         return (
             <React.Fragment>
-                <PageReturn
-                    className='buy-sell__advertiser-page-return'
-                    onClick={buy_sell_store.hideAdvertiserPage}
-                    page_title={localize("Advertiser's page")}
-                />
                 <AdvertiserPage />
             </React.Fragment>
         );

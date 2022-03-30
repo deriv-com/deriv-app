@@ -1,0 +1,39 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "esnext",
+        "jsx": "react",
+        "sourceMap": true,
+        "removeComments": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
+
+        /* Checks */
+        "strict": true,
+
+        /* Additional Checks */
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+
+        /* Module Resolution Options */
+        "moduleResolution": "node",
+        "baseUrl": "./",
+        "paths": {
+            "Components/*": ["src/components/*"],
+            "Constants/*": ["src/constants/*"],
+            "Services/*": ["src/services/*"],
+            "Stores/*": ["src/stores/*"],
+            "Stores": ["src/stores/index"],
+            "Types": ["src/types"],
+            "Utils": ["src/utils"]
+        },
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+    "exclude": ["**/*.js", "**/*.jsx"]
+}

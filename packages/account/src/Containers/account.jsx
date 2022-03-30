@@ -35,7 +35,7 @@ const AccountLogout = ({ logout, history }) => {
 };
 
 const PageOverlayWrapper = ({
-    is_dashboard,
+    is_appstore,
     list_groups,
     logout,
     onClickClose,
@@ -53,7 +53,7 @@ const PageOverlayWrapper = ({
                 <selected_route.component component_icon={selected_route.icon_component} />
             </PageOverlay>
         );
-    } else if (is_dashboard) {
+    } else if (is_appstore) {
         return (
             <VerticalTab
                 title={selected_route.getTitle()}
@@ -69,7 +69,7 @@ const PageOverlayWrapper = ({
                 is_full_width
                 list={subroutes}
                 list_groups={list_groups}
-                extra_content={is_dashboard && <AccountLogout logout={logout} history={history} />}
+                extra_content={is_appstore && <AccountLogout logout={logout} history={history} />}
             />
         );
     }
@@ -109,7 +109,7 @@ const Account = ({
     should_allow_authentication,
     toggleAccount,
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
     list_groups = list_groups.map(route_group => ({
@@ -171,7 +171,7 @@ const Account = ({
         <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
             <div className='account'>
                 <PageOverlayWrapper
-                    is_dashboard={is_dashboard}
+                    is_appstore={is_appstore}
                     list_groups={list_groups}
                     logout={logout}
                     onClickClose={onClickClose}

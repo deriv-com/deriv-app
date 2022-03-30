@@ -10,6 +10,12 @@ module.exports = function (env, argv) {
         entry: {
             cashier: path.resolve(__dirname, '../src', 'index.js'),
             'cashier-store': path.resolve(__dirname, '../src', 'Stores/cashier-store'),
+            'account-transfer': 'Containers/account-transfer',
+            deposit: 'Containers/deposit',
+            'on-ramp': 'Containers/on-ramp',
+            'payment-agent': 'Containers/payment-agent',
+            'payment-agent-transfer': 'Containers/payment-agent-transfer',
+            withdrawal: 'Containers/withdrawal',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

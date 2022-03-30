@@ -29,7 +29,7 @@ const DeactivateAccountReasonFrom = ({
     remaining_characters,
     onBackClick,
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <Formik initialValues={initial_form} validate={validateFields} onSubmit={onSubmit}>
@@ -201,7 +201,7 @@ const DeactivateAccountReasonFrom = ({
                                         as='p'
                                         weight='bold'
                                         size='xs'
-                                        color={is_dashboard ? 'blue' : 'loss-danger'}
+                                        color={is_appstore ? 'blue' : 'loss-danger'}
                                         className='deactivate-account-reasons__error'
                                         key={key}
                                     >

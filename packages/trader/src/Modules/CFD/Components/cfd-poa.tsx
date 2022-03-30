@@ -236,7 +236,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
 
         try {
             const api_response = await file_uploader_ref.current?.upload();
-            console.log('api_response', api_response);
 
             if (api_response && (api_response as TApiResponse)?.warning) {
                 setFormState({ ...form_state, ...{ form_error: (api_response as TApiResponse).warning } });

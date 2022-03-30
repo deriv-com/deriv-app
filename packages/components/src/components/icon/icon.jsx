@@ -78,6 +78,7 @@ Icon.propTypes = {
     className: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     color: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     custom_color: PropTypes.string,
+    data_testid: PropTypes.string,
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     icon: PropTypes.string,
     onClick: PropTypes.func,

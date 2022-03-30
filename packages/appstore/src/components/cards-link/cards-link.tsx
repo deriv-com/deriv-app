@@ -5,8 +5,8 @@ import AppStoreSkeletonCard from 'Components/skeleton-card';
 import AppStoreWalletCard from 'Components/wallet';
 
 type TCardsLinkDetails = {
-    app_card?: Partial<typeof AppStoreAppCard>;
-    wallet_card?: Partial<typeof AppStoreWalletCard>;
+    app_card?: typeof AppStoreAppCard;
+    wallet_card?: typeof AppStoreWalletCard;
     is_linked: boolean;
 };
 

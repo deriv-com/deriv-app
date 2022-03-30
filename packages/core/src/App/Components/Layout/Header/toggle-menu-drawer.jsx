@@ -22,7 +22,6 @@ const MenuLink = ({
     onClickLink,
 }) => {
     if (is_language) {
-
         return (
             <span
                 className={classNames('header__menu-mobile-link', {
@@ -108,7 +107,7 @@ const ToggleMenuDrawer = React.forwardRef(
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
         const { is_appstore } = React.useContext(PlatformContext);
-        
+
         React.useEffect(() => {
             const processRoutes = () => {
                 const routes_config = getRoutesConfig({ is_appstore });
@@ -254,7 +253,6 @@ const ToggleMenuDrawer = React.forwardRef(
         };
 
         const getLanguageRoutes = () => {
-
             const currentLanguage = getLanguage();
 
             return (

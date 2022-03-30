@@ -27,23 +27,23 @@
             top: 1.8rem;
 
             &__horizontal-line {
-                border-right: .1rem solid #d6dadb;
+                border-right: 0.1rem solid #d6dadb;
                 height: 1.6rem;
                 width: 0;
-                margin: .8rem 0;
+                margin: 0.8rem 0;
             }
 
             &__vertical-line {
-                border-bottom: .1rem solid #d6dadb;
+                border-bottom: 0.1rem solid #d6dadb;
                 height: 0;
                 width: 1.6rem;
-                margin: 0 .8rem;
+                margin: 0 0.8rem;
             }
 
             &__link-icon {
                 position: absolute;
                 top: 2.8rem;
-                left: -.8rem;
+                left: -0.8rem;
             }
         }
     }
@@ -67,7 +67,7 @@
         justify-content: center;
         margin: auto;
         padding: 0%;
-        border: .8rem solid rgba(255, 68, 79, 0.3);
+        border: 0.8rem solid rgba(255, 68, 79, 0.3);
         -webkit-background-clip: padding-box; /* for Safari */
         background-clip: padding-box;
         right: 2.2rem;

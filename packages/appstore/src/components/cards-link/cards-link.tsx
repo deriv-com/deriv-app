@@ -25,8 +25,8 @@ const CardsLink = ({ app_card, wallet_card, is_linked }: TCardsLinkDetails) => {
                     </div>
                     <div className='unlinked-cards__app-card'>
                         <div className='unlinked-cards__app-card__link-element'>
-                            <div className='unlinked-cards__app-card__link-element__horizontal-line'/>
-                            <div className='unlinked-cards__app-card__link-element__vertical-line'/>
+                            <div className='unlinked-cards__app-card__link-element__horizontal-line' />
+                            <div className='unlinked-cards__app-card__link-element__vertical-line' />
                             <Icon
                                 icon='IcAppstoreLinkWallet'
                                 width='11.45'

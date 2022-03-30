@@ -7,6 +7,8 @@ import './appstore/ic-appstore-check.svg';
 import './appstore/ic-appstore-checked-red-bg.svg';
 import './appstore/ic-appstore-checked-transparent.svg';
 import './appstore/ic-appstore-checked.svg';
+import './appstore/ic-appstore-link-wallet.svg';
+import './appstore/ic-appstore-linked-wallets.svg';
 import './appstore/ic-appstore-multipliers-trade-type.svg';
 import './appstore/ic-appstore-option-trade-type.svg';
 import './appstore/ic-appstore-skeleton-card-border.svg';

@@ -139,6 +139,7 @@ const getModules = () => {
         {
             path: routes.appstore,
             component: AppStore,
+            is_authenticated: true,
             getTitle: () => localize('Appstore'),
             routes: [
                 {

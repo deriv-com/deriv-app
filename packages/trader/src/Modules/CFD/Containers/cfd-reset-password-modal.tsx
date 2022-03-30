@@ -155,6 +155,7 @@ const CFDResetPasswordModal = ({
                     : localize('Reset DMT5 investor password')
             }
             onMount={() => redirectToLogin(is_logged_in, getLanguage(), true)}
+            should_header_stick_body={false}
         >
             {!getIsListFetched() && !state.has_error && <Loading is_fullscreen={false} />}
             {getIsListFetched() && !state.has_error && !state.is_finished && (
@@ -253,6 +254,9 @@ const CFDResetPasswordModal = ({
                 <div className='cfd-reset-password__success'>
                     <Icon icon='IcMt5PasswordUpdated' size={128} />
                     <div className='cfd-reset-password__description'>
+                        <Text as='p' size='xs' align='center' weight='bold' line_height='xxl'>
+                            <Localize i18n_default_text='Password saved' />
+                        </Text>
                         <Localize
                             i18n_default_text='Your {{account_type}} password has been changed.'
                             values={{

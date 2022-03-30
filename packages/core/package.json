@@ -108,7 +108,7 @@
         "canvas-toBlob": "^1.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",
-        "event-source-polyfill": "^1.0.5",
+        "event-source-polyfill": "1.0.25",
         "formik": "^2.1.4",
         "i18next": "^20.3.2",
         "js-cookie": "^2.2.1",

@@ -1,8 +1,8 @@
 import type { Meta, Story } from '@storybook/react';
 import React from 'react';
 import CardsLink from '../index';
-import AppStoreAppCard from './../../app-card';
-import AppStoreWalletCard from './../../wallet';
+import AppStoreAppCard from '../../app-card';
+import AppStoreWalletCard from '../../wallet';
 
 type CardsLinkProps = Parameters<typeof CardsLink>[0];
 

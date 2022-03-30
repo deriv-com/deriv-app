@@ -253,7 +253,6 @@ const ToggleMenuDrawer = React.forwardRef(
         };
 
         const getLanguageRoutes = () => {
-
             return (
                 <MobileDrawer.SubMenu
                     has_subheader

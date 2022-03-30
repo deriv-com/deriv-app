@@ -24,28 +24,21 @@ const CashierDefaultSideNote = ({
                     values={{ currency_code }}
                 />
             );
-        } else if (can_change_fiat_currency) {
-            return (
-                <Localize
-                    i18n_default_text='You can <0>set a new currency</0> before you deposit for the first time or create a real DMT5 or Deriv X account.'
-                    components={[
-                        <a key={0} className='link link--orange' onClick={() => openRealAccountSignup('manage')} />,
-                    ]}
-                />
-            );
         }
 
         return (
-            <Localize
-                i18n_default_text="You can no longer change your account currency because you've made a deposit into your fiat account or created a real DMT5 or Deriv X account. Please contact us via <0>live chat</0> for clarification."
-                components={[
-                    <span
-                        key={0}
-                        className='link link--orange cashier-default-side-note__text-nowrap'
-                        onClick={() => window.LC_API.open_chat_window()}
-                    />,
-                ]}
-            />
+            !can_change_fiat_currency && (
+                <Localize
+                    i18n_default_text="You can no longer change your account currency because you've made a deposit into your fiat account or created a real DMT5 or Deriv X account. Please contact us via <0>live chat</0> for clarification."
+                    components={[
+                        <span
+                            key={0}
+                            className='link link--orange cashier-default-side-note__text-nowrap'
+                            onClick={() => window.LC_API.open_chat_window()}
+                        />,
+                    ]}
+                />
+            )
         );
     };
 

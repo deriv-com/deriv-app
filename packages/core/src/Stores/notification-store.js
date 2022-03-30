@@ -256,13 +256,13 @@ export default class NotificationStore extends BaseStore {
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
-                const onfido_submissions_left = identity.services.onfido.submissions_left;
+                const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
                 this.addVerificationNotifications(identity, document);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
-                if (poi_name_mismatch && identity.services.onfido.last_rejected) {
+                if (poi_name_mismatch && identity?.services.onfido.last_rejected) {
                     if (!personal_details_locked && onfido_submissions_left > 0) {
                         this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
                     } else {
@@ -462,7 +462,7 @@ export default class NotificationStore extends BaseStore {
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
         const client_name =
-            client.account_status.authentication.identity.services.onfido.reported_properties.first_name;
+            client.account_status.authentication.identity?.services?.onfido?.reported_properties?.first_name;
 
         const notifications = {
             ask_financial_risk_approval: {

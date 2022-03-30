@@ -34,7 +34,7 @@ const AppStore = React.lazy(() => {
     return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
 });
 
-const getModules = ({ is_appstore }) => {
+const getModules = () => {
     const modules = [
         {
             path: routes.bot,
@@ -133,6 +133,18 @@ const getModules = ({ is_appstore }) => {
                             getTitle: () => localize('Deactivate account'),
                         },
                     ],
+                },
+            ],
+        },
+        {
+            path: routes.appstore,
+            component: AppStore,
+            getTitle: () => localize('Appstore'),
+            routes: [
+                {
+                    path: routes.trading_hub,
+                    component: AppStore,
+                    getTitle: () => localize('Trading hub'),
                 },
             ],
         },
@@ -257,14 +269,6 @@ const getModules = ({ is_appstore }) => {
             ],
         },
     ];
-
-    if (is_appstore) {
-        modules.unshift({
-            path: routes.trading_hub,
-            component: AppStore,
-            getTitle: () => localize('Trading hub'),
-        });
-    }
 
     return modules;
 };

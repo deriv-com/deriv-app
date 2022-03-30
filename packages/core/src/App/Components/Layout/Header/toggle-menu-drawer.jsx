@@ -7,7 +7,7 @@ import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { currentLanguage, changeLanguage } from 'Utils/Language';
+import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 
 const MenuLink = ({
@@ -253,6 +253,9 @@ const ToggleMenuDrawer = React.forwardRef(
         };
 
         const getLanguageRoutes = () => {
+            
+            const currentLanguage = getLanguage();
+
             return (
                 <MobileDrawer.SubMenu
                     has_subheader

@@ -18,8 +18,15 @@ import './advertiser-page.scss';
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();
 
-    const { basic_verification, created_time, first_name, full_verification, last_name, total_orders_count } =
-        advertiser_page_store.advertiser_info;
+    const {
+        basic_verification,
+        buy_orders_count,
+        created_time,
+        first_name,
+        full_verification,
+        last_name,
+        sell_orders_count,
+    } = advertiser_page_store.advertiser_info;
 
     const joined_since = daysSince(created_time);
 
@@ -90,7 +97,7 @@ const AdvertiserPage = () => {
                             <TradeBadge
                                 is_poa_verified={!!full_verification}
                                 is_poi_verified={!!basic_verification}
-                                trade_count={total_orders_count}
+                                trade_count={Number(buy_orders_count) + Number(sell_orders_count)}
                                 large
                             />
                         </div>

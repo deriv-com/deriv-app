@@ -50,6 +50,7 @@ module.exports = function () {
                 Assets: path.resolve(__dirname, 'src/assets'),
                 Components: path.resolve(__dirname, 'src/components'),
                 Constants: path.resolve(__dirname, 'src/constants'),
+                Modules: path.resolve(__dirname, 'src/modules'),
                 Services: path.resolve(__dirname, 'src/services'),
                 Stores: path.resolve(__dirname, 'src/stores'),
                 Types: path.resolve(__dirname, 'src/types'),

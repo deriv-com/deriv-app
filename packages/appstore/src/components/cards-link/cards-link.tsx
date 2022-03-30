@@ -13,7 +13,6 @@ type TCardsLinkDetails = {
 const CardsLink = ({ app_card, wallet_card, is_linked }: TCardsLinkDetails) => {
     return (
         <>
-            {' '}
             {(!is_linked || !wallet_card || !app_card) && (
                 <div className='unlinked-cards' data-testid='unlinked-cards'>
                     <div

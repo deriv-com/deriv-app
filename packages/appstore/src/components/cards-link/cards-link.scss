@@ -18,32 +18,32 @@
 
     &__app-card {
         position: relative;
-        top: -18px;
-        left: 32px;
+        top: -1.8rem;
+        left: 3.2rem;
         display: flex;
 
         &__link-element {
             position: relative;
-            top: 18px;
+            top: 1.8rem;
 
             &__horizontal-line {
-                border-right: 1px solid #d6dadb;
-                height: 16px;
-                width: 0px;
-                margin: 8px 0px;
+                border-right: .1rem solid #d6dadb;
+                height: 1.6rem;
+                width: 0;
+                margin: .8rem 0;
             }
 
             &__vertical-line {
-                border-bottom: 1px solid #d6dadb;
-                height: 0px;
-                width: 16px;
-                margin: 0px 8px;
+                border-bottom: .1rem solid #d6dadb;
+                height: 0;
+                width: 1.6rem;
+                margin: 0 .8rem;
             }
 
             &__link-icon {
                 position: absolute;
-                top: 28px;
-                left: -8px;
+                top: 2.8rem;
+                left: -.8rem;
             }
         }
     }
@@ -58,8 +58,8 @@
 
     &__link-element {
         background-color: var(--brand-red-coral);
-        height: 40px;
-        width: 40px;
+        height: 4rem;
+        width: 4rem;
         border-radius: 50%;
         position: relative;
         display: flex;
@@ -67,24 +67,24 @@
         justify-content: center;
         margin: auto;
         padding: 0%;
-        border: 8px solid rgba(255, 68, 79, 0.3);
+        border: .8rem solid rgba(255, 68, 79, 0.3);
         -webkit-background-clip: padding-box; /* for Safari */
         background-clip: padding-box;
-        right: 22px;
+        right: 2.2rem;
         @include mobile {
             right: auto;
-            bottom: 22px;
+            bottom: 2.2rem;
         }
     }
 
     &__app-card {
         position: relative;
-        right: 44px;
+        right: 4.4rem;
         z-index: -1;
 
         @include mobile {
             right: auto;
-            bottom: 44px;
+            bottom: 4.4rem;
         }
     }
 }

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import { routes, PlatformContext } from '@deriv/shared';
-import { localize, getAllowedLanguages } from '@deriv/translations';
+import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
@@ -22,6 +22,7 @@ const MenuLink = ({
     onClickLink,
 }) => {
     if (is_language) {
+
         return (
             <span
                 className={classNames('header__menu-mobile-link', {
@@ -107,7 +108,7 @@ const ToggleMenuDrawer = React.forwardRef(
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
         const { is_appstore } = React.useContext(PlatformContext);
-
+        
         React.useEffect(() => {
             const processRoutes = () => {
                 const routes_config = getRoutesConfig({ is_appstore });
@@ -253,6 +254,9 @@ const ToggleMenuDrawer = React.forwardRef(
         };
 
         const getLanguageRoutes = () => {
+
+            const currentLanguage = getLanguage();
+
             return (
                 <MobileDrawer.SubMenu
                     has_subheader
@@ -265,7 +269,7 @@ const ToggleMenuDrawer = React.forwardRef(
                         <MobileDrawer.Item key={idx}>
                             <MenuLink
                                 is_language
-                                is_active={localStorage.getItem('i18n_language') === lang}
+                                is_active={currentLanguage === lang}
                                 link_to={lang}
                                 icon={`IcFlag${lang.replace('_', '-')}`}
                                 text={getAllowedLanguages()[lang]}

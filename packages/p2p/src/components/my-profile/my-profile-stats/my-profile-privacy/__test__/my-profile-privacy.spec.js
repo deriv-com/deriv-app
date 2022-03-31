@@ -48,16 +48,6 @@ describe('<MyProfilePrivacy/>', () => {
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
     });
 
-    it('should hide the real name if the status is set to disable', () => {
-        useStores.mockImplementation(() => ({
-            general_store: { ...mock_general_store, should_show_real_name: false },
-            my_profile_store: { ...mock_profile_store },
-        }));
-        render(<MyProfilePrivacy />);
-
-        expect(screen.queryByText(test_name)).not.toBeInTheDocument();
-    });
-
     it('should trigger handleToggle method on toggling the input', () => {
         const { my_profile_store } = useStores();
         render(<MyProfilePrivacy />);

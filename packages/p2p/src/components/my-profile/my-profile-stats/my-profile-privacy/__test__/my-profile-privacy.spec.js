@@ -39,8 +39,7 @@ describe('<MyProfilePrivacy/>', () => {
     it('should render privacy setting text', () => {
         render(<MyProfilePrivacy />);
 
-        expect(screen.getByText('Privacy setting')).toBeInTheDocument();
-        expect(screen.getByText(`Show my real name (${test_name})`)).toBeInTheDocument();
+        expect(screen.getByText(`${test_name}`)).toBeInTheDocument();
     });
 
     it('should render toggle checkbox on load', () => {

@@ -4,7 +4,7 @@ import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import Loading from '../../../templates/_common/components/loading';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TSpecifications } from '../Constants/cfd-specifications';
 import { TTradingPlatformAccounts } from './props.types';
 
@@ -46,6 +46,7 @@ type TCFDDemoAccountDisplayProps = {
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
+    landing_companies?: LandingCompany;
 };
 
 const CFDDemoAccountDisplay = ({
@@ -68,8 +69,6 @@ const CFDDemoAccountDisplay = ({
     openPasswordManager,
     residence,
 }: TCFDDemoAccountDisplayProps) => {
-    console.log('current_list', current_list);
-
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const openCFDAccount = () => {

@@ -154,6 +154,7 @@ import './common/ic-alert-announce.svg';
 import './common/ic-alert-danger.svg';
 import './common/ic-alert-info.svg';
 import './common/ic-alert-success.svg';
+import './common/ic-alert-trustpilot.svg';
 import './common/ic-alert-warning.svg';
 import './common/ic-amplifier.svg';
 import './common/ic-archive.svg';

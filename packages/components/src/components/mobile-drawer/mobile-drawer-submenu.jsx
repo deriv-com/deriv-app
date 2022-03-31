@@ -13,6 +13,7 @@ const SubMenu = ({
     submenu_icon,
     submenu_title,
     submenu_suffix_icon,
+    route_config_path,
 }) => {
     const [is_expanded, setIsExpanded] = React.useState(false);
 
@@ -28,7 +29,11 @@ const SubMenu = ({
             <div className={classNames('dc-mobile-drawer__submenu-toggle', submenu_toggle_class)} onClick={toggleMenu}>
                 {submenu_icon && <Icon className='dc-mobile-drawer__submenu-toggle-icon' icon={submenu_icon} />}
                 {submenu_title && (
-                    <Text as='h3' size='xs'>
+                    <Text
+                        as='h3'
+                        size='xs'
+                        weight={window.location.pathname.startsWith(route_config_path) ? 'bold' : null}
+                    >
                         {submenu_title}
                     </Text>
                 )}

@@ -181,7 +181,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                         return [option, option];
                     });
 
-                    multiplier_list_dropdown.updateOptions(multiplier_options, {
+                    multiplier_list_dropdown?.updateOptions(multiplier_options, {
                         default_value: should_use_default_value ? undefined : multiplier_list_dropdown.getValue(),
                     });
                 }

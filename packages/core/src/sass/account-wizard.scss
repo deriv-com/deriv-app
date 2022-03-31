@@ -385,6 +385,7 @@
             bottom: 0;
             width: 100%;
             padding: 1.5rem;
+            background-color: var(--general-main-1);
         }
         & .dc-btn {
             width: 100%;
@@ -392,6 +393,13 @@
     }
 }
 
+.cashier-deposit {
+    @media screen and (max-height: 568px) {
+        .currency-selector__radio-group--with-margin {
+            margin-bottom: 6rem;
+        }
+    }
+}
 /* TODO: [refactor-components] Refactor form subheader to components */
 .account-form {
     &__header {

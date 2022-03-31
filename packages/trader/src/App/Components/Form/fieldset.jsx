@@ -35,7 +35,7 @@ const Fieldset = ({ children, className, header, header_tooltip, is_center, onMo
     );
 };
 
-// ToDo:
+// TODO:
 // - Refactor Last Digit to keep the children as array type.
 //   Currently last_digit.jsx returns object (React-Element) as 'children'
 //   props type.

@@ -16,6 +16,7 @@ const FloatingRate = ({
     local_currency,
     offset,
     placeholder,
+    setCurrentFocus,
     ...props
 }) => {
     const { general_store } = useStores();

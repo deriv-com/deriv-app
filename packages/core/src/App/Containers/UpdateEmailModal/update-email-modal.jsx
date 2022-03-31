@@ -67,12 +67,14 @@ const UpdateEmailModal = ({
                     <Text className='change-email-update__modal-description' size='xs'>
                         <Localize
                             i18n_default_text={
-                                !update_email_error ? 'Your email has been successfully changed.' : update_email_error
+                                !update_email_error
+                                    ? 'Your email has changed. Now, log in with your new email address.'
+                                    : update_email_error
                             }
                         />
                     </Text>
                     <Modal.Footer className='change-email-update__footer'>
-                        <Button onClick={onClickButton} has_effect text={localize('Got it')} primary large />
+                        <Button onClick={onClickButton} has_effect text={localize('Log in')} primary large />
                     </Modal.Footer>
                 </div>
             ) : (

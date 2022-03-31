@@ -5,7 +5,7 @@ import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 
 const CancelAddPaymentMethodModal = () => {
-    const {buy_sell_store, my_profile_store } = useStores();
+    const { buy_sell_store, my_profile_store } = useStores();
 
     return (
         <Modal
@@ -30,10 +30,10 @@ const CancelAddPaymentMethodModal = () => {
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
                         my_profile_store.setSelectedPaymentMethodDisplayName('');
-                        setTimeout(()=>{
-                            buy_sell_store.setShouldShowPopup(true)
-                        },260)
-                        
+                        setTimeout(() => {
+                            buy_sell_store.setShouldShowPopup(true);
+                        }, 260);
+
                         my_profile_store.setShouldShowAddPaymentMethodForm(true);
                     }}
                     secondary
@@ -43,7 +43,7 @@ const CancelAddPaymentMethodModal = () => {
                 <Button
                     large
                     onClick={() => {
-                        buy_sell_store.setShouldShowPopup(true)
+                        buy_sell_store.setShouldShowPopup(true);
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
                     }}

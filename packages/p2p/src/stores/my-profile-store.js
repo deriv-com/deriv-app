@@ -333,9 +333,9 @@ export default class MyProfileStore extends BaseStore {
                 this.getAdvertiserPaymentMethods();
             } else {
                 this.setDeleteErrorMessage(response.error.message);
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.setIsDeleteErrorModalOpen(true);
-                },250)
+                }, 250);
             }
         });
     }

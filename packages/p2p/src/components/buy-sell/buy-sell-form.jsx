@@ -37,19 +37,15 @@ const BuySellForm = props => {
         borderWidth: '2px',
     };
 
-    React.useEffect(() => {
-        requestWS({
-            exchange_rates: 1,
-            base_currency: account_currency,
-        }).then(response => {
-            setMarketRateOnMount(response.exchange_rates.rates[local_currency]);
-        });
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     React.useEffect(
         () => {
+            requestWS({
+                exchange_rates: 1,
+                base_currency: account_currency,
+            }).then(response => {
+                setMarketRateOnMount(response.exchange_rates.rates[local_currency]);
+            });
+
             my_profile_store.setShouldShowAddPaymentMethodForm(false);
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
@@ -117,7 +113,9 @@ const BuySellForm = props => {
                 });
                 if (market_rate_on_mount !== updated_market_rate.exchange_rates.rates[local_currency]) {
                     buy_sell_store.setShouldShowPopup(false);
-                    buy_sell_store.setShowRateChangedPopup(true);
+                    setTimeout(() => {
+                        buy_sell_store.setShowRateChangedPopup(true);
+                    }, 250);
                 } else {
                     buy_sell_store.handleSubmit(() => isMounted(), ...args);
                 }

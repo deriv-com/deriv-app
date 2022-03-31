@@ -9,6 +9,8 @@ export const icons = {
         'IcAppstoreCheckedRedBg',
         'IcAppstoreCheckedTransparent',
         'IcAppstoreChecked',
+        'IcAppstoreLinkWallet',
+        'IcAppstoreLinkedWallets',
         'IcAppstoreMultipliersTradeType',
         'IcAppstoreOptionTradeType',
         'IcAppstoreSkeletonCardBorder',

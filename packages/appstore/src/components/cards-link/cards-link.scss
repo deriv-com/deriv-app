@@ -1,0 +1,90 @@
+.unlinked-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    width: min-content;
+    height: min-content;
+
+    &__wallet-card {
+        position: relative;
+        inset: 0;
+        z-index: -1;
+
+        &--overlap {
+            z-index: 1;
+        }
+    }
+
+    &__app-card {
+        position: relative;
+        top: -1.8rem;
+        left: 3.2rem;
+        display: flex;
+
+        &__link-element {
+            position: relative;
+            top: 1.8rem;
+
+            &__horizontal-line {
+                border-right: 0.1rem solid #d6dadb;
+                height: 1.6rem;
+                width: 0;
+                margin: 0.8rem 0;
+            }
+
+            &__vertical-line {
+                border-bottom: 0.1rem solid #d6dadb;
+                height: 0;
+                width: 1.6rem;
+                margin: 0 0.8rem;
+            }
+
+            &__link-icon {
+                position: absolute;
+                top: 2.8rem;
+                left: -0.8rem;
+            }
+        }
+    }
+}
+
+.linked-cards {
+    display: flex;
+    width: min-content;
+    @include mobile {
+        flex-direction: column;
+    }
+
+    &__link-element {
+        background-color: var(--brand-red-coral);
+        height: 4rem;
+        width: 4rem;
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        padding: 0%;
+        border: 0.8rem solid rgba(255, 68, 79, 0.3);
+        -webkit-background-clip: padding-box; /* for Safari */
+        background-clip: padding-box;
+        right: 2.2rem;
+        @include mobile {
+            right: auto;
+            bottom: 2.2rem;
+        }
+    }
+
+    &__app-card {
+        position: relative;
+        right: 4.4rem;
+        z-index: -1;
+
+        @include mobile {
+            right: auto;
+            bottom: 4.4rem;
+        }
+    }
+}

@@ -1,8 +1,8 @@
-name: Codecov Workflow
+name: StyleLint, ESlint and Coverage Workflow
 on: [ "pull_request" ]
 jobs:
   build:
-    name: Build
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -15,8 +15,12 @@ jobs:
           npm install
           npm run bootstrap
           npm run build
-          npm run test:jest
-
+      - name: Run Tests
+        run: npm run test:jest
+      - name: Run ESLint
+        run: npm run test:eslint
+      - name: Run Stylelint
+        run: npm run test:stylelint
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:

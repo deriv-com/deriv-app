@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { InputField, Text } from '@deriv/components';
@@ -16,7 +17,6 @@ const FloatingRate = ({
     local_currency,
     offset,
     placeholder,
-    setCurrentFocus,
     ...props
 }) => {
     const { general_store } = useStores();
@@ -30,7 +30,7 @@ const FloatingRate = ({
                     ariaLabel='Floating rate'
                     classNameInlinePrefix='floating-rate__percent'
                     classNameInput={classNames('floating-rate__input', {
-                        'floating-rate__input--error': error_messages,
+                        'floating-rate__input__error_field': error_messages,
                     })}
                     decimal_point_change={2}
                     id='floating_rate_input'
@@ -46,7 +46,7 @@ const FloatingRate = ({
                     name={name}
                     onChange={change_handler}
                     placeholder={placeholder}
-                    setCurrentFocus={general_store.props?.setCurrentFocus}
+                    setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
                     type='number'
                     value={value}
@@ -58,7 +58,7 @@ const FloatingRate = ({
                         color='prominent'
                         weight='normal'
                         line_height='xxs'
-                        className='floating-rate__mkt-rate-label'
+                        className='floating-rate__mkt-rate__label'
                     >
                         {localize('of the market rate')}
                     </Text>
@@ -68,7 +68,7 @@ const FloatingRate = ({
                         color='prominent'
                         weight='normal'
                         line_height='xs'
-                        className='floating-rate__mkt-rate-msg'
+                        className='floating-rate__mkt-rate__msg'
                     >
                         {localize('1')} {fiat_currency} = {exchange_rate} {local_currency}
                     </Text>
@@ -80,8 +80,8 @@ const FloatingRate = ({
                     size='xxs'
                     color='loss-danger'
                     weight='normal'
-                    line_height='xs'
-                    className='floating-rate__error-message'
+                    line_height='s'
+                    className='floating-rate__error_message'
                 >
                     {error_messages}
                 </Text>
@@ -112,4 +112,4 @@ FloatingRate.propTypes = {
     placeholder: PropTypes.string,
 };
 
-export default FloatingRate;
+export default observer(FloatingRate);

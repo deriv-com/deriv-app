@@ -114,7 +114,6 @@ const PersonalDetails = ({
     };
 
     const handleValidate = values => {
-        console.log(splitValidationResultTypes(validate(values)));
         const { errors, warnings } = splitValidationResultTypes(validate(values));
         setWarningItems(warnings);
         checkSubmitStatus(errors);

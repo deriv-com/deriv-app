@@ -131,7 +131,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             className='buy-sell__modal'
             height={table_type === buy_sell.BUY ? '400px' : '649px'}
             width='456px'
-            is_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
+            is_open={should_show_popup}
             title={modal_title}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}

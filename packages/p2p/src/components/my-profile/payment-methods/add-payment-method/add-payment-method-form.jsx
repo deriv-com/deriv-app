@@ -7,7 +7,7 @@ import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
-    const { my_profile_store } = useStores();
+    const { buy_sell_store,my_profile_store } = useStores();
 
     const validateFields = values => {
         const errors = {};
@@ -153,7 +153,10 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                     large
                                     onClick={() => {
                                         my_profile_store.setSelectedPaymentMethod('');
-                                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                        buy_sell_store.setShouldShowPopup(false)
+                                        setTimeout(()=>{
+                                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                        },280)
                                     }}
                                     type='button'
                                 >

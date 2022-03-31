@@ -3,6 +3,7 @@
     height: 12rem;
     border-radius: 0.8rem;
     overflow: hidden;
+    cursor: pointer;
 
     @include mobile {
         width: 14.4rem;

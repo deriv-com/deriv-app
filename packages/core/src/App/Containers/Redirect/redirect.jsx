@@ -16,6 +16,10 @@ const Redirect = ({
     setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
+<<<<<<< HEAD
+=======
+    setNewEmail,
+>>>>>>> 0616d0ae6df7fce30bf055da2cb20073f2f2367a
     toggleResetEmailModal,
     toggleUpdateEmailModal,
 }) => {
@@ -25,7 +29,13 @@ const Redirect = ({
     const { is_appstore } = React.useContext(PlatformContext);
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
+<<<<<<< HEAD
     setNewEmail(url_params.get('email'), url_params.get('action'));
+=======
+
+    setNewEmail(url_params.get('email'), url_params.get('action'));
+
+>>>>>>> 0616d0ae6df7fce30bf055da2cb20073f2f2367a
     switch (url_params.get('action')) {
         case 'signup': {
             if (is_appstore) {
@@ -167,6 +177,10 @@ Redirect.propTypes = {
     setNewEmail: PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
+<<<<<<< HEAD
+=======
+    setNewEmail: PropTypes.func,
+>>>>>>> 0616d0ae6df7fce30bf055da2cb20073f2f2367a
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
 };
@@ -182,6 +196,10 @@ export default withRouter(
         setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
+<<<<<<< HEAD
+=======
+        setNewEmail: client.setNewEmail,
+>>>>>>> 0616d0ae6df7fce30bf055da2cb20073f2f2367a
         toggleResetEmailModal: ui.toggleResetEmailModal,
         toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
     }))(Redirect)

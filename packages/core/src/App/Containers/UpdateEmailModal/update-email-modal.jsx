@@ -34,7 +34,7 @@ const UpdateEmailModal = ({
         verification_code,
     };
 
-    React.useEffect(() => {
+    const sendUpdateEmail = () => {
         WS.changeEmail(api_request).then(response => {
             setIsEmailUpdated(true);
             if (response.error) {
@@ -42,15 +42,25 @@ const UpdateEmailModal = ({
                 logoutClient();
             }
         });
+    };
+
+    React.useEffect(() => {
+        if (is_logged_in) {
+            WS.wait('authorize').then(() => {
+                sendUpdateEmail();
+            });
+            return;
+        }
+        sendUpdateEmail();
     }, []);
 
     return (
         <Modal is_open={is_visible} has_close_icon toggleModal={toggleUpdateEmailModal} width='440px' minHeight='400px'>
             {is_email_updated ? (
                 <div className='change-email-update'>
-                    {/* {!update_email_error && ( */}
-                    <Icon className='change-email-update__modal-icon' icon={`IcEmailVerified`} size={128} />
-                    {/* )} */}
+                    {!update_email_error && (
+                        <Icon className='change-email-update__modal-icon' icon={`IcEmailVerified`} size={128} />
+                    )}
                     <Text className='change-email-update__modal-title' weight='bold' size='s'>
                         <Localize i18n_default_text={!update_email_error ? 'Success!' : 'Failed'} />
                     </Text>
@@ -89,3 +99,4 @@ export default connect(({ ui, client }) => ({
     verification_code: client.verification_code.system_email_change,
     is_logged_in: client.is_logged_in,
 }))(UpdateEmailModal);
+

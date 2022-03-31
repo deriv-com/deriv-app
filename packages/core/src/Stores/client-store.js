@@ -1829,7 +1829,7 @@ export default class ClientStore extends BaseStore {
         if (email) {
             LocalStore.set(`new_email.${action}`, email);
         } else {
-            LocalStore.remove(`new_email.${email}`);
+            LocalStore.remove(`new_email.${action}`);
         }
     }
 

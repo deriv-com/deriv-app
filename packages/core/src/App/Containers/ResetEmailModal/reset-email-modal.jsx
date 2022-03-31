@@ -31,6 +31,8 @@ const ResetEmailModal = ({
         }
 
         actions.setStatus({ reset_complete: true });
+        setIsSendEmailModalOpen(true);
+        toggleResetEmailModal(false);
     };
 
     const handleSubmit = (values, actions) => {
@@ -75,7 +77,7 @@ const ResetEmailModal = ({
         return (
             <SentEmailModal
                 is_open={is_send_email_modal_open}
-                onClose={() => setIsSendEmaliModalOpen(false)}
+                onClose={() => setIsSendEmailModalOpen(false)}
                 identifier_title={'Change_Email'}
                 onClickSendEmail={resendEmail}
                 has_live_chat={true}

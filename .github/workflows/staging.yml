@@ -1,0 +1,114 @@
+name: Release Staging
+
+on:
+    push:
+        branches:
+            - master
+        paths-ignore:
+            - '**.md'
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    lint:
+        timeout-minutes: 10
+        runs-on: ubuntu-latest
+        environment: staging
+
+        steps:
+            - name: Checkout 🛎️
+              uses: actions/checkout@v2.3.1
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+            - name: Install Node.js dependencies
+              run: |
+                  npm i
+                  npm run bootstrap
+
+    release-staging:
+        needs: lint
+        timeout-minutes: 30
+        runs-on: ubuntu-latest
+        environment: staging
+        steps:
+            - name: Checkout 🛎️
+              uses: actions/checkout@v2.3.1
+
+            - name: Setup Node
+              uses: actions/setup-node@v2.1.2
+              with:
+                  node-version: '14.x'
+
+            - name: Cache dependencies
+              uses: actions/cache@v2
+              with:
+                  path: |
+                    "node_modules"
+                    "packages/account/node_modules"
+                    "packages/appstore/node_modules"
+                    "packages/bot-skeleton/node_modules"
+                    "packages/bot-web-ui/node_modules"
+                    "packages/cashier/node_modules"
+                    "packages/components/node_modules"
+                    "packages/core/node_modules"
+                    "packages/indicators/node_modules"
+                    "packages/p2p/node_modules"
+                    "packages/shared/node_modules"
+                    "packages/trader/node_modules"
+                    "packages/translations/node_modules"
+                  key: ${{ runner.os }}-node-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+                  # need this to enable after first successfull build
+                  #restore-keys: |
+                  #    ${{ runner.os }}-node-${{ secrets.CACHE_VERSION }}
+            - name: Build Test app
+              run: |
+                  npm install
+                  npm run bootstrap
+                  npm run build
+                  npm run build:travis
+                  npm run build:storybook
+                  npm run test
+            - uses: olegtarasov/get-tag@v2.1
+              id: tagName
+            - name: Building docker image 🐳
+              run: docker build -t ${{ secrets.DOCKHUB_ORGANISATION }}/deriv-app:latest-staging  -t ${{ secrets.DOCKHUB_ORGANISATION }}/deriv-app:$GITHUB_SHA .
+
+            - name: Pushing Image to docker hub 🐳
+              run: |
+                  echo ${{ secrets.DOCKERHUB_PASSWORD }}| docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+                  docker push  ${{ secrets.DOCKHUB_ORGANISATION }}/deriv-app:latest-staging
+                  docker push  ${{ secrets.DOCKHUB_ORGANISATION }}/deriv-app:$GITHUB_SHA
+
+            - name: Deploy 🚀
+              run: |
+                  export NAMESPACE="deriv-app-staging"
+                  export SERVICEACCOUNT_TOKEN=${{ secrets.SERVICEACCOUNT_TOKEN }}
+                  export DOCKERHUB_ORGANISATION=${{ secrets.DOCKERHUB_ORGANISATION }}
+                  export KUBE_SERVER=${{ secrets.KUBE_SERVER }}
+                  export CA=${{ secrets.CA }}
+                  git clone https://github.com/binary-com/devops-ci-scripts
+                  cd devops-ci-scripts/k8s-build_tools
+                  echo ${{ secrets.CA_CRT}} | base64 --decode > ca.crt
+                  ./release.sh deriv-app-staging $GITHUB_SHA
+
+            - name: Slack Notification 📣
+              uses: 8398a7/action-slack@v3
+              with:
+                  status: ${{ job.status }}
+                  fields: workflow,repo
+                  if_mention: failure,cancelled
+                  custom_payload: |
+                      {
+                        attachments: [{
+                          color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                          text: `Release for *app.deriv.com* with version *$GITHUB_SHA*`
+                        }]
+                      }
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+              if: always()

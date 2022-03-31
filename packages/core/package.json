@@ -34,6 +34,7 @@
     },
     "homepage": "https://github.com/binary-com/deriv-app",
     "devDependencies": {
+        "@babel/plugin-proposal-unicode-property-regex": "^7.16.7",
         "babel-eslint": "^10.1.0",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
@@ -92,10 +93,10 @@
     "dependencies": {
         "@babel/polyfill": "^7.4.4",
         "@deriv/account": "^1.0.0",
+        "@deriv/appstore": "^0.0.4",
         "@deriv/bot-web-ui": "^1.0.0",
         "@deriv/cashier": "^1.0.0",
         "@deriv/components": "^1.0.0",
-        "@deriv/appstore": "^0.0.4",
         "@deriv/deriv-api": "^1.0.8",
         "@deriv/deriv-charts": "^0.5.1",
         "@deriv/p2p": "^0.7.3",

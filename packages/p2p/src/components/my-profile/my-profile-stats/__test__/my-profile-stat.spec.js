@@ -21,29 +21,19 @@ jest.mock('@deriv/shared', () => ({
 
 MyProfileSeparatorContainer.Line = jest.fn(() => <div>Profile Seperator</div>);
 
-jest.mock('Components/my-profile/my-profile-stats/my-profile-balance/my-profile-balance.jsx', () =>
-    jest.fn(() => <div>Profile Balance</div>)
-);
-
 jest.mock('Components/my-profile/my-profile-stats/my-profile-privacy/my-profile-privacy.jsx', () =>
     jest.fn(() => <div>Profile Privacy</div>)
 );
-jest.mock('Components/my-profile/my-profile-stats/my-profile-name/my-profile-name.jsx', () =>
-    jest.fn(() => <div>Profile Name</div>)
-);
+
 jest.mock('Components/my-profile/my-profile-stats/my-profile-stats-table/my-profile-stats-table.jsx', () =>
     jest.fn(() => <div>Profile Stats Table</div>)
 );
 
 describe('<MyStats/>', () => {
-    it('should render Name, Balance, StatsTable, Privacy, ProfileSeperator sections on load', () => {
+    it('should render StatsTable on desktop load', () => {
         render(<MyStats />);
 
-        expect(screen.getByText('Profile Balance')).toBeInTheDocument();
-        expect(screen.getByText('Profile Privacy')).toBeInTheDocument();
-        expect(screen.getByText('Profile Name')).toBeInTheDocument();
         expect(screen.getByText('Profile Stats Table')).toBeInTheDocument();
-        expect(screen.getByText('Profile Seperator')).toBeInTheDocument();
     });
 
     it('should render a mobile layout for mobile screen', () => {
@@ -55,7 +45,7 @@ describe('<MyStats/>', () => {
 
     it('should invoke setActiveTab when tabs are clicked', () => {
         render(<MyStats />);
-        fireEvent.click(screen.getByText('Ad template'));
+        fireEvent.click(screen.getByText('Ad details'));
         fireEvent.click(screen.getByText('Payment methods'));
 
         expect(mockFn).toHaveBeenCalledTimes(2);

@@ -17,6 +17,10 @@ jest.mock('Stores', () => ({
 
 jest.mock('Components/my-profile/my-profile-content.jsx', () => jest.fn(() => <div>My Profile Content</div>));
 
+jest.mock('Components/my-profile/my-profile-stats/my-profile-details-container/my-profile-details-container.jsx', () =>
+    jest.fn(() => <div>My Profile Details Container</div>)
+);
+
 jest.mock('Components/my-profile/my-profile-header/my-profile-header.jsx', () =>
     jest.fn(() => <div>My Profile Header</div>)
 );

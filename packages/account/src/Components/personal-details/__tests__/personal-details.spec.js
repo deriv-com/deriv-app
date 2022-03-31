@@ -1,42 +1,61 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { fireEvent, render, screen ,waitFor} from '@testing-library/react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { isDesktop, isMobile, generateValidationFunction } from '@deriv/shared';
 import { act } from 'react-dom/test-utils';
 import PersonalDetails from '../personal-details';
 import { PlatformContext } from '@deriv/shared';
 import { BrowserRouter } from 'react-router-dom';
+import { splitValidationResultTypes } from '../../../Components/real-account-signup/helpers/utils';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
-    isMobile: jest.fn(() =>false),
-    isDesktop: jest.fn(() =>true),
+    isMobile: jest.fn(() => false),
+    isDesktop: jest.fn(() => true),
 }));
 
+const validate = {
+    warnings: {},
+    errors: {
+        account_opening_reason: 'Account opening reason is required.',
+        salutation: 'Salutation is required.',
+        first_name: 'First name is required.',
+        last_name: 'Last name is required.',
+        date_of_birth: 'Date of birth is required.',
+        place_of_birth: 'Place of birth is required.',
+        citizen: 'Citizenship is required',
+        phone: 'You should enter 9-35 numbers.',
+        tax_residence: 'Tax residence is required.',
+        tax_identification_number: 'Tax Identification Number is required.',
+        tax_identification_confirm: 'Please confirm your tax information.',
+    },
+};
+
+
+jest.mock('../../../Components/real-account-signup/helpers/utils', () => ({
+    splitValidationResultTypes: jest.fn(()=>validate),
+}));
 
 const runCommonFormfieldsTests = () => {
-
-
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
-        expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
 
-        expect(screen.getByTestId('first_name')).toBeInTheDocument();
-        expect(screen.getByTestId('last_name')).toBeInTheDocument();
-       
-        expect(screen.getByTestId('date_of_birth')).toBeInTheDocument();
+    expect(screen.getByTestId('first_name')).toBeInTheDocument();
+    expect(screen.getByTestId('last_name')).toBeInTheDocument();
 
-        expect(screen.queryByTestId('place_of_birth')).toBeInTheDocument();
-        expect(screen.queryByTestId('place_of_birth_mobile')).not.toBeInTheDocument();
-        
-        expect(screen.queryByTestId('citizenship')).toBeInTheDocument();
-        expect(screen.queryByTestId('citizenship_mobile')).not.toBeInTheDocument();
+    expect(screen.getByTestId('date_of_birth')).toBeInTheDocument();
 
-        expect(screen.queryByTestId('phone')).toBeInTheDocument();
+    expect(screen.queryByTestId('place_of_birth')).toBeInTheDocument();
+    expect(screen.queryByTestId('place_of_birth_mobile')).not.toBeInTheDocument();
 
-        expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
-        expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
-// 
+    expect(screen.queryByTestId('citizenship')).toBeInTheDocument();
+    expect(screen.queryByTestId('citizenship_mobile')).not.toBeInTheDocument();
 
+    expect(screen.queryByTestId('phone')).toBeInTheDocument();
+
+    expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
+    expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
+    //
 
     expect(screen.getByPlaceholderText(/john/i)).toBeInTheDocument();
     expect(
@@ -74,7 +93,6 @@ const runCommonFormfieldsTests = () => {
     expect(screen.queryByTestId('account_opening_reason')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
 
-
     expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
@@ -111,7 +129,7 @@ describe('<PersonalDetails/>', () => {
         disabled_items: [],
         residence_list: [],
         closeRealAccountSignup: jest.fn(),
-        validate:jest.fn(),
+        validate: jest.fn(),
         value: {
             account_opening_reason: '',
             salutation: '',
@@ -279,41 +297,45 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should not show disabled fields', async () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails
-                    {...props}
-                    disabled_items={[
-                        'salutation',
-                        'first_name',
-                        'last_name',
-                        'date_of_birth',
-                        'place_of_birth',
-                        'citizen',
-                        'account_opening_reason',
-                    ]}
-                />
-            </PlatformContext.Provider>
-        );
+        act(()=>{
+            renderwithRouter(
+                <PlatformContext.Provider value={{ is_appstore: false }}>
+                    <PersonalDetails
+                        {...props}
+                        disabled_items={[
+                            'salutation',
+                            'first_name',
+                            'last_name',
+                            'date_of_birth',
+                            'place_of_birth',
+                            'citizen',
+                            'account_opening_reason',
+                        ]}
+                    />
+                </PlatformContext.Provider>
+            );
+        })
 
-        expect(screen.getByRole('radio', { name: /mr/i })).toBeDisabled();
-        expect(screen.getByRole('radio', { name: /ms/i })).toBeDisabled();
+        await waitFor(()=>{
+            expect(screen.getByRole('radio', { name: /mr/i })).toBeDisabled();
+       expect(screen.getByRole('radio', { name: /ms/i })).toBeDisabled();
 
-        expect(screen.getByTestId('first_name')).toBeDisabled();
-        expect(screen.getByTestId('last_name')).toBeDisabled();
+         expect(screen.getByTestId('first_name')).toBeDisabled();
+       expect(screen.getByTestId('last_name')).toBeDisabled();
 
         expect(screen.getByTestId('date_of_birth')).toBeDisabled();
-        expect(screen.getByTestId('place_of_birth')).toBeDisabled();
+         expect(screen.getByTestId('place_of_birth')).toBeDisabled();
 
-        expect(screen.getByTestId('citizenship')).toBeDisabled();
-    //     // screen.logTestingPlaygroundURL();
-    //     // fireEvent.click(screen.getByTestId('dti_dropdown_display')).toBeC
-    //     // expect(screen.getByTestId('dti_dropdown_display')).toBeDisabled();
-    //     // screen.debug(undefined, Infinity);
-    //     // expect(screen.getByTestId('account_opening_reason_dropdown')).toBeDisabled();
-    //     // screen.logTestingPlaygroundURL();
-    //     // expect(container.querySelector('dc-dropdown--disabled')).toBeInTheDocument();
-    //     // account_opening_reason_dropdown
+       expect(screen.getByTestId('citizenship')).toBeDisabled();
+        })
+        //     // screen.logTestingPlaygroundURL();
+        //     // fireEvent.click(screen.getByTestId('dti_dropdown_display')).toBeC
+        //     // expect(screen.getByTestId('dti_dropdown_display')).toBeDisabled();
+        //     // screen.debug(undefined, Infinity);
+        //     // expect(screen.getByTestId('account_opening_reason_dropdown')).toBeDisabled();
+        //     // screen.logTestingPlaygroundURL();
+        //     // expect(container.querySelector('dc-dropdown--disabled')).toBeInTheDocument();
+        //     // account_opening_reason_dropdown
     });
 
     it('should display proper data in mobile mode', () => {
@@ -329,7 +351,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.getByTestId('first_name')).toBeInTheDocument();
         expect(screen.getByTestId('last_name')).toBeInTheDocument();
-       
+
         expect(screen.getByTestId('date_of_birth')).toBeInTheDocument();
 
         expect(screen.queryByTestId('place_of_birth_mobile')).toBeInTheDocument();
@@ -350,41 +372,84 @@ describe('<PersonalDetails/>', () => {
                 name: /i hereby confirm that the tax information i provided is true and complete\. i will also inform deriv investments \(europe\) limited about any changes to this information\./i,
             })
         ).toBeInTheDocument();
-    
-        expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
 
+        expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
 
         expect(screen.queryByTestId('account_opening_reason')).not.toBeInTheDocument();
         expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();
 
-    
         expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
-    
-        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
 
+        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
     });
 
-
-    // it('should have validation error given input field is touched and error exists on form',async()=>{
-    //     renderwithRouter(
-    //         // <PlatformContext.Provider value={{ is_appstore: false }}>
-    //             <PersonalDetails {...props} is_svg={false} />
-    //         // </PlatformContext.Provider>
-    //     )
-    //    const first_name = screen.getByTestId('first_name');
-
-    //    act(() => {
-    //     fireEvent.change(first_name, { target: { value: 'abc' } });
-    //     // fireEvent.blur(first_name);
-
-    // });
-
-
-    //    await waitFor(() => {
-    //     expect(screen.queryByText('First name should be between 2 and 50 characters.').toBeInTheDocument());
+    it('should have validation error given input field is touched and error exists on form', async () => {
+        const newValidate = 
+            {
+                warnings: {},
+                errors: {
+                    account_opening_reason: 'Account opening reason is required.',
+                    salutation: 'Salutation is required.',
+                    first_name: 'First name is required.',
+                    last_name: 'Last name is required.',
+                    date_of_birth: 'Date of birth is required.',
+                    place_of_birth: 'Place of birth is required.',
+                    citizen: 'Citizenship is required',
+                    phone: 'You should enter 9-35 numbers.',
+                    tax_residence: 'Tax residence is required.',
+                    tax_identification_number: 'Tax Identification Number is required.',
+                    tax_identification_confirm: 'Please confirm your tax information.',
+                },
+            };
+            
         
+        splitValidationResultTypes.mockReturnValue(newValidate)
+//    act(()=>{
+    renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+
+//    })
+        const first_name = screen.getByTestId('first_name');
+        act(() => {
+            fireEvent.blur(first_name);
+        });
+        await waitFor(() => {
+            expect(splitValidationResultTypes).toBeCalled();
+        });
+        await waitFor(() => {
+            expect(screen.getByText(/first name is required\./i)).toBeInTheDocument();
+        });
+    });
+
+    // it('should have validation error given input field is touched and error exists on form', async () => {
+    //     splitValidationResultTypes.mockReturnValue({
+    //         warnings: {},
+    //         errors: {
+    //             account_opening_reason: 'Account opening reason is required.',
+    //             salutation: 'Salutation is required.',
+    //             first_name: 'Letters, spaces, periods, hyphens, apostrophes only',
+    //             last_name: 'Last name is required.',
+    //             date_of_birth: 'Date of birth is required.',
+    //             place_of_birth: 'Place of birth is required.',
+    //             citizen: 'Citizenship is required',
+    //             phone: 'You should enter 9-35 numbers.',
+    //             tax_residence: 'Tax residence is required.',
+    //             tax_identification_number: 'Tax Identification Number is required.',
+    //             tax_identification_confirm: 'Please confirm your tax information.',
+    //         },
+    //     });
+    //     renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+    //     const first_name = screen.getByTestId('first_name');
+    //     act(() => {
+    //         fireEvent.change(first_name, {
+    //             target: { value: '12' },
+    //         });
+    //     });
+    //     await waitFor(() => {
+    //         expect(splitValidationResultTypes).toBeCalled();
+    //     });
+    //     await waitFor(() => {
+    //         expect(screen.getByText(/letters, spaces, periods, hyphens, apostrophes only\./i)).toBeInTheDocument();
+    //         // screen.debug(undefined,Infinity)
+    //     });
     // });
-
-
-    // })
 });

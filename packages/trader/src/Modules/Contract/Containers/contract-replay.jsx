@@ -19,6 +19,7 @@ import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
+import { getDurationPeriod, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
 
 const ContractReplay = ({
     contract_id,
@@ -226,6 +227,7 @@ const Chart = props => {
             enabledChartFooter={false}
             granularity={props.granularity}
             requestAPI={props.wsSendRequest}
+            subscribeProposalOpenContract={props.subscribeProposalOpenContract}
             requestForget={props.wsForget}
             requestForgetStream={props.wsForgetStream}
             crosshair={isMobile() ? 0 : undefined}
@@ -242,6 +244,7 @@ const Chart = props => {
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
+            shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) === 'seconds'}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker
@@ -316,6 +319,7 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         chartStateChange: contract_replay.chartStateChange,
         margin: contract_replay.margin,
         is_static_chart: contract_replay.is_static_chart,
+        subscribe_proposal_open_contract: contract_replay.subscribeProposalOpenContract,
         barriers_array: contract_store.barriers_array,
         markers_array: contract_store.markers_array,
         symbol: contract_store.contract_info.underlying,
@@ -323,5 +327,6 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         wsSubscribe: trade.wsSubscribe,
         wsSendRequest: trade.wsSendRequest,
         wsForgetStream: trade.wsForgetStream,
+        contract_info: contract_store.contract_info,
     };
 })(Chart);

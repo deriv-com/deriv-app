@@ -47,7 +47,7 @@ const ErrorComponent = ({
                       ]
             }
             redirect_urls={[redirect_to]}
-            redirect_labels={[redirect_label || <Localize key={0} i18n_default_text='Refresh' />]}
+            redirect_labels={[redirect_label || <Localize i18n_default_text='Refresh' />]}
             buttonOnClick={redirectOnClick || (() => location.reload())}
             should_clear_error_on_click={should_clear_error_on_click}
             setError={setError}

@@ -20,6 +20,7 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
                 page_header_text={page_title}
                 renderPageHeaderTrailingIcon={() => (
                     <Icon
+                        data_testid='testid'
                         icon='IcChat'
                         height={15}
                         width={16}

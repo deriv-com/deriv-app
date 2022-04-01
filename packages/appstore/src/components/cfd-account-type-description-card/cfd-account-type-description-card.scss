@@ -1,0 +1,60 @@
+
+
+.cfd-account-details {
+    max-width: 26.4rem;
+    font-style: normal;
+
+    &__title {
+        font-weight: 700;
+        font-size: 1.4rem;
+        line-height: 2rem;
+        color: #333333;
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0.8rem 0;
+        }
+
+        &__description {
+        font-weight: 400;
+        font-size: 1.4rem;
+        line-height: 2rem;
+        color: #999999;
+        margin: 0.8rem 0px;
+        }
+
+        &__specification {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin-bottom: 0.8rem;
+
+            &__label {
+                font-weight: 400;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+                color: #333333;
+                }
+
+                &__value {
+                    font-weight: 700;
+                    font-size: 1.2rem;
+                    line-height: 1.8rem;
+                    color: #333333;
+                }
+        }
+
+        &__no-commision-block {
+            font-weight: 400;
+            font-size: 1rem;
+            line-height: 1.4rem;
+            color: #999999;
+            }
+}
+
+
+
+
+
+
+
+

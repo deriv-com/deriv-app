@@ -100,7 +100,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             </div>
                         </React.Fragment>
                     }
-                    right_hidden_component_width={is_advert_active ? '12rem' : '18rem'}
+                    right_hidden_component_width='18rem'
                     visible_component={
                         <Table.Row
                             className={classNames('p2p-my-ads__table-row', {

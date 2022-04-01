@@ -26,7 +26,6 @@ const getHeaders = offered_currency => [
 
 const MyAdsTable = () => {
     const { floating_rate_store, general_store, my_ads_store } = useStores();
-
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
     const local_currency = general_store.client.local_currency_config.currency;
 

@@ -21,15 +21,15 @@ const CFDAccountTypeDetails = ({ platform, is_eu, account_type }: TCFDAccountTyp
 
     React.useEffect(() => {
         if (account_type === 'financial') {
-            is_eu
-                ? setCfdAccountDetails(cfdAccountDetails[`${platform}`].financial_eu)
-                : setCfdAccountDetails(cfdAccountDetails[`${platform}`].financial);
+            setCfdAccountDetails(
+                is_eu ? cfdAccountDetails[`${platform}`].financial_eu : cfdAccountDetails[`${platform}`].financial
+            );
         } else {
-            const cfd_account_details =
+            setCfdAccountDetails(
                 platform === 'mt5'
                     ? cfdAccountDetails[`${platform}`][`${account_type}`]
-                    : cfdAccountDetails[`${platform}`].synthetic;
-            setCfdAccountDetails(cfd_account_details);
+                    : cfdAccountDetails[`${platform}`].synthetic
+            );
         }
     }, [is_eu, platform, account_type]);
 

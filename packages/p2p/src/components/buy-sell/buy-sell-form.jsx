@@ -13,7 +13,8 @@ import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
-    const { advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
+    const { currency, local_currency_config } = general_store.client;
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const [market_rate_on_mount, setMarketRateOnMount] = React.useState(null);
@@ -21,7 +22,6 @@ const BuySellForm = props => {
 
     const { setPageFooterParent } = props;
     const {
-        account_currency,
         advertiser_details,
         description,
         local_currency,
@@ -41,9 +41,9 @@ const BuySellForm = props => {
         () => {
             requestWS({
                 exchange_rates: 1,
-                base_currency: account_currency,
+                base_currency: currency,
             }).then(response => {
-                setMarketRateOnMount(response.exchange_rates.rates[local_currency]);
+                setMarketRateOnMount(response.exchange_rates.rates[local_currency_config.currency]);
             });
 
             my_profile_store.setShouldShowAddPaymentMethodForm(false);
@@ -109,9 +109,9 @@ const BuySellForm = props => {
             onSubmit={async (...args) => {
                 const updated_market_rate = await requestWS({
                     exchange_rates: 1,
-                    base_currency: account_currency,
+                    base_currency: currency,
                 });
-                if (market_rate_on_mount !== updated_market_rate.exchange_rates.rates[local_currency]) {
+                if (market_rate_on_mount !== updated_market_rate.exchange_rates.rates[local_currency_config.currency]) {
                     buy_sell_store.setShouldShowPopup(false);
                     setTimeout(() => {
                         buy_sell_store.setShowRateChangedPopup(true);

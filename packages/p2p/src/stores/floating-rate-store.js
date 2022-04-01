@@ -34,8 +34,8 @@ export default class FloatingRateStore extends BaseStore {
         this.float_rate_adverts_status = floating_rate_advert_status;
     }
     @action.bound
-    setFoatRateOffsetLimit(offset_limit) {
-        this.float_rate_offset_limit = offset_limit;
+    setFloatRateOffsetLimit(offset_limit) {
+        this.float_rate_offset_limit = parseFloat(offset_limit);
     }
     @action.bound
     setFixedRateAdvertsEndDate(end_date) {
@@ -63,7 +63,7 @@ export default class FloatingRateStore extends BaseStore {
                 this.setApiErrorMessage(response.error.message);
             } else {
                 const { rates } = response.exchange_rates;
-                this.exchange_rate = rates[local_currency];
+                this.exchange_rate = parseFloat(rates[local_currency]);
                 this.setApiErrorMessage(null);
             }
         });

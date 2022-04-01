@@ -97,6 +97,7 @@ const P2PCashier = ({
 
 P2PCashier.propTypes = {
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     history: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
     is_logging_in: PropTypes.bool,

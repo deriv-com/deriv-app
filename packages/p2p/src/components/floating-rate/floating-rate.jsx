@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { InputField, Text } from '@deriv/components';
@@ -112,4 +113,4 @@ FloatingRate.propTypes = {
     placeholder: PropTypes.string,
 };
 
-export default FloatingRate;
+export default observer(FloatingRate);

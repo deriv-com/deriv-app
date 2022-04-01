@@ -38,7 +38,7 @@
         height: calc(100% - 56px);
 
         .dc-themed-scrollbars {
-            padding: 5px 25px;
+            padding: 1rem 2rem;
         }
         &-disclaimer {
             display: flex;
@@ -179,7 +179,7 @@
     &__search {
         padding: 0;
         visibility: visible;
-
+        overflow: hidden;
         &-header {
             padding: 20px;
             background-color: var(--general-disabled);

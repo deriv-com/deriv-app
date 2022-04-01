@@ -4,7 +4,7 @@ import React from 'react';
 import { Popover } from '@deriv/components';
 
 const Fieldset = ({ children, className, header, header_tooltip, is_center, onMouseEnter, onMouseLeave }) => {
-    console.log("Failed")
+    console.log("Failed");
     const fieldset_header_class = classNames('trade-container__fieldset-header', {
         'center-text': is_center,
         'trade-container__fieldset-header--inline': header_tooltip,

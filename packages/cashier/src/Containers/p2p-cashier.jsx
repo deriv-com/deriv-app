@@ -11,6 +11,7 @@ import { get, init, timePromise } from '_common/server_time';
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({
     currency,
+    current_focus,
     history,
     is_dark_mode_on,
     is_logging_in,
@@ -88,6 +89,7 @@ const P2PCashier = ({
             setOrderId={setQueryOrder}
             should_show_verification={/verification/.test(location.hash)}
             websocket_api={WS}
+            current_focus={current_focus}
             setCurrentFocus={setCurrentFocus}
         />
     );
@@ -122,5 +124,6 @@ export default withRouter(
         setNotificationCount: modules.cashier.general_store.setNotificationCount,
         is_mobile: ui.is_mobile,
         setCurrentFocus: ui.setCurrentFocus,
+        current_focus: ui.current_focus,
     }))(P2PCashier)
 );

@@ -117,7 +117,7 @@ describe('<OrderDetails/>', () => {
         expect(screen.getByText('Order details footer')).toBeInTheDocument();
     });
 
-    it('should display formatted currency when the torder is pending', () => {
+    it('should display formatted currency when the order is pending', () => {
         useStores.mockReturnValue({
             order_store: {
                 ...mock_order_store,
@@ -156,7 +156,7 @@ describe('<OrderDetails/>', () => {
         expect(screen.getByText('Chat section')).toBeInTheDocument();
     });
 
-    it('shpuld display Buy section when is_buy_order flag is enabled', () => {
+    it('should display Buy section when is_buy_order flag is enabled', () => {
         useStores.mockReturnValue({
             order_store: {
                 ...mock_order_store,
@@ -169,7 +169,7 @@ describe('<OrderDetails/>', () => {
         expect(screen.getByText('Buy USD order')).toBeInTheDocument();
     });
 
-    it('shpuld display Buy section when is_sell_order as well as is_my_ad flag is enabled', () => {
+    it('should display Buy section when is_sell_order as well as is_my_ad flag is enabled', () => {
         useStores.mockReturnValue({
             order_store: {
                 ...mock_order_store,

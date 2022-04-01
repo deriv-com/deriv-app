@@ -73,7 +73,7 @@ describe('<OrderDetailsConfirmModal/>', () => {
         expect(screen.getByRole('button', { name: 'Release 20 USD' })).toBeDisabled();
     });
 
-    it('should show error message when error response is received', async () => {
+    it('should send a request when Release 20 USD is clicked', async () => {
         render(<OrderDetailsConfirmModal should_show_confirm_modal order_information={mock_props} />);
         fireEvent.click(screen.getByRole('checkbox'));
         act(() => {

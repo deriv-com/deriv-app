@@ -31,7 +31,7 @@ describe('<OrderDetailsComplainModal/>', () => {
         expect(screen.getByText("What's your complaint?")).toBeInTheDocument();
     });
 
-    it('should toggle modal ', () => {
+    it('should show modal that accepts complaint from user', () => {
         render(<OrderDetailsComplainModal hideComplainOrderModal={jest.fn()} />);
 
         expect(screen.queryByText("What's your complaint?")).not.toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('<OrderDetailsComplainModal/>', () => {
         });
     });
 
-    it('should render the mobile view', () => {
+    it('should show Complaint header in mobile view', () => {
         isMobile.mockReturnValue(true);
         render(<OrderDetailsComplainModal should_show_complain_modal is_buy_order_for_user />);
 

@@ -32,6 +32,7 @@ const FloatingRate = ({
                     classNameInput={classNames('floating-rate__input', {
                         'floating-rate__input__error_field': error_messages,
                     })}
+                    current_focus={general_store.current_focus}
                     decimal_point_change={2}
                     id='floating_rate_input'
                     inline_prefix='%'

@@ -35,10 +35,10 @@
     }
     &__content {
         overflow: auto;
-        height: calc(100% - 56px);
+        height: calc(100% - 65px);
 
         .dc-themed-scrollbars {
-            padding: 1rem 2rem;
+            padding: 5px 25px;
         }
         &-disclaimer {
             display: flex;
@@ -179,7 +179,7 @@
     &__search {
         padding: 0;
         visibility: visible;
-        overflow: hidden;
+
         &-header {
             padding: 20px;
             background-color: var(--general-disabled);

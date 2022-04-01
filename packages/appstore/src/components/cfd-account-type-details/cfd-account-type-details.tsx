@@ -1,15 +1,15 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import cfdAccountDetails from 'Constants/cfd-account-details';
+import cfdAccountDetails from 'Constants/cfd-account-type-details';
 
-type TCFDAccountTypeDescriptionCard = {
+type TCFDAccountTypeDetails = {
     platform: 'mt5' | 'dxtrade';
     is_eu: boolean;
     account_type: 'synthetic' | 'financial' | 'financial_stp';
 };
 
-const CFDAccountTypeDescriptionCard = ({ platform, is_eu, account_type }: TCFDAccountTypeDescriptionCard) => {
+const CFDAccountTypeDetails = ({ platform, is_eu, account_type }: TCFDAccountTypeDetails) => {
     const [cfd_account_details, setCfdAccountDetails] = React.useState({
         title: '',
         description: '',
@@ -72,4 +72,4 @@ const CFDAccountTypeDescriptionCard = ({ platform, is_eu, account_type }: TCFDAc
     );
 };
 
-export default CFDAccountTypeDescriptionCard;
+export default CFDAccountTypeDetails;

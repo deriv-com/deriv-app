@@ -1,11 +1,11 @@
 import type { Meta, Story } from '@storybook/react';
 import React from 'react';
-import CFDAccountTypeDescriptionCard from '../index';
+import CFDAccountTypeDetails from '../index';
 
-type CFDAccountTypeDescriptionCardProps = Parameters<typeof CFDAccountTypeDescriptionCard>[0];
+type CFDAccountTypeDetailsProps = Parameters<typeof CFDAccountTypeDetails>[0];
 
 export default {
-    title: 'CFDAccountTypeDescriptionCard',
+    title: 'CFDAccountTypeDetails',
     parameters: { controls: { sort: 'alpha' } },
     argTypes: {
         platform: {
@@ -39,12 +39,12 @@ export default {
             },
         },
     },
-} as Meta<CFDAccountTypeDescriptionCardProps>;
+} as Meta<CFDAccountTypeDetailsProps>;
 
-const Template: Story<CFDAccountTypeDescriptionCardProps> = args => <CFDAccountTypeDescriptionCard {...args} />;
+const Template: Story<CFDAccountTypeDetailsProps> = args => <CFDAccountTypeDetails {...args} />;
 
-export const DefaultCFDAccountTypeDescriptionCard = Template.bind({});
-DefaultCFDAccountTypeDescriptionCard.args = {
+export const DefaultCFDAccountTypeDetails = Template.bind({});
+DefaultCFDAccountTypeDetails.args = {
     account_type: 'synthetic',
     is_eu: false,
     platform: 'mt5',

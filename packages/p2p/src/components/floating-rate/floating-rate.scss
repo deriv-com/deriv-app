@@ -1,0 +1,118 @@
+.floating-rate {
+    display: flex;
+    flex-direction: column;
+    &__field {
+        display: flex;
+    }
+    &__input {
+        height: 40px;
+        align-self: center;
+        appearance: none;
+        box-sizing: border-box;
+        border-radius: $BORDER_RADIUS;
+        color: var(--text-general);
+        border: 1px solid var(--border-normal);
+        background-image: none;
+        &:hover {
+            border-color: var(--border-hover);
+        }
+        &:active,
+        &:focus {
+            border-color: var(--border-active);
+        }
+
+        &--error {
+            color: $color-red-1;
+            border-color: $color-red;
+        }
+    }
+
+    &__percent {
+        position: absolute;
+        height: 3.2rem;
+        right: 4rem;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        background: transparent;
+        border-color: transparent;
+        z-index: 2;
+        color: inherit;
+
+        &--symbol {
+            font-size: 1.4rem;
+            line-height: 1.5;
+            padding-top: 0.7rem;
+        }
+        &:before {
+            @include typeface(--paragraph-center-normal-black);
+            color: inherit;
+        }
+    }
+
+    &__mkt-rate {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0.4rem 0.6rem;
+        position: static;
+        left: 10rem;
+        top: 0px;
+        background: rgba(55, 124, 252, 0.08);
+        border-radius: 0px 4px 4px 0px;
+        /* Inside auto layout */
+        flex: none;
+        order: 1;
+        align-self: stretch;
+        flex-grow: 1;
+        gap: 0.2rem;
+
+        &-label {
+            position: static;
+            font-style: normal;
+            color: $color-black-1;
+            flex: none;
+            order: 1;
+            flex-grow: 0;
+            margin: 0px;
+        }
+
+        &-msg {
+            position: static;
+            height: 18px;
+            left: 8px;
+            top: 18px;
+            font-style: normal;
+            flex: none;
+            order: 2;
+            flex-grow: 0;
+            margin: 0px;
+        }
+    }
+
+    &__hint {
+        padding-left: 1rem;
+        text-transform: none;
+        margin-top: 0.3rem;
+    }
+
+    &__error-message {
+        padding-left: 1rem;
+        text-transform: none;
+    }
+}
+
+.dc-input-wrapper__button,
+button.dc-input-wrapper__button {
+    top: 0.6rem;
+}
+
+.dc-input-field {
+    margin: unset;
+}
+
+.mobile-layout {
+    display: flex;
+    flex-direction: column;
+}

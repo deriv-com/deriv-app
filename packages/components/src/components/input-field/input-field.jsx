@@ -18,6 +18,7 @@ const InputField = ({
     current_focus,
     data_tip,
     data_value,
+    decimal_point_change,
     error_messages,
     error_message_alignment,
     fractional_digits,
@@ -37,6 +38,7 @@ const InputField = ({
     is_signed = false,
     is_unit_at_right = false,
     inputmode,
+    increment_button_type,
     label,
     max_length,
     max_value,
@@ -55,7 +57,6 @@ const InputField = ({
     value,
 }) => {
     const [local_value, setLocalValue] = React.useState();
-
     const Icon = icon;
     const has_error = error_messages && !!error_messages.length;
     const max_is_disabled = max_value && (+value >= +max_value || +local_value >= +max_value);
@@ -135,22 +136,21 @@ const InputField = ({
         if (long_press_step) {
             const increase_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;
             const increase = (value * increase_percentage) / 100;
-            const new_value = parseFloat(+(current_value || 0)) + Math.abs(increase);
+            const new_value = parseFloat(current_value || 0) + Math.abs(increase);
 
             increment_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
-            const new_value = parseFloat(+(current_value || 0)) + parseFloat(1 * 10 ** (0 - decimal_places));
-            increment_value = parseFloat(new_value).toFixed(decimal_places);
+            const new_value =
+                parseFloat(current_value || 0) + parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+            increment_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
-            increment_value = parseFloat(+(current_value || 0) + 1).toFixed(decimal_places);
+            increment_value = parseFloat((current_value || 0) + 1).toFixed(decimal_places);
         }
-
         updateValue(increment_value, !!long_press_step);
     };
 
     const calculateDecrementedValue = long_press_step => {
         let decrement_value;
-
         const current_value = local_value || value;
 
         const decimal_places = current_value ? getDecimals(current_value) : 0;
@@ -159,22 +159,27 @@ const InputField = ({
         if (long_press_step) {
             const decrease_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;
             const decrease = (value * decrease_percentage) / 100;
-            const new_value = parseFloat(+(current_value || 0)) - Math.abs(decrease);
+            const new_value = parseFloat(current_value || 0) - Math.abs(decrease);
 
             decrement_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
-            const new_value = parseFloat(+(current_value || 0)) - parseFloat(1 * 10 ** (0 - decimal_places));
-            decrement_value = parseFloat(new_value).toFixed(decimal_places);
+            const new_value =
+                parseFloat(current_value || 0) - parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+            decrement_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
-            decrement_value = parseFloat(+(current_value || 0) - 1).toFixed(decimal_places);
+            decrement_value = parseFloat((current_value || 0) - 1).toFixed(decimal_places);
         }
         return decrement_value;
     };
 
     const decrementValue = (ev, long_press_step) => {
-        if (!value || min_is_disabled) return;
+        if (min_is_disabled) {
+            return;
+        }
         const decrement_value = calculateDecrementedValue(long_press_step);
-        if (is_negative_disabled && decrement_value < 0) return;
+        if (is_negative_disabled && decrement_value < 0) {
+            return;
+        }
         updateValue(decrement_value, !!long_press_step);
     };
 
@@ -257,6 +262,7 @@ const InputField = ({
             decrementValue={decrementValue}
             onLongPressEnd={onLongPressEnd}
             is_incrementable_on_long_press={is_incrementable_on_long_press}
+            type={increment_button_type}
         />
     );
 
@@ -321,6 +327,7 @@ InputField.propTypes = {
     classNamePrefix: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    decimal_point_change: PropTypes.number, // Specify which decimal point must be updated when the increment/decrement button is pressed
     error_messages: PropTypes.array,
     error_message_alignment: PropTypes.string,
     fractional_digits: PropTypes.number,
@@ -338,6 +345,7 @@ InputField.propTypes = {
     is_read_only: PropTypes.bool,
     is_signed: PropTypes.bool,
     is_unit_at_right: PropTypes.bool,
+    increment_button_type: PropTypes.string,
     label: PropTypes.string,
     max_length: PropTypes.number,
     name: PropTypes.string,

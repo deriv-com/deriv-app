@@ -3,11 +3,10 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import cfdAccountDetails from 'Constants/cfd-account-details';
 
-
 type TCFDAccountTypeDescriptionCard = {
     platform: 'mt5' | 'dxtrade';
     is_eu: boolean;
-    account_type: 'synthetic' | 'financial' | 'financial_stp'
+    account_type: 'synthetic' | 'financial' | 'financial_stp';
 };
 
 const CFDAccountTypeDescriptionCard = ({ platform, is_eu, account_type }: TCFDAccountTypeDescriptionCard) => {
@@ -40,18 +39,34 @@ const CFDAccountTypeDescriptionCard = ({ platform, is_eu, account_type }: TCFDAc
                 <div className='cfd-account-details__title'>{cfd_account_details?.title}</div>
                 <div className='cfd-account-details__description'>{cfd_account_details?.description}</div>
                 <div className='cfd-account-details__specification'>
-                    <div className='cfd-account-details__specification__label'>{cfd_account_details?.leverage.key()}</div>
-                    <div className='cfd-account-details__specification__value'>{cfd_account_details?.leverage.value()}</div>
-                    <div className='cfd-account-details__specification__label'>{cfd_account_details?.['margin-call'].key()}</div>
-                    <div className='cfd-account-details__specification__value'>{cfd_account_details?.['margin-call'].value()}</div>
-                    <div className='cfd-account-details__specification__label'>{cfd_account_details?.['stop-out-level'].key()}</div>
-                    <div className='cfd-account-details__specification__value'>{cfd_account_details?.['stop-out-level'].value()}</div>
-                    <div className='cfd-account-details__specification__label'>{cfd_account_details?.['number-of-assets'].key()}</div>
-                    <div className='cfd-account-details__specification__value'>{cfd_account_details?.['number-of-assets'].value()}</div>
+                    <div className='cfd-account-details__specification__label'>
+                        {cfd_account_details?.leverage.key()}
+                    </div>
+                    <div className='cfd-account-details__specification__value'>
+                        {cfd_account_details?.leverage.value()}
+                    </div>
+                    <div className='cfd-account-details__specification__label'>
+                        {cfd_account_details?.['margin-call'].key()}
+                    </div>
+                    <div className='cfd-account-details__specification__value'>
+                        {cfd_account_details?.['margin-call'].value()}
+                    </div>
+                    <div className='cfd-account-details__specification__label'>
+                        {cfd_account_details?.['stop-out-level'].key()}
+                    </div>
+                    <div className='cfd-account-details__specification__value'>
+                        {cfd_account_details?.['stop-out-level'].value()}
+                    </div>
+                    <div className='cfd-account-details__specification__label'>
+                        {cfd_account_details?.['number-of-assets'].key()}
+                    </div>
+                    <div className='cfd-account-details__specification__value'>
+                        {cfd_account_details?.['number-of-assets'].value()}
+                    </div>
                 </div>
                 <Text className='cfd-account-details__no-commision-block'>
-                <Localize i18n_default_text='No commision' />
-                    </Text>
+                    <Localize i18n_default_text='No commision' />
+                </Text>
             </div>
         </>
     );

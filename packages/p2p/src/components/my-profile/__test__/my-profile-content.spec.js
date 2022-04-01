@@ -3,6 +3,7 @@ import { useStores } from 'Stores';
 import { render, screen } from '@testing-library/react';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import MyProfileContent from '../my-profile-content.jsx';
+import { isMobile, isDesktop } from '@deriv/shared';
 
 const mock_profile_store = {
     getSettings: jest.fn(),
@@ -17,8 +18,21 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => ({ my_profile_store: mock_profile_store })),
 }));
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
+    isDesktop: jest.fn(() => true),
+}));
+
 jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
     Loading: jest.fn(() => <div>Loading</div>),
+    MobileFullPageModal: jest.fn(({ children }) => (
+        <div>
+            Mobile full page modal
+            <div>{children}</div>
+        </div>
+    )),
 }));
 
 jest.mock('Components/my-profile/my-profile-form/my-profile-form.jsx', () => jest.fn(() => <div>My Profile Form</div>));
@@ -37,9 +51,9 @@ describe('<MyProfileContent/>', () => {
     });
 
     it('should render Payment methods', () => {
-        useStores.mockImplementation(() => ({
+        useStores.mockReturnValue({
             my_profile_store: { ...mock_profile_store, active_tab: my_profile_tabs.PAYMENT_METHODS },
-        }));
+        });
         render(<MyProfileContent />);
 
         expect(screen.getByText('Payment methods')).toBeInTheDocument();
@@ -61,5 +75,26 @@ describe('<MyProfileContent/>', () => {
         render(<MyProfileContent />);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
+    });
+
+    it('should render desktop version of the component', () => {
+        useStores.mockReturnValue({
+            my_profile_store: { ...mock_profile_store, active_tab: my_profile_tabs.PAYMENT_METHODS },
+        });
+
+        render(<MyProfileContent />);
+
+        expect(screen.queryByText('Mobile full page modal')).not.toBeInTheDocument();
+    });
+
+    it('should render desktop version of the component', () => {
+        useStores.mockReturnValue({
+            my_profile_store: { ...mock_profile_store, active_tab: my_profile_tabs.PAYMENT_METHODS },
+        });
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+        render(<MyProfileContent />);
+
+        expect(screen.queryByText('Mobile full page modal')).toBeInTheDocument();
     });
 });

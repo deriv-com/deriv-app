@@ -227,7 +227,6 @@ const Chart = props => {
             enabledChartFooter={false}
             granularity={props.granularity}
             requestAPI={props.wsSendRequest}
-            subscribeProposalOpenContract={props.subscribeProposalOpenContract}
             requestForget={props.wsForget}
             requestForgetStream={props.wsForgetStream}
             crosshair={isMobile() ? 0 : undefined}
@@ -238,6 +237,7 @@ const Chart = props => {
             scrollToEpoch={props.scroll_to_epoch}
             stateChangeListener={props.chartStateChange}
             symbol={props.symbol}
+            contractInfo={props.contract_info}
             topWidgets={ChartTopWidgets}
             isConnectionOpened={props.is_socket_opened}
             isStaticChart={false}
@@ -275,10 +275,12 @@ Chart.propTypes = {
     settings: PropTypes.object,
     start_epoch: PropTypes.number,
     symbol: PropTypes.string,
+    contract_info: PropTypes.object,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,
     wsSubscribe: PropTypes.func,
+    shouldFetchTickHistory: PropTypes.bool,
 };
 
 const ReplayChart = connect(({ modules, ui, common }) => {
@@ -319,14 +321,13 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         chartStateChange: contract_replay.chartStateChange,
         margin: contract_replay.margin,
         is_static_chart: contract_replay.is_static_chart,
-        subscribe_proposal_open_contract: contract_replay.subscribeProposalOpenContract,
         barriers_array: contract_store.barriers_array,
         markers_array: contract_store.markers_array,
         symbol: contract_store.contract_info.underlying,
+        contract_info: contract_store.contract_info,
         wsForget: trade.wsForget,
         wsSubscribe: trade.wsSubscribe,
         wsSendRequest: trade.wsSendRequest,
         wsForgetStream: trade.wsForgetStream,
-        contract_info: contract_store.contract_info,
     };
 })(Chart);

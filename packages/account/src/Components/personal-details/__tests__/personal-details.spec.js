@@ -23,43 +23,21 @@ const mock_errors = {
     date_of_birth: 'Date of birth is required.',
     place_of_birth: 'Place of birth is required.',
     citizen: 'Citizenship is required',
-    phone: 'You should enter 9-35 numbers.',
+    phone: 'Phone is required.',
     tax_residence: 'Tax residence is required.',
     tax_identification_number: 'Tax Identification Number is required.',
     tax_identification_confirm: 'Please confirm your tax information.',
 };
 
-// const validate = {
-//     warnings:mock_warnings,
-//     errors:mock_errors
-// };
 
-// const validate = {
-//     warnings: {},
-//     errors: {
-//         account_opening_reason: 'Account opening reason is required.',
-//         salutation: 'Salutation is required.',
-//         first_name: 'First name is required.',
-//         last_name: 'Last name is required.',
-//         date_of_birth: 'Date of birth is required.',
-//         place_of_birth: 'Place of birth is required.',
-//         citizen: 'Citizenship is required',
-//         phone: 'You should enter 9-35 numbers.',
-//         tax_residence: 'Tax residence is required.',
-//         tax_identification_number: 'Tax Identification Number is required.',
-//         tax_identification_confirm: 'Please confirm your tax information.',
-//     },
-// };
 
 jest.mock('Components/real-account-signup/helpers/utils.js', () => ({
-    splitValidationResultTypes: jest.fn(() => {
-        const validate = {
+    splitValidationResultTypes: jest.fn(() =>  ({
             warnings: mock_warnings,
             errors: mock_errors,
-        };
-        return validate;
-    }),
-}));
+    })),
+})
+);
 
 const runCommonFormfieldsTests = () => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
@@ -115,7 +93,7 @@ const runCommonFormfieldsTests = () => {
     expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
 
     // expect(screen.queryByTestId('account_opening_reason')).toBeInTheDocument();
-    expect(screen.queryByTestId('account_opening_reason')).toBeInTheDocument();
+    expect(screen.queryByTestId('dti_dropdown_display')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
@@ -179,6 +157,7 @@ describe('<PersonalDetails/>', () => {
             return component;
         });
     });
+    
 
     afterAll(() => {
         ReactDOM.createPortal.mockClear();
@@ -363,6 +342,29 @@ describe('<PersonalDetails/>', () => {
         //     // account_opening_reason_dropdown
     });
 
+ 
+
+    it('should disable if citizen is passed and is_fully_authenticated', async () => {
+        const new_props = {
+            ...props,
+            value:{
+                ...props.value,
+                citizen:'france'
+
+            }
+        }
+        act(() => {
+            renderwithRouter(
+                <PlatformContext.Provider value={{ is_appstore: false }}>
+                    (<PersonalDetails {...new_props} is_fully_authenticated={true}/>);
+                </PlatformContext.Provider>
+            );
+        });
+        await waitFor(() => {expect(screen.getByTestId('citizenship')).toBeDisabled()});
+
+
+    })
+
     it('should display proper data in mobile mode', () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
@@ -408,45 +410,170 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
     });
 
-    it('should have validation error given input field is touched', async () => {
+    it('should have validation error given first_name and last_name fields are touched and have error', async () => {
         
         renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
 
         const first_name = screen.getByTestId('first_name');
-        act(() => {
+        const last_name = screen.getByTestId('last_name');
+
+        await act(async() => {
             fireEvent.blur(first_name);
+            fireEvent.blur(last_name);
         });
-        await waitFor(() => {
-            expect(splitValidationResultTypes).toBeCalled();
-        });
+       
         await waitFor(() => {
             expect(screen.getByText(/first name is required\./i)).toBeInTheDocument();
+            expect(screen.getByText(/last name is required\./i)).toBeInTheDocument();
         });
-    });
 
-    it('should have validation error given input field is numbers', async () => {
-        const newvalidate = {
+        const new_validate = {
             warnings: mock_warnings,
             errors: {
                 ...mock_errors,
                 first_name: 'letters, spaces, periods, hyphens, apostrophes only',
+                last_name : 'last name should be between 2 and 50 characters.',
             },
         };
-        splitValidationResultTypes.mockReturnValue(newvalidate);
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
-        const first_name = screen.getByTestId('first_name');
+        splitValidationResultTypes.mockReturnValue(new_validate);
 
-        act(() => {
+        await act(async()=> {
             fireEvent.change(first_name, {
                 target: { value: '123' },
             });
             fireEvent.blur(first_name);
-        });
-        await waitFor(() => {
-            expect(splitValidationResultTypes).toBeCalled();
-        });
+             
+            fireEvent.change(last_name, {
+                target: { value: 'a' },
+            });
+            fireEvent.blur(last_name);
+        })
         await waitFor(() => {
             expect(screen.getByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
+            expect(screen.getByText(/last name should be between 2 and 50 characters/i)).toBeInTheDocument();
+
+    });
+})
+
+    // it('should have validation errors given first_name and last_name fields are numbers', async () => {
+    //     const newvalidate = {
+    //         warnings: mock_warnings,
+    //         errors: {
+    //             ...mock_errors,
+    //             first_name: 'letters, spaces, periods, hyphens, apostrophes only',
+    //             last_name : 'last name should be between 2 and 50 characters.',
+    //         },
+    //     };
+    //     splitValidationResultTypes.mockReturnValue(newvalidate);
+    //     renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+    //     const first_name = screen.getByTestId('first_name');
+    //     const last_name = screen.getByTestId('last_name');
+
+    //     act(() => {
+    //         fireEvent.change(first_name, {
+    //             target: { value: '123' },
+    //         });
+    //         fireEvent.blur(first_name);
+            
+    //         fireEvent.change(last_name, {
+    //             target: { value: 'a' },
+    //         });
+    //         fireEvent.blur(last_name);
+    //     });
+        
+    //     await waitFor(() => {
+    //         expect(screen.getByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
+    //         expect(screen.getByText(/last name should be between 2 and 50 characters/i)).toBeInTheDocument();
+    //     });
+    // });
+
+
+    it('should have validation errors on form fields', async () => {
+        isMobile.mockReturnValue(false);
+        isDesktop.mockReturnValue(true);
+
+        renderwithRouter(<PersonalDetails {...props} is_svg={false}/>);
+        const date_of_birth = await screen.getByTestId('date_of_birth');
+        const place_of_birth = screen.getByTestId('place_of_birth');
+        const citizenship = screen.getByTestId('citizenship')
+        const phone = screen.getByTestId('phone')
+        const tax_residence = screen.getByTestId('tax_residence')
+       const  tax_identification_number = screen.getByTestId('tax_identification_number')
+    //    const account_opening_reason = screen.getByTestId('account_opening_reason')
+    //    const account_opening_reason_dropdown = screen.getByTestId('dti_dropdown_display');
+       
+        await act(async () => {
+            fireEvent.blur(date_of_birth);
+            fireEvent.blur(place_of_birth);
+            fireEvent.blur(citizenship);
+            fireEvent.blur(phone);
+            fireEvent.blur(tax_residence);
+            fireEvent.blur(tax_identification_number);
+           
+        });
+        await waitFor(() => {
+            expect(screen.getByText(/date of birth is required\./i)).toBeInTheDocument()
+            expect(screen.getByText(/place of birth is required\./i)).toBeInTheDocument();
+            expect(screen.getByText(/citizenship is required/i)).toBeInTheDocument();
+            expect(screen.getByText(/phone is required\./i)).toBeInTheDocument();
+            expect(screen.getByText(/tax residence is required\./i)).toBeInTheDocument();
+            expect(screen.getByText(/tax identification number is required\./i)).toBeInTheDocument();
+
+
+        });
+  
+        splitValidationResultTypes.mockReturnValue({
+            ...mock_warnings,
+            errors:{
+            ...mock_errors.errors,
+            date_of_birth:'You must be 18 years old and above.',
+            tax_identification_number:"Tax Identification Number can't be longer than 25 characters."
+        }
+    });
+        await act(async () => {
+            fireEvent.click(date_of_birth);
+            fireEvent.change(date_of_birth, { target: { value: '2021-04-13'} });
+            fireEvent.blur(date_of_birth)
+
+            fireEvent.change(tax_identification_number, {
+                target: { value: '123456789012345678901234567890'},
+            });
+            fireEvent.blur(tax_identification_number);
+
+        });
+        await waitFor(() => {
+            expect(screen.getByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
+            expect(screen.getByText(/tax Identification Number can't be longer than 25 characters\./i)).toBeInTheDocument();
+
+        });
+
+    });
+
+    it('should show warning', async () => {
+        const newvalidate = {
+            warnings: {
+                tax_identification_number: 'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.'
+            },
+            errors: {  ...mock_errors
+            },
+        };
+        splitValidationResultTypes.mockReturnValue(newvalidate);
+        act(() => {
+            renderwithRouter(
+                <PlatformContext.Provider value={{ is_appstore: false }}>
+                    (<PersonalDetails {...props}/>);
+                </PlatformContext.Provider>
+            );
+        });
+   
+        
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /this tax identification number \(tin\) is invalid\. you may continue using it, but to facilitate future payment processes, valid tax information will be required\./i
+                    )).toBeInTheDocument();
         });
     });
+
+
 });

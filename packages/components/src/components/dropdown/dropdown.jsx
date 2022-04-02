@@ -199,7 +199,6 @@ const Dropdown = ({
     suffix_icon,
     onChange,
     value,
-    data_testid,
 }) => {
     const dropdown_ref = React.useRef();
     const native_select_ref = React.useRef();
@@ -362,9 +361,9 @@ const Dropdown = ({
                 readOnly='readonly'
                 type='hidden'
                 value={value || 0}
-                data-testid={data_testid}
+                
             />
-            <div ref={wrapper_ref} className={containerClassName()}>
+            <div ref={wrapper_ref} className={containerClassName()} >
                 <div
                     className={classNames('dc-dropdown__container', {
                         'dc-dropdown__container--suffix-icon': suffix_icon,
@@ -386,7 +385,7 @@ const Dropdown = ({
                         onClick={handleVisibility}
                         onKeyDown={onKeyPressed}
                         id='dropdown-display'
-                        ref={dropdown_ref}
+                        ref={dropdown_ref}   
                     >
                         {!!suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
                         <DisplayText

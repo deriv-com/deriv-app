@@ -150,7 +150,7 @@ const PersonalDetails = ({
             />
         );
     };
-
+   
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -491,6 +491,7 @@ const PersonalDetails = ({
                                                             label={localize('Tax Identification Number')}
                                                             placeholder={localize('Tax Identification Number')}
                                                             warn={warning_items?.tax_identification_number}
+                                                            data-testid='tax_identification_number'
                                                         />
                                                         <div
                                                             onClick={e => {

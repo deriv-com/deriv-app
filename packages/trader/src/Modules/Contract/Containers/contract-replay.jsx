@@ -237,7 +237,7 @@ const Chart = props => {
             scrollToEpoch={props.scroll_to_epoch}
             stateChangeListener={props.chartStateChange}
             symbol={props.symbol}
-            contractInfo={props.contract_info}
+            allTicks={props.all_ticks}
             topWidgets={ChartTopWidgets}
             isConnectionOpened={props.is_socket_opened}
             isStaticChart={false}
@@ -276,6 +276,7 @@ Chart.propTypes = {
     start_epoch: PropTypes.number,
     symbol: PropTypes.string,
     contract_info: PropTypes.object,
+    all_ticks: PropTypes.array,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,
@@ -325,6 +326,7 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         markers_array: contract_store.markers_array,
         symbol: contract_store.contract_info.underlying,
         contract_info: contract_store.contract_info,
+        all_ticks: contract_store.contract_info.audit_details.all_ticks,
         wsForget: trade.wsForget,
         wsSubscribe: trade.wsSubscribe,
         wsSendRequest: trade.wsSendRequest,

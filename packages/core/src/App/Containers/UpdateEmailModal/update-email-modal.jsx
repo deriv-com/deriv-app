@@ -55,7 +55,13 @@ const UpdateEmailModal = ({
     }, []);
 
     return (
-        <Modal is_open={is_visible} has_close_icon toggleModal={toggleUpdateEmailModal} width='440px' minHeight='400px'>
+        <Modal
+            is_open={is_visible}
+            has_close_icon={false}
+            toggleModal={toggleUpdateEmailModal}
+            width='440px'
+            minHeight='400px'
+        >
             {is_email_updated ? (
                 <div className='change-email-update'>
                     {!update_email_error && (

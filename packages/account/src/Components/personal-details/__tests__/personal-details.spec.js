@@ -80,8 +80,6 @@ const runCommonFormfieldsTests = () => {
 
     // expect(screen.getByText('Tax identification number')).toBeInTheDocument();
 
-
-
     expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
 
     expect(
@@ -221,7 +219,6 @@ describe('<PersonalDetails/>', () => {
         form_error: '',
         bypass_to_personal: false,
     };
-   
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
@@ -349,17 +346,23 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByTestId('tax_residence_pop_over')).toBeInTheDocument();
 
-
-        const tax_residence_pop_over =screen.getByTestId('tax_residence_pop_over');
+        const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
         fireEvent.click(tax_residence_pop_over);
-        expect(screen.getByText(/the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i)).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
+            )
+        ).toBeInTheDocument();
 
-            const tax_identification_number_pop_over =screen.getByTestId('tax_identification_number_pop_over');
-            fireEvent.click(tax_identification_number_pop_over);
-            expect(screen.getByText(/don't know your tax identification number\?/i)).toBeInTheDocument();
-            expect(screen.getByRole('link', {name: 'here' })).toBeInTheDocument();
-            expect(screen.getByText('here').closest('a')).toHaveAttribute('href', 'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/');
-            runCommonFormfieldsTests();
+        const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
+        fireEvent.click(tax_identification_number_pop_over);
+        expect(screen.getByText(/don't know your tax identification number\?/i)).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
+        expect(screen.getByText('here').closest('a')).toHaveAttribute(
+            'href',
+            'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+        );
+        runCommonFormfieldsTests();
     });
 
     it('should display the correct field details when is_appstore is false and is_svg is false ', () => {
@@ -367,7 +370,7 @@ describe('<PersonalDetails/>', () => {
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <PersonalDetails {...props} is_svg={false} />
             </PlatformContext.Provider>
-            );
+        );
         expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
 
@@ -413,7 +416,6 @@ describe('<PersonalDetails/>', () => {
 
             expect(screen.getByTestId('citizenship')).toBeDisabled();
         });
-    
     });
 
     it('should disable if citizen is passed and is_fully_authenticated', async () => {

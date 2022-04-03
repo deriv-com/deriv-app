@@ -462,7 +462,8 @@ const PersonalDetails = ({
                                                                         data-testid='tax_residence_mobile'
                                                                     />
                                                                 </MobileWrapper>
-                                                                <div data-testid='tax_residence_pop_over'
+                                                                <div
+                                                                    data-testid='tax_residence_pop_over'
                                                                     onClick={e => {
                                                                         setIsTaxResidencePopoverOpen(true);
                                                                         setIsTinPopoverOpen(false);
@@ -493,7 +494,8 @@ const PersonalDetails = ({
                                                             warn={warning_items?.tax_identification_number}
                                                             data-testid='tax_identification_number'
                                                         />
-                                                        <div data-testid='tax_identification_number_pop_over'
+                                                        <div
+                                                            data-testid='tax_identification_number_pop_over'
                                                             onClick={e => {
                                                                 setIsTaxResidencePopoverOpen(false);
                                                                 setIsTinPopoverOpen(true);

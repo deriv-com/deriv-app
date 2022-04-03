@@ -361,9 +361,8 @@ const Dropdown = ({
                 readOnly='readonly'
                 type='hidden'
                 value={value || 0}
-                
             />
-            <div ref={wrapper_ref} className={containerClassName()} >
+            <div ref={wrapper_ref} className={containerClassName()}>
                 <div
                     className={classNames('dc-dropdown__container', {
                         'dc-dropdown__container--suffix-icon': suffix_icon,
@@ -385,7 +384,7 @@ const Dropdown = ({
                         onClick={handleVisibility}
                         onKeyDown={onKeyPressed}
                         id='dropdown-display'
-                        ref={dropdown_ref}   
+                        ref={dropdown_ref}
                     >
                         {!!suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
                         <DisplayText

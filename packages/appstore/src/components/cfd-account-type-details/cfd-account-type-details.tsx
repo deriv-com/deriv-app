@@ -67,7 +67,7 @@ const CFDAccountTypeDetails = ({ platform, residence, account_type }: TCFDAccoun
                         </div>
                         <div className='cfd-account-details__specification__value'>
                             <Text size='xxs' weight='bold'>
-                                {cfd_account_detail?.['margin-call'].getValue()}
+                                {cfd_account_detail['margin-call'].getValue()}
                             </Text>
                         </div>
                         <div className='cfd-account-details__specification__label'>

@@ -35,10 +35,9 @@ describe('<OrderDetailsWrapper />', () => {
             page_title: 'mobile test',
         };
 
-        const { container } = render(<OrderDetailsWrapper {...mobile_props} />);
+        render(<OrderDetailsWrapper {...mobile_props} />);
 
         await waitFor(() => {
-            expect(container.getElementsByClassName('dc-icon').length).toBe(1);
             expect(screen.getByTestId('order-details-wrapper-mobile')).toBeInTheDocument();
             expect(screen.getByText('mobile test')).toBeInTheDocument();
         });
@@ -51,10 +50,9 @@ describe('<OrderDetailsWrapper />', () => {
             page_title: 'desktop test',
         };
 
-        const { container } = render(<OrderDetailsWrapper {...desktop_props} />);
+        render(<OrderDetailsWrapper {...desktop_props} />);
 
         await waitFor(() => {
-            expect(container.getElementsByClassName('page-return').length).toBe(1);
             expect(screen.getByTestId('order-details-wrapper-desktop')).toBeInTheDocument();
             expect(screen.getByText('desktop test')).toBeInTheDocument();
         });

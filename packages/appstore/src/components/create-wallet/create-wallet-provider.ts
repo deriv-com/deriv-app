@@ -7,37 +7,28 @@ const crypto_wallets = ['bitcoin', 'ethereum', 'litecoin', 'tether', 'usd_coin']
 const built_in_wallets = ['deriv_p2p', 'payment_agent'];
 
 const e_wallets = [
-    { light: 'IcCashierAirTmLight', dark: 'IcCashierAirTmDark' },
-    { light: 'IcWalletFasapayLight', dark: 'IcWalletFasapayDark' },
-    { light: 'IcWalletJetonLight', dark: 'IcWalletJetonDark' },
-    { light: 'IcAppstoreBoletoLight', dark: 'IcAppstoreBoletoDark' },
-    { light: 'IcWalletNetellerLight', dark: 'IcWalletNetellerDark' },
-    { light: 'IcCashierPayLivreLight', dark: 'IcCashierPayLivreDark' },
-    { light: 'IcAppstorePaysafeCardLight', dark: 'IcAppstorePaysafeCardDark' },
-    { light: 'IcCashierOnlineNairaLight', dark: 'IcCashierOnlineNairaDark' },
-    { light: 'IcCashierPerfectMoneyLight', dark: 'IcCashierPerfectMoneyDark' },
-    { light: 'IcWalletSkrillLight', dark: 'IcWalletSkrillDark' },
-    { light: 'IcWalletSticpayLight', dark: 'IcWalletSticpayDark' },
-    { light: 'IcAppstoreAstropayLight', dark: 'IcAppstoreAstropayDark' },
-    { light: 'IcAppstoreWechatPayLight', dark: 'IcAppstoreWechatPayDark' },
-    { light: 'IcWalletWebmoneyLight', dark: 'IcWalletWebmoneyLight' },
-    { light: 'IcAppstoreBeyonicLight', dark: 'IcAppstoreBeyonicDark' },
-    { light: 'IcAppstoreOneforyouLight', dark: 'IcAppstoreOneforyouDark' },
-    { light: 'IcAppstoreAdvcashLight', dark: 'IcAppstoreAdvcashDark' },
+    'airtm',
+    'Fasapay',
+    'Jeton',
+    'Boleto',
+    'Neteller',
+    'PayLivre',
+    'paysafecard',
+    'Onlinenaira',
+    'PerfectMoney',
+    'Skrill',
+    'Sticpay',
+    'Astropay',
+    'WechatPay',
+    'Webmoney',
+    'Beyonic',
+    '1foryou',
+    'Advcash',
 ];
 
-const bankwire = [
-    { light: 'IcCashierInstantBankTransferLight', dark: 'IcCashierInstantBankTransferDark' },
-    { light: 'IcWalletPaytrustLight', dark: 'IcWalletPaytrustDark' },
-    { light: 'IcCashierNganLoungLight', dark: 'IcCashierNganLoungDark' },
-    { light: 'IcCashierHelpToPayLight', dark: 'IcCashierHelpToPayDark' },
-    { light: 'IcWalletZingpayLight', dark: 'IcWalletZingpayDark' },
-    { light: 'IcAppstoreTrustlyLight', dark: 'IcAppstoreTrustlyDark' },
-    { light: 'IcAppstoreOxxoLight', dark: 'IcAppstoreOxxoDark' },
-    { light: 'IcAppstoreSpeiLight', dark: 'IcAppstoreSpeiDark' },
-];
+const bankwire = ['InstantBankTransfer', 'Paytrust88', 'Nganluong', 'Help2pay', 'Zingpay', 'Trustly', 'Oxxo', 'Spei'];
 
-const credit_debit_card = [{ light: 'IcWalletCreditDebitLight', dark: 'IcWalletCreditDebitDark' }];
+const credit_debit_card = ['CreditCards'];
 
 const wallets_header_info = {
     getTitle: () => localize('Create a wallet'),

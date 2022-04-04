@@ -93,6 +93,12 @@
 /packages/components/**/*                                       @balakrishna-binary @matin-binary 
 /packages/translations/**/*                                     @balakrishna-binary @matin-binary 
 
+# ==============================================================
+#  deriv-app/cfd
+# ==============================================================
+
+/packages/cfd/**/*                                             @balakrishna-binary @matin-binary @yashim-deriv
+
 
 # ==============================================================
 #  deriv-app/p2p

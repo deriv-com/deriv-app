@@ -42,6 +42,15 @@
         width: 100%;
         margin-top: 0.8rem;
         padding: 0;
+
+        &-title {
+            display: flex;
+            align-items: center;
+
+            &__text {
+                margin-right: 0.8rem;
+            }
+        }
     }
 
     &-fiat-icon {

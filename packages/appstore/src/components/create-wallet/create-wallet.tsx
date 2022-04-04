@@ -1,25 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text, ThemedScrollbars } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Icon, Popover, Text, ThemedScrollbars } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import Providers from './create-wallet-provider';
 import WalletCard from 'Components/wallet';
 import WalletIcon from 'Assets/svgs/wallet';
 
 type TProps = {
     is_dark_mode_on: boolean;
-    setShouldShowFiat: any;
     should_show_fiat: boolean;
 };
 
-const CreateWallet = ({ is_dark_mode_on, setShouldShowFiat, should_show_fiat }: TProps) => {
+const CreateWallet = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
     const wallets = should_show_fiat ? Providers.fiat_wallets : Providers.wallets;
-    const header_title = should_show_fiat
-        ? Providers.fiat_wallets_header_info.getTitle()
-        : Providers.wallets_header_info.getTitle();
-    const header_content = should_show_fiat
-        ? Providers.fiat_wallets_header_info.getContent()
-        : Providers.wallets_header_info.getContent();
 
     const [selected_wallet, setSeletedWallet] = React.useState('');
 
@@ -39,32 +32,31 @@ const CreateWallet = ({ is_dark_mode_on, setShouldShowFiat, should_show_fiat }: 
     return (
         <div className='create-wallet'>
             <div className='create-wallet-container'>
-                <div className='create-wallet-title'>
-                    {should_show_fiat && (
-                        <Icon
-                            icon='IcArrowLeft'
-                            className='create-wallet-back'
-                            onClick={() => setShouldShowFiat(false)}
-                        />
-                    )}
-                    <div>
-                        <Text align='left' size='m' as='h2' weight='bold'>
-                            <Localize i18n_default_text={header_title} />
-                        </Text>
-                        <Text align='left' size='s' as='p' line_height='xxl'>
-                            <Localize i18n_default_text={header_content} />
-                        </Text>
-                    </div>
-                </div>
                 <ThemedScrollbars className='create-wallet-scroll'>
                     <div className='create-wallet-details'>
                         {wallets?.map((wallet, index) => {
                             // TODO: Shouuld replaced with get_account_type result once the BE method get ready
                             return (
                                 <div key={`${wallet.getTitle()}${index}`} className='create-wallet-detail'>
-                                    <Text align='left' size='s' weight='bold'>
-                                        {wallet.getTitle()}
-                                    </Text>
+                                    <div className='create-wallet-detail-title'>
+                                        <Text
+                                            align='left'
+                                            size='s'
+                                            weight='bold'
+                                            className='create-wallet-detail-title__text'
+                                        >
+                                            {wallet.getTitle()}
+                                        </Text>
+                                        {wallet?.popover_text() !== '' && (
+                                            <Popover
+                                                alignment='left'
+                                                icon='info'
+                                                message={localize('***')}
+                                                margin={8}
+                                                relative_render
+                                            />
+                                        )}
+                                    </div>
                                     <div
                                         className={classNames('create-wallet-list__items', {
                                             'create-wallet-list__items__center': wallet.content.length < 5,

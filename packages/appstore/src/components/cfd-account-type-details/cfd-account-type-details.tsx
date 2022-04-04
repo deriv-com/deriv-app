@@ -1,73 +1,77 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import cfdAccountDetails from 'Constants/cfd-account-type-details';
+import cfd_account_details from 'Constants/cfd-account-type-details';
 
-type TCFDAccountTypeDetails = {
+type TCFDAccountTypeDetailsProps = {
     platform: 'mt5' | 'dxtrade';
     is_eu: boolean;
     account_type: 'synthetic' | 'financial' | 'financial_stp';
 };
 
-const CFDAccountTypeDetails = ({ platform, is_eu, account_type }: TCFDAccountTypeDetails) => {
-    const [cfd_account_details, setCfdAccountDetails] = React.useState({
-        title: '',
-        description: '',
-        leverage: { key: () => '', value: () => '' },
-        'margin-call': { key: () => '', value: () => '' },
-        'stop-out-level': { key: () => '', value: () => '' },
-        'number-of-assets': { key: () => '', value: () => '' },
-    });
+type TCFDAccountTypeDetails = {
+    title: string;
+    description: string;
+    leverage: { getKey: () => string; getValue: () => string };
+    'margin-call': { getKey: () => string; getValue: () => string };
+    'stop-out-level': { getKey: () => string; getValue: () => string };
+    'number-of-assets': { getKey: () => string; getValue: () => string };
+};
+
+const CFDAccountTypeDetails = ({ platform, is_eu, account_type }: TCFDAccountTypeDetailsProps) => {
+    const [cfd_account_detail, setCfdAccountDetails] = React.useState<TCFDAccountTypeDetails>();
 
     React.useEffect(() => {
         if (account_type === 'financial') {
             setCfdAccountDetails(
-                is_eu ? cfdAccountDetails[`${platform}`].financial_eu : cfdAccountDetails[`${platform}`].financial
+                is_eu ? cfd_account_details[`${platform}`].financial_eu : cfd_account_details[`${platform}`].financial
             );
         } else {
             setCfdAccountDetails(
                 platform === 'mt5'
-                    ? cfdAccountDetails[`${platform}`][`${account_type}`]
-                    : cfdAccountDetails[`${platform}`].synthetic
+                    ? cfd_account_details[`${platform}`][`${account_type}`]
+                    : cfd_account_details[`${platform}`].synthetic
             );
         }
     }, [is_eu, platform, account_type]);
 
     return (
         <>
-            <div className='cfd-account-details'>
-                <div className='cfd-account-details__title'>{cfd_account_details?.title}</div>
-                <div className='cfd-account-details__description'>{cfd_account_details?.description}</div>
-                <div className='cfd-account-details__specification'>
-                    <div className='cfd-account-details__specification__label'>
-                        {cfd_account_details?.leverage.key()}
+            {cfd_account_detail && (
+                <div className='cfd-account-details'>
+                    <div className='cfd-account-details__title'>{cfd_account_detail?.title}</div>
+                    <div className='cfd-account-details__description'>{cfd_account_detail?.description}</div>
+                    <div className='cfd-account-details__specification'>
+                        <div className='cfd-account-details__specification__label'>
+                            {cfd_account_detail?.leverage.getKey()}
+                        </div>
+                        <div className='cfd-account-details__specification__value'>
+                            {cfd_account_detail?.leverage.getValue()}
+                        </div>
+                        <div className='cfd-account-details__specification__label'>
+                            {cfd_account_detail?.['margin-call'].getKey()}
+                        </div>
+                        <div className='cfd-account-details__specification__value'>
+                            {cfd_account_detail?.['margin-call'].getValue()}
+                        </div>
+                        <div className='cfd-account-details__specification__label'>
+                            {cfd_account_detail?.['stop-out-level'].getKey()}
+                        </div>
+                        <div className='cfd-account-details__specification__value'>
+                            {cfd_account_detail?.['stop-out-level'].getValue()}
+                        </div>
+                        <div className='cfd-account-details__specification__label'>
+                            {cfd_account_detail?.['number-of-assets'].getKey()}
+                        </div>
+                        <div className='cfd-account-details__specification__value'>
+                            {cfd_account_detail?.['number-of-assets'].getValue()}
+                        </div>
                     </div>
-                    <div className='cfd-account-details__specification__value'>
-                        {cfd_account_details?.leverage.value()}
-                    </div>
-                    <div className='cfd-account-details__specification__label'>
-                        {cfd_account_details?.['margin-call'].key()}
-                    </div>
-                    <div className='cfd-account-details__specification__value'>
-                        {cfd_account_details?.['margin-call'].value()}
-                    </div>
-                    <div className='cfd-account-details__specification__label'>
-                        {cfd_account_details?.['stop-out-level'].key()}
-                    </div>
-                    <div className='cfd-account-details__specification__value'>
-                        {cfd_account_details?.['stop-out-level'].value()}
-                    </div>
-                    <div className='cfd-account-details__specification__label'>
-                        {cfd_account_details?.['number-of-assets'].key()}
-                    </div>
-                    <div className='cfd-account-details__specification__value'>
-                        {cfd_account_details?.['number-of-assets'].value()}
-                    </div>
+                    <Text className='cfd-account-details__no-commision-block'>
+                        <Localize i18n_default_text='No commision' />
+                    </Text>
                 </div>
-                <Text className='cfd-account-details__no-commision-block'>
-                    <Localize i18n_default_text='No commision' />
-                </Text>
-            </div>
+            )}
         </>
     );
 };

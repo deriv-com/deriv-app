@@ -112,6 +112,7 @@ export const PersonalDetailsForm = ({
     account_settings,
     getChangeableFields,
     history,
+    has_active_real_account,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -134,6 +135,8 @@ export const PersonalDetailsForm = ({
     const { is_appstore } = React.useContext(PlatformContext);
 
     const isMounted = useIsMounted();
+
+    const should_show_email = is_virtual && has_active_real_account;
 
     React.useEffect(() => {
         if (isMounted()) {
@@ -802,20 +805,22 @@ export const PersonalDetailsForm = ({
                                             onChange={handleChange}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-form__fieldset'>
-                                        <Input
-                                            data-lpignore='true'
-                                            type='text'
-                                            name='email'
-                                            id={'email'}
-                                            label={localize('Email address*')}
-                                            value={values.email}
-                                            required
-                                            disabled={!isChangeableField('email')}
-                                            error={errors.email}
-                                            onChange={handleChange}
-                                        />
-                                    </fieldset>
+                                    {should_show_email && (
+                                        <fieldset className='account-form__fieldset'>
+                                            <Input
+                                                data-lpignore='true'
+                                                type='text'
+                                                name='email'
+                                                id={'email'}
+                                                label={localize('Email address*')}
+                                                value={values.email}
+                                                required
+                                                disabled={!isChangeableField('email')}
+                                                error={errors.email}
+                                                onChange={handleChange}
+                                            />
+                                        </fieldset>
+                                    )}
                                 </FormBodySection>
                                 {!is_virtual && (
                                     <React.Fragment>
@@ -1222,6 +1227,7 @@ PersonalDetailsForm.propTypes = {
     getChangeableFields: PropTypes.func,
     current_landing_company: PropTypes.object,
     history: PropTypes.object,
+    has_active_real_account: PropTypes.bool,
 };
 
 export default connect(({ client, notifications }) => ({
@@ -1238,5 +1244,6 @@ export default connect(({ client, notifications }) => ({
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
+    has_active_real_account: client.has_active_real_account,
     refreshNotifications: notifications.refreshNotifications,
 }))(withRouter(PersonalDetailsForm));

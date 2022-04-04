@@ -74,7 +74,7 @@ const UpdateEmailModal = ({
                         <Localize
                             i18n_default_text={
                                 !update_email_error
-                                    ? 'Your email has changed. Now, log in with your new email address.'
+                                    ? 'Your email address has changed. Now, log in with your new email address.'
                                     : update_email_error
                             }
                         />

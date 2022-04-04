@@ -1,24 +1,24 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import SelfExclusionFooter from '../self-exclusion-footer';
-import SelfExclusionContext from '../self-exclusion-context';
 import { Formik } from 'formik';
 import * as formik from 'formik';
+import { fireEvent, render, screen } from '@testing-library/react';
+import SelfExclusionContext from '../self-exclusion-context';
+import SelfExclusionFooter from '../self-exclusion-footer';
 
-const portalRoot = document.createElement('div');
-document.body.appendChild(portalRoot);
+const portal_root = document.createElement('div');
+document.body.appendChild(portal_root);
 
-const useFormikContextMock = jest.spyOn(formik, 'useFormikContext');
+const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext');
 
 describe('<SelfExclusionFooter />', () => {
-    let mockContext = {};
+    let mock_context = {};
     beforeEach(() => {
-        mockContext = {
-            footer_ref: portalRoot,
+        mock_context = {
             goToConfirm: jest.fn(),
             toggleArticle: jest.fn(),
+            footer_ref: portal_root,
         };
-        useFormikContextMock.mockReturnValue({
+        mockUseFormikContext.mockReturnValue({
             dirty: true,
             isSubmitting: false,
             isValid: true,
@@ -26,10 +26,10 @@ describe('<SelfExclusionFooter />', () => {
         });
     });
     it('should not render SelfExclusionFooter component', () => {
-        mockContext.footer_ref = null;
+        mock_context.footer_ref = null;
 
         render(
-            <SelfExclusionContext.Provider value={mockContext}>
+            <SelfExclusionContext.Provider value={mock_context}>
                 <SelfExclusionFooter />
             </SelfExclusionContext.Provider>
         );
@@ -38,9 +38,10 @@ describe('<SelfExclusionFooter />', () => {
     });
 
     it('should render SelfExclusionFooter component', () => {
+
         render(
             <Formik>
-                <SelfExclusionContext.Provider value={mockContext}>
+                <SelfExclusionContext.Provider value={mock_context}>
                     <SelfExclusionFooter />
                 </SelfExclusionContext.Provider>
             </Formik>
@@ -50,22 +51,21 @@ describe('<SelfExclusionFooter />', () => {
     });
 
     it('Should trigger click on the button', () => {
-        const onClick = mockContext.goToConfirm;
+        const mockGoToConfirm = mock_context.goToConfirm;
 
         render(
             <Formik>
-                <SelfExclusionContext.Provider value={mockContext}>
+                <SelfExclusionContext.Provider value={mock_context}>
                     <SelfExclusionFooter />
                 </SelfExclusionContext.Provider>
             </Formik>
         );
 
         const btn = screen.getByRole('button');
-
         expect(btn).toBeInTheDocument();
         expect(btn).toHaveClass('da-self-exclusion__button');
         expect(btn).toHaveTextContent('Next');
         fireEvent.click(btn);
-        expect(onClick).toHaveBeenCalledTimes(1);
+        expect(mockGoToConfirm).toHaveBeenCalledTimes(1);
     });
 });

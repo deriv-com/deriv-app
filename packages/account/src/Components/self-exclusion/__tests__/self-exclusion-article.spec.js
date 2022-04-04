@@ -1,14 +1,14 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import SelfExclusionArticle from '../self-exclusion-article';
-import SelfExclusionContext from '../self-exclusion-context';
-import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content.jsx';
 import { isMobile, isDesktop, PlatformContext } from '@deriv/shared';
+import { fireEvent, render, screen } from '@testing-library/react';
+import SelfExclusionArticle from '../self-exclusion-article';
+import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content.jsx';
+import SelfExclusionContext from '../self-exclusion-context';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(),
     isDesktop: jest.fn(),
+    isMobile: jest.fn(),
 }));
 
 jest.mock('Components/self-exclusion/self-exclusion-article-content.jsx', () => ({
@@ -17,99 +17,99 @@ jest.mock('Components/self-exclusion/self-exclusion-article-content.jsx', () => 
 }));
 
 describe('<SelfExclusionArticle />', () => {
-    const nonEU_Item =
-        /These self-exclusion limits help you control the amount of money and time you spend trading on DTrader, DBot, and SmartTrader. The limits you set here will help you exercise/i;
-    const EU_Item =
-        /These trading limits and self-exclusion help you control the amount of money and time you spend on Deriv.com and exercise/i;
 
-    let mockSelfContext = {};
-    let mockPaltformContext = {};
+    let mock_platform_context = {};
+    let mock_self_exclusion_context = {};
+
+    const eu_item = /These trading limits and self-exclusion help you control the amount of money and time you spend on Deriv.com and exercise/i;
+    const non_eu_item = /These self-exclusion limits help you control the amount of money and time you spend trading on DTrader, DBot, and SmartTrader. The limits you set here will help you exercise/i;
 
     beforeEach(() => {
-        mockSelfContext = {
+        mock_platform_context = {
+            is_appstore: false,
+            is_deriv_crypto: false,
+        };
+        mock_self_exclusion_context = {
             is_app_settings: false,
-            toggleArticle: jest.fn(),
-            overlay_ref: {},
             is_eu: false,
             is_uk: false,
-        };
-        mockPaltformContext = {
-            is_deriv_crypto: false,
-            is_appstore: false,
+            overlay_ref: {},
+            toggleArticle: jest.fn(),
         };
     });
 
     it('should render SelfExclusionArticle desktop component with selfExclusionArticleItems', () => {
-        mockPaltformContext.is_appstore = true;
         isDesktop.mockReturnValueOnce(true);
         isMobile.mockReturnValueOnce(false);
-        selfExclusionArticleItems.mockImplementation(() => ['selfExclusionArticleItems']);
+        mock_platform_context.is_appstore = true;
+
+        selfExclusionArticleItems.mockImplementation(() => ['Self Exclusion Article Items']);
 
         render(
-            <PlatformContext.Provider value={mockPaltformContext}>
-                <SelfExclusionContext.Provider value={mockSelfContext}>
+            <PlatformContext.Provider value={mock_platform_context}>
+                <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
                     <SelfExclusionArticle />
                 </SelfExclusionContext.Provider>
             </PlatformContext.Provider>
         );
 
+        expect(screen.getByText('Self Exclusion Article Items')).toBeInTheDocument();
         expect(screen.getByText('Trading limits and self-exclusion')).toBeInTheDocument();
-        expect(screen.getByText('selfExclusionArticleItems')).toBeInTheDocument();
-        expect(screen.queryByText(EU_Item)).not.toBeInTheDocument();
-        expect(screen.queryByText(nonEU_Item)).not.toBeInTheDocument();
+        expect(screen.queryByText(eu_item)).not.toBeInTheDocument();
+        expect(screen.queryByText(non_eu_item)).not.toBeInTheDocument();
     });
 
     it('should render SelfExclusionArticle desktop component without is_appstore for EU items', () => {
-        mockSelfContext.is_eu = true;
+        mock_self_exclusion_context.is_eu = true;
 
         render(
-            <PlatformContext.Provider value={mockPaltformContext}>
-                <SelfExclusionContext.Provider value={mockSelfContext}>
+            <PlatformContext.Provider value={mock_platform_context}>
+                <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
                     <SelfExclusionArticle />
                 </SelfExclusionContext.Provider>
             </PlatformContext.Provider>
         );
 
+        expect(screen.getByText(eu_item)).toBeInTheDocument();
         expect(screen.getByText('Trading limits and self-exclusion')).toBeInTheDocument();
-        expect(screen.getByText(EU_Item)).toBeInTheDocument();
-        expect(screen.queryByText(nonEU_Item)).not.toBeInTheDocument();
+        expect(screen.queryByText(non_eu_item)).not.toBeInTheDocument();
     });
 
     it('should render SelfExclusionArticle desktop component for non EU items', () => {
-        mockPaltformContext.is_appstore = true;
+        mock_platform_context.is_appstore = true;
         isDesktop.mockReturnValueOnce(false);
         isMobile.mockReturnValueOnce(false);
 
         render(
-            <PlatformContext.Provider value={mockPaltformContext}>
-                <SelfExclusionContext.Provider value={mockSelfContext}>
+            <PlatformContext.Provider value={mock_platform_context}>
+                <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
                     <SelfExclusionArticle />
                 </SelfExclusionContext.Provider>
             </PlatformContext.Provider>
         );
 
+        expect(screen.getByText(non_eu_item)).toBeInTheDocument();
         expect(screen.getByText('Trading limits and self-exclusion')).toBeInTheDocument();
-        expect(screen.queryByText(EU_Item)).not.toBeInTheDocument();
-        expect(screen.getByText(nonEU_Item)).toBeInTheDocument();
+        expect(screen.queryByText(eu_item)).not.toBeInTheDocument();
     });
 
     it('should render SelfExclusionArticle mobile component and trigger click', () => {
         isDesktop.mockReturnValueOnce(false);
         isMobile.mockReturnValueOnce(true);
-        const onClickLearnMore = mockSelfContext.toggleArticle;
+        const mockToggleArticle = mock_self_exclusion_context.toggleArticle;
 
         render(
-            <PlatformContext.Provider value={mockPaltformContext}>
-                <SelfExclusionContext.Provider value={mockSelfContext}>
+            <PlatformContext.Provider value={mock_platform_context}>
+                <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
                     <SelfExclusionArticle />
                 </SelfExclusionContext.Provider>
             </PlatformContext.Provider>
         );
 
+        expect(screen.getByText(non_eu_item)).toBeInTheDocument();
         expect(screen.getByText('Trading limits and self-exclusion')).toBeInTheDocument();
-        expect(screen.queryByText(EU_Item)).not.toBeInTheDocument();
-        expect(screen.getByText(nonEU_Item)).toBeInTheDocument();
+        expect(screen.queryByText(eu_item)).not.toBeInTheDocument();
         fireEvent.click(screen.getByText('Learn more'));
-        expect(onClickLearnMore).toHaveBeenCalledTimes(1);
+        expect(mockToggleArticle).toHaveBeenCalledTimes(1);
     });
 });

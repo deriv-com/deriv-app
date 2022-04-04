@@ -1,27 +1,29 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import SelfExclusionForm from '../self-exclusion-form';
 import SelfExclusionContext from '../self-exclusion-context';
+import SelfExclusionForm from '../self-exclusion-form';
 
 jest.mock('../self-exclusion-confirm-page', () => () => <div>SelfExclusionConfirmPage</div>);
 jest.mock('../self-exclusion-inputs', () => () => <div>SelfExclusionInputs</div>);
 
 describe('<SelfExclusionForm />', () => {
-    let mockContext = {};
+    let mock_context = {};
 
     beforeEach(() => {
-        mockContext = {
+        mock_context = {
             state: {
-                self_exclusions: {},
                 is_confirm_page: false,
+                self_exclusions: {},
             },
-            validateFields: jest.fn(),
             handleSubmit: jest.fn(),
+            validateFields: jest.fn(),
         };
     });
+
     it('should render SelfExclusionForm component with SelfExclusionInputs', () => {
+        
         render(
-            <SelfExclusionContext.Provider value={mockContext}>
+            <SelfExclusionContext.Provider value={mock_context}>
                 <SelfExclusionForm />
             </SelfExclusionContext.Provider>
         );
@@ -31,10 +33,10 @@ describe('<SelfExclusionForm />', () => {
     });
 
     it('should render SelfExclusionForm component with SelfExclusionConfirmPage', () => {
-        mockContext.state.is_confirm_page = true;
+        mock_context.state.is_confirm_page = true;
 
         render(
-            <SelfExclusionContext.Provider value={mockContext}>
+            <SelfExclusionContext.Provider value={mock_context}>
                 <SelfExclusionForm />
             </SelfExclusionContext.Provider>
         );

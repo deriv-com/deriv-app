@@ -39,32 +39,48 @@ const CFDAccountTypeDetails = ({ platform, is_eu, account_type }: TCFDAccountTyp
         <>
             {cfd_account_detail && (
                 <div className='cfd-account-details'>
-                    <div className='cfd-account-details__title'>{cfd_account_detail?.title}</div>
-                    <div className='cfd-account-details__description'>{cfd_account_detail?.description}</div>
+                    <div className='cfd-account-details__title'>
+                        <Text weight='bold' size='xs'>
+                            {cfd_account_detail?.title}
+                        </Text>
+                    </div>
+                    <div className='cfd-account-details__description'>
+                        <Text size='xs' color='grey-5'>
+                            {cfd_account_detail?.description}
+                        </Text>
+                    </div>
                     <div className='cfd-account-details__specification'>
                         <div className='cfd-account-details__specification__label'>
-                            {cfd_account_detail?.leverage.getKey()}
+                            <Text size='xxs'>{cfd_account_detail?.leverage.getKey()}</Text>
                         </div>
                         <div className='cfd-account-details__specification__value'>
-                            {cfd_account_detail?.leverage.getValue()}
+                            <Text size='xxs' weight='bold'>
+                                {cfd_account_detail?.leverage.getValue()}
+                            </Text>
                         </div>
                         <div className='cfd-account-details__specification__label'>
-                            {cfd_account_detail?.['margin-call'].getKey()}
+                            <Text size='xxs'>{cfd_account_detail?.['margin-call'].getKey()}</Text>
                         </div>
                         <div className='cfd-account-details__specification__value'>
-                            {cfd_account_detail?.['margin-call'].getValue()}
+                            <Text size='xxs' weight='bold'>
+                                {cfd_account_detail?.['margin-call'].getValue()}
+                            </Text>
                         </div>
                         <div className='cfd-account-details__specification__label'>
-                            {cfd_account_detail?.['stop-out-level'].getKey()}
+                            <Text size='xxs'>{cfd_account_detail?.['stop-out-level'].getKey()}</Text>
                         </div>
                         <div className='cfd-account-details__specification__value'>
-                            {cfd_account_detail?.['stop-out-level'].getValue()}
+                            <Text size='xxs' weight='bold'>
+                                {cfd_account_detail?.['stop-out-level'].getValue()}
+                            </Text>
                         </div>
                         <div className='cfd-account-details__specification__label'>
-                            {cfd_account_detail?.['number-of-assets'].getKey()}
+                            <Text size='xxs'>{cfd_account_detail?.['number-of-assets'].getKey()}</Text>
                         </div>
                         <div className='cfd-account-details__specification__value'>
-                            {cfd_account_detail?.['number-of-assets'].getValue()}
+                            <Text size='xxs' weight='bold'>
+                                {cfd_account_detail?.['number-of-assets'].getValue()}
+                            </Text>
                         </div>
                     </div>
                     <Text className='cfd-account-details__no-commision-block'>

@@ -19,12 +19,15 @@ export default {
                 defaultValue: { summary: 'mt5' },
             },
         },
-        is_eu: {
-            description: 'To Identify if the residence is eu',
-            defaultValue: false,
+        residence: {
+            description: 'To Identify if the residence',
+            control: {
+                type: 'radio',
+                options: ['eu', 'au', 'others'],
+            },
             table: {
-                type: { summary: 'boolean | undefined' },
-                defaultValue: { summary: false },
+                type: { summary: '"eu" | "au" | "others"' },
+                defaultValue: { summary: 'eu' },
             },
         },
         account_type: {
@@ -46,6 +49,6 @@ const Template: Story<CFDAccountTypeDetailsProps> = args => <CFDAccountTypeDetai
 export const DefaultCFDAccountTypeDetails = Template.bind({});
 DefaultCFDAccountTypeDetails.args = {
     account_type: 'synthetic',
-    is_eu: false,
+    residence: 'eu',
     platform: 'mt5',
 };

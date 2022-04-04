@@ -5,7 +5,7 @@ import cfd_account_details from 'Constants/cfd-account-type-details';
 
 type TCFDAccountTypeDetailsProps = {
     platform: 'mt5' | 'dxtrade';
-    is_eu: boolean;
+    residence: string;
     account_type: 'synthetic' | 'financial' | 'financial_stp';
 };
 
@@ -18,13 +18,17 @@ type TCFDAccountTypeDetails = {
     'number-of-assets': { getKey: () => string; getValue: () => string };
 };
 
-const CFDAccountTypeDetails = ({ platform, is_eu, account_type }: TCFDAccountTypeDetailsProps) => {
+const CFDAccountTypeDetails = ({ platform, residence, account_type }: TCFDAccountTypeDetailsProps) => {
     const [cfd_account_detail, setCfdAccountDetails] = React.useState<TCFDAccountTypeDetails>();
 
     React.useEffect(() => {
+        const is_eu = residence === 'eu';
+        const is_au = residence === 'au';
         if (account_type === 'financial') {
             setCfdAccountDetails(
-                is_eu ? cfd_account_details[`${platform}`].financial_eu : cfd_account_details[`${platform}`].financial
+                (is_eu && cfd_account_details[`${platform}`].financial_eu) ||
+                    (is_au && cfd_account_details[`${platform}`].financial_au) ||
+                    cfd_account_details[`${platform}`].financial
             );
         } else {
             setCfdAccountDetails(
@@ -33,7 +37,7 @@ const CFDAccountTypeDetails = ({ platform, is_eu, account_type }: TCFDAccountTyp
                     : cfd_account_details[`${platform}`].synthetic
             );
         }
-    }, [is_eu, platform, account_type]);
+    }, [residence, platform, account_type]);
 
     return (
         <>
@@ -41,25 +45,25 @@ const CFDAccountTypeDetails = ({ platform, is_eu, account_type }: TCFDAccountTyp
                 <div className='cfd-account-details'>
                     <div className='cfd-account-details__title'>
                         <Text weight='bold' size='xs'>
-                            {cfd_account_detail?.title}
+                            {cfd_account_detail.title}
                         </Text>
                     </div>
                     <div className='cfd-account-details__description'>
                         <Text size='xs' color='grey-5'>
-                            {cfd_account_detail?.description}
+                            {cfd_account_detail.description}
                         </Text>
                     </div>
                     <div className='cfd-account-details__specification'>
                         <div className='cfd-account-details__specification__label'>
-                            <Text size='xxs'>{cfd_account_detail?.leverage.getKey()}</Text>
+                            <Text size='xxs'>{cfd_account_detail.leverage.getKey()}</Text>
                         </div>
                         <div className='cfd-account-details__specification__value'>
                             <Text size='xxs' weight='bold'>
-                                {cfd_account_detail?.leverage.getValue()}
+                                {cfd_account_detail.leverage.getValue()}
                             </Text>
                         </div>
                         <div className='cfd-account-details__specification__label'>
-                            <Text size='xxs'>{cfd_account_detail?.['margin-call'].getKey()}</Text>
+                            <Text size='xxs'>{cfd_account_detail['margin-call'].getKey()}</Text>
                         </div>
                         <div className='cfd-account-details__specification__value'>
                             <Text size='xxs' weight='bold'>
@@ -67,19 +71,19 @@ const CFDAccountTypeDetails = ({ platform, is_eu, account_type }: TCFDAccountTyp
                             </Text>
                         </div>
                         <div className='cfd-account-details__specification__label'>
-                            <Text size='xxs'>{cfd_account_detail?.['stop-out-level'].getKey()}</Text>
+                            <Text size='xxs'>{cfd_account_detail['stop-out-level'].getKey()}</Text>
                         </div>
                         <div className='cfd-account-details__specification__value'>
                             <Text size='xxs' weight='bold'>
-                                {cfd_account_detail?.['stop-out-level'].getValue()}
+                                {cfd_account_detail['stop-out-level'].getValue()}
                             </Text>
                         </div>
                         <div className='cfd-account-details__specification__label'>
-                            <Text size='xxs'>{cfd_account_detail?.['number-of-assets'].getKey()}</Text>
+                            <Text size='xxs'>{cfd_account_detail['number-of-assets'].getKey()}</Text>
                         </div>
                         <div className='cfd-account-details__specification__value'>
                             <Text size='xxs' weight='bold'>
-                                {cfd_account_detail?.['number-of-assets'].getValue()}
+                                {cfd_account_detail['number-of-assets'].getValue()}
                             </Text>
                         </div>
                     </div>

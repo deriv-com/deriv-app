@@ -62,7 +62,7 @@ export const dxtrade = {
     },
     financial: {
         title: localize('Deriv X Financial'),
-        description: localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.'),
+        description: localize('Trade forex, commodities and cryptocurrencies at high leverage.'),
         leverage: { getKey: () => localize('Leverage'), getValue: () => localize('Up to 1:1000') },
         'margin-call': { getKey: () => localize('Margin call'), getValue: () => localize('100%') },
         'stop-out-level': { getKey: () => localize('Stop out level'), getValue: () => localize('50%') },

@@ -5,7 +5,7 @@ import { Icon, StaticUrl } from '@deriv/components';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const Unverified = ({ is_description_enabled }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <IconMessageContent
@@ -19,13 +19,13 @@ export const Unverified = ({ is_description_enabled }) => {
                 ) : null
             }
             icon={
-                is_dashboard ? (
+                is_appstore ? (
                     <Icon icon='IcPoiErrorDashboard' width={273} height={128} />
                 ) : (
                     <Icon icon='IcPoiError' size={128} />
                 )
             }
-            className={is_dashboard && 'account-management-dashboard'}
+            className={is_appstore && 'account-management-dashboard'}
         />
     );
 };

@@ -31,7 +31,7 @@ const Endpoint = () => {
             initialValues={{
                 app_id: getAppId(),
                 server: getSocketURL(),
-                is_dashboard_enabled: platform_store.is_dashboard,
+                is_appstore_enabled: platform_store.is_appstore,
                 is_debug_service_worker_enabled: !!getDebugServiceWorker(),
             }}
             validate={values => {
@@ -53,9 +53,9 @@ const Endpoint = () => {
             onSubmit={values => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
-                localStorage.setItem(platform_store.DERIV_DASHBOARD_KEY, values.is_dashboard_enabled);
+                localStorage.setItem(platform_store.DERIV_APPSTORE_KEY, values.is_appstore_enabled);
                 localStorage.setItem('debug_service_worker', values.is_debug_service_worker_enabled ? 1 : 0);
-                platform_store.setDerivDashboard(values.is_dashboard_enabled);
+                platform_store.setIsAppStore(values.is_appstore_enabled);
                 location.reload();
             }}
         >
@@ -89,16 +89,16 @@ const Endpoint = () => {
                             </React.Fragment>
                         }
                     />
-                    <Field name='is_dashboard_enabled'>
+                    <Field name='is_appstore_enabled'>
                         {({ field }) => (
                             <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
                                 <Checkbox
                                     {...field}
-                                    label='Enable Dashboard'
-                                    value={values.is_dashboard_enabled}
+                                    label='Enable Appstore'
+                                    value={values.is_appstore_enabled}
                                     onChange={e => {
                                         handleChange(e);
-                                        setFieldTouched('is_dashboard_enabled', true);
+                                        setFieldTouched('is_appstore_enabled', true);
                                     }}
                                 />
                             </div>
@@ -125,7 +125,7 @@ const Endpoint = () => {
                             !!(
                                 (!touched.server &&
                                     !touched.app_id &&
-                                    !touched.is_dashboard_enabled &&
+                                    !touched.is_appstore_enabled &&
                                     !touched.is_debug_service_worker_enabled) ||
                                 !values.server ||
                                 !values.app_id ||

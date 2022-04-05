@@ -22,19 +22,19 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         margin-bottom: 0.8rem;
-
-        &__label {
-            line-height: 1.8rem;
-            color: #333333;
-        }
-
-        &__value {
-            line-height: 1.8rem;
-            color: #333333;
-        }
     }
 
-    &__no-commision-block {
+    &__specification-value {
+        line-height: 1.8rem;
+        color: #333333;
+    }
+
+    &__specification-label {
+        line-height: 1.8rem;
+        color: #333333;
+    }
+
+    &__no-commision-text {
         font-size: 1rem;
         line-height: 1.4rem;
         color: #999999;

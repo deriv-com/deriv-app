@@ -54,40 +54,40 @@ const CFDAccountTypeDetails = ({ platform, residence, account_type }: TCFDAccoun
                         </Text>
                     </div>
                     <div className='cfd-account-details__specification'>
-                        <div className='cfd-account-details__specification__label'>
+                        <div className='cfd-account-details__specification-label'>
                             <Text size='xxs'>{cfd_account_detail.leverage.getKey()}</Text>
                         </div>
-                        <div className='cfd-account-details__specification__value'>
+                        <div className='cfd-account-details__specification-value'>
                             <Text size='xxs' weight='bold'>
                                 {cfd_account_detail.leverage.getValue()}
                             </Text>
                         </div>
-                        <div className='cfd-account-details__specification__label'>
+                        <div className='cfd-account-details__specification-label'>
                             <Text size='xxs'>{cfd_account_detail['margin-call'].getKey()}</Text>
                         </div>
-                        <div className='cfd-account-details__specification__value'>
+                        <div className='cfd-account-details__specification-value'>
                             <Text size='xxs' weight='bold'>
                                 {cfd_account_detail['margin-call'].getValue()}
                             </Text>
                         </div>
-                        <div className='cfd-account-details__specification__label'>
+                        <div className='cfd-account-details__specification-label'>
                             <Text size='xxs'>{cfd_account_detail['stop-out-level'].getKey()}</Text>
                         </div>
-                        <div className='cfd-account-details__specification__value'>
+                        <div className='cfd-account-details__specification-value'>
                             <Text size='xxs' weight='bold'>
                                 {cfd_account_detail['stop-out-level'].getValue()}
                             </Text>
                         </div>
-                        <div className='cfd-account-details__specification__label'>
+                        <div className='cfd-account-details__specification-label'>
                             <Text size='xxs'>{cfd_account_detail['number-of-assets'].getKey()}</Text>
                         </div>
-                        <div className='cfd-account-details__specification__value'>
+                        <div className='cfd-account-details__specification-value'>
                             <Text size='xxs' weight='bold'>
                                 {cfd_account_detail['number-of-assets'].getValue()}
                             </Text>
                         </div>
                     </div>
-                    <Text className='cfd-account-details__no-commision-block'>
+                    <Text className='cfd-account-details__no-commision-text'>
                         <Localize i18n_default_text='No commision' />
                     </Text>
                 </div>

@@ -1,6 +1,6 @@
 .ad-status {
     &--active {
-        background: rgba(75, 180, 179, 0.16);
+        background-color: var(--status-active);
         border-radius: 1.6rem;
         padding: 0.2rem 1.6rem;
         text-align: center;
@@ -8,7 +8,7 @@
     }
 
     &--inactive {
-        background: rgba(236, 63, 63, 0.16);
+        background-color: var(--status-in-active);
         border-radius: 1.6rem;
         padding: 0.1rem 1.2rem;
         text-align: center;

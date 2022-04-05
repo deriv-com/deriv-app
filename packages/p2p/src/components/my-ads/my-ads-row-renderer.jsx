@@ -45,7 +45,6 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id);
-    const onClickSwitchAd = () => !general_store.is_barred && my_ads_store.setIsSwitchModalOpen(true, id);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 
@@ -69,10 +68,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 <></>
                             )}
                             {!is_advert_active ? (
-                                <div
-                                    className='p2p-my-ads__table-popovers__edit'
-                                    onClick={enable_action_point ? onClickSwitchAd : onClickEdit}
-                                >
+                                <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
                                     <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
                                 </div>
                             ) : (
@@ -341,7 +337,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 <></>
                             )}
                             {!is_advert_active ? (
-                                <div onClick={enable_action_point ? onClickSwitchAd : onClickEdit}>
+                                <div onClick={onClickEdit}>
                                     <Popover
                                         alignment='bottom'
                                         className='p2p-my-ads__table-popovers__edit'

@@ -244,7 +244,7 @@ const Chart = props => {
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
-            shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) === 'seconds'}
+            shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker

@@ -1,19 +1,4 @@
 .create-wallet {
-    position: absolute;
-    width: 47.2rem;
-    height: 56.8rem;
-    top: 0px;
-    background: var(--general-main-1);
-
-    @include desktop {
-        border-right: 2px solid var(--general-section-1);
-        border-bottom: 2px solid var(--general-section-1);
-    }
-
-    &-container {
-        margin: 4.8rem 2.4rem;
-    }
-
     &-title {
         display: flex;
         flex-direction: row;
@@ -29,10 +14,6 @@
         &::-webkit-scrollbar {
             display: none;
         }
-    }
-
-    &-details {
-        margin-top: 1.6rem;
     }
 
     &-detail {

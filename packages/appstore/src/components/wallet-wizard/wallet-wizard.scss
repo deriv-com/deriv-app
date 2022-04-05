@@ -1,2 +1,9 @@
 .wallet-wizard {
+    &-create-wallet {
+        &-right-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
 }

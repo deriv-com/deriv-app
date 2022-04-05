@@ -1,6 +1,11 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { DesktopWizard } from '@deriv/ui';
 import { localize } from '@deriv/translations';
+import CreateWallet from 'Components/create-wallet';
+import SkeletonCard from 'Components/skeleton-card';
+import WalletCard from 'Components/wallet';
+import { useStores } from 'Stores';
 import './wallet-wizard.scss';
 
 type StepData = Parameters<typeof DesktopWizard>[0]['steps'];
@@ -12,12 +17,31 @@ type WalletWizardProps = {
 const TempMainContent = () => <></>;
 
 const WalletWizard = ({ close }: WalletWizardProps) => {
+    const { create_wallet } = useStores();
+    const { selected_wallet, setSelectedWallet } = create_wallet;
+    const [should_show_fiat, setShouldShowFiat] = React.useState(false);
+
     const steps: StepData = [
         {
             step_title: localize('Wallet'),
-            main_content_header: localize('Create a wallet'),
-            main_content_subheader: localize('Create a wallet that can be link to your choosen app.'),
-            main_content: TempMainContent,
+            main_content_header: '',
+            main_content: () => (
+                <CreateWallet
+                    dark={false}
+                    should_show_fiat={should_show_fiat}
+                    setShouldShowFiat={setShouldShowFiat}
+                    onSubmit={setSelectedWallet}
+                    values={selected_wallet}
+                />
+            ),
+            right_panel_content: {
+                upper_block: () => (
+                    <div className='wallet-wizard-create-wallet-right-panel'>
+                        {selected_wallet && <WalletCard size='large' wallet_name={selected_wallet} />}
+                        {!selected_wallet && <SkeletonCard label='Choose a wallet' should_highlight />}
+                    </div>
+                ),
+            },
         },
         {
             step_title: localize('Currency'),
@@ -62,4 +86,4 @@ const WalletWizard = ({ close }: WalletWizardProps) => {
     );
 };
 
-export default WalletWizard;
+export default observer(WalletWizard);

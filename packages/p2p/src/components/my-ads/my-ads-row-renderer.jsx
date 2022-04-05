@@ -61,15 +61,22 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     is_left_swipe
                     right_hidden_component={
                         <React.Fragment>
-                            {!is_advert_active && !enable_action_point && (
+                            {is_advert_active ? (
                                 <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
                                     <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
                                 </div>
+                            ) : (
+                                <></>
                             )}
-                            {!!is_advert_active && enable_action_point && (
-                                <div className='p2p-my-ads__table-popovers__edit' onClick={onClickSwitchAd}>
+                            {!is_advert_active ? (
+                                <div
+                                    className='p2p-my-ads__table-popovers__edit'
+                                    onClick={enable_action_point ? onClickSwitchAd : onClickEdit}
+                                >
                                     <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
                                 </div>
+                            ) : (
+                                <></>
                             )}
                             {is_advert_active ? (
                                 <div className='p2p-my-ads__table-popovers__activate'>
@@ -100,7 +107,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             </div>
                         </React.Fragment>
                     }
-                    right_hidden_component_width={is_advert_active ? '12rem' : '18rem'}
+                    right_hidden_component_width='18rem'
                     visible_component={
                         <Table.Row
                             className={classNames('p2p-my-ads__table-row', {
@@ -320,7 +327,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     </Popover>
                                 </div>
                             )}
-                            {!is_advert_active && !enable_action_point && (
+                            {is_advert_active ? (
                                 <div onClick={onClickEdit}>
                                     <Popover
                                         alignment='bottom'
@@ -330,8 +337,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         <Icon icon='IcEdit' size={16} />
                                     </Popover>
                                 </div>
+                            ) : (
+                                <></>
                             )}
-                            {!!is_advert_active && (
+                            {!is_advert_active ? (
                                 <div onClick={enable_action_point ? onClickSwitchAd : onClickEdit}>
                                     <Popover
                                         alignment='bottom'
@@ -341,6 +350,8 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         <Icon icon='IcEdit' size={16} />
                                     </Popover>
                                 </div>
+                            ) : (
+                                <></>
                             )}
                             <div onClick={onClickDelete}>
                                 <Popover

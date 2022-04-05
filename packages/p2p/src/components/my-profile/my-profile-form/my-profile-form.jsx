@@ -94,7 +94,7 @@ const MyProfileForm = () => {
         <MobileFullPageModal
             className='my-profile-form'
             is_modal_open={my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE}
-            page_header_text={localize('Ad template')}
+            page_header_text={localize('Ad details')}
             pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
         >
             {content}

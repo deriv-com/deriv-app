@@ -136,16 +136,15 @@ const InputField = ({
         if (long_press_step) {
             const increase_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;
             const increase = (value * increase_percentage) / 100;
-            const new_value = parseFloat(+(current_value || 0)) + Math.abs(increase);
+            const new_value = parseFloat(current_value || 0) + Math.abs(increase);
 
             increment_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
             const new_value =
-                parseFloat(+(current_value || 0)) +
-                parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+                parseFloat(current_value || 0) + parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
             increment_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
-            increment_value = parseFloat(+(current_value || 0) + 1).toFixed(decimal_places);
+            increment_value = parseFloat((current_value || 0) + 1).toFixed(decimal_places);
         }
         updateValue(increment_value, !!long_press_step);
     };
@@ -160,16 +159,15 @@ const InputField = ({
         if (long_press_step) {
             const decrease_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;
             const decrease = (value * decrease_percentage) / 100;
-            const new_value = parseFloat(+(current_value || 0)) - Math.abs(decrease);
+            const new_value = parseFloat(current_value || 0) - Math.abs(decrease);
 
             decrement_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
             const new_value =
-                parseFloat(+(current_value || 0)) -
-                parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+                parseFloat(current_value || 0) - parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
             decrement_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
-            decrement_value = parseFloat(+(current_value || 0) - 1).toFixed(decimal_places);
+            decrement_value = parseFloat((current_value || 0) - 1).toFixed(decimal_places);
         }
         return decrement_value;
     };
@@ -329,7 +327,7 @@ InputField.propTypes = {
     classNamePrefix: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
-    decimal_point_change: PropTypes.number,
+    decimal_point_change: PropTypes.number, // Specify which decimal point must be updated when the increment/decrement button is pressed
     error_messages: PropTypes.array,
     error_message_alignment: PropTypes.string,
     fractional_digits: PropTypes.number,

@@ -112,7 +112,6 @@ export const PersonalDetailsForm = ({
     account_settings,
     getChangeableFields,
     history,
-    has_active_real_account,
     is_social_signup,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
@@ -137,8 +136,6 @@ export const PersonalDetailsForm = ({
 
     const isMounted = useIsMounted();
 
-    const should_show_email = is_social_signup || (is_virtual && has_active_real_account);
-
     React.useEffect(() => {
         if (isMounted()) {
             const getSettings = async () => {
@@ -157,7 +154,7 @@ export const PersonalDetailsForm = ({
             getSettings();
         }
         initializeFormValues();
-    }, [account_settings, is_eu, is_mf, is_social_signup, has_active_real_account]);
+    }, [account_settings, is_eu, is_mf, is_social_signup]);
 
     React.useEffect(() => {
         let timeout_id;
@@ -806,7 +803,7 @@ export const PersonalDetailsForm = ({
                                             onChange={handleChange}
                                         />
                                     </fieldset>
-                                    {should_show_email && (
+                                    {is_social_signup && (
                                         <fieldset className='account-form__fieldset'>
                                             <Input
                                                 data-lpignore='true'
@@ -1228,7 +1225,6 @@ PersonalDetailsForm.propTypes = {
     getChangeableFields: PropTypes.func,
     current_landing_company: PropTypes.object,
     history: PropTypes.object,
-    has_active_real_account: PropTypes.bool,
     is_social_signup: PropTypes.bool,
 };
 
@@ -1246,7 +1242,6 @@ export default connect(({ client, notifications }) => ({
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
-    has_active_real_account: client.has_active_real_account,
     is_social_signup: client.is_social_signup,
     refreshNotifications: notifications.refreshNotifications,
 }))(withRouter(PersonalDetailsForm));

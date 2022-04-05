@@ -114,6 +114,7 @@
             background-color: var(--status-warning);
         }
     }
+
     &__message {
         max-width: 32rem;
         margin: auto;
@@ -325,7 +326,6 @@
         margin-top: 2.4rem;
     }
     &__success {
-        width: 38.4rem;
         height: 28.4rem;
         display: flex;
         flex-direction: column;

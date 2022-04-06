@@ -340,6 +340,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setModalOpenState(value) {
+        this.is_modal_open = value;
+    }
+
+    @action.bound
     showAddPaymentMethodForm() {
         this.setShouldShowAddPaymentMethodForm(true);
     }

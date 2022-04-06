@@ -2,11 +2,11 @@ import { localize } from '@deriv/translations';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import currency_selector_config from './currency-selector-schema';
 
-const currencySelectorConfig = ({ real_account_signup_target }, CurrencySelector, is_appstore = false) => {
+const currencySelectorConfig = ({ real_account_signup_target }, CurrencySelector) => {
     return {
         header: {
-            active_title: is_appstore ? localize('Select wallet currency') : localize('Please choose your currency'),
-            title: is_appstore ? localize('CURRENCY') : localize('Account currency'),
+            active_title: localize('Please choose your currency'),
+            title: localize('Account currency'),
         },
         body: CurrencySelector,
         form_value: getDefaultFields(real_account_signup_target, currency_selector_config),
@@ -14,7 +14,6 @@ const currencySelectorConfig = ({ real_account_signup_target }, CurrencySelector
             validate: generateValidationFunction(real_account_signup_target, currency_selector_config),
         },
         passthrough: ['legal_allowed_currencies'],
-        icon: 'IcDashboardCurrency',
     };
 };
 

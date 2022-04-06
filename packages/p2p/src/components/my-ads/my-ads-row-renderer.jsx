@@ -160,13 +160,21 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 ) : (
                                     <div
                                         className='p2p-my-ads__table-add'
-                                        onClick={() => {
-                                            setAdvert(advert);
-                                            my_ads_store.showQuickAddModal(advert);
-                                        }}
+                                        onClick={
+                                            general_store.is_barred
+                                                ? null
+                                                : () => {
+                                                      setAdvert(advert);
+                                                      my_ads_store.showQuickAddModal(advert);
+                                                  }
+                                        }
                                     >
-                                        <Icon icon='IcAdd' />
-                                        <Text color='prominent' size='xxs' weight='bold'>
+                                        <Icon color={general_store.is_barred && 'disabled'} icon='IcAdd' />
+                                        <Text
+                                            color={general_store.is_barred ? 'less-prominent' : 'prominent'}
+                                            size='xxs'
+                                            weight='bold'
+                                        >
                                             <Localize i18n_default_text='Add' />
                                         </Text>
                                     </div>
@@ -225,13 +233,21 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             ) : (
                                 <div
                                     className='p2p-my-ads__table-add'
-                                    onClick={() => {
-                                        setAdvert(advert);
-                                        my_ads_store.showQuickAddModal(advert);
-                                    }}
+                                    onClick={
+                                        general_store.is_barred
+                                            ? null
+                                            : () => {
+                                                  setAdvert(advert);
+                                                  my_ads_store.showQuickAddModal(advert);
+                                              }
+                                    }
                                 >
-                                    <Icon icon='IcAdd' />
-                                    <Text color='prominent' size='xxs' weight='bold'>
+                                    <Icon color={general_store.is_barred && 'disabled'} icon='IcAdd' />
+                                    <Text
+                                        color={general_store.is_barred ? 'less-prominent' : 'prominent'}
+                                        size='xxs'
+                                        weight='bold'
+                                    >
                                         <Localize i18n_default_text='Add' />
                                     </Text>
                                 </div>

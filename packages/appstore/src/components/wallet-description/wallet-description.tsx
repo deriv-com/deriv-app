@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from '@deriv/components';
-import wallet_details from './../../constants/wallet-details';
+import wallet_descriptions from './../../constants/wallet-description';
 
 type TWalletDescriptionProps = {
     wallet_name:
@@ -28,7 +28,7 @@ const WalletDescription = ({ wallet_name }: TWalletDescriptionProps) => {
     const [wallet_description, setWalletDescription] = useState<TWalletDescription>();
 
     useEffect(() => {
-        setWalletDescription(wallet_details[`${wallet_name}`]);
+        setWalletDescription(wallet_descriptions[`${wallet_name}`]);
     }, [wallet_name]);
 
     return (

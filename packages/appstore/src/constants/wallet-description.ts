@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-const wallet_details = {
+const wallet_descriptions = {
     aud: {
         title: localize('AUD wallet'),
         description: localize(
@@ -83,4 +83,4 @@ const wallet_details = {
     },
 };
 
-export default wallet_details;
+export default wallet_descriptions;

@@ -24,14 +24,12 @@ const Template: Story<AddAppProps> = args => <AddApp {...args} />;
 
 export const AddAppTemplate = Template.bind({});
 AddAppTemplate.args = {
-    apps: [
-        {
-            app_type_title: 'Deriv X Apps',
-            linked_apps: [
-                { app_name: 'Deriv MT5 Synthetics', app_icon: 'icDxtradeSynthetic' },
-                { app_name: 'Deriv MT5 Financial USD', app_icon: 'icAppstoreWalletUsdLight' },
-                { app_name: 'Deriv MT5 Financial STP USD', app_icon: 'icAppstoreWalletUsdLight' },
-            ],
-        },
-    ],
+    app: {
+        app_type_title: 'Deriv X Apps',
+        linked_apps: [
+            { app_name: 'Deriv MT5 Synthetics', app_icon: 'icDxtradeSynthetic' },
+            { app_name: 'Deriv MT5 Financial USD', app_icon: 'icAppstoreWalletUsdLight' },
+            { app_name: 'Deriv MT5 Financial STP USD', app_icon: 'icAppstoreWalletUsdLight' },
+        ],
+    },
 };

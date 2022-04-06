@@ -1,52 +1,27 @@
 import React from 'react';
-import { Button, ButtonToggle, Text } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import AppCard from 'Components/app-card';
+import ToggleAccountType from 'Components/toggle-account-type';
 
 type TLinkedAppCard = {
     app_name: string;
     app_icon: string;
 };
 
-type TApps = {
+type TApp = {
     app_type_title: string;
     linked_apps: Array<TLinkedAppCard>;
     toggleCompareAccountsModal?: () => void;
 };
 
-type TProps = {
-    apps: Array<TApps>;
+type TAddApp = {
+    app: TApp;
     is_dark_mode_on: boolean;
     is_mobile: boolean;
 };
 
-type TAccountTypeProps = {
-    accountTypeChange: any;
-    value: string;
-};
-
-const ToggleAccountType = ({ accountTypeChange, value }: TAccountTypeProps) => {
-    const toggle_options = [
-        { text: 'Real', value: 'Real' },
-        { text: 'Demo', value: 'Demo' },
-    ];
-
-    return (
-        <div className='toggle-account-type'>
-            <ButtonToggle
-                buttons_arr={toggle_options}
-                className='toggle-account-type__button'
-                has_rounded_button
-                is_animated
-                name='account_type'
-                onChange={accountTypeChange}
-                value={value}
-            />
-        </div>
-    );
-};
-
-const AddApp = ({ apps, is_dark_mode_on, is_mobile }: TProps) => {
+const AddApp = ({ app, is_dark_mode_on, is_mobile }: TAddApp) => {
     const [account_type, setAccountType] = React.useState<'Real' | 'Demo'>('Real');
     const accountTypeChange = (event: any) => setAccountType(event.target.value);
     const [selected_app, setSeletedApp] = React.useState('');
@@ -70,49 +45,43 @@ const AddApp = ({ apps, is_dark_mode_on, is_mobile }: TProps) => {
                     )}
                 </div>
                 <div className='add-app-details'>
-                    {apps?.map((app, index) => {
-                        return (
-                            <>
-                                <div key={`content${index}`} className='add-app-details-content'>
-                                    <Text align='left' size='s' as='p' line_height='xxl' weight='bold'>
-                                        <Localize i18n_default_text={app.app_type_title} />
-                                    </Text>
-                                    {!!app.toggleCompareAccountsModal && (
-                                        <Button
-                                            primary_light
-                                            className='add-app-details-content__button'
-                                            large
-                                            onClick={app.toggleCompareAccountsModal}
-                                            type='button'
-                                        >
-                                            <Localize i18n_default_text='Compare apps' />
-                                        </Button>
-                                    )}
+                    <div className='add-app-details-content'>
+                        <Text align='left' size='s' as='p' line_height='xxl' weight='bold'>
+                            <Localize i18n_default_text={app.app_type_title} />
+                        </Text>
+                        {!!app.toggleCompareAccountsModal && (
+                            <Button
+                                primary_light
+                                className='add-app-details-content__button'
+                                large
+                                onClick={app.toggleCompareAccountsModal}
+                                type='button'
+                            >
+                                <Localize i18n_default_text='Compare apps' />
+                            </Button>
+                        )}
+                    </div>
+                    <div className='add-app-details__cards'>
+                        {app.linked_apps.map((linked_app, id) => {
+                            return (
+                                <div
+                                    key={`contentCard${id}`}
+                                    className='add-app-details__card'
+                                    onClick={() => setSeletedApp(linked_app.app_name)}
+                                >
+                                    <AppCard
+                                        account_type={account_type}
+                                        app_card_details={linked_app}
+                                        checked={selected_app === linked_app.app_name}
+                                        dark={is_dark_mode_on}
+                                        faded
+                                        key={id.toString()}
+                                        size={is_mobile ? 'medium' : 'large'}
+                                    />
                                 </div>
-                                <div key={`detail${index}`} className='add-app-details__cards'>
-                                    {app.linked_apps.map((linked_app, id) => {
-                                        return (
-                                            <div
-                                                key={`contentCard${id}`}
-                                                className='add-app-details__card'
-                                                onClick={() => setSeletedApp(linked_app.app_name)}
-                                            >
-                                                <AppCard
-                                                    account_type={account_type}
-                                                    app_card_details={linked_app}
-                                                    checked={selected_app === linked_app.app_name}
-                                                    dark={is_dark_mode_on}
-                                                    faded
-                                                    key={id.toString()}
-                                                    size={is_mobile ? 'medium' : 'large'}
-                                                />
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </div>

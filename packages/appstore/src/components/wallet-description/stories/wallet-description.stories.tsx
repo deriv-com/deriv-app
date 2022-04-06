@@ -12,7 +12,19 @@ export default {
             description: 'Optional. Controls the description of wallet.',
             control: {
                 type: 'select',
-                options: ['aud', 'eur', 'gbp', 'usd', 'bitcoin', 'ethereum' , 'litecoin', 'tether', 'usd_coin', 'deriv_p2p', 'payment_agent'],
+                options: [
+                    'aud',
+                    'eur',
+                    'gbp',
+                    'usd',
+                    'bitcoin',
+                    'ethereum',
+                    'litecoin',
+                    'tether',
+                    'usd_coin',
+                    'deriv_p2p',
+                    'payment_agent',
+                ],
             },
             table: {
                 type: { summary: ' string | undefined' },

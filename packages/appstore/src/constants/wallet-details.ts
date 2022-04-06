@@ -3,7 +3,9 @@ import { localize } from '@deriv/translations';
 const wallet_details = {
     aud: {
         title: localize('AUD wallet'),
-        description: localize("Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide."),
+        description: localize(
+            'Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide.'
+        ),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },
@@ -21,19 +23,25 @@ const wallet_details = {
     },
     ethereum: {
         title: localize('ETH wallet'),
-        description: localize("Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide."),
+        description: localize(
+            'Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide.'
+        ),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },
     eur: {
         title: localize('EUR wallet'),
-        description: localize("Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide."),
+        description: localize(
+            'Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide.'
+        ),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },
     gbp: {
         title: localize('GBP wallet'),
-        description: localize("Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide."),
+        description: localize(
+            'Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide.'
+        ),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },
@@ -53,17 +61,21 @@ const wallet_details = {
     },
     tether: {
         title: localize('Tether wallet'),
-        description: localize("Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide."),
+        description: localize(
+            'Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide.'
+        ),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },
     usd: {
         title: localize('USD wallet'),
-        description: localize("Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide."),
+        description: localize(
+            'Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide.'
+        ),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },
-    usd_coin:{
+    usd_coin: {
         title: localize('USD coin'),
         description: localize("Deposit and withdraw in Bitcoin, the world's first cryptocurrency."),
         deposit_information: localize('Deposits are instant'),

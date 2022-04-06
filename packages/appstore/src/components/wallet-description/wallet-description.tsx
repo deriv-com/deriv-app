@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from '@deriv/components';
-import wallet_descriptions from './../../constants/wallet-description';
+import wallet_descriptions from 'Constants/wallet-description';
 
 type TWalletDescriptionProps = {
     wallet_name:

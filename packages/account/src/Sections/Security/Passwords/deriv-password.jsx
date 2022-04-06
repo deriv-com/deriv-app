@@ -34,7 +34,10 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                         />
                     </Text>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                        <Localize i18n_default_text='Apps you can use with your Deriv login:' />
+                        <Localize
+                            i18n_default_text='Apps you have linked to your <0>Deriv password:</0>'
+                            components={[<strong key={0} />]}
+                        />
                     </Text>
                     <div className='passwords-platform__logo-container'>
                         <DerivComLogo className='passwords-platform__single-icon' />
@@ -60,21 +63,6 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                 {is_social_signup ? (
                     <React.Fragment>
                         <div className='account__passwords-item passwords-social-buttons'>
-                            <div className='passwords-social-buttons__desc'>
-                                <Text
-                                    as='p'
-                                    className='passwords-platform__desc'
-                                    color='prominent'
-                                    size='xs'
-                                    weight='lighter'
-                                >
-                                    {/* <Localize
-                                        i18n_default_text="You're using your {{identifier_title}} account to log in to your Deriv account. To change your login method into using a username and password, click the <0>Unlink</0> button."
-                                        components={[<strong key={0} />]}
-                                        values={{ identifier_title: capitalized_identifier }}
-                                    /> */}
-                                </Text>
-                            </div>
                             <div
                                 className='account__passwords-linked'
                                 onClick={() => {

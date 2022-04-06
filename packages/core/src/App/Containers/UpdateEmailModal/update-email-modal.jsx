@@ -107,4 +107,3 @@ export default connect(({ ui, client }) => ({
     verification_code: client.verification_code.system_email_change,
     is_logged_in: client.is_logged_in,
 }))(UpdateEmailModal);
-

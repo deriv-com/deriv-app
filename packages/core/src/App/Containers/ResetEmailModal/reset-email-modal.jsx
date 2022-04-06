@@ -18,7 +18,7 @@ const ResetEmailModal = ({
     toggleResetEmailModal,
     is_social_signup,
 }) => {
-    const [is_send_email_modal_open, setIsSendEmaliModalOpen] = React.useState(false);
+    const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
     const [email_request, setEmailRequest] = React.useState(null);
 
     const onResetComplete = (error_msg, actions) => {
@@ -50,7 +50,7 @@ const ResetEmailModal = ({
                 onResetComplete(response.error.message, actions);
             } else {
                 onResetComplete(null, actions);
-                setIsSendEmaliModalOpen(true);
+                setIsSendEmailModalOpen(true);
             }
         });
     };

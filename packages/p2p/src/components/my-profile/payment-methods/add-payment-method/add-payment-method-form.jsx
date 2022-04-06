@@ -154,6 +154,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                     onClick={() => {
                                         my_profile_store.setSelectedPaymentMethod('');
                                         buy_sell_store.setShouldShowPopup(false);
+                                        // ensuring the previous modal is closed before opening the new modal
                                         const close_modal = setInterval(() => {
                                             if (!my_profile_store.is_modal_open) {
                                                 my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);

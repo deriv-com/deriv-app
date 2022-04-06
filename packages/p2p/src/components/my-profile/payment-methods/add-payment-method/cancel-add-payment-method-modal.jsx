@@ -35,6 +35,7 @@ const CancelAddPaymentMethodModal = () => {
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
                         my_profile_store.setSelectedPaymentMethodDisplayName('');
+                        // ensuring the previous modal is closed before opening the new modal
                         const cancel_btn = setInterval(() => {
                             if (!my_profile_store.is_modal_open) {
                                 buy_sell_store.setShouldShowPopup(true);
@@ -53,6 +54,7 @@ const CancelAddPaymentMethodModal = () => {
                     onClick={() => {
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
+                        // ensuring the previous modal is closed before opening the new modal
                         const back_btn = setInterval(() => {
                             if (!my_profile_store.is_modal_open) {
                                 buy_sell_store.setShouldShowPopup(true);

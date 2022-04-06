@@ -1,22 +1,57 @@
-import React from 'react';
+import React, { useState , useEffect} from 'react';
+import { Text } from '@deriv/components';
+import wallet_details from './../../constants/wallet-details';
+
+
+type TWalletDescriptionProps = {
+    wallet_name: 'aud'| 'eur'| 'gbp'| 'usd'| 'bitcoin'| 'ethereum' | 'litecoin'| 'tether'| 'usd_coin'| 'deriv_p2p'| 'payment_agent'
+    ;
+};
 
 type TWalletDescription = {
     title: string;
     description: string;
-    depositsInformation: string;
-    withdrawalsInformation: string;
+    deposit_information: string;
+    withdrawal_information: string;
 };
-const WalletDescription = ({ title, description, depositsInformation, withdrawalsInformation }: TWalletDescription) => {
+
+const WalletDescription = ({ wallet_name }: TWalletDescriptionProps) => {
+    const [wallet_description, setWalletDescription] = useState<TWalletDescription>();
+
+    useEffect(() => {
+        setWalletDescription(wallet_details[`${wallet_name}`]);
+    }, [wallet_name]);
+
     return (
-        <div className='wallet-details'>
-            <div className='wallet-details__title'>{title}</div>
-            <div className='wallet-details__description'>{description}</div>
-            <div className='wallet-details__information'>
-                <div>{depositsInformation}</div>
-                <div className='wallet-details__horizontal-line' />
-                <div>{withdrawalsInformation}</div>
-            </div>
-        </div>
+        <>
+            {wallet_description && (
+                <div className='wallet-details'>
+                    <div className='wallet-details__title'>
+                        <Text as='p' weight='bold' line_height='xl' size='xs'>
+                            {wallet_description.title}
+                        </Text>
+                    </div>
+                    <div className='wallet-details__description'>
+                        <Text line_height='xl' color='grey-5' size='xs'>
+                            {wallet_description.description}
+                        </Text>
+                    </div>
+                    <div className='wallet-details__information'>
+                        <div>
+                            <Text as='p' weight='bold' size='xxs' line_height='l'>
+                                {wallet_description.deposit_information}
+                            </Text>
+                        </div>
+                        <div className='wallet-details__horizontal-line' />
+                        <div>
+                            <Text as='p' weight='bold' size='xxs' line_height='l'>
+                                {wallet_description.withdrawal_information}
+                            </Text>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 

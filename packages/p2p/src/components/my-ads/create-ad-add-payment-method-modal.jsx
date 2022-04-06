@@ -9,6 +9,10 @@ import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/a
 const CreateAdAddPaymentMethodModal = () => {
     const { my_ads_store, my_profile_store } = useStores();
 
+    const modalStateHandler = value => {
+        my_profile_store.setModalOpenState(value);
+    };
+
     if (my_profile_store.should_show_add_payment_method_error_modal) {
         my_ads_store.setShouldShowAddPaymentMethodModal(false);
         return (
@@ -58,10 +62,11 @@ const CreateAdAddPaymentMethodModal = () => {
     return (
         <Modal
             className='p2p-my-ads__modal-error'
-            has_close_icon={false}
+            has_close_icon={true}
             height='560px'
             is_open={my_ads_store.should_show_add_payment_method_modal}
             title={localize('Add payment method')}
+            getModalState={modalStateHandler}
         >
             <Modal.Body>
                 <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />

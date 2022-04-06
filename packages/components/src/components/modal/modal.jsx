@@ -35,6 +35,7 @@ const ModalElement = ({
     width,
     renderTitle,
     small,
+    getModalState,
 }) => {
     const el_ref = React.useRef(document.createElement('div'));
     const el_portal_node = document.getElementById(portalId);
@@ -70,6 +71,7 @@ const ModalElement = ({
     useOnClickOutside(wrapper_ref, closeModal, validateClickOutside);
 
     React.useEffect(() => {
+        getModalState?.(true);
         const local_el_ref = el_ref;
         const local_modal_root_ref = modal_root_ref;
 
@@ -80,6 +82,7 @@ const ModalElement = ({
         return () => {
             local_modal_root_ref.current.removeChild(local_el_ref.current);
             if (typeof onUnmount === 'function') onUnmount();
+            getModalState?.(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -228,6 +231,7 @@ const Modal = ({
     toggleModal,
     width,
     elements_to_ignore,
+    getModalState,
 }) => (
     <CSSTransition
         appear
@@ -268,6 +272,7 @@ const Modal = ({
             small={small}
             width={width}
             elements_to_ignore={elements_to_ignore}
+            getModalState={getModalState}
         >
             {children}
         </ModalElement>

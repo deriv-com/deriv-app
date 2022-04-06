@@ -7,6 +7,10 @@ import { Localize } from 'Components/i18next';
 const CancelAddPaymentMethodModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
 
+    const modalStateHandler = value => {
+        my_profile_store.setModalOpenState(value);
+    };
+
     return (
         <Modal
             has_close_icon={false}
@@ -17,6 +21,7 @@ const CancelAddPaymentMethodModal = () => {
                     <Localize i18n_default_text='Cancel adding this payment method?' />
                 </Text>
             }
+            getModalState={modalStateHandler}
         >
             <Modal.Body>
                 <Text color='prominent' size='xs'>
@@ -30,9 +35,12 @@ const CancelAddPaymentMethodModal = () => {
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
                         my_profile_store.setSelectedPaymentMethodDisplayName('');
-                        setTimeout(() => {
-                            buy_sell_store.setShouldShowPopup(true);
-                        }, 260);
+                        const cancel_btn = setInterval(() => {
+                            if (!my_profile_store.is_modal_open) {
+                                buy_sell_store.setShouldShowPopup(true);
+                                clearInterval(cancel_btn);
+                            }
+                        });
 
                         my_profile_store.setShouldShowAddPaymentMethodForm(true);
                     }}
@@ -43,9 +51,14 @@ const CancelAddPaymentMethodModal = () => {
                 <Button
                     large
                     onClick={() => {
-                        buy_sell_store.setShouldShowPopup(true);
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
+                        const back_btn = setInterval(() => {
+                            if (!my_profile_store.is_modal_open) {
+                                buy_sell_store.setShouldShowPopup(true);
+                                clearInterval(back_btn);
+                            }
+                        });
                     }}
                     primary
                 >

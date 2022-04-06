@@ -49,6 +49,10 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         />
     );
 
+    const modalStateHandler = value => {
+        my_profile_store.setModalOpenState(value);
+    };
+
     const onCancel = () => {
         setShouldShowPopup(false);
         my_profile_store.setShouldShowAddPaymentMethodForm(false);
@@ -135,6 +139,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             title={modal_title}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}
+            getModalState={modalStateHandler}
         >
             {/* Parent height - Modal.Header height - Modal.Footer height */}
             <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>

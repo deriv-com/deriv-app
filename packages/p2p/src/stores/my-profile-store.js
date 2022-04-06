@@ -40,6 +40,7 @@ export default class MyProfileStore extends BaseStore {
     @observable should_show_add_payment_method_error_modal = false;
     @observable should_show_add_payment_method_form = false;
     @observable should_show_edit_payment_method_form = false;
+    @observable is_modal_open = false;
 
     @computed
     get advertiser_has_payment_methods() {
@@ -118,9 +119,7 @@ export default class MyProfileStore extends BaseStore {
     @computed
     get payment_methods_list_values() {
         const list = [];
-
         Object.entries(this.available_payment_methods).forEach(key => list.push(key[0]));
-
         return list;
     }
 

@@ -154,9 +154,12 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                     onClick={() => {
                                         my_profile_store.setSelectedPaymentMethod('');
                                         buy_sell_store.setShouldShowPopup(false);
-                                        setTimeout(() => {
-                                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-                                        }, 280);
+                                        const close_modal = setInterval(() => {
+                                            if (!my_profile_store.is_modal_open) {
+                                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                                clearInterval(close_modal);
+                                            }
+                                        });
                                     }}
                                     type='button'
                                 >

@@ -323,7 +323,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     </Popover>
                                 </div>
                             )}
-                            {is_advert_active ? (
+                            {!!is_advert_active && (
                                 <div onClick={onClickEdit}>
                                     <Popover
                                         alignment='bottom'
@@ -333,8 +333,6 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         <Icon icon='IcEdit' size={16} />
                                     </Popover>
                                 </div>
-                            ) : (
-                                <></>
                             )}
                             {!is_advert_active ? (
                                 <div onClick={onClickEdit}>
@@ -346,9 +344,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         <Icon icon='IcEdit' size={16} />
                                     </Popover>
                                 </div>
-                            ) : (
-                                <></>
-                            )}
+                            ) : null}
                             <div onClick={onClickDelete}>
                                 <Popover
                                     alignment='bottom'

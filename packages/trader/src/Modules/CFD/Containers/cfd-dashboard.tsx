@@ -251,9 +251,9 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         }
     };
 
-    const openAccountTransfer = (data: DetailsOfEachMT5Loginid, meta: { category: string; type?: string }) => {
+    const openAccountTransfer = (data: DetailsOfEachMT5Loginid & { account_id?: string}, meta: { category: string; type?: string }) => {
         if (meta.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
+            sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
             props.disableCFDPasswordModal();
             props.history.push(routes.cashier_acc_transfer);
         } else {

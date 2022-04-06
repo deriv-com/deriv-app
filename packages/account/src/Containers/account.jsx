@@ -82,6 +82,7 @@ const PageOverlayWrapper = ({
 const Account = ({
     currency,
     history,
+    is_from_derivgo,
     is_logged_in,
     is_logging_in,
     is_virtual,
@@ -156,6 +157,7 @@ const Account = ({
         <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
             <div className='account'>
                 <PageOverlayWrapper
+                    is_from_derivgo={is_from_derivgo}
                     is_appstore={is_appstore}
                     list_groups={list_groups}
                     logout={logout}
@@ -179,6 +181,7 @@ Account.propTypes = {
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     logout: PropTypes.func,
+    platform: PropTypes.string,
     routes: PropTypes.arrayOf(PropTypes.object),
     should_allow_authentication: PropTypes.bool,
     toggleAccount: PropTypes.func,
@@ -192,6 +195,7 @@ export default connect(({ client, common, ui }) => ({
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,
+    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
     toggleAccount: ui.toggleAccountSettings,

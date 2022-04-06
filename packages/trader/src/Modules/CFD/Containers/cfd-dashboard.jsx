@@ -136,7 +136,7 @@ const CFDDashboard = props => {
 
     const openAccountTransfer = (data, meta) => {
         if (meta.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', data.login);
+            sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id);
             props.disableCFDPasswordModal();
             props.history.push(routes.cashier_acc_transfer);
         } else {

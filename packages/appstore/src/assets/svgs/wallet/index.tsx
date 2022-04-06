@@ -41,6 +41,8 @@ import GbpDark from 'Assets/svgs/wallet/gbp-dark.svg';
 import GbpLight from 'Assets/svgs/wallet/gbp-light.svg';
 import Help2payDark from 'Assets/svgs/wallet/help2pay-dark.svg';
 import Help2payLight from 'Assets/svgs/wallet/help2pay-light.svg';
+import InstantBankTransferDark from 'Assets/svgs/wallet/instant-bank-transfer-dark.svg';
+import InstantBankTransferLight from 'Assets/svgs/wallet/instant-bank-transfer-light.svg';
 import JcbDark from 'Assets/svgs/wallet/jcb-dark.svg';
 import JcbLight from 'Assets/svgs/wallet/jcb-light.svg';
 import JetonDark from 'Assets/svgs/wallet/jeton-dark.svg';
@@ -137,6 +139,8 @@ const Icons = {
     GbpLight,
     Help2payDark,
     Help2payLight,
+    InstantBankTransferDark,
+    InstantBankTransferLight,
     JcbDark,
     JcbLight,
     JetonDark,

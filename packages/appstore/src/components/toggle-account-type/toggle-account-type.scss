@@ -1,0 +1,17 @@
+.toggle-account-type {
+    background-color: var(--general-section-1);
+    padding: 0.4rem;
+    width: fit-content;
+    border-radius: $BORDER_RADIUS;
+
+    @include mobile {
+        align-self: center;
+        position: absolute;
+        right: 4rem;
+    }
+
+    &__button {
+        height: 3.2rem;
+        width: 20rem;
+    }
+}

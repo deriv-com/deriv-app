@@ -1,9 +1,11 @@
 .wallet-details {
     max-width: 26.4rem;
     margin: 2.4rem;
+    padding: 0;
 
     &__title {
-        margin-bottom: 0.8rem;
+        margin-bottom: 0.8rem ;
+        line-height: 2rem;
     }
 
     &__description {
@@ -19,16 +21,13 @@
 
     &__information {
         width: 100%;
-        font-weight: 700;
-        font-size: 12px;
-        line-height: 18px;
-        margin: 8px 0px;
+        line-height: 1.8rem;
     }
 
     &__horizontal-line {
         width: 100%;
-        border-top: 1px solid #d6dadb;
+        border-top: 0.1rem solid #d6dadb;
         height: 0;
-        margin: 8px 0px;
+        margin: 0.8rem 0;
     }
 }

@@ -36,24 +36,24 @@ const WalletDescription = ({ wallet_name }: TWalletDescriptionProps) => {
             {wallet_description && (
                 <div className='wallet-details'>
                     <div className='wallet-details__title'>
-                        <Text as='p' weight='bold' line_height='xl' size='xs'>
+                        <Text as='p' weight='bold' size='xs'>
                             {wallet_description.title}
                         </Text>
                     </div>
                     <div className='wallet-details__description'>
-                        <Text line_height='xl' color='grey-5' size='xs'>
+                        <Text color='grey-5' size='xs'>
                             {wallet_description.description}
                         </Text>
                     </div>
                     <div className='wallet-details__information'>
                         <div>
-                            <Text as='p' weight='bold' size='xxs' line_height='l'>
+                            <Text as='p' weight='bold' size='xxs'>
                                 {wallet_description.deposit_information}
                             </Text>
                         </div>
                         <div className='wallet-details__horizontal-line' />
                         <div>
-                            <Text as='p' weight='bold' size='xxs' line_height='l'>
+                            <Text as='p' weight='bold' size='xxs'>
                                 {wallet_description.withdrawal_information}
                             </Text>
                         </div>

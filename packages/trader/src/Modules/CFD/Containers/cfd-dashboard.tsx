@@ -251,7 +251,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         }
     };
 
-    const openAccountTransfer = (data: DetailsOfEachMT5Loginid & { account_id?: string}, meta: { category: string; type?: string }) => {
+    const openAccountTransfer = (
+        data: DetailsOfEachMT5Loginid & { account_id?: string },
+        meta: { category: string; type?: string }
+    ) => {
         if (meta.category === 'real') {
             sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
             props.disableCFDPasswordModal();

@@ -55,8 +55,8 @@ describe('IframeStore', () => {
     it('should set timeout cashier url', () => {
         jest.useFakeTimers();
 
-        const spyClearTimeoutCashierUrl = spyOn(iframe_store, 'clearTimeoutCashierUrl');
-        const spySetSessionTimeout = spyOn(iframe_store, 'setSessionTimeout');
+        const spyClearTimeoutCashierUrl = jest.spyOn(iframe_store, 'clearTimeoutCashierUrl');
+        const spySetSessionTimeout = jest.spyOn(iframe_store, 'setSessionTimeout');
         iframe_store.setTimeoutCashierUrl();
 
         expect(spyClearTimeoutCashierUrl).toHaveBeenCalledTimes(1);

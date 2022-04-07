@@ -26,7 +26,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
     const [error_message, setErrorMessage] = React.useState('');
     const [secret_key, setSecretKey] = React.useState('');
     const [qr_secret_key, setQrSecretKey] = React.useState('');
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         getDigitStatus();
@@ -189,7 +189,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
         <section className='two-factor'>
             <div
                 className={classNames('two-factor__wrapper', {
-                    'two-factor__wrapper-dashboard': is_dashboard,
+                    'two-factor__wrapper-dashboard': is_appstore,
                 })}
             >
                 {is_two_factor_enabled ? TwoFactorEnabled : TwoFactorDisabled}

@@ -46,7 +46,8 @@ const Numpad = ({
     React.useEffect(() => {
         const is_error = !onValidate(default_value) || onValidate(default_value) === 'error';
         setHasError(is_error);
-    }, [default_value, value, onValidate]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [default_value, value]);
 
     const updateValue = val => {
         setValue(val);

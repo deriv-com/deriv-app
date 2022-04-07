@@ -804,11 +804,9 @@ export default class TradeStore extends BaseStore {
 
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
-            const snapshot = await processTradeParams(this, new_state);
-            snapshot.is_trade_enabled = true;
+            await processTradeParams(this, new_state);
 
             this.updateStore({
-                ...snapshot,
                 ...(!this.is_initial_barrier_applied ? this.initial_barriers : {}),
             });
             this.is_initial_barrier_applied = true;

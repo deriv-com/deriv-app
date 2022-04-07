@@ -67,12 +67,6 @@ export default class GeneralStore extends BaseStore {
     }
 
     @computed
-    get is_unsupported_account() {
-        const allowed_currency = 'USD';
-        return this.client?.is_virtual || this.client?.currency !== allowed_currency;
-    }
-
-    @computed
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
     }

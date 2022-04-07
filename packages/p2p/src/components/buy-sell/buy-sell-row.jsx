@@ -9,6 +9,7 @@ import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
 import './buy-sell-row.scss';
+import TradeBadge from '../trade-badge';
 
 const BuySellRow = ({ row: advert }) => {
     const { buy_sell_store, general_store } = useStores();
@@ -17,7 +18,7 @@ const BuySellRow = ({ row: advert }) => {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
         // an empty item with an item that holds the same height of the toggle container.
         // Also see: buy-sell-table.jsx
-        return <div style={{ height: '177px' }} />;
+        return <div style={{ height: '140px' }} />;
     }
 
     if (advert.id === 'NO_MATCH_ROW') {
@@ -33,10 +34,12 @@ const BuySellRow = ({ row: advert }) => {
 
     const {
         account_currency,
+        advertiser_details,
         counterparty_type,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
+        payment_method_names,
         price_display,
     } = advert;
 
@@ -53,9 +56,18 @@ const BuySellRow = ({ row: advert }) => {
                 >
                     <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
                     <div className='buy-sell-row__advertiser-name'>
-                        <Text size='xs' line_height='m' color='general' weight='bold'>
-                            {advertiser_name}
-                        </Text>
+                        <div className='buy-sell__cell--container__row'>
+                            <Text
+                                className='buy-sell-row__advertiser-name--text'
+                                size='xs'
+                                line_height='m'
+                                color='general'
+                                weight='bold'
+                            >
+                                {advertiser_name}
+                            </Text>
+                            <TradeBadge trade_count={advertiser_details.completed_orders_count} />
+                        </div>
                         {advert.advertiser_details.total_completion_rate ? (
                             <Text color='less-prominent' size='xxs'>
                                 <Localize
@@ -78,9 +90,9 @@ const BuySellRow = ({ row: advert }) => {
                         <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
                             {price_display} {local_currency}
                         </Text>
-                        <Text as='div' color='general' line_height='m' size='xxs'>
+                        <Text as='div' color='less-prominent' line_height='m' size='xxs'>
                             <Localize
-                                i18n_default_text='Limit {{ min_order }}–{{ max_order }} {{ currency }}'
+                                i18n_default_text='Limits {{ min_order }}–{{ max_order }} {{ currency }}'
                                 values={{
                                     min_order: min_order_amount_limit_display,
                                     max_order: max_order_amount_limit_display,
@@ -89,8 +101,22 @@ const BuySellRow = ({ row: advert }) => {
                             />
                         </Text>
                     </div>
+                    <div className='buy-sell-row__payment-methods-list'>
+                        {payment_method_names ? (
+                            payment_method_names.map((payment_method, key) => {
+                                return (
+                                    <div className='buy-sell-row__payment-method' key={key}>
+                                        {payment_method}
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className='buy-sell-row__payment-method'>-</div>
+                        )}
+                    </div>
                     {!is_my_advert && (
                         <Button
+                            className='buy-sell-row__button'
                             is_disabled={general_store.is_barred}
                             large
                             onClick={() => buy_sell_store.setSelectedAdvert(advert)}
@@ -117,12 +143,15 @@ const BuySellRow = ({ row: advert }) => {
                 >
                     <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
                     <div className='buy-sell__cell--container'>
-                        <div
-                            className={classNames({
-                                'buy-sell__name': !general_store.is_barred,
-                            })}
-                        >
-                            {advertiser_name}
+                        <div className='buy-sell__cell--container__row'>
+                            <div
+                                className={classNames({
+                                    'buy-sell__name': !general_store.is_barred,
+                                })}
+                            >
+                                {advertiser_name}
+                            </div>
+                            <TradeBadge trade_count={advertiser_details.completed_orders_count} />
                         </div>
                         {!!advert.advertiser_details.total_completion_rate && (
                             <Text color='less-prominent' size='xxs'>
@@ -142,6 +171,27 @@ const BuySellRow = ({ row: advert }) => {
                 <Text color='profit-success' size='xs' line-height='m' weight='bold'>
                     {price_display} {local_currency}
                 </Text>
+            </Table.Cell>
+            <Table.Cell>
+                <div className='buy-sell-row__payment-method'>
+                    {payment_method_names ? (
+                        payment_method_names.map((payment_method, key) => {
+                            return (
+                                <div className='buy-sell-row__payment-method--label' key={key}>
+                                    <Text color='general' size='xs' line-height='l'>
+                                        {payment_method}
+                                    </Text>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <div className='buy-sell-row__payment-method--label'>
+                            <Text color='general' size='xs' line-height='l'>
+                                -
+                            </Text>
+                        </div>
+                    )}
+                </div>
             </Table.Cell>
             {is_my_advert ? (
                 <Table.Cell />

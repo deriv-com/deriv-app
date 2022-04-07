@@ -25,7 +25,7 @@ const TermsOfUse = ({
     real_account_signup_target,
     ...props
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     const handleCancel = () => {
         const current_step = getCurrentStep() - 1;
@@ -33,7 +33,7 @@ const TermsOfUse = ({
     };
 
     const getSubmitButtonLabel = () => {
-        if (is_dashboard) {
+        if (is_appstore) {
             return localize('Finish');
         }
         return localize('Add account');
@@ -52,7 +52,7 @@ const TermsOfUse = ({
                         <form ref={setRef} onSubmit={handleSubmit}>
                             <Div100vhContainer
                                 className='details-form'
-                                height_offset={is_dashboard ? '242px' : '110px'}
+                                height_offset={is_appstore ? '242px' : '110px'}
                                 is_disabled={isDesktop()}
                             >
                                 <ThemedScrollbars>

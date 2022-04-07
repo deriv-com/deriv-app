@@ -14,10 +14,10 @@ const IconWithMessage = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
-        <div className={classNames('da-icon-with-message', { 'da-icon-with-message-full-width': is_dashboard })}>
+        <div className={classNames('da-icon-with-message', { 'da-icon-with-message-full-width': is_appstore })}>
             <Icon icon={icon} size={128} />
             <Text
                 className='da-icon-with-message__text'
@@ -37,6 +37,7 @@ const IconWithMessage = ({
                         toggleAccountsDialog();
                     }}
                     className='account__demo-message-button'
+                    data-testid='icon-with-message-button'
                 >
                     {has_real_account ? localize('Switch to real account') : localize('Add a real account')}
                 </Button>

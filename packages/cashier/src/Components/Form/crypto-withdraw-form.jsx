@@ -149,7 +149,7 @@ const CryptoWithdrawForm = ({
                                 <Button
                                     className='cashier__form-submit-button'
                                     is_disabled={
-                                        validateAddress(values.address) ||
+                                        !!validateAddress(values.address) ||
                                         !!converter_from_error ||
                                         !!converter_to_error ||
                                         isSubmitting ||

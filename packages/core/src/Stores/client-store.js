@@ -1243,9 +1243,18 @@ export default class ClientStore extends BaseStore {
             }
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
-                if (search_params?.get('action') === 'reset_password') {
+                const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
+                    search_params?.get('action')
+                );
+
+                if (has_action) {
                     const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
-                    window.location.replace(`${redirect_route}/redirect?${query_string}`);
+                    if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
+                        // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
+                        window.location.replace(`/redirect?${query_string}`);
+                    } else {
+                        window.location.replace(`${redirect_route}/redirect?${query_string}`);
+                    }
                 } else {
                     window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
                 }
@@ -1643,7 +1652,7 @@ export default class ClientStore extends BaseStore {
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 
-        if (response.logout === 1) {
+        if (response?.logout === 1) {
             this.cleanUp();
 
             this.root_store.rudderstack.reset();
@@ -1874,35 +1883,33 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence, email_consent }, cb) {
+    onSignup({ password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
-        if (email_consent === undefined) return;
-        email_consent = email_consent ? 1 : 0;
-        WS.newAccountVirtual(
-            this.verification_code.signup,
-            password,
-            residence,
-            email_consent,
-            this.getSignupParams()
-        ).then(async response => {
-            if (response.error) {
-                cb(response.error.message);
-            } else {
-                cb();
-                // Initialize client store with new user login
-                const { client_id, currency, oauth_token } = response.new_account_virtual;
-                await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
+        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
+            async response => {
+                if (response.error) {
+                    cb(response.error.message);
+                } else {
+                    cb();
+                    // Initialize client store with new user login
+                    const { client_id, currency, oauth_token } = response.new_account_virtual;
+                    await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
-                // GTM Signup event
-                this.root_store.gtm.pushDataLayer({
-                    event: 'virtual_signup',
-                });
+                    // GTM Signup event
+                    this.root_store.gtm.pushDataLayer({
+                        event: 'virtual_signup',
+                    });
 
-                if (!this.country_standpoint.is_france && !this.country_standpoint.is_belgium && residence !== 'im') {
-                    this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                    if (
+                        !this.country_standpoint.is_france &&
+                        !this.country_standpoint.is_belgium &&
+                        residence !== 'im'
+                    ) {
+                        this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                    }
                 }
             }
-        });
+        );
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {

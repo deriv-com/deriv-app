@@ -34,17 +34,19 @@ const DurationWrapper = props => {
     };
 
     const setDurationUnit = () => {
-        const new_duration_unit = duration_units_list[0].value;
-        const new_duration_value = getDurationFromUnit(new_duration_unit);
+        if (duration_units_list?.length > 0) {
+            const new_duration_unit = duration_units_list[0].value;
+            const new_duration_value = getDurationFromUnit(new_duration_unit);
 
-        onChangeUiStore({
-            name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`,
-            value: new_duration_unit,
-        });
-        onChangeMultiple({
-            duration_unit: new_duration_unit,
-            duration: +new_duration_value,
-        });
+            onChangeUiStore({
+                name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`,
+                value: new_duration_unit,
+            });
+            onChangeMultiple({
+                duration_unit: new_duration_unit,
+                duration: +new_duration_value,
+            });
+        }
     };
 
     const handleEndTime = () => {

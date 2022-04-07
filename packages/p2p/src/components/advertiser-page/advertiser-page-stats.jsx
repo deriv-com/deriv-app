@@ -31,7 +31,13 @@ const AdvertiserPageStats = () => {
                 <Table className='advertiser-page__stats--wrapper'>
                     <Table.Row className='advertiser-page__stats'>
                         <Table.Cell className='advertiser-page__stats-cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                            <Text
+                                as='p'
+                                color='less-prominent'
+                                line_height='m'
+                                size='xxxs'
+                                data-testid='mobile-buy-completion'
+                            >
                                 <Localize
                                     i18n_default_text='Buy completion  <0>30d</0>'
                                     components={[
@@ -160,7 +166,6 @@ const AdvertiserPageStats = () => {
             </React.Fragment>
         );
     }
-
     return (
         <React.Fragment>
             <Table className='advertiser-page__stats--wrapper'>
@@ -179,7 +184,14 @@ const AdvertiserPageStats = () => {
                                 ]}
                             />
                         </Text>
-                        <Text as='p' color='prominent' line_height='m' size='m' weight='bold'>
+                        <Text
+                            as='p'
+                            color='prominent'
+                            line_height='m'
+                            size='m'
+                            weight='bold'
+                            data-testid='buy-completion'
+                        >
                             {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
                         </Text>
                     </Table.Cell>
@@ -198,7 +210,14 @@ const AdvertiserPageStats = () => {
                                 ]}
                             />
                         </Text>
-                        <Text as='p' color='prominent' line_height='m' size='m' weight='bold'>
+                        <Text
+                            as='p'
+                            color='prominent'
+                            line_height='m'
+                            size='m'
+                            weight='bold'
+                            data-testid='sell-completion'
+                        >
                             {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
                         </Text>
                     </Table.Cell>

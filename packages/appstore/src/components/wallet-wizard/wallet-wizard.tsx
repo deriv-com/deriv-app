@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { DesktopWizard } from '@deriv/ui';
+import { DesktopWizard, MainComponentProps } from '@deriv/ui';
 import { localize } from '@deriv/translations';
 import CreateWallet from 'Components/create-wallet';
 import SkeletonCard from 'Components/skeleton-card';
@@ -16,24 +16,36 @@ type WalletWizardProps = {
 
 const TempMainContent = () => <></>;
 
-const WalletWizard = ({ close }: WalletWizardProps) => {
+const CreateWalletStep = ({ onSubmit }: MainComponentProps) => {
     const { create_wallet } = useStores();
     const { selected_wallet, setSelectedWallet } = create_wallet;
     const [should_show_fiat, setShouldShowFiat] = React.useState(false);
+
+    const handleSubmit = (wallet: string) => {
+        setSelectedWallet(wallet);
+        onSubmit({ wallet }, true);
+    };
+
+    return (
+        <CreateWallet
+            dark={false}
+            should_show_fiat={should_show_fiat}
+            setShouldShowFiat={setShouldShowFiat}
+            setSeletedWallet={handleSubmit}
+            selected_wallet={selected_wallet}
+        />
+    );
+};
+
+const WalletWizard = ({ close }: WalletWizardProps) => {
+    const { create_wallet } = useStores();
+    const { selected_wallet } = create_wallet;
 
     const steps: StepData = [
         {
             step_title: localize('Wallet'),
             main_content_header: '',
-            main_content: () => (
-                <CreateWallet
-                    dark={false}
-                    should_show_fiat={should_show_fiat}
-                    setShouldShowFiat={setShouldShowFiat}
-                    onSubmit={setSelectedWallet}
-                    values={selected_wallet}
-                />
-            ),
+            main_content: CreateWalletStep,
             right_panel_content: {
                 upper_block: () => (
                     <div className='wallet-wizard-create-wallet-right-panel'>

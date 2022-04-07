@@ -9,12 +9,18 @@ import WalletIcon from 'Assets/svgs/wallet';
 type TCreateWallet = {
     dark: boolean;
     should_show_fiat: boolean;
-    setShouldShowFiat: any;
-    onSubmit: any;
-    values: string;
+    setShouldShowFiat: (show: boolean) => void;
+    setSeletedWallet: (wallet: string) => void;
+    selected_wallet: string;
 };
 
-const CreateWallet = ({ dark, should_show_fiat, setShouldShowFiat, onSubmit, values }: TCreateWallet) => {
+const CreateWallet = ({
+    dark,
+    should_show_fiat,
+    setShouldShowFiat,
+    setSeletedWallet,
+    selected_wallet,
+}: TCreateWallet) => {
     const wallets = should_show_fiat ? Providers.fiat_wallets : Providers.wallets;
     const header_title = should_show_fiat
         ? Providers.fiat_wallets_header_info.getTitle()
@@ -25,7 +31,7 @@ const CreateWallet = ({ dark, should_show_fiat, setShouldShowFiat, onSubmit, val
 
     const onWalletClicked = (wallet: string) => {
         if (!should_show_fiat) {
-            onSubmit(wallet);
+            setSeletedWallet(wallet);
         }
     };
 
@@ -72,7 +78,7 @@ const CreateWallet = ({ dark, should_show_fiat, setShouldShowFiat, onSubmit, val
                                 {wallet.content?.map((wallet_name, id) => {
                                     const name = snakeToPascal(wallet_name || '');
                                     const wallet_logo = `${name}${dark ? 'Dark' : 'Light'}`;
-                                    const is_wallet_selected = values === wallet_name;
+                                    const is_wallet_selected = selected_wallet === wallet_name;
 
                                     return (
                                         <div

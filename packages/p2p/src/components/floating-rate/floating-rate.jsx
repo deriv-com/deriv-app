@@ -71,7 +71,7 @@ const FloatingRate = ({
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
-                        {localize('1')} {fiat_currency} = {exchange_rate} {local_currency}
+                        1 {fiat_currency} = {exchange_rate} {local_currency}
                     </Text>
                 </div>
             </section>

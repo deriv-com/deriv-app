@@ -62,7 +62,7 @@ const CreateAdAddPaymentMethodModal = () => {
     return (
         <Modal
             className='p2p-my-ads__modal-error'
-            has_close_icon={true}
+            has_close_icon={false}
             height='560px'
             is_open={my_ads_store.should_show_add_payment_method_modal}
             title={localize('Add payment method')}

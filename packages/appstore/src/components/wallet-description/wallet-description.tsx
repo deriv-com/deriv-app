@@ -3,18 +3,7 @@ import { Text } from '@deriv/components';
 import wallet_descriptions from 'Constants/wallet-description';
 
 type TWalletDescriptionProps = {
-    wallet_name:
-        | 'aud'
-        | 'eur'
-        | 'gbp'
-        | 'usd'
-        | 'bitcoin'
-        | 'ethereum'
-        | 'litecoin'
-        | 'tether'
-        | 'usd_coin'
-        | 'deriv_p2p'
-        | 'payment_agent';
+    wallet_name: string;
 };
 
 type TWalletDescription = {
@@ -28,7 +17,7 @@ const WalletDescription = ({ wallet_name }: TWalletDescriptionProps) => {
     const [wallet_description, setWalletDescription] = useState<TWalletDescription>();
 
     useEffect(() => {
-        setWalletDescription(wallet_descriptions[`${wallet_name}`]);
+            setWalletDescription(wallet_descriptions[`${wallet_name}`]);       
     }, [wallet_name]);
 
     return (

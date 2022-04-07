@@ -1,6 +1,15 @@
 import { localize } from '@deriv/translations';
 
-const wallet_descriptions = {
+type TWalletDescription = {
+    [key: string]: {
+        title: string;
+        description: string;
+        deposit_information: string;
+        withdrawal_information: string;
+    };
+};
+
+const wallet_descriptions: TWalletDescription = {
     aud: {
         title: localize('AUD wallet'),
         description: localize(
@@ -11,13 +20,13 @@ const wallet_descriptions = {
     },
     bitcoin: {
         title: localize('BTC wallet'),
-        description: localize("Deposit and withdraw in Bitcoin, the world's first cryptocurrency."),
+        description: localize('Deposit and withdraw in Bitcoin, the world\'s first cryptocurrency.'),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },
     deriv_p2p: {
         title: localize('Deriv P2P USD wallet'),
-        description: localize("Deposit and withdraw in Bitcoin, the world's first cryptocurrency."),
+        description: localize('Deposit and withdraw in Bitcoin, the world\'s first cryptocurrency.'),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },
@@ -47,7 +56,7 @@ const wallet_descriptions = {
     },
     litecoin: {
         title: localize('LTC wallet'),
-        description: localize("Deposit and withdraw in Bitcoin, the world's first cryptocurrency."),
+        description: localize('Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide.'),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },
@@ -77,7 +86,7 @@ const wallet_descriptions = {
     },
     usd_coin: {
         title: localize('USD coin'),
-        description: localize("Deposit and withdraw in Bitcoin, the world's first cryptocurrency."),
+        description: localize('Quick, simple to use, and available anywhere, anytime. Used by millions of clients worldwide.'),
         deposit_information: localize('Deposits are instant'),
         withdrawal_information: localize('Withdrawals take 1 hour to 2 days'),
     },

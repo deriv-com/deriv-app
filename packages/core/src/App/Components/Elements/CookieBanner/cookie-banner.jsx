@@ -28,7 +28,7 @@ const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode }) => (
             secondary
             onClick={onAccept}
         >
-            {localize('Accept')} Hello
+            {localize('Accept')}
         </Button>
     </div>
 );

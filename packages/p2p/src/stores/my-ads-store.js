@@ -343,7 +343,6 @@ export default class MyAdsStore extends BaseStore {
     restrictLength = (e, handleChange, max_characters = 15) => {
         // typing more than 15 characters will break the layout
         // max doesn't disable typing, so we will use this to restrict length
-        // const max_characters = 15;
         if (e.target.value.length > max_characters) {
             e.target.value = e.target.value.slice(0, max_characters);
             return;
@@ -546,7 +545,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setShouldSwitchAdRate(is_switch_ad_rate) {
+    setSwitchAdRateStatus(is_switch_ad_rate) {
         this.is_switch_ad_rate = is_switch_ad_rate;
         if (is_switch_ad_rate) {
             this.setShowEditAdForm(true);

@@ -14,7 +14,7 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
 
     const display_price_rate = (() => {
-        if (!!market_feed && !!price_rate) {
+        if (market_feed && price_rate) {
             return formatMoney(
                 local_currency_config.currency,
                 parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),

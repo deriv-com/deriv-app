@@ -9,6 +9,14 @@ import { useStores } from 'Stores';
 import './wallet-wizard.scss';
 
 type StepData = Parameters<typeof DesktopWizard>[0]['steps'];
+type MainComponentProps = {
+    onSubmit: (
+        values?: {
+            [key: string]: unknown;
+        },
+        should_disable_next_step?: boolean
+    ) => void;
+};
 
 type WalletWizardProps = {
     close: () => void;
@@ -16,24 +24,36 @@ type WalletWizardProps = {
 
 const TempMainContent = () => <></>;
 
-const WalletWizard = ({ close }: WalletWizardProps) => {
+const CreateWalletStep = ({ onSubmit }: MainComponentProps) => {
     const { create_wallet } = useStores();
     const { selected_wallet, setSelectedWallet } = create_wallet;
     const [should_show_fiat, setShouldShowFiat] = React.useState(false);
+
+    const handleSubmit = (wallet: string) => {
+        setSelectedWallet(wallet);
+        onSubmit({ wallet }, true);
+    };
+
+    return (
+        <CreateWallet
+            dark={false}
+            should_show_fiat={should_show_fiat}
+            setShouldShowFiat={setShouldShowFiat}
+            setSeletedWallet={handleSubmit}
+            selected_wallet={selected_wallet}
+        />
+    );
+};
+
+const WalletWizard = ({ close }: WalletWizardProps) => {
+    const { create_wallet } = useStores();
+    const { selected_wallet } = create_wallet;
 
     const steps: StepData = [
         {
             step_title: localize('Wallet'),
             main_content_header: '',
-            main_content: () => (
-                <CreateWallet
-                    dark={false}
-                    should_show_fiat={should_show_fiat}
-                    setShouldShowFiat={setShouldShowFiat}
-                    onSubmit={setSelectedWallet}
-                    values={selected_wallet}
-                />
-            ),
+            main_content: CreateWalletStep,
             right_panel_content: {
                 upper_block: () => (
                     <div className='wallet-wizard-create-wallet-right-panel'>

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import posed, { PoseGroup } from 'react-pose';
+import { motion } from 'framer-motion';
 
-const BounceUp = posed.div({
-    enter: {
+const BounceUp = {
+    onViewportEnter: {
         y: 0,
         opacity: 1,
         transition: {
@@ -24,15 +24,13 @@ const BounceUp = posed.div({
             duration: 0,
         },
     },
-});
+};
 
 const Bounce = ({ children, className, is_visible, keyname }) =>
     is_visible ? (
-        <PoseGroup>
-            <BounceUp className={className} key={keyname}>
-                {children}
-            </BounceUp>
-        </PoseGroup>
+        <motion.div exit={BounceUp.exit} onViewportEnter={BounceUp.onViewportEnter} className={className} key={keyname}>
+            {children}
+        </motion.div>
     ) : null;
 
 Bounce.propTypes = {

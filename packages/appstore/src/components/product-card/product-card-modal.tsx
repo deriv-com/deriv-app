@@ -41,32 +41,30 @@ const ProductCardModal = () => {
     ];
 
     return (
-        <>
-            <div className='product-card-modal'>
-                <p className='product-card-modal__header'>{header}</p>
-                <p className='product-card-modal__small-header'>{small_header}</p>
+        <div className='product-card-modal'>
+            <p className='product-card-modal__header'>{header}</p>
+            <p className='product-card-modal__small-header'>{small_header}</p>
 
-                <div className='product-card-modal__wrapper'>
-                    {platform_data.map((item, idx) => (
-                        <div
-                            key={idx}
-                            className={classNames(
-                                'product-card-modal__wrapper--child',
-                                idx % 2 !== 1 && 'product-card-modal__wrapper--odd-child'
-                            )}
-                            onClick={() => set_index_checked(idx)}
-                        >
-                            <Platform
-                                platform_name={item.platform_name}
-                                icon_title={item.icon_title}
-                                description={item.description}
-                                checked={idx === index_checked}
-                            />
-                        </div>
-                    ))}
-                </div>
+            <div className='product-card-modal__wrapper'>
+                {platform_data.map((item, idx) => (
+                    <div
+                        key={idx}
+                        className={classNames(
+                            'product-card-modal__wrapper--child',
+                            idx % 2 !== 1 && 'product-card-modal__wrapper--odd-child'
+                        )}
+                        onClick={() => set_index_checked(idx)}
+                    >
+                        <Platform
+                            platform_name={item.platform_name}
+                            icon_title={item.icon_title}
+                            description={item.description}
+                            checked={idx === index_checked}
+                        />
+                    </div>
+                ))}
             </div>
-        </>
+        </div>
     );
 };
 

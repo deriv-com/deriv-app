@@ -55,19 +55,21 @@ export default class FloatingRateStore extends BaseStore {
 
     @action.bound
     setExchangeRate(fiat_currency, local_currency) {
-        const pay_load = {
+        const payload = {
             exchange_rates: 1,
             base_currency: fiat_currency,
             subscribe: 1,
             target_currency: local_currency,
         };
-        requestWS(pay_load).then(response => {
-            if (!!response && response.error) {
-                this.setApiErrorMessage(response.error.message);
-            } else {
-                const { rates } = response.exchange_rates;
-                this.exchange_rate = parseFloat(rates[local_currency]);
-                this.setApiErrorMessage(null);
+        requestWS(payload).then(response => {
+            if (response) {
+                if (response.error) {
+                    this.setApiErrorMessage(response.error.message);
+                } else {
+                    const { rates } = response.exchange_rates;
+                    this.exchange_rate = parseFloat(rates[local_currency]);
+                    this.setApiErrorMessage(null);
+                }
             }
         });
     }

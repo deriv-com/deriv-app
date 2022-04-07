@@ -94,8 +94,6 @@ const OrderDetailsConfirmModal = ({
                         <Localize i18n_default_text='Please confirm only after checking your bank or e-wallet account to make sure you have received payment.' />
                     )}
                 </Text>
-
-               {is_checkbox_visible && 
                     <Checkbox
                         className='order-details-card__modal-checkbox'
                         onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}
@@ -120,7 +118,6 @@ const OrderDetailsConfirmModal = ({
                             )
                         }
                     />
-                }
             </Modal.Body>
             <Modal.Footer>
                 {error_message && <FormError message={error_message} />}

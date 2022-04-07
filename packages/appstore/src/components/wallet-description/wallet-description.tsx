@@ -17,7 +17,7 @@ const WalletDescription = ({ wallet_name }: TWalletDescriptionProps) => {
     const [wallet_description, setWalletDescription] = useState<TWalletDescription>();
 
     useEffect(() => {
-            setWalletDescription(wallet_descriptions[`${wallet_name}`]);       
+        setWalletDescription(wallet_descriptions[`${wallet_name}`]);
     }, [wallet_name]);
 
     return (

@@ -5,4 +5,11 @@
             margin: 0px !important;
         }
     }
+    &-create-wallet {
+        &-right-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
 }

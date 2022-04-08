@@ -4,6 +4,7 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import { Icon, Modal, Popover, VerticalTab, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isBot } from '@deriv/shared';
 import 'Sass/app/modules/settings.scss';
 
 const ThemeSetting = Loadable({
@@ -37,8 +38,7 @@ const ModalContent = ({ settings_extension }) => {
         },
         ...(settings_extension || []),
     ];
-
-    return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={content} />;
+    return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={isBot() ? [...content].slice(1) : content} />;
 };
 
 const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSettings, settings_extension }) => {

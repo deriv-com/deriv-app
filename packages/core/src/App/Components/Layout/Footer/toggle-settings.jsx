@@ -38,7 +38,14 @@ const ModalContent = ({ settings_extension }) => {
         },
         ...(settings_extension || []),
     ];
-    return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={isBot() ? [...content].slice(1) : content} />;
+    return (
+        <VerticalTab
+            alignment='center'
+            classNameHeader='modal__tab-header'
+            id='modal'
+            list={isBot() ? [...content].slice(1) : content}
+        />
+    );
 };
 
 const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSettings, settings_extension }) => {

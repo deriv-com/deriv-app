@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { fireEvent, render, screen, waitFor, userEvent } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { act } from 'react-dom/test-utils';
 import PersonalDetails from '../personal-details';
 import { PlatformContext } from '@deriv/shared';
 import { BrowserRouter } from 'react-router-dom';
 import { splitValidationResultTypes } from 'Components/real-account-signup/helpers/utils.js';
+import * as formik  from 'formik';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -78,10 +79,27 @@ const runCommonFormfieldsTests = () => {
 
     expect(screen.getByText('Tax residence')).toBeInTheDocument();
 
-    // expect(screen.getByText('Tax identification number')).toBeInTheDocument();
+    const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
+    expect(tax_residence_pop_over).toBeInTheDocument();
+
+    fireEvent.click(tax_residence_pop_over);
+    expect(
+        screen.getByText(
+            /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
+        )
+    ).toBeInTheDocument();
 
     expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
 
+    const tax_identification_number_pop_over = screen.queryByTestId('tax_identification_number_pop_over');
+    expect(tax_identification_number_pop_over).toBeInTheDocument();
+    fireEvent.click(tax_identification_number_pop_over);
+    expect(screen.getByText(/don't know your tax identification number\?/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
+    expect(screen.getByText('here').closest('a')).toHaveAttribute(
+        'href',
+        'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+    );
     expect(
         screen.getByRole('checkbox', {
             name: /i hereby confirm that the tax information i provided is true and complete\. i will also inform deriv investments \(europe\) limited about any changes to this information\./i,
@@ -90,7 +108,6 @@ const runCommonFormfieldsTests = () => {
 
     expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
 
-    // expect(screen.queryByTestId('account_opening_reason')).toBeInTheDocument();
     expect(screen.queryByTestId('dti_dropdown_display')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
 
@@ -218,6 +235,10 @@ describe('<PersonalDetails/>', () => {
         has_currency: true,
         form_error: '',
         bypass_to_personal: false,
+        onSubmit: jest.fn(),
+        getCurrentStep: jest.fn(()=>1),
+        onSave:jest.fn(),
+        onCancel:jest.fn()
     };
 
     beforeAll(() => {
@@ -344,24 +365,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByTestId('tax_residence_pop_over')).toBeInTheDocument();
 
-        const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
-        fireEvent.click(tax_residence_pop_over);
-        expect(
-            screen.getByText(
-                /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
-            )
-        ).toBeInTheDocument();
-
-        const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
-        fireEvent.click(tax_identification_number_pop_over);
-        expect(screen.getByText(/don't know your tax identification number\?/i)).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
-        expect(screen.getByText('here').closest('a')).toHaveAttribute(
-            'href',
-            'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
-        );
         runCommonFormfieldsTests();
     });
 
@@ -487,33 +491,29 @@ describe('<PersonalDetails/>', () => {
     it('should select correct dropdown options in mobile mode', async () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
+        const spyformik = jest.spyOn(formik,'useFormikContext');
+        spyformik.mockReturnValue({
+           handleChange: jest.fn(),
+       });
+       await act(async()=>{
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <PersonalDetails {...props} is_svg={false} />
             </PlatformContext.Provider>
         );
-        const place_of_birth_mobile = screen.getByTestId('place_of_birth_mobile');
+       }) 
+        const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
+
         expect(place_of_birth_mobile).toBeInTheDocument();
-        act(() => {
-            // fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
+     
+        await act(async()=>{
+           
             fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
         });
 
-        await waitFor(() => {
-            // screen.logTestingPlaygroundURL()
-            // expect(screen.getByText(/afghanistan/i)).toBeInTheDocument();
-            // expect(onChange).toHaveBeenCalled();
-            // expect(setFieldValue).toHaveBeenCalledWith('place_of_birth', 'Afghanistan', true);
-        });
+        const { getByText } = within( screen.getAllByTestId('selected_value')[0])
+        expect(getByText('Afghanistan')).toBeInTheDocument();
 
-        // // const select = screen.queryByTestId('place_of_birth_mobile');
-        // userEvent.selectOptions(
-        //     // Find the select element
-        //     screen.queryByTestId('place_of_birth_mobile'),
-        //     // Find and select the Ireland option
-        //     screen.getByRole('option', {name: 'Afghanistan'}),
-        //   )
-        // // expect(screen.getByRole('option', { name: /aland islands/i }).selected).toBe(true)
     });
 
     it('should have validation error given first_name and last_name fields are touched and have error', async () => {
@@ -570,9 +570,7 @@ describe('<PersonalDetails/>', () => {
         const phone = screen.getByTestId('phone');
         const tax_residence = screen.getByTestId('tax_residence');
         const tax_identification_number = screen.getByTestId('tax_identification_number');
-        //    const account_opening_reason = screen.getByTestId('account_opening_reason')
-        //    const account_opening_reason_dropdown = screen.getByTestId('dti_dropdown_display');
-
+       
         await act(async () => {
             fireEvent.blur(date_of_birth);
             fireEvent.blur(place_of_birth);
@@ -589,7 +587,6 @@ describe('<PersonalDetails/>', () => {
             expect(screen.getByText(/tax residence is required\./i)).toBeInTheDocument();
             expect(screen.getByText(/tax identification number is required\./i)).toBeInTheDocument();
         });
-
         splitValidationResultTypes.mockReturnValue({
             ...mock_warnings,
             errors: {
@@ -642,4 +639,229 @@ describe('<PersonalDetails/>', () => {
             ).toBeInTheDocument();
         });
     });
+
+    it('should submit the form if there is no validation error on desktop', async () => {
+        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        const new_props = {
+            ...props,
+            value: {
+                date_of_birth: '',
+                first_name: '',
+                last_name: '',
+                phone: '+93',
+            },
+        };
+
+        act(() => {
+            renderwithRouter(<PersonalDetails {...new_props} />);
+        });
+
+        await act(async () => {
+            const first_name = screen.getByTestId('first_name');
+            const last_name = screen.getByTestId('last_name');
+            const date_of_birth = screen.getByTestId('date_of_birth');
+            const phone = screen.getByTestId('phone');
+            fireEvent.change(first_name, {
+                target: { value: 'test firstname' },
+            });
+
+            fireEvent.change(last_name, {
+                target: { value: 'test lastname' },
+            });
+            fireEvent.change(date_of_birth, {
+                target: { value: '2000-12-12' },
+            });
+            fireEvent.change(phone, {
+                target: { value: '+931234567890' },
+            });
+        });
+
+        await act(async () => {
+            const previous_btn = screen.getByRole('button', { name: /previous/i });
+            const next_btn = screen.getByRole('button', { name: /next/i });
+            expect(previous_btn).toBeEnabled();
+            expect(next_btn).toBeEnabled();
+            fireEvent.click(next_btn);
+        });
+
+        await waitFor(() => {
+            expect(new_props.onSubmit).toBeCalled();
+        });
+    });
+
+    it('should submit the form if there is no validation error on mobile', async () => {
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        const new_props = {
+            ...props,
+            value: {
+                account_opening_reason: '',
+                citizen: '',
+                date_of_birth: '',
+                first_name: '',
+                last_name: '',
+                phone: '+49',
+                place_of_birth: '',
+                salutation: '',
+                tax_identification_confirm: false,
+                tax_identification_number: '',
+                tax_residence: '',
+            },
+        };
+
+        await act(async () => {
+            renderwithRouter(<PersonalDetails {...new_props} />);
+        });
+        const mr_radio_btn = screen.getByRole('radio', { name: /mr/i });
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const place_of_birth = screen.getByTestId('place_of_birth_mobile');
+        const citizenship = screen.getByTestId('citizenship_mobile');
+        const phone = screen.getByTestId('phone');
+        const tax_residence = screen.getByTestId('tax_residence_mobile');
+        const tax_identification_number = screen.getByTestId('tax_identification_number');
+        const tax_identification_confirm= screen.getByTestId('tax_identification_confirm');
+        const account_opening_reason = screen.getByTestId('account_opening_reason_mobile');
+
+        await act(async () => {
+            fireEvent.click(mr_radio_btn);
+            fireEvent.change(first_name, {
+                target: { value: 'test firstname' },
+            });
+
+            fireEvent.change(last_name, {
+                target: { value: 'test lastname' },
+            });
+
+            fireEvent.change(date_of_birth, {
+                target: { value: '2000-12-12' },
+            });
+
+            fireEvent.change(place_of_birth, {
+                target: { value: 'Albania' },
+            });
+
+            fireEvent.change(place_of_birth, {
+                target: { value: 'Albania' },
+            });
+
+            fireEvent.change(citizenship, {
+                target: { value: 'Albania' },
+            });
+
+            fireEvent.change(phone, {
+                target: { value: '+49123456789012' },
+            });
+            fireEvent.change(tax_residence, {
+                target: { value: 'Afghanistan' },
+            });
+
+            fireEvent.change(tax_identification_number, {
+                target: { value: '123123123123' },
+            });
+            fireEvent.change(tax_identification_confirm, {
+                target: { value: true },
+            });
+
+            fireEvent.change(account_opening_reason, {
+                target: { value: 'Income Earning' },
+            });
+        });
+
+        await act(async () => {
+            expect(mr_radio_btn.checked).toEqual(true);
+            const next_btn = screen.getByRole('button', { name: /next/i });
+           
+            expect(next_btn).toBeEnabled();
+            fireEvent.click(next_btn);
+        });
+
+        await waitFor(() => {
+            expect(new_props.onSubmit).toBeCalled();
+        });
+
+    });
+
+
+    it('should save filled date when cancel button is clicked ', async () => {
+        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        const new_props = {
+            ...props,
+            value: {
+                first_name: '',
+                last_name: '',
+            },
+        };
+
+        act(() => {
+            renderwithRouter(<PersonalDetails {...new_props} />);
+        });
+
+        await act(async () => {
+            const first_name = screen.getByTestId('first_name');
+            const last_name = screen.getByTestId('last_name');
+          
+            fireEvent.change(first_name, {
+                target: { value: 'test firstname' },
+            });
+
+            fireEvent.change(last_name, {
+                target: { value: 'test lastname' },
+            });
+            
+        });
+
+        await act(async () => {
+            const previous_btn = screen.getByRole('button', { name: /previous/i });
+            expect(previous_btn).toBeEnabled();
+            fireEvent.click(previous_btn);
+        });
+
+        await waitFor(() => {
+        expect(props.onSave).toBeCalledWith(0,{"first_name": "test firstname", "last_name": "test lastname"});
+
+        });
+    });
+    // it.only('should close any pop-overs when clicked on th form', async () => {
+       
+
+    //     await act(async() => {
+    //         renderwithRouter(<PersonalDetails {...props} />);
+    //     });
+       
+    //     expect(
+    //          screen.queryByText(
+    //              /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
+    //          )
+    //      ).toBeNull();
+    //         const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
+    //         expect(tax_residence_pop_over).toBeInTheDocument();
+    //         fireEvent.click(tax_residence_pop_over)
+    //         expect(
+    //             screen.getByText(
+    //                 /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
+    //             )
+    //         ).toBeInTheDocument();
+
+           
+       
+    //      act(() => {
+    //         const personal = screen.queryByTestId('personal-details-form');
+
+    //         fireEvent.click(personal)
+    //     });
+    //     await waitFor(() => {
+    //         screen.debug(undefined, Infinity);
+    //         expect(
+    //             screen.queryByText(
+    //                 /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
+    //             )
+    //         ).toBeNull();
+    //     });
+    // });
+
 });

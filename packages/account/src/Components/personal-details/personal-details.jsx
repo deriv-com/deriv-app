@@ -151,6 +151,7 @@ const PersonalDetails = ({
         );
     };
 
+
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -330,7 +331,7 @@ const PersonalDetails = ({
                                                                 list_portal_id='modal_root'
                                                                 required
                                                                 should_hide_disabled_options={false}
-                                                                data-testid='place_of_birth_mobile'
+                                                                data_testid='place_of_birth_mobile'
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -382,7 +383,7 @@ const PersonalDetails = ({
                                                                 {...field}
                                                                 required
                                                                 should_hide_disabled_options={false}
-                                                                data-testid='citizenship_mobile'
+                                                                data_testid='citizenship_mobile'
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -459,7 +460,7 @@ const PersonalDetails = ({
                                                                         }}
                                                                         {...field}
                                                                         required
-                                                                        data-testid='tax_residence_mobile'
+                                                                        data_testid='tax_residence_mobile'
                                                                     />
                                                                 </MobileWrapper>
                                                                 <div
@@ -553,6 +554,7 @@ const PersonalDetails = ({
                                                         //     </Text>
                                                         // )}
                                                         withTabIndex='0'
+                                                        data-testid='tax_identification_confirm'
                                                     />
                                                 )}
                                             </React.Fragment>
@@ -606,7 +608,7 @@ const PersonalDetails = ({
                                                                     }}
                                                                     {...field}
                                                                     required
-                                                                    data-testid='account_opening_reason_mobile'
+                                                                    data_testid='account_opening_reason_mobile'
                                                                 />
                                                             </MobileWrapper>
                                                         </React.Fragment>

@@ -480,7 +480,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
 
-        expect(screen.queryByTestId('account_opening_reason')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dti_dropdown_display')).not.toBeInTheDocument();
         expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();
 
         expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
@@ -717,13 +717,13 @@ describe('<PersonalDetails/>', () => {
         const last_name = screen.getByTestId('last_name');
 
         const date_of_birth = screen.getByTestId('date_of_birth');
-        const place_of_birth = screen.getByTestId('place_of_birth_mobile');
+        const place_of_birth_mobile = screen.getByTestId('place_of_birth_mobile');
         const citizenship = screen.getByTestId('citizenship_mobile');
         const phone = screen.getByTestId('phone');
-        const tax_residence = screen.getByTestId('tax_residence_mobile');
+        const tax_residence_mobile = screen.getByTestId('tax_residence_mobile');
         const tax_identification_number = screen.getByTestId('tax_identification_number');
         const tax_identification_confirm = screen.getByTestId('tax_identification_confirm');
-        const account_opening_reason = screen.getByTestId('account_opening_reason_mobile');
+        const account_opening_reason_mobile = screen.getByTestId('account_opening_reason_mobile');
 
         await act(async () => {
             fireEvent.click(mr_radio_btn);
@@ -739,11 +739,7 @@ describe('<PersonalDetails/>', () => {
                 target: { value: '2000-12-12' },
             });
 
-            fireEvent.change(place_of_birth, {
-                target: { value: 'Albania' },
-            });
-
-            fireEvent.change(place_of_birth, {
+            fireEvent.change(place_of_birth_mobile, {
                 target: { value: 'Albania' },
             });
 
@@ -754,7 +750,7 @@ describe('<PersonalDetails/>', () => {
             fireEvent.change(phone, {
                 target: { value: '+49123456789012' },
             });
-            fireEvent.change(tax_residence, {
+            fireEvent.change(tax_residence_mobile, {
                 target: { value: 'Afghanistan' },
             });
 
@@ -765,7 +761,7 @@ describe('<PersonalDetails/>', () => {
                 target: { value: true },
             });
 
-            fireEvent.change(account_opening_reason, {
+            fireEvent.change(account_opening_reason_mobile, {
                 target: { value: 'Income Earning' },
             });
         });

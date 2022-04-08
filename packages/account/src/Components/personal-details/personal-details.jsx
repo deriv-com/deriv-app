@@ -281,7 +281,7 @@ const PersonalDetails = ({
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_appstore ? '' : 'modal_root'}
-                                                data-testid='date_of_birth'
+                                                data_testid='date_of_birth'
                                             />
                                         )}
                                         {'place_of_birth' in props.value && (
@@ -584,7 +584,6 @@ const PersonalDetails = ({
                                                                     {...field}
                                                                     list_portal_id='modal_root'
                                                                     required
-                                                                    data_testid='account_opening_reason'
                                                                 />
                                                             </DesktopWrapper>
                                                             <MobileWrapper>

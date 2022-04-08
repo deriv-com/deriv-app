@@ -35,6 +35,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             buy_sell_store.setIsLoading(true);
             buy_sell_store.loadMoreItems({ startIndex: 0 });
         },
+        // testing
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );

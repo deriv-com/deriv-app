@@ -166,17 +166,11 @@ const PersonalDetails = ({
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
-                                <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
-                                    {is_appstore && (
-                                        <div className='details-form__sub-header'>
-                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                {localize(
-                                                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
-                                                )}
-                                            </Text>
-                                        </div>
-                                    )}
-
+                                <ThemedScrollbars
+                                    is_bypassed={is_appstore}
+                                    height={height}
+                                    onScroll={closeTooltipOnScroll}
+                                >
                                     <div
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
@@ -596,16 +590,18 @@ const PersonalDetails = ({
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
-                            <Modal.Footer has_separator is_bypassed={isMobile()}>
-                                <FormSubmitButton
-                                    cancel_label={localize('Previous')}
-                                    has_cancel
-                                    is_disabled={isSubmitDisabled(errors)}
-                                    is_absolute={isMobile()}
-                                    label={localize('Next')}
-                                    onCancel={() => handleCancel(values)}
-                                />
-                            </Modal.Footer>
+                            {!is_appstore && (
+                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                    <FormSubmitButton
+                                        cancel_label={localize('Previous')}
+                                        has_cancel
+                                        is_disabled={isSubmitDisabled(errors)}
+                                        is_absolute={isMobile()}
+                                        label={localize('Next')}
+                                        onCancel={() => handleCancel(values)}
+                                    />
+                                </Modal.Footer>
+                            )}
                         </form>
                     )}
                 </AutoHeightWrapper>

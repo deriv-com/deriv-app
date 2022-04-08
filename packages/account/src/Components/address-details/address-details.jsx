@@ -136,16 +136,11 @@ const AddressDetails = ({
                                         <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
                                     </Text>
                                 )}
-                                <ThemedScrollbars height={height} className='details-form__scrollbar'>
-                                    {is_appstore && (
-                                        <div className='details-form__sub-header'>
-                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                {localize(
-                                                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
-                                                )}
-                                            </Text>
-                                        </div>
-                                    )}
+                                <ThemedScrollbars
+                                    is_bypassed={is_appstore}
+                                    height={height}
+                                    className='details-form__scrollbar'
+                                >
                                     <div className='details-form__elements'>
                                         <InputField
                                             name='address_line_1'
@@ -251,16 +246,18 @@ const AddressDetails = ({
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
-                            <Modal.Footer has_separator is_bypassed={isMobile()}>
-                                <FormSubmitButton
-                                    is_disabled={isSubmitDisabled(errors)}
-                                    label={localize('Next')}
-                                    is_absolute={isMobile()}
-                                    has_cancel
-                                    cancel_label={localize('Previous')}
-                                    onCancel={() => handleCancel(values)}
-                                />
-                            </Modal.Footer>
+                            {!is_appstore && (
+                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                    <FormSubmitButton
+                                        is_disabled={isSubmitDisabled(errors)}
+                                        label={localize('Next')}
+                                        is_absolute={isMobile()}
+                                        has_cancel
+                                        cancel_label={localize('Previous')}
+                                        onCancel={() => handleCancel(values)}
+                                    />
+                                </Modal.Footer>
+                            )}
                         </form>
                     )}
                 </AutoHeightWrapper>

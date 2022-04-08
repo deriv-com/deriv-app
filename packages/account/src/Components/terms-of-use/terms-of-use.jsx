@@ -23,21 +23,25 @@ const TermsOfUse = ({
     onSubmit,
     value,
     real_account_signup_target,
+    onSubmitEnabledChange,
     ...props
 }) => {
     const { is_appstore } = React.useContext(PlatformContext);
+    // const is_submit_disabled_ref = React.useRef(true);
 
     const handleCancel = () => {
         const current_step = getCurrentStep() - 1;
         onCancel(current_step, goToPreviousStep);
     };
 
-    const getSubmitButtonLabel = () => {
-        if (is_appstore) {
-            return localize('Finish');
-        }
-        return localize('Add account');
-    };
+    // const checkSubmitStatus = errors => {
+    //     const is_submit_disabled = !values.agreed_tos || !values.agreed_tnc;
+
+    //     if (is_submit_disabled_ref.current !== is_submit_disabled) {
+    //         is_submit_disabled_ref.current = is_submit_disabled;
+    //         onSubmitEnabledChange?.(!is_submit_disabled);
+    //     }
+    // };
 
     return (
         <Formik
@@ -55,7 +59,7 @@ const TermsOfUse = ({
                                 height_offset={is_appstore ? '242px' : '110px'}
                                 is_disabled={isDesktop()}
                             >
-                                <ThemedScrollbars>
+                                <ThemedScrollbars is_bypassed={is_appstore}>
                                     <div
                                         className={cn('details-form__elements', 'terms-of-use')}
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
@@ -94,17 +98,19 @@ const TermsOfUse = ({
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
-                            <Modal.Footer has_separator is_bypassed={isMobile()}>
-                                <FormSubmitButton
-                                    is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
-                                    label={getSubmitButtonLabel()}
-                                    has_cancel
-                                    is_absolute={isMobile()}
-                                    onCancel={() => handleCancel()}
-                                    cancel_label={localize('Previous')}
-                                    form_error={props.form_error}
-                                />
-                            </Modal.Footer>
+                            {!is_appstore && (
+                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                    <FormSubmitButton
+                                        is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
+                                        label={localize('Add account')}
+                                        has_cancel
+                                        is_absolute={isMobile()}
+                                        onCancel={() => handleCancel()}
+                                        cancel_label={localize('Previous')}
+                                        form_error={props.form_error}
+                                    />
+                                </Modal.Footer>
+                            )}
                         </form>
                     )}
                 </AutoHeightWrapper>

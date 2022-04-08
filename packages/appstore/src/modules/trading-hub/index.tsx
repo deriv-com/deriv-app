@@ -7,7 +7,6 @@ const TradingHub = () => {
 
     return (
         <div className='trading-hub'>
-            Trading Hub
             <Button onClick={() => setIsWalletWizardOpen(true)}>Get more wallets</Button>
             {is_wallet_wizard_open && <WalletWizard close={() => setIsWalletWizardOpen(false)} />}
         </div>

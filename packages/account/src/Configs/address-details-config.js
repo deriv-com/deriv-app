@@ -7,7 +7,6 @@ const address_details_config = ({ account_settings, is_svg }) => {
         return {};
     }
 
-    // console.log("Testing")
     const base_case = {
         address_line_1: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],

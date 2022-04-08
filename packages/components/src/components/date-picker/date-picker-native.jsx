@@ -20,7 +20,6 @@ const Native = ({
     onSelect,
     value,
     data_testid,
-    ...other_props
 }) => {
     const [is_focused, setIsFocused] = React.useState(0);
     const input_ref = React.useRef();
@@ -91,7 +90,6 @@ const Native = ({
                 onFocus={handleFocus}
                 disabled={disabled}
                 data-testid={data_testid}
-                {...other_props}
                 onChange={e => {
                     let new_value = e.target.value;
                     const moment_value = toMoment(new_value);

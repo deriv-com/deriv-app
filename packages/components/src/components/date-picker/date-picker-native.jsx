@@ -90,7 +90,7 @@ const Native = ({
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 disabled={disabled}
-                data-testid ={data_testid}
+                data-testid={data_testid}
                 {...other_props}
                 onChange={e => {
                     let new_value = e.target.value;

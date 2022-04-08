@@ -196,7 +196,7 @@ SelectNative.propTypes = {
     use_text: PropTypes.bool,
     value: PropTypes.string,
     should_hide_disabled_options: PropTypes.bool,
-    data_testid: PropTypes.string
+    data_testid: PropTypes.string,
 };
 
 SelectNative.defaultProps = {

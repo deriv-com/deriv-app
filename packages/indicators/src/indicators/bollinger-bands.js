@@ -19,6 +19,7 @@ export const bollingerBands = (data, config) => {
     const vals = takeLast(data, periods, field);
     const middle = simpleMovingAverage(vals, { periods });
     const std_dev = stddev(vals);
+    // testing
     const upper = middle + std_dev * stdDevUp;
     const lower = middle - std_dev * stdDevDown;
 

@@ -4,4 +4,5 @@ export const lengthValidator = v => v.length >= 1 && v.length <= 300;
 
 export const textValidator = v => /^[\p{L}\p{Nd}\s'.,:;()@#+/-]*$/u.test(v);
 
-export const floatingPointValidator = v => /[0-9]*[eE\-+]+[0-9]*/.test(v);
+// validates floating-point integers that do not contain scientific notation (e, E, -, +) such as 12.2e+2 or 12.2e-2 and negative numbers
+export const floatingPointValidator = v => /^[0-9]*[.]?[0-9]+$(?:[eE\-+]*$)/.test(v);

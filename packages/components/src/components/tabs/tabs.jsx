@@ -92,6 +92,7 @@ const Tabs = ({
         if (active_index >= 0 && active_index !== active_tab_index) {
             setActiveTabIndex(active_index);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_index]);
 
     const onClickTabItem = index => {

@@ -33,7 +33,7 @@ const Carousel = ({
         if (list.slice(computed_item_per_window - 1).length <= 1) {
             setActiveIndex(0);
         }
-    }, [list]);
+    }, [list, computed_item_per_window]);
 
     const handleNextClick = () => {
         const next_idx = active_index + 1;

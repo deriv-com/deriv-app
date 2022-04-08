@@ -470,12 +470,12 @@ ProofOfAddressForm.propTypes = {
     states_list: PropTypes.array,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, notifications }) => ({
     account_settings: client.account_settings,
     is_eu: client.is_eu,
-    addNotificationByKey: ui.addNotificationMessageByKey,
-    removeNotificationMessage: ui.removeNotificationMessage,
-    removeNotificationByKey: ui.removeNotificationByKey,
+    addNotificationByKey: notifications.addNotificationMessageByKey,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    removeNotificationByKey: notifications.removeNotificationByKey,
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,

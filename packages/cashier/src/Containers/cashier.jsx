@@ -109,7 +109,7 @@ const Cashier = ({
     };
 
     const getSideNoteClassName = () => {
-        return location.pathname.endsWith(routes.cashier_withdrawal) && !is_crypto ? 'cashier__side-note' : '';
+        return location.pathname?.endsWith(routes.cashier_withdrawal) && !is_crypto ? 'cashier__side-note' : '';
     };
 
     return (
@@ -117,11 +117,7 @@ const Cashier = ({
             <AccountPromptDialog />
             <ErrorDialog />
             <div className='cashier'>
-                <PageOverlay
-                    header={getHeaderTitle()}
-                    onClickClose={onClickClose}
-                    is_close_disabled={!!platforms[platform]}
-                >
+                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={!!platforms[platform]}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'

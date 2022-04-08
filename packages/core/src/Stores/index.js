@@ -5,6 +5,7 @@ import RudderStackStore from './rudderstack-store';
 import PushWooshStore from './pushwoosh-store';
 import ModulesStore from './Modules';
 import MenuStore from './menu-store';
+import NotificationStore from './notification-store';
 import UIStore from './ui-store';
 
 export default class RootStore {
@@ -17,5 +18,6 @@ export default class RootStore {
         this.rudderstack = new RudderStackStore(this);
         this.menu = new MenuStore(this);
         this.pushwoosh = new PushWooshStore(this);
+        this.notifications = new NotificationStore(this);
     }
 }

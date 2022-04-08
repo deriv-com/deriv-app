@@ -76,7 +76,7 @@ const VerticalTab = ({
             setCurrTabIndex,
             setVerticalTabIndex,
         });
-    }, [vertical_tab_index, list]);
+    }, [vertical_tab_index, list, setVerticalTabIndex, is_routed, current_path]);
 
     return (
         <div

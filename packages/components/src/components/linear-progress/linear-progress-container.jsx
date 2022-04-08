@@ -28,7 +28,7 @@ const LinearProgressContainer = React.forwardRef(
             if (should_store_in_session) {
                 sessionStorage.setItem(`linear_progress_timeout_${session_id}`, timeout_state);
             }
-        }, [timeout_state]);
+        }, [timeout_state, should_store_in_session, session_id]);
 
         React.useEffect(() => {
             const interval = setInterval(makeProgress, 1000);

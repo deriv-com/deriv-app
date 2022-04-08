@@ -6,7 +6,10 @@ import Icon from '../icon/icon.jsx';
 
 const SideNotes = ({ class_name, side_notes }) => {
     return (
-        <div className={classNames('dc-vertical-tab__content-side-note', class_name)}>
+        <div
+            className={classNames('dc-vertical-tab__content-side-note', class_name)}
+            data-testid='vertical_tab_side_note'
+        >
             {side_notes?.map((note, i) => (
                 <div className='dc-vertical-tab__content-side-note-item' key={i}>
                     {note}
@@ -41,6 +44,7 @@ const Content = ({ is_routed, items, selected, side_note_class_name }) => {
             setSideNotes(notes_array[0] ?? null);
             notes_array.splice(0, notes_array.length);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_item]);
 
     return (

@@ -269,8 +269,8 @@ const AccountSwitcher = props => {
 
     const findServerForAccount = acc => {
         const server_name = acc.error ? acc.error.details.server : acc.server;
-        return props.mt5_login_list.length > 1
-            ? props.mt5_login_list.find(server => server.server === server_name)
+        return props.mt5_login_list.length >= 1
+            ? props.mt5_login_list.filter(account => !isDemo(account)).find(server => server.server === server_name)
             : null;
     };
 

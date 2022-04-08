@@ -57,6 +57,21 @@ const RouteWithSubRoutes = route => {
 
         const title = route.getTitle?.() || '';
         document.title = `${title} | ${default_title}`;
+
+        let link = document.querySelector("link[rel='canonical']")
+            ? document.querySelector("link[rel='canonical']")
+            : null;
+        const current_search_params = new URLSearchParams(location.search);
+        const lang_params = current_search_params.get('lang') ? `?lang=${current_search_params.get('lang')}` : '';
+
+        if (link) {
+            link.setAttribute('href', `${location.protocol}//${location.host}${location.pathname}${lang_params}`);
+        } else {
+            link = document.createElement('link');
+            link.setAttribute('href', `${location.protocol}//${location.host}${location.pathname}${lang_params}`);
+            document.head.appendChild(link);
+        }
+
         return result;
     };
 

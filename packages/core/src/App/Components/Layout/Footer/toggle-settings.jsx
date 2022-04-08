@@ -43,7 +43,7 @@ const ModalContent = ({ settings_extension }) => {
             alignment='center'
             classNameHeader='modal__tab-header'
             id='modal'
-            list={isBot() ? [...content].slice(1) : content}
+            list={isBot() ? [...content].slice(-1) : content}
         />
     );
 };

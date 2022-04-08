@@ -53,7 +53,7 @@ PaymentAgentTransferConfirm.propTypes = {
     transfer_to: PropTypes.string,
     transfer_to_name: PropTypes.string,
 };
-
+// test
 export default connect(({ client, modules }) => ({
     currency: client.currency,
     loginid: client.loginid,

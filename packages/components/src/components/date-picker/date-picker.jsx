@@ -247,7 +247,7 @@ DatePicker.defaultProps = {
     date_format: 'YYYY-MM-DD',
     mode: 'date',
     display_format: 'DD MMM YYYY',
-    keep_open: 'false',
+    keep_open: false,
 };
 
 DatePicker.propTypes = {

@@ -548,11 +548,11 @@ const PersonalDetails = ({
                                                         label={localize(
                                                             'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
                                                         )}
-                                                        // renderlabel={title => (
-                                                        //     <Text size='xs' line_height='s'>
-                                                        //         {title}
-                                                        //     </Text>
-                                                        // )}
+                                                        renderlabel={title => (
+                                                            <Text size='xs' line_height='s'>
+                                                                {title}
+                                                            </Text>
+                                                        )}
                                                         withTabIndex='0'
                                                         data-testid='tax_identification_confirm'
                                                     />

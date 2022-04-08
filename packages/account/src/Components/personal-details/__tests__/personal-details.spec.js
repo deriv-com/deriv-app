@@ -7,7 +7,7 @@ import PersonalDetails from '../personal-details';
 import { PlatformContext } from '@deriv/shared';
 import { BrowserRouter } from 'react-router-dom';
 import { splitValidationResultTypes } from 'Components/real-account-signup/helpers/utils.js';
-import * as formik  from 'formik';
+import * as formik from 'formik';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -236,9 +236,9 @@ describe('<PersonalDetails/>', () => {
         form_error: '',
         bypass_to_personal: false,
         onSubmit: jest.fn(),
-        getCurrentStep: jest.fn(()=>1),
-        onSave:jest.fn(),
-        onCancel:jest.fn()
+        getCurrentStep: jest.fn(() => 1),
+        onSave: jest.fn(),
+        onCancel: jest.fn(),
     };
 
     beforeAll(() => {
@@ -491,29 +491,27 @@ describe('<PersonalDetails/>', () => {
     it('should select correct dropdown options in mobile mode', async () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
-        const spyformik = jest.spyOn(formik,'useFormikContext');
+        const spyformik = jest.spyOn(formik, 'useFormikContext');
         spyformik.mockReturnValue({
-           handleChange: jest.fn(),
-       });
-       await act(async()=>{
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} is_svg={false} />
-            </PlatformContext.Provider>
-        );
-       }) 
+            handleChange: jest.fn(),
+        });
+        await act(async () => {
+            renderwithRouter(
+                <PlatformContext.Provider value={{ is_appstore: false }}>
+                    <PersonalDetails {...props} is_svg={false} />
+                </PlatformContext.Provider>
+            );
+        });
         const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
 
         expect(place_of_birth_mobile).toBeInTheDocument();
-     
-        await act(async()=>{
-           
+
+        await act(async () => {
             fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
         });
 
-        const { getByText } = within( screen.getAllByTestId('selected_value')[0])
+        const { getByText } = within(screen.getAllByTestId('selected_value')[0]);
         expect(getByText('Afghanistan')).toBeInTheDocument();
-
     });
 
     it('should have validation error given first_name and last_name fields are touched and have error', async () => {
@@ -570,7 +568,7 @@ describe('<PersonalDetails/>', () => {
         const phone = screen.getByTestId('phone');
         const tax_residence = screen.getByTestId('tax_residence');
         const tax_identification_number = screen.getByTestId('tax_identification_number');
-       
+
         await act(async () => {
             fireEvent.blur(date_of_birth);
             fireEvent.blur(place_of_birth);
@@ -724,7 +722,7 @@ describe('<PersonalDetails/>', () => {
         const phone = screen.getByTestId('phone');
         const tax_residence = screen.getByTestId('tax_residence_mobile');
         const tax_identification_number = screen.getByTestId('tax_identification_number');
-        const tax_identification_confirm= screen.getByTestId('tax_identification_confirm');
+        const tax_identification_confirm = screen.getByTestId('tax_identification_confirm');
         const account_opening_reason = screen.getByTestId('account_opening_reason_mobile');
 
         await act(async () => {
@@ -775,7 +773,7 @@ describe('<PersonalDetails/>', () => {
         await act(async () => {
             expect(mr_radio_btn.checked).toEqual(true);
             const next_btn = screen.getByRole('button', { name: /next/i });
-           
+
             expect(next_btn).toBeEnabled();
             fireEvent.click(next_btn);
         });
@@ -783,9 +781,7 @@ describe('<PersonalDetails/>', () => {
         await waitFor(() => {
             expect(new_props.onSubmit).toBeCalled();
         });
-
     });
-
 
     it('should save filled date when cancel button is clicked ', async () => {
         splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
@@ -804,7 +800,7 @@ describe('<PersonalDetails/>', () => {
         await act(async () => {
             const first_name = screen.getByTestId('first_name');
             const last_name = screen.getByTestId('last_name');
-          
+
             fireEvent.change(first_name, {
                 target: { value: 'test firstname' },
             });
@@ -812,7 +808,6 @@ describe('<PersonalDetails/>', () => {
             fireEvent.change(last_name, {
                 target: { value: 'test lastname' },
             });
-            
         });
 
         await act(async () => {
@@ -822,46 +817,7 @@ describe('<PersonalDetails/>', () => {
         });
 
         await waitFor(() => {
-        expect(props.onSave).toBeCalledWith(0,{"first_name": "test firstname", "last_name": "test lastname"});
-
+            expect(props.onSave).toBeCalledWith(0, { first_name: 'test firstname', last_name: 'test lastname' });
         });
     });
-    // it.only('should close any pop-overs when clicked on th form', async () => {
-       
-
-    //     await act(async() => {
-    //         renderwithRouter(<PersonalDetails {...props} />);
-    //     });
-       
-    //     expect(
-    //          screen.queryByText(
-    //              /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
-    //          )
-    //      ).toBeNull();
-    //         const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
-    //         expect(tax_residence_pop_over).toBeInTheDocument();
-    //         fireEvent.click(tax_residence_pop_over)
-    //         expect(
-    //             screen.getByText(
-    //                 /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
-    //             )
-    //         ).toBeInTheDocument();
-
-           
-       
-    //      act(() => {
-    //         const personal = screen.queryByTestId('personal-details-form');
-
-    //         fireEvent.click(personal)
-    //     });
-    //     await waitFor(() => {
-    //         screen.debug(undefined, Infinity);
-    //         expect(
-    //             screen.queryByText(
-    //                 /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
-    //             )
-    //         ).toBeNull();
-    //     });
-    // });
-
 });

@@ -3,8 +3,9 @@ import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import { FormikValues } from 'formik';
 import { personalDetailsConfig, PersonalDetails } from '@deriv/account';
+import { MainComponentProps } from '@deriv/ui';
 
-const PersonalDetailsWrapper = ({ onSubmit }: any) => {
+const PersonalDetailsStep = ({ onSubmit }: MainComponentProps) => {
     const { client } = useStores();
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
     const formik_ref = React.useRef<FormikValues>(null);
@@ -41,4 +42,4 @@ const PersonalDetailsWrapper = ({ onSubmit }: any) => {
     );
 };
 
-export default observer(PersonalDetailsWrapper);
+export default observer(PersonalDetailsStep);

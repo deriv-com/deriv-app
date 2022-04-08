@@ -56,7 +56,6 @@ const runCommonFormfieldsTests = () => {
 
     expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
     expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
-    //
 
     expect(screen.getByPlaceholderText(/john/i)).toBeInTheDocument();
     expect(

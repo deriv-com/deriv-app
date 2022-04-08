@@ -194,10 +194,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                     setIsRealEnabled(should_enable_tab);
                 }
 
-                // if (account_type === 'demo' && is_demo_enabled !== should_enable_tab && window.location.hash === '#demo') {
                 if (account_type === 'demo' && is_demo_enabled !== should_enable_tab) {
                     setIsDemoEnabled(should_enable_tab);
-                    // setActiveIndex(1);
                 }
             });
         }

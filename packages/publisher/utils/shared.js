@@ -15,12 +15,11 @@ const getLocalDerivDependencies = package_path => {
     if (fs.existsSync(deriv_node_modules_folder)) {
         // Below would only affect local development when npm linking a local @deriv/publisher.
         const ignore_packages = ['publisher'];
-
         return getDirContents(deriv_node_modules_folder).reduce((packages, directory) => {
             if (directory.isSymbolicLink() && !ignore_packages.includes(directory.name)) {
                 packages.push(`@deriv/${directory.name}`);
             }
-
+            // console
             return packages;
         }, []);
     }

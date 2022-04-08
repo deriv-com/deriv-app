@@ -69,7 +69,7 @@ const WalletWizard = ({ close }: WalletWizardProps) => {
         {
             step_title: localize('Complete'),
             main_content: { component: TempMainContent, header: localize('Completed') },
-            right_panel_content,
+            is_fullwidth: true,
         },
     ];
 

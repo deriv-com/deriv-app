@@ -9,7 +9,7 @@ import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
-import { floatingPointValidator } from "Utils/validations"
+import { floatingPointValidator } from 'Utils/validations';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -292,12 +292,19 @@ const BuySellForm = props => {
                                                     </Text>
                                                 }
                                                 onKeyDown={event => {
-                                                    // input tag allows floating-point representations, this includes '+', '-', and 'e' as exponent
-                                                    if (floatingPointValidator(event.key) && !(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(event.key))) {
-                                                        console.log("OH NO ITS FLOATING-POINT", event.key)
-                                                        event.preventDefault()
+                                                    if (
+                                                        ![
+                                                            'Backspace',
+                                                            'Delete',
+                                                            'ArrowLeft',
+                                                            'ArrowRight',
+                                                            '.',
+                                                        ].includes(event.key) &&
+                                                        !floatingPointValidator(event.key)
+                                                    ) {
+                                                        event.preventDefault();
                                                     }
-                                               }}
+                                                }}
                                                 onChange={event => {
                                                     if (event.target.value === '') {
                                                         setFieldValue('amount', '');

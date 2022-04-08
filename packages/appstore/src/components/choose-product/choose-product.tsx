@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import ProductCard from 'Components/product-card';
+import { ProductCard } from 'Components/product-card';
 import './choose-product.scss';
 
 const ChooseProduct = () => {

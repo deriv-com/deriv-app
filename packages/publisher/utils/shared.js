@@ -19,7 +19,7 @@ const getLocalDerivDependencies = package_path => {
             if (directory.isSymbolicLink() && !ignore_packages.includes(directory.name)) {
                 packages.push(`@deriv/${directory.name}`);
             }
-            // console
+
             return packages;
         }, []);
     }

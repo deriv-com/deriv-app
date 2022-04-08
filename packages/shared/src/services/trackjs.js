@@ -10,6 +10,7 @@ const getIgnoredResponseKeywords = () => {
     return window.ignored_responses_in_trackjs || [];
 };
 
+// console.log()
 class ResponseQueue {
     constructor() {
         this.list = [];

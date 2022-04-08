@@ -60,35 +60,17 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     is_left_swipe
                     right_hidden_component={
                         <React.Fragment>
-                            {is_advert_active ? (
-                                <>
-                                    <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
-                                        <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
-                                    </div>
-                                    <div className='p2p-my-ads__table-popovers__activate'>
-                                        <Icon
-                                            icon='IcArchive'
-                                            custom_color='var(--general-main-1)'
-                                            size={14}
-                                            onClick={onClickActivateDeactivate}
-                                        />
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
-                                        <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
-                                    </div>
-                                    <div className='p2p-my-ads__table-popovers__deactivate'>
-                                        <Icon
-                                            icon='IcUnarchive'
-                                            custom_color='var(--general-main-1)'
-                                            size={14}
-                                            onClick={onClickActivateDeactivate}
-                                        />
-                                    </div>
-                                </>
-                            )}
+                            <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
+                                <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
+                            </div>
+                            <div className='p2p-my-ads__table-popovers__activate'>
+                                <Icon
+                                    icon='IcArchive'
+                                    custom_color='var(--general-main-1)'
+                                    size={14}
+                                    onClick={onClickActivateDeactivate}
+                                />
+                            </div>
                             <div className='p2p-my-ads__table-popovers__delete'>
                                 <Icon
                                     icon='IcDelete'
@@ -129,11 +111,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                             <AdStatus is_active={!!is_advert_active} />
                                         </div>
 
-                                        <Icon
-                                            icon='IcAlertWarning'
-                                            size={16}
-                                            className='cfd-dashboard__maintenance-icon'
-                                        />
+                                        <Icon icon='IcAlertWarning' size={16} />
                                     </div>
                                 ) : (
                                     <AdStatus is_active={!!is_advert_active} />
@@ -276,11 +254,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         {!payment_method_names || enable_action_point ? (
                             <div className='p2p-my-ads__table-status-warning'>
                                 <AdStatus is_active={!!is_advert_active} />
-                                <Icon
-                                    icon='IcAlertWarning'
-                                    size={isMobile() ? 28 : 16}
-                                    className='cfd-dashboard__maintenance-icon'
-                                />
+                                <Icon icon='IcAlertWarning' size={isMobile() ? 28 : 16} />
                             </div>
                         ) : (
                             <div className='p2p-my-ads__table-status'>
@@ -319,27 +293,15 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     </Popover>
                                 </div>
                             )}
-                            {is_advert_active ? (
-                                <div onClick={onClickEdit}>
-                                    <Popover
-                                        alignment='bottom'
-                                        className='p2p-my-ads__table-popovers__edit'
-                                        message={localize('Edit')}
-                                    >
-                                        <Icon icon='IcEdit' size={16} />
-                                    </Popover>
-                                </div>
-                            ) : (
-                                <div onClick={onClickEdit}>
-                                    <Popover
-                                        alignment='bottom'
-                                        className='p2p-my-ads__table-popovers__edit'
-                                        message={localize('Edit')}
-                                    >
-                                        <Icon icon='IcEdit' size={16} />
-                                    </Popover>
-                                </div>
-                            )}
+                            <div onClick={onClickEdit}>
+                                <Popover
+                                    alignment='bottom'
+                                    className='p2p-my-ads__table-popovers__edit'
+                                    message={localize('Edit')}
+                                >
+                                    <Icon icon='IcEdit' size={16} />
+                                </Popover>
+                            </div>
                             <div onClick={onClickDelete}>
                                 <Popover
                                     alignment='bottom'

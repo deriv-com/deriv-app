@@ -138,7 +138,7 @@ export default class MyAdsStore extends BaseStore {
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
             rate_type: this.root_store.floating_rate_store.rate_type,
-            rate: Number(values.price_rate),
+            rate: Number(values.rate_type),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
@@ -251,7 +251,7 @@ export default class MyAdsStore extends BaseStore {
             id: this.selected_ad_id,
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
-            rate: Number(values.price_rate),
+            rate: Number(values.rate_type),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
@@ -595,7 +595,7 @@ export default class MyAdsStore extends BaseStore {
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
-            price_rate: [
+            rate_type: [
                 v => !!v,
                 v => !isNaN(v),
                 v =>
@@ -623,7 +623,7 @@ export default class MyAdsStore extends BaseStore {
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
             payment_info: localize('Payment instructions'),
-            price_rate: this.root_store.floating_rate_store.rate_type
+            rate_type: this.root_store.floating_rate_store.rate_type
                 ? localize('Floating rate')
                 : localize('Fixed rate'),
         };
@@ -702,7 +702,7 @@ export default class MyAdsStore extends BaseStore {
                     case 'min_transaction':
                         errors[key] = getMinTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
-                    case 'price_rate':
+                    case 'rate_type':
                         errors[key] = getPriceRateMessages(mapped_key[key])[error_index];
                         break;
                     default:
@@ -756,7 +756,7 @@ export default class MyAdsStore extends BaseStore {
             //     v => (values.min_transaction ? +v >= values.min_transaction : true),
             //     v => (values.max_transaction ? +v >= values.max_transaction : true),
             // ],
-            price_rate: [
+            rate_type: [
                 v => !!v,
                 v => !isNaN(v),
                 v =>
@@ -776,7 +776,7 @@ export default class MyAdsStore extends BaseStore {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            price_rate: localize('Fixed rate'),
+            rate_type: localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
@@ -850,7 +850,7 @@ export default class MyAdsStore extends BaseStore {
                     case 'min_transaction':
                         errors[key] = getMinTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
-                    case 'price_rate':
+                    case 'rate_type':
                         errors[key] = getPriceRateMessages(mapped_key[key])[error_index];
                         break;
                     default:
@@ -870,9 +870,9 @@ export default class MyAdsStore extends BaseStore {
 }
 
 const checkForFixedRateAds = ads_list => {
-    return ads_list.some(ad => ad.rate_type === 'fixed');
+    return ads_list.some(ad => ad.rate_type === ad_type.FIXED);
 };
 
 const checkForFloatRateAds = ads_list => {
-    return ads_list.some(ad => ad.rate_type === 'float');
+    return ads_list.some(ad => ad.rate_type === ad_type.FLOAT);
 };

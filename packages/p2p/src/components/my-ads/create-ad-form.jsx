@@ -107,7 +107,7 @@ const CreateAdForm = () => {
                     min_transaction: '',
                     offer_amount: '',
                     payment_info: my_ads_store.payment_info,
-                    price_rate: floating_rate_store.rate_type === ad_type.FLOAT ? '-0.01' : '',
+                    rate_type: floating_rate_store.rate_type === ad_type.FLOAT ? '-0.01' : '',
                     type: buy_sell.BUY,
                 }}
                 onSubmit={my_ads_store.handleSubmit}
@@ -124,9 +124,9 @@ const CreateAdForm = () => {
                         setFieldValue('type', user_input);
                         if (floating_rate_store.rate_type === ad_type.FLOAT) {
                             if (user_input === buy_sell.SELL) {
-                                setFieldValue('price_rate', '0.01');
+                                setFieldValue('rate_type', '0.01');
                             } else {
-                                setFieldValue('price_rate', '-0.01');
+                                setFieldValue('rate_type', '-0.01');
                             }
                         }
                     };
@@ -173,7 +173,7 @@ const CreateAdForm = () => {
                                                         : null
                                                 }
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
-                                                price_rate={errors.price_rate ? '' : values.price_rate}
+                                                rate_type={errors.rate_type ? '' : values.rate_type}
                                                 type={values.type}
                                             />
                                         </div>
@@ -220,12 +220,12 @@ const CreateAdForm = () => {
                                                     />
                                                 )}
                                             </Field>
-                                            <Field name='price_rate'>
+                                            <Field name='rate_type'>
                                                 {({ field }) =>
                                                     floating_rate_store.rate_type === ad_type.FLOAT ? (
                                                         <FloatingRate
                                                             className='p2p-my-ads__form-field'
-                                                            error_messages={errors.price_rate}
+                                                            error_messages={errors.rate_type}
                                                             exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
@@ -250,7 +250,7 @@ const CreateAdForm = () => {
                                                             {...field}
                                                             data-lpignore='true'
                                                             type='text'
-                                                            error={touched.price_rate && errors.price_rate}
+                                                            error={touched.rate_type && errors.rate_type}
                                                             label={localize('Fixed rate (1 {{currency}})', {
                                                                 currency,
                                                             })}

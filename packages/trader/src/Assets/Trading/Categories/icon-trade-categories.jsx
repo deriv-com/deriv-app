@@ -5,6 +5,7 @@ import { Icon } from '@deriv/components';
 
 const IconTradeCategory = ({ category, className }) => {
     let IconCategory;
+    // wdcw
     if (category) {
         switch (category) {
             case 'rise_fall':

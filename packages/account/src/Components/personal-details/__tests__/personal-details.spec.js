@@ -770,10 +770,9 @@ describe('<PersonalDetails/>', () => {
         ).not.toBeInTheDocument();
     });
 
-
-        it('should close tax_identification_number_pop_over when clicked outside', () => {
+    it('should close tax_identification_number_pop_over when clicked outside', () => {
         renderwithRouter(<PersonalDetails {...props} />);
-        
+
         const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
         expect(tax_identification_number_pop_over).toBeInTheDocument();
         fireEvent.click(tax_identification_number_pop_over);

@@ -1,7 +1,7 @@
 import { formatMoney, toMoment } from '@deriv/shared';
 
-import { getMarketInformation } from '../../../../Modules/Reports/Helpers/market-underlying';
-import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
+import { getMarketInformation } from 'Helpers/market-underlying';
+import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
 
 export const formatProfitTableTransactions = (transaction, currency, active_symbols = []) => {
     const format_string = 'DD MMM YYYY HH:mm:ss';

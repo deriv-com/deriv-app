@@ -1,7 +1,7 @@
 import { formatMoney, toTitleCase, toMoment } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
-import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
+import { getMarketInformation } from 'Helpers/market-underlying';
 
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 

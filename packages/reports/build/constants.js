@@ -11,7 +11,6 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const {
     copyConfig,
@@ -39,6 +38,8 @@ const ALIASES = {
     Modules: path.resolve(__dirname, '../src/Modules'),
     Sass: path.resolve(__dirname, '../src/sass'),
     Stores: path.resolve(__dirname, '../src/Stores'),
+    App: path.resolve(__dirname, '../src/App'),
+    Helpers: path.resolve(__dirname, '../src/Helpers'),
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => [
@@ -124,7 +125,6 @@ const plugins = (base, is_test_env, is_mocha_only) => [
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
-    new ForkTsCheckerWebpackPlugin(),
     ...(IS_RELEASE
         ? []
         : [

@@ -16,15 +16,16 @@ import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractPath } from 'App/Components/Routes/helpers';
-import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
-import EmptyTradeHistoryMessage from 'Modules/Reports/Components/empty-trade-history-message.jsx';
+import { getContractDurationType } from 'Helpers/market-underlying';
+
+import EmptyTradeHistoryMessage from 'Components/empty-trade-history-message.jsx';
 import {
     getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
-} from 'Modules/Reports/Constants/data-table-constants';
+} from 'Constants/data-table-constants';
 import PositionsCard from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/positions-drawer-card.jsx';
-import PlaceholderComponent from 'Modules/Reports/Components/placeholder-component.jsx';
-import { getCardLabels } from 'Constants/contract';
+import PlaceholderComponent from 'Components/placeholder-component.jsx';
+import { getCardLabels } from '_common/contract';
 import { connect } from 'Stores/connect';
 
 const EmptyPlaceholderWrapper = props => (

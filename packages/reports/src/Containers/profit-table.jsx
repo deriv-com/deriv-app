@@ -8,12 +8,13 @@ import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } fro
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
-import { getContractPath } from 'App/Components/Routes/helpers';
-import { getSupportedContracts } from 'Constants';
-import { connect } from 'Stores/connect';
-import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
-import PlaceholderComponent from '../Components/placeholder-component.jsx';
-import { ReportsMeta } from '../Components/reports-meta.jsx';
+import { getContractPath } from 'Components/Routes/helpers';
+import { getSupportedContracts } from '_common/contract';
+
+import { connect } from '../Stores/connect';
+import EmptyTradeHistoryMessage from 'Components/empty-trade-history-message.jsx';
+import PlaceholderComponent from 'Components/placeholder-component.jsx';
+import { ReportsMeta } from 'Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
 
 const getRowAction = row_obj =>

@@ -4,12 +4,13 @@ import { Icon, Label, Money, ContractCard } from '@deriv/components';
 import { isMobile, getCurrencyDisplayCode, getTotalProfit, shouldShowCancellation } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
-import { getCardLabels } from 'Constants/contract';
-import { getProfitOrLoss } from 'Modules/Reports/Helpers/profit-loss';
-import IndicativeCell from '../Components/indicative-cell.jsx';
-import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';
-import ProfitLossCell from '../Components/profit_loss_cell.jsx';
-import CurrencyWrapper from '../Components/currency-wrapper.jsx';
+
+import { getCardLabels } from '_common/contract';
+import { getProfitOrLoss } from 'Helpers/profit-loss';
+import IndicativeCell from 'Components/indicative-cell.jsx';
+import MarketSymbolIconRow from 'Components/market-symbol-icon-row.jsx';
+import ProfitLossCell from 'Components/profit_loss_cell.jsx';
+import CurrencyWrapper from 'Components/currency-wrapper.jsx';
 
 const getModeFromValue = key => {
     const map = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import PersonalDetails from '../personal-details';
 import { PlatformContext } from '@deriv/shared';
@@ -15,9 +15,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    Popover: jest.fn(props => {
-        return props.is_open && <span>{props.message}</span>;
-    }),
+    Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),
 }));
 
 const mock_warnings = {};
@@ -41,6 +39,14 @@ jest.mock('Components/real-account-signup/helpers/utils.js', () => ({
         errors: mock_errors,
     })),
 }));
+const fake_alert_messaget =
+    /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i;
+
+const checkbox_text =
+    /i hereby confirm that the tax information i provided is true and complete\. i will also inform deriv investments \(europe\) limited about any changes to this information\./i;
+const tax_residence_pop_over_text =
+    /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
+const tin_pop_over_text = /don't know your tax identification number\?/i;
 
 const runCommonFormfieldsTests = () => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
@@ -87,28 +93,20 @@ const runCommonFormfieldsTests = () => {
     expect(tax_residence_pop_over).toBeInTheDocument();
 
     fireEvent.click(tax_residence_pop_over);
-    expect(
-        screen.getByText(
-            /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
-        )
-    ).toBeInTheDocument();
+    expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
     expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
 
     const tax_identification_number_pop_over = screen.queryByTestId('tax_identification_number_pop_over');
     expect(tax_identification_number_pop_over).toBeInTheDocument();
     fireEvent.click(tax_identification_number_pop_over);
-    expect(screen.getByText(/don't know your tax identification number\?/i)).toBeInTheDocument();
+    expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
     expect(screen.getByText('here').closest('a')).toHaveAttribute(
         'href',
         'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
     );
-    expect(
-        screen.getByRole('checkbox', {
-            name: /i hereby confirm that the tax information i provided is true and complete\. i will also inform deriv investments \(europe\) limited about any changes to this information\./i,
-        })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: checkbox_text })).toBeInTheDocument();
 
     expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
 
@@ -260,7 +258,7 @@ describe('<PersonalDetails/>', () => {
     };
     it('should render PersonalDetails component', () => {
         renderwithRouter(<PersonalDetails {...props} />);
-        expect(screen.getByTestId('personal-details-form')).toBeInTheDocument();
+        expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
     });
 
     it('should show fake-alert message when is_appstore is true', () => {
@@ -269,23 +267,15 @@ describe('<PersonalDetails/>', () => {
                 <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
-        expect(
-            screen.getByText(
-                /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
     });
-    it('should not show fake-alert message when is_appstore is false ', () => {
+    it('should not show fake_alert_message when is_appstore is false ', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
-        expect(
-            screen.queryByText(
-                /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i
-            )
-        ).not.toBeInTheDocument();
+        expect(screen.queryByText(fake_alert_messaget)).not.toBeInTheDocument();
     });
 
     it('should show proper salutation message when is_virtual is true', () => {
@@ -468,11 +458,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
 
-        expect(
-            screen.getByRole('checkbox', {
-                name: /i hereby confirm that the tax information i provided is true and complete\. i will also inform deriv investments \(europe\) limited about any changes to this information\./i,
-            })
-        ).toBeInTheDocument();
+        expect(screen.getByRole('checkbox', { name: checkbox_text })).toBeInTheDocument();
 
         expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
 
@@ -543,19 +529,13 @@ describe('<PersonalDetails/>', () => {
                 tax_identification_number: "Tax Identification Number can't be longer than 25 characters.",
             },
         });
-        fireEvent.change(first_name, {
-            target: { value: '123' },
-        });
+        fireEvent.change(first_name, { target: { value: '123' } });
 
-        fireEvent.change(last_name, {
-            target: { value: 'a' },
-        });
+        fireEvent.change(last_name, { target: { value: 'a' } });
 
         fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
 
-        fireEvent.change(tax_identification_number, {
-            target: { value: '123456789012345678901234567890' },
-        });
+        fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
 
         expect(await screen.findByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
         expect(await screen.findByText(/last name should be between 2 and 50 characters/i)).toBeInTheDocument();
@@ -606,19 +586,11 @@ describe('<PersonalDetails/>', () => {
         const last_name = screen.getByTestId('last_name');
         const date_of_birth = screen.getByTestId('date_of_birth');
         const phone = screen.getByTestId('phone');
-        fireEvent.change(first_name, {
-            target: { value: 'test firstname' },
-        });
+        fireEvent.change(first_name, { target: { value: 'test firstname' } });
 
-        fireEvent.change(last_name, {
-            target: { value: 'test lastname' },
-        });
-        fireEvent.change(date_of_birth, {
-            target: { value: '2000-12-12' },
-        });
-        fireEvent.change(phone, {
-            target: { value: '+931234567890' },
-        });
+        fireEvent.change(last_name, { target: { value: 'test lastname' } });
+        fireEvent.change(date_of_birth, { target: { value: '2000-12-12' } });
+        fireEvent.change(phone, { target: { value: '+931234567890' } });
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         const next_btn = screen.getByRole('button', { name: /next/i });
@@ -668,43 +640,23 @@ describe('<PersonalDetails/>', () => {
         const account_opening_reason_mobile = screen.getByTestId('account_opening_reason_mobile');
 
         fireEvent.click(mr_radio_btn);
-        fireEvent.change(first_name, {
-            target: { value: 'test firstname' },
-        });
+        fireEvent.change(first_name, { target: { value: 'test firstname' } });
 
-        fireEvent.change(last_name, {
-            target: { value: 'test lastname' },
-        });
+        fireEvent.change(last_name, { target: { value: 'test lastname' } });
 
-        fireEvent.change(date_of_birth, {
-            target: { value: '2000-12-12' },
-        });
+        fireEvent.change(date_of_birth, { target: { value: '2000-12-12' } });
 
-        fireEvent.change(place_of_birth_mobile, {
-            target: { value: 'Albania' },
-        });
+        fireEvent.change(place_of_birth_mobile, { target: { value: 'Albania' } });
 
-        fireEvent.change(citizenship, {
-            target: { value: 'Albania' },
-        });
+        fireEvent.change(citizenship, { target: { value: 'Albania' } });
 
-        fireEvent.change(phone, {
-            target: { value: '+49123456789012' },
-        });
-        fireEvent.change(tax_residence_mobile, {
-            target: { value: 'Afghanistan' },
-        });
+        fireEvent.change(phone, { target: { value: '+49123456789012' } });
+        fireEvent.change(tax_residence_mobile, { target: { value: 'Afghanistan' } });
 
-        fireEvent.change(tax_identification_number, {
-            target: { value: '123123123123' },
-        });
-        fireEvent.change(tax_identification_confirm, {
-            target: { value: true },
-        });
+        fireEvent.change(tax_identification_number, { target: { value: '123123123123' } });
+        fireEvent.change(tax_identification_confirm, { target: { value: true } });
 
-        fireEvent.change(account_opening_reason_mobile, {
-            target: { value: 'Income Earning' },
-        });
+        fireEvent.change(account_opening_reason_mobile, { target: { value: 'Income Earning' } });
 
         expect(mr_radio_btn.checked).toEqual(true);
         const next_btn = screen.getByRole('button', { name: /next/i });
@@ -732,13 +684,9 @@ describe('<PersonalDetails/>', () => {
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
 
-        fireEvent.change(first_name, {
-            target: { value: 'test firstname' },
-        });
+        fireEvent.change(first_name, { target: { value: 'test firstname' } });
 
-        fireEvent.change(last_name, {
-            target: { value: 'test lastname' },
-        });
+        fireEvent.change(last_name, { target: { value: 'test lastname' } });
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         expect(previous_btn).toBeEnabled();
@@ -754,38 +702,61 @@ describe('<PersonalDetails/>', () => {
 
         const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
         expect(tax_residence_pop_over).toBeInTheDocument();
+
         fireEvent.click(tax_residence_pop_over);
-        expect(
-            screen.getByText(
-                /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
         fireEvent.click(screen.getByRole('heading', { name: /account opening reason/i }));
 
-        expect(
-            screen.queryByText(
-                /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i
-            )
-        ).not.toBeInTheDocument();
+        expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
     });
 
     it('should close tax_identification_number_pop_over when clicked outside', () => {
         renderwithRouter(<PersonalDetails {...props} />);
 
-        const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
-        expect(tax_identification_number_pop_over).toBeInTheDocument();
-        fireEvent.click(tax_identification_number_pop_over);
-        expect(screen.getByText(/don't know your tax identification number\?/i)).toBeInTheDocument();
+        const tin_pop_over = screen.getByTestId('tax_identification_number_pop_over');
+        expect(tin_pop_over).toBeInTheDocument();
+        fireEvent.click(tin_pop_over);
+
+        expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
-        expect(screen.getByText('here').closest('a')).toHaveAttribute(
-            'href',
-            'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
-        );
 
         fireEvent.click(screen.getByRole('heading', { name: /account opening reason/i }));
 
-        expect(screen.queryByText(/don't know your tax identification number\?/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(tin_pop_over_text)).not.toBeInTheDocument();
+        expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
+    });
+
+    it('should close tax_residence pop-over when scrolled', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
+
+        const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
+        expect(tax_residence_pop_over).toBeInTheDocument();
+        fireEvent.click(tax_residence_pop_over);
+
+        expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
+
+        fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
+            target: { scrollY: 100 },
+        });
+
+        expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
+    });
+
+    it('should close tax_identification_number_pop_over when scrolled', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
+
+        const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
+        expect(tax_identification_number_pop_over).toBeInTheDocument();
+        fireEvent.click(tax_identification_number_pop_over);
+        expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
+
+        fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
+            target: { scrollY: 100 },
+        });
+
+        expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
     });
 });

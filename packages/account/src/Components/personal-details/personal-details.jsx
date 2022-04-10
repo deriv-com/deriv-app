@@ -169,7 +169,7 @@ const PersonalDetails = ({
                             onSubmit={handleSubmit}
                             autoComplete='off'
                             onClick={handleClickOutside}
-                            data-testid='personal-details-form'
+                            data-testid='personal_details_form'
                         >
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>

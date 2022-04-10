@@ -234,7 +234,7 @@ describe('<PersonalDetails/>', () => {
         onCancel: jest.fn(),
     };
 
-    beforeAll(() => ReactDOM.createPortal = jest.fn(component => component));
+    beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
 
     afterAll(() => ReactDOM.createPortal.mockClear());
 

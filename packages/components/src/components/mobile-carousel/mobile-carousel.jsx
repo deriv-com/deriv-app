@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Swipeable } from 'react-swipeable';
+import { useSwipeable } from 'react-swipeable';
 import Icon from '../icon';
 
 export const MobileCarousel = ({ children, ...props }) => {
@@ -39,23 +39,22 @@ export const MobileCarousel = ({ children, ...props }) => {
 
     const swipedLeft = () => goNext();
     const swipedRight = () => goPrev();
-
+    const swipe_handlers = useSwipeable({
+        onSwipedLeft: swipedLeft,
+        onSwipedRight: swipedRight,
+        ...props,
+    });
     return (
         <div className='dc-carousel'>
             <div className='dc-carousel__row'>
                 <div className='dc-carousel__pref'>
                     <Icon icon='IcChevronLeft' onClick={goPrev} />
                 </div>
-                <Swipeable
-                    className={classNames('dc-carousel__view')}
-                    onSwipedLeft={swipedLeft}
-                    onSwipedRight={swipedRight}
-                    {...props}
-                >
+                <div {...swipe_handlers} className={classNames('dc-carousel__view')}>
                     <div className='dc-carousel__body' ref={carousel_body}>
                         {children}
                     </div>
-                </Swipeable>
+                </div>
                 <div className='dc-carousel__next' onClick={goNext}>
                     <Icon icon='IcChevronRight' />
                 </div>

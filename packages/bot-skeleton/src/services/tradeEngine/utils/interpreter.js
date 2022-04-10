@@ -234,7 +234,7 @@ const Interpreter = () => {
         });
     }
 
-    return { stop, run, terminateSession };
+    return { stop, run, terminateSession, bot };
 };
 export default Interpreter;
 

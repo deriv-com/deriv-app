@@ -10,14 +10,7 @@ const UnlinkAccountModal = ({ onClose, is_open, identifier_title, onClickSendEma
     };
 
     return (
-        <Modal
-            className={'unlink-account__modal'}
-            is_open={is_open}
-            has_close_icon
-            toggleModal={onClose}
-            width='440px'
-            title=''
-        >
+        <Modal className={'unlink-account__modal'} is_open={is_open} has_close_icon toggleModal={onClose} width='440px'>
             <Modal.Body>
                 <div onClick={onClose} className='unlink-account__modal-close'>
                     <Icon icon='IcCross' />

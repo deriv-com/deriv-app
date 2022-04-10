@@ -51,17 +51,18 @@ Blockly.Blocks.math_on_list = {
     getRequiredValueInputs() {
         return {
             LIST: () => {
-                return this.childBlocks_[0]?.type !== 'variables_get' 
-                && this.childBlocks_[0]?.type !== 'lists_getSublist'
-                && this.childBlocks_[0]?.type !== 'ohlc_values'
-                && this.childBlocks_[0]?.type !== 'lists_split'
-                && this.childBlocks_[0]?.type !== 'ohlc'
-                && this.childBlocks_[0]?.type !== 'ticks'
-                && this.childBlocks_[0]?.type !== 'lists_repeat'
-                && this.childBlocks_[0]?.type !== 'lastDigitList'
-                && this.childBlocks_[0]?.type !== 'ohlc_values_in_list'
-                && this.childBlocks_[0]?.type !== 'procedures_callreturn';
-                
+                return (
+                    this.childBlocks_[0]?.type !== 'variables_get' &&
+                    this.childBlocks_[0]?.type !== 'lists_getSublist' &&
+                    this.childBlocks_[0]?.type !== 'ohlc_values' &&
+                    this.childBlocks_[0]?.type !== 'lists_split' &&
+                    this.childBlocks_[0]?.type !== 'ohlc' &&
+                    this.childBlocks_[0]?.type !== 'ticks' &&
+                    this.childBlocks_[0]?.type !== 'lists_repeat' &&
+                    this.childBlocks_[0]?.type !== 'lastDigitList' &&
+                    this.childBlocks_[0]?.type !== 'ohlc_values_in_list' &&
+                    this.childBlocks_[0]?.type !== 'procedures_callreturn'
+                );
             },
         };
     },

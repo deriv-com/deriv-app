@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { isDesktop, isMobile } from '@deriv/shared';
-import PersonalDetails from '../personal-details';
-import { PlatformContext } from '@deriv/shared';
 import { BrowserRouter } from 'react-router-dom';
-import { splitValidationResultTypes } from 'Components/real-account-signup/helpers/utils.js';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
+import PersonalDetails from '../personal-details';
+
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -13,9 +17,11 @@ jest.mock('@deriv/shared', () => ({
     isDesktop: jest.fn(() => true),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),
+jest.mock('../../real-account-signup/helpers/utils.js', () => ({
+    splitValidationResultTypes: jest.fn(() => ({
+        warnings: mock_warnings,
+        errors: mock_errors,
+    })),
 }));
 
 const mock_warnings = {};
@@ -33,12 +39,6 @@ const mock_errors = {
     tax_identification_confirm: 'Please confirm your tax information.',
 };
 
-jest.mock('Components/real-account-signup/helpers/utils.js', () => ({
-    splitValidationResultTypes: jest.fn(() => ({
-        warnings: mock_warnings,
-        errors: mock_errors,
-    })),
-}));
 const fake_alert_messaget =
     /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i;
 
@@ -51,20 +51,14 @@ const tin_pop_over_text = /don't know your tax identification number\?/i;
 const runCommonFormfieldsTests = () => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
-
     expect(screen.getByTestId('first_name')).toBeInTheDocument();
     expect(screen.getByTestId('last_name')).toBeInTheDocument();
-
     expect(screen.getByTestId('date_of_birth')).toBeInTheDocument();
-
     expect(screen.queryByTestId('place_of_birth')).toBeInTheDocument();
     expect(screen.queryByTestId('place_of_birth_mobile')).not.toBeInTheDocument();
-
     expect(screen.queryByTestId('citizenship')).toBeInTheDocument();
     expect(screen.queryByTestId('citizenship_mobile')).not.toBeInTheDocument();
-
     expect(screen.queryByTestId('phone')).toBeInTheDocument();
-
     expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
     expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
 
@@ -84,37 +78,34 @@ const runCommonFormfieldsTests = () => {
     ).toBeInTheDocument();
 
     expect(screen.getByText('Place of birth')).toBeInTheDocument();
-
     expect(screen.getByText('Citizenship')).toBeInTheDocument();
-
     expect(screen.getByText('Tax residence')).toBeInTheDocument();
 
     const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
     expect(tax_residence_pop_over).toBeInTheDocument();
 
     fireEvent.click(tax_residence_pop_over);
+
     expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
     expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
-
     const tax_identification_number_pop_over = screen.queryByTestId('tax_identification_number_pop_over');
     expect(tax_identification_number_pop_over).toBeInTheDocument();
+
     fireEvent.click(tax_identification_number_pop_over);
+
     expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
     expect(screen.getByText('here').closest('a')).toHaveAttribute(
         'href',
         'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
     );
+
     expect(screen.getByRole('checkbox', { name: checkbox_text })).toBeInTheDocument();
-
     expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
-
     expect(screen.queryByTestId('dti_dropdown_display')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
-
     expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
-
     expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
 };
 
@@ -243,19 +234,14 @@ describe('<PersonalDetails/>', () => {
         onCancel: jest.fn(),
     };
 
-    beforeAll(() => {
-        ReactDOM.createPortal = jest.fn(component => {
-            return component;
-        });
-    });
+    beforeAll(() => ReactDOM.createPortal = jest.fn(component => component));
 
-    afterAll(() => {
-        ReactDOM.createPortal.mockClear();
-    });
+    afterAll(() => ReactDOM.createPortal.mockClear());
 
     const renderwithRouter = component => {
         render(<BrowserRouter>{component}</BrowserRouter>);
     };
+
     it('should render PersonalDetails component', () => {
         renderwithRouter(<PersonalDetails {...props} />);
         expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
@@ -267,6 +253,7 @@ describe('<PersonalDetails/>', () => {
                 <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
+
         expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
     });
     it('should not show fake_alert_message when is_appstore is false ', () => {
@@ -275,11 +262,13 @@ describe('<PersonalDetails/>', () => {
                 <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
+
         expect(screen.queryByText(fake_alert_messaget)).not.toBeInTheDocument();
     });
 
     it('should show proper salutation message when is_virtual is true', () => {
         renderwithRouter(<PersonalDetails {...props} is_virtual />);
+
         expect(
             screen.getByText(
                 /please remember that it is your responsibility to keep your answers accurate and up to date\. you can update your personal details at any time in your account settings\./i
@@ -289,6 +278,7 @@ describe('<PersonalDetails/>', () => {
 
     it('should show proper salutation message when is_virtual is false', () => {
         renderwithRouter(<PersonalDetails {...props} />);
+
         expect(
             screen.getByText(
                 /please remember that it is your responsibility to keep your answers accurate and up to date\. you can update your personal details at any time in your \./i
@@ -296,12 +286,15 @@ describe('<PersonalDetails/>', () => {
         ).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /account settings/i })).toBeInTheDocument();
         expect(screen.getByText(/account settings/i).closest('a')).toHaveAttribute('href', '/account/personal-details');
+
         fireEvent.click(screen.getByText('account settings'));
+
         expect(props.closeRealAccountSignup).toHaveBeenCalledTimes(1);
     });
 
     it('should show title and Name label when salutation is passed', () => {
         renderwithRouter(<PersonalDetails {...props} />);
+
         expect(
             screen.getByRole('heading', {
                 name: /title and name/i,
@@ -311,18 +304,22 @@ describe('<PersonalDetails/>', () => {
     it('should show Name label when salutation is not passed', () => {
         const newprops = { ...props, value: {} };
         renderwithRouter(<PersonalDetails {...newprops} />);
+
         expect(screen.getByRole('heading', { name: /name/i })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: /title and name/i })).not.toBeInTheDocument();
     });
 
     it('should show salutation options', () => {
         renderwithRouter(<PersonalDetails {...props} />);
+
         const mr_radio_btn = screen.getByRole('radio', { name: /mr/i });
         const mrs_radio_btn = screen.getByRole('radio', { name: /ms/i });
         expect(mr_radio_btn).toBeInTheDocument();
         expect(mrs_radio_btn).toBeInTheDocument();
         expect(mr_radio_btn.checked).toEqual(false);
+
         fireEvent.click(mr_radio_btn);
+
         expect(mr_radio_btn.checked).toEqual(true);
         expect(mrs_radio_btn.checked).toEqual(false);
     });
@@ -335,11 +332,8 @@ describe('<PersonalDetails/>', () => {
         );
 
         expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
-
         expect(screen.getByText(/family name\*/i)).toBeInTheDocument();
-
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
-
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
 
@@ -352,6 +346,7 @@ describe('<PersonalDetails/>', () => {
                 <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
+
         expect(screen.getByRole('heading', { name: /title and name/i })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
         expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
@@ -369,9 +364,9 @@ describe('<PersonalDetails/>', () => {
                 <PersonalDetails {...props} is_svg={false} />
             </PlatformContext.Provider>
         );
+
         expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
-
         expect(screen.getByRole('heading', { name: /other details/i })).toBeInTheDocument();
         expect(screen.getByText('First name')).toBeInTheDocument();
         expect(screen.getByText('Last name')).toBeInTheDocument();
@@ -401,13 +396,10 @@ describe('<PersonalDetails/>', () => {
         );
         expect(screen.getByRole('radio', { name: /mr/i })).toBeDisabled();
         expect(screen.getByRole('radio', { name: /ms/i })).toBeDisabled();
-
         expect(screen.getByTestId('first_name')).toBeDisabled();
         expect(screen.getByTestId('last_name')).toBeDisabled();
-
         expect(screen.getByTestId('date_of_birth')).toBeDisabled();
         expect(screen.getByTestId('place_of_birth')).toBeDisabled();
-
         expect(screen.getByTestId('citizenship')).toBeDisabled();
     });
 
@@ -437,36 +429,26 @@ describe('<PersonalDetails/>', () => {
                 <PersonalDetails {...props} is_svg={false} />
             </PlatformContext.Provider>
         );
+
         expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
-
         expect(screen.getByTestId('first_name')).toBeInTheDocument();
         expect(screen.getByTestId('last_name')).toBeInTheDocument();
-
         expect(screen.getByTestId('date_of_birth')).toBeInTheDocument();
-
         expect(screen.queryByTestId('place_of_birth_mobile')).toBeInTheDocument();
         expect(screen.queryByTestId('place_of_birth')).not.toBeInTheDocument();
-
         expect(screen.queryByTestId('citizenship_mobile')).toBeInTheDocument();
         expect(screen.queryByTestId('citizenship')).not.toBeInTheDocument();
-
         expect(screen.queryByTestId('phone')).toBeInTheDocument();
         expect(screen.queryByTestId('tax_residence_mobile')).toBeInTheDocument();
         expect(screen.queryByTestId('tax_residence')).not.toBeInTheDocument();
-
         expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
-
         expect(screen.getByRole('checkbox', { name: checkbox_text })).toBeInTheDocument();
-
         expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
-
         expect(screen.queryByTestId('dti_dropdown_display')).not.toBeInTheDocument();
         expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();
-
         expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
-
         expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
     });
 
@@ -494,6 +476,7 @@ describe('<PersonalDetails/>', () => {
         isDesktop.mockReturnValue(true);
 
         renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
         const date_of_birth = await screen.getByTestId('date_of_birth');
@@ -511,6 +494,7 @@ describe('<PersonalDetails/>', () => {
         fireEvent.blur(phone);
         fireEvent.blur(tax_residence);
         fireEvent.blur(tax_identification_number);
+
         expect(await screen.findByText(/first name is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/last name is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/date of birth is required\./i)).toBeInTheDocument();
@@ -530,11 +514,8 @@ describe('<PersonalDetails/>', () => {
             },
         });
         fireEvent.change(first_name, { target: { value: '123' } });
-
         fireEvent.change(last_name, { target: { value: 'a' } });
-
         fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
-
         fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
 
         expect(await screen.findByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
@@ -586,8 +567,8 @@ describe('<PersonalDetails/>', () => {
         const last_name = screen.getByTestId('last_name');
         const date_of_birth = screen.getByTestId('date_of_birth');
         const phone = screen.getByTestId('phone');
-        fireEvent.change(first_name, { target: { value: 'test firstname' } });
 
+        fireEvent.change(first_name, { target: { value: 'test firstname' } });
         fireEvent.change(last_name, { target: { value: 'test lastname' } });
         fireEvent.change(date_of_birth, { target: { value: '2000-12-12' } });
         fireEvent.change(phone, { target: { value: '+931234567890' } });
@@ -625,11 +606,10 @@ describe('<PersonalDetails/>', () => {
         };
 
         renderwithRouter(<PersonalDetails {...new_props} />);
-        const mr_radio_btn = screen.getByRole('radio', { name: /mr/i });
 
+        const mr_radio_btn = screen.getByRole('radio', { name: /mr/i });
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
-
         const date_of_birth = screen.getByTestId('date_of_birth');
         const place_of_birth_mobile = screen.getByTestId('place_of_birth_mobile');
         const citizenship = screen.getByTestId('citizenship_mobile');
@@ -641,21 +621,14 @@ describe('<PersonalDetails/>', () => {
 
         fireEvent.click(mr_radio_btn);
         fireEvent.change(first_name, { target: { value: 'test firstname' } });
-
         fireEvent.change(last_name, { target: { value: 'test lastname' } });
-
         fireEvent.change(date_of_birth, { target: { value: '2000-12-12' } });
-
         fireEvent.change(place_of_birth_mobile, { target: { value: 'Albania' } });
-
         fireEvent.change(citizenship, { target: { value: 'Albania' } });
-
         fireEvent.change(phone, { target: { value: '+49123456789012' } });
         fireEvent.change(tax_residence_mobile, { target: { value: 'Afghanistan' } });
-
         fireEvent.change(tax_identification_number, { target: { value: '123123123123' } });
         fireEvent.change(tax_identification_confirm, { target: { value: true } });
-
         fireEvent.change(account_opening_reason_mobile, { target: { value: 'Income Earning' } });
 
         expect(mr_radio_btn.checked).toEqual(true);
@@ -685,7 +658,6 @@ describe('<PersonalDetails/>', () => {
         const last_name = screen.getByTestId('last_name');
 
         fireEvent.change(first_name, { target: { value: 'test firstname' } });
-
         fireEvent.change(last_name, { target: { value: 'test lastname' } });
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });

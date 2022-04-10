@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FilterDropdown } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
+import CompositeCalendar from 'Components/Form/CompositeCalendar';
 
 const FilterComponent = ({
     action_type,

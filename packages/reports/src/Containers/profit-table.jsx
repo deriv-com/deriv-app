@@ -6,8 +6,8 @@ import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
 import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
-import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
+import { ReportsTableRowLoader } from 'Components/Elements/ContentLoader';
+import CompositeCalendar from 'Components/Form/CompositeCalendar';
 import { getContractPath } from 'Components/Routes/helpers';
 import { getSupportedContracts } from '_common/contract';
 

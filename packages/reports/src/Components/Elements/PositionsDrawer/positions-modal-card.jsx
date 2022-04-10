@@ -13,7 +13,7 @@ import {
     isOpen,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { BinaryLink } from 'App/Components/Routes';
+import { BinaryLink } from 'Components/Routes';
 import { connect } from 'Stores/connect';
 import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
 

@@ -1,3 +1,7 @@
 import { createContext } from 'react';
 
-export const WizardContext = createContext({} as any);
+type WalletWizardState = {
+    selected_wallet?: string;
+};
+
+export const WizardContext = createContext<WalletWizardState>({});

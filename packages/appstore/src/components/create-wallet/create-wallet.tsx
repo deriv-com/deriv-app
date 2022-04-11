@@ -11,7 +11,7 @@ type TCreateWallet = {
     should_show_fiat: boolean;
     setShouldShowFiat: (show: boolean) => void;
     setSeletedWallet: (wallet: string) => void;
-    selected_wallet: string;
+    selected_wallet?: string;
 };
 
 const CreateWallet = ({

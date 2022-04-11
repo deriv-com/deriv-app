@@ -24,55 +24,55 @@ const TempMainContent = ({ onSubmit }: any) => {
     return <></>;
 };
 
-const WalletWizard = ({ close }: WalletWizardProps) => {
-    const right_panel_content = {
-        upper_block: SelectedWallet,
-    };
-    const steps: StepData[] = [
-        {
-            step_title: localize('Wallet'),
-            main_content: { component: WalletStep },
-            right_panel_content,
+const right_panel_content = {
+    upper_block: SelectedWallet,
+};
+const steps: StepData[] = [
+    {
+        step_title: localize('Wallet'),
+        main_content: { component: WalletStep },
+        right_panel_content,
+    },
+    {
+        step_title: localize('Currency'),
+        main_content: { component: TempMainContent, header: localize("Choose your wallet's currency") },
+        right_panel_content,
+    },
+    {
+        step_title: localize('Personal details'),
+        main_content: {
+            component: PersonalDetailsStep,
+            header: localize('Personal details'),
+            subheader: localize(
+                'Please provide your information for verification purposes. If you give us inaccurate information, you may be unable to make deposits or withdrawals.'
+            ),
         },
-        {
-            step_title: localize('Currency'),
-            main_content: { component: TempMainContent, header: localize("Choose your wallet's currency") },
-            right_panel_content,
+        right_panel_content,
+    },
+    {
+        step_title: localize('Address'),
+        main_content: {
+            component: AddressDetailsStep,
+            header: localize('Address information'),
+            subheader: localize(
+                'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
+            ),
         },
-        {
-            step_title: localize('Personal details'),
-            main_content: {
-                component: PersonalDetailsStep,
-                header: localize('Personal details'),
-                subheader: localize(
-                    'Please provide your information for verification purposes. If you give us inaccurate information, you may be unable to make deposits or withdrawals.'
-                ),
-            },
-            right_panel_content,
-        },
-        {
-            step_title: localize('Address'),
-            main_content: {
-                component: AddressDetailsStep,
-                header: localize('Address information'),
-                subheader: localize(
-                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
-                ),
-            },
-            right_panel_content,
-        },
-        {
-            step_title: localize('Terms of use'),
-            main_content: { component: TermsOfUseStep, header: localize('Terms of use') },
-            right_panel_content,
-        },
-        {
-            step_title: localize('Complete'),
-            main_content: { component: TempMainContent, header: localize('Completed') },
-            is_fullwidth: true,
-        },
-    ];
+        right_panel_content,
+    },
+    {
+        step_title: localize('Terms of use'),
+        main_content: { component: TermsOfUseStep, header: localize('Terms of use') },
+        right_panel_content,
+    },
+    {
+        step_title: localize('Complete'),
+        main_content: { component: TempMainContent, header: localize('Completed') },
+        is_fullwidth: true,
+    },
+];
 
+const WalletWizard = ({ close }: WalletWizardProps) => {
     return (
         <div className='wallet-wizard'>
             <WizardContext.Provider value={{}}>

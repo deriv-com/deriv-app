@@ -7,55 +7,58 @@ import { useStores } from 'Stores';
 
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
+    const no_symbols_regex = /^[a-zA-Z0-9\\\s.@_+-]+$/;
+    const no_symbols_message =
+        '{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+._@';
+    const max_characters_error_message = '{{field_name}} has exceeded maximum length of 200 characters.';
+
+    // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
+    const field_dictionary = my_profile_store.selected_payment_method_fields.reduce((dict, field_data) => {
+        return { ...dict, [field_data[0]]: field_data[1].display_name };
+    }, {});
+
+    // Generates suitable error message
+    const setErrorMessage = (user_input, field) => {
+        if (!no_symbols_regex.test(user_input)) {
+            return localize(no_symbols_message, { field_name: field_dictionary[field] });
+        } else if (user_input.length > 200) {
+            return localize(max_characters_error_message, { field_name: field_dictionary[field] });
+        }
+        return null;
+    };
 
     const validateFields = values => {
         const errors = {};
-        const no_symbols_regex = /^[a-zA-Z0-9\\\s.@_+-]+$/;
-        const no_symbols_message = localize(
-            'This field can only include letters, numbers, spaces, and any of these symbols: -+._@'
-        );
-        const max_characters_error_message = localize('This field has exceeded maximum length of 200 characters.');
-
         if (values.account) {
-            if (!no_symbols_regex.test(values.account)) {
-                errors.account = no_symbols_message;
-            } else if (values.account.length > 200) {
-                errors.account = max_characters_error_message;
+            const account_err_message = setErrorMessage(values.account, 'account');
+            if (account_err_message) {
+                errors.account = account_err_message;
             }
         }
-
         if (values.bank_name) {
-            if (!no_symbols_regex.test(values.bank_name)) {
-                errors.bank_name = no_symbols_message;
-            } else if (values.bank_name.length > 200) {
-                errors.bank_name = max_characters_error_message;
+            const bank_name_err_message = setErrorMessage(values.bank_name, 'bank_name');
+            if (bank_name_err_message) {
+                errors.bank_name = bank_name_err_message;
             }
         }
-
         if (values.branch) {
-            if (!no_symbols_regex.test(values.branch)) {
-                errors.branch = no_symbols_message;
-            } else if (values.branch.length > 200) {
-                errors.branch = max_characters_error_message;
+            const branch_err_message = setErrorMessage(values.branch, 'branch');
+            if (branch_err_message) {
+                errors.branch = branch_err_message;
             }
         }
-
         if (values.instructions) {
-            if (!no_symbols_regex.test(values.instructions)) {
-                errors.instructions = no_symbols_message;
-            } else if (values.instructions.length > 200) {
-                errors.instructions = max_characters_error_message;
+            const instruction_err_message = setErrorMessage(values.instructions, 'instructions');
+            if (instruction_err_message) {
+                errors.instructions = instruction_err_message;
             }
         }
-
         if (values.name) {
-            if (!no_symbols_regex.test(values.name)) {
-                errors.name = no_symbols_message;
-            } else if (values.name.length > 200) {
-                errors.name = max_characters_error_message;
+            const name_err_message = setErrorMessage(values.name, 'name');
+            if (name_err_message) {
+                errors.name = name_err_message;
             }
         }
-
         return errors;
     };
 

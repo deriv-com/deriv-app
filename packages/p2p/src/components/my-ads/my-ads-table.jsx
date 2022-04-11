@@ -62,7 +62,7 @@ const MyAdsTable = () => {
                     </div>
                 )}
                 <AdExceedsDailyLimitModal />
-                <div className='p2p-my-ads__header'>
+                <div className='p2p-my-ads__header' data-testid='dp2p-my-ads-table_header'>
                     {isDesktop() && (
                         <Button
                             is_disabled={general_store.is_barred}

@@ -56,7 +56,7 @@ const MyAds = () => {
         }
 
         return (
-            <div className='p2p-my-ads'>
+            <div className='p2p-my-ads' data-testid='dp2p-my-ads-table_container'>
                 <MyAdsTable />
             </div>
         );

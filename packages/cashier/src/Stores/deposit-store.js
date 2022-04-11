@@ -69,6 +69,11 @@ export default class DepositStore {
                 setTimeoutCashierUrl();
             }
         }
+
+        if (!this.root_store.client.account_status?.status?.includes('deposit_attempt')) {
+            await this.root_store.client.updateAccountStatus();
+        }
+
         setLoading(false);
     }
 

@@ -111,7 +111,7 @@ const BuySellForm = props => {
                 return (
                     <React.Fragment>
                         <Form noValidate>
-                            <div className='buy-sell__modal-content'>
+                            <div className='buy-sell__modal-content' data-testid='dp2p-buy-sell-form_container'>
                                 <div className='buy-sell__modal-field-wrapper'>
                                     <div className='buy-sell__modal-field'>
                                         <Text as='p' color='less-prominent' line_height='m' size='xxs'>

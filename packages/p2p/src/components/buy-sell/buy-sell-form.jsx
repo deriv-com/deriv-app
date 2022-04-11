@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Icon, Input, Text } from '@deriv/components';
+import { HintBox, Icon, Input, Text } from '@deriv/components';
 import { getRoundedNumber, getFormattedText, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
+import { requestWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
-    const { advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
+    const { currency, local_currency_config } = general_store.client;
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
+    const [market_rate_on_mount, setMarketRateOnMount] = React.useState(null);
     buy_sell_store.setFormProps(props);
 
     const { setPageFooterParent } = props;
@@ -36,6 +39,13 @@ const BuySellForm = props => {
 
     React.useEffect(
         () => {
+            requestWS({
+                exchange_rates: 1,
+                base_currency: currency,
+            }).then(response => {
+                setMarketRateOnMount(response.exchange_rates.rates[local_currency_config.currency]);
+            });
+
             my_profile_store.setShouldShowAddPaymentMethodForm(false);
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
@@ -96,8 +106,19 @@ const BuySellForm = props => {
                 payment_info: buy_sell_store.payment_info,
             }}
             initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
-            onSubmit={(...args) => {
-                buy_sell_store.handleSubmit(() => isMounted(), ...args);
+            onSubmit={async (...args) => {
+                const updated_market_rate = await requestWS({
+                    exchange_rates: 1,
+                    base_currency: currency,
+                });
+                if (market_rate_on_mount !== updated_market_rate.exchange_rates.rates[local_currency_config.currency]) {
+                    buy_sell_store.setShouldShowPopup(false);
+                    setTimeout(() => {
+                        buy_sell_store.setShowRateChangedPopup(true);
+                    }, 250);
+                } else {
+                    buy_sell_store.handleSubmit(() => isMounted(), ...args);
+                }
             }}
         >
             {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
@@ -110,6 +131,17 @@ const BuySellForm = props => {
 
                 return (
                     <React.Fragment>
+                        <div className='buy-sell__modal-hintbox'>
+                            <HintBox
+                                icon='IcAlertInfo'
+                                message={
+                                    <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                        <Localize i18n_default_text="If the market rate changes from the rate shown here, we won't be able to process your order." />
+                                    </Text>
+                                }
+                                is_info
+                            />
+                        </div>
                         <Form noValidate>
                             <div className='buy-sell__modal-content'>
                                 <div className='buy-sell__modal-field-wrapper'>

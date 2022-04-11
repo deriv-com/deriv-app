@@ -66,7 +66,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         if (!should_show_popup) {
             setErrorMessage(null);
         }
-
         my_profile_store.setShouldShowAddPaymentMethodForm(false);
         my_profile_store.setSelectedPaymentMethod('');
         my_profile_store.setSelectedPaymentMethodDisplayName('');
@@ -129,7 +128,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     return (
         <Modal
             className='buy-sell__modal'
-            height={table_type === buy_sell.BUY ? '400px' : '649px'}
+            height={'100%'}
             width='456px'
             is_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
             title={modal_title}

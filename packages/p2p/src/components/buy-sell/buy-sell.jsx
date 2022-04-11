@@ -12,10 +12,11 @@ import BuySellHeader from './buy-sell-header.jsx';
 import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
 import FilterModal from './filter-modal';
+import RateChangedModal from './rate-changed-modal.jsx';
 import './buy-sell.scss';
 
 const BuySell = () => {
-    const { buy_sell_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
     const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
     const previous_scroll_top = React.useRef(0);
 
@@ -29,6 +30,12 @@ const BuySell = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    let local_currency = '';
+
+    if (general_store?.client?.local_currency_config?.currency) {
+        local_currency = general_store.client.local_currency_config.currency;
+    }
 
     const onScroll = event => {
         if (!buy_sell_store.show_advertiser_page) {
@@ -57,7 +64,6 @@ const BuySell = () => {
             </React.Fragment>
         );
     }
-
     return (
         <div className='buy-sell'>
             <FilterModal />
@@ -79,6 +85,11 @@ const BuySell = () => {
                 setShouldShowPopup={buy_sell_store.setShouldShowPopup}
                 table_type={buy_sell_store.table_type}
             />
+            <RateChangedModal
+                local_currency={local_currency}
+                show_rate_changed_popup={buy_sell_store.show_rate_changed_popup}
+                setShowRateChangedPopup={buy_sell_store.setShowRateChangedPopup}
+            />
         </div>
     );
 };
@@ -89,6 +100,7 @@ BuySell.propTypes = {
     hideVerification: PropTypes.func,
     is_submit_disabled: PropTypes.bool,
     navigate: PropTypes.func,
+    local_currency: PropTypes.string,
     onCancelClick: PropTypes.func,
     onChangeTableType: PropTypes.func,
     onConfirmClick: PropTypes.func,
@@ -97,6 +109,8 @@ BuySell.propTypes = {
     setErrorMessage: PropTypes.func,
     setIsSubmitDisabled: PropTypes.func,
     setSelectedAdvert: PropTypes.func,
+    setShowRateChangedPopup: PropTypes.func,
+    show_rate_changed_popup: PropTypes.bool,
     should_show_popup: PropTypes.bool,
     should_show_verification: PropTypes.bool,
     show_advertiser_page: PropTypes.bool,

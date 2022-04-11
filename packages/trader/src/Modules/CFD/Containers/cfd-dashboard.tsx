@@ -153,7 +153,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     const [is_demo_enabled, setIsDemoEnabled] = React.useState<boolean>(false);
     const [is_real_enabled, setIsRealEnabled] = React.useState<boolean>(false);
     const [active_index, setActiveIndex] = React.useState<number>(0);
-    const [is_demo_tab, setIsDemoTab] = React.useState<boolean>(true);
+    const [is_demo_tab, setIsDemoTab] = React.useState<boolean>(false);
     const [is_notification_loaded, setIsNotificationLoaded] = React.useState<boolean>(false);
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -183,7 +183,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
-        updateActiveIndex();
         props.checkShouldOpenAccount();
 
         if (props.is_logged_in) {
@@ -235,7 +234,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const updateActiveIndex = (index?: number) => {
-        if (!index) return;
+        if (index === undefined) return;
         const updated_state: { is_demo_tab?: boolean; active_index?: number } = {};
         // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
         if (index === 1) updated_state.is_demo_tab = true;

@@ -1,5 +1,5 @@
 import React from 'react';
-import Loading from '../../../templates/_common/components/loading';
+import Loading from '_common/components/loading';
 
 const LoadingCFDRealAccountDisplay = () => (
     <div className='cfd-real-accounts-display'>

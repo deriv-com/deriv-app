@@ -15,6 +15,7 @@ export default class PaymentAgentStore {
     @observable container = Constants.containers.payment_agent;
     @observable error = new ErrorStore();
     @observable filtered_list = [];
+    @observable is_justification_recieved = false;
     @observable is_name_selected = true;
     @observable is_withdraw = false;
     @observable is_try_withdraw_successful = false;
@@ -249,6 +250,36 @@ export default class PaymentAgentStore {
             }
         }
         setLoading(false);
+    }
+
+    @action.bound
+    setIsJustificationRecieved(value) {
+        this.is_justification_recieved = value;
+    }
+
+    @action.bound
+    async requestTrySendPaymentAgentWithdrawJustification({
+        amount,
+        client_justification,
+        currency,
+        loginid,
+        verification_code,
+        setSubmitting,
+    }) {
+        const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
+            amount,
+            currency,
+            client_justification,
+            dry_run: 1,
+            loginid,
+            verification_code,
+        });
+        setSubmitting(false);
+        if (payment_agent_withdraw.error.code === 'PaymentAgentJustificationAdded') {
+            this.setIsJustificationRecieved(true);
+        } else {
+            this.verification.error.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent, null);
+        }
     }
 
     @action.bound

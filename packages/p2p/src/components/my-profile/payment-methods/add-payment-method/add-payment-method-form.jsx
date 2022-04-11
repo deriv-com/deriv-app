@@ -60,6 +60,12 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                 errors.name = name_err_message;
             }
         }
+        if (values.bank_code) {
+            const bank_code_err_message = setErrorMessage(values.name, 'bank_code');
+            if (bank_code_err_message) {
+                errors.bank_code = bank_code_err_message;
+            }
+        }
         return errors;
     };
 

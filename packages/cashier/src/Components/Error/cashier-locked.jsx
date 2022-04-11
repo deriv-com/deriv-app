@@ -21,6 +21,7 @@ const CashierLocked = ({
     const self_exclusion = cashier_validation?.includes('SelfExclusion');
     const no_withdrawal_or_trading_status = cashier_validation?.includes('no_withdrawal_or_trading_status');
     const only_pa_withdrawals_allowed_status = cashier_validation?.includes('only_pa_withdrawals_allowed_status');
+    const withdraw_service_unavailable_for_pa = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
     const withdrawal_locked_status = cashier_validation?.includes('withdrawal_locked_status');
     const documents_expired = cashier_validation?.includes('documents_expired');
     const cashier_locked_status = cashier_validation?.includes('cashier_locked_status');
@@ -213,6 +214,10 @@ const CashierLocked = ({
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');
         message = localize('You can only make deposits. Please contact us via live chat for more information.');
+    } else if (is_withdrawal_lock && withdraw_service_unavailable_for_pa) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Withdrawals are locked');
+        message = localize('This feature is not available for payment agents.');
     }
 
     return (

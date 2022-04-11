@@ -35,9 +35,8 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const amount_dealt = amount - remaining_amount;
     const is_buy_advert = type === buy_sell.BUY;
 
-    const onClickActivateDeactivate = () => {
-        my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
-    };
+    const onClickActivateDeactivate = () =>
+        !general_store.is_barred && my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
@@ -161,13 +160,20 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 ) : (
                                     <div
                                         className='p2p-my-ads__table-add'
-                                        onClick={() => {
-                                            setAdvert(advert);
-                                            my_ads_store.showQuickAddModal(advert);
-                                        }}
+                                        onClick={
+                                            !general_store.is_barred &&
+                                            (() => {
+                                                setAdvert(advert);
+                                                my_ads_store.showQuickAddModal(advert);
+                                            })
+                                        }
                                     >
-                                        <Icon icon='IcAdd' />
-                                        <Text color='prominent' size='xxs' weight='bold'>
+                                        <Icon color={general_store.is_barred && 'disabled'} icon='IcAdd' />
+                                        <Text
+                                            color={general_store.is_barred ? 'less-prominent' : 'prominent'}
+                                            size='xxs'
+                                            weight='bold'
+                                        >
                                             <Localize i18n_default_text='Add' />
                                         </Text>
                                     </div>
@@ -226,13 +232,20 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             ) : (
                                 <div
                                     className='p2p-my-ads__table-add'
-                                    onClick={() => {
-                                        setAdvert(advert);
-                                        my_ads_store.showQuickAddModal(advert);
-                                    }}
+                                    onClick={
+                                        !general_store.is_barred &&
+                                        (() => {
+                                            setAdvert(advert);
+                                            my_ads_store.showQuickAddModal(advert);
+                                        })
+                                    }
                                 >
-                                    <Icon icon='IcAdd' />
-                                    <Text color='prominent' size='xxs' weight='bold'>
+                                    <Icon color={general_store.is_barred && 'disabled'} icon='IcAdd' />
+                                    <Text
+                                        color={general_store.is_barred ? 'less-prominent' : 'prominent'}
+                                        size='xxs'
+                                        weight='bold'
+                                    >
                                         <Localize i18n_default_text='Add' />
                                     </Text>
                                 </div>
@@ -281,7 +294,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     className='p2p-my-ads__table-popovers__edit'
                                     message={localize('Edit')}
                                 >
-                                    <Icon icon='IcEdit' size={16} />
+                                    <Icon icon='IcEdit' color={general_store.is_barred && 'disabled'} size={16} />
                                 </Popover>
                             </div>
                             <div onClick={onClickDelete}>

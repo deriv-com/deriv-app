@@ -65,7 +65,7 @@ export const getLastDigit = tick => {
 export const getLastDigitForList = (tick, pip_size = 0) => {
     const value = Number(tick).toFixed(pip_size);
     return value[value.length - 1];
-}
+};
 
 const getBackoffDelayInMs = (error, delay_index) => {
     const base_delay = 2.5;

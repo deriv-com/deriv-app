@@ -21,7 +21,7 @@ describe('<MissingPersonalDetails />', () => {
         );
 
     it('should render the MissingPersonalDetails component', () => {
-        renderWithRouter(<MissingPersonalDetails/>);
+        renderWithRouter(<MissingPersonalDetails />);
 
         expect(screen.getByText(/your personal details are missing/i)).toBeInTheDocument();
         const btn = screen.getByRole('link', { name: /go to personal details/i });

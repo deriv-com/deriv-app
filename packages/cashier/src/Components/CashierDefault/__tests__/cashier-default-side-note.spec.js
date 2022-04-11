@@ -41,35 +41,6 @@ describe('<CashierDefaultSideNote />', () => {
         expect(window.LC_API.open_chat_window).toHaveBeenCalledTimes(1);
     });
 
-    it('should show the proper messages, with fiat currency and can_change_fiat_currency={true} property', () => {
-        render(<CashierDefaultSideNote currency={'USD'} can_change_fiat_currency is_crypto={false} />);
-
-        expect(screen.getByText('Your fiat account currency is set to USD.')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                textContentMatcher(
-                    'You can set a new currency before you deposit for the first time or create a real DMT5 or Deriv X account.'
-                )
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should trigger onClick callback when the client clicks the "set a new currency" link', () => {
-        const openRealAccountSignup = jest.fn();
-        render(
-            <CashierDefaultSideNote
-                currency={'USD'}
-                can_change_fiat_currency
-                is_crypto={false}
-                openRealAccountSignup={openRealAccountSignup}
-            />
-        );
-
-        const set_a_new_currency_link = screen.getByText('set a new currency');
-        fireEvent.click(set_a_new_currency_link);
-        expect(openRealAccountSignup).toHaveBeenCalledTimes(1);
-    });
-
     it('should show the proper messages when is_crypto is true', () => {
         render(<CashierDefaultSideNote currency={'BTC'} is_crypto />);
 

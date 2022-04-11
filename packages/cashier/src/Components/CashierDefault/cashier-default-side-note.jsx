@@ -7,13 +7,7 @@ import { connect } from 'Stores/connect';
 import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import 'Sass/cashier-default.scss';
 
-const CashierDefaultSideNote = ({
-    can_change_fiat_currency,
-    currency,
-    is_crypto,
-    openRealAccountSignup,
-    setDepositTarget,
-}) => {
+const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, setDepositTarget }) => {
     const currency_code = getCurrencyDisplayCode(currency);
 
     const getSideNoteDescription = () => {
@@ -22,15 +16,6 @@ const CashierDefaultSideNote = ({
                 <Localize
                     i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
                     values={{ currency_code }}
-                />
-            );
-        } else if (can_change_fiat_currency) {
-            return (
-                <Localize
-                    i18n_default_text='You can <0>set a new currency</0> before you deposit for the first time or create a real DMT5 or Deriv X account.'
-                    components={[
-                        <a key={0} className='link link--orange' onClick={() => openRealAccountSignup('manage')} />,
-                    ]}
                 />
             );
         }
@@ -96,7 +81,6 @@ const CashierDefaultSideNote = ({
 };
 
 CashierDefaultSideNote.propTypes = {
-    can_change_fiat_currency: PropTypes.bool,
     currency: PropTypes.string,
     mt5_login_list: PropTypes.array,
     openRealAccountSignup: PropTypes.func,
@@ -104,7 +88,6 @@ CashierDefaultSideNote.propTypes = {
 };
 
 export default connect(({ client, modules, ui }) => ({
-    can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,
     mt5_login_list: client.mt5_login_list,
     openRealAccountSignup: ui.openRealAccountSignup,

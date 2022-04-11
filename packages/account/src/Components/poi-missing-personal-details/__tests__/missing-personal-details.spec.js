@@ -64,7 +64,7 @@ describe('<MissingPersonalDetails />', () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <BrowserRouter>
-                    <MissingPersonalDetails from='proof_of_identity' />
+                    <MissingPersonalDetails />
                 </BrowserRouter>
             </PlatformContext.Provider>
         );
@@ -77,6 +77,6 @@ describe('<MissingPersonalDetails />', () => {
 
         const btn = screen.getByRole('link', { name: /go to personal details/i });
         expect(btn).toBeInTheDocument();
-        expect(btn.closest('a')).toHaveAttribute('href', '/account/personal-details?from=proof_of_identity');
+        expect(btn.closest('a')).toHaveAttribute('href', '/account/personal-details');
     });
 });

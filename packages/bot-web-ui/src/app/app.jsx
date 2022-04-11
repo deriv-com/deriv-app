@@ -25,7 +25,6 @@ const App = ({ passthrough }) => {
     const { app, common, core } = root_store_instance.current;
     const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
 
-    // console.log
     React.useEffect(() => {
         showDigitalOptionsMaltainvestError(core.client, common);
         // eslint-disable-next-line react-hooks/exhaustive-deps

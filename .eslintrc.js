@@ -1,7 +1,7 @@
 module.exports = {
     root: true,
     parser: '@babel/eslint-parser',
-    plugins: ['prettier'],
+    plugins: ['prettier', 'testing-library'],
     env: {
         es6: true,
         browser: true,
@@ -99,8 +99,11 @@ module.exports = {
         'plugin:jest-dom/recommended',
     ],
     parserOptions: {
-        ecmaVersion: 8,
         requireConfigFile: false,
+        ecmaVersion: 8,
+        babelOptions: {
+            presets: ['@babel/preset-react'],
+        },
         ecmaFeatures: {
             jsx: true,
         },
@@ -110,10 +113,10 @@ module.exports = {
             version: '16',
         },
     },
-    // overrides: [
-    //   {
-    //     files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
-    //     extends: ['plugin:testing-library/react'],
-    //   },
-    // ],
+    overrides: [
+        {
+            files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+            extends: ['plugin:testing-library/react'],
+        },
+    ],
 };

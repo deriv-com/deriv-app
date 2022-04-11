@@ -7,14 +7,14 @@ import { MainComponentProps } from '@deriv/ui';
 
 const AddressDetailsStep = ({ onSubmit }: MainComponentProps) => {
     const { client } = useStores();
-    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
+    const [is_submit_enabled, setIsSubmitEnabled] = React.useState(false);
     const formik_ref = React.useRef<FormikValues>(null);
 
     React.useEffect(() => {
-        if (!is_submit_disabled) {
+        if (!is_submit_enabled) {
             onSubmit(formik_ref.current?.values);
         }
-    }, [is_submit_disabled]);
+    }, [is_submit_enabled]);
 
     const {
         account_settings,
@@ -43,7 +43,7 @@ const AddressDetailsStep = ({ onSubmit }: MainComponentProps) => {
     return (
         <Body
             value={address_details_config.form_value}
-            onSubmitEnabledChange={setIsSubmitDisabled}
+            onSubmitEnabledChange={setIsSubmitEnabled}
             selected_step_ref={formik_ref}
             is_gb_residence={residence === 'gb'}
             fetchStatesList={fetchStatesList}

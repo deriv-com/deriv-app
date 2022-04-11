@@ -24,31 +24,34 @@ const TermsOfUse = ({
     value,
     real_account_signup_target,
     onSubmitEnabledChange,
+    selected_step_ref,
     ...props
 }) => {
     const { is_appstore } = React.useContext(PlatformContext);
-    // const is_submit_disabled_ref = React.useRef(true);
+    const is_submit_disabled_ref = React.useRef(true);
 
     const handleCancel = () => {
         const current_step = getCurrentStep() - 1;
         onCancel(current_step, goToPreviousStep);
     };
 
-    // const checkSubmitStatus = errors => {
-    //     const is_submit_disabled = !values.agreed_tos || !values.agreed_tnc;
+    const checkSubmitStatus = values => {
+        const is_submit_disabled = !values.agreed_tos || !values.agreed_tnc;
 
-    //     if (is_submit_disabled_ref.current !== is_submit_disabled) {
-    //         is_submit_disabled_ref.current = is_submit_disabled;
-    //         onSubmitEnabledChange?.(!is_submit_disabled);
-    //     }
-    // };
+        if (is_submit_disabled_ref.current !== is_submit_disabled) {
+            is_submit_disabled_ref.current = is_submit_disabled;
+            onSubmitEnabledChange?.(!is_submit_disabled);
+        }
+    };
 
     return (
         <Formik
+            innerRef={selected_step_ref}
             initialValues={value}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, {}, actions.setSubmitting, goToNextStep);
             }}
+            validate={checkSubmitStatus}
         >
             {({ handleSubmit, values, isSubmitting }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>

@@ -7,14 +7,14 @@ import { MainComponentProps } from '@deriv/ui';
 
 const TermsOfUseStep = ({ onSubmit }: MainComponentProps) => {
     const { client } = useStores();
-    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
+    const [is_submit_enabled, setIsSubmitEnabled] = React.useState(false);
     const formik_ref = React.useRef<FormikValues>(null);
 
     React.useEffect(() => {
-        if (!is_submit_disabled) {
+        if (is_submit_enabled) {
             onSubmit(formik_ref.current?.values);
         }
-    }, [is_submit_disabled]);
+    }, [is_submit_enabled]);
 
     const { account_settings, upgrade_info, residence_list, landing_company_shortcode } = client;
 
@@ -35,7 +35,7 @@ const TermsOfUseStep = ({ onSubmit }: MainComponentProps) => {
     return (
         <Body
             value={terms_of_use_config.form_value}
-            onSubmitEnabledChange={setIsSubmitDisabled}
+            onSubmitEnabledChange={setIsSubmitEnabled}
             selected_step_ref={formik_ref}
             {...terms_of_use_config.props}
         />

@@ -44,6 +44,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             className={classNames('buy-sell__header', {
                 'buy-sell__header-position-static': !!buy_sell_store.api_error_message,
             })}
+            data-testid='dp2p-buy-sell-header_container'
         >
             <div className='buy-sell__header-container'>
                 <AnimationWrapper is_visible={is_visible}>
@@ -64,6 +65,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                     <SortDropdown />
                     <Icon
                         className='buy-sell__header-row--filter'
+                        data_testid={'dp2p-buy-sell-header_filter-icon'}
                         icon='IcFilter'
                         onClick={() => buy_sell_store.setIsFilterModalOpen(true)}
                         size={40}

@@ -59,7 +59,7 @@ const BuySell = () => {
     }
 
     return (
-        <div className='buy-sell'>
+        <div className='buy-sell' data-testid='dp2p-buy-sell_container'>
             <FilterModal />
             <BuySellHeader
                 is_visible={is_toggle_visible}

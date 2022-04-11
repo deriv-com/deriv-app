@@ -21,9 +21,12 @@ describe('<MissingPersonalDetails />', () => {
         );
 
     it('should render the MissingPersonalDetails component', () => {
-        renderWithRouter(<MissingPersonalDetails from='proof_of_identity' />);
+        renderWithRouter(<MissingPersonalDetails/>);
 
         expect(screen.getByText(/your personal details are missing/i)).toBeInTheDocument();
+        const btn = screen.getByRole('link', { name: /go to personal details/i });
+        expect(btn).toBeInTheDocument();
+        expect(btn.closest('a')).toHaveAttribute('href', '/account/personal-details');
     });
 
     it('should show invalid msg and update link if has_invalid_postal_code is true', () => {
@@ -41,6 +44,20 @@ describe('<MissingPersonalDetails />', () => {
             'href',
             '/account/personal-details?from=proof_of_identity#address_postcode'
         );
+    });
+
+    it('should show missing msg with proper icon if has_invalid_postal_code is false and is_appstore is true', () => {
+        renderWithRouter(<MissingPersonalDetails from='proof_of_identity' />);
+
+        expect(screen.getByText(/your personal details are missing/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/please complete your personal details before you verify your identity\./i)
+        ).toBeInTheDocument();
+        expect(screen.getByText('IcAccountMissingDetailsDashboard')).toBeInTheDocument();
+
+        const btn = screen.getByRole('link', { name: /go to personal details/i });
+        expect(btn).toBeInTheDocument();
+        expect(btn.closest('a')).toHaveAttribute('href', '/account/personal-details?from=proof_of_identity');
     });
 
     it('should show missing msg with proper icon if has_invalid_postal_code is false and is_appstore is false', () => {

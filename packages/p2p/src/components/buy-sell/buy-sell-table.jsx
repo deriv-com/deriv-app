@@ -29,6 +29,8 @@ const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 const BuySellTable = ({ onScroll }) => {
     const { buy_sell_store, general_store, my_profile_store } = useStores();
 
+    console.log('List: ', buy_sell_store.rendered_items);
+
     React.useEffect(
         () => {
             my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);

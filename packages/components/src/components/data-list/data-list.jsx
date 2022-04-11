@@ -139,7 +139,9 @@ const DataList = React.memo(
             >
                 <div className='data-list__body-wrapper'>
                     <div
-                        className={classNames('test','data-list__body', { [`${className}__data-list-body`]: className })}
+                        className={classNames('test', 'data-list__body', {
+                            [`${className}__data-list-body`]: className,
+                        })}
                     >
                         <AutoSizer>
                             {({ width, height }) => (

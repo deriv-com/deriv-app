@@ -97,7 +97,7 @@ describe('IframeStore', () => {
         expect(iframe_store.iframe_url).toBe('');
     });
 
-    it('should add event-listener with proper arguments', async () => {
+    it('should add event listener with proper arguments', async () => {
         const spyAddEventListener = jest.spyOn(window, 'addEventListener');
 
         await iframe_store.checkIframeLoaded();

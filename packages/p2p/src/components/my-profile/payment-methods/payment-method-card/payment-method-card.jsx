@@ -35,6 +35,7 @@ const PaymentMethodCard = ({
                 })}
                 onClick={onClickAdd}
                 style={style}
+                data-testid='dp2p-buy-sell-form_unlisted-payment-method-name'
             >
                 <Icon
                     icon='IcAddCircle'
@@ -59,6 +60,7 @@ const PaymentMethodCard = ({
             })}
             onClick={onClick}
             style={style}
+            data-testid='dp2p-buy-sell-form_listed-payment-method-name'
         >
             <div className='payment-method-card__header'>
                 {method === 'BankTransfer' || method === 'Other' ? (

@@ -82,7 +82,7 @@ const Popup = ({
 
     return (
         <PopupContext.Provider value={context_value}>
-            <div className='dc-popup'>
+            <div className='dc-popup' data-testid='dp2p-popup_desktop-container'>
                 <Modal
                     className='popup'
                     has_close_icon={false}

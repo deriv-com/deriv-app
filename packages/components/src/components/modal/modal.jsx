@@ -11,6 +11,7 @@ import { useOnClickOutside } from '../../hooks';
 
 const ModalElement = ({
     close_icon_color,
+    data_testid,
     elements_to_ignore,
     has_close_icon,
     onMount,
@@ -115,6 +116,7 @@ const ModalElement = ({
                 height: height || 'auto',
                 width: width || 'auto',
             }}
+            data-testid={data_testid}
         >
             {!is_risk_warning_visible && (header || title || rendered_title) && (
                 <div
@@ -204,6 +206,7 @@ const Modal = ({
     children,
     className,
     close_icon_color,
+    data_testid,
     header,
     id,
     is_open,
@@ -246,6 +249,7 @@ const Modal = ({
         <ModalElement
             className={className}
             close_icon_color={close_icon_color}
+            data_testid={data_testid}
             should_header_stick_body={should_header_stick_body}
             header={header}
             header_backgound_color={header_backgound_color}

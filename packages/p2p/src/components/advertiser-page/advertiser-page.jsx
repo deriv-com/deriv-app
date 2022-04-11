@@ -51,7 +51,7 @@ const AdvertiserPage = () => {
     }
 
     return (
-        <div className='advertiser-page'>
+        <div className='advertiser-page' data-testid='dp2p-advertiser-page_container'>
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}

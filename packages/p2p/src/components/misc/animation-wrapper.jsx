@@ -7,15 +7,17 @@ import './animation-wrapper.scss';
 const AnimationWrapper = ({ children, is_visible, onEntered, onExit }) => {
     if (isMobile()) {
         return (
-            <CSSTransition
-                in={is_visible}
-                timeout={250}
-                classNames='animation-wrapper'
-                onExit={onExit}
-                onEntered={onEntered}
-            >
-                {children}
-            </CSSTransition>
+            <div data-testid='components-animation-wrapper_container'>
+                <CSSTransition
+                    in={is_visible}
+                    timeout={250}
+                    classNames='animation-wrapper'
+                    onExit={onExit}
+                    onEntered={onEntered}
+                >
+                    {children}
+                </CSSTransition>
+            </div>
         );
     }
 

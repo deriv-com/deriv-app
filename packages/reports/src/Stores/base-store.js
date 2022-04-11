@@ -1,7 +1,7 @@
 import { action, intercept, observable, reaction, toJS, when } from 'mobx';
 import { isProduction, isEmptyObject } from '@deriv/shared';
 
-import Validator from '../Validator';
+import Validator from '../Utils/Validator';
 
 /**
  * BaseStore class is the base class for all defined stores in the application. It handles some stuff such as:

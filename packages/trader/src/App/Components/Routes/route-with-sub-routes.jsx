@@ -47,19 +47,15 @@ const RouteWithSubRoutes = route => {
         const title = route.getTitle?.() || '';
         document.title = `${title} | ${default_title}`;
 
-        let link = document.querySelector("link[rel='canonical']")
-            ? document.querySelector("link[rel='canonical']")
-            : null;
         const current_search_params = new URLSearchParams(location.search);
-        const lang_params = current_search_params.get('lang') ? `?lang=${current_search_params.get('lang')}` : '';
+        const current_lang = current_search_params.get('lang') ? `${current_search_params.get('lang').toLowerCase()}` : 'en';
 
-        if (link) {
-            link.setAttribute('href', `${location.protocol}//${location.host}${location.pathname}${lang_params}`);
-        } else {
-            link = document.createElement('link');
-            link.setAttribute('href', `${location.protocol}//${location.host}${location.pathname}${lang_params}`);
-            document.head.appendChild(link);
-        }
+        const alternate_rel_link = document.querySelector("link[rel='alternate']")
+        const canonical_rel_link = document.querySelector("link[rel='canonical']")
+
+        alternate_rel_link.setAttribute('hreflang', current_lang);
+        alternate_rel_link.setAttribute('href', `${location.origin}${location.pathname}`);
+        canonical_rel_link.setAttribute('href', `${location.origin}${location.pathname}`);
 
         return result;
     };

@@ -9,7 +9,9 @@ import {
     WalletStep,
     WizardContext,
     SelectedWallet,
+    CompletedStep,
 } from 'Components/wizard-containers';
+import WalletDescription from 'Components/wallet-description';
 import './wallet-wizard.scss';
 
 type WalletWizardProps = {
@@ -26,6 +28,7 @@ const TempMainContent = ({ onSubmit }: any) => {
 
 const right_panel_content = {
     upper_block: SelectedWallet,
+    middle_block: WalletDescription,
 };
 const steps: StepData[] = [
     {
@@ -67,8 +70,10 @@ const steps: StepData[] = [
     },
     {
         step_title: localize('Complete'),
-        main_content: { component: TempMainContent, header: localize('Completed') },
+        main_content: { component: CompletedStep, header: localize('Completed') },
         is_fullwidth: true,
+        submit_button_name: localize('Link with an app'),
+        cancel_button_name: localize('I understand'),
     },
 ];
 

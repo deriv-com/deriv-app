@@ -7,7 +7,7 @@ const SelectedWallet = () => {
     const { selected_wallet } = React.useContext(WizardContext);
     return (
         <div className='wallet-wizard-create-wallet-right-panel'>
-            {selected_wallet && <WalletCard size='large' wallet_name={selected_wallet} />}
+            {selected_wallet && <WalletCard size='large' wallet_name={selected_wallet} balance='0.00' />}
             {!selected_wallet && <SkeletonCard label='Choose a wallet' should_highlight />}
         </div>
     );

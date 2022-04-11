@@ -1,24 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Text } from '@deriv/components';
 import wallet_descriptions from 'Constants/wallet-description';
+import { WizardContext } from 'Components/wizard-containers';
 
-type TWalletDescriptionProps = {
-    wallet_name: string;
-};
+const WalletDescription = () => {
+    const { selected_wallet } = React.useContext(WizardContext);
 
-type TWalletDescription = {
-    title: string;
-    description: string;
-    deposit_information: string;
-    withdrawal_information: string;
-};
-
-const WalletDescription = ({ wallet_name }: TWalletDescriptionProps) => {
-    const [wallet_description, setWalletDescription] = useState<TWalletDescription>();
-
-    useEffect(() => {
-        setWalletDescription(wallet_descriptions[`${wallet_name}`]);
-    }, [wallet_name]);
+    const wallet_description = selected_wallet && wallet_descriptions[selected_wallet];
 
     return (
         <>

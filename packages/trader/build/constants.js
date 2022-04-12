@@ -1,6 +1,6 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+// const CopyPlugin = require('copy-webpack-plugin');
 // const HtmlWebPackPlugin = require('html-webpack-plugin');
 // const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
@@ -14,7 +14,6 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const {
-    copyConfig,
     cssConfig,
     // htmlInjectConfig,
     // htmlOutputConfig,
@@ -50,19 +49,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
     ...(is_test_env && !is_mocha_only
         ? [
               {
-                  test: /\.(js|jsx)$/,
-                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
-                  include: /src/,
-                  loader: 'eslint-loader',
-                  enforce: 'pre',
-                  options: {
-                      formatter: require('eslint-formatter-pretty'),
-                      configFile: path.resolve(__dirname, '../.eslintrc.js'),
-                      ignorePath: path.resolve(__dirname, '../.eslintignore'),
-                  },
-              },
-              {
-                  test: /\.(ts|tsx)$/,
+                  test: /\.(js|jsx|ts|tsx)$/,
                   exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
                   include: /src/,
                   loader: 'eslint-loader',

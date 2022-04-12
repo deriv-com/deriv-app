@@ -12,6 +12,7 @@ type TRoutesConfig = {
 const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
     {
         path: consumer_routes.trading_hub,
+        // @ts-ignore
         component: TradingHub,
         getTitle: () => localize('Tradinghub'),
     },

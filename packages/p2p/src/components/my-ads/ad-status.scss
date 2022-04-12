@@ -1,6 +1,6 @@
 .ad-status {
     &--active {
-        background-color: var(--status-active);
+        background-color: var(--status-success);
         border-radius: 1.6rem;
         padding: 0.2rem 1.6rem;
         text-align: center;
@@ -8,7 +8,7 @@
     }
 
     &--inactive {
-        background-color: var(--status-inactive);
+        background-color: var(--status-danger);
         border-radius: 1.6rem;
         padding: 0.1rem 1.2rem;
         text-align: center;

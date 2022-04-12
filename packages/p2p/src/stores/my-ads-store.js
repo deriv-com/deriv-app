@@ -351,14 +351,14 @@ export default class MyAdsStore extends BaseStore {
     };
 
     @action.bound
-    restrictDecimalPlace = (e, decimal_place, handleChangeCb) => {
+    restrictDecimalPlace = (e, decimal_place, handleChangeCallback) => {
         const pattern = new RegExp(`^[+-]?\\d*(\\.\\d{1,${decimal_place}})?$`);
         if (pattern.test(e.target.value)) {
-            handleChangeCb(e);
+            handleChangeCallback(e);
         } else {
             const user_input = parseFloat(e.target.value).toFixed(decimal_place);
             e.target.value = user_input;
-            handleChangeCb(e);
+            handleChangeCallback(e);
         }
     };
 

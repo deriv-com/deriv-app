@@ -1,4 +1,4 @@
-const webpackConfig = require('./build/webpack.config-test.js');
+const webpackConfig = require('./webpack.config.js');
 
 module.exports = {
     extends: [

@@ -8,8 +8,18 @@ import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
 
+
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
+    const isMountedOnce = React.useRef(false)
+
+    React.useEffect(() => {
+        my_profile_store.setIsLoading(true)
+
+        return () => {
+            isMountedOnce.current = false;
+        }
+    }, [])
 
     if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -19,7 +29,7 @@ const MyProfileContent = () => {
         return (
             <React.Fragment>
                 <DesktopWrapper>
-                    <PaymentMethods />
+                    <PaymentMethods isMountedOnce={isMountedOnce} />
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileFullPageModal
@@ -29,7 +39,7 @@ const MyProfileContent = () => {
                         page_header_text={localize('Payment methods')}
                         pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                     >
-                        <PaymentMethods />
+                        <PaymentMethods isMountedOnce={isMountedOnce} />
                     </MobileFullPageModal>
                 </MobileWrapper>
             </React.Fragment>

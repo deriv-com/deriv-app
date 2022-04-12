@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, trace } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -186,9 +186,16 @@ export default class MyProfileStore extends BaseStore {
             this.setIsLoading(false);
         });
     }
-
+    
+    @computed
+    get loading() {
+        trace(true)
+        return this.is_loading;
+    }
+    
     @action.bound
     getAdvertiserPaymentMethods() {
+        this.setIsLoading(true)
         requestWS({
             p2p_advertiser_payment_methods: 1,
         }).then(response => {
@@ -197,6 +204,7 @@ export default class MyProfileStore extends BaseStore {
             } else {
                 this.setAdvertiserPaymentMethods(response.p2p_advertiser_payment_methods);
             }
+            this.setIsLoading(false);
         });
     }
 

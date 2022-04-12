@@ -20,7 +20,6 @@ const PaymentMethodsList = () => {
     const independent_categories = ['bank_transfer', 'other'];
 
     React.useEffect(() => {
-        my_profile_store.getAdvertiserPaymentMethods();
         my_profile_store.setPaymentMethodToDelete(null);
         my_profile_store.setPaymentMethodToEdit(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps

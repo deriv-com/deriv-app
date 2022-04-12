@@ -18,6 +18,7 @@ const LeaveConfirmMessage = ({ back, leave }) => {
                 <Icon
                     icon={is_appstore ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'}
                     size={isMobile() ? 93 : 128}
+                    data_testid="unsaved_changes_icon"
                 />
             }
         >
@@ -95,7 +96,7 @@ const TransitionBlocker = ({ dirty, onDirty }) => {
         </>
     );
 };
-const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
+export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 
 const LeaveConfirm = ({ onDirty }) => (
     <FormikConsumer>

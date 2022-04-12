@@ -1,41 +1,41 @@
 import React from 'react';
-import { routes } from '@deriv/shared';
+import { routes, makeLazyLoader } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-// import { OpenPositions, ProfitTable, Statement, Reports } from '../Containers/index';
-import OpenPositions from '../Containers/open-positions.jsx';
-import ProfitTable from '../Containers/profit-table.jsx';
-import Statement from '../Containers/statement.jsx';
-import Reports from '../Containers/reports.jsx';
 
-// Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
+
+const lazyLoadReportComponent = makeLazyLoader(
+    () => import(/* webpackChunkName: "reports" */ '../Containers'),
+    () => <Loading />
+);
 
 // Order matters
 const initRoutesConfig = () => {
     return [
         {
             path: routes.reports,
-            component: <Reports />,
+            component: lazyLoadReportComponent('Reports'),
             is_authenticated: true,
             getTitle: () => localize('Reports'),
             icon_component: 'IcReports',
             routes: [
                 {
                     path: routes.positions,
-                    component: <OpenPositions />,
+                    component: lazyLoadReportComponent('OpenPositions'),
                     getTitle: () => localize('Open positions'),
                     icon_component: 'IcOpenPositions',
                     default: true,
                 },
                 {
                     path: routes.profit,
-                    component: <ProfitTable />,
+                    component: lazyLoadReportComponent('ProfitTable'),
                     getTitle: () => localize('Profit table'),
                     icon_component: 'IcProfitTable',
                 },
                 {
                     path: routes.statement,
-                    component: <Statement />,
+                    component: lazyLoadReportComponent('Statement'),
                     getTitle: () => localize('Statement'),
                     icon_component: 'IcStatement',
                 },

@@ -14,7 +14,7 @@
             height: 100%;
 
             @include mobile {
-                flex:1 1 auto;
+                flex: 1 1 auto;
                 height: 100vh;
             }
         }

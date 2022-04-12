@@ -5,69 +5,11 @@ import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { usePaymentMethodValidator } from '../payment-method-validator';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_profile_store } = useStores();
-    const no_symbols_regex = /^[a-zA-Z0-9\\\s.@_+-]+$/;
-    const no_symbols_message =
-        '{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+._@';
-    const max_characters_error_message = '{{field_name}} has exceeded maximum length of 200 characters.';
-
-    // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
-    const field_dictionary = my_profile_store.selected_payment_method_fields.reduce((dict, field_data) => {
-        return { ...dict, [field_data[0]]: field_data[1].display_name };
-    }, {});
-
-    // Generates suitable error message
-    const setErrorMessage = (user_input, field) => {
-        if (!no_symbols_regex.test(user_input)) {
-            return localize(no_symbols_message, { field_name: field_dictionary[field] });
-        } else if (user_input.length > 200) {
-            return localize(max_characters_error_message, { field_name: field_dictionary[field] });
-        }
-        return null;
-    };
-
-    const validateFields = values => {
-        const errors = {};
-        if (values.account) {
-            const account_err_message = setErrorMessage(values.account, 'account');
-            if (account_err_message) {
-                errors.account = account_err_message;
-            }
-        }
-        if (values.bank_name) {
-            const bank_name_err_message = setErrorMessage(values.bank_name, 'bank_name');
-            if (bank_name_err_message) {
-                errors.bank_name = bank_name_err_message;
-            }
-        }
-        if (values.branch) {
-            const branch_err_message = setErrorMessage(values.branch, 'branch');
-            if (branch_err_message) {
-                errors.branch = branch_err_message;
-            }
-        }
-        if (values.instructions) {
-            const instruction_err_message = setErrorMessage(values.instructions, 'instructions');
-            if (instruction_err_message) {
-                errors.instructions = instruction_err_message;
-            }
-        }
-        if (values.name) {
-            const name_err_message = setErrorMessage(values.name, 'name');
-            if (name_err_message) {
-                errors.name = name_err_message;
-            }
-        }
-        if (values.bank_code) {
-            const bank_code_err_message = setErrorMessage(values.name, 'bank_code');
-            if (bank_code_err_message) {
-                errors.bank_code = bank_code_err_message;
-            }
-        }
-        return errors;
-    };
+    const validateFields = usePaymentMethodValidator();
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();

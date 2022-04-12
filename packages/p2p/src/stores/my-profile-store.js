@@ -64,6 +64,14 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @computed
+    get field_set() {
+        // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
+        return this.selected_payment_method_fields.reduce((dict, field_data) => {
+            return { ...dict, [field_data[0]]: field_data[1].display_name };
+        }, {});
+    }
+
+    @computed
     get initial_values() {
         const object = {};
 
@@ -463,6 +471,11 @@ export default class MyProfileStore extends BaseStore {
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
+
+    // @action.bound
+    // setFieldList(field_dict) {
+    //     this.field_set = field_dict;
+    // }
 
     @action.bound
     setFormError(form_error) {

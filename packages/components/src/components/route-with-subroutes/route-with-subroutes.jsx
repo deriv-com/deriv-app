@@ -1,6 +1,8 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
+    alternateLinkTagChange,
+    canonicalLinkTagChange,
     redirectToLogin,
     removeBranchName,
     routes as shared_routes,
@@ -75,15 +77,8 @@ const RouteWithSubRoutes = ({
         const title = getTitle?.() || '';
         document.title = `${title} | ${default_title}`;
 
-        const current_search_params = new URLSearchParams(location.search);
-        const current_lang = current_search_params.get('lang') ? `${current_search_params.get('lang').toLowerCase()}` : 'en';
-
-        const alternate_rel_link = document.querySelector("link[rel='alternate']")
-        const canonical_rel_link = document.querySelector("link[rel='canonical']")
-
-        alternate_rel_link.setAttribute('hreflang', current_lang);
-        alternate_rel_link.setAttribute('href', `${location.origin}${location.pathname}`);
-        canonical_rel_link.setAttribute('href', `${location.origin}${location.pathname}`);
+        alternateLinkTagChange();
+        canonicalLinkTagChange();
 
         return result;
     };

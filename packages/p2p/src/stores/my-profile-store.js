@@ -472,11 +472,6 @@ export default class MyProfileStore extends BaseStore {
         this.error_message = error_message;
     }
 
-    // @action.bound
-    // setFieldList(field_dict) {
-    //     this.field_set = field_dict;
-    // }
-
     @action.bound
     setFormError(form_error) {
         this.form_error = form_error;

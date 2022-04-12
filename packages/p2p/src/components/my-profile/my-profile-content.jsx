@@ -8,18 +8,17 @@ import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
 
-
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
-    const isMountedOnce = React.useRef(false)
+    const isMountedOnce = React.useRef(false);
 
     React.useEffect(() => {
-        my_profile_store.setIsLoading(true)
+        my_profile_store.setIsLoading(true);
 
         return () => {
             isMountedOnce.current = false;
-        }
-    }, [])
+        };
+    }, []);
 
     if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={false} />;

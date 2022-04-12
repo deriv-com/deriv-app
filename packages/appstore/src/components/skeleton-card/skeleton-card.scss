@@ -3,19 +3,19 @@
     height: 12rem;
     position: relative;
     box-sizing: border-box;
-    border-radius: 0.8rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: var(--fill-normal);
 
     &__background {
         position: absolute;
         width: 100%;
         height: 100%;
-        z-index: -1;
         svg {
             width: 100%;
             height: 100%;
+            border-radius: $BORDER_RADIUS * 2;
         }
     }
 

@@ -1,10 +1,25 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { ProductCard } from 'Components/product-card';
+import ChoosePlatform from 'Components/choose-platform';
 import './choose-product.scss';
 
-const ChooseProduct = () => {
+type TChooseProduct = {
+    handleSubmit: (product: string) => void;
+};
+
+const ChooseProduct = ({ handleSubmit }: TChooseProduct) => {
     const [selected_product, setSeletedProduct] = React.useState('');
+    const [show_platform, setShowPlatform] = React.useState(false);
+
+    const setProduct = (product: string) => {
+        if (product === 'CFDs') {
+            setShowPlatform(true);
+        } else {
+            setSeletedProduct(product);
+            handleSubmit(product);
+        }
+    };
 
     // TODO: add conditions to show/hide products
     const tradetype = [
@@ -32,13 +47,18 @@ const ChooseProduct = () => {
     ];
 
     return (
-        <div className='choose-product'>
-            {tradetype.map((item, idx) => (
-                <div key={idx} className='choose-product__item' onClick={() => setSeletedProduct(item.type)}>
-                    <ProductCard product_card={true} trade_type_details={item} />
+        <>
+            {show_platform && <ChoosePlatform handleSubmit={handleSubmit} />}
+            {!show_platform && (
+                <div className='choose-product'>
+                    {tradetype.map((item, idx) => (
+                        <div key={idx} className='choose-product__item' onClick={() => setProduct(item.type)}>
+                            <ProductCard product_card={true} trade_type_details={item} />
+                        </div>
+                    ))}
                 </div>
-            ))}
-        </div>
+            )}
+        </>
     );
 };
 

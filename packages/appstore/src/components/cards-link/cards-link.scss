@@ -9,7 +9,6 @@
     &__wallet-card {
         position: relative;
         inset: 0;
-        z-index: -1;
 
         &--overlap {
             z-index: 1;
@@ -19,7 +18,7 @@
     &__app-card {
         position: relative;
         top: -1.8rem;
-        left: 3.2rem;
+        left: 3rem;
         display: flex;
 
         &__link-element {

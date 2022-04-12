@@ -38,7 +38,6 @@ const ALIASES = {
     Modules: path.resolve(__dirname, '../src/Modules'),
     Sass: path.resolve(__dirname, '../src/sass'),
     Stores: path.resolve(__dirname, '../src/Stores'),
-    App: path.resolve(__dirname, '../src/App'),
     Helpers: path.resolve(__dirname, '../src/Helpers'),
 };
 

@@ -7,10 +7,10 @@ import {
     shouldShowCancellation,
     WS,
 } from '@deriv/shared';
-import ServerTime from '_common/base/server_time';
+import ServerTime from '../../../../_common/base/server_time';
 import { localize } from '@deriv/translations';
 
-import { getUnitMap } from 'Stores/Modules/Portfolio/Helpers/details';
+import { getUnitMap } from '../../Portfolio/Helpers/details';
 import { buildBarriersConfig } from './barrier';
 import { buildDurationConfig, hasIntradayDurationUnit } from './duration';
 import { buildForwardStartingConfig, isSessionAvailable } from './start-date';

@@ -2,9 +2,9 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import BinaryRoutes from 'Components/Routes';
-import { connect } from 'Stores/connect';
-import ErrorComponent from 'Components/Errors';
+import BinaryRoutes from '../Components/Routes';
+import { connect } from '../Stores/connect';
+import ErrorComponent from '../Components/Errors';
 
 const Routes = props => {
     if (props.has_error) {

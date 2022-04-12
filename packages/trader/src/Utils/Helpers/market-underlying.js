@@ -1,4 +1,4 @@
-import { getMarketNamesMap, getContractConfig } from 'Constants';
+import { getMarketNamesMap, getContractConfig } from 'Constants/contract';
 import { localize } from '@deriv/translations';
 
 /**

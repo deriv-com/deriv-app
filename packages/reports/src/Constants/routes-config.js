@@ -1,7 +1,11 @@
 import React from 'react';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { OpenPositions, ProfitTable, Statement, Reports } from 'Containers';
+// import { OpenPositions, ProfitTable, Statement, Reports } from '../Containers/index';
+import OpenPositions from '../Containers/open-positions.jsx';
+import ProfitTable from '../Containers/profit-table.jsx';
+import Statement from '../Containers/statement.jsx';
+import Reports from '../Containers/reports.jsx';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));

@@ -14,19 +14,19 @@ import {
 } from '@deriv/components';
 import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name, getTotalProfit } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { ReportsTableRowLoader } from 'Components/Elements/ContentLoader';
-import { getContractPath } from 'Components/Routes/helpers';
-import { getContractDurationType } from 'Helpers/market-underlying';
+import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
+import { getContractPath } from '../Components/Routes/helpers';
+import { getContractDurationType } from '../Helpers/market-underlying';
 
-import EmptyTradeHistoryMessage from 'Components/empty-trade-history-message.jsx';
+import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import {
     getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
-} from 'Constants/data-table-constants';
-import PositionsCard from 'Components/Elements/PositionsDrawer/PositionsDrawerCard/positions-drawer-card.jsx';
-import PlaceholderComponent from 'Components/placeholder-component.jsx';
-import { getCardLabels } from '_common/contract';
-import { connect } from 'Stores/connect';
+} from '../Constants/data-table-constants';
+import PositionsCard from '../Components/Elements/PositionsDrawer/PositionsDrawerCard/positions-drawer-card.jsx';
+import PlaceholderComponent from '../Components/placeholder-component.jsx';
+import { getCardLabels } from '../_common/contract';
+import { connect } from '../Stores/connect';
 
 const EmptyPlaceholderWrapper = props => (
     <React.Fragment>

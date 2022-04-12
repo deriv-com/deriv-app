@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Routes from './Containers/routes.jsx';
 import { MobxContentProvider } from './Stores/connect';
+
 import initStore from './init-store'; // eslint-disable-line import/extensions
 
 const App = ({ passthrough }) => {

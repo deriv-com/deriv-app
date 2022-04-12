@@ -13,16 +13,17 @@ import {
     isOpen,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { BinaryLink } from 'Components/Routes';
-import { connect } from 'Stores/connect';
-import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
+import { BinaryLink } from '../../Routes';
 
-import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
-import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
+import { connect } from '../../../Stores/connect';
+import { getSymbolDisplayName } from '../../../Stores/Modules/Trading/Helpers/active-symbols';
+
+import { connectWithContractUpdate } from '../../../Stores/Modules/Contract/Helpers/multiplier';
+import { getEndTime } from '../../../Stores/Modules/Contract/Helpers/logic';
 import { PositionsCardLoader } from '../ContentLoader';
 
-import { getContractTypeDisplay, getCardLabels } from '_common/contract';
-import { getMarketInformation } from 'Helpers/market-underlying';
+import { getContractTypeDisplay, getCardLabels } from '../../../_common/contract';
+import { getMarketInformation } from '../../../Helpers/market-underlying';
 import ResultMobile from './result-mobile.jsx';
 
 const PositionsModalCard = ({

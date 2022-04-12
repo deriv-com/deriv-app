@@ -1,6 +1,7 @@
 import extend from 'extend';
 import { isMobile, isUserSold, isMultiplierContract, isDigitContract } from '@deriv/shared';
-import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
+import { getEndTime } from './logic';
+
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
 const createMarkerConfig = (marker_type, x, y, content_config) =>

@@ -1,6 +1,6 @@
 import { getUnsupportedContracts } from 'Constants';
 import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
-import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
+import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 
 const isUnSupportedContract = portfolio_pos =>
     !!getUnsupportedContracts()[portfolio_pos.contract_type] || // check unsupported contract type

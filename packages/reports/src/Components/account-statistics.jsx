@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MobileWrapper, Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { connect } from '../Stores/connect';
 
 const AccountStatistics = ({ account_statistics, currency }) => {
     return (

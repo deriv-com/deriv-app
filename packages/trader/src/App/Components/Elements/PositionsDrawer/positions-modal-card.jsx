@@ -20,7 +20,7 @@ import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multi
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
-import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
+import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import ResultMobile from './result-mobile.jsx';
 
 const PositionsModalCard = ({

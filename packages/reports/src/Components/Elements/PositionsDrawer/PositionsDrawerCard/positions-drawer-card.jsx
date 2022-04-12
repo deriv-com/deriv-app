@@ -4,11 +4,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ContractCard } from '@deriv/components';
 import { getContractPath, isCryptoContract, isMultiplierContract } from '@deriv/shared';
-import { getCardLabels, getContractTypeDisplay } from '_common/contract';
-import { connect } from 'Stores/connect';
-import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { getCardLabels, getContractTypeDisplay } from '../../../../_common/contract';
+import { connect } from '../../../../Stores/connect';
+import { connectWithContractUpdate } from '../../../../Stores/Modules/Contract/Helpers/multiplier';
 
-import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
+import { getEndTime } from '../../../../Stores/Modules/Contract/Helpers/logic';
 
 const PositionsDrawerCard = ({
     addToast,

@@ -139,7 +139,7 @@ const DataList = React.memo(
             >
                 <div className='data-list__body-wrapper'>
                     <div
-                        className={classNames('test', 'data-list__body', {
+                        className={classNames('data-list__body', {
                             [`${className}__data-list-body`]: className,
                         })}
                     >

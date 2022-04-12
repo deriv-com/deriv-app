@@ -12,6 +12,11 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+
+            @include mobile {
+                flex:1 1 auto;
+                height: 100vh;
+            }
         }
     }
     &__footer {
@@ -96,8 +101,4 @@
 /* stylelint-disable-next-line plugin/selector-bem-pattern */
 .ReactVirtualized__List {
     outline: 0;
-}
-
-.test {
-    min-height: 541px;
 }

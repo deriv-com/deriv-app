@@ -59,8 +59,8 @@ const AddAppStep = ({ onSubmit }: TAddApp) => {
                 (item: any, index: number) =>
                     item.type === app_type && (
                         <AddApp
-                            key={`${item.type}${index}`}
                             app={item}
+                            key={`${item.type}${index}`}
                             handleSubmit={handleSubmit}
                             is_dark_mode_on={false}
                             is_mobile={false}

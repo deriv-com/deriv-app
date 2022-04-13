@@ -15,7 +15,7 @@ type TAddApp = {
     handleSubmit: (app: Partial<typeof AppCard>) => void;
     is_dark_mode_on: boolean;
     is_mobile: boolean;
-    selected_app: Partial<typeof AppCard>;
+    selected_app: any;
 };
 
 const AddApp = ({ app, handleSubmit, is_dark_mode_on, is_mobile, selected_app }: TAddApp) => {
@@ -62,25 +62,36 @@ const AddApp = ({ app, handleSubmit, is_dark_mode_on, is_mobile, selected_app }:
                 </div>
                 <div className='add-app-details__cards'>
                     {app.linked_apps.map((linked_app, id) => {
-                        const app_card = (
-                            <AppCard
-                                account_type={account_type}
-                                app_card_details={linked_app}
-                                checked={selected_app === linked_app}
-                                dark={is_dark_mode_on}
-                                faded={selected_app === linked_app}
-                                key={id.toString()}
-                                size='medium'
-                            />
-                        );
+                        const is_checked =
+                            JSON.stringify(selected_app?.props.app_card_details) === JSON.stringify(linked_app);
 
                         return (
                             <div
                                 key={`contentCard${id}`}
                                 className='add-app-details__card'
-                                onClick={() => onAppClicked(app_card)}
+                                onClick={() =>
+                                    onAppClicked(
+                                        <AppCard
+                                            account_type={account_type}
+                                            app_card_details={linked_app}
+                                            dark={is_dark_mode_on}
+                                            key={id.toString()}
+                                            size='medium'
+                                        />
+                                    )
+                                }
                             >
-                                {app_card}
+                                {
+                                    <AppCard
+                                        account_type={account_type}
+                                        app_card_details={linked_app}
+                                        checked={is_checked}
+                                        dark={is_dark_mode_on}
+                                        faded={is_checked}
+                                        key={id.toString()}
+                                        size='medium'
+                                    />
+                                }
                             </div>
                         );
                     })}

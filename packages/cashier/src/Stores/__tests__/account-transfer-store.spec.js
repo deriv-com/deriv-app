@@ -204,7 +204,7 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.is_transfer_locked).toBeTrue;
     });
 
-    it('should set the balance by loginid', async () => {
+    it('should set the balance by loginid', () => {
         account_transfer_store.setAccounts([{ ...CR_USD_account, value: 'CR90000103' }]);
         account_transfer_store.setBalanceByLoginId('CR90000103', 100);
 
@@ -414,7 +414,7 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.transfer_limit).toEqual({ min: null, max: '1000.00' });
     });
 
-    it('should not sort and set accounts if there is an error in transfer_between_accounts response', async () => {
+    it('should not sort and set accounts if there is an error in transfer_between_accounts response when calling sortAccountsTransfer method', async () => {
         const spySetAccounts = spyOn(account_transfer_store, 'setAccounts');
         account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({ error: 'Transfer error' });
         await account_transfer_store.sortAccountsTransfer();
@@ -422,7 +422,7 @@ describe('AccountTransferStore', () => {
         expect(spySetAccounts).not.toHaveBeenCalled();
     });
 
-    it('should sort and set accounts', async () => {
+    it('should sort and set accounts when calling sortAccountsTransfer method', async () => {
         await account_transfer_store.sortAccountsTransfer({
             accounts: [...accounts, MT_USD_account, DXR_USD_account],
         });
@@ -439,13 +439,13 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.accounts_list.length).toBe(9);
     });
 
-    it('should set current logged in client as the default transfer from account', async () => {
+    it('should set current logged in client as the default transfer from account when calling sortAccountsTransfer method', async () => {
         await account_transfer_store.sortAccountsTransfer({ accounts });
 
         expect(account_transfer_store.selected_from.value).toBe(account_transfer_store.root_store.client.loginid);
     });
 
-    it('should set an error if client account and selected_from account has not allowed loginid for transfer', async () => {
+    it('should set an error if client account and selected_from account has not allowed loginid for transfer when calling sortAccountsTransfer method', async () => {
         account_transfer_store.root_store.client.loginid = 'MX0000000';
         await account_transfer_store.sortAccountsTransfer({
             accounts: [MX_USD_account],
@@ -454,7 +454,7 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.selected_from.error).not.toBe(undefined);
     });
 
-    it('should set an error if selected_to account has not allowed loginid for transfer', async () => {
+    it('should set an error if selected_to account has not allowed loginid for transfer when calling sortAccountsTransfer method', async () => {
         await account_transfer_store.sortAccountsTransfer({
             accounts: [MX_USD_account],
         });

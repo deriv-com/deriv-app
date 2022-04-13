@@ -60,9 +60,27 @@ beforeEach(() => {
         storage: {
             mt5LoginList: jest.fn().mockResolvedValue({
                 mt5_login_list: [
-                    { ...MT_USD_account, loginid: 'MTR111176' },
-                    { ...MT_USD_account, loginid: 'MTR111177' },
-                    { ...MT_USD_account, loginid: 'MTR40000265' },
+                    {
+                        ...MT_USD_account,
+                        loginid: 'MTR111176',
+                        login: 'MTR111176',
+                        market_type: 'financial',
+                        sub_account_type: 'financial',
+                    },
+                    {
+                        ...MT_USD_account,
+                        loginid: 'MTR111177',
+                        login: 'MTR111177',
+                        market_type: 'financial',
+                        sub_account_type: 'financial',
+                    },
+                    {
+                        ...MT_USD_account,
+                        loginid: 'MTR40000265',
+                        login: 'MTR40000265',
+                        market_type: 'synthetic',
+                        sub_account_type: 'financial',
+                    },
                 ],
             }),
         },
@@ -284,7 +302,9 @@ describe('AccountTransferStore', () => {
     });
 
     it('the client cannot make a transfer if he does not have any account with balance greater then 0 ', () => {
-        expect(account_transfer_store.canDoAccountTransfer([CR_USD_account])).toBeFalse();
+        const spySetHasNoAccountsBalance = jest.spyOn(account_transfer_store, 'setHasNoAccountsBalance');
+        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '0' }])).toBeFalse();
+        expect(spySetHasNoAccountsBalance).toHaveBeenCalledWith(true);
     });
 
     it('the client cannot make a transfer if he does not have at least two real-money accounts', () => {

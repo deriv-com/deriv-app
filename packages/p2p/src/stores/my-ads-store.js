@@ -35,7 +35,7 @@ export default class MyAdsStore extends BaseStore {
     @observable is_quick_add_modal_open = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
-    @observable is_switch_ad_rate = false;
+    @observable should_switch_ad_rate = false;
     @observable is_switch_modal_open = false;
     @observable item_offset = 0;
     @observable p2p_advert_information = {};
@@ -545,9 +545,9 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setSwitchAdRateStatus(is_switch_ad_rate) {
-        this.is_switch_ad_rate = is_switch_ad_rate;
-        if (is_switch_ad_rate) {
+    setShouldSwitchAdRateStatus(should_switch_ad_rate) {
+        this.should_switch_ad_rate = should_switch_ad_rate;
+        if (should_switch_ad_rate) {
             this.setShowEditAdForm(true);
             this.getAdvertInfo();
         }

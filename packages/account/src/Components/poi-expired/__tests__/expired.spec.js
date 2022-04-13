@@ -38,6 +38,6 @@ describe('<Expired />', () => {
         fireEvent.click(btn);
         console.log(btn);
         screen.debug();
-        expect(mockOnClick).toHaveBeenCalledTimes(1);
+        expect(mockOnClick).toBeCalledTimes(1);
     });
 });

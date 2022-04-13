@@ -4,5 +4,5 @@
         "rootDir": "./src",
         "baseUrl": "src"
     },
-    "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx"]
+    "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
 }

@@ -1,11 +1,5 @@
 module.exports = {
-    extends: [
-        '../../.eslintrc.js',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/eslint-recommended',
-    ],
-    parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint'],
+    extends: '../../.eslintrc.js',
     globals: {
         Blockly: false,
         trackJs: false,

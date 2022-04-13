@@ -292,16 +292,7 @@ const BuySellForm = props => {
                                                     </Text>
                                                 }
                                                 onKeyDown={event => {
-                                                    if (
-                                                        ![
-                                                            'Backspace',
-                                                            'Delete',
-                                                            'ArrowLeft',
-                                                            'ArrowRight',
-                                                            '.',
-                                                        ].includes(event.key) &&
-                                                        !floatingPointValidator(event.key)
-                                                    ) {
+                                                    if (!floatingPointValidator(event.key)) {
                                                         event.preventDefault();
                                                     }
                                                 }}

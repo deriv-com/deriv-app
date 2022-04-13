@@ -26,12 +26,12 @@ module.exports = function () {
                 Assets: path.resolve(__dirname, 'src/assets'),
                 Components: path.resolve(__dirname, 'src/components'),
                 Constants: path.resolve(__dirname, 'src/constants'),
+                Stores: path.resolve(__dirname, 'src/stores'),
                 Translations: path.resolve(__dirname, 'src/translations'),
                 Utils: path.resolve(__dirname, 'src/utils'),
-                Stores: path.resolve(__dirname, 'src/stores'),
                 ...publisher_utils.getLocalDerivPackageAliases(__dirname, is_publishing),
             },
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
             symlinks: false,
         },
         module: {
@@ -45,7 +45,7 @@ module.exports = function () {
                     },
                 },
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
                     use: [
                         {

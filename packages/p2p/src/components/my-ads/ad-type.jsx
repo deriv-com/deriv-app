@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { Text } from '@deriv/components';
 import './ad-type.scss';
@@ -22,4 +21,4 @@ AdType.propTypes = {
     float_rate: PropTypes.string,
 };
 
-export default observer(AdType);
+export default AdType;

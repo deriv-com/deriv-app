@@ -107,7 +107,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 </Text>
                                 {!payment_method_names ? (
                                     <div className='p2p-my-ads__table-status-warning'>
-                                        <div style={{ marginRight: '0.8rem' }}>
+                                        <div className='p2p-my-ads__table-status-warning--icon-position'>
                                             <AdStatus is_active={!!is_advert_active} />
                                         </div>
 

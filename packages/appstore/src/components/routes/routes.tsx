@@ -13,7 +13,6 @@ const Routes: React.FC = () => {
 
     return (
         <React.Suspense
-            // @ts-ignore
             fallback={() => {
                 return (
                     <div>

@@ -1,5 +1,11 @@
 module.exports = {
-    extends: '../../.eslintrc.js',
+    extends: [
+        '../../.eslintrc.js',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/eslint-recommended',
+    ],
+    parser: '@typescript-eslint/parser',
+    plugins: ['@typescript-eslint'],
     globals: {
         Blockly: false,
         trackJs: false,
@@ -17,5 +23,5 @@ module.exports = {
     },
     rules: {
         'no-underscore-dangle': 0,
-    }
+    },
 };

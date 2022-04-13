@@ -24,7 +24,7 @@ const UnlinkAccountModal = ({ onClose, is_open, identifier_title, onClickSendEma
                     </Text>
                     <Text className='unlink-account__modal-description' size='xs'>
                         <Localize
-                            i18n_default_text="To change yout email address, you'll first need to unlink your email address form your {{identifier_title}} account."
+                            i18n_default_text="To change your email address, you'll first need to unlink your email address from your {{identifier_title}} account."
                             values={{ identifier_title }}
                         />
                     </Text>

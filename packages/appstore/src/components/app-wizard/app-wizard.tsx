@@ -1,7 +1,7 @@
 import React from 'react';
 import { DesktopWizard } from '@deriv/ui';
 import { localize } from '@deriv/translations';
-import { AddAppStep, ChooseProductStep, SelectedApp } from 'Components/wizard-containers';
+import { AddAppStep, AppDescriptionStep, ChooseProductStep, SelectedApp } from 'Components/wizard-containers';
 import CardsLink from 'Components/cards-link';
 
 type StepData = Parameters<typeof DesktopWizard>[0]['steps'];
@@ -33,6 +33,7 @@ const AppWizard = ({ close }: AppWizardProps) => {
             },
             right_panel_content: {
                 upper_block: SelectedApp,
+                middle_block: AppDescriptionStep,
             },
         },
         {

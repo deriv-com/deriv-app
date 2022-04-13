@@ -12,29 +12,38 @@ const AddAppStep = ({ onSubmit }: TAddApp) => {
 
     const handleSubmit = (app: any) => {
         context.selected_app = app;
+        context.account_type = app.props.app_card_details.account_type;
         onSubmit({ app });
     };
 
-    if (context.selected_product === 'Deriv MT5') app_type = 'Deriv MT5';
-    else if (context.selected_product === 'Deriv X') app_type = 'Deriv X';
-    else app_type = 'Other';
+    if (context.selected_product === 'Deriv MT5') {
+        app_type = 'Deriv MT5';
+        context.selected_platform = 'mt5';
+    } else if (context.selected_product === 'Deriv X') {
+        app_type = 'Deriv X';
+        context.selected_platform = 'dxtrade';
+    } else app_type = 'Other';
 
     const app = [
         {
             type: 'Deriv MT5',
             app_type_title: 'Deriv MT5 Apps',
             linked_apps: [
-                { app_name: 'Deriv MT5 Synthetics USD', app_icon: 'IcAppstoreMt5Synthetic' },
-                { app_name: 'Deriv MT5 Financial USD', app_icon: 'IcAppstoreMt5Financial' },
-                { app_name: 'Deriv MT5 Financial STP USD', app_icon: 'IcAppstoreMt5FinancialStp' },
+                { app_name: 'Deriv MT5 Synthetics USD', app_icon: 'IcAppstoreMt5Synthetic', account_type: 'synthetic' },
+                { app_name: 'Deriv MT5 Financial USD', app_icon: 'IcAppstoreMt5Financial', account_type: 'financial' },
+                {
+                    app_name: 'Deriv MT5 Financial STP USD',
+                    app_icon: 'IcAppstoreMt5FinancialStp',
+                    account_type: 'financial_stp',
+                },
             ],
         },
         {
             type: 'Deriv X',
             app_type_title: 'Deriv X Apps',
             linked_apps: [
-                { app_name: 'Deriv X Synthetics USD', app_icon: 'icDxtradeSynthetic' },
-                { app_name: 'Deriv X Financial USD', app_icon: 'IcDxtradeFinancial' },
+                { app_name: 'Deriv X Synthetics USD', app_icon: 'icDxtradeSynthetic', account_type: 'synthetic' },
+                { app_name: 'Deriv X Financial USD', app_icon: 'IcDxtradeFinancial', account_type: 'financial' },
             ],
         },
         {
@@ -47,9 +56,10 @@ const AddAppStep = ({ onSubmit }: TAddApp) => {
     return (
         <>
             {app.map(
-                (item: any) =>
+                (item: any, index: number) =>
                     item.type === app_type && (
                         <AddApp
+                            key={`${item.type}${index}`}
                             app={item}
                             handleSubmit={handleSubmit}
                             is_dark_mode_on={false}

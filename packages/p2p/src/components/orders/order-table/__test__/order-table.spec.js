@@ -9,6 +9,7 @@ jest.mock('Stores', () => ({
             active_notification_count: 0,
             inactive_notification_count: 0,
             order_table_type: false,
+            banner_config: { reduced_order_time: true },
         },
     }),
 }));

@@ -61,6 +61,19 @@ const MyAdsTable = () => {
                         />
                     </div>
                 )}
+                {general_store.banner_config.reduced_order_time && (
+                    <div className='p2p-my-ads__warning'>
+                        <HintBox
+                            icon='IcInfo'
+                            message={
+                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                    <Localize i18n_default_text='New orders are now active for 1 hour only. Complete your order before it expires!' />
+                                </Text>
+                            }
+                            is_info
+                        />
+                    </div>
+                )}
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (

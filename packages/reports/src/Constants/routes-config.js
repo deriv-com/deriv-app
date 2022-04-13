@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
 
 const lazyLoadReportComponent = makeLazyLoader(
-    () => import(/* webpackChunkName: "reports" */ '../Containers'),
+    () => import(/* webpackChunkName: "reports-routes" */ '../Containers'),
     () => <Loading />
 );
 

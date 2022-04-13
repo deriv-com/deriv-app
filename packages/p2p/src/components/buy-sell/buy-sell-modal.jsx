@@ -50,12 +50,8 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     );
 
     const onCancel = () => {
-        if (my_profile_store.should_show_add_payment_method_form) {
-            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-        } else {
-            setShouldShowPopup(false);
-            my_profile_store.setShouldShowAddPaymentMethodForm(false);
-        }
+        setShouldShowPopup(false);
+        my_profile_store.setShouldShowAddPaymentMethodForm(false);
     };
 
     const onConfirmClick = order_info => {

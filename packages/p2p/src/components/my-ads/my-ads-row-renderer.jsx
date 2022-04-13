@@ -37,7 +37,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
 
     const amount_dealt = amount - remaining_amount;
-    const enable_action_point = rate_type === 'fixed' && floating_rate_store.change_ad_alert;
+    const enable_action_point = rate_type === ad_type.FIXED && floating_rate_store.change_ad_alert;
     const is_buy_advert = type === buy_sell.BUY;
 
     const onClickActivateDeactivate = () => {

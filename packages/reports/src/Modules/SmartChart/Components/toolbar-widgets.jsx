@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { ChartMode, DrawTools, Share, StudyLegend, Views, ToolbarWidget } from 'Modules/SmartChart';
+import { ChartMode, DrawTools, Share, StudyLegend, Views, ToolbarWidget } from '../index';
 
 const ToolbarWidgets = ({ position, updateChartType, updateGranularity }) => (
     <ToolbarWidget position={position || isMobile() ? 'bottom' : null}>

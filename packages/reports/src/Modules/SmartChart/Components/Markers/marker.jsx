@@ -1,7 +1,7 @@
 import { toJS } from 'mobx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FastMarker } from 'Modules/SmartChart';
+import { FastMarker } from '../../index';
 
 const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_visible }) => {
     const { ContentComponent, ...marker_props } = marker_config;

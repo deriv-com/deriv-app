@@ -1,4 +1,4 @@
-import { getMarketNamesMap, getContractConfig } from '_common/contract';
+import { getMarketNamesMap, getContractConfig } from '../_common/contract';
 import { localize } from '@deriv/translations';
 
 /**

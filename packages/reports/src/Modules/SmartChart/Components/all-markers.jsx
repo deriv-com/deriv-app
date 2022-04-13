@@ -4,7 +4,8 @@
 // 3- Please read contract-store.js & trade.jsx carefully
 import React from 'react';
 import { getDecimalPlaces } from '@deriv/shared';
-import { RawMarker } from 'Modules/SmartChart';
+import { RawMarker } from '../index';
+
 import * as ICONS from './icons';
 
 const is_firefox = navigator.userAgent.search('Firefox') > 0;

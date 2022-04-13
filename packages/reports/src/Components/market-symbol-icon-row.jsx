@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
-import { getMarketName, getTradeTypeName } from 'Helpers/market-underlying';
+import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 
 const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_multiplier = true }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';

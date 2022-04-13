@@ -1,4 +1,4 @@
-import ServerTime from '_common/base/server_time';
+import ServerTime from '../../../../_common/base/server_time';
 import { toMoment } from '@deriv/shared';
 
 export const buildForwardStartingConfig = (contract, forward_starting_dates) => {

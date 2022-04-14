@@ -10,7 +10,6 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 jest.mock('../self-exclusion-article', () => () => <div>SelfExclusionArticle</div>);
 
-
 describe('<SelfExclusionWrapper />', () => {
     let mock_context = {};
 

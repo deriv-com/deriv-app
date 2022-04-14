@@ -69,7 +69,6 @@ describe('<SelfExclusion />', () => {
     });
 
     it('should render SelfExclusion component with SelfExclusionModal', async () => {
-        
         await act(async () => {
             render(<SelfExclusion {...mock_props} />);
         });

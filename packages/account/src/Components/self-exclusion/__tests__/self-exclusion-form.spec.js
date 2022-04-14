@@ -21,7 +21,6 @@ describe('<SelfExclusionForm />', () => {
     });
 
     it('should render SelfExclusionForm component with SelfExclusionInputs', () => {
-        
         render(
             <SelfExclusionContext.Provider value={mock_context}>
                 <SelfExclusionForm />

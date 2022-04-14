@@ -38,7 +38,6 @@ describe('<SelfExclusionFooter />', () => {
     });
 
     it('should render SelfExclusionFooter component', () => {
-
         render(
             <Formik>
                 <SelfExclusionContext.Provider value={mock_context}>

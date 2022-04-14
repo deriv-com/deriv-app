@@ -10,9 +10,7 @@ document.body.appendChild(modal_root);
 jest.mock('../self-exclusion-article-content', () => () => <div>SelfExclusionArticleContent</div>);
 
 describe('<SelfExclusionModal />', () => {
-    
     it('should be shown on the page', () => {
-
         render(
             <SelfExclusionContext.Provider value={{ state: { show_article: true }, toggleArticle: () => {} }}>
                 <SelfExclusionModal />

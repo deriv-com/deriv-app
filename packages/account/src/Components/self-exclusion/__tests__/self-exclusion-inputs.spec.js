@@ -37,7 +37,6 @@ describe('<SelfExclusionInputs />', () => {
             isValid: false,
             setFieldValue: jest.fn(),
             values: {},
-
         });
     });
 
@@ -126,9 +125,19 @@ describe('<SelfExclusionInputs />', () => {
 
         const currencies = screen.getAllByText(/test currency/);
         expect(currencies.length).toBeGreaterThan(0);
-        expect(screen.getByText(/If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/)).toBeInTheDocument();
-        expect(screen.getByText('Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.')).toBeInTheDocument();
-        expect(screen.queryByText(/To self-exclude from all online gambling companies licensed in Great Britain, go to/)).not.toBeInTheDocument();
+        expect(
+            screen.getByText(
+                /If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/
+            )
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.'
+            )
+        ).toBeInTheDocument();
+        expect(
+            screen.queryByText(/To self-exclude from all online gambling companies licensed in Great Britain, go to/)
+        ).not.toBeInTheDocument();
         const btn = screen.getByRole('button');
         expect(btn).toBeInTheDocument();
         expect(btn).toHaveTextContent('Next');
@@ -175,9 +184,19 @@ describe('<SelfExclusionInputs />', () => {
 
         const currencies = screen.getAllByText(/test currency/);
         expect(currencies.length).toBeGreaterThan(0);
-        expect(screen.getByText('Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.')).toBeInTheDocument();
-        expect(screen.getByText(/To self-exclude from all online gambling companies licensed in Great Britain, go to/)).toBeInTheDocument();
-        expect(screen.queryByText(/If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/)).not.toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.'
+            )
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(/To self-exclude from all online gambling companies licensed in Great Britain, go to/)
+        ).toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                /If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/
+            )
+        ).not.toBeInTheDocument();
     });
 
     it('Should trigger handleChange callback when the input field changes in StakeLossAndLimitsInputs', () => {

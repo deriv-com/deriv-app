@@ -99,7 +99,6 @@ describe('<SelfExclusionConfirmPage />', () => {
     });
 
     it('should render SelfExclusionConfirmPage component for non EU', () => {
-
         render(
             <SelfExclusionContext.Provider value={mock_context}>
                 <SelfExclusionConfirmPage />

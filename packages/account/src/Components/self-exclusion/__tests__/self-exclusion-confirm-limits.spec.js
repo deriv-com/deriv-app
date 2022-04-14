@@ -8,7 +8,7 @@ const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext');
 
 describe('<SelfExclusionConfirmLimits />', () => {
     let mock_context = {};
-    
+
     beforeEach(() => {
         mock_context = {
             backToReview: jest.fn(),
@@ -27,7 +27,9 @@ describe('<SelfExclusionConfirmLimits />', () => {
         );
 
         expect(screen.getByText('No, review my limits')).toBeInTheDocument();
-        expect(screen.getByText('Remember: You cannot log in to your account until the selected date.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Remember: You cannot log in to your account until the selected date.')
+        ).toBeInTheDocument();
         expect(screen.getByText('Save new limits?')).toBeInTheDocument();
         expect(screen.getByText('Yes, log me out immediately')).toBeInTheDocument();
     });
@@ -45,7 +47,9 @@ describe('<SelfExclusionConfirmLimits />', () => {
         );
 
         expect(screen.getByText('No, review my limits')).toBeInTheDocument();
-        expect(screen.getByText('Remember: You cannot log in to your account until the selected date.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Remember: You cannot log in to your account until the selected date.')
+        ).toBeInTheDocument();
         expect(screen.getByText('Save new limits?')).toBeInTheDocument();
         expect(screen.queryByText('Yes, log me out immediately')).not.toBeInTheDocument();
     });

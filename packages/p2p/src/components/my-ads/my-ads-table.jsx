@@ -49,30 +49,28 @@ const MyAdsTable = () => {
             <React.Fragment>
                 {selected_advert && <QuickAddModal advert={selected_advert} />}
                 {my_ads_store.has_missing_payment_methods && (
-                    <div className='p2p-my-ads__warning'>
-                        <HintBox
-                            icon='IcAlertWarning'
-                            message={
-                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                    <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
-                                </Text>
-                            }
-                            is_warn
-                        />
-                    </div>
+                    <HintBox
+                        className='p2p-my-ads__warning'
+                        icon='IcAlertWarning'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
+                            </Text>
+                        }
+                        is_warn
+                    />
                 )}
                 {general_store.banner_config.reduced_order_time && (
-                    <div className='p2p-my-ads__warning'>
-                        <HintBox
-                            icon='IcInfo'
-                            message={
-                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                    <Localize i18n_default_text='New orders are now active for 1 hour only. Complete your order before it expires!' />
-                                </Text>
-                            }
-                            is_info
-                        />
-                    </div>
+                    <HintBox
+                        className='p2p-my-ads__warning'
+                        icon='IcInfo'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                <Localize i18n_default_text='New orders are now active for 1 hour only. Complete your order before it expires!' />
+                            </Text>
+                        }
+                        is_info
+                    />
                 )}
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>

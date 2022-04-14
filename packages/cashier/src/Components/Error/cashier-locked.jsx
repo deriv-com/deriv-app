@@ -198,6 +198,10 @@ const CashierLocked = ({
         icon = 'IcCashierDepositLock';
         title = localize('Deposits are locked');
         message = localize('Please contact us via live chat.');
+    } else if (is_withdrawal_lock && withdraw_service_unavailable_for_pa) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Withdrawals are locked');
+        message = localize('This feature is not available for payment agents.');
     } else if (is_withdrawal_lock && no_withdrawal_or_trading_status) {
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');
@@ -214,10 +218,6 @@ const CashierLocked = ({
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');
         message = localize('You can only make deposits. Please contact us via live chat for more information.');
-    } else if (is_withdrawal_lock && withdraw_service_unavailable_for_pa) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = localize('This feature is not available for payment agents.');
     }
 
     return (

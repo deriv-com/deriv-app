@@ -18,7 +18,7 @@ const LeaveConfirmMessage = ({ back, leave }) => {
                 <Icon
                     icon={is_appstore ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'}
                     size={isMobile() ? 93 : 128}
-                    data_testid="unsaved_changes_icon"
+                    data_testid='unsaved_changes_icon'
                 />
             }
         >
@@ -47,7 +47,7 @@ const LeaveConfirmMessage = ({ back, leave }) => {
  * Blocks routing if Formik form is dirty
  * Has to be a child of <Formik> for FormikConsumer to work
  */
-const TransitionBlocker = ({ dirty, onDirty }) => {
+export const TransitionBlocker = ({ dirty, onDirty }) => {
     const [show, setShow] = React.useState(false);
     const [next_location, setNextLocation] = React.useState(null);
     const history = useHistory();

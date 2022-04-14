@@ -51,11 +51,13 @@ describe('LeaveConfirm', () => {
      it('should render LeaveConfirm component in desktop mode', () => {
         jest.spyOn(React, 'useState').mockReturnValueOnce([true, () => {}])
         render(<LeaveConfirmComponent />);
+        expect(screen.getByText('You have unsaved changes. Are you sure you want to discard changes and leave this page?')).toBeInTheDocument();
     });
     it('should render LeaveConfirm component in mobile mode', () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState(true));
         isMobile.mockReturnValueOnce(true)
         render(<LeaveConfirmComponent />);
+        expect(screen.getByText('Unsaved changes')).toBeInTheDocument();
     });
     it("should show proper icon", () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState(true));

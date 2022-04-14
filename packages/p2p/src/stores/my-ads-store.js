@@ -34,16 +34,16 @@ export default class MyAdsStore extends BaseStore {
     @observable is_quick_add_modal_open = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
-    @observable should_switch_ad_rate = false;
     @observable is_switch_modal_open = false;
     @observable item_offset = 0;
     @observable p2p_advert_information = {};
+    @observable show_ad_form = false;
     @observable selected_ad_id = '';
     @observable selected_advert = null;
     @observable should_show_add_payment_method = false;
     @observable should_show_add_payment_method_modal = false;
-    @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
+    @observable should_switch_ad_rate = false;
     @observable update_payment_methods_error_message = '';
 
     payment_method_ids = [];

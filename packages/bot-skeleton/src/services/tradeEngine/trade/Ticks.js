@@ -1,7 +1,7 @@
 import { getLast } from 'binary-utils';
 import { localize } from '@deriv/translations';
 import * as constants from './state/constants';
-import { getDirection, getLastDigit, getLastDigitForList } from '../utils/helpers';
+import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
 
@@ -75,9 +75,13 @@ export default Engine =>
         }
 
         getLastDigitList() {
-            return new Promise(resolve =>
-                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigitForList(tick, this.getPipSize()))))
-            );
+            return new Promise(resolve => this.getTicks().then(ticks => resolve(this.getLastDigitsFromList(ticks))));
+        }
+        getLastDigitsFromList(ticks) {
+            const digits = ticks.map(tick => {
+                return getLastDigit(tick.toFixed(this.getPipSize()));
+            });
+            return digits;
         }
 
         checkDirection(dir) {

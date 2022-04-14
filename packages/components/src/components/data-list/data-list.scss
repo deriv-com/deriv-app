@@ -13,10 +13,10 @@
             flex-direction: column;
             height: 100%;
 
-            @include mobile {
-                flex: 1 1 auto;
-                height: 100vh;
-            }
+            // @include mobile {
+            //     flex: 1 1 auto;
+            //     height: 100vh;
+            // }
         }
     }
     &__footer {

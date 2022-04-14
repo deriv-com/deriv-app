@@ -7,6 +7,7 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
+import { isMobile } from '@deriv/shared';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
@@ -20,9 +21,10 @@ const MyProfileContent = () => {
         };
     }, []);
 
-    if (my_profile_store.is_loading) {
+    if (my_profile_store.is_loading && !isMobile()) {
         return <Loading is_fullscreen={false} />;
-    } else if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
+    }
+    if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
     } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {
         return (

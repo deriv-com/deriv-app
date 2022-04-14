@@ -263,17 +263,9 @@ const BinarySocketBase = (() => {
     const paymentAgentDetails = (passthrough, req_id) =>
         deriv_api.send({ paymentagent_details: 1, passthrough, req_id });
 
-    const paymentAgentWithdraw = ({
-        amount,
-        client_justification,
-        currency,
-        dry_run = 0,
-        loginid,
-        verification_code,
-    }) =>
+    const paymentAgentWithdraw = ({ amount, currency, dry_run = 0, loginid, verification_code }) =>
         deriv_api.send({
             amount,
-            client_justification,
             currency,
             dry_run,
             paymentagent_loginid: loginid,

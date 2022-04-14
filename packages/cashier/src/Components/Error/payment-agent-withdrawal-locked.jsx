@@ -5,7 +5,6 @@ import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { withRouter } from 'react-router-dom';
 import Error from './error.jsx';
-import PaymentAgentWithdrawJustificationForm from '../Form/payment-agent-withdraw-justification-form.jsx';
 import 'Sass/payment-agent-withdrawal-locked.scss';
 
 const PaymentAgentWithdrawalLockedItem = ({ item }) => {
@@ -62,7 +61,7 @@ const PaymentAgentWithdrawalLocked = ({ error, history }) => {
             : []),
     ];
 
-    if (error.onClickButton) {
+    if (error.onClickButton || error.code === 'PaymentAgentJustification') {
         return <Error error={error} />;
     }
 
@@ -71,7 +70,6 @@ const PaymentAgentWithdrawalLocked = ({ error, history }) => {
             {items.map((item, index) => {
                 return <PaymentAgentWithdrawalLockedItem item={item} key={index} />;
             })}
-            {error.code === 'PaymentAgentJustification' && <PaymentAgentWithdrawJustificationForm />}
         </React.Fragment>
     );
 };

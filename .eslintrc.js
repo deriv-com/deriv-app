@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser:  '@typescript-eslint/parser',  // Specifies the ESLint parser
   plugins: ['prettier', 'testing-library'],
   env: {
     es6: true,
@@ -89,6 +89,8 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:jest-dom/recommended',
+    'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+    'prettier/@typescript-eslint',  // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
   ],
   parserOptions: {
     ecmaVersion: 6,

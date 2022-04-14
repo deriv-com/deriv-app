@@ -19,7 +19,7 @@ describe('OpenPositions', () => {
     );
 
     it('should render one <OpenPositions /> component', async () => {
-        const OpenPositions = (await import('../../index')).default.OpenPositions;
+        const OpenPositions = (await import('../index')).default.OpenPositions;
         const wrapper = shallow(<OpenPositions />);
         expect(wrapper).to.have.length(1);
     });

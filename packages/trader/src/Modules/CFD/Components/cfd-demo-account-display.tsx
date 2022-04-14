@@ -69,8 +69,6 @@ const CFDDemoAccountDisplay = ({
     openPasswordManager,
     residence,
 }: TCFDDemoAccountDisplayProps) => {
-    console.log('current_list', current_list);
-
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const openCFDAccount = () => {
@@ -142,7 +140,7 @@ const CFDDemoAccountDisplay = ({
                     }
                     platform={platform}
                     descriptor={localize(
-                        'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
+                        'Trade CFDs on our Synthetic indices that simulate real-world market movement.'
                     )}
                     specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                     has_banner

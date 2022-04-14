@@ -23,8 +23,7 @@ const PaymentMethods = ({ isMountedOnce }) => {
     }, []);
     if (my_profile_store.is_loading && isMobile()) {
         return <Loading is_fullscreen={true} />;
-    }
-    if (my_profile_store.should_show_add_payment_method_form) {
+    } else if (my_profile_store.should_show_add_payment_method_form) {
         return <AddPaymentMethod />;
     } else if (!my_profile_store.advertiser_has_payment_methods && isMountedOnce.current) {
         return <PaymentMethodsEmpty />;

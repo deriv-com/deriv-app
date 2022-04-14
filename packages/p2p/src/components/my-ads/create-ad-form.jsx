@@ -242,7 +242,7 @@ const CreateAdForm = () => {
                                                             change_handler={e => {
                                                                 my_ads_store.restrictDecimalPlace(e, 2, handleChange);
                                                             }}
-                                                            placeholder='Floating rate'
+                                                            placeholder={localize('Floating rate')}
                                                             {...field}
                                                         />
                                                     ) : (

@@ -13,7 +13,6 @@ export default class MyAdsStore extends BaseStore {
     @observable advert_details = null;
     @observable adverts = [];
     @observable adverts_archive_period = null;
-
     @observable api_error = '';
     @observable api_error_message = '';
     @observable api_table_error_message = '';

@@ -88,7 +88,9 @@ const MyProfileForm = () => {
         </Formik>
     );
 
-    return my_profile_store.is_loading ? <Loading is_fullscreen={false} /> : isDesktop() ? (
+    return my_profile_store.is_loading ? (
+        <Loading is_fullscreen={false} />
+    ) : isDesktop() ? (
         <div className='my-profile-form'>{content}</div>
     ) : (
         <MobileFullPageModal

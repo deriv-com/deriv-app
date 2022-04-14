@@ -11,7 +11,6 @@ import PaymentMethods from './payment-methods';
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
 
-
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
     } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {

@@ -1,0 +1,27 @@
+.trade-badge {
+    align-items: center;
+    border-radius: 3.4rem;
+    cursor: default;
+    display: flex;
+    height: 1.8rem;
+    justify-content: center;
+    margin-right: 0.4rem;
+    padding: 0.2rem 0.7rem;
+    width: fit-content;
+
+    &--blue {
+        background-image: var(--gradient-blue);
+    }
+
+    &--gold {
+        background-image: var(--gradient-gold);
+    }
+
+    &--green {
+        background-image: var(--gradient-green);
+    }
+
+    &--large {
+        width: 6.9rem;
+    }
+}

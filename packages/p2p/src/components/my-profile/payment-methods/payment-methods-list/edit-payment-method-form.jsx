@@ -56,6 +56,14 @@ const EditPaymentMethodForm = () => {
             }
         }
 
+        if (values.bank_code) {
+            if (!no_symbols_regex.test(values.bank_code)) {
+                errors.bank_code = no_symbols_message;
+            } else if (values.bank_code.length > 200) {
+                errors.bank_code = max_characters_error_message;
+            }
+        }
+
         return errors;
     };
 

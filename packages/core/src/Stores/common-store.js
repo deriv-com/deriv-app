@@ -1,6 +1,6 @@
-import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, routes, toMoment } from '@deriv/shared';
+import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { currentLanguage } from 'Utils/Language/index';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -69,6 +69,11 @@ export default class CommonStore extends BaseStore {
             const url_params = new URLSearchParams(search);
             this.platform = url_params.get('platform') || '';
         }
+    }
+
+    @computed
+    get is_from_derivgo() {
+        return platforms[this.platform]?.platform_name === platforms.derivgo.platform_name;
     }
 
     @action.bound

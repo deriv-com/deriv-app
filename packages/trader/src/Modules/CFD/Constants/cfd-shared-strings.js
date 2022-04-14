@@ -20,7 +20,7 @@ export const general_messages = {
     },
     getFinancialAccountDescriptor: (platform, is_eu) => {
         if (platform === CFD_PLATFORMS.DXTRADE) {
-            return localize('Trade forex, commodities and cryptocurrencies at high leverage.');
+            return localize('Trade forex, basket indices, commodities, and cryptocurrencies with high leverage.');
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (is_eu) {
                 return localize(
@@ -28,7 +28,7 @@ export const general_messages = {
                 );
             }
             return localize(
-                'Trade major (standard and micro-lots) and minor currency pairs, stocks, stock indices, commodities, and cryptocurrencies with high leverage.'
+                'Trade major (standard & micro-lots) and minor forex, stocks & stock indices, commodities, basket indices, and crypto with high leverage.'
             );
         }
         return '';

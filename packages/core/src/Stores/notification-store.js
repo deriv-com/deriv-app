@@ -61,6 +61,7 @@ export default class NotificationStore extends BaseStore {
                 ) {
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
+                    this.setClientNotifications();
                     this.handleClientNotifications();
                 }
             }
@@ -346,21 +347,6 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
-    }
-
-    @action.bound
-    init() {
-        this.setClientNotifications();
-        reaction(
-            () => [
-                this.root_store.client.is_uk,
-                this.root_store.client.has_malta_account,
-                this.root_store.client.can_have_mlt_account,
-            ],
-            () => {
-                this.setClientNotifications();
-            }
-        );
     }
 
     @action.bound

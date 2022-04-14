@@ -67,7 +67,7 @@
         "mocha": "^7.1.1",
         "mochapack": "^2.1.2",
         "mock-local-storage": "^1.1.8",
-        "node-sass": "^4.12.0",
+        "node-sass": "^7.0.0",
         "postcss-loader": "^6.2.1",
         "postcss-preset-env": "^7.4.3",
         "postcss-scss": "^4.0.3",

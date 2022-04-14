@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text, Loading } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
@@ -12,7 +12,7 @@ const MyStats = () => {
     const { my_profile_store } = useStores();
     const [should_show_stats_and_ratings, setShouldShowStatsAndRatings] = React.useState(false);
 
-    return (
+    return my_profile_store.is_loading ? <Loading is_fullscreen={false} /> : (
         <React.Fragment>
             <MobileFullPageModal
                 height_offset='80px'

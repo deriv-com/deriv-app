@@ -628,6 +628,10 @@
         }
     }
 
+    &__modal-body--scroll {
+        overflow: auto;
+    }
+
     .toggle-ads {
         align-items: center;
         display: flex;

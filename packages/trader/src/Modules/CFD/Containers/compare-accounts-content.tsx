@@ -329,20 +329,20 @@ const getAccounts: TGetAccounts = ({ landing_companies, platform, is_logged_in, 
                 synthetic: localize('Synthetics'),
                 synthetic_eu: localize('Synthetics'),
                 financial: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
+                    'FX-majors (standard/micro lots), FX-minors, basket indices, commodities, cryptocurrencies, and stocks and stock indices'
                 ),
                 financial_au: localize(
                     'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
                 ),
                 financial_eu: financial_eu_trading_instruments,
-                financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
+                financial_stp: localize('FX-majors, FX-minors, FX-exotics, and cryptocurrencies'),
                 footnote: null,
             },
             dxtrade: {
                 synthetic: localize('Synthetics'),
                 synthetic_eu: localize('Synthetics'),
                 financial: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies'
+                    'FX majors (standard/micro lots), FX minors, basket indices, commodities, and cryptocurrencies'
                 ),
                 financial_au: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
                 financial_eu: localize(

@@ -49,9 +49,21 @@ Blockly.Blocks.math_on_list = {
         };
     },
     getRequiredValueInputs() {
+        const type_list = [
+            'variables_get',
+            'lists_getSublist',
+            'ohlc_values',
+            'lists_split',
+            'ohlc',
+            'ticks',
+            'lists_repeat',
+            'lastDigitList',
+            'ohlc_values_in_list',
+            'procedures_callreturn',
+        ];
         return {
-            LIST: input => {
-                return input !== 'list';
+            LIST: () => {
+                return !type_list.includes(this.childBlocks_[0]?.type);
             },
         };
     },

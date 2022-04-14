@@ -6,7 +6,7 @@ import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from 
 import { Localize, localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import DemoMessage from 'Components/demo-message';
-import AccountLimitsArticle from './account-limits-article.jsx';
+import AccountLimitsArticle from './account-limits-article.tsx';
 import AccountLimitsContext from './account-limits-context';
 import AccountLimitsExtraInfo from './account-limits-extra-info.jsx';
 import AccountLimitsFooter from './account-limits-footer.jsx';

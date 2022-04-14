@@ -23,8 +23,7 @@ const MyProfileContent = () => {
 
     if (my_profile_store.is_loading && !isMobile()) {
         return <Loading is_fullscreen={false} />;
-    }
-    if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
+    } else if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
     } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {
         return (

@@ -4,14 +4,12 @@ import React from 'react';
 import Icon from '../icon/icon.jsx';
 
 const HintBox = ({ className, icon, is_info, is_warn, message }) => {
-    console.log('classname: ', className);
     return (
         <div
             className={classNames('dc-hint-box', {
                 'dc-hint-box--info': is_info,
-                'dc-hint-box--warn': is_warn,
-                [className]: !!className,
-            })}
+                'dc-hint-box--warn': is_warn
+            },className)}
         >
             <Icon
                 className='dc-hint-box__icon'

@@ -15,7 +15,11 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
-        WS.verifyEmail(email, 'reset_password');
+        if (social_identity_provider === 'apple') {
+            WS.verifyEmail(email, 'request_email');
+        } else {
+            WS.verifyEmail(email, 'reset_password');
+        }
         setIsUnlinkModalOpen(false);
         setIsSentEmailModalOpen(true);
     };

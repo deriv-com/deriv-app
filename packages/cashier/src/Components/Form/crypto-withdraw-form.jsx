@@ -87,13 +87,13 @@ const CryptoWithdrawForm = ({
 
     return (
         <div className='cashier__wrapper'>
-            {!isMobile() && <Header currency={currency} />}
+            <Header currency={currency} />
             <Icon
                 icon={`IcCurrency-${account_platform_icon.toLowerCase()}`}
                 size={isMobile() ? 64 : 128}
                 className='crypto-withdraw-form__icon'
             />
-            {isMobile() && <Header currency={currency} />}
+            {/* {isMobile() && <Header currency={currency} />} */}
             <Formik
                 initialValues={{
                     address: '',

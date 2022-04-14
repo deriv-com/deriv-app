@@ -111,6 +111,5 @@ Blockly.JavaScript.text_charAt = block => {
         ]);
         code = `${functionName}(${text})`;
     }
-
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

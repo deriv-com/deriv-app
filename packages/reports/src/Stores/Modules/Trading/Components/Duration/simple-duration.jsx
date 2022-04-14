@@ -2,9 +2,9 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ButtonToggle, InputField } from '@deriv/components';
-import RangeSlider from 'App/Components/Form/RangeSlider';
-import { connect } from 'Stores/connect';
-import TradingDatePicker from '../../DatePicker';
+import RangeSlider from '../../../../../Components/Form/RangeSlider';
+import { connect } from '../../../../connect';
+import TradingDatePicker from '../../../../../Components/Form/DatePicker';
 
 const SimpleDuration = ({
     contract_expiry_type,

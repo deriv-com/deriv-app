@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Icon, InputField, MobileWrapper } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
+import Fieldset from '../../../../Components/Form/fieldset.jsx';
+import { connect } from '../../../connect';
 import { localize } from '@deriv/translations';
 
 const Barrier = ({

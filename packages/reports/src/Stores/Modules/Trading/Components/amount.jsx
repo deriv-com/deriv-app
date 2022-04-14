@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces, addComma } from '@deriv/shared';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
+import Fieldset from '../../../../Components/Form/fieldset.jsx';
+import { connect } from '../../../connect';
 import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
-import MultipliersInfo from './Multiplier/info.jsx';
-import Multiplier from './Multiplier/multiplier.jsx';
+import MultipliersInfo from './info.jsx';
+import Multiplier from './multiplier.jsx';
 
 const Input = ({
     amount,

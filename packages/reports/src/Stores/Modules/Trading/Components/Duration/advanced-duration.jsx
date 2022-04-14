@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
-import RangeSlider from 'App/Components/Form/RangeSlider';
-import { connect } from 'Stores/connect';
-import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
-import TradingDatePicker from '../../DatePicker';
-import TradingTimePicker from '../../TimePicker';
+import RangeSlider from '../../../../../Components/Form/RangeSlider';
+import { connect } from '../../../../connect';
+import { hasIntradayDurationUnit } from '../../Helpers/duration';
+import TradingDatePicker from '../../../../../Components/Form/DatePicker';
+import TradingTimePicker from '../../../../../Components/Form/TimePicker';
 
 const AdvancedDuration = ({
     advanced_duration_unit,

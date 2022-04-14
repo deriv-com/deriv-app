@@ -3,8 +3,8 @@ import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components'
 import { isEmptyObject, addComma } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
-import { connect } from 'Stores/connect';
-import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
+import { connect } from '../../../../connect';
+import { getDurationMinMaxValues } from '../../Helpers/duration';
 
 const submit_label = localize('OK');
 

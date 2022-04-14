@@ -2,14 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
-import {
-    routes as shared_routes,
-    isMobile,
-    matchRoute,
-    getSelectedRoute,
-    platforms,
-    PlatformContext,
-} from '@deriv/shared';
+import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
@@ -35,21 +28,17 @@ const AccountLogout = ({ logout, history }) => {
 };
 
 const PageOverlayWrapper = ({
+    is_from_derivgo,
     is_appstore,
     list_groups,
     logout,
     onClickClose,
-    platform,
     selected_route,
     subroutes,
 }) => {
     if (isMobile() && selected_route) {
         return (
-            <PageOverlay
-                header={selected_route.getTitle()}
-                onClickClose={onClickClose}
-                is_close_disabled={!!platforms[platform]}
-            >
+            <PageOverlay header={selected_route.getTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                 <selected_route.component component_icon={selected_route.icon_component} />
             </PageOverlay>
         );
@@ -75,11 +64,7 @@ const PageOverlayWrapper = ({
     }
 
     return (
-        <PageOverlay
-            header={localize('Settings')}
-            onClickClose={onClickClose}
-            is_close_disabled={!!platforms[platform]}
-        >
+        <PageOverlay header={localize('Settings')} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
             <VerticalTab
                 alignment='center'
                 is_floating
@@ -97,6 +82,7 @@ const PageOverlayWrapper = ({
 const Account = ({
     currency,
     history,
+    is_from_derivgo,
     is_logged_in,
     is_logging_in,
     is_virtual,
@@ -171,6 +157,7 @@ const Account = ({
         <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
             <div className='account'>
                 <PageOverlayWrapper
+                    is_from_derivgo={is_from_derivgo}
                     is_appstore={is_appstore}
                     list_groups={list_groups}
                     logout={logout}
@@ -189,6 +176,7 @@ Account.propTypes = {
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    is_from_derivgo: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
@@ -203,6 +191,7 @@ export default connect(({ client, common, ui }) => ({
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    is_from_derivgo: common.is_from_derivgo,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,

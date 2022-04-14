@@ -31,6 +31,7 @@ const DatePicker = React.memo(props => {
         required,
         type,
         value,
+        data_testid,
         ...other_props
     } = props;
 
@@ -201,6 +202,7 @@ const DatePicker = React.memo(props => {
                     placeholder={placeholder}
                     value={getCalendarValue(date)} // native picker accepts date format yyyy-mm-dd
                     disabled={disabled}
+                    data_testid={data_testid}
                     {...common_props}
                 />
             </MobileWrapper>
@@ -219,6 +221,7 @@ const DatePicker = React.memo(props => {
                             required={required}
                             type={type}
                             value={getInputValue()}
+                            data-testid={data_testid}
                         />
                         <Calendar
                             ref={calendar_ref}

@@ -56,9 +56,6 @@ const CreateAdForm = () => {
             JSON.stringify(should_not_show_auto_archive_message_again.current)
         );
         my_ads_store.setIsAdCreatedModalVisible(false);
-        if (!my_ads_store.advert_details.is_visible) {
-            my_ads_store.setIsAdExceedsDailyLimitModalOpen(true);
-        }
         my_ads_store.setShowAdForm(false);
     };
 

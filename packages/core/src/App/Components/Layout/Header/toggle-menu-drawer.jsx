@@ -84,6 +84,7 @@ const ToggleMenuDrawer = React.forwardRef(
             is_payment_agent_transfer_visible,
             is_payment_agent_visible,
             is_account_transfer_visible,
+            is_pending_proof_of_ownership,
             is_virtual,
             logoutClient,
             platform_header,
@@ -219,6 +220,8 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     /proof-of-address/.test(subroute.path)) ||
                                                 (!should_allow_authentication &&
                                                     /proof-of-identity/.test(subroute.path)) ||
+                                                (!is_pending_proof_of_ownership &&
+                                                    /proof-of-ownership/.test(subroute.path)) ||
                                                 (is_virtual && /financial-assessment/.test(subroute.path)) ||
                                                 subroute.is_disabled
                                             }

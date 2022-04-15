@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState, Icon } from '@deriv/components';
+import { Button, Icon, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
@@ -81,24 +81,28 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_popup]);
 
-    const paymentMethodTitle = () => {
-        if (!isMobile()) {
-            return (
-                <>
-                    <Icon icon='IcArrowLeftBold' onClick={onHandleReturnFnDesktop} />
-                    &nbsp;{localize('Add payment method')}
-                </>
-            );
+    const generateModalTitle = () => {
+        if (my_profile_store.should_show_add_payment_method_form) {
+            if (!isMobile()) {
+                return (
+                    <>
+                        <Icon icon='IcArrowLeftBold' onClick={onHandleReturnFnDesktop} />
+                        &nbsp;{localize('Add payment method')}
+                    </>
+                );
+            }
+            return localize('Add payment method');
+        } else {
+            if (table_type === buy_sell.BUY) {
+                return localize('Buy {{ currency }}', { currency: selected_ad.account_currency })
+            } else {
+                return localize('Sell {{ currency }}', { currency: selected_ad.account_currency })
+            }
         }
-        return localize('Add payment method');
     };
 
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
-    const modal_title = my_profile_store.should_show_add_payment_method_form
-        ? paymentMethodTitle()
-        : table_type === buy_sell.BUY
-        ? localize('Buy {{ currency }}', { currency: selected_ad.account_currency })
-        : localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
+    const modal_title = generateModalTitle()
 
     if (isMobile()) {
         return (

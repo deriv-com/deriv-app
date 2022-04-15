@@ -1,10 +1,8 @@
 import React from 'react';
-// import {BrowserRouter} from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { useStores } from 'Stores';
+import { render, screen } from '@testing-library/react';
 import AdvertiserPage from '../advertiser-page.jsx';
-import { createBrowserHistory } from 'history';
-import { Router } from 'react-router';
 
 const mockFn = jest.fn();
 
@@ -58,7 +56,6 @@ jest.mock('Components/advertiser-page/advertiser-page-adverts.jsx', () =>
 );
 
 describe('<AdvertiserPage/>', () => {
-    const history = createBrowserHistory();
 
     it('should render BuySell modal poup if show_ad_popup is true', () => {
         useStores.mockReturnValue({
@@ -69,9 +66,9 @@ describe('<AdvertiserPage/>', () => {
             },
         });
         render(
-            <Router history={history}>
+            <BrowserRouter>
                 <AdvertiserPage />
-            </Router>
+            </BrowserRouter>
         );
 
         expect(mock_buy_sell_modal).toHaveBeenLastCalledWith({
@@ -91,9 +88,9 @@ describe('<AdvertiserPage/>', () => {
             },
         });
         render(
-            <Router history={history}>
+            <BrowserRouter>
                 <AdvertiserPage />
-            </Router>
+            </BrowserRouter>
         );
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
@@ -108,9 +105,9 @@ describe('<AdvertiserPage/>', () => {
             },
         });
         render(
-            <Router history={history}>
+            <BrowserRouter>
                 <AdvertiserPage />
-            </Router>
+            </BrowserRouter>
         );
 
         expect(screen.getByText('P2P Test error')).toBeInTheDocument();

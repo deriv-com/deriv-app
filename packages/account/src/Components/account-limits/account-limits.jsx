@@ -312,8 +312,8 @@ const AccountLimits = ({
                                             )}
                                         </tbody>
                                     </table>
-                                    {!is_appstore ||
-                                        (isMobile() && (
+                                    {(!is_appstore ||
+                                        isMobile()) && (
                                             <div className='da-account-limits__text-container'>
                                                 <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
                                                     {is_fully_authenticated ? (
@@ -323,7 +323,7 @@ const AccountLimits = ({
                                                     )}
                                                 </Text>
                                             </div>
-                                        ))}
+                                        )}
                                 </React.Fragment>
                             )}
                         </ThemedScrollbars>

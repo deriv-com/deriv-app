@@ -21,13 +21,14 @@ jest.mock('@deriv/components', () => {
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(),
-    isDesktop: jest.fn(),
+    isMobile: jest.fn(()=>false),
+    isDesktop: jest.fn(()=>true),
     formatMoney: jest.fn(),
 }));
 
 jest.mock('Components/demo-message', () => jest.fn(() => 'mockedDemoMessage'));
 jest.mock('Components/load-error-message', () => jest.fn(() => 'mockedLoadErrorMessage'));
+jest.mock('../account-limits-footer.jsx',()=> jest.fn(() => 'mockedAccountLimitsFooter'));
 
 describe('<AccountLimits/>', () => {
     const props = {
@@ -114,6 +115,7 @@ describe('<AccountLimits/>', () => {
             remainder: 13907.43,
             withdrawal_for_x_days_monetary: 0,
             withdrawal_since_inception_monetary: 0,
+            
         },
     };
 
@@ -128,15 +130,22 @@ describe('<AccountLimits/>', () => {
 
         expect(screen.getByText('mockedDemoMessage')).toBeInTheDocument();
     });
+
     it('should render LoadErrorMessage component if there is api_initial_load_error', () => {
         render(
             <AccountLimits {...props} account_limits={{ api_initial_load_error: 'error in fetching data from API' }} />
         );
         expect(screen.getByText('mockedLoadErrorMessage')).toBeInTheDocument();
     });
+
     it('should render AccountLimits component', () => {
         render(<AccountLimits {...props} />);
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
+    });
+    it('should call setIsPopupOverlayShown fn ', () => {
+        const setIsPopupOverlayShown = jest.fn();
+        render(<AccountLimits {...props} setIsOverlayShown = {setIsPopupOverlayShown} />);
+        expect(setIsPopupOverlayShown).toHaveBeenCalledTimes(1);
     });
 
     it('should render Loading component if is_loading is true', () => {
@@ -144,11 +153,24 @@ describe('<AccountLimits/>', () => {
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
     });
 
-    it('should render AccountLimitsArticle component if should_show_article is true and isMobile', () => {
+    it('should render AccountLimitsArticle component if should_show_article is true  and is_from_derivgo is false  in mobile mode', () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
         render(<AccountLimits {...props} should_show_article />);
         expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
+        expect(
+            screen.queryByText(/to learn more about trading limits and how they apply, please go to the/i)
+        ).toBeInTheDocument();
+    });
+
+    it('should render AccountLimitsArticle component if should_show_article is true and is_from_derivgo is true in mobile mode', () => {
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+        render(<AccountLimits {...props} should_show_article is_from_derivgo />);
+        expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
+        expect(
+            screen.queryByText(/to learn more about trading limits and how they apply, please go to the/i)
+        ).not.toBeInTheDocument();
     });
 
     it('should not render AccountLimitsArticle component if should_show_article is false', () => {
@@ -157,6 +179,7 @@ describe('<AccountLimits/>', () => {
         render(<AccountLimits {...props} should_show_article={false} />);
         expect(screen.queryByText('/account limits/i')).not.toBeInTheDocument();
     });
+
     it('should render Trading limits - Item table and its contents properly', () => {
         render(<AccountLimits {...props} />);
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
@@ -233,10 +256,12 @@ describe('<AccountLimits/>', () => {
             })
         ).toBeInTheDocument();
     });
+
     it('withdrawal_limits_table should have a Limits header if is_fully_authenticated is true', () => {
         render(<AccountLimits {...props} />);
         expect(screen.getByTestId('withdrawal_limits_table')).toHaveTextContent('Limit');
     });
+
     it('show show withdrawal limit lifted message if is_fully_authenticated is true', () => {
         render(<AccountLimits {...props} />);
 
@@ -305,7 +330,9 @@ describe('<AccountLimits/>', () => {
         expect(formatMoney).toHaveBeenCalledWith(props.currency, remainder, true);
     });
 
-    it('should show limit_notice message when is_appstore is true and is_fully_authenticated is false', () => {
+    it('should show limit_notice message when is_appstore is true and is_fully_authenticated is false in mobile mode', () => {
+        isDesktop.mockReturnValue(false);
+        isMobile.mockReturnValue(true);
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
                 <BrowserRouter>
@@ -314,6 +341,19 @@ describe('<AccountLimits/>', () => {
             </PlatformContext.Provider>
         );
         expect(screen.getByText(/stated limits are subject to change without prior notice\./i)).toBeInTheDocument();
+    });
+
+    it('should not  show limit_notice message when is_appstore is false and is_fully_authenticated is false', () => {
+        isDesktop.mockReturnValue(true);
+        isMobile.mockReturnValue(false);
+        render(
+            <PlatformContext.Provider value={{ is_appstore: false }}>
+                <BrowserRouter>
+                    <AccountLimits {...props} is_app_settings={false} is_fully_authenticated={false} />
+                </BrowserRouter>
+            </PlatformContext.Provider>
+        );
+        expect(screen.queryByText(/your account is fully authenticated and your withdrawal limits have been lifted\./i)).not.toBeInTheDocument();
     });
 
     it('should show AccountLimitsArticle when should_show_article and isDesktop is true', () => {
@@ -331,6 +371,12 @@ describe('<AccountLimits/>', () => {
                     name: /help centre/i,
                 })
                 .closest('a')
-        ).toHaveAttribute('href', 'https://deriv.com/help-centre');
+        ).toHaveAttribute('href', 'https://deriv.com/help-centre/trading/#trading-limits');
+    });
+
+    it('should show AccountLimitsFooter if footer_ref is passed', () => {
+        const footer = { current: { offsetWidth: 100 } };
+        render(<AccountLimits {...props} should_show_article  footer_ref={footer} />);
+        expect(screen.getByText(/mockedaccountlimitsfooter/i)).toBeInTheDocument();
     });
 });

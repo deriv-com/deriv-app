@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
@@ -88,12 +89,8 @@ const CryptoWithdrawForm = ({
     return (
         <div className='cashier__wrapper'>
             {!isMobile() && <Header currency={currency} />}
-            <div>
-                <Icon
-                    icon={`IcCurrency-${account_platform_icon.toLowerCase()}`}
-                    size={isMobile() ? 64 : 128}
-                    className='crypto-withdraw-form__icon'
-                />
+            <div className={classNames({ 'crypto-withdraw-form__icon': isMobile() })}>
+                <Icon icon={`IcCurrency-${account_platform_icon.toLowerCase()}`} size={isMobile() ? 64 : 128} />
             </div>
             {isMobile() && <Header currency={currency} />}
             <Formik

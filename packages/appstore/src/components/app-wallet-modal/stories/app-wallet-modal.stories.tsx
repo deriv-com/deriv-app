@@ -13,7 +13,7 @@ const Template: Story<AppWalletModalProps> = args => <AppWalletModal {...args} /
 
 const ModalTrigger = <div onClick={() => {}}>Transfer</div>;
 
-const ModalBody =  <div>Modal Body</div>;
+const ModalBody = <div>Modal Body</div>;
 
 export const DefaultUnlinkedLightLarge = Template.bind({});
 DefaultUnlinkedLightLarge.args = {

@@ -27,9 +27,7 @@ const AppstoreAppWalletModal = ({
     return (
         <div>
             <AppModal>
-                <AppModal.Trigger>
-                    {modal_trigger_children}
-                </AppModal.Trigger>
+                <AppModal.Trigger>{modal_trigger_children}</AppModal.Trigger>
                 <AppModal.Body
                     logo={logo}
                     balance={balance}

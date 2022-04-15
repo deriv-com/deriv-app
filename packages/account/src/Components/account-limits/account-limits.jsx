@@ -312,18 +312,17 @@ const AccountLimits = ({
                                             )}
                                         </tbody>
                                     </table>
-                                    {(!is_appstore ||
-                                        isMobile()) && (
-                                            <div className='da-account-limits__text-container'>
-                                                <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
-                                                    {is_fully_authenticated ? (
-                                                        <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
-                                                    ) : (
-                                                        <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
-                                                    )}
-                                                </Text>
-                                            </div>
-                                        )}
+                                    {(!is_appstore || isMobile()) && (
+                                        <div className='da-account-limits__text-container'>
+                                            <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
+                                                {is_fully_authenticated ? (
+                                                    <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
+                                                ) : (
+                                                    <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
+                                                )}
+                                            </Text>
+                                        </div>
+                                    )}
                                 </React.Fragment>
                             )}
                         </ThemedScrollbars>

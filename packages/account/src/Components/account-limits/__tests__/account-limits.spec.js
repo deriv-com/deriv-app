@@ -21,14 +21,14 @@ jest.mock('@deriv/components', () => {
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(()=>false),
-    isDesktop: jest.fn(()=>true),
+    isMobile: jest.fn(() => false),
+    isDesktop: jest.fn(() => true),
     formatMoney: jest.fn(),
 }));
 
 jest.mock('Components/demo-message', () => jest.fn(() => 'mockedDemoMessage'));
 jest.mock('Components/load-error-message', () => jest.fn(() => 'mockedLoadErrorMessage'));
-jest.mock('../account-limits-footer.jsx',()=> jest.fn(() => 'mockedAccountLimitsFooter'));
+jest.mock('../account-limits-footer.jsx', () => jest.fn(() => 'mockedAccountLimitsFooter'));
 
 describe('<AccountLimits/>', () => {
     const props = {
@@ -115,7 +115,6 @@ describe('<AccountLimits/>', () => {
             remainder: 13907.43,
             withdrawal_for_x_days_monetary: 0,
             withdrawal_since_inception_monetary: 0,
-            
         },
     };
 
@@ -144,7 +143,7 @@ describe('<AccountLimits/>', () => {
     });
     it('should call setIsPopupOverlayShown fn ', () => {
         const setIsPopupOverlayShown = jest.fn();
-        render(<AccountLimits {...props} setIsOverlayShown = {setIsPopupOverlayShown} />);
+        render(<AccountLimits {...props} setIsOverlayShown={setIsPopupOverlayShown} />);
         expect(setIsPopupOverlayShown).toHaveBeenCalledTimes(1);
     });
 
@@ -353,7 +352,9 @@ describe('<AccountLimits/>', () => {
                 </BrowserRouter>
             </PlatformContext.Provider>
         );
-        expect(screen.queryByText(/your account is fully authenticated and your withdrawal limits have been lifted\./i)).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(/your account is fully authenticated and your withdrawal limits have been lifted\./i)
+        ).not.toBeInTheDocument();
     });
 
     it('should show AccountLimitsArticle when should_show_article and isDesktop is true', () => {
@@ -376,7 +377,7 @@ describe('<AccountLimits/>', () => {
 
     it('should show AccountLimitsFooter if footer_ref is passed', () => {
         const footer = { current: { offsetWidth: 100 } };
-        render(<AccountLimits {...props} should_show_article  footer_ref={footer} />);
+        render(<AccountLimits {...props} should_show_article footer_ref={footer} />);
         expect(screen.getByText(/mockedaccountlimitsfooter/i)).toBeInTheDocument();
     });
 });

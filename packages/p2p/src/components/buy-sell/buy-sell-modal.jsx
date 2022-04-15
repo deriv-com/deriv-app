@@ -65,11 +65,11 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     };
 
     const onHandleReturnFnDesktop = () => {
-        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)
-    }
+        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+    };
 
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
-    
+
     React.useEffect(() => {
         if (!should_show_popup) {
             setErrorMessage(null);
@@ -83,10 +83,15 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
 
     const paymentMethodTitle = () => {
         if (!isMobile()) {
-            return <><Icon icon="IcArrowLeftBold" onClick={onHandleReturnFnDesktop}/>&nbsp;{localize('Add payment method')}</>
+            return (
+                <>
+                    <Icon icon='IcArrowLeftBold' onClick={onHandleReturnFnDesktop} />
+                    &nbsp;{localize('Add payment method')}
+                </>
+            );
         }
         return localize('Add payment method');
-    }
+    };
 
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
     const modal_title = my_profile_store.should_show_add_payment_method_form

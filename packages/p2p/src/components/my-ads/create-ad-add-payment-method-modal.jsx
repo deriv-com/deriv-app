@@ -63,11 +63,14 @@ const CreateAdAddPaymentMethodModal = () => {
             is_open={my_ads_store.should_show_add_payment_method_modal}
             title={
                 <>
-                <Icon icon="icArrowLeftBold" onClick={() => {
-                    my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-                }}/>
-                &nbsp;
-                {localize('Choose payment method')}
+                    <Icon
+                        icon='icArrowLeftBold'
+                        onClick={() => {
+                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                        }}
+                    />
+                    &nbsp;
+                    {localize('Choose payment method')}
                 </>
             }
         >

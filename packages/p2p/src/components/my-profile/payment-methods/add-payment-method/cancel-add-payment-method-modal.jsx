@@ -3,35 +3,38 @@ import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
-import { reaction } from "mobx"
-import PropTypes from "prop-types"
+import { reaction } from 'mobx';
+import PropTypes from 'prop-types';
 
 const CancelAddPaymentMethodModal = ({ stacked }) => {
     const { my_profile_store, my_ads_store } = useStores();
 
     React.useLayoutEffect(() => {
-        const disposeWrapper = reaction(() => my_profile_store.is_cancel_add_payment_method_modal_open, (isOpen) => {
-            let wrapper = document.getElementById("cancel_modal_root");
-            if (isOpen) {
-                if (!wrapper) {
-                    wrapper = document.createElement("div")
-                    wrapper.setAttribute("id", "cancel_modal_root")
-                } 
-                if (stacked) {
-                    wrapper.classList.add("modal-root")
-                    document.body.appendChild(wrapper);
+        const disposeWrapper = reaction(
+            () => my_profile_store.is_cancel_add_payment_method_modal_open,
+            isOpen => {
+                let wrapper = document.getElementById('cancel_modal_root');
+                if (isOpen) {
+                    if (!wrapper) {
+                        wrapper = document.createElement('div');
+                        wrapper.setAttribute('id', 'cancel_modal_root');
+                    }
+                    if (stacked) {
+                        wrapper.classList.add('modal-root');
+                        document.body.appendChild(wrapper);
+                    }
+                } else if (wrapper) {
+                    document.body.removeChild(wrapper);
                 }
-            } else if (wrapper) {
-                document.body.removeChild(wrapper)
             }
-        })
+        );
 
         return () => {
-            disposeWrapper()
-        }
-    },[])
+            disposeWrapper();
+        };
+    }, []);
 
-        return (
+    return (
         <Modal
             has_close_icon={false}
             is_open={my_profile_store.is_cancel_add_payment_method_modal_open}
@@ -41,7 +44,7 @@ const CancelAddPaymentMethodModal = ({ stacked }) => {
                     <Localize i18n_default_text='Cancel adding this payment method?' />
                 </Text>
             }
-            portalId={stacked ? "cancel_modal_root" : undefined}
+            portalId={stacked ? 'cancel_modal_root' : undefined}
         >
             <Modal.Body>
                 <Text color='prominent' size='xs'>
@@ -56,7 +59,7 @@ const CancelAddPaymentMethodModal = ({ stacked }) => {
                         my_profile_store.setSelectedPaymentMethod('');
                         my_profile_store.setSelectedPaymentMethodDisplayName('');
                         my_profile_store.setShouldShowAddPaymentMethodForm(false);
-                        my_ads_store.setShouldShowAddPaymentMethodModal(false)
+                        my_ads_store.setShouldShowAddPaymentMethodModal(false);
                     }}
                     secondary
                 >
@@ -78,6 +81,6 @@ const CancelAddPaymentMethodModal = ({ stacked }) => {
 
 CancelAddPaymentMethodModal.propTypes = {
     stacked: PropTypes.bool,
-}
+};
 
 export default observer(CancelAddPaymentMethodModal);

@@ -152,7 +152,6 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                     secondary
                                     large
                                     onClick={() => {
-                                        my_profile_store.setSelectedPaymentMethod('');
                                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
                                     }}
                                     type='button'

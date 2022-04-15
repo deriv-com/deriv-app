@@ -6,6 +6,7 @@ import { localize } from 'Components/i18next';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import AddPaymentMethodForm from './add-payment-method-form.jsx';
 import SelectPaymentMethod from './select-payment-method.jsx';
+import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal'
 
 const AddPaymentMethod = ({ should_show_page_return = true, should_show_separated_footer }) => {
     const { my_profile_store } = useStores();
@@ -19,10 +20,13 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
 
     return (
         <React.Fragment>
+            <CancelAddPaymentMethodModal stacked />
             <DesktopWrapper>
                 {should_show_page_return && (
                     <PageReturn
-                        onClick={my_profile_store.hideAddPaymentMethodForm}
+                        onClick={() => {
+                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                        }}
                         page_title={localize('Add payment method')}
                     />
                 )}

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState } from '@deriv/components';
+import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState, Icon } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
@@ -64,23 +64,33 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         setShouldShowPopup(false);
     };
 
-    const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
+    const onHandleReturnFnDesktop = () => {
+        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)
+    }
 
+    const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
+    
     React.useEffect(() => {
         if (!should_show_popup) {
             setErrorMessage(null);
         }
 
-        my_profile_store.setShouldShowAddPaymentMethodForm(false);
         my_profile_store.setSelectedPaymentMethod('');
         my_profile_store.setSelectedPaymentMethodDisplayName('');
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_popup]);
 
+    const paymentMethodTitle = () => {
+        if (!isMobile()) {
+            return <><Icon icon="IcArrowLeftBold" onClick={onHandleReturnFnDesktop}/>&nbsp;{localize('Add payment method')}</>
+        }
+        return localize('Add payment method');
+    }
+
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
     const modal_title = my_profile_store.should_show_add_payment_method_form
-        ? localize('Add payment method')
+        ? paymentMethodTitle()
         : table_type === buy_sell.BUY
         ? localize('Buy {{ currency }}', { currency: selected_ad.account_currency })
         : localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
@@ -92,7 +102,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 className='buy-sell__modal'
                 height_offset='80px'
                 is_flex
-                is_modal_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
+                is_modal_open={should_show_popup}
                 page_header_className='buy-sell__modal-header'
                 page_header_text={modal_title}
                 pageHeaderReturnFn={onCancel}
@@ -135,7 +145,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             className='buy-sell__modal'
             height={table_type === buy_sell.BUY ? '400px' : '649px'}
             width='456px'
-            is_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
+            is_open={should_show_popup}
             title={modal_title}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}

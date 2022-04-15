@@ -75,7 +75,6 @@ describe('LeaveConfirm', () => {
     });
     it('should trigger onclick callback when the user clicks cancel button', async () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState(true));
-
         render(<LeaveConfirmComponent />);
         const el_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
         fireEvent.click(el_cancel_btn);
@@ -85,7 +84,6 @@ describe('LeaveConfirm', () => {
     });
     it('should set values as dirty when the user leaves modal', () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState(true));
-
         render(<TransitionBlockerComponent onDirty={jest.fn()} />);
         const el_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
         fireEvent.click(el_cancel_btn);
@@ -95,7 +93,6 @@ describe('LeaveConfirm', () => {
         jest.spyOn(React, 'useState')
             .mockReturnValueOnce([true, () => {}])
             .mockReturnValueOnce([{ pathname: '/' }, () => {}]);
-
         render(<TransitionBlockerComponent />);
         const el_leave_settings_btn = screen.getByRole('button', { name: 'Leave Settings' });
         fireEvent.click(el_leave_settings_btn);

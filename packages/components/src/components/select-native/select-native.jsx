@@ -61,6 +61,7 @@ const SelectNative = ({
     suffix_icon,
     use_text,
     value,
+    data_testid,
     ...props
 }) => (
     <div
@@ -79,7 +80,10 @@ const SelectNative = ({
             >
                 <div className='dc-select-native__display'>
                     {list_items && value && (
-                        <div className={classNames('dc-select-native__display-text', classNameDisplay)}>
+                        <div
+                            className={classNames('dc-select-native__display-text', classNameDisplay)}
+                            data-testid='selected_value'
+                        >
                             {!hide_selected_value && (use_text ? value : getDisplayText(list_items, value))}
                         </div>
                     )}
@@ -102,6 +106,7 @@ const SelectNative = ({
                     className='dc-select-native__picker'
                     value={value}
                     disabled={disabled}
+                    data-testid={data_testid}
                     {...props}
                 >
                     {Array.isArray(list_items) ? (
@@ -191,6 +196,7 @@ SelectNative.propTypes = {
     use_text: PropTypes.bool,
     value: PropTypes.string,
     should_hide_disabled_options: PropTypes.bool,
+    data_testid: PropTypes.string,
 };
 
 SelectNative.defaultProps = {

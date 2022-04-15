@@ -15,8 +15,8 @@ const ModalTrigger = <div onClick={() => {}}>Transfer</div>;
 
 const ModalBody = <div>Modal Body</div>;
 
-export const DefaultUnlinkedLightLarge = Template.bind({});
-DefaultUnlinkedLightLarge.args = {
+export const DefaultAppModal = Template.bind({});
+DefaultAppModal.args = {
     modal_trigger_children: ModalTrigger,
     modal_body_children: ModalBody,
     balance: '10,0000.00',

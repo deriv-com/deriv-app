@@ -151,6 +151,4 @@ describe('<AdvertiserPageRow/>', () => {
         expect(screen.getByRole('button')).toBeInTheDocument();
         expect(screen.getByText('Buy AED')).toBeInTheDocument();
     });
-
-    
 });

@@ -56,7 +56,6 @@ jest.mock('Components/advertiser-page/advertiser-page-adverts.jsx', () =>
 );
 
 describe('<AdvertiserPage/>', () => {
-
     it('should render BuySell modal poup if show_ad_popup is true', () => {
         useStores.mockReturnValue({
             buy_sell_store: { hideAdvertiserPage: jest.fn() },

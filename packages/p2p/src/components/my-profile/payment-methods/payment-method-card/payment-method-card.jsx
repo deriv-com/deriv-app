@@ -18,7 +18,6 @@ const PaymentMethodCard = ({
     style,
 }) => {
     const { my_profile_store } = useStores();
-
     const method = !is_add && payment_method.display_name.replace(/\s|-/gm, '');
     const payment_account = payment_method?.fields?.account?.value;
     const payment_account_name = payment_method?.fields?.account?.display_name;

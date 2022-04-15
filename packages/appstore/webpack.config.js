@@ -1,11 +1,31 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+
+const file_loaders = [
+    {
+        loader: 'file-loader',
+        options: {
+            name: '[path][name].[contenthash].[ext]',
+        },
+    },
+];
+
+const svg_file_loaders = [
+    {
+        loader: 'file-loader',
+        options: {
+            name: '[path][name].[contenthash].[ext]',
+            outputPath: 'appstore',
+        },
+    },
+];
 
 const svg_loaders = [
     {
@@ -131,8 +151,19 @@ module.exports = function () {
                     ],
                 },
                 {
+                    test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+                    exclude: /node_modules/,
+                    use: file_loaders,
+                },
+                {
                     test: /\.svg$/,
-                    exclude: /node_modules|public\//,
+                    exclude: /node_modules/,
+                    include: /assets/,
+                    use: svg_file_loaders,
+                },
+                {
+                    test: /\.svg$/,
+                    exclude: /node_modules|assets\//,
                     use: svg_loaders,
                 },
             ],
@@ -164,6 +195,22 @@ module.exports = function () {
                 '@deriv/account': true,
             },
         ],
-        plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
+        plugins: [
+            new CleanWebpackPlugin(),
+            new ForkTsCheckerWebpackPlugin(),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.resolve(__dirname, '../../node_modules/@deriv/ui/dist/assets'),
+                        to: 'appstore/assets',
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    { from: path.resolve(__dirname, '../../node_modules/@deriv/ui/dist/modal'), to: 'appstore/modal' },
+                ],
+            }),
+        ],
     };
 };

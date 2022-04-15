@@ -92,13 +92,11 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 );
             }
             return localize('Add payment method');
-        } else {
-            if (table_type === buy_sell.BUY) {
-                return localize('Buy {{ currency }}', { currency: selected_ad.account_currency });
-            } else {
-                return localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
-            }
         }
+        if (table_type === buy_sell.BUY) {
+            return localize('Buy {{ currency }}', { currency: selected_ad.account_currency });
+        }
+        return localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
     };
 
     const Form = general_store.nickname ? BuySellForm : NicknameForm;

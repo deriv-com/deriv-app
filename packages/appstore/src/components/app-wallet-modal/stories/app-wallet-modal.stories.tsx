@@ -5,7 +5,7 @@ import AppWalletModal from '../index';
 type AppWalletModalProps = Parameters<typeof AppWalletModal>[0];
 
 export default {
-    title: 'AppModal',
+    title: 'AppWalletModal',
     parameters: { controls: { sort: 'alpha' } },
 } as Meta<AppWalletModalProps>;
 
@@ -22,7 +22,7 @@ DefaultUnlinkedLightLarge.args = {
     balance: '10,0000.00',
     currency: 'USD',
     dark: false,
-    message: '',
-    message_type: '',
+    message: 'Message goes here',
+    message_type: 'information',
     wallet_name: 'Astropay',
 };

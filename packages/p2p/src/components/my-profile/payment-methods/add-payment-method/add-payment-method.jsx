@@ -20,7 +20,7 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
 
     return (
         <React.Fragment>
-            <CancelAddPaymentMethodModal stacked />
+            <CancelAddPaymentMethodModal float />
             <DesktopWrapper>
                 {should_show_page_return && (
                     <PageReturn

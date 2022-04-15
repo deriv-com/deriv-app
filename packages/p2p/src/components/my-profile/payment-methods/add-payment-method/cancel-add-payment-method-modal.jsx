@@ -6,7 +6,7 @@ import { Localize } from 'Components/i18next';
 import { reaction } from 'mobx';
 import PropTypes from 'prop-types';
 
-const CancelAddPaymentMethodModal = ({ stacked }) => {
+const CancelAddPaymentMethodModal = ({ float }) => {
     const { my_profile_store, my_ads_store } = useStores();
 
     React.useLayoutEffect(() => {
@@ -19,7 +19,7 @@ const CancelAddPaymentMethodModal = ({ stacked }) => {
                         wrapper = document.createElement('div');
                         wrapper.setAttribute('id', 'cancel_modal_root');
                     }
-                    if (stacked) {
+                    if (float) {
                         wrapper.classList.add('modal-root');
                         document.body.appendChild(wrapper);
                     }
@@ -44,7 +44,7 @@ const CancelAddPaymentMethodModal = ({ stacked }) => {
                     <Localize i18n_default_text='Cancel adding this payment method?' />
                 </Text>
             }
-            portalId={stacked ? 'cancel_modal_root' : undefined}
+            portalId={float ? 'cancel_modal_root' : undefined}
         >
             <Modal.Body>
                 <Text color='prominent' size='xs'>
@@ -80,7 +80,7 @@ const CancelAddPaymentMethodModal = ({ stacked }) => {
 };
 
 CancelAddPaymentMethodModal.propTypes = {
-    stacked: PropTypes.bool,
+    float: PropTypes.bool,
 };
 
 export default observer(CancelAddPaymentMethodModal);

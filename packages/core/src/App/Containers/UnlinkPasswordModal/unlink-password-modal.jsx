@@ -223,7 +223,7 @@ const UnlinkPasswordModal = ({
                 logoutClient={logoutClient}
                 social_identity_provider={social_identity_provider}
                 toggleResetPasswordModal={toggleResetPasswordModal}
-                verification_code={social_identity_provider ? unlink_verification_code : reset_verification_code}
+                verification_code={unlink_verification_code || reset_verification_code}
                 new_email={new_email}
             />
         </Dialog>

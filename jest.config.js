@@ -11,7 +11,4 @@ module.exports = {
     },
     testRegex: ['__tests__', '.*.spec.js'],
     transformIgnorePatterns: ['/node_modules/(?!react-virtualized).+\\.js$'],
-    preset: 'ts-jest',
-    testEnvironment: 'node',
-    testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(test).ts?(x)'],
 };

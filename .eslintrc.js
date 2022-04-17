@@ -108,6 +108,9 @@ module.exports = {
         react: {
             version: '16',
         },
+        'import/resolver': {
+            typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
+        },
     },
     overrides: [
         {

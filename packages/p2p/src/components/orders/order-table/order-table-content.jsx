@@ -5,7 +5,7 @@ import { reaction } from 'mobx';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
-import { TableError } from 'Components/table/table-error.jsx';
+import { TableError } from 'Components/table/table-error.tsx';
 import Empty from 'Components/empty/empty.jsx';
 import OrderRow from 'Components/orders/order-table/order-table-row.jsx';
 import OrderTableHeader from 'Components/orders/order-table/order-table-header.jsx';

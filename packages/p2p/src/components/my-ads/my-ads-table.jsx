@@ -12,6 +12,7 @@ import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import QuickAddModal from './quick-add-modal.jsx';
 import AdExceedsDailyLimitModal from './ad-exceeds-daily-limit-modal.jsx';
+import ReduceOrderTimeBanner from './reduce-order-time-banner.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -60,18 +61,7 @@ const MyAdsTable = () => {
                         is_warn
                     />
                 )}
-                {general_store.banner_config.reduced_order_time && (
-                    <HintBox
-                        className='p2p-my-ads__warning'
-                        icon='IcInfo'
-                        message={
-                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text='New orders are now active for 1 hour only. Complete your order before it expires!' />
-                            </Text>
-                        }
-                        is_info
-                    />
-                )}
+                <ReduceOrderTimeBanner />
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (

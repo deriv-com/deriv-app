@@ -30,9 +30,6 @@ export default class GeneralStore extends BaseStore {
     @observable should_show_popup = false;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
-    @observable banner_config = {
-        reduced_order_time: true,
-    };
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {

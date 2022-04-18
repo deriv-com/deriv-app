@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ButtonToggle, HintBox, Text } from '@deriv/components';
+import { ButtonToggle } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import { order_list } from 'Constants/order-list';
 import { useStores } from 'Stores';
 import OrderTableContent from './order-table-content.jsx';
+import ReduceOrderTimeBanner from 'Components/my-ads/reduce-order-time-banner.jsx';
 
 const OrderTable = ({ showDetails }) => {
     const { general_store } = useStores();
@@ -27,18 +28,7 @@ const OrderTable = ({ showDetails }) => {
     const is_active_tab = general_store.order_table_type === order_list.ACTIVE;
     return (
         <React.Fragment>
-            {general_store.banner_config.reduced_order_time && (
-                <HintBox
-                    className='orders__banner'
-                    icon='IcInfo'
-                    message={
-                        <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                            <Localize i18n_default_text='New orders are now active for 1 hour only. Complete your order before it expires!' />
-                        </Text>
-                    }
-                    is_info
-                />
-            )}
+            <ReduceOrderTimeBanner />
             <div className='orders-tab'>
                 <div className='orders-tab__header '>
                     <ToggleContainer>

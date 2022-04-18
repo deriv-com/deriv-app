@@ -268,19 +268,22 @@ export default class MyAdsStore extends BaseStore {
             update_advert.description = values.description;
         }
 
-        requestWS(update_advert).then(response => {
-            // If there's an error, let the user submit the form again.
-            if (response.error) {
-                setSubmitting(false);
-                this.setEditAdFormError(response.error.message);
-                this.setIsEditAdErrorModalVisible(true);
-            } else {
-                this.setShowEditAdForm(false);
-            }
-        })
-        .finally(()=>{
-            this.setIsSwitchModalOpen(false, null);
-        })
+        requestWS(update_advert)
+            .then(response => {
+                // If there's an error, let the user submit the form again.
+                if (response) {
+                    if (response.error) {
+                        setSubmitting(false);
+                        this.setEditAdFormError(response.error.message);
+                        this.setIsEditAdErrorModalVisible(true);
+                    } else {
+                        this.setShowEditAdForm(false);
+                    }
+                }
+            })
+            .finally(() => {
+                this.setIsSwitchModalOpen(false, null);
+            });
     }
 
     @action.bound

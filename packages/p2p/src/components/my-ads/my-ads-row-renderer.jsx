@@ -64,7 +64,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             <div
                                 className='p2p-my-ads__table-popovers__edit'
                                 onClick={
-                                    (enable_action_point && floating_rate_store.rate_type !== rate_type)
+                                    enable_action_point && floating_rate_store.rate_type !== rate_type
                                         ? onClickSwitchAd
                                         : onClickEdit
                                 }

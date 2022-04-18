@@ -141,7 +141,7 @@ const MyAdsTable = () => {
                     </div>
                 )}
                 <MyAdsDeleteModal />
-                <MyAdsFloatingRateSwitchModal/>
+                <MyAdsFloatingRateSwitchModal />
                 <Modal
                     className='p2p-my-ads__modal-error'
                     has_close_icon={false}

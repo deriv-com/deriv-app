@@ -4,6 +4,7 @@ import { Field, Form, Formik } from 'formik';
 import { Button, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal'
 
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
@@ -83,6 +84,7 @@ const EditPaymentMethodForm = () => {
 
     return (
         <React.Fragment>
+            <CancelEditPaymentMethodModal />
             <Formik
                 enableReinitialize
                 initialValues={my_profile_store.initial_values}
@@ -144,8 +146,7 @@ const EditPaymentMethodForm = () => {
                                     secondary
                                     large
                                     onClick={() => {
-                                        my_profile_store.setShouldShowEditPaymentMethodForm(false);
-                                        my_profile_store.setPaymentMethodToEdit();
+                                        my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
                                     }}
                                     type='button'
                                 >

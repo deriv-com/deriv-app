@@ -14,6 +14,11 @@ const Trader = React.lazy(() => {
     return import(/* webpackChunkName: "trader" */ '@deriv/trader');
 });
 
+const CFD = React.lazy(() => {
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
+});
+
 const Account = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "account" */ '@deriv/account');
@@ -41,6 +46,16 @@ const getModules = ({ is_appstore }) => {
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Bot'),
+        },
+        {
+            path: routes.dxtrade,
+            component: props => <CFD {...props} platform='dxtrade' />,
+            getTitle: () => localize('Deriv X'),
+        },
+        {
+            path: routes.mt5,
+            component: props => <CFD {...props} platform='mt5' />,
+            getTitle: () => localize('MT5'),
         },
         {
             path: routes.account_deactivated,
@@ -207,18 +222,6 @@ const getModules = ({ is_appstore }) => {
             component: Trader,
             getTitle: () => localize('Trader'),
             routes: [
-                {
-                    path: routes.dxtrade,
-                    component: Trader,
-                    getTitle: () => localize('Deriv X'),
-                    is_authenticated: false,
-                },
-                {
-                    path: routes.mt5,
-                    component: Trader,
-                    getTitle: () => localize('MT5'),
-                    is_authenticated: false,
-                },
                 {
                     path: routes.reports,
                     component: Trader,

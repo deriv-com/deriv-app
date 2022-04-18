@@ -382,16 +382,22 @@ export default class GeneralStore extends BaseStore {
     setP2PConfig() {
         const { floating_rate_store } = this.root_store;
         requestWS({ website_status: 1 }).then(response => {
-            if (!!response && response.error) {
-                floating_rate_store.setApiErrorMessage(response.error.message);
-            } else {
-                const { fixed_rate_adverts, float_rate_adverts, float_rate_offset_limit, fixed_rate_adverts_end_date } =
-                    response.website_status.p2p_config;
-                floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
-                floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
-                floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
-                floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
-                floating_rate_store.setApiErrorMessage(null);
+            if (response) {
+                if (response.error) {
+                    floating_rate_store.setApiErrorMessage(response.error.message);
+                } else {
+                    const {
+                        fixed_rate_adverts,
+                        float_rate_adverts,
+                        float_rate_offset_limit,
+                        fixed_rate_adverts_end_date,
+                    } = response.website_status.p2p_config;
+                    floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
+                    floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
+                    floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
+                    floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
+                    floating_rate_store.setApiErrorMessage(null);
+                }
             }
         });
     }

@@ -76,8 +76,8 @@ const MyAdsTable = () => {
                                                 'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}'
                                             }
                                             values={{
-                                                local_currency: local_currency || '-',
-                                                end_date: floating_rate_store.fixed_rate_adverts_end_date || '-',
+                                                local_currency: local_currency || '',
+                                                end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
                                             }}
                                         />
                                     )}
@@ -141,7 +141,7 @@ const MyAdsTable = () => {
                     </div>
                 )}
                 <MyAdsDeleteModal />
-                <MyAdsFloatingRateSwitchModal />
+                <MyAdsFloatingRateSwitchModal/>
                 <Modal
                     className='p2p-my-ads__modal-error'
                     has_close_icon={false}

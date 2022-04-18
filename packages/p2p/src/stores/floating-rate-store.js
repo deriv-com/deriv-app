@@ -23,7 +23,10 @@ export default class FloatingRateStore extends BaseStore {
 
     @computed
     get reached_target_date() {
-        return new Date().getTime() <= new Date(this.fixed_rate_adverts_end_date).getTime();
+        // Ensuring the date is translated to EOD GMT without the time difference
+        const current_date = new Date(new Date().getTime()).setUTCHours(23, 59, 59, 999);
+        const cutoff_date = new Date(new Date(this.fixed_rate_adverts_end_date).getTime()).setUTCHours(23, 59, 59, 999);
+        return current_date > cutoff_date;
     }
 
     @action.bound
@@ -58,20 +61,22 @@ export default class FloatingRateStore extends BaseStore {
     @action.bound
     setExchangeRate(fiat_currency, local_currency) {
         this.setIsLoading(true);
-        const pay_load = {
+        const payload = {
             exchange_rates: 1,
             base_currency: fiat_currency,
             subscribe: 1,
             target_currency: local_currency,
         };
-        requestWS(pay_load)
+        requestWS(payload)
             .then(response => {
-                if (!!response && response.error) {
-                    this.setApiErrorMessage(response.error.message);
-                } else {
-                    const { rates } = response.exchange_rates;
-                    this.exchange_rate = parseFloat(rates[local_currency]);
-                    this.setApiErrorMessage(null);
+                if (response) {
+                    if (response.error) {
+                        this.setApiErrorMessage(response.error.message);
+                    } else {
+                        const { rates } = response.exchange_rates;
+                        this.exchange_rate = parseFloat(rates[local_currency]);
+                        this.setApiErrorMessage(null);
+                    }
                 }
             })
             .finally(() => this.setIsLoading(false));

@@ -9,11 +9,11 @@ const MyAdsFloatingRateSwitchModal = () => {
 
     const onClickDoLater = () => {
         my_ads_store.setIsSwitchModalOpen(false);
-        my_ads_store.setShouldSwitchAdRate(false);
+        my_ads_store.setShouldSwitchAdRateStatus(false);
     };
 
     const onClickSetFloatingRate = () => {
-        my_ads_store.setShouldSwitchAdRate(true);
+        my_ads_store.setShouldSwitchAdRateStatus(true);
     };
 
     return (

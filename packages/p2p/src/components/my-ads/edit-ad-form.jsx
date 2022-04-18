@@ -102,7 +102,7 @@ const EditAdForm = () => {
                             max_transaction: max_order_amount_display,
                             min_transaction: min_order_amount_display,
                             offer_amount: amount_display,
-                            price_rate: rate_display,
+                            rate_type: rate_display,
                             type,
                         }}
                         onSubmit={my_ads_store.onClickSaveEditAd}
@@ -132,7 +132,7 @@ const EditAdForm = () => {
                                                                 : null
                                                         }
                                                         offer_amount={errors.offer_amount ? '' : values.offer_amount}
-                                                        price_rate={errors.price_rate ? '' : values.price_rate}
+                                                        price_rate={errors.rate_type ? '' : values.rate_type}
                                                         type={values.type}
                                                     />
                                                 </div>
@@ -181,12 +181,12 @@ const EditAdForm = () => {
                                                             />
                                                         )}
                                                     </Field>
-                                                    <Field name='price_rate'>
+                                                    <Field name='rate_type'>
                                                         {({ field }) =>
                                                             floating_rate_store.rate_type === ad_type.FLOAT ? (
                                                                 <FloatingRate
                                                                     className='p2p-my-ads__form-field'
-                                                                    error_messages={errors.price_rate}
+                                                                    error_messages={errors.rate_type}
                                                                     exchange_rate={floating_rate_store.exchange_rate}
                                                                     fiat_currency={account_currency}
                                                                     local_currency={local_currency}
@@ -214,7 +214,7 @@ const EditAdForm = () => {
                                                                     {...field}
                                                                     data-lpignore='true'
                                                                     type='text'
-                                                                    error={touched.price_rate && errors.price_rate}
+                                                                    error={touched.rate_type && errors.rate_type}
                                                                     label={localize('Fixed rate (1 {{currency}})', {
                                                                         account_currency,
                                                                     })}

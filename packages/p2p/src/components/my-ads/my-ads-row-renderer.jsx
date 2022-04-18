@@ -63,7 +63,11 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         {is_advert_active ? (
                             <div
                                 className='p2p-my-ads__table-popovers__edit'
-                                onClick={enable_action_point ? onClickSwitchAd : onClickEdit}
+                                onClick={
+                                    (enable_action_point && floating_rate_store.rate_type !== rate_type)
+                                        ? onClickSwitchAd
+                                        : onClickEdit
+                                }
                             >
                                 <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
                             </div>
@@ -167,7 +171,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 {min_order_amount_display} - {max_order_amount_display} {account_currency}
                             </Text>
                             <Text color='profit-success' line_height='m' size='xs' weight='bold'>
-                                {price_display} {local_currency}
+                                <div className='display-layout'>
+                                    {price_display} {local_currency}
+                                    {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
+                                </div>
                             </Text>
                         </div>
                         <div className='p2p-my-ads__table-row-methods'>
@@ -222,9 +229,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 <Table.Cell className='p2p-my-ads__table-price'>
                     <div className='display-layout'>
                         {price_display} {local_currency}
-                        {rate_type === ad_type.FLOAT && (
-                            <AdType float_rate={rate_display} className='p2p-my-ads__table__payment-method--label' />
-                        )}
+                        {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
                     </div>
                 </Table.Cell>
                 <Table.Cell className='p2p-my-ads__table-available'>
@@ -269,11 +274,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     {!payment_method_names || enable_action_point ? (
                         <div className='p2p-my-ads__table-status-warning'>
                             <AdStatus is_active={!!is_advert_active} />
-                            <Icon
-                                icon='IcAlertWarning'
-                                size={isMobile() ? 28 : 16}
-                                className='cfd-dashboard__maintenance-icon'
-                            />
+                            <Icon icon='IcAlertWarning' size={isMobile() ? 28 : 16} />
                         </div>
                     ) : (
                         <div className='p2p-my-ads__table-status'>
@@ -305,7 +306,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             </div>
                         )}
                         {is_advert_active ? (
-                            <div onClick={enable_action_point ? onClickSwitchAd : onClickEdit}>
+                            <div
+                                onClick={
+                                    enable_action_point && floating_rate_store.rate_type !== rate_type
+                                        ? onClickSwitchAd
+                                        : onClickEdit
+                                }
+                            >
                                 <Popover
                                     alignment='bottom'
                                     className='p2p-my-ads__table-popovers__edit'

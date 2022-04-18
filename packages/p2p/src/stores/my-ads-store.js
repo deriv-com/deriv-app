@@ -13,7 +13,6 @@ export default class MyAdsStore extends BaseStore {
     @observable advert_details = null;
     @observable adverts = [];
     @observable adverts_archive_period = null;
-
     @observable api_error = '';
     @observable api_error_message = '';
     @observable api_table_error_message = '';
@@ -35,16 +34,16 @@ export default class MyAdsStore extends BaseStore {
     @observable is_quick_add_modal_open = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
-    @observable is_switch_ad_rate = false;
     @observable is_switch_modal_open = false;
     @observable item_offset = 0;
     @observable p2p_advert_information = {};
+    @observable show_ad_form = false;
     @observable selected_ad_id = '';
     @observable selected_advert = null;
     @observable should_show_add_payment_method = false;
     @observable should_show_add_payment_method_modal = false;
-    @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
+    @observable should_switch_ad_rate = false;
     @observable update_payment_methods_error_message = '';
 
     payment_method_ids = [];
@@ -138,7 +137,7 @@ export default class MyAdsStore extends BaseStore {
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
             rate_type: this.root_store.floating_rate_store.rate_type,
-            rate: Number(values.price_rate),
+            rate: Number(values.rate_type),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
@@ -252,7 +251,7 @@ export default class MyAdsStore extends BaseStore {
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
             rate_type: this.root_store.floating_rate_store.rate_type,
-            rate: Number(values.price_rate),
+            rate: Number(values.rate_type),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
@@ -278,7 +277,10 @@ export default class MyAdsStore extends BaseStore {
             } else {
                 this.setShowEditAdForm(false);
             }
-        });
+        })
+        .finally(()=>{
+            this.setIsSwitchModalOpen(false, null);
+        })
     }
 
     @action.bound
@@ -344,7 +346,6 @@ export default class MyAdsStore extends BaseStore {
     restrictLength = (e, handleChange, max_characters = 15) => {
         // typing more than 15 characters will break the layout
         // max doesn't disable typing, so we will use this to restrict length
-        // const max_characters = 15;
         if (e.target.value.length > max_characters) {
             e.target.value = e.target.value.slice(0, max_characters);
             return;
@@ -353,14 +354,14 @@ export default class MyAdsStore extends BaseStore {
     };
 
     @action.bound
-    restrictDecimalPlace = (e, decimal_place, handleChangeCb) => {
+    restrictDecimalPlace = (e, decimal_place, handleChangeCallback) => {
         const pattern = new RegExp(`^[+-]?\\d*(\\.\\d{1,${decimal_place}})?$`);
         if (pattern.test(e.target.value)) {
-            handleChangeCb(e);
+            handleChangeCallback(e);
         } else {
             const user_input = parseFloat(e.target.value).toFixed(decimal_place);
             e.target.value = user_input;
-            handleChangeCb(e);
+            handleChangeCallback(e);
         }
     };
 
@@ -547,10 +548,9 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setShouldSwitchAdRate(is_switch_ad_rate) {
-        this.is_switch_ad_rate = is_switch_ad_rate;
-        if (is_switch_ad_rate) {
-            // this.getAdvertInfo();
+    setShouldSwitchAdRateStatus(should_switch_ad_rate) {
+        this.should_switch_ad_rate = should_switch_ad_rate;
+        if (should_switch_ad_rate) {
             this.setShowEditAdForm(true);
         }
     }
@@ -596,7 +596,7 @@ export default class MyAdsStore extends BaseStore {
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
-            price_rate: [
+            rate_type: [
                 v => !!v,
                 v => !isNaN(v),
                 v =>
@@ -624,7 +624,7 @@ export default class MyAdsStore extends BaseStore {
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
             payment_info: localize('Payment instructions'),
-            price_rate: this.root_store.floating_rate_store.rate_type
+            rate_type: this.root_store.floating_rate_store.rate_type
                 ? localize('Floating rate')
                 : localize('Fixed rate'),
         };
@@ -703,7 +703,7 @@ export default class MyAdsStore extends BaseStore {
                     case 'min_transaction':
                         errors[key] = getMinTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
-                    case 'price_rate':
+                    case 'rate_type':
                         errors[key] = getPriceRateMessages(mapped_key[key])[error_index];
                         break;
                     default:
@@ -758,7 +758,7 @@ export default class MyAdsStore extends BaseStore {
             //     v => (values.min_transaction ? +v >= values.min_transaction : true),
             //     v => (values.max_transaction ? +v >= values.max_transaction : true),
             // ],
-            price_rate: [
+            rate_type: [
                 v => !!v,
                 v => !isNaN(v),
                 v =>
@@ -785,7 +785,7 @@ export default class MyAdsStore extends BaseStore {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            price_rate: localize('Fixed rate'),
+            rate_type: localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
@@ -862,7 +862,7 @@ export default class MyAdsStore extends BaseStore {
                     case 'min_transaction':
                         errors[key] = getMinTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
-                    case 'price_rate':
+                    case 'rate_type':
                         errors[key] = getPriceRateMessages(mapped_key[key])[error_index];
                         break;
                     default:
@@ -882,9 +882,9 @@ export default class MyAdsStore extends BaseStore {
 }
 
 const checkForFixedRateAds = ads_list => {
-    return ads_list.some(ad => ad.rate_type === 'fixed');
+    return ads_list.some(ad => ad.rate_type === ad_type.FIXED);
 };
 
 const checkForFloatRateAds = ads_list => {
-    return ads_list.some(ad => ad.rate_type === 'float');
+    return ads_list.some(ad => ad.rate_type === ad_type.FLOAT);
 };

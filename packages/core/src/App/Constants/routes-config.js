@@ -19,6 +19,11 @@ const Reports = React.lazy(() => {
     return import(/* webpackChunkName: "reports" */ '@deriv/reports');
 });
 
+const CFD = React.lazy(() => {
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
+});
+
 const Account = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "account" */ '@deriv/account');
@@ -39,7 +44,7 @@ const AppStore = React.lazy(() => {
     return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
 });
 
-const getModules = ({ is_appstore }) => {
+const getModules = ({ is_appstore }, is_social_signup) => {
     const modules = [
         {
             path: routes.bot,
@@ -74,6 +79,16 @@ const getModules = ({ is_appstore }) => {
                     icon_component: 'IcStatement',
                 },
             ],
+        },
+        {
+            path: routes.dxtrade,
+            component: props => <CFD {...props} platform='dxtrade' />,
+            getTitle: () => localize('Deriv X'),
+        },
+        {
+            path: routes.mt5,
+            component: props => <CFD {...props} platform='mt5' />,
+            getTitle: () => localize('MT5'),
         },
         {
             path: routes.account_deactivated,
@@ -128,7 +143,8 @@ const getModules = ({ is_appstore }) => {
                         {
                             path: routes.passwords,
                             component: Account,
-                            getTitle: () => localize('Passwords'),
+                            getTitle: () =>
+                                is_social_signup ? localize('Passwords') : localize('Email and passwords'),
                         },
                         {
                             path: routes.self_exclusion,
@@ -281,7 +297,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_appstore }) => [
+const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
@@ -292,7 +308,7 @@ const initRoutesConfig = ({ is_appstore }) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_appstore }),
+    ...getModules({ is_appstore }, is_social_signup),
 ];
 
 let routesConfig;
@@ -301,11 +317,9 @@ let routesConfig;
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_appstore = true }) => {
-    if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_appstore });
-        routesConfig.push(route_default);
-    }
+const getRoutesConfig = ({ is_appstore = true }, is_social_signup) => {
+    routesConfig = initRoutesConfig({ is_appstore }, is_social_signup);
+    routesConfig.push(route_default);
     return routesConfig;
 };
 

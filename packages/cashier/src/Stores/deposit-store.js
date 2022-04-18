@@ -24,7 +24,7 @@ export default class DepositStore {
             setSessionTimeout,
             setTimeoutCashierUrl,
         } = modules.cashier.iframe;
-        const { is_virtual } = client;
+        const { account_status, is_virtual, updateAccountStatus } = client;
         const current_container = active_container;
 
         setOnRemount(this.onMountDeposit);
@@ -70,8 +70,8 @@ export default class DepositStore {
             }
         }
 
-        if (!this.root_store.client.account_status?.status?.includes('deposit_attempt')) {
-            await this.root_store.client.updateAccountStatus();
+        if (!account_status?.status?.includes('deposit_attempt')) {
+            await updateAccountStatus();
         }
 
         setLoading(false);

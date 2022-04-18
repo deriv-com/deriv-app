@@ -87,11 +87,7 @@ export default class MyAdsStore extends BaseStore {
                     this.setP2pAdvertInformation(p2p_advert_info);
                 }
             })
-            .finally(() => {
-                this.setIsFormLoading(false);
-                if (this.root_store.floating_rate_store.rate_type === 'float')
-                    this.setIsSwitchModalOpen(false, this.selected_ad_id);
-            });
+            .finally(() => this.setIsFormLoading(false));
     }
 
     @action.bound
@@ -554,7 +550,7 @@ export default class MyAdsStore extends BaseStore {
     setShouldSwitchAdRate(is_switch_ad_rate) {
         this.is_switch_ad_rate = is_switch_ad_rate;
         if (is_switch_ad_rate) {
-            this.getAdvertInfo();
+            // this.getAdvertInfo();
             this.setShowEditAdForm(true);
         }
     }

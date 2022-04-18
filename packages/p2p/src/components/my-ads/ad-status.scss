@@ -1,17 +1,39 @@
 .ad-status {
     &--active {
-        background-color: var(--status-active);
-        border-radius: 1.6rem;
-        padding: 0.2rem 1.6rem;
+        &:before {
+            content: '';
+            height: 100%;
+            width: 100%;
+            background-color: var(--status-success);
+            opacity: 0.16;
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 1.6rem;
+        }
+        padding: 0.1rem 1.2rem;
         text-align: center;
-        width: 7.4rem;
+        display: flex;
+        position: relative;
     }
 
     &--inactive {
-        background-color: var(--status-in-active);
-        border-radius: 1.6rem;
+        &:before {
+            content: '';
+            height: 100%;
+            width: 100%;
+            background-color: var(--status-danger);
+            opacity: 0.16;
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 1.6rem;
+        }
         padding: 0.1rem 1.2rem;
         text-align: center;
-        width: 8.8rem;
+        display: flex;
+        position: relative;
     }
 }

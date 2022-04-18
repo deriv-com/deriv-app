@@ -42,8 +42,8 @@ const FloatingRate = ({
                     is_signed
                     inputmode='decimal'
                     increment_button_type='button'
-                    max_value={offset.upper_limit}
-                    min_value={offset.lower_limit}
+                    max_value={offset?.upper_limit}
+                    min_value={offset?.lower_limit}
                     name={name}
                     onChange={change_handler}
                     placeholder={placeholder}
@@ -71,7 +71,7 @@ const FloatingRate = ({
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
-                        {localize('1')} {fiat_currency} = {exchange_rate} {local_currency}
+                        1 {fiat_currency} = {exchange_rate} {local_currency}
                     </Text>
                 </div>
             </section>

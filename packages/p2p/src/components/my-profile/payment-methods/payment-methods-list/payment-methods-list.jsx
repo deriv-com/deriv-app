@@ -151,7 +151,8 @@ const PaymentMethodsList = () => {
                 small
                 has_close_icon={false}
                 title={localize('Delete {{payment_method_name}}?', {
-                    payment_method_name: my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value,
+                    payment_method_name: my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value || 
+                    my_profile_store?.payment_method_to_delete?.fields?.name?.value,
                 })}
             >
                 <Modal.Body>

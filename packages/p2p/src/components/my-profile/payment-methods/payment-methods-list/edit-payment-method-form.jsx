@@ -4,7 +4,7 @@ import { Field, Form, Formik } from 'formik';
 import { Button, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal'
+import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal';
 
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();

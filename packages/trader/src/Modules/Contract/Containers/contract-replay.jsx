@@ -245,6 +245,7 @@ const Chart = props => {
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}
+            contractInfo={props.contract_info}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker
@@ -326,7 +327,7 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         markers_array: contract_store.markers_array,
         symbol: contract_store.contract_info.underlying,
         contract_info: contract_store.contract_info,
-        all_ticks: contract_store.contract_info.audit_details.all_ticks,
+        all_ticks: contract_store.contract_info.audit_details ? contract_store.contract_info.audit_details.all_ticks : [],
         wsForget: trade.wsForget,
         wsSubscribe: trade.wsSubscribe,
         wsSendRequest: trade.wsSendRequest,

@@ -98,6 +98,7 @@ const ToggleMenuDrawer = React.forwardRef(
             should_allow_authentication,
             title,
             toggleTheme,
+            is_social_signup,
         },
         ref
     ) => {
@@ -110,7 +111,7 @@ const ToggleMenuDrawer = React.forwardRef(
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore });
+                const routes_config = getRoutesConfig({ is_appstore }, is_social_signup);
                 let primary_routes = [];
                 let secondary_routes = [];
 
@@ -136,7 +137,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_appstore, account_status, should_allow_authentication]);
+        }, [is_appstore, account_status, should_allow_authentication, is_social_signup]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);

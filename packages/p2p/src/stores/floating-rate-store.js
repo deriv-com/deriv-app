@@ -64,14 +64,16 @@ export default class FloatingRateStore extends BaseStore {
             subscribe: 1,
             target_currency: local_currency,
         };
-        requestWS(pay_load).then(response => {
-            if (!!response && response.error) {
-                this.setApiErrorMessage(response.error.message);
-            } else {
-                const { rates } = response.exchange_rates;
-                this.exchange_rate = parseFloat(rates[local_currency]);
-                this.setApiErrorMessage(null);
-            }
-        }).finally(()=>this.setIsLoading(false));
+        requestWS(pay_load)
+            .then(response => {
+                if (!!response && response.error) {
+                    this.setApiErrorMessage(response.error.message);
+                } else {
+                    const { rates } = response.exchange_rates;
+                    this.exchange_rate = parseFloat(rates[local_currency]);
+                    this.setApiErrorMessage(null);
+                }
+            })
+            .finally(() => this.setIsLoading(false));
     }
 }

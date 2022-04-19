@@ -45,6 +45,7 @@ const InputField = ({
     min_value,
     name,
     format,
+    onBlurHandler,
     onChange,
     onClick,
     onClickInputWrapper,
@@ -184,10 +185,13 @@ const InputField = ({
     };
 
     const updateValue = (new_value, is_long_press) => {
-        const formatted_value = format ? format(new_value) : new_value;
+        let formatted_value = format ? format(new_value) : new_value;
         if (is_long_press) {
             setLocalValue(formatted_value);
         } else {
+            if (is_signed && !/^[+-]/.test(formatted_value) && Math.sign(formatted_value) > 0) {
+                formatted_value = `+${formatted_value}`;
+            }
             onChange({ target: { value: formatted_value, name } });
         }
     };
@@ -241,6 +245,7 @@ const InputField = ({
             is_read_only={is_read_only}
             max_length={max_length}
             name={name}
+            onBlurHandler={onBlurHandler}
             onClick={onClick}
             onKeyPressed={onKeyPressed}
             placeholder={placeholder}
@@ -349,6 +354,7 @@ InputField.propTypes = {
     label: PropTypes.string,
     max_length: PropTypes.number,
     name: PropTypes.string,
+    onBlurHandler: PropTypes.func,
     onChange: PropTypes.func,
     onClick: PropTypes.func,
     onClickInputWrapper: PropTypes.func,

@@ -15,17 +15,29 @@ const FloatingRate = ({
     error_messages,
     fiat_currency,
     local_currency,
+    onChangeHandler,
     offset,
-    placeholder,
     ...props
 }) => {
     const { general_store } = useStores();
     const { name, value, required } = props;
     const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)).toFixed(2) : exchange_rate;
 
+    const onBlurHandler = e => {
+        if (e.target.value && e.target.value.length) {
+            e.target.value = parseFloat(e.target.value).toFixed(2);
+            if (!/^[+-]/.test(e.target.value) && Math.sign(e.target.value) > 0) {
+                e.target.value = `+${e.target.value}`;
+            }
+        }
+        onChangeHandler(e);
+    };
     return (
         <div className={classNames(className, 'floating-rate')}>
             <section className={classNames('floating-rate__field', { 'mobile-layout': isMobile() })}>
+                <Text as='div' size='s' weight='normal' line_height='xs' className='floating-rate__field--prefix'>
+                    {localize('at')}
+                </Text>
                 <InputField
                     ariaLabel='Floating rate'
                     classNameInlinePrefix='floating-rate__percent'
@@ -45,8 +57,8 @@ const FloatingRate = ({
                     max_value={offset?.upper_limit}
                     min_value={offset?.lower_limit}
                     name={name}
+                    onBlurHandler={onBlurHandler}
                     onChange={change_handler}
-                    placeholder={placeholder}
                     setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
                     type='number'
@@ -109,8 +121,8 @@ FloatingRate.propTypes = {
     error_messages: PropTypes.string,
     fiat_currency: PropTypes.string,
     local_currency: PropTypes.string,
+    onChangeHandler: PropTypes.func,
     offset: PropTypes.object,
-    placeholder: PropTypes.string,
 };
 
 export default observer(FloatingRate);

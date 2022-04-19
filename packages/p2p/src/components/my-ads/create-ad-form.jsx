@@ -173,7 +173,7 @@ const CreateAdForm = () => {
                                                         : null
                                                 }
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
-                                                rate_type={errors.rate_type ? '' : values.rate_type}
+                                                price_rate={errors.rate_type ? '' : values.rate_type}
                                                 type={values.type}
                                             />
                                         </div>
@@ -229,6 +229,7 @@ const CreateAdForm = () => {
                                                             exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
+                                                            onChangeHandler={handleChange}
                                                             offset={{
                                                                 upper_limit: parseInt(
                                                                     floating_rate_store.float_rate_offset_limit
@@ -242,7 +243,6 @@ const CreateAdForm = () => {
                                                             change_handler={e => {
                                                                 my_ads_store.restrictDecimalPlace(e, 2, handleChange);
                                                             }}
-                                                            placeholder={localize('Floating rate')}
                                                             {...field}
                                                         />
                                                     ) : (

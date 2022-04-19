@@ -24,6 +24,7 @@ const Input = ({
     is_read_only,
     max_length,
     name,
+    onBlurHandler,
     onClick,
     onKeyPressed,
     placeholder,
@@ -38,7 +39,12 @@ const Input = ({
         }
     }, [current_focus, name]);
 
-    const onBlur = () => setCurrentFocus(null);
+    const onBlur = e => {
+        setCurrentFocus(null);
+        if (!!onBlurHandler) {
+            onBlurHandler(e);
+        }
+    };
     const onFocus = () => setCurrentFocus(name);
 
     const onChange = e => {
@@ -96,6 +102,7 @@ const Input = ({
                 type={type === 'number' ? 'text' : type}
                 value={display_value || ''}
                 aria-label={ariaLabel}
+                data-lpignore={type === 'password' ? undefined : true}
             />
         </React.Fragment>
     );
@@ -121,6 +128,7 @@ Input.propTypes = {
     is_read_only: PropTypes.bool,
     max_length: PropTypes.number,
     name: PropTypes.string,
+    onBlurHandler: PropTypes.func,
     onClick: PropTypes.func,
     onKeyPressed: PropTypes.func,
     placeholder: PropTypes.string,

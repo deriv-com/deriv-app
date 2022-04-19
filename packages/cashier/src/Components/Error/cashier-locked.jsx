@@ -44,7 +44,7 @@ const CashierLocked = ({
             if (is_withdrawal_lock) {
                 title = localize('Withdrawals are locked');
                 message = localize(
-                    'Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete.'
+                    'Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete'
                 );
             } else if (is_deposit_lock) {
                 title = 'Deposits are locked';

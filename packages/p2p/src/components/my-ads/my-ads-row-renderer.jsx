@@ -244,7 +244,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     </div>
                 </Table.Cell>
                 <Table.Cell>
-                    { enable_action_point ? (
+                    {enable_action_point ? (
                         <div className='p2p-my-ads__table-status-warning'>
                             <AdStatus is_active={!!is_advert_active} />
                             <Icon icon='IcAlertWarning' size={isMobile() ? 28 : 16} />

@@ -127,7 +127,6 @@ class DBot {
     runBot() {
         try {
             const code = this.generateCode();
-
             if (this.interpreter !== null) {
                 this.interpreter = null;
             }
@@ -160,6 +159,19 @@ class DBot {
             var BinaryBotPrivateLastTickTime;
             var BinaryBotPrivateTickAnalysisList = [];
             var BinaryBotPrivateHasCalledTradeOptions = false;
+
+            var finalList = [];
+            function recursiveList(list){
+                for(var i=0; i < list.length; i++){
+                    if(typeof(list[i]) === 'object'){
+                        recursiveList(list[i]);
+                    }
+                    if(typeof(list[i]) == 'number'){
+                           finalList.push(list[i]);                	
+                    }
+                }
+            }
+
             function BinaryBotPrivateRun(f, arg) {
                 if (f) return f(arg);
                 return false;

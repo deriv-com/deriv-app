@@ -1,14 +1,26 @@
 .my-profile-privacy {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
     margin-bottom: 2.4rem;
 
+    @include mobile {
+        justify-content: space-between;
+        margin: 3.8rem 0 1.4rem;
+    }
+
     &__toggle {
+        display: flex;
+        margin-left: 0.8rem;
+
         &-container {
-            display: flex;
             align-items: center;
+            display: flex;
+            flex-direction: column;
             margin-top: 1.6rem;
 
             @include mobile {
-                justify-content: space-between;
+                align-items: unset;
             }
         }
 

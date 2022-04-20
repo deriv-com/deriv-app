@@ -35,14 +35,16 @@ const getStringsFromXmlFile = input => {
 const getTranslatableFiles = () => {
     const packages_with_translations = [
         'account',
-        'appstore',
+        // TODO: add appstore package once it's done and merged
+        // 'appstore',
         'cashier',
         'bot-web-ui',
         'core',
+        'cfd',
         'trader',
         'bot-skeleton',
     ];
-    const globs = ['**/*.js', '**/*.jsx', '**/xml/*.xml'];
+    const globs = ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx', '**/xml/*.xml'];
     const file_paths = [];
 
     for (let i = 0; i < packages_with_translations.length; i++) {

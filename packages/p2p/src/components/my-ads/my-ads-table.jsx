@@ -61,8 +61,6 @@ const MyAdsTable = () => {
                         is_warn
                     />
                 )}
-                {/* TODO: This component is temporary and to be removed in the future releases */}
-                <ReduceOrderTimeBanner />
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (

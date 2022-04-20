@@ -1,3 +1,4 @@
+// TODO: This component is temporary and to be removed in the future releases
 import React from 'react';
 import { HintBox, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';

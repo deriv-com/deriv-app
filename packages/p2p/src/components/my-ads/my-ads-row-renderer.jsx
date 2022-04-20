@@ -129,7 +129,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     />
                                 )}
                             </Text>
-                            {!payment_method_names ? (
+                            {enable_action_point ? (
                                 <div className='p2p-my-ads__table-status-warning'>
                                     <div style={{ marginRight: '0.8rem' }}>
                                         <AdStatus is_active={!!is_advert_active} />
@@ -271,7 +271,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                     </div>
                 </Table.Cell>
                 <Table.Cell>
-                    {!payment_method_names || enable_action_point ? (
+                    {enable_action_point ? (
                         <div className='p2p-my-ads__table-status-warning'>
                             <AdStatus is_active={!!is_advert_active} />
                             <Icon icon='IcAlertWarning' size={isMobile() ? 28 : 16} />

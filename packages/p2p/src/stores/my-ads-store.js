@@ -358,12 +358,12 @@ export default class MyAdsStore extends BaseStore {
 
     @action.bound
     restrictDecimalPlace = (e, decimal_place, handleChangeCallback) => {
-        const pattern = new RegExp(`^[+-]?\\d*(\\.\\d{1,${decimal_place}})?$`);
+        const pattern = new RegExp(`^[+-]?\\d*(\\.)?(\\d{1,${decimal_place}})?$`);
+        if (e.target.value.length > 7) {
+            e.target.value = e.target.value.slice(0, 7);
+            return;
+        }
         if (pattern.test(e.target.value)) {
-            handleChangeCallback(e);
-        } else {
-            const user_input = parseFloat(e.target.value).toFixed(decimal_place);
-            e.target.value = user_input;
             handleChangeCallback(e);
         }
     };

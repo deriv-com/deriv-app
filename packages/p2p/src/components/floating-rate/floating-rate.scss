@@ -3,9 +3,18 @@
     flex-direction: column;
     &__field {
         display: flex;
+        align-items: center;
+
+        @include mobile {
+            margin-top: -2rem;
+        }
+
+        &--prefix {
+            margin-right: 2rem;
+        }
     }
     &__input {
-        height: 40px;
+        height: 4rem;
         align-self: center;
         appearance: none;
         box-sizing: border-box;
@@ -13,6 +22,10 @@
         color: var(--text-general);
         border: 1px solid var(--border-normal);
         background-image: none;
+        padding-left: 2.5rem;
+        @include mobile {
+            padding: 0;
+        }
         &:hover {
             border-color: var(--border-hover);
         }
@@ -30,7 +43,7 @@
     &__percent {
         position: absolute;
         height: 3.2rem;
-        right: 4rem;
+        right: 3.2rem;
         align-items: center;
         justify-content: center;
         display: flex;
@@ -38,6 +51,9 @@
         border-color: transparent;
         z-index: 2;
         color: inherit;
+        @include mobile {
+            right: 14rem;
+        }
 
         &--symbol {
             font-size: 1.4rem;
@@ -68,6 +84,12 @@
         flex-grow: 1;
         gap: 0.2rem;
 
+        @include mobile {
+            flex-direction: row;
+            align-items: center;
+            gap: 1rem;
+        }
+
         &--label {
             position: static;
             font-style: normal;
@@ -92,14 +114,20 @@
     }
 
     &__hint {
-        padding-left: 1rem;
+        padding-left: 4rem;
         text-transform: none;
         margin-top: 0.3rem;
+        @include mobile {
+            padding-left: 1rem;
+        }
     }
 
     &__error-message {
-        padding-left: 1rem;
+        padding-left: 4rem;
         text-transform: none;
+        @include mobile {
+            padding-left: 1rem;
+        }
     }
 }
 
@@ -109,10 +137,22 @@ button.dc-input-wrapper__button {
 }
 
 .dc-input-field {
-    margin: unset;
+    @include mobile {
+        width: 100%;
+    }
+
+    @include desktop {
+        margin: unset;
+    }
 }
 
 .mobile-layout {
     display: flex;
     flex-direction: column;
+}
+
+.p2p-my-ads__form-field {
+    @include mobile {
+        height: auto !important;
+    }
 }

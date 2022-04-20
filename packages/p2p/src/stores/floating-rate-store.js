@@ -39,7 +39,7 @@ export default class FloatingRateStore extends BaseStore {
     }
     @action.bound
     setFloatRateOffsetLimit(offset_limit) {
-        this.float_rate_offset_limit = parseFloat(offset_limit);
+        this.float_rate_offset_limit = parseFloat(offset_limit).toFixed(2);
     }
     @action.bound
     setFixedRateAdvertsEndDate(end_date) {

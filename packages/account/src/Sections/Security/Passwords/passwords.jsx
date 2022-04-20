@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import DerivPassword from './deriv-password.jsx';
+import DerivEmail from './deriv-email.jsx';
 import PasswordsPlatform from './passwords-platform.jsx';
 
 const Passwords = ({
@@ -31,6 +32,8 @@ const Passwords = ({
 
     return (
         <div className='account__passwords'>
+            {/* Todo: remove the condition after unlinking the email with social account is fully functional */}
+            {!is_social_signup && <DerivEmail email={email} />}
             <DerivPassword
                 email={email}
                 is_dark_mode_on={is_dark_mode_on}

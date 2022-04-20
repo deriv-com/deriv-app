@@ -45,7 +45,7 @@ const InputField = ({
     min_value,
     name,
     format,
-    onBlurHandler,
+    onBlur,
     onChange,
     onClick,
     onClickInputWrapper,
@@ -245,7 +245,7 @@ const InputField = ({
             is_read_only={is_read_only}
             max_length={max_length}
             name={name}
-            onBlurHandler={onBlurHandler}
+            onBlurHandler={onBlur}
             onClick={onClick}
             onKeyPressed={onKeyPressed}
             placeholder={placeholder}
@@ -354,7 +354,7 @@ InputField.propTypes = {
     label: PropTypes.string,
     max_length: PropTypes.number,
     name: PropTypes.string,
-    onBlurHandler: PropTypes.func,
+    onBlur: PropTypes.func,
     onChange: PropTypes.func,
     onClick: PropTypes.func,
     onClickInputWrapper: PropTypes.func,

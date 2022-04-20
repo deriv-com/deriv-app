@@ -102,7 +102,7 @@ const Input = ({
                 type={type === 'number' ? 'text' : type}
                 value={display_value || ''}
                 aria-label={ariaLabel}
-                data-lpignore={type === 'password' ? undefined : true}
+                data-lpignore={type !== 'password'}
             />
         </React.Fragment>
     );

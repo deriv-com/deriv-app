@@ -41,7 +41,7 @@ const Input = ({
 
     const onBlur = e => {
         setCurrentFocus(null);
-        if (!!onBlurHandler) {
+        if (onBlurHandler) {
             onBlurHandler(e);
         }
     };

@@ -47,6 +47,16 @@ export default class GeneralStore extends BaseStore {
     }
 
     @computed
+    get current_focus() {
+        return this.props?.current_focus;
+    }
+
+    @computed
+    get setCurrentFocus() {
+        return this.props?.setCurrentFocus;
+    }
+
+    @computed
     get blocked_until_date_time() {
         return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), false, true);
     }
@@ -366,6 +376,30 @@ export default class GeneralStore extends BaseStore {
 
         order_store.setIsLoading(true);
         this.order_table_type = order_table_type;
+    }
+
+    @action.bound
+    setP2PConfig() {
+        const { floating_rate_store } = this.root_store;
+        requestWS({ website_status: 1 }).then(response => {
+            if (response) {
+                if (response.error) {
+                    floating_rate_store.setApiErrorMessage(response.error.message);
+                } else {
+                    const {
+                        fixed_rate_adverts,
+                        float_rate_adverts,
+                        float_rate_offset_limit,
+                        fixed_rate_adverts_end_date,
+                    } = response.website_status.p2p_config;
+                    floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
+                    floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
+                    floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
+                    floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
+                    floating_rate_store.setApiErrorMessage(null);
+                }
+            }
+        });
     }
 
     @action.bound

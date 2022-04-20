@@ -20,6 +20,7 @@ class RootStore {
         this.order_store = new OrderStore(this);
         this.order_details_store = new OrderDetailsStore(this);
         this.sendbird_store = new SendbirdStore(this);
+        this.floating_rate_store = new FloatingRateStore(this);
     }
 }
 
@@ -31,7 +32,6 @@ export const useStores = () => {
 
         stores_context = React.createContext({
             general_store: root_store.general_store,
-
             advertiser_page_store: root_store.advertiser_page_store,
             buy_sell_store: root_store.buy_sell_store,
             my_ads_store: root_store.my_ads_store,

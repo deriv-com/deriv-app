@@ -43,6 +43,8 @@ const App = props => {
             }
         });
 
+        general_store.setP2PConfig();
+
         return () => general_store.onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

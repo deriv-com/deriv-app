@@ -26,8 +26,8 @@ const getHeaders = offered_currency => [
 
 const MyAdsTable = () => {
     const { floating_rate_store, general_store, my_ads_store } = useStores();
-
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
+    const local_currency = general_store.client.local_currency_config.currency;
 
     React.useEffect(() => {
         my_ads_store.setAdverts([]);
@@ -68,15 +68,19 @@ const MyAdsTable = () => {
                             icon='IcAlertWarning'
                             message={
                                 <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                    <Localize
-                                        i18n_default_text={
-                                            'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}'
-                                        }
-                                        values={{
-                                            local_currency: general_store.client.local_currency_config.currency || '-',
-                                            end_date: floating_rate_store.fixed_rate_adverts_end_date || '-',
-                                        }}
-                                    />
+                                    {floating_rate_store.reached_target_date ? (
+                                        <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to activate them.' />
+                                    ) : (
+                                        <Localize
+                                            i18n_default_text={
+                                                'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}'
+                                            }
+                                            values={{
+                                                local_currency: local_currency || '',
+                                                end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+                                            }}
+                                        />
+                                    )}
                                 </Text>
                             }
                             is_warn

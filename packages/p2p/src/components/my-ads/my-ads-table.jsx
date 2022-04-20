@@ -61,7 +61,8 @@ const MyAdsTable = () => {
                         is_warn
                     />
                 )}
-                <ReduceOrderTimeBanner />                {/* TODO: This component is temporary and to be removed in the future releases */}
+                {/* TODO: This component is temporary and to be removed in the future releases */}
+                <ReduceOrderTimeBanner />
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (
@@ -76,7 +77,6 @@ const MyAdsTable = () => {
                     )}
                     <ToggleAds />
                 </div>
-
                 <Table
                     className={classNames('p2p-my-ads__table', {
                         'p2p-my-ads__table--disabled': !general_store.is_listed || general_store.is_barred,

@@ -12,7 +12,6 @@ import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import QuickAddModal from './quick-add-modal.jsx';
 import AdExceedsDailyLimitModal from './ad-exceeds-daily-limit-modal.jsx';
-import ReduceOrderTimeBanner from './reduce-order-time-banner.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },

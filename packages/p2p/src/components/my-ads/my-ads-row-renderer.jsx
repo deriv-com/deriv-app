@@ -35,6 +35,12 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const amount_dealt = amount - remaining_amount;
     const is_buy_advert = type === buy_sell.BUY;
 
+    const onClickAddPaymentMethod = () => {
+        if (!general_store.is_barred) {
+            setAdvert(advert);
+            my_ads_store.showQuickAddModal(advert);
+        }
+    };
     const onClickActivateDeactivate = () =>
         !general_store.is_barred && my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
@@ -158,16 +164,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         );
                                     })
                                 ) : (
-                                    <div
-                                        className='p2p-my-ads__table-add'
-                                        onClick={
-                                            !general_store.is_barred &&
-                                            (() => {
-                                                setAdvert(advert);
-                                                my_ads_store.showQuickAddModal(advert);
-                                            })
-                                        }
-                                    >
+                                    <div className='p2p-my-ads__table-add' onClick={onClickAddPaymentMethod}>
                                         <Icon color={general_store.is_barred && 'disabled'} icon='IcAdd' />
                                         <Text
                                             color={general_store.is_barred ? 'less-prominent' : 'prominent'}
@@ -232,13 +229,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             ) : (
                                 <div
                                     className='p2p-my-ads__table-add'
-                                    onClick={
-                                        !general_store.is_barred &&
-                                        (() => {
-                                            setAdvert(advert);
-                                            my_ads_store.showQuickAddModal(advert);
-                                        })
-                                    }
+                                    onClick={!general_store.is_barred && onClickAddPaymentMethod}
                                 >
                                     <Icon color={general_store.is_barred && 'disabled'} icon='IcAdd' />
                                     <Text

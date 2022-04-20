@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react-lite';
-import { Autocomplete, Icon, Input, Text } from '@deriv/components';
+import { Autocomplete, Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize, Localize } from 'Components/i18next';
+import './create-ad-form-payment-methods.scss';
+import { isMobile } from "@deriv/shared";
 
 const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
@@ -78,7 +80,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {
             return (
-                <>
+                <ThemedScrollbars className="ads-payment-methods__container" is_scrollbar_hidden is_scrollable={isMobile()} is_only_horizontal={isMobile()}>
                     {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
                         <PaymentMethodCard
                             is_vertical_ellipsis_visible={false}
@@ -95,7 +97,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                         medium
                         onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
                     />
-                </>
+                </ThemedScrollbars>
             );
         }
 

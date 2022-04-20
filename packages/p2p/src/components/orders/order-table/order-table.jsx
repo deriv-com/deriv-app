@@ -29,7 +29,7 @@ const OrderTable = ({ showDetails }) => {
     return (
         <React.Fragment>
             {/* TODO: This component is temporary and to be removed in the future releases */}
-            <ReduceOrderTimeBanner /> 
+            <ReduceOrderTimeBanner />
             <div className='orders-tab'>
                 <div className='orders-tab__header '>
                     <ToggleContainer>

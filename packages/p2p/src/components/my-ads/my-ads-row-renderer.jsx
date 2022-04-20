@@ -227,10 +227,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     );
                                 })
                             ) : (
-                                <div
-                                    className='p2p-my-ads__table-add'
-                                    onClick={!general_store.is_barred && onClickAddPaymentMethod}
-                                >
+                                <div className='p2p-my-ads__table-add' onClick={onClickAddPaymentMethod}>
                                     <Icon color={general_store.is_barred && 'disabled'} icon='IcAdd' />
                                     <Text
                                         color={general_store.is_barred ? 'less-prominent' : 'prominent'}

@@ -1,0 +1,16 @@
+.ads-payment-methods {
+    &__container {
+        display: grid;
+        grid-template-columns: repeat(4, 0.19fr);
+
+        @include mobile {
+            grid-auto-flow: column;
+        }
+
+        & .payment-method-card {
+            @include mobile {
+                margin: 1rem 1.5rem 1rem auto;
+            }
+        }
+    }
+}

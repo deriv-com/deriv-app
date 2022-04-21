@@ -1,30 +1,7 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isMobile, isDesktop } from '@deriv/shared';
-import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
-
 import FinancialDetails from '../financial-details';
-import { Formik, Field } from 'formik';
-import * as formik from 'formik';
-import {
-    AccountTurnover,
-    BinaryOptionsTradingExperience,
-    BinaryOptionsTradingFrequency,
-    CFDTradingExperience,
-    CFDTradingFrequency,
-    EducationLevel,
-    EmploymentIndustry,
-    EmploymentStatus,
-    EstimatedWorth,
-    ForexTradingExperience,
-    ForexTradingFrequency,
-    IncomeSource,
-    NetIncome,
-    Occupation,
-    OtherInstrumentsTradingExperience,
-    OtherInstrumentsTradingFrequency,
-    SourceOfWealth,
-} from '../financial-details-partials';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -108,16 +85,20 @@ const fields_enums = {
 };
 
 describe('<FinancialDetails />', () => {
-    const mock_props = {
-        value: {},
-        getCurrentStep: jest.fn(),
-        onSave: jest.fn(),
-        validate: jest.fn(() => ({ errors: {} })),
-        onCancel: jest.fn(),
-        onSubmit: jest.fn(),
-        goToNextStep: jest.fn(),
-        ...fields_enums,
-    };
+    let mock_props = {};
+
+    beforeEach(() => {
+        mock_props = {
+            value: {},
+            getCurrentStep: jest.fn(),
+            onSave: jest.fn(),
+            validate: jest.fn(() => ({ errors: {} })),
+            onCancel: jest.fn(),
+            onSubmit: jest.fn(),
+            goToNextStep: jest.fn(),
+            ...fields_enums,
+        };
+    });
 
     const fieldsRenderCheck = () => {
         expect(screen.getByText('Financial information')).toBeInTheDocument();
@@ -282,73 +263,3 @@ describe('<FinancialDetails />', () => {
         });
     });
 });
-
-// describe('financial-details-partials', () => {
-//     it('should call handleChange and setFieldValue after changing an option', async () => {
-//         isMobile.mockReturnValue(true);
-//         isDesktop.mockReturnValue(false);
-//         const mock_props = {
-//             handleBlur: jest.fn(),
-//             handleChange: jest.fn(),
-//             setFieldValue: jest.fn(),
-//             errors: { employment_status: 'employment_status error' },
-//             values: {
-//                 income_source: 'income source 1',
-//                 employment_status: 'employment status 2',
-//                 employment_industry: 'employment industry 1',
-//                 occupation: 'occupation 2',
-//                 source_of_wealth: 'source of wealth 1',
-//                 education_level: 'education level 2',
-//                 net_income: 'net income 1',
-//                 estimated_worth: 'estimated worth 2',
-//                 account_turnover: 'account turnover 1',
-//                 forex_trading_experience: 'forex trading experience 2',
-//                 forex_trading_frequency: 'forex trading frequency 1',
-//                 binary_options_trading_experience: 'binary options trading experience 2',
-//                 binary_options_trading_frequency: 'binary options trading frequency 2',
-//                 cfd_trading_experience: 'cfd trading experience 1',
-//                 cfd_trading_frequency: 'cfd trading frequency 2',
-//                 other_instruments_trading_experience: 'other instruments trading experience 1',
-//                 other_instruments_trading_frequency: 'other instruments trading frequency 2',
-//             },
-//             touched: {
-//                 income_source: '',
-//                 employment_status: '',
-//                 employment_industry: '',
-//                 occupation: '',
-//                 source_of_wealth: '',
-//                 education_level: '',
-//                 net_income: '',
-//                 estimated_worth: '',
-//                 account_turnover: '',
-//                 forex_trading_experience: '',
-//                 forex_trading_frequency: '',
-//                 binary_options_trading_experience: '',
-//                 binary_options_trading_frequency: '',
-//                 cfd_trading_experience: '',
-//                 cfd_trading_frequency: '',
-//                 other_instruments_trading_experience: '',
-//                 other_instruments_trading_frequency: '',
-//             },
-//             ...fields_enums,
-//         };
-//         const initialValues = { ...mock_props.touched };
-
-//         render(
-//             <Formik initialValues={initialValues}>
-//                 <EmploymentStatus {...mock_props} />
-//             </Formik>
-//         );
-
-//         const select_inputs = screen.getAllByRole('combobox');
-//         const employment_status_select = select_inputs.find(option => option.name === 'employment_status');
-//         await waitFor(() => {
-//             fireEvent.change(employment_status_select, { target: { value: 'employment status 2' } });
-//             expect(await mock_props.setFieldValue).toHaveBeenCalled();
-//         });
-
-//         screen.debug();
-//         await waitFor(() => {
-//         });
-//     });
-// });

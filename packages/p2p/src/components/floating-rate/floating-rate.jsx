@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { InputField, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './floating-rate.scss';
@@ -83,7 +83,7 @@ const FloatingRate = ({
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
-                        1 {fiat_currency} = {exchange_rate} {local_currency}
+                        1 {fiat_currency} = {formatMoney(local_currency, exchange_rate, true)} {local_currency}
                     </Text>
                 </div>
             </section>
@@ -107,7 +107,7 @@ const FloatingRate = ({
                     line_height='xs'
                     className='floating-rate__hint'
                 >
-                    {localize('Your rate is')} = {market_feed} {local_currency}
+                    {localize('Your rate is')} = {formatMoney(local_currency, market_feed, true)} {local_currency}
                 </Text>
             )}
         </div>

@@ -35,6 +35,6 @@ describe('<FloatingRate/>', () => {
     it('should render the exchange rate in hint', () => {
         render(<FloatingRate exchange_rate='20' fiat_currency='AED' local_currency='INR' />);
 
-        expect(screen.getByText('1 AED = 20 INR')).toBeInTheDocument();
+        expect(screen.getByText('1 AED = 20.00 INR')).toBeInTheDocument();
     });
 });

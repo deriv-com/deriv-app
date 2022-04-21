@@ -43,7 +43,6 @@
     &__percent {
         position: absolute;
         height: 3.2rem;
-        right: 3.2rem;
         align-items: center;
         justify-content: center;
         display: flex;
@@ -51,9 +50,6 @@
         border-color: transparent;
         z-index: 2;
         color: inherit;
-        @include mobile {
-            right: 14rem;
-        }
 
         &--symbol {
             font-size: 1.4rem;
@@ -155,4 +151,11 @@ button.dc-input-wrapper__button {
     @include mobile {
         height: auto !important;
     }
+}
+
+.tracker {
+    width: fit-content;
+    font-weight: 400;
+    font-size: 1.4rem;
+    visibility: hidden;
 }

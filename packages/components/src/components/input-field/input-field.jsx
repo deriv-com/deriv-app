@@ -26,6 +26,7 @@ const InputField = ({
     icon,
     id,
     inline_prefix,
+    inline_prefix_ref,
     is_autocomplete_disabled,
     is_disabled,
     is_error_tooltip_hidden = false,
@@ -238,6 +239,7 @@ const InputField = ({
             has_error={has_error}
             id={id}
             inline_prefix={inline_prefix}
+            inline_prefix_ref={inline_prefix_ref}
             is_autocomplete_disabled={is_autocomplete_disabled}
             is_disabled={is_disabled}
             is_hj_whitelisted={is_hj_whitelisted}
@@ -340,6 +342,7 @@ InputField.propTypes = {
     icon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     id: PropTypes.string,
     inline_prefix: PropTypes.string,
+    inline_prefix_ref: PropTypes.object, // Create a reference for prefix
     is_autocomplete_disabled: PropTypes.bool,
     is_disabled: PropTypes.string,
     is_float: PropTypes.bool,

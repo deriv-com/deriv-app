@@ -8,6 +8,22 @@ import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './floating-rate.scss';
 
+// Compute the absolute position for the prefix based on the user input
+const calculateDynamicWidth = element_width => {
+    const absolute_font_size = window.getComputedStyle(document.documentElement, null).getPropertyValue('font-size');
+    const prefix_position = element_width / parseFloat(absolute_font_size) + 4;
+    if (!isMobile()) {
+        if (element_width > 33) {
+            return prefix_position < 8.7 ? prefix_position : 8.7;
+        }
+        return 7.5;
+    }
+    if (element_width > 45) {
+        return 17.5;
+    }
+    return 16.5;
+};
+
 const FloatingRate = ({
     change_handler,
     className,
@@ -22,6 +38,15 @@ const FloatingRate = ({
     const { general_store } = useStores();
     const { name, value, required } = props;
     const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)).toFixed(2) : exchange_rate;
+
+    const ref = React.useRef(null);
+    const tracker_ref = React.useRef(null); // Creates a DOM element that is used for keeping trach of the width of user input
+
+    React.useEffect(() => {
+        const input_width = tracker_ref.current?.offsetWidth;
+        const fixed = calculateDynamicWidth(input_width);
+        ref.current.style.left = `${fixed}rem`;
+    }, [tracker_ref?.current?.innerHTML]);
 
     const onBlurHandler = e => {
         if (e.target.value && e.target.value.length) {
@@ -48,6 +73,7 @@ const FloatingRate = ({
                     decimal_point_change={2}
                     id='floating_rate_input'
                     inline_prefix='%'
+                    inline_prefix_ref={ref}
                     is_autocomplete_disabled
                     is_float
                     is_incrementable
@@ -110,6 +136,9 @@ const FloatingRate = ({
                     {localize('Your rate is')} = {formatMoney(local_currency, market_feed, true)} {local_currency}
                 </Text>
             )}
+            <div className='tracker' ref={tracker_ref}>
+                {value}
+            </div>
         </div>
     );
 };

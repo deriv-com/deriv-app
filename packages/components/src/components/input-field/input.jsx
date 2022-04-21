@@ -17,6 +17,7 @@ const Input = ({
     id,
     inputmode,
     inline_prefix,
+    inline_prefix_ref,
     is_autocomplete_disabled,
     is_disabled,
     is_hj_whitelisted,
@@ -67,7 +68,7 @@ const Input = ({
     return (
         <React.Fragment>
             {!!inline_prefix && (
-                <div className={classNameInlinePrefix}>
+                <div className={classNameInlinePrefix} ref={inline_prefix_ref}>
                     <span
                         className={classNames(classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '', {
                             disabled: !!is_disabled,
@@ -121,6 +122,7 @@ Input.propTypes = {
     fractional_digits: PropTypes.number,
     id: PropTypes.string,
     inline_prefix: PropTypes.string,
+    inline_prefix_ref: PropTypes.object, // Create a reference for prefix
     is_autocomplete_disabled: PropTypes.bool,
     is_disabled: PropTypes.string,
     is_hj_whitelisted: PropTypes.bool,

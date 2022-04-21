@@ -1,0 +1,101 @@
+.close-uk-account {
+    &--is-fullscreen {
+        max-width: 80vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin: 0 auto;
+        .close-uk-account__content {
+            max-width: 800px;
+            padding: 2.4rem 0.6rem;
+        }
+    }
+    &-header {
+        width: 100%;
+        height: 65px;
+        padding: 2.4rem;
+
+        @include mobile {
+            height: 20px;
+            padding: 0 1.2rem;
+            position: sticky;
+            .dc-text {
+                margin: 1.6rem 0 !important;
+            }
+        }
+    }
+    &__content {
+        padding: 2rem 4.8rem;
+        @include mobile {
+            padding: 0.8rem 1.2rem;
+        }
+    }
+
+    .dc-dialog__wrapper,
+    &__wrapper {
+        z-index: 1001;
+        .dc-dialog__dialog,
+        &__dialog {
+            max-height: unset;
+            max-width: unset;
+            width: 588px;
+            height: 524px;
+            left: 426px;
+            top: 162px;
+            margin-top: 0;
+            padding: 0;
+            .dc-dialog__content {
+                max-width: unset;
+                height: 100%;
+                margin-bottom: 5rem;
+                overflow-y: auto;
+                padding: 0;
+            }
+            .close-uk-account.dc-dialog__footer {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                border-bottom-right-radius: 0.8rem;
+                border-bottom-left-radius: 0.8rem;
+                padding: 1.6rem 2.4rem;
+                background-color: var(--general-main-1);
+                .dc-btn--primary {
+                    margin-left: 0.5rem;
+                }
+            }
+            .dc-text {
+                margin: 0.3rem 0;
+                text-align: left;
+
+                &__bullet_list {
+                    list-style: decimal;
+                    list-style-position: outside;
+                    font-size: var(--text-size-xxs);
+                    color: var(--text-general);
+                    line-height: var(--text-lh-m);
+                    text-align: left;
+                    padding-left: 1.6rem;
+                }
+
+                &__bullet_content {
+                    padding: 0.6rem 0 0.8rem 0;
+                }
+            }
+            @include mobile {
+                margin: 2rem;
+                width: 328px;
+                height: 450px;
+                box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.08);
+                border-radius: 8px;
+            }
+        }
+    }
+}
+
+body.theme--dark {
+    .close-uk-account {
+        color: var(--general-main-1);
+    }
+}

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { InputField, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './floating-rate.scss';
@@ -57,7 +57,7 @@ const FloatingRate = ({
                     max_value={offset?.upper_limit}
                     min_value={offset?.lower_limit}
                     name={name}
-                    onBlurHandler={onBlurHandler}
+                    onBlur={onBlurHandler}
                     onChange={change_handler}
                     setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
@@ -83,7 +83,7 @@ const FloatingRate = ({
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
-                        1 {fiat_currency} = {exchange_rate} {local_currency}
+                        1 {fiat_currency} = {formatMoney(local_currency, exchange_rate, true)} {local_currency}
                     </Text>
                 </div>
             </section>
@@ -107,7 +107,7 @@ const FloatingRate = ({
                     line_height='xs'
                     className='floating-rate__hint'
                 >
-                    {localize('Your rate is')} = {market_feed} {local_currency}
+                    {localize('Your rate is')} = {formatMoney(local_currency, market_feed, true)} {local_currency}
                 </Text>
             )}
         </div>

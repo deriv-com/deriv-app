@@ -352,4 +352,3 @@ describe('<FinancialDetails />', () => {
 //         });
 //     });
 // });
-

@@ -5,14 +5,10 @@ import { Autocomplete, Icon, Input, Text } from '@deriv/components';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize, Localize } from 'Components/i18next';
+import AdFormPaymentMethodsList from './ad-form-payment-methods-list';
 
 const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
-
-    const style = {
-        borderColor: 'var(--brand-secondary)',
-        borderWidth: '2px',
-    };
 
     const onClickDeletePaymentMethodItem = value => {
         if (value) {
@@ -23,6 +19,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
         }
     };
 
+    // eslint-disable-next-line no-unused-vars
     const onClickPaymentMethodItem = value => {
         if (value) {
             if (!my_ads_store.payment_method_names.includes(value)) {
@@ -39,6 +36,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
         }
     };
 
+    // eslint-disable-next-line no-unused-vars
     const onClickPaymentMethodCard = payment_method => {
         if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
             if (my_ads_store.payment_method_ids.length < 3) {
@@ -65,24 +63,10 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {
             return (
-                <>
-                    {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
-                        <PaymentMethodCard
-                            is_vertical_ellipsis_visible={false}
-                            key={key}
-                            medium
-                            onClick={() => onClickPaymentMethodCard(payment_method)}
-                            payment_method={payment_method}
-                            style={selected_methods.includes(payment_method.ID) ? style : {}}
-                        />
-                    ))}
-                    <PaymentMethodCard
-                        is_add={true}
-                        label={localize('Payment method')}
-                        medium
-                        onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
-                    />
-                </>
+                <AdFormPaymentMethodsList 
+                    selected_methods={selected_methods} 
+                    onClickPaymentMethodCard={onClickPaymentMethodCard} 
+                />
             );
         }
 

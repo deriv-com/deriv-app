@@ -81,7 +81,7 @@ const OrderDetailsFooter = observer(() => {
         return (
             <React.Fragment>
                 <div className='order-details-card__footer'>
-                    <div className='order-details-card__footer--left'>
+                    <div className='order-details-card__footer--right'>
                         <Button large tertiary onClick={showComplainOrderModal}>
                             <Localize i18n_default_text='Complain' />
                         </Button>
@@ -112,7 +112,7 @@ const OrderDetailsFooter = observer(() => {
         return (
             <React.Fragment>
                 <div className='order-details-card__footer'>
-                    <div className='order-details-card__footer--left'>
+                    <div className='order-details-card__footer--right'>
                         <Button large tertiary onClick={showComplainOrderModal}>
                             <Localize i18n_default_text='Complain' />
                         </Button>

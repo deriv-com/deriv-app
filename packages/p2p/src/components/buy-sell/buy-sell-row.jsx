@@ -18,7 +18,7 @@ const BuySellRow = ({ row: advert }) => {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
         // an empty item with an item that holds the same height of the toggle container.
         // Also see: buy-sell-table.jsx
-        return <div style={{ height: '140px' }} />;
+        return <div style={{ height: '140px' }} data-testid='dp2p-buy-sell-row__slider_animation_element' />;
     }
 
     if (advert.id === 'NO_MATCH_ROW') {
@@ -49,10 +49,11 @@ const BuySellRow = ({ row: advert }) => {
 
     if (isMobile()) {
         return (
-            <div className='buy-sell-row'>
+            <div className='buy-sell-row' data-testid='dp2p-buy-sell-row__mobile_container'>
                 <div
                     className='buy-sell-row__advertiser'
                     onClick={() => (general_store.is_barred ? null : buy_sell_store.showAdvertiserPage(advert))}
+                    data-testid='dp2p-buy-sell-row__mobile_advertiser_page_container'
                 >
                     <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
                     <div className='buy-sell-row__advertiser-name'>
@@ -140,6 +141,7 @@ const BuySellRow = ({ row: advert }) => {
                 <div
                     className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}
                     onClick={() => (general_store.is_barred ? undefined : buy_sell_store.showAdvertiserPage(advert))}
+                    data-testid='dp2p-buy-sell-row__desktop_advertiser_page_container'
                 >
                     <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
                     <div className='buy-sell__cell--container'>

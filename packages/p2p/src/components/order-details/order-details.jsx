@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Accordion, HintBox, Text, ThemedScrollbars } from '@deriv/components';
-import { getFormattedText, isDesktop } from '@deriv/shared';
+import { getFormattedText } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
@@ -208,7 +208,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             }
                             value={advert_details.description.trim() || '-'}
                         />
-                        {should_show_order_footer && <MyProfileSeparatorContainer.Line className='order-details-card--line' />}
+                        {should_show_order_footer && (
+                            <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                        )}
                     </ThemedScrollbars>
                     {should_show_order_footer && (
                         <OrderDetailsFooter order_information={order_store.order_information} />

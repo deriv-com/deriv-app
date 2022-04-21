@@ -84,7 +84,9 @@ const CFDResetPasswordModal = ({
         localStorage.removeItem('cfd_reset_password_intent');
         localStorage.removeItem('cfd_reset_password_type');
         localStorage.removeItem('cfd_reset_password_code');
-        history.push(`${routes.mt5}`);
+        if (history.location.pathname !== routes.mt5) {
+            history.push(`${routes.mt5}`);
+        }
     };
     const validatePassword = (values: { new_password: string }) => {
         const errors: { new_password?: string } = {};

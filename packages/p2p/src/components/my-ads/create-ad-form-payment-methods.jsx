@@ -75,9 +75,9 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {
             return (
-                <AdFormPaymentMethodsList 
-                    selected_methods={selected_sell_methods} 
-                    onClickPaymentMethodCard={onClickPaymentMethodCard} 
+                <AdFormPaymentMethodsList
+                    selected_methods={selected_sell_methods}
+                    onClickPaymentMethodCard={onClickPaymentMethodCard}
                 />
             );
         }

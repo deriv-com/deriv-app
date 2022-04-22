@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
@@ -79,7 +79,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
 
     const generateModalTitle = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
-            if (!isMobile()) {
+            if (isDesktop()) {
                 return (
                     <>
                         <Icon

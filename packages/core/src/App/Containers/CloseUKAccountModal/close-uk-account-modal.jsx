@@ -63,7 +63,6 @@ funds.'
     </>
 );
 
-
 const CloseUKAccountModal = ({
     is_logged_in,
     is_loading,

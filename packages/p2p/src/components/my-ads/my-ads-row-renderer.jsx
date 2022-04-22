@@ -117,17 +117,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         </Text>
                         <div className='p2p-my-ads__table-row__type-and-status'>
                             <Text line_height='m' size='s' weight='bold'>
-                                {is_buy_advert ? (
-                                    <Localize
-                                        i18n_default_text='Buy {{ account_currency }}'
-                                        values={{ account_currency }}
-                                    />
-                                ) : (
-                                    <Localize
-                                        i18n_default_text='Sell {{ account_currency }}'
-                                        values={{ account_currency }}
-                                    />
-                                )}
+                                <Localize
+                                    i18n_default_text='{{ad_type}} {{ account_currency }}'
+                                    values={{ account_currency, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
+                                />
                             </Text>
                             {enable_action_point ? (
                                 <div className='p2p-my-ads__table-status-warning'>
@@ -217,11 +210,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 })}
             >
                 <Table.Cell>
-                    {is_buy_advert ? (
-                        <Localize i18n_default_text='Buy {{ id }}' values={{ id }} />
-                    ) : (
-                        <Localize i18n_default_text='Sell {{ id }}' values={{ id }} />
-                    )}
+                    <Localize
+                        i18n_default_text='{{ad_type}} {{ id }}'
+                        values={{ id, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
+                    />
                 </Table.Cell>
                 <Table.Cell>
                     {min_order_amount_display}-{max_order_amount_display} {account_currency}

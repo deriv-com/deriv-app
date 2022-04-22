@@ -328,10 +328,15 @@ export default class MyAdsStore extends BaseStore {
                     this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
                     this.setMissingPaymentMethods(!!list.find(payment_method => !payment_method.payment_method_names));
+                    let should_update_ads = false;
                     if (floating_rate_store.rate_type === ad_type.FLOAT) {
-                        floating_rate_store.setChangeAdAlert(checkForFixedRateAds(list));
+                        // Check if there are any Fixed rate ads
+                        should_update_ads = list.some(ad => ad.rate_type === ad_type.FIXED);
+                        floating_rate_store.setChangeAdAlert(should_update_ads);
                     } else if (floating_rate_store.rate_type === ad_type.FIXED) {
-                        floating_rate_store.setChangeAdAlert(checkForFloatRateAds(list));
+                        // Check if there are any Float rate ads
+                        should_update_ads = list.some(ad => ad.rate_type === ad_type.FLOAT);
+                        floating_rate_store.setChangeAdAlert(should_update_ads);
                     }
                 } else if (response.error.code === 'PermissionDenied') {
                     this.root_store.general_store.setIsBlocked(true);
@@ -545,8 +550,8 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setIsSwitchModalOpen(is_switch_modal_open, app_id) {
-        this.setSelectedAdId(app_id);
+    setIsSwitchModalOpen(is_switch_modal_open, ad_id) {
+        this.setSelectedAdId(ad_id);
         this.is_switch_modal_open = is_switch_modal_open;
     }
 
@@ -883,11 +888,3 @@ export default class MyAdsStore extends BaseStore {
         return errors;
     }
 }
-
-const checkForFixedRateAds = ads_list => {
-    return ads_list.some(ad => ad.rate_type === ad_type.FIXED);
-};
-
-const checkForFloatRateAds = ads_list => {
-    return ads_list.some(ad => ad.rate_type === ad_type.FLOAT);
-};

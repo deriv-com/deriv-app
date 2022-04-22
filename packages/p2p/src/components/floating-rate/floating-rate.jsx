@@ -15,7 +15,7 @@ const FloatingRate = ({
     error_messages,
     fiat_currency,
     local_currency,
-    onChangeHandler,
+    onChange,
     offset,
     ...props
 }) => {
@@ -30,7 +30,7 @@ const FloatingRate = ({
                 e.target.value = `+${e.target.value}`;
             }
         }
-        onChangeHandler(e);
+        onChange(e);
     };
     return (
         <div className={classNames(className, 'floating-rate')}>
@@ -121,7 +121,7 @@ FloatingRate.propTypes = {
     error_messages: PropTypes.string,
     fiat_currency: PropTypes.string,
     local_currency: PropTypes.string,
-    onChangeHandler: PropTypes.func,
+    onChange: PropTypes.func,
     offset: PropTypes.object,
 };
 

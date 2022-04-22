@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Button, Input, MobileFullPageModal, Text, Loading } from '@deriv/components';
+import { Button, Input, Loading, MobileFullPageModal, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer, Observer } from 'mobx-react-lite';
 import classNames from 'classnames';
@@ -88,11 +88,15 @@ const MyProfileForm = () => {
         </Formik>
     );
 
-    return my_profile_store.is_loading ? (
-        <Loading is_fullscreen={false} />
-    ) : isDesktop() ? (
-        <div className='my-profile-form'>{content}</div>
-    ) : (
+    if (my_profile_store.is_loading) {
+        return <Loading is_fullscreen={false} />
+    }
+
+    if (isDesktop()) {
+        return (<div className='my-profile-form'>{content}</div>)
+    } 
+
+    return (
         <MobileFullPageModal
             className='my-profile-form'
             is_modal_open={my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE}

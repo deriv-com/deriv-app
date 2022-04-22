@@ -27,9 +27,7 @@ const MyProfileContent = () => {
                         height_offset='80px'
                         is_modal_open={true}
                         page_header_text={localize('Payment methods')}
-                        pageHeaderReturnFn={() => {
-                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-                        }}
+                        pageHeaderReturnFn={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
                     >
                         <PaymentMethods />
                     </MobileFullPageModal>

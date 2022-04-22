@@ -7,24 +7,24 @@ import { localize } from 'Components/i18next';
 
 const ReduceOrderTimeBanner = () => {
     const { general_store } = useStores();
-    const { order_time_out } = general_store;
+    const { order_timeout } = general_store;
 
     let render_banner_text = '';
 
-    if (order_time_out.hours > 0 && order_time_out.minutes > 0) {
+    if (order_timeout.hours > 0 && order_timeout.minutes > 0) {
         render_banner_text = localize(
             'New orders are now active for {{hours}} hour and {{minutes}} minutes only. Complete your order before it expires!',
-            { hours: order_time_out.hours, minutes: order_time_out.minutes }
+            { hours: order_timeout.hours, minutes: order_timeout.minutes }
         );
-    } else if (order_time_out.hours > 0 && order_time_out.minutes === 0) {
+    } else if (order_timeout.hours > 0 && order_timeout.minutes === 0) {
         render_banner_text = localize(
             'New orders are now active for {{hours}} hour only. Complete your order before it expires!',
-            { hours: order_time_out.hours }
+            { hours: order_timeout.hours }
         );
     } else {
         render_banner_text = localize(
             'New orders are now active for {{minutes}} minutes only. Complete your order before it expires!',
-            { minutes: order_time_out.minutes }
+            { minutes: order_timeout.minutes }
         );
     }
 

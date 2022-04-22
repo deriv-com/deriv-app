@@ -2,12 +2,13 @@ import React from 'react';
 import { Text } from '@deriv/ui';
 import { localize } from '@deriv/translations';
 import WalletCard from 'Components/wallet';
-import { WizardContext } from '../context';
 import './completed-step.scss';
 
-const CompletedStep = () => {
-    const { selected_wallet } = React.useContext(WizardContext);
+type CompletedStepProps = {
+    selected_wallet: string;
+};
 
+const CompletedStep = ({ selected_wallet }: CompletedStepProps) => {
     return (
         <>
             {selected_wallet && (

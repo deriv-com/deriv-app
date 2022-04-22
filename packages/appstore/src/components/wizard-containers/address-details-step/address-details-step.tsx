@@ -3,7 +3,6 @@ import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import { FormikValues } from 'formik';
 import { addressDetailsConfig, AddressDetails } from '@deriv/account';
-import { MainComponentProps } from '@deriv/ui';
 
 const AddressDetailsStep = ({ onSubmit }: MainComponentProps) => {
     const { client } = useStores();

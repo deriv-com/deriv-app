@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import wallet_descriptions from 'Constants/wallet-description';
-import { WizardContext } from 'Components/wizard-containers';
 
-const WalletDescription = () => {
-    const { selected_wallet } = React.useContext(WizardContext);
+type WalletDescriptionProps = {
+    selected_wallet: string;
+};
 
+const WalletDescription = ({ selected_wallet }: WalletDescriptionProps) => {
     const wallet_description = selected_wallet && wallet_descriptions[selected_wallet];
 
     return (

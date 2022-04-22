@@ -23,6 +23,7 @@ export default class GeneralStore extends BaseStore {
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
+    @observable order_time_out = { hours: 0, minutes: 0 };
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -366,6 +367,28 @@ export default class GeneralStore extends BaseStore {
 
         order_store.setIsLoading(true);
         this.order_table_type = order_table_type;
+    }
+
+    @action.bound
+    setOrderTimeOut(time) {
+        console.log('Time: ', time);
+        const time_in_minutes = time;
+        const hours = Math.floor(time_in_minutes / 60);
+        const minutes = time_in_minutes % 60;
+        this.order_time_out = { hours, minutes };
+        console.log('Values: ', this.order_time_out.hours, this.order_time_out.minutes);
+    }
+
+    @action.bound
+    setP2PConfig() {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    const { order_payment_period } = response.website_status?.p2p_config;
+                    this.setOrderTimeOut(order_payment_period);
+                }
+            }
+        });
     }
 
     @action.bound

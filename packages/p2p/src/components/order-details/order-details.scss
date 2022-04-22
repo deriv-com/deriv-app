@@ -195,10 +195,6 @@ $card-width: 456px;
                 color: var(--text-general);
                 word-break: break-word;
             }
-
-            &:last-of-type {
-                color: red;
-            }
         }
 
 
@@ -223,7 +219,6 @@ $card-width: 456px;
         line-height: 1.43;
         color: var(--text-general);
         padding: 1.6rem 2.4rem;
-        // height: 7.2rem;
 
         @include mobile {
             width: 100%;
@@ -231,7 +226,7 @@ $card-width: 456px;
         }
         @include tablet-up {
             width: 100%;
-            padding: 1.6rem;
+            padding: 0rem 1.6rem 1.6rem 1.6rem;
         }
 
         &--left {

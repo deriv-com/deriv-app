@@ -12,9 +12,11 @@ const MyStats = () => {
     const { my_profile_store } = useStores();
     const [should_show_stats_and_ratings, setShouldShowStatsAndRatings] = React.useState(false);
 
-    return my_profile_store.is_loading ? (
-        <Loading is_fullscreen={false} />
-    ) : (
+    if (my_profile_store.is_loading) {
+        return <Loading is_fullscreen={false} />
+    }
+    
+    return (
         <React.Fragment>
             <MobileFullPageModal
                 height_offset='80px'

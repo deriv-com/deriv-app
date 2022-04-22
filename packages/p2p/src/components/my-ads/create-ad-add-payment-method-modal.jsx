@@ -66,9 +66,7 @@ const CreateAdAddPaymentMethodModal = () => {
                 <>
                     <Icon
                         icon='icArrowLeftBold'
-                        onClick={() => {
-                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-                        }}
+                        onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
                     />
                     &nbsp;
                     {localize('Choose payment method')}

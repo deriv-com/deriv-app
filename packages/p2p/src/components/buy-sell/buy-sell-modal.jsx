@@ -64,10 +64,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         setShouldShowPopup(false);
     };
 
-    const onHandleReturnFnDesktop = () => {
-        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-    };
-
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     React.useEffect(() => {
@@ -86,7 +82,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             if (!isMobile()) {
                 return (
                     <>
-                        <Icon icon='IcArrowLeftBold' onClick={onHandleReturnFnDesktop} />
+                        <Icon icon='IcArrowLeftBold' onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)} />
                         &nbsp;{localize('Add payment method')}
                     </>
                 );

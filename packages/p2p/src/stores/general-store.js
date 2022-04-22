@@ -371,9 +371,8 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     setOrderTimeOut(time) {
-        const time_in_minutes = time;
-        const hours = Math.floor(time_in_minutes / 60);
-        const minutes = time_in_minutes % 60;
+        const hours = Math.floor(time / 60);
+        const minutes = time % 60;
         this.order_time_out = { hours, minutes };
     }
 

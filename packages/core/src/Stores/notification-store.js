@@ -214,7 +214,7 @@ export default class NotificationStore extends BaseStore {
 
             if (loginid !== LocalStore.get('active_loginid')) return;
 
-            if (is_uk) {
+            if (malta_account) {
                 const server_time = this.root_store.common.server_time.unix(); // current server time
                 const deadline_for_closing_uk = new Date('Apr 25, 2022 00:00:00 GMT+00:00').valueOf(); // deadline time to timestamp
                 if (server_time < deadline_for_closing_uk)

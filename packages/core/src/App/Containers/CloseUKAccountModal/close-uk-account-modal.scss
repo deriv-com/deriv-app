@@ -28,7 +28,7 @@
             max-height: unset;
             max-width: unset;
             width: 58.8rem;
-            height: 52.4rem;
+            height: 42rem;
             left: 42.6rem;
             top: 16.2rem;
             margin-top: 0;
@@ -56,25 +56,11 @@
             .dc-text {
                 margin: 0.3rem 0;
                 text-align: left;
-
-                &__bullet_list {
-                    list-style: decimal;
-                    list-style-position: outside;
-                    font-size: var(--text-size-xxs);
-                    color: var(--text-general);
-                    line-height: var(--text-lh-m);
-                    text-align: left;
-                    padding-left: 1.6rem;
-                }
-
-                &__bullet_content {
-                    padding: 0.6rem 0 0.8rem;
-                }
             }
             @include mobile {
                 margin: 2rem;
                 width: 32.8rem;
-                height: 45rem;
+                height: 40rem;
                 box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.08);
                 border-radius: 8px;
             }

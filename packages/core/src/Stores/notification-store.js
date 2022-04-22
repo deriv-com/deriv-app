@@ -178,6 +178,7 @@ export default class NotificationStore extends BaseStore {
             is_identity_verification_needed,
             is_logged_in,
             is_tnc_needed,
+            is_uk,
             landing_company_shortcode,
             loginid,
             obj_total_balance,
@@ -213,7 +214,7 @@ export default class NotificationStore extends BaseStore {
 
             if (loginid !== LocalStore.get('active_loginid')) return;
 
-            if (malta_account) {
+            if (is_uk && malta_account) {
                 this.addNotificationMessage(this.client_notifications.close_uk_account);
             }
 
@@ -534,7 +535,7 @@ export default class NotificationStore extends BaseStore {
             close_uk_account: {
                 key: 'close_uk_account',
                 header: localize('Your account is scheduled to be closed'),
-                message: localize('Please close all your positions before 25 Apr and withdraw your funds.'),
+                message: localize('Please withdraw all your funds.'),
                 action: {
                     text: localize('Learn more'),
                     onClick: () => {

@@ -13,9 +13,9 @@ const MyStats = () => {
     const [should_show_stats_and_ratings, setShouldShowStatsAndRatings] = React.useState(false);
 
     if (my_profile_store.is_loading) {
-        return <Loading is_fullscreen={false} />
+        return <Loading is_fullscreen={false} />;
     }
-    
+
     return (
         <React.Fragment>
             <MobileFullPageModal

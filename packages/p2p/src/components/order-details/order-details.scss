@@ -195,7 +195,12 @@ $card-width: 456px;
                 color: var(--text-general);
                 word-break: break-word;
             }
+
+            &:last-of-type {
+                color: red;
+            }
         }
+
 
         &-columns {
             display: flex;

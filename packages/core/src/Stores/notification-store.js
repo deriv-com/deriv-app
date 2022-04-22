@@ -178,7 +178,6 @@ export default class NotificationStore extends BaseStore {
             is_identity_verification_needed,
             is_logged_in,
             is_tnc_needed,
-            is_uk,
             landing_company_shortcode,
             loginid,
             obj_total_balance,

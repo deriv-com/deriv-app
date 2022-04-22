@@ -83,7 +83,7 @@ export default class UIStore extends BaseStore {
     // Remove MX & MLT
     @observable is_close_mx_mlt_account_modal_visible = false;
 
-    // Remove MX account modal
+    // Remove MF account modal
     @observable is_close_uk_account_modal_visible = false;
 
     // set currency modal

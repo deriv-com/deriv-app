@@ -14,13 +14,15 @@ type TProps = {
 };
 
 const CreateWallet = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
-    const {wallet_store} = useStores();
+    const { wallet_store } = useStores();
 
-    React.useEffect(()=>{
-       wallet_store.getWalletNames();
+    React.useEffect(() => {
+        wallet_store.getWalletNames();
     }, []);
 
-    const wallets = should_show_fiat ? createWalletProvider(wallet_store.wallet_names).fiat_wallets : createWalletProvider(wallet_store.wallet_names).wallets;
+    const wallets = should_show_fiat
+        ? createWalletProvider(wallet_store.wallet_names).fiat_wallets
+        : createWalletProvider(wallet_store.wallet_names).wallets;
 
     const [selected_wallet, setSeletedWallet] = React.useState('');
 

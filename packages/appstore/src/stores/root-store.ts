@@ -14,6 +14,6 @@ export default class RootStore {
         this.client = core_store.client;
         this.common = core_store.common;
         this.ui = core_store.ui;
-        this.wallet_store = new WalletStore(this)
+        this.wallet_store = new WalletStore(this);
     }
 }

@@ -2,8 +2,8 @@ import { localize } from '@deriv/translations';
 
 const createWalletProvider = (wallet_names: any) => {
     type CryptoWalletMapping = {
-        [key: string]: string
-    }
+        [key: string]: string;
+    };
     const crypto_wallets_mapping: CryptoWalletMapping = {
         BTC: 'bitcoin',
         ETH: 'ethereum',
@@ -11,9 +11,9 @@ const createWalletProvider = (wallet_names: any) => {
         USDT: 'tether',
         USDC: 'usd_coin',
     };
-    const fiat_currencies = wallet_names?.fiat?.currencies.map((a: string) => a.toLowerCase());
+    const fiat_currencies = wallet_names?.fiat?.currencies.map((currency: string) => currency.toLowerCase());
 
-    const crypto_wallets = wallet_names?.crypto?.currencies.map((a:string) => crypto_wallets_mapping[a]);
+    const crypto_wallets = wallet_names?.crypto?.currencies.map((currency: string) => crypto_wallets_mapping[currency]);
 
     const built_in_wallets = ['deriv_p2p', 'payment_agent'];
 
@@ -75,6 +75,5 @@ const createWalletProvider = (wallet_names: any) => {
         wallets,
     };
 };
-
 
 export default createWalletProvider;

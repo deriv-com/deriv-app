@@ -15,6 +15,7 @@ import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx'
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import 'Components/order-details/order-details.scss';
+import { isDesktop } from '@deriv/shared';
 
 const OrderDetails = observer(({ onPageReturn }) => {
     const { order_store, sendbird_store } = useStores();
@@ -208,11 +209,11 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             }
                             value={advert_details.description.trim() || '-'}
                         />
-                        {should_show_order_footer && (
+                        {should_show_order_footer && isDesktop() && (
                             <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                         )}
                     </ThemedScrollbars>
-                    {should_show_order_footer && (
+                    {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />
                     )}
                 </div>

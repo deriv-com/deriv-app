@@ -77,19 +77,19 @@ const OrderDetailsFooter = observer(() => {
         );
     }
 
-    if (should_show_complain_and_received_button) {
+    if (true) {
         return (
             <React.Fragment>
                 <div className='order-details-card__footer'>
                     <div className='order-details-card__footer--right'>
-                        <Button large tertiary onClick={showComplainOrderModal}>
-                            <Localize i18n_default_text='Complain' />
-                        </Button>
-                    </div>
-                    <div className='order-details-card__footer--right'>
-                        <Button large primary onClick={showConfirmOrderModal}>
-                            <Localize i18n_default_text="I've received payment" />
-                        </Button>
+                        <Button.Group>
+                            <Button large tertiary onClick={showComplainOrderModal}>
+                                <Localize i18n_default_text='Complain' />
+                            </Button>
+                            <Button large primary onClick={showConfirmOrderModal}>
+                                <Localize i18n_default_text="I've received payment" />
+                            </Button>
+                        </Button.Group>
                     </div>
                 </div>
                 <OrderDetailsComplainModal

@@ -181,7 +181,7 @@ $card-width: 456px;
         @include mobile {
             flex: 1;
             min-height: 0;
-            padding: 1.6rem;
+            padding: 1.6rem 0rem;
         }
 
         &-block {
@@ -222,6 +222,7 @@ $card-width: 456px;
 
         @include mobile {
             width: 100%;
+            padding: 0rem;
         }
         @include tablet-up {
             width: 100%;

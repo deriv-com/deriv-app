@@ -46,6 +46,6 @@ const AdFormPaymentMethodsList = ({ onClickPaymentMethodCard, selected_methods }
 AdFormPaymentMethodsList.propTypes = {
     onClickPaymentMethodCard: PropTypes.func,
     selected_methods: PropTypes.array,
-}
+};
 
 export default observer(AdFormPaymentMethodsList);

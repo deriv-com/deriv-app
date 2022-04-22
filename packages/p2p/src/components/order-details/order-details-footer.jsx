@@ -77,7 +77,7 @@ const OrderDetailsFooter = observer(() => {
         );
     }
 
-    if (true) {
+    if (should_show_complain_and_received_button) {
         return (
             <React.Fragment>
                 <div className='order-details-card__footer'>
@@ -105,6 +105,7 @@ const OrderDetailsFooter = observer(() => {
                     should_show_confirm_modal={should_show_confirm_modal}
                 />
             </React.Fragment>
+            
         );
     }
 

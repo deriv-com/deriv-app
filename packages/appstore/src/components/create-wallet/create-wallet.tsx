@@ -1,10 +1,12 @@
-import React from 'react';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
+import React from 'react';
 import { Icon, Popover, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import Providers from './create-wallet-provider';
-import WalletCard from 'Components/wallet';
 import WalletIcon from 'Assets/svgs/wallet';
+import WalletCard from 'Components/wallet';
+import { useStores } from 'Stores';
+import createWalletProvider from './create-wallet-provider';
 
 type TProps = {
     is_dark_mode_on: boolean;
@@ -12,7 +14,13 @@ type TProps = {
 };
 
 const CreateWallet = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
-    const wallets = should_show_fiat ? Providers.fiat_wallets : Providers.wallets;
+    const {wallet_store} = useStores();
+
+    React.useEffect(()=>{
+       wallet_store.getWalletNames();
+    }, []);
+
+    const wallets = should_show_fiat ? createWalletProvider(wallet_store.wallet_names).fiat_wallets : createWalletProvider(wallet_store.wallet_names).wallets;
 
     const [selected_wallet, setSeletedWallet] = React.useState('');
 
@@ -59,10 +67,10 @@ const CreateWallet = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
                                     </div>
                                     <div
                                         className={classNames('create-wallet-list__items', {
-                                            'create-wallet-list__items__center': wallet.content.length < 5,
+                                            'create-wallet-list__items__center': wallet.content?.length < 5,
                                         })}
                                     >
-                                        {wallet.content?.map((wallet_name, id) => {
+                                        {wallet.content?.map((wallet_name: string, id: number) => {
                                             const name = snakeToPascal(wallet_name || '');
                                             const wallet_logo = `${name}${is_dark_mode_on ? 'Dark' : 'Light'}`;
                                             const is_wallet_selected = selected_wallet === wallet_name;
@@ -116,4 +124,4 @@ const CreateWallet = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
     );
 };
 
-export default CreateWallet;
+export default observer(CreateWallet);

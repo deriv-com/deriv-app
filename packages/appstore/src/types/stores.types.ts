@@ -4,4 +4,5 @@ export type TRootStore = {
     ui: any;
     client: any;
     config: ConfigStore;
+    wallet_store: any;
 };

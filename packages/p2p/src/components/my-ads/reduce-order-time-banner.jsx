@@ -8,29 +8,25 @@ import { localize } from 'Components/i18next';
 const ReduceOrderTimeBanner = () => {
     const { general_store } = useStores();
     const { order_time_out } = general_store;
-    // Generate the banner text
-    const render_banner_text = (() => {
-        let hour_msg = '';
-        if (order_time_out.hours === 1) {
-            hour_msg = localize('{{hour}} hour', { hour: order_time_out.hours });
-        } else if (order_time_out.hours > 1) {
-            hour_msg = localize('{{hour}} hours', { hour: order_time_out.hours });
-        }
-        if (order_time_out.hours > 0 && order_time_out.miutes > 0) {
-            return localize(
-                'New orders are now active for {{hours}} and {{minutes}} minutes only. Complete your order before it expires!',
-                { hours: hour_msg, minutes: order_time_out.minutes }
-            );
-        } else if (order_time_out.hours > 0 && order_time_out.minutes === 0) {
-            return localize('New orders are now active for {{hours}} only. Complete your order before it expires!', {
-                hours: hour_msg,
-            });
-        }
-        return localize(
+
+    let render_banner_text = '';
+
+    if (order_time_out.hours > 0 && order_time_out.minutes > 0) {
+        render_banner_text = localize(
+            'New orders are now active for {{hours}} hour and {{minutes}} minutes only. Complete your order before it expires!',
+            { hours: order_time_out.hours, minutes: order_time_out.minutes }
+        );
+    } else if (order_time_out.hours > 0 && order_time_out.minutes === 0) {
+        render_banner_text = localize(
+            'New orders are now active for {{hours}} hour only. Complete your order before it expires!',
+            { hours: order_time_out.hours }
+        );
+    } else {
+        render_banner_text = localize(
             'New orders are now active for {{minutes}} minutes only. Complete your order before it expires!',
             { minutes: order_time_out.minutes }
         );
-    })();
+    }
 
     return (
         <HintBox

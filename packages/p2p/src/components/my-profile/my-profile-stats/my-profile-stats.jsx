@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text, Loading } from '@deriv/components';
+import { DesktopWrapper, Icon, Loading, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';

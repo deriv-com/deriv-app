@@ -89,12 +89,12 @@ const MyProfileForm = () => {
     );
 
     if (my_profile_store.is_loading) {
-        return <Loading is_fullscreen={false} />
+        return <Loading is_fullscreen={false} />;
     }
 
     if (isDesktop()) {
-        return (<div className='my-profile-form'>{content}</div>)
-    } 
+        return <div className='my-profile-form'>{content}</div>;
+    }
 
     return (
         <MobileFullPageModal

@@ -25,7 +25,7 @@ const Input = ({
     is_read_only,
     max_length,
     name,
-    onBlurHandler,
+    onBlur,
     onClick,
     onKeyPressed,
     placeholder,
@@ -40,10 +40,10 @@ const Input = ({
         }
     }, [current_focus, name]);
 
-    const onBlur = e => {
+    const onBlurHandler = e => {
         setCurrentFocus(null);
-        if (onBlurHandler) {
-            onBlurHandler(e);
+        if (onBlur) {
+            onBlur(e);
         }
     };
     const onFocus = () => setCurrentFocus(name);
@@ -90,7 +90,7 @@ const Input = ({
                 id={id}
                 maxLength={fractional_digits ? max_length + fractional_digits + 1 : max_length}
                 name={name}
-                onBlur={onBlur}
+                onBlur={onBlurHandler}
                 onChange={onChange}
                 onClick={onClick}
                 onFocus={onFocus}
@@ -130,7 +130,7 @@ Input.propTypes = {
     is_read_only: PropTypes.bool,
     max_length: PropTypes.number,
     name: PropTypes.string,
-    onBlurHandler: PropTypes.func,
+    onBlur: PropTypes.func,
     onClick: PropTypes.func,
     onKeyPressed: PropTypes.func,
     placeholder: PropTypes.string,

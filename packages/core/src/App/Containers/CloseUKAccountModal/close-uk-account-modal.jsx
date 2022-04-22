@@ -8,26 +8,24 @@ import './close-uk-account-modal.scss';
 
 export const CloseUKAccountContent = ({ showCloseUKAccountPopup, removeNotificationMessageByKey }) => {
     const BulletData = () => (
-        <>
-            <ol className='dc-text__bullet_list'>
-                <li className='dc-text__bullet_content'>
-                    <Text size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
-                        <Localize i18n_default_text='Close all your positions before 25 Apr, 12:00 am GMT' />
-                    </Text>
-                    <Text size={isMobile() ? 'xxs' : 'xs'} as='p' line_height='s' className='dc-text__bullet_desc'>
-                        <Localize i18n_default_text='If you still have open positions on 25 Apr 2022, 12:00 am GMT, we shall close them and refund you.' />
-                    </Text>
-                </li>
-                <li className='dc-text__bullet_content'>
-                    <Text size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
-                        <Localize i18n_default_text=' Withdraw your funds from your Deriv account' />
-                    </Text>
-                    <Text size={isMobile() ? 'xxs' : 'xs'} as='p' line_height='s' className='dc-text__bullet_desc'>
-                        <Localize i18n_default_text='You will lose access to your account when it gets closed, so be sure to withdraw all your funds.' />
-                    </Text>
-                </li>
-            </ol>
-        </>
+        <ol className='dc-text__bullet_list'>
+            <li className='dc-text__bullet_content'>
+                <Text size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
+                    <Localize i18n_default_text='Close all your positions before 25 Apr, 12:00 am GMT' />
+                </Text>
+                <Text size={isMobile() ? 'xxs' : 'xs'} as='p' line_height='s' className='dc-text__bullet_desc'>
+                    <Localize i18n_default_text='If you still have open positions on 25 Apr 2022, 12:00 am GMT, we shall close them and refund you.' />
+                </Text>
+            </li>
+            <li className='dc-text__bullet_content'>
+                <Text size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
+                    <Localize i18n_default_text=' Withdraw your funds from your Deriv account' />
+                </Text>
+                <Text size={isMobile() ? 'xxs' : 'xs'} as='p' line_height='s' className='dc-text__bullet_desc'>
+                    <Localize i18n_default_text='You will lose access to your account when it gets closed, so be sure to withdraw all your funds.' />
+                </Text>
+            </li>
+        </ol>
     );
 
     return (
@@ -84,14 +82,10 @@ const CloseUKAccountModal = ({
     removeNotificationMessageByKey,
     showCloseUKAccountPopup,
 }) => {
-    const [is_visible, setVisible] = React.useState(false);
+    const [is_visible, setIsVisible] = React.useState(false);
 
     React.useEffect(() => {
-        if (is_logged_in && is_close_uk_account_modal_visible) {
-            setVisible(true);
-        } else {
-            setVisible(false);
-        }
+        setIsVisible(is_logged_in && is_close_uk_account_modal_visible);
     }, [is_logged_in, is_close_uk_account_modal_visible]);
 
     return (

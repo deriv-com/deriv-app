@@ -173,16 +173,16 @@ export default class NotificationStore extends BaseStore {
             accounts,
             has_iom_account,
             has_malta_account,
+            isAccountOfType,
             is_eu,
             is_identity_verification_needed,
             is_logged_in,
             is_tnc_needed,
-            isAccountOfType,
+            is_uk,
             landing_company_shortcode,
             loginid,
             obj_total_balance,
             website_status,
-            is_uk,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -215,12 +215,12 @@ export default class NotificationStore extends BaseStore {
             if (loginid !== LocalStore.get('active_loginid')) return;
 
             if (is_uk) {
-                const current_date = new Date().getTime(); // current timestamp
-                const deadline_for_closing_uk = new Date('Apr 25, 2022 00:00:00 GMT+00:00').getTime(); // deadline time to timestamp
-                if (current_date < deadline_for_closing_uk)
+                const server_time = this.root_store.common.server_time.unix(); // current server time
+                const deadline_for_closing_uk = new Date('Apr 25, 2022 00:00:00 GMT+00:00').valueOf(); // deadline time to timestamp
+                if (server_time < deadline_for_closing_uk)
                     this.addNotificationMessage(this.client_notifications.close_uk_account);
-                return;
             }
+
             if (
                 (has_iom_account || has_malta_account) &&
                 (!malta_account || !virtual_account) &&
@@ -534,6 +534,23 @@ export default class NotificationStore extends BaseStore {
                 img_src: getUrlBase('/public/images/common/close_account_banner.png'),
                 img_alt: 'close mx mlt account',
                 type: 'close_mx_mlt',
+            },
+            close_uk_account: {
+                key: 'close_uk_account',
+                header: localize('Your account is scheduled to be closed'),
+                message: localize('Please close all your positions before 25 Apr and withdraw your funds.'),
+                action: {
+                    text: localize('Learn more'),
+                    onClick: () => {
+                        ui.showCloseUKAccountPopup(true);
+                        this.removeNotificationByKey({ key: this.client_notifications.close_uk_account.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.close_uk_account.key,
+                            should_show_again: false,
+                        });
+                    },
+                },
+                type: 'danger',
             },
             currency: {
                 key: 'currency',
@@ -928,24 +945,6 @@ export default class NotificationStore extends BaseStore {
                 key: 'you_are_offline',
                 header: localize('You are offline'),
                 message: <Localize i18n_default_text='Check your connection.' />,
-                type: 'danger',
-            },
-            close_uk_account: {
-                key: 'close_uk_account',
-                header: localize('Your account is scheduled to be closed'),
-                message: localize('Please close all your positions before 25 Apr and withdraw your funds.'),
-                action: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        ui.showCloseUKAccountPopup(true);
-
-                        this.removeNotificationByKey({ key: this.client_notifications.close_uk_account.key });
-                        this.removeNotificationMessage({
-                            key: this.client_notifications.close_uk_account.key,
-                            should_show_again: true,
-                        });
-                    },
-                },
                 type: 'danger',
             },
         };

@@ -1,23 +1,11 @@
 .close-uk-account {
-    &--is-fullscreen {
-        max-width: 80vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        margin: 0 auto;
-        .close-uk-account__content {
-            max-width: 800px;
-            padding: 2.4rem 0.6rem;
-        }
-    }
     &-header {
         width: 100%;
-        height: 65px;
+        height: 6.5rem;
         padding: 2.4rem;
 
         @include mobile {
-            height: 20px;
+            height: 2rem;
             padding: 0 1.2rem;
             position: sticky;
             .dc-text {
@@ -39,10 +27,10 @@
         &__dialog {
             max-height: unset;
             max-width: unset;
-            width: 588px;
-            height: 524px;
-            left: 426px;
-            top: 162px;
+            width: 58.8rem;
+            height: 52.4rem;
+            left: 42.6rem;
+            top: 16.2rem;
             margin-top: 0;
             padding: 0;
             .dc-dialog__content {
@@ -85,8 +73,8 @@
             }
             @include mobile {
                 margin: 2rem;
-                width: 328px;
-                height: 450px;
+                width: 32.8rem;
+                height: 45rem;
                 box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.08);
                 border-radius: 8px;
             }

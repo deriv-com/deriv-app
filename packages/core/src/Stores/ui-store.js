@@ -80,10 +80,10 @@ export default class UIStore extends BaseStore {
     // Welcome modal
     @observable is_welcome_modal_visible = false;
 
-    // Remove MX gaming account modal
+    // Remove MX & MLT
     @observable is_close_mx_mlt_account_modal_visible = false;
 
-    // Remove MX gaming account modal
+    // Remove MX account modal
     @observable is_close_uk_account_modal_visible = false;
 
     // set currency modal
@@ -242,6 +242,7 @@ export default class UIStore extends BaseStore {
     showCloseUKAccountPopup(is_open) {
         this.is_close_uk_account_modal_visible = is_open;
     }
+
     @computed
     get is_mobile() {
         return this.screen_width <= MAX_MOBILE_WIDTH;

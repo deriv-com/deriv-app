@@ -6,6 +6,7 @@ import './ad-form-payment-methods-list.scss';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
+import PropTypes from 'prop-types';
 
 const AdFormPaymentMethodsList = ({ selected_methods, onClickPaymentMethodCard }) => {
     const { my_profile_store, my_ads_store } = useStores();
@@ -41,5 +42,10 @@ const AdFormPaymentMethodsList = ({ selected_methods, onClickPaymentMethodCard }
         </ThemedScrollbars>
     );
 };
+
+AdFormPaymentMethodsList.propTypes = {
+    selected_methods: PropTypes.array,
+    onClickPaymentMethodCard: PropTypes.func,
+}
 
 export default observer(AdFormPaymentMethodsList);

@@ -35,7 +35,6 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
         }
     };
 
-    // eslint-disable-next-line no-unused-vars
     const onClickPaymentMethodCard = payment_method => {
         if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
             if (my_ads_store.payment_method_ids.length < 3) {

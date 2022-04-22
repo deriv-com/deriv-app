@@ -167,7 +167,7 @@ describe('<FinancialDetails />', () => {
         expect(screen.getByText('Previous')).toBeInTheDocument();
     });
 
-    it('should trigger "Previous" button', async () => {
+    it('should trigger "Previous" button', () => {
         render(<FinancialDetails {...mock_props} />);
 
         fieldsRenderCheck();

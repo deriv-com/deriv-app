@@ -2,8 +2,6 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import CountrySelector from '../poi-country-selector';
-import { act } from 'react-dom/test-utils';
-import { Formik, Field } from 'formik';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

@@ -64,18 +64,14 @@ describe('<CountrySelector/>', () => {
         const next_btn = screen.getByRole('button');
 
         expect(field).toBeInTheDocument();
-        expect(screen.queryByText(/please select the country of document issuance/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/please select a valid country of document issuance/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/please select the country of document issuance/i)).not.toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.blur(field);
-        });
+        fireEvent.blur(field);
         expect(await screen.findByText(/please select the country of document issuance/i)).toBeInTheDocument();
         expect(next_btn).toBeDisabled();
 
-        await waitFor(() => {
-            fireEvent.change(field, { target: { value: 'invalid country' } });
-        });
+        fireEvent.change(field, { target: { value: 'invalid country' } });
         expect(await screen.findByText(/please select a valid country of document issuance/i)).toBeInTheDocument();
         expect(next_btn).toBeDisabled();
     });
@@ -89,18 +85,15 @@ describe('<CountrySelector/>', () => {
 
         const field = screen.getByRole('combobox');
 
-        await waitFor(() => {
-            fireEvent.change(field, { target: { value: 'Country 2' } });
-        });
+        fireEvent.change(field, { target: { value: 'Country 2' } });
 
         const next_btn = screen.getByRole('button');
         expect(next_btn).toBeEnabled();
         expect(mock_props.setSelectedCountry).toHaveBeenCalledTimes(1);
 
+        fireEvent.click(next_btn);
         await waitFor(() => {
-            fireEvent.click(next_btn);
+            expect(mock_props.handleSelectionNext).toHaveBeenCalledTimes(1);
         });
-
-        expect(mock_props.handleSelectionNext).toHaveBeenCalledTimes(1);
     });
 });

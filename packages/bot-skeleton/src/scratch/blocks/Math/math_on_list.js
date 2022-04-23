@@ -87,10 +87,7 @@ Blockly.JavaScript.math_on_list = block => {
     } else if (operation === 'AVERAGE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
-                finalList = [];
-                recursiveList(myList);
-
-                return finalList.reduce(function(x, y) { 
+                return recursiveList(myList).reduce(function(x, y) { 
                     return x + y; 
                 }) / myList.length;
             }`,
@@ -139,21 +136,23 @@ Blockly.JavaScript.math_on_list = block => {
                         stack.push(end);
                     }
                 }
+
             }
 
-            function calculateMedian(){
-                quickSort(finalList);
-                if (finalList.length % 2 == 0) {
-                    return (finalList[finalList.length / 2 - 1] + finalList[finalList.length / 2]) / 2;
-                } else {
-                    return finalList[(finalList.length - 1) / 2];
-                }
+            function calculateMedian(final_list){
+                console.log('stat sorting with final list:', final_list);
+                quickSort(final_list);
+                console.log('sorted list:', final_list);
+
+                if (final_list.length % 2 == 0) {
+                    return (final_list[final_list.length / 2 - 1] + final_list[final_list.length / 2]) / 2;
+                } 
+                return final_list[(final_list.length - 1) / 2];
             }
 
-            function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {  
-                finalList = [];
-                recursiveList(myList);
-                return calculateMedian();  
+            function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+                var final_list = [];
+                return calculateMedian(recursiveList(myList, final_list));  
             }`,
         ]);
 

@@ -140,9 +140,7 @@ Blockly.JavaScript.math_on_list = block => {
             }
 
             function calculateMedian(final_list){
-                console.log('stat sorting with final list:', final_list);
                 quickSort(final_list);
-                console.log('sorted list:', final_list);
 
                 if (final_list.length % 2 == 0) {
                     return (final_list[final_list.length / 2 - 1] + final_list[final_list.length / 2]) / 2;

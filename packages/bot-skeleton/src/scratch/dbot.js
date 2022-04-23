@@ -127,8 +127,6 @@ class DBot {
     runBot() {
         try {
             const code = this.generateCode();
-
-            console.log('code:', code);
             if (this.interpreter !== null) {
                 this.interpreter = null;
             }

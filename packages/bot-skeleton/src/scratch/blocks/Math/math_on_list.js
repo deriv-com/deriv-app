@@ -87,7 +87,8 @@ Blockly.JavaScript.math_on_list = block => {
     } else if (operation === 'AVERAGE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
-                return recursiveList(myList).reduce(function(x, y) { 
+                var final_list = [];
+                return recursiveList(myList, final_list).reduce(function(x, y) { 
                     return x + y; 
                 }) / myList.length;
             }`,

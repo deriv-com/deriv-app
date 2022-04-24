@@ -27,6 +27,8 @@ const Redirect = ({
     setVerificationCode(url_params.get('code'), url_params.get('action'));
     setNewEmail(url_params.get('email'), url_params.get('action'));
 
+    setNewEmail(url_params.get('email'), url_params.get('action'));
+
     switch (url_params.get('action')) {
         case 'signup': {
             if (is_appstore) {

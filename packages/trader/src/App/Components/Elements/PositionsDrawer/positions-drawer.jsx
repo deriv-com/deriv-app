@@ -7,7 +7,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Icon, DataList, Text } from '@deriv/components';
 import { routes, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import EmptyPortfolioMessage from '@deriv/reports';
+import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { connect } from 'Stores/connect';
 import PositionsDrawerCard from './PositionsDrawerCard';
 import { filterByContractType } from './helpers';

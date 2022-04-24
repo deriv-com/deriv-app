@@ -4,7 +4,7 @@ import { Icon, Div100vhContainer, Modal, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import EmptyPortfolioMessage from '@deriv/reports';
+import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { connect } from 'Stores/connect';

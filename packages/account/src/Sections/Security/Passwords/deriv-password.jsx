@@ -5,13 +5,11 @@ import { toTitleCase, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
-import UnlinkModal from 'Components/unlink-modal';
 import DerivComLogo from '../../../Assets/ic-brand-deriv-red.svg';
 import DerivGoLight from '../../../Assets/ic-brand-deriv-go-light.svg';
 import DerivGoDark from '../../../Assets/ic-brand-deriv-go-dark.svg';
 
 const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identity_provider }) => {
-    const [is_unlink_modal_open, setIsUnlinkModalOpen] = React.useState(false);
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
@@ -20,7 +18,6 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
         } else {
             WS.verifyEmail(email, 'reset_password');
         }
-        setIsUnlinkModalOpen(false);
         setIsSentEmailModalOpen(true);
     };
 
@@ -67,13 +64,7 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                 {is_social_signup ? (
                     <React.Fragment>
                         <div className='account__passwords-item passwords-social-buttons'>
-                            <div
-                                className='account__passwords-linked'
-                                onClick={() => {
-                                    setIsUnlinkModalOpen(true);
-                                    setIsSentEmailModalOpen(true);
-                                }}
-                            >
+                            <div className='account__passwords-linked' onClick={onClickSendEmail}>
                                 {social_identity_provider ? (
                                     <React.Fragment>
                                         <Icon icon={`IcStock${capitalized_identifier}`} size={16} />
@@ -110,17 +101,8 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                         />
                     </div>
                 )}
-                <UnlinkModal
-                    is_open={is_unlink_modal_open}
-                    onClose={() => {
-                        setIsUnlinkModalOpen(false);
-                        setIsSentEmailModalOpen(false);
-                    }}
-                    identifier_title={capitalized_identifier}
-                    onClickSendEmail={onClickSendEmail}
-                />
                 <SentEmailModal
-                    is_open={is_sent_email_modal_open && !is_unlink_modal_open}
+                    is_open={is_sent_email_modal_open}
                     onClose={() => setIsSentEmailModalOpen(false)}
                     identifier_title={capitalized_identifier}
                     onClickSendEmail={onClickSendEmail}

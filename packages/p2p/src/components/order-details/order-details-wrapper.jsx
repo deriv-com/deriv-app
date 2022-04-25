@@ -15,7 +15,7 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
             return footer;
         }
         return false;
-    }
+    };
 
     return isMobile() ? (
         <MobileFullPageModal

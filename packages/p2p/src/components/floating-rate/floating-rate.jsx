@@ -6,6 +6,7 @@ import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { truncateDecimal } from 'Utils/format-value.js';
 import './floating-rate.scss';
 
 const FloatingRate = ({
@@ -15,22 +16,25 @@ const FloatingRate = ({
     error_messages,
     fiat_currency,
     local_currency,
-    onChangeHandler,
+    onChange,
     offset,
     ...props
 }) => {
     const { general_store } = useStores();
     const { name, value, required } = props;
-    const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)).toFixed(2) : exchange_rate;
+    // Get market feed restricted to 2 decimal places
+    const market_feed = value ? truncateDecimal(parseFloat(exchange_rate * (1 + value / 100)), 2) : exchange_rate;
 
     const onBlurHandler = e => {
-        if (e.target.value && e.target.value.length) {
-            e.target.value = parseFloat(e.target.value).toFixed(2);
-            if (!/^[+-]/.test(e.target.value) && Math.sign(e.target.value) > 0) {
-                e.target.value = `+${e.target.value}`;
+        let float_rate = e.target.value;
+        if (float_rate && float_rate.length) {
+            float_rate = parseFloat(float_rate).toFixed(2);
+            if (!/^[+-]/.test(float_rate) && Math.sign(float_rate) > 0) {
+                // Assign + symbol for positive rate
+                e.target.value = `+${float_rate}`;
             }
         }
-        onChangeHandler(e);
+        onChange(e);
     };
     return (
         <div className={classNames(className, 'floating-rate')}>
@@ -121,7 +125,7 @@ FloatingRate.propTypes = {
     error_messages: PropTypes.string,
     fiat_currency: PropTypes.string,
     local_currency: PropTypes.string,
-    onChangeHandler: PropTypes.func,
+    onChange: PropTypes.func,
     offset: PropTypes.object,
 };
 

@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
+import { truncateDecimal } from 'Utils/format-value.js';
 import { useStores } from 'Stores';
 
 const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
@@ -13,31 +14,28 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
 
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
 
-    const display_price_rate = (() => {
-        if (market_feed && price_rate) {
-            return formatMoney(
-                local_currency_config.currency,
-                parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
-                true
-            );
-        } else if (price_rate) {
-            return formatMoney(local_currency_config.currency, price_rate, true);
-        }
-        return '';
-    })();
+    let display_price_rate = '';
+    let display_total = '';
 
-    const display_total = (() => {
-        if (market_feed && offer_amount && price_rate) {
-            return formatMoney(
-                local_currency_config.currency,
-                offer_amount * parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
-                true
-            );
-        } else if (offer_amount && price_rate) {
-            return formatMoney(local_currency_config.currency, offer_amount * price_rate, true);
-        }
-        return '';
-    })();
+    if (market_feed && price_rate) {
+        display_price_rate = formatMoney(
+            local_currency_config.currency,
+            truncateDecimal(parseFloat(market_feed * (1 + price_rate / 100)), 2),
+            true
+        );
+    } else if (price_rate) {
+        display_price_rate = formatMoney(local_currency_config.currency, price_rate, true);
+    }
+
+    if (market_feed && offer_amount && price_rate) {
+        display_total = formatMoney(
+            local_currency_config.currency,
+            offer_amount * truncateDecimal(parseFloat(market_feed * (1 + price_rate / 100)), 2),
+            true
+        );
+    } else if (offer_amount && price_rate) {
+        display_total = formatMoney(local_currency_config.currency, offer_amount * price_rate, true);
+    }
 
     if (offer_amount) {
         const components = [

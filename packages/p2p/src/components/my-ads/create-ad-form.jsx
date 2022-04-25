@@ -229,7 +229,7 @@ const CreateAdForm = () => {
                                                             exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
-                                                            onChangeHandler={handleChange}
+                                                            onChange={handleChange}
                                                             offset={{
                                                                 upper_limit: parseInt(
                                                                     floating_rate_store.float_rate_offset_limit

@@ -320,5 +320,4 @@ describe('CryptoFiatConverterStore', () => {
             crypto_fiat_converter_store.root_store.modules.cashier.account_transfer.setAccountTransferAmount
         ).toBeCalledTimes(1);
     });
-
 });

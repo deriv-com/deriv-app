@@ -1,4 +1,3 @@
-// TODO: This component is temporary and to be removed in the future releases
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useStores } from 'Stores';
@@ -7,24 +6,28 @@ import { localize } from 'Components/i18next';
 
 const ReduceOrderTimeBanner = () => {
     const { general_store } = useStores();
-    const { order_timeout } = general_store;
+    const { hours, minutes } = general_store.order_timeout;
 
     let render_banner_text = '';
 
-    if (order_timeout.hours > 0 && order_timeout.minutes > 0) {
+    if (hours === 0 && minutes === 0) {
+        return null;
+    }
+
+    if (hours > 0 && minutes > 0) {
         render_banner_text = localize(
             'New orders are now active for {{hours}} hour and {{minutes}} minutes only. Complete your order before it expires!',
-            { hours: order_timeout.hours, minutes: order_timeout.minutes }
+            { hours, minutes }
         );
-    } else if (order_timeout.hours > 0 && order_timeout.minutes === 0) {
+    } else if (hours > 0 && minutes === 0) {
         render_banner_text = localize(
             'New orders are now active for {{hours}} hour only. Complete your order before it expires!',
-            { hours: order_timeout.hours }
+            { hours }
         );
     } else {
         render_banner_text = localize(
             'New orders are now active for {{minutes}} minutes only. Complete your order before it expires!',
-            { minutes: order_timeout.minutes }
+            { minutes }
         );
     }
 

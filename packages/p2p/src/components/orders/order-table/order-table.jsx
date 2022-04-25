@@ -28,7 +28,6 @@ const OrderTable = ({ showDetails }) => {
     const is_active_tab = general_store.order_table_type === order_list.ACTIVE;
     return (
         <React.Fragment>
-            {/* TODO: This component is temporary and to be removed in the future releases */}
             <ReduceOrderTimeBanner />
             <div className='orders-tab'>
                 <div className='orders-tab__header '>

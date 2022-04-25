@@ -242,7 +242,6 @@ export const icons =
         'IcEmailSent',
         'IcEmailSpam',
         'IcEmailTypo',
-        'IcEmailVerified',
         'IcEmail',
         'IcEmptyFolder',
         'IcEye',

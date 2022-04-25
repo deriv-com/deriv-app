@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import * as Helpers from '../helpers';
 import { routes } from '@deriv/shared';
-import getRoutesConfig from '../../../Constants/routes-config';
+import getRoutesConfig from 'Constants/routes-config';
 
 describe('Helpers', () => {
     describe('findRouteByPath', () => {

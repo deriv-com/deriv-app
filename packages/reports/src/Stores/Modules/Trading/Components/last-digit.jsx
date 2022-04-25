@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import NumberSelector from '../../../../Components/Form/number-selector.jsx';
-import Fieldset from '../../../../Components/Form/fieldset.jsx';
-import { connect } from '../../../connect';
+import NumberSelector from 'Components/Form/number-selector.jsx';
+import Fieldset from 'Components/Form/fieldset.jsx';
+import { connect } from 'Stores/connect';
 
 const LastDigit = ({ is_minimized, last_digit, onChange }) => {
     if (is_minimized) {

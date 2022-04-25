@@ -3,10 +3,10 @@ import { routes, makeLazyLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
+const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 const lazyLoadReportComponent = makeLazyLoader(
-    () => import(/* webpackChunkName: "reports-routes" */ '../Containers'),
+    () => import(/* webpackChunkName: "reports-routes" */ 'Containers'),
     () => <Loading />
 );
 

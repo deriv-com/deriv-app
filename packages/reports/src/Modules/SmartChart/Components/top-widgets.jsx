@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isDigitContract } from '@deriv/shared';
-import { connect } from '../../../Stores/connect';
+import { connect } from 'Stores/connect';
 import { ChartTitle } from '../index';
 
 const TradeInfo = ({ markers_array, granularity }) => {

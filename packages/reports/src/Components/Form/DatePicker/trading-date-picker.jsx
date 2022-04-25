@@ -5,9 +5,9 @@ import React from 'react';
 import { DatePicker, Tooltip } from '@deriv/components';
 import { isTimeValid, setTime, toMoment, useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from '../../../Stores/connect';
-import ContractType from '../../../Stores/Modules/Trading/Helpers/contract-type';
-import { hasIntradayDurationUnit } from '../../../Stores/Modules/Trading/Helpers/duration';
+import { connect } from 'Stores/connect';
+import ContractType from 'Stores/Modules/Trading/Helpers/contract-type';
+import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
 
 const TradingDatePicker = ({
     duration: current_duration,

@@ -8,7 +8,7 @@ import { Icon, DataList, Text } from '@deriv/components';
 import { routes, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../../empty-portfolio-message.jsx';
-import { connect } from '../../../Stores/connect';
+import { connect } from 'Stores/connect';
 import PositionsDrawerCard from './PositionsDrawerCard';
 import { filterByContractType } from './helpers';
 

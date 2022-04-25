@@ -1,4 +1,4 @@
-import { getUnsupportedContracts } from '../../../../_common/contract';
+import { getUnsupportedContracts } from '_common/contract';
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 
 import { getMarketInformation } from '../../../../Helpers/market-underlying';

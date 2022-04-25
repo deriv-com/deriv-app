@@ -13,8 +13,8 @@ import {
 } from '@deriv/components';
 import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from '../Stores/connect';
-import '../sass/app/modules/reports.scss';
+import { connect } from 'Stores/connect';
+import 'Sass/app/modules/reports.scss';
 
 const Reports = ({
     history,

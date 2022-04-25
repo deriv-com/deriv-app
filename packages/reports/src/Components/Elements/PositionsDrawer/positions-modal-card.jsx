@@ -15,14 +15,14 @@ import {
 import { localize } from '@deriv/translations';
 import { BinaryLink } from '../../Routes';
 
-import { connect } from '../../../Stores/connect';
-import { getSymbolDisplayName } from '../../../Stores/Modules/Trading/Helpers/active-symbols';
+import { connect } from 'Stores/connect';
+import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
 
-import { connectWithContractUpdate } from '../../../Stores/Modules/Contract/Helpers/multiplier';
-import { getEndTime } from '../../../Stores/Modules/Contract/Helpers/logic';
+import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { PositionsCardLoader } from '../ContentLoader';
 
-import { getContractTypeDisplay, getCardLabels } from '../../../_common/contract';
+import { getContractTypeDisplay, getCardLabels } from '_common/contract';
 import { getMarketInformation } from '../../../Helpers/market-underlying';
 import ResultMobile from './result-mobile.jsx';
 

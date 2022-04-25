@@ -4,7 +4,7 @@ import Loadable from 'react-loadable';
 import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared';
-import { connect } from '../../../Stores/connect';
+import { connect } from 'Stores/connect';
 import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';
 import CalendarIcon from './calendar-icon.jsx';

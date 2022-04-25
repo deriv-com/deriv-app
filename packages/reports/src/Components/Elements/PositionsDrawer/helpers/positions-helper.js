@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { isHighLow } from '@deriv/shared';
-import { getContractTypesConfig } from '../../../../Stores/Modules/Trading/Constants/contract';
-import { isCallPut } from '../../../../Stores/Modules/Contract/Helpers/contract-type';
+import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
+import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
 
 export const addCommaToNumber = (num, decimal_places) => {
     if (!num || isNaN(num)) {

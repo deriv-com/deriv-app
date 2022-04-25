@@ -38,7 +38,6 @@ const ALIASES = {
     Modules: path.resolve(__dirname, '../src/Modules'),
     Sass: path.resolve(__dirname, '../src/sass'),
     Stores: path.resolve(__dirname, '../src/Stores'),
-    Helpers: path.resolve(__dirname, '../src/Helpers'),
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => [

@@ -1,4 +1,4 @@
-import { template } from '../../_common/utility';
+import { template } from '_common/utility';
 import { getPreBuildDVRs } from '@deriv/shared';
 import Error from './errors';
 

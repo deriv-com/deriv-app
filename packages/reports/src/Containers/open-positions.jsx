@@ -22,11 +22,11 @@ import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.
 import {
     getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
-} from '../Constants/data-table-constants';
+} from 'Constants/data-table-constants';
 import PositionsCard from '../Components/Elements/PositionsDrawer/PositionsDrawerCard/positions-drawer-card.jsx';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
-import { getCardLabels } from '../_common/contract';
-import { connect } from '../Stores/connect';
+import { getCardLabels } from '_common/contract';
+import { connect } from 'Stores/connect';
 
 const EmptyPlaceholderWrapper = props => (
     <React.Fragment>

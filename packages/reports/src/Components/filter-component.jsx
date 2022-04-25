@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FilterDropdown } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from '../Stores/connect';
+import { connect } from 'Stores/connect';
 import CompositeCalendar from './Form/CompositeCalendar';
 
 const FilterComponent = ({

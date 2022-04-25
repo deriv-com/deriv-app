@@ -15,7 +15,7 @@ import {
 import { localize } from '@deriv/translations';
 import { isDigitContractType, isDigitTradeType } from '../../../Helpers/digits';
 
-import ServerTime from '../../../_common/base/server_time';
+import ServerTime from '_common/base/server_time';
 
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
@@ -36,7 +36,7 @@ import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
-import BaseStore from '../../base-store';
+import BaseStore from 'Stores/base-store';
 
 const store_name = 'trade_store';
 const g_subscribers_map = {}; // blame amin.m

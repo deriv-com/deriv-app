@@ -7,8 +7,8 @@ import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } fro
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getContractPath } from '../Components/Routes/helpers';
-import { getSupportedContracts } from '../_common/contract';
-import { connect } from '../Stores/connect';
+import { getSupportedContracts } from '_common/contract';
+import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import AccountStatistics from '../Components/account-statistics.jsx';

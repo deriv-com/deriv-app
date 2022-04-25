@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, InputField } from '@deriv/components';
-import { connect } from '../../../Stores/connect';
+import { connect } from 'Stores/connect';
 import Dialog from './dialog.jsx';
 
 const class_prefix = 'time-picker';

@@ -43,6 +43,7 @@ const getTranslatableFiles = () => {
         'cfd',
         'trader',
         'bot-skeleton',
+        'reports',
     ];
     const globs = ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx', '**/xml/*.xml'];
     const file_paths = [];

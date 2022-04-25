@@ -6,6 +6,7 @@ import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { truncateDecimal } from 'Utils/format-value.js';
 import './floating-rate.scss';
 
 const FloatingRate = ({
@@ -22,7 +23,7 @@ const FloatingRate = ({
     const { general_store } = useStores();
     const { name, value, required } = props;
     // Get market feed restricted to 2 decimal places
-    const market_feed = value ? Math.trunc(parseFloat(exchange_rate * (1 + value / 100)) * 100) / 100 : exchange_rate;
+    const market_feed = value ? truncateDecimal(parseFloat(exchange_rate * (1 + value / 100)), 2) : exchange_rate;
 
     const onBlurHandler = e => {
         let float_rate = e.target.value;

@@ -17,16 +17,18 @@ const ReduceOrderTimeBanner = () => {
         return null;
     }
 
-    if (hours > 0 && minutes > 0) {
-        render_banner_text = localize(
-            'New orders are now active for {{hours}} hour and {{minutes}} minutes only. Complete your order before it expires!',
-            { hours, minutes }
-        );
-    } else if (hours > 0 && minutes === 0) {
-        render_banner_text = localize(
-            'New orders are now active for {{hours}} hour only. Complete your order before it expires!',
-            { hours }
-        );
+    if (hours > 0) {
+        if (minutes > 0) {
+            render_banner_text = localize(
+                'New orders are now active for {{hours}} hour and {{minutes}} minutes only. Complete your order before it expires!',
+                { hours, minutes }
+            );
+        } else if (minutes === 0) {
+            render_banner_text = localize(
+                'New orders are now active for {{hours}} hour only. Complete your order before it expires!',
+                { hours }
+            );
+        }
     } else {
         render_banner_text = localize(
             'New orders are now active for {{minutes}} minutes only. Complete your order before it expires!',

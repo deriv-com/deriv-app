@@ -6,7 +6,10 @@ import { localize } from 'Components/i18next';
 
 const ReduceOrderTimeBanner = () => {
     const { general_store } = useStores();
-    const { hours, minutes } = general_store.order_timeout;
+    const { order_timeout } = general_store;
+    // Convert the time in minutes to hours
+    const hours = Math.floor(order_timeout / 60);
+    const minutes = order_timeout % 60;
 
     let render_banner_text = '';
 

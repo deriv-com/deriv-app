@@ -23,7 +23,7 @@ export default class GeneralStore extends BaseStore {
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
-    @observable order_timeout = { hours: 0, minutes: 0 };
+    @observable order_timeout = 0;
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -371,9 +371,7 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     setOrderTimeOut(time) {
-        const hours = Math.floor(time / 60);
-        const minutes = time % 60;
-        this.order_timeout = { hours, minutes };
+        this.order_timeout = time;
     }
 
     @action.bound

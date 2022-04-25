@@ -21,13 +21,16 @@ const FloatingRate = ({
 }) => {
     const { general_store } = useStores();
     const { name, value, required } = props;
-    const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)).toFixed(2) : exchange_rate;
+    // Get market feed restricted to 2 decimal places
+    const market_feed = value ? Math.trunc(parseFloat(exchange_rate * (1 + value / 100)) * 100) / 100 : exchange_rate;
 
     const onBlurHandler = e => {
-        if (e.target.value && e.target.value.length) {
-            e.target.value = parseFloat(e.target.value).toFixed(2);
-            if (!/^[+-]/.test(e.target.value) && Math.sign(e.target.value) > 0) {
-                e.target.value = `+${e.target.value}`;
+        let float_rate = e.target.value;
+        if (float_rate && float_rate.length) {
+            float_rate = parseFloat(float_rate).toFixed(2);
+            if (!/^[+-]/.test(float_rate) && Math.sign(float_rate) > 0) {
+                // Assign + symbol for positive rate
+                e.target.value = `+${float_rate}`;
             }
         }
         onChange(e);

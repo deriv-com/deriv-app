@@ -105,7 +105,6 @@ const OrderDetailsFooter = observer(() => {
                     should_show_confirm_modal={should_show_confirm_modal}
                 />
             </React.Fragment>
-            
         );
     }
 

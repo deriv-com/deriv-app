@@ -197,7 +197,6 @@ $card-width: 456px;
             }
         }
 
-
         &-columns {
             display: flex;
             flex-flow: row nowrap;
@@ -226,7 +225,7 @@ $card-width: 456px;
         }
         @include tablet-up {
             width: 100%;
-            padding: 0rem 1.6rem 1.6rem 1.6rem;
+            padding: 0rem 1.6rem 1.6rem;
         }
 
         &--left {

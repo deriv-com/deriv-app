@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Accordion, HintBox, Text, ThemedScrollbars } from '@deriv/components';
-import { getFormattedText } from '@deriv/shared';
+import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
@@ -15,7 +15,6 @@ import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx'
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import 'Components/order-details/order-details.scss';
-import { isDesktop } from '@deriv/shared';
 
 const OrderDetails = observer(({ onPageReturn }) => {
     const { order_store, sendbird_store } = useStores();

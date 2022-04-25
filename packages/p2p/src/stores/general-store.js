@@ -379,11 +379,9 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setP2PConfig() {
         requestWS({ website_status: 1 }).then(response => {
-            if (response) {
-                if (!response.error) {
-                    const { order_payment_period } = response.website_status?.p2p_config;
-                    this.setOrderTimeOut(order_payment_period);
-                }
+            if (response && !response.error) {
+                const { order_payment_period } = response.website_status?.p2p_config;
+                this.setOrderTimeOut(order_payment_period);
             }
         });
     }

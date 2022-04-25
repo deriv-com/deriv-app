@@ -26,10 +26,10 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
                     onClick={() => sendbird_store.setShouldShowChatModal(true)}
                 />
             )}
-            renderPageFooterChildren={() =>
+            renderPageFooterChildren={order_store.order_information.should_show_order_footer  ? () =>
                 order_store.order_information.should_show_order_footer && (
                     <OrderDetailsFooter order_information={order_store.order_information} />
-                )
+                ) : false
             }
         >
             {children}

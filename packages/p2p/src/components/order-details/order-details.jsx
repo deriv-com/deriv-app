@@ -213,7 +213,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                         )}
                     </ThemedScrollbars>
-                    {should_show_order_footer && (
+                    {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />
                     )}
                 </div>

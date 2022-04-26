@@ -3,15 +3,15 @@ import React from 'react';
 import { useStores } from 'Stores';
 import { HintBox, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
+import { minutesToHours } from 'Utils/date-time';
 
 const ReduceOrderTimeBanner = () => {
     const { general_store } = useStores();
     const { order_timeout } = general_store;
-    // Convert the time in minutes to hours
-    const hours = Math.floor(order_timeout / 60);
-    const minutes = order_timeout % 60;
 
     let render_banner_text = '';
+
+    const { hours, minutes } = minutesToHours(order_timeout);
 
     if (hours === 0 && minutes === 0) {
         return null;

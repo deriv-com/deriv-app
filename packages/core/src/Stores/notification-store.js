@@ -191,7 +191,7 @@ export default class NotificationStore extends BaseStore {
         const virtual_account = landing_company_shortcode === 'virtual';
         const is_website_up = website_status.site_status === 'up';
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
-            this.client_notifications.trustpilot.key
+            this.client_notifications?.trustpilot?.key
         );
 
         let has_missing_required_field;

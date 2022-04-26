@@ -30,6 +30,8 @@
     "url": "https://github.com/binary-com/deriv-app/issues"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/preset-react": "^7.16.7",
     "chai": "^4.2.0",
     "jsdom": "^16.2.1",
     "moment": "^2.24.0"
@@ -38,9 +40,9 @@
     "canvas-toBlob": "^1.0.0",
     "extend": "^3.0.2",
     "js-cookie": "^2.2.1",
+    "moment": "^2.24.0",
     "object.fromentries": "^2.0.0",
     "react": "^16.14.0",
-    "moment": "^2.24.0",
     "react-loadable": "^5.5.0"
   }
 }

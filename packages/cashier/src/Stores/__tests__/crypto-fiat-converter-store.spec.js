@@ -194,7 +194,7 @@ describe('CryptoFiatConverterStore', () => {
         expect(crypto_fiat_converter_store.is_timer_visible).toBeFalse();
         expect(
             crypto_fiat_converter_store.root_store.modules.cashier.account_transfer.setAccountTransferAmount
-        ).toHaveBeenCalledWith('')
+        ).toHaveBeenCalledWith('');
     });
 
     it('should set converter_from_amount with an amount when onChangeConverterToAmount is called', async () => {

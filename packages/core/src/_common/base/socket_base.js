@@ -373,6 +373,8 @@ const BinarySocketBase = (() => {
             name: 'test real labuan financial stp',
         });
 
+    const changeEmail = api_request => deriv_api.send(api_request);
+
     return {
         init,
         openNewConnection,
@@ -459,6 +461,7 @@ const BinarySocketBase = (() => {
         tradingPlatformAccountsList,
         tradingPlatformNewAccount,
         triggerMt5DryRun,
+        changeEmail,
     };
 })();
 

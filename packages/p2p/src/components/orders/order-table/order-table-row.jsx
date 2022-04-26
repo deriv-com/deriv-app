@@ -67,7 +67,6 @@ const OrderRow = ({ style, row: order }) => {
     React.useEffect(() => {
         const countDownTimer = () => {
             const { distance, label } = getTimeLeft(order_expiry_milliseconds);
-
             if (distance < 0) {
                 const { client, props } = general_store;
                 setRemainingTime(label);
@@ -91,7 +90,7 @@ const OrderRow = ({ style, row: order }) => {
 
     if (isMobile()) {
         return (
-            <div onClick={() => order_store.setQueryDetails(order)}>
+            <div onClick={() => order_store.setQueryDetails(order)} data-testid='table-row-mobile'>
                 <Table.Row
                     style={style}
                     className={classNames('orders__mobile', {
@@ -151,7 +150,7 @@ const OrderRow = ({ style, row: order }) => {
         );
     }
     return (
-        <div onClick={() => order_store.setQueryDetails(order)}>
+        <div onClick={() => order_store.setQueryDetails(order)} data-testid='table-row-desktop'>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': general_store.is_active_tab,

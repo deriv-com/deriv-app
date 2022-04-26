@@ -4,7 +4,15 @@ let crypto_fiat_converter_store, root_store, WS;
 
 beforeEach(() => {
     WS = {
-        send: jest.fn(),
+        send: jest.fn().mockResolvedValue({
+            exchange_rates: {
+                base_currency: 'USD',
+                date: 1650868989,
+                rates: {
+                    AED: 3.67,
+                },
+            },
+        }),
     };
     root_store = {
         modules: {
@@ -60,43 +68,21 @@ describe('CryptoFiatConverterStore', () => {
     });
 
     it('should set is_timer_visible to a truthy value', () => {
-        const error = new Error('Something went wrong');
-
         crypto_fiat_converter_store.setIsTimerVisible(true);
 
         expect(crypto_fiat_converter_store.is_timer_visible).toBeTruthy();
     });
 
     it('should set is_timer_visible to a false value', () => {
-        const error = new Error('Something went wrong');
-
-        crypto_fiat_converter_store.resetTimer(false);
-
-        expect(crypto_fiat_converter_store.is_timer_visible).toBeFalse();
-    });
-
-    it('should set is_timer_visible to a false value', () => {
-        const error = new Error('Something went wrong');
-
         crypto_fiat_converter_store.resetTimer(false);
 
         expect(crypto_fiat_converter_store.is_timer_visible).toBeFalse();
     });
 
     it('should get the exchange rates', async () => {
-        WS.send.mockResolvedValue({
-            exchange_rates: {
-                base_currency: 'USD',
-                date: 1650868989,
-                rates: {
-                    AED: 3.67,
-                },
-            },
-        });
+        const exchange_rate = await crypto_fiat_converter_store.getExchangeRate('USD', 'AED');
 
-        const exchangeRate = await crypto_fiat_converter_store.getExchangeRate('USD', 'AED');
-
-        expect(exchangeRate).toEqual(3.67);
+        expect(exchange_rate).toEqual(3.67);
     });
 
     it('should call function validateWithdrawFromAmount when account transfer container and general store container are different', () => {
@@ -146,17 +132,7 @@ describe('CryptoFiatConverterStore', () => {
         expect(crypto_fiat_converter_store.is_timer_visible).toBeFalse();
     });
 
-    it('should set converter_from_amount amount', async () => {
-        WS.send.mockResolvedValue({
-            exchange_rates: {
-                base_currency: 'USD',
-                date: 1650868989,
-                rates: {
-                    AED: 3.67,
-                },
-            },
-        });
-
+    it('should set converter_from_amount with an amount when target value is passed', async () => {
         await crypto_fiat_converter_store.onChangeConverterFromAmount({ target: { value: 3 } }, 'USD', 'AED');
 
         expect(
@@ -168,9 +144,8 @@ describe('CryptoFiatConverterStore', () => {
         expect(crypto_fiat_converter_store.converter_from_amount).toEqual(3);
     });
 
-    it('should set converter_from_error with error', async () => {
+    it('should clear converter_from_amount, converter_to_amount, is_timer_visible and setAccountTransferAmount when converter_from_error has error', async () => {
         crypto_fiat_converter_store.setConverterFromError(new Error('something went wrong'));
-
         await crypto_fiat_converter_store.onChangeConverterFromAmount({ target: { value: 3 } }, 'USD', 'AED');
 
         expect(
@@ -188,17 +163,7 @@ describe('CryptoFiatConverterStore', () => {
         ).toBeCalledTimes(1);
     });
 
-    it('should set converter_to_amount with an amount', async () => {
-        WS.send.mockResolvedValue({
-            exchange_rates: {
-                base_currency: 'USD',
-                date: 1650868989,
-                rates: {
-                    AED: 3.67,
-                },
-            },
-        });
-
+    it('should set converter_to_amount with an amount when onChangeConverterFromAmount is called', async () => {
         await crypto_fiat_converter_store.onChangeConverterFromAmount({ target: { value: 3 } }, 'USD', 'AED');
 
         expect(
@@ -229,17 +194,7 @@ describe('CryptoFiatConverterStore', () => {
         expect(crypto_fiat_converter_store.is_timer_visible).toBeFalse();
     });
 
-    it('should set converter_to_amount amount', async () => {
-        WS.send.mockResolvedValue({
-            exchange_rates: {
-                base_currency: 'USD',
-                date: 1650868989,
-                rates: {
-                    AED: 3.67,
-                },
-            },
-        });
-
+    it('should set converter_to_amount with an amount when target value is passed', async () => {
         await crypto_fiat_converter_store.onChangeConverterToAmount({ target: { value: 3 } }, 'USD', 'AED');
 
         expect(
@@ -251,12 +206,10 @@ describe('CryptoFiatConverterStore', () => {
         expect(crypto_fiat_converter_store.converter_to_amount).toEqual(3);
     });
 
-    it('should set converter_from_error with error', async () => {
+    it('should clear converter_from_amount, converter_to_amount, is_timer_visible and setAccountTransferAmount when converter_to_error has error', async () => {
         crypto_fiat_converter_store.setConverterToError(new Error('something went wrong'));
-
         await crypto_fiat_converter_store.onChangeConverterToAmount({ target: { value: 3 } }, 'USD', 'AED');
 
-        expect(crypto_fiat_converter_store.converter_from_amount).toEqual('');
         expect(crypto_fiat_converter_store.converter_from_amount).toEqual('');
         expect(crypto_fiat_converter_store.converter_from_error).toEqual('');
         expect(crypto_fiat_converter_store.is_timer_visible).toBeFalse();
@@ -265,17 +218,7 @@ describe('CryptoFiatConverterStore', () => {
         ).toBeCalledTimes(1);
     });
 
-    it('should set converter_from_amount with an amount', async () => {
-        WS.send.mockResolvedValue({
-            exchange_rates: {
-                base_currency: 'USD',
-                date: 1650868989,
-                rates: {
-                    AED: 3.67,
-                },
-            },
-        });
-
+    it('should set converter_from_amount with an amount when onChangeConverterToAmount is called', async () => {
         await crypto_fiat_converter_store.onChangeConverterToAmount({ target: { value: 3 } }, 'USD', 'AED');
 
         expect(
@@ -295,16 +238,6 @@ describe('CryptoFiatConverterStore', () => {
 
     it('should set is_timer_visible to false when converter_from_error has error', async () => {
         crypto_fiat_converter_store.setConverterFromError(new Error('something went wrong'));
-        WS.send.mockResolvedValue({
-            exchange_rates: {
-                base_currency: 'USD',
-                date: 1650868989,
-                rates: {
-                    AED: 3.67,
-                },
-            },
-        });
-
         await crypto_fiat_converter_store.onChangeConverterToAmount({ target: { value: 3 } }, 'USD', 'AED');
 
         expect(

@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
+import { usePaymentMethodValidator } from 'Components/hooks';
 import { useStores } from 'Stores';
-import { usePaymentMethodValidator } from '../payment-method-validator';
 
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();

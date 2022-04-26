@@ -1,7 +1,7 @@
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 
-export function usePaymentMethodValidator() {
+export const usePaymentMethodValidator = () => {
     const { my_profile_store } = useStores();
     const no_symbols_regex = /^[a-zA-Z0-9\\\s.@_+-]+$/;
     const no_symbols_message =
@@ -13,12 +13,12 @@ export function usePaymentMethodValidator() {
         if (!no_symbols_regex.test(user_input)) {
             return localize(no_symbols_message, {
                 field_name: my_profile_store.field_set[field],
-                interpolation: { escapeValue: false }, // To prevent the convertion of characters to UNIcode
+                interpolation: { escapeValue: false }, // To prevent the conversion of characters to UNIcode
             });
         } else if (user_input.length > 200) {
             return localize(max_characters_error_message, {
                 field_name: my_profile_store.field_set[field],
-                interpolation: { escapeValue: false }, // To prevent the convertion of characters to UNIcode
+                interpolation: { escapeValue: false }, // To prevent the conversion of characters to UNIcode
             });
         }
         return null;
@@ -65,4 +65,4 @@ export function usePaymentMethodValidator() {
         return errors;
     };
     return validateFields;
-}
+};

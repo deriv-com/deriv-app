@@ -29,7 +29,7 @@ const FloatingRate = ({
         let float_rate = e.target.value;
         if (float_rate && float_rate.length) {
             float_rate = parseFloat(float_rate).toFixed(2);
-            if (!/^[+-]/.test(float_rate) && Math.sign(float_rate) > 0) {
+            if (/^\d+/.test(float_rate) && Math.sign(float_rate) > 0) {
                 // Assign + symbol for positive rate
                 e.target.value = `+${float_rate}`;
             }

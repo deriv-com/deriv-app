@@ -144,7 +144,7 @@ describe('CryptoFiatConverterStore', () => {
         expect(crypto_fiat_converter_store.converter_from_amount).toEqual(3);
     });
 
-    it('should clear converter_from_amount, converter_to_amount, is_timer_visible and setAccountTransferAmount when converter_from_error has error', async () => {
+    it('should clear converter_to_amount, converter_to_error, is_timer_visible and setAccountTransferAmount when converter_from_error has error', async () => {
         crypto_fiat_converter_store.setConverterFromError(new Error('something went wrong'));
         await crypto_fiat_converter_store.onChangeConverterFromAmount({ target: { value: 3 } }, 'USD', 'AED');
 
@@ -206,7 +206,7 @@ describe('CryptoFiatConverterStore', () => {
         expect(crypto_fiat_converter_store.converter_to_amount).toEqual(3);
     });
 
-    it('should clear converter_from_amount, converter_to_amount, is_timer_visible and setAccountTransferAmount when converter_to_error has error', async () => {
+    it('should clear converter_from_amount, converter_from_error, is_timer_visible and setAccountTransferAmount when converter_to_error has error', async () => {
         crypto_fiat_converter_store.setConverterToError(new Error('something went wrong'));
         await crypto_fiat_converter_store.onChangeConverterToAmount({ target: { value: 3 } }, 'USD', 'AED');
 

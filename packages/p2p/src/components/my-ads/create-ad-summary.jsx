@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
-import { truncateDecimal } from 'Utils/format-value.js';
 import { useStores } from 'Stores';
+import { truncateDecimal } from 'Utils/format-value';
 
 const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const { general_store } = useStores();

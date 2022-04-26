@@ -123,7 +123,7 @@ describe('<EditAdForm />', () => {
             my_ads_store: mocked_my_ads_store,
             my_profile_store: mocked_my_profile_store,
             general_store: mocked_general_store,
-            floating_rate_store: {...mocked_floating_rate_store},
+            floating_rate_store: { ...mocked_floating_rate_store },
         }));
         render(<EditAdForm />);
 

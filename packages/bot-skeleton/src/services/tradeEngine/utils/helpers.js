@@ -59,7 +59,7 @@ export const getLastDigit = tick => {
     if (typeof number_string === 'number') {
         number_string = String(number_string);
     }
-    return number_string[number_string.length - 1];
+    return Number(number_string[number_string.length - 1]);
 };
 
 const getBackoffDelayInMs = (error, delay_index) => {

@@ -171,6 +171,7 @@ Notification.propTypes = {
             'danger',
             'contract_sold',
             'news',
+            'trustpilot',
             'announce',
             'promotions',
             'close_mx_mlt',

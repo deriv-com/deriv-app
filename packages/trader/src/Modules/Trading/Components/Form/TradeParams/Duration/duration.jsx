@@ -5,6 +5,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import RangeSlider from 'App/Components/Form/RangeSlider';
+import { Dropdown } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
 import DurationToggle from './duration-toggle.jsx';
 import AdvancedDuration from './advanced-duration.jsx';
@@ -136,6 +137,20 @@ const Duration = ({
                 'trade-container__fieldset--advanced': is_advanced_duration,
             })}
         >
+            {duration_units_list.length === 1 && !is_advanced_duration && (
+                <Dropdown
+                    classNameDisplay='dc-dropdown__display--duration'
+                    disabled={false}
+                    id='duration'
+                    is_alignment_left
+                    is_nativepicker={false}
+                    list={duration_units_list}
+                    name='advanced_duration_unit'
+                    no_border={true}
+                    onChange={changeDurationUnit}
+                    value={advanced_duration_unit}
+                />
+            )}
             {!has_toggle && <RangeSlider name='duration' value={duration_t} {...props.shared_input} />}
             {has_toggle && (
                 <>

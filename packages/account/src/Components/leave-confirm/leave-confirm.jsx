@@ -8,7 +8,7 @@ import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
 const LeaveConfirmMessage = ({ back, leave }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     return (
         <IconMessageContent
             className='leave-confirm'
@@ -16,7 +16,7 @@ const LeaveConfirmMessage = ({ back, leave }) => {
             text={localize('You have unsaved changes. Are you sure you want to discard changes and leave this page?')}
             icon={
                 <Icon
-                    icon={is_dashboard ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'}
+                    icon={is_appstore ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'}
                     size={isMobile() ? 93 : 128}
                 />
             }

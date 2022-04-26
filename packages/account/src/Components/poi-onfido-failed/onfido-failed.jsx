@@ -7,8 +7,8 @@ import IconMessageContent from 'Components/icon-message-content';
 import ContinueTradingButton from 'Components/poa-continue-trading-button';
 
 const OnfidoFailed = ({ suspected }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
-    if (is_dashboard && suspected)
+    const { is_appstore } = React.useContext(PlatformContext);
+    if (is_appstore && suspected)
         <IconMessageContent
             message={'We could not verify your proof of identity'}
             text={
@@ -29,7 +29,7 @@ const OnfidoFailed = ({ suspected }) => {
                 'We were unable to verify your document automatically. We will try to verify your document manually. Please check back in 1-3 days.'
             )}
             icon={
-                is_dashboard ? (
+                is_appstore ? (
                     <Icon icon='IcPoiFailedDashboard' width={237} height={128} />
                 ) : (
                     <Icon icon='IcPoiFailed' size={128} />
@@ -37,7 +37,7 @@ const OnfidoFailed = ({ suspected }) => {
             }
             className='account-management-dashboard'
         >
-            {is_dashboard && <ContinueTradingButton />}
+            {is_appstore && <ContinueTradingButton />}
         </IconMessageContent>
     );
 };

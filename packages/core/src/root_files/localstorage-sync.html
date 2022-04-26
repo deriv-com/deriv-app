@@ -7,10 +7,12 @@
         <script>
             window.addEventListener('message', function (message) {
                 let domain_url = '';
-                if (window.location.hostname.indexOf('deriv.com') > -1) {
-                    domain_url = 'deriv.com';
-                } else {
+                if (window.location.hostname.indexOf('deriv.me') > -1) {
                     domain_url = 'deriv.me';
+                } else if (window.location.hostname.indexOf('deriv.be') > -1) {
+                    domain_url = 'deriv.be';
+                } else {
+                    domain_url = 'deriv.com';
                 }
                 var allowed_origins = [
                     `https://smarttrader.${domain_url}`,

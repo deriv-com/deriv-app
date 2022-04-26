@@ -507,7 +507,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                 cancel_label={localize('Previous')}
                                                 is_disabled={
                                                     isFormDisabled(dirty, errors) ||
-                                                    ((poa_status !== PoaStatusCodes.verified) &&
+                                                    (poa_status !== PoaStatusCodes.verified &&
                                                         document_upload.files &&
                                                         document_upload.files.length < 1) ||
                                                     !!document_upload.error_message

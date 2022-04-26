@@ -6,7 +6,10 @@ import Icon from '../icon/icon.jsx';
 
 const SideNotes = ({ class_name, side_notes }) => {
     return (
-        <div className={classNames('dc-vertical-tab__content-side-note', class_name)}>
+        <div
+            className={classNames('dc-vertical-tab__content-side-note', class_name)}
+            data-testid='vertical_tab_side_note'
+        >
             {side_notes?.map((note, i) => (
                 <div className='dc-vertical-tab__content-side-note-item' key={i}>
                     {note}

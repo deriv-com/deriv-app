@@ -55,8 +55,9 @@ export default class NotificationStore extends BaseStore {
             ],
             () => {
                 if (
-                    root_store.client.landing_companies &&
-                    Object.keys(root_store.client.landing_companies).length > 0
+                    !root_store.client.is_logged_in ||
+                    (Object.keys(root_store.client.account_status).length > 0 &&
+                        Object.keys(root_store.client.landing_companies).length > 0)
                 ) {
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
@@ -188,139 +189,140 @@ export default class NotificationStore extends BaseStore {
 
         let has_missing_required_field;
 
-        const {
-            authentication: { document, identity, needs_verification },
-            status,
-            cashier_validation,
-        } = account_status;
+        if (is_logged_in) {
+            const {
+                authentication: { document, identity, needs_verification },
+                status,
+                cashier_validation,
+            } = account_status;
 
-        const hidden_close_account_notification =
-            parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
-        const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
-            getStatusValidations(status || []);
+            const hidden_close_account_notification =
+                parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
+            const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
+                getStatusValidations(status || []);
 
-        if (obj_total_balance.amount_real > 0) {
-            this.addNotificationMessage(this.client_notifications.two_f_a);
-        }
+            if (obj_total_balance.amount_real > 0) {
+                this.addNotificationMessage(this.client_notifications.two_f_a);
+            }
 
-        if (loginid !== LocalStore.get('active_loginid')) return;
-
-        if (
-            (has_iom_account || has_malta_account) &&
-            (!malta_account || !virtual_account) &&
-            is_logged_in &&
-            !hidden_close_account_notification
-        ) {
-            this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
-        }
-        const client = accounts[loginid];
-        if (client && !client.is_virtual) {
-            if (isEmptyObject(account_status)) return;
             if (loginid !== LocalStore.get('active_loginid')) return;
 
-            const {
-                system_maintenance,
-                is_virtual,
-                no_residence,
-                documents_expired,
-                unwelcome_status,
-                no_withdrawal_or_trading_status,
-                withdrawal_locked_status,
-                cashier_locked_status,
-                FinancialAssessmentRequired,
-                SelfExclusion,
-                ASK_CURRENCY,
-                ASK_AUTHENTICATE,
-                ASK_FINANCIAL_RISK_APPROVAL,
-                ASK_TIN_INFORMATION,
-                ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
-                ASK_FIX_DETAILS,
-                ASK_UK_FUNDS_PROTECTION,
-            } = cashier_validation ? getCashierValidations(cashier_validation) : {};
+            if (
+                (has_iom_account || has_malta_account) &&
+                (!malta_account || !virtual_account) &&
+                !hidden_close_account_notification
+            ) {
+                this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
+            }
+            const client = accounts[loginid];
+            if (client && !client.is_virtual) {
+                if (isEmptyObject(account_status)) return;
+                if (loginid !== LocalStore.get('active_loginid')) return;
 
-            this.addVerificationNotifications(identity, document);
-            const needs_poa =
-                is_10k_withdrawal_limit_reached &&
-                (needs_verification.includes('document') || document?.status !== 'verified');
-            const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+                const {
+                    system_maintenance,
+                    is_virtual,
+                    no_residence,
+                    documents_expired,
+                    unwelcome_status,
+                    no_withdrawal_or_trading_status,
+                    withdrawal_locked_status,
+                    cashier_locked_status,
+                    FinancialAssessmentRequired,
+                    SelfExclusion,
+                    ASK_CURRENCY,
+                    ASK_AUTHENTICATE,
+                    ASK_FINANCIAL_RISK_APPROVAL,
+                    ASK_TIN_INFORMATION,
+                    ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
+                    ASK_FIX_DETAILS,
+                    ASK_UK_FUNDS_PROTECTION,
+                } = cashier_validation ? getCashierValidations(cashier_validation) : {};
 
-            if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
-            if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
-            if (system_maintenance) {
-                this.setClientNotifications(client);
-                this.addNotificationMessage(
-                    this.client_notifications.system_maintenance(withdrawal_locked, deposit_locked)
-                );
-            } else if (cashier_locked) {
-                if (is_virtual) {
-                    this.addNotificationMessage(this.client_notifications.is_virtual);
-                } else if (no_residence) {
-                    this.addNotificationMessage(this.client_notifications.no_residence);
-                } else if (documents_expired) {
-                    this.addNotificationMessage(this.client_notifications.documents_expired);
-                } else if (cashier_locked_status) {
-                    this.addNotificationMessage(this.client_notifications.cashier_locked);
-                } else if (ASK_CURRENCY) {
-                    this.addNotificationMessage(this.client_notifications.currency);
-                } else if (ASK_AUTHENTICATE && is_identity_verification_needed) {
-                    this.addNotificationMessage(this.client_notifications.identity);
-                } else if (ASK_AUTHENTICATE) {
-                    this.addNotificationMessage(this.client_notifications.authenticate);
-                } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
-                    this.addNotificationMessage(this.client_notifications.ask_financial_risk_approval);
-                } else if (FinancialAssessmentRequired) {
-                    this.addNotificationMessage(this.client_notifications.risk);
-                } else if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
-                    this.addNotificationMessage(this.client_notifications.tax);
-                } else if (ASK_UK_FUNDS_PROTECTION) {
-                    this.addNotificationMessage(this.client_notifications.ask_uk_funds_protection);
-                } else if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
-                    this.addNotificationMessage(this.client_notifications.max_turnover_limit_not_set);
-                } else if (ASK_FIX_DETAILS) {
+                this.addVerificationNotifications(identity, document);
+                const needs_poa =
+                    is_10k_withdrawal_limit_reached &&
+                    (needs_verification.includes('document') || document?.status !== 'verified');
+                const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+
+                if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
+                if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
+                if (system_maintenance) {
+                    this.setClientNotifications(client);
                     this.addNotificationMessage(
-                        this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
+                        this.client_notifications.system_maintenance(withdrawal_locked, deposit_locked)
                     );
+                } else if (cashier_locked) {
+                    if (is_virtual) {
+                        this.addNotificationMessage(this.client_notifications.is_virtual);
+                    } else if (no_residence) {
+                        this.addNotificationMessage(this.client_notifications.no_residence);
+                    } else if (documents_expired) {
+                        this.addNotificationMessage(this.client_notifications.documents_expired);
+                    } else if (cashier_locked_status) {
+                        this.addNotificationMessage(this.client_notifications.cashier_locked);
+                    } else if (ASK_CURRENCY) {
+                        this.addNotificationMessage(this.client_notifications.currency);
+                    } else if (ASK_AUTHENTICATE && is_identity_verification_needed) {
+                        this.addNotificationMessage(this.client_notifications.identity);
+                    } else if (ASK_AUTHENTICATE) {
+                        this.addNotificationMessage(this.client_notifications.authenticate);
+                    } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
+                        this.addNotificationMessage(this.client_notifications.ask_financial_risk_approval);
+                    } else if (FinancialAssessmentRequired) {
+                        this.addNotificationMessage(this.client_notifications.risk);
+                    } else if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
+                        this.addNotificationMessage(this.client_notifications.tax);
+                    } else if (ASK_UK_FUNDS_PROTECTION) {
+                        this.addNotificationMessage(this.client_notifications.ask_uk_funds_protection);
+                    } else if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
+                        this.addNotificationMessage(this.client_notifications.max_turnover_limit_not_set);
+                    } else if (ASK_FIX_DETAILS) {
+                        this.addNotificationMessage(
+                            this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
+                        );
+                    } else {
+                        this.addNotificationMessage(this.client_notifications.cashier_locked);
+                    }
                 } else {
-                    this.addNotificationMessage(this.client_notifications.cashier_locked);
+                    if (withdrawal_locked && ASK_AUTHENTICATE) {
+                        this.addNotificationMessage(this.client_notifications.withdrawal_locked_review);
+                    } else if (withdrawal_locked && no_withdrawal_or_trading_status) {
+                        this.addNotificationMessage(this.client_notifications.no_withdrawal_or_trading);
+                    } else if (withdrawal_locked && withdrawal_locked_status) {
+                        this.addNotificationMessage(this.client_notifications.withdrawal_locked);
+                    } else if (withdrawal_locked && ASK_FIX_DETAILS) {
+                        this.addNotificationMessage(
+                            this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
+                        );
+                    }
+                    if (deposit_locked && SelfExclusion) {
+                        this.addNotificationMessage(this.client_notifications.self_exclusion(client.excluded_until));
+                    } else if (deposit_locked && unwelcome_status) {
+                        this.addNotificationMessage(this.client_notifications.unwelcome);
+                    }
+                    if (is_identity_verification_needed) {
+                        this.addNotificationMessage(this.client_notifications.identity);
+                    }
                 }
-            } else {
-                if (withdrawal_locked && ASK_AUTHENTICATE) {
-                    this.addNotificationMessage(this.client_notifications.withdrawal_locked_review);
-                } else if (withdrawal_locked && no_withdrawal_or_trading_status) {
-                    this.addNotificationMessage(this.client_notifications.no_withdrawal_or_trading);
-                } else if (withdrawal_locked && withdrawal_locked_status) {
-                    this.addNotificationMessage(this.client_notifications.withdrawal_locked);
-                } else if (withdrawal_locked && ASK_FIX_DETAILS) {
+                if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
+                if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
+                if (is_p2p_visible) {
+                    this.addNotificationMessage(this.client_notifications.dp2p);
+                } else {
+                    this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
+                }
+
+                if (is_tnc_needed) {
+                    this.addNotificationMessage(this.client_notifications.tnc);
+                }
+
+                has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
+                if (has_missing_required_field) {
                     this.addNotificationMessage(
                         this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
                     );
                 }
-                if (deposit_locked && SelfExclusion) {
-                    this.addNotificationMessage(this.client_notifications.self_exclusion(client.excluded_until));
-                } else if (deposit_locked && unwelcome_status) {
-                    this.addNotificationMessage(this.client_notifications.unwelcome);
-                }
-                if (is_identity_verification_needed) {
-                    this.addNotificationMessage(this.client_notifications.identity);
-                }
-            }
-            if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
-            if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
-            if (is_p2p_visible) {
-                this.addNotificationMessage(this.client_notifications.dp2p);
-            } else {
-                this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
-            }
-
-            if (is_tnc_needed) {
-                this.addNotificationMessage(this.client_notifications.tnc);
-            }
-
-            has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
-            if (has_missing_required_field) {
-                this.addNotificationMessage(
-                    this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
-                );
             }
         }
 

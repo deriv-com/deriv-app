@@ -8,9 +8,10 @@ import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
-import { ChartBottomWidgets, ChartToolbarWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
+import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
+import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
@@ -268,6 +269,8 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 
 const Chart = props => {
     const {
+        updateGranularity,
+        updateChartType,
         active_symbols,
         chart_layout,
         chart_type,
@@ -382,7 +385,9 @@ const Chart = props => {
             topWidgets={is_trade_enabled ? topWidgets : null}
             isConnectionOpened={is_socket_opened}
             clearChart={false}
-            toolbarWidget={ChartToolbarWidgets}
+            toolbarWidget={() => (
+                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+            )}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
             shouldFetchTradingTimes={!end_epoch}
@@ -427,6 +432,8 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     granularity: modules.contract_trade.granularity,
     chart_type: modules.contract_trade.chart_type,
     chartStateChange: modules.trade.chartStateChange,
+    updateChartType: modules.contract_trade.updateChartType,
+    updateGranularity: modules.contract_trade.updateGranularity,
     settings: {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: ui.is_chart_countdown_visible,

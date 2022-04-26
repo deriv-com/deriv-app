@@ -4,7 +4,6 @@ import Digits from 'Modules/Contract/Components/Digits';
 import { connect } from 'Stores/connect';
 import BottomWidgets from '../../SmartChart/Components/bottom-widgets.jsx';
 import ControlWidgets from '../../SmartChart/Components/control-widgets.jsx';
-import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
 import { symbolChange } from '../../SmartChart/Helpers/symbol';
 
@@ -70,13 +69,6 @@ export const ChartTopWidgets = connect(({ modules, ui }) => ({
         />
     );
 });
-
-export const ChartToolbarWidgets = connect(({ modules }) => ({
-    updateChartType: modules.contract_trade.updateChartType,
-    updateGranularity: modules.contract_trade.updateGranularity,
-}))(({ updateChartType, updateGranularity }) => (
-    <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-));
 
 export const ChartBottomWidgets = ({ digits, tick }) => (
     <BottomWidgets Digits={<DigitsWidget digits={digits} tick={tick} />} />

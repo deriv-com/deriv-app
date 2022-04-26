@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import debounce from 'lodash.debounce';
+import { withTranslation } from 'react-i18next';
 import { DesktopWrapper } from '@deriv/components';
 import {
     checkAndSetEndpointFromUrl,
@@ -41,7 +42,7 @@ import '@deriv/deriv-charts/dist/smartcharts.css';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
-const App = ({ root_store }) => {
+const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
@@ -125,9 +126,10 @@ const App = ({ root_store }) => {
     );
 };
 
-App.propTypes = {
+AppWithoutTranslation.propTypes = {
     root_store: PropTypes.object,
 };
+const App = withTranslation()(AppWithoutTranslation);
 
 export default App;
 
@@ -139,5 +141,5 @@ if (!has_endpoint_url) {
 
     const wrapper = document.getElementById('deriv_app');
     // eslint-disable-next-line no-unused-expressions
-    wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;
+    wrapper ? ReactDOM.render(<App useSuspense={false} root_store={root_store} />, wrapper) : false;
 }

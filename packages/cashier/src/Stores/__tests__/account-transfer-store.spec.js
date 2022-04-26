@@ -714,14 +714,12 @@ describe('AccountTransferStore', () => {
         account_transfer_store.setSelectedFrom({ currency: 'USD' });
         account_transfer_store.setSelectedTo({ currency: 'BTC' });
         account_transfer_store.setTransferPercentageSelectorResult(10);
+        const { onChangeConverterFromAmount, setConverterFromAmount } =
+            account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        expect(
-            account_transfer_store.root_store.modules.cashier.crypto_fiat_converter.setConverterFromAmount
-        ).toHaveBeenCalledWith(10);
+        expect(setConverterFromAmount).toHaveBeenCalledWith(10);
         expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
-        expect(
-            account_transfer_store.root_store.modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount
-        ).toHaveBeenCalledWith({ target: { value: 10 } }, 'USD', 'BTC');
+        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 10 } }, 'USD', 'BTC');
     });
 
     it('should set transfer percentage selector result if selected_from.balance = 0', () => {
@@ -729,14 +727,12 @@ describe('AccountTransferStore', () => {
         account_transfer_store.setSelectedFrom({ balance: 0, currency: 'USD' });
         account_transfer_store.setSelectedTo({ currency: 'BTC' });
         account_transfer_store.setTransferPercentageSelectorResult(0);
+        const { onChangeConverterFromAmount, setConverterFromAmount } =
+            account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        expect(
-            account_transfer_store.root_store.modules.cashier.crypto_fiat_converter.setConverterFromAmount
-        ).toHaveBeenCalledWith(0);
+        expect(setConverterFromAmount).toHaveBeenCalledWith(0);
         expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
-        expect(
-            account_transfer_store.root_store.modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount
-        ).toHaveBeenCalledWith({ target: { value: 0 } }, 'USD', 'BTC');
+        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 0 } }, 'USD', 'BTC');
     });
 
     it('should reset crypto fiat converter if amount = 0 and selected_from.balance > 0', () => {
@@ -750,13 +746,10 @@ describe('AccountTransferStore', () => {
 
     it('should set timer visibility and percentage selector selection status to false when calling  setTransferPercentageSelectorResult method', () => {
         account_transfer_store.setTransferPercentageSelectorResult(10);
+        const { crypto_fiat_converter, general_store } = account_transfer_store.root_store.modules.cashier;
 
-        expect(
-            account_transfer_store.root_store.modules.cashier.crypto_fiat_converter.setIsTimerVisible
-        ).toHaveBeenCalledWith(false);
-        expect(
-            account_transfer_store.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus
-        ).toHaveBeenCalledWith(false);
+        expect(crypto_fiat_converter.setIsTimerVisible).toHaveBeenCalledWith(false);
+        expect(general_store.percentageSelectorSelectionStatus).toHaveBeenCalledWith(false);
     });
 
     it('should set "This field is required." error, if there is no converter_from_amount when calling validateTransferFromAmount method', () => {

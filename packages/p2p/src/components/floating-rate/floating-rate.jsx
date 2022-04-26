@@ -18,6 +18,7 @@ const FloatingRate = ({
     local_currency,
     onChange,
     offset,
+    data_testid,
     ...props
 }) => {
     const { general_store } = useStores();
@@ -67,6 +68,7 @@ const FloatingRate = ({
                     required={required}
                     type='number'
                     value={value}
+                    data_testid={data_testid}
                 />
                 <div className='floating-rate__mkt-rate'>
                     <Text

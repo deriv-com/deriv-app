@@ -56,6 +56,7 @@ const InputField = ({
     type,
     unit,
     value,
+    data_testid,
 }) => {
     const [local_value, setLocalValue] = React.useState();
     const Icon = icon;
@@ -232,6 +233,7 @@ const InputField = ({
             )}
             classNameInlinePrefix={classNameInlinePrefix}
             data_tip={data_tip}
+            data_testid={data_testid}
             data_value={data_value}
             display_value={display_value}
             fractional_digits={fractional_digits}

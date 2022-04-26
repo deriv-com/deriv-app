@@ -132,7 +132,7 @@ const CreateAdForm = () => {
                     };
 
                     return (
-                        <div className='p2p-my-ads__form'>
+                        <div className='p2p-my-ads__form' data-testid='dp2p-create-ad-form_container'>
                             <Form
                                 className={classNames('p2p-my-ads__form-element', {
                                     'p2p-my-ads__form-element--ios': is_sell_advert && os === 'iOS',
@@ -182,6 +182,7 @@ const CreateAdForm = () => {
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
+                                                        data-testid='offer_amount'
                                                         data-lpignore='true'
                                                         type='text'
                                                         error={touched.offer_amount && errors.offer_amount}
@@ -225,6 +226,7 @@ const CreateAdForm = () => {
                                                     floating_rate_store.rate_type === ad_type.FLOAT ? (
                                                         <FloatingRate
                                                             className='p2p-my-ads__form-field'
+                                                            data_testid='rate_type'
                                                             error_messages={errors.rate_type}
                                                             exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
@@ -248,6 +250,7 @@ const CreateAdForm = () => {
                                                     ) : (
                                                         <Input
                                                             {...field}
+                                                            data-testid='rate_type'
                                                             data-lpignore='true'
                                                             type='text'
                                                             error={touched.rate_type && errors.rate_type}

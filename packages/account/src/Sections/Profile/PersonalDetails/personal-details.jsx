@@ -51,8 +51,8 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
 };
 
 const InputGroup = ({ children, className }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
-    if (is_dashboard) {
+    const { is_appstore } = React.useContext(PlatformContext);
+    if (is_appstore) {
         return React.Children.map(children, child => <fieldset className='account-form__fieldset'>{child}</fieldset>);
     }
     return (
@@ -131,7 +131,7 @@ export const PersonalDetailsForm = ({
         timeout_callback: null,
     });
 
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     const isMounted = useIsMounted();
 
@@ -447,7 +447,7 @@ export const PersonalDetailsForm = ({
                 'is_authenticated_payment_agent',
                 'user_hash',
                 'country',
-                (!is_dashboard || !is_eu) && 'salutation',
+                (!is_appstore || !is_eu) && 'salutation',
                 'immutable_fields',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
@@ -543,7 +543,7 @@ export const PersonalDetailsForm = ({
                         <form
                             noValidate
                             className={classNames('account-form account-form__personal-details', {
-                                'account-form account-form__personal-details--dashboard': is_dashboard,
+                                'account-form account-form__personal-details--dashboard': is_appstore,
                             })}
                             onSubmit={handleSubmit}
                         >
@@ -552,12 +552,12 @@ export const PersonalDetailsForm = ({
                                 {!is_virtual && (
                                     <React.Fragment>
                                         <FormBodySection
-                                            has_side_note={is_dashboard}
+                                            has_side_note={is_appstore}
                                             side_note={localize(
                                                 'We use the information you give us only for verification purposes. All information is kept confidential.'
                                             )}
                                         >
-                                            {is_dashboard && is_eu && (
+                                            {is_appstore && is_eu && (
                                                 <fieldset className='account-form__fieldset'>
                                                     <DesktopWrapper>
                                                         <Field name='salutation'>
@@ -787,7 +787,7 @@ export const PersonalDetailsForm = ({
                                         </FormBodySection>
                                     </React.Fragment>
                                 )}
-                                <FormBodySection has_side_note={is_dashboard}>
+                                <FormBodySection has_side_note={is_appstore}>
                                     <fieldset className='account-form__fieldset'>
                                         <Input
                                             data-lpignore='true'
@@ -819,7 +819,7 @@ export const PersonalDetailsForm = ({
                                 </FormBodySection>
                                 {!is_virtual && (
                                     <React.Fragment>
-                                        <FormBodySection has_side_note={is_dashboard}>
+                                        <FormBodySection has_side_note={is_appstore}>
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
                                                     data-lpignore='true'
@@ -868,7 +868,7 @@ export const PersonalDetailsForm = ({
                                         <React.Fragment>
                                             <FormSubHeader title={localize('Tax information')} />
                                             <FormBodySection
-                                                has_side_note={is_dashboard}
+                                                has_side_note={is_appstore}
                                                 side_note={localize(
                                                     'We’re legally obliged to ask for your tax information.'
                                                 )}
@@ -930,10 +930,10 @@ export const PersonalDetailsForm = ({
                                             </FormBodySection>
                                         </React.Fragment>
                                     )}
-                                    {!is_dashboard && !is_virtual && (
+                                    {!is_appstore && !is_virtual && (
                                         <React.Fragment>
                                             <FormSubHeader title={localize('Address')} />
-                                            <FormBodySection has_side_note={is_dashboard}>
+                                            <FormBodySection has_side_note={is_appstore}>
                                                 <div className='account-address__details-section'>
                                                     <fieldset className='account-form__fieldset'>
                                                         <Input
@@ -1117,7 +1117,7 @@ export const PersonalDetailsForm = ({
                                                         }
                                                         greyDisabled
                                                         className={classNames({
-                                                            'dc-checkbox-blue': is_dashboard,
+                                                            'dc-checkbox-blue': is_appstore,
                                                         })}
                                                     />
                                                 </fieldset>
@@ -1128,7 +1128,7 @@ export const PersonalDetailsForm = ({
                                 )}
                                 <FormSubHeader title={localize('Email preference')} />
                                 <FormBodySection
-                                    has_side_note={is_dashboard}
+                                    has_side_note={is_appstore}
                                     side_note={localize('Check this box to receive updates via email.')}
                                 >
                                     <fieldset className='account-form__fieldset'>
@@ -1143,7 +1143,7 @@ export const PersonalDetailsForm = ({
                                             id='email_consent'
                                             defaultChecked={!!values.email_consent}
                                             disabled={!isChangeableField('email_consent') && !is_virtual}
-                                            className={classNames({ 'dc-checkbox-blue': is_dashboard })}
+                                            className={classNames({ 'dc-checkbox-blue': is_appstore })}
                                         />
                                     </fieldset>
                                 </FormBodySection>
@@ -1193,7 +1193,7 @@ export const PersonalDetailsForm = ({
                                     has_effect
                                     is_loading={is_btn_loading}
                                     is_submit_success={is_submit_success}
-                                    text={is_dashboard ? localize('Save') : localize('Submit')}
+                                    text={is_appstore ? localize('Save') : localize('Submit')}
                                     large
                                     primary
                                 />

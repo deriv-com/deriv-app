@@ -77,15 +77,15 @@ jobs:
             cd deriv-app
 
             package_name="@deriv/api-types"
-            old_version=$(json -f packages/dashboard/package.json -a devDependencies."$package_name")
+            old_version=$(json -f packages/appstore/package.json -a dependencies."$package_name")
             safe_old_version=$(echo $old_version | sed 's/[^a-zA-Z0-9.]//g')
 
             git checkout -b "$package_name"
 
             # "Manually" bump the version in package.json to accommodate 
             # Lerna's flexibility (or its lack thereof).
-            json -I -f packages/dashboard/package.json -e "this.devDependencies[\"$package_name\"]=\"$new_version\"" -o json-4
-            rm packages/dashboard/package-lock.json
+            json -I -f packages/appstore/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
+            json -I -f packages/trader/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
 
             # We have to run "lerna bootstrap --no-ci" to generate a new 
             # package-lock.json ("npm run bootstrap" requires this).

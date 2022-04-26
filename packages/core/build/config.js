@@ -49,6 +49,10 @@ const copyConfig = base => {
             from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/trader'),
             to: 'trader',
         },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/appstore/dist/appstore'),
+            to: 'appstore',
+        },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
         {
             from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),

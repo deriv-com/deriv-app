@@ -1,93 +1,57 @@
-import * as React from 'react';
-import { Icon, PopoverMobile, Table, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
-import { localize, Localize } from 'Components/i18next';
+import React from 'react';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
+import MyProfileBalance from './my-profile-balance';
+import MyProfilePrivacy from './my-profile-privacy';
+import MyProfileStatsTable from './my-profile-stats-table';
+import MyProfileName from './my-profile-name';
+import MyProfileSeparatorContainer from '../my-profile-separator-container';
+import { Localize } from 'Components/i18next';
+import { isMobile } from '@deriv/shared';
 
-const MyProfileStats = () => {
-    const { general_store, my_profile_store } = useStores();
-    const [is_statistics_tooltip_open, setIsStatisticsTooltipOpen] = React.useState(false);
-
-    const { daily_buy, daily_buy_limit, daily_sell, daily_sell_limit, total_orders_count } =
-        my_profile_store.advertiser_info;
+const MyStats = () => {
+    const { my_profile_store } = useStores();
 
     return (
-        <Table>
-            <Table.Row className='my-profile-stats'>
-                <Table.Cell className='my-profile-stats__cell'>
-                    <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
-                        <Localize i18n_default_text='Total orders' />
+        <React.Fragment>
+            <MyProfileName />
+            <DesktopWrapper>
+                <MyProfileBalance />
+            </DesktopWrapper>
+            <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' is_invisible={isMobile()} />
+            <MyProfileStatsTable />
+            <MobileWrapper>
+                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+                <MyProfileBalance />
+                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+            </MobileWrapper>
+            <MyProfilePrivacy />
+            <MobileWrapper>
+                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+                <div
+                    className='my-profile__navigation'
+                    onClick={() => my_profile_store.setActiveTab(my_profile_tabs.PAYMENT_METHODS)}
+                >
+                    <Text color='prominent' size='xxs'>
+                        <Localize i18n_default_text='Payment methods' />
                     </Text>
-                    <Text color='prominent' weight='bold' line_height='l' as='p' size={isMobile() ? 'xs' : 's'}>
-                        {total_orders_count || '-'}
-                    </Text>
-                </Table.Cell>
-                {isMobile() ? (
-                    <Table.Cell className='my-profile-stats__cell'>
-                        <Text size='xxxs' color='less-prominent' line_height='m' as='p'>
-                            <Localize
-                                i18n_default_text='Buy / Sell ({{currency}})'
-                                values={{ currency: general_store.client.currency }}
-                            />
-                        </Text>
-                        <Text color='prominent' weight='bold' line_height='l' as='p' size='xs'>
-                            {daily_buy || '-'}/{daily_sell || '-'}
-                        </Text>
-                    </Table.Cell>
-                ) : (
-                    <React.Fragment>
-                        <Table.Cell className='my-profile-stats__cell'>
-                            <Text size='xs' color='less-prominent' line_height='m' as='p'>
-                                <Localize
-                                    i18n_default_text='Buy ({{currency}})'
-                                    values={{ currency: general_store.client.currency }}
-                                />
-                            </Text>
-                            <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                {daily_buy || '0'}
-                            </Text>
-                        </Table.Cell>
-                        <Table.Cell className='my-profile-stats__cell'>
-                            <Text size='xs' color='less-prominent' line_height='m' as='p'>
-                                <Localize
-                                    i18n_default_text='Sell ({{currency}})'
-                                    values={{ currency: general_store.client.currency }}
-                                />
-                            </Text>
-                            <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                {daily_sell || '-'}
-                            </Text>
-                        </Table.Cell>
-                    </React.Fragment>
-                )}
-                <Table.Cell className='my-profile-stats__cell'>
-                    <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
-                        <Localize
-                            i18n_default_text='Buy / Sell limit ({{currency}})'
-                            values={{ currency: general_store.client.currency }}
-                        />
-                    </Text>
-                    <Text color='prominent' weight='bold' line_height='m' as='p' size={isMobile() ? 'xs' : 's'}>
-                        {daily_buy_limit && daily_sell_limit
-                            ? `${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}`
-                            : '-'}
-                    </Text>
-                </Table.Cell>
-                <div className='my-profile-stats__popover'>
-                    <PopoverMobile
-                        className='my-profile__stats-popover'
-                        button_text={localize('Got it')}
-                        is_open={is_statistics_tooltip_open}
-                        message={localize('Your Buy/Sell limit resets at 00:00 GMT daily.')}
-                        setIsOpen={setIsStatisticsTooltipOpen}
-                    >
-                        <Icon icon='IcInfoOutline' size={16} />
-                    </PopoverMobile>
+                    <Icon icon='IcChevronRight' />
                 </div>
-            </Table.Row>
-        </Table>
+                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+                <div
+                    className='my-profile__navigation'
+                    onClick={() => my_profile_store.setActiveTab(my_profile_tabs.AD_TEMPLATE)}
+                >
+                    <Text color='prominent' size='xxs'>
+                        <Localize i18n_default_text='Ad template' />
+                    </Text>
+                    <Icon icon='IcChevronRight' />
+                </div>
+                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+            </MobileWrapper>
+        </React.Fragment>
     );
 };
 
-export default observer(MyProfileStats);
+export default MyStats;

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 
@@ -43,6 +43,26 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
                     confirm_button_text: localize('Verify identity'),
                     onConfirm: () => history.push(routes.proof_of_identity),
                     message: error_message,
+                });
+            } else if (error_code === 'FinancialAssessmentRequired') {
+                setDetails({
+                    title: localize('Cashier Error'),
+                    cancel_button_text: undefined,
+                    confirm_button_text: localize('OK'),
+                    onConfirm: undefined,
+                    message: (
+                        <Localize
+                            i18n_default_text='Please complete your <0>financial assessment</0>.'
+                            components={[
+                                <Link
+                                    to={routes.financial_assessment}
+                                    key={0}
+                                    className='link'
+                                    onClick={dismissError}
+                                />,
+                            ]}
+                        />
+                    ),
                 });
             } else {
                 setDetails({

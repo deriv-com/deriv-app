@@ -88,7 +88,7 @@ const PersonalDetails = ({
     closeRealAccountSignup,
     ...props
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
@@ -138,7 +138,7 @@ const PersonalDetails = ({
     };
 
     const getLastNameLabel = () => {
-        if (is_dashboard) return localize('Family name*');
+        if (is_appstore) return localize('Family name*');
         return is_svg ? localize('Last name*') : localize('Last name');
     };
 
@@ -167,7 +167,7 @@ const PersonalDetails = ({
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
-                                    {is_dashboard && (
+                                    {is_appstore && (
                                         <div className='details-form__sub-header'>
                                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                 {localize(
@@ -204,7 +204,7 @@ const PersonalDetails = ({
                                                 </Text>
                                             </div>
                                         )}
-                                        {!is_dashboard && (
+                                        {!is_appstore && (
                                             <FormSubHeader
                                                 title={
                                                     'salutation' in props.value
@@ -237,9 +237,9 @@ const PersonalDetails = ({
                                         {'first_name' in props.value && (
                                             <FormInputField
                                                 name='first_name'
-                                                required={is_svg || is_dashboard}
+                                                required={is_svg || is_appstore}
                                                 label={
-                                                    is_svg || is_dashboard
+                                                    is_svg || is_appstore
                                                         ? localize('First name*')
                                                         : localize('First name')
                                                 }
@@ -251,27 +251,27 @@ const PersonalDetails = ({
                                         {'last_name' in props.value && (
                                             <FormInputField
                                                 name='last_name'
-                                                required={is_svg || is_dashboard}
+                                                required={is_svg || is_appstore}
                                                 label={getLastNameLabel()}
                                                 hint={getFieldHint('last name')}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
                                             />
                                         )}
-                                        {!is_dashboard && <FormSubHeader title={localize('Other details')} />}
+                                        {!is_appstore && <FormSubHeader title={localize('Other details')} />}
                                         {'date_of_birth' in props.value && (
                                             <DateOfBirthField
                                                 name='date_of_birth'
-                                                required={is_svg || is_dashboard}
+                                                required={is_svg || is_appstore}
                                                 label={
-                                                    is_svg || is_dashboard
+                                                    is_svg || is_appstore
                                                         ? localize('Date of birth*')
                                                         : localize('Date of birth')
                                                 }
                                                 hint={getFieldHint('date of birth')}
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
-                                                portal_id={is_dashboard ? '' : 'modal_root'}
+                                                portal_id={is_appstore ? '' : 'modal_root'}
                                             />
                                         )}
                                         {'place_of_birth' in props.value && (
@@ -380,12 +380,12 @@ const PersonalDetails = ({
                                             <FormInputField
                                                 name='phone'
                                                 label={
-                                                    is_svg || is_dashboard
+                                                    is_svg || is_appstore
                                                         ? localize('Phone number*')
                                                         : localize('Phone number')
                                                 }
                                                 placeholder={
-                                                    is_svg || is_dashboard
+                                                    is_svg || is_appstore
                                                         ? localize('Phone number*')
                                                         : localize('Phone number')
                                                 }

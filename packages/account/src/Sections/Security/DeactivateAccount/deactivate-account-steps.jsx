@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 
 const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <div>
@@ -66,7 +66,7 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
             </div>
             <Button
                 className={classNames('deactivate-account__button', {
-                    'deactivate-account__button--dashboard': is_dashboard,
+                    'deactivate-account__button--dashboard': is_appstore,
                 })}
                 large
                 onClick={() => redirectToReasons()}

@@ -41,7 +41,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                 setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
             }
         }
-    }
+    };
 
     const onClickPaymentMethodItem = (name, value) => {
         if (value) {
@@ -137,15 +137,15 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                         <Formik key={key} enableReinitialize initialValues={{ payment_method: method }}>
                             <Field name='payment_method'>
                                 {({ field }) => (
-                                   <Autocomplete
-                                        className="quick-add-modal--input"
+                                    <Autocomplete
+                                        className='quick-add-modal--input'
                                         {...field}
                                         autoComplete='off' // prevent chrome autocomplete
                                         data-lpignore='true'
                                         has_updating_list={false}
                                         list_items={my_profile_store.payment_methods_list}
                                         onItemSelection={({ value }) => {
-                                            onEditPaymentMethodItem(value, key)
+                                            onEditPaymentMethodItem(value, key);
                                         }}
                                         onFocus={e => {
                                             setSelectedEditMethod(e.target.value);

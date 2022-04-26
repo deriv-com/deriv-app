@@ -226,7 +226,7 @@ const CreateAdForm = () => {
                                                     floating_rate_store.rate_type === ad_type.FLOAT ? (
                                                         <FloatingRate
                                                             className='p2p-my-ads__form-field'
-                                                            data_testid='rate_type'
+                                                            data_testid='float_rate_type'
                                                             error_messages={errors.rate_type}
                                                             exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
@@ -250,7 +250,7 @@ const CreateAdForm = () => {
                                                     ) : (
                                                         <Input
                                                             {...field}
-                                                            data-testid='rate_type'
+                                                            data-testid='fixed_rate_type'
                                                             data-lpignore='true'
                                                             type='text'
                                                             error={touched.rate_type && errors.rate_type}
@@ -282,6 +282,7 @@ const CreateAdForm = () => {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
+                                                        data-testid='min_transaction'
                                                         type='text'
                                                         error={touched.min_transaction && errors.min_transaction}
                                                         label={localize('Min order')}
@@ -306,6 +307,7 @@ const CreateAdForm = () => {
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
+                                                        data-testid='max_transaction'
                                                         data-lpignore='true'
                                                         type='text'
                                                         error={touched.max_transaction && errors.max_transaction}
@@ -333,6 +335,7 @@ const CreateAdForm = () => {
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
+                                                        data-testid='contact_info'
                                                         data-lpignore='true'
                                                         type='textarea'
                                                         label={
@@ -354,6 +357,7 @@ const CreateAdForm = () => {
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
+                                                    data-testid='default_advert_description'
                                                     data-lpignore='true'
                                                     type='textarea'
                                                     error={

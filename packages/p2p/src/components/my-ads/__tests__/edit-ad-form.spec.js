@@ -3,7 +3,7 @@ import { act, fireEvent, screen, render, waitFor } from '@testing-library/react'
 import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { useStores } from 'Stores';
 import { isMobile } from '@deriv/shared';
-import CreateAdForm from '../create-ad-form.jsx';
+import EditAdForm from '../edit-ad-form.jsx';
 
 const mocked_general_store = {
     client: {
@@ -13,21 +13,40 @@ const mocked_general_store = {
     setP2PConfig: jest.fn(),
 };
 
+const mock_advert_info = {
+    account_currency: 'USD',
+    amount_display: '0',
+    contact_info: '',
+    description: '',
+    local_currency: 'AED',
+    max_order_amount_display: '10',
+    min_order_amount_display: '1',
+    payment_method_names: ['cash', 'crypto'],
+    payment_method_details: ['Cash', 'Crypto'],
+    rate_display: '',
+    type: 'fixed',
+};
+
 const mocked_my_ads_store = {
+    p2p_advert_information: mock_advert_info,
     advert_details: {
         is_visible: false,
     },
     default_advert_description: '',
-    contact_info: 1,
+    payment_method_ids: [],
+    is_edit_ad_error_modal_visible: false,
+    edit_ad_form_error: '',
+    setShowEditAdForm: jest.fn(),
+    setEditAdFormError: jest.fn(),
+    setIsEditAdErrorModalVisible: jest.fn(),
+    onClickSaveEditAd: jest.fn(),
+    validateEditAdForm: jest.fn(),
     restrictLength: jest.fn(),
-    setApiErrorMessage: jest.fn(),
-    setIsAdCreatedModalVisible: jest.fn(),
-    setIsAdExceedsDailyLimitModalOpen: jest.fn(),
-    setShowAdForm: jest.fn(),
     restrictDecimalPlace: jest.fn(),
 };
 
 const mocked_floating_rate_store = {
+    is_loading: false,
     rate_type: '',
     exchange_rate: '',
     float_rate_offset_limit: '',
@@ -36,19 +55,13 @@ const mocked_floating_rate_store = {
 };
 
 const mocked_my_profile_store = {
+    payment_methods_list: [],
+    payment_method_value: '',
+    getPaymentMethodDisplayName: jest.fn(),
+    getPaymentMethodValue: jest.fn(),
     getAdvertiserPaymentMethods: jest.fn(),
     getPaymentMethodsList: jest.fn(),
-    payment_methods_list: [],
 };
-
-const getFormFields = rate_type => ({
-    offer_amount: screen.queryByTestId('offer_amount'),
-    rate_type: screen.queryByTestId(rate_type),
-    min_transaction: screen.queryByTestId('min_transaction'),
-    max_transaction: screen.queryByTestId('max_transaction'),
-    contact_info: screen.queryByTestId('contact_info'),
-    default_advert_description: screen.queryByTestId('default_advert_description'),
-});
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -83,24 +96,36 @@ jest.mock('@deriv/shared', () => ({
 
 const modal_root_el = document.createElement('div');
 
-describe('<CreateAdForm />', () => {
+describe('<EditAdForm />', () => {
     beforeAll(() => {
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
     });
+
     afterAll(() => {
         document.body.removeChild(modal_root_el);
     });
 
-    it('Component should be rendered', () => {
-        render(<CreateAdForm />);
+    it('should display loader when loading state is set to true', () => {
+        useStores.mockImplementation(() => ({
+            my_ads_store: mocked_my_ads_store,
+            my_profile_store: mocked_my_profile_store,
+            general_store: mocked_general_store,
+            floating_rate_store: { ...mocked_floating_rate_store, is_loading: true },
+        }));
+        render(<EditAdForm />);
 
-        const el_dp2p_create_ad_form_container = screen.getByTestId('dp2p-create-ad-form_container');
-        expect(el_dp2p_create_ad_form_container).toBeInTheDocument();
+        expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('inputs must be checked for changes after making changes in each input', () => {
-        render(<CreateAdForm />);
+        useStores.mockImplementation(() => ({
+            my_ads_store: mocked_my_ads_store,
+            my_profile_store: mocked_my_profile_store,
+            general_store: mocked_general_store,
+            floating_rate_store: {...mocked_floating_rate_store},
+        }));
+        render(<EditAdForm />);
 
         const el_dp2p_create_ad_form__inputs = screen.getAllByRole('textbox');
         el_dp2p_create_ad_form__inputs.map(input => fireEvent.change(input, { target: { value: 123 } }));
@@ -108,95 +133,49 @@ describe('<CreateAdForm />', () => {
     });
 
     it('should hide the form after clicking `Cancel` button', () => {
-        render(<CreateAdForm />);
+        render(<EditAdForm />);
 
         const el_dp2p_create_ad_form_cancel_button = screen.getByRole('button', { name: 'Cancel' });
         fireEvent.click(el_dp2p_create_ad_form_cancel_button);
-        expect(mocked_my_ads_store.setShowAdForm).toHaveBeenCalledWith(false);
+        expect(mocked_my_ads_store.setShowEditAdForm).toHaveBeenCalledWith(false);
     });
 
-    it('checkbox must be unchecked after toggle checkbox', () => {
+    it('should hide modal after clicking `Ok` button', () => {
         useStores.mockImplementation(() => ({
-            my_ads_store: { ...mocked_my_ads_store, is_ad_created_modal_visible: true },
+            my_ads_store: { ...mocked_my_ads_store, is_edit_ad_error_modal_visible: true },
             my_profile_store: mocked_my_profile_store,
             general_store: mocked_general_store,
             floating_rate_store: mocked_floating_rate_store,
         }));
-        render(<CreateAdForm />);
-
-        const el_dp2p_create_ad_form_checkbox = screen.getByRole('checkbox');
-
-        fireEvent.click(el_dp2p_create_ad_form_checkbox);
-        expect(el_dp2p_create_ad_form_checkbox).toBeChecked(false);
-    });
-
-    it('should hide the modal after clicking `Ok` button', () => {
-        useStores.mockImplementation(() => ({
-            my_ads_store: { ...mocked_my_ads_store, is_ad_created_modal_visible: true },
-            my_profile_store: mocked_my_profile_store,
-            general_store: mocked_general_store,
-            floating_rate_store: mocked_floating_rate_store,
-        }));
-        render(<CreateAdForm />);
+        render(<EditAdForm />);
 
         const el_dp2p_create_ad_form_confirm_button = screen.getByRole('button', { name: 'Ok' });
         fireEvent.click(el_dp2p_create_ad_form_confirm_button);
 
-        expect(mocked_my_ads_store.setIsAdCreatedModalVisible).toHaveBeenCalledWith(false);
+        expect(mocked_my_ads_store.setIsEditAdErrorModalVisible).toHaveBeenCalledWith(false);
     });
 
     it('should disable button when form contains invalid data', () => {
         useStores.mockImplementation(() => ({
-            my_ads_store: { ...mocked_my_ads_store },
+            my_ads_store: {
+                ...mocked_my_ads_store,
+                p2p_advert_information: { ...mock_advert_info, payment_method_names: [], payment_method_details: [] },
+            },
             my_profile_store: mocked_my_profile_store,
             general_store: mocked_general_store,
             floating_rate_store: { ...mocked_floating_rate_store, rate_type: 'float' },
         }));
-        render(<CreateAdForm />);
+        act(() => {
+            render(<EditAdForm />);
+        });
 
         expect(screen.getByTestId('float_rate_type')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Post ad' })).toBeDisabled();
-    });
-
-    it('should set default rate type as +0.01 for sell ad', async () => {
-        render(<CreateAdForm />);
-        const el_sell_ad = screen.getByRole('radio', { name: 'Sell USD' });
-        act(() => {
-            fireEvent.click(el_sell_ad);
-        });
-        await waitFor(() => {
-            expect(useUpdatingAvailableBalance).toHaveBeenCalled();
-            expect(screen.getByTestId('float_rate_type')).toHaveDisplayValue('+0.01');
-        });
-    });
-
-    it('should set default rate type as -0.01 for buy ad', async () => {
-        render(<CreateAdForm />);
-        const el_buy_ad = screen.getByRole('radio', { name: 'Buy USD' });
-        act(() => {
-            fireEvent.click(el_buy_ad);
-        });
-        await waitFor(() => {
-            expect(screen.getByTestId('float_rate_type')).toHaveDisplayValue('-0.01');
-        });
-    });
-
-    it('should restrict decimal to 2 places for rate field', async () => {
-        const { my_ads_store } = useStores();
-        render(<CreateAdForm />);
-        const { rate_type } = getFormFields('float_rate_type');
-
-        act(() => {
-            fireEvent.change(rate_type, { target: { value: '4' } });
-        });
-        await waitFor(() => {
-            expect(my_ads_store.restrictDecimalPlace).toHaveBeenCalled();
-        });
+        expect(screen.getByRole('button', { name: 'Save changes' })).toBeDisabled();
     });
 
     it('should render the component in mobile view', () => {
         isMobile.mockReturnValue(true);
-        render(<CreateAdForm />);
+        render(<EditAdForm />);
 
         expect(screen.getByText('Div100vhContainer')).toBeInTheDocument();
     });

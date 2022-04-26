@@ -141,6 +141,7 @@ const EditAdForm = () => {
                                                         {({ field }) => (
                                                             <Input
                                                                 {...field}
+                                                                data-testid='offer_amount'
                                                                 data-lpignore='true'
                                                                 type='text'
                                                                 error={touched.offer_amount && errors.offer_amount}
@@ -186,6 +187,7 @@ const EditAdForm = () => {
                                                             floating_rate_store.rate_type === ad_type.FLOAT ? (
                                                                 <FloatingRate
                                                                     className='p2p-my-ads__form-field'
+                                                                    data_testid='float_rate_type'
                                                                     error_messages={errors.rate_type}
                                                                     exchange_rate={floating_rate_store.exchange_rate}
                                                                     fiat_currency={account_currency}
@@ -212,6 +214,7 @@ const EditAdForm = () => {
                                                             ) : (
                                                                 <Input
                                                                     {...field}
+                                                                    data-testid='fixed_rate_type'
                                                                     data-lpignore='true'
                                                                     type='text'
                                                                     error={touched.rate_type && errors.rate_type}
@@ -247,6 +250,7 @@ const EditAdForm = () => {
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
+                                                                data-testid='min_transaction'
                                                                 type='text'
                                                                 error={
                                                                     touched.min_transaction && errors.min_transaction
@@ -276,6 +280,7 @@ const EditAdForm = () => {
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
+                                                                data-testid='max_transaction'
                                                                 type='text'
                                                                 error={
                                                                     touched.max_transaction && errors.max_transaction
@@ -308,6 +313,7 @@ const EditAdForm = () => {
                                                                 <Input
                                                                     {...field}
                                                                     data-lpignore='true'
+                                                                    data-testid='contact_info'
                                                                     type='textarea'
                                                                     label={
                                                                         <Text color='less-prominent' size='xs'>
@@ -330,6 +336,7 @@ const EditAdForm = () => {
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
+                                                            data-testid='description'
                                                             type='textarea'
                                                             error={touched.description && errors.description}
                                                             label={

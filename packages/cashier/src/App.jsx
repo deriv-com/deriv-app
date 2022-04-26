@@ -4,24 +4,17 @@ import { init } from '_common/server_time';
 import Routes from 'Containers/routes.jsx';
 import { MobxContentProvider } from 'Stores/connect';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        const {
-            passthrough: { WS, root_store },
-        } = props;
+const App = ({ passthrough: { WS, root_store } }) => {
+    React.useEffect(() => {
         setWebsocket(WS);
-        this.root_store = root_store;
         init();
-    }
+    }, []);
 
-    render() {
-        return (
-            <MobxContentProvider store={this.root_store}>
-                <Routes />
-            </MobxContentProvider>
-        );
-    }
-}
+    return (
+        <MobxContentProvider store={root_store}>
+            <Routes />
+        </MobxContentProvider>
+    );
+};
 
 export default App;

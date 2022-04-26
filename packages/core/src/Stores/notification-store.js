@@ -327,7 +327,7 @@ export default class NotificationStore extends BaseStore {
                 if (is_p2p_visible) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
                 } else {
-                    this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
+                    this.removeNotificationMessageByKey({ key: this.client_notifications?.dp2p?.key });
                 }
 
                 if (is_website_up && !has_trustpilot) {
@@ -350,7 +350,7 @@ export default class NotificationStore extends BaseStore {
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
             this.addNotificationMessage(this.client_notifications.deriv_go);
         } else {
-            this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
+            this.removeNotificationMessageByKey({ key: this.client_notifications?.deriv_go?.key });
         }
         this.setShouldShowPopups(true);
     }

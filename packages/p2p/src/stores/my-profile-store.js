@@ -205,27 +205,31 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_payment_methods: 1,
         }).then(response => {
-            const { p2p_payment_methods } = response;
-            const list = [];
-            const list_items = [];
-            this.setAvailablePaymentMethods(p2p_payment_methods);
+            if (response) {
+                if (response.error) {
+                    return;
+                }
+                const { p2p_payment_methods } = response;
+                const list = [];
+                const list_items = [];
+                this.setAvailablePaymentMethods(p2p_payment_methods);
+                if (this.search_term) {
+                    Object.entries(this.available_payment_methods).forEach(key => {
+                        if (key[1].display_name.toLowerCase().includes(this.search_term.toLowerCase().trim()))
+                            list_items.push({ text: key[1].display_name, value: key[0] });
+                    });
+                }
 
-            if (this.search_term) {
                 Object.entries(this.available_payment_methods).forEach(key => {
-                    if (key[1].display_name.toLowerCase().includes(this.search_term.toLowerCase().trim()))
-                        list_items.push({ text: key[1].display_name, value: key[0] });
+                    list.push({ text: key[1].display_name, value: key[0] });
                 });
-            }
+                this.setPaymentMethodsList(list);
 
-            Object.entries(this.available_payment_methods).forEach(key => {
-                list.push({ text: key[1].display_name, value: key[0] });
-            });
-            this.setPaymentMethodsList(list);
-
-            if (list_items.length) {
-                this.setSearchResults(list_items);
-            } else {
-                this.setSearchResults([]);
+                if (list_items.length) {
+                    this.setSearchResults(list_items);
+                } else {
+                    this.setSearchResults([]);
+                }
             }
         });
     }

@@ -104,7 +104,15 @@ export default class ClientStore extends BaseStore {
         payment_agent_withdraw: '',
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
+        request_email: '',
+        system_email_change: '',
     };
+
+    @observable new_email = {
+        system_email_change: '',
+    };
+
+    @observable account_limits = {};
     @observable account_limits = {};
 
     @observable self_exclusion = {};
@@ -1268,7 +1276,12 @@ export default class ClientStore extends BaseStore {
 
                 if (has_action) {
                     const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
-                    window.location.replace(`${redirect_route}/redirect?${query_string}`);
+                    if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
+                        // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
+                        window.location.replace(`/redirect?${query_string}`);
+                    } else {
+                        window.location.replace(`${redirect_route}/redirect?${query_string}`);
+                    }
                 } else {
                     window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
                 }
@@ -1830,6 +1843,16 @@ export default class ClientStore extends BaseStore {
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
             this.fetchResidenceList(); // Prefetch for use in account signup process
+        }
+    }
+
+    @action.bound
+    setNewEmail(email, action) {
+        this.new_email[action] = email;
+        if (email) {
+            LocalStore.set(`new_email.${action}`, email);
+        } else {
+            LocalStore.remove(`new_email.${action}`);
         }
     }
 

@@ -18,8 +18,8 @@ export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+
 export const validLength = (value = '', options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+export const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
 const validBarrier = value => /^[+-]?\d+\.?\d*$/.test(value);
-const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
 const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validRegular = (value, options) => options.regex.test(value);
 const confirmRequired = value => value === true;

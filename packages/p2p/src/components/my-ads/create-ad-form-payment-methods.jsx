@@ -11,6 +11,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
 
     const [selected_buy_methods, setSelectedBuyMethods] = React.useState([]);
     const [selected_sell_methods, setSelectedSellMethods] = React.useState([]);
+    const [selected_edit_method, setSelectedEditMethod] = React.useState();
 
     const style = {
         borderColor: 'var(--brand-secondary)',
@@ -26,7 +27,23 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
         }
     };
 
-    const onClickPaymentMethodItem = value => {
+    const onEditPaymentMethodItem = (value, index) => {
+        if (value) {
+            if (!my_ads_store.payment_method_names.includes(value)) {
+                let modified = selected_buy_methods.slice();
+                modified[index] = value;
+                my_ads_store.payment_method_names[index] = value;
+                setSelectedBuyMethods(modified);
+            } else {
+                my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
+                    payment_method_id => payment_method_id !== value
+                );
+                setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
+            }
+        }
+    }
+
+    const onClickPaymentMethodItem = (name, value) => {
         if (value) {
             if (!my_ads_store.payment_method_names.includes(value)) {
                 if (my_ads_store.payment_method_names.length < 3) {
@@ -117,12 +134,23 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                     const payment_method_icon = method.replace(' ', '');
 
                     return (
-                        <Formik key={key} enableReinitialize initialValues={{}}>
+                        <Formik key={key} enableReinitialize initialValues={{ payment_method: method }}>
                             <Field name='payment_method'>
                                 {({ field }) => (
-                                    <Input
+                                   <Autocomplete
+                                        className="quick-add-modal--input"
                                         {...field}
-                                        className='quick-add-modal--input'
+                                        autoComplete='off' // prevent chrome autocomplete
+                                        data-lpignore='true'
+                                        has_updating_list={false}
+                                        list_items={my_profile_store.payment_methods_list}
+                                        onItemSelection={({ value }) => {
+                                            onEditPaymentMethodItem(value, key)
+                                        }}
+                                        onFocus={e => {
+                                            setSelectedEditMethod(e.target.value);
+                                        }}
+                                        // required
                                         leading_icon={
                                             <Icon
                                                 icon={
@@ -142,7 +170,6 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                             />
                                         }
                                         type='text'
-                                        value={method}
                                     />
                                 )}
                             </Field>
@@ -157,6 +184,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                     <div className='p2p-my-ads--border'>
                                         <Autocomplete
                                             {...field}
+                                            is_alignment_top
                                             autoComplete='off' // prevent chrome autocomplete
                                             data-lpignore='true'
                                             has_updating_list={false}
@@ -169,8 +197,8 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                                 </React.Fragment>
                                             }
                                             list_items={my_profile_store.payment_methods_list}
-                                            onItemSelection={({ value }) => {
-                                                onClickPaymentMethodItem(value);
+                                            onItemSelection={({ text, value }) => {
+                                                onClickPaymentMethodItem(text, value);
                                             }}
                                             required
                                             trailing_icon={<></>}
@@ -194,6 +222,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                         <div className='p2p-my-ads--border'>
                             <Autocomplete
                                 {...field}
+                                is_alignment_top
                                 autoComplete='off' // prevent chrome autocomplete
                                 data-lpignore='true'
                                 has_updating_list={false}
@@ -208,7 +237,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                 list_items={my_profile_store.payment_methods_list}
                                 onItemSelection={({ text, value }) => {
                                     setFieldValue('payment_method', value ? text : '');
-                                    onClickPaymentMethodItem(value);
+                                    onClickPaymentMethodItem(text, value);
                                 }}
                                 required
                                 trailing_icon={<></>}

@@ -10,7 +10,10 @@
     }
 
     &--input {
-        padding: 0 2rem;
+        padding-bottom: 2rem;
+        & .dc-input__field {
+            padding-left: 3rem;
+        }
     }
 
     &--text {

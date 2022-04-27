@@ -11,6 +11,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
 
     const [selected_buy_methods, setSelectedBuyMethods] = React.useState([]);
     const [selected_sell_methods, setSelectedSellMethods] = React.useState([]);
+    const [payment_methods_list, setPaymentMethodsList] = React.useState(my_profile_store.payment_methods_list);
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
 
     const style = {
@@ -18,28 +19,28 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
         borderWidth: '2px',
     };
 
-    const onClickDeletePaymentMethodItem = value => {
+    const onClickDeletePaymentMethodItem = (value) => {
         if (value) {
             my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
                 payment_method_id => payment_method_id !== value
             );
             setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
+            setPaymentMethodsList([...payment_methods_list, {
+                value,
+                text: my_profile_store.getPaymentMethodDisplayName(value)
+            }])
         }
     };
 
     const onEditPaymentMethodItem = (value, index) => {
         if (value) {
             if (!my_ads_store.payment_method_names.includes(value)) {
-                let modified = selected_buy_methods.slice();
-                modified[index] = value;
+                let edited_buy_methods = selected_buy_methods.slice();
+                edited_buy_methods[index] = value;
                 my_ads_store.payment_method_names[index] = value;
-                setSelectedBuyMethods(modified);
-            } else {
-                my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
-                    payment_method_id => payment_method_id !== value
-                );
-                setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
-            }
+                setSelectedBuyMethods(edited_buy_methods);
+                setPaymentMethodsList([...payment_methods_list.filter(pm => pm.value !== value), selected_edit_method]);
+            } 
         }
     };
 
@@ -49,13 +50,9 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                 if (my_ads_store.payment_method_names.length < 3) {
                     my_ads_store.payment_method_names.push(value);
                     setSelectedBuyMethods([...selected_buy_methods, value]);
+                    setPaymentMethodsList(payment_methods_list.filter(payment_method => payment_method.value !== value));
                 }
-            } else {
-                my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
-                    payment_method_id => payment_method_id !== value
-                );
-                setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
-            }
+            } 
         }
     };
 
@@ -135,73 +132,92 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
 
                     return (
                         <Formik key={key} enableReinitialize initialValues={{ payment_method: method }}>
-                            <Field name='payment_method'>
-                                {({ field }) => (
-                                    <Autocomplete
-                                        className='quick-add-modal--input'
-                                        {...field}
-                                        autoComplete='off' // prevent chrome autocomplete
-                                        data-lpignore='true'
-                                        has_updating_list={false}
-                                        list_items={my_profile_store.payment_methods_list}
-                                        onItemSelection={({ value }) => {
-                                            onEditPaymentMethodItem(value, key);
-                                        }}
-                                        onFocus={e => {
-                                            setSelectedEditMethod(e.target.value);
-                                        }}
-                                        // required
-                                        leading_icon={
-                                            <Icon
-                                                icon={
-                                                    payment_method_icon === 'BankTransfer' ||
-                                                    payment_method_icon === 'Other'
-                                                        ? `IcCashier${payment_method_icon}`
-                                                        : 'IcCashierEwallet'
+                            {({ setFieldValue }) => 
+                                <Field name='payment_method'>
+                                    {({ field }) => (
+                                        <Autocomplete
+                                            {...field}
+                                            className='quick-add-modal--input'
+                                            required
+                                            autoComplete='off' // prevent chrome autocomplete
+                                            data-lpignore='true'
+                                            list_items={payment_methods_list}
+                                            onItemSelection={({ value }) => {
+                                                onEditPaymentMethodItem(value, key);
+                                            }}
+                                            onFocus={e => {
+                                                setSelectedEditMethod({value: payment_method, text: method })
+                                                setFieldValue('payment_method', '');
+                                            }}
+                                            onBlur={e => {
+                                                e.preventDefault();
+                                                let match = false;
+                                                let id;
+                                                my_profile_store.payment_methods_list.map(({ value, text }) => {
+                                                    if (e.target.value === text) {
+                                                        match = true;
+                                                        id = value;
+                                                    }
+                                                })
+                                                if (e.target.value === '') {
+                                                    setFieldValue('payment_method', method);
+                                                } else if (!match) {
+                                                    onClickDeletePaymentMethodItem(payment_method)
+                                                } else {
+                                                    onEditPaymentMethodItem(id, key)
                                                 }
-                                            />
-                                        }
-                                        trailing_icon={
-                                            <Icon
-                                                icon='IcDelete'
-                                                onClick={() => {
-                                                    onClickDeletePaymentMethodItem(payment_method);
-                                                }}
-                                            />
-                                        }
-                                        type='text'
-                                    />
-                                )}
-                            </Field>
+                                            }}
+                                            leading_icon={
+                                                <Icon
+                                                    icon={
+                                                        payment_method_icon === 'BankTransfer' ||
+                                                        payment_method_icon === 'Other'
+                                                            ? `IcCashier${payment_method_icon}`
+                                                            : 'IcCashierEwallet'
+                                                    }
+                                                />
+                                            }
+                                            trailing_icon={
+                                                <Icon
+                                                    icon='IcDelete'
+                                                    onClick={() => {
+                                                        console.log('[onClick] Deleting...')
+                                                        onClickDeletePaymentMethodItem(payment_method);
+                                                    }}
+                                                />
+                                            }
+                                            type='text'
+                                        />
+                                    )}
+                                </Field>
+                            }
                         </Formik>
                     );
                 })}
                 {my_ads_store.payment_method_names.length < 3 && (
                     <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-                        {() => (
+                        {({ setFieldValue }) => (
                             <Field name='payment_method'>
                                 {({ field }) => (
                                     <div className='p2p-my-ads--border'>
                                         <Autocomplete
                                             {...field}
+                                            className="quick-add-modal--input"
                                             is_alignment_top
                                             autoComplete='off' // prevent chrome autocomplete
                                             data-lpignore='true'
-                                            has_updating_list={false}
-                                            label={
-                                                <React.Fragment>
-                                                    <Icon icon='IcAddCircle' size={14} />
-                                                    <Text color='less-prominent' size='xs'>
-                                                        <Localize i18n_default_text='Add' />
-                                                    </Text>
-                                                </React.Fragment>
-                                            }
-                                            list_items={my_profile_store.payment_methods_list}
+                                            list_items={payment_methods_list}
                                             onItemSelection={({ text, value }) => {
                                                 onClickPaymentMethodItem(text, value);
                                             }}
+                                            onBlur={e => {
+                                                e.preventDefault();
+                                                setFieldValue('payment_method', '');
+                                            }}
                                             required
+                                            leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                             trailing_icon={<></>}
+                                            placeholder={localize("Add")}
                                             type='text'
                                         />
                                     </div>
@@ -222,26 +238,28 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                         <div className='p2p-my-ads--border'>
                             <Autocomplete
                                 {...field}
+                                className="quick-add-modal--input"
                                 is_alignment_top
                                 autoComplete='off' // prevent chrome autocomplete
                                 data-lpignore='true'
-                                has_updating_list={false}
-                                label={
-                                    <React.Fragment>
-                                        <Icon icon='IcAddCircle' size={14} />
-                                        <Text color='less-prominent' size='xs'>
-                                            <Localize i18n_default_text='Add' />
-                                        </Text>
-                                    </React.Fragment>
-                                }
-                                list_items={my_profile_store.payment_methods_list}
+                                // label={
+                                //     <React.Fragment>
+                                //         <Icon icon='IcAddOutline' size={14} />
+                                //         <Text color='less-prominent' size='xs'>
+                                //             <Localize i18n_default_text='Add' />
+                                //         </Text>
+                                //     </React.Fragment>
+                                // }
+                                list_items={payment_methods_list}
                                 onItemSelection={({ text, value }) => {
                                     setFieldValue('payment_method', value ? text : '');
                                     onClickPaymentMethodItem(text, value);
                                 }}
                                 required
+                                leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                 trailing_icon={<></>}
                                 type='text'
+                                placeholder={localize("Add")}
                             />
                         </div>
                     )}

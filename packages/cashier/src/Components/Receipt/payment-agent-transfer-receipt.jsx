@@ -12,7 +12,14 @@ const openStatement = (history, resetPaymentAgentTransfer) => {
     resetPaymentAgentTransfer();
 };
 
-const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, resetPaymentAgentTransfer }) => (
+const PaymentAgentTransferReceipt = ({
+    currency,
+    history,
+    is_from_derivgo,
+    loginid,
+    receipt,
+    resetPaymentAgentTransfer,
+}) => (
     <div className='cashier__wrapper payment-agent-transfer-receipt__wrapper'>
         <div className='cashier__success'>
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
@@ -56,14 +63,16 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
             </div>
         </div>
         <div className='cashier__form-submit'>
-            <Button
-                className='cashier__form-submit-button'
-                has_effect
-                text={localize('View in statement')}
-                onClick={() => openStatement(history, resetPaymentAgentTransfer)}
-                secondary
-                large
-            />
+            {!is_from_derivgo && (
+                <Button
+                    className='cashier__form-submit-button'
+                    has_effect
+                    text={localize('View in statement')}
+                    onClick={() => openStatement(history, resetPaymentAgentTransfer)}
+                    secondary
+                    large
+                />
+            )}
             <Button
                 className='cashier__form-submit-button cashier__done-button'
                 has_effect
@@ -79,14 +88,16 @@ const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, rese
 PaymentAgentTransferReceipt.propTypes = {
     currency: PropTypes.string,
     history: PropTypes.object,
+    is_from_derivgo: PropTypes.bool,
     loginid: PropTypes.string,
     receipt: PropTypes.object,
     resetPaymentAgentTransfer: PropTypes.func,
 };
 
 export default withRouter(
-    connect(({ client, modules }) => ({
+    connect(({ client, common, modules }) => ({
         currency: client.currency,
+        is_from_derivgo: common.is_from_derivgo,
         loginid: client.loginid,
         receipt: modules.cashier.payment_agent_transfer.receipt,
         resetPaymentAgentTransfer: modules.cashier.payment_agent_transfer.resetPaymentAgentTransfer,

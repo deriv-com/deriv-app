@@ -4,11 +4,12 @@ import { NavLink } from 'react-router-dom';
 import { PlatformContext } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import { findRouteByPath, normalizePath } from './helpers';
+import { connect } from 'Stores/connect';
 
-const BinaryLink = ({ active_class, to, children, ...props }) => {
+const BinaryLink = ({ active_class, to, children, is_social_signup, ...props }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const path = normalizePath(to);
-    const route = findRouteByPath(path, getRoutesConfig({ is_appstore }));
+    const route = findRouteByPath(path, getRoutesConfig({ is_appstore }, is_social_signup));
 
     if (!route) {
         throw new Error(`Route not found: ${to}`);
@@ -29,4 +30,6 @@ BinaryLink.propTypes = {
     to: PropTypes.string,
 };
 
-export default BinaryLink;
+export default connect(({ client }) => ({
+    is_social_signup: client.is_social_signup,
+}))(BinaryLink);

@@ -1,0 +1,75 @@
+.close-uk-account {
+    &-header {
+        width: 100%;
+        height: 6.5rem;
+        padding: 2.4rem;
+
+        @include mobile {
+            height: 2rem;
+            padding: 0 1.2rem;
+            position: sticky;
+            .dc-text {
+                margin: 1.6rem 0 !important;
+            }
+        }
+    }
+    &__content {
+        padding: 2rem 4.8rem;
+        @include mobile {
+            padding: 0.8rem 1.2rem;
+        }
+    }
+
+    .dc-dialog__wrapper,
+    &__wrapper {
+        z-index: 1001;
+        .dc-dialog__dialog,
+        &__dialog {
+            max-height: unset;
+            max-width: unset;
+            width: 58.8rem;
+            height: 42rem;
+            left: 42.6rem;
+            top: 16.2rem;
+            margin-top: 0;
+            padding: 0;
+            .dc-dialog__content {
+                max-width: unset;
+                height: 100%;
+                margin-bottom: 5rem;
+                overflow-y: auto;
+                padding: 0;
+            }
+            .close-uk-account.dc-dialog__footer {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                border-bottom-right-radius: 0.8rem;
+                border-bottom-left-radius: 0.8rem;
+                padding: 1.6rem 2.4rem;
+                background-color: var(--general-main-1);
+                .dc-btn--primary {
+                    margin-left: 0.5rem;
+                }
+            }
+            .dc-text {
+                margin: 0.3rem 0;
+                text-align: left;
+            }
+            @include mobile {
+                margin: 2rem;
+                width: 32.8rem;
+                height: 40rem;
+                box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.08);
+                border-radius: 8px;
+            }
+        }
+    }
+}
+
+body.theme--dark {
+    .close-uk-account {
+        color: var(--general-main-1);
+    }
+}

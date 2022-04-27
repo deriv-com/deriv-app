@@ -58,7 +58,7 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
                         />
                     )}
                 </Text>
-                <Text className='cashier-default-side-note__text' size='xxs' as='p'>
+                <Text className='cashier-default-side-note__text' size='xxs' as='p' data-testid='side-note-text'>
                     {getSideNoteDescription()}
                 </Text>
                 {is_crypto && (

@@ -1,5 +1,5 @@
 export type TRoute = {
-    component?: () => void;
+    component?: () => React.ReactNode;
     default?: boolean;
     exact?: boolean;
     getTitle?: () => string;

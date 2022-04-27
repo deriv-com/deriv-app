@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Dropdown, Icon, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import PropTypes from 'prop-types';
 
 const PaymentMethodCard = ({
     add_payment_method,
@@ -112,7 +113,7 @@ const PaymentMethodCard = ({
                 )}
                 {!show_payment_method_name && method !== 'BankTransfer' && method !== 'Other' && (
                     <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                        {payment_account_name}
+                        {method}
                     </Text>
                 )}
 
@@ -125,6 +126,21 @@ const PaymentMethodCard = ({
             </div>
         </div>
     );
+};
+
+PaymentMethodCard.propTypes = {
+    add_payment_method: PropTypes.string,
+    is_add: PropTypes.bool,
+    is_vertical_ellipsis_visible: PropTypes.bool,
+    show_payment_method_name: PropTypes.bool,
+    label: PropTypes.string,
+    large: PropTypes.bool,
+    medium: PropTypes.bool,
+    onClick: PropTypes.func,
+    onClickAdd: PropTypes.func,
+    payment_method: PropTypes.object,
+    small: PropTypes.bool,
+    style: PropTypes.object,
 };
 
 export default PaymentMethodCard;

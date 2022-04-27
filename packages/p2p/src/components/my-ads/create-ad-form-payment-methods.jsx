@@ -19,16 +19,19 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
         borderWidth: '2px',
     };
 
-    const onClickDeletePaymentMethodItem = (value) => {
+    const onClickDeletePaymentMethodItem = value => {
         if (value) {
             my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
                 payment_method_id => payment_method_id !== value
             );
             setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
-            setPaymentMethodsList([...payment_methods_list, {
-                value,
-                text: my_profile_store.getPaymentMethodDisplayName(value)
-            }])
+            setPaymentMethodsList([
+                ...payment_methods_list,
+                {
+                    value,
+                    text: my_profile_store.getPaymentMethodDisplayName(value),
+                },
+            ]);
         }
     };
 
@@ -40,7 +43,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                 my_ads_store.payment_method_names[index] = value;
                 setSelectedBuyMethods(edited_buy_methods);
                 setPaymentMethodsList([...payment_methods_list.filter(pm => pm.value !== value), selected_edit_method]);
-            } 
+            }
         }
     };
 
@@ -50,9 +53,11 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                 if (my_ads_store.payment_method_names.length < 3) {
                     my_ads_store.payment_method_names.push(value);
                     setSelectedBuyMethods([...selected_buy_methods, value]);
-                    setPaymentMethodsList(payment_methods_list.filter(payment_method => payment_method.value !== value));
+                    setPaymentMethodsList(
+                        payment_methods_list.filter(payment_method => payment_method.value !== value)
+                    );
                 }
-            } 
+            }
         }
     };
 
@@ -132,7 +137,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
 
                     return (
                         <Formik key={key} enableReinitialize initialValues={{ payment_method: method }}>
-                            {({ setFieldValue }) => 
+                            {({ setFieldValue }) => (
                                 <Field name='payment_method'>
                                     {({ field }) => (
                                         <Autocomplete
@@ -146,7 +151,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                                 onEditPaymentMethodItem(value, key);
                                             }}
                                             onFocus={e => {
-                                                setSelectedEditMethod({value: payment_method, text: method })
+                                                setSelectedEditMethod({ value: payment_method, text: method });
                                                 setFieldValue('payment_method', '');
                                             }}
                                             onBlur={e => {
@@ -158,13 +163,13 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                                         match = true;
                                                         id = value;
                                                     }
-                                                })
+                                                });
                                                 if (e.target.value === '') {
                                                     setFieldValue('payment_method', method);
                                                 } else if (!match) {
-                                                    onClickDeletePaymentMethodItem(payment_method)
+                                                    onClickDeletePaymentMethodItem(payment_method);
                                                 } else {
-                                                    onEditPaymentMethodItem(id, key)
+                                                    onEditPaymentMethodItem(id, key);
                                                 }
                                             }}
                                             leading_icon={
@@ -181,7 +186,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                                 <Icon
                                                     icon='IcDelete'
                                                     onClick={() => {
-                                                        console.log('[onClick] Deleting...')
+                                                        console.log('[onClick] Deleting...');
                                                         onClickDeletePaymentMethodItem(payment_method);
                                                     }}
                                                 />
@@ -190,7 +195,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                         />
                                     )}
                                 </Field>
-                            }
+                            )}
                         </Formik>
                     );
                 })}
@@ -202,7 +207,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                     <div className='p2p-my-ads--border'>
                                         <Autocomplete
                                             {...field}
-                                            className="quick-add-modal--input"
+                                            className='quick-add-modal--input'
                                             is_alignment_top
                                             autoComplete='off' // prevent chrome autocomplete
                                             data-lpignore='true'
@@ -217,7 +222,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                             required
                                             leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                             trailing_icon={<></>}
-                                            placeholder={localize("Add")}
+                                            placeholder={localize('Add')}
                                             type='text'
                                         />
                                     </div>
@@ -238,7 +243,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                         <div className='p2p-my-ads--border'>
                             <Autocomplete
                                 {...field}
-                                className="quick-add-modal--input"
+                                className='quick-add-modal--input'
                                 is_alignment_top
                                 autoComplete='off' // prevent chrome autocomplete
                                 data-lpignore='true'
@@ -259,7 +264,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                 leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                 trailing_icon={<></>}
                                 type='text'
-                                placeholder={localize("Add")}
+                                placeholder={localize('Add')}
                             />
                         </div>
                     )}

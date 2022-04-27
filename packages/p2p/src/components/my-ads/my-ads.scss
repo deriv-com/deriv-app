@@ -406,11 +406,9 @@
                     }
                 }
 
-                @include mobile {
-                    .dc-text {
-                        &:not(.ad-status--inactive) {
-                            color: var(--text-disabled);
-                        }
+                .dc-text {
+                    &:not(.ad-status--inactive) {
+                        color: var(--text-disabled);
                     }
                 }
             }
@@ -628,6 +626,10 @@
                 }
             }
         }
+    }
+
+    &__modal-body--scroll {
+        overflow: auto;
     }
 
     .toggle-ads {

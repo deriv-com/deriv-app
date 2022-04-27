@@ -74,6 +74,18 @@
         &-header {
             margin-top: 2.8rem;
             margin-bottom: 1.8rem;
+            overflow: hidden;
+
+            &:after {
+                content: "";
+                display: inline-block;
+                height: 1px;
+                vertical-align: middle;
+                width: 100%;
+                margin-right: -100%;
+                margin-left: 10px;
+                border-top: 1px solid var(--general-section-1);
+            }
         }
         &-selector {
             margin-bottom: 1rem;

@@ -20,7 +20,6 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
             <Text as='p' size='xs' weight='bold' color='prominent' className='payment-agent-list__list-header'>
                 <Localize i18n_default_text='Payment agents' />
             </Text>
-            <div className='payment-agent-list__list-line' />
             <div className='payment-agent-list__list-selector'>
                 <Text as='p' size={isMobile() ? 'xxs' : 'xs'} line_height='s' className='cashier__paragraph'>
                     <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />

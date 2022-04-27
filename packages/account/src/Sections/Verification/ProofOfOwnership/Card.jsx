@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
+import paymentMethodConfig from './payment-method-config';
 
 const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error }) => {
     const onClick = e => {
@@ -21,23 +22,24 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
         />
     );
 
-    const paymentMethodIcons = {
-        credit_debit_card: 'IcCreditCard',
-        e_wallet: 'IcEwallet',
-        zingPay: 'IcZingpay',
-        online_naira: 'IcOnlineNaira',
-        beyonic: 'IcBeyonic',
-        bank_transfer: 'IcBankTransfer',
-        other: 'IcOtherPaymentMethod',
-    };
+    // const paymentMethodIcons = {
+    //     credit_debit_card: 'IcCreditCard',
+    //     e_wallet: 'IcEwallet',
+    //     zingPay: 'IcZingpay',
+    //     online_naira: 'IcOnlineNaira',
+    //     beyonic: 'IcBeyonic',
+    //     bank_transfer: 'IcBankTransfer',
+    //     other: 'IcOtherPaymentMethod',
+    // };
+    // console.log(card.payment_method);
     return (
         <div
             className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}
             data-testid={card.id}
         >
-            <div className='proof-of-ownership__card-item'>
+            <div className='proof-of-ownership__card-item' onClick={onClick}>
                 <Icon
-                    icon={paymentMethodIcons[card.payment_method_identifier]}
+                    icon={paymentMethodConfig[card.payment_method]?.icon}
                     className='proof-of-ownership__card-item-logo'
                     width={64}
                     height={58}
@@ -57,6 +59,7 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
             </div>
             {is_open && (
                 <ExpandedCard
+                    cardDetails={paymentMethodConfig[card.payment_method]}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     values={values}

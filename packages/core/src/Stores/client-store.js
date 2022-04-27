@@ -719,7 +719,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_pending_proof_of_ownership() {
-        return this.account_status?.authentication?.ownership?.status === 'pending';
+        return true; // this.account_status?.authentication?.ownership?.status === 'pending';
     }
 
     isMT5Allowed = landing_companies => {

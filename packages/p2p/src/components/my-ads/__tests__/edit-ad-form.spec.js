@@ -1,6 +1,5 @@
 import React from 'react';
-import { act, fireEvent, screen, render, waitFor } from '@testing-library/react';
-import { useUpdatingAvailableBalance } from 'Components/hooks';
+import { act, fireEvent, screen, render } from '@testing-library/react';
 import { useStores } from 'Stores';
 import { isMobile } from '@deriv/shared';
 import EditAdForm from '../edit-ad-form.jsx';

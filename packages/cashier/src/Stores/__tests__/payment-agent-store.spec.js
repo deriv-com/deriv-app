@@ -16,7 +16,6 @@ describe('PaymentAgentStore', () => {
                 telephone: '+12345678',
                 url: 'http://www.pa.com',
                 supported_banks: 'Visa',
-                supported_payment_methods: [{ payment_method: 'Visa' }],
             },
             {
                 name: 'Payment Agent of CR90000002',
@@ -26,8 +25,8 @@ describe('PaymentAgentStore', () => {
                 email: 'pa@example.com',
                 telephone: '+12345678',
                 url: 'http://www.pa.com',
-                supported_banks: 'Mastercard',
-                supported_payment_methods: [{ payment_method: 'Mastercard' }],
+                supported_banks: 'Visa, Mastercard',
+                supported_payment_methods: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
             },
         ],
     };
@@ -36,14 +35,14 @@ describe('PaymentAgentStore', () => {
             email: 'pa@example.com',
             phones: '+12345678',
             name: 'Payment Agent of CR90000000',
-            supported_banks: [{ payment_method: 'Visa' }],
+            supported_banks: 'Visa',
             urls: 'http://www.pa.com',
         },
         {
             email: 'pa@example.com',
             phones: '+12345678',
             name: 'Payment Agent of CR90000002',
-            supported_banks: [{ payment_method: 'Mastercard' }],
+            supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
             urls: 'http://www.pa.com',
         },
     ];
@@ -166,7 +165,7 @@ describe('PaymentAgentStore', () => {
                     email: 'pa@example.com',
                     phones: '+12345678',
                     name: 'Payment Agent of CR90000000',
-                    supported_banks: [{ payment_method: 'Visa' }],
+                    supported_banks: 'Visa',
                     urls: 'http://www.pa.com',
                 },
             ])
@@ -188,19 +187,6 @@ describe('PaymentAgentStore', () => {
 
     it('should filter payment agent list by selected bank', async () => {
         await payment_agent_store.setPaymentAgentList();
-        payment_agent_store.filterPaymentAgentList('visa');
-        expect(payment_agent_store.filtered_list).toEqual(
-            expect.arrayContaining([
-                {
-                    email: 'pa@example.com',
-                    phones: '+12345678',
-                    name: 'Payment Agent of CR90000000',
-                    supported_banks: [{ payment_method: 'Visa' }],
-                    urls: 'http://www.pa.com',
-                },
-            ])
-        );
-
         payment_agent_store.filterPaymentAgentList('mastercard');
         expect(payment_agent_store.filtered_list).toEqual(
             expect.arrayContaining([
@@ -208,7 +194,7 @@ describe('PaymentAgentStore', () => {
                     email: 'pa@example.com',
                     phones: '+12345678',
                     name: 'Payment Agent of CR90000002',
-                    supported_banks: [{ payment_method: 'Mastercard' }],
+                    supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
                     urls: 'http://www.pa.com',
                 },
             ])
@@ -227,7 +213,7 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.filtered_list.length).toBe(2);
 
         payment_agent_store.onChangePaymentMethod({ target: { value: 'visa' } });
-        expect(payment_agent_store.filtered_list.length).toBe(1);
+        expect(payment_agent_store.filtered_list.length).toBe(2);
     });
 
     it('should set is_withdraw', () => {

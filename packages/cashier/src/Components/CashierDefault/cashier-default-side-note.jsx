@@ -22,7 +22,7 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
 
         return (
             <Localize
-                i18n_default_text="You can no longer change your account currency because you've made a deposit into your fiat account or created a real DMT5 or Deriv X account. Please contact us via <0>live chat</0> for clarification."
+                i18n_default_text='If you want to change your account currency, please contact us via <0>live chat</0>.'
                 components={[
                     <span
                         key={0}

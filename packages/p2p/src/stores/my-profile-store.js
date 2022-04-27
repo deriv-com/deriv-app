@@ -206,11 +206,13 @@ export default class MyProfileStore extends BaseStore {
             p2p_payment_methods: 1,
         }).then(response => {
             if (response) {
+                if (response.error) {
+                    return;
+                }
                 const { p2p_payment_methods } = response;
                 const list = [];
                 const list_items = [];
                 this.setAvailablePaymentMethods(p2p_payment_methods);
-
                 if (this.search_term) {
                     Object.entries(this.available_payment_methods).forEach(key => {
                         if (key[1].display_name.toLowerCase().includes(this.search_term.toLowerCase().trim()))

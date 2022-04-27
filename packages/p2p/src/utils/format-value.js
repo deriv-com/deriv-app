@@ -1,4 +1,4 @@
-export function truncateDecimal(number, decimal_point = 2) {
-    // Truncates the number to specified decimal digits without rounding off the next decimal digit
-    return Math.trunc(number * Math.pow(10, decimal_point)) / Math.pow(10, decimal_point);
-}
+export const roundOffDecimal = (number, decimal_point = 2) => {
+    // Rounds of the digit to the specified decimal point
+    return parseFloat(Math.round(number * Math.pow(10, decimal_point)) / Math.pow(10, decimal_point));
+};

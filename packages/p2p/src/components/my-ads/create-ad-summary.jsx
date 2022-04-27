@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
-import { truncateDecimal } from 'Utils/format-value.js';
+import { roundOffDecimal } from 'Utils/format-value.js';
 import { useStores } from 'Stores';
 
 const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
@@ -20,17 +20,23 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     if (market_feed && price_rate) {
         display_price_rate = formatMoney(
             local_currency_config.currency,
-            truncateDecimal(parseFloat(market_feed * (1 + price_rate / 100)), 2),
-            true
+            roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100)), local_currency_config.decimal_places),
+            true,
+            local_currency_config.decimal_places
         );
     } else if (price_rate) {
-        display_price_rate = formatMoney(local_currency_config.currency, price_rate, true);
+        display_price_rate = formatMoney(
+            local_currency_config.currency,
+            price_rate,
+            true,
+            local_currency_config.decimal_places
+        );
     }
 
     if (market_feed && offer_amount && price_rate) {
         display_total = formatMoney(
             local_currency_config.currency,
-            offer_amount * truncateDecimal(parseFloat(market_feed * (1 + price_rate / 100)), 2),
+            offer_amount * roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100))),
             true
         );
     } else if (offer_amount && price_rate) {

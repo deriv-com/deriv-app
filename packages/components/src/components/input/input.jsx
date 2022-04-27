@@ -91,6 +91,7 @@ const Input = React.forwardRef(
                             disabled={disabled}
                             data-lpignore={props.type === 'password' ? undefined : true}
                             id={input_id}
+                            aria-label={label}
                         />
                     )}
                     {trailing_icon &&

@@ -8,6 +8,7 @@ const PaymentMethodCard = ({
     add_payment_method,
     is_add = false,
     is_vertical_ellipsis_visible = true,
+    show_payment_method_name = true,
     label = undefined,
     large,
     medium,
@@ -102,11 +103,18 @@ const PaymentMethodCard = ({
                 )}
             </div>
             <div className='payment-method-card__body'>
-                <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                    {method === 'BankTransfer' || method === 'Other'
-                        ? payment_method?.display_name
-                        : payment_account_name}
-                </Text>
+                {show_payment_method_name && (
+                    <Text color='prominent' size={large ? 'xs' : 'xxs'}>
+                        {method === 'BankTransfer' || method === 'Other'
+                            ? payment_method?.display_name
+                            : payment_account_name}
+                    </Text>
+                )}
+                {!show_payment_method_name && method !== 'BankTransfer' && method !== 'Other' && (
+                    <Text color='prominent' size={large ? 'xs' : 'xxs'}>
+                        {payment_account_name}
+                    </Text>
+                )}
 
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>
                     {payment_bank_name || payment_name}

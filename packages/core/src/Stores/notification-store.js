@@ -363,6 +363,7 @@ export default class NotificationStore extends BaseStore {
     refreshNotifications() {
         this.removeNotifications(true);
         this.removeAllNotificationMessages();
+        this.setClientNotifications();
         this.handleClientNotifications();
     }
 

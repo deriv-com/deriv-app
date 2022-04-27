@@ -113,7 +113,7 @@ const PaymentMethodCard = ({
                 )}
                 {!show_payment_method_name && method !== 'BankTransfer' && method !== 'Other' && (
                     <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                        {method}
+                        {payment_account_name}
                     </Text>
                 )}
 

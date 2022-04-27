@@ -263,14 +263,14 @@ const BinarySocketBase = (() => {
     const paymentAgentDetails = (passthrough, req_id) =>
         deriv_api.send({ paymentagent_details: 1, passthrough, req_id });
 
-    const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code, dry_run = 0 }) =>
+    const paymentAgentWithdraw = ({ amount, currency, dry_run = 0, loginid, verification_code }) =>
         deriv_api.send({
             amount,
             currency,
-            verification_code,
-            paymentagent_withdraw: 1,
             dry_run,
             paymentagent_loginid: loginid,
+            paymentagent_withdraw: 1,
+            verification_code,
         });
 
     const cryptoWithdraw = ({ address, amount, verification_code, dry_run = 0 }) =>
@@ -373,6 +373,8 @@ const BinarySocketBase = (() => {
             name: 'test real labuan financial stp',
         });
 
+    const changeEmail = api_request => deriv_api.send(api_request);
+
     return {
         init,
         openNewConnection,
@@ -459,6 +461,7 @@ const BinarySocketBase = (() => {
         tradingPlatformAccountsList,
         tradingPlatformNewAccount,
         triggerMt5DryRun,
+        changeEmail,
     };
 })();
 

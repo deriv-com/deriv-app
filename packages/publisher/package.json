@@ -27,9 +27,5 @@
     "publish_package": "node ./index.js prepublish && npm publish; node ./index.js postpublish"
   },
   "author": "Deriv.com",
-  "license": "ISC",
-  "devDependencies": {
-    "@babel/eslint-parser": "^7.17.0",
-    "@babel/preset-react": "^7.16.7"
-  }
+  "license": "ISC"
 }

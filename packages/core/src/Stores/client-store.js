@@ -104,7 +104,15 @@ export default class ClientStore extends BaseStore {
         payment_agent_withdraw: '',
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
+        request_email: '',
+        system_email_change: '',
     };
+
+    @observable new_email = {
+        system_email_change: '',
+    };
+
+    @observable account_limits = {};
     @observable account_limits = {};
 
     @observable self_exclusion = {};
@@ -958,27 +966,46 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async accountRealReaction(response) {
         return new Promise(resolve => {
+            let client_accounts;
+            const has_client_accounts = !!LocalStore.get(storage_key);
+
             runInAction(() => {
                 this.is_populating_account_list = true;
             });
-            const client_accounts = JSON.parse(LocalStore.get(storage_key));
-            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
-            BinarySocket.authorize(oauth_token).then(authorize_response => {
-                const new_data = {};
-                new_data.token = oauth_token;
-                new_data.residence = authorize_response.authorize.country;
-                new_data.currency = authorize_response.authorize.currency;
-                new_data.is_virtual = authorize_response.authorize.is_virtual;
-                new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
-                new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
 
-                runInAction(() => (client_accounts[client_id] = new_data));
-                this.setLoginInformation(client_accounts, client_id);
-                WS.authorized.storage.getSettings().then(get_settings_response => {
-                    this.setAccountSettings(get_settings_response.get_settings);
-                    resolve();
+            if (this.is_logged_in && !has_client_accounts) {
+                localStorage.setItem(storage_key, JSON.stringify(this.accounts));
+                LocalStore.set(storage_key, JSON.stringify(this.accounts));
+            }
+
+            try {
+                client_accounts = JSON.parse(LocalStore.get(storage_key));
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.error('JSON parse failed, invalid value (client.accounts): ', error);
+            }
+
+            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
+            BinarySocket.authorize(oauth_token)
+                .then(authorize_response => {
+                    const new_data = {};
+                    new_data.token = oauth_token;
+                    new_data.residence = authorize_response.authorize.country;
+                    new_data.currency = authorize_response.authorize.currency;
+                    new_data.is_virtual = authorize_response.authorize.is_virtual;
+                    new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
+                    new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
+                    runInAction(() => (client_accounts[client_id] = new_data));
+                    this.setLoginInformation(client_accounts, client_id);
+                    WS.authorized.storage.getSettings().then(get_settings_response => {
+                        this.setAccountSettings(get_settings_response.get_settings);
+                        resolve();
+                    });
+                })
+                .catch(error => {
+                    // eslint-disable-next-line no-console
+                    console.error('Something went wrong while registering a real account: ', error);
                 });
-            });
         });
     }
 
@@ -1816,6 +1843,16 @@ export default class ClientStore extends BaseStore {
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
             this.fetchResidenceList(); // Prefetch for use in account signup process
+        }
+    }
+
+    @action.bound
+    setNewEmail(email, action) {
+        this.new_email[action] = email;
+        if (email) {
+            LocalStore.set(`new_email.${action}`, email);
+        } else {
+            LocalStore.remove(`new_email.${action}`);
         }
     }
 

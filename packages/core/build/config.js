@@ -50,6 +50,10 @@ const copyConfig = base => {
             to: 'trader',
         },
         {
+            from: path.resolve(__dirname, '../node_modules/@deriv/cfd/dist/cfd'),
+            to: 'cfd',
+        },
+        {
             from: path.resolve(__dirname, '../node_modules/@deriv/appstore/dist/appstore'),
             to: 'appstore',
         },
@@ -87,7 +91,7 @@ const copyConfig = base => {
             to: 'favicon.ico',
             toType: 'file',
         },
-        { from: path.resolve(__dirname, '../src/public/images/favicons/'), to: 'public/images/favicons' },
+        { from: path.resolve(__dirname, '../src/public/images/favicons/'), to: 'public/images/favicons/' },
         {
             from: path.resolve(__dirname, '../src/public/images/common/static_images/'),
             to: 'public/images/common',
@@ -132,6 +136,8 @@ const generateSWConfig = is_release => ({
         /sitemap\.xml$/,
         /robots\.txt$/,
         /manifest\.json$/,
+        /^public\/images\/favicons\//,
+        /^favicon\.ico$/,
         /^apple-app-site-association/,
         /^assetlinks.json/,
         /^.well-known\//,
@@ -180,13 +186,33 @@ const htmlInjectConfig = () => ({
             },
         },
         {
-            path: 'public/images/favicons',
-            glob: '*',
-            globPath: path.resolve(__dirname, '../src/public/images/favicons'),
+            path: 'favicon.ico',
             attributes: {
                 rel: 'icon',
             },
         },
+        ...[
+            { name: 'favicon', rel: 'icon', size: '16' },
+            { name: 'favicon', rel: 'icon', size: '32' },
+            { name: 'favicon', rel: 'icon', size: '96' },
+            { name: 'favicon', rel: 'icon', size: '160' },
+            { name: 'favicon', rel: 'icon', size: '192' },
+            { name: 'apple-touch-icon', size: '57' },
+            { name: 'apple-touch-icon', size: '60' },
+            { name: 'apple-touch-icon', size: '72' },
+            { name: 'apple-touch-icon', size: '76' },
+            { name: 'apple-touch-icon', size: '114' },
+            { name: 'apple-touch-icon', size: '120' },
+            { name: 'apple-touch-icon', size: '144' },
+            { name: 'apple-touch-icon', size: '152' },
+            { name: 'apple-touch-icon', size: '180' },
+        ].map(({ name, rel, size }) => ({
+            path: `public/images/favicons/${name}-${size}.png`,
+            attributes: {
+                rel: rel || name,
+                sizes: `${size}x${size}`,
+            },
+        })),
     ],
     append: false,
 });

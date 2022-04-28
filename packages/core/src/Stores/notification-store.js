@@ -173,11 +173,12 @@ export default class NotificationStore extends BaseStore {
             accounts,
             has_iom_account,
             has_malta_account,
+            isAccountOfType,
             is_eu,
             is_identity_verification_needed,
             is_logged_in,
             is_tnc_needed,
-            isAccountOfType,
+            is_uk,
             landing_company_shortcode,
             loginid,
             obj_total_balance,
@@ -212,6 +213,10 @@ export default class NotificationStore extends BaseStore {
             }
 
             if (loginid !== LocalStore.get('active_loginid')) return;
+
+            if (is_uk && malta_account) {
+                this.addNotificationMessage(this.client_notifications.close_uk_account);
+            }
 
             if (
                 (has_iom_account || has_malta_account) &&
@@ -358,6 +363,7 @@ export default class NotificationStore extends BaseStore {
     refreshNotifications() {
         this.removeNotifications(true);
         this.removeAllNotificationMessages();
+        this.setClientNotifications();
         this.handleClientNotifications();
     }
 
@@ -525,6 +531,23 @@ export default class NotificationStore extends BaseStore {
                 img_src: getUrlBase('/public/images/common/close_account_banner.png'),
                 img_alt: 'close mx mlt account',
                 type: 'close_mx_mlt',
+            },
+            close_uk_account: {
+                key: 'close_uk_account',
+                header: localize('Your account is scheduled to be closed'),
+                message: localize('Please withdraw all your funds.'),
+                action: {
+                    text: localize('Learn more'),
+                    onClick: () => {
+                        ui.showCloseUKAccountPopup(true);
+                        this.removeNotificationByKey({ key: this.client_notifications.close_uk_account.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.close_uk_account.key,
+                            should_show_again: false,
+                        });
+                    },
+                },
+                type: 'danger',
             },
             currency: {
                 key: 'currency',

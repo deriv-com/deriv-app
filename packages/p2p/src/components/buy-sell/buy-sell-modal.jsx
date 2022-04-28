@@ -85,7 +85,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         <Icon
                             icon='IcArrowLeftBold'
                             onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
-                            className="buy-sell__modal-icon"
+                            className='buy-sell__modal-icon'
                         />
                         {localize('Add payment method')}
                     </>

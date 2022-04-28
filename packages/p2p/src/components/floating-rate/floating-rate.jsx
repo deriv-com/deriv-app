@@ -22,10 +22,7 @@ const FloatingRate = ({
 }) => {
     const { general_store } = useStores();
     const { name, value, required } = props;
-    const { decimal_places } = general_store.client.local_currency_config;
-    const market_feed = value
-        ? roundOffDecimal(parseFloat(exchange_rate * (1 + value / 100)), decimal_places)
-        : exchange_rate;
+    const market_feed = value ? roundOffDecimal(parseFloat(exchange_rate * (1 + value / 100))) : exchange_rate;
 
     const onBlurHandler = e => {
         let float_rate = e.target.value;
@@ -89,8 +86,7 @@ const FloatingRate = ({
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
-                        1 {fiat_currency} = {formatMoney(local_currency, exchange_rate, true, decimal_places)}{' '}
-                        {local_currency}
+                        1 {fiat_currency} = {formatMoney(local_currency, exchange_rate, true)} {local_currency}
                     </Text>
                 </div>
             </section>
@@ -114,8 +110,7 @@ const FloatingRate = ({
                     line_height='xs'
                     className='floating-rate__hint'
                 >
-                    {localize('Your rate is')} = {formatMoney(local_currency, market_feed, true, decimal_places)}{' '}
-                    {local_currency}
+                    {localize('Your rate is')} = {formatMoney(local_currency, market_feed, true)} {local_currency}
                 </Text>
             )}
         </div>

@@ -20,17 +20,11 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     if (market_feed && price_rate) {
         display_price_rate = formatMoney(
             local_currency_config.currency,
-            roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100)), local_currency_config.decimal_places),
-            true,
-            local_currency_config.decimal_places
+            roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100))),
+            true
         );
     } else if (price_rate) {
-        display_price_rate = formatMoney(
-            local_currency_config.currency,
-            price_rate,
-            true,
-            local_currency_config.decimal_places
-        );
+        display_price_rate = formatMoney(local_currency_config.currency, price_rate, true);
     }
 
     if (market_feed && offer_amount && price_rate) {

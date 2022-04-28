@@ -1,28 +1,18 @@
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Icon, Popover, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
 import WalletCard from 'Components/wallet';
-import { useStores } from 'Stores';
-import createWalletProvider from './create-wallet-provider';
 
 type TProps = {
     is_dark_mode_on: boolean;
     should_show_fiat: boolean;
+    wallets: { getTitle: () => string; content: string[]; popover_text: () => string }[];
+    
 };
 
-const CreateWallet = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
-    const { wallet_store } = useStores();
-
-    React.useEffect(() => {
-        wallet_store.getWalletNames();
-    }, []);
-
-    const wallets = should_show_fiat
-        ? createWalletProvider(wallet_store.wallet_names).fiat_wallets
-        : createWalletProvider(wallet_store.wallet_names).wallets;
+const CreateWallet = ({ is_dark_mode_on, should_show_fiat, wallets}: TProps) => {
 
     const [selected_wallet, setSeletedWallet] = React.useState('');
 
@@ -126,4 +116,4 @@ const CreateWallet = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
     );
 };
 
-export default observer(CreateWallet);
+export default CreateWallet;

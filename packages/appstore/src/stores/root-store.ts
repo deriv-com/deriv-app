@@ -7,7 +7,7 @@ export default class RootStore {
     public client: any;
     public common: any;
     public ui: any;
-    public wallet_store: any;
+    public wallet_store: WalletStore;
 
     public constructor(core_store: any) {
         this.config = new ConfigStore(this);

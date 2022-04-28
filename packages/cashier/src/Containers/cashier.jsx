@@ -54,7 +54,7 @@ const Cashier = ({
     }, [toggleCashier]);
     React.useEffect(() => {
         (async () => {
-            await WS.wait('authorize');
+            await WS?.wait('authorize');
             if (is_logged_in) {
                 onMount();
                 setAccountSwitchListener();

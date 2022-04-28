@@ -60,7 +60,7 @@ export default class WalletStore extends BaseStore {
         };
     }
 
-    @action 
+    @action
     onMount() {
         this.getWalletNames();
     }
@@ -82,7 +82,7 @@ export default class WalletStore extends BaseStore {
             });
     }
 
-    @action 
+    @action
     onUnmount() {
         this.wallet_names = {};
     }

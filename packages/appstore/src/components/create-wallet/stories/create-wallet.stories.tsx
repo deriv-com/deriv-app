@@ -76,11 +76,11 @@ const Template: Story<CreateWalletProps> = args => <CreateWallet {...args} />;
 export const CreateWalletTemplate = Template.bind({});
 CreateWalletTemplate.args = {
     wallets,
-    should_show_fiat: false
+    should_show_fiat: false,
 };
 
 export const CreateWalletTemplateWithShouldShowFiat = Template.bind({});
 CreateWalletTemplateWithShouldShowFiat.args = {
-    wallets:fiat_wallets,
-    should_show_fiat: true
+    wallets: fiat_wallets,
+    should_show_fiat: true,
 };

@@ -9,11 +9,9 @@ type TProps = {
     is_dark_mode_on: boolean;
     should_show_fiat: boolean;
     wallets: { getTitle: () => string; content: string[]; popover_text: () => string }[];
-    
 };
 
-const CreateWallet = ({ is_dark_mode_on, should_show_fiat, wallets}: TProps) => {
-
+const CreateWallet = ({ is_dark_mode_on, should_show_fiat, wallets }: TProps) => {
     const [selected_wallet, setSeletedWallet] = React.useState('');
 
     const onWalletClicked = (wallet: string) => {

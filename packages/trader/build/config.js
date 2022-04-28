@@ -6,7 +6,7 @@ const { IS_RELEASE } = require('./constants');
 const generateSWConfig = () => ({
     importWorkboxFrom: 'local',
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/],
+    exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^public\/images\/favicons\//, /^favicon\.ico$/],
     skipWaiting: true,
     clientsClaim: true,
 });
@@ -24,20 +24,6 @@ const htmlOutputConfig = () => ({
           },
 });
 
-const htmlInjectConfig = () => ({
-    links: [
-        {
-            path: 'public/images/favicons',
-            glob: '*',
-            globPath: path.resolve(__dirname, '../src/public/images/favicons'),
-            attributes: {
-                rel: 'icon',
-            },
-        },
-    ],
-    append: false,
-});
-
 const cssConfig = () => ({
     filename: 'trader/css/trader.main.[contenthash].css',
     chunkFilename: 'trader/css/trader.[name].[contenthash].css',
@@ -52,7 +38,6 @@ const stylelintConfig = () => ({
 
 module.exports = {
     htmlOutputConfig,
-    htmlInjectConfig,
     cssConfig,
     stylelintConfig,
     generateSWConfig,

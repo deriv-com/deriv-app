@@ -65,11 +65,13 @@ const EditAdForm = () => {
         my_ads_store.setEditAdFormError('');
 
         if (payment_method_names && !payment_method_details) {
+            const selected = [];
             payment_method_names?.forEach(pm => {
                 my_profile_store.getPaymentMethodValue(pm);
-                selected_methods.push(my_profile_store.payment_method_value);
+                selected.push(my_profile_store.payment_method_value);
                 my_ads_store.payment_method_names.push(my_profile_store.payment_method_value);
             });
+            setSelectedMethods(selected);
         }
         if (payment_method_details) {
             Object.entries(payment_method_details)?.map(pm => {

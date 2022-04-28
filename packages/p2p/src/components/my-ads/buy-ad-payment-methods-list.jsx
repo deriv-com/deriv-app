@@ -9,12 +9,15 @@ import PropTypes from 'prop-types';
 const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
     const [selected_edit_method, setSelectedEditMethod] = useState();
-    const [payment_methods_list, setPaymentMethodsList] = useState(my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value)));
+    const [payment_methods_list, setPaymentMethodsList] = useState(
+        my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
+    );
 
     useEffect(() => {
-        console.log('useeffect')
-        setPaymentMethodsList(my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value)));
-    }, [selected_methods])
+        setPaymentMethodsList(
+            my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
+        );
+    }, [selected_methods]);
 
     const onClickDeletePaymentMethodItem = value => {
         if (value) {
@@ -38,24 +41,24 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
             edited_methods[index] = value;
             my_ads_store.payment_method_names[index] = value;
             setSelectedMethods(edited_methods);
-            setPaymentMethodsList([...payment_methods_list.filter(payment_method => payment_method.value !== value), selected_edit_method]);
+            setPaymentMethodsList([
+                ...payment_methods_list.filter(payment_method => payment_method.value !== value),
+                selected_edit_method,
+            ]);
         }
     };
 
     const onClickPaymentMethodItem = value => {
-        console.log('on click payment method item');
         if (value && !my_ads_store.payment_method_names.includes(value)) {
             if (my_ads_store.payment_method_names.length < 3) {
                 my_ads_store.payment_method_names.push(value);
                 setSelectedMethods([...selected_methods, value]);
-                setPaymentMethodsList(
-                    payment_methods_list.filter(payment_method => payment_method.value !== value)
-                );
+                setPaymentMethodsList(payment_methods_list.filter(payment_method => payment_method.value !== value));
             }
         }
     };
 
-    const checkValidPaymentMethod = (payment_method_text) => {
+    const checkValidPaymentMethod = payment_method_text => {
         let match = false;
         let id;
         my_profile_store.payment_methods_list.map(({ value, text }) => {
@@ -65,7 +68,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
             }
         });
         return match ? id : false;
-    }
+    };
 
     if (selected_methods?.length > 0) {
         return (
@@ -93,7 +96,6 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                             }}
                                             onBlur={e => {
                                                 e.preventDefault();
-                                                console.log('on blur')
                                                 const value = checkValidPaymentMethod(e.target.value);
                                                 if (e.target.value === '') {
                                                     setFieldValue('payment_method', method);
@@ -127,7 +129,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                         </Formik>
                     );
                 })}
-                {my_ads_store.payment_method_names.length < 3  && payment_methods_list.length > 0 && (
+                {my_ads_store.payment_method_names.length < 3 && payment_methods_list.length > 0 && (
                     <Formik enableReinitialize initialValues={{ payment_method: '' }}>
                         {({ setFieldValue }) => (
                             <Field name='payment_method'>
@@ -190,11 +192,11 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
             )}
         </Formik>
     );
-}
+};
 
 BuyAdPaymentMethodsList.propTypes = {
     selected_methods: PropTypes.array,
-    setSelectedMethods: PropTypes.func
-}
+    setSelectedMethods: PropTypes.func,
+};
 
 export default observer(BuyAdPaymentMethodsList);

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize } from 'Components/i18next';
-import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list'
+import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list';
 
 const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
@@ -29,15 +29,6 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
             setSelectedSellMethods(selected_sell_methods.filter(i => i !== payment_method.ID));
         }
     };
-
-    const checkValidPaymentMethod = (payment_method_text) => {
-        my_profile_store.payment_methods_list.map(({ value, text }) => {
-            if (text === payment_method_text) {
-                return value;
-            }
-        });
-        return false;
-    }
 
     React.useEffect(() => {
         return () => {
@@ -92,7 +83,9 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
         );
     }
 
-    return <BuyAdPaymentMethodsList selected_methods={selected_buy_methods} setSelectedMethods={setSelectedBuyMethods} />
+    return (
+        <BuyAdPaymentMethodsList selected_methods={selected_buy_methods} setSelectedMethods={setSelectedBuyMethods} />
+    );
 };
 
 export default observer(CreateAdFormPaymentMethods);

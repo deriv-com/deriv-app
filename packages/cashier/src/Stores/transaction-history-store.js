@@ -69,7 +69,9 @@ export default class TransactionHistoryStore {
 
     @action.bound
     sortCryptoTransactions() {
-        this.crypto_transactions = this.crypto_transactions.sort((a, b) => b.submit_date - a.submit_date);
+        this.crypto_transactions.replace(
+            this.crypto_transactions.slice().sort((a, b) => b.submit_date - a.submit_date)
+        );
     }
 
     @action.bound

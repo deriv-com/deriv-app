@@ -59,15 +59,15 @@ const Tabs = ({
         if (should_update_hash) {
             // if hash is in url, find which tab index correlates to it
             const hash = location.hash.slice(1);
-            const hash_index = children.findIndex(child => child && child.props && child.props['data-hash'] === hash);
+            const hash_index = children.findIndex(child => child && child.props && child.props.hash === hash);
             const has_hash = hash_index > -1;
 
             if (has_hash) {
                 initial_index_to_show = hash_index;
             } else {
-                // if no hash is in url but component has passed data-hash prop, set hash of the tab shown
+                // if no hash is in url but component has passed hash prop, set hash of the tab shown
                 const child_props = children[initial_index_to_show].props;
-                const current_id = child_props && child_props['data-hash'];
+                const current_id = child_props && child_props.hash;
                 if (current_id) {
                     pushHash(current_id);
                 }
@@ -97,7 +97,7 @@ const Tabs = ({
 
     const onClickTabItem = index => {
         if (should_update_hash) {
-            const hash = children[index].props['data-hash'];
+            const hash = children[index].props.hash;
             pushHash(hash);
         }
         setActiveTabIndex(index);

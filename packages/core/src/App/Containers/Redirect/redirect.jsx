@@ -15,6 +15,9 @@ const Redirect = ({
     setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
+    setNewEmail,
+    toggleResetEmailModal,
+    toggleUpdateEmailModal,
 }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
@@ -22,6 +25,8 @@ const Redirect = ({
     const { is_appstore } = React.useContext(PlatformContext);
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
+
+    setNewEmail(url_params.get('email'), url_params.get('action'));
 
     switch (url_params.get('action')) {
         case 'signup': {
@@ -39,6 +44,14 @@ const Redirect = ({
         }
         case 'reset_password': {
             toggleResetPasswordModal(true);
+            break;
+        }
+        case 'request_email': {
+            toggleResetEmailModal(true);
+            break;
+        }
+        case 'system_email_change': {
+            toggleUpdateEmailModal(true);
             break;
         }
         case 'trading_platform_mt5_password_reset':
@@ -151,6 +164,9 @@ Redirect.propTypes = {
     setVerificationCode: PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
+    setNewEmail: PropTypes.func,
+    toggleResetEmailModal: PropTypes.func,
+    toggleUpdateEmailModal: PropTypes.func,
 };
 
 export default withRouter(
@@ -163,5 +179,8 @@ export default withRouter(
         setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
+        setNewEmail: client.setNewEmail,
+        toggleResetEmailModal: ui.toggleResetEmailModal,
+        toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
     }))(Redirect)
 );

@@ -48,7 +48,7 @@ const CreateAdAddPaymentMethodModal = () => {
                 is_flex
                 is_modal_open={my_ads_store.should_show_add_payment_method_modal}
                 page_header_className='buy-sell__modal-header'
-                page_header_text={localize('Choose payment method')}
+                page_header_text={localize('Add payment method')}
                 pageHeaderReturnFn={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
             >
                 <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />

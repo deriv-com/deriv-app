@@ -101,13 +101,6 @@
                 color: var(--text-less-prominent);
             }
         }
-        &-line {
-            border-bottom: 1px solid var(--general-section-1);
-            position: relative;
-            width: 83%;
-            margin-left: 17%;
-            top: -28px;
-        }
         @include mobile {
             &-header {
                 position: relative;

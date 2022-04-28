@@ -84,6 +84,6 @@ export default class WalletStore extends BaseStore {
 
     @action
     onUnmount() {
-        this.wallet_names = {};
+        this.wallet_names = null;
     }
 }

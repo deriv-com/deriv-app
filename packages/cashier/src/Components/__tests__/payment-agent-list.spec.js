@@ -10,7 +10,7 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('Components/Error/error', () => () => <div>PaymentAgentWithdrawError</div>);
+jest.mock('Components/Error/payment-agent-withdrawal-locked', () => () => <div>PaymentAgentWithdrawalLocked</div>);
 jest.mock('Components/Email/email-sent', () => () => <div>The email has been sent!</div>);
 jest.mock('Components/Form/payment-agent-withdraw-form', () => () => <div>Payment agent withdraw form</div>);
 jest.mock('Components/Form/payment-agent-deposit', () => () => <div>Payment agent deposit</div>);
@@ -41,7 +41,7 @@ describe('<PaymentAgentList />', () => {
         return render(<Router history={history}>{component}</Router>);
     };
 
-    it('should show proper messages, tabs and titles in Deposit tab', () => {
+    it('should show proper messages', () => {
         renderWithRouter(<PaymentAgentList {...props} />);
 
         expect(screen.getByText('Payment agent deposit')).toBeInTheDocument();
@@ -59,15 +59,14 @@ describe('<PaymentAgentList />', () => {
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
-    it('should show withdrawal error message in Withdrawal tab', () => {
+    it('should show PaymentAgentWithdrawalLocked message in Withdrawal tab, when an error is occured', () => {
         const error = {
             code: 'error code',
-            onClickButton: jest.fn(),
         };
 
         renderWithRouter(<PaymentAgentList {...props} error={error} payment_agent_active_tab_index={1} />);
 
-        expect(screen.getByText('PaymentAgentWithdrawError')).toBeInTheDocument();
+        expect(screen.getByText('PaymentAgentWithdrawalLocked')).toBeInTheDocument();
     });
 
     it('should show "The email has been sent!" message in Withdrawal tab', () => {

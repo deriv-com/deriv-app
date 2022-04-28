@@ -67,8 +67,8 @@ const CreateAdAddPaymentMethodModal = () => {
                     <Icon
                         icon='icArrowLeftBold'
                         onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
+                        className="p2p-my-ads__modal-icon"
                     />
-                    &nbsp;
                     {localize('Choose payment method')}
                 </>
             }

@@ -85,8 +85,9 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         <Icon
                             icon='IcArrowLeftBold'
                             onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
+                            className="buy-sell__modal-icon"
                         />
-                        &nbsp;{localize('Add payment method')}
+                        {localize('Add payment method')}
                     </>
                 );
             }
@@ -99,7 +100,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     };
 
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
-    const modal_title = generateModalTitle();
 
     if (isMobile()) {
         return (
@@ -110,7 +110,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 is_flex
                 is_modal_open={should_show_popup}
                 page_header_className='buy-sell__modal-header'
-                page_header_text={modal_title}
+                page_header_text={generateModalTitle()}
                 pageHeaderReturnFn={onCancel}
                 page_footer_parent={my_profile_store.should_show_add_payment_method_form ? '' : page_footer_parent}
                 renderPageFooterChildren={() =>
@@ -152,7 +152,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             height={table_type === buy_sell.BUY ? '400px' : '649px'}
             width='456px'
             is_open={should_show_popup}
-            title={modal_title}
+            title={generateModalTitle()}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}
         >

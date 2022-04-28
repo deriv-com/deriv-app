@@ -163,25 +163,5 @@ module.exports = {
                 },
             },
         },
-        // {
-
-        //     files: ['*.ts', '*.tsx'],
-        //     parser: '@typescript-eslint/parser',
-        //     parserOptions: {
-        //         babelOptions: {
-        //             presets: ['@babel/preset-react', '@babel/preset-typescript'],
-        //             plugins: [
-        //                 ['@babel/plugin-proposal-decorators', { legacy: true }],
-        //                 ['@babel/plugin-proposal-class-properties', { loose: true }],
-        //                 '@babel/plugin-proposal-export-default-from',
-        //                 '@babel/plugin-proposal-object-rest-spread',
-        //                 '@babel/plugin-proposal-export-namespace-from',
-        //                 '@babel/plugin-syntax-dynamic-import',
-        //                 '@babel/plugin-proposal-optional-chaining',
-        //                 '@babel/plugin-proposal-nullish-coalescing-operator',
-        //             ],
-        //         },
-        //     },
-        // },
     ],
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react-lite';
 import { Autocomplete, Icon } from '@deriv/components';
@@ -8,12 +8,12 @@ import PropTypes from 'prop-types';
 
 const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
-    const [selected_edit_method, setSelectedEditMethod] = useState();
-    const [payment_methods_list, setPaymentMethodsList] = useState(
+    const [selected_edit_method, setSelectedEditMethod] = React.useState();
+    const [payment_methods_list, setPaymentMethodsList] = React.useState(
         my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
     );
 
-    useEffect(() => {
+    React.useEffect(() => {
         setPaymentMethodsList(
             my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
         );
@@ -72,7 +72,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
 
     if (selected_methods?.length > 0) {
         return (
-            <>
+            <React.Fragment>
                 {selected_methods.map((payment_method, key) => {
                     const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
                     const payment_method_icon = method.replace(' ', '');
@@ -159,7 +159,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                         )}
                     </Formik>
                 )}
-            </>
+            </React.Fragment>
         );
     }
 

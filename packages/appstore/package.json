@@ -30,7 +30,7 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
-        "@deriv/ui": "^0.0.3",
+        "@deriv/ui": "^0.0.5",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "mobx": "^5.15.7",

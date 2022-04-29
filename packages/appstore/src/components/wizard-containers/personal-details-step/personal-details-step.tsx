@@ -3,16 +3,21 @@ import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import { FormikValues } from 'formik';
 import { personalDetailsConfig, PersonalDetails } from '@deriv/account';
-import { MainComponentProps } from '@deriv/ui';
+import { Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
-const PersonalDetailsStep = ({ onSubmit }: MainComponentProps) => {
+type PersonalDetailsStepProps = {
+    onUpdateState: (values: any) => void;
+};
+
+const PersonalDetailsStep = ({ onUpdateState }: PersonalDetailsStepProps) => {
     const { client } = useStores();
     const [is_submit_enabled, setIsSubmitEnabled] = React.useState(false);
     const formik_ref = React.useRef<FormikValues>(null);
 
     React.useEffect(() => {
         if (is_submit_enabled) {
-            onSubmit(formik_ref.current?.values);
+            onUpdateState(formik_ref.current?.values);
         }
     }, [is_submit_enabled]);
 
@@ -33,12 +38,22 @@ const PersonalDetailsStep = ({ onSubmit }: MainComponentProps) => {
     const Body = personal_details_config.body;
 
     return (
-        <Body
-            value={personal_details_config.form_value}
-            onSubmitEnabledChange={setIsSubmitEnabled}
-            selected_step_ref={formik_ref}
-            {...personal_details_config.props}
-        />
+        <div className='wizard-step'>
+            <Text className='wizard-step__header' as='h5' weight='bold' size='m'>
+                {localize('Personal details')}
+            </Text>
+            <Text className='wizard-step__subheader' as='p' size='xs'>
+                {localize(
+                    'Please provide your information for verification purposes. If you give us inaccurate information, you may be unable to make deposits or withdrawals.'
+                )}
+            </Text>
+            <Body
+                value={personal_details_config.form_value}
+                onSubmitEnabledChange={setIsSubmitEnabled}
+                selected_step_ref={formik_ref}
+                {...personal_details_config.props}
+            />
+        </div>
     );
 };
 

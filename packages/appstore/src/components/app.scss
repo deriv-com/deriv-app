@@ -1,3 +1,17 @@
 .dw-dashboard {
     height: 100%;
 }
+
+.wizard-step {
+    &__header {
+        margin-bottom: 2.4rem;
+    }
+    &__subheader {
+        margin-bottom: 2.4rem;
+        padding-right: 1.2rem;
+    }
+
+    .details-form {
+        padding-left: 0px;
+    }
+}

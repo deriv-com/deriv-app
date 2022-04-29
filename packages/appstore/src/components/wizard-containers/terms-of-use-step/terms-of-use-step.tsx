@@ -3,16 +3,21 @@ import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import { FormikValues } from 'formik';
 import { termsOfUseConfig, TermsOfUse } from '@deriv/account';
-import { MainComponentProps } from '@deriv/ui';
+import { Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
-const TermsOfUseStep = ({ onSubmit }: MainComponentProps) => {
+type TermsOfUseStepProps = {
+    onUpdateState: (values: any) => void;
+};
+
+const TermsOfUseStep = ({ onUpdateState }: TermsOfUseStepProps) => {
     const { client } = useStores();
     const [is_submit_enabled, setIsSubmitEnabled] = React.useState(false);
     const formik_ref = React.useRef<FormikValues>(null);
 
     React.useEffect(() => {
         if (is_submit_enabled) {
-            onSubmit(formik_ref.current?.values);
+            onUpdateState(formik_ref.current?.values);
         }
     }, [is_submit_enabled]);
 
@@ -33,12 +38,17 @@ const TermsOfUseStep = ({ onSubmit }: MainComponentProps) => {
     const Body = terms_of_use_config.body;
 
     return (
-        <Body
-            value={terms_of_use_config.form_value}
-            onSubmitEnabledChange={setIsSubmitEnabled}
-            selected_step_ref={formik_ref}
-            {...terms_of_use_config.props}
-        />
+        <div className='wizard-step'>
+            <Text className='wizard-step__header' as='h5' weight='bold' size='m'>
+                {localize('Terms of use')}
+            </Text>
+            <Body
+                value={terms_of_use_config.form_value}
+                onSubmitEnabledChange={setIsSubmitEnabled}
+                selected_step_ref={formik_ref}
+                {...terms_of_use_config.props}
+            />
+        </div>
     );
 };
 

@@ -12,4 +12,9 @@
             align-items: center;
         }
     }
+    &__right-panel {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
 }

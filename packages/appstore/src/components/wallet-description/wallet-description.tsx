@@ -2,8 +2,8 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import wallet_descriptions from 'Constants/wallet-description';
 
-type WalletDescriptionProps = {
-    selected_wallet: string;
+export type WalletDescriptionProps = {
+    selected_wallet?: string;
 };
 
 const WalletDescription = ({ selected_wallet }: WalletDescriptionProps) => {

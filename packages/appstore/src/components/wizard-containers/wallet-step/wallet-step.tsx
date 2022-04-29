@@ -2,11 +2,11 @@ import React from 'react';
 import CreateWallet from 'Components/create-wallet';
 
 type WalletStepProps = {
-    selected_wallet: string;
+    wallet_type?: string;
     onSelect: (selected_wallet: string) => void;
 };
 
-const WalletStep = ({ selected_wallet, onSelect }: WalletStepProps) => {
+const WalletStep = ({ wallet_type, onSelect }: WalletStepProps) => {
     const [should_show_fiat, setShouldShowFiat] = React.useState(false);
 
     return (
@@ -15,7 +15,7 @@ const WalletStep = ({ selected_wallet, onSelect }: WalletStepProps) => {
             should_show_fiat={should_show_fiat}
             setShouldShowFiat={setShouldShowFiat}
             setSeletedWallet={onSelect}
-            selected_wallet={selected_wallet}
+            selected_wallet={wallet_type}
         />
     );
 };

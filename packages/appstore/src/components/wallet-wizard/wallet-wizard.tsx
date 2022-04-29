@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { DesktopWizard } from '@deriv/ui';
 import { localize } from '@deriv/translations';
@@ -17,68 +17,26 @@ type WalletWizardProps = {
     close: () => void;
 };
 
-// const right_panel_content = {
-//     upper_block: SelectedWallet,
-//     middle_block: WalletDescription,
-// };
-// const steps: StepData[] = [
-//     {
-//         step_title: localize('Wallet'),
-//         main_content: { component: WalletStep },
-//         right_panel_content,
-//     },
-//     {
-//         step_title: localize('Currency'),
-//         main_content: { component: TempMainContent, header: localize("Choose your wallet's currency") },
-//         right_panel_content,
-//     },
-//     {
-//         step_title: localize('Personal details'),
-//         main_content: {
-//             component: PersonalDetailsStep,
-//             header: localize('Personal details'),
-//             subheader: localize(
-//                 'Please provide your information for verification purposes. If you give us inaccurate information, you may be unable to make deposits or withdrawals.'
-//             ),
-//         },
-//         right_panel_content,
-//     },
-//     {
-//         step_title: localize('Address'),
-//         main_content: {
-//             component: AddressDetailsStep,
-//             header: localize('Address information'),
-//             subheader: localize(
-//                 'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
-//             ),
-//         },
-//         right_panel_content,
-//     },
-//     {
-//         step_title: localize('Terms of use'),
-//         main_content: { component: TermsOfUseStep, header: localize('Terms of use') },
-//         right_panel_content,
-//     },
-//     {
-//         step_title: localize('Complete'),
-//         main_content: { component: CompletedStep, header: localize('Completed') },
-//         is_fullwidth: true,
-//         submit_button_name: localize('Link with an app'),
-//         cancel_button_name: localize('I understand'),
-//     },
-// ];
-
 type CreateWalletState = {
-    selected_wallet?: string;
+    wallet_type?: string;
     [x: string]: any;
 };
 
 const WalletWizard = ({ close }: WalletWizardProps) => {
-    const [create_wallet_state, setCreateWalletState] = React.useState<CreateWalletState>({});
+    const [create_wallet_state, setCreateWalletState] = useState<CreateWalletState>({});
+    const [current_step_key, setCurrentStepKey] = useState<string>();
 
     const updateState = (new_state: Partial<CreateWalletState>) => {
         setCreateWalletState({ ...create_wallet_state, ...new_state });
     };
+
+    const onChangeStep = (_current_step: number, _current_step_key?: string) => {
+        setCurrentStepKey(_current_step_key);
+    };
+
+    const is_final_step = current_step_key === 'complete_step';
+
+    const { wallet_type } = create_wallet_state;
 
     return (
         <div className='wallet-wizard'>
@@ -86,16 +44,37 @@ const WalletWizard = ({ close }: WalletWizardProps) => {
                 onComplete={() => null}
                 onClose={() => close()}
                 wizard_title={localize("Let's get you a new wallet.")}
+                lock_final_step
+                primary_button_label={is_final_step ? 'Deposit' : 'Next'}
+                secondary_button_label={is_final_step ? 'Maybe later' : 'Back'}
+                onChangeStep={onChangeStep}
             >
-                <DesktopWizard.Step>
-                    <WalletStep
-                        selected_wallet={create_wallet_state.wallet}
-                        onSelect={wallet => updateState({ wallet })}
-                    />
+                <DesktopWizard.Step title='Wallet' is_submit_disabled={!wallet_type}>
+                    <WalletStep wallet_type={wallet_type} onSelect={type => updateState({ wallet_type: type })} />
+                </DesktopWizard.Step>
+                <DesktopWizard.Step title='Currency' is_disabled>
+                    <div />
+                </DesktopWizard.Step>
+                <DesktopWizard.Step title='Personal details'>
+                    <PersonalDetailsStep onUpdateState={updateState} />
+                </DesktopWizard.Step>
+                <DesktopWizard.Step title='Address details'>
+                    <AddressDetailsStep onUpdateState={updateState} />
+                </DesktopWizard.Step>
+                <DesktopWizard.Step
+                    title='Terms of use'
+                    is_submit_disabled={!(create_wallet_state.agreed_tos && create_wallet_state.agreed_tnc)}
+                >
+                    <TermsOfUseStep onUpdateState={updateState} />
+                </DesktopWizard.Step>
+                <DesktopWizard.Step step_key='complete_step' title='Complete' is_fullwidth>
+                    <CompletedStep selected_wallet={wallet_type as string} />
                 </DesktopWizard.Step>
                 <DesktopWizard.RightPanel>
-                    <SelectedWallet />
-                    <WalletDescription />
+                    <div className='wallet-wizard__right-panel'>
+                        <SelectedWallet selected_wallet={wallet_type} />
+                        <WalletDescription selected_wallet={wallet_type} />
+                    </div>
                 </DesktopWizard.RightPanel>
             </DesktopWizard>
         </div>

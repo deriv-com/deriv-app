@@ -46,9 +46,7 @@ const AppWalletModalBody = ({
     message_type,
     wallet_name,
 }: AppWalletModalBodyProps) => {
-    const wallet_icon_name = dark
-        ? `${wallets[`${wallet_name}`].icon}Dark`
-        : `${wallets[`${wallet_name}`].icon}Light`;
+    const wallet_icon_name = dark ? `${wallets[`${wallet_name}`].icon}Dark` : `${wallets[`${wallet_name}`].icon}Light`;
     return (
         <DialogContent>
             <div className={classNames('modal-dialog-content', dark && 'modal-dialog-content-dark')}>

@@ -47,8 +47,8 @@ const AppWalletModalBody = ({
     wallet_name,
 }: AppWalletModalBodyProps) => {
     const wallet_icon_name = dark
-        ? `${wallets[`${wallet_name}`]['icon']}Dark`
-        : `${wallets[`${wallet_name}`]['icon']}Light`;
+        ? `${wallets[`${wallet_name}`].icon}Dark`
+        : `${wallets[`${wallet_name}`].icon}Light`;
     return (
         <DialogContent>
             <div className={classNames('modal-dialog-content', dark && 'modal-dialog-content-dark')}>
@@ -77,14 +77,14 @@ const AppWalletModalBody = ({
                             <div>
                                 <Icon
                                     className='modal-dialog-header__ellipse'
-                                    custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`]['color']}
+                                    custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`].color}
                                     icon='IcAppstoreCircle'
                                     width={59}
                                     height={136}
                                 />
                                 <Icon
                                     className='modal-dialog-header__circle'
-                                    custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`]['color']}
+                                    custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`].color}
                                     icon='IcAppstoreEllipse'
                                     width={183}
                                     height={44}

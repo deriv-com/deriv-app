@@ -132,7 +132,7 @@ module.exports = function () {
                 },
                 {
                     test: /\.svg$/,
-                    exclude: /node_modules\//,
+                    exclude: /node_modules|public\//,
                     use: svg_loaders,
                 },
             ],

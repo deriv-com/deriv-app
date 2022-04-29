@@ -46,7 +46,9 @@ const AppWalletModalBody = ({
     message_type,
     wallet_name,
 }: AppWalletModalBodyProps) => {
-    const wallet_icon_name = dark ? `${wallets[`${wallet_name}`]['icon']}Dark` : `${wallets[`${wallet_name}`]['icon']}Light`;
+    const wallet_icon_name = dark
+        ? `${wallets[`${wallet_name}`]['icon']}Dark`
+        : `${wallets[`${wallet_name}`]['icon']}Light`;
     return (
         <DialogContent>
             <div className={classNames('modal-dialog-content', dark && 'modal-dialog-content-dark')}>
@@ -60,7 +62,9 @@ const AppWalletModalBody = ({
                         </div>
                     </div>
                     <div className='modal-dialog-header__image-wrapper'>
-                        {wallet_name && wallets[`${wallet_name}`] && <WalletIcon icon={wallet_icon_name} className='modal-dialog-header__logo'/>}
+                        {wallet_name && wallets[`${wallet_name}`] && (
+                            <WalletIcon icon={wallet_icon_name} className='modal-dialog-header__logo' />
+                        )}
                         <DialogClose asChild>
                             <Icon
                                 className={'modal-dialog-header__logo-close'}
@@ -69,24 +73,24 @@ const AppWalletModalBody = ({
                         </DialogClose>
                     </div>
                     <div className='modal-dialog-header__ellipse-wrapper'>
-                       {
-                             wallet_name && wallets[`${wallet_name}`] &&(  <div>
-                                        <Icon
-                                            className='modal-dialog-header__ellipse'
-                                            custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`]['color']}
-                                            icon='IcAppstoreCircle'
-                                            width={59}
-                                            height={136}
-                                        />
-                                        <Icon
-                                            className='modal-dialog-header__circle'
-                                            custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`]['color']}
-                                            icon='IcAppstoreEllipse'
-                                            width={183}
-                                            height={44}
-                                        />
-                                    </div>)
-                       }
+                        {wallet_name && wallets[`${wallet_name}`] && (
+                            <div>
+                                <Icon
+                                    className='modal-dialog-header__ellipse'
+                                    custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`]['color']}
+                                    icon='IcAppstoreCircle'
+                                    width={59}
+                                    height={136}
+                                />
+                                <Icon
+                                    className='modal-dialog-header__circle'
+                                    custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`]['color']}
+                                    icon='IcAppstoreEllipse'
+                                    width={183}
+                                    height={44}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className='modal-dialog-body'>{children}</div>

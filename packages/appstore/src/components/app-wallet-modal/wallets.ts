@@ -1,9 +1,9 @@
 type TWalletTypes = {
     [key: string]: {
-        color: string,
-        icon: string
-    }
-}
+        color: string;
+        icon: string;
+    };
+};
 export const wallets: TWalletTypes = {
     '1Foryou': { color: '#FF5F00', icon: '1foryou' },
     Advcash: { color: '#00AF7E', icon: 'Advcash' },

@@ -90,9 +90,7 @@ const Template: Story<AppWalletModalBodyProps> = args => {
                 <AppWalletModal.Trigger>
                     <div onClick={() => {}}>Transfer</div>
                 </AppWalletModal.Trigger>
-                <AppWalletModal.Body
-                    {...args}
-                ></AppWalletModal.Body>
+                <AppWalletModal.Body {...args}></AppWalletModal.Body>
             </AppWalletModal>
         </React.Fragment>
     );

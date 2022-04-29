@@ -195,10 +195,10 @@ const Icons = {
     ZingpayLight,
 };
 
-const WalletIcon = ({ icon , className}: { icon: string, className? :string }) => {
+const WalletIcon = ({ icon, className }: { icon: string; className?: string }) => {
     const Icon = Icons[icon as keyof typeof Icons] as React.ElementType;
 
-    return Icon ? <Icon className={className}/> : null;
+    return Icon ? <Icon className={className} /> : null;
 };
 
 export default WalletIcon;

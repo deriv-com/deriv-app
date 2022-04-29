@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { DesktopWizard } from '@deriv/ui';
 import { localize } from '@deriv/translations';
@@ -23,8 +23,8 @@ type CreateWalletState = {
 };
 
 const WalletWizard = ({ close }: WalletWizardProps) => {
-    const [create_wallet_state, setCreateWalletState] = useState<CreateWalletState>({});
-    const [current_step_key, setCurrentStepKey] = useState<string>();
+    const [create_wallet_state, setCreateWalletState] = React.useState<CreateWalletState>({});
+    const [current_step_key, setCurrentStepKey] = React.useState<string>();
 
     const updateState = (new_state: Partial<CreateWalletState>) => {
         setCreateWalletState({ ...create_wallet_state, ...new_state });

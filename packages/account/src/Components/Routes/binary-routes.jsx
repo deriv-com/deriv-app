@@ -3,10 +3,11 @@ import { Switch } from 'react-router-dom';
 import { Localize, PlatformContext } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
+import { connect } from 'Stores/connect';
 
 const BinaryRoutes = props => {
     const { is_appstore } = React.useContext(PlatformContext);
-
+    const { is_social_signup } = props;
     return (
         <React.Suspense
             fallback={() => {
@@ -18,7 +19,7 @@ const BinaryRoutes = props => {
             }}
         >
             <Switch>
-                {getRoutesConfig({ is_appstore }).map((route, idx) => (
+                {getRoutesConfig({ is_appstore }, is_social_signup).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>
@@ -26,4 +27,6 @@ const BinaryRoutes = props => {
     );
 };
 
-export default BinaryRoutes;
+export default connect(({ client }) => ({
+    is_social_signup: client.is_social_signup,
+}))(BinaryRoutes);

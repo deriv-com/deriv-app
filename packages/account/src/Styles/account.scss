@@ -2266,6 +2266,7 @@ $MIN_HEIGHT_FLOATING: calc(
             display: flex;
             flex-direction: row;
             align-items: center;
+            cursor: pointer;
             &-text {
                 line-height: 2.4rem;
                 padding-left: 1.6rem;
@@ -2294,10 +2295,32 @@ $MIN_HEIGHT_FLOATING: calc(
             }
 
             &-inputs {
-                display: flex;
+                display: grid;
+                grid-template-columns: 1fr 3fr;
                 align-items: center;
                 margin-top: 3rem;
-                width: 100%;
+                // width: 100%;
+                @include mobile {
+                    display: flex;
+                }
+                &-upload {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    flex-grow: 4;
+                    @include mobile {
+                        width: 100%;
+                    }
+                }
+                &-field {
+                    display: flex;
+                    flex-direction: column;
+                    align-self: flex-start;
+                    flex-grow: 1;
+                    @include mobile {
+                        width: 100%;
+                    }
+                }
 
                 @include desktop {
                     .dc-input {
@@ -2314,15 +2337,14 @@ $MIN_HEIGHT_FLOATING: calc(
                     box-sizing: border-box;
                     border-radius: 4px;
                     height: 4rem;
-                    flex-grow: 1;
+                    margin-right: 10px;
                     @include mobile {
                         width: 100%;
                     }
                 }
 
                 &-photo {
-                    margin-left: 1rem;
-                    flex-grow: 4;
+                    margin-bottom: 35px;
                     @include mobile {
                         width: 100%;
                         margin-left: 0;

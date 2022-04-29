@@ -22,16 +22,6 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
         />
     );
 
-    // const paymentMethodIcons = {
-    //     credit_debit_card: 'IcCreditCard',
-    //     e_wallet: 'IcEwallet',
-    //     zingPay: 'IcZingpay',
-    //     online_naira: 'IcOnlineNaira',
-    //     beyonic: 'IcBeyonic',
-    //     bank_transfer: 'IcBankTransfer',
-    //     other: 'IcOtherPaymentMethod',
-    // };
-    // console.log(card.payment_method);
     return (
         <div
             className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}
@@ -39,7 +29,7 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
         >
             <div className='proof-of-ownership__card-item' onClick={onClick}>
                 <Icon
-                    icon={paymentMethodConfig[card.payment_method]?.icon}
+                    icon={paymentMethodConfig[card.payment_method]?.icon || paymentMethodConfig.other.icon}
                     className='proof-of-ownership__card-item-logo'
                     width={64}
                     height={58}
@@ -59,7 +49,8 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
             </div>
             {is_open && (
                 <ExpandedCard
-                    cardDetails={paymentMethodConfig[card.payment_method]}
+                    cardDetails={paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other}
+                    identifier={card.payment_method_identifier}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     values={values}

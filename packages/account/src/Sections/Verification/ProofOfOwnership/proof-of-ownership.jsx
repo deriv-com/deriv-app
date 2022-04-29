@@ -9,7 +9,7 @@ const ownership_temp = {
             creation_time: '3 o clock',
             id: 'abc1234',
             payment_method: 'E-wallet',
-            payment_method_identifier: '23543656',
+            payment_method_identifier: 'john@gmail.com',
         },
         {
             creation_time: '4 o clock',
@@ -45,7 +45,7 @@ const ownership_temp = {
             creation_time: '9 o clock',
             id: 'abc12340',
             payment_method: 'Credit / Debit card',
-            payment_method_identifier: '3245346346',
+            payment_method_identifier: '3245346346095768',
         },
     ],
     status: 'pending',

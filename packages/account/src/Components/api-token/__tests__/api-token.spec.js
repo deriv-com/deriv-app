@@ -3,11 +3,6 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import ApiToken from '../api-token';
 
-const footer_portal_root = document.createElement('div');
-document.body.appendChild(footer_portal_root);
-const overlay_portal_root = document.createElement('div');
-document.body.appendChild(overlay_portal_root);
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getPropertyValue: jest.fn().mockReturnValue([]),
@@ -33,6 +28,15 @@ describe('<ApiToken/>', () => {
     const learn_more_title = 'Learn more about API token';
 
     let mock_props = {};
+    let footer_portal_root_el;
+    let overlay_portal_root_el;
+
+    beforeAll(() => {
+        footer_portal_root_el = document.createElement('div');
+        document.body.appendChild(footer_portal_root_el);
+        overlay_portal_root_el = document.createElement('div');
+        document.body.appendChild(overlay_portal_root_el);
+    });
 
     beforeEach(() => {
         isDesktop.mockReturnValue(true);
@@ -63,6 +67,11 @@ describe('<ApiToken/>', () => {
                 },
             },
         };
+    });
+
+    afterAll(() => {
+        document.body.removeChild(footer_portal_root_el);
+        document.body.removeChild(overlay_portal_root_el);
     });
 
     it('should render ApiToken component without app_settings and footer', async () => {
@@ -131,8 +140,8 @@ describe('<ApiToken/>', () => {
     });
 
     it('should render ApiTokenFooter, show and close ApiTokenOverlay after triggering links', async () => {
-        mock_props.footer_ref = footer_portal_root;
-        mock_props.overlay_ref = overlay_portal_root;
+        mock_props.footer_ref = footer_portal_root_el;
+        mock_props.overlay_ref = overlay_portal_root_el;
 
         render(<ApiToken {...mock_props} />);
 

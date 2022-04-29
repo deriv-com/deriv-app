@@ -12,7 +12,7 @@ import {
     RunPanel,
     RoutePromptDialog,
     Toolbar,
-    NetworkToastPopup
+    NetworkToastPopup,
 } from 'Components';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
@@ -58,7 +58,7 @@ const App = ({ passthrough }) => {
     const onDisconnectFromNetwork = () => {
         setIsLoading(false);
     }
-    
+
     return is_loading ? (
         <Loading />
     ) : (

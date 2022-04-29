@@ -81,9 +81,8 @@ export default class WalletStore extends BaseStore {
         const response = await WS.authorized.storage.send({
             get_account_types: 1,
         });
-        
-        if(response)
-        this.setAccountNames(response.get_account_types.wallet);
+
+        if (response) this.setAccountNames(response.get_account_types.wallet);
     }
 
     @action

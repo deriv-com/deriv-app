@@ -376,7 +376,7 @@ describe('GeneralStore', () => {
         ).toHaveBeenCalledTimes(1);
     });
 
-    it('should not call setPaymentAgentList method if is_populating_values is equal to true', async () => {
+    it('should not call setPaymentAgentList method if is_populating_values is equal to true when onMountCommon was called', async () => {
         general_store.is_populating_values = true;
         await general_store.onMountCommon(false);
 

@@ -2,7 +2,6 @@ import type { Meta, Story } from '@storybook/react';
 import React from 'react';
 import { AppWalletModalBodyProps } from '../app-wallet-modal-body';
 import AppWalletModal from '../index';
-import WebMoneyDark from 'Assets/svgs/modal/lg-banxa-light.svg';
 
 export default {
     title: 'AppWalletModal',
@@ -85,8 +84,6 @@ export default {
 } as Meta<AppWalletModalBodyProps>;
 
 const Template: Story<AppWalletModalBodyProps> = args => {
-    //const logo_src = args?.wallet_name?.replace(' ', '-').toLowerCase();
-
     return (
         <React.Fragment>
             <AppWalletModal>
@@ -94,8 +91,6 @@ const Template: Story<AppWalletModalBodyProps> = args => {
                     <div onClick={() => {}}>Transfer</div>
                 </AppWalletModal.Trigger>
                 <AppWalletModal.Body
-                    // logo={args.dark ? `./modal/lg-${logo_src}-dark.svg` : `./modal/lg-${logo_src}-light.svg`}
-                    logo={<WebMoneyDark className='modal-dialog-header__logo' />}
                     {...args}
                 ></AppWalletModal.Body>
             </AppWalletModal>

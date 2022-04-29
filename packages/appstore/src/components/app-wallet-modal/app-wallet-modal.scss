@@ -53,9 +53,18 @@
 
     &__logo {
         margin: 8px 18px;
+        height: 80px;
+        width: 128px;
 
         @media (max-width: 992px) {
-            width: 82px;
+                height: 80px;
+                width: 82px;
+            
+        }
+
+        svg {
+            width: inherit;
+            height: inherit;
         }
     }
 

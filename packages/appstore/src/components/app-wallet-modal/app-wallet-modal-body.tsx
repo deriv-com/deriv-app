@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import classNames from 'classnames';
-import { wallets } from './wallets';
 import { Icon } from '@deriv/components';
+import WalletIcon from 'Assets/svgs/wallet';
+import { wallets } from './wallets';
 
 interface DialogContentProps {
     children: ReactElement;
@@ -31,7 +32,6 @@ export interface AppWalletModalBodyProps {
     children?: ReactElement | ReactElement[];
     currency?: string;
     dark?: boolean;
-    logo?: ReactElement;
     message?: string;
     message_type?: 'information' | 'warning' | 'success' | 'error';
     wallet_name?: string;
@@ -42,12 +42,11 @@ const AppWalletModalBody = ({
     balance,
     currency,
     dark,
-    logo,
     message,
     message_type,
     wallet_name,
 }: AppWalletModalBodyProps) => {
-    console.log(logo);
+    const wallet_icon_name = dark ? `${wallets[`${wallet_name}`]['icon']}Dark` : `${wallets[`${wallet_name}`]['icon']}Light`;
     return (
         <DialogContent>
             <div className={classNames('modal-dialog-content', dark && 'modal-dialog-content-dark')}>
@@ -61,7 +60,7 @@ const AppWalletModalBody = ({
                         </div>
                     </div>
                     <div className='modal-dialog-header__image-wrapper'>
-                        {logo}
+                        {wallet_name && wallets[`${wallet_name}`] && <WalletIcon icon={wallet_icon_name} className='modal-dialog-header__logo'/>}
                         <DialogClose asChild>
                             <Icon
                                 className={'modal-dialog-header__logo-close'}
@@ -70,29 +69,24 @@ const AppWalletModalBody = ({
                         </DialogClose>
                     </div>
                     <div className='modal-dialog-header__ellipse-wrapper'>
-                        {wallets.map((wallet, idx) => {
-                            if (wallet['name'] === wallet_name)
-                                return (
-                                    <div key={idx}>
+                       {
+                             wallet_name && wallets[`${wallet_name}`] &&(  <div>
                                         <Icon
                                             className='modal-dialog-header__ellipse'
-                                            custom_color={dark ? '#0E0E0E' : wallet['color']}
+                                            custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`]['color']}
                                             icon='IcAppstoreCircle'
                                             width={59}
                                             height={136}
                                         />
                                         <Icon
                                             className='modal-dialog-header__circle'
-                                            custom_color={dark ? '#0E0E0E' : wallet['color']}
+                                            custom_color={dark ? '#0E0E0E' : wallets[`${wallet_name}`]['color']}
                                             icon='IcAppstoreEllipse'
                                             width={183}
                                             height={44}
                                         />
-                                    </div>
-                                );
-
-                            return null;
-                        })}
+                                    </div>)
+                       }
                     </div>
                 </div>
                 <div className='modal-dialog-body'>{children}</div>

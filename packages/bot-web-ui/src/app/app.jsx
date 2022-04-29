@@ -12,6 +12,7 @@ import {
     RunPanel,
     RoutePromptDialog,
     Toolbar,
+    NetworkToastPopup
 } from 'Components';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
@@ -64,6 +65,7 @@ const App = ({ passthrough }) => {
         <MobxContentProvider store={root_store_instance.current}>
             <div className='bot'>
                 <BotNotificationMessages />
+                <NetworkToastPopup />
                 <Toolbar />
                 <MainContent />
                 <RunPanel />

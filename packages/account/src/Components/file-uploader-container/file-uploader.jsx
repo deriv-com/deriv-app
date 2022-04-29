@@ -112,6 +112,7 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
                         })}
                         onClick={removeFile}
                         color='secondary'
+                        data_testid='removeFileIcon'
                     />
                 </div>
             )}

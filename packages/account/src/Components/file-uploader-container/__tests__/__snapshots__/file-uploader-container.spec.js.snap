@@ -1,0 +1,929 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FileUploaderContainer /> should not show description is is_description_enabled is false) 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="account-poa__upload-section"
+        data-testid="file_uploader_container"
+      >
+        <div
+          class="account-poa__upload-file"
+        >
+          <div
+            class="dc-file-dropzone"
+            tabindex="0"
+          >
+            <input
+              accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf"
+              autocomplete="off"
+              data-testid="file_upload_input"
+              style="display: none;"
+              tabindex="-1"
+              type="file"
+            />
+            <div
+              class="dc-file-dropzone__content"
+            >
+              <span
+                class="dc-text dc-file-dropzone__message dc-file-dropzone__message--enter"
+                style="--text-size: var(--text-size-xxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+              >
+                IcCloudUpload
+                <div
+                  class="dc-file-dropzone__message-subtitle"
+                >
+                  Click here to upload
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="account-poa__upload-section"
+      data-testid="file_uploader_container"
+    >
+      <div
+        class="account-poa__upload-file"
+      >
+        <div
+          class="dc-file-dropzone"
+          tabindex="0"
+        >
+          <input
+            accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf"
+            autocomplete="off"
+            data-testid="file_upload_input"
+            style="display: none;"
+            tabindex="-1"
+            type="file"
+          />
+          <div
+            class="dc-file-dropzone__content"
+          >
+            <span
+              class="dc-text dc-file-dropzone__message dc-file-dropzone__message--enter"
+              style="--text-size: var(--text-size-xxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+            >
+              IcCloudUpload
+              <div
+                class="dc-file-dropzone__message-subtitle"
+              >
+                Click here to upload
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<FileUploaderContainer /> should show icons and description when is_appstore false in desktop 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="account-poa__upload-section"
+        data-testid="file_uploader_container"
+      >
+        <ul
+          class="account-poa__upload-list"
+        >
+          <li
+            class="account-poa__upload-box"
+          >
+            IcLessThanEight
+            <div
+              class="account-poa__upload-item"
+            >
+              Less than 8MB
+            </div>
+          </li>
+          <li
+            class="account-poa__upload-box"
+          >
+            IcImage
+            <div
+              class="account-poa__upload-item"
+            >
+              JPEG JPG PNG PDF GIF
+            </div>
+          </li>
+          <li
+            class="account-poa__upload-box"
+          >
+            IcClock
+            <div
+              class="account-poa__upload-item"
+            >
+              1 - 6 months old
+            </div>
+          </li>
+          <li
+            class="account-poa__upload-box"
+          >
+            IcEye
+            <div
+              class="account-poa__upload-item"
+            >
+              A clear colour photo or scanned image
+            </div>
+          </li>
+          <li
+            class="account-poa__upload-box"
+          >
+            IcUser
+            <div
+              class="account-poa__upload-item"
+            >
+              Issued under your name with your current address
+            </div>
+          </li>
+        </ul>
+        <div
+          class="account-poa__upload-file"
+        >
+          <div
+            class="dc-file-dropzone"
+            tabindex="0"
+          >
+            <input
+              accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf"
+              autocomplete="off"
+              data-testid="file_upload_input"
+              style="display: none;"
+              tabindex="-1"
+              type="file"
+            />
+            <div
+              class="dc-file-dropzone__content"
+            >
+              <span
+                class="dc-text dc-file-dropzone__message dc-file-dropzone__message--enter"
+                style="--text-size: var(--text-size-xxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+              >
+                IcCloudUpload
+                <div
+                  class="dc-file-dropzone__message-subtitle"
+                >
+                  Drop file or click here to upload
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="account-poa__upload-section"
+      data-testid="file_uploader_container"
+    >
+      <ul
+        class="account-poa__upload-list"
+      >
+        <li
+          class="account-poa__upload-box"
+        >
+          IcLessThanEight
+          <div
+            class="account-poa__upload-item"
+          >
+            Less than 8MB
+          </div>
+        </li>
+        <li
+          class="account-poa__upload-box"
+        >
+          IcImage
+          <div
+            class="account-poa__upload-item"
+          >
+            JPEG JPG PNG PDF GIF
+          </div>
+        </li>
+        <li
+          class="account-poa__upload-box"
+        >
+          IcClock
+          <div
+            class="account-poa__upload-item"
+          >
+            1 - 6 months old
+          </div>
+        </li>
+        <li
+          class="account-poa__upload-box"
+        >
+          IcEye
+          <div
+            class="account-poa__upload-item"
+          >
+            A clear colour photo or scanned image
+          </div>
+        </li>
+        <li
+          class="account-poa__upload-box"
+        >
+          IcUser
+          <div
+            class="account-poa__upload-item"
+          >
+            Issued under your name with your current address
+          </div>
+        </li>
+      </ul>
+      <div
+        class="account-poa__upload-file"
+      >
+        <div
+          class="dc-file-dropzone"
+          tabindex="0"
+        >
+          <input
+            accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf"
+            autocomplete="off"
+            data-testid="file_upload_input"
+            style="display: none;"
+            tabindex="-1"
+            type="file"
+          />
+          <div
+            class="dc-file-dropzone__content"
+          >
+            <span
+              class="dc-text dc-file-dropzone__message dc-file-dropzone__message--enter"
+              style="--text-size: var(--text-size-xxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+            >
+              IcCloudUpload
+              <div
+                class="dc-file-dropzone__message-subtitle"
+              >
+                Drop file or click here to upload
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<FileUploaderContainer /> should show icons and description when is_appstore is true in desktop 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="account-poa__upload-section account-poa__upload-section-dashboard"
+      >
+        <div
+          class="account-poa__upload-file account-poa__upload-file-dashboard"
+        >
+          <div
+            class="account-poa__upload-property"
+          >
+            <div
+              class="account-poa__upload-property-item account-poa__upload-property-size"
+            >
+              <div
+                class="account-poa__upload-property-wrapper"
+              >
+                IcPoaFileEightMb
+                <span
+                  class="dc-text"
+                  style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+                >
+                  Less than 8MB
+                </span>
+              </div>
+            </div>
+            <div
+              class="account-poa__upload-property-item account-poa__upload-property-format"
+            >
+              <div
+                class="account-poa__upload-property-wrapper"
+              >
+                IcPoaFileFormat
+                <span
+                  class="dc-text"
+                  style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+                >
+                  JPEG  JPG  PNG  PDF  GIF
+                </span>
+              </div>
+            </div>
+            <div
+              class="account-poa__upload-property-item account-poa__upload-property-time"
+            >
+              <div
+                class="account-poa__upload-property-wrapper"
+              >
+                IcPoaFileTime
+                <span
+                  class="dc-text"
+                  style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+                >
+                  1 - 6 months old
+                </span>
+              </div>
+            </div>
+            <div
+              class="account-poa__upload-property-item account-poa__upload-property-clear"
+            >
+              <div
+                class="account-poa__upload-property-wrapper"
+              >
+                IcPoaFileClear
+                <span
+                  class="dc-text"
+                  style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+                >
+                  A clear colour photo or scanned image
+                </span>
+              </div>
+            </div>
+            <div
+              class="account-poa__upload-property-item account-poa__upload-property-with-address"
+            >
+              <div
+                class="account-poa__upload-property-wrapper"
+              >
+                IcPoaFileWithAddress
+                <span
+                  class="dc-text"
+                  style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+                >
+                  Issued under your name with your current address
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="account-poa__upload-file-zone"
+          >
+            <div
+              class="dc-file-dropzone"
+              tabindex="0"
+            >
+              <input
+                accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf"
+                autocomplete="off"
+                data-testid="file_upload_input"
+                style="display: none;"
+                tabindex="-1"
+                type="file"
+              />
+              <div
+                class="dc-file-dropzone__content"
+              >
+                <span
+                  class="dc-text dc-file-dropzone__message dc-file-dropzone__message--enter"
+                  style="--text-size: var(--text-size-xxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+                >
+                  IcCloudUpload
+                  <div
+                    class="dc-file-dropzone__message-subtitle"
+                  >
+                    Drop file or click here to upload
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="account-poa__upload-section account-poa__upload-section-dashboard"
+    >
+      <div
+        class="account-poa__upload-file account-poa__upload-file-dashboard"
+      >
+        <div
+          class="account-poa__upload-property"
+        >
+          <div
+            class="account-poa__upload-property-item account-poa__upload-property-size"
+          >
+            <div
+              class="account-poa__upload-property-wrapper"
+            >
+              IcPoaFileEightMb
+              <span
+                class="dc-text"
+                style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+              >
+                Less than 8MB
+              </span>
+            </div>
+          </div>
+          <div
+            class="account-poa__upload-property-item account-poa__upload-property-format"
+          >
+            <div
+              class="account-poa__upload-property-wrapper"
+            >
+              IcPoaFileFormat
+              <span
+                class="dc-text"
+                style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+              >
+                JPEG  JPG  PNG  PDF  GIF
+              </span>
+            </div>
+          </div>
+          <div
+            class="account-poa__upload-property-item account-poa__upload-property-time"
+          >
+            <div
+              class="account-poa__upload-property-wrapper"
+            >
+              IcPoaFileTime
+              <span
+                class="dc-text"
+                style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+              >
+                1 - 6 months old
+              </span>
+            </div>
+          </div>
+          <div
+            class="account-poa__upload-property-item account-poa__upload-property-clear"
+          >
+            <div
+              class="account-poa__upload-property-wrapper"
+            >
+              IcPoaFileClear
+              <span
+                class="dc-text"
+                style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+              >
+                A clear colour photo or scanned image
+              </span>
+            </div>
+          </div>
+          <div
+            class="account-poa__upload-property-item account-poa__upload-property-with-address"
+          >
+            <div
+              class="account-poa__upload-property-wrapper"
+            >
+              IcPoaFileWithAddress
+              <span
+                class="dc-text"
+                style="--text-size: var(--text-size-xxxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+              >
+                Issued under your name with your current address
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="account-poa__upload-file-zone"
+        >
+          <div
+            class="dc-file-dropzone"
+            tabindex="0"
+          >
+            <input
+              accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf"
+              autocomplete="off"
+              data-testid="file_upload_input"
+              style="display: none;"
+              tabindex="-1"
+              type="file"
+            />
+            <div
+              class="dc-file-dropzone__content"
+            >
+              <span
+                class="dc-text dc-file-dropzone__message dc-file-dropzone__message--enter"
+                style="--text-size: var(--text-size-xxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+              >
+                IcCloudUpload
+                <div
+                  class="dc-file-dropzone__message-subtitle"
+                >
+                  Drop file or click here to upload
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<FileUploaderContainer /> should show icons and description when is_appstore true in mobile 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="account-poa__upload-section"
+        data-testid="file_uploader_container"
+      >
+        <ul
+          class="account-poa__upload-list"
+        >
+          <li
+            class="account-poa__upload-box"
+          >
+            IcPoaFileEightMb
+            <div
+              class="account-poa__upload-item"
+            >
+              Less than 8MB
+            </div>
+          </li>
+          <li
+            class="account-poa__upload-box"
+          >
+            IcImage
+            <div
+              class="account-poa__upload-item"
+            >
+              JPEG JPG PNG PDF GIF
+            </div>
+          </li>
+          <li
+            class="account-poa__upload-box"
+          >
+            IcPoaFileTime
+            <div
+              class="account-poa__upload-item"
+            >
+              1 - 6 months old
+            </div>
+          </li>
+          <li
+            class="account-poa__upload-box"
+          >
+            IcPoaFileClear
+            <div
+              class="account-poa__upload-item"
+            >
+              A clear colour photo or scanned image
+            </div>
+          </li>
+          <li
+            class="account-poa__upload-box"
+          >
+            IcPoaFileWithAddress
+            <div
+              class="account-poa__upload-item"
+            >
+              Issued under your name with your current address
+            </div>
+          </li>
+        </ul>
+        <div
+          class="account-poa__upload-file"
+        >
+          <div
+            class="dc-file-dropzone"
+            tabindex="0"
+          >
+            <input
+              accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf"
+              autocomplete="off"
+              data-testid="file_upload_input"
+              style="display: none;"
+              tabindex="-1"
+              type="file"
+            />
+            <div
+              class="dc-file-dropzone__content"
+            >
+              <span
+                class="dc-text dc-file-dropzone__message dc-file-dropzone__message--enter"
+                style="--text-size: var(--text-size-xxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+              >
+                IcCloudUpload
+                <div
+                  class="dc-file-dropzone__message-subtitle"
+                >
+                  Click here to upload
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="account-poa__upload-section"
+      data-testid="file_uploader_container"
+    >
+      <ul
+        class="account-poa__upload-list"
+      >
+        <li
+          class="account-poa__upload-box"
+        >
+          IcPoaFileEightMb
+          <div
+            class="account-poa__upload-item"
+          >
+            Less than 8MB
+          </div>
+        </li>
+        <li
+          class="account-poa__upload-box"
+        >
+          IcImage
+          <div
+            class="account-poa__upload-item"
+          >
+            JPEG JPG PNG PDF GIF
+          </div>
+        </li>
+        <li
+          class="account-poa__upload-box"
+        >
+          IcPoaFileTime
+          <div
+            class="account-poa__upload-item"
+          >
+            1 - 6 months old
+          </div>
+        </li>
+        <li
+          class="account-poa__upload-box"
+        >
+          IcPoaFileClear
+          <div
+            class="account-poa__upload-item"
+          >
+            A clear colour photo or scanned image
+          </div>
+        </li>
+        <li
+          class="account-poa__upload-box"
+        >
+          IcPoaFileWithAddress
+          <div
+            class="account-poa__upload-item"
+          >
+            Issued under your name with your current address
+          </div>
+        </li>
+      </ul>
+      <div
+        class="account-poa__upload-file"
+      >
+        <div
+          class="dc-file-dropzone"
+          tabindex="0"
+        >
+          <input
+            accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf"
+            autocomplete="off"
+            data-testid="file_upload_input"
+            style="display: none;"
+            tabindex="-1"
+            type="file"
+          />
+          <div
+            class="dc-file-dropzone__content"
+          >
+            <span
+              class="dc-text dc-file-dropzone__message dc-file-dropzone__message--enter"
+              style="--text-size: var(--text-size-xxs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+            >
+              IcCloudUpload
+              <div
+                class="dc-file-dropzone__message-subtitle"
+              >
+                Click here to upload
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

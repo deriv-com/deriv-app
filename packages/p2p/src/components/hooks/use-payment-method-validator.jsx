@@ -57,7 +57,7 @@ export const usePaymentMethodValidator = () => {
             }
         }
         if (values.bank_code) {
-            const bank_code_err_message = setErrorMessage(values.name, 'bank_code');
+            const bank_code_err_message = setErrorMessage(values.bank_code, 'bank_code');
             if (bank_code_err_message) {
                 errors.bank_code = bank_code_err_message;
             }

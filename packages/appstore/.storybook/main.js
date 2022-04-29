@@ -29,7 +29,6 @@ module.exports = {
     core: {
         builder: 'webpack5',
     },
-    staticDirs: ['../dist/appstore'],
     webpackFinal: async config => {
         config.module.rules.forEach(rule => {
             const regex_string = rule.test.toString();

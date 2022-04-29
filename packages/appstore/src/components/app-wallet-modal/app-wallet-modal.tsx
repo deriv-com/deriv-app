@@ -1,47 +1,19 @@
-import React from 'react';
-import { AppModal } from '@deriv/ui';
+import React, { ReactElement } from 'react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import AppWalletModalBody from './app-wallet-modal-body';
+import AppWalletModalTrigger from './app-wallet-modal-trigger';
 
-export interface AppWalletModalProps {
-    balance?: string;
-    modal_trigger_children?: JSX.Element;
-    modal_body_children?: JSX.Element;
-    currency?: string;
-    dark?: boolean;
-    logo?: string;
-    message?: string;
-    message_type?: string;
-    wallet_name?: string;
+export const Dialog = DialogPrimitive.Root;
+
+export interface ModalProps {
+    children?: ReactElement[];
 }
 
-const AppstoreAppWalletModal = ({
-    balance,
-    modal_trigger_children,
-    modal_body_children,
-    currency,
-    dark,
-    logo,
-    message,
-    message_type,
-    wallet_name,
-}: AppWalletModalProps) => {
-    return (
-        <div>
-            <AppModal>
-                <AppModal.Trigger>{modal_trigger_children}</AppModal.Trigger>
-                <AppModal.Body
-                    logo={logo}
-                    balance={balance}
-                    currency={currency}
-                    dark={dark}
-                    message={message}
-                    message_type={message_type}
-                    wallet_name={wallet_name}
-                >
-                    {modal_body_children}
-                </AppModal.Body>
-            </AppModal>
-        </div>
-    );
+const WalletModal = ({ children }: ModalProps) => {
+    return <Dialog>{children}</Dialog>;
 };
 
-export default AppstoreAppWalletModal;
+WalletModal.Trigger = AppWalletModalTrigger;
+WalletModal.Body = AppWalletModalBody;
+
+export default WalletModal;

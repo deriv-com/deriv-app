@@ -115,7 +115,7 @@ describe('<ApiToken/>', () => {
         ).not.toBeInTheDocument();
         expect(screen.queryByText('Copy and paste the token into the app.')).not.toBeInTheDocument();
 
-        const loader = container.querySelector('.initial-loader')
+        const loader = container.querySelector('.initial-loader');
         expect(loader).toBeInTheDocument();
     });
 
@@ -222,7 +222,7 @@ describe('<ApiToken/>', () => {
     });
 
     it('should render created tokens and trigger delete', async () => {
-        jest.setTimeout(11000)
+        jest.setTimeout(11000);
 
         getPropertyValue.mockReturnValue([
             {
@@ -291,7 +291,7 @@ describe('<ApiToken/>', () => {
         const yes_btn_2 = screen.getByText('Yes');
         expect(yes_btn_2).toBeInTheDocument();
 
-        await new Promise((r) => setTimeout(r, 10000))
+        await new Promise(r => setTimeout(r, 10000));
 
         expect(no_btn_2).not.toBeInTheDocument();
         expect(yes_btn_2).not.toBeInTheDocument();

@@ -47,7 +47,7 @@ const AppWalletModalBody = ({
     message_type,
     wallet_name,
 }: AppWalletModalBodyProps) => {
-    console.log(logo)
+    console.log(logo);
     return (
         <DialogContent>
             <div className={classNames('modal-dialog-content', dark && 'modal-dialog-content-dark')}>

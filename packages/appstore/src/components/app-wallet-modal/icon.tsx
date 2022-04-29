@@ -9,8 +9,8 @@ const Icon = ({ custom_color, icon, height = 16, width = 16, ...props }: IconPro
         <svg
             width={width}
             height={height}
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink='http://www.w3.org/1999/xlink'
+            xmlns='http://www.w3.org/2000/svg'
             style={{ fill: custom_color }}
             {...props}
         >

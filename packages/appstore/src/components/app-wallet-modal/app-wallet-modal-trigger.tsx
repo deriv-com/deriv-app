@@ -10,7 +10,7 @@ export interface AppWalletModalTriggerProps {
 const AppWalletModalTrigger = ({ children }: AppWalletModalTriggerProps) => {
     return (
         <React.Fragment>
-            {React.Children?.map(children, (child) => {
+            {React.Children?.map(children, child => {
                 return <DialogTrigger>{child}</DialogTrigger>;
             })}
         </React.Fragment>

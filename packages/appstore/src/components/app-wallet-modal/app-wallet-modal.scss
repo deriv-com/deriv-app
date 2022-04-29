@@ -78,7 +78,7 @@
             width: 50px;
         }
     }
-    
+
     &__circle {
         position: absolute;
         top: 0;
@@ -92,7 +92,6 @@
 .modal-dialog-body {
     flex: 1;
 }
-
 
 .modal-dialog-footer__message {
     padding: 16px;
@@ -109,21 +108,19 @@
     &--information {
         background-color: #377cfc;
     }
-    
+
     &--warning {
         background-color: #ffad3a;
     }
-    
+
     &--success {
         background-color: #4bb4b3;
     }
-    
+
     &--error {
         background-color: #ec3f3f;
     }
 }
-
-
 
 .modal-dialog-content-dark {
     & .modal-dialog-header {
@@ -144,4 +141,3 @@
         background-color: #cc2e3d;
     }
 }
-

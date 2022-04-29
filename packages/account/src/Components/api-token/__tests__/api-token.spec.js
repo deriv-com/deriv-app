@@ -1,20 +1,12 @@
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { isDesktop, isMobile, getPropertyValue, useIsMounted } from '@deriv/shared';
-
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import ApiToken from '../api-token';
 
 const footer_portal_root = document.createElement('div');
 document.body.appendChild(footer_portal_root);
 const overlay_portal_root = document.createElement('div');
 document.body.appendChild(overlay_portal_root);
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -25,14 +17,26 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<ApiToken/>', () => {
-    const access_description =
+    const our_access_description =
         "To access our mobile apps and other third-party apps, you'll first need to generate an API token.";
+    const your_access_description =
+        "To access your mobile apps and other third-party apps, you'll first need to generate an API token.";
+    const select_scopes_msg = 'Select scopes based on the access you need.';
+    const view_activity_msg =
+        'View account activity such as settings, limits, balance sheets, trade purchase history, and more.';
+    const trade_description = 'Buy and sell contracts, renew expired purchases, and top up demo accounts.';
+    const payments_description = 'Withdraw to payment agents, and transfer funds between accounts.';
+    const admin_description = 'Open accounts, manage settings, manage token usage, and more.';
+    const trading_info_description = 'View the trading history.';
+    const token_creation_description = "Name your token and click on 'Create' to generate your token.";
+    const token_using_description = 'Copy and paste the token into the app.';
+    const learn_more_title = 'Learn more about API token';
 
     let mock_props = {};
 
     beforeEach(() => {
-        isMobile.mockReturnValue(false);
         isDesktop.mockReturnValue(true);
+        isMobile.mockReturnValue(false);
 
         mock_props = {
             footer_ref: undefined,
@@ -61,41 +65,21 @@ describe('<ApiToken/>', () => {
         };
     });
 
-    const renderCheck = async () => {
-        await waitFor(() => {});
-    };
-
     it('should render ApiToken component without app_settings and footer', async () => {
         render(<ApiToken {...mock_props} />);
 
         expect(mock_props.ws.authorized.apiToken).toHaveBeenCalled();
-        expect(
-            await screen.findByText(
-                "To access your mobile apps and other third-party apps, you'll first need to generate an API token."
-            )
-        ).toBeInTheDocument();
-        expect(await screen.findByText('Select scopes based on the access you need.')).toBeInTheDocument();
-        expect(
-            await screen.findByText(
-                'View account activity such as settings, limits, balance sheets, trade purchase history, and more.'
-            )
-        ).toBeInTheDocument();
-        expect(
-            await screen.findByText('Buy and sell contracts, renew expired purchases, and top up demo accounts.')
-        ).toBeInTheDocument();
-        expect(
-            await screen.findByText('Withdraw to payment agents, and transfer funds between accounts.')
-        ).toBeInTheDocument();
-        expect(
-            await screen.findByText('Open accounts, manage settings, manage token usage, and more.')
-        ).toBeInTheDocument();
-        expect(await screen.findByText('View the trading history.')).toBeInTheDocument();
-        expect(
-            await screen.findByText("Name your token and click on 'Create' to generate your token.")
-        ).toBeInTheDocument();
-        expect(await screen.findByText('Copy and paste the token into the app.')).toBeInTheDocument();
 
-        expect(screen.queryByText('Learn more about API token')).not.toBeInTheDocument();
+        expect(await screen.findByText(your_access_description)).toBeInTheDocument();
+        expect(await screen.findByText(select_scopes_msg)).toBeInTheDocument();
+        expect(await screen.findByText(view_activity_msg)).toBeInTheDocument();
+        expect(await screen.findByText(trade_description)).toBeInTheDocument();
+        expect(await screen.findByText(payments_description)).toBeInTheDocument();
+        expect(await screen.findByText(admin_description)).toBeInTheDocument();
+        expect(await screen.findByText(trading_info_description)).toBeInTheDocument();
+        expect(await screen.findByText(token_creation_description)).toBeInTheDocument();
+        expect(await screen.findByText(token_using_description)).toBeInTheDocument();
+        expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
     });
 
     it('should not render ApiToken component if is not mounted', async () => {
@@ -104,16 +88,16 @@ describe('<ApiToken/>', () => {
         const { container } = render(<ApiToken {...mock_props} />);
 
         expect(mock_props.ws.authorized.apiToken).toHaveBeenCalled();
-        expect(
-            screen.queryByText(
-                "To access your mobile apps and other third-party apps, you'll first need to generate an API token."
-            )
-        ).not.toBeInTheDocument();
-        expect(screen.queryByText('Select scopes based on the access you need.')).not.toBeInTheDocument();
-        expect(
-            screen.queryByText("Name your token and click on 'Create' to generate your token.")
-        ).not.toBeInTheDocument();
-        expect(screen.queryByText('Copy and paste the token into the app.')).not.toBeInTheDocument();
+        expect(screen.queryByText(your_access_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(select_scopes_msg)).not.toBeInTheDocument();
+        expect(screen.queryByText(view_activity_msg)).not.toBeInTheDocument();
+        expect(screen.queryByText(trade_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(payments_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(admin_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(trading_info_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(token_creation_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(token_using_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
 
         const loader = container.querySelector('.initial-loader');
         expect(loader).toBeInTheDocument();
@@ -125,28 +109,15 @@ describe('<ApiToken/>', () => {
 
         render(<ApiToken {...mock_props} />);
 
-        expect(await screen.findByText('Select scopes based on the access you need.')).toBeInTheDocument();
-        expect(
-            await screen.findByText(
-                'View account activity such as settings, limits, balance sheets, trade purchase history, and more.'
-            )
-        ).toBeInTheDocument();
-        expect(
-            await screen.findByText('Buy and sell contracts, renew expired purchases, and top up demo accounts.')
-        ).toBeInTheDocument();
-        expect(
-            await screen.findByText('Withdraw to payment agents, and transfer funds between accounts.')
-        ).toBeInTheDocument();
-        expect(
-            await screen.findByText('Open accounts, manage settings, manage token usage, and more.')
-        ).toBeInTheDocument();
-        expect(await screen.findByText('View the trading history.')).toBeInTheDocument();
-        expect(
-            await screen.findByText("Name your token and click on 'Create' to generate your token.")
-        ).toBeInTheDocument();
-        expect(await screen.findByText('Copy and paste the token into the app.')).toBeInTheDocument();
-
-        expect(screen.queryByText('Learn more about API token')).not.toBeInTheDocument();
+        expect(await screen.findByText(select_scopes_msg)).toBeInTheDocument();
+        expect(await screen.findByText(view_activity_msg)).toBeInTheDocument();
+        expect(await screen.findByText(trade_description)).toBeInTheDocument();
+        expect(await screen.findByText(payments_description)).toBeInTheDocument();
+        expect(await screen.findByText(admin_description)).toBeInTheDocument();
+        expect(await screen.findByText(trading_info_description)).toBeInTheDocument();
+        expect(await screen.findByText(token_creation_description)).toBeInTheDocument();
+        expect(await screen.findByText(token_using_description)).toBeInTheDocument();
+        expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
     });
 
     it('should render ApiToken component with app_settings', async () => {
@@ -154,7 +125,9 @@ describe('<ApiToken/>', () => {
 
         render(<ApiToken {...mock_props} />);
 
-        expect(screen.queryByText(access_description)).not.toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
+        });
     });
 
     it('should render ApiTokenFooter, show and close ApiTokenOverlay after triggering links', async () => {
@@ -163,15 +136,15 @@ describe('<ApiToken/>', () => {
 
         render(<ApiToken {...mock_props} />);
 
-        expect(await screen.findByText('Learn more about API token')).toBeInTheDocument();
-        expect(screen.queryByText(access_description)).not.toBeInTheDocument();
+        expect(await screen.findByText(learn_more_title)).toBeInTheDocument();
+        expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
 
-        fireEvent.click(await screen.findByText('Learn more about API token'));
+        fireEvent.click(await screen.findByText(learn_more_title));
 
-        expect(await screen.findByText(access_description)).toBeInTheDocument();
+        expect(await screen.findByText(our_access_description)).toBeInTheDocument();
 
         fireEvent.click(await screen.findByText('Done'));
-        expect(screen.queryByText(access_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
     });
 
     it('should choose checkbox, enter a valid value and create token', async () => {
@@ -218,11 +191,11 @@ describe('<ApiToken/>', () => {
         expect(updated_token_name_input.value).toBe('');
 
         const createToken = mock_props.ws.apiToken;
-        expect(createToken).toHaveBeenCalledTimes(1);
+        expect(await createToken).toHaveBeenCalledTimes(1);
     });
 
     it('should render created tokens and trigger delete', async () => {
-        jest.setTimeout(11000);
+        jest.useFakeTimers();
 
         getPropertyValue.mockReturnValue([
             {
@@ -277,7 +250,6 @@ describe('<ApiToken/>', () => {
         fireEvent.click(yes_btn_1);
 
         const deleteToken = mock_props.ws.authorized.apiToken;
-
         expect(deleteToken).toHaveBeenCalled();
 
         const delete_btns_4 = await screen.findAllByText('Delete');
@@ -291,7 +263,7 @@ describe('<ApiToken/>', () => {
         const yes_btn_2 = screen.getByText('Yes');
         expect(yes_btn_2).toBeInTheDocument();
 
-        await new Promise(r => setTimeout(r, 10000));
+        act(() => jest.advanceTimersByTime(10000));
 
         expect(no_btn_2).not.toBeInTheDocument();
         expect(yes_btn_2).not.toBeInTheDocument();

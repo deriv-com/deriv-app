@@ -96,6 +96,7 @@
         "@deriv/appstore": "^0.0.4",
         "@deriv/bot-web-ui": "^1.0.0",
         "@deriv/cashier": "^1.0.0",
+        "@deriv/cfd": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
         "@deriv/deriv-charts": "^0.5.1",

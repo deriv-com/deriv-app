@@ -24,6 +24,8 @@ export default class BuySellStore extends BaseStore {
     @observable search_results = [];
     @observable search_term = '';
     @observable selected_ad_state = {};
+    @observable selected_payment_method_value = [];
+    @observable selected_payment_method_text = [];
     @observable selected_value = 'rate';
     @observable should_show_popup = false;
     @observable should_show_verification = false;
@@ -113,8 +115,7 @@ export default class BuySellStore extends BaseStore {
     @computed
     get should_filter_by_payment_method() {
         const { my_profile_store } = this.root_store;
-
-        return my_profile_store.payment_methods_list_values !== this.filter_payment_methods;
+        return my_profile_store.payment_methods_list_values !== this.selected_payment_method_value;
     }
 
     @action.bound
@@ -203,7 +204,9 @@ export default class BuySellStore extends BaseStore {
                 limit: general_store.list_item_limit,
                 sort_by: this.sort_by,
                 use_client_limits: this.should_use_client_limits ? 1 : 0,
-                ...(this.filter_payment_methods.length > 0 ? { payment_method: this.filter_payment_methods } : {}),
+                ...(this.selected_payment_method_value.length > 0
+                    ? { payment_method: this.selected_payment_method_value }
+                    : {}),
             }).then(response => {
                 if (response && !response.error) {
                     // Ignore any responses that don't match our request. This can happen
@@ -272,7 +275,9 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    onClickApply() {
+    onClickApply(payment_method_value, payment_method_text) {
+        this.setSelectedPaymentMethodValue(payment_method_value);
+        this.setSelectedPaymentMethodText(payment_method_text);
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
@@ -398,6 +403,16 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setSelectedAdState(selected_ad_state) {
         this.selected_ad_state = selected_ad_state;
+    }
+
+    @action.bound
+    setSelectedPaymentMethodValue(payment_method_value) {
+        this.selected_payment_method_value = [...payment_method_value];
+    }
+
+    @action.bound
+    setSelectedPaymentMethodText(payment_method_text) {
+        this.selected_payment_method_text = [...payment_method_text];
     }
 
     @action.bound

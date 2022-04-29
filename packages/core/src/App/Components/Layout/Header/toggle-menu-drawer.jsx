@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import { routes, PlatformContext } from '@deriv/shared';
-import { localize, getAllowedLanguages } from '@deriv/translations';
+import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { currentLanguage, changeLanguage } from 'Utils/Language';
+import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 
 const MenuLink = ({
@@ -98,6 +98,7 @@ const ToggleMenuDrawer = React.forwardRef(
             should_allow_authentication,
             title,
             toggleTheme,
+            is_social_signup,
         },
         ref
     ) => {
@@ -110,7 +111,7 @@ const ToggleMenuDrawer = React.forwardRef(
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore });
+                const routes_config = getRoutesConfig({ is_appstore }, is_social_signup);
                 let primary_routes = [];
                 let secondary_routes = [];
 
@@ -136,7 +137,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_appstore, account_status, should_allow_authentication]);
+        }, [is_appstore, account_status, should_allow_authentication, is_social_signup]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);
@@ -253,6 +254,8 @@ const ToggleMenuDrawer = React.forwardRef(
         };
 
         const getLanguageRoutes = () => {
+            const currentLanguage = getLanguage();
+
             return (
                 <MobileDrawer.SubMenu
                     has_subheader

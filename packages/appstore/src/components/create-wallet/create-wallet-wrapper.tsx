@@ -14,8 +14,6 @@ const CreateWalletWrapper = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
 
     React.useEffect(() => {
         wallet_store.onMount();
-
-        return () => wallet_store.onUnmount();
     }, []);
 
     const wallets = should_show_fiat ? wallet_store.wallet_provider.fiat_wallets : wallet_store.wallet_provider.wallets;

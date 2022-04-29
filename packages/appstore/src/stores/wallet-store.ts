@@ -16,7 +16,12 @@ type TWalletProvider = {
 };
 export default class WalletStore extends BaseStore {
     @observable
-    wallet_names: any;
+    account_types: any;
+
+    @computed
+    get wallet_names() {
+        return this.account_types?.wallet;
+    }
 
     @computed
     get fiat_currencies() {
@@ -66,24 +71,23 @@ export default class WalletStore extends BaseStore {
     }
 
     @action.bound
-    setWalletNames(data: any) {
-        this.wallet_names = data;
+    setAccountNames(data: any) {
+        this.account_types = data;
     }
 
     @action.bound
-    getWalletNames() {
+    async getWalletNames() {
         if (this.wallet_names) return;
-        WS.authorized.storage
-            .send({
-                get_account_types: 1,
-            })
-            .then((response: any) => {
-                this.setWalletNames(response.get_account_types.wallet);
-            });
+        const response = await WS.authorized.storage.send({
+            get_account_types: 1,
+        });
+        
+        if(response)
+        this.setAccountNames(response.get_account_types.wallet);
     }
 
     @action
     onUnmount() {
-        this.wallet_names = null;
+        this.account_types = null;
     }
 }

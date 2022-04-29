@@ -49,15 +49,16 @@ const App = ({ passthrough }) => {
     }, [onMount, onUnmount]);
 
     React.useEffect(() => {
+
+        const onDisconnectFromNetwork = () => {
+            setIsLoading(false);
+        }
+
         window.addEventListener('offline', onDisconnectFromNetwork);
         return () => {
             window.removeEventListener('offline', onDisconnectFromNetwork);
         }
     }, []);
-
-    const onDisconnectFromNetwork = () => {
-        setIsLoading(false);
-    }
 
     return is_loading ? (
         <Loading />

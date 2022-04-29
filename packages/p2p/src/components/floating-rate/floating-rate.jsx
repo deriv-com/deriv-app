@@ -6,7 +6,7 @@ import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { roundOffDecimal } from 'Utils/format-value.js';
+import { roundOffDecimal, setDecimalPlaces } from 'Utils/format-value.js';
 import './floating-rate.scss';
 
 const FloatingRate = ({
@@ -22,7 +22,10 @@ const FloatingRate = ({
 }) => {
     const { general_store } = useStores();
     const { name, value, required } = props;
-    const market_feed = value ? roundOffDecimal(parseFloat(exchange_rate * (1 + value / 100))) : exchange_rate;
+    const decimal_places = setDecimalPlaces(exchange_rate, 6);
+    const market_feed = value
+        ? roundOffDecimal(parseFloat(exchange_rate * (1 + value / 100)), decimal_places)
+        : exchange_rate;
 
     const onBlurHandler = e => {
         let float_rate = e.target.value;
@@ -86,7 +89,8 @@ const FloatingRate = ({
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
-                        1 {fiat_currency} = {formatMoney(local_currency, exchange_rate, true)} {local_currency}
+                        1 {fiat_currency} = {formatMoney(local_currency, exchange_rate, true, decimal_places)}{' '}
+                        {local_currency}
                     </Text>
                 </div>
             </section>
@@ -110,7 +114,8 @@ const FloatingRate = ({
                     line_height='xs'
                     className='floating-rate__hint'
                 >
-                    {localize('Your rate is')} = {formatMoney(local_currency, market_feed, true)} {local_currency}
+                    {localize('Your rate is')} = {formatMoney(local_currency, market_feed, true, decimal_places)}{' '}
+                    {local_currency}
                 </Text>
             )}
         </div>

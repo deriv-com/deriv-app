@@ -7,7 +7,7 @@ const GoogleDriveIntegration = () => {
     const { is_gd_logged_in } = useSelector(state => state.client);
 
     return (
-        <div className="integration input-row last">
+        <div className="integration input-row last gd-popup">
             <div className="left">
                 <h2>Google Drive</h2>
                 <div className="description">{translate('Save your blocks and strategies to Google Drive')}</div>

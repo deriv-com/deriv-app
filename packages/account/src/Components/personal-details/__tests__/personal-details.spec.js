@@ -39,8 +39,7 @@ const mock_errors = {
     tax_identification_confirm: 'Please confirm your tax information.',
 };
 
-const fake_alert_messaget =
-    /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i;
+const family_name_title = /family name\*/i;
 
 const checkbox_text =
     /i hereby confirm that the tax information i provided is true and complete\. i will also inform deriv investments \(europe\) limited about any changes to this information\./i;
@@ -48,7 +47,7 @@ const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
 const tin_pop_over_text = /don't know your tax identification number\?/i;
 
-const runCommonFormfieldsTests = () => {
+const runCommonFormfieldsTests = is_appstore => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
     expect(screen.getByTestId('first_name')).toBeInTheDocument();
@@ -105,8 +104,11 @@ const runCommonFormfieldsTests = () => {
     expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
     expect(screen.queryByTestId('dti_dropdown_display')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
+
+    if (!is_appstore) {
+        expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
+    }
 };
 
 describe('<PersonalDetails/>', () => {
@@ -247,23 +249,23 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
     });
 
-    it('should show fake-alert message when is_appstore is true', () => {
+    it('should show family_name_title when is_appstore is true', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: true }}>
                 <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
 
-        expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
+        expect(screen.getByText(family_name_title)).toBeInTheDocument();
     });
-    it('should not show fake_alert_message when is_appstore is false ', () => {
+    it('should not show family_name_title when is_appstore is false ', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
 
-        expect(screen.queryByText(fake_alert_messaget)).not.toBeInTheDocument();
+        expect(screen.queryByText(family_name_title)).not.toBeInTheDocument();
     });
 
     it('should show proper salutation message when is_virtual is true', () => {
@@ -337,7 +339,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
 
-        runCommonFormfieldsTests();
+        runCommonFormfieldsTests(true);
     });
 
     it('should display the correct field details when is_appstore is false and is_svg is true ', () => {

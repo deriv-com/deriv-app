@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
+import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import { routes, PlatformContext } from '@deriv/shared';
 import { localize, getAllowedLanguages } from '@deriv/translations';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
@@ -64,7 +64,14 @@ const MenuLink = ({
             onClick={onClickLink}
         >
             <Icon className='header__menu-mobile-link-icon' icon={icon} />
-            <span className='header__menu-mobile-link-text'>{text}</span>
+            <Text
+                className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
+                as='h3'
+                size='xs'
+                weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
+            >
+                {text}
+            </Text>
             {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
         </BinaryLink>
     );
@@ -92,6 +99,7 @@ const ToggleMenuDrawer = React.forwardRef(
             should_allow_authentication,
             title,
             toggleTheme,
+            is_social_signup,
         },
         ref
     ) => {
@@ -104,7 +112,7 @@ const ToggleMenuDrawer = React.forwardRef(
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore });
+                const routes_config = getRoutesConfig({ is_appstore }, is_social_signup);
                 let primary_routes = [];
                 let secondary_routes = [];
 
@@ -130,7 +138,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_appstore, account_status, should_allow_authentication]);
+        }, [is_appstore, account_status, should_allow_authentication, is_social_signup]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);
@@ -179,6 +187,7 @@ const ToggleMenuDrawer = React.forwardRef(
                     submenu_title={route_config.getTitle()}
                     submenu_suffix_icon='IcChevronRight'
                     onToggle={expandSubMenu}
+                    route_config_path={route_config.path}
                 >
                     {!has_subroutes &&
                         route_config.routes.map((route, index) => {

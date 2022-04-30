@@ -5,8 +5,8 @@ import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
 import POOSubmitted from 'Components/poo-submitted';
 
 const ProofOfOwnership = ({ account_status }) => {
-    const [cards] = account_status?.authentication?.ownership?.requests;
-    const [status] = account_status?.authentication?.ownership?.status;
+    const cards = account_status?.authentication?.ownership?.requests;
+    const status = account_status?.authentication?.ownership?.status;
 
     const handleSubmit = e => {
         e.preventDefault();

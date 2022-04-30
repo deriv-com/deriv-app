@@ -85,32 +85,32 @@ const FileDropzone = ({ className, ...props }) => {
 
                         {props.multiple && props.value.length > 0 && !props.validation_error_message
                             ? props.value.map((file, idx) => (
-                                <Text
-                                    size='xxs'
-                                    weight='bold'
-                                    align='center'
-                                    key={idx}
-                                    className='dc-file-dropzone__filename'
-                                >
-                                    {props.filename_limit ? truncateFileName(file, props.filename_limit) : file.name}
-                                </Text>
-                            ))
+                                  <Text
+                                      size='xxs'
+                                      weight='bold'
+                                      align='center'
+                                      key={idx}
+                                      className='dc-file-dropzone__filename'
+                                  >
+                                      {props.filename_limit ? truncateFileName(file, props.filename_limit) : file.name}
+                                  </Text>
+                              ))
                             : props.value[0] &&
-                            !isDragActive && (
-                                <Text
-                                    size='xxs'
-                                    weight='bold'
-                                    align='center'
-                                    className='dc-file-dropzone__filename'
-                                    styles={{
-                                        maxWidth: `calc(${dropzone_ref.current?.offsetWidth || 365}px - 3.2rem)`,
-                                    }}
-                                >
-                                    {props.filename_limit
-                                        ? truncateFileName(props.value[0], props.filename_limit)
-                                        : props.value[0].name}
-                                </Text>
-                            )}
+                              !isDragActive && (
+                                  <Text
+                                      size='xxs'
+                                      weight='bold'
+                                      align='center'
+                                      className='dc-file-dropzone__filename'
+                                      styles={{
+                                          maxWidth: `calc(${dropzone_ref.current?.offsetWidth || 365}px - 3.2rem)`,
+                                      }}
+                                  >
+                                      {props.filename_limit
+                                          ? truncateFileName(props.value[0], props.filename_limit)
+                                          : props.value[0].name}
+                                  </Text>
+                              )}
                         <FadeInMessage
                             // message shown if there are errors with the dragged file
                             is_visible={isDragReject}

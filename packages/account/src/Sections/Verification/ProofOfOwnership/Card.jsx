@@ -35,8 +35,7 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
                     height={58}
                 />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {card?.payment_method || 'Credit/debit card'}{' '}
-                    {/** TODO: || method is temporary, should be removed */}
+                    {card?.payment_method || 'Payment method'} {/** TODO: || method is temporary, should be removed */}
                 </Text>
                 <Button
                     id='proof-of-ownership'

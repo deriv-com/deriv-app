@@ -76,15 +76,12 @@
             margin-bottom: 1.8rem;
             overflow: hidden;
 
-            &:after {
-                content: '';
-                display: inline-block;
-                height: 1px;
-                vertical-align: middle;
+            &-line {
+                border-bottom: 1px solid var(--general-section-1);
+                position: relative;
                 width: 100%;
-                margin-right: -100%;
-                margin-left: 10px;
-                border-top: 1px solid var(--general-section-1);
+                margin-left: 115px;
+                top: -10px;
             }
         }
         &-selector {
@@ -118,10 +115,6 @@
                 & .dc-select-native__placeholder {
                     background-color: var(--general-main-1);
                 }
-            }
-            &-line {
-                width: 66%;
-                margin-left: 33%;
             }
         }
     }

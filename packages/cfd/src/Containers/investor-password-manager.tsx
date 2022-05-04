@@ -1,10 +1,11 @@
 import React from 'react';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FieldProps } from 'formik';
 import { PasswordInput, PasswordMeter, Text, Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getErrorMessages } from '@deriv/shared';
+import { TCFDPasswordSuccessMessage, TInvestorPasswordManager, TPasswordManagerModalFormValues } from './props.types';
 
-const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }) => (
+const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }: TCFDPasswordSuccessMessage) => (
     <div className='cfd-password-manager__success'>
         <Icon icon='IcPasswordUpdated' size={128} />
         <Text as='p' size='xxs' align='center'>
@@ -28,7 +29,7 @@ const InvestorPasswordManager = ({
     setPasswordType,
     toggleModal,
     validatePassword,
-}) => {
+}: TInvestorPasswordManager) => {
     if (is_submit_success_investor) {
         return <CFDPasswordSuccessMessage toggleModal={toggleModal} is_investor />;
     }
@@ -52,7 +53,7 @@ const InvestorPasswordManager = ({
                 {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                     <Form className='cfd-password-manager__investor-form' noValidate>
                         <Field name='old_password'>
-                            {({ field }) => (
+                            {({ field }: FieldProps<string, TPasswordManagerModalFormValues>) => (
                                 <PasswordInput
                                     {...field}
                                     autoComplete='current-password'
@@ -63,13 +64,13 @@ const InvestorPasswordManager = ({
                             )}
                         </Field>
                         <Field name='new_password'>
-                            {({ field }) => (
+                            {({ field }: FieldProps<string, TPasswordManagerModalFormValues>) => (
                                 <PasswordMeter
                                     input={field.value}
                                     has_error={!!(touched.new_password && errors.new_password)}
                                     custom_feedback_messages={getErrorMessages().password_warnings}
                                 >
-                                    {({ has_warning }) => (
+                                    {({ has_warning }: { has_warning: boolean }) => (
                                         <PasswordInput
                                             {...field}
                                             autoComplete='new-password'
@@ -81,7 +82,7 @@ const InvestorPasswordManager = ({
                                                 )
                                             }
                                             error={touched.new_password && errors.new_password}
-                                            onChange={e => {
+                                            onChange={(e: React.FormEvent<HTMLInputElement>) => {
                                                 setFieldTouched('new_password', true, true);
                                                 field.onChange(e);
                                             }}

@@ -1,19 +1,17 @@
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
 import { Icon, Popover, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import Providers from './create-wallet-provider';
-import WalletCard from 'Components/wallet';
 import WalletIcon from 'Assets/svgs/wallet';
+import WalletCard from 'Components/wallet';
 
 type TProps = {
     is_dark_mode_on: boolean;
     should_show_fiat: boolean;
+    wallets: { getTitle: () => string; content: string[]; popover_text: () => string }[];
 };
 
-const CreateWallet = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
-    const wallets = should_show_fiat ? Providers.fiat_wallets : Providers.wallets;
-
+const CreateWallet = ({ is_dark_mode_on, should_show_fiat, wallets }: TProps) => {
     const [selected_wallet, setSeletedWallet] = React.useState('');
 
     const onWalletClicked = (wallet: string) => {
@@ -59,10 +57,10 @@ const CreateWallet = ({ is_dark_mode_on, should_show_fiat }: TProps) => {
                                     </div>
                                     <div
                                         className={classNames('create-wallet-list__items', {
-                                            'create-wallet-list__items__center': wallet.content.length < 5,
+                                            'create-wallet-list__items__center': wallet.content?.length < 5,
                                         })}
                                     >
-                                        {wallet.content?.map((wallet_name, id) => {
+                                        {wallet.content?.map((wallet_name: string, id: number) => {
                                             const name = snakeToPascal(wallet_name || '');
                                             const wallet_logo = `${name}${is_dark_mode_on ? 'Dark' : 'Light'}`;
                                             const is_wallet_selected = selected_wallet === wallet_name;

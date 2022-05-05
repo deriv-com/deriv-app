@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
+import { setWebsocket } from '@deriv/shared';
 import Routes from 'Components/routes/routes';
 import { useStores, initContext } from 'Stores';
 import './app.scss';
@@ -15,7 +16,7 @@ type TAppProps = {
 const App: React.FC<TAppProps> = ({ passthrough }: TAppProps) => {
     const { root_store, WS } = passthrough;
     initContext(root_store, WS);
-
+    setWebsocket(WS);
     const { ui } = useStores();
 
     // Different consumers of this package have different sized headers and footers so they

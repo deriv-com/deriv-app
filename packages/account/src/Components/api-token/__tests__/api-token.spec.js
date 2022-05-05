@@ -6,9 +6,14 @@ import ApiToken from '../api-token';
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getPropertyValue: jest.fn().mockReturnValue([]),
-    isDesktop: jest.fn(),
-    isMobile: jest.fn(),
+    isDesktop: jest.fn(() => true),
+    isMobile: jest.fn(() => false),
     useIsMounted: jest.fn().mockImplementation(() => () => true),
+}));
+
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Loading: () => <div>Loading</div>,
 }));
 
 describe('<ApiToken/>', () => {
@@ -27,28 +32,21 @@ describe('<ApiToken/>', () => {
     const your_access_description =
         "To access your mobile apps and other third-party apps, you'll first need to generate an API token.";
 
-    let mock_props = {};
-    let footer_portal_root_el;
-    let overlay_portal_root_el;
-
-    beforeAll(() => {
-        footer_portal_root_el = document.createElement('div');
-        document.body.appendChild(footer_portal_root_el);
-        overlay_portal_root_el = document.createElement('div');
-        document.body.appendChild(overlay_portal_root_el);
-    });
-
-    beforeEach(() => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
-
-        mock_props = {
-            footer_ref: undefined,
-            is_app_settings: false,
-            is_switching: false,
-            overlay_ref: undefined,
-            setIsOverlayShown: jest.fn(),
-            ws: {
+    const mock_props = {
+        footer_ref: undefined,
+        is_app_settings: false,
+        is_switching: false,
+        overlay_ref: undefined,
+        setIsOverlayShown: jest.fn(),
+        ws: {
+            apiToken: jest.fn(() =>
+                Promise.resolve({
+                    api_token: {
+                        tokens: [],
+                    },
+                })
+            ),
+            authorized: {
                 apiToken: jest.fn(() =>
                     Promise.resolve({
                         api_token: {
@@ -56,23 +54,9 @@ describe('<ApiToken/>', () => {
                         },
                     })
                 ),
-                authorized: {
-                    apiToken: jest.fn(() =>
-                        Promise.resolve({
-                            api_token: {
-                                tokens: [],
-                            },
-                        })
-                    ),
-                },
             },
-        };
-    });
-
-    afterAll(() => {
-        document.body.removeChild(footer_portal_root_el);
-        document.body.removeChild(overlay_portal_root_el);
-    });
+        },
+    };
 
     it('should render ApiToken component without app_settings and footer', async () => {
         render(<ApiToken {...mock_props} />);
@@ -91,12 +75,14 @@ describe('<ApiToken/>', () => {
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
     });
 
-    it('should not render ApiToken component if is not mounted', async () => {
+    it('should not render ApiToken component if is not mounted', () => {
         useIsMounted.mockImplementationOnce(() => () => false);
 
-        const { container } = render(<ApiToken {...mock_props} />);
+        render(<ApiToken {...mock_props} />);
 
         expect(mock_props.ws.authorized.apiToken).toHaveBeenCalled();
+        expect(screen.getByText('Loading')).toBeInTheDocument();
+
         expect(screen.queryByText(admin_description)).not.toBeInTheDocument();
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
         expect(screen.queryByText(payments_description)).not.toBeInTheDocument();
@@ -107,9 +93,6 @@ describe('<ApiToken/>', () => {
         expect(screen.queryByText(trading_info_description)).not.toBeInTheDocument();
         expect(screen.queryByText(your_access_description)).not.toBeInTheDocument();
         expect(screen.queryByText(view_activity_msg)).not.toBeInTheDocument();
-
-        const loader = container.querySelector('.initial-loader');
-        expect(loader).toBeInTheDocument();
     });
 
     it('should render ApiToken component without app_settings and footer for mobile', async () => {
@@ -140,6 +123,11 @@ describe('<ApiToken/>', () => {
     });
 
     it('should render ApiTokenFooter, show and close ApiTokenOverlay after triggering links', async () => {
+        const footer_portal_root_el = document.createElement('div');
+        document.body.appendChild(footer_portal_root_el);
+        const overlay_portal_root_el = document.createElement('div');
+        document.body.appendChild(overlay_portal_root_el);
+
         mock_props.footer_ref = footer_portal_root_el;
         mock_props.overlay_ref = overlay_portal_root_el;
 
@@ -153,6 +141,9 @@ describe('<ApiToken/>', () => {
 
         fireEvent.click(await screen.findByRole('button', { name: /done/i }));
         expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
+
+        document.body.removeChild(footer_portal_root_el);
+        document.body.removeChild(overlay_portal_root_el);
     });
 
     it('should choose checkbox, enter a valid value and create token', async () => {
@@ -161,13 +152,13 @@ describe('<ApiToken/>', () => {
         expect(screen.queryByText('New token name')).not.toBeInTheDocument();
 
         const checkboxes = await screen.findAllByRole('checkbox');
-        const read_checkbox = checkboxes.find(card => card.name === 'read');
         const create_btn = await screen.findByRole('button');
+        const read_checkbox = checkboxes.find(card => card.name === 'read');
         const token_name_input = await screen.findByLabelText('Token name');
 
         expect(checkboxes.length).toBe(5);
-        expect(read_checkbox.checked).toBeFalsy();
         expect(create_btn).toBeDisabled();
+        expect(read_checkbox.checked).toBeFalsy();
         expect(token_name_input.value).toBe('');
 
         fireEvent.click(read_checkbox);
@@ -183,19 +174,17 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText(/maximum/i)).toBeInTheDocument();
 
         fireEvent.change(token_name_input, { target: { value: 'New token name' } });
-        expect(token_name_input.value).toBe('New token name');
-
         await waitFor(() => {
-            expect(create_btn).toBeEnabled();
+            expect(token_name_input.value).toBe('New token name');
         });
+        expect(create_btn).toBeEnabled();
 
         fireEvent.click(create_btn);
-
         const updated_token_name_input = await screen.findByLabelText('Token name');
         expect(updated_token_name_input.value).toBe('');
 
         const createToken = mock_props.ws.apiToken;
-        expect(await createToken).toHaveBeenCalledTimes(1);
+        expect(createToken).toHaveBeenCalledTimes(1);
     });
 
     it('should render created tokens and trigger delete', async () => {
@@ -239,6 +228,7 @@ describe('<ApiToken/>', () => {
 
         fireEvent.click(no_btn_1);
         expect(no_btn_1).not.toBeInTheDocument();
+
         const delete_btns_3 = await screen.findAllByRole('button', { name: /delete/i });
         expect(delete_btns_3.length).toBe(2);
 

@@ -87,6 +87,12 @@
             max-width: calc(100vw - 3.2rem) !important;
         }
     }
+    &__container_sent-email__modal {
+        @include mobile {
+            height: 42rem !important;
+            overflow-y: scroll !important;
+        }
+    }
     /** @define dc-modal-header */
     &-header {
         display: flex;

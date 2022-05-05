@@ -13,7 +13,7 @@ export default class ContractsFor {
         // e.g. if market omitted, rule will apply to all markets.
         this.disabled_options = [
             {
-                submarket: 'smart_fx',
+                submarket: 'forex_basket',
                 trade_type: 'higherlower',
             },
             {

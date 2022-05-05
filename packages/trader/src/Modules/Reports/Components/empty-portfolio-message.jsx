@@ -12,8 +12,10 @@ const EmptyPortfolioMessage = ({ error }) => (
             ) : (
                 <React.Fragment>
                     <Icon icon='IcPortfolio' className='portfolio-empty__icon' size={96} color='disabled' />
-                    <Text color='disabled' size='xs'>
-                        {localize('No open positions')}
+                    <Text align='center' className='portfolio-empty__text' color='disabled' size='xs'>
+                        {localize(
+                            'You have no open positions for this asset. To view other open positions, click Go to Reports'
+                        )}
                     </Text>
                 </React.Fragment>
             )}

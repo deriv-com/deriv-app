@@ -24,12 +24,20 @@ const RealityCheckModal = React.lazy(() =>
 );
 const WelcomeModal = React.lazy(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'));
 
+const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
+
+const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
+
+const CloseUKAccountModal = React.lazy(() =>
+    import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseUKAccountModal')
+);
 const AppModals = ({
     is_account_needed_modal_on,
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
     is_close_mx_mlt_account_modal_visible,
+    is_close_uk_account_modal_visible,
     is_eu,
     is_logged_in,
 }) => {
@@ -47,6 +55,12 @@ const AppModals = ({
         case 'signup':
             ComponentToLoad = <AccountSignupModal />;
             break;
+        case 'request_email':
+            ComponentToLoad = <ResetEmailModal />;
+            break;
+        case 'system_email_change':
+            ComponentToLoad = <UpdateEmailModal />;
+            break;
         default:
             if (is_set_residence_modal_visible) {
                 ComponentToLoad = <SetResidenceModal />;
@@ -55,6 +69,9 @@ const AppModals = ({
     }
     if (is_close_mx_mlt_account_modal_visible) {
         ComponentToLoad = <CloseMxMltAccountModal />;
+    }
+    if (is_close_uk_account_modal_visible) {
+        ComponentToLoad = <CloseUKAccountModal />;
     }
 
     if (is_welcome_modal_visible) {
@@ -81,6 +98,7 @@ export default connect(({ client, ui }) => ({
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
+    is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_eu: client.is_eu,

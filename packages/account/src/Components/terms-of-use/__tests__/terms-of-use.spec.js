@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import TermsOfUse from '../terms-of-use';
 
@@ -10,31 +10,31 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<TermsOfUse/>', () => {
+    const agree_check = /i agree to the/i;
+    const iom_description =
+        'Your account will be opened with Deriv (MX) Ltd, regulated by the UK Gaming Commission (UKGC), and will be subject to the laws of the Isle of Man.';
+    const law_title = 'Jurisdiction and choice of law';
     const malta_description =
         'Your account will be opened with Deriv (Europe) Limited, regulated by the Malta Gaming Authority, and will be subject to the laws of Malta.';
     const malta_invest_description =
         'Your account will be opened with Deriv Investments (Europe) Limited, regulated by the Malta Financial Services Authority (MFSA), and will be subject to the laws of Malta.';
-    const responsibility_warning_msg =
-        'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.';
-    const law_title = 'Jurisdiction and choice of law';
-    const samoa_description =
-        'Your account will be opened with Deriv Capital International Ltd and will be subject to the laws of Samoa.';
-    const risk_warning_title = 'Risk warning';
-    const peps_title = 'Real accounts are not available to politically exposed persons (PEPs).';
+    const not_pep_check = 'I am not a PEP, and I have not been a PEP in the last 12 months.';
     const peps_message =
         'A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.';
-    const iom_description =
-        'Your account will be opened with Deriv (MX) Ltd, regulated by the UK Gaming Commission (UKGC), and will be subject to the laws of the Isle of Man.';
-
+    const peps_title = 'Real accounts are not available to politically exposed persons (PEPs).';
+    const responsibility_warning_msg =
+        'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.';
+    const risk_warning_title = 'Risk warning';
+    const samoa_description =
+        'Your account will be opened with Deriv Capital International Ltd and will be subject to the laws of Samoa.';
     const svg_description =
         'Your account will be opened with Deriv (SVG) LLC, and will be subject to the laws of Saint Vincent and the Grenadines.';
 
-    const not_pep_check = 'I am not a PEP, and I have not been a PEP in the last 12 months.';
-    const agree_check = /i agree to the/i;
-
     const commonFieldsCheck = () => {
-        expect(screen.getByText(peps_title)).toBeInTheDocument();
+        expect(screen.getByText(agree_check)).toBeInTheDocument();
+        expect(screen.getByText(not_pep_check)).toBeInTheDocument();
         expect(screen.getByText(peps_message)).toBeInTheDocument();
+        expect(screen.getByText(peps_title)).toBeInTheDocument();
     };
 
     let mock_props;
@@ -50,7 +50,7 @@ describe('<TermsOfUse/>', () => {
             onCancel: jest.fn(),
             onSubmit: jest.fn(),
             real_account_signup_target: '',
-            value: false,
+            value: { agreed_tos: false, agreed_tnc: false },
         };
     });
 
@@ -129,7 +129,7 @@ describe('<TermsOfUse/>', () => {
         expect(add_btn).toBeInTheDocument();
     });
 
-    it('should render TermsOfUse component for malta accounts and trigger buttons', () => {
+    it('should render TermsOfUse component for malta accounts and trigger buttons', async () => {
         mock_props.real_account_signup_target = 'malta';
 
         render(
@@ -149,18 +149,30 @@ describe('<TermsOfUse/>', () => {
         expect(screen.queryByText(samoa_description)).not.toBeInTheDocument();
         expect(screen.queryByText(svg_description)).not.toBeInTheDocument();
 
-        const btns = screen.getAllByRole('button');
-        console.log('btns', btns)
-        const previous_btn = btns.find(btn => btn.innerText === 'Previous');
+        const previous_btn = screen.getByRole('button', { name: /previous/i });
         fireEvent.click(previous_btn);
-        // expect(mock_props.onCancel).toHaveBeenCalledTimes(1);
-        // expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(1);
+        expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(1);
+        expect(mock_props.onCancel).toHaveBeenCalledTimes(1);
 
-        // const finish_btn = screen.getByText('Finish');
-        // fireEvent.click(finish_btn);
+        const agree_checkbox = screen.getByLabelText(agree_check);
+        const not_pep_checkbox = screen.getByLabelText(not_pep_check);
 
-        // console.log('finish_btn', finish_btn);
+        expect(agree_checkbox.checked).toBeFalse();
+        expect(not_pep_checkbox.checked).toBeFalse();
 
-        // expect(mock_props.onSubmit).toHaveBeenCalledTimes(1)
+        fireEvent.click(agree_checkbox);
+        fireEvent.click(not_pep_checkbox);
+
+        expect(agree_checkbox.checked).toBeTruthy();
+        expect(not_pep_checkbox.checked).toBeTruthy();
+
+        const finish_btn = screen.getByRole('button', { name: /finish/i });
+
+        fireEvent.click(finish_btn);
+
+        await waitFor(() => {
+            expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(2);
+            expect(mock_props.onSubmit).toHaveBeenCalledTimes(1);
+        });
     });
 });

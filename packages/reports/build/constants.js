@@ -1,6 +1,6 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+// const CopyPlugin = require('copy-webpack-plugin');
 // const HtmlWebPackPlugin = require('html-webpack-plugin');
 // const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
@@ -12,13 +12,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
-const {
-    copyConfig,
-    cssConfig,
-    // htmlInjectConfig,
-    // htmlOutputConfig,
-    stylelintConfig,
-} = require('./config');
+const { cssConfig, stylelintConfig } = require('./config');
 const {
     css_loaders,
     file_loaders,

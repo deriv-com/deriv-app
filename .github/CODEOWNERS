@@ -119,11 +119,11 @@
 
 /packages/trader/**/*                                           @matin-binary @balakrishna-binary @akmal-binary 
 
+# ==============================================================
 #  deriv-app/reports
 # ==============================================================
 
 /packages/reports/**/*                                           @matin-binary @balakrishna-binary
-
 
 # ==============================================================
 #  deriv-app/publisher

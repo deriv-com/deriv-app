@@ -6,7 +6,7 @@ import getRoutesConfig from '../../Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
 const BinaryRoutes = props => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <React.Suspense
@@ -19,7 +19,7 @@ const BinaryRoutes = props => {
             }}
         >
             <Switch>
-                {getRoutesConfig({ is_dashboard }).map(route => (
+                {getRoutesConfig({ is_appstore }).map(route => (
                     <RouteWithSubRoutes key={route.path} {...route} {...props} />
                 ))}
             </Switch>

@@ -82,7 +82,7 @@ export default class WalletStore extends BaseStore {
             get_account_types: 1,
         });
 
-        if (response) this.setAccountNames(response.get_account_types.wallet);
+        if (response) this.setAccountNames(response.get_account_types);
     }
 
     @action

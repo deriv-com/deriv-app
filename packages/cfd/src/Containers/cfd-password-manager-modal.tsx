@@ -34,7 +34,7 @@ import {
     TCFDPasswordManagerTabContentWrapper,
     TCFDPasswordManagerTabContent,
     TCFDPasswordManagerModal,
-    TFormValues
+    TFormValues,
 } from './props.types';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
@@ -57,7 +57,13 @@ const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent)
     return <span className='countdown'>{count}</span>;
 };
 
-const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server, password_type }: TCFDPasswordReset) => {
+const CFDPasswordReset = ({
+    sendVerifyEmail,
+    account_type,
+    account_group,
+    server,
+    password_type,
+}: TCFDPasswordReset) => {
     const [is_resend_verification_requested, setResendVerification] = React.useState<boolean>(false);
     const [is_resend_verification_sent, setResendVerificationSent] = React.useState<boolean>(false);
 

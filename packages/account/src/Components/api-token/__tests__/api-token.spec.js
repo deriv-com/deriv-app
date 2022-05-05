@@ -302,7 +302,7 @@ describe('<ApiToken/>', () => {
     it('should show token error if exists', async () => {
         mock_props.ws.authorized.apiToken = jest.fn(() =>
             Promise.resolve({
-                api_tonen: { tokens: [] },
+                api_token: { tokens: [] },
                 error: { message: 'New test error' },
             })
         );

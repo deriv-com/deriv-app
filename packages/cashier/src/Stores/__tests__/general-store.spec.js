@@ -82,7 +82,7 @@ beforeEach(() => {
     };
     WS = {
         authorized: {
-            p2pAdvertiserInfo: jest.fn().mockResolvedValueOnce({ error: { code: 'advetiser_error' } }),
+            p2pAdvertiserInfo: jest.fn().mockResolvedValueOnce({ error: { code: 'advertiser_error' } }),
         },
     };
     general_store = new GeneralStore({ root_store, WS });
@@ -333,27 +333,27 @@ describe('GeneralStore', () => {
         expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
     });
 
-    it('should set advetiser error', async () => {
+    it('should set advertiser error', async () => {
         const spySetP2pAdvertiserError = jest.spyOn(general_store, 'setP2pAdvertiserError');
         await general_store.getAdvertizerError();
 
-        expect(spySetP2pAdvertiserError).toHaveBeenCalledWith('advetiser_error');
+        expect(spySetP2pAdvertiserError).toHaveBeenCalledWith('advertiser_error');
     });
 
-    it('should set p2p advetiser error', () => {
-        general_store.setP2pAdvertiserError('p2p_advetiser_error');
+    it('should set p2p advertiser error', () => {
+        general_store.setP2pAdvertiserError('p2p_advertiser_error');
 
-        expect(general_store.p2p_advertiser_error).toBe('p2p_advetiser_error');
+        expect(general_store.p2p_advertiser_error).toBe('p2p_advertiser_error');
     });
 
-    it('should set is_p2p_visible equal to false, if there is a "RestrictedCountry" p2p advetiser error', () => {
+    it('should set is_p2p_visible equal to false, if there is a "RestrictedCountry" p2p advertiser error', () => {
         general_store.setP2pAdvertiserError('RestrictedCountry');
         general_store.checkP2pStatus();
 
         expect(general_store.is_p2p_visible).toBeFalse();
     });
 
-    it('should set is_p2p_visible equal to false, if there is a "RestrictedCurrency" p2p advetiser error', () => {
+    it('should set is_p2p_visible equal to false, if there is a "RestrictedCurrency" p2p advertiser error', () => {
         general_store.setP2pAdvertiserError('RestrictedCurrency');
         general_store.checkP2pStatus();
 
@@ -434,12 +434,6 @@ describe('GeneralStore', () => {
         general_store.setCashierTabIndex(1);
 
         expect(general_store.cashier_route_tab_index).toBe(1);
-    });
-
-    it('should set notification count', () => {
-        general_store.setNotificationCount(1);
-
-        expect(general_store.p2p_notification_count).toBe(1);
     });
 
     it('should set notification count', () => {

@@ -67,7 +67,8 @@ const CreateAdAddPaymentMethodModal = () => {
             height='560px'
             is_open={my_ads_store.should_show_add_payment_method_modal}
             title={localize('Add payment method')}
-            getModalState={modalStateHandler}
+            onMount={() => modalStateHandler(true)}
+            onUnmount={() => modalStateHandler(false)}
         >
             <Modal.Body
                 className={classNames({ 'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method })}

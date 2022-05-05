@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { when } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
@@ -159,16 +160,14 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                 <Button
                                     secondary
                                     large
-                                    onClick={() => {
+                                    onClick={async () => {
                                         my_profile_store.setSelectedPaymentMethod('');
                                         buy_sell_store.setShouldShowPopup(false);
                                         // ensuring the previous modal is closed before opening the new modal
-                                        const close_modal = setInterval(() => {
-                                            if (!my_profile_store.is_modal_open) {
-                                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-                                                clearInterval(close_modal);
-                                            }
-                                        });
+                                        await when(
+                                            () => !my_profile_store.is_modal_open,
+                                            () => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)
+                                        );
                                     }}
                                     type='button'
                                 >

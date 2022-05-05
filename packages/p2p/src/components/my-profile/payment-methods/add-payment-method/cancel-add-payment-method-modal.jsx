@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
+import { when } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
@@ -21,7 +22,8 @@ const CancelAddPaymentMethodModal = () => {
                     <Localize i18n_default_text='Cancel adding this payment method?' />
                 </Text>
             }
-            getModalState={modalStateHandler}
+            onMount={() => modalStateHandler(true)}
+            onUnmount={() => modalStateHandler(false)}
         >
             <Modal.Body>
                 <Text color='prominent' size='xs'>
@@ -31,18 +33,10 @@ const CancelAddPaymentMethodModal = () => {
             <Modal.Footer>
                 <Button
                     large
-                    onClick={() => {
+                    onClick={async () => {
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
                         my_profile_store.setSelectedPaymentMethodDisplayName('');
-                        // ensuring the previous modal is closed before opening the new modal
-                        const close_modal = setInterval(() => {
-                            if (!my_profile_store.is_modal_open) {
-                                buy_sell_store.setShouldShowPopup(true);
-                                clearInterval(close_modal);
-                            }
-                        });
-
                         my_profile_store.setShouldShowAddPaymentMethodForm(true);
                     }}
                     secondary
@@ -51,16 +45,14 @@ const CancelAddPaymentMethodModal = () => {
                 </Button>
                 <Button
                     large
-                    onClick={() => {
+                    onClick={async () => {
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
                         // ensuring the previous modal is closed before opening the new modal
-                        const back_btn = setInterval(() => {
-                            if (!my_profile_store.is_modal_open) {
-                                buy_sell_store.setShouldShowPopup(true);
-                                clearInterval(back_btn);
-                            }
-                        });
+                        await when(
+                            () => !my_profile_store.is_modal_open,
+                            () => buy_sell_store.setShouldShowPopup(true)
+                        );
                     }}
                     primary
                 >

@@ -71,7 +71,7 @@ export default class WalletStore extends BaseStore {
     }
 
     @action.bound
-    setAccountNames(data: any) {
+    setAccountTypes(data: any) {
         this.account_types = data;
     }
 
@@ -82,7 +82,7 @@ export default class WalletStore extends BaseStore {
             get_account_types: 1,
         });
 
-        if (response) this.setAccountNames(response.get_account_types);
+        if (response) this.setAccountTypes(response.get_account_types);
     }
 
     @action

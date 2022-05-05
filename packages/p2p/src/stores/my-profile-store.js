@@ -339,7 +339,7 @@ export default class MyProfileStore extends BaseStore {
                 this.getAdvertiserPaymentMethods();
             } else {
                 this.setDeleteErrorMessage(response.error.message);
-                // waiting for 250ms for animation to complete before triggering a new render
+                // waiting for 250ms of animation to complete before triggering a new render
                 setTimeout(() => {
                     this.setIsDeleteErrorModalOpen(true);
                 }, 250);

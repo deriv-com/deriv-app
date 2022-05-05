@@ -292,7 +292,7 @@ Modal.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     close_icon_color: PropTypes.string,
-    getModalState: PropTypes.func, // Returns the state of the modal
+    getModalState: PropTypes.func, // Returns the state of the modal specifying if it is open or closed
     should_header_stick_body: PropTypes.bool,
     has_close_icon: PropTypes.bool,
     header: PropTypes.node,

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { Dialog as DialogPrimitive } from '@deriv/ui';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import WalletIcon from 'Assets/svgs/wallet';

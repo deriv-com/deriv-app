@@ -31,7 +31,6 @@
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
         "@deriv/ui": "^0.0.1",
-        "@radix-ui/react-dialog": "^0.1.5",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "mobx": "^5.15.7",

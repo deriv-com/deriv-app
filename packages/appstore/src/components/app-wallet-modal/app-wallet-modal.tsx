@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { Dialog as DialogPrimitive } from '@deriv/ui';
 import AppWalletModalBody from './app-wallet-modal-body';
 import AppWalletModalTrigger from './app-wallet-modal-trigger';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { Dialog as DialogPrimitive } from '@deriv/ui';
 
 export const DialogTrigger = DialogPrimitive.Trigger;
 

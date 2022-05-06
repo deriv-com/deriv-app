@@ -345,31 +345,6 @@ describe('<CurrencySelector/>', () => {
         });
     });
 
-    it('should call handleCancel when previous button is called', () => {
-        render(<CurrencySelector {...props} has_wallet_account has_cancel />);
-
-        const usdc = screen.getByRole('radio', { name: /usd coin \(usdc\)/i });
-        expect(usdc.checked).toEqual(false);
-        fireEvent.click(usdc);
-        expect(usdc.checked).toEqual(true);
-
-        expect(screen.getByRole('button', { name: /finish/i })).toBeInTheDocument();
-        const prev_btn = screen.getByRole('button', { name: /previous/i });
-        expect(prev_btn).toBeInTheDocument();
-        fireEvent.click(prev_btn);
-        expect(props.onSave).toHaveBeenCalledWith(0, { currency: 'USDC' });
-    });
-
-    it('should bypass to next step in case of form error', () => {
-        const real_account_signup = {
-            ...props.real_account_signup,
-            error_code: 'sample_error_code',
-        };
-        render(<CurrencySelector {...props} real_account_signup={real_account_signup} />);
-        expect(props.goToNextStep).toHaveBeenCalled();
-        expect(props.resetRealAccountSignupParams).toHaveBeenCalled();
-    });
-
     it('should render the selector__container with proper div height when appstore is true', async () => {
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
@@ -400,5 +375,30 @@ describe('<CurrencySelector/>', () => {
         expect(screen.getByTestId('currency_selector_form').firstChild.getAttribute('style')).toEqual(
             'height: calc(150px - 89px);'
         );
+    });
+
+    it('should call handleCancel when previous button is called', () => {
+        render(<CurrencySelector {...props} has_wallet_account has_cancel />);
+
+        const usdc = screen.getByRole('radio', { name: /usd coin \(usdc\)/i });
+        expect(usdc.checked).toEqual(false);
+        fireEvent.click(usdc);
+        expect(usdc.checked).toEqual(true);
+
+        expect(screen.getByRole('button', { name: /finish/i })).toBeInTheDocument();
+        const prev_btn = screen.getByRole('button', { name: /previous/i });
+        expect(prev_btn).toBeInTheDocument();
+        fireEvent.click(prev_btn);
+        expect(props.onSave).toHaveBeenCalledWith(0, { currency: 'USDC' });
+    });
+
+    it('should bypass to next step in case of form error', () => {
+        const real_account_signup = {
+            ...props.real_account_signup,
+            error_code: 'sample_error_code',
+        };
+        render(<CurrencySelector {...props} real_account_signup={real_account_signup} />);
+        expect(props.goToNextStep).toHaveBeenCalled();
+        expect(props.resetRealAccountSignupParams).toHaveBeenCalled();
     });
 });

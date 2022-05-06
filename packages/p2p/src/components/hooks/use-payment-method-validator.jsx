@@ -12,12 +12,12 @@ export const usePaymentMethodValidator = () => {
     const setErrorMessage = (user_input, field) => {
         if (!no_symbols_regex.test(user_input)) {
             return localize(no_symbols_message, {
-                field_name: my_profile_store.field_set[field],
+                field_name: my_profile_store.payment_method_field_set[field],
                 interpolation: { escapeValue: false }, // To prevent the conversion of characters to UNIcode
             });
         } else if (user_input.length > 200) {
             return localize(max_characters_error_message, {
-                field_name: my_profile_store.field_set[field],
+                field_name: my_profile_store.payment_method_field_set[field],
                 interpolation: { escapeValue: false }, // To prevent the conversion of characters to UNIcode
             });
         }

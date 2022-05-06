@@ -5,8 +5,8 @@ import TermsOfUse from '../terms-of-use';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(),
-    isMobile: jest.fn(),
+    isDesktop: jest.fn(() => true),
+    isMobile: jest.fn(() => false),
 }));
 
 describe('<TermsOfUse/>', () => {
@@ -30,29 +30,22 @@ describe('<TermsOfUse/>', () => {
     const svg_description =
         'Your account will be opened with Deriv (SVG) LLC, and will be subject to the laws of Saint Vincent and the Grenadines.';
 
+    const mock_props = {
+        getCurrentStep: jest.fn(),
+        goToNextStep: jest.fn(),
+        goToPreviousStep: jest.fn(),
+        onCancel: jest.fn(),
+        onSubmit: jest.fn(),
+        real_account_signup_target: '',
+        value: { agreed_tos: false, agreed_tnc: false },
+    };
+
     const commonFieldsCheck = () => {
         expect(screen.getByText(agree_check)).toBeInTheDocument();
         expect(screen.getByText(not_pep_check)).toBeInTheDocument();
         expect(screen.getByText(peps_message)).toBeInTheDocument();
         expect(screen.getByText(peps_title)).toBeInTheDocument();
     };
-
-    let mock_props;
-
-    beforeEach(() => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
-
-        mock_props = {
-            getCurrentStep: jest.fn(),
-            goToNextStep: jest.fn(),
-            goToPreviousStep: jest.fn(),
-            onCancel: jest.fn(),
-            onSubmit: jest.fn(),
-            real_account_signup_target: '',
-            value: { agreed_tos: false, agreed_tnc: false },
-        };
-    });
 
     it('should render TermsOfUse component for svg accounts', () => {
         mock_props.real_account_signup_target = 'svg';
@@ -108,11 +101,7 @@ describe('<TermsOfUse/>', () => {
     it('should render TermsOfUse component for maltainvest accounts and show "Add account" button', () => {
         mock_props.real_account_signup_target = 'maltainvest';
 
-        render(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <TermsOfUse {...mock_props} />
-            </PlatformContext.Provider>
-        );
+        render(<TermsOfUse {...mock_props} />);
 
         commonFieldsCheck();
         expect(screen.getByText(law_title)).toBeInTheDocument();
@@ -125,7 +114,30 @@ describe('<TermsOfUse/>', () => {
         expect(screen.queryByText(samoa_description)).not.toBeInTheDocument();
         expect(screen.queryByText(svg_description)).not.toBeInTheDocument();
 
-        const add_btn = screen.getByText('Add account');
+        const add_btn = screen.getByRole('button', { name: /add account/i });
+        expect(add_btn).toBeInTheDocument();
+    });
+
+    it('should render TermsOfUse component for maltainvest accounts and show "Add account" button for mobile', () => {
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+
+        mock_props.real_account_signup_target = 'maltainvest';
+
+        render(<TermsOfUse {...mock_props} />);
+
+        commonFieldsCheck();
+        expect(screen.getByText(law_title)).toBeInTheDocument();
+        expect(screen.getByText(malta_invest_description)).toBeInTheDocument();
+        expect(screen.getByText(responsibility_warning_msg)).toBeInTheDocument();
+        expect(screen.getByText(risk_warning_title)).toBeInTheDocument();
+
+        expect(screen.queryByText(iom_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(malta_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(samoa_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(svg_description)).not.toBeInTheDocument();
+
+        const add_btn = screen.getByRole('button', { name: /add account/i });
         expect(add_btn).toBeInTheDocument();
     });
 
@@ -156,20 +168,17 @@ describe('<TermsOfUse/>', () => {
 
         const agree_checkbox = screen.getByLabelText(agree_check);
         const not_pep_checkbox = screen.getByLabelText(not_pep_check);
-
         expect(agree_checkbox.checked).toBeFalse();
         expect(not_pep_checkbox.checked).toBeFalse();
 
         fireEvent.click(agree_checkbox);
         fireEvent.click(not_pep_checkbox);
-
         expect(agree_checkbox.checked).toBeTruthy();
         expect(not_pep_checkbox.checked).toBeTruthy();
 
         const finish_btn = screen.getByRole('button', { name: /finish/i });
 
         fireEvent.click(finish_btn);
-
         await waitFor(() => {
             expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(2);
             expect(mock_props.onSubmit).toHaveBeenCalledTimes(1);

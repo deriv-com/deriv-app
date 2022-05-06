@@ -75,6 +75,16 @@ type TStandPoint = {
     maltainvest: boolean;
     svg: boolean;
 };
+type TMt5StatusServerType = {
+    all: number;
+    platform: number;
+    server_number: number;
+};
+
+type TMt5StatusServer = {
+    demo: TMt5StatusServerType[];
+    real: TMt5StatusServerType[];
+};
 
 type TCFDDashboardProps = {
     account_settings: { residence: string };
@@ -147,6 +157,7 @@ type TCFDDashboardProps = {
     history: History;
     setCurrentAccount: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     setAccountType: (account_type: TOpenAccountTransferMeta) => void;
+    mt5_status_server: TMt5StatusServer;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -373,15 +384,23 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         disableApp,
         mt5_verification_code,
         dxtrade_verification_code,
+        mt5_status_server,
     } = props;
 
     const should_show_missing_real_account =
         !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
     if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
+    const is_suspended_mt5_server = (type_server: TMt5StatusServer['demo' | 'real']) =>
+        type_server?.map((item: TMt5StatusServerType) => item.all).some((item: number) => item === 1);
+
     const has_mt5_account_error = is_demo_tab
-        ? has_mt5_demo_account_error || mt5_disabled_signup_types.demo
-        : has_mt5_real_account_error || mt5_disabled_signup_types.real;
+        ? is_suspended_mt5_server(mt5_status_server.demo) ||
+          has_mt5_demo_account_error ||
+          mt5_disabled_signup_types.demo
+        : is_suspended_mt5_server(mt5_status_server.real) ||
+          has_mt5_real_account_error ||
+          mt5_disabled_signup_types.real;
 
     const has_dxtrade_account_error = is_demo_tab
         ? has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
@@ -471,8 +490,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 has_malta_account={has_malta_account}
                                                 has_cfd_account_error={
                                                     platform === CFD_PLATFORMS.MT5
-                                                        ? mt5_disabled_signup_types.real
-                                                        : dxtrade_disabled_signup_types.real ||
+                                                        ? is_suspended_mt5_server(mt5_status_server.real) ||
+                                                          mt5_disabled_signup_types.real
+                                                        : is_suspended_mt5_server(mt5_status_server.real) ||
+                                                          dxtrade_disabled_signup_types.real ||
                                                           !!dxtrade_accounts_list_error
                                                 }
                                                 openAccountNeededModal={openAccountNeededModal}
@@ -513,8 +534,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             has_maltainvest_account={has_maltainvest_account}
                                             has_cfd_account_error={
                                                 platform === CFD_PLATFORMS.MT5
-                                                    ? mt5_disabled_signup_types.demo
-                                                    : dxtrade_disabled_signup_types.demo ||
+                                                    ? is_suspended_mt5_server(mt5_status_server.demo) ||
+                                                      mt5_disabled_signup_types.demo
+                                                    : is_suspended_mt5_server(mt5_status_server.demo) ||
+                                                      dxtrade_disabled_signup_types.demo ||
                                                       !!dxtrade_accounts_list_error
                                             }
                                             openAccountNeededModal={openAccountNeededModal}
@@ -714,5 +737,6 @@ export default withRouter(
         toggleResetTradingPasswordModal: ui.setResetTradingPasswordModalOpen,
         mt5_verification_code: client.verification_code.trading_platform_mt5_password_reset,
         dxtrade_verification_code: client.verification_code.trading_platform_dxtrade_password_reset,
+        mt5_status_server: client.website_status.mt5_status,
     }))(CFDDashboard)
 );

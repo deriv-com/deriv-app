@@ -64,7 +64,6 @@ describe('<CurrencySelector/>', () => {
                 },
                 type: 'fiat',
             },
-
             {
                 value: 'USD',
                 fractional_digits: 2,
@@ -202,6 +201,7 @@ describe('<CurrencySelector/>', () => {
 
     const dxtrade_eu_msg =
         'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs or Deriv X account.';
+
     const dxtrade_non_eu_msg =
         'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 or Deriv X account.';
 
@@ -251,7 +251,7 @@ describe('<CurrencySelector/>', () => {
         });
     });
 
-    it('should disable fiat if user already have a fiat ', async () => {
+    it('should disable fiat if user already have a fiat ', () => {
         const new_props = {
             ...props,
             accounts: {
@@ -345,7 +345,7 @@ describe('<CurrencySelector/>', () => {
         });
     });
 
-    it('should render the selector__container with proper div height when appstore is true', async () => {
+    it('should render the selector__container with proper div height when appstore is true', () => {
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
         Object.defineProperty(window, 'innerHeight', {
@@ -363,7 +363,7 @@ describe('<CurrencySelector/>', () => {
         );
     });
 
-    it('should render the selector__container with proper div height', async () => {
+    it('should render the selector__container with proper div height', () => {
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
         Object.defineProperty(window, 'innerHeight', {

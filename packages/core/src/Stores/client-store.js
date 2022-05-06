@@ -128,6 +128,9 @@ export default class ClientStore extends BaseStore {
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
 
+    @observable search_params_to_keep = '';
+    @observable window_location_search = '';
+
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
@@ -1224,12 +1227,23 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init(login_new_user) {
-        const search = window.location.search;
-        const search_params = new URLSearchParams(search);
+        this.window_location_search = window.location.search;
+        const search_params = new URLSearchParams(this.window_location_search);
         const redirect_url = search_params?.get('redirect_url');
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                // timeout is needed for the app to get all necessary query params from the full URL
+                // before we hide them from LiveChat getting the URL from Window, particularly when initialized via HTML script on mobile
+                if (this.window_location_search) history.replaceState(null, null, `/${window.location.hash}`);
+            }, 0);
+        });
+        window.onload = () => {
+            // restoring all the necessary query params in the URL:
+            if (this.window_location_search) history.replaceState(null, null, this.search_params_to_keep);
+        };
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
@@ -1275,7 +1289,7 @@ export default class ClientStore extends BaseStore {
                 );
 
                 if (has_action) {
-                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
+                    const query_string = filterUrlQuery(this.window_location_search, ['platform', 'code', 'action']);
                     if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
                         // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
                         window.location.replace(`/redirect?${query_string}`);
@@ -1283,7 +1297,9 @@ export default class ClientStore extends BaseStore {
                         window.location.replace(`${redirect_route}/redirect?${query_string}`);
                     }
                 } else {
-                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
+                    window.location.replace(
+                        `${redirect_route}/?${filterUrlQuery(this.window_location_search, ['platform'])}`
+                    );
                 }
             }
             runInAction(() => {
@@ -1761,10 +1777,9 @@ export default class ClientStore extends BaseStore {
     async setUserLogin(login_new_user) {
         // login_new_user is populated only on virtual sign-up
         let obj_params = {};
-        const search = window.location.search;
 
-        if (search) {
-            let search_params = new URLSearchParams(window.location.search);
+        if (this.window_location_search) {
+            let search_params = new URLSearchParams(this.window_location_search);
 
             search_params.forEach((value, key) => {
                 const account_keys = ['acct', 'token', 'cur'];
@@ -1782,12 +1797,14 @@ export default class ClientStore extends BaseStore {
             search_params.delete('state'); // remove unused state= query string
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';
-            history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
+            this.search_params_to_keep = `${search_param_without_account}${window.location.hash}`;
+            history.replaceState(null, null, this.search_params_to_keep);
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
         if (is_client_logging_in) {
-            window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
+            this.search_params_to_keep = sessionStorage.getItem('redirect_url');
+            history.replaceState({}, document.title, this.search_params_to_keep);
             SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
@@ -1882,7 +1899,7 @@ export default class ClientStore extends BaseStore {
             'affiliate_token',
         ];
         const signup_params = {};
-        const url_params = new URLSearchParams(window.location.search);
+        const url_params = new URLSearchParams(this.window_location_search);
 
         param_list.forEach(key => {
             if (url_params.get(key)) {

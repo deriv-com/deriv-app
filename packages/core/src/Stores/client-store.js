@@ -113,23 +113,18 @@ export default class ClientStore extends BaseStore {
     };
 
     @observable account_limits = {};
-    @observable account_limits = {};
-
     @observable self_exclusion = {};
 
     @observable local_currency_config = {
         currency: '',
         decimal_places: undefined,
     };
+
     @observable has_cookie_account = false;
-
     @observable initial_search_params = '';
-
     @observable financial_assessment = null;
-
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
-
     @observable replacement_url = '';
 
     is_mt5_account_list_updated = false;

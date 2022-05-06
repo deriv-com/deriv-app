@@ -75,7 +75,7 @@ export default class FloatingRateStore extends BaseStore {
                         this.setApiErrorMessage(response.error.message);
                     } else {
                         const { rates } = response.exchange_rates;
-                        this.exchange_rate = parseFloat(rates[local_currency]);
+                        this.exchange_rate = parseFloat(rates[local_currency]) ?? 0;
                         this.setApiErrorMessage(null);
                     }
                 }

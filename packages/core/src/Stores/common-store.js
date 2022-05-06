@@ -92,6 +92,7 @@ export default class CommonStore extends BaseStore {
             }
 
             window.history.replaceState({}, document.title, window.location.pathname);
+            this.root_store.client.setReplacementUrl(window.location.pathname);
         } else {
             this.addRouteHistoryItem({ ...location, action: 'PUSH' });
         }

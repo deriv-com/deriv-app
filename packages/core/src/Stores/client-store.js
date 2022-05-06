@@ -128,7 +128,7 @@ export default class ClientStore extends BaseStore {
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
 
-    @observable search_params_to_keep = '';
+    @observable replacement_url = '';
     @observable window_location_search = '';
 
     is_mt5_account_list_updated = false;
@@ -1242,7 +1242,7 @@ export default class ClientStore extends BaseStore {
         });
         window.onload = () => {
             // restoring all the necessary query params in the URL:
-            if (this.window_location_search) history.replaceState(null, null, this.search_params_to_keep);
+            if (this.window_location_search) history.replaceState(null, null, this.replacement_url);
         };
         this.setDeviceData();
 
@@ -1797,14 +1797,14 @@ export default class ClientStore extends BaseStore {
             search_params.delete('state'); // remove unused state= query string
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';
-            this.search_params_to_keep = `${search_param_without_account}${window.location.hash}`;
-            history.replaceState(null, null, this.search_params_to_keep);
+            this.setReplacementUrl(`${search_param_without_account}${window.location.hash}`);
+            history.replaceState(null, null, this.replacement_url);
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
         if (is_client_logging_in) {
-            this.search_params_to_keep = sessionStorage.getItem('redirect_url');
-            history.replaceState({}, document.title, this.search_params_to_keep);
+            this.setReplacementUrl(sessionStorage.getItem('redirect_url'));
+            history.replaceState({}, document.title, this.replacement_url);
             SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
@@ -2229,6 +2229,11 @@ export default class ClientStore extends BaseStore {
             // after this duration passes, show the summary pop up
             this.setVisibilityRealityCheck(1);
         }, +duration * 60 * 1000);
+    }
+
+    @action.bound
+    setReplacementUrl(replacement_url) {
+        this.replacement_url = replacement_url;
     }
 
     @action.bound

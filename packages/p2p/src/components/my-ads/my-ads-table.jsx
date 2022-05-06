@@ -76,8 +76,8 @@ const MyAdsTable = () => {
                                                 'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}'
                                             }
                                             values={{
-                                                local_currency: local_currency || '',
-                                                end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+                                                local_currency: local_currency ?? '',
+                                                end_date: floating_rate_store.fixed_rate_adverts_end_date ?? '',
                                             }}
                                         />
                                     )}

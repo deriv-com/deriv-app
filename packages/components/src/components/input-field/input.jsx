@@ -102,7 +102,7 @@ const Input = ({
                 required={required || undefined}
                 inputMode={inputmode}
                 type={type === 'number' ? 'text' : type}
-                value={display_value || ''}
+                value={display_value ?? ''}
                 aria-label={ariaLabel}
                 data-lpignore={type !== 'password'}
             />

@@ -190,7 +190,7 @@ const InputField = ({
         if (is_long_press) {
             setLocalValue(formatted_value);
         } else {
-            if (is_signed && /^\d+/.test(formatted_value) && Math.sign(formatted_value) > 0) {
+            if (is_signed && /^\d+/.test(formatted_value) && formatted_value > 0) {
                 formatted_value = `+${formatted_value}`;
             }
             onChange({ target: { value: formatted_value, name } });

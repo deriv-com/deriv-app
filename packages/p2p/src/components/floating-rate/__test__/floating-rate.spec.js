@@ -7,6 +7,7 @@ jest.mock('Stores', () => ({
     useStores: jest.fn().mockReturnValue({
         general_store: {
             current_focus: '',
+            client: { local_currency_config: { decimal_places: 2 } },
             setCurrentFocus: jest.fn(),
         },
     }),

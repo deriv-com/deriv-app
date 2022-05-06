@@ -81,10 +81,7 @@ type TMt5StatusServerType = {
     server_number: number;
 };
 
-type TMt5StatusServer = {
-    demo: TMt5StatusServerType[];
-    real: TMt5StatusServerType[];
-};
+type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
 type TCFDDashboardProps = {
     account_settings: { residence: string };
@@ -394,13 +391,12 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     const is_suspended_mt5_server = (type_server: TMt5StatusServer['demo' | 'real']) =>
         type_server?.map((item: TMt5StatusServerType) => item.all).some((item: number) => item === 1);
 
+    const is_suspended_mt5_demo_server = is_suspended_mt5_server(mt5_status_server.demo);
+    const is_suspended_mt5_real_server = is_suspended_mt5_server(mt5_status_server.real);
+
     const has_mt5_account_error = is_demo_tab
-        ? is_suspended_mt5_server(mt5_status_server.demo) ||
-          has_mt5_demo_account_error ||
-          mt5_disabled_signup_types.demo
-        : is_suspended_mt5_server(mt5_status_server.real) ||
-          has_mt5_real_account_error ||
-          mt5_disabled_signup_types.real;
+        ? is_suspended_mt5_demo_server || has_mt5_demo_account_error || mt5_disabled_signup_types.demo
+        : is_suspended_mt5_real_server || has_mt5_real_account_error || mt5_disabled_signup_types.real;
 
     const has_dxtrade_account_error = is_demo_tab
         ? has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
@@ -490,9 +486,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 has_malta_account={has_malta_account}
                                                 has_cfd_account_error={
                                                     platform === CFD_PLATFORMS.MT5
-                                                        ? is_suspended_mt5_server(mt5_status_server.real) ||
-                                                          mt5_disabled_signup_types.real
-                                                        : is_suspended_mt5_server(mt5_status_server.real) ||
+                                                        ? is_suspended_mt5_real_server || mt5_disabled_signup_types.real
+                                                        : is_suspended_mt5_real_server ||
                                                           dxtrade_disabled_signup_types.real ||
                                                           !!dxtrade_accounts_list_error
                                                 }
@@ -534,9 +529,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             has_maltainvest_account={has_maltainvest_account}
                                             has_cfd_account_error={
                                                 platform === CFD_PLATFORMS.MT5
-                                                    ? is_suspended_mt5_server(mt5_status_server.demo) ||
-                                                      mt5_disabled_signup_types.demo
-                                                    : is_suspended_mt5_server(mt5_status_server.demo) ||
+                                                    ? is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
+                                                    : is_suspended_mt5_demo_server ||
                                                       dxtrade_disabled_signup_types.demo ||
                                                       !!dxtrade_accounts_list_error
                                             }

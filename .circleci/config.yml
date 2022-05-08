@@ -69,7 +69,6 @@ commands:
             - "packages/cfd/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
-            # TO PREVENET CACHE
             - "packages/shared/node_modules"
             - "packages/trader/node_modules"
             - "packages/translations/node_modules"

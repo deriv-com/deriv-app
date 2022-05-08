@@ -19,8 +19,8 @@ const BinaryRoutes = props => {
             }}
         >
             <Switch>
-                {getRoutesConfig({ is_dashboard }).map(route => (
-                    <RouteWithSubRoutes key={route.path} {...route} {...props} />
+                {getRoutesConfig({ is_dashboard }).map((route, idx) => (
+                    <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>
         </React.Suspense>

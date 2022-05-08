@@ -51,7 +51,6 @@ const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent)
 
         onTimeout();
 
-        return () => {};
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);
     return <span className='countdown'>{count}</span>;

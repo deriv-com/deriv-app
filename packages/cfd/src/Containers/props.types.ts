@@ -1,8 +1,7 @@
 import { History } from 'history';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, VerifyEmailResponse } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
-import { VerifyEmailResponse } from '@deriv/api-types';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;

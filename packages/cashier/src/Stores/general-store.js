@@ -37,7 +37,7 @@ export default class GeneralStore extends BaseStore {
 
         reaction(
             () => this.root_store.client.currency,
-            () => withdraw.setIsWithdrawConfirmed(false)
+            () => this.root_store.modules.cashier.withdraw.setIsWithdrawConfirmed(false)
         );
     }
 

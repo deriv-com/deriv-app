@@ -51,7 +51,7 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
             Object.assign(values, {
                 local_amount: display_total,
                 local_currency: local_currency_config.currency,
-                price_rate: roundOffDecimal(display_price_rate, setDecimalPlaces(display_price_rate, 6)),
+                price_rate: roundOffDecimal(display_price_rate),
             });
 
             if (type === buy_sell.BUY) {

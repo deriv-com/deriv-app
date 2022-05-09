@@ -9,9 +9,9 @@ commands:
       - restore_cache:
           name: "Git restore cache"
           keys:
-            - source-v0.0.1-{{ .Branch }}-{{ .Revision }}
-            - source-v0.0.1-{{ .Branch }}-
-            - source-v0.0.1-
+            - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
+            - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
+            - source-v{{ .Environment.CACHE_VERSION }}-
       - run:
           name: "Fetch git tags"
           command: |
@@ -29,7 +29,7 @@ commands:
           command: git gc
       - save_cache:
           name: Git save cache
-          key: source-v0.0.1-{{ .Branch }}-{{ .Revision }}
+          key: source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
 
@@ -41,7 +41,7 @@ commands:
           command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
       - restore_cache:
           keys:
-            - node-v0.0.1-{{ checksum "CACHE_KEY1" }}
+            - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
       - run:
           name: "Install npm packages"
           command: |
@@ -55,7 +55,7 @@ commands:
             # fi
       - save_cache:
           name: "Saving node_modules cache"
-          key: node-v0.0.1-{{ checksum "CACHE_KEY1" }}
+          key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
           paths:
             # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
             - "node_modules"
@@ -69,6 +69,7 @@ commands:
             - "packages/cfd/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
+            - "packages/reports/node_modules"
             - "packages/shared/node_modules"
             - "packages/trader/node_modules"
             - "packages/translations/node_modules"

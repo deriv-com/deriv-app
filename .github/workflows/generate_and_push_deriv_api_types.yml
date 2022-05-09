@@ -8,12 +8,14 @@ jobs:
   generate_and_push_deriv_api_types:
     runs-on: "ubuntu-latest"
     steps:
-      - name: Bump version and create PR
+      - name: Checkout repo
+        id: step4
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
           ref: master
-        id: step4
+      - name: Bump version and create PR
+        id: step5
         run: |
           if [ true = true ]
           then

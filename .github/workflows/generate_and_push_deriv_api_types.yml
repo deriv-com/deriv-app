@@ -9,6 +9,10 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Bump version and create PR
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          ref: master
         id: step4
         run: |
           if [ true = true ]
@@ -19,7 +23,7 @@ jobs:
             new_version=$(npm show @deriv/api-types version)
 
             # Make a shallow clone of the project
-            git clone "git@github.com:binary-com/deriv-app.git" --depth 1
+            #git clone "git@github.com:binary-com/deriv-app.git" --depth 1
 
             # lerna: To allow us to bootstrap the project.
             # json: To manually edit the target package's package.json

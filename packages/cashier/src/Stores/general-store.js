@@ -244,24 +244,15 @@ export default class GeneralStore extends BaseStore {
                 }
             );
 
-            reaction(
-                () => [switched, is_logged_in, currency],
-                async () => {
-                    // wait for client settings to be populated in client-store
-                    await this.WS.wait('get_settings');
-
-                    if (is_logged_in) {
-                        await this.getAdvertizerError();
-                        account_prompt_dialog.resetLastLocation();
-                        if (!switched) {
-                            this.checkP2pStatus();
-                            // check if withdrawal limit is reached
-                            // if yes, this will trigger to show a notification
-                            await this.check10kLimit();
-                        }
-                    }
+            if (is_logged_in) {
+                account_prompt_dialog.resetLastLocation();
+                if (!switched) {
+                    this.checkP2pStatus();
+                    // check if withdrawal limit is reached
+                    // if yes, this will trigger to show a notification
+                    await withdraw.check10kLimit();
                 }
-            );
+            }
         }
     }
 

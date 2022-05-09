@@ -25,6 +25,7 @@ const AccountLimits = ({
     is_switching,
     is_virtual,
     overlay_ref,
+    is_from_derivgo,
     setIsOverlayShown: setIsPopupOverlayShown,
     should_bypass_scrollbars,
     should_show_article,
@@ -70,7 +71,7 @@ const AccountLimits = ({
                     'account__demo-message-wrapper-dashboard': is_appstore,
                 })}
             >
-                <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
+                <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />
             </div>
         );
     }
@@ -110,16 +111,16 @@ const AccountLimits = ({
 
     return (
         <AccountLimitsContext.Provider value={context_value}>
-            <section className='da-account-limits__wrapper'>
+            <section className='da-account-limits__wrapper' data-testid='account_limits_data'>
                 <div
                     className={classNames('da-account-limits', {
                         'da-account-limits--app-settings': is_app_settings,
                     })}
                 >
-                    {should_show_article && isMobile() && <AccountLimitsArticle />}
+                    {should_show_article && isMobile() && <AccountLimitsArticle is_from_derivgo={is_from_derivgo} />}
                     <div className='da-account-limits__table-wrapper'>
                         <ThemedScrollbars is_bypassed={should_bypass_scrollbars || isMobile()}>
-                            <table className='da-account-limits__table'>
+                            <table className='da-account-limits__table' data-testid='trading_limit_item_table'>
                                 <thead>
                                     <tr>
                                         <AccountLimitsTableHeader>
@@ -185,7 +186,7 @@ const AccountLimits = ({
                                     </tr>
                                 </tbody>
                             </table>
-                            <table className='da-account-limits__table'>
+                            <table className='da-account-limits__table' data-testid='trading_daily_turnover_table'>
                                 <thead>
                                     <tr>
                                         <AccountLimitsTableHeader
@@ -217,7 +218,7 @@ const AccountLimits = ({
                             {/* We only show "Withdrawal Limits" on account-wide settings pages. */}
                             {!is_app_settings && (
                                 <React.Fragment>
-                                    <table className='da-account-limits__table'>
+                                    <table className='da-account-limits__table' data-testid='withdrawal_limits_table'>
                                         <thead>
                                             <tr>
                                                 <AccountLimitsTableHeader>
@@ -311,18 +312,17 @@ const AccountLimits = ({
                                             )}
                                         </tbody>
                                     </table>
-                                    {!is_appstore ||
-                                        (isMobile() && (
-                                            <div className='da-account-limits__text-container'>
-                                                <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
-                                                    {is_fully_authenticated ? (
-                                                        <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
-                                                    ) : (
-                                                        <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
-                                                    )}
-                                                </Text>
-                                            </div>
-                                        ))}
+                                    {(!is_appstore || isMobile()) && (
+                                        <div className='da-account-limits__text-container'>
+                                            <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
+                                                {is_fully_authenticated ? (
+                                                    <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
+                                                ) : (
+                                                    <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
+                                                )}
+                                            </Text>
+                                        </div>
+                                    )}
                                 </React.Fragment>
                             )}
                         </ThemedScrollbars>
@@ -343,6 +343,7 @@ AccountLimits.propTypes = {
     is_app_settings: PropTypes.bool,
     getLimits: PropTypes.func.isRequired,
     is_fully_authenticated: PropTypes.bool.isRequired,
+    is_from_derivgo: PropTypes.bool,
     is_switching: PropTypes.bool.isRequired,
     is_virtual: PropTypes.bool.isRequired,
     overlay_ref: PropTypes.shape({ current: PropTypes.any }),

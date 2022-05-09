@@ -4,10 +4,10 @@ import { Loading, Tabs, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import Error from './Error/error.jsx';
 import EmailSent from './Email/email-sent.jsx';
 import PaymentAgentDeposit from './Form/payment-agent-deposit.jsx';
 import PaymentAgentWithdrawForm from './Form/payment-agent-withdraw-form.jsx';
+import PaymentAgentWithdrawalLocked from './Error/payment-agent-withdrawal-locked.jsx';
 import 'Sass/payment-agent-list.scss';
 
 const PaymentAgentList = ({
@@ -32,11 +32,14 @@ const PaymentAgentList = ({
     return (
         <div className='cashier__wrapper--align-left cashier__wrapper-padding'>
             <React.Fragment>
-                <Text as='p' line_height='s' size={isMobile() ? 'xxs' : 'xs'} className='cashier__paragraph'>
-                    <Localize
-                        i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.'
-                        values={{ website_name }}
-                    />
+                <Text
+                    as='p'
+                    align='center'
+                    line_height='s'
+                    size={isMobile() ? 'xxs' : 'xs'}
+                    className='cashier__paragraph'
+                >
+                    <Localize i18n_default_text='Can’t find a suitable payment method for your country? Then try a payment agent.' />
                 </Text>
                 <div className='payment-agent-list__instructions'>
                     <Tabs
@@ -62,8 +65,8 @@ const PaymentAgentList = ({
                             </div>
                         </div>
                         <div label={localize('Withdrawal')}>
-                            {error?.code && !!error?.onClickButton ? (
-                                <Error error={error} />
+                            {error?.code ? (
+                                <PaymentAgentWithdrawalLocked error={error} />
                             ) : (
                                 <div>
                                     {is_email_sent ? (

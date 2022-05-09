@@ -68,15 +68,12 @@ jobs:
       - name: Bump version and create PR
         id: step5
         run: |
-          if [ true = true ]
+          if [ ${{ steps.step3.outputs.should_create_pr }} = true ]
           then
             # Sleep to make sure the package is available on NPM.
             sleep 30s
 
             new_version=$(npm show @deriv/api-types version)
-
-            # Make a shallow clone of the project
-            #git clone "git@github.com:binary-com/deriv-app.git" --depth 1
 
             # lerna: To allow us to bootstrap the project.
             # json: To manually edit the target package's package.json

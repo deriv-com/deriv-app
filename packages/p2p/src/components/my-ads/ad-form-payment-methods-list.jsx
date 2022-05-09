@@ -7,9 +7,16 @@ import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-const AdFormPaymentMethodsList = ({ onClickPaymentMethodCard, selected_methods }) => {
-    const { my_profile_store, my_ads_store } = useStores();
+const AdFormPaymentMethodsList = ({
+    is_only_horizontal = isMobile(),
+    is_scrollable = isMobile(),
+    onClickAdd,
+    onClickPaymentMethodCard,
+    selected_methods,
+}) => {
+    const { my_profile_store } = useStores();
 
     const style = {
         borderColor: 'var(--brand-secondary)',
@@ -18,10 +25,12 @@ const AdFormPaymentMethodsList = ({ onClickPaymentMethodCard, selected_methods }
 
     return (
         <ThemedScrollbars
-            className='ads-payment-methods__container'
+            className={classNames('ads-payment-methods__container', {
+                'ads-payment-methods__container--horizontal': is_only_horizontal,
+            })}
             is_scrollbar_hidden
-            is_scrollable={isMobile()}
-            is_only_horizontal={isMobile()}
+            is_scrollable={is_scrollable}
+            is_only_horizontal={is_only_horizontal}
         >
             {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
                 <PaymentMethodCard
@@ -33,17 +42,15 @@ const AdFormPaymentMethodsList = ({ onClickPaymentMethodCard, selected_methods }
                     style={selected_methods.includes(payment_method.ID) ? style : {}}
                 />
             ))}
-            <PaymentMethodCard
-                is_add={true}
-                label={localize('Payment method')}
-                medium
-                onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
-            />
+            <PaymentMethodCard is_add={true} label={localize('Payment method')} medium onClickAdd={onClickAdd} />
         </ThemedScrollbars>
     );
 };
 
 AdFormPaymentMethodsList.propTypes = {
+    is_only_horizontal: PropTypes.bool,
+    is_scrollable: PropTypes.bool,
+    onClickAdd: PropTypes.func,
     onClickPaymentMethodCard: PropTypes.func,
     selected_methods: PropTypes.array,
 };

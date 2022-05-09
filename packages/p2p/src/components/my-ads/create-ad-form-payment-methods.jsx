@@ -76,6 +76,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
             return (
                 <AdFormPaymentMethodsList
                     selected_methods={selected_sell_methods}
+                    onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
                     onClickPaymentMethodCard={onClickPaymentMethodCard}
                 />
             );

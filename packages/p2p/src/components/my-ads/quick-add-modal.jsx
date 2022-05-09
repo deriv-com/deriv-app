@@ -433,6 +433,7 @@ const QuickAddModal = ({ advert }) => {
 
                     <Button
                         has_effect
+                        is_disabled={!my_profile_store?.advertiser_has_payment_methods || selected_methods.length === 0}
                         large
                         onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                         primary

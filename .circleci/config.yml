@@ -29,7 +29,7 @@ commands:
           command: git gc
       - save_cache:
           name: Git save cache
-          key: source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
+          key: source-v0.0.1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
 
@@ -41,7 +41,7 @@ commands:
           command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
       - restore_cache:
           keys:
-            - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
+            - node-v0.0.1-{{ checksum "CACHE_KEY1" }}
       - run:
           name: "Install npm packages"
           command: |

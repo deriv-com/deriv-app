@@ -187,6 +187,7 @@ const htmlInjectConfig = () => ({
             path: 'manifest.json',
             attributes: {
                 rel: 'manifest',
+                crossorigin: 'use-credentials',
             },
         },
         {

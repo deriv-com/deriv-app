@@ -1,6 +1,8 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
+    alternateLinkTagChange,
+    canonicalLinkTagChange,
     redirectToLogin,
     removeBranchName,
     routes as shared_routes,
@@ -74,6 +76,10 @@ const RouteWithSubRoutes = ({
 
         const title = getTitle?.() || '';
         document.title = `${title} | ${default_title}`;
+
+        alternateLinkTagChange();
+        canonicalLinkTagChange();
+
         return result;
     };
 

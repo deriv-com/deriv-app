@@ -17,8 +17,8 @@ const getFormattedData = login_history => {
         data[i] = {};
         const environment = login_history[i].environment;
         const environment_split = environment.split(' ');
-        const dp2p_UA = environment.match(
-            /(?<date>[0-9a-zA-Z-]+\s[0-9:]+GMT)[\s](IP=)(?<ip>[\w:.]+)\sIP_COUNTRY=(?<country>([a-zA-Z]{2}))\s(User_AGENT=)(\w.*)(?<name>iPhone|Android)([\W\w]+)\s(?<app>DP2P)(?<version>[\w\W]+)\s(LANG=)([\w]{2})/
+        const mobile_app_UA = environment.match(
+            /(?<date>[0-9a-zA-Z-]+\s[0-9:]+GMT)[\s](IP=)(?<ip>[\w:.]+)\sIP_COUNTRY=(?<country>([a-zA-Z]{2}))\s(User_AGENT=)(\w.*)(?<name>iPhone|Android)([\W\w]+)\s(?<app>Deriv P2P|Deriv GO)(?<version>[\w\W]+)\s(LANG=)([\w]{2})/
         );
         const date = environment_split[0];
         const time = environment_split[1].replace('GMT', '');
@@ -26,7 +26,7 @@ const getFormattedData = login_history => {
         data[i].date = `${date_time} GMT`;
         data[i].action = login_history[i].action === 'login' ? localize('Login') : localize('Logout');
         const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
-        const ua = dp2p_UA ? dp2p_UA.groups : Bowser.getParser(user_agent)?.getBrowser();
+        const ua = mobile_app_UA ? mobile_app_UA.groups : Bowser.getParser(user_agent)?.getBrowser();
         data[i].browser = ua ? `${ua.name} ${ua.app || ''} v${ua.version}` : localize('Unknown');
         data[i].ip = environment_split[2].split('=')[1];
         data[i].status = login_history[i].status === 1 ? localize('Successful') : localize('Failed');

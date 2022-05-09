@@ -31,8 +31,6 @@ jobs:
             # json: To manually edit the target package's package.json
             npm i -g lerna@latest json@latest
 
-            cd deriv-app
-
             package_name="@deriv/api-types"
             old_version=$(json -f packages/appstore/package.json -a dependencies."$package_name")
             safe_old_version=$(echo $old_version | sed 's/[^a-zA-Z0-9.]//g')

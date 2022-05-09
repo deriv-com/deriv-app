@@ -30,14 +30,14 @@ export default class GeneralStore extends BaseStore {
                 this.root_store.client.is_logged_in,
                 this.root_store.client.currency,
             ],
-            () => {
-                this.init();
+            async () => {
+                await this.init();
             }
         );
 
         reaction(
             () => this.root_store.client.currency,
-            () => this.root_store.modules.cashier.withdraw.setIsWithdrawConfirmed(false)
+            () => withdraw.setIsWithdrawConfirmed(false)
         );
     }
 

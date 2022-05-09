@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { isMobile, isDesktop, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import FileUploaderContainer from '../file-uploader-container';
 
 jest.mock('@deriv/components', () => {
@@ -78,7 +78,6 @@ describe('<FileUploaderContainer />', () => {
                 <FileUploaderContainer {...props} />
             </PlatformContext.Provider>
         );
-
         runCommonTests();
     });
 

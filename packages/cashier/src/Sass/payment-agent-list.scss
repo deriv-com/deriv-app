@@ -74,14 +74,18 @@
         &-header {
             margin-top: 2.8rem;
             margin-bottom: 1.8rem;
-            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            &-text {
+                min-width: 12rem;
+            }
 
             &-line {
                 border-bottom: 1px solid var(--general-section-1);
-                position: relative;
                 width: 100%;
-                margin-left: 115px;
-                top: -10px;
+                height: 1px;
             }
         }
         &-selector {

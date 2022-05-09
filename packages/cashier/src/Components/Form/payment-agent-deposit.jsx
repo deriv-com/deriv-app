@@ -18,7 +18,7 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
     return (
         <React.Fragment>
             <div className='payment-agent-list__list-header'>
-                <Text as='p' size='xs' weight='bold' color='prominent'>
+                <Text as='p' size='xs' weight='bold' color='prominent' className='payment-agent-list__list-header-text'>
                     <Localize i18n_default_text='Payment agents' />
                 </Text>
                 <div className='payment-agent-list__list-header-line' />

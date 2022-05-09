@@ -6,6 +6,7 @@ on:
 
 jobs:
   generate_and_push_deriv_api_types:
+    if: github.repository == 'binary-com/deriv-app'
     runs-on: "ubuntu-latest"
     steps:
       - name: Setup node
@@ -24,6 +25,45 @@ jobs:
         with:
           fetch-depth: 1
           ref: master
+
+      - name: Generate hash of existing package
+        id: step2
+        run: |
+          npm i json-schema-to-typescript
+          npm i @deriv/api-types@latest
+          echo ::set-output name=old_declarations_hash::"$(git hash-object ./node_modules/@deriv/api-types/index.d.ts)"
+
+      - name: Generate declarations file from upstream
+        id: step3
+        run: |
+          git clone https://github.com/binary-com/websockets.git --depth 1
+          cd websockets
+          git checkout HEAD
+
+          # Parse the JSON schema into TypeScript interfaces into index.d.ts
+          ${GITHUB_WORKSPACE}/node_modules/.bin/json2ts --input "./config/v3/**/[!example]*.json" --no-bannerComment > index.d.ts
+
+          if [ ${{ steps.step2.outputs.old_declarations_hash }} = $(git hash-object index.d.ts) ]
+          then
+            echo "Hashes are the same. Aborting."
+            echo ::set-output name=should_create_pr::false
+          else
+            echo "Hashes are different. I will publish a new version."
+
+            cd ${GITHUB_WORKSPACE}/node_modules/@deriv/api-types
+            npm version patch
+
+            # Remove the existing file.
+            rm index.d.ts
+
+            # Copy the newly generated file into the package.
+            cp ${GITHUB_WORKSPACE}/websockets/index.d.ts index.d.ts
+
+            # Publish the package with a new version.
+            npm publish
+
+            echo ::set-output name=should_create_pr::true
+          fi
 
       - name: Bump version and create PR
         id: step5

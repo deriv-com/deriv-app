@@ -8,12 +8,23 @@ jobs:
   generate_and_push_deriv_api_types:
     runs-on: "ubuntu-latest"
     steps:
+      - name: Setup node
+        id: step1
+        uses: actions/setup-node@v2
+        with:
+          node-version: "12"
+          check-latest: true
+          registry-url: "https://registry.npmjs.org"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+
       - name: Checkout repo
         id: step4
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
           ref: master
+          
       - name: Bump version and create PR
         id: step5
         run: |

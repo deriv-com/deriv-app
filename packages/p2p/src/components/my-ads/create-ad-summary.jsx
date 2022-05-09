@@ -11,9 +11,10 @@ import { useStores } from 'Stores';
 const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
-    const decimal_places = setDecimalPlaces(market_feed, 6);
 
-    const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true, decimal_places) : '';
+    const display_offer_amount = offer_amount
+        ? formatMoney(currency, offer_amount, true, setDecimalPlaces(market_feed, 6))
+        : '';
 
     let display_price_rate = '';
     let display_total = '';
@@ -21,9 +22,9 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     if (market_feed && price_rate) {
         display_price_rate = formatMoney(
             local_currency_config.currency,
-            roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100)), decimal_places),
+            parseFloat(market_feed * (1 + price_rate / 100)),
             true,
-            decimal_places
+            6
         );
     } else if (price_rate) {
         display_price_rate = formatMoney(local_currency_config.currency, price_rate, true);
@@ -32,7 +33,7 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     if (market_feed && offer_amount && price_rate) {
         display_total = formatMoney(
             local_currency_config.currency,
-            offer_amount * roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100))),
+            offer_amount * parseFloat(market_feed * (1 + price_rate / 100)),
             true
         );
     } else if (offer_amount && price_rate) {
@@ -50,7 +51,7 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
             Object.assign(values, {
                 local_amount: display_total,
                 local_currency: local_currency_config.currency,
-                price_rate: display_price_rate,
+                price_rate: roundOffDecimal(display_price_rate, setDecimalPlaces(display_price_rate, 6)),
             });
 
             if (type === buy_sell.BUY) {

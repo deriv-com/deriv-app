@@ -70,8 +70,8 @@ commands:
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
             - "packages/shared/node_modules"
-            - "packages/translations/node_modules"
             - "packages/trader/node_modules"
+            - "packages/translations/node_modules"
             # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
 
   build:

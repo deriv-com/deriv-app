@@ -238,10 +238,10 @@ export default class GeneralStore extends BaseStore {
                     await withdraw.check10kLimit();
                 }
             );
-            
-             // wait for client settings to be populated in client-store
-             await this.WS.wait('get_settings');
-             
+
+            // wait for client settings to be populated in client-store
+            await this.WS.wait('get_settings');
+
             if (is_logged_in) {
                 account_prompt_dialog.resetLastLocation();
                 if (!switched) {

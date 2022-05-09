@@ -19,21 +19,18 @@ describe('<FileUploader />', () => {
         getSocket: jest.fn(),
         ref: React.createRef(),
     };
-    it('should render FileUploader component in desktop mode', () => {
-        const tree = render(<FileUploader {...props} />);
-        expect(tree).toMatchSnapshot();
-    });
 
-    it('should render FileUploader component in mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
-        const tree = render(<FileUploader {...props} />);
-        expect(tree).toMatchSnapshot();
+    const large_file_error_msg = /file size should be 8mb or less/i;
+    const file_not_supported_msg = /file uploaded is not supported/i;
+    const drop_click_msg = /drop file or click here to upload/i;
+    const click_msg = /click here to upload/i;
+
+    it('should render FileUploader component in desktop mode', () => {
+        render(<FileUploader {...props} />);
+        expect(screen.getByText(drop_click_msg)).toBeInTheDocument();
     });
 
     it('should upload supported file', async () => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
         render(<FileUploader {...props} />);
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
@@ -47,10 +44,9 @@ describe('<FileUploader />', () => {
         expect(input.files[0]).toBe(file);
         expect(input.files).toHaveLength(1);
     });
+
     it('should show error message when unsupported file is uploaded', async () => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
-        const tree = render(<FileUploader {...props} />);
+        render(<FileUploader {...props} />);
 
         const file = new File(['hello'], 'hello.html', { type: 'html' });
         const input = screen.getByTestId('file_upload_input');
@@ -59,13 +55,11 @@ describe('<FileUploader />', () => {
                 target: { files: [file] },
             })
         );
-        expect(tree).toMatchSnapshot();
+        expect(screen.getByText(file_not_supported_msg)).toBeInTheDocument();
     });
 
     it('should show error message when multiple files are uploaded', async () => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
-        const tree = render(<FileUploader {...props} />);
+        render(<FileUploader {...props} />);
 
         const files = [
             new File(['hello'], 'hello.png', { type: 'image/png' }),
@@ -77,13 +71,11 @@ describe('<FileUploader />', () => {
                 target: { files: [files] },
             })
         );
-        expect(tree).toMatchSnapshot();
+        expect(screen.getByText(file_not_supported_msg)).toBeInTheDocument();
     });
 
     it('should show error message when larger files are uploaded', async () => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
-        const tree = render(<FileUploader {...props} />);
+        render(<FileUploader {...props} />);
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         Object.defineProperty(file, 'size', { value: 1024 * 1024 * 10 });
 
@@ -93,12 +85,10 @@ describe('<FileUploader />', () => {
                 target: { files: [file] },
             })
         );
-        expect(tree).toMatchSnapshot();
+        expect(screen.getByText(large_file_error_msg)).toBeInTheDocument();
     });
 
     it('should remove the file when close icon is clicked', async () => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
         render(<FileUploader {...props} />);
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const input = screen.getByTestId('file_upload_input');
@@ -126,8 +116,6 @@ describe('<FileUploader />', () => {
     });
 
     it('upload methods should reject if readFile returns empty array ', async () => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
         readFiles.mockResolvedValue([]);
 
         render(<FileUploader {...props} />);
@@ -147,5 +135,12 @@ describe('<FileUploader />', () => {
         props.ref.current.upload();
         expect(compressImageFiles).toBeCalled();
         expect(props.onFileDrop).toBeCalled();
+    });
+
+    it('should render FileUploader component in mobile mode', () => {
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+        render(<FileUploader {...props} />);
+        expect(screen.getByText(click_msg)).toBeInTheDocument();
     });
 });

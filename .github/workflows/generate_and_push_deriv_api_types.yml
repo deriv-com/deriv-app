@@ -88,6 +88,7 @@ jobs:
             # "Manually" bump the version in package.json to accommodate 
             # Lerna's flexibility (or its lack thereof).
             json -I -f packages/appstore/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
+            json -I -f packages/cfd/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
             json -I -f packages/trader/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
 
             # We have to run "lerna bootstrap --no-ci" to generate a new 

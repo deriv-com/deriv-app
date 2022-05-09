@@ -121,14 +121,23 @@ const CashierLocked = ({
             />
         );
     } else if (financial_assessment_required) {
-        message = (
-            <Localize
-                i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
-                components={[
-                    <a key={0} className='link' rel='noopener noreferrer' href={'/account/financial-assessment'} />,
-                ]}
-            />
-        );
+        if (is_withdrawal_lock) {
+            icon = 'IcCashierWithdrawalLock';
+            title = localize('Withdrawals are locked');
+            message = (
+                <Localize
+                    i18n_default_text='You can only make deposits. Please complete the <0>financial assessment</0> to unlock withdrawals.'
+                    components={[<a key={0} className='link' href={'/account/financial-assessment'} />]}
+                />
+            );
+        } else {
+            message = (
+                <Localize
+                    i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
+                    components={[<a key={0} className='link' href={'/account/financial-assessment'} />]}
+                />
+            );
+        }
     } else if (ask_tin_information) {
         message = (
             <Localize

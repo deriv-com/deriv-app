@@ -55,7 +55,7 @@ commands:
             # fi
       - save_cache:
           name: "Saving node_modules cache"
-          key: node-v1{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
+          key: node-v0.0.1-{{ checksum "CACHE_KEY1" }}
           paths:
             # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
             - "node_modules"

@@ -11,7 +11,7 @@ jobs:
       - name: Bump version and create PR
         id: step4
         run: |
-          if [ ${{ steps.step3.outputs.should_create_pr }} = true ]
+          if [ true = true ]
           then
             # Sleep to make sure the package is available on NPM.
             sleep 30s

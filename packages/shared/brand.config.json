@@ -1,0 +1,31 @@
+{
+    "brand_name" : "Peeps",
+    "domain_name": "Peeps.com",
+    "platforms": {
+        "trader": {
+            "name": "PTrader",
+            "icon": "IcBrandDtrader"
+        },
+        "dbot": {
+            "name": "PBot",
+            "icon": "IcBrandDbot"
+        },
+        "mt5": {
+            "name": "PMT5",
+            "icon": "IcBrandDmt5"
+        },
+        "x": {
+            "name": "Peeps X",
+            "icon": "IcBrandDxtrade"
+        },
+        "smarttrader": {
+            "name": "SmartTrader",
+            "icon": "IcBrandSmarttrader"
+        },
+        "bbot": {
+            "name": "Peeps Bot",
+            "icon": "IcBrandBinarybot"
+        }
+    }
+    
+}

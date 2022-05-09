@@ -19,13 +19,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
-      - name: Checkout repo
-        id: step4
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-          ref: master
-
       - name: Generate hash of existing package
         id: step2
         run: |
@@ -64,6 +57,13 @@ jobs:
 
             echo ::set-output name=should_create_pr::true
           fi
+      
+      - name: Checkout repo
+        id: step4
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          ref: master
 
       - name: Bump version and create PR
         id: step5

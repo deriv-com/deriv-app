@@ -72,9 +72,6 @@ const CreateAdForm = () => {
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
         );
 
-        general_store.setP2PConfig();
-        floating_rate_store.setExchangeRate(currency, local_currency_config.currency);
-
         return () => {
             disposeApiErrorReaction();
             my_ads_store.setApiErrorMessage('');

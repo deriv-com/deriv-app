@@ -39,6 +39,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const amount_dealt = amount - remaining_amount;
     const enable_action_point = rate_type === ad_type.FIXED && floating_rate_store.change_ad_alert;
     const is_buy_advert = type === buy_sell.BUY;
+    const display_effective_rate =
+        rate_type === ad_type.FIXED
+            ? price_display
+            : parseFloat(floating_rate_store.exchange_rate * (1 + rate_display / 100));
 
     const onClickActivateDeactivate = () => {
         my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
@@ -136,9 +140,8 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 {min_order_amount_display} - {max_order_amount_display} {account_currency}
                             </Text>
                             <Text color='profit-success' line_height='m' size='xs' weight='bold'>
-                                {/* {price_display} {local_currency} */}
                                 <div className='display-layout'>
-                                    {price_display} {local_currency}
+                                    {formatMoney(local_currency, display_effective_rate, true)} {local_currency}
                                     {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
                                 </div>
                             </Text>
@@ -193,7 +196,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 </Table.Cell>
                 <Table.Cell className='p2p-my-ads__table-price'>
                     <div className='display-layout'>
-                        {price_display} {local_currency}
+                        {formatMoney(local_currency, display_effective_rate, true)} {local_currency}
                         {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
                     </div>
                 </Table.Cell>

@@ -30,8 +30,8 @@ export default class GeneralStore extends BaseStore {
                 this.root_store.client.is_logged_in,
                 this.root_store.client.currency,
             ],
-            async () => {
-                await this.init();
+            () => {
+                this.init();
             }
         );
 

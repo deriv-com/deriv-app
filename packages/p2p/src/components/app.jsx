@@ -16,7 +16,7 @@ const App = props => {
 
     React.useEffect(() => {
         general_store.setAppProps(props);
-        general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
+        general_store.setWebsocketInit(websocket_api, client.local_currency_config.decimal_places);
         order_store.setOrderId(order_id);
 
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.

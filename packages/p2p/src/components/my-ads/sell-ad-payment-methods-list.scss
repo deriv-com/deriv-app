@@ -5,13 +5,7 @@
 
         &--horizontal {
             grid-auto-flow: column;
-            & > .payment-method-card {
-                margin: 1rem 1.5rem 1rem auto;
-            }
-        }
-
-        & .payment-method-card {
-            @include mobile {
+            & .payment-method-card {
                 margin: 1rem 1.5rem 1rem auto;
             }
         }

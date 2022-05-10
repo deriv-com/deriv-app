@@ -42,6 +42,7 @@ commands:
       - restore_cache:
           keys:
             - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
+            - node-v2
       - run:
           name: "Install npm packages"
           command: |

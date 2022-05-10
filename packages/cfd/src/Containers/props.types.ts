@@ -117,3 +117,9 @@ export type TCFDPasswordManagerModal = {
     selected_server: string;
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
 };
+
+export type TPasswordManagerModalFormValues = {
+    old_password: string;
+    new_password: string;
+    password_type: string;
+};

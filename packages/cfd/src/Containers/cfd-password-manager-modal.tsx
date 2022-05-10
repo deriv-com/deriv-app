@@ -26,7 +26,7 @@ import { FormikErrors } from 'formik';
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
-import InvestorPasswordManager from './investor-password-manager.jsx';
+import InvestorPasswordManager from './investor-password-manager';
 import RootStore from 'Stores/index';
 import {
     TCountdownComponent,
@@ -35,6 +35,7 @@ import {
     TCFDPasswordManagerTabContent,
     TCFDPasswordManagerModal,
     TFormValues,
+    TPasswordManagerModalFormValues
 } from './props.types';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
@@ -194,7 +195,7 @@ const CFDPasswordManagerTabContent = ({
     };
 
     const onSubmit = React.useCallback(
-        async values => {
+        async (values: TPasswordManagerModalFormValues) => {
             if (!selected_login) {
                 return;
             }

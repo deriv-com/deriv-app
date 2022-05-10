@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import { routes, useIsMounted } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -12,43 +12,38 @@ import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
-    const { className, history, lang, order_id, server_time, websocket_api } = props;
-
-    const isMounted = useIsMounted();
+    const { client, className, history, lang, order_id, server_time, websocket_api } = props;
 
     React.useEffect(() => {
-        if (isMounted()) {
-            general_store.setAppProps(props);
-            general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
-            order_store.setOrderId(order_id);
+        general_store.setAppProps(props);
+        general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
+        order_store.setOrderId(order_id);
 
-            // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
-            if (/\/verification$/.test(history?.location.pathname)) {
-                localStorage.setItem('is_verifying_p2p', true);
-                history.push(routes.cashier_p2p);
-            }
-
-            setLanguage(lang);
-            ServerTime.init(server_time);
-
-            // force safari refresh on back/forward
-            window.onpageshow = function (event) {
-                if (event.persisted) {
-                    window.location.reload();
-                }
-            };
-
-            waitWS('authorize').then(() => {
-                general_store.onMount();
-                if (localStorage.getItem('is_verifying_p2p')) {
-                    localStorage.removeItem('is_verifying_p2p');
-                    general_store.setActiveIndex(general_store.path.my_ads);
-                }
-            });
+        // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
+        if (/\/verification$/.test(history?.location.pathname)) {
+            localStorage.setItem('is_verifying_p2p', true);
+            history.push(routes.cashier_p2p);
         }
+
+        setLanguage(lang);
+        ServerTime.init(server_time);
+
+        // force safari refresh on back/forward
+        window.onpageshow = function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+        waitWS('authorize').then(() => {
+            general_store.onMount();
+            if (localStorage.getItem('is_verifying_p2p')) {
+                localStorage.removeItem('is_verifying_p2p');
+                general_store.setActiveIndex(general_store.path.my_ads);
+            }
+        });
         return () => general_store.onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isMounted]);
+    }, [client]);
 
     React.useEffect(() => {
         if (order_id) {

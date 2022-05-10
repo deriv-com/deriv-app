@@ -154,7 +154,7 @@ const ProofOfAddressForm = ({
         if (is_eu) {
             const { citizen, tax_residence, tax_identification_number } = form_values;
             settings_values = removeEmptyPropertiesFromObject({
-                ...values,
+                ...settings_values,
                 citizen,
                 tax_identification_number,
                 tax_residence,

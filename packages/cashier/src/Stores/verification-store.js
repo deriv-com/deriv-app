@@ -73,6 +73,14 @@ export default class VerificationStore {
         const response_verify_email = await this.WS.verifyEmail(client.email, withdrawal_type);
 
         if (response_verify_email.error) {
+            if (
+                ['PaymentAgentJustification', 'PaymentAgentWithdrawSameMethod', 'PaymentAgentUseOtherMethod'].includes(
+                    response_verify_email.error.code
+                )
+            ) {
+                this.error.setErrorMessage(response_verify_email.error, null, null);
+                return;
+            }
             this.clearVerification();
             if (response_verify_email.error.code === 'PaymentAgentWithdrawError') {
                 this.error.setErrorMessage(response_verify_email.error, resetPaymentAgent, null);

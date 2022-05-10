@@ -21,6 +21,7 @@ const CashierLocked = ({
     const self_exclusion = cashier_validation?.includes('SelfExclusion');
     const no_withdrawal_or_trading_status = cashier_validation?.includes('no_withdrawal_or_trading_status');
     const only_pa_withdrawals_allowed_status = cashier_validation?.includes('only_pa_withdrawals_allowed_status');
+    const withdraw_service_unavailable_for_pa = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
     const withdrawal_locked_status = cashier_validation?.includes('withdrawal_locked_status');
     const documents_expired = cashier_validation?.includes('documents_expired');
     const cashier_locked_status = cashier_validation?.includes('cashier_locked_status');
@@ -120,14 +121,23 @@ const CashierLocked = ({
             />
         );
     } else if (financial_assessment_required) {
-        message = (
-            <Localize
-                i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
-                components={[
-                    <a key={0} className='link' rel='noopener noreferrer' href={'/account/financial-assessment'} />,
-                ]}
-            />
-        );
+        if (is_withdrawal_lock) {
+            icon = 'IcCashierWithdrawalLock';
+            title = localize('Withdrawals are locked');
+            message = (
+                <Localize
+                    i18n_default_text='You can only make deposits. Please complete the <0>financial assessment</0> to unlock withdrawals.'
+                    components={[<a key={0} className='link' href={'/account/financial-assessment'} />]}
+                />
+            );
+        } else {
+            message = (
+                <Localize
+                    i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
+                    components={[<a key={0} className='link' href={'/account/financial-assessment'} />]}
+                />
+            );
+        }
     } else if (ask_tin_information) {
         message = (
             <Localize
@@ -197,6 +207,10 @@ const CashierLocked = ({
         icon = 'IcCashierDepositLock';
         title = localize('Deposits are locked');
         message = localize('Please contact us via live chat.');
+    } else if (is_withdrawal_lock && withdraw_service_unavailable_for_pa) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Withdrawals are locked');
+        message = localize('This feature is not available for payment agents.');
     } else if (is_withdrawal_lock && no_withdrawal_or_trading_status) {
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');

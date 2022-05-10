@@ -444,7 +444,7 @@ const QuickAddModal = ({ advert }) => {
                     <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
                 </Modal.Body>
             ) : (
-                <Modal.Body className="p2p-my-ads__modal-body--horizontal">
+                <Modal.Body className='p2p-my-ads__modal-body--horizontal'>
                     <Text color='prominent' size='xs'>
                         <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                     </Text>

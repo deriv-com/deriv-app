@@ -6,7 +6,7 @@ import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
-import { TableError } from 'Components/table/table-error.jsx';
+import { TableError } from 'Components/table/table-error.tsx';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
 import CancelAddPaymentMethodModal from '../my-profile/payment-methods/add-payment-method/cancel-add-payment-method-modal.jsx';

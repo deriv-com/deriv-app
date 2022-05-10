@@ -35,7 +35,7 @@ import {
     TCFDPasswordManagerTabContent,
     TCFDPasswordManagerModal,
     TFormValues,
-    TPasswordManagerModalFormValues
+    TPasswordManagerModalFormValues,
 } from './props.types';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {

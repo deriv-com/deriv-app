@@ -5,7 +5,7 @@ import { Autocomplete, Icon, Input, Text } from '@deriv/components';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize, Localize } from 'Components/i18next';
-import AdFormPaymentMethodsList from './ad-form-payment-methods-list';
+import SellAdPaymentMethodsList from './sell-ad-payment-methods-list';
 
 const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
@@ -61,7 +61,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {
             return (
-                <AdFormPaymentMethodsList
+                <SellAdPaymentMethodsList
                     selected_methods={selected_methods}
                     onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
                     onClickPaymentMethodCard={onClickPaymentMethodCard}

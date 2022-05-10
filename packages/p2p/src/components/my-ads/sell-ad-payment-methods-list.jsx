@@ -1,15 +1,15 @@
 import React from 'react';
 import { useStores } from 'Stores';
 import { ThemedScrollbars } from '@deriv/components';
-import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
-import './ad-form-payment-methods-list.scss';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
+import './sell-ad-payment-methods-list.scss';
 
-const AdFormPaymentMethodsList = ({
+const SellAdPaymentMethodsList = ({
     is_only_horizontal = isMobile(),
     is_scrollable = isMobile(),
     onClickAdd,
@@ -25,8 +25,8 @@ const AdFormPaymentMethodsList = ({
 
     return (
         <ThemedScrollbars
-            className={classNames('ads-payment-methods__container', {
-                'ads-payment-methods__container--horizontal': is_only_horizontal,
+            className={classNames('sell-ad-payment-methods__container', {
+                'sell-ad-payment-methods__container--horizontal': is_only_horizontal,
             })}
             is_scrollbar_hidden
             is_scrollable={is_scrollable}
@@ -47,7 +47,7 @@ const AdFormPaymentMethodsList = ({
     );
 };
 
-AdFormPaymentMethodsList.propTypes = {
+SellAdPaymentMethodsList.propTypes = {
     is_only_horizontal: PropTypes.bool,
     is_scrollable: PropTypes.bool,
     onClickAdd: PropTypes.func,
@@ -55,4 +55,4 @@ AdFormPaymentMethodsList.propTypes = {
     selected_methods: PropTypes.array,
 };
 
-export default observer(AdFormPaymentMethodsList);
+export default observer(SellAdPaymentMethodsList);

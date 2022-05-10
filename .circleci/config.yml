@@ -39,6 +39,20 @@ commands:
       - run:
           name: "Create cache key"
           command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
+      - restore_cache:
+          keys:
+            - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
+      - run:
+          name: "Install npm packages"
+          command: |
+            npm run bootstrap
+            # if [ -d "./node_modules" ]; then
+            #   echo "Found cache. Using cached node_modules."
+            #   node_modules/lerna/cli.js link
+            # else
+            #   echo "Could not find cache. Bootstrapping..."
+            #   npm run bootstrap
+            # fi
       - save_cache:
           name: "Saving node_modules cache"
           key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
@@ -59,20 +73,6 @@ commands:
             - "packages/trader/node_modules"
             - "packages/translations/node_modules"
             # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
-      - restore_cache:
-          keys:
-            - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
-      - run:
-          name: "Install npm packages"
-          command: |
-            npm run bootstrap
-            # if [ -d "./node_modules" ]; then
-            #   echo "Found cache. Using cached node_modules."
-            #   node_modules/lerna/cli.js link
-            # else
-            #   echo "Could not find cache. Bootstrapping..."
-            #   npm run bootstrap
-            # fi
 
   build:
     description: "Build"

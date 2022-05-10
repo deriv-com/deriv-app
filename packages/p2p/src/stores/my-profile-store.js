@@ -196,7 +196,7 @@ export default class MyProfileStore extends BaseStore {
             if (response.error) {
                 this.setAdvertiserPaymentMethodsError(response.error.message);
             } else {
-                this.setAdvertiserPaymentMethods(response.p2p_advertiser_payment_methods);
+                this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
             }
         });
     }

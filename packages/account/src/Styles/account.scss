@@ -650,6 +650,9 @@ $MIN_HEIGHT_FLOATING: calc(
                         .dc-input__label {
                             color: var(--text-general) !important;
                         }
+                        input {
+                            overflow-x: scroll;
+                        }
                     }
                 }
             }

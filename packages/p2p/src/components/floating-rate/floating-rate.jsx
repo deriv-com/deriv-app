@@ -70,7 +70,7 @@ const FloatingRate = ({
                 <div className='floating-rate__mkt-rate'>
                     <Text
                         as='span'
-                        size='xxxs'
+                        size='xxs'
                         color='prominent'
                         weight='normal'
                         line_height='xxs'

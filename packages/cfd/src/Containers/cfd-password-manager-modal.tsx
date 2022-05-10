@@ -342,7 +342,6 @@ const CFDPasswordManagerModal = ({
                     email={email}
                     selected_login={selected_login}
                     toggleModal={toggleModal}
-                    password_type={password_type}
                     setPasswordType={setPasswordType}
                     multi_step_ref={multi_step_ref}
                     platform={platform}

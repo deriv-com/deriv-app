@@ -96,7 +96,6 @@ export type TCFDPasswordManagerTabContent = {
     toggleModal: () => void;
     selected_login: string;
     email: string;
-    password_type: string;
     setPasswordType: (value: string) => void;
     multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
     platform: 'dxtrade' | 'mt5';

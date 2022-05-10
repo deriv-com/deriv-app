@@ -630,8 +630,14 @@
         }
     }
 
-    &__modal-body--scroll {
-        overflow: auto;
+    &__modal-body {
+        &--scroll {
+            overflow: auto;
+        }
+
+        &--horizontal {
+            padding-right: 0rem;
+        }
     }
 
     .toggle-ads {

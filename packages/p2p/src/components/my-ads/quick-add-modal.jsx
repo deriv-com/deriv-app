@@ -73,7 +73,7 @@ const QuickAddModal = ({ advert }) => {
         }
     };
 
-    const hideModal = close_all => {
+    const hideModal = should_close_all_modals => {
         setSelectedMethods([]);
         if (!close_all) {
             if (my_ads_store.should_show_add_payment_method) {

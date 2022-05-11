@@ -610,7 +610,7 @@ const ModalContent = ({
                     <Table className='cfd-compare-accounts__table'>
                         <Table.Header>
                             <Table.Row className='cfd-compare-accounts__table-row'>
-                                <Table.Head />
+                                <Table.Head fixed />
                                 {is_logged_in ? (
                                     <React.Fragment>
                                         {isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) && (

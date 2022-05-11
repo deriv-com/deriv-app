@@ -71,7 +71,7 @@ const FloatingRate = ({
                     <Text
                         as='span'
                         size='xxs'
-                        color='prominent'
+                        color='hint'
                         weight='normal'
                         line_height='xxs'
                         className='floating-rate__mkt-rate--label'

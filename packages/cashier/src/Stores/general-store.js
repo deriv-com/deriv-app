@@ -230,19 +230,11 @@ export default class GeneralStore extends BaseStore {
             } = this.root_store;
             const { account_prompt_dialog, withdraw } = modules.cashier;
 
-            when(
-                () => is_logged_in,
-                async () => {
-                    await this.getAdvertizerError();
-                    this.checkP2pStatus();
-                    await withdraw.check10kLimit();
-                }
-            );
-
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
 
             if (is_logged_in) {
+                await this.getAdvertizerError();
                 account_prompt_dialog.resetLastLocation();
                 if (!switched) {
                     this.checkP2pStatus();

@@ -49,5 +49,5 @@ Blockly.Blocks.ticks_string = {
     onchange: Blockly.Blocks.ticks.onchange,
 };
 
-Blockly.JavaScript.ticks = () => ['Bot.getTicks(false)', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.ticks = () => ['Bot.getTicks(true)', Blockly.JavaScript.ORDER_ATOMIC];
 Blockly.JavaScript.ticks_string = () => ['Bot.getTicks(true)', Blockly.JavaScript.ORDER_ATOMIC];

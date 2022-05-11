@@ -52,6 +52,7 @@ describe('DepositStore', () => {
     it('should mount deposit properly', async () => {
         const { checkIframeLoaded, setIframeUrl, setSessionTimeout, setTimeoutCashierUrl } =
             deposit_store.root_store.modules.cashier.iframe;
+        const { updateAccountStatus } = deposit_store.root_store.client;
 
         await deposit_store.onMountDeposit();
         expect(checkIframeLoaded).toHaveBeenCalled();
@@ -63,6 +64,7 @@ describe('DepositStore', () => {
         expect(setIframeUrl).toHaveBeenCalledWith('https://cashier.deriv.com');
         expect(setSessionTimeout).toHaveBeenCalledWith(false);
         expect(setTimeoutCashierUrl).toHaveBeenCalled();
+        expect(updateAccountStatus).toHaveBeenCalled();
     });
 
     it('should handle the error on deposit', async () => {

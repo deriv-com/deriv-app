@@ -13,11 +13,13 @@ const Routes: React.FC = () => {
 
     return (
         <React.Suspense
-            fallback={
-                <div>
-                    <Localize i18n_default_text='Loading...' />
-                </div>
-            }
+            fallback={() => {
+                return (
+                    <div>
+                        <Localize i18n_default_text='Loading...' />
+                    </div>
+                );
+            }}
         >
             <RoutesWrapper has_router={config.has_router}>
                 <Switch>

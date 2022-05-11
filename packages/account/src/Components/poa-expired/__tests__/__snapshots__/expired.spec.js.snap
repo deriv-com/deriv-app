@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Expired/> should render Expired component snapshot check 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="account-management__message-wrapper"
+      >
+        <div
+          class="account-management__message-content"
+        >
+          <div
+            class="account-management__message-icon"
+          >
+            <svg
+              class="dc-icon"
+              height="128"
+              width="128"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <use
+                xlink:href="/public/sprites/common.784d255e58485e5ee9f70cc9a40c7ffe.svg#ic-poa-upload"
+              />
+            </svg>
+          </div>
+          <div
+            class="dc-text account-management__message"
+            style="--text-size: var(--text-size-s); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+          >
+            New proof of address is needed
+          </div>
+          <div
+            class="account-management__text-container"
+          >
+            <p
+              class="dc-text"
+              style="--text-size: var(--text-size-xs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+            >
+              Your documents for proof of address is expired. Please submit again.
+            </p>
+          </div>
+          <button
+            class="dc-btn dc-btn__effect dc-btn--primary"
+            tabindex="0"
+            type="submit"
+          >
+            <span
+              class="dc-text dc-btn__text"
+              style="--text-size: var(--text-size-xs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+            >
+              <p
+                class="dc-text dc-btn__text"
+                style="--text-size: var(--text-size-xs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-left);"
+              >
+                Resubmit
+              </p>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="account-management__message-wrapper"
+    >
+      <div
+        class="account-management__message-content"
+      >
+        <div
+          class="account-management__message-icon"
+        >
+          <svg
+            class="dc-icon"
+            height="128"
+            width="128"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <use
+              xlink:href="/public/sprites/common.784d255e58485e5ee9f70cc9a40c7ffe.svg#ic-poa-upload"
+            />
+          </svg>
+        </div>
+        <div
+          class="dc-text account-management__message"
+          style="--text-size: var(--text-size-s); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+        >
+          New proof of address is needed
+        </div>
+        <div
+          class="account-management__text-container"
+        >
+          <p
+            class="dc-text"
+            style="--text-size: var(--text-size-xs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-normal); --text-align: var(--text-align-center);"
+          >
+            Your documents for proof of address is expired. Please submit again.
+          </p>
+        </div>
+        <button
+          class="dc-btn dc-btn__effect dc-btn--primary"
+          tabindex="0"
+          type="submit"
+        >
+          <span
+            class="dc-text dc-btn__text"
+            style="--text-size: var(--text-size-xs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-center);"
+          >
+            <p
+              class="dc-text dc-btn__text"
+              style="--text-size: var(--text-size-xs); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-left);"
+            >
+              Resubmit
+            </p>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

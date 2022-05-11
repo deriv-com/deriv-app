@@ -11,6 +11,8 @@ module.exports = {
         '^_common/(.*)$': '<rootDir>/src/_common/$1',
         '^Config/(.*)$': '<rootDir>/src/Config/$1',
         '^Components/(.*)$': '<rootDir>/src/Components/$1',
+        '^Utils/(.*)$': '<rootDir>/src/Utils/$1',
+        '^Containers/(.*)$': '<rootDir>/src/Containers/$1',
     },
     testPathIgnorePatterns: ['/Routes/', '/Validator/'],
     coveragePathIgnorePatterns: [

@@ -31,13 +31,14 @@ const FloatingRate = ({
     error_messages,
     fiat_currency,
     local_currency,
-    onChangeHandler,
+    onChange,
     offset,
     ...props
 }) => {
     const { general_store } = useStores();
     const { name, value, required } = props;
-    const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)).toFixed(2) : exchange_rate;
+
+    const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)) : exchange_rate;
 
     const ref = React.useRef(null);
     const tracker_ref = React.useRef(null); // Creates a DOM element that is used for keeping trach of the width of user input
@@ -49,13 +50,15 @@ const FloatingRate = ({
     }, [tracker_ref?.current?.innerHTML]);
 
     const onBlurHandler = e => {
-        if (e.target.value && e.target.value.length) {
-            e.target.value = parseFloat(e.target.value).toFixed(2);
-            if (!/^[+-]/.test(e.target.value) && Math.sign(e.target.value) > 0) {
-                e.target.value = `+${e.target.value}`;
+        let float_rate = e.target.value;
+        if (float_rate && float_rate.trim().length) {
+            float_rate = parseFloat(float_rate).toFixed(2);
+            if (/^\d+/.test(float_rate) && float_rate > 0) {
+                // Assign + symbol for positive rate
+                e.target.value = `+${float_rate}`;
             }
         }
-        onChangeHandler(e);
+        onChange(e);
     };
     return (
         <div className={classNames(className, 'floating-rate')}>
@@ -93,7 +96,7 @@ const FloatingRate = ({
                 <div className='floating-rate__mkt-rate'>
                     <Text
                         as='span'
-                        size='xxxs'
+                        size='xxs'
                         color='prominent'
                         weight='normal'
                         line_height='xxs'
@@ -150,7 +153,7 @@ FloatingRate.propTypes = {
     error_messages: PropTypes.string,
     fiat_currency: PropTypes.string,
     local_currency: PropTypes.string,
-    onChangeHandler: PropTypes.func,
+    onChange: PropTypes.func,
     offset: PropTypes.object,
 };
 

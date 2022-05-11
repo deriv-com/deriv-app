@@ -5,39 +5,35 @@ import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
+import { setDecimalPlaces } from 'Utils/format-value.js';
 import { useStores } from 'Stores';
 
 const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
 
-    const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
+    const display_offer_amount = offer_amount
+        ? formatMoney(currency, offer_amount, true, setDecimalPlaces(market_feed, 6))
+        : '';
 
-    const display_price_rate = (() => {
-        if (market_feed && price_rate) {
-            return formatMoney(
-                local_currency_config.currency,
-                parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
-                true
-            );
-        } else if (price_rate) {
-            return formatMoney(local_currency_config.currency, price_rate, true);
-        }
-        return '';
-    })();
+    let display_price_rate = '';
+    let display_total = '';
 
-    const display_total = (() => {
-        if (market_feed && offer_amount && price_rate) {
-            return formatMoney(
-                local_currency_config.currency,
-                offer_amount * parseFloat(market_feed * (1 + price_rate / 100)).toFixed(2),
-                true
-            );
-        } else if (offer_amount && price_rate) {
-            return formatMoney(local_currency_config.currency, offer_amount * price_rate, true);
-        }
-        return '';
-    })();
+    if (market_feed && price_rate) {
+        display_price_rate = parseFloat(market_feed * (1 + price_rate / 100));
+    } else if (price_rate) {
+        display_price_rate = price_rate;
+    }
+
+    if (market_feed && offer_amount && price_rate) {
+        display_total = formatMoney(
+            local_currency_config.currency,
+            offer_amount * parseFloat(market_feed * (1 + price_rate / 100)),
+            true
+        );
+    } else if (offer_amount && price_rate) {
+        display_total = formatMoney(local_currency_config.currency, offer_amount * price_rate, true);
+    }
 
     if (offer_amount) {
         const components = [
@@ -45,12 +41,11 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
             <Text key={1} weight='normal' size='xs' color='status-info-blue' />,
         ];
         const values = { target_amount: display_offer_amount, target_currency: currency };
-
         if (price_rate) {
             Object.assign(values, {
                 local_amount: display_total,
                 local_currency: local_currency_config.currency,
-                price_rate: display_price_rate,
+                price_rate: formatMoney(local_currency_config.currency, display_price_rate, true),
             });
 
             if (type === buy_sell.BUY) {

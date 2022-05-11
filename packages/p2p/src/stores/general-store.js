@@ -23,6 +23,7 @@ export default class GeneralStore extends BaseStore {
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
+    @observable order_timeout = 0;
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -236,7 +237,6 @@ export default class GeneralStore extends BaseStore {
             }
 
             const { sendbird_store } = this.root_store;
-
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {
@@ -378,26 +378,30 @@ export default class GeneralStore extends BaseStore {
         this.order_table_type = order_table_type;
     }
 
+    setOrderTimeOut(time) {
+        this.order_timeout = time;
+    }
+
     @action.bound
     setP2PConfig() {
         const { floating_rate_store } = this.root_store;
         requestWS({ website_status: 1 }).then(response => {
-            if (response) {
-                if (response.error) {
-                    floating_rate_store.setApiErrorMessage(response.error.message);
-                } else {
-                    const {
-                        fixed_rate_adverts,
-                        float_rate_adverts,
-                        float_rate_offset_limit,
-                        fixed_rate_adverts_end_date,
-                    } = response.website_status.p2p_config;
-                    floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
-                    floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
-                    floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
-                    floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
-                    floating_rate_store.setApiErrorMessage(null);
-                }
+            if (!!response && response.error) {
+                floating_rate_store.setApiErrorMessage(response.error.message);
+            } else {
+                const {
+                    fixed_rate_adverts,
+                    float_rate_adverts,
+                    float_rate_offset_limit,
+                    fixed_rate_adverts_end_date,
+                    order_payment_period,
+                } = response.website_status.p2p_config;
+                floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
+                floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
+                floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
+                floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
+                floating_rate_store.setApiErrorMessage(null);
+                this.setOrderTimeOut(order_payment_period);
             }
         });
     }
@@ -473,17 +477,14 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     updateAdvertiserInfo(response) {
         const { p2p_advertiser_info } = response;
-
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
             this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
-            this.setShouldShowRealName(!!p2p_advertiser_info.show_name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
-
             if (response.error.code === 'RestrictedCountry') {
                 this.setIsRestricted(true);
             } else if (response.error.code === 'AdvertiserNotFound') {

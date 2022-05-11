@@ -14,8 +14,9 @@ import {
 import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { Localize, localize } from 'Components/i18next';
+import FloatingRate from 'Components/floating-rate';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
+import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
@@ -23,7 +24,6 @@ import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
-import FloatingRate from '../floating-rate';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -57,7 +57,7 @@ const CreateAdForm = () => {
             JSON.stringify(should_not_show_auto_archive_message_again.current)
         );
         my_ads_store.setIsAdCreatedModalVisible(false);
-        if (!my_ads_store.advert_details.is_visible) {
+        if (my_ads_store.advert_details?.visibility_status?.includes('advertiser_daily_limit')) {
             my_ads_store.setIsAdExceedsDailyLimitModalOpen(true);
         }
         my_ads_store.setShowAdForm(false);
@@ -71,9 +71,6 @@ const CreateAdForm = () => {
             () => my_ads_store.api_error_message,
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
         );
-
-        general_store.setP2PConfig();
-        floating_rate_store.setExchangeRate(currency, local_currency_config.currency);
 
         return () => {
             disposeApiErrorReaction();
@@ -229,7 +226,7 @@ const CreateAdForm = () => {
                                                             exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
-                                                            onChangeHandler={handleChange}
+                                                            onChange={handleChange}
                                                             offset={{
                                                                 upper_limit: parseInt(
                                                                     floating_rate_store.float_rate_offset_limit

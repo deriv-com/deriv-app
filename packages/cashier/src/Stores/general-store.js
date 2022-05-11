@@ -242,16 +242,6 @@ export default class GeneralStore extends BaseStore {
                     // if yes, this will trigger to show a notification
                     await withdraw.check10kLimit();
                 }
-            );
-
-            if (is_logged_in) {
-                account_prompt_dialog.resetLastLocation();
-                if (!switched) {
-                    this.checkP2pStatus();
-                    // check if withdrawal limit is reached
-                    // if yes, this will trigger to show a notification
-                    await withdraw.check10kLimit();
-                }
             }
         }
     }

@@ -160,6 +160,21 @@ class DBot {
             var BinaryBotPrivateLastTickTime;
             var BinaryBotPrivateTickAnalysisList = [];
             var BinaryBotPrivateHasCalledTradeOptions = false;
+
+           
+            function recursiveList(list, final_list){
+                for(var i=0; i < list.length; i++){
+                    if(typeof(list[i]) === 'object'){
+                        recursiveList(list[i], final_list);
+                    }
+                    if(typeof(list[i]) == 'number'){
+                        final_list.push(list[i]);   
+                                  	
+                    }
+                }
+                return final_list;
+            }
+
             function BinaryBotPrivateRun(f, arg) {
                 if (f) return f(arg);
                 return false;

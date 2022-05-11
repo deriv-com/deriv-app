@@ -6,7 +6,7 @@
     .dc-tabs__content {
         display: flex;
         flex-direction: column;
-        padding-bottom: 7rem;
+        margin-bottom: 7rem;
     }
     .dc-tabs__list--header-fit-content {
         margin: 0 auto;
@@ -57,7 +57,7 @@
             width: 768px;
         }
         .dc-form-submit-button--absolute {
-            position: fixed;
+            position: absolute;
             padding: 1.6rem;
             width: 100%;
             right: 0;

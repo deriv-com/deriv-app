@@ -158,6 +158,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                             autoComplete='off' // prevent chrome autocomplete
                                             data-lpignore='true'
                                             has_updating_list={false}
+                                            is_alignment_top
                                             label={
                                                 <React.Fragment>
                                                     <Icon icon='IcAddCircle' size={14} />
@@ -167,6 +168,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                                 </React.Fragment>
                                             }
                                             list_items={my_profile_store.payment_methods_list}
+                                            list_portal_id='deriv_app'
                                             onItemSelection={({ value }) => {
                                                 onClickPaymentMethodItem(value);
                                                 resetForm();
@@ -196,6 +198,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                 autoComplete='off' // prevent chrome autocomplete
                                 data-lpignore='true'
                                 has_updating_list={false}
+                                is_alignment_top
                                 label={
                                     <React.Fragment>
                                         <Icon icon='IcAddCircle' size={14} />

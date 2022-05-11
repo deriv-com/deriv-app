@@ -50,4 +50,6 @@ Blockly.Blocks.tick_string = {
 };
 
 Blockly.JavaScript.tick = () => ['Bot.getLastTick(false, true)', Blockly.JavaScript.ORDER_ATOMIC];
+
+/// TODO check if we can remove tick_string and avoid duplicating the codes
 Blockly.JavaScript.tick_string = () => ['Bot.getLastTick(false, true)', Blockly.JavaScript.ORDER_ATOMIC];

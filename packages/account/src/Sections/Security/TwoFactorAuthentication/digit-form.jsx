@@ -49,7 +49,6 @@ const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
             const is_enabled_response = !!getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
             setSuccess(true);
             resetForm();
-
             setEnabled(is_enabled_response);
             logoutClient();
         }

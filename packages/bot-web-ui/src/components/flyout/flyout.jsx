@@ -68,7 +68,7 @@ const FlyoutContent = props => {
                         <span className='flyout__content-disclaimer-text'>
                             {localize(
                                 'Indicators on the chart tab are for indicative purposes only and may vary slightly from the ones on the {{platform_name_dbot}} workspace.',
-                                {platform_name_dbot: getPlatformSettings('dbot').name}
+                                { platform_name_dbot: getPlatformSettings('dbot').name }
                             )}
                         </span>
                     </div>

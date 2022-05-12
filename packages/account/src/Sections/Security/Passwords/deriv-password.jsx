@@ -36,7 +36,13 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                         <Localize
                             i18n_default_text='Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, and {{platform_name_dbot}}.'
                             components={[<strong key={0} />]}
-                            values={{ brand_website_name, platform_name_trader, platform_name_dbot, platform_name_smarttrader, platform_name_go }}
+                            values={{
+                                brand_website_name,
+                                platform_name_trader,
+                                platform_name_dbot,
+                                platform_name_smarttrader,
+                                platform_name_go,
+                            }}
                         />
                     </Text>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>

@@ -31,7 +31,7 @@ const CashierDefaultSideNote = ({
                     components={[
                         <a key={0} className='link link--orange' onClick={() => openRealAccountSignup('manage')} />,
                     ]}
-                    values={{platform_name_dxtrade: getPlatformSettings('dxtrade').name}}
+                    values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
                 />
             );
         }
@@ -46,7 +46,7 @@ const CashierDefaultSideNote = ({
                         onClick={() => window.LC_API.open_chat_window()}
                     />,
                 ]}
-                values={{platform_name_dxtrade: getPlatformSettings('dxtrade').name}}
+                values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
             />
         );
     };

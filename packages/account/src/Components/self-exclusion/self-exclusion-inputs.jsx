@@ -255,7 +255,10 @@ const SessionAndLoginLimitsInputs = () => {
                     <Icon icon='IcAlertWarning' className='da-self-exclusion__warning-icon' />
                     <div className='da-self-exclusion__warning-textbox'>
                         <Text as='p' size='xxxs'>
-                            <Localize i18n_default_text='Self-exclusion on the website only applies to your {{brand_website_name}} account and does not include other companies or websites.' values={{ brand_website_name: getBrandWebsiteName() }} />
+                            <Localize
+                                i18n_default_text='Self-exclusion on the website only applies to your {{brand_website_name}} account and does not include other companies or websites.'
+                                values={{ brand_website_name: getBrandWebsiteName() }}
+                            />
                         </Text>
                         <Text as='p' size='xxxs'>
                             {is_mlt ? (

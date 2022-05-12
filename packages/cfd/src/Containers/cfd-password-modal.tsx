@@ -537,7 +537,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
 
                         {props.is_real_financial_stp && !props.is_bvi && (
                             <div className='dc-modal__container_cfd-password-modal__description'>
-                                <Localize 
+                                <Localize
                                     i18n_default_text='Your MT5 Financial STP account will be opened through {{legal_entity_name}}. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).'
                                     values={{
                                         legal_entity_name: getLegalEntityName('fx'),

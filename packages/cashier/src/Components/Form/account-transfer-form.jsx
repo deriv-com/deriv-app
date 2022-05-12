@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, getPlatformSettings, validNumber } from '@deriv/shared';
+import {
+    getDecimalPlaces,
+    getCurrencyDisplayCode,
+    getCurrencyName,
+    getPlatformSettings,
+    validNumber,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
@@ -82,15 +88,27 @@ const AccountTransferNote = ({
     const getTransferFeeNote = () => {
         if (transfer_fee === 0) {
             return is_dxtrade_allowed ? (
-                <Localize i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.' values={{platform_name_dxtrade, platform_name_mt5}} />
+                <Localize
+                    i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
+                    values={{ platform_name_dxtrade, platform_name_mt5 }}
+                />
             ) : (
-                <Localize i18n_default_text='You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts.' values={{platform_name_mt5}} />
+                <Localize
+                    i18n_default_text='You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts.'
+                    values={{ platform_name_mt5 }}
+                />
             );
         } else if (transfer_fee === 1) {
             return is_dxtrade_allowed ? (
-                <Localize i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.' values={{platform_name_dxtrade, platform_name_mt5}} />
+                <Localize
+                    i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
+                    values={{ platform_name_dxtrade, platform_name_mt5 }}
+                />
             ) : (
-                <Localize i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts.' values={{platform_name_mt5}} />
+                <Localize
+                    i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts.'
+                    values={{ platform_name_mt5 }}
+                />
             );
         } else if (transfer_fee === 2 && is_crypto_to_crypto_transfer) {
             return (
@@ -109,7 +127,7 @@ const AccountTransferNote = ({
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
-                        platform_name_dxtrade
+                        platform_name_dxtrade,
                     }}
                 />
             ) : (
@@ -149,9 +167,15 @@ const AccountTransferNote = ({
             </DesktopWrapper>
             <AccountTransferBullet>
                 {is_dxtrade_allowed ? (
-                    <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, and {{platform_name_dxtrade}} accounts.' values={{platform_name_dxtrade, platform_name_mt5}} />
+                    <Localize
+                        i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, and {{platform_name_dxtrade}} accounts.'
+                        values={{ platform_name_dxtrade, platform_name_mt5 }}
+                    />
                 ) : (
-                    <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and {{platform_name_mt5}} accounts.' values={{platform_name_mt5}} />
+                    <Localize
+                        i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and {{platform_name_mt5}} accounts.'
+                        values={{ platform_name_mt5 }}
+                    />
                 )}
             </AccountTransferBullet>
             <AccountTransferBullet>
@@ -355,13 +379,17 @@ const AccountTransferForm = ({
 
         setFromAccounts({
             ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
-            ...(dxtrade_accounts_from.length && { [localize('{{platform_name_dxtrade}} accounts', {platform_name_dxtrade})]: dxtrade_accounts_from }),
+            ...(dxtrade_accounts_from.length && {
+                [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_from,
+            }),
             ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
         });
 
         setToAccounts({
             ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
-            ...(dxtrade_accounts_to.length && { [localize('{{platform_name_dxtrade}} accounts', {platform_name_dxtrade})]: dxtrade_accounts_to }),
+            ...(dxtrade_accounts_to.length && {
+                [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_to,
+            }),
             ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
         });
     }, [accounts_list, selected_to, selected_from]);

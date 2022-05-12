@@ -31,7 +31,10 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
                 </Text>
                 <Text size='xs' as='p'>
                     {is_dxtrade_allowed ? (
-                        <Localize i18n_default_text='If you have a DMT5 or {{platform_name_dxtrade}} real account, log in to close any open positions.' values={{platform_name_dxtrade: getPlatformSettings('dxtrade').name}} />
+                        <Localize
+                            i18n_default_text='If you have a DMT5 or {{platform_name_dxtrade}} real account, log in to close any open positions.'
+                            values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
+                        />
                     ) : (
                         <Localize i18n_default_text='If you have a DMT5 real account, log in to close any open positions.' />
                     )}
@@ -55,7 +58,7 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
                                 <Link to='/mt5' key={0} className='deactivate-account__link' />,
                                 <Link to='/derivx' key={1} className='deactivate-account__link' />,
                             ]}
-                            values={{platform_name_dxtrade: getPlatformSettings('dxtrade').name}}
+                            values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
                         />
                     ) : (
                         <Localize

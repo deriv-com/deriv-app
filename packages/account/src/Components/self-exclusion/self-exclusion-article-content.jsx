@@ -48,7 +48,10 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
 
         eu_items.push({
             component: (
-                <Localize i18n_default_text='When you set your limits or self-exclusion, they will be aggregated across all your account types in {{platform_name_trader}} and {{platform_name_dbot}}. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.' values={{ platform_name_trader, platform_name_dbot }} />
+                <Localize
+                    i18n_default_text='When you set your limits or self-exclusion, they will be aggregated across all your account types in {{platform_name_trader}} and {{platform_name_dbot}}. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.'
+                    values={{ platform_name_trader, platform_name_dbot }}
+                />
             ),
         });
 
@@ -105,7 +108,10 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
         },
         {
             component: (
-                <Localize i18n_default_text='When you set your limits, they will be aggregated across all your account types in {{platform_name_trader}}, {{platform_name_dbot}}, and {{platform_name_smarttrader}}. For example, the losses made on all three platforms will add up and be counted towards the loss limit you set.' values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader }} />
+                <Localize
+                    i18n_default_text='When you set your limits, they will be aggregated across all your account types in {{platform_name_trader}}, {{platform_name_dbot}}, and {{platform_name_smarttrader}}. For example, the losses made on all three platforms will add up and be counted towards the loss limit you set.'
+                    values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader }}
+                />
             ),
         },
         ...(!is_app_settings

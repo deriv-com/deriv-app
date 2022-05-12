@@ -14,7 +14,14 @@ import {
     Text,
     useOnClickOutside,
 } from '@deriv/components';
-import { routes, formatMoney, getCFDAccount, getAccountTypeFields, getPlatformSettings, CFD_PLATFORMS } from '@deriv/shared';
+import {
+    routes,
+    formatMoney,
+    getCFDAccount,
+    getAccountTypeFields,
+    getPlatformSettings,
+    CFD_PLATFORMS,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
@@ -381,22 +388,36 @@ const AccountSwitcher = props => {
 
     const total_assets_message_demo = () => {
         if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv, {{platform_name_mt5}} and {{platform_name_dxtrade}} demo accounts.', {platform_name_dxtrade, platform_name_mt5});
+            return localize(
+                'Total assets in your Deriv, {{platform_name_mt5}} and {{platform_name_dxtrade}} demo accounts.',
+                { platform_name_dxtrade, platform_name_mt5 }
+            );
         } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and {{platform_name_mt5}} demo accounts.', {platform_name_mt5});
+            return localize('Total assets in your Deriv and {{platform_name_mt5}} demo accounts.', {
+                platform_name_mt5,
+            });
         } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and {{platform_name_dxtrade}} demo accounts.', {platform_name_dxtrade});
+            return localize('Total assets in your Deriv and {{platform_name_dxtrade}} demo accounts.', {
+                platform_name_dxtrade,
+            });
         }
         return localize('Total assets in your Deriv demo accounts.');
     };
 
     const total_assets_message_real = () => {
         if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv, {{platform_name_mt5}} and {{platform_name_dxtrade}} real accounts.', {platform_name_dxtrade, platform_name_mt5});
+            return localize(
+                'Total assets in your Deriv, {{platform_name_mt5}} and {{platform_name_dxtrade}} real accounts.',
+                { platform_name_dxtrade, platform_name_mt5 }
+            );
         } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and {{platform_name_mt5}} real accounts.'), {platform_name_mt5};
+            return (
+                localize('Total assets in your Deriv and {{platform_name_mt5}} real accounts.'), { platform_name_mt5 }
+            );
         } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and {{platform_name_dxtrade}} real accounts.', {platform_name_dxtrade});
+            return localize('Total assets in your Deriv and {{platform_name_dxtrade}} real accounts.', {
+                platform_name_dxtrade,
+            });
         }
         return localize('Total assets in your Deriv real accounts.');
     };
@@ -520,7 +541,7 @@ const AccountSwitcher = props => {
             )}
             {isDxtradeAllowed() && (
                 <AccountWrapper
-                    header={localize('{{platform_name_dxtrade}} Accounts', {platform_name_dxtrade})}
+                    header={localize('{{platform_name_dxtrade}} Accounts', { platform_name_dxtrade })}
                     is_visible={is_dxtrade_demo_visible}
                     toggleVisibility={() => {
                         toggleVisibility('demo_dxtrade');
@@ -739,7 +760,7 @@ const AccountSwitcher = props => {
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
-                        header={localize('{{platform_name_dxtrade}} Accounts', {platform_name_dxtrade})}
+                        header={localize('{{platform_name_dxtrade}} Accounts', { platform_name_dxtrade })}
                         is_visible={is_dxtrade_real_visible}
                         toggleVisibility={() => {
                             toggleVisibility('real_dxtrade');

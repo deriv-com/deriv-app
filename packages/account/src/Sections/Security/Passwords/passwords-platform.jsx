@@ -17,7 +17,7 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
         if (has_mt5_accounts) {
             title = localize('DMT5 Password');
         } else if (has_dxtrade_accounts) {
-            title = localize('{{platform_name_dxtrade}} Password', {platform_name_dxtrade});
+            title = localize('{{platform_name_dxtrade}} Password', { platform_name_dxtrade });
         }
         return title;
     };
@@ -70,13 +70,16 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                 {has_dxtrade_accounts && (
                     <React.Fragment>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                            <Localize i18n_default_text='Your {{platform_name_dxtrade}} password is for logging in to your {{platform_name_dxtrade}} accounts on the web and mobile apps.' values={{platform_name_dxtrade}}/>
+                            <Localize
+                                i18n_default_text='Your {{platform_name_dxtrade}} password is for logging in to your {{platform_name_dxtrade}} accounts on the web and mobile apps.'
+                                values={{ platform_name_dxtrade }}
+                            />
                         </Text>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                             <Localize
                                 i18n_default_text='Click the <0>Change password</0> button to change your {{platform_name_dxtrade}} password.'
                                 components={[<strong key={0} />]}
-                                values={{platform_name_dxtrade}}
+                                values={{ platform_name_dxtrade }}
                             />
                         </Text>
                         <div className='passwords-platform__content'>

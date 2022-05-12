@@ -13,9 +13,18 @@ const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }) 
         </Text>
         <Text as='p' size='xs' line_height='s' align='center' className='cashier__text'>
             {is_dxtrade_allowed ? (
-                <Localize i18n_default_text='Please create another Deriv, {{platform_name_mt5}}, or {{platform_name_dxtrade}} account.' values={{platform_name_mt5: getPlatformSettings('mt5').name, platform_name_dxtrade: getPlatformSettings('dxtrade').name}} />
+                <Localize
+                    i18n_default_text='Please create another Deriv, {{platform_name_mt5}}, or {{platform_name_dxtrade}} account.'
+                    values={{
+                        platform_name_mt5: getPlatformSettings('mt5').name,
+                        platform_name_dxtrade: getPlatformSettings('dxtrade').name,
+                    }}
+                />
             ) : (
-                <Localize i18n_default_text='Please create another Deriv or {{platform_name_mt5}} account.' values={{platform_name_mt5: getPlatformSettings('mt5').name}} />
+                <Localize
+                    i18n_default_text='Please create another Deriv or {{platform_name_mt5}} account.'
+                    values={{ platform_name_mt5: getPlatformSettings('mt5').name }}
+                />
             )}
         </Text>
         <Button className='account-transfer-no-account__button' primary large onClick={toggleAccountsDialog}>

@@ -178,6 +178,7 @@ export default class MyProfileStore extends BaseStore {
                 this.setBalanceAvailable(p2p_advertiser_info.balance_available);
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
+                this.root_store.general_store.setShouldShowRealName(!!p2p_advertiser_info.show_name);
             } else if (response.error.code === 'PermissionDenied') {
                 this.root_store.general_store.setIsBlocked(true);
             } else {
@@ -195,7 +196,7 @@ export default class MyProfileStore extends BaseStore {
             if (response.error) {
                 this.setAdvertiserPaymentMethodsError(response.error.message);
             } else {
-                this.setAdvertiserPaymentMethods(response.p2p_advertiser_payment_methods);
+                this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
             }
         });
     }
@@ -309,14 +310,16 @@ export default class MyProfileStore extends BaseStore {
     }
     @action.bound
     handleToggle() {
+        this.root_store.general_store.setShouldShowRealName(!this.root_store?.general_store?.should_show_real_name);
         requestWS({
             p2p_advertiser_update: 1,
-            show_name: this.root_store?.general_store?.should_show_real_name ? 0 : 1,
+            show_name: this.root_store?.general_store?.should_show_real_name ? 1 : 0,
         }).then(response => {
             if (response.error) {
                 this.setFormError(response.error.message);
-            } else {
-                this.root_store.general_store.setShouldShowRealName(true);
+                this.root_store.general_store.setShouldShowRealName(
+                    !this.root_store?.general_store?.should_show_real_name
+                );
             }
         });
     }

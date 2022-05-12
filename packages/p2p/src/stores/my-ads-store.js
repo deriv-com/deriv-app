@@ -617,7 +617,7 @@ export default class MyAdsStore extends BaseStore {
                         : true,
                 v =>
                     floating_rate_store.rate_type === ad_type.FLOAT
-                        ? rangeValidator(v, parseInt(this.root_store.floating_rate_store.float_rate_offset_limit))
+                        ? rangeValidator(parseFloat(v), this.root_store.floating_rate_store.float_rate_offset_limit)
                         : true,
             ],
         };

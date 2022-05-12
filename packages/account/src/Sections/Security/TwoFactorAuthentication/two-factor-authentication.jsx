@@ -176,7 +176,6 @@ const TwoFactorAuthentication = ({ email_address, is_switching, logoutClient }) 
                         >
                             <DigitForm
                                 is_enabled={is_two_factor_enabled}
-                                test={setEnabled}
                                 setEnabled={setEnabled}
                                 logoutClient={logoutClient}
                             />

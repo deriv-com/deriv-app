@@ -50,7 +50,7 @@ const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
             setSuccess(true);
             resetForm();
             setEnabled(is_enabled_response);
-            logoutClient()
+            logoutClient();
         }
     };
 

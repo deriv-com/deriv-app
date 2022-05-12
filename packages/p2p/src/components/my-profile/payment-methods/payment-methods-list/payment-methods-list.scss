@@ -4,10 +4,15 @@
             display: flex;
             flex-direction: column;
             grid-template-rows: 1fr 8rem;
-            height: 73vh;
+            height: 100%;
             overflow-x: hidden;
             padding: 1rem 2rem;
             width: 100vw;
+        }
+
+        &--footer {
+            bottom: 0;
+            position: fixed;
         }
     }
     &__button {

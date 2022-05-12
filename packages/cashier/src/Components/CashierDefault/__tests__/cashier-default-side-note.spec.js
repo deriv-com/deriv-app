@@ -9,25 +9,13 @@ jest.mock('Stores/connect.js', () => ({
 }));
 
 describe('<CashierDefaultSideNote />', () => {
-    const textContentMatcher = text => {
-        return (content, node) => {
-            const hasText = element => element.textContent === text;
-            const node_has_text = hasText(node);
-            const children_dont_have_ext = Array.from(node?.children || []).every(child => !hasText(child));
-            return node_has_text && children_dont_have_ext;
-        };
-    };
     it('should show the proper messages, with fiat currency and can_change_fiat_currency={false} property', () => {
         render(<CashierDefaultSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
 
         expect(screen.getByText('Your fiat account currency is set to USD.')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                textContentMatcher(
-                    "You can no longer change your account currency because you've made a deposit into your fiat account or created a real DMT5 or Deriv X account. Please contact us via live chat for clarification."
-                )
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByTestId('side-note-text')).toHaveTextContent(
+            'If you want to change your account currency, please contact us via live chat.'
+        );
     });
 
     it('should trigger onClick callback when the client clicks the "live chat" link', () => {
@@ -39,35 +27,6 @@ describe('<CashierDefaultSideNote />', () => {
         const live_chat_link = screen.getByText('live chat');
         fireEvent.click(live_chat_link);
         expect(window.LC_API.open_chat_window).toHaveBeenCalledTimes(1);
-    });
-
-    it('should show the proper messages, with fiat currency and can_change_fiat_currency={true} property', () => {
-        render(<CashierDefaultSideNote currency={'USD'} can_change_fiat_currency is_crypto={false} />);
-
-        expect(screen.getByText('Your fiat account currency is set to USD.')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                textContentMatcher(
-                    'You can set a new currency before you deposit for the first time or create a real DMT5 or Deriv X account.'
-                )
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should trigger onClick callback when the client clicks the "set a new currency" link', () => {
-        const openRealAccountSignup = jest.fn();
-        render(
-            <CashierDefaultSideNote
-                currency={'USD'}
-                can_change_fiat_currency
-                is_crypto={false}
-                openRealAccountSignup={openRealAccountSignup}
-            />
-        );
-
-        const set_a_new_currency_link = screen.getByText('set a new currency');
-        fireEvent.click(set_a_new_currency_link);
-        expect(openRealAccountSignup).toHaveBeenCalledTimes(1);
     });
 
     it('should show the proper messages when is_crypto is true', () => {

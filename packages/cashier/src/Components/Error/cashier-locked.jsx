@@ -183,6 +183,15 @@ const CashierLocked = ({
         icon = 'IcCashierDepositLock';
         title = localize('Deposits are locked');
         message = localize('Please contact us via live chat.');
+    } else if (is_withdrawal_locked && financial_assessment_required) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Withdrawals are locked');
+        message = (
+            <Localize
+                i18n_default_text='You can only make deposits. Please complete the <0>financial assessment</0> to unlock withdrawals.'
+                components={[<a key={0} className='link' href={'/account/financial-assessment'} />]}
+            />
+        );
     } else if (is_withdrawal_locked && ask_authenticate) {
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');

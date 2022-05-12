@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { isMobile, getPathname } from '@deriv/shared';
+import { isMobile, getPathname, getPlatformSettings } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Notification, {
     max_display_notifications,
@@ -29,7 +29,7 @@ const NotificationsContent = ({
     React.useEffect(() => {
         if ((has_iom_account || has_malta_account) && is_logged_in) {
             const get_close_mx_mlt_notification = notifications.find(item => item.key === 'close_mx_mlt_account');
-            const is_dtrader = getPathname() === 'DTrader';
+            const is_dtrader = getPathname() === getPlatformSettings('trader').name;
             const malta_account = landing_company_shortcode === 'malta';
             const iom_account = landing_company_shortcode === 'iom';
             if ((!is_dtrader && get_close_mx_mlt_notification) || malta_account || iom_account) {

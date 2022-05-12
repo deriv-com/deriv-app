@@ -8,7 +8,11 @@ export const getBusinessEntityName = () => {
     return 'Peeps Investments (Europe) Limited';
 }
 
-export const getLandingPageDomainName = () => {
+export const getLegalEntityName = (landing_company) => {
+    return config_data.legal_entities[landing_company];
+}
+
+export const getBrandWebsiteName = () => {
     return config_data.domain_name;
 }
 

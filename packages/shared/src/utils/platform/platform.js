@@ -8,7 +8,7 @@ import { getPlatformSettings } from '../brand';
 export const platform_name = Object.freeze({
     DBot: getPlatformSettings('dbot').name,
     DTrader: getPlatformSettings('trader').name,
-    DXtrade: getPlatformSettings('x').name,
+    DXtrade: getPlatformSettings('dxtrade').name,
     DMT5: getPlatformSettings('mt5').name,
     SmartTrader: getPlatformSettings('smarttrader').name,
     BinaryBot: getPlatformSettings('bbot').name,
@@ -57,7 +57,7 @@ export const getPlatformInformation = routing_history => {
     }
 
     if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) {
-        return { header: platform_name.DXtrade, icon: getPlatformSettings('x').icon };
+        return { header: platform_name.DXtrade, icon: getPlatformSettings('dxtrade').icon };
     }
 
     if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
@@ -71,12 +71,12 @@ export const getPlatformInformation = routing_history => {
 };
 
 export const getActivePlatform = routing_history => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
-    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
-    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return 'Deriv X';
-    if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
-    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) return 'Binary Bot';
-    return 'DTrader';
+    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return platform_name.DBot;
+    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return platform_name.DMT5;
+    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return platform_name.DXtrade;
+    if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) return platform_name.SmartTrader;
+    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) return platform_name.BinaryBot;
+    return platform_name.DTrader;
 };
 
 export const getPlatformRedirect = routing_history => {

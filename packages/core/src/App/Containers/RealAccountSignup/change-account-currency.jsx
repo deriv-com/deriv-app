@@ -2,7 +2,7 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Text } from '@deriv/components';
-import { getCurrencyDisplayCode, isMobile, reorderCurrencies } from '@deriv/shared';
+import { getCurrencyDisplayCode, getPlatformSettings, isMobile, reorderCurrencies } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
@@ -27,9 +27,10 @@ const ChangeAccountCurrency = ({
     const is_fiat = current_currency_type === 'fiat';
     const fiat_message = is_dxtrade_allowed ? (
         <Localize
-            i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on DMT5 or Deriv X."
+            i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on DMT5 or {{platform_name_dxtrade}}."
             values={{
                 currency: getCurrencyDisplayCode(client_currency),
+                platform_name_dxtrade: getPlatformSettings('dxtrade').name,
             }}
         />
     ) : (

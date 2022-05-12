@@ -1,21 +1,30 @@
 {
-    "brand_name" : "Peeps",
-    "domain_name": "Peeps.com",
+    "brand_name" : "Deriv",
+    "domain_name": "Deriv.com",
+    "legal_entities": {
+        "fx": "Deriv (FX) Ltd",
+        "malta": "Deriv (Europe) Limited",
+        "maltainvest": "Deriv Investments (Europe) Limited",
+        "mx": "Deriv (MX) Ltd",
+        "samoa": "Deriv Capital International Ltd",
+        "svg": "Deriv (SVG) LLC",
+        "v": "Deriv (V) Ltd"
+    },
     "platforms": {
         "trader": {
-            "name": "PTrader",
+            "name": "DTrader",
             "icon": "IcBrandDtrader"
         },
         "dbot": {
-            "name": "PBot",
+            "name": "DBot",
             "icon": "IcBrandDbot"
         },
         "mt5": {
-            "name": "PMT5",
+            "name": "DMT5",
             "icon": "IcBrandDmt5"
         },
-        "x": {
-            "name": "Peeps X",
+        "dxtrade": {
+            "name": "Deriv X",
             "icon": "IcBrandDxtrade"
         },
         "smarttrader": {
@@ -23,8 +32,11 @@
             "icon": "IcBrandSmarttrader"
         },
         "bbot": {
-            "name": "Peeps Bot",
+            "name": "Deriv Bot",
             "icon": "IcBrandBinarybot"
+        },
+        "go": {
+            "name": "Deriv Go"
         }
     }
     

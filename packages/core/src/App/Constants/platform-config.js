@@ -25,9 +25,9 @@ const platform_config = [
         link_to: routes.mt5,
     },
     {
-        icon: getPlatformSettings('x').icon,
-        title: () => getPlatformSettings('x').name,
-        name: getPlatformSettings('x').name,
+        icon: getPlatformSettings('dxtrade').icon,
+        title: () => getPlatformSettings('dxtrade').name,
+        name: getPlatformSettings('dxtrade').name,
         description: () => localize('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
         link_to: routes.dxtrade,
     },

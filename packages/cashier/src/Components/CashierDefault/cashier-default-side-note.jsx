@@ -4,7 +4,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, getPlatformSettings, isMobile, routes } from '@deriv/shared';
 import 'Sass/cashier-default.scss';
 
 const CashierDefaultSideNote = ({
@@ -27,17 +27,18 @@ const CashierDefaultSideNote = ({
         } else if (can_change_fiat_currency) {
             return (
                 <Localize
-                    i18n_default_text='You can <0>set a new currency</0> before you deposit for the first time or create a real DMT5 or Deriv X account.'
+                    i18n_default_text='You can <0>set a new currency</0> before you deposit for the first time or create a real DMT5 or {{platform_name_dxtrade}} account.'
                     components={[
                         <a key={0} className='link link--orange' onClick={() => openRealAccountSignup('manage')} />,
                     ]}
+                    values={{platform_name_dxtrade: getPlatformSettings('dxtrade').name}}
                 />
             );
         }
 
         return (
             <Localize
-                i18n_default_text="You can no longer change your account currency because you've made a deposit into your fiat account or created a real DMT5 or Deriv X account. Please contact us via <0>live chat</0> for clarification."
+                i18n_default_text="You can no longer change your account currency because you've made a deposit into your fiat account or created a real DMT5 or {{platform_name_dxtrade}} account. Please contact us via <0>live chat</0> for clarification."
                 components={[
                     <span
                         key={0}
@@ -45,6 +46,7 @@ const CashierDefaultSideNote = ({
                         onClick={() => window.LC_API.open_chat_window()}
                     />,
                 ]}
+                values={{platform_name_dxtrade: getPlatformSettings('dxtrade').name}}
             />
         );
     };

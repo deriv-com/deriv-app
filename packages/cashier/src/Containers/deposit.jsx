@@ -46,12 +46,7 @@ const Deposit = ({
     tab_index,
 }) => {
     const is_fiat_currency_banner_visible_for_MF_clients =
-        !is_switching &&
-        landing_company_shortcode === 'maltainvest' &&
-        !is_crypto &&
-        !can_change_fiat_currency &&
-        !!iframe_height;
-
+        landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();

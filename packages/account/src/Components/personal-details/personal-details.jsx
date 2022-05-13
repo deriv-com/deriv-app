@@ -20,7 +20,7 @@ import {
 } from '@deriv/components';
 import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { getBusinessEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
+import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 
@@ -547,7 +547,7 @@ const PersonalDetails = ({
                                                         label={localize(
                                                             'I hereby confirm that the tax information I provided is true and complete. I will also inform {{business_entity_name}} about any changes to this information.',
                                                             {
-                                                                business_entity_name: getBusinessEntityName(),
+                                                                business_entity_name: getLegalEntityName(),
                                                             }
                                                         )}
                                                         renderlabel={title => (

@@ -44,9 +44,7 @@ const svg_file_loaders = [
     },
 ];
 
-const svg_loaders = [
-    'babel-loader',
-];
+const svg_loaders = ['babel-loader'];
 
 const css_loaders = [
     {

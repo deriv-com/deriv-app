@@ -45,7 +45,7 @@ const Deposit = ({
     setSideNotes,
     tab_index,
 }) => {
-    const is_currency_banner_visible =
+    const is_fiat_currency_banner_visible_for_MF_clients =
         !is_switching &&
         landing_company_shortcode === 'maltainvest' &&
         !is_crypto &&
@@ -79,8 +79,8 @@ const Deposit = ({
                 ];
                 if (side_notes.length > 0) setSideNotes(side_notes);
             }
-            if (is_currency_banner_visible) {
-                setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
+            if (is_fiat_currency_banner_visible_for_MF_clients) {
+                setSideNotes([<CashierDefaultSideNote key={0} is_crypto={false} />]);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,9 +120,9 @@ const Deposit = ({
 
         return (
             <>
-                {is_currency_banner_visible && (
+                {is_fiat_currency_banner_visible_for_MF_clients && (
                     <MobileWrapper>
-                        <CashierDefaultSideNote is_crypto={is_crypto} />
+                        <CashierDefaultSideNote is_crypto={false} />
                     </MobileWrapper>
                 )}
                 <CashierContainer

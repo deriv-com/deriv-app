@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import { getPlatformSettings, routes, PlatformContext } from '@deriv/shared';
-import { localize, getAllowedLanguages } from '@deriv/translations';
+import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { currentLanguage, changeLanguage } from 'Utils/Language';
+import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 
 const MenuLink = ({
@@ -254,6 +254,8 @@ const ToggleMenuDrawer = React.forwardRef(
         };
 
         const getLanguageRoutes = () => {
+            const currentLanguage = getLanguage();
+
             return (
                 <MobileDrawer.SubMenu
                     has_subheader

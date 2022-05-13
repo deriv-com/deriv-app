@@ -106,6 +106,7 @@ const AppNotificationMessages = ({
                   'deriv_go',
                   'close_mx_mlt_account',
                   'trustpilot',
+                  'close_uk_account',
               ].includes(message.key)
             : true;
         return is_not_marked_notification && is_non_hidden_notification;

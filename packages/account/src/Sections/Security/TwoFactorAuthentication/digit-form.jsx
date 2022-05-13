@@ -5,7 +5,7 @@ import { Input, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getPropertyValue, WS } from '@deriv/shared';
 
-const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
+const DigitForm = ({ is_enabled, setEnabled }) => {
     const [is_success, setSuccess] = React.useState(false);
     const button_text = is_enabled ? localize('Disable 2FA') : localize('Enable');
 
@@ -50,7 +50,6 @@ const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
             setSuccess(true);
             resetForm();
             setEnabled(is_enabled_response);
-            logoutClient();
         }
     };
 

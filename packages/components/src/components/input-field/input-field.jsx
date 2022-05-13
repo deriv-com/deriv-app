@@ -14,6 +14,7 @@ const InputField = ({
     classNameInlinePrefix,
     classNameInput,
     classNamePrefix,
+    classNameWrapper,
     currency,
     current_focus,
     data_tip,
@@ -290,9 +291,13 @@ const InputField = ({
             )}
             {is_increment_input ? (
                 <div
-                    className={classNames('dc-input-wrapper', {
-                        'dc-input-wrapper--disabled': !!is_disabled,
-                    })}
+                    className={classNames(
+                        'dc-input-wrapper',
+                        {
+                            'dc-input-wrapper--disabled': !!is_disabled,
+                        },
+                        classNameWrapper
+                    )}
                 >
                     {increment_buttons}
                     {input}
@@ -330,6 +335,7 @@ InputField.propTypes = {
     classNameInlinePrefix: PropTypes.string,
     classNameInput: PropTypes.string,
     classNamePrefix: PropTypes.string,
+    classNameWrapper: PropTypes.string, // CSS class for the component wrapper
     currency: PropTypes.string,
     current_focus: PropTypes.string,
     decimal_point_change: PropTypes.number, // Specify which decimal point must be updated when the increment/decrement button is pressed

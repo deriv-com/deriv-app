@@ -146,7 +146,12 @@ const EditPaymentMethodForm = () => {
                                     secondary
                                     large
                                     onClick={() => {
-                                        my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                        if (dirty) {
+                                            my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                        } else {
+                                            my_profile_store.setPaymentMethodToEdit(null);
+                                            my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                                        }
                                     }}
                                     type='button'
                                 >

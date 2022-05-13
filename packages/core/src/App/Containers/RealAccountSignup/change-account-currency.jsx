@@ -2,7 +2,7 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Text } from '@deriv/components';
-import { getPlatformSettings, isMobile, reorderCurrencies } from '@deriv/shared';
+import { isMobile, reorderCurrencies } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';

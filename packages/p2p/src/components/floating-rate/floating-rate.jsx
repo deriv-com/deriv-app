@@ -24,6 +24,7 @@ const FloatingRate = ({
 
     const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)) : exchange_rate;
 
+    // Input mask for formatting value on blur of floating rate field
     const onBlurHandler = e => {
         let float_rate = e.target.value;
         if (float_rate && float_rate.trim().length) {
@@ -32,6 +33,7 @@ const FloatingRate = ({
                 // Assign + symbol for positive rate
                 e.target.value = `+${float_rate}`;
             }
+            e.target.value = float_rate;
         }
         onChange(e);
     };

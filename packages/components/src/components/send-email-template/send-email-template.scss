@@ -29,6 +29,27 @@
     &__cta-btn {
         margin: 3.2rem auto 0;
     }
+    &__resend {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-row-gap: 16px;
+        max-width: 400px;
+        margin: 24px auto 0;
+        color: var(--text-prominent);
+        font-size: var(--text-size-xxs);
+        line-height: 1.5;
+        .sent-email__content {
+            display: grid;
+            grid-template-columns: 3.2rem auto;
+            grid-gap: 8px;
+
+            .inline-icon {
+                width: 3.2rem;
+                height: 3.2rem;
+                margin-right: 0.8rem;
+            }
+        }
+    }
     &__btn {
         margin: 0 auto;
     }
@@ -38,5 +59,12 @@
     @include mobile {
         margin-bottom: 1.6rem;
         width: 100%;
+    }
+    &__footer {
+        margin-top: 2.6rem;
+        &-live-chat {
+            color: var(--text-red);
+            cursor: pointer;
+        }
     }
 }

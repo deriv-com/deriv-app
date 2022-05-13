@@ -199,7 +199,7 @@ export default class WithdrawStore {
             response_cashier = { error: { code: 'InvalidToken', message: 'Your token has expired or is invalid.' } };
         }
 
-        if (response_cashier.error.code === 'InvalidToken') {
+        if (response_cashier.error?.code === 'InvalidToken') {
             this.error.handleCashierError(response_cashier.error);
             general_store.setLoading(false);
             iframe.setSessionTimeout(true);

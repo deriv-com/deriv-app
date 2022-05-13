@@ -12,11 +12,13 @@ import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-si
 const CashierDefault = ({
     available_crypto_currencies,
     accounts_list,
+    can_change_fiat_currency,
     currency,
     has_set_currency,
     is_dark_mode_on,
     is_landing_company_loaded,
     is_mobile,
+    is_from_derivgo,
     is_payment_agent_visible_in_onboarding,
     is_switching,
     onMountCashierDefault,
@@ -36,7 +38,8 @@ const CashierDefault = ({
     const is_crypto = !!currency && isCryptocurrency(currency);
     const has_crypto_account = accounts_list.some(x => x.is_crypto);
     const has_fiat_account = accounts_list.some(x => !x.is_crypto);
-    const is_currency_banner_visible = !is_crypto || available_crypto_currencies.length > 0;
+    const is_currency_banner_visible =
+        (!is_crypto && !can_change_fiat_currency) || (is_crypto && available_crypto_currencies.length > 0);
 
     React.useEffect(() => {
         onMountCashierDefault();
@@ -154,7 +157,7 @@ const CashierDefault = ({
                         <Localize i18n_default_text='Please note that some payment methods might not be available in your country.' />
                     </Text>
                 </div>
-                {is_mobile && (
+                {is_mobile && !is_from_derivgo && (
                     <div
                         className='cashier-default-header-learn-more'
                         onClick={() => window.open(getStaticUrl('/payment-methods'))}
@@ -187,11 +190,13 @@ const CashierDefault = ({
 CashierDefault.propTypes = {
     accounts_list: PropTypes.array,
     available_crypto_currencies: PropTypes.array,
+    can_change_fiat_currency: PropTypes.bool,
     currency: PropTypes.string,
     has_set_currency: PropTypes.bool,
     is_dark_mode_on: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    is_from_derivgo: PropTypes.bool,
     is_payment_agent_visible_in_onboarding: PropTypes.bool,
     is_switching: PropTypes.bool,
     onMountCashierDefault: PropTypes.func,
@@ -208,14 +213,16 @@ CashierDefault.propTypes = {
     toggleSetCurrencyModal: PropTypes.func,
 };
 
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
     accounts_list: modules.cashier.account_transfer.accounts_list,
     available_crypto_currencies: client.available_crypto_currencies,
+    can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,
     has_set_currency: modules.cashier.general_store.has_set_currency,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_landing_company_loaded: client.is_landing_company_loaded,
     is_mobile: ui.is_mobile,
+    is_from_derivgo: common.is_from_derivgo,
     is_payment_agent_visible_in_onboarding: modules.cashier.payment_agent.is_payment_agent_visible_in_onboarding,
     is_switching: client.is_switching,
     onMountCashierDefault: modules.cashier.general_store.onMountCashierDefault,

@@ -112,6 +112,7 @@ export const PersonalDetailsForm = ({
     account_settings,
     getChangeableFields,
     history,
+    is_social_signup,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -153,7 +154,7 @@ export const PersonalDetailsForm = ({
             getSettings();
         }
         initializeFormValues();
-    }, [account_settings, is_eu, is_mf]);
+    }, [account_settings, is_eu, is_mf, is_social_signup]);
 
     React.useEffect(() => {
         let timeout_id;
@@ -802,20 +803,22 @@ export const PersonalDetailsForm = ({
                                             onChange={handleChange}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-form__fieldset'>
-                                        <Input
-                                            data-lpignore='true'
-                                            type='text'
-                                            name='email'
-                                            id={'email'}
-                                            label={localize('Email address*')}
-                                            value={values.email}
-                                            required
-                                            disabled={!isChangeableField('email')}
-                                            error={errors.email}
-                                            onChange={handleChange}
-                                        />
-                                    </fieldset>
+                                    {is_social_signup && (
+                                        <fieldset className='account-form__fieldset'>
+                                            <Input
+                                                data-lpignore='true'
+                                                type='text'
+                                                name='email'
+                                                id={'email'}
+                                                label={localize('Email address*')}
+                                                value={values.email}
+                                                required
+                                                disabled={!isChangeableField('email')}
+                                                error={errors.email}
+                                                onChange={handleChange}
+                                            />
+                                        </fieldset>
+                                    )}
                                 </FormBodySection>
                                 {!is_virtual && (
                                     <React.Fragment>
@@ -1222,6 +1225,7 @@ PersonalDetailsForm.propTypes = {
     getChangeableFields: PropTypes.func,
     current_landing_company: PropTypes.object,
     history: PropTypes.object,
+    is_social_signup: PropTypes.bool,
 };
 
 export default connect(({ client, notifications }) => ({
@@ -1238,5 +1242,6 @@ export default connect(({ client, notifications }) => ({
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
+    is_social_signup: client.is_social_signup,
     refreshNotifications: notifications.refreshNotifications,
 }))(withRouter(PersonalDetailsForm));

@@ -27,13 +27,14 @@ const FloatingRate = ({
     // Input mask for formatting value on blur of floating rate field
     const onBlurHandler = e => {
         let float_rate = e.target.value;
-        if (float_rate && float_rate.trim().length) {
+        if (!isNaN(float_rate) && float_rate.trim().length) {
             float_rate = parseFloat(float_rate).toFixed(2);
             if (/^\d+/.test(float_rate) && float_rate > 0) {
                 // Assign + symbol for positive rate
                 e.target.value = `+${float_rate}`;
+            } else {
+                e.target.value = float_rate;
             }
-            e.target.value = float_rate;
         }
         onChange(e);
     };
@@ -49,6 +50,7 @@ const FloatingRate = ({
                     classNameInput={classNames('floating-rate__input', {
                         'floating-rate__input--error-field': error_messages,
                     })}
+                    classNameDynamicSuffix='dc-input-suffix'
                     classNameWrapper={classNames({ 'dc-input-wrapper--error': error_messages })}
                     current_focus={general_store.current_focus}
                     decimal_point_change={2}

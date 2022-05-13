@@ -9,6 +9,7 @@ const Input = ({
     checked,
     className,
     classNameInlinePrefix,
+    classNameDynamicSuffix,
     current_focus,
     data_value,
     data_tip,
@@ -65,7 +66,7 @@ const Input = ({
     };
 
     return (
-        <React.Fragment>
+        <div className={classNameDynamicSuffix}>
             {!!inline_prefix && (
                 <div className={classNameInlinePrefix}>
                     <span
@@ -104,7 +105,7 @@ const Input = ({
                 aria-label={ariaLabel}
                 data-lpignore={type !== 'password'}
             />
-        </React.Fragment>
+        </div>
     );
 };
 
@@ -114,6 +115,7 @@ Input.propTypes = {
     checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
+    classNameDynamicSuffix: PropTypes.string,
     current_focus: PropTypes.string,
     data_tip: PropTypes.string,
     data_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

@@ -116,6 +116,74 @@
             padding-left: 1rem;
         }
     }
+
+    .dc-input-wrapper {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--border-normal);
+        border-radius: 4px;
+
+        &--error {
+            border: 1px solid $color-red;
+        }
+
+        .dc-input-wrapper__button {
+            top: unset;
+            &--increment {
+                right: unset;
+                order: 4;
+            }
+
+            &--decrement {
+                left: unset;
+            }
+        }
+
+        .input {
+            text-align: right;
+            border: unset;
+            background-color: unset;
+            padding: unset;
+            &:focus {
+                border-color: unset;
+            }
+            &:hover {
+                border-color: unset;
+            }
+            &--has-inline-prefix {
+                padding-right: unset !important;
+            }
+            @include mobile {
+                text-align: center;
+            }
+        }
+
+        &:hover {
+            border-color: var(--border-hover);
+        }
+        &:active,
+        &:focus {
+            border-color: var(--border-active);
+        }
+
+        button.dc-input-wrapper__button {
+            position: relative !important;
+        }
+
+        &--error:hover {
+            border-color: $color-red !important;
+        }
+    }
+
+    .dc-input-suffix {
+        display: flex;
+        align-items: center;
+        padding-right: 1.5rem;
+
+        @include mobile {
+            width: -webkit-fill-available;
+        }
+    }
 }
 
 .dc-input-wrapper__button,
@@ -141,63 +209,5 @@ button.dc-input-wrapper__button {
 .p2p-my-ads__form-field {
     @include mobile {
         height: auto !important;
-    }
-}
-
-.dc-input-wrapper {
-    display: flex;
-    align-items: center;
-    border: 1px solid var(--border-normal);
-    border-radius: 4px;
-
-    &--error {
-        border: 1px solid $color-red;
-    }
-
-    .dc-input-wrapper__button {
-        top: unset;
-        &--increment {
-            right: unset;
-            order: 4;
-        }
-
-        &--decrement {
-            left: unset;
-        }
-    }
-
-    .input {
-        text-align: right;
-        border: unset;
-        background-color: unset;
-        padding: unset;
-        &:focus {
-            border-color: unset;
-        }
-        &:hover {
-            border-color: unset;
-        }
-        &--has-inline-prefix {
-            padding-right: unset !important;
-        }
-        @include mobile {
-            text-align: center;
-        }
-    }
-
-    &:hover {
-        border-color: var(--border-hover);
-    }
-    &:active,
-    &:focus {
-        border-color: var(--border-active);
-    }
-
-    button.dc-input-wrapper__button {
-        position: relative !important;
-    }
-
-    &--error:hover {
-        border-color: $color-red !important;
     }
 }

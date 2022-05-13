@@ -11,6 +11,7 @@ const InputField = ({
     ariaLabel,
     checked,
     className,
+    classNameDynamicSuffix,
     classNameInlinePrefix,
     classNameInput,
     classNamePrefix,
@@ -231,6 +232,7 @@ const InputField = ({
                 { 'input--error': has_error },
                 classNameInput
             )}
+            classNameDynamicSuffix={classNameDynamicSuffix}
             classNameInlinePrefix={classNameInlinePrefix}
             data_tip={data_tip}
             data_value={data_value}
@@ -334,6 +336,7 @@ InputField.propTypes = {
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
     classNameInput: PropTypes.string,
+    classNameDynamicSuffix: PropTypes.string,
     classNamePrefix: PropTypes.string,
     classNameWrapper: PropTypes.string, // CSS class for the component wrapper
     currency: PropTypes.string,

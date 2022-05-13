@@ -46,20 +46,6 @@ const svg_file_loaders = [
 
 const svg_loaders = [
     'babel-loader',
-    {
-        loader: 'react-svg-loader',
-        options: {
-            jsx: true,
-            svgo: {
-                plugins: [
-                    { removeTitle: false },
-                    { removeUselessStrokeAndFill: false },
-                    { removeUknownsAndDefaults: false },
-                ],
-                floatPrecision: 2,
-            },
-        },
-    },
 ];
 
 const css_loaders = [

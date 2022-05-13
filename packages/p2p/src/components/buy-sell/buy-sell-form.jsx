@@ -9,6 +9,7 @@ import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
+import { floatingPointValidator } from 'Utils/validations';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -290,6 +291,11 @@ const BuySellForm = props => {
                                                         {buy_sell_store.account_currency}
                                                     </Text>
                                                 }
+                                                onKeyDown={event => {
+                                                    if (!floatingPointValidator(event.key)) {
+                                                        event.preventDefault();
+                                                    }
+                                                }}
                                                 onChange={event => {
                                                     if (event.target.value === '') {
                                                         setFieldValue('amount', '');

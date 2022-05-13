@@ -8,7 +8,6 @@ import { localize, Localize } from 'Components/i18next';
 
 const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
-
     const [selected_buy_methods, setSelectedBuyMethods] = React.useState([]);
     const [selected_sell_methods, setSelectedSellMethods] = React.useState([]);
 
@@ -108,7 +107,6 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
             />
         );
     }
-
     if (selected_buy_methods?.length > 0) {
         return (
             <React.Fragment>
@@ -151,7 +149,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                 })}
                 {my_ads_store.payment_method_names.length < 3 && (
                     <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-                        {() => (
+                        {({ resetForm }) => (
                             <Field name='payment_method'>
                                 {({ field }) => (
                                     <div className='p2p-my-ads--border'>
@@ -160,6 +158,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                             autoComplete='off' // prevent chrome autocomplete
                                             data-lpignore='true'
                                             has_updating_list={false}
+                                            is_alignment_top
                                             label={
                                                 <React.Fragment>
                                                     <Icon icon='IcAddCircle' size={14} />
@@ -169,8 +168,10 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                                 </React.Fragment>
                                             }
                                             list_items={my_profile_store.payment_methods_list}
+                                            list_portal_id='deriv_app'
                                             onItemSelection={({ value }) => {
                                                 onClickPaymentMethodItem(value);
+                                                resetForm();
                                             }}
                                             required
                                             trailing_icon={<></>}
@@ -188,7 +189,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
 
     return (
         <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-            {({ setFieldValue }) => (
+            {({ resetForm }) => (
                 <Field name='payment_method'>
                     {({ field }) => (
                         <div className='p2p-my-ads--border'>
@@ -197,6 +198,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                 autoComplete='off' // prevent chrome autocomplete
                                 data-lpignore='true'
                                 has_updating_list={false}
+                                is_alignment_top
                                 label={
                                     <React.Fragment>
                                         <Icon icon='IcAddCircle' size={14} />
@@ -206,9 +208,9 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
                                     </React.Fragment>
                                 }
                                 list_items={my_profile_store.payment_methods_list}
-                                onItemSelection={({ text, value }) => {
-                                    setFieldValue('payment_method', value ? text : '');
+                                onItemSelection={({ value }) => {
                                     onClickPaymentMethodItem(value);
+                                    resetForm();
                                 }}
                                 required
                                 trailing_icon={<></>}

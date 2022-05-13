@@ -572,9 +572,6 @@ export default class AccountTransferStore {
                 selected_from_currency,
                 selected_to_currency
             );
-        } else if (+this.selected_from.balance === 0) {
-            crypto_fiat_converter.setConverterFromAmount(amount);
-            this.validateTransferFromAmount();
         } else {
             crypto_fiat_converter.resetConverter();
         }

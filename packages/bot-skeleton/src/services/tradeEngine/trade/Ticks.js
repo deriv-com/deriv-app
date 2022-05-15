@@ -55,10 +55,15 @@ export default Engine =>
                     .request({ symbol: this.symbol })
                     .then(ticks => {
                         let lastTick = raw ? getLast(ticks) : getLast(ticks).quote;
-
-                        if (toString && !raw) {
-                            lastTick = lastTick.toFixed(this.getPipSize());
+                        if (!raw) {
+                            lastTick = lastTick
+                                .toString()
+                                .padEnd(lastTick.toString().split('.')[0].length + this.getPipSize() + 1, '0');
+                            if (!toString) {
+                                lastTick = parseFloat(lastTick);
+                            }
                         }
+
                         resolve(lastTick);
                     })
                     .catch(e => {

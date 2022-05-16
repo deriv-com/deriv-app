@@ -38,7 +38,7 @@ const PaymentMethodCard = ({
             </div>
         );
     }
-    
+
     if (is_add) {
         return (
             <div

@@ -27,7 +27,6 @@ const PaymentMethods = () => {
         return <EditPaymentMethodForm />;
     }
     return <PaymentMethodsList />;
-
 };
 
 export default observer(PaymentMethods);

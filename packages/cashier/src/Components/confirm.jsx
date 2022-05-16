@@ -40,13 +40,13 @@ const WarningBullet = ({ children }) => (
 );
 
 const Confirm = ({
-    warning_messages,
     data,
     error,
     header,
     is_payment_agent_transfer_confirm_component,
     onClickBack,
     onClickConfirm,
+    warning_messages,
 }) => {
     const [is_transfer_consent_checked, setIsTransferConsentChecked] = React.useState(false);
 
@@ -113,7 +113,6 @@ const Confirm = ({
 };
 
 Confirm.propTypes = {
-    warning_messages: PropTypes.arrayOf(PropTypes.object),
     data: PropTypes.arrayOf(
         PropTypes.shape({
             label: PropTypes.string,
@@ -125,6 +124,7 @@ Confirm.propTypes = {
     is_payment_agent_transfer_confirm_component: PropTypes.bool,
     onClickBack: PropTypes.func,
     onClickConfirm: PropTypes.func,
+    warning_messages: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Confirm;

@@ -31,7 +31,11 @@ const PaymentAgentTransferConfirm = ({
     ];
     return (
         <div className='cashier__wrapper'>
-            <Icon icon='IcCashierRedWarning' className='payment-agent-transfer-confirm__warning-icon' />
+            <Icon
+                icon='IcCashierRedWarning'
+                className='payment-agent-transfer-confirm__warning-icon'
+                data_testid='dti_red_warning_icon'
+            />
             <Text
                 as='h2'
                 color='loss-danger'

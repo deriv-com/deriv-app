@@ -441,7 +441,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setWebsocketInit = (websocket) => {
+    setWebsocketInit = websocket => {
         WebsocketInit(websocket);
     };
 

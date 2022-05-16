@@ -17,7 +17,7 @@ const PaymentAgentTransferConfirm = ({
     transfer_to,
     transfer_to_name,
 }) => {
-    const payment_agent_transfer_confirm_warnings = [
+    const payment_agent_transfer_warning_messages = [
         <Localize
             i18n_default_text='<0>Remember</0>, it’s solely your responsibility to ensure the transfer is made to the correct account.'
             components={[<strong key={0} />]}
@@ -61,14 +61,14 @@ const PaymentAgentTransferConfirm = ({
                     { label: localize('Description'), value: description, key: 'description' },
                 ]}
                 error={error}
-                is_payment_agent_transfer_confirm
+                is_payment_agent_transfer_confirm_component
                 onClickBack={() => {
                     setIsTryTransferSuccessful(false);
                 }}
                 onClickConfirm={() => {
                     requestPaymentAgentTransfer({ amount, currency, description, transfer_to });
                 }}
-                confirm_warnings={payment_agent_transfer_confirm_warnings}
+                warning_messages={payment_agent_transfer_warning_messages}
             />
         </div>
     );

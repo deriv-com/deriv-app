@@ -40,11 +40,11 @@ const WarningBullet = ({ children }) => (
 );
 
 const Confirm = ({
-    confirm_warnings,
+    warning_messages,
     data,
     error,
     header,
-    is_payment_agent_transfer_confirm,
+    is_payment_agent_transfer_confirm_component,
     onClickBack,
     onClickConfirm,
 }) => {
@@ -53,10 +53,10 @@ const Confirm = ({
     return (
         <div
             className={classNames('cashier__wrapper--confirm', {
-                cashier__wrapper: !is_payment_agent_transfer_confirm,
+                cashier__wrapper: !is_payment_agent_transfer_confirm_component,
             })}
         >
-            {!is_payment_agent_transfer_confirm && (
+            {!is_payment_agent_transfer_confirm_component && (
                 <Icon data_testid='dti_confirm_details_icon' icon='IcConfirmDetails' width='128' height='128' />
             )}
             {header && (
@@ -77,9 +77,9 @@ const Confirm = ({
                     ))}
                 </div>
             </div>
-            {!!confirm_warnings && confirm_warnings.length > 0 && (
+            {!!warning_messages && warning_messages.length > 0 && (
                 <div className='confirm__warnings'>
-                    {confirm_warnings.map((warning, idx) => (
+                    {warning_messages.map((warning, idx) => (
                         <WarningBullet key={idx}>
                             <Text as='p' size='xxs' color='loss-danger' align='left'>
                                 {warning}
@@ -88,7 +88,7 @@ const Confirm = ({
                     ))}
                 </div>
             )}
-            {is_payment_agent_transfer_confirm && (
+            {is_payment_agent_transfer_confirm_component && (
                 <Checkbox
                     name='transfer_consent'
                     value={is_transfer_consent_checked}
@@ -101,10 +101,10 @@ const Confirm = ({
                 <Button large text={localize('Back')} onClick={onClickBack} secondary />
                 <Button
                     large
-                    text={is_payment_agent_transfer_confirm ? localize('Transfer now') : localize('Confirm')}
+                    text={is_payment_agent_transfer_confirm_component ? localize('Transfer now') : localize('Confirm')}
                     onClick={onClickConfirm}
                     primary
-                    disabled={is_payment_agent_transfer_confirm && !is_transfer_consent_checked}
+                    disabled={is_payment_agent_transfer_confirm_component && !is_transfer_consent_checked}
                 />
             </div>
             <FormError error={error} />
@@ -113,7 +113,7 @@ const Confirm = ({
 };
 
 Confirm.propTypes = {
-    confirm_warnings: PropTypes.arrayOf(PropTypes.object),
+    warning_messages: PropTypes.arrayOf(PropTypes.object),
     data: PropTypes.arrayOf(
         PropTypes.shape({
             label: PropTypes.string,
@@ -122,7 +122,7 @@ Confirm.propTypes = {
     ),
     error: PropTypes.object,
     header: PropTypes.string,
-    is_payment_agent_transfer_confirm: PropTypes.bool,
+    is_payment_agent_transfer_confirm_component: PropTypes.bool,
     onClickBack: PropTypes.func,
     onClickConfirm: PropTypes.func,
 };

@@ -255,6 +255,7 @@ const BuySellForm = props => {
                                                             );
                                                             my_profile_store.setShouldShowAddPaymentMethodForm(true);
                                                         }}
+                                                        is_loading={my_profile_store.is_payment_methods_loading}
                                                     />
                                                 );
                                             })}

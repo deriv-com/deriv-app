@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import { Loading } from '@deriv/components';
 import AddPaymentMethod from './add-payment-method';
 import PaymentMethodsEmpty from './payment-methods-empty';
 import PaymentMethodsList from './payment-methods-list';
@@ -15,7 +16,9 @@ const PaymentMethods = () => {
         my_profile_store.setShouldShowEditPaymentMethodForm(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    if (my_profile_store.is_payment_methods_loading) {
+        return <Loading is_fullscreen={false} />;
+    }
     if (my_profile_store.should_show_add_payment_method_form) {
         return <AddPaymentMethod />;
     } else if (!my_profile_store.advertiser_has_payment_methods) {
@@ -23,8 +26,8 @@ const PaymentMethods = () => {
     } else if (my_profile_store.should_show_edit_payment_method_form) {
         return <EditPaymentMethodForm />;
     }
-
     return <PaymentMethodsList />;
+
 };
 
 export default observer(PaymentMethods);

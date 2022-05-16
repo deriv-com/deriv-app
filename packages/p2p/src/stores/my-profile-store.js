@@ -40,6 +40,7 @@ export default class MyProfileStore extends BaseStore {
     @observable should_show_add_payment_method_error_modal = false;
     @observable should_show_add_payment_method_form = false;
     @observable should_show_edit_payment_method_form = false;
+    @observable is_payment_methods_loading;
 
     @computed
     get advertiser_has_payment_methods() {
@@ -156,8 +157,8 @@ export default class MyProfileStore extends BaseStore {
                     this.setAddPaymentMethodErrorMessage(response.error.message);
                     this.setShouldShowAddPaymentMethodErrorModal(true);
                 } else {
-                    this.setShouldShowAddPaymentMethodForm(false);
                     this.getAdvertiserPaymentMethods();
+                    this.setShouldShowAddPaymentMethodForm(false);
                 }
 
                 setSubmitting(false);
@@ -189,7 +190,13 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setIsLoadingAdvertiserPaymentMethods(value) {
+        this.is_payment_methods_loading = value;
+    }
+
+    @action.bound
     getAdvertiserPaymentMethods() {
+        this.setIsLoadingAdvertiserPaymentMethods(true);
         requestWS({
             p2p_advertiser_payment_methods: 1,
         }).then(response => {
@@ -198,6 +205,7 @@ export default class MyProfileStore extends BaseStore {
             } else {
                 this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
             }
+            this.setIsLoadingAdvertiserPaymentMethods(false);
         });
     }
 

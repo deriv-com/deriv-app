@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown, Icon, Text } from '@deriv/components';
+import { Dropdown, Icon, Loading, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
@@ -16,6 +16,7 @@ const PaymentMethodCard = ({
     payment_method,
     small,
     style,
+    is_loading = false,
 }) => {
     const { my_profile_store } = useStores();
     const method = !is_add && payment_method.display_name.replace(/\s|-/gm, '');
@@ -24,6 +25,20 @@ const PaymentMethodCard = ({
     const payment_bank_name = payment_method?.fields?.bank_name?.value;
     const payment_name = payment_method?.fields?.name?.value;
 
+    if (is_loading) {
+        return (
+            <div
+                className={classNames('payment-method-card--add', {
+                    'payment-method-card--large': large,
+                    'payment-method-card--medium': medium,
+                    'payment-method-card--small': small,
+                })}
+            >
+                <Loading is_fullscreen={false} />
+            </div>
+        );
+    }
+    
     if (is_add) {
         return (
             <div

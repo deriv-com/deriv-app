@@ -148,7 +148,7 @@ const Withdrawal = ({
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
-    return <SendEmail />;
+    return <SendEmail WithdrawalSideNote={WithdrawalSideNote} />;
 };
 
 Withdrawal.propTypes = {
@@ -168,6 +168,7 @@ Withdrawal.propTypes = {
     is_withdrawal_locked: PropTypes.bool,
     recentTransactionOnMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setSideNotes: PropTypes.func,
     tab_index: PropTypes.number,
     verification_code: PropTypes.string,
 };

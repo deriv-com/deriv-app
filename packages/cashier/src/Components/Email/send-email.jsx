@@ -18,6 +18,7 @@ const SendEmail = ({
     recentTransactionOnMount,
     sendVerificationEmail,
     setIsResendClicked,
+    WithdrawalSideNote,
 }) => {
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -56,6 +57,7 @@ const SendEmail = ({
                     />
                     <MobileWrapper>
                         {isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
+                        <WithdrawalSideNote currency={currency} />
                     </MobileWrapper>
                 </React.Fragment>
             )}
@@ -72,6 +74,7 @@ SendEmail.propTypes = {
     resendVerificationEmail: PropTypes.func,
     sendVerificationEmail: PropTypes.func,
     setIsResendClicked: PropTypes.func,
+    WithdrawalSideNote: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({

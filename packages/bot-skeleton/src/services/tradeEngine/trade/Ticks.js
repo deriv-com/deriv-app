@@ -36,15 +36,14 @@ export default Engine =>
         getTicks(toString = false) {
             return new Promise(resolve => {
                 this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
-                    const pipSize = this.getPipSize();
-                    const ticksList = ticks.map(o => {
-                        if (toString) {
-                            return o.quote.toFixed(pipSize);
+                    const ticks_list = ticks.map(tick => {
+                        const tick_string = tick.quote.toFixed(this.getPipSize());
+                        if (!toString) {
+                            return parseFloat(tick_string);
                         }
-                        return o.quote;
+                        return tick_string;
                     });
-
-                    resolve(ticksList);
+                    resolve(ticks_list);
                 });
             });
         }
@@ -54,17 +53,15 @@ export default Engine =>
                 this.$scope.ticksService
                     .request({ symbol: this.symbol })
                     .then(ticks => {
-                        let lastTick = raw ? getLast(ticks) : getLast(ticks).quote;
+                        let last_tick = raw ? getLast(ticks) : getLast(ticks).quote;
                         if (!raw) {
-                            lastTick = lastTick
-                                .toString()
-                                .padEnd(lastTick.toString().split('.')[0].length + this.getPipSize() + 1, '0');
+                            last_tick = last_tick.toFixed(this.getPipSize());
+
                             if (!toString) {
-                                lastTick = parseFloat(lastTick);
+                                last_tick = parseFloat(last_tick);
                             }
                         }
-
-                        resolve(lastTick);
+                        resolve(last_tick);
                     })
                     .catch(e => {
                         if (e.code === 'MarketIsClosed') {

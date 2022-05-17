@@ -7,6 +7,7 @@ import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
+import { api_error_codes } from 'Constants/api-error-codes.js';
 import { useStores } from 'Stores';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
@@ -32,9 +33,17 @@ const MyAdsTable = () => {
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const generateTitle = () => {
+        if (my_ads_store.error_code === api_error_codes.ADVERT_SAME_LIMITS) {
+            return localize('You already have an ad with this range');
+        } else if (my_ads_store.error_code === api_error_codes.DUPLICATE_ADVERT) {
+            return localize('You already have an ad with this rate');
+        }
+        return localize("Something's not right");
+    };
 
     if (my_ads_store.is_table_loading) {
         return <Loading is_fullscreen={false} />;
@@ -118,7 +127,7 @@ const MyAdsTable = () => {
                     has_close_icon={false}
                     is_open={Boolean(my_ads_store.activate_deactivate_error_message)}
                     small
-                    title={localize('Something’s not right')}
+                    title={generateTitle()}
                 >
                     <Modal.Body>
                         <Text as='p' size='xs' color='prominent'>
@@ -140,7 +149,7 @@ const MyAdsTable = () => {
                     has_close_icon={false}
                     is_open={my_ads_store.is_quick_add_error_modal_open}
                     small
-                    title={localize('Something’s not right')}
+                    title={generateTitle()}
                 >
                     <Modal.Body>
                         <Text as='p' size='xs' color='prominent'>

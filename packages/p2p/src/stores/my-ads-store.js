@@ -42,6 +42,7 @@ export default class MyAdsStore extends BaseStore {
     @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
     @observable update_payment_methods_error_message = '';
+    @observable error_code = '';
 
     payment_method_ids = [];
     payment_method_names = [];
@@ -154,7 +155,7 @@ export default class MyAdsStore extends BaseStore {
             requestWS(create_advert).then(response => {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads
                 if (response.error) {
-                    this.setCreateAdErrorCode(response.error.code);
+                    this.setApiErrorCode(response.error.code);
                     this.setApiErrorMessage(response.error.message);
                     setSubmitting(false);
                 } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
@@ -192,6 +193,7 @@ export default class MyAdsStore extends BaseStore {
         if (!this.root_store.general_store.is_barred) {
             requestWS({ p2p_advert_update: 1, id, is_active: is_ad_active ? 0 : 1 }).then(response => {
                 if (response.error) {
+                    this.setApiErrorCode(response.error.code);
                     this.setActivateDeactivateErrorMessage(response.error.message);
                 } else {
                     setIsAdvertActive(!!response.p2p_advert_update.is_active);
@@ -401,8 +403,8 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setCreateAdErrorCode(create_ad_error_code) {
-        this.create_ad_error_code = create_ad_error_code;
+    setApiErrorCode(error_code) {
+        this.error_code = error_code;
     }
 
     @action.bound

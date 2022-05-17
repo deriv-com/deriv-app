@@ -57,7 +57,7 @@
         "stylelint-webpack-plugin": "^2.1.1"
     },
     "scripts": {
-        "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis ;}; f",
+        "bootstrap": "f () { npm -v && npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis ;}; f",
         "build": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build $2 ;}; f",
         "build:publish": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
         "build:local": "f () { lerna exec --scope @deriv/trader --scope @deriv/bot-web-ui --parallel -- npm run build $1 ;}; f",

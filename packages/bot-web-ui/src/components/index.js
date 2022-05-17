@@ -21,3 +21,4 @@ export { default as Toolbar } from './toolbar';
 export { default as Toolbox } from './toolbox';
 export { default as TradeAnimation } from './trade-animation';
 export { default as Transactions } from './transactions';
+export { default as NetworkToastPopup } from './network-toast-popup';

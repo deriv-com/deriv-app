@@ -49,17 +49,16 @@ const MyAdsTable = () => {
             <React.Fragment>
                 {selected_advert && <QuickAddModal advert={selected_advert} />}
                 {my_ads_store.has_missing_payment_methods && (
-                    <div className='p2p-my-ads__warning'>
-                        <HintBox
-                            icon='IcAlertWarning'
-                            message={
-                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                    <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
-                                </Text>
-                            }
-                            is_warn
-                        />
-                    </div>
+                    <HintBox
+                        className='p2p-my-ads__warning'
+                        icon='IcAlertWarning'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
+                            </Text>
+                        }
+                        is_warn
+                    />
                 )}
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
@@ -75,7 +74,6 @@ const MyAdsTable = () => {
                     )}
                     <ToggleAds />
                 </div>
-
                 <Table
                     className={classNames('p2p-my-ads__table', {
                         'p2p-my-ads__table--disabled': !general_store.is_listed || general_store.is_barred,

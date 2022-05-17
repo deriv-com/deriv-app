@@ -7,7 +7,6 @@ import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list';
 
 const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
-
     const [selected_buy_methods, setSelectedBuyMethods] = React.useState([]);
     const [selected_sell_methods, setSelectedSellMethods] = React.useState([]);
 

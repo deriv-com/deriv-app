@@ -3,7 +3,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import SentEmailModal from '../sent-email-modal';
 
-let onClose, onClickSendEmail;
+const onClose = jest.fn();
+const onClickSendEmail = jest.fn();
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -16,8 +17,6 @@ describe('<SentEmailModal/>', () => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
-        onClose = jest.fn();
-        onClickSendEmail = jest.fn();
     });
 
     afterAll(() => {

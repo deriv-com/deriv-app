@@ -28,14 +28,7 @@ describe('<SendEmailModal/>', () => {
     });
 
     it('should render SendEmailModal component to change dmt5 password', () => {
-        render(
-            <SendEmailModal
-                identifier_title='mt5'
-                is_open
-                onClose={onClose}
-                onClickSendEmail={onClickSendEmail}
-            />
-        );
+        render(<SendEmailModal identifier_title='mt5' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />);
         expect(
             screen.getByText(/Please click on the link in the email to change your DMT5 password./i)
         ).toBeInTheDocument();
@@ -43,24 +36,14 @@ describe('<SendEmailModal/>', () => {
 
     it('should render SendEmailModal component to change deriv x password', () => {
         render(
-            <SendEmailModal
-                identifier_title='dxtrade'
-                is_open
-                onClose={onClose}
-                onClickSendEmail={onClickSendEmail}
-            />
+            <SendEmailModal identifier_title='dxtrade' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />
         );
         expect(screen.getByText(/Deriv X/i)).toBeInTheDocument();
     });
 
     it('should render SendEmailModal component to change password through google account', () => {
         render(
-            <SendEmailModal
-                identifier_title='Google'
-                is_open
-                onClose={onClose}
-                onClickSendEmail={onClickSendEmail}
-            />
+            <SendEmailModal identifier_title='Google' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />
         );
         expect(
             screen.getByText(/Check your Google account email and click the link in the email to proceed./i)
@@ -80,21 +63,12 @@ describe('<SendEmailModal/>', () => {
     });
 
     it('should display default message when no appropriate identifier_title is passed', () => {
-        render(
-            <SendEmailModal identifier_title='' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />
-        );
+        render(<SendEmailModal identifier_title='' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />);
         expect(screen.getByText(/Please click on the link in the email to reset your password/i)).toBeInTheDocument();
     });
 
     it('should trigger onClose function when modal close button is clicked', () => {
-        render(
-            <SendEmailModal
-                identifier_title='mt5'
-                is_open
-                onClose={onClose}
-                onClickSendEmail={onClickSendEmail}
-            />
-        );
+        render(<SendEmailModal identifier_title='mt5' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />);
         const btn = screen.getByTestId('send-email-template-close-test-id');
         fireEvent.click(btn);
         expect(onClose).toBeCalledTimes(1);

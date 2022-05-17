@@ -36,7 +36,7 @@
         background: transparent;
         border-color: transparent;
         z-index: 2;
-        padding: 0 0.4rem;
+        padding: 0 0.2rem;
         color: inherit;
         @include mobile {
             position: relative;
@@ -178,7 +178,6 @@
     .dc-input-suffix {
         display: flex;
         align-items: center;
-        padding-right: 1.5rem;
 
         @include mobile {
             width: -webkit-fill-available;

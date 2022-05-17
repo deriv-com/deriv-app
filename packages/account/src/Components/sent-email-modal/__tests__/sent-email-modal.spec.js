@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import SendEmailModal from '../sent-email-modal';
 import { isMobile } from '@deriv/shared';
+import SendEmailModal from '../sent-email-modal';
 
 let onClose, onClickSendEmail;
 

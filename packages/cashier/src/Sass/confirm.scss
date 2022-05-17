@@ -31,7 +31,7 @@
         width: 40rem;
         display: flex;
         flex-direction: column;
-        margin: 2.4rem 0 1.8rem;
+        margin: 2.4rem auto 1.8rem;
         @include mobile {
             margin-bottom: 1.2rem;
         }
@@ -51,10 +51,8 @@
             }
         }
     }
-    &__checkbox {
-        .dc-text {
-            font-size: var(--text-size-xxs);
-        }
+    &__checkbox-label {
+        font-size: var(--text-size-xxs);
     }
     &__submit {
         margin: 2.4rem auto;

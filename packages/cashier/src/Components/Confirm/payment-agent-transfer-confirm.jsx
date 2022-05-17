@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
 import { Icon, Money, Text } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Confirm from '../confirm.jsx';
 import 'Sass/payment-agent-transfer-confirm.scss';
@@ -42,6 +43,7 @@ const PaymentAgentTransferConfirm = ({
                 weight='bold'
                 align='center'
                 className='payment-agent-transfer-confirm__warning-icon__description'
+                size={isMobile() ? 'xs' : ''}
             >
                 {localize('Check Transfer Information')}
             </Text>

@@ -13,7 +13,6 @@
         &__description {
             margin-bottom: 3.2rem;
             @include mobile {
-                font-size: var(--text-size-xs);
                 margin-bottom: 4rem;
             }
         }

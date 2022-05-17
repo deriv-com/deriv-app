@@ -77,7 +77,7 @@ const Confirm = ({
                     ))}
                 </div>
             </div>
-            {!!warning_messages && warning_messages.length > 0 && (
+            {warning_messages && (
                 <div className='confirm__warnings'>
                     {warning_messages.map((warning, idx) => (
                         <WarningBullet key={idx}>
@@ -94,7 +94,7 @@ const Confirm = ({
                     value={is_transfer_consent_checked}
                     onChange={() => setIsTransferConsentChecked(!is_transfer_consent_checked)}
                     label={localize('I confirm that I have checked and verified the client’s transfer information')}
-                    className='confirm__checkbox'
+                    classNameLabel='confirm__checkbox-label'
                 />
             )}
             <div className='confirm__submit'>

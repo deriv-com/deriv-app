@@ -470,6 +470,7 @@ const RealAccountSignup = ({
                                     />
                                 );
                             }
+
                             return null;
                         }}
                     >

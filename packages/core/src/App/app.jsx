@@ -35,6 +35,7 @@ import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import { CFD_TEXT } from '../Constants/cfd-text';
+import { getLCP, getFID, getCLS } from 'web-vitals';
 
 // TODO: Lazy load smartchart styles
 import '@deriv/deriv-charts/dist/smartcharts.css';
@@ -85,6 +86,9 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(() => {
         const debouncedHandleResize = debounce(handleResize, 400);
         window.addEventListener('resize', debouncedHandleResize);
+        getCLS(console.log);
+        getFID(console.log);
+        getLCP(console.log);
 
         return () => {
             window.removeEventListener('resize', debouncedHandleResize);

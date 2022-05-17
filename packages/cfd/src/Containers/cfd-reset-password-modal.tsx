@@ -131,7 +131,8 @@ const CFDResetPasswordModal = ({
                 response.error &&
                 (response.error.code === 'InvalidToken' ||
                     response.error.code === 'BadSession' ||
-                    response.error.code === 'SameAsMainPassword')
+                    response.error.code === 'SameAsMainPassword' ||
+                    response.error.code)
             ) {
                 renderErrorBox(response.error);
             } else {

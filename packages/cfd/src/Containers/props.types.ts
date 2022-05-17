@@ -7,7 +7,7 @@ type CFD_Platform = 'dxtrade' | 'mt5';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;
-    platform: CFD_Platform;
+    platform: string;
     className?: string;
     onConfirm: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
     onCancel: () => void;
@@ -32,7 +32,7 @@ export type TMissingRealAccount = {
 };
 
 export type TChangePassword = {
-    platform: CFD_Platform;
+    platform: string;
     onConfirm: () => void;
 };
 

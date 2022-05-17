@@ -73,7 +73,6 @@ type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
     password: string;
     onSubmit: TOnSubmitPassword;
     is_real_financial_stp: boolean;
-    has_mt5_account: boolean;
 };
 
 type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
@@ -292,7 +291,6 @@ const CreatePassword = ({
     onSubmit,
     error_message,
     is_real_financial_stp,
-    has_mt5_account,
 }: TCFDCreatePasswordProps) => {
     return (
         <Formik
@@ -363,7 +361,7 @@ const CreatePassword = ({
                                 )}
                             </PasswordMeter>
                         </div>
-                        {is_real_financial_stp && !has_mt5_account && (
+                        {is_real_financial_stp && (
                             <div className='dc-modal__container_cfd-password-modal__description'>
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
                             </div>
@@ -413,7 +411,6 @@ const CFDCreatePasswordForm = ({
                     validatePassword={validatePassword}
                     onSubmit={onSubmit}
                     is_real_financial_stp={is_real_financial_stp}
-                    has_mt5_account={has_mt5_account}
                 />
             ),
         },

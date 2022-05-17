@@ -84,10 +84,10 @@ const TradeAnimation = ({
     onStopButtonClick,
     info_direction,
     toggleAnimationInfoModal,
-    account_status,
+    cashier_validation,
 }) => {
     const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
-    const is_unavailable_for_payment_agent = account_status?.includes('WithdrawServiceUnavailableForPA');
+    const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
     React.useEffect(() => {
         if (is_button_disabled) {
             setTimeout(() => {
@@ -190,5 +190,5 @@ export default connect(({ summary_card, run_panel, toolbar, ui, client }) => ({
     profit: summary_card.profit,
     should_show_overlay: run_panel.should_show_overlay,
     toggleAnimationInfoModal: toolbar.toggleAnimationInfoModal,
-    account_status: client.account_status.cashier_validation,
+    cashier_validation: client.account_status.cashier_validation,
 }))(TradeAnimation);

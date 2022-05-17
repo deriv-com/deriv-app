@@ -3,9 +3,9 @@ import { localize } from 'Components/i18next';
 
 export const usePaymentMethodValidator = () => {
     const { my_profile_store } = useStores();
-    const no_symbols_regex = /^[a-zA-Z0-9\\\s.@_+-]+$/;
+    const no_symbols_regex = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/;
     const no_symbols_message =
-        '{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+._@';
+        "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;";
     const max_characters_error_message = '{{field_name}} has exceeded maximum length of 200 characters.';
 
     // Generates suitable error message

@@ -31,7 +31,7 @@ describe('<SendEmailModal/>', () => {
         render(
             <SendEmailModal
                 identifier_title='mt5'
-                is_open={true}
+                is_open
                 onClose={onClose}
                 onClickSendEmail={onClickSendEmail}
             />
@@ -45,7 +45,7 @@ describe('<SendEmailModal/>', () => {
         render(
             <SendEmailModal
                 identifier_title='dxtrade'
-                is_open={true}
+                is_open
                 onClose={onClose}
                 onClickSendEmail={onClickSendEmail}
             />
@@ -57,7 +57,7 @@ describe('<SendEmailModal/>', () => {
         render(
             <SendEmailModal
                 identifier_title='Google'
-                is_open={true}
+                is_open
                 onClose={onClose}
                 onClickSendEmail={onClickSendEmail}
             />
@@ -71,7 +71,7 @@ describe('<SendEmailModal/>', () => {
         render(
             <SendEmailModal
                 identifier_title='Change_Email'
-                is_open={true}
+                is_open
                 onClose={onClose}
                 onClickSendEmail={onClickSendEmail}
             />
@@ -81,7 +81,7 @@ describe('<SendEmailModal/>', () => {
 
     it('should display default message when no appropriate identifier_title is passed', () => {
         render(
-            <SendEmailModal identifier_title='' is_open={true} onClose={onClose} onClickSendEmail={onClickSendEmail} />
+            <SendEmailModal identifier_title='' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />
         );
         expect(screen.getByText(/Please click on the link in the email to reset your password/i)).toBeInTheDocument();
     });
@@ -90,7 +90,7 @@ describe('<SendEmailModal/>', () => {
         render(
             <SendEmailModal
                 identifier_title='mt5'
-                is_open={true}
+                is_open
                 onClose={onClose}
                 onClickSendEmail={onClickSendEmail}
             />
@@ -105,7 +105,7 @@ describe('<SendEmailModal/>', () => {
         render(
             <SendEmailModal
                 identifier_title='Change_Email'
-                is_open={true}
+                is_open
                 onClose={onClose}
                 onClickSendEmail={onClickSendEmail}
             />

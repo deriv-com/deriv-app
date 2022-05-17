@@ -436,7 +436,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 <Text
                                     as='p'
                                     className='cfd-dashboard__accounts-error-message'
-                                    lineheight='l'
+                                    line_height='l'
                                     size='xxs'
                                     color='prominent'
                                     weight='normal'

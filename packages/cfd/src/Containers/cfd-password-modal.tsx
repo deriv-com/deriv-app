@@ -74,14 +74,12 @@ type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
     onSubmit: TOnSubmitPassword;
     is_real_financial_stp: boolean;
     has_mt5_account: boolean;
-    is_bvi: boolean;
 };
 
 type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
     has_mt5_account: boolean;
     submitPassword: TOnSubmitPassword;
     is_real_financial_stp: boolean;
-    is_bvi: boolean;
 };
 
 type TMultiStepRefProps = {
@@ -294,7 +292,6 @@ const CreatePassword = ({
     onSubmit,
     error_message,
     is_real_financial_stp,
-    is_bvi,
     has_mt5_account,
 }: TCFDCreatePasswordProps) => {
     return (
@@ -366,14 +363,9 @@ const CreatePassword = ({
                                 )}
                             </PasswordMeter>
                         </div>
-                        {is_real_financial_stp && !has_mt5_account && !is_bvi && (
+                        {is_real_financial_stp && !has_mt5_account && (
                             <div className='dc-modal__container_cfd-password-modal__description'>
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
-                            </div>
-                        )}
-                        {is_real_financial_stp && !has_mt5_account && is_bvi && (
-                            <div className='dc-modal__container_cfd-password-modal__description'>
-                                <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (BVI) Ltd. All trading in this account is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC).' />
                             </div>
                         )}
                         <FormSubmitButton
@@ -398,7 +390,6 @@ const CFDCreatePasswordForm = ({
     validatePassword,
     submitPassword,
     is_real_financial_stp,
-    is_bvi,
 }: TCFDCreatePasswordFormProps) => {
     const multi_step_ref = React.useRef<TMultiStepRefProps>();
     const [password, setPassword] = React.useState('');
@@ -422,7 +413,6 @@ const CFDCreatePasswordForm = ({
                     validatePassword={validatePassword}
                     onSubmit={onSubmit}
                     is_real_financial_stp={is_real_financial_stp}
-                    is_bvi={is_bvi}
                     has_mt5_account={has_mt5_account}
                 />
             ),
@@ -508,7 +498,6 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                 submitPassword={props.submitPassword}
                 has_mt5_account={props.has_mt5_account}
                 is_real_financial_stp={props.is_real_financial_stp}
-                is_bvi={props.is_bvi}
             />
         );
     }

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import * as React from 'react';
 import { Formik, Field } from 'formik';
 import {
@@ -92,7 +93,7 @@ const QuickAddModal = ({ advert }) => {
                     height_offset='80px'
                     is_flex
                     is_modal_open={my_ads_store.is_quick_add_modal_open}
-                    page_header_text={localize('Add payment methods')}
+                    page_header_text={localize('Add payment method')}
                     pageHeaderReturnFn={() => {
                         setSelectedMethods([]);
                         my_ads_store.hideQuickAddModal();
@@ -243,7 +244,7 @@ const QuickAddModal = ({ advert }) => {
                 height_offset='80px'
                 is_flex
                 is_modal_open={my_ads_store.is_quick_add_modal_open}
-                page_header_text={localize('Add payment methods')}
+                page_header_text={localize('Add payment method')}
                 pageHeaderReturnFn={() => {
                     setSelectedMethods([]);
                     my_ads_store.hideQuickAddModal();
@@ -313,7 +314,7 @@ const QuickAddModal = ({ advert }) => {
                 has_close_icon={false}
                 height='660px'
                 is_open={my_ads_store.is_quick_add_modal_open}
-                title={localize('Add payment methods')}
+                title={localize('Add payment method')}
             >
                 <Modal.Body>
                     <div className='p2p-my-ads__info'>
@@ -458,10 +459,14 @@ const QuickAddModal = ({ advert }) => {
             has_close_icon={false}
             height='660px'
             is_open={my_ads_store.is_quick_add_modal_open}
-            title={localize('Add payment methods')}
+            title={localize('Add payment method')}
         >
             {my_ads_store.should_show_add_payment_method ? (
-                <Modal.Body>
+                <Modal.Body
+                    className={classNames({
+                        'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method,
+                    })}
+                >
                     <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
                 </Modal.Body>
             ) : (

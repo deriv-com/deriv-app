@@ -66,7 +66,7 @@ PageOverlay.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    is_close_disabled: PropTypes.bool,
+    is_from_app: PropTypes.bool,
     is_open: PropTypes.bool,
     onClickClose: PropTypes.func,
     portal_id: PropTypes.string,

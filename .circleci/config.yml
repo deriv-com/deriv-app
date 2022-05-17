@@ -44,6 +44,7 @@ commands:
             - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
       - run:
           name: "Install npm packages"
+          no_output_timeout: 30m
           command: |
             npm run bootstrap
             # if [ -d "./node_modules" ]; then
@@ -66,6 +67,7 @@ commands:
             - "packages/cashier/node_modules"
             - "packages/components/node_modules"
             - "packages/core/node_modules"
+            - "packages/cfd/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
             - "packages/shared/node_modules"

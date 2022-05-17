@@ -6,7 +6,7 @@ import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { roundOffDecimal, setDecimalPlaces } from 'Utils/format-value.js';
+import { setDecimalPlaces } from 'Utils/format-value.js';
 
 const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
@@ -20,14 +20,9 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     let display_total = '';
 
     if (market_feed && price_rate) {
-        display_price_rate = formatMoney(
-            local_currency_config.currency,
-            parseFloat(market_feed * (1 + price_rate / 100)),
-            true,
-            6
-        );
+        display_price_rate = parseFloat(market_feed * (1 + price_rate / 100));
     } else if (price_rate) {
-        display_price_rate = formatMoney(local_currency_config.currency, price_rate, true);
+        display_price_rate = price_rate;
     }
 
     if (market_feed && offer_amount && price_rate) {
@@ -46,12 +41,11 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
             <Text key={1} weight='normal' size='xs' color='status-info-blue' />,
         ];
         const values = { target_amount: display_offer_amount, target_currency: currency };
-
         if (price_rate) {
             Object.assign(values, {
                 local_amount: display_total,
                 local_currency: local_currency_config.currency,
-                price_rate: roundOffDecimal(display_price_rate),
+                price_rate: formatMoney(local_currency_config.currency, display_price_rate, true),
             });
 
             if (type === buy_sell.BUY) {

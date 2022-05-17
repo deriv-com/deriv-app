@@ -622,7 +622,7 @@ export default class MyAdsStore extends BaseStore {
                         : true,
                 v =>
                     floating_rate_store.rate_type === ad_type.FLOAT
-                        ? rangeValidator(v, parseInt(this.root_store.floating_rate_store.float_rate_offset_limit))
+                        ? rangeValidator(parseFloat(v), this.root_store.floating_rate_store.float_rate_offset_limit)
                         : true,
             ],
         };
@@ -638,9 +638,10 @@ export default class MyAdsStore extends BaseStore {
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
             payment_info: localize('Payment instructions'),
-            rate_type: this.root_store.floating_rate_store.rate_type
-                ? localize('Floating rate')
-                : localize('Fixed rate'),
+            rate_type:
+                this.root_store.floating_rate_store.rate_type === ad_type.FLOAT
+                    ? localize('Float rate')
+                    : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];

@@ -6,7 +6,7 @@
         align-items: center;
 
         @include mobile {
-            margin-top: -2rem;
+            margin-top: -3rem;
         }
 
         &--prefix {
@@ -20,18 +20,9 @@
         box-sizing: border-box;
         border-radius: $BORDER_RADIUS;
         color: var(--text-general);
-        border: 1px solid var(--border-normal);
         background-image: none;
-        padding-left: 2.5rem;
         @include mobile {
             padding: 0;
-        }
-        &:hover {
-            border-color: var(--border-hover);
-        }
-        &:active,
-        &:focus {
-            border-color: var(--border-active);
         }
 
         &--error-field {
@@ -41,24 +32,20 @@
     }
 
     &__percent {
-        position: absolute;
-        height: 3.2rem;
-        right: 3.2rem;
-        align-items: center;
-        justify-content: center;
-        display: flex;
+        order: 3;
         background: transparent;
         border-color: transparent;
         z-index: 2;
+        padding: 0 0.4rem;
         color: inherit;
         @include mobile {
-            right: 14rem;
+            position: relative;
+            right: 9rem;
         }
 
         &--symbol {
             font-size: 1.4rem;
             line-height: 1.5;
-            padding-top: 0.7rem;
         }
         &:before {
             @include typeface(--paragraph-center-normal-black);
@@ -75,7 +62,7 @@
         position: static;
         left: 10rem;
         top: 0px;
-        background: rgba(55, 124, 252, 0.08);
+        background-color: var(--transparent-hint);
         border-radius: 0px 4px 4px 0px;
         /* Inside auto layout */
         flex: none;
@@ -127,6 +114,74 @@
         text-transform: none;
         @include mobile {
             padding-left: 1rem;
+        }
+    }
+
+    .dc-input-wrapper {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--border-normal);
+        border-radius: 4px;
+
+        &--error {
+            border: 1px solid $color-red;
+        }
+
+        .dc-input-wrapper__button {
+            top: unset;
+            &--increment {
+                right: unset;
+                order: 4;
+            }
+
+            &--decrement {
+                left: unset;
+            }
+        }
+
+        .input {
+            text-align: right;
+            border: unset;
+            background-color: unset;
+            padding: unset;
+            &:focus {
+                border-color: unset;
+            }
+            &:hover {
+                border-color: unset;
+            }
+            &--has-inline-prefix {
+                padding-right: unset !important;
+            }
+            @include mobile {
+                text-align: center;
+            }
+        }
+
+        &:hover {
+            border-color: var(--border-hover);
+        }
+        &:active,
+        &:focus {
+            border-color: var(--border-active);
+        }
+
+        button.dc-input-wrapper__button {
+            position: relative !important;
+        }
+
+        &--error:hover {
+            border-color: $color-red !important;
+        }
+    }
+
+    .dc-input-suffix {
+        display: flex;
+        align-items: center;
+        padding-right: 1.5rem;
+
+        @include mobile {
+            width: -webkit-fill-available;
         }
     }
 }

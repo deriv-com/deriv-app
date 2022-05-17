@@ -89,6 +89,7 @@
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-grey-2};
         --text-status-info-blue: #{$color-blue};
+        --text-hint: #{$color-black-1};
         // Purchase
         --purchase-main-1: #{$color-green-1};
         --purchase-section-1: #{$color-green-2};
@@ -162,6 +163,7 @@
         // Transparentize
         --transparent-success: #{$alpha-color-green-1};
         --transparent-info: #{$alpha-color-blue-1};
+        --transparent-hint: #{$alpha-color-blue-3};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-1};
@@ -198,6 +200,8 @@
         --text-loss-danger: #{$color-red-2};
         --text-red: #{$color-red};
         --text-colored-background: #{$color-white};
+        --text-status-info-blue: #{$color-blue};
+        --text-hint: #{$color-grey};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-black-1};
@@ -255,6 +259,7 @@
         // Transparentize
         --transparent-success: #{$alpha-color-green-2};
         --transparent-info: #{$alpha-color-blue-1};
+        --transparent-hint: #{$alpha-color-blue-1};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-2};

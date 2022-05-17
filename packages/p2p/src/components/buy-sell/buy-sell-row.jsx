@@ -2,17 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Table, Text, Button, Icon } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { formatMoney, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
+import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import './buy-sell-row.scss';
 import TradeBadge from '../trade-badge';
 
 const BuySellRow = ({ row: advert }) => {
-    const { buy_sell_store, general_store } = useStores();
+    const { buy_sell_store, floating_rate_store, general_store } = useStores();
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -41,11 +42,15 @@ const BuySellRow = ({ row: advert }) => {
         min_order_amount_limit_display,
         payment_method_names,
         price_display,
+        rate_type,
+        rate,
     } = advert;
 
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name } = advert.advertiser_details;
+    const display_effective_rate =
+        rate_type === ad_type.FIXED ? price_display : parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100));
 
     if (isMobile()) {
         return (
@@ -88,7 +93,7 @@ const BuySellRow = ({ row: advert }) => {
                             />
                         </Text>
                         <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
-                            {price_display} {local_currency}
+                            {formatMoney(local_currency, display_effective_rate, true)} {local_currency}
                         </Text>
                         <Text as='div' color='less-prominent' line_height='m' size='xxs'>
                             <Localize
@@ -169,7 +174,7 @@ const BuySellRow = ({ row: advert }) => {
             </Table.Cell>
             <Table.Cell>
                 <Text color='profit-success' size='xs' line-height='m' weight='bold'>
-                    {price_display} {local_currency}
+                    {formatMoney(local_currency, display_effective_rate, true)} {local_currency}
                 </Text>
             </Table.Cell>
             <Table.Cell>

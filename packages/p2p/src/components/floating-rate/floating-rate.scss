@@ -21,6 +21,7 @@
         border-radius: $BORDER_RADIUS;
         color: var(--text-general);
         background-image: none;
+        text-overflow: ellipsis;
         @include mobile {
             padding: 0;
         }

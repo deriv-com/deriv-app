@@ -26,15 +26,15 @@ beforeEach(() => {
 
 describe('<IdvExpired/>', () => {
     const props = {
-        handleRequireSubmission:jest.fn()
-    }
+        handleRequireSubmission: jest.fn(),
+    };
 
-   const testComponentRender = ()=>{
-        render(<IdvExpired {...props}/>);
+    const testComponentRender = () => {
+        render(<IdvExpired {...props} />);
         expect(screen.getByTestId('idv_expired_container')).toBeInTheDocument();
         expect(screen.getByText('mockedIcon')).toBeInTheDocument();
-        expect(screen.getByRole('button', {name: /try again/i,})).toBeInTheDocument();
-    }
+        expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
+    };
 
     it('should render IdvExpired component on desktop', () => {
         testComponentRender();
@@ -44,13 +44,12 @@ describe('<IdvExpired/>', () => {
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
         testComponentRender();
-
     });
 
-    it('should call handleRequireSubmission when try_again button is clicked',()=>{
-        render(<IdvExpired {...props}/>);
-        const try_again_btn =  screen.getByRole('button', {name: /try again/i,})
+    it('should call handleRequireSubmission when try_again button is clicked', () => {
+        render(<IdvExpired {...props} />);
+        const try_again_btn = screen.getByRole('button', { name: /try again/i });
         fireEvent.click(try_again_btn);
         expect(props.handleRequireSubmission).toBeCalledTimes(1);
-    })
-})
+    });
+});

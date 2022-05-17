@@ -82,7 +82,12 @@ const SentEmailModal = ({
         <Localize
             i18n_default_text="Still didn't get the email? Please contact us via <0>live chat.</0>"
             components={[
-                <span className='send-email-template__footer-live-chat' key={0} onClick={onLiveChatClick} data-testid='live-chat-id'>
+                <span
+                    className='send-email-template__footer-live-chat'
+                    key={0}
+                    onClick={onLiveChatClick}
+                    data-testid='live-chat-id'
+                >
                     <Popover
                         className='send-email-template__footer-live-chat__link'
                         classNameBubble='help-centre__tooltip'

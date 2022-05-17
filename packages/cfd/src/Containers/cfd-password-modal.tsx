@@ -368,6 +368,7 @@ const CreatePassword = ({
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
                             </div>
                         )}
+
                         <FormSubmitButton
                             is_disabled={!values.password || Object.keys(errors).length > 0}
                             is_loading={isSubmitting}

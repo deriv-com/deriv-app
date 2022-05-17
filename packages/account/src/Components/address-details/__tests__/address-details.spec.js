@@ -212,14 +212,12 @@ describe('<AddressDetails/>', () => {
         const required_fields = inputs.filter(input => input.required === true);
         expect(required_fields.length).toBe(4);
 
-        await waitFor(() => {
-            expect(screen.getByLabelText(address_line_1_marked)).toBeInTheDocument();
-            expect(screen.getByLabelText(address_line_2_marked)).toBeInTheDocument();
-            expect(screen.getByLabelText(address_postcode_marked)).toBeInTheDocument();
-            expect(screen.getByLabelText(address_state)).toBeInTheDocument();
-            expect(screen.getByLabelText(address_town_marked)).toBeInTheDocument();
-            expect(screen.getByText(verification_info)).toBeInTheDocument();
-        });
+        expect(screen.getByLabelText(address_line_1_marked)).toBeInTheDocument();
+        expect(screen.getByLabelText(address_line_2_marked)).toBeInTheDocument();
+        expect(screen.getByLabelText(address_postcode_marked)).toBeInTheDocument();
+        expect(screen.getByLabelText(address_state)).toBeInTheDocument();
+        expect(screen.getByLabelText(address_town_marked)).toBeInTheDocument();
+        expect(screen.getByText(verification_info)).toBeInTheDocument();
 
         expect(screen.queryByText(address_line_1)).not.toBeInTheDocument();
         expect(screen.queryByText(address_line_2)).not.toBeInTheDocument();
@@ -239,9 +237,7 @@ describe('<AddressDetails/>', () => {
 
         render(<AddressDetails {...mock_props} />);
 
-        await waitFor(() => {
-            expect(screen.getByText('Default test state')).toBeInTheDocument();
-        });
+        expect(screen.getByText('Default test state')).toBeInTheDocument();
 
         const address_state_input = screen.getByRole('combobox');
         expect(address_state_input.value).toBe('');

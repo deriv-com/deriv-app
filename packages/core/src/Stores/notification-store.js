@@ -463,11 +463,9 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     setClientNotifications(client_data = {}) {
-        const { ui, client } = this.root_store;
+        const { ui } = this.root_store;
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
-        const client_name =
-            client.account_status.authentication.identity?.services?.onfido?.reported_properties?.first_name;
 
         const notifications = {
             ask_financial_risk_approval: {

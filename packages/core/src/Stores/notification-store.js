@@ -790,9 +790,12 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
                 key: 'poi_name_mismatch',
-                header: localize('What’s your real name, {{client_name}}?', { client_name }),
-                message: localize(
-                    'It appears that the name in your document doesn’t match the name in your Deriv profile. Please update your name in the Personal details page now.'
+                header: localize('Please update your personal info'),
+                message: (
+                    <Localize
+                        i18n_default_text='It seems that your name in the document is not the same as your Deriv profile. Please update your name in the <0>Personal details</0> page to solve this issue.'
+                        components={[<strong key={0} />]}
+                    />
                 ),
                 type: 'warning',
             },

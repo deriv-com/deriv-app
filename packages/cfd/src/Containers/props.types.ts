@@ -61,3 +61,29 @@ export type TCFDResetPasswordModal = {
     setCFDPasswordResetModal: (value: boolean) => void;
     history: History;
 };
+
+export type TCFDPasswordSuccessMessage = {
+    toggleModal: () => void;
+    is_investor: boolean;
+};
+
+export type TPasswordManagerModalFormValues = {
+    old_password: string;
+    new_password: string;
+    password_type: string;
+};
+
+export type TMultiStepRefProps = {
+    goNextStep: () => void;
+    goPrevStep: () => void;
+};
+
+export type TInvestorPasswordManager = {
+    error_message_investor: string;
+    is_submit_success_investor: boolean;
+    multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
+    onSubmit: (values: TPasswordManagerModalFormValues) => Promise<void>;
+    setPasswordType: (value: string) => void;
+    toggleModal: () => void;
+    validatePassword: (values: { old_password: string; new_password: string; password_type: string }) => void | object;
+};

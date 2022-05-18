@@ -47,6 +47,17 @@ const App = ({ passthrough }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMount, onUnmount]);
 
+    React.useEffect(() => {
+        const onDisconnectFromNetwork = () => {
+            setIsLoading(false);
+        };
+
+        window.addEventListener('offline', onDisconnectFromNetwork);
+        return () => {
+            window.removeEventListener('offline', onDisconnectFromNetwork);
+        };
+    }, []);
+
     return is_loading ? (
         <Loading />
     ) : (

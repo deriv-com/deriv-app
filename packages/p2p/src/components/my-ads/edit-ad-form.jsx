@@ -132,7 +132,7 @@ const EditAdForm = () => {
                                                                 : null
                                                         }
                                                         offer_amount={errors.offer_amount ? '' : values.offer_amount}
-                                                        price_rate={errors.rate_type ? '' : values.rate_type}
+                                                        price_rate={values.rate_type}
                                                         type={values.type}
                                                     />
                                                 </div>

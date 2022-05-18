@@ -136,6 +136,7 @@ const RealAccountSignup = ({
                     is_add_fiat={local_props.real_account_signup_target === 'add_fiat'}
                     is_add_currency={local_props.real_account_signup_target === 'add_currency'}
                     deposit_target={local_props.deposit_target}
+                    onClose={closeModal}
                 />
             ),
             title: local_props => {

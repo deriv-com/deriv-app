@@ -68,8 +68,6 @@ const EditPaymentMethodForm = () => {
     };
 
     React.useEffect(() => {
-        my_profile_store.getAdvertiserPaymentMethods();
-
         return () => {
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');

@@ -129,7 +129,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     return (
         <Modal
             className='buy-sell__modal'
-            height={table_type === buy_sell.BUY ? '400px' : '649px'}
+            height={table_type === buy_sell.BUY ? 'auto' : '649px'}
             width='456px'
             is_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
             title={modal_title}
@@ -137,7 +137,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             toggleModal={onCancel}
         >
             {/* Parent height - Modal.Header height - Modal.Footer height */}
-            <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
+            <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                 <Modal.Body>
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm should_show_separated_footer />

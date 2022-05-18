@@ -91,8 +91,8 @@ describe('<Confirm />', () => {
         expect(screen.getByText('We do not guarantee a refund if you make a wrong transfer.')).toBeInTheDocument();
     });
 
-    it('should show checkbox when is_payment_agent_transfer_confirm_component property is equal to true', () => {
-        render(<Confirm {...props} is_payment_agent_transfer_confirm_component />);
+    it('should show checkbox when is_payment_agent_transfer property is equal to true', () => {
+        render(<Confirm {...props} is_payment_agent_transfer />);
 
         expect(
             screen.getByLabelText('I confirm that I have checked and verified the client’s transfer information')
@@ -100,7 +100,7 @@ describe('<Confirm />', () => {
     });
 
     it('should enable "Transfer now" button when checkbox is checked', () => {
-        render(<Confirm {...props} is_payment_agent_transfer_confirm_component />);
+        render(<Confirm {...props} is_payment_agent_transfer />);
 
         const el_checkbox_transfer_consent = screen.getByRole('checkbox');
         fireEvent.click(el_checkbox_transfer_consent);

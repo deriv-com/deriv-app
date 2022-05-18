@@ -199,14 +199,15 @@ export default class MyProfileStore extends BaseStore {
         this.setIsLoadingAdvertiserPaymentMethods(true);
         requestWS({
             p2p_advertiser_payment_methods: 1,
-        }).then(response => {
-            if (response.error) {
-                this.setAdvertiserPaymentMethodsError(response.error.message);
-            } else {
-                this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
-            }
-            this.setIsLoadingAdvertiserPaymentMethods(false);
-        });
+        })
+            .then(response => {
+                if (response.error) {
+                    this.setAdvertiserPaymentMethodsError(response.error.message);
+                } else {
+                    this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
+                }
+            })
+            .finally(() => this.setIsLoadingAdvertiserPaymentMethods(false));
     }
 
     @action.bound

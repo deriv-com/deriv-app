@@ -169,6 +169,16 @@
 
         button.dc-input-wrapper__button {
             position: inherit !important;
+            @include mobile {
+                // In some browsers the background color for button remains set as they consider hover as focus
+                &:hover {
+                    background-color: unset;
+                }
+
+                &:active {
+                    background-color: var(--state-hover);
+                }
+            }
         }
 
         &--error:hover {

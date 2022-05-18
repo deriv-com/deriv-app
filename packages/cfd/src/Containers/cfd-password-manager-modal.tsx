@@ -300,8 +300,8 @@ const CFDPasswordManagerModal = ({
     selected_server,
     sendVerifyEmail,
 }: TCFDPasswordManagerModal) => {
-    const multi_step_ref = React.useRef();
-    const [index, setIndex] = React.useState(0);
+    const multi_step_ref: React.MutableRefObject<undefined> = React.useRef();
+    const [index, setIndex] = React.useState<number>(0);
 
     const [password_type, setPasswordType] = React.useState('main');
 

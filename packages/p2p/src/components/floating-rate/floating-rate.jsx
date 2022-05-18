@@ -62,8 +62,6 @@ const FloatingRate = ({
                     is_signed
                     inputmode='decimal'
                     increment_button_type='button'
-                    max_value={offset?.upper_limit}
-                    min_value={offset?.lower_limit}
                     name={name}
                     onBlur={onBlurHandler}
                     onChange={change_handler}

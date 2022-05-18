@@ -167,8 +167,17 @@
         }
 
         button.dc-input-wrapper__button {
-            z-index: unset;
             position: inherit !important;
+            @include mobile {
+                // In some browsers the background color for button remains set as they consider hover as focus
+                &:hover {
+                    background-color: unset !important;
+                }
+
+                &:active {
+                    background-color: var(--state-hover) !important;
+                }
+            }
         }
 
         &--error:hover {
@@ -189,6 +198,7 @@
 .dc-input-wrapper__button,
 button.dc-input-wrapper__button {
     top: 0.6rem;
+    z-index: auto;
 }
 
 .dc-input-field {

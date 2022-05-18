@@ -635,7 +635,7 @@ export default class MyAdsStore extends BaseStore {
             payment_info: localize('Payment instructions'),
             rate_type:
                 this.root_store.floating_rate_store.rate_type === ad_type.FLOAT
-                    ? localize('Float rate')
+                    ? localize('Floating rate')
                     : localize('Fixed rate'),
         };
 

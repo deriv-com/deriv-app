@@ -190,6 +190,7 @@ export default class MyProfileStore extends BaseStore {
 
     @action.bound
     getAdvertiserPaymentMethods() {
+        this.setIsLoading(true);
         requestWS({
             p2p_advertiser_payment_methods: 1,
         }).then(response => {
@@ -198,6 +199,7 @@ export default class MyProfileStore extends BaseStore {
             } else {
                 this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
             }
+            this.setIsLoading(false);
         });
     }
 

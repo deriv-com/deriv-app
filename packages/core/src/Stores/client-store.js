@@ -228,7 +228,9 @@ export default class ClientStore extends BaseStore {
         const has_no_mt5 = !this.has_real_mt5_login;
         const has_no_dxtrade = !this.has_real_dxtrade_login;
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
-        const has_account_criteria = has_no_transaction && has_no_mt5 && has_no_dxtrade;
+        const has_no_deposit_attempt_account_status = !this.account_status?.status?.includes('deposit_attempt');
+        const has_account_criteria =
+            has_no_transaction && has_no_mt5 && has_no_dxtrade && has_no_deposit_attempt_account_status;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
     }
 
@@ -1645,6 +1647,14 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setAccountStatus(status) {
         this.account_status = status;
+    }
+
+    @action.bound
+    async updateAccountStatus() {
+        const account_status_response = await WS.authorized.getAccountStatus();
+        if (!account_status_response.error) {
+            this.setAccountStatus(account_status_response.get_account_status);
+        }
     }
 
     @action.bound

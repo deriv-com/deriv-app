@@ -12,6 +12,7 @@ import {
     RunPanel,
     RoutePromptDialog,
     Toolbar,
+    NetworkToastPopup,
 } from 'Components';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
@@ -48,14 +49,15 @@ const App = ({ passthrough }) => {
     }, [onMount, onUnmount]);
 
     React.useEffect(() => {
+
         const onDisconnectFromNetwork = () => {
             setIsLoading(false);
-        };
+        }
 
         window.addEventListener('offline', onDisconnectFromNetwork);
         return () => {
             window.removeEventListener('offline', onDisconnectFromNetwork);
-        };
+        }
     }, []);
 
     return is_loading ? (
@@ -64,6 +66,7 @@ const App = ({ passthrough }) => {
         <MobxContentProvider store={root_store_instance.current}>
             <div className='bot'>
                 <BotNotificationMessages />
+                <NetworkToastPopup />
                 <Toolbar />
                 <MainContent />
                 <RunPanel />

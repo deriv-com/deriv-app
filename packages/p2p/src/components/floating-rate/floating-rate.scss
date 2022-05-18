@@ -172,11 +172,11 @@
             @include mobile {
                 // In some browsers the background color for button remains set as they consider hover as focus
                 &:hover {
-                    background-color: unset;
+                    background-color: unset !important;
                 }
 
                 &:active {
-                    background-color: var(--state-hover);
+                    background-color: var(--state-hover) !important;
                 }
             }
         }

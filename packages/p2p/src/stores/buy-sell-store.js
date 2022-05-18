@@ -32,6 +32,7 @@ export default class BuySellStore extends BaseStore {
     @observable should_use_client_limits = false;
     @observable show_advertiser_page = false;
     @observable show_filter_payment_methods = false;
+    @observable show_rate_changed_popup = false;
     @observable sort_by = 'rate';
     @observable submitForm = () => {};
     @observable table_type = buy_sell.BUY;
@@ -155,7 +156,7 @@ export default class BuySellStore extends BaseStore {
 
         this.form_props.setErrorMessage(null);
 
-        const order = await requestWS({
+        const payload = {
             p2p_order_create: 1,
             advert_id: this.advert.id,
             amount: values.amount,
@@ -167,7 +168,13 @@ export default class BuySellStore extends BaseStore {
                       contact_info: values.contact_info,
                   }
                 : {}),
-        });
+        };
+        if (values.rate !== null) {
+            payload.rate = values.rate;
+        }
+        console.log('Payload: ', payload);
+
+        const order = await requestWS({ ...payload });
 
         if (order.error) {
             this.form_props.setErrorMessage(order.error.message);
@@ -481,6 +488,11 @@ export default class BuySellStore extends BaseStore {
     showAdvertiserPage(selected_advert) {
         this.setSelectedAdState(selected_advert);
         this.setShowAdvertiserPage(true);
+    }
+
+    @action.bound
+    setShowRateChangedPopup(show_rate_changed_popup) {
+        this.show_rate_changed_popup = show_rate_changed_popup;
     }
 
     @action.bound

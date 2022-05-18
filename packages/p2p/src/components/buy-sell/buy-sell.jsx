@@ -6,6 +6,7 @@ import { localize } from 'Components/i18next';
 import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import Verification from 'Components/verification/verification.jsx';
+import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
@@ -15,9 +16,11 @@ import FilterModal from './filter-modal';
 import './buy-sell.scss';
 
 const BuySell = () => {
-    const { buy_sell_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
     const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
     const previous_scroll_top = React.useRef(0);
+
+    const local_currency = general_store.client?.local_currency_config?.currency;
 
     React.useEffect(() => {
         const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
@@ -78,6 +81,11 @@ const BuySell = () => {
                 should_show_popup={buy_sell_store.should_show_popup}
                 setShouldShowPopup={buy_sell_store.setShouldShowPopup}
                 table_type={buy_sell_store.table_type}
+            />
+            <RateChangeModal
+                local_currency={local_currency}
+                show_rate_changed_popup={buy_sell_store.show_rate_changed_popup}
+                setShowRateChangedPopup={buy_sell_store.setShowRateChangedPopup}
             />
         </div>
     );

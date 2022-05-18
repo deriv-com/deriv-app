@@ -36,7 +36,6 @@
         order: 3;
         background: transparent;
         border-color: transparent;
-        z-index: 2;
         padding: 0 0.2rem;
         color: inherit;
         @include mobile {
@@ -168,7 +167,8 @@
         }
 
         button.dc-input-wrapper__button {
-            position: relative !important;
+            z-index: unset;
+            position: inherit !important;
         }
 
         &--error:hover {

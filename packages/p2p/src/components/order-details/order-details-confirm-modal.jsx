@@ -83,7 +83,7 @@ const OrderDetailsConfirmModal = ({
                 <Text color='general' line-height='m' size='xs'>
                     {is_buy_order_for_user ? (
                         <Localize
-                            i18n_default_text="Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}."
+                            i18n_default_text='Have you paid {{amount}} {{currency}} to {{other_user_name}}?'
                             values={{
                                 amount: Number(amount * rate).toFixed(2),
                                 currency: local_currency,
@@ -102,7 +102,7 @@ const OrderDetailsConfirmModal = ({
                     label={
                         is_buy_order_for_user ? (
                             <Localize
-                                i18n_default_text='I have paid {{amount}} {{currency}}'
+                                i18n_default_text="Yes, I've paid"
                                 values={{
                                     amount: Number(amount * rate).toFixed(2),
                                     currency: local_currency,

@@ -6,16 +6,15 @@ import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
 import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
 
+const shouldShowOrderDetailsFooter = order_store => {
+    if (order_store.order_information.should_show_order_footer) {
+        return () => <OrderDetailsFooter order_information={order_store.order_information} />;
+    }
+    return false;
+};
+
 const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
     const { order_store, sendbird_store } = useStores();
-
-    const showMobileOrderFooter = () => {
-        const footer = () => <OrderDetailsFooter order_information={order_store.order_information} />;
-        if (order_store.order_information.should_show_order_footer) {
-            return footer;
-        }
-        return false;
-    };
 
     return isMobile() ? (
         <MobileFullPageModal
@@ -34,7 +33,7 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
                     onClick={() => sendbird_store.setShouldShowChatModal(true)}
                 />
             )}
-            renderPageFooterChildren={showMobileOrderFooter()}
+            renderPageFooterChildren={shouldShowOrderDetailsFooter(order_store)}
         >
             {children}
         </MobileFullPageModal>

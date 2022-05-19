@@ -10,6 +10,7 @@ $card-width: 456px;
     @include tablet-up {
         min-height: $card-height;
         max-height: $card-height;
+        margin-bottom: 3rem;
     }
 
     &--body {

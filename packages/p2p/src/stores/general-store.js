@@ -378,6 +378,7 @@ export default class GeneralStore extends BaseStore {
         this.order_table_type = order_table_type;
     }
 
+    @action.bound
     setOrderTimeOut(time) {
         this.order_timeout = time;
     }

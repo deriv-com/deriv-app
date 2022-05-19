@@ -15,7 +15,6 @@ const Accordion = ({ className, icon_close, icon_open, list }) => {
 
     // close if clicking the accordion that's open, otherwise open the new one
     const onClick = index => setOpenIdx(index === open_idx ? null : index);
-
     return (
         <div className={classNames('dc-accordion__wrapper', className)}>
             {list.map((item, idx) => (

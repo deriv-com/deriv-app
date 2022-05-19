@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, HintBox, Text, ThemedScrollbars } from '@deriv/components';
+import { Accordion, ButtonLink, HintBox, Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -127,11 +127,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.counterparty_nickname_label}
-                                    value={
-                                        <Text size='xs' line_height='m'>
-                                            {other_user_details.name}
-                                        </Text>
-                                    }
+                                    value={<Text size='xs'>{other_user_details.name}</Text>}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>
@@ -168,9 +164,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                         <Text size='xs' weight='bold'>
                                             {labels.payment_details}
                                         </Text>
-                                        <Text size='xss' weight='bold' color='red'>
-                                            {localize('Expand all')}
-                                        </Text>
                                     </section>
                                     <Accordion
                                         className='order-details-card__accordion'
@@ -185,32 +178,26 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             ) : (
                                 <OrderInfoBlock
                                     className='order-details-card--padding'
-                                    label={
-                                        <Text size='xs' weight='bold'>
-                                            {labels.payment_details}
-                                        </Text>
-                                    }
+                                    label={labels.payment_details}
+                                    size='xs'
+                                    weight='bold'
                                     value={payment_info || '-'}
                                 />
                             ))}
                         <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                         <OrderInfoBlock
                             className='order-details-card--padding'
-                            label={
-                                <Text size='xs' weight='bold'>
-                                    {labels.contact_details}
-                                </Text>
-                            }
+                            label={labels.contact_details}
+                            size='xs'
+                            weight='bold'
                             value={contact_info || '-'}
                         />
                         <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                         <OrderInfoBlock
                             className='order-details-card--padding'
-                            label={
-                                <Text size='xs' weight='bold'>
-                                    {labels.instructions}
-                                </Text>
-                            }
+                            label={labels.instructions}
+                            size='xs'
+                            weight='bold'
                             value={advert_details.description.trim() || '-'}
                         />
                         <MyProfileSeparatorContainer.Line className='order-details-card--line' />

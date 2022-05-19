@@ -7,7 +7,7 @@ import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
-    const { my_profile_store } = useStores();
+    const { my_profile_store, my_ads_store } = useStores();
 
     const validateFields = values => {
         const errors = {};
@@ -73,6 +73,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
         my_profile_store.getSelectedPaymentMethodDetails();
         my_profile_store.setAddPaymentMethodErrorMessage('');
         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+        console.log('add pm form mounted', my_profile_store);
 
         return () => {
             my_profile_store.setSelectedPaymentMethod('');
@@ -161,6 +162,12 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                     large
                                     onClick={() => {
                                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                        // } else {
+                                        // my_profile_store.setSelectedPaymentMethod('');
+                                        // my_profile_store.setSelectedPaymentMethodDisplayName('');
+                                        // my_profile_store.hideAddPaymentMethodForm();
+                                        // my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                                        // }
                                     }}
                                     type='button'
                                 >

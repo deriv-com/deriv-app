@@ -25,7 +25,13 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
                 {should_show_page_return && (
                     <PageReturn
                         onClick={() => {
-                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                            console.log('selected pm', my_profile_store.selected_payment_method);
+                            if (my_profile_store.selected_payment_method.length > 0) {
+                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                            } else {
+                                my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                                my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                            }
                         }}
                         page_title={localize('Add payment method')}
                     />

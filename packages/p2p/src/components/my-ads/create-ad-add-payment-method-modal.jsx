@@ -49,7 +49,13 @@ const CreateAdAddPaymentMethodModal = () => {
                 is_modal_open={my_ads_store.should_show_add_payment_method_modal}
                 page_header_className='buy-sell__modal-header'
                 page_header_text={localize('Add payment method')}
-                pageHeaderReturnFn={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
+                pageHeaderReturnFn={() => {
+                    if (my_profile_store.selected_payment_method.length > 0) {
+                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                    } else {
+                        my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                    }
+                }}
             >
                 <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
             </MobileFullPageModal>
@@ -66,7 +72,13 @@ const CreateAdAddPaymentMethodModal = () => {
                 <>
                     <Icon
                         icon='icArrowLeftBold'
-                        onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
+                        onClick={() => {
+                            if (my_profile_store.selected_payment_method.length > 0) {
+                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                            } else {
+                                my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                            }
+                        }}
                         className='p2p-my-ads__modal-icon'
                     />
                     {localize('Choose payment method')}
@@ -80,7 +92,17 @@ const CreateAdAddPaymentMethodModal = () => {
             </Modal.Body>
             {!my_profile_store.selected_payment_method && (
                 <Modal.Footer has_separator>
-                    <Button large onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)} secondary>
+                    <Button
+                        large
+                        onClick={() => {
+                            if (my_profile_store.selected_payment_method.length > 0) {
+                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                            } else {
+                                my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                            }
+                        }}
+                        secondary
+                    >
                         <Localize i18n_default_text='Cancel' />
                     </Button>
                 </Modal.Footer>

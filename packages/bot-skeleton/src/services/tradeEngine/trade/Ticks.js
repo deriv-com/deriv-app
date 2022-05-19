@@ -37,12 +37,12 @@ export default Engine =>
             return new Promise(resolve => {
                 this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
                     const ticks_list = ticks.map(tick => {
-                        const tick_string = tick.quote.toFixed(this.getPipSize());
-                        if (!toString) {
-                            return parseFloat(tick_string);
+                        if (toString) {
+                            return tick.quote.toFixed(this.getPipSize());
                         }
-                        return tick_string;
+                        return tick.quote;
                     });
+
                     resolve(ticks_list);
                 });
             });
@@ -54,12 +54,8 @@ export default Engine =>
                     .request({ symbol: this.symbol })
                     .then(ticks => {
                         let last_tick = raw ? getLast(ticks) : getLast(ticks).quote;
-                        if (!raw) {
+                        if (!raw && toString) {
                             last_tick = last_tick.toFixed(this.getPipSize());
-
-                            if (!toString) {
-                                last_tick = parseFloat(last_tick);
-                            }
                         }
                         resolve(last_tick);
                     })

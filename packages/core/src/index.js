@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+import 'promise-polyfill';
 import registerServiceWorker from 'Utils/pwa';
 
 if (

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, ButtonLink, HintBox, Text, ThemedScrollbars } from '@deriv/components';
+import { Accordion, HintBox, Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -17,6 +17,7 @@ import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-cont
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
+    const [should_expand_all, setShouldExpandAll] = React.useState(false);
     const { order_store, sendbird_store } = useStores();
     const {
         account_currency,
@@ -73,6 +74,11 @@ const OrderDetails = observer(({ onPageReturn }) => {
     if (sendbird_store.should_show_chat_on_orders) {
         return <Chat />;
     }
+
+    // const handler = (is_expanded) => {
+    //     setShouldExpandAll(is_expanded)
+    //     console.log('Clicked');
+    // };
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
@@ -164,6 +170,8 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                         <Text size='xs' weight='bold'>
                                             {labels.payment_details}
                                         </Text>
+                                        <button onClick={() => setShouldExpandAll(true)}>Expand all</button>
+                                        <button onClick={() => setShouldExpandAll(false)}>Collapse all</button>
                                     </section>
                                     <Accordion
                                         className='order-details-card__accordion'
@@ -173,6 +181,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                             header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
                                             content: <PaymentMethodAccordionContent payment_method={payment_method} />,
                                         }))}
+                                        is_expand_all={should_expand_all}
                                     />
                                 </div>
                             ) : (

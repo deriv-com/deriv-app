@@ -67,7 +67,7 @@ const MyAdsTable = () => {
                             message={
                                 <Text as='p' size='xxxs' color='prominent' line_height='xs'>
                                     {floating_rate_store.reached_target_date ? (
-                                        <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to activate them.' />
+                                        <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to reactivate them.' />
                                     ) : (
                                         <Localize
                                             i18n_default_text={

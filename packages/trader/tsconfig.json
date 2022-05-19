@@ -1,4 +1,5 @@
 {
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
         "paths": {
             "_common/*": ["src/_common/*"],
@@ -14,27 +15,9 @@
             "Translations/*": ["src/public/translations/*"],
             "Utils/*": ["src/Utils/*"]
         },
-        "target": "es5",
-        "lib": ["dom", "dom.iterable", "esnext"],
         "outDir": "./dist",
         "rootDir": "./src",
-        "baseUrl": "./",
-        "allowJs": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react",
-        "experimentalDecorators": true,
-        "skipDefaultLibCheck": true
+        "baseUrl": "./"
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"],
-    "exclude": ["**/*.js", "**/*.jsx"]
+    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
 }

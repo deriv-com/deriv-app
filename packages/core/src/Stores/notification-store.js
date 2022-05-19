@@ -34,7 +34,7 @@ export default class NotificationStore extends BaseStore {
     @observable marked_notifications = [];
     @observable push_notifications = [];
     @observable client_notifications = {};
-    @observable should_show_popups = false;
+    @observable should_show_popups = true;
 
     constructor(root_store) {
         super({ root_store });
@@ -368,7 +368,6 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
-        this.setShouldShowPopups(true);
     }
 
     @action.bound
@@ -468,7 +467,7 @@ export default class NotificationStore extends BaseStore {
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
         const client_name =
-            client.account_status.authentication.identity?.services?.onfido?.reported_properties?.first_name;
+            client.account_status.authentication?.identity?.services?.onfido?.reported_properties?.first_name;
 
         const notifications = {
             ask_financial_risk_approval: {

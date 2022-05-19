@@ -102,39 +102,43 @@ const Logtable = () => {
     );
 
     return (
-        <div className="content-row">
-            <div>
-                <div className="content-row-table">
-                    <div style={{ height: min_height }}>
-                        <Table
-                            ref={logtable}
-                            width={760}
-                            height={min_height}
-                            headerHeight={35}
-                            rowHeight={35}
-                            rowCount={rows.length}
-                            rowGetter={({ index }) => rows[index]}
-                            headerStyle={{
-                                fontSize: 11,
-                                textTransform: 'capitalize',
-                            }}
-                            rowRenderer={rowRenderer}
-                            deferredMeasurementCache={cache}
-                        >
-                            {columns.map(({ label, dataKey }, index) => (
-                                <Column
-                                    key={index}
-                                    headerRenderer={headerRenderer}
-                                    width={widths[dataKey] * total_width}
-                                    label={label}
-                                    dataKey={dataKey}
-                                />
-                            ))}
-                        </Table>
+        <span id="logPanel" className="draggable-dialog" title={translate("Log")}>
+            <div id="logTable" className="logTable-scroll">
+                <div className="content-row">
+                    <div>
+                        <div className="content-row-table">
+                            <div style={{ height: min_height }}>
+                                <Table
+                                    ref={logtable}
+                                    width={760}
+                                    height={min_height}
+                                    headerHeight={35}
+                                    rowHeight={35}
+                                    rowCount={rows.length}
+                                    rowGetter={({ index }) => rows[index]}
+                                    headerStyle={{
+                                        fontSize: 11,
+                                        textTransform: 'capitalize',
+                                    }}
+                                    rowRenderer={rowRenderer}
+                                    deferredMeasurementCache={cache}
+                                >
+                                    {columns.map(({ label, dataKey }, index) => (
+                                        <Column
+                                            key={index}
+                                            headerRenderer={headerRenderer}
+                                            width={widths[dataKey] * total_width}
+                                            label={label}
+                                            dataKey={dataKey}
+                                        />
+                                    ))}
+                                </Table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </span>
     );
 };
 

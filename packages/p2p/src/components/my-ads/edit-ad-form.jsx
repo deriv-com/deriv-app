@@ -10,6 +10,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
+import EditAdCancelModal from 'Components/my-ads/edit-ad-cancel-modal.jsx';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
@@ -44,6 +45,7 @@ const EditAdForm = () => {
 
     const is_buy_advert = type === buy_sell.BUY;
     const [selected_methods, setSelectedMethods] = React.useState([]);
+    const [is_cancel_edit_modal_open, setIsCancelEditModalOpen] = React.useState(false);
 
     const payment_methods_changed = is_buy_advert
         ? !(
@@ -59,6 +61,17 @@ const EditAdForm = () => {
               selected_methods.every(pm => Object.keys(payment_method_details).includes(pm)) &&
               selected_methods.length === Object.keys(payment_method_details).length
           );
+
+    const handleCancelEdit = is_form_edited => {
+        if (is_form_edited || payment_methods_changed) {
+            setIsCancelEditModalOpen(true);
+        } else {
+            my_ads_store.setShowEditAdForm(false);
+        }
+    };
+
+    const confirmCancelEdit = is_cancel_edit =>
+        is_cancel_edit ? my_ads_store.setShowEditAdForm(false) : setIsCancelEditModalOpen(false);
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -146,7 +159,10 @@ const EditAdForm = () => {
                                                                 type='text'
                                                                 error={touched.offer_amount && errors.offer_amount}
                                                                 label={localize('Total amount')}
-                                                                className='p2p-my-ads__form-field'
+                                                                className={classNames(
+                                                                    'p2p-my-ads__form-field',
+                                                                    'edit-ad__offer-amt'
+                                                                )}
                                                                 trailing_icon={
                                                                     <Text
                                                                         color={
@@ -375,7 +391,7 @@ const EditAdForm = () => {
                                                         className='p2p-my-ads__form-button'
                                                         secondary
                                                         large
-                                                        onClick={() => my_ads_store.setShowEditAdForm(false)}
+                                                        onClick={() => handleCancelEdit(dirty)}
                                                         type='button'
                                                     >
                                                         <Localize i18n_default_text='Cancel' />
@@ -406,6 +422,7 @@ const EditAdForm = () => {
                 </React.Fragment>
             )}
             <CreateAdAddPaymentMethodModal />
+            <EditAdCancelModal handleCancelEdit={confirmCancelEdit} is_open={is_cancel_edit_modal_open} />
             <Modal
                 className='p2p-my-ads__modal-error'
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}

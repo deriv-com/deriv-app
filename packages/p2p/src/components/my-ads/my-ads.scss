@@ -700,3 +700,15 @@
         }
     }
 }
+
+.edit-ad__offer-amt {
+    .dc-input__label {
+        color: var(--text-general);
+        -webkit-text-fill-color: var(--text-general);
+    }
+
+    .dc-input__field:disabled {
+        color: var(--text-less-prominent);
+        -webkit-text-fill-color: var(--text-less-prominent);
+    }
+}

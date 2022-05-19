@@ -566,7 +566,9 @@ export default class MyAdsStore extends BaseStore {
         this.should_switch_ad_rate = should_switch_ad_rate;
         if (should_switch_ad_rate) {
             this.setShowEditAdForm(true);
+            this.getAdvertInfo();
         }
+        this.setIsSwitchModalOpen(false, null);
     }
 
     @action.bound
@@ -761,18 +763,6 @@ export default class MyAdsStore extends BaseStore {
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
-            // Offer amount disabled for edit ads
-            // offer_amount: [
-            //     v => !!v,
-            //     v => !isNaN(v),
-            //     v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
-            //     v =>
-            //         v > 0 &&
-            //         decimalValidator(v) &&
-            //         countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
-            //     v => (values.min_transaction ? +v >= values.min_transaction : true),
-            //     v => (values.max_transaction ? +v >= values.max_transaction : true),
-            // ],
             rate_type: [
                 v => !!v,
                 v => !isNaN(v),
@@ -800,7 +790,10 @@ export default class MyAdsStore extends BaseStore {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            rate_type: localize('Fixed rate'),
+            rate_type:
+                this.root_store.floating_rate_store.rate_type === ad_type.FLOAT
+                    ? localize('Floating rate')
+                    : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];

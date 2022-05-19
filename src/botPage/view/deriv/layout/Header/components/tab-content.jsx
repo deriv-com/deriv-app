@@ -32,7 +32,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
       setIsAccDropdownOpen(false);
     }
   }
-  
+
   return (
     <div className={`account__switcher-tabs-content ${isActive ? "" : "hide"}`}>
       <div className="account__switcher-accordion">
@@ -62,7 +62,10 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                   <div
                     className={classNames('account__switcher-acc', { 'account__switcher-acc--active': index === 0 })}
                     key={acc}
-                    onClick={() => onChangeAccount(acc)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onChangeAccount(acc);
+                    }}
                     ref={(el) => (item_ref.current[index] = el)}
                   >
                     <input type="hidden" name="account_name" value={acc} />

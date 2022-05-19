@@ -63,10 +63,4 @@ describe('Helpers', () => {
             expect(Helpers.getPath('/contract')).to.equal('/contract');
         });
     });
-
-    describe('getContractPath', () => {
-        it('should return the path of contract with contract_id passed', () => {
-            expect(Helpers.getContractPath(1234)).to.equal('/contract/1234');
-        });
-    });
 });

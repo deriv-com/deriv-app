@@ -9,6 +9,7 @@ module.exports = function (env) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             trader: path.resolve(__dirname, '../src', 'index.tsx'),
+            'positions-drawer-card': 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -46,11 +47,13 @@ module.exports = function (env) {
                 '@deriv/translations': '@deriv/translations',
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv/account': '@deriv/account',
+                '@deriv/reports': '@deriv/reports',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,
             /^@deriv\/translations\/.+$/,
             /^@deriv\/account\/.+$/,
+            /^@deriv\/reports\/.+$/,
         ],
         target: 'web',
         plugins: plugins(base, false),

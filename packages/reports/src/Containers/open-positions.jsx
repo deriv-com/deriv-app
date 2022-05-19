@@ -12,10 +12,17 @@ import {
     ContractCard,
     usePrevious,
 } from '@deriv/components';
-import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name, getTotalProfit } from '@deriv/shared';
+import {
+    urlFor,
+    isMobile,
+    isMultiplierContract,
+    getTimePercentage,
+    website_name,
+    getTotalProfit,
+    getContractPath,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
-import { getContractPath } from '../Components/Routes/helpers';
 import { getContractDurationType } from '../Helpers/market-underlying';
 
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
@@ -23,7 +30,7 @@ import {
     getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
-import PositionsCard from '../Components/Elements/PositionsDrawer/PositionsDrawerCard/positions-drawer-card.jsx';
+import PositionsDrawerCard from '@deriv/trader/dist/trader/js/positions-drawer-card';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { getCardLabels } from '_common/contract';
 import { connect } from 'Stores/connect';
@@ -43,7 +50,16 @@ const EmptyPlaceholderWrapper = props => (
     </React.Fragment>
 );
 
-const MobileRowRenderer = ({ row, is_footer, columns_map, server_time, onClickCancel, onClickSell, measure }) => {
+const MobileRowRenderer = ({
+    row,
+    is_footer,
+    columns_map,
+    server_time,
+    onClickCancel,
+    onClickSell,
+    measure,
+    ...props
+}) => {
     React.useEffect(() => {
         if (!is_footer) {
             measure();
@@ -78,7 +94,7 @@ const MobileRowRenderer = ({ row, is_footer, columns_map, server_time, onClickCa
 
     if (isMultiplierContract(type)) {
         return (
-            <PositionsCard
+            <PositionsDrawerCard
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
@@ -88,6 +104,7 @@ const MobileRowRenderer = ({ row, is_footer, columns_map, server_time, onClickCa
                 onClickSell={onClickSell}
                 server_time={server_time}
                 status={status}
+                {...props}
             />
         );
     }
@@ -290,6 +307,7 @@ const OpenPositions = ({
     onClickSell,
     onMount,
     server_time,
+    ...props
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier contract
@@ -301,8 +319,9 @@ const OpenPositions = ({
          * For mobile, we show portfolio stepper in header even for reports pages.
          * `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
          */
-        if (!isMobile()) onMount();
+        // if (!isMobile()) onMount();
 
+        onMount();
         checkForMultiplierContract();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -350,13 +369,14 @@ const OpenPositions = ({
         return map;
     }, {});
 
-    const mobileRowRenderer = props => (
+    const mobileRowRenderer = args => (
         <MobileRowRenderer
-            {...props}
+            {...args}
             columns_map={columns_map}
             server_time={server_time}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
+            {...props}
         />
     );
 
@@ -439,4 +459,15 @@ export default connect(({ modules, client, common, ui }) => ({
     onClickSell: modules.portfolio.onClickSell,
     onMount: modules.portfolio.onMount,
     server_time: common.server_time,
+
+    addToast: ui.addToast,
+    current_focus: ui.current_focus,
+    onClickRemove: modules.portfolio.removePositionById,
+    getContractById: modules.contract_trade.getContractById,
+    is_mobile: ui.is_mobile,
+    removeToast: ui.removeToast,
+    setCurrentFocus: ui.setCurrentFocus,
+    should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    toggleCancellationWarning: ui.toggleCancellationWarning,
+    toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
 }))(withRouter(OpenPositions));

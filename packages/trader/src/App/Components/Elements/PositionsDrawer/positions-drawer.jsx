@@ -12,7 +12,7 @@ import { connect } from 'Stores/connect';
 import PositionsDrawerCard from './PositionsDrawerCard';
 import { filterByContractType } from './helpers';
 
-const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosition, is_new_row }) => {
+const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosition, is_new_row, ...props }) => {
     const { in_prop } = useNewRowTransition(is_new_row);
 
     React.useEffect(() => {
@@ -43,6 +43,7 @@ const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosi
                     }}
                     onFooterEntered={measure}
                     should_show_transition={is_new_row}
+                    {...props}
                 />
             </div>
         </CSSTransition>
@@ -58,6 +59,7 @@ const PositionsDrawer = ({
     toggleDrawer,
     trade_contract_type,
     onMount,
+    ...props
 }) => {
     const drawer_ref = React.useRef(null);
     const list_ref = React.useRef(null);
@@ -82,7 +84,7 @@ const PositionsDrawer = ({
     const body_content = (
         <DataList
             data_source={positions}
-            rowRenderer={args => <PositionsDrawerCardItem onHoverPosition={onHoverPosition} {...args} />}
+            rowRenderer={args => <PositionsDrawerCardItem onHoverPosition={onHoverPosition} {...args} {...props} />}
             keyMapper={row => row.id}
             row_gap={8}
         />
@@ -130,7 +132,6 @@ const PositionsDrawer = ({
             </div>
         </React.Fragment>
     );
-    // }
 };
 
 PositionsDrawer.propTypes = {
@@ -144,9 +145,23 @@ PositionsDrawer.propTypes = {
     onMount: PropTypes.func,
     symbol: PropTypes.string,
     toggleDrawer: PropTypes.func,
+
+    currency: PropTypes.string,
+    server_time: PropTypes.object,
+    addToast: PropTypes.func,
+    current_focus: PropTypes.string,
+    onClickCancel: PropTypes.func,
+    onClickSell: PropTypes.func,
+    onClickRemove: PropTypes.func,
+    getContractById: PropTypes.func,
+    removeToast: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
+    should_show_cancellation_warning: PropTypes.bool,
+    toggleCancellationWarning: PropTypes.func,
+    toggleUnsupportedContractModal: PropTypes.func,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui, client, common }) => ({
     all_positions: modules.portfolio.all_positions,
     error: modules.portfolio.error,
     onHoverPosition: modules.portfolio.onHoverPosition,
@@ -156,4 +171,19 @@ export default connect(({ modules, ui }) => ({
     is_mobile: ui.is_mobile,
     is_positions_drawer_on: ui.is_positions_drawer_on,
     toggleDrawer: ui.togglePositionsDrawer,
+
+    currency: client.currency,
+    server_time: common.server_time,
+    addToast: ui.addToast,
+    current_focus: ui.current_focus,
+    onClickCancel: modules.portfolio.onClickCancel,
+    onClickSell: modules.portfolio.onClickSell,
+    onClickRemove: modules.portfolio.removePositionById,
+    getContractById: modules.contract_trade.getContractById,
+    is_mobile: ui.is_mobile,
+    removeToast: ui.removeToast,
+    setCurrentFocus: ui.setCurrentFocus,
+    should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    toggleCancellationWarning: ui.toggleCancellationWarning,
+    toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
 }))(PositionsDrawer);

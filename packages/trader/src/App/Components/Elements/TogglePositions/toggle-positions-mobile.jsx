@@ -114,7 +114,7 @@ const TogglePositionsMobile = ({
                         <BinaryLink
                             onClick={closeModal}
                             className='dc-btn dc-btn--secondary dc-btn__large positions-modal__footer-btn'
-                            to={routes.positions}
+                            // to={routes.positions}
                         >
                             <span className='dc-btn__text'>{localize('Go to Reports')}</span>
                         </BinaryLink>

@@ -4,11 +4,10 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } from '@deriv/shared';
+import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name, getContractPath } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import { getContractPath } from '../Components/Routes/helpers';
 import { getSupportedContracts } from '_common/contract';
 
 import { connect } from 'Stores/connect';

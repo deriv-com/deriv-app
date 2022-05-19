@@ -105,7 +105,7 @@ const PaymentMethodCard = ({
             </div>
             <div className='payment-method-card__body'>
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                    {method !== 'BankTransfer' && method !== 'Other'
+                    {!['BankTransfer', 'Other'].includes(method)
                         ? payment_account_name
                         : show_payment_method_name && payment_method?.display_name}
                 </Text>

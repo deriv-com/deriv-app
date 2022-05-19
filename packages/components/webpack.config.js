@@ -45,17 +45,20 @@ module.exports = function () {
                         {
                             loader: 'svgo-loader',
                             options: {
-                                plugins: [{
-                                    name: 'removeUselessStrokeAndFill',
-                                    params: {
-                                        attrs: 'false'
-                                        }
+                                plugins: [
+                                    {
+                                        name: 'removeUselessStrokeAndFill',
+                                        params: {
+                                            attrs: 'false',
+                                        },
                                     },
-                                    { name: 'removeUnknownsAndDefaults',
-                                      params: {
-                                           attr: false
-                                        }
-                                    }],
+                                    {
+                                        name: 'removeUnknownsAndDefaults',
+                                        params: {
+                                            attr: false,
+                                        },
+                                    },
+                                ],
                             },
                         },
                     ],

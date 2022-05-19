@@ -6,7 +6,7 @@
     @include mobile {
         .page-return {
             border-bottom: 2px solid var(--general-section-1);
-            margin: unset;
+            margin: 1rem 0;
             padding: 0 1.6rem 1.6rem;
         }
 
@@ -190,6 +190,7 @@
                 position: fixed;
                 right: 0;
                 width: 100vw;
+                z-index: 4;
             }
         }
     }
@@ -246,6 +247,11 @@
         &-price {
             color: var(--text-profit-success);
             font-weight: bold;
+
+            .display-layout {
+                display: flex;
+                flex-direction: column;
+            }
         }
         &-popovers {
             background-color: var(--general-main-1);
@@ -440,6 +446,7 @@
                     display: flex;
                     justify-content: unset;
                     width: unset;
+                    gap: 1rem;
                 }
             }
         }

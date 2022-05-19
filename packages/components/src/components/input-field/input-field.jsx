@@ -11,9 +11,11 @@ const InputField = ({
     ariaLabel,
     checked,
     className,
+    classNameDynamicSuffix,
     classNameInlinePrefix,
     classNameInput,
     classNamePrefix,
+    classNameWrapper,
     currency,
     current_focus,
     data_tip,
@@ -45,6 +47,7 @@ const InputField = ({
     min_value,
     name,
     format,
+    onBlur,
     onChange,
     onClick,
     onClickInputWrapper,
@@ -184,10 +187,13 @@ const InputField = ({
     };
 
     const updateValue = (new_value, is_long_press) => {
-        const formatted_value = format ? format(new_value) : new_value;
+        let formatted_value = format ? format(new_value) : new_value;
         if (is_long_press) {
             setLocalValue(formatted_value);
         } else {
+            if (is_signed && /^\d+/.test(formatted_value) && formatted_value > 0) {
+                formatted_value = `+${formatted_value}`;
+            }
             onChange({ target: { value: formatted_value, name } });
         }
     };
@@ -226,6 +232,7 @@ const InputField = ({
                 { 'input--error': has_error },
                 classNameInput
             )}
+            classNameDynamicSuffix={classNameDynamicSuffix}
             classNameInlinePrefix={classNameInlinePrefix}
             data_tip={data_tip}
             data_value={data_value}
@@ -241,6 +248,7 @@ const InputField = ({
             is_read_only={is_read_only}
             max_length={max_length}
             name={name}
+            onBlur={onBlur}
             onClick={onClick}
             onKeyPressed={onKeyPressed}
             placeholder={placeholder}
@@ -285,9 +293,13 @@ const InputField = ({
             )}
             {is_increment_input ? (
                 <div
-                    className={classNames('dc-input-wrapper', {
-                        'dc-input-wrapper--disabled': !!is_disabled,
-                    })}
+                    className={classNames(
+                        'dc-input-wrapper',
+                        {
+                            'dc-input-wrapper--disabled': !!is_disabled,
+                        },
+                        classNameWrapper
+                    )}
                 >
                     {increment_buttons}
                     {input}
@@ -324,7 +336,9 @@ InputField.propTypes = {
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
     classNameInput: PropTypes.string,
+    classNameDynamicSuffix: PropTypes.string,
     classNamePrefix: PropTypes.string,
+    classNameWrapper: PropTypes.string, // CSS class for the component wrapper
     currency: PropTypes.string,
     current_focus: PropTypes.string,
     decimal_point_change: PropTypes.number, // Specify which decimal point must be updated when the increment/decrement button is pressed
@@ -349,6 +363,7 @@ InputField.propTypes = {
     label: PropTypes.string,
     max_length: PropTypes.number,
     name: PropTypes.string,
+    onBlur: PropTypes.func,
     onChange: PropTypes.func,
     onClick: PropTypes.func,
     onClickInputWrapper: PropTypes.func,

@@ -9,6 +9,7 @@ const Input = ({
     checked,
     className,
     classNameInlinePrefix,
+    classNameDynamicSuffix,
     current_focus,
     data_value,
     data_tip,
@@ -24,6 +25,7 @@ const Input = ({
     is_read_only,
     max_length,
     name,
+    onBlur,
     onClick,
     onKeyPressed,
     placeholder,
@@ -38,7 +40,12 @@ const Input = ({
         }
     }, [current_focus, name]);
 
-    const onBlur = () => setCurrentFocus(null);
+    const onBlurHandler = e => {
+        setCurrentFocus(null);
+        if (onBlur) {
+            onBlur(e);
+        }
+    };
     const onFocus = () => setCurrentFocus(name);
 
     const onChange = e => {
@@ -59,7 +66,7 @@ const Input = ({
     };
 
     return (
-        <React.Fragment>
+        <div className={classNameDynamicSuffix}>
             {!!inline_prefix && (
                 <div className={classNameInlinePrefix}>
                     <span
@@ -83,7 +90,7 @@ const Input = ({
                 id={id}
                 maxLength={fractional_digits ? max_length + fractional_digits + 1 : max_length}
                 name={name}
-                onBlur={onBlur}
+                onBlur={onBlurHandler}
                 onChange={onChange}
                 onClick={onClick}
                 onFocus={onFocus}
@@ -96,8 +103,9 @@ const Input = ({
                 type={type === 'number' ? 'text' : type}
                 value={display_value || ''}
                 aria-label={ariaLabel}
+                data-lpignore={type !== 'password'}
             />
-        </React.Fragment>
+        </div>
     );
 };
 
@@ -107,6 +115,7 @@ Input.propTypes = {
     checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
+    classNameDynamicSuffix: PropTypes.string,
     current_focus: PropTypes.string,
     data_tip: PropTypes.string,
     data_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -121,6 +130,7 @@ Input.propTypes = {
     is_read_only: PropTypes.bool,
     max_length: PropTypes.number,
     name: PropTypes.string,
+    onBlur: PropTypes.func,
     onClick: PropTypes.func,
     onKeyPressed: PropTypes.func,
     placeholder: PropTypes.string,

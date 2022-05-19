@@ -50,7 +50,6 @@ const BuySellForm = props => {
         return parseFloat(rates[local_currency_config.currency]);
     };
 
-    console.log('Form input', price, rate, rate_type);
     React.useEffect(
         () => {
             fetchCurrentMarketRate().then(market_rate => setMarketRateOnMount(market_rate));
@@ -104,7 +103,6 @@ const BuySellForm = props => {
     };
 
     const onSubmitAdTransaction = async (...args) => {
-        console.log('Args: ', args);
         const updated_market_rate = await fetchCurrentMarketRate();
         if (market_rate_on_mount !== updated_market_rate) {
             buy_sell_store.setShouldShowPopup(false);
@@ -303,71 +301,80 @@ const BuySellForm = props => {
                                         </div>
                                     </div>
                                 )}
-                                <div className='buy-sell__modal-field-wrapper'>
-                                    <Field name='amount'>
-                                        {({ field }) => (
-                                            <Input
-                                                {...field}
-                                                data-lpignore='true'
-                                                type='number'
-                                                error={errors.amount}
-                                                label={
-                                                    buy_sell_store.is_buy_advert
-                                                        ? localize('Buy amount')
-                                                        : localize('Sell amount')
-                                                }
-                                                hint={
-                                                    <Localize
-                                                        i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
-                                                        values={{
-                                                            min: min_order_amount_limit_display,
-                                                            max: max_order_amount_limit_display,
-                                                            currency: buy_sell_store.account_currency,
-                                                        }}
-                                                    />
-                                                }
-                                                is_relative_hint
-                                                className='buy-sell__modal-field'
-                                                trailing_icon={
-                                                    <Text color='less-prominet' line-height='m' size='xs'>
-                                                        {buy_sell_store.account_currency}
-                                                    </Text>
-                                                }
-                                                onKeyDown={event => {
-                                                    if (!floatingPointValidator(event.key)) {
-                                                        event.preventDefault();
+                                <div className='buy-sell__modal-line' />
+                                <div className='buy-sell__modal--input'>
+                                    <Text color='less-prominent' size='xxs'>
+                                        {localize('Enter {{transaction_type}} amount', {
+                                            transaction_type: buy_sell_store.is_buy_advert ? 'buy' : 'sell',
+                                        })}
+                                    </Text>
+                                    <section className='buy-sell__modal--input-field'>
+                                        <Field name='amount'>
+                                            {({ field }) => (
+                                                <Input
+                                                    {...field}
+                                                    data-lpignore='true'
+                                                    type='number'
+                                                    error={errors.amount}
+                                                    label={
+                                                        buy_sell_store.is_buy_advert
+                                                            ? localize('Buy amount')
+                                                            : localize('Sell amount')
                                                     }
-                                                }}
-                                                onChange={event => {
-                                                    if (event.target.value === '') {
-                                                        setFieldValue('amount', '');
-                                                        buy_sell_store.setReceiveAmount(0);
-                                                    } else {
-                                                        const input_amount = getRoundedNumber(
-                                                            event.target.value,
-                                                            buy_sell_store.account_currency
-                                                        );
-
-                                                        setFieldValue('amount', getRoundedNumber(input_amount));
-                                                        buy_sell_store.setReceiveAmount(
-                                                            getRoundedNumber(
-                                                                input_amount * price,
+                                                    hint={
+                                                        <Localize
+                                                            i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
+                                                            values={{
+                                                                min: min_order_amount_limit_display,
+                                                                max: max_order_amount_limit_display,
+                                                                currency: buy_sell_store.account_currency,
+                                                            }}
+                                                        />
+                                                    }
+                                                    is_relative_hint
+                                                    className='buy-sell__modal-field'
+                                                    trailing_icon={
+                                                        <Text color='less-prominent' line-height='m' size='xs'>
+                                                            {buy_sell_store.account_currency}
+                                                        </Text>
+                                                    }
+                                                    onKeyDown={event => {
+                                                        if (!floatingPointValidator(event.key)) {
+                                                            event.preventDefault();
+                                                        }
+                                                    }}
+                                                    onChange={event => {
+                                                        if (event.target.value === '') {
+                                                            setFieldValue('amount', '');
+                                                            buy_sell_store.setReceiveAmount(0);
+                                                        } else {
+                                                            const input_amount = getRoundedNumber(
+                                                                event.target.value,
                                                                 buy_sell_store.account_currency
-                                                            )
-                                                        );
-                                                    }
-                                                }}
-                                                required
-                                                value={values.amount}
-                                            />
+                                                            );
+
+                                                            setFieldValue('amount', getRoundedNumber(input_amount));
+                                                            buy_sell_store.setReceiveAmount(
+                                                                getRoundedNumber(
+                                                                    input_amount * price,
+                                                                    buy_sell_store.account_currency
+                                                                )
+                                                            );
+                                                        }
+                                                    }}
+                                                    required
+                                                    value={values.amount}
+                                                />
+                                            )}
+                                        </Field>
+                                        {isDesktop() && (
+                                            <div className='buy-sell__modal-field'>
+                                                <BuySellFormReceiveAmount />
+                                            </div>
                                         )}
-                                    </Field>
-                                    {isDesktop() && (
-                                        <div className='buy-sell__modal-field'>
-                                            <BuySellFormReceiveAmount />
-                                        </div>
-                                    )}
+                                    </section>
                                 </div>
+                                <div className='buy-sell__modal-line' />
                                 {buy_sell_store.is_sell_advert && (
                                     <React.Fragment>
                                         {!payment_method_names && (

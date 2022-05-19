@@ -39,6 +39,20 @@
         }
     }
 
+    &--input {
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+        .dc-input__wrapper {
+            margin-bottom: unset;
+        }
+
+        &-field {
+            display: flex;
+            gap: 2rem;
+        }
+    }
+
     &-hintbox {
         margin: -2.4rem 0 2.4rem;
 

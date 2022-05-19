@@ -82,7 +82,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         icon='IcAlertWarning'
                         message={
                             <Text size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text='To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.' />
+                                <Localize i18n_default_text="Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead." />
                             </Text>
                         }
                         is_warn
@@ -164,9 +164,14 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         {is_active_order &&
                             (order_store?.has_order_payment_method_details ? (
                                 <div className='order-details-card--padding'>
-                                    <Text size='xs' weight='bold'>
-                                        {labels.payment_details}
-                                    </Text>
+                                    <section className='order-details-card__title'>
+                                        <Text size='xs' weight='bold'>
+                                            {labels.payment_details}
+                                        </Text>
+                                        <Text size='xss' weight='bold' color='red'>
+                                            {localize('Expand all')}
+                                        </Text>
+                                    </section>
                                     <Accordion
                                         className='order-details-card__accordion'
                                         icon_close='IcChevronRight'

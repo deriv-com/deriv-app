@@ -47,7 +47,7 @@ const OrderDetailsConfirmModal = ({
 
     const getConfirmButtonText = () => {
         if (is_buy_order_for_user) {
-            return <Localize i18n_default_text="I've paid" />;
+            return <Localize i18n_default_text='Confirm' />;
         } else if (is_process_request) {
             return <Loading is_fullscreen={false} />;
         }
@@ -71,7 +71,7 @@ const OrderDetailsConfirmModal = ({
             renderTitle={() => (
                 <Text color='prominent' line-height='m' size='s' weight='bold'>
                     {is_buy_order_for_user ? (
-                        <Localize i18n_default_text='Confirm payment?' />
+                        <Localize i18n_default_text='Payment confirmation' />
                     ) : (
                         <Localize i18n_default_text='Have you received payment?' />
                     )}

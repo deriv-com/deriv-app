@@ -172,7 +172,6 @@ export default class BuySellStore extends BaseStore {
         if (values.rate !== null) {
             payload.rate = values.rate;
         }
-        console.log('Payload: ', payload);
 
         const order = await requestWS({ ...payload });
 

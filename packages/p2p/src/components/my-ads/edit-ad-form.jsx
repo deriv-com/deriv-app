@@ -194,7 +194,7 @@ const EditAdForm = () => {
                                                                           )
                                                                 }
                                                                 is_relative_hint
-                                                                disabled={true}
+                                                                disabled
                                                             />
                                                         )}
                                                     </Field>

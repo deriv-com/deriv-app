@@ -73,11 +73,11 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         : onClickEdit
                                 }
                             >
-                                <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
+                                <Icon custom_color='var(--general-main-1)' icon='IcEdit' />
                             </div>
                         ) : (
                             <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
-                                <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
+                                <Icon custom_color='var(--general-main-1)' icon='IcEdit' />
                             </div>
                         )}
                         {is_advert_active ? (
@@ -100,12 +100,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             </div>
                         )}
                         <div className='p2p-my-ads__table-popovers__delete'>
-                            <Icon
-                                icon='IcDelete'
-                                custom_color='var(--general-main-1)'
-                                size={16}
-                                onClick={onClickDelete}
-                            />
+                            <Icon icon='IcDelete' custom_color='var(--general-main-1)' onClick={onClickDelete} />
                         </div>
                     </React.Fragment>
                 }
@@ -132,7 +127,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         <AdStatus is_active={!!is_advert_active} />
                                     </div>
 
-                                    <Icon icon='IcAlertWarning' size={16} className='cfd-dashboard__maintenance-icon' />
+                                    <Icon icon='IcAlertWarning' className='cfd-dashboard__maintenance-icon' />
                                 </div>
                             ) : (
                                 <AdStatus is_active={!!is_advert_active} />
@@ -287,7 +282,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     className='p2p-my-ads__table-popovers__deactivate'
                                     message={localize('Deactivate')}
                                 >
-                                    <Icon icon='IcArchive' color={general_store.is_barred && 'disabled'} size={16} />
+                                    <Icon icon='IcArchive' color={general_store.is_barred && 'disabled'} />
                                 </Popover>
                             </div>
                         ) : (
@@ -297,7 +292,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     className='p2p-my-ads__table-popovers__activate'
                                     message={localize('Activate')}
                                 >
-                                    <Icon icon='IcUnarchive' color={general_store.is_barred && 'disabled'} size={16} />
+                                    <Icon icon='IcUnarchive' color={general_store.is_barred && 'disabled'} />
                                 </Popover>
                             </div>
                         )}
@@ -314,7 +309,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     className='p2p-my-ads__table-popovers__deactivate'
                                     message={localize('Edit')}
                                 >
-                                    <Icon icon='IcEdit' size={16} />
+                                    <Icon icon='IcEdit' />
                                 </Popover>
                             </div>
                         ) : (
@@ -324,7 +319,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     className='p2p-my-ads__table-popovers__edit'
                                     message={localize('Edit')}
                                 >
-                                    <Icon icon='IcEdit' size={16} />
+                                    <Icon icon='IcEdit' />
                                 </Popover>
                             </div>
                         )}
@@ -342,7 +337,6 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                                 my_ads_store.delete_error_message)) &&
                                         'disabled'
                                     }
-                                    size={16}
                                 />
                             </Popover>
                         </div>

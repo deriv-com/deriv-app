@@ -4,11 +4,11 @@ import { Button, Modal, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 
 const EditAdCancelModal = ({ handleCancelEdit, is_open }) => {
-    const [is_modal_open, setIsModalOpen] = React.useState(is_open);
+    // const [is_modal_open, setIsModalOpen] = React.useState(is_open);
 
-    React.useEffect(() => {
-        setIsModalOpen(is_open);
-    }, [is_open]);
+    // React.useEffect(() => {
+    //     setIsModalOpen(is_open);
+    // }, [is_open]);
 
     const handleModalAction = should_cancel_edit => {
         handleCancelEdit(should_cancel_edit);
@@ -16,7 +16,7 @@ const EditAdCancelModal = ({ handleCancelEdit, is_open }) => {
     };
 
     return (
-        <Modal has_close_icon={false} is_open={is_modal_open} small title={localize('Cancel your edits?')}>
+        <Modal has_close_icon={false} is_open={is_open} small title={localize('Cancel your edits?')}>
             <Modal.Body>
                 <Text as='p' size='xs' color='prominent'>
                     {localize('If you choose to cancel, the edited details will be lost.')}
@@ -37,7 +37,7 @@ const EditAdCancelModal = ({ handleCancelEdit, is_open }) => {
 };
 
 EditAdCancelModal.propTypes = {
-    modal_state: PropTypes.bool,
+    is_open: PropTypes.bool,
     handleCancelEdit: PropTypes.func,
 };
 

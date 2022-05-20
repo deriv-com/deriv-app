@@ -345,7 +345,7 @@ export default class MyAdsStore extends BaseStore {
                         floating_rate_store.setChangeAdAlert(should_update_ads);
                     }
                 } else if (response.error.code === 'PermissionDenied') {
-                    this.root_store.general_store.setIsBlocked(true);
+                    general_store.setIsBlocked(true);
                 } else {
                     this.setApiErrorMessage(response.error.message);
                 }
@@ -619,12 +619,11 @@ export default class MyAdsStore extends BaseStore {
                     floating_rate_store.rate_type === ad_type.FIXED
                         ? v > 0 &&
                           decimalValidator(v) &&
-                          countDecimalPlaces(v) <=
-                              this.root_store.general_store.client.local_currency_config.decimal_places
+                          countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
                         : true,
                 v =>
                     floating_rate_store.rate_type === ad_type.FLOAT
-                        ? rangeValidator(parseFloat(v), this.root_store.floating_rate_store.float_rate_offset_limit)
+                        ? rangeValidator(parseFloat(v), floating_rate_store.float_rate_offset_limit)
                         : true,
             ],
         };
@@ -641,9 +640,7 @@ export default class MyAdsStore extends BaseStore {
             offer_amount: localize('Amount'),
             payment_info: localize('Payment instructions'),
             rate_type:
-                this.root_store.floating_rate_store.rate_type === ad_type.FLOAT
-                    ? localize('Floating rate')
-                    : localize('Fixed rate'),
+                floating_rate_store.rate_type === ad_type.FLOAT ? localize('Floating rate') : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
@@ -695,7 +692,7 @@ export default class MyAdsStore extends BaseStore {
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
             localize("Enter a value thats's within -{{limit}}% to +{{limit}}%", {
-                limit: this.root_store.floating_rate_store.float_rate_offset_limit,
+                limit: floating_rate_store.float_rate_offset_limit,
             }),
         ];
 
@@ -770,12 +767,11 @@ export default class MyAdsStore extends BaseStore {
                     floating_rate_store.rate_type === ad_type.FIXED
                         ? v > 0 &&
                           decimalValidator(v) &&
-                          countDecimalPlaces(v) <=
-                              this.root_store.general_store.client.local_currency_config.decimal_places
+                          countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
                         : true,
                 v =>
                     floating_rate_store.rate_type === ad_type.FLOAT
-                        ? rangeValidator(v, parseInt(this.root_store.floating_rate_store.float_rate_offset_limit))
+                        ? rangeValidator(v, parseInt(floating_rate_store.float_rate_offset_limit))
                         : true,
             ],
         };
@@ -791,9 +787,7 @@ export default class MyAdsStore extends BaseStore {
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
             rate_type:
-                this.root_store.floating_rate_store.rate_type === ad_type.FLOAT
-                    ? localize('Floating rate')
-                    : localize('Fixed rate'),
+                floating_rate_store.rate_type === ad_type.FLOAT ? localize('Floating rate') : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
@@ -814,15 +808,6 @@ export default class MyAdsStore extends BaseStore {
                 { field_name }
             ),
         ];
-
-        // const getOfferAmountMessages = field_name => [
-        //     localize('{{field_name}} is required', { field_name }),
-        //     localize('Enter a valid amount'),
-        //     localize('Max available amount is {{value}}', { value: this.available_balance }),
-        //     localize('Enter a valid amount'),
-        //     localize('{{field_name}} should not be below Min limit', { field_name }),
-        //     localize('{{field_name}} should not be below Max limit', { field_name }),
-        // ];
 
         const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
@@ -845,7 +830,7 @@ export default class MyAdsStore extends BaseStore {
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
             localize("Enter a value thats's within -{{limit}}% to +{{limit}}%", {
-                limit: this.root_store.floating_rate_store.float_rate_offset_limit,
+                limit: floating_rate_store.float_rate_offset_limit,
             }),
         ];
 
@@ -861,9 +846,6 @@ export default class MyAdsStore extends BaseStore {
                     case 'description':
                         errors[key] = getDefaultAdvertDescriptionMessages(mapped_key[key])[error_index];
                         break;
-                    // case 'offer_amount':
-                    //     errors[key] = getOfferAmountMessages(mapped_key[key])[error_index];
-                    //     break;
                     case 'max_transaction':
                         errors[key] = getMaxTransactionLimitMessages(mapped_key[key])[error_index];
                         break;

@@ -44,7 +44,6 @@ commands:
             - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
       - run:
           name: "Install npm packages"
-          no_output_timeout: 30m
           command: |
             npm run bootstrap
             # if [ -d "./node_modules" ]; then

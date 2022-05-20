@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 import { MobileWrapper, Toast } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
-
 // TODO: Need to sanitize,
 // Same sort of component is being used inside DTrader,
 // In Future we might move the `NetworkStatusToastError` to the core packages for resuability.

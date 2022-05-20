@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "module": "es2022", // Specify module code generation
+        "target": "es5", // Specify ECMAScript target version
+        "jsx": "react", // Support JSX in .tsx files
+        "lib": ["dom", "dom.iterable", "esnext"], // List of library files to be included in the compilation
+        "allowJs": true, // Allow JavaScript files to be compiled
+        "declaration": true, // Generate corresponding .d.ts file
+        "noEmit": true, // Do not emit output (meaning do not compile code, only perform type checking)
+        "sourceMap": true, // Generate corrresponding .map file
+        "strict": true, // Enable all strict type checking options
+        "skipLibCheck": true, // Skip type checking of all declaration files
+        "esModuleInterop": true, // Disables namespace imports (import * as fs from "fs") and enables CJS/AMD/UMD style imports (import fs from "fs")
+        "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+        "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file.
+        "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statement
+        "moduleResolution": "node", // Resolve modules using Node.js style
+        "resolveJsonModule": true, // Include modules imported with .json extension
+        "isolatedModules": true, // Unconditionally emit imports for unresolved files
+        "noUnusedLocals": false, // Report errors on unused locals
+        "noUnusedParameters": false, // Report errors on unused parameters
+        "incremental": true, // Enable incremental compilation by reading/writing information from prior compilations to a file on disk
+        "removeComments": true, // Disable emitting comments
+        "skipDefaultLibCheck": true // Skip type checking .d.ts files that are included with TypeScript
+    },
+    "exclude": ["node_modules", "build", "**/__tests__/**/*", "**/*.js", "**/*.jsx"] // *** The files to not type check ***
+}

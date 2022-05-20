@@ -1,7 +1,3 @@
-/* eslint-disable no-useless-return */
-/* eslint-disable consistent-return */
-/* eslint-disable quotes */
-/* eslint-disable indent */
 import React from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +6,7 @@ import Save from "./components/save";
 import Reset from "./components/reset";
 import Modal from "../../components/modal";
 import { translate } from "../../../../../common/i18n";
-import {setIsBotRunning} from '../../store/ui-slice';
+import { setIsBotRunning } from '../../store/ui-slice';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { isMobile } from "../../../../../common/utils/tools";
 import Popover from "../../components/popover/index";
@@ -25,31 +21,39 @@ const ShowModal = ({ modal, onClose, class_name }) => {
   );
 };
 
+const ToolboxButton = ({ label, tooltip, classes, id, position = 'bottom' }) => {
+  return <span id={id}>
+    <Popover content={tooltip} position={position}>
+      <button className={classes}>{label}</button>
+    </Popover>
+  </span>
+}
+
 const ToolBox = ({ blockly }) => {
   const [should_show_modal, setShowModal] = React.useState(false);
   const [selected_modal, updateSelectedModal] = React.useState("");
+  const has_active_token = useSelector(state => !!state.client?.active_token);
 
   const dispatch = useDispatch();
   const { is_gd_ready } = useSelector(state => state.ui);
   const { is_gd_logged_in } = useSelector(state => state.client);
 
-
   React.useEffect(() => {
     globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
     globalObserver.register('bot.stop', () => dispatch(setIsBotRunning(false)));
-    
+
     const Keys = Object.freeze({ "zoomIn": 187, "zoomOut": 189 })
     document.body.addEventListener("keydown", (e) => {
       if (e.which === Keys.zoomOut && e.ctrlKey) {
         // Ctrl + -
         e.preventDefault();
-        blockly.zoomOnPlusMinus(false);
+        blockly?.zoomOnPlusMinus(false);
         return;
       }
       if (e.which === Keys.zoomIn && e.ctrlKey) {
         // Ctrl + +
         e.preventDefault();
-        blockly.zoomOnPlusMinus(true);
+        blockly?.zoomOnPlusMinus(true);
         return;
       }
     });
@@ -92,9 +96,9 @@ const ToolBox = ({ blockly }) => {
   };
   return (
     <div id="toolbox">
-      <Popover  content={translate("Reset the blocks to their initial state")}
+      <Popover content={translate("Reset the blocks to their initial state")}
         position="bottom"
-        >
+      >
         <button
           id="resetButton"
           className="toolbox-button icon-reset"
@@ -102,7 +106,7 @@ const ToolBox = ({ blockly }) => {
             onShowModal("reset");
           }}
         />
-       
+
       </Popover>
       <Popover content={translate("Load new blocks (xml file)")} position="bottom">
         <button
@@ -173,17 +177,21 @@ const ToolBox = ({ blockly }) => {
       <Popover content={translate("Show/hide the summary pop-up")} position="bottom">
         <button id="showSummary" className="toolbox-button icon-summary" />
       </Popover>
-      <Popover content={translate("Run the bot")} position="bottom">
-        <button id="runButton" className="toolbox-button icon-run" />
-      </Popover>
-      <Popover content={translate("Stop the bot")} position="bottom">
-        <button id="stopButton" className="toolbox-button icon-stop" />
-      </Popover>
+      <ToolboxButton
+        id="runButton"
+        classes="toolbox-button icon-run"
+        tooltip={translate("Run the bot")}
+      />
+      <ToolboxButton
+        id="stopButton"
+        classes="toolbox-button icon-stop"
+        tooltip={translate("Stop the bot")}
+      />
       <Popover content={translate("Show log")} position="bottom">
         <button id="logButton" className="toolbox-button icon-info" />
       </Popover>
-      <span className="toolbox-separator" />
-       {/* Needs resizeable modal */}
+      {has_active_token && <span className="toolbox-separator" />}
+      {/* Needs resizeable modal */}
       <Popover content={translate("Show chart")} position="bottom">
         <button
           id="chartButton"

@@ -9,7 +9,7 @@ import { localize, Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import './cfd-password-modal.scss';
 
-type TProps = {
+type TCFDPasswordFormProps = {
     validatePassword: any;
     submitMt5Password: any;
     is_real_financial_stp: boolean;
@@ -18,7 +18,7 @@ type TProps = {
     account_title: any;
 };
 
-const CFDPasswordForm = ({ ...props }: TProps) => (
+const CFDPasswordForm = ({ ...props }: TCFDPasswordFormProps) => (
     <Formik
         initialValues={{
             password: '',

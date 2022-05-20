@@ -168,6 +168,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                         <Button
                                             className='p2p-my-ads__expand-button'
                                             onClick={() => setShouldExpandAll(prev_state => !prev_state)}
+                                            transparent
                                         >
                                             <Text size='xss' weight='bold' color='red'>
                                                 {should_expand_all ? localize('Collapse all') : localize('Expand all')}

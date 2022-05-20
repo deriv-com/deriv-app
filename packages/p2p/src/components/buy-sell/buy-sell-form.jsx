@@ -31,7 +31,6 @@ const BuySellForm = props => {
         min_order_amount_limit_display,
         payment_method_names,
         price,
-        rate,
         rate_type,
     } = buy_sell_store?.advert || {};
 

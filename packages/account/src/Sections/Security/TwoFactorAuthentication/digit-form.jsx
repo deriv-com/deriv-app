@@ -80,7 +80,7 @@ const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
                             })}
                             type='submit'
                             is_disabled={isSubmitting || !isValid || !dirty}
-                            has_effects
+                            has_effect
                             is_loading={isSubmitting}
                             is_submit_success={is_success}
                             text={button_text}

@@ -167,7 +167,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                         </Text>
                                         <Button
                                             className='p2p-my-ads__expand-button'
-                                            onClick={() => setShouldExpandAll(!should_expand_all)}
+                                            onClick={() => setShouldExpandAll(prev_state => !prev_state)}
                                         >
                                             <Text size='xss' weight='bold' color='red'>
                                                 {should_expand_all ? localize('Collapse all') : localize('Expand all')}
@@ -182,7 +182,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                             header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
                                             content: <PaymentMethodAccordionContent payment_method={payment_method} />,
                                         }))}
-                                        is_expand_all={should_expand_all}
+                                        expand_all={should_expand_all}
                                     />
                                 </div>
                             ) : (

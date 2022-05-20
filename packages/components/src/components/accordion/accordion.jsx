@@ -4,19 +4,13 @@ import React from 'react';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon';
 
-const Accordion = ({ className, icon_close, icon_open, list, is_expand_all }) => {
+const Accordion = ({ className, icon_close, icon_open, list, expand_all }) => {
     const [open_idx, setOpenIdx] = React.useState(null);
-    const [expand_all, setExpandAll] = React.useState(is_expand_all);
-
     const prev_list = usePrevious(list);
 
     React.useEffect(() => {
         if (prev_list !== list) setOpenIdx(null);
     }, [list, prev_list]);
-
-    React.useEffect(() => {
-        setExpandAll(is_expand_all);
-    }, [is_expand_all]);
 
     // close if clicking the accordion that's open, otherwise open the new one
     const onClick = index => setOpenIdx(index === open_idx ? null : index);

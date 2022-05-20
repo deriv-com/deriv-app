@@ -105,6 +105,7 @@ const BuySellForm = props => {
         const updated_market_rate = await fetchCurrentMarketRate();
         if (market_rate_on_mount !== updated_market_rate) {
             buy_sell_store.setShouldShowPopup(false);
+            // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
             setTimeout(() => {
                 buy_sell_store.setShowRateChangedPopup(true);
             }, 250);

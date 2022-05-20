@@ -6,40 +6,27 @@ import { WS } from 'Services';
 import PropTypes from 'prop-types';
 import { connect } from 'Stores/connect';
 
-export const ConfirmPasswordModal = ({ onClose, is_open, prevEmail, curEmail, verification_code }) => {
+export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, curEmail, verification_code }) => {
     const [email_request, setEmailRequest] = React.useState(null);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
     const [is_error, set_is_error] = React.useState(false);
     const [error_message, set_error_message] = React.useState(null);
-    const [isOpen, setIsOpen] = React.useState(is_open);
 
-    const onResetComplete = error_msg => {
-        // Error would be returned on invalid token (and the like) cases.
-        if (error_msg) {
-            set_is_error(true);
-            return;
-        }
-
-        setIsOpen(!is_open);
-        setIsSendEmailModalOpen(true);
-        set_error_message(error_msg);
-        // toggleResetEmailModal(false);
-    };
-
-    const handleSubmit = actions => {
+    const handleSubmit = () => {
         const api_request = {
             change_email: 'verify',
             new_email: curEmail,
             verification_code,
         };
 
-        setEmailRequest(api_request);
+        setEmailRequest(prev => ({ ...prev, ...api_request }));
 
-        WS.changeEmail(api_request).then(async response => {
+        WS.changeEmail(api_request).then(response => {
             if (response.error) {
-                onResetComplete(response.error.message);
+                set_is_error(true);
+                set_error_message(response.error.message);
             } else {
-                onResetComplete(null, actions);
+                setIsSendEmailModalOpen(true);
             }
         });
     };
@@ -62,7 +49,7 @@ export const ConfirmPasswordModal = ({ onClose, is_open, prevEmail, curEmail, ve
     }
     return (
         <Modal
-            is_open={isOpen}
+            is_open={is_open}
             should_header_stick_body
             title={<Localize i18n_default_text='Are you sure?' />}
             toggleModal={onClose}
@@ -102,7 +89,7 @@ export const ConfirmPasswordModal = ({ onClose, is_open, prevEmail, curEmail, ve
     );
 };
 
-ConfirmPasswordModal.propTypes = {
+ConfirmEmailModal.propTypes = {
     email: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
@@ -123,4 +110,4 @@ export default connect(({ ui, client }) => ({
     logoutClient: client.logout,
     toggleResetEmailModal: ui.toggleResetEmailModal,
     verification_code: client.verification_code.request_email,
-}))(ConfirmPasswordModal);
+}))(ConfirmEmailModal);

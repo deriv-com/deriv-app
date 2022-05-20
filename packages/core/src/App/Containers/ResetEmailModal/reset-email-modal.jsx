@@ -6,7 +6,7 @@ import { Button, Dialog, Text, Input } from '@deriv/components';
 import { validEmail, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { ConfirmPasswordModal } from './confirm-password-modal.jsx';
+import { ConfirmEmailModal } from './confirm-email-modal.jsx';
 
 const ResetEmailModal = ({
     disableApp,
@@ -93,7 +93,7 @@ const ResetEmailModal = ({
 
     if (confirmResetEmailModal) {
         return (
-            <ConfirmPasswordModal
+            <ConfirmEmailModal
                 email={email}
                 is_open={confirmResetEmailModal}
                 verification_code={verification_code}

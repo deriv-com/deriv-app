@@ -1,6 +1,16 @@
-import { TrackJS } from 'trackjs';
-import { observer as globalObserver } from '../../common/utils/observer';
-import { isProduction, isMobile } from '../../common/utils/tools';
+import { TrackJS } from "trackjs";
+import { observer as globalObserver } from "../../common/utils/observer";
+import { isProduction, isMobile } from "../../common/utils/tools";
+import { isIOS } from "./osDetect";
+
+const default_errors_to_ignore = [
+  'CallError',
+  'WrongResponse',
+  'GetProposalFailure',
+  'RateLimit',
+  'DisconnectError',
+  'MarketIsClosed',
+];
 
 const log = (type, ...args) => {
   if (type === "warn") {
@@ -18,11 +28,13 @@ const log = (type, ...args) => {
 const notify = ({ className, message, position = "left", sound = "silent" }) => {
   log(className, message);
 
+  // TODO: remove jquery dependency
   $.notify(message.toString(), { position: `bottom ${position}`, className });
-  if (sound !== "silent") {
-    $(`#${sound}`)
-      .get(0)
-      .play();
+
+  if (sound !== "silent" && !isIOS()) {
+    const audio = document.getElementById(sound);
+    if(!audio && !audio.play) return;
+    audio.play().catch(() => { });
   }
 };
 
@@ -68,7 +80,9 @@ const notifyError = error => {
   notify({ className: "error", message, position: isMobile() ? 'left' : 'right' });
 
   if (isProduction()) {
-    TrackJS.track(code || error.error.code);
+    if(!default_errors_to_ignore.includes(code)){
+      TrackJS.track(code);
+    }
   }
 };
 

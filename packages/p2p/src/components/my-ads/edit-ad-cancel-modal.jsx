@@ -4,15 +4,8 @@ import { Button, Modal, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 
 const EditAdCancelModal = ({ handleCancelEdit, is_open }) => {
-    // const [is_modal_open, setIsModalOpen] = React.useState(is_open);
-
-    // React.useEffect(() => {
-    //     setIsModalOpen(is_open);
-    // }, [is_open]);
-
     const handleModalAction = should_cancel_edit => {
         handleCancelEdit(should_cancel_edit);
-        setIsModalOpen(prevState => !prevState);
     };
 
     return (

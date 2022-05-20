@@ -122,6 +122,9 @@ module.exports = {
         react: {
             version: '16',
         },
+    'import/resolver': {
+      typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
+    },
     },
     overrides: [
         {
@@ -129,10 +132,12 @@ module.exports = {
             extends: ['plugin:testing-library/react'],
         },
         {
-            files: ['*.ts', '*.tsx'],
+            files: ['*.{ts,tsx}'],
             parser: '@typescript-eslint/parser',
             plugins: ['@typescript-eslint'],
             extends: [
+                'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+                'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
                 'plugin:react/recommended',
                 'plugin:@typescript-eslint/recommended',
                 'plugin:prettier/recommended',

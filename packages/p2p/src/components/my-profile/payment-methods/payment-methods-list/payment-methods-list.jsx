@@ -19,6 +19,10 @@ const PaymentMethodsList = () => {
 
     const independent_categories = ['bank_transfer', 'other'];
 
+    const modalStateHandler = value => {
+        my_profile_store.setModalOpenState(value);
+    };
+
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
         my_profile_store.setPaymentMethodToDelete(null);
@@ -131,6 +135,8 @@ const PaymentMethodsList = () => {
                 small
                 has_close_icon={false}
                 title={localize("Something's not right")}
+                onMount={() => modalStateHandler(true)}
+                onUnmount={() => modalStateHandler(false)}
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>
@@ -154,6 +160,8 @@ const PaymentMethodsList = () => {
                 title={localize('Delete {{payment_method_name}}?', {
                     payment_method_name: my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value,
                 })}
+                onMount={() => modalStateHandler(true)}
+                onUnmount={() => modalStateHandler(false)}
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>

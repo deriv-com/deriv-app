@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, when } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -333,16 +333,16 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_advertiser_payment_methods: 1,
             delete: [this.payment_method_to_delete.ID],
-        }).then(response => {
+        }).then(async response => {
             this.setIsConfirmDeleteModalOpen(false);
             if (!response.error) {
                 this.getAdvertiserPaymentMethods();
             } else {
                 this.setDeleteErrorMessage(response.error.message);
-                // waiting for 250ms of animation to complete before triggering a new render
-                setTimeout(() => {
-                    this.setIsDeleteErrorModalOpen(true);
-                }, 250);
+                await when(
+                    () => !this.is_modal_open,
+                    () => this.setIsDeleteErrorModalOpen(true)
+                );
             }
         });
     }

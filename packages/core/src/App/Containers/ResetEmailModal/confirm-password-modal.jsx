@@ -4,15 +4,9 @@ import { localize, Localize } from '@deriv/translations';
 import { SentEmailModal } from '@deriv/account';
 import { WS } from 'Services';
 import PropTypes from 'prop-types';
+import { connect } from 'Stores/connect';
 
-export const ConfirmPasswordModal = ({
-    onClose,
-    is_open,
-    prevEmail,
-    curEmail,
-    verification_code,
-    toggleResetEmailModal,
-}) => {
+export const ConfirmPasswordModal = ({ onClose, is_open, prevEmail, curEmail, verification_code }) => {
     const [email_request, setEmailRequest] = React.useState(null);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
     const [is_error, set_is_error] = React.useState(false);
@@ -29,10 +23,10 @@ export const ConfirmPasswordModal = ({
         setIsOpen(!is_open);
         setIsSendEmailModalOpen(true);
         set_error_message(error_msg);
-        toggleResetEmailModal(false);
+        // toggleResetEmailModal(false);
     };
 
-    const handleSubmit = (values, actions) => {
+    const handleSubmit = actions => {
         const api_request = {
             change_email: 'verify',
             new_email: curEmail,
@@ -94,12 +88,8 @@ export const ConfirmPasswordModal = ({
                     <Button
                         className='email-change_button'
                         has_effect
-                        type='submit'
                         onClick={() => {
-                            setIsOpen(!is_open);
-                            setIsSendEmailModalOpen(true);
-                            set_error_message(error_msg);
-                            toggleResetEmailModal(false);
+                            handleSubmit();
                         }}
                         primary
                         large
@@ -124,4 +114,13 @@ ConfirmPasswordModal.propTypes = {
     verification_code: PropTypes.string,
 };
 
-export default ConfirmPasswordModal;
+export default connect(({ ui, client }) => ({
+    disableApp: ui.disableApp,
+    email: client.email,
+    enableApp: ui.enableApp,
+    is_loading: ui.is_loading,
+    is_visible: ui.is_reset_email_modal_visible,
+    logoutClient: client.logout,
+    toggleResetEmailModal: ui.toggleResetEmailModal,
+    verification_code: client.verification_code.request_email,
+}))(ConfirmPasswordModal);

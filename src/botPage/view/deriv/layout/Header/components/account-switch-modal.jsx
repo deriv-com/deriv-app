@@ -1,7 +1,7 @@
 import React from 'react'
 import { translate } from '../../../../../../common/i18n';
 
-const AccountSwitchModal = ({is_bot_running,onClose, onAccept}) => (
+const AccountSwitchModal = ({ is_bot_running, onClose, onAccept }) => (
     <div className="logout-dialog">
         {is_bot_running ?(
             <div className="logout-dialog__warning-text">

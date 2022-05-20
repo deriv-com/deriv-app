@@ -33,7 +33,7 @@ const CancelAddPaymentMethodModal = () => {
             <Modal.Footer>
                 <Button
                     large
-                    onClick={async () => {
+                    onClick={() => {
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
                         my_profile_store.setSelectedPaymentMethodDisplayName('');

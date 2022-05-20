@@ -5,12 +5,12 @@ import { isMobile } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import 'Components/buy-sell/rate-change-modal.scss';
 
-const RateChangeModal = ({ local_currency, show_rate_changed_popup, setShowRateChangedPopup }) => {
-    const cancelModal = () => {
-        setShowRateChangedPopup(false);
+const RateChangeModal = ({ local_currency, should_show_rate_change_modal, setShouldShowRatechangeModal }) => {
+    const closeModal = () => {
+        setShouldShowRatechangeModal(false);
     };
     return (
-        <Modal is_open={show_rate_changed_popup} toggleModal={cancelModal} width={'440px'}>
+        <Modal is_open={should_show_rate_change_modal} toggleModal={closeModal} width={'440px'}>
             <div>
                 <Text
                     as='p'
@@ -27,7 +27,7 @@ const RateChangeModal = ({ local_currency, show_rate_changed_popup, setShowRateC
             </div>
 
             <div className='rate-changed-modal__button'>
-                <Button onClick={cancelModal} text={localize('Try again')} primary large />
+                <Button onClick={closeModal} text={localize('Try again')} primary large />
             </div>
         </Modal>
     );
@@ -35,8 +35,8 @@ const RateChangeModal = ({ local_currency, show_rate_changed_popup, setShowRateC
 
 RateChangeModal.propTypes = {
     local_currency: PropTypes.string,
-    show_rate_changed_popup: PropTypes.bool,
-    setShowRateChangedPopup: PropTypes.func,
+    should_show_rate_change_modal: PropTypes.bool,
+    setShouldShowRatechangeModal: PropTypes.func,
 };
 
 export default RateChangeModal;

@@ -844,7 +844,7 @@ export default class MyAdsStore extends BaseStore {
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
-            localize("Enter a value thats's within -{{limit}}% to {{limit}}%", {
+            localize("Enter a value thats's within -{{limit}}% to +{{limit}}%", {
                 limit: this.root_store.floating_rate_store.float_rate_offset_limit,
             }),
         ];

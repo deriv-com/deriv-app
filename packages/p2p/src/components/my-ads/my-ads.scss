@@ -684,6 +684,13 @@
             padding-right: 1.6rem;
         }
     }
+
+    &__expand-button {
+        background-color: unset;
+        vertical-align: unset;
+        border-radius: unset;
+        height: unset;
+    }
 }
 
 .p2p-my-ads__modal-error {

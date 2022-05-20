@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, HintBox, Text, ThemedScrollbars } from '@deriv/components';
+import { Accordion, Button, HintBox, Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -74,11 +74,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
     if (sendbird_store.should_show_chat_on_orders) {
         return <Chat />;
     }
-
-    // const handler = (is_expanded) => {
-    //     setShouldExpandAll(is_expanded)
-    //     console.log('Clicked');
-    // };
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
@@ -170,8 +165,14 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                         <Text size='xs' weight='bold'>
                                             {labels.payment_details}
                                         </Text>
-                                        <button onClick={() => setShouldExpandAll(true)}>Expand all</button>
-                                        <button onClick={() => setShouldExpandAll(false)}>Collapse all</button>
+                                        <Button
+                                            className='p2p-my-ads__expand-button'
+                                            onClick={() => setShouldExpandAll(!should_expand_all)}
+                                        >
+                                            <Text size='xss' weight='bold' color='red'>
+                                                {should_expand_all ? localize('Collapse all') : localize('Expand all')}
+                                            </Text>
+                                        </Button>
                                     </section>
                                     <Accordion
                                         className='order-details-card__accordion'

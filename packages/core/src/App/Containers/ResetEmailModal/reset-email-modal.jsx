@@ -6,55 +6,63 @@ import { Button, Dialog, Text, Input } from '@deriv/components';
 import { validEmail, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { SentEmailModal } from '@deriv/account';
-import { WS } from 'Services';
+import { ConfirmPasswordModal } from './confirm-password-modal.jsx';
 
 const ResetEmailModal = ({
     disableApp,
+    email,
     enableApp,
     is_loading,
     is_visible,
     verification_code,
     toggleResetEmailModal,
 }) => {
-    const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
-    const [email_request, setEmailRequest] = React.useState(null);
+    // const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
+    // const [email_request, setEmailRequest] = React.useState(null);
+    const [confirmResetEmailModal, setConfirmResetEmailModal] = React.useState(false);
+    const [curEmail, setCurEmail] = React.useState(null);
+    const [prevEmail, setPrevEmail] = React.useState(null);
 
-    const onResetComplete = (error_msg, actions) => {
-        actions.setSubmitting(false);
-        // Error would be returned on invalid token (and the like) cases.
-        if (error_msg) {
-            actions.resetForm({ email: '' });
-            actions.setStatus({ error_msg });
-            return;
-        }
+    // const onResetComplete = (error_msg, actions) => {
+    // actions.setSubmitting(false);
+    // Error would be returned on invalid token (and the like) cases.
+    // if (error_msg) {
+    //     actions.resetForm({ email: '' });
+    //     actions.setStatus({ error_msg });
+    //     return;
+    // }
 
-        actions.setStatus({ reset_complete: true });
-        setIsSendEmailModalOpen(true);
-        toggleResetEmailModal(false);
+    // actions.setStatus({ reset_complete: true });
+    // setConfirmResetEmailModal(true);
+    // setIsSendEmailModalOpen(true);
+    // toggleResetEmailModal(false);
+    // };
+
+    const handleSubmit = values => {
+        // const api_request = {
+        //     change_email: 'verify',
+        //     new_email: values.email,
+        //     verification_code,
+        // };
+
+        // setEmailRequest(api_request);
+
+        // WS.changeEmail(api_request).then(async response => {
+        //     if (response.error) {
+        //         onResetComplete(response.error.message, actions);
+        //     } else {
+        setCurEmail(values.email);
+        setPrevEmail(email);
+        setConfirmResetEmailModal(true);
+
+        // onResetComplete(null, actions);
+        // }
+        // });
     };
 
-    const handleSubmit = (values, actions) => {
-        const api_request = {
-            change_email: 'verify',
-            new_email: values.email,
-            verification_code,
-        };
-
-        setEmailRequest(api_request);
-
-        WS.changeEmail(api_request).then(async response => {
-            if (response.error) {
-                onResetComplete(response.error.message, actions);
-            } else {
-                onResetComplete(null, actions);
-            }
-        });
-    };
-
-    const resendEmail = () => {
-        WS.changeEmail(email_request);
-    };
+    // const resendEmail = () => {
+    //     WS.changeEmail(email_request);
+    // };
 
     const validateReset = values => {
         const errors = {};
@@ -70,15 +78,28 @@ const ResetEmailModal = ({
 
     const reset_initial_values = { email: '' };
 
-    if (is_send_email_modal_open) {
+    // if (is_send_email_modal_open) {
+    //     return (
+    //         <SentEmailModal
+    //             is_open={is_send_email_modal_open}
+    //             onClose={() => setIsSendEmailModalOpen(false)}
+    //             identifier_title={'Change_Email'}
+    //             onClickSendEmail={resendEmail}
+    //             has_live_chat={true}
+    //             is_modal_when_mobile={true}
+    //         />
+    //     );
+    // }
+
+    if (confirmResetEmailModal) {
         return (
-            <SentEmailModal
-                is_open={is_send_email_modal_open}
-                onClose={() => setIsSendEmailModalOpen(false)}
-                identifier_title={'Change_Email'}
-                onClickSendEmail={resendEmail}
-                has_live_chat={true}
-                is_modal_when_mobile={true}
+            <ConfirmPasswordModal
+                email={email}
+                is_open={confirmResetEmailModal}
+                verification_code={verification_code}
+                onClose={() => setConfirmResetEmailModal(false)}
+                curEmail={curEmail}
+                prevEmail={prevEmail}
             />
         );
     }
@@ -176,6 +197,7 @@ const ResetEmailModal = ({
 
 ResetEmailModal.propTypes = {
     disableApp: PropTypes.func,
+    email: PropTypes.string,
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
@@ -185,6 +207,7 @@ ResetEmailModal.propTypes = {
 
 export default connect(({ ui, client }) => ({
     disableApp: ui.disableApp,
+    email: client.email,
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
     is_visible: ui.is_reset_email_modal_visible,

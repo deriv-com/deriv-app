@@ -87,3 +87,25 @@
         justify-content: center;
     }
 }
+
+.email-confirmation {
+    margin: 0.5rem 2.4rem 1.7rem;
+    line-break: anywhere;
+
+    &__prevEmail {
+        font-weight: bold;
+    }
+
+    &__currentEmail {
+        color: red;
+        font-style: italic;
+        font-weight: bold;
+    }
+}
+
+// .email-confirmation {
+//     &__description {
+//         margin: 0.5rem 2.4rem 1.7rem;
+//         align-self: justify-content;
+//     }
+// }

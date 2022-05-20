@@ -16,18 +16,18 @@ describe('<Routes />', () => {
     it('should show error messages when "has_error = true"', () => {
         const history = createBrowserHistory();
         const error = {
-            header:'',
-            message:'',
-            redirect_label:['test label'],
-            redirectOnClick:jest.fn(),
-            should_clear_error_on_click:true,
-            setError:jest.fn(),
-            redirect_to:['/testurl'],
-            should_show_refresh:true,
-        }
+            header: '',
+            message: '',
+            redirect_label: ['test label'],
+            redirectOnClick: jest.fn(),
+            should_clear_error_on_click: true,
+            setError: jest.fn(),
+            redirect_to: ['/testurl'],
+            should_show_refresh: true,
+        };
         render(
             <Router history={history}>
-                <Routes has_error error={error}/>
+                <Routes has_error error={error} />
             </Router>
         );
 

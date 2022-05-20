@@ -24,7 +24,6 @@ const PaymentMethodsList = () => {
     };
 
     React.useEffect(() => {
-        my_profile_store.getAdvertiserPaymentMethods();
         my_profile_store.setPaymentMethodToDelete(null);
         my_profile_store.setPaymentMethodToEdit(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -158,7 +157,10 @@ const PaymentMethodsList = () => {
                 small
                 has_close_icon={false}
                 title={localize('Delete {{payment_method_name}}?', {
-                    payment_method_name: my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value,
+                    payment_method_name:
+                        my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value ||
+                        my_profile_store?.payment_method_to_delete?.fields?.name?.value ||
+                        my_profile_store?.payment_method_to_delete?.fields?.account?.value,
                 })}
                 onMount={() => modalStateHandler(true)}
                 onUnmount={() => modalStateHandler(false)}

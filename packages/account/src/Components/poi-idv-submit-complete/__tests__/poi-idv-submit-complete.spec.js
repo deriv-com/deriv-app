@@ -1,7 +1,7 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import IdvSubmitComplete from '../poi-idv-submit-complete';
-import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('../../../Assets/ic-idv-document-pending.svg', () => jest.fn(() => 'IdvDocumentPending'));
 

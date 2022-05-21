@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Text } from '../text';
+import Text from '../text';
 
 const Rating = ({
     allow_half_rating = false,
@@ -26,7 +26,7 @@ const Rating = ({
     const calculateRating = e => {
         const { width, left, right } = ratingContainerRef.current.getBoundingClientRect();
         const rating_start_element = direction === 'ltr' ? e.clientX - left : right - e.clientX;
-        let selected_rating = (rating_start_element / width) * max_rating;
+        const selected_rating = (rating_start_element / width) * max_rating;
         if (selected_rating > 0.4) {
             const calculated_rating = allow_half_rating
                 ? Math.round((selected_rating + 0.5 / 2) / 0.5) * 0.5 // This will always make sure that, if we hover between tro ratings, it will select the nearest number
@@ -54,7 +54,7 @@ const Rating = ({
         setHoveredRateIndex(calculateRating(e));
     };
 
-    const handleMouseLeave = e => {
+    const handleMouseLeave = () => {
         if (readonly || disable_hover) {
             return;
         }
@@ -75,7 +75,7 @@ const Rating = ({
         validateInitialValue();
     }, [value, max_rating]);
 
-    if (!!display_default_message && value <= 0) {
+    if (!!display_default_content && value <= 0) {
         return display_default_content;
     }
 
@@ -83,15 +83,13 @@ const Rating = ({
         <div className='user-rating'>
             <div
                 className={classNames('user-rating__wrapper', background_class)}
-                style={{ direction: direction }}
+                style={{ direction }}
                 ref={ratingContainerRef}
                 onClick={handleClick}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
             >
                 {[...new Array(parseInt(max_rating))].map((_, index) => {
-                    if (value) {
-                    }
                     const active_rate = is_hover_enabled ? hovered_rate_index : enabled_rate_index;
                     const show_empty_icon = active_rate === -1 || active_rate < index + 1;
                     const is_rating_with_precision = active_rate % 1 !== 0;

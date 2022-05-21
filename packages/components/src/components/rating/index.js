@@ -1,4 +1,4 @@
-import Rating from './ratings.jsx';
-import './ratings.scss';
+import Rating from './rating.jsx';
+import './rating.scss';
 
 export default Rating;

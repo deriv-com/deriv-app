@@ -1,7 +1,11 @@
 .user-rating {
     display: inline-flex;
-    position: relative;
-    cursor: pointer;
+    gap: 0.4rem;
+    &__wrapper {
+        display: inline-flex;
+        position: relative;
+        cursor: pointer;
+    }
 
     &__element {
         position: relative;

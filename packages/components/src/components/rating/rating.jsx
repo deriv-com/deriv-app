@@ -1,17 +1,21 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Text } from '../text';
 
 const Rating = ({
     allow_half_rating = false,
-    back_ground_class,
+    background_class,
     direction = 'ltr',
     disable_hover = false,
+    display_default_content,
     element_class,
     icon_selected,
     icon_unselected,
     max_rating = 5,
     onClick,
+    readonly = false,
+    show_rating = false,
     value,
 }) => {
     const [enabled_rate_index, setEnabledRateIndex] = React.useState(-1);
@@ -33,6 +37,9 @@ const Rating = ({
     };
 
     const handleClick = e => {
+        if (readonly) {
+            return;
+        }
         setIsHoverEnabled(false);
         const rating_value = calculateRating(e);
         setEnabledRateIndex(rating_value);
@@ -40,11 +47,17 @@ const Rating = ({
     };
 
     const handleMouseMove = e => {
+        if (readonly || disable_hover) {
+            return;
+        }
         setIsHoverEnabled(true);
         setHoveredRateIndex(calculateRating(e));
     };
 
     const handleMouseLeave = e => {
+        if (readonly || disable_hover) {
+            return;
+        }
         setHoveredRateIndex(-1); // Reset to default state
         setIsHoverEnabled(false);
     };
@@ -62,50 +75,61 @@ const Rating = ({
         validateInitialValue();
     }, [value, max_rating]);
 
+    if (!!display_default_message && value <= 0) {
+        return display_default_content;
+    }
+
     return (
-        <div
-            className={classNames('user-calculated_rating', back_ground_class)}
-            ref={ratingContainerRef}
-            onClick={handleClick}
-            onMouseMove={!disable_hover && handleMouseMove}
-            onMouseLeave={!disable_hover && handleMouseLeave}
-        >
-            {[...new Array(parseInt(max_rating))].map((_, index) => {
-                if (value) {
-                }
-                const active_rate = is_hover_enabled ? hovered_rate_index : enabled_rate_index;
-                const show_empty_icon = active_rate === -1 || active_rate < index + 1;
-                const is_rating_with_precision = active_rate % 1 !== 0;
-                const is_rating_equal_to_index = Math.round(active_rate) === index + 1;
-                const show_rating_with_precision = is_rating_with_precision && is_rating_equal_to_index;
-                return (
-                    <div className={classNames('user-rating__element', element_class)} key={index}>
-                        <section
-                            className={classNames('user-rating__element--filled')}
-                            style={{
-                                width: show_rating_with_precision ? `${(active_rate % 1) * 100}%` : '0%',
-                            }}
-                        >
-                            {icon_selected}
-                        </section>
-                        <section>{show_empty_icon ? icon_unselected : icon_selected}</section>
-                    </div>
-                );
-            })}
+        <div className='user-rating'>
+            <div
+                className={classNames('user-rating__wrapper', background_class)}
+                style={{ direction: direction }}
+                ref={ratingContainerRef}
+                onClick={handleClick}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+            >
+                {[...new Array(parseInt(max_rating))].map((_, index) => {
+                    if (value) {
+                    }
+                    const active_rate = is_hover_enabled ? hovered_rate_index : enabled_rate_index;
+                    const show_empty_icon = active_rate === -1 || active_rate < index + 1;
+                    const is_rating_with_precision = active_rate % 1 !== 0;
+                    const is_rating_equal_to_index = Math.round(active_rate) === index + 1;
+                    const show_rating_with_precision = is_rating_with_precision && is_rating_equal_to_index;
+                    return (
+                        <div className={classNames('user-rating__element', element_class)} key={index}>
+                            <section
+                                className={classNames('user-rating__element--filled')}
+                                style={{
+                                    width: show_rating_with_precision ? `${(active_rate % 1) * 100}%` : '0%',
+                                }}
+                            >
+                                {icon_selected}
+                            </section>
+                            <section>{show_empty_icon ? icon_unselected : icon_selected}</section>
+                        </div>
+                    );
+                })}
+            </div>
+            {show_rating && <Text>{parseFloat(enabled_rate_index).toFixed(1)}</Text>}
         </div>
     );
 };
 
 Rating.propTypes = {
     allow_half_rating: PropTypes.bool,
-    back_ground_class: PropTypes.string,
+    background_class: PropTypes.string,
     direction: PropTypes.oneOf(['ltr', 'rtl']),
     disable_hover: PropTypes.bool,
+    display_default_content: PropTypes.elementType,
     element_class: PropTypes.string,
     icon_selected: PropTypes.elementType.isRequired,
     icon_unselected: PropTypes.elementType.isRequired,
     max_rating: PropTypes.number,
     onClick: PropTypes.func,
+    readonly: PropTypes.bool,
+    show_rating: PropTypes.bool,
     value: PropTypes.number,
 };
 

@@ -1,0 +1,16 @@
+.user-rating {
+    display: inline-flex;
+    position: relative;
+    cursor: pointer;
+
+    &__element {
+        position: relative;
+        cursor: pointer;
+
+        &--filled {
+            overflow: hidden;
+            position: absolute;
+            width: 0%;
+        }
+    }
+}

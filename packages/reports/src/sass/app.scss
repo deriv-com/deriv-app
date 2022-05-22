@@ -3,10 +3,6 @@
 
 // Drawers
 @import 'app/_common/drawer/positions-drawer';
-@import 'app/_common/drawer/positions-modal-card';
-
-// Form
-@import 'app/_common/form/time-picker';
 
 // Components
 @import 'app/_common/components/amount';
@@ -15,8 +11,6 @@
 @import 'app/_common/components/card-list';
 //@import 'app/_common/components/date-picker'; // TODO: [move-to-components] Datepicker component should be moved
 @import 'app/_common/components/market-symbol-icon';
-@import 'app/_common/components/number-selector';
-@import 'app/_common/components/range-slider';
 
 // Modules
 @import 'app/modules/contract/bottom-widgets';

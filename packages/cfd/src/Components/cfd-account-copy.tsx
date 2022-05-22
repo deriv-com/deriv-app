@@ -6,7 +6,7 @@ import { TCFDAccountCopy } from './props.types';
 
 const CFDAccountCopy = ({ text, className }: TCFDAccountCopy) => {
     return (
-        <div className={className}>
+        <div className={className} data-testid="cfd-account-copy-test">
             <Clipboard
                 text_copy={text}
                 info_message={isMobile() ? '' : localize('copy')}

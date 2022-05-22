@@ -58,7 +58,14 @@ body {
     height: 100%;
     width: 100%;
     max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+}
 
+.blocklyWidgetDiv {
+    z-index: 100;
+}
+
+#blocklyArea {
+    height: calc(100% - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
     @include mobile {
         max-height: calc(100vh - 7.5rem);
     }
@@ -178,5 +185,5 @@ label {
 }
 
 .notifyjs-corner {
-    z-index: 10001 !important;
+    z-index: 998 !important;
 }

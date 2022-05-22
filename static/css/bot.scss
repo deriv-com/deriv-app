@@ -57,6 +57,11 @@ body {
     position: absolute;
     height: 100%;
     width: 100%;
+    //fix for safari comment box by unsetting cordinates
+    & foreignObject body {
+        all: unset;
+        display: block;
+    }
     max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
 }
 
@@ -247,5 +252,7 @@ label {
 }
 
 .notifyjs-corner {
-    z-index: 998 !important;
+    z-index: 10001 !important;
 }
+
+

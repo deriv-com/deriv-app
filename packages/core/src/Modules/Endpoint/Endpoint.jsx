@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Checkbox, Text } from '@deriv/components';
-import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext } from '@deriv/shared';
+import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext, LocalStore } from '@deriv/shared';
 // eslint-disable-next-line import/extensions
 
 const InputField = props => {
@@ -26,7 +26,7 @@ const InputField = props => {
 // doesn't need localization as it's for internal use
 const Endpoint = () => {
     const platform_store = React.useContext(PlatformContext);
-    const show_dbot_dashboard = window.localStorage.getItem('show_dbot_dashboard') !== 'false';
+    const show_dbot_dashboard = LocalStore.get('show_dbot_dashboard') !== 'false';
     return (
         <Formik
             initialValues={{
@@ -56,7 +56,7 @@ const Endpoint = () => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
                 localStorage.setItem(platform_store.DERIV_APPSTORE_KEY, values.is_appstore_enabled);
-                localStorage.setItem('show_dbot_dashboard', values.show_dbot_dashboard);
+                LocalStore.set('show_dbot_dashboard', values.show_dbot_dashboard);
                 localStorage.setItem('debug_service_worker', values.is_debug_service_worker_enabled ? 1 : 0);
                 platform_store.setIsAppStore(values.is_appstore_enabled);
                 location.reload();
@@ -87,7 +87,7 @@ const Endpoint = () => {
                                     rel='noopener noreferrer'
                                 >
                                     app ID
-                                </a>
+                                </a>{' '}
                                 to use the above server for logging in.
                             </React.Fragment>
                         }

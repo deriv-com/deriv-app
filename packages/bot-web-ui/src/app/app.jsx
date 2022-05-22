@@ -14,16 +14,17 @@ import {
     Toolbar,
     NetworkToastPopup,
 } from 'Components';
+import { LocalStore } from '@deriv/shared';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import './app.scss';
-import Dashboard from '../components/dashboad';
+import Dashboard from 'Components/dashboard';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
     const [is_loading, setIsLoading] = React.useState(true);
-    const show_dashboard = window.localStorage.getItem('show_dbot_dashboard') !== 'false';
+    const show_dashboard = LocalStore.get('show_dbot_dashboard'); //localStorage.getItem('show_dbot_dashboard') !== 'false';
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
@@ -42,10 +43,14 @@ const App = ({ passthrough }) => {
         setIsLoading(true);
         active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
-            onMount();
+            if (!show_dashboard) {
+                onMount();
+            }
         });
         return () => {
-            onUnmount();
+            if (!show_dashboard) {
+                onUnmount();
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMount, onUnmount]);

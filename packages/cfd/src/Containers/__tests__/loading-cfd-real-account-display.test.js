@@ -8,6 +8,6 @@ describe('<LoadingCFDRealAccountDisplay />', () => {
     it('component should be rendered', () => {
         const { container } = render(<LoadingCFDRealAccountDisplay />);
 
-        expect(container.querySelector("cfd-real-accounts-display")).toBeInTheDocument();
+        expect(container.querySelector('cfd-real-accounts-display')).toBeInTheDocument();
     });
 });

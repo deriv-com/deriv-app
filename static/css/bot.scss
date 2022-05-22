@@ -75,7 +75,69 @@ body {
     #blocklyArea {
         height: 86%;
     }
+
 }
+.acc-info__balance {
+    color: var(--text-profit-success);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.75;
+    line-height: 2.4rem;
+    margin-right: 0.8rem;
+    pointer-events: none;
+    text-align: center;
+    text-transform: default;
+}
+.acc-info__balance.acc-info__balance--no-currency-text{
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 0;
+    // line-height: 2.4rem;
+    /* margin-right: 0.8rem; */
+    pointer-events: none;
+    text-align: center;
+    color:#333;
+    margin: 0px auto;
+}
+    .notifyjs-bootstrap-base,
+    .notifyjs-bootstrap-success,
+    .notifyjs-bootstrap-warn,
+    .notifyjs-bootstrap-error {
+        white-space: unset !important;
+        max-width: 40vw;
+        min-height: 30px;
+        padding: 8px 30px !important;
+        word-break: break-word !important;
+        @include mobile {
+            max-width: 80vw !important;
+        }
+    }
+    .notifyjs-corner{
+        @include mobile {
+            min-height: 30px;
+            font-size: 12px;
+            }
+    }
+
+    .notifyjs-bootstrap-base span{
+        @include mobile {
+        min-height: 30px;
+        max-width: 40vw;
+        // padding: 2px;
+        word-break: break-word;
+        }
+
+    }
+    [data-notify-text], [data-notify-html] {
+        @include mobile {
+        white-space: break-spaces !important;
+        position: relative;
+        max-width: 40vw !important;
+        word-break: break-word;
+        }
+    }
+
+
 
 .barspinner {
     position: fixed;

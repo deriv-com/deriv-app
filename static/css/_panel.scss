@@ -477,3 +477,11 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
         }
     }
 }
+
+.gd-popup {
+    .button, .button-disabled {
+        span {
+            width: 120px;
+        }
+    }
+}

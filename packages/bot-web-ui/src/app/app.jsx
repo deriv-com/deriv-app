@@ -24,7 +24,7 @@ import Dashboard from 'Components/dashboard';
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
     const [is_loading, setIsLoading] = React.useState(true);
-    const show_dashboard = LocalStore.get('show_dbot_dashboard'); //localStorage.getItem('show_dbot_dashboard') !== 'false';
+    const show_dashboard = LocalStore.get('show_dbot_dashboard');
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;

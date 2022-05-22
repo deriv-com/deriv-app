@@ -18,10 +18,12 @@ import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import './app.scss';
+import Dashboard from '../components/dashboad';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
     const [is_loading, setIsLoading] = React.useState(true);
+    const show_dashboard = window.localStorage.getItem('show_dbot_dashboard') !== 'false';
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
@@ -49,15 +51,14 @@ const App = ({ passthrough }) => {
     }, [onMount, onUnmount]);
 
     React.useEffect(() => {
-
         const onDisconnectFromNetwork = () => {
             setIsLoading(false);
-        }
+        };
 
         window.addEventListener('offline', onDisconnectFromNetwork);
         return () => {
             window.removeEventListener('offline', onDisconnectFromNetwork);
-        }
+        };
     }, []);
 
     return is_loading ? (
@@ -65,16 +66,22 @@ const App = ({ passthrough }) => {
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
             <div className='bot'>
-                <BotNotificationMessages />
-                <NetworkToastPopup />
-                <Toolbar />
-                <MainContent />
-                <RunPanel />
-                <QuickStrategy />
-                <BotFooterExtensions />
-                <Audio />
-                <RoutePromptDialog />
-                <BlocklyLoading />
+                {show_dashboard ? (
+                    <Dashboard />
+                ) : (
+                    <>
+                        <BotNotificationMessages />
+                        <NetworkToastPopup />
+                        <Toolbar />
+                        <MainContent />
+                        <RunPanel />
+                        <QuickStrategy />
+                        <BotFooterExtensions />
+                        <Audio />
+                        <RoutePromptDialog />
+                        <BlocklyLoading />
+                    </>
+                )}
             </div>
         </MobxContentProvider>
     );

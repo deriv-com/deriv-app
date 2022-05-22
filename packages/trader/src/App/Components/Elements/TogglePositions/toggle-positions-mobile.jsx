@@ -3,7 +3,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Icon, Div100vhContainer, Modal, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { BinaryLink } from 'App/Components/Routes';
+import { NavLink } from 'react-router-dom';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
@@ -111,13 +111,13 @@ const TogglePositionsMobile = ({
                         {is_empty || error ? <EmptyPortfolioMessage error={error} /> : body_content}
                     </div>
                     <div className='positions-modal__footer'>
-                        <BinaryLink
+                        <NavLink
                             onClick={closeModal}
                             className='dc-btn dc-btn--secondary dc-btn__large positions-modal__footer-btn'
-                            // to={routes.positions}
+                            to={routes.positions}
                         >
                             <span className='dc-btn__text'>{localize('Go to Reports')}</span>
-                        </BinaryLink>
+                        </NavLink>
                     </div>
                 </Div100vhContainer>
             </Modal>

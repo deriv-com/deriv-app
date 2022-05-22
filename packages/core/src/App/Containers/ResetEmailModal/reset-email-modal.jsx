@@ -143,14 +143,6 @@ const ResetEmailModal = ({
                                                 }}
                                             />
                                         </fieldset>
-                                        <Text align='center' as='p' size='xxs' className='reset-email__subtext'>
-                                            {status.error_msg && (
-                                                <Localize
-                                                    i18n_default_text='{{error_msg}}'
-                                                    values={{ error_msg: status.error_msg }}
-                                                />
-                                            )}
-                                        </Text>
                                         <Button
                                             className={classNames('reset-email__btn', {
                                                 'reset-email__btn--disabled':

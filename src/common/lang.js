@@ -9,6 +9,7 @@ export const getLanguage = () => {
     setStorage('lang', lang);
     setCookieLanguage(lang);
     return lang;
+    
 };
 
 const addUiLang = () => {

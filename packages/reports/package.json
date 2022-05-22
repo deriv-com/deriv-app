@@ -86,7 +86,6 @@
       "@deriv/api-types": "1.0.48",
       "@deriv/components": "^1.0.0",
       "@deriv/deriv-api": "^1.0.8",
-      "@deriv/trader": "^3.8.0",
       "@deriv/shared": "^1.0.0",
       "@deriv/translations": "^1.0.0",
       "@types/classnames": "^2.2.11",

@@ -9,6 +9,7 @@ module.exports = function (env) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             reports: path.resolve(__dirname, '../src', 'index.jsx'),
+            'positions-drawer-card': 'Components/Elements/PositionsDrawerCard',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -45,13 +46,11 @@ module.exports = function (env) {
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
-                '@deriv/trader': '@deriv/trader',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,
             /^@deriv\/translations\/.+$/,
             /^@deriv\/account\/.+$/,
-            /^@deriv\/trader\/.+$/,
         ],
         target: 'web',
         plugins: plugins(base, false),

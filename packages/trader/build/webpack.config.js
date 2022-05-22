@@ -9,7 +9,6 @@ module.exports = function (env) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             trader: path.resolve(__dirname, '../src', 'index.tsx'),
-            'positions-drawer-card': 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
@@ -17,6 +18,21 @@ import { connect } from 'Stores/connect';
 import AccountPromptDialog from 'Components/account-prompt-dialog.jsx';
 import ErrorDialog from 'Components/error-dialog.jsx';
 import 'Sass/cashier.scss';
+
+const SideNotes = ({ class_name, side_notes }) => {
+    return (
+        <div
+            className={classNames('dc-vertical-tab__content-side-note', class_name)}
+            data-testid='vertical_tab_side_note'
+        >
+            {side_notes?.map((note, i) => (
+                <div className='dc-vertical-tab__content-side-note-item' key={i}>
+                    {note}
+                </div>
+            ))}
+        </div>
+    );
+};
 
 const Cashier = ({
     history,
@@ -45,6 +61,14 @@ const Cashier = ({
     tab_index,
     toggleCashier,
 }) => {
+    const [side_notes, setSideNotes] = React.useState();
+
+    const notes_array = [];
+    const addToNotesQueue = notes => {
+        notes_array.unshift(notes);
+        setSideNotes(notes);
+    };
+
     React.useEffect(() => {
         toggleCashier();
         // we still need to populate the tabs shown on cashier
@@ -168,7 +192,10 @@ const Cashier = ({
                                     component_icon={selected_route.icon_component}
                                     history={history}
                                     menu_options={getMenuOptions()}
-                                />
+                                    setSideNotes={addToNotesQueue}
+                                >
+                                    <SideNotes side_notes={side_notes} />
+                                </selected_route.component>
                             )}
                         </Div100vhContainer>
                     </MobileWrapper>

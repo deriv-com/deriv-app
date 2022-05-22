@@ -9,6 +9,7 @@ import EmailSent from './email-sent.jsx';
 import 'Sass/send-email.scss';
 
 const SendEmail = ({
+    children,
     crypto_transactions,
     currency,
     is_email_sent,
@@ -57,6 +58,7 @@ const SendEmail = ({
                     <MobileWrapper>
                         {isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
                     </MobileWrapper>
+                    {children}
                 </React.Fragment>
             )}
         </div>

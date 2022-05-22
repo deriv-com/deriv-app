@@ -194,6 +194,7 @@ let mt_accounts_to = [];
 let dxtrade_accounts_to = [];
 
 const AccountTransferForm = ({
+    children,
     account_limits,
     accounts_list,
     account_transfer_amount,
@@ -607,7 +608,7 @@ const AccountTransferForm = ({
                                 </div>
                                 <MobileWrapper>
                                     {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
-                                    <AccountTransferNote
+                                    {/* <AccountTransferNote
                                         allowed_transfers_count={{
                                             internal: internal_remaining_transfers?.allowed,
                                             mt5: mt5_remaining_transfers?.allowed,
@@ -620,7 +621,7 @@ const AccountTransferForm = ({
                                         is_dxtrade_allowed={is_dxtrade_allowed}
                                         is_dxtrade_transfer={is_dxtrade_transfer}
                                         is_mt_transfer={is_mt_transfer}
-                                    />
+                                    /> */}
                                 </MobileWrapper>
                                 <FormError error={error} />
                             </Form>
@@ -628,6 +629,7 @@ const AccountTransferForm = ({
                     </React.Fragment>
                 )}
             </Formik>
+            {children}
         </div>
     );
 };

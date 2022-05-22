@@ -14,6 +14,7 @@ import AccountTransferReceipt from 'Components/Receipt/account-transfer-receipt.
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 
 const AccountTransfer = ({
+    children,
     accounts_list,
     container,
     error,
@@ -94,7 +95,11 @@ const AccountTransfer = ({
         return <CryptoTransactionsHistory />;
     }
 
-    return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
+    return (
+        <AccountTransferForm error={error} setSideNotes={setSideNotes}>
+            {children}
+        </AccountTransferForm>
+    );
 };
 
 AccountTransfer.propTypes = {

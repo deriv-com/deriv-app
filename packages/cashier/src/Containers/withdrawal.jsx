@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+// eslint-disable-next-line no-unused-vars
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CryptoWithdrawForm from 'Components/Form/crypto-withdraw-form.jsx';
@@ -42,6 +43,7 @@ const WithdrawalSideNote = ({ currency }) => {
 };
 
 const Withdrawal = ({
+    children,
     balance,
     check10kLimit,
     container,
@@ -91,7 +93,7 @@ const Withdrawal = ({
     }, [willMountWithdraw]);
 
     React.useEffect(() => {
-        if (isDesktop()) {
+        // if (isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
                 const side_notes = [];
                 if (crypto_transactions?.length) {
@@ -105,7 +107,7 @@ const Withdrawal = ({
                 side_notes.push(side_note);
                 setSideNotes(side_notes);
             } else setSideNotes(null);
-        }
+        // }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);
 
@@ -148,7 +150,11 @@ const Withdrawal = ({
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
-    return <SendEmail />;
+    return (
+        <SendEmail>
+            {children}
+        </SendEmail>
+    );
 };
 
 Withdrawal.propTypes = {

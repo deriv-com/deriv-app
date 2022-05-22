@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import CFDAccountCopy from '../cfd-account-copy';
+import { CFDAccountCopy } from '../cfd-account-copy';
 
 describe('<CFDAccountCopy />', () => {
     it('component should be rendered', () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-export const EmptyPortfolioMessage = ({ error }) => (
+const EmptyPortfolioMessage = ({ error }) => (
     <div className='portfolio-empty'>
         <div className='portfolio-empty__wrapper'>
             {error ? (
@@ -22,3 +22,5 @@ export const EmptyPortfolioMessage = ({ error }) => (
         </div>
     </div>
 );
+
+export default EmptyPortfolioMessage;

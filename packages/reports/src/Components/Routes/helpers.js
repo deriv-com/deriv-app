@@ -1,5 +1,4 @@
 import { matchPath } from 'react-router';
-import { routes } from '@deriv/shared';
 
 export const normalizePath = path => (/^\//.test(path) ? path : `/${path || ''}`); // Default to '/'
 

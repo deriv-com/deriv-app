@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom';
 import { ContractCard } from '@deriv/components';
 import { getContractPath, isCryptoContract, isMultiplierContract } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
-import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 
@@ -210,22 +209,5 @@ PositionsDrawerCard.propTypes = {
     toggleUnsupportedContractModal: PropTypes.func,
     type: PropTypes.string,
 };
-
-// export default connect(({ modules, ui, client, common }) => ({
-//     currency: client.currency,
-//     server_time: common.server_time,
-//     addToast: ui.addToast,
-//     current_focus: ui.current_focus,
-//     onClickCancel: modules.portfolio.onClickCancel,
-//     onClickSell: modules.portfolio.onClickSell,
-//     onClickRemove: modules.portfolio.removePositionById,
-//     getContractById: modules.contract_trade.getContractById,
-//     is_mobile: ui.is_mobile,
-//     removeToast: ui.removeToast,
-//     setCurrentFocus: ui.setCurrentFocus,
-//     should_show_cancellation_warning: ui.should_show_cancellation_warning,
-//     toggleCancellationWarning: ui.toggleCancellationWarning,
-//     toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
-// }))(PositionsDrawerCard);
 
 export default PositionsDrawerCard;

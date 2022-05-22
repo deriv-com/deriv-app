@@ -1,5 +1,4 @@
 import { getMarketNamesMap, getContractConfig } from 'Constants/contract';
-import { localize } from '@deriv/translations';
 
 /**
  * Fetch market information from shortcode

@@ -180,7 +180,6 @@ export default connect(({ modules, ui, client, common }) => ({
     onClickSell: modules.portfolio.onClickSell,
     onClickRemove: modules.portfolio.removePositionById,
     getContractById: modules.contract_trade.getContractById,
-    is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,
     setCurrentFocus: ui.setCurrentFocus,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,

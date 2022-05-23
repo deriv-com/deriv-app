@@ -183,7 +183,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                             header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
                                             content: <PaymentMethodAccordionContent payment_method={payment_method} />,
                                         }))}
-                                        expand_all={should_expand_all}
+                                        is_expand_all={should_expand_all}
                                     />
                                 </div>
                             ) : (

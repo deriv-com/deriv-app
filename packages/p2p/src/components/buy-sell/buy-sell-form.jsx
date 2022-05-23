@@ -110,7 +110,7 @@ const BuySellForm = props => {
                 buy_sell_store.setShouldShowPopup(false);
                 // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
                 setTimeout(() => {
-                    buy_sell_store.setShowRateChangedPopup(true);
+                    buy_sell_store.setShowRateChangeModal(true);
                 }, 250);
             } else {
                 buy_sell_store.handleSubmit(() => isMounted(), ...args);

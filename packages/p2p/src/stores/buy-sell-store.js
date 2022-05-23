@@ -32,7 +32,7 @@ export default class BuySellStore extends BaseStore {
     @observable should_use_client_limits = false;
     @observable show_advertiser_page = false;
     @observable show_filter_payment_methods = false;
-    @observable show_rate_changed_popup = false;
+    @observable show_rate_change_modal = false;
     @observable sort_by = 'rate';
     @observable submitForm = () => {};
     @observable table_type = buy_sell.BUY;
@@ -490,8 +490,8 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    setShowRateChangedPopup(show_rate_changed_popup) {
-        this.show_rate_changed_popup = show_rate_changed_popup;
+    setShowRateChangeModal(show_rate_change_modal) {
+        this.show_rate_change_modal = show_rate_change_modal;
     }
 
     @action.bound

@@ -145,10 +145,10 @@ const Duration = ({
                     is_alignment_left
                     is_nativepicker={false}
                     list={duration_units_list}
-                    name='advanced_duration_unit'
+                    name='simple_duration_unit'
                     no_border={true}
                     onChange={changeDurationUnit}
-                    value={advanced_duration_unit}
+                    value={simple_duration_unit}
                 />
             )}
             {!has_toggle && <RangeSlider name='duration' value={duration_t} {...props.shared_input} />}

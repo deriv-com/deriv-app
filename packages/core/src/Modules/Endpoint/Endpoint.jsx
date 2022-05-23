@@ -26,14 +26,14 @@ const InputField = props => {
 // doesn't need localization as it's for internal use
 const Endpoint = () => {
     const platform_store = React.useContext(PlatformContext);
-    const show_dbot_dashboard = LocalStore.get('show_dbot_dashboard') !== 'false';
+    const dbot_dashboard_storage = LocalStore.get('show_dbot_dashboard');
     return (
         <Formik
             initialValues={{
                 app_id: getAppId(),
                 server: getSocketURL(),
                 is_appstore_enabled: platform_store.is_appstore,
-                show_dbot_dashboard,
+                show_dbot_dashboard: dbot_dashboard_storage !== undefined && dbot_dashboard_storage !== 'false',
                 is_debug_service_worker_enabled: !!getDebugServiceWorker(),
             }}
             validate={values => {

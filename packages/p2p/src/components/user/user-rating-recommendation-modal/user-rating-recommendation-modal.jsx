@@ -4,7 +4,6 @@ import { Button, Icon, Modal, Text, Rating } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { user_recommendation as Recommendation } from 'Constants/user-recommendation.js';
 
-// TODO: Implement appropriate Icons - Star for rating and Thumbs up & thumbs down for recommendation
 const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendation, user_type }) => {
     const [user_rating, setUserRating] = React.useState(0);
     const [user_recommendation, setUserRecommendation] = React.useState(null);
@@ -34,8 +33,8 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
                 <div className='user-rating-recommendation__layout--vertical'>
                     <Rating
                         value={user_rating}
-                        icon_selected={<Icon icon='IcArchive' size={16} custom_color='var(--status-warning)' />}
-                        icon_unselected={<Icon icon='IcUnarchive' size={16} custom_color='var(--status-default)' />}
+                        icon_selected={<Icon icon='IcStarFilled' size={16} custom_color='var(--status-warning)' />}
+                        icon_unselected={<Icon icon='IcStarUnfilled' size={16} custom_color='var(--status-default)' />}
                         onClick={setUserRating}
                     />
                     {user_rating && (
@@ -45,7 +44,7 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
                                 <Button small transparent>
                                     <div className='user-rating-recommendation__layout--horizontal'>
                                         <Icon
-                                            icon='IcArchive'
+                                            icon='IcThumbsUp'
                                             size={14}
                                             custom_color={
                                                 user_recommendation === Recommendation.YES
@@ -59,7 +58,7 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
                                 <Button small transparent>
                                     <div className='user-rating-recommendation__layout--horizontal'>
                                         <Icon
-                                            icon='IcUnarchive'
+                                            icon='IcThumbsDown'
                                             size={14}
                                             custom_color={
                                                 user_recommendation === Recommendation.NO

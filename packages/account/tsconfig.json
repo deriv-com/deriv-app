@@ -14,7 +14,6 @@
             "Layout/*": ["src/Layout/*"],
             "Modules/*": ["src/Modules/*"],
             "Sections/*": ["src/Sections/*"],
-            "Services/*": ["src/Services/*"],
             "Stores/*": ["src/Stores/*"],
             "Styles/*": ["src/Styles/*"]
         }

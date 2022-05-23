@@ -16,12 +16,12 @@ const Trader = React.lazy(() =>
     })
 );
 
-const CFD = React.lazy(() => {
+const CFD = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
     })
-});
+);
 
 const Account = React.lazy(() =>
     moduleLoader(() => {

@@ -16,7 +16,7 @@
         }
     }
     &__subtext {
-        color: red;
+        color: var(--status-danger);
         position: relative;
         bottom: 3rem;
     }
@@ -102,7 +102,7 @@
     }
 
     &__currentEmail {
-        color: red;
+        color: var(--status-danger);
         font-style: italic;
         font-weight: bold;
     }

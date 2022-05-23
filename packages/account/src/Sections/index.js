@@ -4,6 +4,7 @@ import PersonalDetails from 'Sections/Profile/PersonalDetails';
 import FinancialAssessment from 'Sections/Profile/FinancialAssessment';
 import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
+import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
 import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 import ApiToken from 'Sections/Security/ApiToken';
 import SelfExclusion from 'Sections/Security/SelfExclusion';
@@ -20,6 +21,7 @@ export {
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
+    ProofOfIncome,
     TwoFactorAuthentication,
     ApiToken,
     SelfExclusion,

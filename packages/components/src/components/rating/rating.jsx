@@ -8,7 +8,7 @@ const Rating = ({
     background_class,
     direction = 'ltr',
     disable_hover = false,
-    display_default_content,
+    default_content,
     element_class,
     icon_selected,
     icon_unselected,
@@ -75,8 +75,8 @@ const Rating = ({
         validateInitialValue();
     }, [value, max_rating]);
 
-    if (!!display_default_content && value <= 0) {
-        return display_default_content;
+    if (!!default_content && value <= 0) {
+        return default_content;
     }
 
     return (
@@ -116,11 +116,11 @@ const Rating = ({
 };
 
 Rating.propTypes = {
-    allow_half_rating: PropTypes.bool,
+    allow_half_rating: PropTypes.bool, // Allows user to rate in steps of 0.5
     background_class: PropTypes.string,
     direction: PropTypes.oneOf(['ltr', 'rtl']),
     disable_hover: PropTypes.bool,
-    display_default_content: PropTypes.element,
+    default_content: PropTypes.element, // Content to be rendered when rating values are not required/available
     element_class: PropTypes.string,
     icon_selected: PropTypes.element.isRequired,
     icon_unselected: PropTypes.element.isRequired,

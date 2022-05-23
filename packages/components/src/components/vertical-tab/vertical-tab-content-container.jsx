@@ -49,10 +49,8 @@ const Content = ({ is_routed, items, selected, side_note_class_name, side_note_c
 
     const SideNoteComponent = () => {
         const Component = side_note_component ? side_note_component : 'SideNotes';
-        return (
-            <Component selected_item={selected_item} side_notes={side_notes} class_name={side_note_class_name} />
-        );
-    }
+        return <Component selected_item={selected_item} side_notes={side_notes} class_name={side_note_class_name} />;
+    };
 
     return (
         <React.Fragment>

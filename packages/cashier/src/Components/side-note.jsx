@@ -20,15 +20,16 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => (
             </DesktopWrapper>
         )}
 
-        {side_notes && side_notes.map((note, i) =>
-            has_bullets ? (
-                <SideNoteBullet key={i}>{note}</SideNoteBullet>
-            ) : (
-                <Text key={i} className='side-note__text' size='xxs' as='p'>
-                    {note}
-                </Text>
-            )
-        )}
+        {side_notes &&
+            side_notes.map((note, i) =>
+                has_bullets ? (
+                    <SideNoteBullet key={i}>{note}</SideNoteBullet>
+                ) : (
+                    <Text key={i} className='side-note__text' size='xxs' as='p'>
+                        {note}
+                    </Text>
+                )
+            )}
     </div>
 );
 

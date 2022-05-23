@@ -142,9 +142,7 @@ const CashierDefault = ({
     return (
         <div>
             {is_currency_banner_visible && (
-                <MobileWrapper>
-                    {/* <CashierDefaultSideNote is_crypto={is_crypto} /> */}
-                </MobileWrapper>
+                <MobileWrapper>{/* <CashierDefaultSideNote is_crypto={is_crypto} /> */}</MobileWrapper>
             )}
             <div className='cashier-default'>
                 <div className='cashier-default-header'>

@@ -4,38 +4,29 @@ import { Icon, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, routes } from '@deriv/shared';
 import 'Sass/cashier-default.scss';
 
-const notes = (
-    is_crypto,
-    can_change_fiat_currency,
-    currency,
-    openRealAccountSignup,
-    setDepositTarget,
-) => {
+const notes = (is_crypto, can_change_fiat_currency, currency, openRealAccountSignup, setDepositTarget) => {
     const notes_array = [];
 
     const currency_code = getCurrencyDisplayCode(currency);
 
     if (is_crypto) {
         notes_array.push(
-            <Localize
-                i18n_default_text='This is your {{currency_code}} account.'
-                values={{ currency_code }}
-            />
-        )
+            <Localize i18n_default_text='This is your {{currency_code}} account.' values={{ currency_code }} />
+        );
     } else {
         notes_array.push(
             <Localize
                 i18n_default_text='Your fiat account currency is set to {{currency_code}}.'
                 values={{ currency_code }}
             />
-        )
+        );
     }
 
     if (is_crypto) {
         notes_array.push(
             <Localize
-            i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
-            values={{ currency_code }}
+                i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
+                values={{ currency_code }}
             />
         );
     } else if (can_change_fiat_currency) {
@@ -76,7 +67,7 @@ const notes = (
                 </Text>
                 <Icon icon='IcChevronRight' color='red' />
             </div>
-        )
+        );
     }
 
     return notes_array;

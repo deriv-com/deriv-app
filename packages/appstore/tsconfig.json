@@ -1,0 +1,18 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "baseUrl": "./",
+        "paths": {
+            "Components/*": ["src/components/*"],
+            "Constants/*": ["src/constants/*"],
+            "Services/*": ["src/services/*"],
+            "Stores/*": ["src/stores/*"],
+            "Stores": ["src/stores/index"],
+            "Types": ["src/types"],
+            "Utils": ["src/utils"]
+        }
+    },
+    "include": ["./src/**/*.ts", "./src/**/*.tsx"]
+}

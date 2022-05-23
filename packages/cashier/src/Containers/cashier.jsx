@@ -12,7 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, getStaticUrl, isMobile, routes, WS, platforms } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from 'Components/account-prompt-dialog.jsx';
 import ErrorDialog from 'Components/error-dialog.jsx';
@@ -23,10 +23,12 @@ const Cashier = ({
     is_account_transfer_visible,
     is_account_setting_loaded,
     is_cashier_default,
+    is_crypto,
     is_crypto_transactions_visible,
     is_loading,
     is_logged_in,
     is_logging_in,
+    is_from_derivgo,
     is_onramp_tab_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
@@ -36,7 +38,6 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
-    platform,
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
@@ -50,16 +51,16 @@ const Cashier = ({
         return () => {
             toggleCashier();
         };
-    }, []);
+    }, [toggleCashier]);
     React.useEffect(() => {
         (async () => {
-            await WS.wait('authorize');
+            await WS?.wait('authorize');
             if (is_logged_in) {
                 onMount();
                 setAccountSwitchListener();
             }
         })();
-    }, [is_logged_in]);
+    }, [is_logged_in, onMount, setAccountSwitchListener]);
 
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
@@ -107,20 +108,21 @@ const Cashier = ({
         return selected_route.getTitle();
     };
 
+    const getSideNoteClassName = () => {
+        return location.pathname?.endsWith(routes.cashier_withdrawal) && !is_crypto ? 'cashier__side-note' : '';
+    };
+
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <AccountPromptDialog />
             <ErrorDialog />
             <div className='cashier'>
-                <PageOverlay
-                    header={getHeaderTitle()}
-                    onClickClose={onClickClose}
-                    is_close_disabled={!!platforms[platform]}
-                >
+                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
                             id='cashier'
+                            side_note_class_name={getSideNoteClassName()}
                             classNameHeader='cashier__tab-header'
                             current_path={location.pathname}
                             is_floating
@@ -185,6 +187,7 @@ Cashier.propTypes = {
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    is_from_derivgo: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
@@ -194,7 +197,6 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
-    platform: PropTypes.string,
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
@@ -207,10 +209,12 @@ export default connect(({ client, common, modules, ui }) => ({
     is_cashier_default: modules.cashier.general_store.is_cashier_default,
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
+    is_crypto: modules.cashier.general_store.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_loading: modules.cashier.general_store.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    is_from_derivgo: common.is_from_derivgo,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
@@ -219,7 +223,6 @@ export default connect(({ client, common, modules, ui }) => ({
     is_visible: ui.is_cashier_visible,
     onMount: modules.cashier.general_store.onMountCommon,
     p2p_notification_count: modules.cashier.general_store.p2p_notification_count,
-    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.general_store.setAccountSwitchListener,
     setTabIndex: modules.cashier.general_store.setCashierTabIndex,

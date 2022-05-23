@@ -4,6 +4,7 @@ import { when } from 'mobx';
 import { MobileWrapper } from '@deriv/components';
 import { isMobile, routes, WS } from '@deriv/shared';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
+import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { connect, MobxContentProvider } from 'Stores/connect';
 
 const TradeHeaderExtensions = props => {
@@ -15,7 +16,6 @@ const TradeHeaderExtensions = props => {
         onPositionsCancel,
         onPositionsRemove,
         onPositionsSell,
-        onUnmountPositions,
         populateHeaderExtensions,
         setAccountSwitchListener,
         store,
@@ -29,13 +29,20 @@ const TradeHeaderExtensions = props => {
     const populateHeader = React.useCallback(() => {
         const {
             is_logged_in,
-            is_positions_empty,
             active_positions_count,
             positions,
             positions_currency,
             positions_error,
+            trade_contract_type,
+            symbol,
         } = props_ref.current;
 
+        const symbol_positions = positions.filter(
+            p =>
+                p.contract_info &&
+                symbol === p.contract_info.underlying &&
+                filterByContractType(p.contract_info, trade_contract_type)
+        );
         const header_items = is_logged_in && show_positions_toggle && (
             <MobileWrapper>
                 <MobxContentProvider store={store}>
@@ -44,7 +51,7 @@ const TradeHeaderExtensions = props => {
                         all_positions={positions}
                         currency={positions_currency}
                         disableApp={disableApp}
-                        is_empty={is_positions_empty}
+                        is_empty={!symbol_positions.length}
                         enableApp={enableApp}
                         error={positions_error}
                         onClickSell={onPositionsSell}
@@ -87,13 +94,11 @@ const TradeHeaderExtensions = props => {
         waitForLogin();
 
         return () => {
-            if (isMobile()) onUnmountPositions();
             populateHeaderExtensions(null);
         };
     }, [
         onMountCashier,
         onMountPositions,
-        onUnmountPositions,
         populateHeader,
         populateHeaderExtensions,
         setAccountSwitchListener,
@@ -117,15 +122,15 @@ export default connect(({ client, modules, ui }) => ({
     positions_currency: client.currency,
     is_logged_in: client.is_logged_in,
     positions: modules.portfolio.all_positions,
-    positions_error: modules.portfolio.error,
-    is_positions_empty: modules.portfolio.is_empty,
     onPositionsSell: modules.portfolio.onClickSell,
+    positions_error: modules.portfolio.error,
     onPositionsRemove: modules.portfolio.removePositionById,
     onPositionsCancel: modules.portfolio.onClickCancel,
     onMountCashier: modules.cashier.general_store.onMountCommon,
     onMountPositions: modules.portfolio.onMount,
-    onUnmountPositions: modules.portfolio.onUnmount,
     active_positions_count: modules.portfolio.active_positions_count,
+    trade_contract_type: modules.trade.contract_type,
+    symbol: modules.trade.symbol,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     populateHeaderExtensions: ui.populateHeaderExtensions,

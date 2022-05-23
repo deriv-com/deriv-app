@@ -3,4 +3,7 @@
         color: var(--status-danger);
         font-weight: var(--text-weight-bold);
     }
+    &__dialog {
+        text-decoration: underline;
+    }
 }

@@ -161,4 +161,4 @@ PurchaseFieldset.propTypes = {
     type: PropTypes.string,
 };
 
-export default PurchaseFieldset;
+export default React.memo(PurchaseFieldset);

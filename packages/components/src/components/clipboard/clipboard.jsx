@@ -41,7 +41,7 @@ const Clipboard = ({
 
     React.useEffect(() => {
         return () => clearTimeout(timeout_clipboard);
-    }, []);
+    }, [timeout_clipboard]);
 
     return (
         <>

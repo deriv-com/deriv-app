@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
 import 'Sass/crypto-fiat-converter.scss';
 
-const Timer = props => {
+const Timer = ({ onComplete }) => {
     const initial_time = 60;
     const [remaining_time, setRemainingTime] = React.useState(initial_time);
 
@@ -19,10 +19,10 @@ const Timer = props => {
     }, 1000);
     React.useEffect(() => {
         if (remaining_time === 0) {
-            props.onComplete();
+            onComplete();
             setRemainingTime(initial_time);
         }
-    });
+    }, [onComplete, remaining_time]);
 
     return (
         <Text as='p' size='xs' color='less-prominent' className='timer'>
@@ -95,7 +95,11 @@ const CryptoFiatConverter = ({
                 {arrow_icon_direction === 'right' ? <Icon icon='IcArrowDownBold' /> : <Icon icon='IcArrowUpBold' />}
             </MobileWrapper>
             <DesktopWrapper>
-                {arrow_icon_direction === 'right' ? <Icon icon='IcArrowRightBold' /> : <Icon icon='IcArrowLeftBold' />}
+                {arrow_icon_direction === 'right' ? (
+                    <Icon icon='IcArrowRightBold' id='arrow_right_bold' />
+                ) : (
+                    <Icon icon='IcArrowLeftBold' id='arrow_left_bold' />
+                )}
             </DesktopWrapper>
             <Field name='converter_to_amount' validate={validateToAmount}>
                 {({ field }) => (
@@ -160,7 +164,4 @@ export default connect(({ modules }) => ({
     converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
     converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
     is_timer_visible: modules.cashier.crypto_fiat_converter.is_timer_visible,
-    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
-    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
-    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
 }))(CryptoFiatConverter);

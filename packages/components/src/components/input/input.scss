@@ -29,6 +29,21 @@
         border-color: var(--general-disabled);
         color: var(--text-disabled);
     }
+    &--error {
+        border-color: var(--brand-red-coral) !important;
+        @media (max-width: 992px) {
+            margin-bottom: 5rem;
+        }
+
+        label {
+            color: var(--brand-red-coral) !important;
+        }
+    }
+    &--hint {
+        @media (max-width: 992px) {
+            margin-bottom: 5rem;
+        }
+    }
     &__field {
         background: none;
         color: var(--text-prominent);
@@ -226,16 +241,6 @@
             color: var(--text-prominent);
             padding: 0 4px;
             background-color: var(--fill-normal);
-        }
-    }
-    &--error {
-        border-color: var(--brand-red-coral) !important;
-        @media (max-width: 992px) {
-            margin-bottom: 5rem;
-        }
-
-        label {
-            color: var(--brand-red-coral) !important;
         }
     }
     &__footer {

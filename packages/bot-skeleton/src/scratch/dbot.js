@@ -127,12 +127,12 @@ class DBot {
     runBot() {
         try {
             const code = this.generateCode();
-
             if (this.interpreter !== null) {
                 this.interpreter = null;
             }
 
-            this.interpreter = new Interpreter();
+            this.interpreter = Interpreter();
+
             this.interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
                 this.stopBot();
@@ -160,6 +160,21 @@ class DBot {
             var BinaryBotPrivateLastTickTime;
             var BinaryBotPrivateTickAnalysisList = [];
             var BinaryBotPrivateHasCalledTradeOptions = false;
+
+           
+            function recursiveList(list, final_list){
+                for(var i=0; i < list.length; i++){
+                    if(typeof(list[i]) === 'object'){
+                        recursiveList(list[i], final_list);
+                    }
+                    if(typeof(list[i]) == 'number'){
+                        final_list.push(list[i]);   
+                                  	
+                    }
+                }
+                return final_list;
+            }
+
             function BinaryBotPrivateRun(f, arg) {
                 if (f) return f(arg);
                 return false;
@@ -474,6 +489,25 @@ class DBot {
                 }
             }
         });
+    }
+
+    /**
+     * Checks whether the workspace contains non-silent notification blocks. Returns array of names for audio files to be played.
+     */
+    getStrategySounds() {
+        const all_blocks = this.workspace.getAllBlocks();
+        const notify_blocks = all_blocks.filter(block => block.type === 'notify');
+        const strategy_sounds = [];
+
+        notify_blocks.forEach(block => {
+            const selected_sound = block.inputList[0].fieldRow[3].value_;
+
+            if (selected_sound !== 'silent') {
+                strategy_sounds.push(selected_sound);
+            }
+        });
+
+        return strategy_sounds;
     }
 
     static handleDragOver(event) {

@@ -62,7 +62,7 @@ const ProofOfIdentityContainer = ({
                 });
             });
         }
-    }, [is_switching]);
+    }, [fetchResidenceList, is_switching]);
 
     if (is_status_loading || is_switching) {
         return <Loading is_fullscreen={false} />;

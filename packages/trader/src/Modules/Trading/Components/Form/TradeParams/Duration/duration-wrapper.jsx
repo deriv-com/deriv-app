@@ -34,17 +34,19 @@ const DurationWrapper = props => {
     };
 
     const setDurationUnit = () => {
-        const new_duration_unit = duration_units_list[0].value;
-        const new_duration_value = getDurationFromUnit(new_duration_unit);
+        if (duration_units_list?.length > 0) {
+            const new_duration_unit = duration_units_list[0].value;
+            const new_duration_value = getDurationFromUnit(new_duration_unit);
 
-        onChangeUiStore({
-            name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`,
-            value: new_duration_unit,
-        });
-        onChangeMultiple({
-            duration_unit: new_duration_unit,
-            duration: +new_duration_value,
-        });
+            onChangeUiStore({
+                name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`,
+                value: new_duration_unit,
+            });
+            onChangeMultiple({
+                duration_unit: new_duration_unit,
+                duration: +new_duration_value,
+            });
+        }
     };
 
     const handleEndTime = () => {
@@ -82,6 +84,15 @@ const DurationWrapper = props => {
     );
 
     React.useEffect(() => {
+        if (duration_unit === 'd') {
+            onChangeUiStore({
+                name: 'is_advanced_duration',
+                value: true,
+            });
+        }
+    }, [duration_unit, onChangeUiStore]);
+
+    React.useEffect(() => {
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
 
@@ -99,6 +110,7 @@ const DurationWrapper = props => {
         if (expiry_type === 'endtime') handleEndTime();
 
         assertDurationIsWithinBoundary(current_duration);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

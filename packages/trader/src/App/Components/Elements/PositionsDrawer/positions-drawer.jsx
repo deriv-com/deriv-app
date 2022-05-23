@@ -58,7 +58,6 @@ const PositionsDrawer = ({
     toggleDrawer,
     trade_contract_type,
     onMount,
-    onUnmount,
 }) => {
     const drawer_ref = React.useRef(null);
     const list_ref = React.useRef(null);
@@ -66,10 +65,7 @@ const PositionsDrawer = ({
 
     React.useEffect(() => {
         onMount();
-        return () => {
-            onUnmount();
-        };
-    }, []);
+    }, [onMount]);
 
     React.useEffect(() => {
         list_ref?.current?.scrollTo(0);
@@ -146,7 +142,6 @@ PositionsDrawer.propTypes = {
     onChangeContractUpdate: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
     onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
     symbol: PropTypes.string,
     toggleDrawer: PropTypes.func,
 };
@@ -156,7 +151,6 @@ export default connect(({ modules, ui }) => ({
     error: modules.portfolio.error,
     onHoverPosition: modules.portfolio.onHoverPosition,
     onMount: modules.portfolio.onMount,
-    onUnmount: modules.portfolio.onUnmount,
     symbol: modules.trade.symbol,
     trade_contract_type: modules.trade.contract_type,
     is_mobile: ui.is_mobile,

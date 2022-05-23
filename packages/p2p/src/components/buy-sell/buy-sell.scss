@@ -11,8 +11,8 @@
 
         @include mobile {
             border-bottom: 1px solid var(--general-section-1);
-            margin-bottom: unset;
-            padding-bottom: 1.2rem;
+            margin: unset;
+            padding: 1.2rem 0;
 
             .page-return__button {
                 padding: 0 1.6rem;
@@ -41,6 +41,22 @@
             display: flex;
             flex-direction: column;
         }
+
+        &-sort {
+            display: flex;
+            flex-direction: column;
+            margin: 1.2rem 2.4rem;
+
+            &--divider {
+                border-top: 1px solid var(--border-normal);
+            }
+
+            &-radiogroup {
+                height: 10rem;
+                display: flex;
+                flex-direction: column;
+            }
+        }
     }
 
     &__data-list {
@@ -57,7 +73,7 @@
 
     &__table-header {
         display: grid;
-        grid-template-columns: 2fr repeat(3, 1fr);
+        grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;
 
         > .dc-table__head:first-child {
             margin-left: 1.6rem;
@@ -66,7 +82,7 @@
 
     &__table-row {
         padding: 1.6rem;
-        grid-template-columns: 2fr repeat(3, 1fr);
+        grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;
 
         &:hover {
             background-color: var(--general-hover);
@@ -84,10 +100,17 @@
             display: flex;
             flex-direction: column;
             margin-left: 0.8rem;
+
+            &__row {
+                display: flex;
+                flex-direction: row;
+            }
         }
     }
 
     &__name {
+        padding-right: 0.4rem;
+
         &:hover {
             color: var(--brand-red-coral);
             text-decoration: underline;
@@ -99,5 +122,38 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+}
+
+.dc-modal__container {
+    &_sort {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.dc-radio-group {
+    &.sort-radiogroup {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin: unset;
+    }
+    .dc-radio-group__item {
+        &.sort-radiogroup {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            margin: unset;
+            padding: 1.2rem 2.4rem;
+            width: 100%;
+
+            &:first-child {
+                border-bottom: 1px solid var(--border-normal);
+            }
+        }
     }
 }

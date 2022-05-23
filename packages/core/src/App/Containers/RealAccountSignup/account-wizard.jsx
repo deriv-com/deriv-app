@@ -262,10 +262,14 @@ const AccountWizard = props => {
     const onAcceptRisk = () => {
         createRealAccount({ accept_risk: 1 });
     };
+    const onDeclineRisk = () => {
+        props.onClose();
+        props.setIsRiskWarningVisible(false);
+    };
 
     if (props.is_loading) return <LoadingModal />;
     if (should_accept_financial_risk) {
-        return <AcceptRiskForm onSubmit={onAcceptRisk} />;
+        return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
     if (!mounted) return null;
     if (!finished) {
@@ -332,7 +336,7 @@ AccountWizard.propTypes = {
     residence_list: PropTypes.array,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, notifications, ui }) => ({
     account_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
     realAccountSignup: client.realAccountSignup,
@@ -347,7 +351,7 @@ export default connect(({ client, ui }) => ({
     states_list: client.states_list,
     fetchStatesList: client.fetchStatesList,
     fetchResidenceList: client.fetchResidenceList,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
 }))(AccountWizard);

@@ -66,6 +66,9 @@
     &--circular {
         border-radius: 100px;
     }
+    &--transparent {
+        background: transparent;
+    }
     &--primary {
         background: var(--button-primary-default);
         color: var(--text-colored-background);

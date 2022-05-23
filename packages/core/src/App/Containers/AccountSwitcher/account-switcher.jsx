@@ -41,7 +41,7 @@ const AccountSwitcher = props => {
         if (getMaxAccountsDisplayed()) {
             setDmt5RealVisible(false);
         }
-    }, []);
+    }, [getMaxAccountsDisplayed]);
 
     React.useEffect(() => {
         if (scroll_ref.current && (is_dmt5_real_visible || is_dxtrade_real_visible)) {
@@ -51,7 +51,7 @@ const AccountSwitcher = props => {
                 inline: 'nearest',
             });
         }
-    }, [is_dmt5_real_visible, is_dxtrade_real_visible]);
+    }, [getMaxAccountsDisplayed, is_dmt5_real_visible, is_dxtrade_real_visible]);
 
     const toggleVisibility = section => {
         switch (section) {
@@ -72,9 +72,9 @@ const AccountSwitcher = props => {
         }
     };
 
-    const getMaxAccountsDisplayed = () => {
+    const getMaxAccountsDisplayed = React.useCallback(() => {
         return props?.account_list?.length > 4;
-    };
+    }, [props?.account_list?.length]);
 
     const handleLogout = async () => {
         closeAccountsDialog();
@@ -269,8 +269,8 @@ const AccountSwitcher = props => {
 
     const findServerForAccount = acc => {
         const server_name = acc.error ? acc.error.details.server : acc.server;
-        return props.mt5_login_list.length > 1
-            ? props.mt5_login_list.find(server => server.server === server_name)
+        return props.mt5_login_list.length >= 1
+            ? props.mt5_login_list.filter(account => !isDemo(account)).find(server => server.server === server_name)
             : null;
     };
 

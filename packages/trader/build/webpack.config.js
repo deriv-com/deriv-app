@@ -1,15 +1,14 @@
 const path = require('path');
 const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 
-module.exports = function (env, argv) {
-    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+module.exports = function (env) {
+    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
 
     return {
-        context: path.resolve(__dirname, '../src'),
+        context: path.resolve(__dirname, '../'),
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
-            trader: path.resolve(__dirname, '../src', 'index.js'),
-            CFDStore: 'Stores/Modules/CFD/cfd-store.js',
+            trader: path.resolve(__dirname, '../src', 'index.tsx'),
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -17,35 +16,13 @@ module.exports = function (env, argv) {
         },
         resolve: {
             alias: ALIASES,
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         optimization: {
             chunkIds: 'named',
             moduleIds: 'named',
             minimize: IS_RELEASE,
             minimizer: MINIMIZERS,
-            // splitChunks: {
-            //     chunks: 'all',
-            //     minSize: 30000,
-            //     maxSize: 0,
-            //     minChunks: 1,
-            //     maxAsyncRequests: 5,
-            //     maxInitialRequests: 3,
-            //     automaticNameDelimiter: '~',
-            //     automaticNameMaxLength: 30,
-            //     name: true,
-            //     cacheGroups: {
-            //         vendors: {
-            //             test: /[\\/]node_modules[\\/]/,
-            //             priority: -10
-            //         },
-            //         default: {
-            //             minChunks: 2,
-            //             priority: -20,
-            //             reuseExistingChunk: true
-            //         }
-            //     }
-            // }
         },
         output: {
             filename: 'trader/js/[name].js',

@@ -4,7 +4,7 @@
     align-items: center;
     margin-bottom: 4rem;
 
-    &-submit {
+    &__submit {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -15,7 +15,7 @@
             width: fit-content;
         }
         @include mobile {
-            align-items: center;
+            align-items: flex-end;
         }
 
         > * {
@@ -23,7 +23,7 @@
         }
     }
     &__icon {
-        margin-top: 2.4rem 0 0.4rem;
+        margin: 2.4rem 0 0.4rem;
     }
     &__percentage-selector {
         margin-bottom: 1.6rem;

@@ -31,176 +31,37 @@ const shouldStopOnError = (bot, errorName = '') => {
 
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
-export default class Interpreter {
-    constructor() {
-        this.init();
+// TODO chek beforState & duringState & startState
+const Interpreter = () => {
+    let $scope = createScope();
+    let bot = Interface($scope);
+    let interpreter = {};
+    let onFinish;
+
+    $scope.observer.register('REVERT', watchName =>
+        revert(watchName === 'before' ? $scope.beforeState : $scope.duringState)
+    );
+
+    function init() {
+        $scope = createScope();
+        bot = Interface($scope);
+        interpreter = {};
+        onFinish = () => {};
     }
 
-    init() {
-        this.$scope = createScope();
-        this.bot = new Interface(this.$scope);
-        this.stopped = false;
-        this.$scope.observer.register('REVERT', watchName =>
-            this.revert(watchName === 'before' ? this.beforeState : this.duringState)
-        );
+    function revert(state) {
+        interpreter.restoreStateSnapshot(state);
+        interpreter.paused_ = false;
+        loop();
     }
 
-    run(code) {
-        const initFunc = (interpreter, scope) => {
-            const bot_interface = this.bot.getInterface('Bot');
-            const ticks_interface = this.bot.getTicksInterface();
-            const { alert, prompt, sleep, console: custom_console } = this.bot.getInterface();
-
-            interpreter.setProperty(scope, 'console', interpreter.nativeToPseudo(custom_console));
-            interpreter.setProperty(scope, 'alert', interpreter.nativeToPseudo(alert));
-            interpreter.setProperty(scope, 'prompt', interpreter.nativeToPseudo(prompt));
-            interpreter.setProperty(
-                scope,
-                'getPurchaseReference',
-                interpreter.nativeToPseudo(bot_interface.getPurchaseReference)
-            );
-
-            const pseudo_bot_interface = interpreter.nativeToPseudo(bot_interface);
-
-            Object.entries(ticks_interface).forEach(([name, f]) =>
-                interpreter.setProperty(pseudo_bot_interface, name, this.createAsync(interpreter, f))
-            );
-
-            interpreter.setProperty(
-                pseudo_bot_interface,
-                'start',
-                interpreter.nativeToPseudo((...args) => {
-                    const { start } = bot_interface;
-                    if (shouldRestartOnError(this.bot)) {
-                        this.startState = interpreter.takeStateSnapshot();
-                    }
-                    start(...args);
-                })
-            );
-
-            interpreter.setProperty(
-                pseudo_bot_interface,
-                'purchase',
-                this.createAsync(interpreter, bot_interface.purchase)
-            );
-            interpreter.setProperty(
-                pseudo_bot_interface,
-                'sellAtMarket',
-                this.createAsync(interpreter, bot_interface.sellAtMarket)
-            );
-            interpreter.setProperty(scope, 'Bot', pseudo_bot_interface);
-            interpreter.setProperty(
-                scope,
-                'watch',
-                this.createAsync(interpreter, watchName => {
-                    const { watch } = this.bot.getInterface();
-
-                    if (timeMachineEnabled(this.bot)) {
-                        const snapshot = this.interpreter.takeStateSnapshot();
-                        if (watchName === 'before') {
-                            this.beforeState = snapshot;
-                        } else {
-                            this.duringState = snapshot;
-                        }
-                    }
-
-                    return watch(watchName);
-                })
-            );
-
-            interpreter.setProperty(scope, 'sleep', this.createAsync(interpreter, sleep));
-        };
-
-        return new Promise((resolve, reject) => {
-            const onError = e => {
-                if (this.stopped) {
-                    return;
-                }
-                // DBot handles 'InvalidToken' internally
-                if (e.code === 'InvalidToken') {
-                    globalObserver.emit('client.invalid_token');
-                    return;
-                }
-                if (shouldStopOnError(this.bot, e?.code)) {
-                    globalObserver.emit('ui.log.error', e.message);
-                    globalObserver.emit('bot.click_stop');
-                    return;
-                }
-
-                this.is_error_triggered = true;
-                if (!shouldRestartOnError(this.bot, e.code) || !botStarted(this.bot)) {
-                    reject(e);
-                    return;
-                }
-
-                globalObserver.emit('Error', e);
-                const { initArgs, tradeOptions } = this.bot.tradeEngine;
-                this.terminateSession();
-                this.init();
-                this.$scope.observer.register('Error', onError);
-                this.bot.tradeEngine.init(...initArgs);
-                this.bot.tradeEngine.start(tradeOptions);
-                this.revert(this.startState);
-            };
-
-            this.$scope.observer.register('Error', onError);
-
-            this.interpreter = new JSInterpreter(code, initFunc);
-            this.onFinish = resolve;
-
-            this.loop();
-        });
-    }
-
-    loop() {
-        if (this.stopped || !this.interpreter.run()) {
-            this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value));
+    function loop() {
+        if ($scope.stopped || !interpreter.run()) {
+            onFinish(interpreter.pseudoToNative(interpreter.value));
         }
     }
 
-    revert(state) {
-        this.interpreter.restoreStateSnapshot(state);
-        this.interpreter.paused_ = false; // eslint-disable-line no-underscore-dangle
-        this.loop();
-    }
-
-    terminateSession() {
-        const { connection } = this.$scope.api;
-        if (connection.readyState === 0) {
-            connection.addEventListener('open', () => connection.close());
-        } else if (connection.readyState === 1) {
-            connection.close();
-        }
-
-        this.stopped = true;
-        this.is_error_triggered = false;
-
-        globalObserver.emit('bot.stop');
-    }
-
-    stop() {
-        const global_timeouts = globalObserver.getState('global_timeouts') ?? [];
-        const is_timeouts_cancellable = Object.keys(global_timeouts).every(
-            timeout => global_timeouts[timeout].is_cancellable
-        );
-
-        if (!this.bot.tradeEngine.contractId && is_timeouts_cancellable) {
-            // When user is rate limited, allow them to stop the bot immediately
-            // granted there is no active contract.
-            global_timeouts.forEach(timeout => clearTimeout(global_timeouts[timeout]));
-            this.terminateSession();
-        } else if (this.bot.tradeEngine.isSold === false && !this.is_error_triggered) {
-            globalObserver.register('contract.status', contractStatus => {
-                if (contractStatus.id === 'contract.sold') {
-                    this.terminateSession();
-                }
-            });
-        } else {
-            this.terminateSession();
-        }
-    }
-
-    createAsync(interpreter, func) {
+    function createAsync(js_interpreter, func) {
         const asyncFunc = (...args) => {
             const callback = args.pop();
 
@@ -212,14 +73,14 @@ export default class Interpreter {
             const function_args = first_defined_arg_idx < 0 ? [] : reversed_args.slice(first_defined_arg_idx).reverse();
             // End of workaround
 
-            func(...function_args.map(arg => interpreter.pseudoToNative(arg)))
+            func(...function_args.map(arg => js_interpreter.pseudoToNative(arg)))
                 .then(rv => {
-                    callback(interpreter.nativeToPseudo(rv));
-                    this.loop();
+                    callback(js_interpreter.nativeToPseudo(rv));
+                    loop();
                 })
                 .catch(e => {
                     // e.error for errors get from API, e for code errors
-                    this.$scope.observer.emit('Error', e.error || e);
+                    $scope.observer.emit('Error', e.error || e);
                 });
         };
 
@@ -228,12 +89,153 @@ export default class Interpreter {
         // assume a max of 100.
         const MAX_ACCEPTABLE_FUNC_ARGS = 100;
         Object.defineProperty(asyncFunc, 'length', { value: MAX_ACCEPTABLE_FUNC_ARGS + 1 });
-        return interpreter.createAsyncFunction(asyncFunc);
+        return js_interpreter.createAsyncFunction(asyncFunc);
     }
 
-    hasStarted() {
-        return !this.stopped;
+    function initFunc(js_interpreter, scope) {
+        const bot_interface = bot.getInterface();
+        const { getTicksInterface, alert, prompt, sleep, console: custom_console } = bot_interface;
+        const ticks_interface = getTicksInterface;
+
+        js_interpreter.setProperty(scope, 'console', js_interpreter.nativeToPseudo(custom_console));
+        js_interpreter.setProperty(scope, 'alert', js_interpreter.nativeToPseudo(alert));
+        js_interpreter.setProperty(scope, 'prompt', js_interpreter.nativeToPseudo(prompt));
+        js_interpreter.setProperty(
+            scope,
+            'getPurchaseReference',
+            js_interpreter.nativeToPseudo(bot_interface.getPurchaseReference)
+        );
+
+        const pseudo_bot_interface = js_interpreter.nativeToPseudo(bot_interface);
+
+        Object.entries(ticks_interface).forEach(([name, f]) =>
+            js_interpreter.setProperty(pseudo_bot_interface, name, createAsync(js_interpreter, f))
+        );
+
+        js_interpreter.setProperty(
+            pseudo_bot_interface,
+            'start',
+            js_interpreter.nativeToPseudo((...args) => {
+                const { start } = bot_interface;
+                if (shouldRestartOnError(bot)) {
+                    $scope.startState = js_interpreter.takeStateSnapshot();
+                }
+                start(...args);
+            })
+        );
+
+        js_interpreter.setProperty(
+            pseudo_bot_interface,
+            'purchase',
+            createAsync(js_interpreter, bot_interface.purchase)
+        );
+        js_interpreter.setProperty(
+            pseudo_bot_interface,
+            'sellAtMarket',
+            createAsync(js_interpreter, bot_interface.sellAtMarket)
+        );
+        js_interpreter.setProperty(scope, 'Bot', pseudo_bot_interface);
+        js_interpreter.setProperty(
+            scope,
+            'watch',
+            createAsync(js_interpreter, watchName => {
+                const { watch } = bot.getInterface();
+
+                if (timeMachineEnabled(bot)) {
+                    const snapshot = interpreter.takeStateSnapshot();
+                    if (watchName === 'before') {
+                        $scope.beforeState = snapshot;
+                    } else {
+                        $scope.duringState = snapshot;
+                    }
+                }
+
+                return watch(watchName);
+            })
+        );
+
+        js_interpreter.setProperty(scope, 'sleep', createAsync(js_interpreter, sleep));
     }
-}
+
+    function stop() {
+        const global_timeouts = globalObserver.getState('global_timeouts') ?? [];
+        const is_timeouts_cancellable = Object.keys(global_timeouts).every(
+            timeout => global_timeouts[timeout].is_cancellable
+        );
+
+        if (!bot.tradeEngine.contractId && is_timeouts_cancellable) {
+            // When user is rate limited, allow them to stop the bot immediately
+            // granted there is no active contract.
+            global_timeouts.forEach(timeout => clearTimeout(global_timeouts[timeout]));
+            terminateSession();
+        } else if (bot.tradeEngine.isSold === false && !$scope.is_error_triggered) {
+            globalObserver.register('contract.status', contractStatus => {
+                if (contractStatus.id === 'contract.sold') {
+                    terminateSession();
+                }
+            });
+        } else {
+            terminateSession();
+        }
+    }
+
+    function terminateSession() {
+        const { connection } = $scope.api;
+        if (connection.readyState === 0) {
+            connection.addEventListener('open', () => connection.close());
+        } else if (connection.readyState === 1) {
+            connection.close();
+        }
+
+        $scope.stopped = true;
+        $scope.is_error_triggered = false;
+        globalObserver.emit('bot.stop');
+    }
+
+    function run(code) {
+        return new Promise((resolve, reject) => {
+            const onError = e => {
+                if ($scope.stopped) {
+                    return;
+                }
+                // DBot handles 'InvalidToken' internally
+                if (e.code === 'InvalidToken') {
+                    globalObserver.emit('client.invalid_token');
+                    return;
+                }
+                if (shouldStopOnError(bot, e?.code)) {
+                    globalObserver.emit('ui.log.error', e.message);
+                    globalObserver.emit('bot.click_stop');
+                    return;
+                }
+
+                $scope.is_error_triggered = true;
+                if (!shouldRestartOnError(bot, e.code) || !botStarted(bot)) {
+                    reject(e);
+                    return;
+                }
+
+                globalObserver.emit('Error', e);
+                const { initArgs, tradeOptions } = bot.tradeEngine;
+                terminateSession();
+                init();
+                $scope.observer.register('Error', onError);
+                bot.tradeEngine.init(...initArgs);
+                bot.tradeEngine.start(tradeOptions);
+                revert($scope.startState);
+            };
+
+            $scope.observer.register('Error', onError);
+
+            interpreter = new JSInterpreter(code, initFunc);
+            onFinish = resolve;
+
+            loop();
+        });
+    }
+
+    return { stop, run, terminateSession, bot };
+};
+export default Interpreter;
 
 export const createInterpreter = () => new Interpreter();

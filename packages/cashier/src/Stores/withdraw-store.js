@@ -1,7 +1,8 @@
 import React from 'react';
 import { action, computed, observable } from 'mobx';
-import { localize, Localize } from '@deriv/translations';
-import { getDecimalPlaces, getMinWithdrawal, validNumber } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { ReadMore } from '@deriv/components';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
@@ -20,6 +21,7 @@ export default class WithdrawStore {
     @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     @observable withdraw_amount = '';
     @observable max_withdraw_amount = 0;
+    @observable crypto_config = {};
 
     @action.bound
     setIsWithdrawConfirmed(is_withdraw_confirmed) {
@@ -197,7 +199,7 @@ export default class WithdrawStore {
             response_cashier = { error: { code: 'InvalidToken', message: 'Your token has expired or is invalid.' } };
         }
 
-        if (response_cashier.error.code === 'InvalidToken') {
+        if (response_cashier.error?.code === 'InvalidToken') {
             this.error.handleCashierError(response_cashier.error);
             general_store.setLoading(false);
             iframe.setSessionTimeout(true);
@@ -207,6 +209,7 @@ export default class WithdrawStore {
                 this.verification.clearVerification();
             }
         } else {
+            this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
             general_store.setLoading(false);
         }
     }
@@ -270,11 +273,17 @@ export default class WithdrawStore {
         let error_message = '';
 
         const { client, modules } = this.root_store;
-        const { balance, currency, website_status } = client;
-        const { converter_from_amount, setConverterFromError } = modules.cashier.crypto_fiat_converter;
+        const { balance, currency } = client;
+        const { crypto_fiat_converter, error_dialog } = modules.cashier;
+        const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
+        const { openReadMoreDialog } = error_dialog;
 
-        const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
+        const min_withdraw_amount = this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal;
         const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
+
+        const format_balance = formatMoney(currency, balance, true);
+        const format_min_withdraw_amount = formatMoney(currency, min_withdraw_amount, true);
+        const format_max_withdraw_amount = formatMoney(currency, max_withdraw_amount, true);
 
         if (converter_from_amount) {
             const { is_ok, message } = validNumber(converter_from_amount, {
@@ -282,18 +291,28 @@ export default class WithdrawStore {
                 decimals: getDecimalPlaces(currency),
             });
             if (!is_ok) error_message = message;
+            else if (+balance < +converter_from_amount) error_message = localize('Insufficient funds');
+            else if (+balance < +min_withdraw_amount) {
+                error_message = localize(
+                    'Your balance ({{format_balance}} {{currency}}) is less than the current minimum withdrawal allowed ({{format_min_withdraw_amount}} {{currency}}). Please top up your account to continue with your withdrawal.',
+                    { format_balance, currency, format_min_withdraw_amount }
+                );
+            } else if (+converter_from_amount < +min_withdraw_amount || +converter_from_amount > +max_withdraw_amount) {
+                error_message = localize(
+                    'The current allowed withdraw amount is {{format_min_withdraw_amount}} to {{format_max_withdraw_amount}} {{currency}}',
+                    { format_min_withdraw_amount, format_max_withdraw_amount, currency }
+                );
+            }
 
-            if (+balance < +converter_from_amount) error_message = localize('Insufficient funds');
-
-            if (+converter_from_amount < +min_withdraw_amount || +converter_from_amount > +max_withdraw_amount) {
+            if (isMobile() && error_message.length > 35) {
+                const error_content = error_message;
                 error_message = (
-                    <Localize
-                        i18n_default_text='The allowed withdraw amount is {{min_withdraw_amount}} to {{max_withdraw_amount}} {{currency}}'
-                        values={{
-                            min_withdraw_amount,
-                            max_withdraw_amount,
-                            currency,
-                        }}
+                    <ReadMore
+                        expand_text={localize('more')}
+                        text={error_content}
+                        collapse_length={28}
+                        openDialog={() => openReadMoreDialog(error_content, localize('OK'))}
+                        show_dialog
                     />
                 );
             }

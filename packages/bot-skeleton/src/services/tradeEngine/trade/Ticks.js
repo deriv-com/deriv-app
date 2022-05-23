@@ -71,15 +71,17 @@ export default Engine =>
         }
 
         getLastDigit() {
-            return new Promise(resolve =>
-                this.getLastTick().then(tick => resolve(getLastDigit(tick, this.getPipSize())))
-            );
+            return new Promise(resolve => this.getLastTick(false, true).then(tick => resolve(getLastDigit(tick))));
         }
 
         getLastDigitList() {
-            return new Promise(resolve =>
-                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick, this.getPipSize()))))
-            );
+            return new Promise(resolve => this.getTicks().then(ticks => resolve(this.getLastDigitsFromList(ticks))));
+        }
+        getLastDigitsFromList(ticks) {
+            const digits = ticks.map(tick => {
+                return getLastDigit(tick.toFixed(this.getPipSize()));
+            });
+            return digits;
         }
 
         checkDirection(dir) {

@@ -208,6 +208,8 @@ const AccountTransferForm = ({
     is_dark_mode_on,
     minimum_fee,
     mt5_login_list,
+    onChangeConverterFromAmount,
+    onChangeConverterToAmount,
     onChangeTransferFrom,
     onChangeTransferTo,
     onMount,
@@ -323,13 +325,11 @@ const AccountTransferForm = ({
             if (!is_selected_from) {
                 const is_selected_from_mt = selected_from.is_mt && account.is_mt;
                 const is_selected_from_dxtrade = selected_from.is_dxtrade && account.is_dxtrade;
-                const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
 
                 // cannot transfer to MT account from MT
-                // cannot transfer to crypto account from crypto
                 // cannot transfer to Dxtrade account from Dxtrade
 
-                const is_disabled = is_selected_from_mt || is_selected_from_crypto || is_selected_from_dxtrade;
+                const is_disabled = is_selected_from_mt || is_selected_from_dxtrade;
 
                 getAccounts('to', account).push({
                     text,
@@ -578,6 +578,9 @@ const AccountTransferForm = ({
                                                     ''
                                                 )
                                             }
+                                            onChangeConverterFromAmount={onChangeConverterFromAmount}
+                                            onChangeConverterToAmount={onChangeConverterToAmount}
+                                            resetConverter={resetConverter}
                                             validateFromAmount={validateTransferFromAmount}
                                             validateToAmount={validateTransferToAmount}
                                         />
@@ -585,12 +588,7 @@ const AccountTransferForm = ({
                                 )}
                                 <div className='cashier__form-submit account-transfer-form__form-submit'>
                                     <Button
-                                        className={classNames({
-                                            'cashier__form-submit-button':
-                                                selected_from.currency === selected_to.currency,
-                                            'account-transfer-form__submit-button':
-                                                selected_from.currency !== selected_to.currency,
-                                        })}
+                                        className='account-transfer-form__submit-button'
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
@@ -646,6 +644,8 @@ AccountTransferForm.propTypes = {
     error: PropTypes.object,
     is_crypto: PropTypes.bool,
     minimum_fee: PropTypes.string,
+    onChangeConverterFromAmount: PropTypes.func,
+    onChangeConverterToAmount: PropTypes.func,
     onChangeTransferFrom: PropTypes.func,
     onChangeTransferTo: PropTypes.func,
     onMount: PropTypes.func,
@@ -679,6 +679,8 @@ export default connect(({ client, modules, ui }) => ({
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     minimum_fee: modules.cashier.account_transfer.minimum_fee,
     mt5_login_list: client.mt5_login_list,
+    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
+    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
     onChangeTransferFrom: modules.cashier.account_transfer.onChangeTransferFrom,
     onChangeTransferTo: modules.cashier.account_transfer.onChangeTransferTo,
     onMount: client.getLimits,

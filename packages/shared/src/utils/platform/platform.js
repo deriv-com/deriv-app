@@ -139,5 +139,18 @@ export const isNavigationFromP2P = (routing_history, platform_route) => {
 };
 
 export const isNavigationFromExternalPlatform = (routing_history, platform_route) => {
-    return routing_history.some(history_item => history_item.pathname === platform_route);
+    /*
+     *  Check if the client is navigating from external platform(SmartTrader or BinaryBot)
+     *  and has not visited Dtrader after it.
+     */
+    const platform_index = routing_history.findIndex(history_item => history_item.pathname === platform_route);
+    const dtrader_index = routing_history.findIndex(history_item => history_item.pathname === routes.trade);
+    const has_visited_platform = platform_index !== -1;
+    const has_visited_dtrader = dtrader_index !== -1;
+
+    if (has_visited_platform) {
+        return has_visited_dtrader ? platform_index < dtrader_index : true;
+    }
+
+    return false;
 };

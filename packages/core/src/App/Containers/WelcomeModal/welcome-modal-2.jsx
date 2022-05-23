@@ -42,46 +42,48 @@ const WelcomeColumn = ({
                     {localize('Platforms')}
                 </Text>
                 <div className='welcome-column__platforms__container'>
-                    {platforms.map((platform, index) => (
-                        <React.Fragment key={index}>
-                            <div className='welcome-column__platform'>
-                                <Icon className='welcome-column__platform__icon' icon={platform.icon} size={32} />
-                                <Text
-                                    as='h3'
-                                    weight='bold'
-                                    align='center'
-                                    color='prominent'
-                                    size='xs'
-                                    className='welcome-column__platform__title'
+                    {platforms.map((platform, index) =>
+                        platform ? (
+                            <React.Fragment key={index}>
+                                <div className='welcome-column__platform'>
+                                    <Icon className='welcome-column__platform__icon' icon={platform.icon} size={32} />
+                                    <Text
+                                        as='h3'
+                                        weight='bold'
+                                        align='center'
+                                        color='prominent'
+                                        size='xs'
+                                        className='welcome-column__platform__title'
+                                    >
+                                        {platform.title}
+                                    </Text>
+                                    <Text
+                                        as='p'
+                                        color='less-prominent'
+                                        size='xxs'
+                                        align='left'
+                                        className='welcome-column__platform__description'
+                                    >
+                                        {platform.description}
+                                    </Text>
+                                </div>
+                                <div
+                                    className={classNames('welcome-column__platform-footer', {
+                                        'welcome-column__platform-footer--has-separator': index === 0,
+                                    })}
                                 >
-                                    {platform.title}
-                                </Text>
-                                <Text
-                                    as='p'
-                                    color='less-prominent'
-                                    size='xxs'
-                                    align='left'
-                                    className='welcome-column__platform__description'
-                                >
-                                    {platform.description}
-                                </Text>
-                            </div>
-                            <div
-                                className={classNames('welcome-column__platform-footer', {
-                                    'welcome-column__platform-footer--has-separator': index === 0,
-                                })}
-                            >
-                                <Button
-                                    className='welcome-column__platform-button'
-                                    onClick={platform.onButtonClick}
-                                    secondary
-                                    large
-                                >
-                                    {platform.button_text}
-                                </Button>
-                            </div>
-                        </React.Fragment>
-                    ))}
+                                    <Button
+                                        className='welcome-column__platform-button'
+                                        onClick={platform.onButtonClick}
+                                        secondary
+                                        large
+                                    >
+                                        {platform.button_text}
+                                    </Button>
+                                </div>
+                            </React.Fragment>
+                        ) : null
+                    )}
                 </div>
             </div>
             <div className='welcome-column__footer'>
@@ -104,7 +106,7 @@ WelcomeColumn.propTypes = {
     title: PropTypes.string,
 };
 
-const WelcomeModal = ({ toggleWelcomeModal, history, is_dxtrade_allowed }) => {
+const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_allowed }) => {
     const [hovered, setHovered] = React.useState(null);
     const [column_width, setColumnWidth] = React.useState(320);
     const carouselRef = React.useRef(null);
@@ -177,13 +179,15 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_dxtrade_allowed }) => {
                     onButtonClick: () => switchPlatform(routes.trade),
                     button_text: localize('Trade on DTrader'),
                 },
-                {
-                    icon: 'IcBrandDbot',
-                    title: localize('DBot'),
-                    description: localize('Automate your trading, no coding needed.'),
-                    onButtonClick: () => switchPlatform(routes.bot),
-                    button_text: localize('Trade on DBot'),
-                },
+                is_bot_allowed
+                    ? {
+                          icon: 'IcBrandDbot',
+                          title: localize('DBot'),
+                          description: localize('Automate your trading, no coding needed.'),
+                          onButtonClick: () => switchPlatform(routes.bot),
+                          button_text: localize('Trade on DBot'),
+                      }
+                    : null,
             ]}
             title={localize('Options & Multipliers')}
             onMouseEnter={() => {
@@ -252,6 +256,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_dxtrade_allowed }) => {
 export default withRouter(
     connect(({ ui, client }) => ({
         toggleWelcomeModal: ui.toggleWelcomeModal,
+        is_bot_allowed: client.is_bot_allowed,
         is_dxtrade_allowed: client.is_dxtrade_allowed,
     }))(WelcomeModal)
 );

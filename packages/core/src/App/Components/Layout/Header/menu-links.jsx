@@ -7,8 +7,10 @@ const MenuLinks = ({ is_logged_in, items }) => (
     <React.Fragment>
         {!!items.length && (
             <div className='header__menu-links'>
-                {items.map((item, idx) =>
-                    item.login_only && item.login_only !== is_logged_in ? null : (
+                {items.map((item, idx) => {
+                    const item_text = item.text();
+
+                    return item.login_only && item.login_only !== is_logged_in ? null : (
                         <BinaryLink
                             id={item.id}
                             key={idx}
@@ -19,15 +21,15 @@ const MenuLinks = ({ is_logged_in, items }) => (
                             active_class='header__menu-link--active'
                         >
                             <React.Fragment>
-                                {item.text && (
+                                {item_text && (
                                     <Text
                                         size='m'
                                         line_height='xs'
-                                        title={item.text()}
+                                        title={item_text}
                                         className='header__menu-link-text'
                                     >
                                         {item.icon}
-                                        {item.text()}
+                                        {item_text}
                                         {item.logo}
                                     </Text>
                                 )}
@@ -39,8 +41,8 @@ const MenuLinks = ({ is_logged_in, items }) => (
                                 )}
                             </React.Fragment>
                         </BinaryLink>
-                    )
-                )}
+                    );
+                })}
             </div>
         )}
     </React.Fragment>
@@ -54,7 +56,7 @@ MenuLinks.propTypes = {
             }),
             is_logged_in: PropTypes.bool,
             link_to: PropTypes.string,
-            text: PropTypes.function,
+            text: PropTypes.func,
         })
     ),
 };

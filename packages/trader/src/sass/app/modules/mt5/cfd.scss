@@ -114,6 +114,7 @@
             background-color: var(--status-warning);
         }
     }
+
     &__message {
         max-width: 32rem;
         margin: auto;
@@ -308,8 +309,8 @@
         min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
         padding-top: 2rem;
+        margin: 0 auto;
     }
     &__description {
         @include typeface(--paragraph-left-normal-black);
@@ -325,7 +326,6 @@
         margin-top: 2.4rem;
     }
     &__success {
-        width: 38.4rem;
         height: 28.4rem;
         display: flex;
         flex-direction: column;

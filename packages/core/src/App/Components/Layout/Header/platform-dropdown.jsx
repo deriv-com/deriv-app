@@ -26,7 +26,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
         return () => {
             window.removeEventListener('popstate', closeDrawer);
         };
-    }, []);
+    }, [closeDrawer]);
 
     const ref = React.useRef();
 

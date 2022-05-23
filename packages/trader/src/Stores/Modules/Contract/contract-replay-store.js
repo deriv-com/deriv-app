@@ -218,7 +218,7 @@ export default class ContractReplayStore extends BaseStore {
                         ...response.error,
                     });
                 } else {
-                    this.root_store.ui.addNotificationMessage(contractCancelled());
+                    this.root_store.notifications.addNotificationMessage(contractCancelled());
                 }
             });
         }
@@ -249,7 +249,7 @@ export default class ContractReplayStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.ui.addNotificationMessage(
+            this.root_store.notifications.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for)
             );
         }

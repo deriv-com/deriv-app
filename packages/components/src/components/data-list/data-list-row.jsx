@@ -23,7 +23,7 @@ const DataListRow = ({
                 measure?.();
             }
         });
-    }, [show_desc]);
+    }, [show_desc, isMounted, is_dynamic_height, measure]);
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
             {destination_link ? (

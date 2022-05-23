@@ -11,6 +11,7 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const {
     copyConfig,
@@ -60,10 +61,22 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
                       ignorePath: path.resolve(__dirname, '../.eslintignore'),
                   },
               },
+              {
+                  test: /\.(ts|tsx)$/,
+                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+                  include: /src/,
+                  loader: 'eslint-loader',
+                  enforce: 'pre',
+                  options: {
+                      formatter: require('eslint-formatter-pretty'),
+                      configFile: path.resolve(__dirname, '../.eslintrc.ts'),
+                      ignorePath: path.resolve(__dirname, '../.eslintignore'),
+                  },
+              },
           ]
         : []),
     {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
         include: is_test_env ? /__tests__|src/ : /src/,
         use: js_loaders,
@@ -118,6 +131,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
+    new ForkTsCheckerWebpackPlugin(),
     ...(IS_RELEASE
         ? []
         : [

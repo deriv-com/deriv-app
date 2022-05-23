@@ -74,6 +74,19 @@
         &-header {
             margin-top: 2.8rem;
             margin-bottom: 1.8rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            &-text {
+                min-width: 12rem;
+            }
+
+            &-line {
+                border-bottom: 1px solid var(--general-section-1);
+                width: 100%;
+                height: 1px;
+            }
         }
         &-selector {
             margin-bottom: 1rem;
@@ -88,13 +101,6 @@
             .dc-dropdown__display-text {
                 color: var(--text-less-prominent);
             }
-        }
-        &-line {
-            border-bottom: 1px solid var(--general-section-1);
-            position: relative;
-            width: 83%;
-            margin-left: 17%;
-            top: -28px;
         }
         @include mobile {
             &-header {
@@ -113,10 +119,6 @@
                 & .dc-select-native__placeholder {
                     background-color: var(--general-main-1);
                 }
-            }
-            &-line {
-                width: 66%;
-                margin-left: 33%;
             }
         }
     }

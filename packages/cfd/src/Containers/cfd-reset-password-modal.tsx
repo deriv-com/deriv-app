@@ -128,11 +128,7 @@ const CFDResetPasswordModal = ({
 
         WS.tradingPlatformInvestorPasswordReset(request).then((response: { error: TError; password_type: string }) => {
             if (
-                response.error &&
-                (response.error.code === 'InvalidToken' ||
-                    response.error.code === 'BadSession' ||
-                    response.error.code === 'SameAsMainPassword' ||
-                    response.error.code)
+                response?.error?.code
             ) {
                 renderErrorBox(response.error);
             } else {

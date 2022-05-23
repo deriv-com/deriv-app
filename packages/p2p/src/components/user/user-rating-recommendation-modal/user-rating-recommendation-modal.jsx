@@ -33,8 +33,8 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
                 <div className='user-rating-recommendation__layout--vertical'>
                     <Rating
                         value={user_rating}
-                        icon_selected={<Icon icon='IcStarFilled' size={16} custom_color='var(--status-warning)' />}
-                        icon_unselected={<Icon icon='IcStarUnfilled' size={16} custom_color='var(--status-default)' />}
+                        icon_selected={<Icon icon='IcStar' size={16} custom_color='var(--status-warning)' />}
+                        icon_unselected={<Icon icon='IcStar' size={16} custom_color='var(--status-default)' />}
                         onClick={setUserRating}
                     />
                     {user_rating && (

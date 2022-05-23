@@ -7,7 +7,7 @@ import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/component
 import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
 import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-details.jsx';
-import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-side-note.jsx';
+import notes from 'Components/CashierDefault/cashier-default-side-note.jsx';
 
 const CashierDefault = ({
     available_crypto_currencies,
@@ -59,7 +59,7 @@ const CashierDefault = ({
             is_landing_company_loaded &&
             is_currency_banner_visible
         ) {
-            setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
+            setSideNotes(notes(is_crypto));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts_list, is_landing_company_loaded]);
@@ -143,7 +143,7 @@ const CashierDefault = ({
         <div>
             {is_currency_banner_visible && (
                 <MobileWrapper>
-                    <CashierDefaultSideNote is_crypto={is_crypto} />
+                    {/* <CashierDefaultSideNote is_crypto={is_crypto} /> */}
                 </MobileWrapper>
             )}
             <div className='cashier-default'>

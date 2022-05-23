@@ -26,7 +26,7 @@ const ContentWrapper = ({ children, has_side_note }) => {
     return children;
 };
 
-const Content = ({ is_routed, items, selected, side_note_class_name }) => {
+const Content = ({ is_routed, items, selected, side_note_class_name, side_note_component }) => {
     const selected_item = items.find(item => item.label === selected.label);
     const previous_selected_item = usePrevious(selected_item);
     const TabContent = selected_item.value;
@@ -47,6 +47,13 @@ const Content = ({ is_routed, items, selected, side_note_class_name }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_item]);
 
+    const SideNoteComponent = () => {
+        const Component = side_note_component ? side_note_component : 'SideNotes';
+        return (
+            <Component selected_item={selected_item} side_notes={side_notes} class_name={side_note_class_name} />
+        );
+    }
+
     return (
         <React.Fragment>
             {is_routed ? (
@@ -65,11 +72,7 @@ const Content = ({ is_routed, items, selected, side_note_class_name }) => {
             ) : (
                 <TabContent key={selected_item.label} className='item-id' setSideNotes={addToNotesQueue} />
             )}
-            {selected.has_side_note && (
-                // for components that have side note, even if no note is passed currently,
-                // we want to keep the column space for side note
-                <SideNotes selected_item={selected_item} side_notes={side_notes} class_name={side_note_class_name} />
-            )}
+            {selected.has_side_note && <SideNoteComponent />}
         </React.Fragment>
     );
 };
@@ -84,6 +87,7 @@ const VerticalTabContentContainer = ({
     items,
     selected,
     side_note_class_name,
+    side_note_component,
     tab_container_classname,
 }) => {
     return (
@@ -123,6 +127,7 @@ const VerticalTabContentContainer = ({
                         items={items}
                         selected={selected}
                         side_note_class_name={side_note_class_name}
+                        side_note_component={side_note_component}
                     />
                 </ContentWrapper>
             </div>

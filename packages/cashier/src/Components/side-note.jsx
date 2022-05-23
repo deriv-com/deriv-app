@@ -10,7 +10,7 @@ const SideNoteBullet = ({ children }) => (
     </div>
 );
 
-const SideNote = ({ notes, title, has_bullets }) => (
+const SideNote = ({ side_notes, title, has_bullets = true }) => (
     <div className='side-note'>
         {title && (
             <DesktopWrapper>
@@ -20,7 +20,7 @@ const SideNote = ({ notes, title, has_bullets }) => (
             </DesktopWrapper>
         )}
 
-        {notes.map((note, i) =>
+        {side_notes && side_notes.map((note, i) =>
             has_bullets ? (
                 <SideNoteBullet key={i}>{note}</SideNoteBullet>
             ) : (
@@ -33,7 +33,7 @@ const SideNote = ({ notes, title, has_bullets }) => (
 );
 
 SideNote.propTypes = {
-    notes: PropTypes.array.isRequired,
+    side_notes: PropTypes.array,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     has_bullets: PropTypes.bool,
 };

@@ -32,7 +32,7 @@ module.exports = {
     indent: 0,
     // 'max-len'                           : ['error', { code: 120, 'ignoreComments': true }],
     // 'no-extra-semi'                     : 'error',
-    'no-console': 'error',
+    'no-console': 'off',
     'no-else-return': ['error', { allowElseIf: true }],
     'no-multi-assign': 0,
     // 'no-multi-spaces'                   : [2, { exceptions: { 'BinaryExpression': true, 'VariableDeclarator': true, 'ImportDeclaration': true } }],

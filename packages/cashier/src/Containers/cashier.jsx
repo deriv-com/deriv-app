@@ -17,6 +17,7 @@ import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/sha
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from 'Components/account-prompt-dialog.jsx';
 import ErrorDialog from 'Components/error-dialog.jsx';
+import SideNote from 'Components/side-note.jsx';
 import 'Sass/cashier.scss';
 
 const SideNotes = ({ class_name, side_notes }) => {
@@ -147,6 +148,7 @@ const Cashier = ({
                             alignment='center'
                             id='cashier'
                             side_note_class_name={getSideNoteClassName()}
+                            side_note_component={SideNote}
                             classNameHeader='cashier__tab-header'
                             current_path={location.pathname}
                             is_floating

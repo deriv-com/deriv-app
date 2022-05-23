@@ -53,6 +53,7 @@ const VerticalTab = ({
     onClickClose,
     setVerticalTabIndex,
     side_note_class_name,
+    side_note_component,
     tab_headers_note,
     title,
     vertical_tab_index,
@@ -137,6 +138,7 @@ const VerticalTab = ({
                 selected={list[curr_tab_index] || list[0]}
                 is_routed={is_routed}
                 side_note_class_name={side_note_class_name}
+                side_note_component={side_note_component}
             />
         </div>
     );

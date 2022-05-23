@@ -17,52 +17,16 @@ const ResetEmailModal = ({
     verification_code,
     toggleResetEmailModal,
 }) => {
-    // const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
-    // const [email_request, setEmailRequest] = React.useState(null);
     const [confirmResetEmailModal, setConfirmResetEmailModal] = React.useState(false);
-    const [curEmail, setCurEmail] = React.useState(null);
+    const [get_error, set_get_error] = React.useState(null);
+    const [newEmail, setNewEmail] = React.useState(null);
     const [prevEmail, setPrevEmail] = React.useState(null);
 
-    // const onResetComplete = (error_msg, actions) => {
-    // actions.setSubmitting(false);
-    // Error would be returned on invalid token (and the like) cases.
-    // if (error_msg) {
-    //     actions.resetForm({ email: '' });
-    //     actions.setStatus({ error_msg });
-    //     return;
-    // }
-
-    // actions.setStatus({ reset_complete: true });
-    // setConfirmResetEmailModal(true);
-    // setIsSendEmailModalOpen(true);
-    // toggleResetEmailModal(false);
-    // };
-
     const handleSubmit = values => {
-        // const api_request = {
-        //     change_email: 'verify',
-        //     new_email: values.email,
-        //     verification_code,
-        // };
-
-        // setEmailRequest(api_request);
-
-        // WS.changeEmail(api_request).then(async response => {
-        //     if (response.error) {
-        //         onResetComplete(response.error.message, actions);
-        //     } else {
-        setCurEmail(values.email);
+        setNewEmail(values.email);
         setPrevEmail(email);
         setConfirmResetEmailModal(true);
-
-        // onResetComplete(null, actions);
-        // }
-        // });
     };
-
-    // const resendEmail = () => {
-    //     WS.changeEmail(email_request);
-    // };
 
     const validateReset = values => {
         const errors = {};
@@ -78,18 +42,9 @@ const ResetEmailModal = ({
 
     const reset_initial_values = { email: '' };
 
-    // if (is_send_email_modal_open) {
-    //     return (
-    //         <SentEmailModal
-    //             is_open={is_send_email_modal_open}
-    //             onClose={() => setIsSendEmailModalOpen(false)}
-    //             identifier_title={'Change_Email'}
-    //             onClickSendEmail={resendEmail}
-    //             has_live_chat={true}
-    //             is_modal_when_mobile={true}
-    //         />
-    //     );
-    // }
+    const get_error_message = error_msg => {
+        set_get_error(error_msg);
+    };
 
     if (confirmResetEmailModal) {
         return (
@@ -98,7 +53,8 @@ const ResetEmailModal = ({
                 is_open={confirmResetEmailModal}
                 verification_code={verification_code}
                 onClose={() => setConfirmResetEmailModal(false)}
-                curEmail={curEmail}
+                pullErrorMessage={get_error_message}
+                newEmail={newEmail}
                 prevEmail={prevEmail}
             />
         );
@@ -165,12 +121,12 @@ const ResetEmailModal = ({
                                             />
                                         </fieldset>
                                         <Text align='center' as='p' size='xxs' className='reset-email__subtext'>
-                                            {status.error_msg && (
+                                            {
                                                 <Localize
                                                     i18n_default_text='{{error_msg}}'
-                                                    values={{ error_msg: status.error_msg }}
+                                                    values={{ error_msg: get_error }}
                                                 />
-                                            )}
+                                            }
                                         </Text>
                                         <Button
                                             className={classNames('reset-email__btn', {

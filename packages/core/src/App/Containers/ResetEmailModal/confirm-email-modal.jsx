@@ -6,16 +6,17 @@ import { WS } from 'Services';
 import PropTypes from 'prop-types';
 import { connect } from 'Stores/connect';
 
-export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, curEmail, verification_code }) => {
+export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, newEmail, verification_code, pullErrorMessage }) => {
     const [email_request, setEmailRequest] = React.useState(null);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
     const [is_error, set_is_error] = React.useState(false);
     const [error_message, set_error_message] = React.useState(null);
+    const [isOpen, setIsOpen] = React.useState(is_open);
 
     const handleSubmit = () => {
         const api_request = {
             change_email: 'verify',
-            new_email: curEmail,
+            new_email: newEmail,
             verification_code,
         };
 
@@ -23,10 +24,14 @@ export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, curEmail, verif
 
         WS.changeEmail(api_request).then(response => {
             if (response.error) {
+                setIsOpen(false);
+                onClose(true);
                 set_is_error(true);
                 set_error_message(response.error.message);
+                pullErrorMessage(response.error.message);
             } else {
                 setIsSendEmailModalOpen(true);
+                setIsOpen(false);
             }
         });
     };
@@ -49,7 +54,7 @@ export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, curEmail, verif
     }
     return (
         <Modal
-            is_open={is_open}
+            is_open={isOpen}
             should_header_stick_body
             title={<Localize i18n_default_text='Are you sure?' />}
             toggleModal={onClose}
@@ -60,8 +65,8 @@ export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, curEmail, verif
                 <div className='email-confirmation'>
                     <Text as='p' color='prominent' size='xs' align='left'>
                         <Localize
-                            i18n_default_text='Are you sure you want to update email <0>{{prevEmail}}</0> to <1>{{curEmail}}</1>?'
-                            values={{ curEmail, prevEmail }}
+                            i18n_default_text='Are you sure you want to update email <0>{{prevEmail}}</0> to <1>{{newEmail}}</1>?'
+                            values={{ newEmail, prevEmail }}
                             components={[
                                 <span key={0} className='email-confirmation__prevEmail' />,
                                 <span key={1} className='email-confirmation__currentEmail' />,

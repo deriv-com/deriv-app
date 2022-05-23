@@ -1,0 +1,18 @@
+.user-rating-recommendation {
+    &__layout--vertical {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    &__layout--horizontal {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    &__footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}

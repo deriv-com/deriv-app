@@ -104,17 +104,13 @@ const BuySellForm = props => {
     };
 
     const onSubmitAdTransaction = async (...args) => {
-        if (rate_type === ad_type.FLOAT) {
-            const updated_market_rate = await fetchCurrentMarketRate();
-            if (market_rate_on_mount !== updated_market_rate) {
-                buy_sell_store.setShouldShowPopup(false);
-                // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
-                setTimeout(() => {
-                    buy_sell_store.setShowRateChangeModal(true);
-                }, 250);
-            } else {
-                buy_sell_store.handleSubmit(() => isMounted(), ...args);
-            }
+        const updated_market_rate = rate_type === ad_type.FLOAT ? await fetchCurrentMarketRate() : 0;
+        if (rate_type === ad_type.FLOAT && market_rate_on_mount !== updated_market_rate) {
+            buy_sell_store.setShouldShowPopup(false);
+            // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
+            setTimeout(() => {
+                buy_sell_store.setShowRateChangeModal(true);
+            }, 250);
         } else {
             buy_sell_store.handleSubmit(() => isMounted(), ...args);
         }

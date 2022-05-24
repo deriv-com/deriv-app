@@ -3,29 +3,26 @@ import { useLocation } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
-import { moduleLoader } from '@deriv/shared';
 
 const AccountSignupModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
+    import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal')
 );
 const CloseMxMltAccountModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
+    import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal')
 );
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
+    import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal')
 );
 const RedirectToLoginModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal'))
+    import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal')
 );
 const SetResidenceModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal'))
+    import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
 );
 const RealityCheckModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal'))
+    import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal')
 );
-const WelcomeModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'))
-);
+const WelcomeModal = React.lazy(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'));
 
 const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
 

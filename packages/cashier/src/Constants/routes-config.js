@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes, moduleLoader } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     Cashier,
@@ -13,7 +13,7 @@ import {
 } from '../containers';
 
 // Error Routes
-const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Components/Page404.jsx')));
+const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Components/Page404.jsx'));
 
 // Order matters
 const initRoutesConfig = () => [

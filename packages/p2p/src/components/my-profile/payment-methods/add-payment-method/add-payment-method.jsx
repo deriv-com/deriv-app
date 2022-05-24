@@ -8,7 +8,7 @@ import AddPaymentMethodForm from './add-payment-method-form.jsx';
 import SelectPaymentMethod from './select-payment-method.jsx';
 import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal';
 
-const AddPaymentMethod = ({ should_show_page_return = true, should_show_separated_footer }) => {
+const AddPaymentMethod = ({ should_fixed_footer, should_show_page_return = true, should_show_separated_footer }) => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
@@ -25,7 +25,6 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
                 {should_show_page_return && (
                     <PageReturn
                         onClick={() => {
-                            console.log('selected pm', my_profile_store.selected_payment_method);
                             if (my_profile_store.selected_payment_method.length > 0) {
                                 my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
                             } else {
@@ -37,7 +36,10 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
                     />
                 )}
                 {my_profile_store.selected_payment_method ? (
-                    <AddPaymentMethodForm should_show_separated_footer={should_show_separated_footer} />
+                    <AddPaymentMethodForm
+                        should_fixed_footer={should_fixed_footer}
+                        should_show_separated_footer={should_show_separated_footer}
+                    />
                 ) : (
                     <SelectPaymentMethod />
                 )}

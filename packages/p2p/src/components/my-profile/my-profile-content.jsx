@@ -24,6 +24,8 @@ const MyProfileContent = () => {
                         body_className='payment-methods-list__modal'
                         height_offset='80px'
                         is_modal_open={true}
+                        is_flex
+                        page_header_className='buy-sell__modal-header'
                         page_header_text={localize('Payment methods')}
                         pageHeaderReturnFn={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
                     >

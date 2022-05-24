@@ -2,19 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Modal, Text, Rating } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { user_recommendation as Recommendation } from 'Constants/user-recommendation.js';
 
 const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendation, user_type }) => {
     const [user_rating, setUserRating] = React.useState(0);
     const [user_recommendation, setUserRecommendation] = React.useState(null);
 
-    const handleModalAction = action_status => {
-        if (action_status) {
-            onClick({ rating: user_rating, recommendation: user_recommendation });
-        } else {
-            onClick({ rating, recommendation });
-        }
-    };
+    const handleModalAction = action_status =>
+        action_status
+            ? onClick({ rating: user_rating, recommendation: user_recommendation })
+            : onClick({ rating, recommendation });
 
     React.useEffect(() => {
         setUserRating(rating);
@@ -47,9 +43,7 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
                                             icon='IcThumbsUp'
                                             size={14}
                                             custom_color={
-                                                user_recommendation === Recommendation.YES
-                                                    ? 'var(--text-prominent)'
-                                                    : 'var(--status-unselect)'
+                                                user_recommendation ? 'var(--text-prominent)' : 'var(--status-unselect)'
                                             }
                                         />
                                         {localize('Yes')}
@@ -61,9 +55,7 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
                                             icon='IcThumbsDown'
                                             size={14}
                                             custom_color={
-                                                user_recommendation === Recommendation.NO
-                                                    ? 'var(--text-prominent)'
-                                                    : 'var(--status-unselect)'
+                                                user_recommendation ? 'var(--status-unselect)' : 'var(--text-prominent)'
                                             }
                                         />
                                         {localize('No')}

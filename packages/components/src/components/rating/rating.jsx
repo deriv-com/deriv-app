@@ -29,7 +29,7 @@ const Rating = ({
         const selected_rating = (rating_start_element / width) * max_rating;
         if (selected_rating > 0.4) {
             const calculated_rating = allow_half_rating
-                ? Math.round((selected_rating + 0.5 / 2) / 0.5) * 0.5 // This will always make sure that, if we hover between two ratings, it will select the nearest number
+                ? Math.round(selected_rating / 0.5) * 0.5 // This will always make sure that, if we hover between two ratings, it will select the nearest number
                 : Math.round(selected_rating);
             return calculated_rating;
         }
@@ -63,7 +63,13 @@ const Rating = ({
     };
 
     const validateInitialValue = () => {
-        if (value < 0 || value > max_rating) {
+        /**
+         * Sets the initial value to 0 in the following cases
+         * 1. Value passed as null or undefined
+         * 2. Value is less than zero
+         * 3. Value is greater than the maximum rating allowed
+         */
+        if (!value || value < 0 || value > max_rating) {
             setEnabledRateIndex(0);
         } else {
             const set_value = allow_half_rating ? parseFloat(value) : parseInt(value);

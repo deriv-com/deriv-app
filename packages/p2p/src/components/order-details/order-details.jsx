@@ -43,9 +43,12 @@ const OrderDetails = observer(({ onPageReturn }) => {
         should_highlight_danger,
         should_highlight_success,
         should_show_lost_funds_banner,
-        should_show_order_footer,
+        // should_show_order_footer,
+        is_order_reviewable,
         status_string,
     } = order_store?.order_information;
+
+    console.log('should_show_order_footer: ', is_order_reviewable);
 
     const { chat_channel_url } = sendbird_store;
 
@@ -210,9 +213,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         />
                         <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                     </ThemedScrollbars>
-                    {should_show_order_footer && isDesktop() && (
-                        <OrderDetailsFooter order_information={order_store.order_information} />
-                    )}
+                    {isDesktop() && <OrderDetailsFooter order_information={order_store.order_information} />}
                 </div>
                 {chat_channel_url && <Chat />}
             </div>

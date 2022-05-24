@@ -1,24 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@deriv/components';
+import { Button, Icon, Text, Rating } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { Localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import OrderDetailsCancelModal from './order-details-cancel-modal.jsx';
 import OrderDetailsComplainModal from './order-details-complain-modal.jsx';
 import OrderDetailsConfirmModal from './order-details-confirm-modal.jsx';
+import classNames from 'classnames';
 
 const OrderDetailsFooter = observer(() => {
     const { order_store } = useStores();
     const {
         is_buy_order,
         is_my_ad,
+        is_order_reviewable,
         is_sell_order,
+        review_details,
         should_show_cancel_and_paid_button,
         should_show_complain_and_received_button,
         should_show_only_received_button,
         should_show_only_complain_button,
     } = order_store.order_information;
+
+    console.log('review_details: ', { ...order_store.order_information });
 
     const is_buy_order_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
 
@@ -148,7 +153,67 @@ const OrderDetailsFooter = observer(() => {
         );
     }
 
-    return null;
+    return (
+        <React.Fragment>
+            <div className={classNames('order-details-card__footer', 'order-details-card__footer--align-content')}>
+                <div className='order-details-card__footer--left'>
+                    {review_details ? (
+                        <React.Fragment>
+                            <Text size='m' weight='bold'>
+                                <Localize i18n_default_text='Your transaction experience' />
+                            </Text>
+                            <section className='order-details-card__footer--show-review'>
+                                <Rating
+                                    value={review_details?.rating}
+                                    readonly
+                                    icon_selected={
+                                        <Icon icon='IcStar' size={16} custom_color='var(--status-warning)' />
+                                    }
+                                    icon_unselected={
+                                        <Icon icon='IcStar' size={16} custom_color='var(--status-unselect)' />
+                                    }
+                                />
+                                <Icon
+                                    icon={review_details?.recommended ? 'IcThumbsUp' : 'IcThumbsDown'}
+                                    size={16}
+                                    custom_color={
+                                        review_details?.recommended ? 'var(--status-success)' : 'var(--status-danger)'
+                                    }
+                                />
+                            </section>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <section className='order-details-card__footer--get-review'>
+                                <Button
+                                    large
+                                    secondary
+                                    is_disabled={!is_order_reviewable}
+                                    className='order-details-card__footer--get-review-button'
+                                >
+                                    <Icon
+                                        icon='IcStar'
+                                        size={16}
+                                        custom_color={
+                                            is_order_reviewable ? 'var(--status-warning)' : 'var(--status-unselect)'
+                                        }
+                                    />
+                                    <Text>{localize(is_order_reviewable ? 'Rate this transaction' : 'Not rated')}</Text>
+                                </Button>
+                                <Text size='xs' color='less-prominent'>
+                                    {localize(
+                                        is_order_reviewable
+                                            ? 'You have until to rate this transaction'
+                                            : 'You can no longer rate this transaction'
+                                    )}
+                                </Text>
+                            </section>
+                        </React.Fragment>
+                    )}
+                </div>
+            </div>
+        </React.Fragment>
+    );
 });
 
 OrderDetailsFooter.propTypes = {

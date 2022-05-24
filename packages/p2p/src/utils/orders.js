@@ -60,6 +60,10 @@ export default class ExtendedOrderDetails {
         return this.order_details.status === 'refunded';
     }
 
+    get is_order_reviewable() {
+        return !!this.order_details.is_reviewable;
+    }
+
     get is_my_ad() {
         return this.order_details.advertiser_details.loginid === this.loginid;
     }
@@ -185,14 +189,15 @@ export default class ExtendedOrderDetails {
         return !this.is_my_ad && this.is_buyer_confirmed_order;
     }
 
-    get should_show_order_footer() {
-        return (
-            this.should_show_cancel_and_paid_button ||
-            this.should_show_complain_and_received_button ||
-            this.should_show_only_complain_button ||
-            this.should_show_only_received_button
-        );
-    }
+    // TODO: To be removed
+    // get should_show_order_footer() {
+    //     return (
+    //         this.should_show_cancel_and_paid_button ||
+    //         this.should_show_complain_and_received_button ||
+    //         this.should_show_only_complain_button ||
+    //         this.should_show_only_received_button
+    //     );
+    // }
 
     get should_show_order_timer() {
         if (this.is_finalised_order) return false;

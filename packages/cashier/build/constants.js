@@ -19,16 +19,14 @@ const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const ALIASES = {
     _common: path.resolve(__dirname, '../src/_common'),
-    Components: path.resolve(__dirname, '../src/Components'),
-    Config: path.resolve(__dirname, '../src/Config'),
-    Containers: path.resolve(__dirname, '../src/Containers'),
-    Constants: path.resolve(__dirname, '../src/Constants'),
+    Components: path.resolve(__dirname, '../src/components'),
+    Config: path.resolve(__dirname, '../src/config'),
+    Containers: path.resolve(__dirname, '../src/containers'),
+    Constants: path.resolve(__dirname, '../src/constants'),
     Images: path.resolve(__dirname, '../src/public/images'),
-    Routes: path.resolve(__dirname, '../src/Routes'),
-    Sass: path.resolve(__dirname, '../src/Sass'),
-    Services: path.resolve(__dirname, '../src/Services'),
-    Stores: path.resolve(__dirname, '../src/Stores'),
-    Utils: path.resolve(__dirname, '../src/Utils'),
+    Sass: path.resolve(__dirname, '../src/sass'),
+    Stores: path.resolve(__dirname, '../src/stores'),
+    Utils: path.resolve(__dirname, '../src/utils'),
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => [

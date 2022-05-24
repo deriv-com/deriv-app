@@ -17,15 +17,14 @@ const ResetEmailModal = ({
     verification_code,
     toggleResetEmailModal,
 }) => {
-    const [confirmResetEmailModal, setConfirmResetEmailModal] = React.useState(false);
-    const [get_error, set_get_error] = React.useState(null);
-    const [newEmail, setNewEmail] = React.useState(null);
-    const [prevEmail, setPrevEmail] = React.useState(null);
+    const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
+    const [get_error_msg, setErrorMsg] = React.useState(null);
+    const [new_Email, setNewEmail] = React.useState(null);
+    const [is_email_error, setIsEmailError] = React.useState(false);
 
     const handleSubmit = values => {
         setNewEmail(values.email);
-        setPrevEmail(email);
-        setConfirmResetEmailModal(true);
+        setIsConfirmResetEmailModal(true);
     };
 
     const validateReset = values => {
@@ -42,20 +41,16 @@ const ResetEmailModal = ({
 
     const reset_initial_values = { email: '' };
 
-    const get_error_message = error_msg => {
-        set_get_error(error_msg);
-    };
-
-    if (confirmResetEmailModal) {
+    if (is_confirm_email_modal_open) {
         return (
             <ConfirmEmailModal
-                email={email}
-                is_open={confirmResetEmailModal}
+                is_open={is_confirm_email_modal_open}
                 verification_code={verification_code}
-                onClose={() => setConfirmResetEmailModal(false)}
-                pullErrorMessage={get_error_message}
-                newEmail={newEmail}
-                prevEmail={prevEmail}
+                onClose={() => setIsConfirmResetEmailModal(false)}
+                new_Email={new_Email}
+                prev_Email={email}
+                setEmailError={setIsEmailError}
+                setErrorMessage={setErrorMsg}
             />
         );
     }
@@ -121,12 +116,12 @@ const ResetEmailModal = ({
                                             />
                                         </fieldset>
                                         <Text align='center' as='p' size='xxs' className='reset-email__subtext'>
-                                            {
+                                            {is_email_error ? (
                                                 <Localize
                                                     i18n_default_text='{{error_msg}}'
-                                                    values={{ error_msg: get_error }}
+                                                    values={{ error_msg: get_error_msg }}
                                                 />
-                                            }
+                                            ) : null}
                                         </Text>
                                         <Button
                                             className={classNames('reset-email__btn', {
@@ -157,7 +152,6 @@ ResetEmailModal.propTypes = {
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
-    logoutClient: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
@@ -167,7 +161,6 @@ export default connect(({ ui, client }) => ({
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
     is_visible: ui.is_reset_email_modal_visible,
-    logoutClient: client.logout,
     toggleResetEmailModal: ui.toggleResetEmailModal,
     verification_code: client.verification_code.request_email,
 }))(ResetEmailModal);

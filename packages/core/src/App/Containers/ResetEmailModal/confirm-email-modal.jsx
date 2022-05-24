@@ -6,17 +6,23 @@ import { WS } from 'Services';
 import PropTypes from 'prop-types';
 import { connect } from 'Stores/connect';
 
-export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, newEmail, verification_code, pullErrorMessage }) => {
+export const ConfirmEmailModal = ({
+    onClose,
+    is_open,
+    prev_Email,
+    new_Email,
+    verification_code,
+    setEmailError,
+    setErrorMessage,
+}) => {
     const [email_request, setEmailRequest] = React.useState(null);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
-    const [is_error, set_is_error] = React.useState(false);
-    const [error_message, set_error_message] = React.useState(null);
     const [isOpen, setIsOpen] = React.useState(is_open);
 
     const handleSubmit = () => {
         const api_request = {
             change_email: 'verify',
-            new_email: newEmail,
+            new_email: new_Email,
             verification_code,
         };
 
@@ -25,10 +31,9 @@ export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, newEmail, verif
         WS.changeEmail(api_request).then(response => {
             if (response.error) {
                 setIsOpen(false);
+                setEmailError(true);
                 onClose(true);
-                set_is_error(true);
-                set_error_message(response.error.message);
-                pullErrorMessage(response.error.message);
+                setErrorMessage(response.error.message);
             } else {
                 setIsSendEmailModalOpen(true);
                 setIsOpen(false);
@@ -60,16 +65,15 @@ export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, newEmail, verif
             toggleModal={onClose}
             width='440px'
         >
-            {is_error ? <p>{error_message}</p> : null}
             <React.Fragment>
                 <div className='email-confirmation'>
                     <Text as='p' color='prominent' size='xs' align='left'>
                         <Localize
-                            i18n_default_text='Are you sure you want to update email <0>{{prevEmail}}</0> to <1>{{newEmail}}</1>?'
-                            values={{ newEmail, prevEmail }}
+                            i18n_default_text='Are you sure you want to update email <0>{{prev_Email}}</0> to <1>{{new_Email}}</1>?'
+                            values={{ prev_Email, new_Email }}
                             components={[
-                                <span key={0} className='email-confirmation__prevEmail' />,
-                                <span key={1} className='email-confirmation__currentEmail' />,
+                                <strong key={0} />,
+                                <strong key={1} className='email-confirmation__currentEmail' />,
                             ]}
                         />
                     </Text>
@@ -95,24 +99,12 @@ export const ConfirmEmailModal = ({ onClose, is_open, prevEmail, newEmail, verif
 };
 
 ConfirmEmailModal.propTypes = {
-    email: PropTypes.string,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
     onClose: PropTypes.func,
     is_open: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    logoutClient: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
 export default connect(({ ui, client }) => ({
     disableApp: ui.disableApp,
-    email: client.email,
-    enableApp: ui.enableApp,
-    is_loading: ui.is_loading,
-    is_visible: ui.is_reset_email_modal_visible,
-    logoutClient: client.logout,
-    toggleResetEmailModal: ui.toggleResetEmailModal,
     verification_code: client.verification_code.request_email,
 }))(ConfirmEmailModal);

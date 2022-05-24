@@ -125,7 +125,7 @@ UserRatingRecommendationModal.propTypes = {
     is_open: PropTypes.bool,
     onClick: PropTypes.func,
     rating: PropTypes.number,
-    recommendation: PropTypes.oneOf(['yes', 'no']),
+    recommendation: PropTypes.oneOf([0, 1]),
     user_type: PropTypes.string,
 };
 

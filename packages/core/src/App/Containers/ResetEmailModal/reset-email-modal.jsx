@@ -18,9 +18,9 @@ const ResetEmailModal = ({
     toggleResetEmailModal,
 }) => {
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
-    const [get_error_msg, setErrorMsg] = React.useState(null);
+    const [email_error_msg, setEmailErrorMsg] = React.useState(null);
     const [new_Email, setNewEmail] = React.useState(null);
-    const [is_email_error, setIsEmailError] = React.useState(false);
+    const [has_error, setHasError] = React.useState(false);
 
     const handleSubmit = values => {
         setNewEmail(values.email);
@@ -49,8 +49,8 @@ const ResetEmailModal = ({
                 onClose={() => setIsConfirmResetEmailModal(false)}
                 new_Email={new_Email}
                 prev_Email={email}
-                setEmailError={setIsEmailError}
-                setErrorMessage={setErrorMsg}
+                setEmailError={setHasError}
+                setErrorMessage={setEmailErrorMsg}
             />
         );
     }
@@ -116,10 +116,10 @@ const ResetEmailModal = ({
                                             />
                                         </fieldset>
                                         <Text align='center' as='p' size='xxs' className='reset-email__subtext'>
-                                            {is_email_error ? (
+                                            {has_error ? (
                                                 <Localize
                                                     i18n_default_text='{{error_msg}}'
-                                                    values={{ error_msg: get_error_msg }}
+                                                    values={{ error_msg: email_error_msg }}
                                                 />
                                             ) : null}
                                         </Text>
@@ -153,6 +153,7 @@ ResetEmailModal.propTypes = {
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     verification_code: PropTypes.string,
+    toggleResetEmailModal: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({

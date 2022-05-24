@@ -4,7 +4,6 @@ import { localize, Localize } from '@deriv/translations';
 import { SentEmailModal } from '@deriv/account';
 import { WS } from 'Services';
 import PropTypes from 'prop-types';
-import { connect } from 'Stores/connect';
 
 export const ConfirmEmailModal = ({
     onClose,
@@ -30,14 +29,13 @@ export const ConfirmEmailModal = ({
 
         WS.changeEmail(api_request).then(response => {
             if (response.error) {
-                setIsOpen(false);
                 setEmailError(true);
                 onClose(true);
                 setErrorMessage(response.error.message);
             } else {
                 setIsSendEmailModalOpen(true);
-                setIsOpen(false);
             }
+            setIsOpen(false);
         });
     };
 
@@ -102,9 +100,8 @@ ConfirmEmailModal.propTypes = {
     onClose: PropTypes.func,
     is_open: PropTypes.bool,
     verification_code: PropTypes.string,
+    prev_Email: PropTypes.string,
+    new_Email: PropTypes.string,
+    setEmailError: PropTypes.func,
+    setErrorMessage: PropTypes.func,
 };
-
-export default connect(({ ui, client }) => ({
-    disableApp: ui.disableApp,
-    verification_code: client.verification_code.request_email,
-}))(ConfirmEmailModal);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes, moduleLoader } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,
@@ -19,7 +19,7 @@ import {
 } from 'Sections';
 
 // Error Routes
-const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
+const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 // Order matters
 const initRoutesConfig = ({ is_appstore }) => [

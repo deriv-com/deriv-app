@@ -1,9 +1,7 @@
 import React from 'react';
-import { getUrlBase, moduleLoader } from '@deriv/shared';
+import { getUrlBase } from '@deriv/shared';
 
-const Module = moduleLoader(() =>
-    import(/* webpackChunkName: "smart_chart", webpackPreload: true */ '@deriv/deriv-charts')
-);
+const Module = import(/* webpackChunkName: "smart_chart", webpackPreload: true */ '@deriv/deriv-charts');
 
 Module.then(({ setSmartChartsPublicPath }) => {
     setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));

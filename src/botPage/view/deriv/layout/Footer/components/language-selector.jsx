@@ -1,7 +1,7 @@
 import React from "react";
-import { supportedLanguages } from "../../../config.js";
 import { translate } from "../../../../../../common/utils/tools";
 import { getLanguage } from "../../../../../../common/lang";
+import config from "../../../../../../app.config";
 
 const current_language = getLanguage();
 const toggleModal = () => $("#language-menu-modal").toggleClass("invisible");
@@ -18,7 +18,7 @@ const LanguageModal = () => (
             </div>
             <div className="language-menu-container">
                 <div className="language-menu-list">
-                    {Object.keys(supportedLanguages).map(lang => <LanguageItem lang={lang} key={lang} />)}
+                    {Object.keys(config.supported_languages).map(lang => <LanguageItem lang={lang} key={lang} />)}
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@ const LanguageItem = ({ lang }) => {
             }}
         >
             <img src={`image/deriv/flag/ic-flag-${lang}.svg`} />
-            <span>{supportedLanguages[lang]}</span>
+            <span>{config.supported_languages[lang]}</span>
         </div>
     )
 }

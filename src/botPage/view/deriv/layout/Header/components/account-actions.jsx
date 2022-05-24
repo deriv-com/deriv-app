@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { translate } from "../../../../../../common/utils/tools";
 import Notifications from "./notifications.jsx";
 import AccountDropdown from "./account-dropdown.jsx";
-import { currencyNameMap } from "../../../config";
 import { generateDerivLink, getRelatedDeriveOrigin } from "../../../utils";
 import Modal from "../../../components/modal";
 import AccountSwitchModal from "./account-switch-modal.jsx";
@@ -24,6 +23,7 @@ import {
 } from "../../../../../../common/utils/storageManager";
 import { updateActiveToken } from "../../../store/client-slice";
 import Popover from "../../../components/popover";
+import config from "../../../../../../app.config";
 
 const AccountActions = () => {
     const {
@@ -77,7 +77,7 @@ const AccountActions = () => {
                     src={`image/deriv/currency/ic-currency-${is_virtual ? "virtual" : currency.toLowerCase()}.svg`}
                 />
                 <div id="header__acc-balance" className="header__acc-balance">
-                    {balance.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2 })}
+                    {balance.toLocaleString(undefined, { minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2 })}
                     <span className="symbols">&nbsp;{currency}</span>
                 </div>
                 <img

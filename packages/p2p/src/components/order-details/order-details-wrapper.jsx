@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, MobileFullPageModal } from '@deriv/components';
@@ -13,6 +14,9 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
         <MobileFullPageModal
             className='order-details'
             body_className='order-details--body'
+            page_footer_className={classNames({
+                'order-details--body-mobile-footer': order_store.order_information?.is_completed_order ?? false,
+            })}
             height_offset='80px'
             is_flex
             is_modal_open
@@ -26,11 +30,7 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
                     onClick={() => sendbird_store.setShouldShowChatModal(true)}
                 />
             )}
-            renderPageFooterChildren={() =>
-                order_store.order_information.should_show_order_footer && (
-                    <OrderDetailsFooter order_information={order_store.order_information} />
-                )
-            }
+            renderPageFooterChildren={() => <OrderDetailsFooter order_information={order_store.order_information} />}
         >
             {children}
         </MobileFullPageModal>

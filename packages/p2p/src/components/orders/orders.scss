@@ -183,6 +183,11 @@
                     background: var(--general-hover);
                 }
             }
+            &--rate-button {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+            }
         }
         &-time {
             border: solid 1px var(--border-normal);

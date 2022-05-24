@@ -13,6 +13,7 @@ const OrderDetailsFooter = observer(() => {
     const { order_store } = useStores();
     const {
         is_buy_order,
+        is_completed_order,
         is_my_ad,
         is_order_reviewable,
         is_sell_order,
@@ -22,8 +23,6 @@ const OrderDetailsFooter = observer(() => {
         should_show_only_received_button,
         should_show_only_complain_button,
     } = order_store.order_information;
-
-    console.log('review_details: ', { ...order_store.order_information });
 
     const is_buy_order_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
 
@@ -153,67 +152,87 @@ const OrderDetailsFooter = observer(() => {
         );
     }
 
-    return (
-        <React.Fragment>
-            <div className={classNames('order-details-card__footer', 'order-details-card__footer--align-content')}>
-                <div className='order-details-card__footer--left'>
-                    {review_details ? (
-                        <React.Fragment>
-                            <Text size='m' weight='bold'>
-                                <Localize i18n_default_text='Your transaction experience' />
-                            </Text>
-                            <section className='order-details-card__footer--show-review'>
-                                <Rating
-                                    value={review_details?.rating}
-                                    readonly
-                                    icon_selected={
-                                        <Icon icon='IcStar' size={16} custom_color='var(--status-warning)' />
-                                    }
-                                    icon_unselected={
-                                        <Icon icon='IcStar' size={16} custom_color='var(--status-unselect)' />
-                                    }
-                                />
-                                <Icon
-                                    icon={review_details?.recommended ? 'IcThumbsUp' : 'IcThumbsDown'}
-                                    size={16}
-                                    custom_color={
-                                        review_details?.recommended ? 'var(--status-success)' : 'var(--status-danger)'
-                                    }
-                                />
-                            </section>
-                        </React.Fragment>
-                    ) : (
-                        <React.Fragment>
-                            <section className='order-details-card__footer--get-review'>
-                                <Button
-                                    large
-                                    secondary
-                                    is_disabled={!is_order_reviewable}
-                                    className='order-details-card__footer--get-review-button'
-                                >
-                                    <Icon
-                                        icon='IcStar'
-                                        size={16}
-                                        custom_color={
-                                            is_order_reviewable ? 'var(--status-warning)' : 'var(--status-unselect)'
+    if (is_completed_order) {
+        return (
+            <React.Fragment>
+                <div className={classNames('order-details-card__footer', 'order-details-card__footer--align-content')}>
+                    <div className='order-details-card__footer--left'>
+                        {review_details ? (
+                            <div className='order-details-card__footer--review-wrapper'>
+                                <Text weight='bold'>
+                                    <Localize i18n_default_text='Your transaction experience' />
+                                </Text>
+                                <section className='order-details-card__footer--show-review'>
+                                    <Rating
+                                        value={review_details?.rating}
+                                        readonly
+                                        icon_selected={
+                                            <Icon icon='IcStar' size={16} custom_color='var(--status-warning)' />
+                                        }
+                                        icon_unselected={
+                                            <Icon icon='IcStar' size={16} custom_color='var(--status-unselect)' />
                                         }
                                     />
-                                    <Text>{localize(is_order_reviewable ? 'Rate this transaction' : 'Not rated')}</Text>
-                                </Button>
-                                <Text size='xs' color='less-prominent'>
-                                    {localize(
-                                        is_order_reviewable
-                                            ? 'You have until to rate this transaction'
-                                            : 'You can no longer rate this transaction'
+                                    {(review_details?.recommended === 0 || review_details?.recommended === 1) && (
+                                        <section className='order-details-card__footer--show-review-recommendation'>
+                                            <Icon
+                                                icon={review_details?.recommended ? 'IcThumbsUp' : 'IcThumbsDown'}
+                                                size={16}
+                                                custom_color={
+                                                    review_details?.recommended
+                                                        ? 'var(--status-success)'
+                                                        : 'var(--status-danger)'
+                                                }
+                                            />
+                                            <Text size='xxs' color='less-prominent'>
+                                                {localize('{{recommend_status}}', {
+                                                    recommend_status: review_details?.recommended
+                                                        ? 'Recommended'
+                                                        : 'Not Recommended',
+                                                })}
+                                            </Text>
+                                        </section>
                                     )}
-                                </Text>
-                            </section>
-                        </React.Fragment>
-                    )}
+                                </section>
+                            </div>
+                        ) : (
+                            <React.Fragment>
+                                <section className='order-details-card__footer--get-review'>
+                                    <Button
+                                        large
+                                        secondary
+                                        is_disabled={!is_order_reviewable}
+                                        className='order-details-card__footer--get-review-button'
+                                        classNameSpan='order-details-card__footer--get-review-button-text'
+                                        onClick={() => order_store.setIsUserRatingModalOpen(true)}
+                                    >
+                                        <Icon
+                                            icon='IcStar'
+                                            size={14}
+                                            custom_color={
+                                                is_order_reviewable ? 'var(--status-warning)' : 'var(--text-general)'
+                                            }
+                                        />
+                                        <Text size='xs'>
+                                            {localize(is_order_reviewable ? 'Rate this transaction' : 'Not rated')}
+                                        </Text>
+                                    </Button>
+                                    <Text size='xs' color='less-prominent'>
+                                        {localize(
+                                            is_order_reviewable
+                                                ? 'You have until DD Mmm YYYY 00:00 GMT to rate this transaction'
+                                                : 'You can no longer rate this transaction'
+                                        )}
+                                    </Text>
+                                </section>
+                            </React.Fragment>
+                        )}
+                    </div>
                 </div>
-            </div>
-        </React.Fragment>
-    );
+            </React.Fragment>
+        );
+    }
+    return null;
 });
 
 OrderDetailsFooter.propTypes = {

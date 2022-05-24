@@ -27,6 +27,7 @@ export default class OrderStore {
     @observable order_id = null;
     @observable order_payment_method_details = null;
     @observable order_rerender_timeout = null;
+    @observable is_user_rating_modal_open = false;
 
     interval;
     order_info_subscription = {};
@@ -294,6 +295,11 @@ export default class OrderStore {
     @action.bound
     setData(data) {
         this.data = data;
+    }
+
+    @action.bound
+    setIsUserRatingModalOpen(is_open) {
+        this.is_user_rating_modal_open = is_open;
     }
 
     @action.bound

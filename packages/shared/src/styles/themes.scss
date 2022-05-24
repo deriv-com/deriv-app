@@ -85,6 +85,7 @@
         --text-red: #{$color-red};
         --text-blue: #{$color-blue-3};
         --text-colored-background: #{$color-white};
+        --text-unselect: #{$color-grey-6};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-grey-2};
@@ -198,6 +199,7 @@
         --text-loss-danger: #{$color-red-2};
         --text-red: #{$color-red};
         --text-colored-background: #{$color-white};
+        --text-unselect: #{$color-grey};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-black-1};

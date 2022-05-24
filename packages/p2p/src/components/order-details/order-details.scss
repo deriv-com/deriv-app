@@ -15,6 +15,10 @@ $card-width: 456px;
     &--body {
         display: flex;
         flex-direction: column;
+
+        &-mobile-footer {
+            padding: 2.6rem;
+        }
     }
 
     &--warning {
@@ -229,10 +233,21 @@ $card-width: 456px;
         &--right {
             margin-left: auto;
         }
+        &--review-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2.4rem;
+        }
 
         &--show-review {
             display: inline-flex;
             justify-content: space-between;
+
+            &-recommendation {
+                gap: 0.5rem;
+                display: flex;
+                margin-right: 8.4rem;
+            }
         }
 
         &--get-review {
@@ -240,13 +255,22 @@ $card-width: 456px;
             flex-direction: column;
             gap: 1rem;
 
+            @include mobile {
+                margin-top: -2rem;
+            }
+
             &-button {
                 width: fit-content;
+                &-text {
+                    align-items: center;
+                    gap: 0.5rem;
+                }
             }
         }
 
         &--align-content {
             margin-top: unset;
+            display: block;
         }
     }
 

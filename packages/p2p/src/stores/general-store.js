@@ -17,6 +17,7 @@ export default class GeneralStore extends BaseStore {
     @observable is_blocked = false;
     @observable is_listed = false;
     @observable is_loading = false;
+    @observable is_p2p_blocked_for_pa = false;
     @observable is_restricted = false;
     @observable nickname = null;
     @observable nickname_error = '';
@@ -170,6 +171,7 @@ export default class GeneralStore extends BaseStore {
         this.setIsLoading(true);
         this.setIsBlocked(false);
         this.setIsHighRiskFullyAuthedWithoutFa(false);
+        this.setIsPaymentAgentBlocked(false);
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -186,9 +188,9 @@ export default class GeneralStore extends BaseStore {
         );
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
-            if (!error && get_account_status.risk_classification === 'high') {
-                const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
+            const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
+            if (!error && get_account_status.risk_classification === 'high') {
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
 
                 const is_fully_authenticated = hasStatuses(['age_verification', 'authenticated']);
@@ -220,10 +222,18 @@ export default class GeneralStore extends BaseStore {
                 } else if (is_fully_authed_and_does_not_need_fa) {
                     this.setIsLoading(false);
                 }
+            } else if (!error && get_account_status.risk_classification === 'low') {
+                const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
+
+                if (is_blocked_for_pa) {
+                    this.setIsPaymentAgentBlocked(true);
+                    this.setIsLoading(false);
+                }
             } else if (error) {
                 this.setIsHighRiskFullyAuthedWithoutFa(false);
                 this.setIsBlocked(false);
                 this.setIsLoading(false);
+                this.setIsPaymentAgentBlocked(false);
             }
 
             const { sendbird_store } = this.root_store;
@@ -338,6 +348,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
+    }
+
+    @action.bound
+    setIsPaymentAgentBlocked(is_p2p_blocked_for_pa) {
+        this.is_p2p_blocked_for_pa = is_p2p_blocked_for_pa;
     }
 
     @action.bound

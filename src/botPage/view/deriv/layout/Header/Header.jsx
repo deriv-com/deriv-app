@@ -79,20 +79,20 @@ const Header = () => {
 
   React.useEffect(() => {
     const token_list = getTokenList();
-    const active_token = getActiveToken(token_list);
-    const landing_company = active_token?.loginInfo.landing_company_name;
+    const active_storage_token = getActiveToken(token_list);
+    const landing_company = active_storage_token?.loginInfo.landing_company_name;
 
     dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
 
-    if (!active_token) {
+    if (!active_storage_token) {
       removeAllTokens();
       dispatch(resetClient());
       dispatch(setAccountSwitcherLoader(false));
     }
-    if (active_token) {
-      api.authorize(active_token.token).then((account) => {
+    if (active_storage_token) {
+      api.authorize(active_storage_token.token).then((account) => {
         if (account?.error?.code) return;
-        dispatch(updateActiveToken(active_token.token))
+        dispatch(updateActiveToken(active_storage_token.token))
         dispatch(updateActiveAccount(account.authorize));
         dispatch(setAccountSwitcherLoader(false));
 
@@ -101,7 +101,9 @@ const Header = () => {
             balance: 1,
             account: "all",
             subscribe: 1,
-          });
+          })
+            .then(() => { })
+            .catch(() => { });
         });
       }).catch(() => {
         removeAllTokens();
@@ -124,7 +126,7 @@ const Header = () => {
   }, [is_bot_running])
 
   const onBeforeUnload = (e) => {
-    if(is_bot_running) {
+    if (is_bot_running) {
       e.preventDefault();
       e.returnValue = true;
     }

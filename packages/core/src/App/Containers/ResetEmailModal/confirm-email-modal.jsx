@@ -16,7 +16,7 @@ export const ConfirmEmailModal = ({
 }) => {
     const [email_request, setEmailRequest] = React.useState(null);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
-    const [isOpen, setIsOpen] = React.useState(is_open);
+    const [is_modal_open, setIsModalOpen] = React.useState(is_open);
 
     const handleSubmit = () => {
         const api_request = {
@@ -30,12 +30,12 @@ export const ConfirmEmailModal = ({
         WS.changeEmail(api_request).then(response => {
             if (response.error) {
                 setEmailError(true);
-                onClose(true);
+                onClose();
                 setErrorMessage(response.error.message);
             } else {
                 setIsSendEmailModalOpen(true);
             }
-            setIsOpen(false);
+            setIsModalOpen(false);
         });
     };
 
@@ -57,7 +57,7 @@ export const ConfirmEmailModal = ({
     }
     return (
         <Modal
-            is_open={isOpen}
+            is_open={is_modal_open}
             should_header_stick_body
             title={<Localize i18n_default_text='Are you sure?' />}
             toggleModal={onClose}

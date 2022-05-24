@@ -1,18 +1,36 @@
 .user-rating-recommendation {
-    &__layout--vertical {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-    }
+    &__layout {
+        &--vertical {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
 
-    &__layout--horizontal {
-        display: flex;
-        justify-content: space-around;
+        &--horizontal {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        &--buttons {
+            display: flex;
+            gap: 1rem;
+        }
     }
 
     &__footer {
         display: flex;
         align-items: center;
         justify-content: flex-end;
+    }
+
+    &__button {
+        padding: 0 0.8rem;
+        border-color: var(--text-unselect);
+
+        &--text {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
     }
 }

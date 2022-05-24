@@ -99,7 +99,11 @@ const Rating = ({
                     const is_rating_equal_to_index = Math.round(active_rate) === index + 1;
                     const show_rating_with_precision = is_rating_with_precision && is_rating_equal_to_index;
                     return (
-                        <div className={classNames('user-rating__element', element_class)} key={index}>
+                        <div
+                            className={classNames('user-rating__element', element_class)}
+                            key={index}
+                            style={{ cursor: readonly ? '' : 'pointer' }}
+                        >
                             <section
                                 className={classNames('user-rating__element--filled')}
                                 style={{

@@ -15,6 +15,21 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
         setUserRecommendation(recommendation);
     }, [rating, recommendation]);
 
+    const resetRecommendationValue = () => {
+        setUserRating(0);
+        setUserRecommendation(null);
+    };
+
+    const setButtonColor = (is_recommended, color_select, color_unselect) => {
+        if (user_recommendation === 0 || user_recommendation === 1) {
+            if (is_recommended) {
+                return user_recommendation ? color_select : color_unselect;
+            }
+            return user_recommendation ? color_unselect : color_select;
+        }
+        return color_unselect;
+    };
+
     return (
         <Modal
             has_close_icon={!!user_rating}
@@ -22,42 +37,59 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
             small
             title={localize('How would you rate this transaction?')}
             toggleModal={() => handleModalAction(false)}
+            onUnmount={resetRecommendationValue}
         >
             <Modal.Body>
-                <div className='user-rating-recommendation__layout--vertical'>
+                <div className='user-rating-recommendation__layout--vertical' style={{ gap: '2.9rem' }}>
                     <Rating
                         value={user_rating}
-                        icon_selected={<Icon icon='IcStar' size={16} custom_color='var(--status-warning)' />}
-                        icon_unselected={<Icon icon='IcStarOutline' size={16} custom_color='var(--status-warning)' />}
+                        icon_selected={<Icon icon='IcStar' size={22} custom_color='var(--status-warning)' />}
+                        icon_unselected={<Icon icon='IcStarOutline' size={22} custom_color='var(--status-warning)' />}
                         onClick={setUserRating}
                     />
-                    {user_rating && (
-                        <section className='user-rating-recommendation__layout--vertical'>
-                            <Text>{localize('Would you recommend this {{user_type}}', { user_type })}</Text>
-                            <div className='user-rating-recommendation__layout--horizontal'>
-                                <Button small transparent>
-                                    <div className='user-rating-recommendation__layout--horizontal'>
-                                        <Icon
-                                            icon='IcThumbsUp'
-                                            size={14}
-                                            custom_color={
-                                                user_recommendation ? 'var(--text-prominent)' : 'var(--status-unselect)'
-                                            }
-                                        />
+                    {!!user_rating && (
+                        <section className='user-rating-recommendation__layout--vertical' style={{ gap: '1.9rem' }}>
+                            <Text size='xs'>{localize('Would you recommend this {{user_type}}', { user_type })}</Text>
+                            <div className='user-rating-recommendation__layout--buttons'>
+                                <Button
+                                    small
+                                    secondary
+                                    onClick={() => setUserRecommendation(1)}
+                                    className='user-rating-recommendation__button'
+                                    classNameSpan='user-rating-recommendation__button--text'
+                                >
+                                    <Icon
+                                        icon='IcThumbsUp'
+                                        size={14}
+                                        custom_color={setButtonColor(
+                                            1,
+                                            'var(--text-prominent)',
+                                            'var(--status-unselect)'
+                                        )}
+                                    />
+                                    <Text size='xxs' color={setButtonColor(1, 'prominent', 'unselect')}>
                                         {localize('Yes')}
-                                    </div>
+                                    </Text>
                                 </Button>
-                                <Button small transparent>
-                                    <div className='user-rating-recommendation__layout--horizontal'>
-                                        <Icon
-                                            icon='IcThumbsDown'
-                                            size={14}
-                                            custom_color={
-                                                user_recommendation ? 'var(--status-unselect)' : 'var(--text-prominent)'
-                                            }
-                                        />
+                                <Button
+                                    small
+                                    secondary
+                                    onClick={() => setUserRecommendation(0)}
+                                    className='user-rating-recommendation__button'
+                                    classNameSpan='user-rating-recommendation__button--text'
+                                >
+                                    <Icon
+                                        icon='IcThumbsDown'
+                                        size={14}
+                                        custom_color={setButtonColor(
+                                            0,
+                                            'var(--text-prominent)',
+                                            'var(--status-unselect)'
+                                        )}
+                                    />
+                                    <Text size='xxs' color={setButtonColor(0, 'prominent', 'unselect')}>
                                         {localize('No')}
-                                    </div>
+                                    </Text>
                                 </Button>
                             </div>
                         </section>

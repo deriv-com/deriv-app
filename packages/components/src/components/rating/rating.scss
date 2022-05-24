@@ -4,13 +4,11 @@
     &__wrapper {
         display: inline-flex;
         position: relative;
-        cursor: pointer;
         gap: 0.5rem;
     }
 
     &__element {
         position: relative;
-        cursor: pointer;
 
         &--filled {
             overflow: hidden;

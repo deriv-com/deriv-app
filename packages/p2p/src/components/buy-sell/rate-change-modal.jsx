@@ -11,7 +11,7 @@ const RateChangeModal = ({ local_currency, should_show_rate_change_modal, setSho
     };
     return (
         <Modal is_open={should_show_rate_change_modal} toggleModal={closeModal} small>
-            <div>
+            <Modal.Body>
                 <Text
                     as='p'
                     align='left'
@@ -24,11 +24,10 @@ const RateChangeModal = ({ local_currency, should_show_rate_change_modal, setSho
                         values={{ local_currency }}
                     />
                 </Text>
-            </div>
-
-            <div className='rate-changed-modal__button'>
+            </Modal.Body>
+            <Modal.Footer className='rate-changed-modal__button'>
                 <Button onClick={closeModal} text={localize('Try again')} primary large />
-            </div>
+            </Modal.Footer>
         </Modal>
     );
 };

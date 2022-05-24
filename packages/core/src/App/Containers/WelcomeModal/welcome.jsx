@@ -106,14 +106,11 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                         description={
                             <Localize
                                 i18n_default_text='Get more info on <0>CFDs</0>, <1>multipliers</1>, and <2>options</2>.'
-                                components={
-                                    [
-                                        <StaticUrl key={0} className='link' href='/trade-types/cfds/' />,
-                                        <StaticUrl key={1} className='link' href='/trade-types/multiplier/'/>,
-                                        <StaticUrl key={2} className='link' href='/trade-types/options/'/>,
-                                    ]
-                                }
-                                
+                                components={[
+                                    <StaticUrl key={0} className='link' href='/trade-types/cfds/' />,
+                                    <StaticUrl key={1} className='link' href='/trade-types/multiplier/' />,
+                                    <StaticUrl key={2} className='link' href='/trade-types/options/' />,
+                                ]}
                             />
                         }
                         title={localize('Not sure where to start?')}

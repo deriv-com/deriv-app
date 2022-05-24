@@ -56,6 +56,7 @@ const MobileDialog = props => {
     if (!document.getElementById(portal_element_id)) return null;
     return ReactDOM.createPortal(
         <CSSTransition
+            appear
             in={visible}
             timeout={250}
             classNames={{

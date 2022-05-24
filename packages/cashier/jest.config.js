@@ -14,11 +14,11 @@ module.exports = {
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
         '^Containers/(.*)$': '<rootDir>/src/containers/$1',
     },
-    testPathIgnorePatterns: ['/Routes/', '/Validator/'],
+    testPathIgnorePatterns: ['/Routes/', '/validator/'],
     coveragePathIgnorePatterns: [
-        // TODO: Remove '/Routes/__tests__/' and '/Validator/__tests__/' when the old tests written in chai and enzyme replaced with testing library
+        // TODO: Remove '/Routes/__tests__/' and '/validator/__tests__/' when the old tests written in chai and enzyme replaced with testing library
         '/Routes/__tests__/',
-        '/Validator/__tests__/',
+        '/validator/__tests__/',
         '<rootDir>/.eslintrc.js',
         '<rootDir>/jest.config.js',
         '<rootDir>/build',

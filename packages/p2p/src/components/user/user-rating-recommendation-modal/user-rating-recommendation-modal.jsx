@@ -8,9 +8,7 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
     const [user_recommendation, setUserRecommendation] = React.useState(null);
 
     const handleModalAction = action_status =>
-        action_status
-            ? onClick({ rating: user_rating, recommendation: user_recommendation })
-            : onClick({ rating, recommendation });
+        action_status ? onClick({ rating: user_rating, recommendation: user_recommendation }) : onClick(null);
 
     React.useEffect(() => {
         setUserRating(rating);
@@ -30,7 +28,7 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
                     <Rating
                         value={user_rating}
                         icon_selected={<Icon icon='IcStar' size={16} custom_color='var(--status-warning)' />}
-                        icon_unselected={<Icon icon='IcStar' size={16} custom_color='var(--status-default)' />}
+                        icon_unselected={<Icon icon='IcStarOutline' size={16} custom_color='var(--status-warning)' />}
                         onClick={setUserRating}
                     />
                     {user_rating && (

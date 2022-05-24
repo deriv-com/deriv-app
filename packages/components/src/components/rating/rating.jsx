@@ -27,13 +27,10 @@ const Rating = ({
         const { width, left, right } = ratingContainerRef.current.getBoundingClientRect();
         const rating_start_element = direction === 'ltr' ? e.clientX - left : right - e.clientX;
         const selected_rating = (rating_start_element / width) * max_rating;
-        if (selected_rating > 0.4) {
-            const calculated_rating = allow_half_rating
-                ? Math.round(selected_rating / 0.5) * 0.5 // This will always make sure that, if we hover between two ratings, it will select the nearest number
-                : Math.round(selected_rating);
-            return calculated_rating;
-        }
-        return 0;
+        const calculated_rating = allow_half_rating
+            ? Math.round(selected_rating / 0.5) * 0.5 // This will always make sure that, if we hover between two ratings, it will select the nearest number
+            : Math.round(selected_rating);
+        return calculated_rating;
     };
 
     const handleClick = e => {

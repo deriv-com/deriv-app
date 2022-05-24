@@ -350,6 +350,7 @@ import './common/ic-stage1.svg';
 import './common/ic-stage2.svg';
 import './common/ic-stage3.svg';
 import './common/ic-stage4.svg';
+import './common/ic-star-outline.svg';
 import './common/ic-star.svg';
 import './common/ic-statement.svg';
 import './common/ic-stop.svg';

@@ -86,6 +86,8 @@
         --text-blue: #{$color-blue-3};
         --text-colored-background: #{$color-white};
         --text-unselect: #{$color-grey-6};
+        --text-recommend: #{$color-black-1};
+        --text-reject: #{$color-black-1};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-grey-2};
@@ -127,6 +129,8 @@
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-grey-3};
+        --border-recommend: #{$color-grey-6};
+        --border-reject: #{$color-grey-6};
         // Fill
         --fill-normal: #{$color-white};
         --fill-hover: #{$color-grey-1};
@@ -143,6 +147,8 @@
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
         --status-unselect: #{$color-grey-6};
+        --status-recommend: #{$color-black-1};
+        --status-reject: #{$color-black-1};
         // Dashboard
         --dashboard-swap-free: #{$gradient-color-black-3};
         --dashboard-app: #{$gradient-color-black-4};
@@ -200,6 +206,8 @@
         --text-red: #{$color-red};
         --text-colored-background: #{$color-white};
         --text-unselect: #{$color-grey};
+        --text-recommend: #{$color-green-1};
+        --text-reject: #{$color-red-1};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-black-1};
@@ -239,6 +247,8 @@
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-black-4};
+        --border-recommend: #{$color-green-3};
+        --border-reject: #{$color-red-2};
         // Fill
         --fill-normal: #{$color-black};
         --fill-hover: #{$color-grey-7};
@@ -254,6 +264,9 @@
         --status-transfer: #{$color-orange};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
+        --status-unselect: #{$color-grey};
+        --status-recommend: #{$color-green-3};
+        --status-reject: #{$color-red-2};
         // Transparentize
         --transparent-success: #{$alpha-color-green-2};
         --transparent-info: #{$alpha-color-blue-1};

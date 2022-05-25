@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Modal, Text, Rating } from '@deriv/components';
 import { localize } from 'Components/i18next';
+import classNames from 'classnames';
 
 const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendation, user_type }) => {
     const [user_rating, setUserRating] = React.useState(0);
@@ -20,7 +21,7 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
         setUserRecommendation(null);
     };
 
-    const setButtonColor = (is_recommended, color_select, color_unselect) => {
+    const setButtonStyle = (is_recommended, color_select, color_unselect) => {
         if (user_recommendation === 0 || user_recommendation === 1) {
             if (is_recommended) {
                 return user_recommendation ? color_select : color_unselect;
@@ -55,19 +56,26 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
                                     small
                                     secondary
                                     onClick={() => setUserRecommendation(1)}
-                                    className='user-rating-recommendation__button'
+                                    className={
+                                        (classNames('user-rating-recommendation__button'),
+                                        setButtonStyle(
+                                            1,
+                                            'user-rating-recommendation__button--border-active-recommend',
+                                            'user-rating-recommendation__button--border-inactive'
+                                        ))
+                                    }
                                     classNameSpan='user-rating-recommendation__button--text'
                                 >
                                     <Icon
                                         icon='IcThumbsUp'
                                         size={14}
-                                        custom_color={setButtonColor(
+                                        custom_color={setButtonStyle(
                                             1,
-                                            'var(--text-prominent)',
+                                            'var(--status-recommend)',
                                             'var(--status-unselect)'
                                         )}
                                     />
-                                    <Text size='xxs' color={setButtonColor(1, 'prominent', 'unselect')}>
+                                    <Text size='xxs' color={setButtonStyle(1, 'recommend', 'unselect')}>
                                         {localize('Yes')}
                                     </Text>
                                 </Button>
@@ -75,19 +83,26 @@ const UserRatingRecommendationModal = ({ onClick, is_open, rating, recommendatio
                                     small
                                     secondary
                                     onClick={() => setUserRecommendation(0)}
-                                    className='user-rating-recommendation__button'
+                                    className={
+                                        (classNames('user-rating-recommendation__button'),
+                                        setButtonStyle(
+                                            0,
+                                            'user-rating-recommendation__button--border-active-reject',
+                                            'user-rating-recommendation__button--border-inactive'
+                                        ))
+                                    }
                                     classNameSpan='user-rating-recommendation__button--text'
                                 >
                                     <Icon
                                         icon='IcThumbsDown'
                                         size={14}
-                                        custom_color={setButtonColor(
+                                        custom_color={setButtonStyle(
                                             0,
-                                            'var(--text-prominent)',
+                                            'var(--status-reject)',
                                             'var(--status-unselect)'
                                         )}
                                     />
-                                    <Text size='xxs' color={setButtonColor(0, 'prominent', 'unselect')}>
+                                    <Text size='xxs' color={setButtonStyle(0, 'reject', 'unselect')}>
                                         {localize('No')}
                                     </Text>
                                 </Button>

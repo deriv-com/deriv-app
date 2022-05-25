@@ -25,7 +25,19 @@
 
     &__button {
         padding: 0 0.8rem;
-        border-color: var(--text-unselect);
+
+        &--border-active {
+            &-recommend {
+                border-color: var(--border-recommend);
+            }
+            &-reject {
+                border-color: var(--border-reject);
+            }
+        }
+
+        &--border-inactive {
+            border-color: var(--status-unselect);
+        }
 
         &--text {
             display: flex;

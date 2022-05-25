@@ -223,7 +223,7 @@ export default class GeneralStore extends BaseStore {
                     this.setIsBlocked(true);
                 }
             } else if (is_blocked_for_pa) {
-                this.setIsPaymentAgentBlocked(true);
+                this.setIsP2pBlockedForPa(true);
             }
 
             this.setIsLoading(false);

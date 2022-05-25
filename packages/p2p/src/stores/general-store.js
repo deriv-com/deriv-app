@@ -171,7 +171,7 @@ export default class GeneralStore extends BaseStore {
         this.setIsLoading(true);
         this.setIsBlocked(false);
         this.setIsHighRiskFullyAuthedWithoutFa(false);
-        this.setIsPaymentAgentBlocked(false);
+        this.setIsP2pBlockedForPa(false);
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -195,7 +195,7 @@ export default class GeneralStore extends BaseStore {
             if (error) {
                 this.setIsHighRiskFullyAuthedWithoutFa(false);
                 this.setIsBlocked(false);
-                this.setIsPaymentAgentBlocked(false);
+                this.setIsP2pBlockedForPa(false);
             } else if (get_account_status.risk_classification === 'high') {
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
 

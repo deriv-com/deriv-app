@@ -5,14 +5,13 @@ import { Button, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { usePaymentMethodValidator } from 'Components/hooks';
 import { useStores } from 'Stores';
+import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal';
 
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
     const validateFields = usePaymentMethodValidator();
 
     React.useEffect(() => {
-        my_profile_store.getAdvertiserPaymentMethods();
-
         return () => {
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
@@ -26,6 +25,7 @@ const EditPaymentMethodForm = () => {
 
     return (
         <React.Fragment>
+            <CancelEditPaymentMethodModal />
             <Formik
                 enableReinitialize
                 initialValues={my_profile_store.initial_values}
@@ -87,8 +87,12 @@ const EditPaymentMethodForm = () => {
                                     secondary
                                     large
                                     onClick={() => {
-                                        my_profile_store.setShouldShowEditPaymentMethodForm(false);
-                                        my_profile_store.setPaymentMethodToEdit();
+                                        if (dirty) {
+                                            my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                        } else {
+                                            my_profile_store.setPaymentMethodToEdit(null);
+                                            my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                                        }
                                     }}
                                     type='button'
                                 >

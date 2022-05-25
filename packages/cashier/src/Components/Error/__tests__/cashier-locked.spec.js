@@ -16,9 +16,9 @@ describe('<CashierLocked />', () => {
                     cashier_validation: [],
                 }}
                 current_currency_type={'crypto'}
-                is_deposit_lock={false}
+                is_deposit_locked={false}
                 is_system_maintenance
-                is_withdrawal_lock={false}
+                is_withdrawal_locked={false}
             />
         );
 
@@ -36,9 +36,9 @@ describe('<CashierLocked />', () => {
                     cashier_validation: [],
                 }}
                 current_currency_type={'crypto'}
-                is_deposit_lock={false}
+                is_deposit_locked={false}
                 is_system_maintenance
-                is_withdrawal_lock
+                is_withdrawal_locked
             />
         );
 
@@ -56,9 +56,9 @@ describe('<CashierLocked />', () => {
                     cashier_validation: [],
                 }}
                 current_currency_type={'crypto'}
-                is_deposit_lock
+                is_deposit_locked
                 is_system_maintenance
-                is_withdrawal_lock={false}
+                is_withdrawal_locked={false}
             />
         );
 
@@ -76,9 +76,9 @@ describe('<CashierLocked />', () => {
                     cashier_validation: [],
                 }}
                 current_currency_type={'fiat'}
-                is_deposit_lock={false}
+                is_deposit_locked={false}
                 is_system_maintenance
-                is_withdrawal_lock={false}
+                is_withdrawal_locked={false}
             />
         );
 
@@ -95,6 +95,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['no_residence'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -111,6 +112,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['documents_expired'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -127,6 +129,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['cashier_locked_status'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -143,6 +146,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['disabled_status'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -159,6 +163,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['ASK_CURRENCY'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -173,6 +178,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['ASK_AUTHENTICATE'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -185,6 +191,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['ASK_FINANCIAL_RISK_APPROVAL'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -200,6 +207,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['FinancialAssessmentRequired'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -216,6 +224,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['ASK_TIN_INFORMATION'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -228,6 +237,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['ASK_UK_FUNDS_PROTECTION'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -240,6 +250,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['ASK_SELF_EXCLUSION_MAX_TURNOVER_SET'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -256,6 +267,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['ASK_FIX_DETAILS'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -277,7 +289,8 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['SelfExclusion'],
                 }}
-                is_deposit_lock
+                is_cashier_locked={false}
+                is_deposit_locked
                 loginid={'CR9000000'}
             />
         );
@@ -295,7 +308,8 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['unwelcome_status'],
                 }}
-                is_deposit_lock
+                is_cashier_locked={false}
+                is_deposit_locked
             />
         );
 
@@ -308,7 +322,8 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['no_withdrawal_or_trading_status'],
                 }}
-                is_withdrawal_lock
+                is_cashier_locked={false}
+                is_withdrawal_locked
             />
         );
 
@@ -325,7 +340,8 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['withdrawal_locked_status'],
                 }}
-                is_withdrawal_lock
+                is_cashier_locked={false}
+                is_withdrawal_locked
             />
         );
 
@@ -342,7 +358,8 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['only_pa_withdrawals_allowed_status'],
                 }}
-                is_withdrawal_lock
+                is_cashier_locked={false}
+                is_withdrawal_locked
             />
         );
 
@@ -357,6 +374,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['ASK_AUTHENTICATE', 'unwelcome_status'],
                 }}
+                is_cashier_locked
             />
         );
 
@@ -369,6 +387,7 @@ describe('<CashierLocked />', () => {
                 account_status={{
                     cashier_validation: ['no_withdrawal_or_trading_status', 'unwelcome_status'],
                 }}
+                is_cashier_locked
             />
         );
 

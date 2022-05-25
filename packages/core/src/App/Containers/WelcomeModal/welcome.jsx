@@ -113,7 +113,6 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                                 ]}
                             />
                         }
-                        onClick={() => switchPlatform({ route: routes.trade })}
                         title={localize('Not sure where to start?')}
                         icon={<NotSure />}
                         mobileIcon={<NotSureMobile />}

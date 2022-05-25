@@ -10,6 +10,7 @@ import PaymentMethods from './payment-methods';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
+    const formik_ref = React.useRef();
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
@@ -25,9 +26,17 @@ const MyProfileContent = () => {
                         height_offset='80px'
                         is_modal_open={true}
                         page_header_text={localize('Payment methods')}
-                        pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+                        pageHeaderReturnFn={() => {
+                            if (formik_ref.current.dirty) {
+                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                            } else {
+                                my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                                my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                            }
+                        }}
                     >
-                        <PaymentMethods />
+                        <PaymentMethods formik_ref={formik_ref} />
                     </MobileFullPageModal>
                 </MobileWrapper>
             </React.Fragment>

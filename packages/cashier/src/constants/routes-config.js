@@ -1,8 +1,8 @@
 import React from 'react';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import Cashier from '../containers/cashier/cashier.jsx';
 import {
-    Cashier,
     Deposit,
     Withdrawal,
     PaymentAgent,

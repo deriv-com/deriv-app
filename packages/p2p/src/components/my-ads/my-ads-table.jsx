@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
-import { TableError } from 'Components/table/table-error.tsx';
+import { TableError } from 'Components/table/table-error.js';
 import { useStores } from 'Stores';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';

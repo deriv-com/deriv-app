@@ -9,7 +9,7 @@ import { routes, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { connect } from 'Stores/connect';
-import PositionsDrawerCard from '@deriv/reports/dist/reports/js/positions-drawer-card';
+import { PositionsDrawerCard } from '@deriv/reports';
 import { filterByContractType } from './helpers';
 
 const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosition, is_new_row, ...props }) => {

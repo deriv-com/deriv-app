@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { isMobile } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
-import Cashier from '../cashier';
+import Cashier from '../cashier.jsx';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -35,10 +35,10 @@ jest.mock('@deriv/shared', () => {
     };
 });
 
-jest.mock('Components/account-prompt-dialog', () => jest.fn(() => 'mockedAccountPromptDialog'));
-jest.mock('Components/error-dialog', () => jest.fn(() => 'mockedErrorDialog'));
-jest.mock('../withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
-jest.mock('../deposit', () => jest.fn(() => 'mockedDeposit'));
+jest.mock('../account-prompt-dialog/account-prompt-dialog', () => jest.fn(() => 'mockedAccountPromptDialog'));
+jest.mock('../error-dialog/error-dialog', () => jest.fn(() => 'mockedErrorDialog'));
+jest.mock('Pages/withdrawal/withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
+jest.mock('Pages/deposit/deposit', () => jest.fn(() => 'mockedDeposit'));
 
 describe('<Cashier />', () => {
     let history;

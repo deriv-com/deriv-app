@@ -14,9 +14,11 @@ import {
 import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { Localize, localize } from 'Components/i18next';
+import FloatingRate from 'Components/floating-rate';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
+import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
@@ -27,12 +29,11 @@ const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
         return <Div100vhContainer height_offset='auto'>{children}</Div100vhContainer>;
     }
-
     return children;
 };
 
 const CreateAdForm = () => {
-    const { general_store, my_ads_store, my_profile_store } = useStores();
+    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
 
@@ -74,6 +75,7 @@ const CreateAdForm = () => {
         return () => {
             disposeApiErrorReaction();
             my_ads_store.setApiErrorMessage('');
+            floating_rate_store.setApiErrorMessage('');
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,7 +103,8 @@ const CreateAdForm = () => {
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
-                    price_rate: '',
+                    payment_info: my_ads_store.payment_info,
+                    rate_type: floating_rate_store.rate_type === ad_type.FLOAT ? '-0.01' : '',
                     type: buy_sell.BUY,
                 }}
                 onSubmit={my_ads_store.handleSubmit}
@@ -113,6 +116,17 @@ const CreateAdForm = () => {
             >
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
+
+                    const onChangeAdTypeHandler = user_input => {
+                        setFieldValue('type', user_input);
+                        if (floating_rate_store.rate_type === ad_type.FLOAT) {
+                            if (user_input === buy_sell.SELL) {
+                                setFieldValue('rate_type', '+0.01');
+                            } else {
+                                setFieldValue('rate_type', '-0.01');
+                            }
+                        }
+                    };
 
                     return (
                         <div className='p2p-my-ads__form'>
@@ -133,7 +147,7 @@ const CreateAdForm = () => {
                                                     {...field}
                                                     className='p2p-my-ads__form-radio-group'
                                                     name='type'
-                                                    onToggle={event => setFieldValue('type', event.target.value)}
+                                                    onToggle={event => onChangeAdTypeHandler(event.target.value)}
                                                     selected={values.type}
                                                     required
                                                 >
@@ -150,8 +164,13 @@ const CreateAdForm = () => {
                                         </Field>
                                         <div className='p2p-my-ads__form-summary'>
                                             <CreateAdSummary
+                                                market_feed={
+                                                    floating_rate_store.rate_type === ad_type.FLOAT
+                                                        ? floating_rate_store.exchange_rate
+                                                        : null
+                                                }
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
-                                                price_rate={errors.price_rate ? '' : values.price_rate}
+                                                price_rate={values.rate_type}
                                                 type={values.type}
                                             />
                                         </div>
@@ -198,32 +217,57 @@ const CreateAdForm = () => {
                                                     />
                                                 )}
                                             </Field>
-                                            <Field name='price_rate'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        type='text'
-                                                        error={touched.price_rate && errors.price_rate}
-                                                        label={localize('Fixed rate (1 {{currency}})', {
-                                                            currency,
-                                                        })}
-                                                        className='p2p-my-ads__form-field'
-                                                        trailing_icon={
-                                                            <Text
-                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
-                                                                line_height='m'
-                                                                size={isDesktop() ? 'xxs' : 's'}
-                                                            >
-                                                                {local_currency_config.currency}
-                                                            </Text>
-                                                        }
-                                                        onChange={e => {
-                                                            my_ads_store.restrictLength(e, handleChange);
-                                                        }}
-                                                        required
-                                                    />
-                                                )}
+                                            <Field name='rate_type'>
+                                                {({ field }) =>
+                                                    floating_rate_store.rate_type === ad_type.FLOAT ? (
+                                                        <FloatingRate
+                                                            className='p2p-my-ads__form-field'
+                                                            error_messages={errors.rate_type}
+                                                            exchange_rate={floating_rate_store.exchange_rate}
+                                                            fiat_currency={currency}
+                                                            local_currency={local_currency_config.currency}
+                                                            onChange={handleChange}
+                                                            offset={{
+                                                                upper_limit: parseInt(
+                                                                    floating_rate_store.float_rate_offset_limit
+                                                                ),
+                                                                lower_limit:
+                                                                    parseInt(
+                                                                        floating_rate_store.float_rate_offset_limit
+                                                                    ) * -1,
+                                                            }}
+                                                            required
+                                                            change_handler={e => {
+                                                                my_ads_store.restrictDecimalPlace(e, 2, handleChange);
+                                                            }}
+                                                            {...field}
+                                                        />
+                                                    ) : (
+                                                        <Input
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            type='text'
+                                                            error={touched.rate_type && errors.rate_type}
+                                                            label={localize('Fixed rate (1 {{currency}})', {
+                                                                currency,
+                                                            })}
+                                                            className='p2p-my-ads__form-field'
+                                                            trailing_icon={
+                                                                <Text
+                                                                    color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                    line_height='m'
+                                                                    size={isDesktop() ? 'xxs' : 's'}
+                                                                >
+                                                                    {local_currency_config.currency}
+                                                                </Text>
+                                                            }
+                                                            onChange={e => {
+                                                                my_ads_store.restrictLength(e, handleChange);
+                                                            }}
+                                                            required
+                                                        />
+                                                    )
+                                                }
                                             </Field>
                                         </div>
                                         <div className='p2p-my-ads__form-container'>

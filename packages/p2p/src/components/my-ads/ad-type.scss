@@ -1,0 +1,16 @@
+.ad-type {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    &__badge {
+        align-items: center;
+        border-radius: 0.4rem;
+        border: 1px solid var(--border-normal);
+        display: flex;
+        flex-direction: row;
+        margin: 0.25rem;
+        padding: 0.1rem 0.8rem;
+        width: fit-content;
+    }
+}

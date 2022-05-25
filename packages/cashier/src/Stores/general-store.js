@@ -250,13 +250,6 @@ export default class GeneralStore extends BaseStore {
                     }
                 }
             );
-
-            reaction(
-                () => currency,
-                () => {
-                    withdraw.setIsWithdrawConfirmed(false);
-                }
-            );
         }
     }
 

@@ -10,8 +10,6 @@ import {
     RadioGroup,
     Text,
     ThemedScrollbars,
-    Rating,
-    Icon,
 } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
 import { reaction } from 'mobx';
@@ -29,7 +27,6 @@ const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
         return <Div100vhContainer height_offset='auto'>{children}</Div100vhContainer>;
     }
-
     return children;
 };
 
@@ -341,22 +338,6 @@ const CreateAdForm = () => {
                                             is_sell_advert={is_sell_advert}
                                         />
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
-                                            <Rating
-                                                icon_selected={
-                                                    <Icon
-                                                        icon='IcStar'
-                                                        custom_color='var(--status-warning)'
-                                                        size={16}
-                                                    />
-                                                }
-                                                icon_unselected={
-                                                    <Icon
-                                                        icon='IcStarOutline'
-                                                        custom_color='var(--status-warning)'
-                                                        size={16}
-                                                    />
-                                                }
-                                            />
                                             <Button
                                                 className='p2p-my-ads__form-button'
                                                 secondary

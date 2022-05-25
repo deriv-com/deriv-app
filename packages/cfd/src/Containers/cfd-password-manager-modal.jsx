@@ -42,6 +42,7 @@ const CountdownComponent = ({ count_from = 60, onTimeout }) => {
 
         onTimeout();
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);

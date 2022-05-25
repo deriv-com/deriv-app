@@ -46,6 +46,32 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         />
     );
 
+    const BuySellFormError = () => {
+        return buy_sell_store.form_error_code === 'OrderAlreadyExists' ? (
+            <HintBox
+                className='buy-sell__modal-danger'
+                icon='IcAlertDanger'
+                message={
+                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                        {error_message}
+                    </Text>
+                }
+                is_danger
+            />
+        ) : (
+            <HintBox
+                className='buy-sell__modal-danger'
+                icon='IcAlertDanger'
+                message={
+                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                        <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                    </Text>
+                }
+                is_danger
+            />
+        );
+    };
+
     const onCancel = () => {
         setShouldShowPopup(false);
         my_profile_store.setShouldShowAddPaymentMethodForm(false);
@@ -106,18 +132,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         : 'buy-sell__modal-footer'
                 }
             >
-                {error_message && (
-                    <HintBox
-                        className='buy-sell__modal-danger'
-                        icon='IcAlertDanger'
-                        message={
-                            <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                                <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
-                            </Text>
-                        }
-                        is_danger
-                    />
-                )}
+                {error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
                     <AddPaymentMethodForm should_show_separated_footer={true} />
                 ) : (
@@ -148,18 +163,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             {/* Parent height - Modal.Header height - Modal.Footer height */}
             <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                 <Modal.Body>
-                    {error_message && (
-                        <HintBox
-                            className='buy-sell__modal-danger'
-                            icon='IcAlertDanger'
-                            message={
-                                <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                                    <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
-                                </Text>
-                            }
-                            is_danger
-                        />
-                    )}
+                    {error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm should_show_separated_footer />
                     ) : (

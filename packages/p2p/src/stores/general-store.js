@@ -190,6 +190,8 @@ export default class GeneralStore extends BaseStore {
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
+            const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
+
             if (error) {
                 this.setIsHighRiskFullyAuthedWithoutFa(false);
                 this.setIsBlocked(false);
@@ -220,12 +222,8 @@ export default class GeneralStore extends BaseStore {
                     // Second priority: If user is blocked, don't bother asking them to submit FA.
                     this.setIsBlocked(true);
                 }
-            } else if (get_account_status.risk_classification === 'low') {
-                const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
-
-                if (is_blocked_for_pa) {
-                    this.setIsPaymentAgentBlocked(true);
-                }
+            } else if (is_blocked_for_pa) {
+                this.setIsPaymentAgentBlocked(true);
             }
 
             this.setIsLoading(false);
@@ -345,7 +343,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setIsPaymentAgentBlocked(is_p2p_blocked_for_pa) {
+    setIsP2pBlockedForPa(is_p2p_blocked_for_pa) {
         this.is_p2p_blocked_for_pa = is_p2p_blocked_for_pa;
     }
 

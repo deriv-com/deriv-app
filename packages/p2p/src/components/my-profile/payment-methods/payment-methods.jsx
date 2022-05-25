@@ -5,6 +5,8 @@ import AddPaymentMethod from './add-payment-method';
 import PaymentMethodsEmpty from './payment-methods-empty';
 import PaymentMethodsList from './payment-methods-list';
 import EditPaymentMethodForm from './payment-methods-list/edit-payment-method-form.jsx';
+import { isMobile } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 
 const PaymentMethods = () => {
     const { my_profile_store } = useStores();
@@ -15,8 +17,9 @@ const PaymentMethods = () => {
         my_profile_store.setShouldShowEditPaymentMethodForm(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    if (my_profile_store.should_show_add_payment_method_form) {
+    if (my_profile_store.is_loading) {
+        return <Loading is_fullscreen={isMobile()} />;
+    } else if (my_profile_store.should_show_add_payment_method_form) {
         return <AddPaymentMethod />;
     } else if (!my_profile_store.advertiser_has_payment_methods) {
         return <PaymentMethodsEmpty />;

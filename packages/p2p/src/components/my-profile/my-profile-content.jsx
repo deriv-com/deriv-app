@@ -10,6 +10,7 @@ import PaymentMethods from './payment-methods';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
+    // formik_ref is used to obtain Formik's form state from outside Formik component in AddPaymentMethodForm and EditPaymentMethodForm
     const formik_ref = React.useRef();
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {

@@ -32,7 +32,6 @@ const PaymentMethods = ({ formik_ref }) => {
 };
 
 PaymentMethods.propTypes = {
-    // formik_ref is used to obtain Formik's form state from outside Formik component in AddPaymentMethodForm and EditPaymentMethodForm
     formik_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
 };
 

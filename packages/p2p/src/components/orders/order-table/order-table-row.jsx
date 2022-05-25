@@ -190,7 +190,7 @@ const OrderRow = ({ style, row: order }) => {
                     ) : (
                         <Button
                             secondary
-                            medium
+                            small
                             classNameSpan='orders__table-row--rate-button'
                             onClick={() => order_store.setIsUserRatingModalOpen(true)}
                             is_disabled={!is_order_reviewable}
@@ -200,7 +200,7 @@ const OrderRow = ({ style, row: order }) => {
                                 custom_color={is_order_reviewable ? 'var(--status-warning)' : 'var(--text-general)'}
                                 size={10}
                             />
-                            <Text weight='bold' size='xs'>
+                            <Text weight='bold' size='xxs'>
                                 <Localize i18n_default_text='Rate' />
                             </Text>
                         </Button>

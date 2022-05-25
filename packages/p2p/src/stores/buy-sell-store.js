@@ -32,7 +32,7 @@ export default class BuySellStore extends BaseStore {
     @observable should_use_client_limits = false;
     @observable show_advertiser_page = false;
     @observable show_filter_payment_methods = false;
-    @observable show_rate_change_modal = false;
+    @observable show_rate_change_popup = false;
     @observable sort_by = 'rate';
     @observable submitForm = () => {};
     @observable table_type = buy_sell.BUY;
@@ -177,6 +177,11 @@ export default class BuySellStore extends BaseStore {
 
         if (order.error) {
             this.form_props.setErrorMessage(order.error.message);
+            this.setShouldShowPopup(false);
+            // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
+            setTimeout(() => {
+                this.setShowRateChangePopup(true);
+            }, 250);
         } else {
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);
@@ -490,8 +495,8 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    setShowRateChangeModal(show_rate_change_modal) {
-        this.show_rate_change_modal = show_rate_change_modal;
+    setShowRateChangePopup(show_rate_change_popup) {
+        this.show_rate_change_popup = show_rate_change_popup;
     }
 
     @action.bound

@@ -8,17 +8,14 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate.js';
 import { useStores } from 'Stores';
-import { requestWS } from 'Utils/websocket';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
-    const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
-    const { currency, local_currency_config } = general_store.client;
+    const { advertiser_page_store, buy_sell_store, floating_rate_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
-    const [market_rate_on_mount, setMarketRateOnMount] = React.useState(null);
     buy_sell_store.setFormProps(props);
 
     const { setPageFooterParent } = props;
@@ -31,6 +28,7 @@ const BuySellForm = props => {
         min_order_amount_limit_display,
         payment_method_names,
         price,
+        rate,
         rate_type,
     } = buy_sell_store?.advert || {};
 
@@ -39,21 +37,11 @@ const BuySellForm = props => {
         borderWidth: '2px',
     };
 
-    const fetchCurrentMarketRate = async () => {
-        const response = await requestWS({
-            exchange_rates: 1,
-            base_currency: currency,
-            target_currency: local_currency_config.currency,
-        });
-        const { rates } = response.exchange_rates;
-        return parseFloat(rates[local_currency_config.currency]);
-    };
+    const effective_rate =
+        rate_type === ad_type.FLOAT ? parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100)) : price;
 
     React.useEffect(
         () => {
-            if (rate_type === ad_type.FLOAT) {
-                fetchCurrentMarketRate().then(market_rate => setMarketRateOnMount(market_rate));
-            }
             my_profile_store.setShouldShowAddPaymentMethodForm(false);
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
@@ -103,23 +91,6 @@ const BuySellForm = props => {
         }
     };
 
-    const onSubmitAdTransaction = async (...args) => {
-        if (rate_type === ad_type.FLOAT) {
-            const updated_market_rate = await fetchCurrentMarketRate();
-            if (market_rate_on_mount !== updated_market_rate) {
-                buy_sell_store.setShouldShowPopup(false);
-                // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
-                setTimeout(() => {
-                    buy_sell_store.setShowRateChangeModal(true);
-                }, 250);
-            } else {
-                buy_sell_store.handleSubmit(() => isMounted(), ...args);
-            }
-        } else {
-            buy_sell_store.handleSubmit(() => isMounted(), ...args);
-        }
-    };
-
     return (
         <Formik
             enableReinitialize
@@ -129,10 +100,10 @@ const BuySellForm = props => {
                 amount: min_order_amount_limit,
                 contact_info: buy_sell_store.contact_info,
                 payment_info: buy_sell_store.payment_info,
-                rate: rate_type === ad_type.FLOAT ? price : null,
+                rate: rate_type === ad_type.FLOAT ? effective_rate : null,
             }}
             initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
-            onSubmit={onSubmitAdTransaction}
+            onSubmit={(...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args)}
         >
             {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
                 buy_sell_store.form_props.setIsSubmitDisabled(
@@ -180,7 +151,7 @@ const BuySellForm = props => {
                                             />
                                         </Text>
                                         <Text as='p' color='general' line_height='m' size='xs'>
-                                            {getFormattedText(price, local_currency)}
+                                            {getFormattedText(effective_rate, local_currency)}
                                         </Text>
                                     </div>
                                 </div>
@@ -362,7 +333,7 @@ const BuySellForm = props => {
                                                             setFieldValue('amount', getRoundedNumber(input_amount));
                                                             buy_sell_store.setReceiveAmount(
                                                                 getRoundedNumber(
-                                                                    input_amount * price,
+                                                                    input_amount * effective_rate,
                                                                     buy_sell_store.account_currency
                                                                 )
                                                             );

@@ -5,12 +5,21 @@ import { isMobile } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import './rate-change-modal.scss';
 
-const RateChangeModal = ({ local_currency, should_show_rate_change_modal, setShouldShowRateChangeModal }) => {
+const RateChangeModal = ({
+    local_currency,
+    should_show_rate_change_popup,
+    setShouldShowRateChangePopup,
+    setShouldShowBuySellForm,
+}) => {
     const closeModal = () => {
-        setShouldShowRateChangeModal(false);
+        setShouldShowRateChangePopup(false);
+        // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
+        setTimeout(() => {
+            setShouldShowBuySellForm(true);
+        }, 250);
     };
     return (
-        <Modal is_open={should_show_rate_change_modal} toggleModal={closeModal} small>
+        <Modal is_open={should_show_rate_change_popup} toggleModal={closeModal} small>
             <Modal.Body>
                 <Text
                     as='p'
@@ -34,7 +43,7 @@ const RateChangeModal = ({ local_currency, should_show_rate_change_modal, setSho
 
 RateChangeModal.propTypes = {
     local_currency: PropTypes.string,
-    should_show_rate_change_modal: PropTypes.bool,
+    should_show_rate_change_popup: PropTypes.bool,
     setShouldShowRateChangeModal: PropTypes.func,
 };
 

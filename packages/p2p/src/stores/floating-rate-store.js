@@ -58,7 +58,6 @@ export default class FloatingRateStore extends BaseStore {
 
     @action.bound
     setExchangeRate(fiat_currency, local_currency) {
-        this.setIsLoading(true);
         const payload = {
             exchange_rates: 1,
             base_currency: fiat_currency,
@@ -76,7 +75,6 @@ export default class FloatingRateStore extends BaseStore {
                         this.exchange_rate = parseFloat(rates[local_currency]);
                         this.setApiErrorMessage(null);
                     }
-                    this.setIsLoading(false);
                 }
             },
         ]);

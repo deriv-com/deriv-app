@@ -72,5 +72,3 @@ const notes = (is_crypto, can_change_fiat_currency, currency, openRealAccountSig
 
     return notes_array;
 };
-
-export default notes;

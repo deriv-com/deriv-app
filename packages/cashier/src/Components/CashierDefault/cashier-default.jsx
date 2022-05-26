@@ -7,6 +7,7 @@ import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/component
 import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
 import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-details.jsx';
+import SideNote from 'Components/side-note.jsx';
 import notes from 'Components/CashierDefault/cashier-default-side-note.jsx';
 
 const CashierDefault = ({
@@ -142,7 +143,9 @@ const CashierDefault = ({
     return (
         <div>
             {is_currency_banner_visible && (
-                <MobileWrapper>{/* <CashierDefaultSideNote is_crypto={is_crypto} /> */}</MobileWrapper>
+                <MobileWrapper>
+                    <SideNote side_notes={notes(is_crypto)} />
+                </MobileWrapper>
             )}
             <div className='cashier-default'>
                 <div className='cashier-default-header'>

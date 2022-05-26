@@ -6,7 +6,7 @@ import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }) => {
+const NoBalance = ({ children, currency, history, is_deposit_locked, setTabIndex }) => {
     const onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
         setTabIndex(0);
@@ -37,6 +37,7 @@ const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }) => {
                     />
                 </>
             )}
+            {children}
         </div>
     );
 };

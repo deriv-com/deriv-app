@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
@@ -19,21 +18,6 @@ import AccountPromptDialog from 'Components/account-prompt-dialog.jsx';
 import ErrorDialog from 'Components/error-dialog.jsx';
 import SideNote from 'Components/side-note.jsx';
 import 'Sass/cashier.scss';
-
-const SideNotes = ({ class_name, side_notes }) => {
-    return (
-        <div
-            className={classNames('dc-vertical-tab__content-side-note', class_name)}
-            data-testid='vertical_tab_side_note'
-        >
-            {side_notes?.map((note, i) => (
-                <div className='dc-vertical-tab__content-side-note-item' key={i}>
-                    {note}
-                </div>
-            ))}
-        </div>
-    );
-};
 
 const Cashier = ({
     history,
@@ -62,12 +46,28 @@ const Cashier = ({
     tab_index,
     toggleCashier,
 }) => {
+    /**
+     * SideNotes Method to set SideNotes from the inner component
+     * The notes will be applied to the `side_notes` state.
+     * The `side_notes` state will be passed to the `SideNote` component
+     * The `SideNote` component is passed to the `VerticalTab` in DesktopWrapper
+     * And is passed to the `selected_route.component` in MobileWrapper
+     * `setSideNotes` method will be passed to the VerticalTab and Component inside MobileWrapper
+     * The same `side_notes` state and `addToNotesQueue` function is defined in `VerticalTab`
+     */
     const [side_notes, setSideNotes] = React.useState();
-
     const notes_array = [];
     const addToNotesQueue = notes => {
         notes_array.unshift(notes);
         setSideNotes(notes);
+    };
+
+    /**
+     * Set Side Note Title
+     */
+    const [side_notes_title, setSideNotesTitle] = React.useState();
+    const setTitle = title => {
+        setSideNotesTitle(title);
     };
 
     React.useEffect(() => {
@@ -152,6 +152,7 @@ const Cashier = ({
                             classNameHeader='cashier__tab-header'
                             current_path={location.pathname}
                             is_floating
+                            setSideNotesTitle={setTitle}
                             setVerticalTabIndex={setTabIndex}
                             vertical_tab_index={is_default_route ? 0 : tab_index}
                             is_full_width
@@ -195,8 +196,9 @@ const Cashier = ({
                                     history={history}
                                     menu_options={getMenuOptions()}
                                     setSideNotes={addToNotesQueue}
+                                    setSideNotesTitle={setTitle}
                                 >
-                                    <SideNotes side_notes={side_notes} />
+                                    <SideNote side_notes={side_notes} title={side_notes_title} />
                                 </selected_route.component>
                             )}
                         </Div100vhContainer>

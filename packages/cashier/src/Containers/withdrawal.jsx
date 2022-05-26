@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Loading } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-// eslint-disable-next-line no-unused-vars
-import { isCryptocurrency, isDesktop } from '@deriv/shared';
+import { Loading, MobileWrapper } from '@deriv/components';
+import { isCryptocurrency } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CryptoWithdrawForm from 'Components/Form/crypto-withdraw-form.jsx';
 import CryptoWithdrawReceipt from 'Components/Receipt/crypto-withdraw-receipt.jsx';
@@ -14,33 +12,56 @@ import NoBalance from 'Components/Error/no-balance.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
 import WithdrawalLocked from 'Components/Error/withdrawal-locked.jsx';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import SideNote from 'Components/side-note.jsx';
 import USDTSideNote from 'Components/usdt-side-note.jsx';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 
-const WithdrawalSideNote = ({ currency }) => {
-    const notes = [
-        <Localize
-            i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
-            key={0}
-        />,
-        <Localize
-            i18n_default_text='Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.'
-            key={1}
-        />,
-    ];
+const notes = (currency, crypto_transactions) => {
+    const list = [];
+
+    if (crypto_transactions?.length) {
+        list.push(
+            {
+                component: <RecentTransaction key={2} />,
+            },
+        )
+    }
+
+    list.push(
+        {
+            i18n_default_text: 'Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.',
+        },
+        {
+            i18n_default_text: 'Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.',
+        }
+    );
 
     if (!isCryptocurrency(currency)) {
-        notes.push(
-            <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />
+        list.push(
+            {
+                i18n_default_text: 'We\'ll send you an email once your transaction has been processed.',
+            }
         );
     }
-    const side_note_title =
-        notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
 
-    return <SideNote has_bullets notes={notes} title={side_note_title} />;
-};
+    if (/^(UST)$/i.test(currency)) {
+        list.push(
+            {
+                component: <USDTSideNote type='usdt' />,
+            },
+        )
+    }
+
+    if (/^(eUSDT)$/i.test(currency)) {
+        list.push(
+            {
+                component: <USDTSideNote type='eusdt' />,
+            },
+        )
+    }
+
+    return list;
+}
 
 const Withdrawal = ({
     children,
@@ -64,6 +85,7 @@ const Withdrawal = ({
     setActiveTab,
     setErrorMessage,
     setSideNotes,
+    setSideNotesTitle,
     tab_index,
     verify_error,
     verification_code,
@@ -93,21 +115,10 @@ const Withdrawal = ({
     }, [willMountWithdraw]);
 
     React.useEffect(() => {
-        // if (isDesktop()) {
         if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
-            const side_notes = [];
-            if (crypto_transactions?.length) {
-                side_notes.push(<RecentTransaction key={2} />);
-            }
-            const side_note = [
-                <WithdrawalSideNote currency={currency} key={0} />,
-                ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
-                ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
-            ];
-            side_notes.push(side_note);
-            setSideNotes(side_notes);
+            setSideNotes(notes(currency, crypto_transactions));
+            setSideNotesTitle(null);
         } else setSideNotes(null);
-        // }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);
 
@@ -130,7 +141,13 @@ const Withdrawal = ({
         return <WithdrawalLocked />;
     }
     if (!+balance) {
-        return <NoBalance />;
+        return (
+            <NoBalance>
+                <MobileWrapper>
+                    {children}
+                </MobileWrapper>
+            </NoBalance>
+        );
     }
     if (error.message) {
         return <Error error={error} />;
@@ -150,7 +167,13 @@ const Withdrawal = ({
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
-    return <SendEmail>{children}</SendEmail>;
+    return (
+        <SendEmail>
+            <MobileWrapper>
+                {children}
+            </MobileWrapper>
+        </SendEmail>
+    );
 };
 
 Withdrawal.propTypes = {

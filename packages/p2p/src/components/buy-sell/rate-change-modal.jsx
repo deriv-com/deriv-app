@@ -44,7 +44,7 @@ const RateChangeModal = ({
 RateChangeModal.propTypes = {
     local_currency: PropTypes.string,
     should_show_rate_change_popup: PropTypes.bool,
-    setShouldShowRateChangeModal: PropTypes.func,
+    setShouldShowRateChangePopup: PropTypes.func,
 };
 
 export default RateChangeModal;

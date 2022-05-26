@@ -60,7 +60,7 @@ const BuySellTable = ({ onScroll }) => {
     if (buy_sell_store.items.length) {
         return (
             <>
-                <CancelAddPaymentMethodModal float />
+                <CancelAddPaymentMethodModal is_floating />
                 <Table className='buy-sell__table'>
                     <Modal
                         name='sort'

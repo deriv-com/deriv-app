@@ -1,25 +1,26 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { reaction } from 'mobx';
-import PropTypes from 'prop-types';
 
-const CancelAddPaymentMethodModal = ({ float }) => {
+const CancelAddPaymentMethodModal = ({ is_floating }) => {
     const { my_profile_store, my_ads_store } = useStores();
 
+    // mounts the modal in a seperate modal-root container to show/float the modal over another modal if is_floating is true
     React.useLayoutEffect(() => {
-        const disposeWrapper = reaction(
+        const disposeFloatingWrapper = reaction(
             () => my_profile_store.is_cancel_add_payment_method_modal_open,
-            isOpen => {
+            is_open => {
                 let wrapper = document.getElementById('cancel_modal_root');
-                if (isOpen) {
+                if (is_open) {
                     if (!wrapper) {
                         wrapper = document.createElement('div');
                         wrapper.setAttribute('id', 'cancel_modal_root');
                     }
-                    if (float) {
+                    if (is_floating) {
                         wrapper.classList.add('modal-root');
                         document.body.appendChild(wrapper);
                     }
@@ -30,7 +31,7 @@ const CancelAddPaymentMethodModal = ({ float }) => {
         );
 
         return () => {
-            disposeWrapper();
+            disposeFloatingWrapper();
         };
     }, []);
 
@@ -44,7 +45,7 @@ const CancelAddPaymentMethodModal = ({ float }) => {
                     <Localize i18n_default_text='Cancel adding this payment method?' />
                 </Text>
             }
-            portalId={float ? 'cancel_modal_root' : undefined}
+            portalId={is_floating ? 'cancel_modal_root' : undefined}
         >
             <Modal.Body>
                 <Text color='prominent' size='xs'>
@@ -58,7 +59,7 @@ const CancelAddPaymentMethodModal = ({ float }) => {
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
                         my_profile_store.setSelectedPaymentMethodDisplayName('');
-                        my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                        my_profile_store.hideAddPaymentMethodForm();
                         my_ads_store.setShouldShowAddPaymentMethodModal(false);
                     }}
                     secondary
@@ -80,7 +81,7 @@ const CancelAddPaymentMethodModal = ({ float }) => {
 };
 
 CancelAddPaymentMethodModal.propTypes = {
-    float: PropTypes.bool,
+    is_floating: PropTypes.bool,
 };
 
 export default observer(CancelAddPaymentMethodModal);

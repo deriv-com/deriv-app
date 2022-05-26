@@ -8,7 +8,7 @@ import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false }) => {
-    const { my_profile_store } = useStores();
+    const { my_ads_store, my_profile_store } = useStores();
 
     const validateFields = values => {
         const errors = {};
@@ -162,13 +162,12 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
                                     secondary
                                     large
                                     onClick={() => {
-                                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-                                        // } else {
-                                        // my_profile_store.setSelectedPaymentMethod('');
-                                        // my_profile_store.setSelectedPaymentMethodDisplayName('');
-                                        // my_profile_store.hideAddPaymentMethodForm();
-                                        // my_ads_store.setShouldShowAddPaymentMethodModal(false);
-                                        // }
+                                        if (dirty || my_profile_store.selected_payment_method.length > 0) {
+                                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                        } else {
+                                            my_profile_store.hideAddPaymentMethodForm();
+                                            my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                                        }
                                     }}
                                     type='button'
                                 >

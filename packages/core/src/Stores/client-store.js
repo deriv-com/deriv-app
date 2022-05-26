@@ -51,15 +51,15 @@ export default class ClientStore extends BaseStore {
     @observable states_list = [];
     /* poinc_documents_list is hardcoded. should to clarify if it will be get from BE */
     @observable poinc_documents_list = [
-        { text: 'Tax return', value: 'Tax return' },
-        { text: 'Employment contract', value: 'Employment contract' },
-        { text: 'Payslip', value: 'Payslip' },
-        { text: 'COI', value: 'COI' },
-        { text: 'Business POA', value: 'Business POA' },
-        { text: 'Article of association', value: 'Article of association' },
-        { text: 'Memorandum', value: 'Memorandum' },
-        { text: 'Authorized letter', value: 'Authorized letter' },
-        { text: 'Declarations', value: 'Declarations' },
+        { text: 'Tax return', value: 'tax_return' },
+        { text: 'Employment contract', value: 'employment_contract' },
+        { text: 'Payslip', value: 'payslip' },
+        { text: 'COI', value: 'coi' },
+        { text: 'Business POA', value: 'business_poa' },
+        { text: 'Article of association', value: 'article_of_association' },
+        { text: 'Memorandum', value: 'memorandum' },
+        { text: 'Authorized letter', value: 'authorized_letter' },
+        { text: 'Declarations', value: 'declarations' },
     ];
     @observable selected_currency = '';
     @observable is_populating_account_list = false;

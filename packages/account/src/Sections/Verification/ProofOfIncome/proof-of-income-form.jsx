@@ -58,6 +58,10 @@ const ProofOfIncomeForm = ({
 
     // Settings update is handled here
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
+        const document_type_value = poinc_documents_list.find(doc => doc.text === values.document_input)?.value;
+        delete values.document_input;
+        values.document_type = document_type_value;
+
         setStatus({ msg: '' });
         WS.setSettings(values).then(data => {
             if (data.error) {

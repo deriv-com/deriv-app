@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, MobileWrapper } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { isCryptocurrency } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CryptoWithdrawForm from 'Components/Form/crypto-withdraw-form.jsx';
@@ -20,38 +21,26 @@ const notes = (currency, crypto_transactions) => {
     const list = [];
 
     if (crypto_transactions?.length) {
-        list.push({
-            component: <RecentTransaction key={2} />,
-        });
+        list.push(<RecentTransaction key={2} />);
     }
 
     list.push(
-        {
-            i18n_default_text:
-                'Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.',
-        },
-        {
-            i18n_default_text:
-                'Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.',
-        }
+        <Localize i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.' />,
+        <Localize i18n_default_text='Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.' />,
     );
 
     if (!isCryptocurrency(currency)) {
-        list.push({
-            i18n_default_text: "We'll send you an email once your transaction has been processed.",
-        });
+        list.push(
+            <Localize i18n_default_text="We'll send you an email once your transaction has been processed." />,
+        );
     }
 
     if (/^(UST)$/i.test(currency)) {
-        list.push({
-            component: <USDTSideNote type='usdt' />,
-        });
+        list.push(<USDTSideNote type='usdt' />);
     }
 
     if (/^(eUSDT)$/i.test(currency)) {
-        list.push({
-            component: <USDTSideNote type='eusdt' />,
-        });
+        list.push(<USDTSideNote type='eusdt' />);
     }
 
     return list;

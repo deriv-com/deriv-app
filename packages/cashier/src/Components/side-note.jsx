@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import 'Sass/side-note.scss';
 
 const SideNoteTitle = ({ title }) => (
-    <Text className='side-note__text' weight='bold' as='p'>
+    <Text className='side-note__title' weight='bold' as='p'>
         {title}
     </Text>
 );
@@ -23,13 +23,12 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
         (side_notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />);
 
     const checkNote = (note, i) => {
-        const Component = { ...note.component };
-        if (note.component && Component) Component.key = i;
-        if (typeof note === 'string' || (typeof note === 'object' && note.i18n_default_text)) {
+        let Component;
+        if (typeof note === 'string') {
             if (has_bullets)
                 return (
-                    <SideNoteBullet key={note.key || i}>
-                        <Localize i18n_default_text={note.i18n_default_text} />
+                    <SideNoteBullet key={i}>
+                        <Localize i18n_default_text={note} />
                     </SideNoteBullet>
                 );
             return (
@@ -37,7 +36,20 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
                     {note.i18n_default_text}
                 </Text>
             );
+        } else if (typeof note === 'object' && note.props.i18n_default_text) {
+            Component = { ...note };
+            if (has_bullets)
+                return (
+                    <SideNoteBullet key={i}>
+                        {Component}
+                    </SideNoteBullet>
+                );
+            Component.key = i;
+            return Component;
         }
+
+        Component = { ...note };
+        Component.key = i;
         return Component;
     };
 

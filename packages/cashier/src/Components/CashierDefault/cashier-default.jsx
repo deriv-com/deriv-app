@@ -60,7 +60,7 @@ const CashierDefault = ({
             is_landing_company_loaded &&
             is_currency_banner_visible
         ) {
-            setSideNotes(notes(is_crypto));
+            setSideNotes(notes(is_crypto, null, currency, openRealAccountSignup, setDepositTarget));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts_list, is_landing_company_loaded]);

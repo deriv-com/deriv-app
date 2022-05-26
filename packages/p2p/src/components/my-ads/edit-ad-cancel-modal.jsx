@@ -4,10 +4,6 @@ import { Button, Modal, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 
 const EditAdCancelModal = ({ handleCancelEdit, is_open }) => {
-    const handleModalAction = should_cancel_edit => {
-        handleCancelEdit(should_cancel_edit);
-    };
-
     return (
         <Modal has_close_icon={false} is_open={is_open} small title={localize('Cancel your edits?')}>
             <Modal.Body>
@@ -16,11 +12,11 @@ const EditAdCancelModal = ({ handleCancelEdit, is_open }) => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button has_effect text={localize('Cancel')} onClick={() => handleModalAction(true)} secondary large />
+                <Button has_effect text={localize('Cancel')} onClick={() => handleCancelEdit(true)} secondary large />
                 <Button
                     has_effect
                     text={localize("Don't cancel")}
-                    onClick={() => handleModalAction(false)}
+                    onClick={() => handleCancelEdit(false)}
                     primary
                     large
                 />

@@ -53,6 +53,11 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 
+    const handleOnEdit = () =>
+        is_advert_active && enable_action_point && floating_rate_store.rate_type !== rate_type
+            ? onClickSwitchAd()
+            : onClickEdit();
+
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,22 +69,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 is_left_swipe
                 right_hidden_component={
                     <React.Fragment>
-                        {is_advert_active ? (
-                            <div
-                                className='p2p-my-ads__table-popovers__edit'
-                                onClick={
-                                    enable_action_point && floating_rate_store.rate_type !== rate_type
-                                        ? onClickSwitchAd
-                                        : onClickEdit
-                                }
-                            >
-                                <Icon custom_color='var(--general-main-1)' icon='IcEdit' />
-                            </div>
-                        ) : (
-                            <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
-                                <Icon custom_color='var(--general-main-1)' icon='IcEdit' />
-                            </div>
-                        )}
+                        <div className='p2p-my-ads__table-popovers__edit' onClick={() => handleOnEdit()}>
+                            <Icon custom_color='var(--general-main-1)' icon='IcEdit' />
+                        </div>
                         {is_advert_active ? (
                             <div className='p2p-my-ads__table-popovers__activate'>
                                 <Icon
@@ -296,33 +288,15 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 </Popover>
                             </div>
                         )}
-                        {is_advert_active ? (
-                            <div
-                                onClick={
-                                    enable_action_point && floating_rate_store.rate_type !== rate_type
-                                        ? onClickSwitchAd
-                                        : onClickEdit
-                                }
+                        <div onClick={() => handleOnEdit()}>
+                            <Popover
+                                alignment='bottom'
+                                className='p2p-my-ads__table-popovers__deactivate'
+                                message={localize('Edit')}
                             >
-                                <Popover
-                                    alignment='bottom'
-                                    className='p2p-my-ads__table-popovers__deactivate'
-                                    message={localize('Edit')}
-                                >
-                                    <Icon icon='IcEdit' />
-                                </Popover>
-                            </div>
-                        ) : (
-                            <div onClick={onClickEdit}>
-                                <Popover
-                                    alignment='bottom'
-                                    className='p2p-my-ads__table-popovers__edit'
-                                    message={localize('Edit')}
-                                >
-                                    <Icon icon='IcEdit' />
-                                </Popover>
-                            </div>
-                        )}
+                                <Icon icon='IcEdit' />
+                            </Popover>
+                        </div>
                         <div onClick={onClickDelete}>
                             <Popover
                                 alignment='bottom'

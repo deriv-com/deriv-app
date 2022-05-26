@@ -29,6 +29,37 @@ const MyAdsTable = () => {
     const { floating_rate_store, general_store, my_ads_store } = useStores();
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
 
+    const generateHintBoxMessage = () => {
+        if (floating_rate_store.rate_type === ad_type.FLOAT) {
+            return floating_rate_store.reached_target_date ? (
+                <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to reactivate them.' />
+            ) : (
+                <Localize
+                    i18n_default_text={
+                        'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}'
+                    }
+                    values={{
+                        local_currency: general_store.client.local_currency_config.currency || '',
+                        end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+                    }}
+                />
+            );
+        }
+        return floating_rate_store.reached_target_date ? (
+            <Localize i18n_default_text='Your ads with floating rates have been deactivated. Set fixed rates to reactivate them.' />
+        ) : (
+            <Localize
+                i18n_default_text={
+                    'Fixed rates are enabled for {{local_currency}}. Ads with floating rates will be deactivated. Switch to fixed rates by {{end_date}}'
+                }
+                values={{
+                    local_currency: general_store.client.local_currency_config.currency || '',
+                    end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+                }}
+            />
+        );
+    };
+
     React.useEffect(() => {
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
@@ -61,45 +92,11 @@ const MyAdsTable = () => {
                         is_warn
                     />
                 )}
-                {floating_rate_store.change_ad_alert &&
-                    (floating_rate_store.rate_type === ad_type.FLOAT ? (
-                        <div className='p2p-my-ads__warning'>
-                            <HintBox
-                                icon='IcAlertWarning'
-                                message={
-                                    <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                        {floating_rate_store.reached_target_date ? (
-                                            <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to reactivate them.' />
-                                        ) : (
-                                            <Localize
-                                                i18n_default_text={
-                                                    'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}'
-                                                }
-                                                values={{
-                                                    local_currency:
-                                                        general_store.client.local_currency_config.currency || '-',
-                                                    end_date: floating_rate_store.fixed_rate_adverts_end_date || '-',
-                                                }}
-                                            />
-                                        )}
-                                    </Text>
-                                }
-                                is_warn
-                            />
-                        </div>
-                    ) : (
-                        <div className='p2p-my-ads__warning'>
-                            <HintBox
-                                icon='IcAlertWarning'
-                                message={
-                                    <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                        <Localize i18n_default_text='Your ads with floating rates have been deactivated. Set fixed rates to reactivate them.' />
-                                    </Text>
-                                }
-                                is_warn
-                            />
-                        </div>
-                    ))}
+                {floating_rate_store.change_ad_alert && (
+                    <div className='p2p-my-ads__warning'>
+                        <HintBox icon='IcAlertWarning' message={generateHintBoxMessage()} is_warn />
+                    </div>
+                )}
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (

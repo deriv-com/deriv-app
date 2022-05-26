@@ -134,7 +134,7 @@ const ProofOfIncomeForm = ({
 
     return (
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
-            {({ values, errors, status, touched, handleChange, handleSubmit, isSubmitting, setFieldValue }) => (
+            {({ values, errors, status, touched, handleChange, /* handleSubmit, */ isSubmitting, setFieldValue }) => (
                 <>
                     <Timeline>
                         <Timeline.Item>

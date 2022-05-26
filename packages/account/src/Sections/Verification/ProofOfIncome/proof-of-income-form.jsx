@@ -4,18 +4,21 @@ import {
     Autocomplete,
     Loading,
     Button,
-    Input,
+    // Input,
     DesktopWrapper,
     MobileWrapper,
     SelectNative,
     FormSubmitErrorMessage,
-    Text,
+    // Text,
     Timeline,
-    useStateCallback,
+    // useStateCallback,
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
-import { localize, Localize } from '@deriv/translations';
-import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
+import { localize /* Localize */ } from '@deriv/translations';
+import {
+    /* isMobile, validAddress, validPostCode, validLetterSymbol, validLength, */ getLocation,
+    WS,
+} from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
@@ -75,12 +78,11 @@ const ProofOfIncomeForm = ({
                 // force request to update settings cache since settings have been updated
                 WS.authorized.storage
                     .getSettings()
-                    .then(({ error, get_settings }) => {
+                    .then(({ error /* get_settings */ }) => {
                         if (error) {
                             setAPIInitialLoadError(error.message);
                             return;
                         }
-                        const { document } = get_settings;
 
                         setIsLoading(false);
                     })
@@ -131,7 +133,7 @@ const ProofOfIncomeForm = ({
 
     return (
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
-            {({ values, errors, status, touched, handleSubmit, isSubmitting, setFieldValue }) => (
+            {({ values, errors, status, touched, /* handleSubmit, */ isSubmitting, setFieldValue }) => (
                 <>
                     <Timeline>
                         <Timeline.Item>

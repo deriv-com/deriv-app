@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, useStateCallback } from '@deriv/components';
 import { WS } from '@deriv/shared';
-import Expired from 'Components/poinc-expired';
+// import Expired from 'Components/poinc-expired';
 import Unverified from 'Components/poinc-unverified';
 import NeedsReview from 'Components/poinc-needs-review';
 import Submitted from 'Components/poinc-submitted';
 import Verified from 'Components/poinc-verified';
-import NotRequired from 'Components/poinc-not-required';
+// import NotRequired from 'Components/poinc-not-required';
 import { income_status_codes } from './proof-of-income-utils';
 import ProofOfIncomeForm from './proof-of-income-form.jsx';
 import { populateVerificationStatus } from '../Helpers/verification';
@@ -68,13 +68,13 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
     };
 
     const {
-        allow_document_upload,
+        // allow_document_upload, should be uncommented
         // allow_poinc_resubmission,
         proof_of_income_status,
         needs_poinc,
         // resubmit_poinc,
         has_submitted_poinc,
-        is_age_verified,
+        // is_age_verified, should be uncommented
     } = authentication_status;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;

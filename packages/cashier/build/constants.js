@@ -23,6 +23,7 @@ const ALIASES = {
     Config: path.resolve(__dirname, '../src/config'),
     Containers: path.resolve(__dirname, '../src/containers'),
     Constants: path.resolve(__dirname, '../src/constants'),
+    Pages: path.resolve(__dirname, '../src/pages'),
     Images: path.resolve(__dirname, '../src/public/images'),
     Sass: path.resolve(__dirname, '../src/Sass'),
     Stores: path.resolve(__dirname, '../src/stores'),

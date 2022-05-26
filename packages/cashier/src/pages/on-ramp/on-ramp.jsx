@@ -6,10 +6,10 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
 import DepositsLocked from 'Components/Error/deposit-locked.jsx';
-import OnRampProviderCard from 'Components/on-ramp-provider-card.jsx';
-import OnRampProviderPopup from 'Components/on-ramp-provider-popup.jsx';
+import OnRampProviderCard from './on-ramp-provider-card';
+import OnRampProviderPopup from './on-ramp-provider-popup';
 import SideNote from 'Components/side-note.jsx';
-import 'Sass/on-ramp.scss';
+import './on-ramp.scss';
 
 const OnRampSideNote = () => {
     const notes = [

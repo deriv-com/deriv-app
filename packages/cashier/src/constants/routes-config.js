@@ -8,9 +8,10 @@ import {
     PaymentAgent,
     AccountTransfer,
     PaymentAgentTransfer,
-    P2PCashier,
-    OnRamp,
 } from '../containers';
+
+import P2PCashier from 'Pages/p2p-cashier';
+import OnRamp from 'Pages/on-ramp';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Components/Page404.jsx'));

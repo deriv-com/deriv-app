@@ -4,6 +4,14 @@
     &-body {
         padding: 1.6rem;
         position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-danger {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+        align-items: flex-start;
     }
 
     &-field {

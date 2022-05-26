@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import SelectPaymentMethod from './select-payment-method.jsx';
 
 const AddPaymentMethod = ({ formik_ref, should_show_page_return = true, should_show_separated_footer }) => {
-    const { my_profile_store } = useStores();
+    const { my_ads_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);

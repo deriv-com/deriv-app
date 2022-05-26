@@ -86,12 +86,12 @@ module.exports = function (env, argv) {
                     ],
                 },
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
                     loader: '@deriv/shared/src/loaders/react-import-loader.js',
                 },
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
                     loader: 'babel-loader',
                     options: {
@@ -113,7 +113,7 @@ module.exports = function (env, argv) {
                 Stores: path.resolve(__dirname, './src/stores'),
                 Utils: path.resolve(__dirname, './src/utils'),
             },
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         plugins: [
             new CleanWebpackPlugin(),

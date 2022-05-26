@@ -34,7 +34,7 @@ export default class NotificationStore extends BaseStore {
     @observable marked_notifications = [];
     @observable push_notifications = [];
     @observable client_notifications = {};
-    @observable should_show_popups = false;
+    @observable should_show_popups = true;
 
     constructor(root_store) {
         super({ root_store });
@@ -205,8 +205,15 @@ export default class NotificationStore extends BaseStore {
 
             const hidden_close_account_notification =
                 parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
-            const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
-                getStatusValidations(status || []);
+            const {
+                cashier_locked,
+                deposit_locked,
+                document_needs_action,
+                mt5_withdrawal_locked,
+                personal_details_locked,
+                poi_name_mismatch,
+                withdrawal_locked,
+            } = getStatusValidations(status || []);
 
             if (obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -250,14 +257,23 @@ export default class NotificationStore extends BaseStore {
                     ASK_UK_FUNDS_PROTECTION,
                 } = cashier_validation ? getCashierValidations(cashier_validation) : {};
 
-                this.addVerificationNotifications(identity, document);
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+                const onfido_submissions_left = identity?.services.onfido.submissions_left;
+
+                this.addVerificationNotifications(identity, document);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
+                if (poi_name_mismatch && identity?.services.onfido.last_rejected) {
+                    if (!personal_details_locked && onfido_submissions_left > 0) {
+                        this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
+                    } else {
+                        this.addNotificationMessage(this.client_notifications.onfido_failed);
+                    }
+                }
                 if (system_maintenance) {
                     this.setClientNotifications(client);
                     this.addNotificationMessage(
@@ -352,7 +368,6 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
-        this.setShouldShowPopups(true);
     }
 
     @action.bound
@@ -364,6 +379,7 @@ export default class NotificationStore extends BaseStore {
     refreshNotifications() {
         this.removeNotifications(true);
         this.removeAllNotificationMessages();
+        this.setClientNotifications();
         this.handleClientNotifications();
     }
 
@@ -446,10 +462,10 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    setClientNotifications(client = {}) {
+    setClientNotifications(client_data = {}) {
+        const { ui } = this.root_store;
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
-        const { ui } = this.root_store;
 
         const notifications = {
             ask_financial_risk_approval: {
@@ -698,7 +714,7 @@ export default class NotificationStore extends BaseStore {
             needs_poi_virtual: {
                 action: {
                     onClick: async () => {
-                        const { switchAccount, first_switchable_real_loginid } = client;
+                        const { switchAccount, first_switchable_real_loginid } = client_data;
 
                         await switchAccount(first_switchable_real_loginid);
                     },
@@ -748,11 +764,38 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
+            onfido_failed: {
+                key: 'onfido_failed',
+                header: localize("You've reached the limit for uploading your documents."),
+                message: localize('Please contact us via live chat.'),
+                action: {
+                    onClick: () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Go to live chat'),
+                },
+                type: 'danger',
+            },
             password_changed: {
                 key: 'password_changed',
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
+            },
+            poi_name_mismatch: {
+                action: {
+                    route: routes.personal_details,
+                    text: localize('Personal details'),
+                },
+                key: 'poi_name_mismatch',
+                header: localize('Please update your personal info'),
+                message: (
+                    <Localize
+                        i18n_default_text='It seems that your name in the document is not the same as your Deriv profile. Please update your name in the <0>Personal details</0> page to solve this issue.'
+                        components={[<strong key={0} />]}
+                    />
+                ),
+                type: 'warning',
             },
             required_fields: (withdrawal_locked, deposit_locked) => {
                 let message;
@@ -783,7 +826,7 @@ export default class NotificationStore extends BaseStore {
             reset_virtual_balance: {
                 key: 'reset_virtual_balance',
                 header: localize('Reset your balance'),
-                message: client.message,
+                message: client_data.message,
                 type: 'info',
                 is_persistent: true,
                 should_show_again: true,
@@ -792,7 +835,7 @@ export default class NotificationStore extends BaseStore {
                 action: {
                     text: localize('Reset balance'),
                     onClick: async () => {
-                        await client.resetVirtualBalance();
+                        await client_data.resetVirtualBalance();
                     },
                 },
             },
@@ -830,7 +873,7 @@ export default class NotificationStore extends BaseStore {
             },
             system_maintenance: (withdrawal_locked, deposit_locked) => {
                 let message, header;
-                if (isCryptocurrency(client.currency)) {
+                if (isCryptocurrency(client_data.currency)) {
                     if (withdrawal_locked) {
                         header = localize('Unable to process withdrawals in the moment');
                         message = localize(

@@ -24,7 +24,6 @@
         text-overflow: ellipsis;
         @include mobile {
             padding: 0;
-            caret-color: transparent;
         }
 
         &--error-field {

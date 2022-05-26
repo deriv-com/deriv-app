@@ -60,7 +60,7 @@ const FloatingRate = ({
                     is_float
                     is_incrementable
                     is_signed
-                    inputmode='decimal'
+                    // inputmode='decimal'
                     increment_button_type='button'
                     name={name}
                     onBlur={onBlurHandler}

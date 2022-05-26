@@ -6,7 +6,7 @@ import { Button, Dialog, Text, Input } from '@deriv/components';
 import { validEmail, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { ConfirmEmailModal } from './confirm-email-modal.jsx';
+import { ConfirmEmailModal } from '../ConfirmEmailModal/confirm-email-modal.jsx';
 
 const ResetEmailModal = ({
     disableApp,
@@ -14,8 +14,8 @@ const ResetEmailModal = ({
     enableApp,
     is_loading,
     is_visible,
-    verification_code,
     toggleResetEmailModal,
+    verification_code,
 }) => {
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
     const [email_error_msg, setEmailErrorMsg] = React.useState(null);
@@ -44,13 +44,13 @@ const ResetEmailModal = ({
     if (is_confirm_email_modal_open) {
         return (
             <ConfirmEmailModal
-                is_open={is_confirm_email_modal_open}
-                verification_code={verification_code}
-                onClose={() => setIsConfirmResetEmailModal(false)}
                 changed_email={new_email}
+                is_open={is_confirm_email_modal_open}
+                onClose={() => setIsConfirmResetEmailModal(false)}
                 prev_email={email}
-                setEmailError={setHasError}
+                setIsEmailError={setHasError}
                 setErrorMessage={setEmailErrorMsg}
+                verification_code={verification_code}
             />
         );
     }

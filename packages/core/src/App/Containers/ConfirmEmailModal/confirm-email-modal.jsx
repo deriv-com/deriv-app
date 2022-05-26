@@ -6,13 +6,13 @@ import { WS } from 'Services';
 import PropTypes from 'prop-types';
 
 export const ConfirmEmailModal = ({
-    onClose,
-    is_open,
-    prev_email,
     changed_email,
-    verification_code,
-    setEmailError,
+    is_open,
+    onClose,
+    prev_email,
+    setIsEmailError,
     setErrorMessage,
+    verification_code,
 }) => {
     const [email_request, setEmailRequest] = React.useState(null);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
@@ -29,7 +29,7 @@ export const ConfirmEmailModal = ({
 
         WS.changeEmail(api_request).then(response => {
             if (response.error) {
-                setEmailError(true);
+                setIsEmailError(true);
                 onClose();
                 setErrorMessage(response.error.message);
             } else {
@@ -69,7 +69,6 @@ export const ConfirmEmailModal = ({
                         <Localize
                             i18n_default_text='Are you sure you want to update email <0>{{prev_email}}</0> to <1>{{changed_email}}</1>?'
                             values={{ prev_email, changed_email }}
-                            s
                             components={[
                                 <strong key={0} />,
                                 <strong key={1} className='email-confirmation__currentEmail' />,
@@ -97,11 +96,11 @@ export const ConfirmEmailModal = ({
 };
 
 ConfirmEmailModal.propTypes = {
-    onClose: PropTypes.func,
-    is_open: PropTypes.bool,
-    verification_code: PropTypes.string,
-    prev_email: PropTypes.string,
     changed_email: PropTypes.string,
-    setEmailError: PropTypes.func,
+    is_open: PropTypes.bool,
+    onClose: PropTypes.func,
+    prev_email: PropTypes.string,
+    setIsEmailError: PropTypes.func,
     setErrorMessage: PropTypes.func,
+    verification_code: PropTypes.string,
 };

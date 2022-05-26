@@ -77,13 +77,15 @@ export default class MyAdsStore extends BaseStore {
             id: this.selected_ad_id,
         })
             .then(response => {
-                if (!response.error) {
-                    const { p2p_advert_info } = response;
-                    if (!p2p_advert_info.payment_method_names)
-                        p2p_advert_info.payment_method_names = this.payment_method_names;
-                    if (!p2p_advert_info.payment_method_details)
-                        p2p_advert_info.payment_method_details = this.payment_method_details;
-                    this.setP2pAdvertInformation(p2p_advert_info);
+                if (response) {
+                    if (!response.error) {
+                        const { p2p_advert_info } = response;
+                        if (!p2p_advert_info.payment_method_names)
+                            p2p_advert_info.payment_method_names = this.payment_method_names;
+                        if (!p2p_advert_info.payment_method_details)
+                            p2p_advert_info.payment_method_details = this.payment_method_details;
+                        this.setP2pAdvertInformation(p2p_advert_info);
+                    }
                 }
             })
             .finally(() => this.setIsFormLoading(false));
@@ -92,20 +94,21 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     getAdvertiserInfo() {
         this.setIsFormLoading(true);
-
         requestWS({
             p2p_advertiser_info: 1,
         }).then(response => {
-            if (!response.error) {
-                const { p2p_advertiser_info } = response;
-                this.setContactInfo(p2p_advertiser_info.contact_info);
-                this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                this.setAvailableBalance(p2p_advertiser_info.balance_available);
-            } else {
-                this.setContactInfo('');
-                this.setDefaultAdvertDescription('');
+            if (response) {
+                if (!response.error) {
+                    const { p2p_advertiser_info } = response;
+                    this.setContactInfo(p2p_advertiser_info.contact_info);
+                    this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
+                    this.setAvailableBalance(p2p_advertiser_info.balance_available);
+                } else {
+                    this.setContactInfo('');
+                    this.setDefaultAdvertDescription('');
+                }
+                this.setIsFormLoading(false);
             }
-            this.setIsFormLoading(false);
         });
     }
 

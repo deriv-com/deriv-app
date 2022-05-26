@@ -1,14 +1,14 @@
 const path = require('path');
 const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 
-module.exports = function (env, argv) {
-    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+module.exports = function (env) {
+    const base = env && env.base && env.base !== true ? `/${  env.base  }/` : '/';
 
     return {
         context: path.resolve(__dirname, '../src'),
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
-            cashier: path.resolve(__dirname, '../src', 'index.js'),
+            cashier: path.resolve(__dirname, '../src', 'index.tsx'),
             'cashier-store': path.resolve(__dirname, '../src', 'Stores/cashier-store'),
             'account-transfer': 'Containers/account-transfer',
             deposit: 'Containers/deposit',
@@ -23,7 +23,7 @@ module.exports = function (env, argv) {
         },
         resolve: {
             alias: ALIASES,
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         optimization: {
             chunkIds: 'named',

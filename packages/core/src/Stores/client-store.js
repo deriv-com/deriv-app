@@ -727,6 +727,11 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
+    @computed
+    get is_pending_proof_of_ownership() {
+        return this.account_status?.authentication?.ownership?.status === 'pending';
+    }
+
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5

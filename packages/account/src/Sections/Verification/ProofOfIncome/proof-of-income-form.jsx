@@ -39,7 +39,6 @@ const ProofOfIncomeForm = ({
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [is_loading, setIsLoading] = React.useState(true);
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
-    const [selected_document, setSelectedDocument] = React.useState('');
 
     React.useEffect(() => {
         fetchPoIncDocumentsList().then(() => {
@@ -51,11 +50,7 @@ const ProofOfIncomeForm = ({
         document_input: '',
     };
 
-    console.log('poinc_documents_list', poinc_documents_list[0]);
-
     const validateFields = values => {
-        console.log('values', values);
-
         const errors = {};
         const { document_input } = values;
 
@@ -70,7 +65,6 @@ const ProofOfIncomeForm = ({
 
     // Settings update is handled here
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
-        console.log('values', values);
         setStatus({ msg: '' });
         const settings_values = { ...values };
 

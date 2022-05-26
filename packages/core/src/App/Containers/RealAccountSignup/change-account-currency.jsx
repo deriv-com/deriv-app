@@ -2,7 +2,7 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Text } from '@deriv/components';
-import { getCurrencyDisplayCode, isMobile, reorderCurrencies } from '@deriv/shared';
+import { isMobile, reorderCurrencies } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
@@ -19,25 +19,25 @@ const ChangeAccountCurrency = ({
     client_currency,
     current_currency_type,
     current_fiat_currency,
-    is_dxtrade_allowed,
+    closeModal,
 }) => {
     const getReorderedCurrencies = () =>
         reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
 
     const is_fiat = current_currency_type === 'fiat';
-    const fiat_message = is_dxtrade_allowed ? (
+    const fiat_message = (
         <Localize
-            i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on DMT5 or Deriv X."
-            values={{
-                currency: getCurrencyDisplayCode(client_currency),
-            }}
-        />
-    ) : (
-        <Localize
-            i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on DMT5."
-            values={{
-                currency: getCurrencyDisplayCode(client_currency),
-            }}
+            i18n_default_text='If you want to change your account currency, please contact us via <0>live chat</0>.'
+            components={[
+                <span
+                    key={0}
+                    className='link link--orange'
+                    onClick={() => {
+                        closeModal();
+                        window.LC_API.open_chat_window();
+                    }}
+                />,
+            ]}
         />
     );
 
@@ -123,6 +123,7 @@ const ChangeAccountCurrency = ({
 ChangeAccountCurrency.propTypes = {
     legal_allowed_currencies: PropTypes.array,
     onSubmit: PropTypes.func,
+    closeModal: PropTypes.func,
     value: PropTypes.shape({
         crypto: PropTypes.string,
         fiat: PropTypes.string,
@@ -133,12 +134,10 @@ ChangeAccountCurrency.propTypes = {
     current_currency_type: PropTypes.string,
     current_fiat_currency: PropTypes.string,
     client_currency: PropTypes.string,
-    is_dxtrade_allowed: PropTypes.bool,
 };
 
 export default connect(({ client }) => ({
     legal_allowed_currencies: client.upgradeable_currencies,
     client_currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
 }))(ChangeAccountCurrency);

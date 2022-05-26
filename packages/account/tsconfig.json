@@ -1,0 +1,22 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "baseUrl": "./",
+        "paths": {
+            "Components/*": ["src/Components/*"],
+            "Containers/*": ["src/Containers/*"],
+            "Constants/*": ["src/Constants/*"],
+            "Configs/*": ["src/Configs/*"],
+            "Duplicated/*": ["src/Duplicated/*"],
+            "Helpers/*": ["src/Helpers/*"],
+            "Layout/*": ["src/Layout/*"],
+            "Modules/*": ["src/Modules/*"],
+            "Sections/*": ["src/Sections/*"],
+            "Stores/*": ["src/Stores/*"],
+            "Styles/*": ["src/Styles/*"]
+        }
+    },
+    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"] // *** The files TypeScript should type check ***
+}

@@ -14,8 +14,8 @@ import {
 import { localize } from '@deriv/translations';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import AccountPromptDialog from './account-prompt-dialog/account-prompt-dialog.jsx';
-import ErrorDialog from './error-dialog/error-dialog.jsx';
+import AccountPromptDialog from './account-prompt-dialog';
+import ErrorDialog from './error-dialog';
 import './cashier.scss';
 
 const Cashier = ({

@@ -32,7 +32,7 @@ const PaymentMethods = ({ formik_ref }) => {
 };
 
 PaymentMethods.propTypes = {
-    formik_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
+    formik_ref: PropTypes.shape({ current: PropTypes.any }),
 };
 
 export default observer(PaymentMethods);

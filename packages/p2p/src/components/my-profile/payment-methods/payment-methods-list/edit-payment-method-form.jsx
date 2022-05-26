@@ -211,7 +211,7 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
 };
 
 EditPaymentMethodForm.propTypes = {
-    formik_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
+    formik_ref: PropTypes.shape({ current: PropTypes.any }),
 };
 
 export default observer(EditPaymentMethodForm);

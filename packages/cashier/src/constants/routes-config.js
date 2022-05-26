@@ -1,14 +1,7 @@
 import React from 'react';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import {
-    Cashier,
-    Deposit,
-    Withdrawal,
-    PaymentAgent,
-    AccountTransfer,
-    PaymentAgentTransfer,
-} from '../containers';
+import { Cashier, Deposit, Withdrawal, PaymentAgent, AccountTransfer, PaymentAgentTransfer } from '../containers';
 
 import P2PCashier from 'Pages/p2p-cashier';
 import OnRamp from 'Pages/on-ramp';

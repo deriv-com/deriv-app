@@ -1,3 +1,4 @@
+import ThemedScrollbars from './themed-scrollbars.jsx';
 import './themed-scrollbars.scss';
 
-export default from './themed-scrollbars.jsx';
+export default ThemedScrollbars;

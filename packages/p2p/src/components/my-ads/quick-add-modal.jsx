@@ -73,7 +73,7 @@ const QuickAddModal = ({ advert }) => {
         }
     };
 
-    const hideModal = should_close_all_modals => {
+    const setShouldCloseAllModals = should_close_all_modals => {
         setSelectedMethods([]);
         if (!should_close_all_modals) {
             if (my_ads_store.should_show_add_payment_method) {
@@ -108,12 +108,18 @@ const QuickAddModal = ({ advert }) => {
                     is_flex
                     is_modal_open={my_ads_store.is_quick_add_modal_open}
                     page_header_text={localize('Add payment method')}
-                    pageHeaderReturnFn={() => hideModal(false)}
+                    pageHeaderReturnFn={() => setShouldCloseAllModals(false)}
                     secondary
                     text={localize('Cancel')}
                     renderPageFooterChildren={() => (
                         <>
-                            <Button has_effect large onClick={hideModal} secondary text={localize('Cancel')} />
+                            <Button
+                                has_effect
+                                large
+                                onClick={setShouldCloseAllModals}
+                                secondary
+                                text={localize('Cancel')}
+                            />
                             <Button
                                 className='quick-add-modal--button'
                                 has_effect
@@ -250,13 +256,19 @@ const QuickAddModal = ({ advert }) => {
                 is_flex
                 is_modal_open={my_ads_store.is_quick_add_modal_open}
                 page_header_text={localize('Add payment method')}
-                pageHeaderReturnFn={() => hideModal(false)}
+                pageHeaderReturnFn={() => setShouldCloseAllModals(false)}
                 secondary
                 text={localize('Cancel')}
                 renderPageFooterChildren={() =>
                     !my_ads_store.should_show_add_payment_method && (
                         <>
-                            <Button has_effect large onClick={hideModal} secondary text={localize('Cancel')} />
+                            <Button
+                                has_effect
+                                large
+                                onClick={setShouldCloseAllModals}
+                                secondary
+                                text={localize('Cancel')}
+                            />
                             <Button
                                 className='quick-add-modal--button'
                                 has_effect
@@ -312,7 +324,7 @@ const QuickAddModal = ({ advert }) => {
                 is_open={my_ads_store.is_quick_add_modal_open}
                 title={localize('Add payment method')}
                 toggleModal={e => {
-                    if (!e.target || e.target.className !== 'dc-dropdown-list__item') hideModal(true);
+                    if (!e.target || e.target.className !== 'dc-dropdown-list__item') setShouldCloseAllModals(true);
                 }}
             >
                 <Modal.Body>
@@ -429,7 +441,7 @@ const QuickAddModal = ({ advert }) => {
                     )}
                 </Modal.Body>
                 <Modal.Footer has_separator>
-                    <Button has_effect large onClick={hideModal} secondary text={localize('Cancel')} />
+                    <Button has_effect large onClick={setShouldCloseAllModals} secondary text={localize('Cancel')} />
 
                     <Button
                         has_effect
@@ -452,7 +464,7 @@ const QuickAddModal = ({ advert }) => {
             is_open={my_ads_store.is_quick_add_modal_open}
             title={localize('Add payment method')}
             toggleModal={e => {
-                if (!e.target || e.target.className !== 'dc-dropdown-list__item') hideModal(true);
+                if (!e.target || e.target.className !== 'dc-dropdown-list__item') setShouldCloseAllModals(true);
             }}
         >
             {my_ads_store.should_show_add_payment_method ? (
@@ -490,7 +502,7 @@ const QuickAddModal = ({ advert }) => {
             )}
             {!my_ads_store.should_show_add_payment_method && (
                 <Modal.Footer has_separator>
-                    <Button has_effect large onClick={hideModal} secondary text={localize('Cancel')} />
+                    <Button has_effect large onClick={setShouldCloseAllModals} secondary text={localize('Cancel')} />
 
                     <Button
                         has_effect
@@ -504,7 +516,13 @@ const QuickAddModal = ({ advert }) => {
             )}
             {!my_profile_store.selected_payment_method && my_ads_store.should_show_add_payment_method && (
                 <Modal.Footer>
-                    <Button has_effect large onClick={() => hideModal(false)} secondary text={localize('Cancel')} />
+                    <Button
+                        has_effect
+                        large
+                        onClick={() => setShouldCloseAllModals(false)}
+                        secondary
+                        text={localize('Cancel')}
+                    />
                 </Modal.Footer>
             )}
         </Modal>

@@ -21,6 +21,7 @@ export default class MyProfileStore extends BaseStore {
     @observable full_name = '';
     @observable is_button_loading = false;
     @observable is_cancel_add_payment_method_modal_open = false;
+    @observable is_cancel_edit_payment_method_modal_open = false;
     @observable is_confirm_delete_modal_open = false;
     @observable is_delete_error_modal_open = false;
     @observable is_loading = true;
@@ -127,7 +128,6 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     createPaymentMethod(values, { setSubmitting }) {
         setSubmitting(true);
-
         requestWS({
             p2p_advertiser_payment_methods: 1,
             create: [
@@ -138,6 +138,7 @@ export default class MyProfileStore extends BaseStore {
                     instructions: values?.instructions,
                     method: this.payment_method_value || this.selected_payment_method,
                     name: values?.name,
+                    bank_code: values?.bank_code,
                 },
             ],
         }).then(response => {
@@ -178,6 +179,7 @@ export default class MyProfileStore extends BaseStore {
                 this.setBalanceAvailable(p2p_advertiser_info.balance_available);
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
+                this.root_store.general_store.setShouldShowRealName(!!p2p_advertiser_info.show_name);
             } else if (response.error.code === 'PermissionDenied') {
                 this.root_store.general_store.setIsBlocked(true);
             } else {
@@ -189,14 +191,16 @@ export default class MyProfileStore extends BaseStore {
 
     @action.bound
     getAdvertiserPaymentMethods() {
+        this.setIsLoading(true);
         requestWS({
             p2p_advertiser_payment_methods: 1,
         }).then(response => {
             if (response.error) {
                 this.setAdvertiserPaymentMethodsError(response.error.message);
             } else {
-                this.setAdvertiserPaymentMethods(response.p2p_advertiser_payment_methods);
+                this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
             }
+            this.setIsLoading(false);
         });
     }
 
@@ -205,27 +209,31 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_payment_methods: 1,
         }).then(response => {
-            const { p2p_payment_methods } = response;
-            const list = [];
-            const list_items = [];
-            this.setAvailablePaymentMethods(p2p_payment_methods);
+            if (response) {
+                if (response.error) {
+                    return;
+                }
+                const { p2p_payment_methods } = response;
+                const list = [];
+                const list_items = [];
+                this.setAvailablePaymentMethods(p2p_payment_methods);
+                if (this.search_term) {
+                    Object.entries(this.available_payment_methods).forEach(key => {
+                        if (key[1].display_name.toLowerCase().includes(this.search_term.toLowerCase().trim()))
+                            list_items.push({ text: key[1].display_name, value: key[0] });
+                    });
+                }
 
-            if (this.search_term) {
                 Object.entries(this.available_payment_methods).forEach(key => {
-                    if (key[1].display_name.toLowerCase().includes(this.search_term.toLowerCase().trim()))
-                        list_items.push({ text: key[1].display_name, value: key[0] });
+                    list.push({ text: key[1].display_name, value: key[0] });
                 });
-            }
+                this.setPaymentMethodsList(list);
 
-            Object.entries(this.available_payment_methods).forEach(key => {
-                list.push({ text: key[1].display_name, value: key[0] });
-            });
-            this.setPaymentMethodsList(list);
-
-            if (list_items.length) {
-                this.setSearchResults(list_items);
-            } else {
-                this.setSearchResults([]);
+                if (list_items.length) {
+                    this.setSearchResults(list_items);
+                } else {
+                    this.setSearchResults([]);
+                }
             }
         });
     }
@@ -305,14 +313,16 @@ export default class MyProfileStore extends BaseStore {
     }
     @action.bound
     handleToggle() {
+        this.root_store.general_store.setShouldShowRealName(!this.root_store?.general_store?.should_show_real_name);
         requestWS({
             p2p_advertiser_update: 1,
-            show_name: this.root_store?.general_store?.should_show_real_name ? 0 : 1,
+            show_name: this.root_store?.general_store?.should_show_real_name ? 1 : 0,
         }).then(response => {
             if (response.error) {
                 this.setFormError(response.error.message);
-            } else {
-                this.root_store.general_store.setShouldShowRealName(true);
+                this.root_store.general_store.setShouldShowRealName(
+                    !this.root_store?.general_store?.should_show_real_name
+                );
             }
         });
     }
@@ -477,6 +487,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setIsCancelAddPaymentMethodModalOpen(is_cancel_add_payment_method_modal_open) {
         this.is_cancel_add_payment_method_modal_open = is_cancel_add_payment_method_modal_open;
+    }
+
+    @action.bound
+    setIsCancelEditPaymentMethodModalOpen(is_cancel_edit_payment_method_modal_open) {
+        this.is_cancel_edit_payment_method_modal_open = is_cancel_edit_payment_method_modal_open;
     }
 
     @action.bound

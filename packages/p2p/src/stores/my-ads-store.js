@@ -189,14 +189,16 @@ export default class MyAdsStore extends BaseStore {
 
     @action.bound
     onClickActivateDeactivate(id, is_ad_active, setIsAdvertActive) {
-        requestWS({ p2p_advert_update: 1, id, is_active: is_ad_active ? 0 : 1 }).then(response => {
-            if (response.error) {
-                this.setActivateDeactivateErrorMessage(response.error.message);
-            } else {
-                setIsAdvertActive(!!response.p2p_advert_update.is_active);
-            }
-            this.setSelectedAdId('');
-        });
+        if (!this.root_store.general_store.is_barred) {
+            requestWS({ p2p_advert_update: 1, id, is_active: is_ad_active ? 0 : 1 }).then(response => {
+                if (response.error) {
+                    this.setActivateDeactivateErrorMessage(response.error.message);
+                } else {
+                    setIsAdvertActive(!!response.p2p_advert_update.is_active);
+                }
+                this.setSelectedAdId('');
+            });
+        }
     }
 
     @action.bound
@@ -226,15 +228,19 @@ export default class MyAdsStore extends BaseStore {
 
     @action.bound
     onClickDelete(id) {
-        this.setSelectedAdId(id);
-        this.setIsDeleteModalOpen(true);
+        if (!this.root_store.general_store.is_barred) {
+            this.setSelectedAdId(id);
+            this.setIsDeleteModalOpen(true);
+        }
     }
 
     @action.bound
     onClickEdit(id) {
-        this.setSelectedAdId(id);
-        this.setShowEditAdForm(true);
-        this.getAdvertInfo();
+        if (!this.root_store.general_store.is_barred) {
+            this.setSelectedAdId(id);
+            this.setShowEditAdForm(true);
+            this.getAdvertInfo();
+        }
     }
 
     @action.bound

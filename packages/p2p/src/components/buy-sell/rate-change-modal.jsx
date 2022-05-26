@@ -1,25 +1,25 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
+import { useStores } from 'Stores';
 import './rate-change-modal.scss';
 
-const RateChangeModal = ({
-    local_currency,
-    should_show_rate_change_popup,
-    setShouldShowRateChangePopup,
-    setShouldShowBuySellForm,
-}) => {
+const RateChangeModal = () => {
+    const { buy_sell_store, general_store } = useStores();
+
+    const local_currency = general_store.client?.local_currency_config?.currency;
+
     const closeModal = () => {
-        setShouldShowRateChangePopup(false);
+        buy_sell_store.setShowRateChangePopup(false);
         // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
         setTimeout(() => {
-            setShouldShowBuySellForm(true);
+            buy_sell_store.setShouldShowPopup(true);
         }, 250);
     };
     return (
-        <Modal is_open={should_show_rate_change_popup} toggleModal={closeModal} small>
+        <Modal is_open={buy_sell_store.show_rate_change_popup} toggleModal={closeModal} small>
             <Modal.Body>
                 <Text
                     as='p'
@@ -41,10 +41,4 @@ const RateChangeModal = ({
     );
 };
 
-RateChangeModal.propTypes = {
-    local_currency: PropTypes.string,
-    should_show_rate_change_popup: PropTypes.bool,
-    setShouldShowRateChangePopup: PropTypes.func,
-};
-
-export default RateChangeModal;
+export default observer(RateChangeModal);

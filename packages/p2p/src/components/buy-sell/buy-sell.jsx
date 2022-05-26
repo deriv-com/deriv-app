@@ -16,11 +16,9 @@ import FilterModal from './filter-modal';
 import './buy-sell.scss';
 
 const BuySell = () => {
-    const { buy_sell_store, general_store } = useStores();
+    const { buy_sell_store } = useStores();
     const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
     const previous_scroll_top = React.useRef(0);
-
-    const local_currency = general_store.client?.local_currency_config?.currency;
 
     React.useEffect(() => {
         const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
@@ -82,12 +80,7 @@ const BuySell = () => {
                 setShouldShowPopup={buy_sell_store.setShouldShowPopup}
                 table_type={buy_sell_store.table_type}
             />
-            <RateChangeModal
-                local_currency={local_currency}
-                should_show_rate_change_popup={buy_sell_store.show_rate_change_popup}
-                setShouldShowRateChangePopup={buy_sell_store.setShowRateChangePopup}
-                setShouldShowBuySellForm={buy_sell_store.setShouldShowPopup}
-            />
+            <RateChangeModal />
         </div>
     );
 };

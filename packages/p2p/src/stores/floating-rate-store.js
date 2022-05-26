@@ -82,6 +82,8 @@ export default class FloatingRateStore extends BaseStore {
 
     @action.bound
     unSubscribeFromExchangeRates() {
-        this.exchange_rate_subscription.unsubscribe();
+        if (this.exchange_rate_subscription.unsubscribe) {
+            this.exchange_rate_subscription.unsubscribe();
+        }
     }
 }

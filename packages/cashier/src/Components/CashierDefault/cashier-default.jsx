@@ -144,7 +144,7 @@ const CashierDefault = ({
         <div>
             {is_currency_banner_visible && (
                 <MobileWrapper>
-                    <SideNote side_notes={notes(is_crypto)} />
+                    <SideNote side_notes={notes(is_crypto, null, currency, openRealAccountSignup, setDepositTarget)} />
                 </MobileWrapper>
             )}
             <div className='cashier-default'>

@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import 'Sass/side-note.scss';
 
 const SideNoteTitle = ({ title }) => (
@@ -10,10 +12,16 @@ const SideNoteTitle = ({ title }) => (
     </Text>
 );
 
-const SideNoteBullet = ({ children }) => (
+const SideNoteText = ({ children }) => (
+    <Text className='side-note__text' size='xxs' as='p'>
+        {children}
+    </Text>
+);
+
+const SideNoteBullet = ({ children, component }) => (
     <div className='side-note__bullet-wrapper'>
         <div className='side-note__bullet' />
-        <span>{children}</span>
+        {component ? children : <SideNoteText>{children}</SideNoteText>}
     </div>
 );
 
@@ -31,14 +39,15 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
                         <Localize i18n_default_text={note} />
                     </SideNoteBullet>
                 );
-            return (
-                <Text key={note.key || i} className='side-note__text' size='xxs' as='p'>
-                    {note.i18n_default_text}
-                </Text>
-            );
+            return <SideNoteText key={note.key || i}>{note.i18n_default_text}</SideNoteText>;
         } else if (typeof note === 'object' && note.props.i18n_default_text) {
             Component = { ...note };
-            if (has_bullets) return <SideNoteBullet key={i}>{Component}</SideNoteBullet>;
+            if (has_bullets)
+                return (
+                    <SideNoteBullet key={i} component>
+                        <SideNoteText>{Component}</SideNoteText>
+                    </SideNoteBullet>
+                );
             Component.key = i;
             return Component;
         }
@@ -49,14 +58,19 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
     };
 
     return (
-        <div className='side-note'>
+        <div className={classNames('side-note', { 'side-note--mobile': isMobile })}>
             {side_note_title && (
                 <DesktopWrapper>
                     <SideNoteTitle title={side_note_title} />
                 </DesktopWrapper>
             )}
 
-            {side_notes && side_notes.map((note, i) => checkNote(note, i))}
+            {side_notes &&
+                side_notes.map((note, i) => (
+                    <div key={i} className={classNames('side-note__item')}>
+                        {checkNote(note, i)}
+                    </div>
+                ))}
         </div>
     );
 };

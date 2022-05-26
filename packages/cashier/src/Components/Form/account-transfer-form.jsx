@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Loading, Money, MobileWrapper, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -59,13 +59,6 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     );
 };
 
-const AccountTransferBullet = ({ children }) => (
-    <div className='account-transfer-form__bullet-wrapper'>
-        <div className='account-transfer-form__bullet' />
-        <Text size='xxs'>{children}</Text>
-    </div>
-);
-
 const AccountTransferNote = ({
     allowed_transfers_count,
     currency,
@@ -75,7 +68,9 @@ const AccountTransferNote = ({
     is_mt_transfer,
     transfer_fee,
     minimum_fee,
-}) => {
+    is_crypto,
+    crypto_transactions,
+} = {}) => {
     const getTransferFeeNote = () => {
         if (transfer_fee === 0) {
             return is_dxtrade_allowed ? (
@@ -131,57 +126,45 @@ const AccountTransferNote = ({
         return null;
     };
 
-    return (
-        <div className='account-transfer-form__notes'>
-            <DesktopWrapper>
-                <Text
-                    as='h2'
-                    color='prominent'
-                    weight='bold'
-                    className='cashier__header account-transfer-form__notes-header'
-                >
-                    <Localize i18n_default_text='Notes' />
-                </Text>
-            </DesktopWrapper>
-            <AccountTransferBullet>
-                {is_dxtrade_allowed ? (
-                    <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, DMT5, and Deriv X accounts.' />
-                ) : (
-                    <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and DMT5 accounts.' />
-                )}
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                {is_dxtrade_allowed ? (
-                    <Localize
-                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and Deriv X accounts.'
-                        values={{
-                            allowed_internal: allowed_transfers_count.internal,
-                            allowed_mt5: allowed_transfers_count.mt5,
-                            allowed_dxtrade: allowed_transfers_count.dxtrade,
-                        }}
-                    />
-                ) : (
-                    <Localize
-                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts and up to {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts.'
-                        values={{
-                            allowed_internal: allowed_transfers_count.internal,
-                            allowed_mt5: allowed_transfers_count.mt5,
-                        }}
-                    />
-                )}
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                {getTransferFeeNote()}{' '}
-                <Localize i18n_default_text='Please bear in mind that some transfers may not be possible.' />
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />
-            </AccountTransferBullet>
-        </div>
+    const notesList = [];
+
+    if (is_crypto && crypto_transactions?.length) {
+        notesList.push(<RecentTransaction />);
+    }
+
+    if (is_dxtrade_allowed) {
+        notesList.push(
+            <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, DMT5, and Deriv X accounts.' />,
+            <Localize
+                i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and Deriv X accounts.'
+                values={{
+                    allowed_internal: allowed_transfers_count.internal,
+                    allowed_mt5: allowed_transfers_count.mt5,
+                    allowed_dxtrade: allowed_transfers_count.dxtrade,
+                }}
+            />
+        );
+    } else {
+        notesList.push(
+            <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and DMT5 accounts.' />,
+            <Localize
+                i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts and up to {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts.'
+                values={{
+                    allowed_internal: allowed_transfers_count.internal,
+                    allowed_mt5: allowed_transfers_count.mt5,
+                }}
+            />
+        );
+    }
+
+    notesList.push(
+        <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />,
+        getTransferFeeNote(),
+        <Localize i18n_default_text='Please bear in mind that some transfers may not be possible.' />,
+        <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />
     );
+
+    return notesList;
 };
 
 let remaining_transfers;
@@ -381,7 +364,24 @@ const AccountTransferForm = ({
                     is_mt_transfer={is_mt_transfer}
                 />
             );
-            setSideNotes(side_notes);
+            setSideNotes(
+                AccountTransferNote({
+                    allowed_transfers_count: {
+                        internal: internal_remaining_transfers?.allowed,
+                        mt5: mt5_remaining_transfers?.allowed,
+                        dxtrade: dxtrade_remaining_transfers?.allowed,
+                    },
+                    currency: selected_from.currency,
+                    is_crypto_to_crypto_transfer: selected_from.is_crypto && selected_to.is_crypto,
+                    is_dxtrade_allowed,
+                    is_dxtrade_transfer,
+                    is_mt_transfer,
+                    transfer_fee,
+                    minimum_fee,
+                    is_crypto,
+                    crypto_transactions,
+                })
+            );
         }
     }, [transfer_fee, selected_from, selected_to, minimum_fee, from_accounts, is_dxtrade_allowed, crypto_transactions]);
 
@@ -608,20 +608,7 @@ const AccountTransferForm = ({
                                 </div>
                                 <MobileWrapper>
                                     {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
-                                    {/* <AccountTransferNote
-                                        allowed_transfers_count={{
-                                            internal: internal_remaining_transfers?.allowed,
-                                            mt5: mt5_remaining_transfers?.allowed,
-                                            dxtrade: dxtrade_remaining_transfers?.allowed,
-                                        }}
-                                        transfer_fee={transfer_fee}
-                                        currency={selected_from.currency}
-                                        minimum_fee={minimum_fee}
-                                        is_crypto_to_crypto_transfer={selected_from.is_crypto && selected_to.is_crypto}
-                                        is_dxtrade_allowed={is_dxtrade_allowed}
-                                        is_dxtrade_transfer={is_dxtrade_transfer}
-                                        is_mt_transfer={is_mt_transfer}
-                                    /> */}
+                                    {children}
                                 </MobileWrapper>
                                 <FormError error={error} />
                             </Form>
@@ -629,7 +616,6 @@ const AccountTransferForm = ({
                     </React.Fragment>
                 )}
             </Formik>
-            {children}
         </div>
     );
 };

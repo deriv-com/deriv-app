@@ -2,6 +2,10 @@
     min-width: 25.6rem;
     margin-left: 2.4rem;
 
+    &--mobile {
+        margin-left: 0;
+    }
+
     &-item {
         background-color: var(--general-section-1);
         border-radius: 8px;
@@ -13,9 +17,10 @@
         width: 25.6rem;
     }
 
-    &__text {
+    &__title {
         margin-bottom: 0.8rem;
     }
+
     &__bullet {
         background-color: var(--text-general);
         border-radius: 100%;

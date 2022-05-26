@@ -12,14 +12,20 @@ jest.mock('@deriv/components', () => {
 });
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => true),
-    isMobile: jest.fn(() => false),
+    isDesktop: jest.fn(),
+    isMobile: jest.fn(),
     WS: {
         getSocket: jest.fn(),
     },
 }));
 
 describe('<FileUploaderContainer />', () => {
+    beforeEach(() => {
+        isDesktop.mockReturnValue(true);
+        isMobile.mockReturnValue(false);
+        jest.clearAllMocks();
+    });
+
     const props = {
         getSocket: jest.fn(),
         onFileDrop: jest.fn(),
@@ -112,9 +118,6 @@ describe('<FileUploaderContainer />', () => {
     });
 
     it('should call ref function on rendering the component', () => {
-        isMobile.mockReturnValue(false);
-        isDesktop.mockReturnValue(true);
-
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
                 <FileUploaderContainer onRef={props.onRef} />

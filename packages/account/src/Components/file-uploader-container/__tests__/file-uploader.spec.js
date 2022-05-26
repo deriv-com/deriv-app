@@ -5,8 +5,8 @@ import FileUploader from '../file-uploader';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => true),
-    isMobile: jest.fn(() => false),
+    isDesktop: jest.fn(),
+    isMobile: jest.fn(),
     compressImageFiles: jest.fn(() => Promise.resolve([{ path: 'hello.pdf' }])),
     readFiles: jest.fn(),
 }));
@@ -14,6 +14,12 @@ jest.mock('@deriv/shared', () => ({
 jest.mock('@binary-com/binary-document-uploader');
 
 describe('<FileUploader />', () => {
+    beforeEach(() => {
+        isDesktop.mockReturnValue(true);
+        isMobile.mockReturnValue(false);
+        jest.clearAllMocks();
+    });
+
     const props = {
         onFileDrop: jest.fn(),
         getSocket: jest.fn(),
@@ -28,6 +34,13 @@ describe('<FileUploader />', () => {
     it('should render FileUploader component in desktop mode', () => {
         render(<FileUploader {...props} />);
         expect(screen.getByText(drop_click_msg)).toBeInTheDocument();
+    });
+
+    it('should render FileUploader component in mobile mode', () => {
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+        render(<FileUploader {...props} />);
+        expect(screen.getByText(click_msg)).toBeInTheDocument();
     });
 
     it('should upload supported file', async () => {
@@ -101,7 +114,7 @@ describe('<FileUploader />', () => {
         expect(input.files[0]).toBe(file);
         expect(input.files).toHaveLength(1);
 
-        const close_icon = screen.getByTestId('removeFileIcon');
+        const close_icon = screen.getByTestId('remove_file_icon');
         expect(close_icon).toBeInTheDocument();
         await waitFor(() => fireEvent.click(close_icon));
 
@@ -135,12 +148,5 @@ describe('<FileUploader />', () => {
         props.ref.current.upload();
         expect(compressImageFiles).toBeCalled();
         expect(props.onFileDrop).toBeCalled();
-    });
-
-    it('should render FileUploader component in mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
-        render(<FileUploader {...props} />);
-        expect(screen.getByText(click_msg)).toBeInTheDocument();
     });
 });

@@ -91,6 +91,32 @@ const OrderRow = ({ style, row: order }) => {
     const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
     const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
 
+    const display_rating = review_details?.rating ? (
+        <Rating
+            readonly
+            value={review_details.rating}
+            icon_selected={<Icon icon='IcStar' size={10} custom_color='var(--status-warning)' />}
+            icon_unselected={<Icon icon='IcStarOutline' size={10} custom_color='var(--status-warning)' />}
+        />
+    ) : (
+        <Button
+            secondary
+            small
+            classNameSpan='orders__table-row--rate-button'
+            onClick={() => order_store.setIsUserRatingModalOpen(true)}
+            is_disabled={!is_order_reviewable}
+        >
+            <Icon
+                icon='IcStar'
+                custom_color={is_order_reviewable ? 'var(--status-warning)' : 'var(--text-general)'}
+                size={10}
+            />
+            <Text weight='bold' size='xxs'>
+                <Localize i18n_default_text='Rate' />
+            </Text>
+        </Button>
+    );
+
     if (isMobile()) {
         return (
             <div onClick={() => order_store.setQueryDetails(order)}>
@@ -117,28 +143,34 @@ const OrderRow = ({ style, row: order }) => {
                         </div>
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-header-right'>
-                        {is_timer_visible && (
-                            <Text
-                                size='xxs'
-                                color='prominent'
-                                align='center'
-                                line_height='l'
-                                className='orders__mobile-time'
-                            >
-                                {remaining_time}
-                            </Text>
+                        {general_store.is_active_tab ? (
+                            <React.Fragment>
+                                {is_timer_visible && (
+                                    <Text
+                                        size='xxs'
+                                        color='prominent'
+                                        align='center'
+                                        line_height='l'
+                                        className='orders__mobile-time'
+                                    >
+                                        {remaining_time}
+                                    </Text>
+                                )}
+                                <div className='orders__mobile-chat'>
+                                    <Icon
+                                        icon='IcChat'
+                                        height={15}
+                                        width={16}
+                                        onClick={() => {
+                                            sendbird_store.setShouldShowChatModal(true);
+                                            sendbird_store.setShouldShowChatOnOrders(true);
+                                        }}
+                                    />
+                                </div>
+                            </React.Fragment>
+                        ) : (
+                            display_rating
                         )}
-                        <div className='orders__mobile-chat'>
-                            <Icon
-                                icon='IcChat'
-                                height={15}
-                                width={16}
-                                onClick={() => {
-                                    sendbird_store.setShouldShowChatModal(true);
-                                    sendbird_store.setShouldShowChatOnOrders(true);
-                                }}
-                            />
-                        </div>
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-title'>
                         <Title
@@ -178,32 +210,10 @@ const OrderRow = ({ style, row: order }) => {
                 <Table.Cell>{is_buy_order_type_for_user ? transaction_amount : offer_amount}</Table.Cell>
                 <Table.Cell>{is_buy_order_type_for_user ? offer_amount : transaction_amount}</Table.Cell>
                 <Table.Cell>
-                    {review_details?.rating ? (
-                        <Rating
-                            readonly
-                            value={review_details.rating}
-                            icon_selected={<Icon icon='IcStar' size={10} custom_color='var(--status-warning)' />}
-                            icon_unselected={
-                                <Icon icon='IcStarOutline' size={10} custom_color='var(--status-warning)' />
-                            }
-                        />
+                    {general_store.is_active_tab ? (
+                        <div className='orders__table-time'>{remaining_time}</div>
                     ) : (
-                        <Button
-                            secondary
-                            small
-                            classNameSpan='orders__table-row--rate-button'
-                            onClick={() => order_store.setIsUserRatingModalOpen(true)}
-                            is_disabled={!is_order_reviewable}
-                        >
-                            <Icon
-                                icon='IcStar'
-                                custom_color={is_order_reviewable ? 'var(--status-warning)' : 'var(--text-general)'}
-                                size={10}
-                            />
-                            <Text weight='bold' size='xxs'>
-                                <Localize i18n_default_text='Rate' />
-                            </Text>
-                        </Button>
+                        display_rating
                     )}
                 </Table.Cell>
             </Table.Row>

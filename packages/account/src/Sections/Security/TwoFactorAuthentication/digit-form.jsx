@@ -2,10 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Input, Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { getPropertyValue, WS } from '@deriv/shared';
+import { localize, getLanguage } from '@deriv/translations';
+import { getPropertyValue, WS, redirectToLogin } from '@deriv/shared';
 
-const DigitForm = ({ is_enabled, setEnabled }) => {
+const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
     const [is_success, setSuccess] = React.useState(false);
     const button_text = is_enabled ? localize('Disable 2FA') : localize('Enable');
 
@@ -55,7 +55,7 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
 
     return (
         <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
-            {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting }) => (
+            {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, dirty }) => (
                 <Form noValidate>
                     <div className='two-factor__input-group'>
                         <Field name='digit_code'>
@@ -79,13 +79,18 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
                                 'two-factor__button--success': is_success,
                             })}
                             type='submit'
-                            is_disabled={isSubmitting || !isValid}
+                            is_disabled={isSubmitting || !isValid || !dirty}
                             has_effect
                             is_loading={isSubmitting}
                             is_submit_success={is_success}
                             text={button_text}
                             large
                             primary
+                            onClick={() => {
+                                if (isValid) {
+                                    logoutClient().then(() => redirectToLogin(false, getLanguage()));
+                                }
+                            }}
                         />
                     </div>
                 </Form>

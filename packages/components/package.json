@@ -28,6 +28,8 @@
     "author": "Deriv",
     "license": "Apache-2.0",
     "devDependencies": {
+        "@babel/eslint-parser": "^7.17.0",
+        "@babel/preset-react": "^7.16.7",
         "@storybook/addon-actions": "^5.2.4",
         "@storybook/addon-info": "^5.2.4",
         "@storybook/addon-links": "^5.2.4",
@@ -38,7 +40,6 @@
         "@storybook/source-loader": "^5.2.4",
         "@storybook/storybook-deployer": "^2.8.1",
         "@testing-library/react": "^12.0.0",
-        "babel-eslint": "^10.1.0",
         "babel-loader": "^8.1.0",
         "copy-webpack-plugin": "^9.0.1",
         "copy-webpack-plugin-v6": "npm:copy-webpack-plugin@6",

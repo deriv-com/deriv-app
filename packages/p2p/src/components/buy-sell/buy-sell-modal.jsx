@@ -36,6 +36,34 @@ BuySellModalFooter.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
+const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_ad) => {
+    if (my_profile_store.should_show_add_payment_method_form) {
+        if (isDesktop()) {
+            return (
+                <>
+                    <Icon
+                        icon='IcArrowLeftBold'
+                        onClick={() => {
+                            if (formik_ref.current.dirty) {
+                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                            } else {
+                                my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                            }
+                        }}
+                        className='buy-sell__modal-icon'
+                    />
+                    {localize('Add payment method')}
+                </>
+            );
+        }
+        return localize('Add payment method');
+    }
+    if (table_type === buy_sell.BUY) {
+        return localize('Buy {{ currency }}', { currency: selected_ad.account_currency });
+    }
+    return localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
+};
+
 const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
     const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
@@ -48,6 +76,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             receive_amount={buy_sell_store.receive_amount}
         />
     );
+    const formik_ref = React.useRef();
 
     const onCancel = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
@@ -77,28 +106,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_popup]);
 
-    const generateModalTitle = () => {
-        if (my_profile_store.should_show_add_payment_method_form) {
-            if (isDesktop()) {
-                return (
-                    <>
-                        <Icon
-                            icon='IcArrowLeftBold'
-                            onClick={() => my_profile_store.setIsCancelAddPaymentMethodModalOpen(true)}
-                            className='buy-sell__modal-icon'
-                        />
-                        {localize('Add payment method')}
-                    </>
-                );
-            }
-            return localize('Add payment method');
-        }
-        if (table_type === buy_sell.BUY) {
-            return localize('Buy {{ currency }}', { currency: selected_ad.account_currency });
-        }
-        return localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
-    };
-
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
 
     if (isMobile()) {
@@ -110,7 +117,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 is_flex
                 is_modal_open={should_show_popup}
                 page_header_className='buy-sell__modal-header'
-                page_header_text={generateModalTitle()}
+                page_header_text={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
                 pageHeaderReturnFn={onCancel}
                 page_footer_parent={my_profile_store.should_show_add_payment_method_form ? '' : page_footer_parent}
                 renderPageFooterChildren={() =>
@@ -130,7 +137,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 }
             >
                 {my_profile_store.should_show_add_payment_method_form ? (
-                    <AddPaymentMethodForm should_show_separated_footer={true} />
+                    <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
                 ) : (
                     <Form
                         advert={selected_ad}
@@ -152,7 +159,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             height={table_type === buy_sell.BUY ? 'auto' : '649px'}
             width='456px'
             is_open={should_show_popup}
-            title={generateModalTitle()}
+            title={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}
         >
@@ -160,7 +167,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                 <Modal.Body>
                     {my_profile_store.should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm should_fixed_footer should_show_separated_footer />
+                        <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
                     ) : (
                         <Form
                             advert={selected_ad}

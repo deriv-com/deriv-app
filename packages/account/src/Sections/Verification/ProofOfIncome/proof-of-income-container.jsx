@@ -43,7 +43,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
                         ...authentication_status,
                         ...{
                             allow_document_upload,
-                            // allow_poinc_resubmission,
+                            // allow_poinc_resubmission, ask BE if it will be implemented
                             proof_of_income_status,
                             has_submitted_poinc,
                             is_age_verified,

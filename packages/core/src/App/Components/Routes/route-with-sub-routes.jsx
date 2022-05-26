@@ -1,6 +1,14 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { redirectToLogin, removeBranchName, routes, isEmptyObject, default_title } from '@deriv/shared';
+import {
+    alternateLinkTagChange,
+    canonicalLinkTagChange,
+    redirectToLogin,
+    removeBranchName,
+    routes,
+    isEmptyObject,
+    default_title,
+} from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import Page404 from 'Modules/Page404';
 import { connect } from 'Stores/connect';
@@ -57,6 +65,10 @@ const RouteWithSubRoutes = route => {
 
         const title = route.getTitle?.() || '';
         document.title = `${title} | ${default_title}`;
+
+        alternateLinkTagChange();
+        canonicalLinkTagChange();
+
         return result;
     };
 

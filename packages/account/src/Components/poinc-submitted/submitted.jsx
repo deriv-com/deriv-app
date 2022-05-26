@@ -1,10 +1,10 @@
-import { Icon, Text } from '@deriv/components';
+import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
 import classNames from 'classnames';
 import { PlatformContext } from '@deriv/shared';
 import { ContinueTradingButton } from 'Components/poa-continue-trading-button/continue-trading-button.jsx';
-import PoiButton from 'Components/poi-button';
+// import PoiButton from 'Components/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const Submitted = ({ is_description_enabled = true }) => {

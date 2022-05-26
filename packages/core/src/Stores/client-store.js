@@ -49,7 +49,18 @@ export default class ClientStore extends BaseStore {
     @observable currencies_list = {};
     @observable residence_list = [];
     @observable states_list = [];
-    @observable documents_list = ['pass', 'license', 'bills'];
+    /* poinc_documents_list is hardcoded. should to clarify if it will be get from BE */
+    @observable poinc_documents_list = [
+        { text: 'Tax return', value: 'Tax return' },
+        { text: 'Employment contract', value: 'Employment contract' },
+        { text: 'Payslip', value: 'Payslip' },
+        { text: 'COI', value: 'COI' },
+        { text: 'Business POA', value: 'Business POA' },
+        { text: 'Article of association', value: 'Article of association' },
+        { text: 'Memorandum', value: 'Memorandum' },
+        { text: 'Authorized letter', value: 'Authorized letter' },
+        { text: 'Declarations', value: 'Declarations' },
+    ];
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
@@ -2015,22 +2026,23 @@ export default class ClientStore extends BaseStore {
 
     // adjust correct request for documents list
     @action.bound
-    fetchDocumentsList() {
+    fetchPoIncDocumentsList() {
         return new Promise((resolve, reject) => {
-            WS.authorized.storage
-                .statesList({
-                    states_list: this.accounts[this.loginid].residence,
-                })
-                .then(response => {
-                    if (response.error) {
-                        reject(response.error);
-                    } else {
-                        runInAction(() => {
-                            this.documents_list = response.states_list || [];
-                        });
-                    }
-                    resolve(response);
-                });
+            resolve('need to clarify if it wiil be sent from BE');
+            // WS.authorized.storage
+            //     .statesList({
+            //         states_list: this.accounts[this.loginid].residence,
+            //     })
+            //     .then(response => {
+            //         if (response.error) {
+            //             reject(response.error);
+            //         } else {
+            //             runInAction(() => {
+            //                 this.poinc_documents_list = response.states_list || [];
+            //             });
+            //         }
+            //         resolve(response);
+            //     });
         });
     }
 

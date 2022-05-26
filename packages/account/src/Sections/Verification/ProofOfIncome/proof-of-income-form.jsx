@@ -21,41 +21,47 @@ import {
 } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
-import FormBody from 'Components/form-body';
+// import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
-import LeaveConfirm from 'Components/leave-confirm';
+// import LeaveConfirm from 'Components/leave-confirm';
 import FileUploaderContainer from 'Components/file-uploader-container';
 
 let file_uploader_ref = null;
 
 const ProofOfIncomeForm = ({
     addNotificationByKey,
-    fetchDocumentsList,
+    fetchPoIncDocumentsList,
     removeNotificationByKey,
     removeNotificationMessage,
-    documents_list,
+    poinc_documents_list,
     onSubmit,
 }) => {
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [is_loading, setIsLoading] = React.useState(true);
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
+    const [selected_document, setSelectedDocument] = React.useState('');
 
     React.useEffect(() => {
-        fetchDocumentsList().then(() => {
+        fetchPoIncDocumentsList().then(() => {
             setIsLoading(false);
         });
-    }, [fetchDocumentsList]);
+    }, [fetchPoIncDocumentsList]);
 
     const initial_form_values = {
-        document: '',
+        document_input: '',
     };
 
+    console.log('poinc_documents_list', poinc_documents_list[0]);
+
     const validateFields = values => {
+        console.log('values', values);
+
         const errors = {};
         const { document_input } = values;
+
         if (!document_input) {
             errors.document_input = localize('This field is required.');
-        } else if (!documents_list.find(c => c.text === document_input)) {
+        } else if (!poinc_documents_list.find(c => c.text === document_input)) {
             errors.document_input = localize('This field is required.');
         }
 
@@ -64,11 +70,12 @@ const ProofOfIncomeForm = ({
 
     // Settings update is handled here
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
+        console.log('values', values);
         setStatus({ msg: '' });
         const settings_values = { ...values };
 
-        if (values.document && documents_list.length) {
-            settings_values.document = getLocation(documents_list, values.document, 'value') || '';
+        if (values.document_input && poinc_documents_list.length) {
+            settings_values.document_input = getLocation(poinc_documents_list, values.document_input, 'value') || '';
         }
 
         WS.setSettings(settings_values).then(data => {
@@ -133,7 +140,7 @@ const ProofOfIncomeForm = ({
 
     return (
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
-            {({ values, errors, status, touched, /* handleSubmit, */ isSubmitting, setFieldValue }) => (
+            {({ values, errors, status, touched, handleChange, handleSubmit, isSubmitting, setFieldValue }) => (
                 <>
                     <Timeline>
                         <Timeline.Item>
@@ -154,28 +161,29 @@ const ProofOfIncomeForm = ({
                                                         'Please select the document you wish to upload*'
                                                     )}
                                                     error={touched.document_input && errors.document_input}
-                                                    list_items={documents_list}
+                                                    list_items={poinc_documents_list}
                                                     value={values.document_input}
-                                                    onItemSelection={({ value, text }) =>
-                                                        setFieldValue('document_input', value ? text : '', true)
-                                                    }
+                                                    onChange={handleChange}
+                                                    onItemSelection={({ value, text }) => {
+                                                        setFieldValue('document_input', value ? text : '', true);
+                                                    }}
                                                     required
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
-                                                    {...field}
+                                                    // {...field}
                                                     name='document_input'
                                                     placeholder={localize(
                                                         'Please select the document you wish to upload*'
                                                     )}
                                                     value={values.document_input}
-                                                    list_items={documents_list}
+                                                    list_items={poinc_documents_list}
                                                     error={touched.document_input && errors.document_input}
                                                     use_text={true}
-                                                    onChange={e =>
-                                                        setFieldValue('document_input', e.target.value, true)
-                                                    }
+                                                    onChange={e => {
+                                                        setFieldValue('document_input', e.target.value, true);
+                                                    }}
                                                     required
                                                 />
                                             </MobileWrapper>
@@ -222,17 +230,17 @@ const ProofOfIncomeForm = ({
 
 ProofOfIncomeForm.propTypes = {
     addNotificationByKey: PropTypes.func,
-    fetchDocumentsList: PropTypes.func,
+    fetchPoIncDocumentsList: PropTypes.func,
     onSubmit: PropTypes.func,
     removeNotificationByKey: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
-    documents_list: PropTypes.array,
+    poinc_documents_list: PropTypes.array,
 };
 
 export default connect(({ client, notifications }) => ({
     addNotificationByKey: notifications.addNotificationMessageByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,
     removeNotificationByKey: notifications.removeNotificationByKey,
-    documents_list: client.documents_list,
-    fetchDocumentsList: client.fetchDocumentsList,
+    poinc_documents_list: client.poinc_documents_list,
+    fetchPoIncDocumentsList: client.fetchPoIncDocumentsList,
 }))(ProofOfIncomeForm);

@@ -371,6 +371,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .back-btn {
                 margin-right: 8px;
+                .back-btn-icon {
+                    margin-right: 0.8rem;
+                }
                 span {
                     display: inline-flex;
                     align-items: center;
@@ -641,15 +644,28 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-top: 3.6rem;
                     display: flex;
                     grid-column-gap: 0.8rem;
+                    @include mobile {
+                        margin-bottom: 2.4rem;
+                        flex-direction: column;
+                    }
                     &__fieldset {
                         @include mobile {
                             width: inherit;
                             max-width: 40rem;
+                            .email-input {
+                                margin-bottom: 1.6rem;
+                            }
                         }
                         width: 40rem;
                         .dc-input__label {
                             color: var(--text-general) !important;
                         }
+                        input {
+                            text-overflow: ellipsis;
+                        }
+                    }
+                    .email-change_button {
+                        max-width: 14.9rem;
                     }
                 }
             }

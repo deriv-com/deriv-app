@@ -19,7 +19,7 @@ const ResetEmailModal = ({
 }) => {
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
     const [email_error_msg, setEmailErrorMsg] = React.useState(null);
-    const [new_Email, setNewEmail] = React.useState(null);
+    const [new_email, setNewEmail] = React.useState(null);
     const [has_error, setHasError] = React.useState(false);
 
     const handleSubmit = values => {
@@ -47,8 +47,8 @@ const ResetEmailModal = ({
                 is_open={is_confirm_email_modal_open}
                 verification_code={verification_code}
                 onClose={() => setIsConfirmResetEmailModal(false)}
-                new_Email={new_Email}
-                prev_Email={email}
+                changed_email={new_email}
+                prev_email={email}
                 setEmailError={setHasError}
                 setErrorMessage={setEmailErrorMsg}
             />

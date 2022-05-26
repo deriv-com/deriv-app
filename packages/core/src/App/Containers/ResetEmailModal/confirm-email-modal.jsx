@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 export const ConfirmEmailModal = ({
     onClose,
     is_open,
-    prev_Email,
-    new_Email,
+    prev_email,
+    changed_email,
     verification_code,
     setEmailError,
     setErrorMessage,
@@ -21,7 +21,7 @@ export const ConfirmEmailModal = ({
     const handleSubmit = () => {
         const api_request = {
             change_email: 'verify',
-            new_email: new_Email,
+            new_email: changed_email,
             verification_code,
         };
 
@@ -67,8 +67,9 @@ export const ConfirmEmailModal = ({
                 <div className='email-confirmation'>
                     <Text as='p' color='prominent' size='xs' align='left'>
                         <Localize
-                            i18n_default_text='Are you sure you want to update email <0>{{prev_Email}}</0> to <1>{{new_Email}}</1>?'
-                            values={{ prev_Email, new_Email }}
+                            i18n_default_text='Are you sure you want to update email <0>{{prev_email}}</0> to <1>{{changed_email}}</1>?'
+                            values={{ prev_email, changed_email }}
+                            s
                             components={[
                                 <strong key={0} />,
                                 <strong key={1} className='email-confirmation__currentEmail' />,
@@ -76,7 +77,6 @@ export const ConfirmEmailModal = ({
                         />
                     </Text>
                 </div>
-
                 <Modal.Footer>
                     <Button onClick={onClose} has_effect text={localize('Cancel')} secondary large />
                     <Button
@@ -100,8 +100,8 @@ ConfirmEmailModal.propTypes = {
     onClose: PropTypes.func,
     is_open: PropTypes.bool,
     verification_code: PropTypes.string,
-    prev_Email: PropTypes.string,
-    new_Email: PropTypes.string,
+    prev_email: PropTypes.string,
+    changed_email: PropTypes.string,
     setEmailError: PropTypes.func,
     setErrorMessage: PropTypes.func,
 };

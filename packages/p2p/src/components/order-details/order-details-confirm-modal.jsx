@@ -70,11 +70,11 @@ const OrderDetailsConfirmModal = ({
             has_close_icon
             renderTitle={() => (
                 <Text color='prominent' line-height='m' size='s' weight='bold'>
-                    {is_buy_order_for_user ? (
-                        <Localize i18n_default_text='Payment confirmation' />
-                    ) : (
-                        <Localize i18n_default_text='Have you received payment?' />
-                    )}
+                    <Localize
+                        i18n_default_text={
+                            is_buy_order_for_user ? 'Payment confirmation' : 'Have you received payment?'
+                        }
+                    />
                 </Text>
             )}
             width='440px'

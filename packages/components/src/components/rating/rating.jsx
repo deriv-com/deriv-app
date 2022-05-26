@@ -94,10 +94,10 @@ const Rating = ({
             >
                 {[...new Array(parseInt(max_rating))].map((_, index) => {
                     const active_rate = is_hover_enabled ? hovered_rate_index : enabled_rate_index;
-                    const show_empty_icon = active_rate === -1 || active_rate < index + 1;
+                    const should_show_empty_icon = active_rate === -1 || active_rate < index + 1;
                     const is_rating_with_precision = active_rate % 1 !== 0;
                     const is_rating_equal_to_index = Math.round(active_rate) === index + 1;
-                    const show_rating_with_precision = is_rating_with_precision && is_rating_equal_to_index;
+                    const should_show_rating_with_precision = is_rating_with_precision && is_rating_equal_to_index;
                     return (
                         <div
                             className={classNames('user-rating__element', element_class)}
@@ -107,12 +107,12 @@ const Rating = ({
                             <section
                                 className={classNames('user-rating__element--filled')}
                                 style={{
-                                    width: show_rating_with_precision ? `${(active_rate % 1) * 100}%` : '0%',
+                                    width: should_show_rating_with_precision ? `${(active_rate % 1) * 100}%` : '0%',
                                 }}
                             >
                                 {icon_selected}
                             </section>
-                            <section>{show_empty_icon ? icon_unselected : icon_selected}</section>
+                            <section>{should_show_empty_icon ? icon_unselected : icon_selected}</section>
                         </div>
                     );
                 })}

@@ -49,6 +49,7 @@ export default class ClientStore extends BaseStore {
     @observable currencies_list = {};
     @observable residence_list = [];
     @observable states_list = [];
+    @observable documents_list = ['pass', 'license', 'bills'];
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
@@ -581,8 +582,8 @@ export default class ClientStore extends BaseStore {
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
         return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
             ? eu_shortcode_regex.test(financial_shortcode) ||
-            eu_shortcode_regex.test(gaming_shortcode) ||
-            eu_shortcode_regex.test(mt_gaming_shortcode)
+                  eu_shortcode_regex.test(gaming_shortcode) ||
+                  eu_shortcode_regex.test(mt_gaming_shortcode)
             : eu_excluded_regex.test(this.residence);
     }
 
@@ -1050,18 +1051,18 @@ export default class ClientStore extends BaseStore {
                 ...response,
                 ...(is_maltainvest_account
                     ? {
-                        new_account_maltainvest: {
-                            ...response.new_account_maltainvest,
-                            currency,
-                        },
-                    }
+                          new_account_maltainvest: {
+                              ...response.new_account_maltainvest,
+                              currency,
+                          },
+                      }
                     : {}),
                 ...(is_samoa_account
                     ? {
-                        new_account_samoa: {
-                            currency,
-                        },
-                    }
+                          new_account_samoa: {
+                              currency,
+                          },
+                      }
                     : {}),
             });
         }
@@ -2005,6 +2006,27 @@ export default class ClientStore extends BaseStore {
                     } else {
                         runInAction(() => {
                             this.states_list = response.states_list || [];
+                        });
+                    }
+                    resolve(response);
+                });
+        });
+    }
+
+    // adjust correct request for documents list
+    @action.bound
+    fetchDocumentsList() {
+        return new Promise((resolve, reject) => {
+            WS.authorized.storage
+                .statesList({
+                    states_list: this.accounts[this.loginid].residence,
+                })
+                .then(response => {
+                    if (response.error) {
+                        reject(response.error);
+                    } else {
+                        runInAction(() => {
+                            this.documents_list = response.states_list || [];
                         });
                     }
                     resolve(response);

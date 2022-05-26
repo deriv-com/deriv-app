@@ -2,27 +2,26 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, useStateCallback } from '@deriv/components';
 import { WS } from '@deriv/shared';
-import Expired from 'Components/poa-expired';
-import Unverified from 'Components/poa-unverified';
-import NeedsReview from 'Components/poa-needs-review';
-import Submitted from 'Components/poa-submitted';
-import Verified from 'Components/poa-verified';
-import NotRequired from 'Components/poa-not-required';
-import PoaStatusCodes from 'Components/poa-status-codes';
-import ProofOfAddressForm from './proof-of-income-form.jsx';
+import Expired from 'Components/poinc-expired';
+import Unverified from 'Components/poinc-unverified';
+import NeedsReview from 'Components/poinc-needs-review';
+import Submitted from 'Components/poinc-submitted';
+import Verified from 'Components/poinc-verified';
+import NotRequired from 'Components/poinc-not-required';
+import { income_status_codes } from './proof-of-income-utils';
+import ProofOfIncomeForm from './proof-of-income-form.jsx';
 import { populateVerificationStatus } from '../Helpers/verification';
 
-const ProofOfIncomeContainer = ({ is_mx_mlt, is_switching, refreshNotifications }) => {
+const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = useStateCallback({
         allow_document_upload: false,
-        allow_poi_resubmission: false,
-        needs_poi: false,
-        needs_poa: false,
-        has_poi: false,
-        resubmit_poa: false,
-        has_submitted_poa: false,
-        document_status: null,
+        // allow_poinc_resubmission: false, ask BE if it will be implemented
+        needs_poinc: false,
+        has_poinc: false,
+        // resubmit_poinc: false,
+        has_submitted_poinc: false,
+        proof_of_income_status: null,
         is_age_verified: false,
     });
 
@@ -32,24 +31,21 @@ const ProofOfIncomeContainer = ({ is_mx_mlt, is_switching, refreshNotifications 
                 const { get_account_status } = response;
                 const {
                     allow_document_upload,
-                    allow_poa_resubmission,
-                    needs_poi,
-                    needs_poa,
-                    document_status,
+                    /* allow_poinc_resubmission, */
+                    proof_of_income_status,
                     is_age_verified,
                 } = populateVerificationStatus(get_account_status);
-                const has_submitted_poa = document_status === PoaStatusCodes.pending && !allow_poa_resubmission;
+                const has_submitted_poinc =
+                    proof_of_income_status === income_status_codes.pending; /* && !allow_poinc_resubmission */
 
                 setAuthenticationStatus(
                     {
                         ...authentication_status,
                         ...{
                             allow_document_upload,
-                            allow_poa_resubmission,
-                            needs_poi,
-                            needs_poa,
-                            document_status,
-                            has_submitted_poa,
+                            // allow_poinc_resubmission,
+                            proof_of_income_status,
+                            has_submitted_poinc,
                             is_age_verified,
                         },
                     },
@@ -63,55 +59,56 @@ const ProofOfIncomeContainer = ({ is_mx_mlt, is_switching, refreshNotifications 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
-    const handleResubmit = () => {
-        setAuthenticationStatus({ ...authentication_status, ...{ resubmit_poa: true } });
-    };
+    // const handleResubmit = () => {
+    //     setAuthenticationStatus({ ...authentication_status, ...{ resubmit_poinc: true } }); //check if it will be implemented on BE
+    // };
 
-    const onSubmit = ({ needs_poi }) => {
-        setAuthenticationStatus({ ...authentication_status, ...{ has_submitted_poa: true, needs_poi } });
+    const onSubmit = ({ needs_poinc }) => {
+        setAuthenticationStatus({ ...authentication_status, ...{ has_submitted_poinc: true, needs_poinc } });
     };
 
     const {
         allow_document_upload,
-        allow_poa_resubmission,
-        document_status,
-        needs_poi,
-        resubmit_poa,
-        has_submitted_poa,
+        // allow_poinc_resubmission,
+        proof_of_income_status,
+        needs_poinc,
+        // resubmit_poinc,
+        has_submitted_poinc,
         is_age_verified,
     } = authentication_status;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (
-        !allow_document_upload ||
-        (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
-    )
-        return <NotRequired />;
-    if (has_submitted_poa) return <Submitted needs_poi={needs_poi} />;
-    if (resubmit_poa || allow_poa_resubmission) {
-        return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
-    }
+    // if (
+    //     !allow_document_upload ||
+    //     (!is_age_verified /* && !allow_poinc_resubmission */ && proof_of_income_status === 'none') should be uncommented after connecting to BE
+    // )
+    //     return <NotRequired />;
 
-    switch (document_status) {
-        case PoaStatusCodes.none:
-            return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
-        case PoaStatusCodes.pending:
-            return <NeedsReview needs_poi={needs_poi} />;
-        case PoaStatusCodes.verified:
-            return <Verified needs_poi={needs_poi} />;
-        case PoaStatusCodes.expired:
-            return <Expired onClick={handleResubmit} />;
-        case PoaStatusCodes.rejected:
+    if (has_submitted_poinc) return <Submitted />;
+
+    // if (resubmit_poinc || allow_poinc_resubmission ) {
+    //     return <ProofOfIncomeForm onSubmit={() => onSubmit({ needs_poinc })} />; need to clarify from BE if resubmission will be implemented
+    // }
+
+    switch (proof_of_income_status) {
+        case income_status_codes.none:
+            return <ProofOfIncomeForm onSubmit={() => onSubmit({ needs_poinc })} />;
+        case income_status_codes.pending:
+            return <NeedsReview />;
+        case income_status_codes.verified:
+            return <Verified />;
+        // case income_status_codes.expired:
+        //     return <Expired onClick={handleResubmit} />;
+        case income_status_codes.rejected:
             return <Unverified />;
-        case PoaStatusCodes.suspected:
-            return <Unverified />;
+        // case income_status_codes.suspected:
+        //     return <Unverified />;
         default:
             return null;
     }
 };
 
 ProofOfIncomeContainer.propTypes = {
-    is_mx_mlt: PropTypes.bool,
     is_switching: PropTypes.bool,
     refreshNotifications: PropTypes.func,
 };

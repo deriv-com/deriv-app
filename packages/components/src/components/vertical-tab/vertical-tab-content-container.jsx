@@ -57,12 +57,19 @@ const Content = ({ is_routed, items, selected, side_note_class_name, side_note_c
      * Return the component that will be used for showing side notes.
      * This component can be from outside provided by prop named: `side_note_component`
      * And if prop is null, inner `SideNotes` component will be used.
-     * 
+     *
      * @returns {Component}
      */
     const SideNoteComponent = () => {
         const Component = side_note_component ? side_note_component : 'SideNotes';
-        return <Component selected_item={selected_item} side_notes={side_notes} class_name={side_note_class_name} title={side_notes_title} />;
+        return (
+            <Component
+                selected_item={selected_item}
+                side_notes={side_notes}
+                class_name={side_note_class_name}
+                title={side_notes_title}
+            />
+        );
     };
 
     return (
@@ -75,13 +82,24 @@ const Content = ({ is_routed, items, selected, side_note_class_name, side_note_c
                             <Route
                                 key={idx}
                                 path={path}
-                                render={() => <Component component_icon={icon} setSideNotes={addToNotesQueue} setSideNotesTitle={setTitle} />}
+                                render={() => (
+                                    <Component
+                                        component_icon={icon}
+                                        setSideNotes={addToNotesQueue}
+                                        setSideNotesTitle={setTitle}
+                                    />
+                                )}
                             />
                         );
                     })}
                 </Switch>
             ) : (
-                <TabContent key={selected_item.label} className='item-id' setSideNotes={addToNotesQueue} setSideNotesTitle={setTitle} />
+                <TabContent
+                    key={selected_item.label}
+                    className='item-id'
+                    setSideNotes={addToNotesQueue}
+                    setSideNotesTitle={setTitle}
+                />
             )}
             {selected.has_side_note && <SideNoteComponent />}
         </React.Fragment>

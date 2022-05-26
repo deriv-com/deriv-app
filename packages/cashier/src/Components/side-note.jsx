@@ -18,29 +18,32 @@ const SideNoteBullet = ({ children }) => (
 );
 
 const SideNote = ({ side_notes, title, has_bullets = true }) => {
-    const side_note_title = title || (side_notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />);
+    const side_note_title =
+        title ||
+        (side_notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />);
 
     const checkNote = (note, i) => {
         const Component = { ...note.component };
         if (note.component && Component) Component.key = i;
         if (typeof note === 'string' || (typeof note === 'object' && note.i18n_default_text)) {
-            if (has_bullets) return (
-                <SideNoteBullet key={note.key || i}>
-                    <Localize i18n_default_text={note.i18n_default_text} />
-                </SideNoteBullet>
-            )
+            if (has_bullets)
+                return (
+                    <SideNoteBullet key={note.key || i}>
+                        <Localize i18n_default_text={note.i18n_default_text} />
+                    </SideNoteBullet>
+                );
             return (
                 <Text key={note.key || i} className='side-note__text' size='xxs' as='p'>
                     {note.i18n_default_text}
                 </Text>
-            )
+            );
         }
         return Component;
-    }
+    };
 
     return (
         <div className='side-note'>
-            {(side_note_title) && (
+            {side_note_title && (
                 <DesktopWrapper>
                     <SideNoteTitle title={side_note_title} />
                 </DesktopWrapper>
@@ -48,7 +51,7 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
 
             {side_notes && side_notes.map((note, i) => checkNote(note, i))}
         </div>
-    )
+    );
 };
 
 SideNote.propTypes = {

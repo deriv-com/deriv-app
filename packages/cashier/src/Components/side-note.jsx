@@ -38,12 +38,7 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
             );
         } else if (typeof note === 'object' && note.props.i18n_default_text) {
             Component = { ...note };
-            if (has_bullets)
-                return (
-                    <SideNoteBullet key={i}>
-                        {Component}
-                    </SideNoteBullet>
-                );
+            if (has_bullets) return <SideNoteBullet key={i}>{Component}</SideNoteBullet>;
             Component.key = i;
             return Component;
         }

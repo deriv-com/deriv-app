@@ -26,13 +26,11 @@ const notes = (currency, crypto_transactions) => {
 
     list.push(
         <Localize i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.' />,
-        <Localize i18n_default_text='Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.' />,
+        <Localize i18n_default_text='Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.' />
     );
 
     if (!isCryptocurrency(currency)) {
-        list.push(
-            <Localize i18n_default_text="We'll send you an email once your transaction has been processed." />,
-        );
+        list.push(<Localize i18n_default_text="We'll send you an email once your transaction has been processed." />);
     }
 
     if (/^(UST)$/i.test(currency)) {

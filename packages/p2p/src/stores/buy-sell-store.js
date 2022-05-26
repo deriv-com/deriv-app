@@ -11,6 +11,7 @@ export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
     @observable contact_info = '';
     @observable error_message = '';
+    @observable form_error_code = '';
     @observable has_more_items_to_load = false;
     @observable has_payment_methods = false;
     @observable is_filter_modal_loading = false;
@@ -171,6 +172,7 @@ export default class BuySellStore extends BaseStore {
 
         if (order.error) {
             this.form_props.setErrorMessage(order.error.message);
+            this.setFormErrorCode(order.error.code);
         } else {
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);
@@ -328,6 +330,11 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
+    }
+
+    @action.bound
+    setFormErrorCode(form_error_code) {
+        this.form_error_code = form_error_code;
     }
 
     @action.bound

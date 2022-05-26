@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState } from '@deriv/components';
+import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState, HintBox, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
-import { localize } from 'Components/i18next';
-import FormError from 'Components/form/error.jsx';
+import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
@@ -13,10 +12,9 @@ import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
 import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 
-const BuySellModalFooter = ({ onCancel, error_message, is_submit_disabled, onSubmit }) => {
+const BuySellModalFooter = ({ onCancel, is_submit_disabled, onSubmit }) => {
     return (
         <React.Fragment>
-            {error_message && <FormError message={error_message} />}
             <Button.Group>
                 <Button secondary onClick={onCancel} large>
                     {localize('Cancel')}
@@ -31,7 +29,6 @@ const BuySellModalFooter = ({ onCancel, error_message, is_submit_disabled, onSub
 
 BuySellModalFooter.propTypes = {
     onCancel: PropTypes.func.isRequired,
-    error_message: PropTypes.string,
     is_submit_disabled: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
 };
@@ -48,6 +45,32 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             receive_amount={buy_sell_store.receive_amount}
         />
     );
+
+    const BuySellFormError = () => {
+        return buy_sell_store.form_error_code === 'OrderAlreadyExists' ? (
+            <HintBox
+                className='buy-sell__modal-danger'
+                icon='IcAlertDanger'
+                message={
+                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                        {error_message}
+                    </Text>
+                }
+                is_danger
+            />
+        ) : (
+            <HintBox
+                className='buy-sell__modal-danger'
+                icon='IcAlertDanger'
+                message={
+                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                        <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                    </Text>
+                }
+                is_danger
+            />
+        );
+    };
 
     const onCancel = () => {
         setShouldShowPopup(false);
@@ -109,6 +132,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         : 'buy-sell__modal-footer'
                 }
             >
+                {error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
                     <AddPaymentMethodForm should_show_separated_footer={true} />
                 ) : (
@@ -139,6 +163,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             {/* Parent height - Modal.Header height - Modal.Footer height */}
             <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                 <Modal.Body>
+                    {error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm should_show_separated_footer />
                     ) : (
@@ -157,7 +182,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 <Modal.Footer has_separator>
                     {my_profile_store.should_show_add_payment_method_form ? null : (
                         <BuySellModalFooter
-                            error_message={error_message}
                             is_submit_disabled={is_submit_disabled}
                             onCancel={onCancel}
                             onSubmit={submitForm.current}

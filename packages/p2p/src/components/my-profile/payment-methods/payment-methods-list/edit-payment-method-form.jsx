@@ -6,6 +6,7 @@ import { Localize, localize } from 'Components/i18next';
 import { usePaymentMethodValidator } from 'Components/hooks';
 import { useStores } from 'Stores';
 import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal';
+import classNames from 'classnames';
 
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
@@ -71,7 +72,10 @@ const EditPaymentMethodForm = () => {
                                                                 : payment_method_field[1].type
                                                         }
                                                         label={payment_method_field[1].display_name}
-                                                        className='add-payment-method-form__payment-method-field'
+                                                        className={classNames({
+                                                            'add-payment-method-form__payment-method-field':
+                                                                !errors[payment_method_field[0]]?.length,
+                                                        })}
                                                         onChange={handleChange}
                                                         name={payment_method_field[0]}
                                                         required={!!payment_method_field[1].required}

@@ -1,7 +1,13 @@
 import { localize } from '@deriv/translations';
 
 const paymentMethodConfig = {
-    'Credit / Debit card': {
+    AstroPay: {
+        icon: 'IcOtherPaymentMethod',
+        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        input_label: localize('Account number'),
+        title: 'AstroPay',
+    },
+    credit_debit_card: {
         icon: 'IcCreditCard',
         paragraphs: [
             localize(
@@ -9,8 +15,9 @@ const paymentMethodConfig = {
             ),
         ],
         input_label: localize('Card number'),
+        title: 'Credit / Debit card',
     },
-    'E-wallet': {
+    e_wallet: {
         icon: 'IcEwallet',
         paragraphs: [
             localize(
@@ -18,13 +25,15 @@ const paymentMethodConfig = {
             ),
         ],
         input_label: localize('Email address'),
+        title: 'E-wallet',
     },
-    ZingPay: {
+    zingPay: {
         icon: 'IcZingpay',
         paragraphs: [localize('Upload your Zingpay bank statement showing your name and bank account number.')],
         input_label: localize('Bank account number'),
+        title: 'ZingPay',
     },
-    OnlineNaira: {
+    online_naira: {
         icon: 'IcOnlineNaira',
         paragraphs: [
             localize('Upload the following documents:'),
@@ -32,21 +41,25 @@ const paymentMethodConfig = {
             localize('2. Upload a screenshot of the Settings page:'),
         ],
         input_label: localize('Account ID'),
+        title: 'OnlineNaira',
     },
-    Beyonic: {
+    beyonic: {
         icon: 'IcBeyonic',
         paragraphs: [localize('Upload your mobile phone bill showing your name and mobile number clearly.')],
         input_label: localize('Account number'),
+        title: 'Beyonic',
     },
-    'Bank Transfer/Bank Wire': {
+    bank_wire: {
         icon: 'IcBankTransfer',
         paragraphs: [localize('Upload your bank statement showing your name and bank account number.')],
         input_label: localize('Bank account number'),
+        title: 'Bank Transfer/Bank Wire',
     },
     other: {
         icon: 'IcOtherPaymentMethod',
         paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
         input_label: null,
+        title: '[Payment method name]',
     },
 };
 

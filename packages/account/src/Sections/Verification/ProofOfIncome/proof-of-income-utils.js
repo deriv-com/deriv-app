@@ -3,8 +3,6 @@ export const income_status_codes = {
     pending: 'pending',
     rejected: 'rejected',
     verified: 'verified',
-    // expired: 'expired',
-    // suspected: 'suspected',
 };
 
 export const submission_status_code = {

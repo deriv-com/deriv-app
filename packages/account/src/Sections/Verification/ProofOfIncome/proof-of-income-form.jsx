@@ -12,20 +12,19 @@ import {
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-import { /* isMobile, */ WS } from '@deriv/shared';
+import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
-// import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import FileUploaderContainer from 'Components/file-uploader-container';
 
 let file_uploader_ref = null;
 
 const ProofOfIncomeForm = ({
-    // addNotificationByKey,
+    addNotificationByKey,
     fetchPoIncDocumentsList,
-    // removeNotificationByKey,
-    // removeNotificationMessage,
+    removeNotificationByKey,
+    removeNotificationMessage,
     poinc_documents_list,
     onSubmit,
 }) => {
@@ -64,7 +63,7 @@ const ProofOfIncomeForm = ({
 
         setStatus({ msg: '' });
         WS.setSettings(values).then(data => {
-            if (data.error) {
+            if (!data.error) {
                 setStatus({ msg: data.error.message });
             } else {
                 // force request to update settings cache since settings have been updated
@@ -90,17 +89,17 @@ const ProofOfIncomeForm = ({
                                             setAPIInitialLoadError(error.message);
                                             return;
                                         }
-                                        const { proof_of_income /* needs_verification */ } =
+                                        const { proof_of_income, needs_verification } =
                                             get_account_status.authentication;
                                         const has_poinc = !(proof_of_income && proof_of_income.status === 'none');
-                                        // const needs_poinc =
-                                        //     needs_verification.length && needs_verification.includes('proof_of_income');
+                                        const needs_poinc =
+                                            needs_verification.length && needs_verification.includes('proof_of_income');
                                         onSubmit({ has_poinc });
-                                        // removeNotificationMessage({ key: 'authenticate' });
-                                        // removeNotificationByKey({ key: 'authenticate' });   clarify if notification is needed
-                                        // if (needs_poinc) {
-                                        //     addNotificationByKey('needs_poinc');
-                                        // }
+                                        removeNotificationMessage({ key: 'authenticate' });
+                                        removeNotificationByKey({ key: 'authenticate' });
+                                        if (needs_poinc) {
+                                            addNotificationByKey('needs_poinc');
+                                        }
                                     });
                                 }
                             })
@@ -212,18 +211,18 @@ const ProofOfIncomeForm = ({
 };
 
 ProofOfIncomeForm.propTypes = {
-    // addNotificationByKey: PropTypes.func,
+    addNotificationByKey: PropTypes.func,
     fetchPoIncDocumentsList: PropTypes.func,
     onSubmit: PropTypes.func,
-    // removeNotificationByKey: PropTypes.func,
-    // removeNotificationMessage: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
     poinc_documents_list: PropTypes.array,
 };
 
-export default connect(({ client /* notifications */ }) => ({
-    // addNotificationByKey: notifications.addNotificationMessageByKey,
-    // removeNotificationMessage: notifications.removeNotificationMessage,
-    // removeNotificationByKey: notifications.removeNotificationByKey,
+export default connect(({ client, notifications }) => ({
+    addNotificationByKey: notifications.addNotificationMessageByKey,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    removeNotificationByKey: notifications.removeNotificationByKey,
     poinc_documents_list: client.poinc_documents_list,
     fetchPoIncDocumentsList: client.fetchPoIncDocumentsList,
 }))(ProofOfIncomeForm);

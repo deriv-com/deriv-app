@@ -198,7 +198,7 @@ export default class NotificationStore extends BaseStore {
 
         if (is_logged_in) {
             const {
-                authentication: { document, identity, needs_verification },
+                authentication: { document, identity, needs_verification, proof_of_income },
                 status,
                 cashier_validation,
             } = account_status;
@@ -261,12 +261,16 @@ export default class NotificationStore extends BaseStore {
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+                const needs_poinc =
+                    needs_verification.includes('proof_of_income') ||
+                    !['verified', 'none'].includes(proof_of_income?.status);
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
-                this.addVerificationNotifications(identity, document);
+                this.addVerificationNotifications(identity, document, proof_of_income);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
+                if (needs_poinc) this.addNotificationMessage(this.client_notifications.needs_poinc);
                 if (poi_name_mismatch && identity?.services.onfido.last_rejected) {
                     if (!personal_details_locked && onfido_submissions_left > 0) {
                         this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
@@ -697,6 +701,16 @@ export default class NotificationStore extends BaseStore {
                 key: 'needs_poi',
                 header: localize('Please verify your proof of identity'),
                 message: localize('To continue trading with us, please confirm who you are.'),
+                type: 'danger',
+            },
+            needs_poinc: {
+                action: {
+                    route: routes.proof_of_income,
+                    text: localize('Verify income'),
+                },
+                key: 'needs_poi',
+                header: localize('Please verify your proof of income'),
+                message: localize('To continue trading with us, please confirm your income.') /* need clarify design */,
                 type: 'danger',
             },
             needs_poa_virtual: {

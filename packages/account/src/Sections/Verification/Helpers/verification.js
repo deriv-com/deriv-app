@@ -9,17 +9,18 @@ export const populateVerificationStatus = account_status => {
     const needs_poi = needs_verification.length && needs_verification.includes('identity');
     const needs_poinc = needs_verification.length && needs_verification.includes('proof_of_income');
 
-    const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
+    // const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
+    const allow_document_upload = true;
     const allow_poi_resubmission = account_status.status.some(status => status === 'allow_poi_resubmission');
     const allow_poa_resubmission = account_status.status.some(status => status === 'allow_poa_resubmission');
-    // const allow_poinc_resubmission = account_status.status.some(status => status === 'allow_poinc_resubmission'); ask to BE if it will be implemented
-    const is_age_verified = account_status.status.some(status => status === 'age_verification');
+    // const is_age_verified = account_status.status.some(status => status === 'age_verification');
+    const is_age_verified = true;
     const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
 
     const identity_status = identity.status;
     const document_status = document.status;
     // const proof_of_income_status = proof_of_income.status;
-    const proof_of_income_status = 'none'; /* temporary */
+    const proof_of_income_status = 'pending'; /* temporary */
 
     const { idv, onfido, manual } = identity.services;
     const identity_last_attempt = attempts.latest;
@@ -29,7 +30,6 @@ export const populateVerificationStatus = account_status => {
         allow_document_upload,
         allow_poa_resubmission,
         allow_poi_resubmission,
-        // allow_poinc_resubmission,
         has_attempted_idv,
         has_poa,
         has_poi,

@@ -66,11 +66,12 @@ const CreateAdForm = () => {
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
-
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
         );
+        // P2P configuration is not subscribable. Hence need to fetch it on demand
+        general_store.setP2PConfig();
 
         return () => {
             disposeApiErrorReaction();

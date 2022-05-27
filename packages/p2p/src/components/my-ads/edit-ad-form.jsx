@@ -8,13 +8,13 @@ import { Localize, localize } from 'Components/i18next';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
-import { useStores } from 'Stores';
+import FloatingRate from 'Components/floating-rate';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import EditAdCancelModal from 'Components/my-ads/edit-ad-cancel-modal.jsx';
+import { useStores } from 'Stores';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
-import FloatingRate from '../floating-rate';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -79,8 +79,8 @@ const EditAdForm = () => {
         my_ads_store.setIsEditAdErrorModalVisible(false);
         my_ads_store.setEditAdFormError('');
         floating_rate_store.setApiErrorMessage('');
+        // P2P configuration is not subscribable. Hence need to fetch it on demand
         general_store.setP2PConfig();
-        floating_rate_store.setExchangeRate(account_currency, local_currency);
 
         if (payment_method_names && !payment_method_details) {
             payment_method_names?.forEach(pm => {

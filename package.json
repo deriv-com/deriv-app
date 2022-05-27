@@ -88,7 +88,7 @@
         "babel-jest": "^27.3.1",
         "dotenv": "^8.2.0",
         "jest-chain": "^1.1.5",
-        "jest-extended": "^0.11.5",
+        "jest-extended": "^1.2.0",
         "react": "^16.14.0",
         "react-dom": "^16.14.0"
     },

@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import 'Sass/account-transfer-no-account.scss';
+import './account-transfer-no-account.scss';
 
 const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }) => (
     <div className='cashier__wrapper cashier__no-balance'>

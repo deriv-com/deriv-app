@@ -1,16 +1,8 @@
 import React from 'react';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import {
-    Cashier,
-    Deposit,
-    Withdrawal,
-    PaymentAgent,
-    AccountTransfer,
-    PaymentAgentTransfer,
-    P2PCashier,
-    OnRamp,
-} from '../containers';
+import { Cashier, Deposit, Withdrawal, PaymentAgent, PaymentAgentTransfer, P2PCashier, OnRamp } from '../containers';
+import { AccountTransfer } from '../pages';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Components/Page404.jsx'));

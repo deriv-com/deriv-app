@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../common/i18n';
+import appConfig from '../../../app.config';
 import { iframe as iframeStyle } from '../style';
 import Dialog from './Dialog';
 
@@ -7,13 +7,13 @@ const chartWidth = 700;
 const chartHeight = 700;
 
 function TradingViewComponent() {
-    return <iframe style={iframeStyle} src="https://tradingview.binary.com/" />;
+    return <iframe style={iframeStyle} src={appConfig.trading_view_chart.url} />;
 }
 
 export default class TradingView extends Dialog {
     constructor() {
-        super('trading-view-dialog', translate('Trading View'), <TradingViewComponent />, {
-            width : chartWidth,
+        super('trading-view-dialog', appConfig.trading_view_chart.label, <TradingViewComponent />, {
+            width: chartWidth,
             height: chartHeight,
         });
     }

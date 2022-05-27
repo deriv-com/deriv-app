@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import DerivPassword from './deriv-password.jsx';
+import DerivEmail from './deriv-email.jsx';
 import PasswordsPlatform from './passwords-platform.jsx';
 
 const Passwords = ({
@@ -16,6 +17,7 @@ const Passwords = ({
     is_loading_mt5,
     is_mt5_password_not_set,
     is_dxtrade_password_not_set,
+    is_from_derivgo,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -31,19 +33,21 @@ const Passwords = ({
 
     return (
         <div className='account__passwords'>
+            {/* Todo: remove the condition after unlinking the email with social account is fully functional */}
+            {!is_social_signup && <DerivEmail email={email} />}
             <DerivPassword
                 email={email}
                 is_dark_mode_on={is_dark_mode_on}
                 is_social_signup={is_social_signup}
                 social_identity_provider={social_identity_provider}
             />
-            {(mt5_login_list?.length > 0 || !is_mt5_password_not_set) && (
+            {!is_from_derivgo && (mt5_login_list?.length > 0 || !is_mt5_password_not_set) && (
                 <PasswordsPlatform
                     email={email}
                     has_mt5_accounts={mt5_login_list?.length > 0 || !is_mt5_password_not_set}
                 />
             )}
-            {(dxtrade_accounts_list?.length > 0 || !is_dxtrade_password_not_set) && (
+            {!is_from_derivgo && (dxtrade_accounts_list?.length > 0 || !is_dxtrade_password_not_set) && (
                 <PasswordsPlatform
                     email={email}
                     has_dxtrade_accounts={dxtrade_accounts_list?.length > 0 || !is_dxtrade_password_not_set}
@@ -64,9 +68,10 @@ Passwords.propTypes = {
     is_loading_dxtrade: PropTypes.bool,
     is_mt5_password_not_set: PropTypes.bool,
     is_dxtrade_password_not_set: PropTypes.bool,
+    is_from_derivgo: PropTypes.bool,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, ui, common }) => ({
     email: client.email,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_social_signup: client.is_social_signup,
@@ -77,4 +82,5 @@ export default connect(({ client, ui }) => ({
     is_loading_dxtrade: client.is_populating_dxtrade_account_list,
     is_mt5_password_not_set: client.is_mt5_password_not_set,
     is_dxtrade_password_not_set: client.is_dxtrade_password_not_set,
+    is_from_derivgo: common.is_from_derivgo,
 }))(Passwords);

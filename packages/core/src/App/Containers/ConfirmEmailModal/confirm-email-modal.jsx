@@ -10,7 +10,7 @@ export const ConfirmEmailModal = ({
     is_open,
     onClose,
     prev_email,
-    setIsEmailError,
+    setHasError,
     setErrorMessage,
     verification_code,
 }) => {
@@ -29,7 +29,7 @@ export const ConfirmEmailModal = ({
 
         WS.changeEmail(api_request).then(response => {
             if (response.error) {
-                setIsEmailError(true);
+                setHasError(true);
                 onClose();
                 setErrorMessage(response.error.message);
             } else {

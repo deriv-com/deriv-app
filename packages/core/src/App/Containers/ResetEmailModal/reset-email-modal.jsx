@@ -48,7 +48,7 @@ const ResetEmailModal = ({
                 is_open={is_confirm_email_modal_open}
                 onClose={() => setIsConfirmResetEmailModal(false)}
                 prev_email={email}
-                setIsEmailError={setHasError}
+                setHasError={setHasError}
                 setErrorMessage={setEmailErrorMsg}
                 verification_code={verification_code}
             />

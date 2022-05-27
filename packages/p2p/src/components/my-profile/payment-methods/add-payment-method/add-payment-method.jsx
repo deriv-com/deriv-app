@@ -5,9 +5,10 @@ import PageReturn from 'Components/page-return/page-return.jsx';
 import { localize } from 'Components/i18next';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import AddPaymentMethodForm from './add-payment-method-form.jsx';
+import PropTypes from 'prop-types';
 import SelectPaymentMethod from './select-payment-method.jsx';
 
-const AddPaymentMethod = ({ should_show_page_return = true, should_show_separated_footer }) => {
+const AddPaymentMethod = ({ should_fixed_footer, should_show_page_return = true, should_show_separated_footer }) => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
@@ -34,13 +35,22 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
             </DesktopWrapper>
             <MobileWrapper>
                 {my_profile_store.selected_payment_method ? (
-                    <AddPaymentMethodForm should_show_separated_footer={should_show_separated_footer} />
+                    <AddPaymentMethodForm
+                        should_fixed_footer={should_fixed_footer}
+                        should_show_separated_footer={should_show_separated_footer}
+                    />
                 ) : (
                     <SelectPaymentMethod />
                 )}
             </MobileWrapper>
         </React.Fragment>
     );
+};
+
+AddPaymentMethod.propTypes = {
+    should_fixed_footer: PropTypes.bool,
+    should_show_page_return: PropTypes.bool,
+    should_show_seperated_footer: PropTypes.bool,
 };
 
 export default observer(AddPaymentMethod);

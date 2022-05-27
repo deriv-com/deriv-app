@@ -51,7 +51,11 @@ const CreateAdAddPaymentMethodModal = () => {
                 page_header_text={localize('Add payment method')}
                 pageHeaderReturnFn={() => my_ads_store.setShouldShowAddPaymentMethodModal(false)}
             >
-                <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                <AddPaymentMethod
+                    should_fixed_footer
+                    should_show_page_return={false}
+                    should_show_separated_footer={true}
+                />
             </MobileFullPageModal>
         );
     }

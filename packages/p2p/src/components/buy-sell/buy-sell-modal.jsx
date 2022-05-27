@@ -134,7 +134,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             >
                 {error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
-                    <AddPaymentMethodForm should_show_separated_footer={true} />
+                    <AddPaymentMethodForm should_fixed_footer should_show_separated_footer={true} />
                 ) : (
                     <Form
                         advert={selected_ad}

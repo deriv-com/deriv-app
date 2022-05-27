@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Loading } from '@deriv/components';
+import { Loading, MobileWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CashierContainer from 'Components/cashier-container.jsx';
 import CashierDefault from 'Components/CashierDefault/cashier-default.jsx';
+import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-side-note.jsx';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 import DepositsLocked from 'Components/Error/deposit-locked.jsx';
@@ -15,6 +16,7 @@ import Virtual from 'Components/Error/virtual.jsx';
 import CryptoDeposit from './crypto-deposit.jsx';
 
 const Deposit = ({
+    can_change_fiat_currency,
     crypto_transactions,
     container,
     currency,
@@ -34,6 +36,7 @@ const Deposit = ({
     is_switching,
     is_system_maintenance,
     is_virtual,
+    landing_company_shortcode,
     onMount,
     recentTransactionOnMount,
     setActiveTab,
@@ -42,6 +45,8 @@ const Deposit = ({
     setSideNotes,
     tab_index,
 }) => {
+    const is_fiat_currency_banner_visible_for_MF_clients =
+        landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
@@ -58,7 +63,6 @@ const Deposit = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setActiveTab, onMount, container, setErrorMessage]);
-
     React.useEffect(() => {
         if (typeof setSideNotes === 'function') {
             if (is_switching || is_deposit) setSideNotes(null);
@@ -70,9 +74,12 @@ const Deposit = ({
                 ];
                 if (side_notes.length > 0) setSideNotes(side_notes);
             }
+            if (is_fiat_currency_banner_visible_for_MF_clients) {
+                setSideNotes([<CashierDefaultSideNote key={0} is_crypto={false} />]);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions, is_cashier_default]);
+    }, [currency, tab_index, crypto_transactions, is_cashier_default, iframe_height]);
 
     if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen />;
@@ -107,18 +114,26 @@ const Deposit = ({
         }
 
         return (
-            <CashierContainer
-                iframe_height={iframe_height}
-                iframe_url={iframe_url}
-                is_loading={is_loading}
-                clearIframe={clearIframe}
-            />
+            <>
+                {is_fiat_currency_banner_visible_for_MF_clients && (
+                    <MobileWrapper>
+                        <CashierDefaultSideNote is_crypto={false} />
+                    </MobileWrapper>
+                )}
+                <CashierContainer
+                    iframe_height={iframe_height}
+                    iframe_url={iframe_url}
+                    is_loading={is_loading}
+                    clearIframe={clearIframe}
+                />
+            </>
         );
     }
     return <CashierDefault setSideNotes={setSideNotes} />;
 };
 
 Deposit.propTypes = {
+    can_change_fiat_currency: PropTypes.bool,
     crypto_transactions: PropTypes.array,
     container: PropTypes.string,
     current_currency_type: PropTypes.string,
@@ -136,6 +151,7 @@ Deposit.propTypes = {
     is_switching: PropTypes.bool,
     is_system_maintenance: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
     onMount: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
     setActiveTab: PropTypes.func,
@@ -146,6 +162,7 @@ Deposit.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
+    can_change_fiat_currency: client.can_change_fiat_currency,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     container: modules.cashier.deposit.container,
     currency: client.currency,
@@ -165,6 +182,7 @@ export default connect(({ client, modules }) => ({
     is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
+    landing_company_shortcode: client.landing_company_shortcode,
     onMount: modules.cashier.deposit.onMountDeposit,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.general_store.setActiveTab,

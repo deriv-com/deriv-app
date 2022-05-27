@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import CryptoWithdrawReceipt from '../crypto-withdraw-receipt';
+import CryptoWithdrawReceipt from '../crypto-withdraw-receipt.jsx';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

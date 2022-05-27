@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import SendEmail from '../send-email';
+import SendEmail from '../send-email.jsx';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

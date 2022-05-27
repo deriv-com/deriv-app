@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import WithdrawalLocked from '../withdrawal-locked';
+import WithdrawalLocked from '../withdrawal-locked.jsx';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

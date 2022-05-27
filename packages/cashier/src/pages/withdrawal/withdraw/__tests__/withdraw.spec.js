@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Withdraw from '../withdraw';
+import Withdraw from '../withdraw.jsx';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

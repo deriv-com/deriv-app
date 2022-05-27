@@ -24,6 +24,7 @@
         text-overflow: ellipsis;
         @include mobile {
             padding: 0;
+            user-select: text;
         }
 
         &--error-field {

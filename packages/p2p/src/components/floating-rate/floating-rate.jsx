@@ -67,7 +67,7 @@ const FloatingRate = ({
                     onChange={change_handler}
                     setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
-                    type='text'
+                    type='number'
                     value={value}
                 />
                 <div className='floating-rate__mkt-rate'>

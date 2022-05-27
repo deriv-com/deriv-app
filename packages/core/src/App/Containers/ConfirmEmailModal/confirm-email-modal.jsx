@@ -100,7 +100,7 @@ ConfirmEmailModal.propTypes = {
     is_open: PropTypes.bool,
     onClose: PropTypes.func,
     prev_email: PropTypes.string,
-    setIsEmailError: PropTypes.func,
+    setHasError: PropTypes.func,
     setErrorMessage: PropTypes.func,
     verification_code: PropTypes.string,
 };

@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isMobile } from '@deriv/shared';
 import Icon from '../icon';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
@@ -39,7 +38,10 @@ const Drawer = ({
         }
     };
 
-    const is_mobile = isMobile();
+    // Note: Cannot use isMobile from @deriv/shared due to dimension change error
+    // TODO: Maybe we can fix isMobile in @deriv/shared
+    const isMobileDrawer = () => window.innerWidth < 768;
+    const is_mobile = isMobileDrawer();
 
     return (
         <div

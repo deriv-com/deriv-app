@@ -67,7 +67,11 @@ const CreateAdAddPaymentMethodModal = () => {
             <Modal.Body
                 className={classNames({ 'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method })}
             >
-                <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                <AddPaymentMethod
+                    should_fixed_footer
+                    should_show_page_return={false}
+                    should_show_separated_footer={true}
+                />
             </Modal.Body>
             {!my_profile_store.selected_payment_method && (
                 <Modal.Footer has_separator>

@@ -1,12 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { isMobile } from '@deriv/shared';
 
-const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
+const AddPaymentMethodForm = ({ should_fixed_footer = isMobile(), should_show_separated_footer = false }) => {
     const { my_profile_store } = useStores();
 
     const validateFields = values => {
@@ -154,6 +156,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                             <div
                                 className={classNames('add-payment-method-form__buttons', {
                                     'add-payment-method-form__buttons--separated-footer': should_show_separated_footer,
+                                    'add-payment-method-form__buttons--fixed-footer': should_fixed_footer,
                                 })}
                             >
                                 <Button
@@ -203,6 +206,11 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
             </Modal>
         </React.Fragment>
     );
+};
+
+AddPaymentMethodForm.propTypes = {
+    should_fixed_footer: PropTypes.bool,
+    should_show_separated_footer: PropTypes.bool,
 };
 
 export default observer(AddPaymentMethodForm);

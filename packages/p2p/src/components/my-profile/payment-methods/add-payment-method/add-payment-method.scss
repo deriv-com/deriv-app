@@ -38,6 +38,17 @@
                 margin-top: auto;
                 padding-top: 1.6rem;
             }
+
+            &--fixed-footer {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                width: 100vw;
+                padding: 1.6rem;
+                border-top: 2px solid var(--general-section-1);
+                z-index: 9999;
+                background: var(--general-main-1);
+            }
         }
 
         &__field {

@@ -84,7 +84,10 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                                                 : payment_method_field[1].type
                                                         }
                                                         label={payment_method_field[1].display_name}
-                                                        className='add-payment-method-form__payment-method-field'
+                                                        className={classNames({
+                                                            'add-payment-method-form__payment-method-field':
+                                                                !errors[payment_method_field[0]]?.length,
+                                                        })}
                                                         onChange={handleChange}
                                                         name={payment_method_field[0]}
                                                         required={!!payment_method_field[1].required}
@@ -114,7 +117,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                     className='add-payment-method-form__buttons--add'
                                     primary
                                     large
-                                    is_disabled={isSubmitting || !dirty}
+                                    is_disabled={isSubmitting || !dirty || !!Object.keys(errors)?.length}
                                 >
                                     <Localize i18n_default_text='Add' />
                                 </Button>

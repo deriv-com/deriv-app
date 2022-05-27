@@ -102,7 +102,7 @@ const EditPaymentMethodForm = () => {
                                     className='add-payment-method-form__buttons--add'
                                     primary
                                     large
-                                    is_disabled={isSubmitting || !dirty}
+                                    is_disabled={isSubmitting || !dirty || !!Object.keys(errors)?.length}
                                 >
                                     <Localize i18n_default_text='Save changes' />
                                 </Button>

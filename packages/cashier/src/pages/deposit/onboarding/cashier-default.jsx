@@ -6,8 +6,8 @@ import { Localize } from '@deriv/translations';
 import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
-import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-details.jsx';
-import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-side-note.jsx';
+import CashierDefaultDetails from './cashier-default-details.jsx';
+import CashierDefaultSideNote from './cashier-default-side-note.jsx';
 
 const CashierDefault = ({
     available_crypto_currencies,

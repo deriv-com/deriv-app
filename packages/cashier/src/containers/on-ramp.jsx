@@ -5,10 +5,10 @@ import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import DepositsLocked from 'Components/Error/deposit-locked.jsx';
 import OnRampProviderCard from 'Components/on-ramp-provider-card.jsx';
 import OnRampProviderPopup from 'Components/on-ramp-provider-popup.jsx';
 import SideNote from 'Components/side-note.jsx';
+import DepositsLocked from 'Pages/deposit/deposit-locked.jsx';
 import 'Sass/on-ramp.scss';
 
 const OnRampSideNote = () => {

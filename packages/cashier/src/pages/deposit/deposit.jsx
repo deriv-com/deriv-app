@@ -3,16 +3,16 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CashierContainer from 'Components/cashier-container.jsx';
-import CashierDefault from 'Components/CashierDefault/cashier-default.jsx';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
-import DepositsLocked from 'Components/Error/deposit-locked.jsx';
 import Error from 'Components/Error/error.jsx';
 import FundsProtection from 'Components/Error/funds-protection.jsx';
 import USDTSideNote from 'Components/usdt-side-note.jsx';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
+import CashierDefault from './onboarding/cashier-default.jsx';
 import CryptoDeposit from './crypto-deposit.jsx';
+import DepositsLocked from './deposit-locked.jsx';
 
 const Deposit = ({
     crypto_transactions,

@@ -6,7 +6,7 @@ import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deri
 import QRCode from 'qrcode.react';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
-import 'Sass/crypto-deposit.scss';
+import './crypto-deposit.scss';
 
 const CryptoDeposit = ({
     api_error,

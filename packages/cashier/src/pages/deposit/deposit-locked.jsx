@@ -5,7 +5,7 @@ import { routes, WS } from '@deriv/shared';
 import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CashierLocked from './cashier-locked.jsx';
+import CashierLocked from 'Components/Error/cashier-locked.jsx';
 
 const DepositsLocked = ({
     account_status,

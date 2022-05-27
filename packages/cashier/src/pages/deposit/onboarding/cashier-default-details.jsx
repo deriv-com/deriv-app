@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, NewsTicker, Text } from '@deriv/components';
-import 'Sass/cashier-default.scss';
+import './cashier-default.scss';
 
 const CashierDefaultDetails = ({
     detail_click,
@@ -58,4 +58,4 @@ CashierDefaultDetails.propTypes = {
     is_mobile: PropTypes.bool,
 };
 
-export default CashierDefaultDetails;
+export default React.memo(CashierDefaultDetails);

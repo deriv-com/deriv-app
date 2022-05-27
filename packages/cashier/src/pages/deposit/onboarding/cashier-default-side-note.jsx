@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
-import 'Sass/cashier-default.scss';
+import { connect } from 'Stores/connect';
+import './cashier-default.scss';
 
 const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, setDepositTarget }) => {
     const currency_code = getCurrencyDisplayCode(currency);

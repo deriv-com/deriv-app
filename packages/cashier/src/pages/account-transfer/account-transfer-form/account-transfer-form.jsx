@@ -7,7 +7,7 @@ import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, MobileWr
 import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CryptoFiatConverter from 'Components/form/crypto-fiat-converter.jsx';
+import CryptoFiatConverter from 'Components/Form/crypto-fiat-converter.jsx';
 import FormError from 'Components/Error/form-error.jsx';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction.jsx';

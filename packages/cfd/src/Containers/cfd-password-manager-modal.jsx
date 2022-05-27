@@ -26,7 +26,7 @@ import {
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
-import InvestorPasswordManager from './investor-password-manager.jsx';
+import InvestorPasswordManager from './investor-password-manager';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);
@@ -42,6 +42,7 @@ const CountdownComponent = ({ count_from = 60, onTimeout }) => {
 
         onTimeout();
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);

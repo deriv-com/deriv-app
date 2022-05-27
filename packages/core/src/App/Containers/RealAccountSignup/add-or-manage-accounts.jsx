@@ -34,6 +34,7 @@ const AddOrManageAccounts = props => {
         setLoading,
         setIsDeposit,
         setShouldShowCancel,
+        onClose,
     } = props;
 
     const initial_active_index =
@@ -115,6 +116,7 @@ const AddOrManageAccounts = props => {
                 form_error={form_error}
                 can_change_fiat_currency={can_change_fiat_currency}
                 current_currency_type={current_currency_type}
+                closeModal={onClose}
             />
         </div>
     );
@@ -194,6 +196,7 @@ AddOrManageAccounts.propTypes = {
         type: PropTypes.string,
         value: PropTypes.string,
     }),
+    onClose: PropTypes.func,
     onError: PropTypes.func,
     onLoading: PropTypes.func,
     onSuccessSetAccountCurrency: PropTypes.func,

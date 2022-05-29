@@ -1,7 +1,16 @@
 import { TrackJS } from "trackjs";
 import { observer as globalObserver } from "../../common/utils/observer";
-import { isProduction } from "../../common/utils/tools";
+import { isProduction, isMobile } from "../../common/utils/tools";
 import { isIOS } from "./osDetect";
+
+const default_errors_to_ignore = [
+  'CallError',
+  'WrongResponse',
+  'GetProposalFailure',
+  'RateLimit',
+  'DisconnectError',
+  'MarketIsClosed',
+];
 
 const log = (type, ...args) => {
   if (type === "warn") {
@@ -68,10 +77,12 @@ const notifyError = error => {
     return;
   }
 
-  notify({ className: "error", message, position: "right" });
+  notify({ className: "error", message, position: isMobile() ? 'left' : 'right' });
 
   if (isProduction()) {
-    TrackJS.track(code || error.error.code);
+    if(!default_errors_to_ignore.includes(code)){
+      TrackJS.track(code);
+    }
   }
 };
 
@@ -82,9 +93,11 @@ const waitForNotifications = () => {
 
   globalObserver.register("Error", notifyError);
 
-  notifList.forEach(className =>
-    globalObserver.register(`ui.log.${className}`, message => notify({ className, message, position: "right" }))
-  );
+    notifList.forEach(className =>
+        globalObserver.register(`ui.log.${className}`, message =>
+            notify({ className, message, position: isMobile() ? 'left' : 'right' })
+        )
+    );
 };
 
 const logHandler = () => {

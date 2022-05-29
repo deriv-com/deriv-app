@@ -25,8 +25,6 @@ const Logtable = () => {
         { label: translate('Message'), dataKey: 'message' },
     ];
 
-    const logtable = React.useRef();
-
     React.useEffect(() => {
         globalObserver.register('log.export', exportLogs);
         globalObserver.register('bot.notify', notify);
@@ -50,7 +48,6 @@ const Logtable = () => {
         const { id: updated_id, rows: updated_rows } = appendRow(log, { id, rows }, true);
         setId(updated_id);
         setRows(updated_rows);
-        logtable.current.scrollToRow(updated_id);
     };
 
     const headerRenderer = ({ dataKey, label }) => {
@@ -102,39 +99,42 @@ const Logtable = () => {
     );
 
     return (
-        <div className="content-row">
-            <div>
-                <div className="content-row-table">
-                    <div style={{ height: min_height }}>
-                        <Table
-                            ref={logtable}
-                            width={760}
-                            height={min_height}
-                            headerHeight={35}
-                            rowHeight={35}
-                            rowCount={rows.length}
-                            rowGetter={({ index }) => rows[index]}
-                            headerStyle={{
-                                fontSize: 11,
-                                textTransform: 'capitalize',
-                            }}
-                            rowRenderer={rowRenderer}
-                            deferredMeasurementCache={cache}
-                        >
-                            {columns.map(({ label, dataKey }, index) => (
-                                <Column
-                                    key={index}
-                                    headerRenderer={headerRenderer}
-                                    width={widths[dataKey] * total_width}
-                                    label={label}
-                                    dataKey={dataKey}
-                                />
-                            ))}
-                        </Table>
+        <span id="logPanel" className="draggable-dialog" title={translate("Log")}>
+            <div id="logTable" className="logTable-scroll">
+                <div className="content-row">
+                    <div>
+                        <div className="content-row-table">
+                            <div style={{ height: min_height }}>
+                                <Table
+                                    width={760}
+                                    height={min_height}
+                                    headerHeight={35}
+                                    rowHeight={35}
+                                    rowCount={rows.length}
+                                    rowGetter={({ index }) => rows[index]}
+                                    headerStyle={{
+                                        fontSize: 11,
+                                        textTransform: 'capitalize',
+                                    }}
+                                    rowRenderer={rowRenderer}
+                                    deferredMeasurementCache={cache}
+                                >
+                                    {columns.map(({ label, dataKey }, index) => (
+                                        <Column
+                                            key={index}
+                                            headerRenderer={headerRenderer}
+                                            width={widths[dataKey] * total_width}
+                                            label={label}
+                                            dataKey={dataKey}
+                                        />
+                                    ))}
+                                </Table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </span>
     );
 };
 

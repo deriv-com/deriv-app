@@ -34,7 +34,7 @@ export default class NotificationStore extends BaseStore {
     @observable marked_notifications = [];
     @observable push_notifications = [];
     @observable client_notifications = {};
-    @observable should_show_popups = false;
+    @observable should_show_popups = true;
 
     constructor(root_store) {
         super({ root_store });
@@ -368,7 +368,6 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
-        this.setShouldShowPopups(true);
     }
 
     @action.bound
@@ -464,11 +463,9 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     setClientNotifications(client_data = {}) {
-        const { ui, client } = this.root_store;
+        const { ui } = this.root_store;
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
-        const client_name =
-            client.account_status.authentication.identity?.services?.onfido?.reported_properties?.first_name;
 
         const notifications = {
             ask_financial_risk_approval: {
@@ -791,9 +788,12 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
                 key: 'poi_name_mismatch',
-                header: localize('What’s your real name, {{client_name}}?', { client_name }),
-                message: localize(
-                    'It appears that the name in your document doesn’t match the name in your Deriv profile. Please update your name in the Personal details page now.'
+                header: localize('Please update your personal info'),
+                message: (
+                    <Localize
+                        i18n_default_text='It seems that your name in the document is not the same as your Deriv profile. Please update your name in the <0>Personal details</0> page to solve this issue.'
+                        components={[<strong key={0} />]}
+                    />
                 ),
                 type: 'warning',
             },
@@ -971,14 +971,17 @@ export default class NotificationStore extends BaseStore {
             },
             withdrawal_locked_review: {
                 key: 'withdrawal_locked_review',
-                header: localize('Your withdrawal is locked'),
-                message: localize(
-                    'Please submit your Proof of Identity again and complete the financial assessment in account setting to unlock it.'
+                header: localize('You are unable to make withdrawals'),
+                message: (
+                    <Localize
+                        i18n_default_text='To enable withdrawals, please submit your <0>Proof of Identity (POI)</0> and <1>Proof of Address (POA)</1> and also complete the <2>financial assessment</2> in your account settings.'
+                        components={[
+                            <a key={0} className='link dark' href={'/account/proof-of-identity'} />,
+                            <a key={1} className='link dark' href={'/account/proof-of-address'} />,
+                            <a key={2} className='link dark' href={'/account/financial-assessment'} />,
+                        ]}
+                    />
                 ),
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Go to my account settings'),
-                },
                 type: 'warning',
             },
             you_are_offline: {

@@ -24,7 +24,7 @@ describe('<RadioButtonGroup/>', () => {
 
     it('should show limited_fiat msg if is_fiat and has_fiat are true', () => {
         render(<RadioButtonGroup {...props} has_fiat />);
-        expect(screen.queryByText(fiat_limit_msg)).toBeInTheDocument();
+        expect(screen.getByText(fiat_limit_msg)).toBeInTheDocument();
     });
 
     it('should render the children', () => {
@@ -43,16 +43,16 @@ describe('<RadioButtonGroup/>', () => {
             </RadioButtonGroup>
         );
         fireEvent.click(screen.getByRole('heading', { level: 1 }));
-        expect(screen.getAllByText('This is a description')).toBeInTheDocuments;
+        expect(screen.getByText('This is a description')).toBeInTheDocument();
     });
 
     it('if is_fiat is false it should not show description on clicking the child component', () => {
         render(
-            <RadioButtonGroup {...props}>
+            <RadioButtonGroup {...props}  is_fiat={false}>
                 <button>Currency</button>
             </RadioButtonGroup>
         );
         fireEvent.click(screen.getByRole('button'));
-        expect(screen.queryByAltText('This is a description')).not.toBeInTheDocuments;
+        expect(screen.queryByText('This is a description')).not.toBeInTheDocument();
     });
 });

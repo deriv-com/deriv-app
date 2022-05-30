@@ -86,6 +86,7 @@ export default class IframeStore {
 
     @action.bound
     clearIframe() {
+        this.setContainerHeight(0);
         this.setIframeUrl('');
         this.clearTimeoutCashierUrl();
         this.setSessionTimeout(true);

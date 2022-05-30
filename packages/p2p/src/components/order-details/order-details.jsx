@@ -171,7 +171,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                             transparent
                                         >
                                             <Text size='xss' weight='bold' color='red'>
-                                                {should_expand_all ? localize('Collapse all') : localize('Expand all')}
+                                                {localize('{{accordion_state}}', {
+                                                    accordion_state: should_expand_all ? 'Collapse all' : 'Expand all',
+                                                })}
                                             </Text>
                                         </Button>
                                     </section>

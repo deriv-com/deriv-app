@@ -293,11 +293,11 @@ const BuySellForm = props => {
                                                     data-lpignore='true'
                                                     type='number'
                                                     error={errors.amount}
-                                                    label={
-                                                        buy_sell_store.is_buy_advert
-                                                            ? localize('Buy amount')
-                                                            : localize('Sell amount')
-                                                    }
+                                                    label={localize('{{ad_type}}', {
+                                                        ad_type: buy_sell_store.is_buy_advert
+                                                            ? 'Buy amount'
+                                                            : 'Sell amount',
+                                                    })}
                                                     hint={
                                                         <Localize
                                                             i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'

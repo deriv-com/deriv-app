@@ -1231,7 +1231,7 @@ export default class ClientStore extends BaseStore {
                 setTimeout(() => {
                     // timeout is needed to get the token (code) from the URL before we hide it from the URL
                     // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
-                    history.replaceState(null, null, window.location.search.replace(/&code=[^&]*/i, ''));
+                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
                 }, 0);
             });
         }

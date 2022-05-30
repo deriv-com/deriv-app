@@ -13,16 +13,8 @@ const OrderDetailsConfirmModal = ({
     hideConfirmOrderModal,
     should_show_confirm_modal,
 }) => {
-    const {
-        amount,
-        account_currency,
-        amount_display,
-        id,
-        local_currency,
-        other_user_details,
-        // price_display,  TODO: Uncomment when price is fixed
-        rate,
-    } = order_information;
+    const { account_currency, amount_display, id, local_currency, other_user_details, price_display } =
+        order_information;
 
     const isMounted = useIsMounted();
     const [error_message, setErrorMessage] = React.useState('');
@@ -85,7 +77,7 @@ const OrderDetailsConfirmModal = ({
                         <Localize
                             i18n_default_text="Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}."
                             values={{
-                                amount: Number(amount * rate).toFixed(2),
+                                amount: price_display,
                                 currency: local_currency,
                                 other_user_name: other_user_details.name,
                             }}
@@ -104,7 +96,7 @@ const OrderDetailsConfirmModal = ({
                             <Localize
                                 i18n_default_text='I have paid {{amount}} {{currency}}'
                                 values={{
-                                    amount: Number(amount * rate).toFixed(2),
+                                    amount: price_display,
                                     currency: local_currency,
                                 }}
                             />
@@ -112,7 +104,7 @@ const OrderDetailsConfirmModal = ({
                             <Localize
                                 i18n_default_text='I have received {{amount}} {{currency}}'
                                 values={{
-                                    amount: Number(amount * rate).toFixed(2),
+                                    amount: price_display,
                                     currency: local_currency,
                                 }}
                             />

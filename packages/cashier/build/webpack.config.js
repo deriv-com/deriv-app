@@ -15,7 +15,7 @@ module.exports = function (env, argv) {
             'on-ramp': 'Containers/on-ramp',
             'payment-agent': 'Containers/payment-agent',
             'payment-agent-transfer': 'Containers/payment-agent-transfer',
-            withdrawal: 'Pages/withdrawal/withdrawal',
+            withdrawal: 'Pages/withdrawal',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

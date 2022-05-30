@@ -36,17 +36,17 @@ describe('OnRampStore', () => {
     it('onramp tab should not be visible for virtual account', () => {
         onramp_store.root_store.client.is_virtual = true;
 
-        expect(onramp_store.is_onramp_tab_visible).toBeFalse();
+        expect(onramp_store.is_onramp_tab_visible).toBeFalsy();
     });
 
     it('onramp tab should not be visible if the client currency is not cryptocurrency', () => {
         onramp_store.root_store.client.currency = 'USD';
 
-        expect(onramp_store.is_onramp_tab_visible).toBeFalse();
+        expect(onramp_store.is_onramp_tab_visible).toBeFalsy();
     });
 
     it('onramp tab should not be visible if there is no onramp providers', () => {
-        expect(onramp_store.is_onramp_tab_visible).toBeFalse();
+        expect(onramp_store.is_onramp_tab_visible).toBeFalsy();
     });
 
     it('onramp tab should be visible if there is at least one onramp provider', () => {
@@ -280,7 +280,7 @@ describe('OnRampStore', () => {
         expect(onramp_store.deposit_address_ref).toBeNull();
         expect(onramp_store.is_deposit_address_loading).toBeTruthy();
         expect(onramp_store.selected_provider).toBeNull();
-        expect(onramp_store.should_show_widget).toBeFalse();
+        expect(onramp_store.should_show_widget).toBeFalsy();
         expect(onramp_store.widget_error).toBeNull();
         expect(onramp_store.widget_html).toBeNull();
     });
@@ -346,7 +346,7 @@ describe('OnRampStore', () => {
         onramp_store.setSelectedProvider();
 
         expect(onramp_store.selected_provider).toBeNull();
-        expect(onramp_store.is_onramp_modal_open).toBeFalse();
+        expect(onramp_store.is_onramp_modal_open).toBeFalsy();
     });
 
     it('should change value of the variable should_show_widget', () => {

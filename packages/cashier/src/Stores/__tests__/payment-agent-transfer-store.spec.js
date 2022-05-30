@@ -52,7 +52,7 @@ beforeEach(() => {
 
 describe('PaymentAgentTransferStore', () => {
     it('should return correct value', () => {
-        expect(payment_agent_transfer_store.is_payment_agent_transfer_visible).toBeFalse();
+        expect(payment_agent_transfer_store.is_payment_agent_transfer_visible).toBeFalsy();
     });
 
     it('should check and set is_payment_agent as true value', async () => {
@@ -70,7 +70,7 @@ describe('PaymentAgentTransferStore', () => {
         });
         await payment_agent_transfer_store.checkIsPaymentAgent();
 
-        expect(payment_agent_transfer_store.is_payment_agent).toBeFalse();
+        expect(payment_agent_transfer_store.is_payment_agent).toBeFalsy();
     });
 
     it('should set correct is_payment_agent value', () => {
@@ -152,7 +152,7 @@ describe('PaymentAgentTransferStore', () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
         payment_agent_transfer_store.resetPaymentAgentTransfer();
 
-        expect(payment_agent_transfer_store.is_transfer_successful).toBeFalse();
+        expect(payment_agent_transfer_store.is_transfer_successful).toBeFalsy();
         expect(spySetErrorMessage).toHaveBeenCalledWith('');
     });
 
@@ -249,7 +249,7 @@ describe('PaymentAgentTransferStore', () => {
             client_name: 'George',
         });
         expect(payment_agent_transfer_store.is_transfer_successful).toBeTruthy();
-        expect(payment_agent_transfer_store.is_try_transfer_successful).toBeFalse();
+        expect(payment_agent_transfer_store.is_try_transfer_successful).toBeFalsy();
         expect(payment_agent_transfer_store.confirm).toEqual({});
     });
 

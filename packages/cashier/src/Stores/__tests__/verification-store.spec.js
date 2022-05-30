@@ -27,7 +27,7 @@ describe('VerificationStore', () => {
     it('should change value of the variable is_button_clicked', () => {
         verification_store.setIsButtonClicked(false);
 
-        expect(verification_store.is_button_clicked).toBeFalse();
+        expect(verification_store.is_button_clicked).toBeFalsy();
 
         verification_store.setIsButtonClicked(true);
 
@@ -41,7 +41,7 @@ describe('VerificationStore', () => {
     it('should change value of the variable is_email_sent', () => {
         verification_store.setIsEmailSent(false);
 
-        expect(verification_store.is_email_sent).toBeFalse();
+        expect(verification_store.is_email_sent).toBeFalsy();
 
         verification_store.setIsEmailSent(true);
 
@@ -50,7 +50,7 @@ describe('VerificationStore', () => {
     it('should change value of the variable is_resend_clicked', () => {
         verification_store.setIsResendClicked(false);
 
-        expect(verification_store.is_resend_clicked).toBeFalse();
+        expect(verification_store.is_resend_clicked).toBeFalsy();
 
         verification_store.setIsResendClicked(true);
 
@@ -88,14 +88,14 @@ describe('VerificationStore', () => {
         verification_store.setIsButtonClicked(true);
         await verification_store.sendVerificationEmail();
 
-        expect(verification_store.is_email_sent).toBeFalse();
+        expect(verification_store.is_email_sent).toBeFalsy();
     });
     it('should not send an email if there is no client email', async () => {
         verification_store.root_store.client.email = '';
         verification_store.WS.verifyEmail.mockResolvedValue({});
         await verification_store.sendVerificationEmail();
 
-        expect(verification_store.is_email_sent).toBeFalse();
+        expect(verification_store.is_email_sent).toBeFalsy();
     });
     it('should send an email if there is no error in response_verify_email', async () => {
         verification_store.WS.verifyEmail.mockResolvedValue({});
@@ -150,9 +150,9 @@ describe('VerificationStore', () => {
         verification_store.clearVerification();
 
         expect(spyClearTimeoutVerification).toHaveBeenCalledTimes(1);
-        expect(verification_store.is_button_clicked).toBeFalse();
-        expect(verification_store.is_email_sent).toBeFalse();
-        expect(verification_store.is_resend_clicked).toBeFalse();
+        expect(verification_store.is_button_clicked).toBeFalsy();
+        expect(verification_store.is_email_sent).toBeFalsy();
+        expect(verification_store.is_resend_clicked).toBeFalsy();
         expect(spySetResendTimeout).toHaveBeenCalledWith(60);
         expect(spySetErrorMessage).toHaveBeenCalledWith('', null, null);
         expect(verification_store.root_store.client.setVerificationCode).toHaveBeenCalledWith(

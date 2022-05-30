@@ -114,7 +114,7 @@ describe('GeneralStore', () => {
     });
 
     it('should return false if the client currency is equal to USD when is_crypto property was called', () => {
-        expect(general_store.is_crypto).toBeFalse();
+        expect(general_store.is_crypto).toBeFalsy();
     });
 
     it('should return true if the client currency is equal to BTC when is_crypto property was called', () => {
@@ -123,13 +123,13 @@ describe('GeneralStore', () => {
     });
 
     it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
-        expect(general_store.is_p2p_enabled).toBeFalse();
+        expect(general_store.is_p2p_enabled).toBeFalsy();
     });
 
     it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
         general_store.setIsP2pVisible(true);
         general_store.root_store.client.is_eu = true;
-        expect(general_store.is_p2p_enabled).toBeFalse();
+        expect(general_store.is_p2p_enabled).toBeFalsy();
     });
 
     it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
@@ -141,21 +141,21 @@ describe('GeneralStore', () => {
         general_store.setP2pAdvertiserError('RestrictedCountry');
         general_store.showP2pInCashierDefault();
 
-        expect(general_store.show_p2p_in_cashier_default).toBeFalse();
+        expect(general_store.show_p2p_in_cashier_default).toBeFalsy();
     });
 
     it('should not show p2p in cashier default if the user has accounts with fiat currency, but has not account with USD currency', () => {
         general_store.root_store.client.account_list = [{ title: 'EUR' }];
         general_store.showP2pInCashierDefault();
 
-        expect(general_store.show_p2p_in_cashier_default).toBeFalse();
+        expect(general_store.show_p2p_in_cashier_default).toBeFalsy();
     });
 
     it('should not show p2p in cashier default if the user has accounts with fiat currency, but has not account with USD currency', () => {
         general_store.root_store.client.account_list = [{ title: 'EUR' }];
         general_store.showP2pInCashierDefault();
 
-        expect(general_store.show_p2p_in_cashier_default).toBeFalse();
+        expect(general_store.show_p2p_in_cashier_default).toBeFalsy();
     });
 
     it('should show p2p in cashier default if the user account is not virtual, there is no p2p_advertiser_error and he has USD account', () => {
@@ -225,7 +225,7 @@ describe('GeneralStore', () => {
         general_store.root_store.client.has_active_real_account = true;
         general_store.setHasSetCurrency();
 
-        expect(general_store.has_set_currency).toBeFalse();
+        expect(general_store.has_set_currency).toBeFalsy();
     });
 
     it('should change the value of the variable should_set_currency_modal_title_change equal to true', () => {
@@ -356,21 +356,21 @@ describe('GeneralStore', () => {
         general_store.setP2pAdvertiserError('RestrictedCountry');
         general_store.checkP2pStatus();
 
-        expect(general_store.is_p2p_visible).toBeFalse();
+        expect(general_store.is_p2p_visible).toBeFalsy();
     });
 
     it('should set is_p2p_visible equal to false, if there is a "RestrictedCurrency" p2p advertiser error', () => {
         general_store.setP2pAdvertiserError('RestrictedCurrency');
         general_store.checkP2pStatus();
 
-        expect(general_store.is_p2p_visible).toBeFalse();
+        expect(general_store.is_p2p_visible).toBeFalsy();
     });
 
     it('should set is_p2p_visible equal to false, if there is a virtual account', () => {
         general_store.root_store.client.is_virtual = true;
         general_store.checkP2pStatus();
 
-        expect(general_store.is_p2p_visible).toBeFalse();
+        expect(general_store.is_p2p_visible).toBeFalsy();
     });
 
     it('should check is the client a payment agent ? when onMountCommon was called', async () => {
@@ -462,17 +462,17 @@ describe('GeneralStore', () => {
         }));
         general_store.setIsP2pVisible(false);
 
-        expect(general_store.is_p2p_visible).toBeFalse();
+        expect(general_store.is_p2p_visible).toBeFalsy();
         expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
     });
 
     it('should return is_cashier_locked equal to false if account_status is undefined', () => {
         general_store.root_store.client.account_status = undefined;
-        expect(general_store.is_cashier_locked).toBeFalse();
+        expect(general_store.is_cashier_locked).toBeFalsy();
     });
 
     it('should return is_cashier_locked equal to false if there is no cashier_locked status', () => {
-        expect(general_store.is_cashier_locked).toBeFalse();
+        expect(general_store.is_cashier_locked).toBeFalsy();
     });
 
     it('should return is_cashier_locked equal to true if there is cashier_locked status', () => {
@@ -482,11 +482,11 @@ describe('GeneralStore', () => {
 
     it('should return is_system_maintenance equal to false if account_status is undefined', () => {
         general_store.root_store.client.account_status = undefined;
-        expect(general_store.is_system_maintenance).toBeFalse();
+        expect(general_store.is_system_maintenance).toBeFalsy();
     });
 
     it('should return is_system_maintenance equal to false if there is no system_maintenance status', () => {
-        expect(general_store.is_system_maintenance).toBeFalse();
+        expect(general_store.is_system_maintenance).toBeFalsy();
     });
 
     it('should return is_system_maintenance equal to true if there is system_maintenance status', () => {
@@ -514,7 +514,7 @@ describe('GeneralStore', () => {
         expect(payment_agent.verification.clearVerification).toHaveBeenCalledTimes(1);
         expect(iframe.clearIframe).toHaveBeenCalledTimes(1);
         expect(general_store.payment_agent).toEqual(payment_agent);
-        expect(general_store.is_populating_values).toBeFalse();
+        expect(general_store.is_populating_values).toBeFalsy();
         expect(spyOnRemount).toHaveBeenCalledTimes(1);
     });
 });

@@ -221,7 +221,7 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.is_withdraw).toBeTruthy();
 
         payment_agent_store.setIsWithdraw(false);
-        expect(payment_agent_store.is_withdraw).toBeFalse();
+        expect(payment_agent_store.is_withdraw).toBeFalsy();
     });
 
     it('should set is_try_withdraw_successful', () => {
@@ -234,7 +234,7 @@ describe('PaymentAgentStore', () => {
 
     it('should set is_withdraw_successful', () => {
         payment_agent_store.setIsWithdrawSuccessful(false);
-        expect(payment_agent_store.is_withdraw_successful).toBeFalse();
+        expect(payment_agent_store.is_withdraw_successful).toBeFalsy();
     });
 
     it('should set confirm value', () => {
@@ -294,7 +294,7 @@ describe('PaymentAgentStore', () => {
         await payment_agent_store.onMountPaymentAgentWithdraw();
 
         expect(payment_agent_store.is_withdraw).toBeTruthy();
-        expect(payment_agent_store.is_withdraw_successful).toBeFalse();
+        expect(payment_agent_store.is_withdraw_successful).toBeFalsy();
         expect(payment_agent_store.receipt).toEqual({});
         expect(payment_agent_store.agents).toEqual(
             expect.arrayContaining([
@@ -339,7 +339,7 @@ describe('PaymentAgentStore', () => {
         payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ error: error_message });
         await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
         expect(spySetErrorMessage).toHaveBeenLastCalledWith(error_message, payment_agent_store.resetPaymentAgent);
-        expect(payment_agent_store.is_try_withdraw_successful).toBeFalse();
+        expect(payment_agent_store.is_try_withdraw_successful).toBeFalsy();
     });
 
     it('should reset payment agent withdrawal form', () => {
@@ -348,7 +348,7 @@ describe('PaymentAgentStore', () => {
 
         payment_agent_store.resetPaymentAgent();
         expect(spySetErrorMessage).toHaveBeenLastCalledWith('');
-        expect(payment_agent_store.is_withdraw).toBeFalse();
+        expect(payment_agent_store.is_withdraw).toBeFalsy();
         expect(spyClearVerification).toHaveBeenCalled();
         expect(payment_agent_store.active_tab_index).toBe(0);
     });
@@ -390,7 +390,7 @@ describe('PaymentAgentStore', () => {
             payment_agent_url: 'http://www.pa.com',
         });
         expect(payment_agent_store.is_withdraw_successful).toBeTruthy();
-        expect(payment_agent_store.is_try_withdraw_successful).toBeFalse();
+        expect(payment_agent_store.is_try_withdraw_successful).toBeFalsy();
         expect(payment_agent_store.confirm).toEqual({});
     });
 
@@ -401,6 +401,6 @@ describe('PaymentAgentStore', () => {
         payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ error: error_message });
         await payment_agent_store.requestPaymentAgentWithdraw(mocked_withdrawal_request);
         expect(spySetErrorMessage).toHaveBeenLastCalledWith(error_message, payment_agent_store.resetPaymentAgent);
-        expect(payment_agent_store.is_withdraw_successful).toBeFalse();
+        expect(payment_agent_store.is_withdraw_successful).toBeFalsy();
     });
 });

@@ -16,7 +16,7 @@ describe('ErrorStore', () => {
     it('should change value of the variable is_ask_uk_funds_protection', () => {
         error_store.setIsAskUkFundsProtection(false);
 
-        expect(error_store.is_ask_uk_funds_protection).toBeFalse();
+        expect(error_store.is_ask_uk_funds_protection).toBeFalsy();
 
         error_store.setIsAskUkFundsProtection(true);
 
@@ -26,7 +26,7 @@ describe('ErrorStore', () => {
     it('should change value of the variable is_self_exclusion_max_turnover_set', () => {
         error_store.setIsSelfExclusionMaxTurnoverSet(false);
 
-        expect(error_store.is_self_exclusion_max_turnover_set).toBeFalse();
+        expect(error_store.is_self_exclusion_max_turnover_set).toBeFalsy();
 
         error_store.setIsSelfExclusionMaxTurnoverSet(true);
 
@@ -36,7 +36,7 @@ describe('ErrorStore', () => {
     it('should change value of the variable is_ask_authentication', () => {
         error_store.setIsAskAuthentication(false);
 
-        expect(error_store.is_ask_authentication).toBeFalse();
+        expect(error_store.is_ask_authentication).toBeFalsy();
 
         error_store.setIsAskAuthentication(true);
 
@@ -46,7 +46,7 @@ describe('ErrorStore', () => {
     it('should change value of the variable is_ask_financial_risk_approval', () => {
         error_store.setIsAskFinancialRiskApproval(false);
 
-        expect(error_store.is_ask_financial_risk_approval).toBeFalse();
+        expect(error_store.is_ask_financial_risk_approval).toBeFalsy();
 
         error_store.setIsAskFinancialRiskApproval(true);
 
@@ -87,10 +87,10 @@ describe('ErrorStore', () => {
         error_store.handleCashierError({ code: 'DEFAULT_ERROR_CODE' });
 
         expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'DEFAULT_ERROR_CODE' });
-        expect(error_store.is_ask_uk_funds_protection).toBeFalse();
-        expect(error_store.is_self_exclusion_max_turnover_set).toBeFalse();
-        expect(error_store.is_ask_authentication).toBeFalse();
-        expect(error_store.is_ask_financial_risk_approval).toBeFalse();
+        expect(error_store.is_ask_uk_funds_protection).toBeFalsy();
+        expect(error_store.is_self_exclusion_max_turnover_set).toBeFalsy();
+        expect(error_store.is_ask_authentication).toBeFalsy();
+        expect(error_store.is_ask_financial_risk_approval).toBeFalsy();
     });
 
     it('should set proper values when the setErrorMessage function is called', () => {

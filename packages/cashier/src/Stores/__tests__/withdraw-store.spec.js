@@ -239,7 +239,7 @@ describe('WithdrawStore', () => {
 
     it('should return is_withdrawal_locked equal to false if there is no account status', () => {
         withdraw_store.root_store.client.account_status = {};
-        expect(withdraw_store.is_withdrawal_locked).toBeFalse();
+        expect(withdraw_store.is_withdrawal_locked).toBeFalsy();
     });
 
     it('should return is_withdrawal_locked equal to true if client needs POI verification', () => {

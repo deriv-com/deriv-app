@@ -51,7 +51,7 @@ describe('ErrorDialogStore', () => {
         error_dialog_store.reset();
 
         expect(error_dialog_store.confirm_button_text).toBe('');
-        expect(error_dialog_store.should_not_show_title).toBeFalse();
-        expect(error_dialog_store.has_no_close_icon).toBeFalse();
+        expect(error_dialog_store.should_not_show_title).toBeFalsy();
+        expect(error_dialog_store.has_no_close_icon).toBeFalsy();
     });
 });

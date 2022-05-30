@@ -168,26 +168,26 @@ describe('AccountTransferStore', () => {
     it('account transfer tab should not be visible for "iom" clients', () => {
         account_transfer_store.root_store.client.residence = 'im';
 
-        expect(account_transfer_store.is_account_transfer_visible).toBeFalse();
+        expect(account_transfer_store.is_account_transfer_visible).toBeFalsy();
     });
 
     it('account transfer tab should not be visible if landing_company_shortcode is equal to "malta" and the client has not maltainvest account ', () => {
         account_transfer_store.root_store.client.landing_company_shortcode = 'malta';
         account_transfer_store.root_store.client.has_maltainvest_account = false;
 
-        expect(account_transfer_store.is_account_transfer_visible).toBeFalse();
+        expect(account_transfer_store.is_account_transfer_visible).toBeFalsy();
     });
 
     it('should not lock the transfer if there is no any account statuses', () => {
         account_transfer_store.root_store.client.account_status.status = undefined;
 
-        expect(account_transfer_store.is_transfer_locked).toBeFalse;
+        expect(account_transfer_store.is_transfer_locked).toBeFalsy;
     });
 
     it('should not lock the transfer if it is not a financial account', () => {
         account_transfer_store.root_store.client.is_financial_account = false;
 
-        expect(account_transfer_store.is_transfer_locked).toBeFalse;
+        expect(account_transfer_store.is_transfer_locked).toBeFalsy;
     });
 
     it('should not lock the transfer if is_financial_information_incomplete and is_trading_experience_incomplete is equal to false', () => {
@@ -195,7 +195,7 @@ describe('AccountTransferStore', () => {
         account_transfer_store.root_store.client.is_financial_information_incomplete = false;
         account_transfer_store.root_store.client.is_trading_experience_incomplete = false;
 
-        expect(account_transfer_store.is_transfer_locked).toBeFalse;
+        expect(account_transfer_store.is_transfer_locked).toBeFalsy;
     });
 
     it('should lock the transfer if the financial assessment is needed and error.is_ask_financial_risk_approval is equal to true', () => {
@@ -303,12 +303,12 @@ describe('AccountTransferStore', () => {
 
     it('the client cannot make a transfer if he does not have any account with balance greater then 0 ', () => {
         const spySetHasNoAccountsBalance = jest.spyOn(account_transfer_store, 'setHasNoAccountsBalance');
-        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '0' }])).toBeFalse();
+        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '0' }])).toBeFalsy();
         expect(spySetHasNoAccountsBalance).toHaveBeenCalledWith(true);
     });
 
     it('the client cannot make a transfer if he does not have at least two real-money accounts', () => {
-        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '10000.00' }])).toBeFalse();
+        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '10000.00' }])).toBeFalsy();
     });
 
     it('the client must be able to make a transfer', () => {

@@ -47,14 +47,14 @@ describe('AccountPromptDialogStore', () => {
     it('should reset is_confirmed', () => {
         account_prompt_dialog_store.resetIsConfirmed();
 
-        expect(account_prompt_dialog_store.is_confirmed).toBeFalse();
+        expect(account_prompt_dialog_store.is_confirmed).toBeFalsy();
     });
 
     it('should hide the dialog then switch to fiat account if the client is on crypto account upon confirm', async () => {
         account_prompt_dialog_store.shouldNavigateAfterPrompt(routes.cashier_deposit, 'deposit');
         await account_prompt_dialog_store.onConfirm();
 
-        expect(account_prompt_dialog_store.should_show).toBeFalse();
+        expect(account_prompt_dialog_store.should_show).toBeFalsy();
         expect(account_prompt_dialog_store.is_confirmed).toBeTruthy();
         expect(account_prompt_dialog_store.root_store.client.switchAccount).toHaveBeenCalledWith('CR90000001');
         expect(account_prompt_dialog_store.root_store.modules.cashier.general_store.setIsDeposit).toHaveBeenCalledWith(
@@ -71,7 +71,7 @@ describe('AccountPromptDialogStore', () => {
         account_prompt_dialog_store.shouldNavigateAfterPrompt(routes.cashier_deposit, 'deposit');
         await account_prompt_dialog_store.onConfirm();
 
-        expect(account_prompt_dialog_store.should_show).toBeFalse();
+        expect(account_prompt_dialog_store.should_show).toBeFalsy();
         expect(account_prompt_dialog_store.is_confirmed).toBeTruthy();
         expect(account_prompt_dialog_store.root_store.client.switchAccount).not.toHaveBeenCalled();
     });
@@ -79,6 +79,6 @@ describe('AccountPromptDialogStore', () => {
     it('should hide the dialog on cancel', () => {
         account_prompt_dialog_store.onCancel();
 
-        expect(account_prompt_dialog_store.should_show).toBeFalse();
+        expect(account_prompt_dialog_store.should_show).toBeFalsy();
     });
 });

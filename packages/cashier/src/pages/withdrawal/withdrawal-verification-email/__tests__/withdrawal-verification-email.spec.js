@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import SendEmail from '../send-email.jsx';
+import WithdrawalVerificationEmail from '../withdrawal-verification-email.jsx';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -8,24 +8,30 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-describe('<SendEmail />', () => {
+describe('<WithdrawalVerificationEmail />', () => {
     const recentTransactionOnMount = jest.fn();
     const sendVerificationEmail = jest.fn();
 
     it('component should be rendered', () => {
-        const { container } = render(<SendEmail is_email_sent recentTransactionOnMount={recentTransactionOnMount} />);
+        const { container } = render(
+            <WithdrawalVerificationEmail is_email_sent recentTransactionOnMount={recentTransactionOnMount} />
+        );
 
         expect(container.querySelector('.cashier__wrapper')).toBeInTheDocument();
     });
 
-    it("<SendEmail /> component should be rendered when 'is_email_sent' prop is true", () => {
-        const { container } = render(<SendEmail is_email_sent recentTransactionOnMount={recentTransactionOnMount} />);
+    it("<WithdrawalVerificationEmail /> component should be rendered when 'is_email_sent' prop is true", () => {
+        const { container } = render(
+            <WithdrawalVerificationEmail is_email_sent recentTransactionOnMount={recentTransactionOnMount} />
+        );
 
         expect(container.querySelector('.email-sent')).toBeInTheDocument();
     });
 
     it("React.Fragment should be rendered when 'is_email_sent' prop is false", () => {
-        render(<SendEmail is_email_sent={false} recentTransactionOnMount={recentTransactionOnMount} />);
+        render(
+            <WithdrawalVerificationEmail is_email_sent={false} recentTransactionOnMount={recentTransactionOnMount} />
+        );
 
         expect(screen.getByText('Please help us verify your withdrawal request.')).toBeInTheDocument();
         expect(
@@ -37,14 +43,16 @@ describe('<SendEmail />', () => {
     });
 
     it("'Send email' button should be rendered when 'is_email_sent' prop is false", () => {
-        render(<SendEmail is_email_sent={false} recentTransactionOnMount={recentTransactionOnMount} />);
+        render(
+            <WithdrawalVerificationEmail is_email_sent={false} recentTransactionOnMount={recentTransactionOnMount} />
+        );
 
         expect(screen.getByRole('button', { name: 'Send email' })).toBeInTheDocument();
     });
 
     it("sendVerificationEmail func should be triggered when click on 'Send email' button", () => {
         render(
-            <SendEmail
+            <WithdrawalVerificationEmail
                 is_email_sent={false}
                 recentTransactionOnMount={recentTransactionOnMount}
                 sendVerificationEmail={sendVerificationEmail}

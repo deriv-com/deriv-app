@@ -7,7 +7,7 @@ import { connect } from 'Stores/connect';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import Withdraw from './withdraw';
-import SendEmail from './send-email';
+import WithdrawalVerificationEmail from './withdrawal-verification-email';
 import Error from 'Components/Error/error.jsx';
 import NoBalance from 'Components/Error/no-balance.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
@@ -148,7 +148,7 @@ const Withdrawal = ({
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
-    return <SendEmail />;
+    return <WithdrawalVerificationEmail />;
 };
 
 Withdrawal.propTypes = {

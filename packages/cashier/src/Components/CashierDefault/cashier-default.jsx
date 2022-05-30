@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
 import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-details.jsx';
 import SideNote from 'Components/side-note.jsx';
-import notes from 'Components/CashierDefault/cashier-default-side-note.jsx';
+import { notes } from 'Components/CashierDefault/cashier-default-side-note.jsx';
 
 const CashierDefault = ({
     available_crypto_currencies,

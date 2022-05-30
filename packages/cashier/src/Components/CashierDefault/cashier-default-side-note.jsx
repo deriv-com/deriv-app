@@ -4,7 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, routes } from '@deriv/shared';
 import 'Sass/cashier-default.scss';
 
-const notes = (is_crypto, can_change_fiat_currency, currency, openRealAccountSignup, setDepositTarget) => {
+export const notes = (is_crypto, can_change_fiat_currency, currency, openRealAccountSignup, setDepositTarget) => {
     const notes_array = [];
 
     const currency_code = getCurrencyDisplayCode(currency);

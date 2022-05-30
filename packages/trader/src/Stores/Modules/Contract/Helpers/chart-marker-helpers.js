@@ -49,22 +49,9 @@ export const createMarkerStartTime = contract_info => {
 export const createMarkerSpotEntry = contract_info => {
     if (!contract_info.entry_tick_time) return false;
 
-    let marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
-    let component_props = {};
-
+    const marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
+    const component_props = {};
     const entry_tick = contract_info.entry_tick_display_value;
-
-    const spot_has_label = isDigitContract(contract_info.contract_type);
-    if (spot_has_label) {
-        marker_type = MARKER_TYPES_CONFIG.SPOT_MIDDLE.type;
-
-        component_props = {
-            spot_value: `${entry_tick}`,
-            spot_epoch: `${contract_info.entry_tick_time}`,
-            spot_count: 1,
-        };
-    }
-
     return createMarkerConfig(marker_type, contract_info.entry_tick_time, entry_tick, component_props);
 };
 

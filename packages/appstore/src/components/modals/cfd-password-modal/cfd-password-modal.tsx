@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formik } from 'formik';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
@@ -8,7 +9,16 @@ import { localize, Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import './cfd-password-modal.scss';
 
-const CFDPasswordForm = ({ ...props }) => (
+type TCFDPasswordFormProps = {
+    validatePassword: any;
+    submitMt5Password: any;
+    is_real_financial_stp: boolean;
+    closeModal: any;
+    form_error?: any;
+    account_title: any;
+};
+
+const CFDPasswordForm = ({ ...props }: TCFDPasswordFormProps) => (
     <Formik
         initialValues={{
             password: '',

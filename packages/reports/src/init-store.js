@@ -1,7 +1,6 @@
 import { configure } from 'mobx';
 import RootStore from 'Stores';
-import { setWebsocket } from '@deriv/shared';
-import ServerTime from '_common/base/server_time';
+import { setWebsocket, ServerTime } from '@deriv/shared';
 
 configure({ enforceActions: 'observed' });
 

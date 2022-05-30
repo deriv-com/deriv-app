@@ -10,6 +10,12 @@ module.exports = function (env) {
         entry: {
             reports: path.resolve(__dirname, '../src', 'index.jsx'),
             'positions-drawer-card': 'Components/Elements/PositionsDrawerCard',
+            'contract-replay-store': 'Stores/Modules/Contract/contract-replay-store.js',
+            'contract-trade-store': 'Stores/Modules/Contract/contract-trade-store.js',
+            'profit-table-store': 'Stores/Modules/Profit/profit-store.js',
+            'portfolio-store': 'Stores/Modules/Portfolio/portfolio-store.js',
+            'statement-store': 'Stores/Modules/Statement/statement-store.js',
+            'trade-store': 'Stores/Modules/Trading/trade-store.js',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

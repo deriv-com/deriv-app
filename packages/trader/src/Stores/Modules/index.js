@@ -1,9 +1,11 @@
-import ContractReplayStore from './Contract/contract-replay-store';
-import ContractTradeStore from './Contract/contract-trade-store';
-import PortfolioStore from './Portfolio/portfolio-store';
-import ProfitTableStore from './Profit/profit-store';
-import StatementStore from './Statement/statement-store';
-import TradeStore from './Trading/trade-store';
+import {
+    ContractReplayStore,
+    ContractTradeStore,
+    PortfolioStore,
+    ProfitTableStore,
+    StatementStore,
+    TradeStore,
+} from '@deriv/reports';
 
 export default class ModulesStore {
     constructor(root_store, core_store) {

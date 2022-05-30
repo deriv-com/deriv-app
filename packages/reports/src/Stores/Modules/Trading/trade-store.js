@@ -10,12 +10,11 @@ import {
     isEmptyObject,
     isMobile,
     showDigitalOptionsUnavailableError,
+    ServerTime,
     WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { isDigitContractType, isDigitTradeType } from '../../../Helpers/digits';
-
-import ServerTime from '_common/base/server_time';
 
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';

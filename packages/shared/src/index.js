@@ -18,6 +18,7 @@ export * from './utils/platform';
 export * from './utils/route';
 export * from './utils/routes';
 export * from './utils/screen';
+export * from './utils/server-time';
 export * from './utils/shortcode';
 export * from './utils/storage';
 export * from './utils/string';

@@ -5,9 +5,9 @@ import {
     minDate,
     toMoment,
     shouldShowCancellation,
+    ServerTime,
     WS,
 } from '@deriv/shared';
-import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
 
 import { getUnitMap } from '../../Portfolio/Helpers/details';

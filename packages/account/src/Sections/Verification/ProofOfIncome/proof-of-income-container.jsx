@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { income_status_codes } from './proof-of-income-utils';
 import { Loading, useStateCallback } from '@deriv/components';
 import { WS } from '@deriv/shared';
-import Unverified from 'Components/poinc-unverified';
-import NeedsReview from 'Components/poinc-needs-review';
-// import Submitted from 'Components/poinc-submitted';
-import Verified from 'Components/poinc-verified';
-import NotRequired from 'Components/poinc-not-required';
-import { income_status_codes } from './proof-of-income-utils';
+import PoincUnverified from 'Components/poinc-unverified';
+import PoincReceived from 'Components/poinc-received';
+import PoincVerified from 'Components/poinc-verified';
+import PoincNotRequired from 'Components/poinc-not-required';
 import ProofOfIncomeForm from './proof-of-income-form.jsx';
 import { populateVerificationStatus } from '../Helpers/verification';
 
@@ -60,17 +59,17 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     // if (has_submitted_poinc) return <Submitted />;
-    if (!allow_document_upload || (!is_age_verified && proof_of_income_status === 'none')) return <NotRequired />;
+    if (!allow_document_upload || (!is_age_verified && proof_of_income_status === 'none')) return <PoincNotRequired />;
 
     switch (proof_of_income_status) {
         case income_status_codes.none:
             return <ProofOfIncomeForm onSubmit={() => onSubmit({ needs_poinc })} />;
         case income_status_codes.pending:
-            return <NeedsReview />;
+            return <PoincReceived />;
         case income_status_codes.verified:
-            return <Verified />;
+            return <PoincVerified />;
         case income_status_codes.rejected:
-            return <Unverified />;
+            return <PoincUnverified />;
         default:
             return null;
     }

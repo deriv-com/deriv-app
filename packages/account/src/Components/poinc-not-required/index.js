@@ -1,3 +1,3 @@
-import { PoincNotRequired } from './not-required.jsx';
+import { NotRequired as PoincNotRequired } from './not-required.jsx';
 
 export default PoincNotRequired;

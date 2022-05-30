@@ -24,7 +24,7 @@ export const Verified = ({ is_description_enabled = true }) => {
             <IconMessageContent
                 message={message}
                 icon={
-                    <Icon icon='IcPoaVerified' size={128} className={is_appstore && 'account-management-dashboard'} />
+                    <Icon icon='IcPoincVerified' size={128} className={is_appstore && 'account-management-dashboard'} />
                 }
             >
                 {!is_description_enabled && <ContinueTradingButton />}
@@ -36,5 +36,3 @@ export const Verified = ({ is_description_enabled = true }) => {
 Verified.PropTypes = {
     is_description_disabled: PropTypes.bool,
 };
-
-export default Verified;

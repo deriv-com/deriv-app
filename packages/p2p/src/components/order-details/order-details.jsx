@@ -36,7 +36,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         local_currency,
         other_user_details,
         payment_info,
-        price,
+        // price, TODO: Uncomment when price is fixed
         purchase_time,
         rate,
         should_highlight_alert,
@@ -111,7 +111,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
                                 <div className='order-details-card__header-amount'>
-                                    {getFormattedText(price, local_currency)}
+                                    {getFormattedText(amount_display * rate, local_currency)}
                                 </div>
                             )}
                             <div className='order-details-card__header-id'>
@@ -145,7 +145,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.left_send_or_receive}
-                                    value={getFormattedText(price, local_currency)}
+                                    value={getFormattedText(amount_display * rate, local_currency)}
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}

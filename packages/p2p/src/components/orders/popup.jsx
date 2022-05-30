@@ -57,7 +57,7 @@ const FormWithConfirmation = observer(
                                                     }
                                                     defaultChecked={values.need_confirmation}
                                                     label={localize('I have received {{amount}} {{currency}}.', {
-                                                        amount: order_information.amount * order_information.rate,
+                                                        amount: order_information.price_display,
                                                         currency: order_information.local_currency,
                                                     })}
                                                     classNameLabel='orders__popup-field_text'
@@ -147,7 +147,7 @@ const FormWithoutConfirmation = observer(
                                     onChange={() => setShouldDisableConfirm(!should_disable_confirm)}
                                     defaultChecked={!should_disable_confirm}
                                     label={localize('I have paid {{amount}} {{currency}}.', {
-                                        amount: order_information.amount * order_information.rate,
+                                        amount: order_information.price_display,
                                         currency: order_information.local_currency,
                                     })}
                                 />

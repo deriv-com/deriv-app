@@ -35,7 +35,6 @@ const OrderRow = ({ style, row: order }) => {
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
     const {
-        amount,
         account_currency,
         amount_display,
         id,
@@ -46,8 +45,7 @@ const OrderRow = ({ style, row: order }) => {
         order_expiry_milliseconds,
         order_purchase_datetime,
         other_user_details,
-        // price_display,  TODO: Uncomment when price is fixed
-        rate,
+        price_display,
         should_highlight_alert,
         should_highlight_danger,
         should_highlight_disabled,
@@ -85,7 +83,7 @@ const OrderRow = ({ style, row: order }) => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const offer_amount = `${amount_display} ${account_currency}`;
-    const transaction_amount = `${Number(amount * rate).toFixed(2)} ${local_currency}`;
+    const transaction_amount = `${price_display} ${local_currency}`;
     const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
     const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
 

@@ -12,7 +12,7 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-describe('TransferLocked', () => {
+describe('AccountTransferLocked', () => {
     it('Should show the default lock content if the account is not financial', () => {
         render(
             <AccountTransferLocked

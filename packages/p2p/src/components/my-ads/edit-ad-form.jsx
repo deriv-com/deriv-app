@@ -6,9 +6,10 @@ import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared'
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
+import PageReturn from 'Components/page-return/page-return.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import { generateErrorDialogTitle } from 'Utils/adverts.js';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
@@ -77,6 +78,7 @@ const EditAdForm = () => {
                 my_ads_store.payment_method_ids.push(pm[0]);
             });
         }
+        return () => my_ads_store.setApiErrorCode(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -338,7 +340,7 @@ const EditAdForm = () => {
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}
                 small
                 has_close_icon={false}
-                title={localize('Something’s not right')}
+                title={generateErrorDialogTitle(my_ads_store.error_code)}
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>

@@ -273,8 +273,9 @@ export default class MyAdsStore extends BaseStore {
 
         requestWS(update_advert).then(response => {
             // If there's an error, let the user submit the form again.
-            if (response.error) {
+            if (response && response.error) {
                 setSubmitting(false);
+                this.setApiErrorCode(response.error.code);
                 this.setEditAdFormError(response.error.message);
                 this.setIsEditAdErrorModalVisible(true);
             } else {

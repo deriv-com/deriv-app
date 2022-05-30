@@ -6,9 +6,10 @@ import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import 'Sass/side-note.scss';
 
-const SideNoteTitle = ({ title }) => (
+const SideNoteTitle = ({ side_notes, title }) => (
     <Text className='side-note__title' weight='bold' as='p'>
-        {title}
+        {title ||
+            (side_notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />)}
     </Text>
 );
 
@@ -26,10 +27,6 @@ const SideNoteBullet = ({ children, component }) => (
 );
 
 const SideNote = ({ side_notes, title, has_bullets = true }) => {
-    const side_note_title =
-        title ||
-        (side_notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />);
-
     const checkNote = (note, i) => {
         let Component;
         if (typeof note === 'string') {
@@ -59,11 +56,9 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
 
     return (
         <div className={classNames('side-note', { 'side-note--mobile': isMobile })}>
-            {side_note_title && (
-                <DesktopWrapper>
-                    <SideNoteTitle title={side_note_title} />
-                </DesktopWrapper>
-            )}
+            <DesktopWrapper>
+                <SideNoteTitle side_notes={side_notes} title={title} />
+            </DesktopWrapper>
 
             {side_notes &&
                 side_notes.map((note, i) => (

@@ -56,16 +56,19 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
 
     return (
         <div className={classNames('side-note', { 'side-note--mobile': isMobile })}>
-            <DesktopWrapper>
-                <SideNoteTitle side_notes={side_notes} title={title} />
-            </DesktopWrapper>
+            {side_notes?.length && (
+                <>
+                    <DesktopWrapper>
+                        <SideNoteTitle side_notes={side_notes} title={title} />
+                    </DesktopWrapper>
 
-            {side_notes &&
-                side_notes.map((note, i) => (
-                    <div key={i} className={classNames('side-note__item')}>
-                        {checkNote(note, i)}
-                    </div>
-                ))}
+                    {side_notes.map((note, i) => (
+                        <div key={i} className={classNames('side-note__item')}>
+                            {checkNote(note, i)}
+                        </div>
+                    ))}
+                </>
+            )}
         </div>
     );
 };

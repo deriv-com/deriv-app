@@ -61,7 +61,7 @@ const Content = ({ is_routed, items, selected, side_note_class_name, side_note_c
      * @returns {Component}
      */
     const SideNoteComponent = () => {
-        const Component = side_note_component ? side_note_component : 'SideNotes';
+        const Component = side_note_component || SideNotes;
         return (
             <Component
                 selected_item={selected_item}

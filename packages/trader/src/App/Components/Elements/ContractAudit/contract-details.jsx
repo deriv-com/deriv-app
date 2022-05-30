@@ -108,15 +108,13 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                     label={localize('Start time')}
                     value={toGMTFormat(epochToMoment(purchase_time)) || ' - '}
                 />
-                {!isDigitType(contract_type) && (
-                    <ContractAuditItem
-                        id='dt_entry_spot_label'
-                        icon={<Icon icon='IcContractEntrySpot' size={24} />}
-                        label={localize('Entry spot')}
-                        value={addCommaToNumber(entry_spot_display_value) || ' - '}
-                        value2={toGMTFormat(epochToMoment(entry_tick_time)) || ' - '}
-                    />
-                )}
+                <ContractAuditItem
+                    id='dt_entry_spot_label'
+                    icon={<Icon icon='IcContractEntrySpot' size={24} />}
+                    label={localize('Entry spot')}
+                    value={addCommaToNumber(entry_spot_display_value) || ' - '}
+                    value2={toGMTFormat(epochToMoment(entry_tick_time)) || ' - '}
+                />
                 {!isNaN(exit_spot) && (
                     <ContractAuditItem
                         id='dt_exit_spot_label'

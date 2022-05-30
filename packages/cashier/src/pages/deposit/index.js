@@ -1,3 +1,3 @@
 import Deposit from './deposit.jsx';
 
-export { Deposit };
+export default Deposit;

@@ -10,7 +10,7 @@ import {
     P2PCashier,
     OnRamp,
 } from '../containers';
-import { Deposit } from 'Pages/deposit';
+import { Deposit } from '../pages';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Components/Page404.jsx'));

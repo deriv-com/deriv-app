@@ -35,7 +35,8 @@
     },
     "homepage": "https://github.com/binary-com/deriv-app",
     "devDependencies": {
-        "babel-eslint": "^10.1.0",
+        "@babel/eslint-parser": "^7.17.0",
+        "@babel/preset-react": "^7.16.7",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
         "circular-dependency-plugin": "^5.2.2",

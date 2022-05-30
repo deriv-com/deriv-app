@@ -29,7 +29,6 @@ const Routes = ({
     passthrough,
     setAppRouterHistory,
     setInitialRouteHistoryItem,
-    setReplacementUrl,
 }) => {
     const initial_route = React.useRef(null);
     const unlisten_to_change = React.useRef(null);
@@ -73,9 +72,7 @@ const Routes = ({
     // with the default language (EN), so we
     // will remove it.
     if ((!has_lang && lang !== 'EN') || (has_lang && lang === 'EN')) {
-        const replacement_url = urlForLanguage(lang);
-        window.history.replaceState({}, document.title, replacement_url);
-        setReplacementUrl(replacement_url);
+        window.history.replaceState({}, document.title, urlForLanguage(lang));
     }
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
@@ -91,7 +88,6 @@ Routes.propTypes = {
     is_virtual: PropTypes.bool,
     setAppRouterHistory: PropTypes.func,
     setInitialRouteHistoryItem: PropTypes.func,
-    setReplacementUrl: PropTypes.func,
 };
 
 // need to wrap withRouter around connect
@@ -105,6 +101,5 @@ export default withRouter(
         setAppRouterHistory: common.setAppRouterHistory,
         addRouteHistoryItem: common.addRouteHistoryItem,
         setInitialRouteHistoryItem: common.setInitialRouteHistoryItem,
-        setReplacementUrl: client.setReplacementUrl,
     }))(Routes)
 );

@@ -34,7 +34,7 @@ describe('AccountPromptDialogStore', () => {
         account_prompt_dialog_store.shouldNavigateAfterPrompt(routes.cashier_deposit, 'deposit');
 
         expect(account_prompt_dialog_store.last_location).toBe(routes.cashier_deposit);
-        expect(account_prompt_dialog_store.should_show).toBeTrue();
+        expect(account_prompt_dialog_store.should_show).toBeTruthy();
         expect(account_prompt_dialog_store.current_location).toBe('deposit');
     });
 
@@ -55,7 +55,7 @@ describe('AccountPromptDialogStore', () => {
         await account_prompt_dialog_store.onConfirm();
 
         expect(account_prompt_dialog_store.should_show).toBeFalse();
-        expect(account_prompt_dialog_store.is_confirmed).toBeTrue();
+        expect(account_prompt_dialog_store.is_confirmed).toBeTruthy();
         expect(account_prompt_dialog_store.root_store.client.switchAccount).toHaveBeenCalledWith('CR90000001');
         expect(account_prompt_dialog_store.root_store.modules.cashier.general_store.setIsDeposit).toHaveBeenCalledWith(
             true
@@ -72,7 +72,7 @@ describe('AccountPromptDialogStore', () => {
         await account_prompt_dialog_store.onConfirm();
 
         expect(account_prompt_dialog_store.should_show).toBeFalse();
-        expect(account_prompt_dialog_store.is_confirmed).toBeTrue();
+        expect(account_prompt_dialog_store.is_confirmed).toBeTruthy();
         expect(account_prompt_dialog_store.root_store.client.switchAccount).not.toHaveBeenCalled();
     });
 

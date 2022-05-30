@@ -162,7 +162,7 @@ jest.mock('@deriv/shared', () => ({
 
 describe('AccountTransferStore', () => {
     it('account transfer tab should be visible', () => {
-        expect(account_transfer_store.is_account_transfer_visible).toBeTrue();
+        expect(account_transfer_store.is_account_transfer_visible).toBeTruthy();
     });
 
     it('account transfer tab should not be visible for "iom" clients', () => {
@@ -201,7 +201,7 @@ describe('AccountTransferStore', () => {
     it('should lock the transfer if the financial assessment is needed and error.is_ask_financial_risk_approval is equal to true', () => {
         account_transfer_store.error.is_ask_financial_risk_approval = true;
 
-        expect(account_transfer_store.is_transfer_locked).toBeTrue;
+        expect(account_transfer_store.is_transfer_locked).toBeTruthy;
     });
 
     it('should set the balance by loginid', () => {
@@ -312,19 +312,19 @@ describe('AccountTransferStore', () => {
     });
 
     it('the client must be able to make a transfer', () => {
-        expect(account_transfer_store.canDoAccountTransfer([CR_USD_account, CR_eUSDT_account])).toBeTrue();
+        expect(account_transfer_store.canDoAccountTransfer([CR_USD_account, CR_eUSDT_account])).toBeTruthy();
     });
 
     it('should change value of the variable has_no_accounts_balance', () => {
         account_transfer_store.setHasNoAccountsBalance(true);
 
-        expect(account_transfer_store.has_no_accounts_balance).toBeTrue();
+        expect(account_transfer_store.has_no_accounts_balance).toBeTruthy();
     });
 
     it('should change value of the variable has_no_account', () => {
         account_transfer_store.setHasNoAccount(true);
 
-        expect(account_transfer_store.has_no_account).toBeTrue();
+        expect(account_transfer_store.has_no_account).toBeTruthy();
     });
 
     it('should set transfer fee equal to 2', () => {
@@ -487,7 +487,7 @@ describe('AccountTransferStore', () => {
     it('should change value of the variable is_transfer_confirm', () => {
         account_transfer_store.setIsTransferConfirm(true);
 
-        expect(account_transfer_store.is_transfer_confirm).toBeTrue();
+        expect(account_transfer_store.is_transfer_confirm).toBeTruthy();
     });
 
     it('should set account transfer amount', () => {
@@ -499,13 +499,13 @@ describe('AccountTransferStore', () => {
     it('should change value of the variable is_transfer_successful', () => {
         account_transfer_store.setIsTransferSuccessful(true);
 
-        expect(account_transfer_store.is_transfer_successful).toBeTrue();
+        expect(account_transfer_store.is_transfer_successful).toBeTruthy();
     });
 
     it('should change value of the variable is_mt5_transfer_in_progress', () => {
         account_transfer_store.setIsMT5TransferInProgress(true);
 
-        expect(account_transfer_store.is_mt5_transfer_in_progress).toBeTrue();
+        expect(account_transfer_store.is_mt5_transfer_in_progress).toBeTruthy();
     });
 
     it('should set transfered amount in receipt', () => {

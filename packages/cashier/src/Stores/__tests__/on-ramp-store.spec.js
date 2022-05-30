@@ -51,7 +51,7 @@ describe('OnRampStore', () => {
 
     it('onramp tab should be visible if there is at least one onramp provider', () => {
         onramp_store.setOnrampProviders(onramp_providers);
-        expect(onramp_store.is_onramp_tab_visible).toBeTrue();
+        expect(onramp_store.is_onramp_tab_visible).toBeTruthy();
     });
 
     it('should return only one provider for USD currency', () => {
@@ -196,7 +196,7 @@ describe('OnRampStore', () => {
     it('should show widget when onClickDisclaimerContinue method was called', () => {
         onramp_store.onClickDisclaimerContinue();
 
-        expect(onramp_store.should_show_widget).toBeTrue();
+        expect(onramp_store.should_show_widget).toBeTruthy();
     });
 
     it('should go to deposit page when onClickGoToDepositPage method was called', () => {
@@ -278,7 +278,7 @@ describe('OnRampStore', () => {
         expect(onramp_store.api_error).toBeNull();
         expect(onramp_store.deposit_address).toBeNull();
         expect(onramp_store.deposit_address_ref).toBeNull();
-        expect(onramp_store.is_deposit_address_loading).toBeTrue();
+        expect(onramp_store.is_deposit_address_loading).toBeTruthy();
         expect(onramp_store.selected_provider).toBeNull();
         expect(onramp_store.should_show_widget).toBeFalse();
         expect(onramp_store.widget_error).toBeNull();
@@ -312,25 +312,25 @@ describe('OnRampStore', () => {
     it('should change value of the variable is_deposit_address_loading', () => {
         onramp_store.setIsDepositAddressLoading(true);
 
-        expect(onramp_store.is_deposit_address_loading).toBeTrue();
+        expect(onramp_store.is_deposit_address_loading).toBeTruthy();
     });
 
     it('should change value of the variable is_deposit_address_popover_open', () => {
         onramp_store.setIsDepositAddressPopoverOpen(true);
 
-        expect(onramp_store.is_deposit_address_popover_open).toBeTrue();
+        expect(onramp_store.is_deposit_address_popover_open).toBeTruthy();
     });
 
     it('should change value of the variable is_onramp_modal_open', () => {
         onramp_store.setIsOnRampModalOpen(true);
 
-        expect(onramp_store.is_onramp_modal_open).toBeTrue();
+        expect(onramp_store.is_onramp_modal_open).toBeTruthy();
     });
 
     it('should change value of the variable is_requesting_widget_html', () => {
         onramp_store.setIsRequestingWidgetHtml(true);
 
-        expect(onramp_store.is_requesting_widget_html).toBeTrue();
+        expect(onramp_store.is_requesting_widget_html).toBeTruthy();
     });
 
     it('should set selected provider', () => {
@@ -338,7 +338,7 @@ describe('OnRampStore', () => {
         onramp_store.setSelectedProvider('provider');
 
         expect(onramp_store.selected_provider).toBe('provider');
-        expect(onramp_store.is_onramp_modal_open).toBeTrue();
+        expect(onramp_store.is_onramp_modal_open).toBeTruthy();
         expect(spyPollApiForDepositAddress).toHaveBeenCalledWith(true);
     });
 
@@ -352,7 +352,7 @@ describe('OnRampStore', () => {
     it('should change value of the variable should_show_widget', () => {
         onramp_store.setShouldShowWidget(true);
 
-        expect(onramp_store.should_show_widget).toBeTrue();
+        expect(onramp_store.should_show_widget).toBeTruthy();
     });
 
     it('should set onramp providers', () => {

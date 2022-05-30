@@ -160,7 +160,7 @@ describe('CryptoFiatConverterStore', () => {
         await crypto_fiat_converter_store.onChangeConverterFromAmount({ target: { value: 3 } }, 'USD', 'AED');
 
         expect(crypto_fiat_converter_store.converter_to_amount).toEqual('11.01');
-        expect(crypto_fiat_converter_store.is_timer_visible).toBeTrue();
+        expect(crypto_fiat_converter_store.is_timer_visible).toBeTruthy();
         expect(
             crypto_fiat_converter_store.root_store.modules.cashier.account_transfer.setAccountTransferAmount
         ).toHaveBeenCalledWith(3);
@@ -201,7 +201,7 @@ describe('CryptoFiatConverterStore', () => {
         await crypto_fiat_converter_store.onChangeConverterToAmount({ target: { value: 3 } }, 'USD', 'AED');
 
         expect(crypto_fiat_converter_store.converter_from_amount).toEqual('11.01');
-        expect(crypto_fiat_converter_store.is_timer_visible).toBeTrue();
+        expect(crypto_fiat_converter_store.is_timer_visible).toBeTruthy();
         expect(
             crypto_fiat_converter_store.root_store.modules.cashier.account_transfer.setAccountTransferAmount
         ).toHaveBeenCalledWith('11.01');

@@ -218,7 +218,7 @@ describe('PaymentAgentStore', () => {
 
     it('should set is_withdraw', () => {
         payment_agent_store.setIsWithdraw();
-        expect(payment_agent_store.is_withdraw).toBeTrue();
+        expect(payment_agent_store.is_withdraw).toBeTruthy();
 
         payment_agent_store.setIsWithdraw(false);
         expect(payment_agent_store.is_withdraw).toBeFalse();
@@ -229,7 +229,7 @@ describe('PaymentAgentStore', () => {
 
         payment_agent_store.setIsTryWithdrawSuccessful(true);
         expect(spySetErrorMessage).toHaveBeenCalledWith('');
-        expect(payment_agent_store.is_try_withdraw_successful).toBeTrue();
+        expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
     });
 
     it('should set is_withdraw_successful', () => {
@@ -293,7 +293,7 @@ describe('PaymentAgentStore', () => {
     it('should mount payment agent withdraw', async () => {
         await payment_agent_store.onMountPaymentAgentWithdraw();
 
-        expect(payment_agent_store.is_withdraw).toBeTrue();
+        expect(payment_agent_store.is_withdraw).toBeTruthy();
         expect(payment_agent_store.is_withdraw_successful).toBeFalse();
         expect(payment_agent_store.receipt).toEqual({});
         expect(payment_agent_store.agents).toEqual(
@@ -329,7 +329,7 @@ describe('PaymentAgentStore', () => {
             loginid: 'CR90000000',
             payment_agent_name: 'Payment Agent of CR90000000',
         });
-        expect(payment_agent_store.is_try_withdraw_successful).toBeTrue();
+        expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
     });
 
     it('should handle error when requesting to try payment agent withdraw', async () => {
@@ -374,7 +374,7 @@ describe('PaymentAgentStore', () => {
 
         payment_agent_store.setAllPaymentAgentList(list);
         expect(payment_agent_store.all_payment_agent_list).toEqual(list);
-        expect(payment_agent_store.is_payment_agent_visible_in_onboarding).toBeTrue();
+        expect(payment_agent_store.is_payment_agent_visible_in_onboarding).toBeTruthy();
     });
 
     it('should request for payment agent withdraw', async () => {
@@ -389,7 +389,7 @@ describe('PaymentAgentStore', () => {
             payment_agent_phone: '+12345678',
             payment_agent_url: 'http://www.pa.com',
         });
-        expect(payment_agent_store.is_withdraw_successful).toBeTrue();
+        expect(payment_agent_store.is_withdraw_successful).toBeTruthy();
         expect(payment_agent_store.is_try_withdraw_successful).toBeFalse();
         expect(payment_agent_store.confirm).toEqual({});
     });

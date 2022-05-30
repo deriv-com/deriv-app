@@ -263,10 +263,10 @@ export default class NotificationStore extends BaseStore {
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const needs_poinc =
                     needs_verification.includes('proof_of_income') ||
-                    !['verified', 'none'].includes(proof_of_income?.status);
+                    ['verified', 'none'].includes(proof_of_income?.status);
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
-                this.addVerificationNotifications(identity, document, proof_of_income);
+                this.addVerificationNotifications(identity, document);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);

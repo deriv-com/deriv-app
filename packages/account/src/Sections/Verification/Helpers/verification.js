@@ -9,18 +9,18 @@ export const populateVerificationStatus = account_status => {
     const needs_poi = needs_verification.length && needs_verification.includes('identity');
     const needs_poinc = needs_verification.length && needs_verification.includes('proof_of_income');
 
-    // const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
-    const allow_document_upload = true;
+    const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
+    // const allow_document_upload = true;
     const allow_poi_resubmission = account_status.status.some(status => status === 'allow_poi_resubmission');
     const allow_poa_resubmission = account_status.status.some(status => status === 'allow_poa_resubmission');
-    // const is_age_verified = account_status.status.some(status => status === 'age_verification');
-    const is_age_verified = true;
+    const is_age_verified = account_status.status.some(status => status === 'age_verification');
+    // const is_age_verified = true;
     const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
 
     const identity_status = identity.status;
     const document_status = document.status;
-    // const proof_of_income_status = proof_of_income.status;
-    const proof_of_income_status = 'pending'; /* temporary */
+    const proof_of_income_status = proof_of_income.status;
+    // const proof_of_income_status = 'none'; /* temporary */
 
     const { idv, onfido, manual } = identity.services;
     const identity_last_attempt = attempts.latest;

@@ -72,25 +72,23 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         <div className='p2p-my-ads__table-popovers__edit' onClick={() => handleOnEdit()}>
                             <Icon custom_color='var(--general-main-1)' icon='IcEdit' />
                         </div>
-                        {is_advert_active ? (
-                            <div className='p2p-my-ads__table-popovers__activate'>
+                        <div onClick={onClickActivateDeactivate}>
+                            <Popover
+                                alignment='bottom'
+                                className={`p2p-my-ads__table-popovers__${
+                                    is_advert_active ? 'deactivate' : 'activate'
+                                }`}
+                                message={localize('{{status}}', {
+                                    status: is_advert_active ? 'Deactivate' : 'Activate',
+                                })}
+                            >
                                 <Icon
-                                    icon='IcArchive'
-                                    custom_color='var(--general-main-1)'
-                                    size={14}
-                                    onClick={onClickActivateDeactivate}
+                                    icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
+                                    color={general_store.is_barred && 'disabled'}
                                 />
-                            </div>
-                        ) : (
-                            <div className='p2p-my-ads__table-popovers__deactivate'>
-                                <Icon
-                                    icon='IcUnarchive'
-                                    custom_color='var(--general-main-1)'
-                                    size={14}
-                                    onClick={onClickActivateDeactivate}
-                                />
-                            </div>
-                        )}
+                            </Popover>
+                        </div>
+
                         <div className='p2p-my-ads__table-popovers__delete'>
                             <Icon icon='IcDelete' custom_color='var(--general-main-1)' onClick={onClickDelete} />
                         </div>
@@ -119,7 +117,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                         <AdStatus is_active={!!is_advert_active} />
                                     </div>
 
-                                    <Icon icon='IcAlertWarning' className='cfd-dashboard__maintenance-icon' />
+                                    <Icon icon='IcAlertWarning' />
                                 </div>
                             ) : (
                                 <AdStatus is_active={!!is_advert_active} />
@@ -267,27 +265,22 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 </Table.Cell>
                 {is_popover_actions_visible && (
                     <div className='p2p-my-ads__table-popovers'>
-                        {is_advert_active ? (
-                            <div onClick={onClickActivateDeactivate}>
-                                <Popover
-                                    alignment='bottom'
-                                    className='p2p-my-ads__table-popovers__deactivate'
-                                    message={localize('Deactivate')}
-                                >
-                                    <Icon icon='IcArchive' color={general_store.is_barred && 'disabled'} />
-                                </Popover>
-                            </div>
-                        ) : (
-                            <div onClick={onClickActivateDeactivate}>
-                                <Popover
-                                    alignment='bottom'
-                                    className='p2p-my-ads__table-popovers__activate'
-                                    message={localize('Activate')}
-                                >
-                                    <Icon icon='IcUnarchive' color={general_store.is_barred && 'disabled'} />
-                                </Popover>
-                            </div>
-                        )}
+                        <div onClick={onClickActivateDeactivate}>
+                            <Popover
+                                alignment='bottom'
+                                className={`p2p-my-ads__table-popovers__${
+                                    is_advert_active ? 'deactivate' : 'activate'
+                                }`}
+                                message={localize('{{status}}', {
+                                    status: is_advert_active ? 'Deactivate' : 'Activate',
+                                })}
+                            >
+                                <Icon
+                                    icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
+                                    color={general_store.is_barred && 'disabled'}
+                                />
+                            </Popover>
+                        </div>
                         <div onClick={() => handleOnEdit()}>
                             <Popover
                                 alignment='bottom'

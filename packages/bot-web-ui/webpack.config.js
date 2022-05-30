@@ -16,8 +16,8 @@ const output = {
     libraryTarget: 'umd',
 };
 
-module.exports = function (env, argv) {
-    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+module.exports = function (env) {
+    const base = env && env.base && env.base !== true ? `/${  env.base  }/` : '/';
 
     return {
         entry: [path.join(__dirname, 'src', 'app', 'app.js')],

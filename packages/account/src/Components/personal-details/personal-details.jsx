@@ -545,9 +545,9 @@ const PersonalDetails = ({
                                                         }
                                                         value={values.tax_identification_confirm}
                                                         label={localize(
-                                                            'I hereby confirm that the tax information I provided is true and complete. I will also inform {{business_entity_name}} about any changes to this information.',
+                                                            'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
                                                             {
-                                                                business_entity_name: getLegalEntityName(),
+                                                                legal_entity_name: getLegalEntityName('maltainvest'),
                                                             }
                                                         )}
                                                         renderlabel={title => (

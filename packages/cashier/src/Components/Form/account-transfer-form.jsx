@@ -82,8 +82,8 @@ const AccountTransferNote = ({
     transfer_fee,
     minimum_fee,
 }) => {
-    const platform_name_dxtrade = getPlatformSettings('dxtrade');
-    const platform_name_mt5 = getPlatformSettings('mt5');
+    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
+    const platform_name_mt5 = getPlatformSettings('mt5').name;
 
     const getTransferFeeNote = () => {
         if (transfer_fee === 0) {

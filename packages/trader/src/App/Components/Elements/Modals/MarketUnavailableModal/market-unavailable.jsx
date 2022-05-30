@@ -13,7 +13,7 @@ const MarketUnavailableModal = ({ disableApp, enableApp, is_loading, is_visible,
             platform_name_trader: getPlatformSettings('trader').name,
         })}
         cancel_button_text={localize('Go to {{platform_name_smarttrader}}', {
-            platform_name_smarttrader: getPlatformSettings('smartrader'),
+            platform_name_smarttrader: getPlatformSettings('smarttrader').name,
         })}
         onConfirm={onConfirm}
         onCancel={onCancel}
@@ -27,7 +27,7 @@ const MarketUnavailableModal = ({ disableApp, enableApp, is_loading, is_visible,
             i18n_default_text='This market is not yet available on {{platform_name_trader}}, but it is on {{platform_name_smarttrader}}.'
             values={{
                 platform_name_trader: getPlatformSettings('trader').name,
-                platform_name_smarttrader: getPlatformSettings('smartrader'),
+                platform_name_smarttrader: getPlatformSettings('smarttrader').name,
             }}
         />
     </Dialog>

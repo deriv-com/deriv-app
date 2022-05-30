@@ -10,7 +10,7 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
     const [identifier, setIdenifier] = React.useState('');
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
-    const platform_name_dxtrade = getPlatformSettings('dxtrade');
+    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
     const getPlatformTitle = () => {
         let title = '';

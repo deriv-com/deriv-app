@@ -411,9 +411,9 @@ const AccountSwitcher = props => {
                 { platform_name_dxtrade, platform_name_mt5 }
             );
         } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
-            return (
-                localize('Total assets in your Deriv and {{platform_name_mt5}} real accounts.'), { platform_name_mt5 }
-            );
+            return localize('Total assets in your Deriv and {{platform_name_mt5}} real accounts.', {
+                platform_name_mt5,
+            });
         } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
             return localize('Total assets in your Deriv and {{platform_name_dxtrade}} real accounts.', {
                 platform_name_dxtrade,

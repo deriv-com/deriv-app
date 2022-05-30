@@ -110,7 +110,7 @@ const CurrencySelector = ({
 
     const description = React.useMemo(() => {
         const dmt5_label = is_eu ? localize('CFDs') : localize('DMT5');
-        const platform_name_dxtrade = getPlatformSettings('dxtrade');
+        const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
         if (is_dxtrade_allowed && is_mt5_allowed) {
             return (

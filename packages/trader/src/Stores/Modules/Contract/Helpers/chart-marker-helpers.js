@@ -52,6 +52,7 @@ export const createMarkerSpotEntry = contract_info => {
     const marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
     const component_props = {};
     const entry_tick = contract_info.entry_tick_display_value;
+
     return createMarkerConfig(marker_type, contract_info.entry_tick_time, entry_tick, component_props);
 };
 

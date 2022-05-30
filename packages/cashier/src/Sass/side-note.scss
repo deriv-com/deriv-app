@@ -1,20 +1,27 @@
 .side-note {
     min-width: 25.6rem;
     margin-left: 2.4rem;
+    background-color: var(--general-section-1);
+    border-radius: 8px;
+    padding: 1.6rem 2.4rem;
+    width: 25.6rem;
+    height: max-content;
 
     &--mobile {
         margin-left: 0;
+        margin-bottom: 2.4rem;
+        width: 100%;
     }
 
-    &-item {
-        background-color: var(--general-section-1);
-        border-radius: 8px;
-        padding: 1.6rem 2.4rem;
+    &__item {
         color: var(--text-general);
         font-size: var(--text-size-xxs);
         line-height: 1.5;
-        margin-bottom: 2.4rem;
-        width: 25.6rem;
+        margin-bottom: 1.1rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 
     &__title {
@@ -32,7 +39,6 @@
 
         &-wrapper {
             display: flex;
-            margin-bottom: 1.1rem;
         }
     }
 }

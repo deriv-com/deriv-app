@@ -8,19 +8,17 @@ import CashierLocked from 'Components/Error/cashier-locked.jsx';
 import DepositsLocked from 'Components/Error/deposit-locked.jsx';
 import OnRampProviderCard from 'Components/on-ramp-provider-card.jsx';
 import OnRampProviderPopup from 'Components/on-ramp-provider-popup.jsx';
-import SideNote from 'Components/side-note.jsx';
 import 'Sass/on-ramp.scss';
 
 const OnRampSideNote = () => {
-    const notes = [
+    return [
         <Localize
             i18n_default_text='Fiat onramp is a cashier service that allows you to convert fiat currencies to crypto to top up your Deriv crypto accounts. Listed here are third-party crypto exchanges. You’ll need to create an account with them to use their services.'
             key={0}
         />,
     ];
-
-    return <SideNote notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
 };
+
 const OnRampInfo = () => (
     <div className='on-ramp__info'>
         <Text color='prominent' size='s' weight='bold' className='on-ramp__info-header' as='p'>
@@ -56,6 +54,7 @@ const OnRamp = ({
     setIsOnRampModalOpen,
     should_show_dialog,
     setSideNotes,
+    setSideNotesTitle,
     tab_index,
 }) => {
     const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
@@ -69,7 +68,8 @@ const OnRamp = ({
     React.useEffect(() => {
         onMountOnramp();
         if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
-            setSideNotes([<OnRampSideNote key={0} />]);
+            setSideNotes(OnRampSideNote());
+            setSideNotesTitle(<Localize i18n_default_text='What is Fiat onramp?' />);
         }
 
         return () => onUnmountOnramp();
@@ -124,6 +124,7 @@ const OnRamp = ({
                 {filtered_onramp_providers.map(provider => (
                     <OnRampProviderCard key={provider.name} provider={provider} />
                 ))}
+
                 <Modal
                     className='on-ramp__modal'
                     has_close_icon

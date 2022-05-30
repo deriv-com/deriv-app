@@ -26,7 +26,7 @@ const SideNoteBullet = ({ children, component }) => (
     </div>
 );
 
-const SideNote = ({ side_notes, title, has_bullets = true }) => {
+const SideNote = ({ side_notes, title, has_bullets = true, className }) => {
     const checkNote = (note, i) => {
         let Component;
         if (typeof note === 'string') {
@@ -55,9 +55,9 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
     };
 
     return (
-        <div className={classNames('side-note', { 'side-note--mobile': isMobile })}>
+        <>
             {side_notes?.length && (
-                <>
+                <div className={classNames('side-note', { 'side-note--mobile': isMobile() }, className)}>
                     <DesktopWrapper>
                         <SideNoteTitle side_notes={side_notes} title={title} />
                     </DesktopWrapper>
@@ -67,9 +67,9 @@ const SideNote = ({ side_notes, title, has_bullets = true }) => {
                             {checkNote(note, i)}
                         </div>
                     ))}
-                </>
+                </div>
             )}
-        </div>
+        </>
     );
 };
 

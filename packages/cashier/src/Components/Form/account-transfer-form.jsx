@@ -343,27 +343,6 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
-            const side_notes = [];
-            if (is_crypto && crypto_transactions?.length) {
-                side_notes.push(<RecentTransaction key={2} />);
-            }
-            side_notes.push(
-                <AccountTransferNote
-                    allowed_transfers_count={{
-                        internal: internal_remaining_transfers?.allowed,
-                        mt5: mt5_remaining_transfers?.allowed,
-                        dxtrade: dxtrade_remaining_transfers?.allowed,
-                    }}
-                    transfer_fee={transfer_fee}
-                    currency={selected_from.currency}
-                    minimum_fee={minimum_fee}
-                    key={0}
-                    is_crypto_to_crypto_transfer={selected_from.is_crypto && selected_to.is_crypto}
-                    is_dxtrade_allowed={is_dxtrade_allowed}
-                    is_dxtrade_transfer={is_dxtrade_transfer}
-                    is_mt_transfer={is_mt_transfer}
-                />
-            );
             setSideNotes(
                 AccountTransferNote({
                     allowed_transfers_count: {

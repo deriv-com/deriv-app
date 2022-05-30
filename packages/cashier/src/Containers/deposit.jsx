@@ -4,16 +4,37 @@ import { Loading, MobileWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CashierContainer from 'Components/cashier-container.jsx';
 import CashierDefault from 'Components/CashierDefault/cashier-default.jsx';
-import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-side-note.jsx';
+import { notes } from 'Components/CashierDefault/cashier-default-side-note.jsx';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 import DepositsLocked from 'Components/Error/deposit-locked.jsx';
 import Error from 'Components/Error/error.jsx';
 import FundsProtection from 'Components/Error/funds-protection.jsx';
+import SideNote from 'Components/side-note.jsx';
 import USDTSideNote from 'Components/usdt-side-note.jsx';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
 import CryptoDeposit from './crypto-deposit.jsx';
+
+const depositNotes = (currency, is_crypto, is_deposit, is_switching, crypto_transactions) => {
+    const list = [];
+
+    if (is_crypto && is_deposit && !is_switching) {
+        if (crypto_transactions?.length) {
+            list.push(<RecentTransaction key={2} />);
+        }
+
+        if (/^(UST)$/i.test(currency)) {
+            list.push(<USDTSideNote type='usdt' />);
+        }
+
+        if (/^(eUSDT)$/i.test(currency)) {
+            list.push(<USDTSideNote type='eusdt' />);
+        }
+    }
+
+    return list;
+};
 
 const Deposit = ({
     can_change_fiat_currency,
@@ -67,15 +88,10 @@ const Deposit = ({
         if (typeof setSideNotes === 'function') {
             if (is_switching || is_deposit) setSideNotes(null);
             if (is_crypto && is_deposit && !is_switching) {
-                const side_notes = [
-                    ...(crypto_transactions.length ? [<RecentTransaction key={2} />] : []),
-                    ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
-                    ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
-                ];
-                if (side_notes.length > 0) setSideNotes(side_notes);
+                setSideNotes(depositNotes(currency, is_crypto, is_deposit, is_switching, crypto_transactions));
             }
             if (is_fiat_currency_banner_visible_for_MF_clients) {
-                setSideNotes([<CashierDefaultSideNote key={0} is_crypto={false} />]);
+                setSideNotes(notes(false));
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -117,7 +133,7 @@ const Deposit = ({
             <>
                 {is_fiat_currency_banner_visible_for_MF_clients && (
                     <MobileWrapper>
-                        <CashierDefaultSideNote is_crypto={false} />
+                        <SideNote side_notes={notes(false)} />
                     </MobileWrapper>
                 )}
                 <CashierContainer
@@ -129,7 +145,7 @@ const Deposit = ({
             </>
         );
     }
-    return <CashierDefault setSideNotes={setSideNotes} />;
+    return <CashierDefault className='cashier-default__side-note' setSideNotes={setSideNotes} />;
 };
 
 Deposit.propTypes = {

@@ -21,6 +21,7 @@ export default class MyProfileStore extends BaseStore {
     @observable full_name = '';
     @observable is_button_loading = false;
     @observable is_cancel_add_payment_method_modal_open = false;
+    @observable is_cancel_edit_payment_method_modal_open = false;
     @observable is_confirm_delete_modal_open = false;
     @observable is_delete_error_modal_open = false;
     @observable is_loading = true;
@@ -486,6 +487,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setIsCancelAddPaymentMethodModalOpen(is_cancel_add_payment_method_modal_open) {
         this.is_cancel_add_payment_method_modal_open = is_cancel_add_payment_method_modal_open;
+    }
+
+    @action.bound
+    setIsCancelEditPaymentMethodModalOpen(is_cancel_edit_payment_method_modal_open) {
+        this.is_cancel_edit_payment_method_modal_open = is_cancel_edit_payment_method_modal_open;
     }
 
     @action.bound

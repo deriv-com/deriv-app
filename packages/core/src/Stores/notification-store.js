@@ -463,11 +463,9 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     setClientNotifications(client_data = {}) {
-        const { ui, client } = this.root_store;
+        const { ui } = this.root_store;
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
-        const client_name =
-            client.account_status.authentication?.identity?.services?.onfido?.reported_properties?.first_name;
 
         const notifications = {
             ask_financial_risk_approval: {
@@ -790,9 +788,12 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
                 key: 'poi_name_mismatch',
-                header: localize('What’s your real name, {{client_name}}?', { client_name }),
-                message: localize(
-                    'It appears that the name in your document doesn’t match the name in your Deriv profile. Please update your name in the Personal details page now.'
+                header: localize('Please update your personal info'),
+                message: (
+                    <Localize
+                        i18n_default_text='It seems that your name in the document is not the same as your Deriv profile. Please update your name in the <0>Personal details</0> page to solve this issue.'
+                        components={[<strong key={0} />]}
+                    />
                 ),
                 type: 'warning',
             },

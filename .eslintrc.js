@@ -48,10 +48,11 @@ module.exports = {
         'space-infix-ops': 'error',
         // 'space-unary-ops'                   : 'error',
         // 'no-multiple-empty-lines'           : ['error', { 'max': 1, 'maxEOF': 1 }],
+        'global-require': 'warn',
 
         // import rules
         'import/no-extraneous-dependencies': [
-            'error',
+            'warn',
             {
                 devDependencies: [
                     '**/__tests__/**/*.js',
@@ -122,9 +123,9 @@ module.exports = {
         react: {
             version: '16',
         },
-    'import/resolver': {
-      typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
-    },
+        'import/resolver': {
+            typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
+        },
     },
     overrides: [
         {

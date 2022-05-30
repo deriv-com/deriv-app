@@ -978,14 +978,17 @@ export default class NotificationStore extends BaseStore {
             },
             withdrawal_locked_review: {
                 key: 'withdrawal_locked_review',
-                header: localize('Your withdrawal is locked'),
-                message: localize(
-                    'Please submit your Proof of Identity again and complete the financial assessment in account setting to unlock it.'
+                header: localize('You are unable to make withdrawals'),
+                message: (
+                    <Localize
+                        i18n_default_text='To enable withdrawals, please submit your <0>Proof of Identity (POI)</0> and <1>Proof of Address (POA)</1> and also complete the <2>financial assessment</2> in your account settings.'
+                        components={[
+                            <a key={0} className='link dark' href={'/account/proof-of-identity'} />,
+                            <a key={1} className='link dark' href={'/account/proof-of-address'} />,
+                            <a key={2} className='link dark' href={'/account/financial-assessment'} />,
+                        ]}
+                    />
                 ),
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Go to my account settings'),
-                },
                 type: 'warning',
             },
             you_are_offline: {

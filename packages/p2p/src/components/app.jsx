@@ -12,7 +12,7 @@ import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
-    const { client, className, history, lang, order_id, server_time, websocket_api } = props;
+    const { className, history, lang, order_id, server_time, websocket_api } = props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
@@ -44,7 +44,7 @@ const App = props => {
         general_store.setP2PConfig();
         return () => general_store.onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [client]);
+    }, []);
 
     React.useEffect(() => {
         if (order_id) {

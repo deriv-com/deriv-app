@@ -1,8 +1,8 @@
 const path = require('path');
 const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 
-module.exports = function (env, argv) {
-    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+module.exports = function (env) {
+    const base = env && env.base && env.base !== true ? `/${  env.base  }/` : '/';
 
     return {
         context: path.resolve(__dirname, '../src'),

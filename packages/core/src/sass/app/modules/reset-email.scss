@@ -95,7 +95,7 @@
 
 .email-confirmation {
     margin: 0.5rem 2.4rem 1.7rem;
-    line-break: anywhere;
+    word-break: break-word;
 
     &__currentEmail {
         color: var(--status-danger);

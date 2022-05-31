@@ -64,6 +64,7 @@ const PaymentMethodsList = () => {
                                                         key={each_payment_method_key}
                                                         large={true}
                                                         payment_method={each_payment_method}
+                                                        show_payment_method_name={false}
                                                     />
                                                 )
                                             )}
@@ -120,6 +121,7 @@ const PaymentMethodsList = () => {
                                                 key={each_payment_method_key}
                                                 payment_method={each_payment_method}
                                                 small={true}
+                                                show_payment_method_name={false}
                                             />
                                         ))}
                                     </ThemedScrollbars>

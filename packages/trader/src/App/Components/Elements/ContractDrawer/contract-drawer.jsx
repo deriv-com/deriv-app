@@ -8,8 +8,8 @@ import { isUserSold, isMobile } from '@deriv/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { connect } from 'Stores/connect';
-import { getDurationPeriod, getDurationTime, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
-import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
+import { getDurationPeriod, getDurationTime, getDurationUnitText } from 'Stores/Helpers/Portfolio/details';
+import { getEndTime } from 'Stores/Helpers/Contract/logic';
 import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
 

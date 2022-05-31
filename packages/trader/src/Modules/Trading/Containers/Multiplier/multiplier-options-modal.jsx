@@ -1,7 +1,7 @@
 import React from 'react';
 import { Div100vhContainer, Modal, RadioGroup, Popover, usePreventIOSZoom } from '@deriv/components';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
-import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
+import { requestPreviewProposal } from 'Stores/Helpers/Trading/preview-proposal';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useIsMounted, WS } from '@deriv/shared';

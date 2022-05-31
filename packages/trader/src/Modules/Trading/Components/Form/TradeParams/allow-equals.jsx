@@ -2,11 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Popover, Checkbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import {
-    hasCallPutEqual,
-    hasDurationForCallPutEqual,
-    isRiseFallEqual,
-} from 'Stores/Modules/Trading/Helpers/allow-equals';
+import { hasCallPutEqual, hasDurationForCallPutEqual, isRiseFallEqual } from 'Stores/Helpers/Trading/allow-equals';
 
 const AllowEquals = ({
     contract_start_type,

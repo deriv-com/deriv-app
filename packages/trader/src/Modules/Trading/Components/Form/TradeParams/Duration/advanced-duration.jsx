@@ -6,7 +6,7 @@ import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
-import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
+import { hasIntradayDurationUnit } from 'Stores/Helpers/Trading/duration';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';
 

@@ -4,7 +4,7 @@ import { MobileWrapper, usePrevious } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { localize } from '@deriv/translations';
-import { unsupported_contract_types_list } from 'Stores/Modules/Trading/Constants/contract';
+import { unsupported_contract_types_list } from 'Stores/Helpers/Trading/contract';
 import { ToastPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';

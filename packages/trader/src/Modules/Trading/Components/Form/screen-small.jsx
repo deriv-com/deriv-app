@@ -4,11 +4,7 @@ import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
 import { connect } from 'Stores/connect';
-import {
-    hasCallPutEqual,
-    hasDurationForCallPutEqual,
-    isRiseFallEqual,
-} from 'Stores/Modules/Trading/Helpers/allow-equals';
+import { hasCallPutEqual, hasDurationForCallPutEqual, isRiseFallEqual } from 'Stores/Helpers/Trading/allow-equals';
 import { MultiplierOptionsWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
 import RiskManagementInfo from '../Elements/Multiplier/risk-management-info.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';

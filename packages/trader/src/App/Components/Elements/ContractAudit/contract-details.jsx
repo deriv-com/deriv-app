@@ -20,7 +20,7 @@ import {
     isCancellationExpired,
     isEndedBeforeCancellationExpired,
     isUserCancelled,
-} from 'Stores/Modules/Contract/Helpers/logic';
+} from 'Stores/Helpers/Contract/logic';
 import ContractAuditItem from './contract-audit-item.jsx';
 
 const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot }) => {

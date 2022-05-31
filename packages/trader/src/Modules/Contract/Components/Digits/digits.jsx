@@ -5,7 +5,7 @@ import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover, Text } from '@deriv/components';
 import { isMobile, useIsMounted } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { isContractElapsed } from 'Stores/Modules/Contract/Helpers/logic';
+import { isContractElapsed } from 'Stores/Helpers/Contract/logic';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { getMarketNamesMap } from '../../../../Constants';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';

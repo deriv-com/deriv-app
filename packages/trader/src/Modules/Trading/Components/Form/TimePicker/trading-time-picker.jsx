@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import { setTime, toMoment } from '@deriv/shared';
 import TimePicker from 'App/Components/Form/TimePicker';
-import { getSelectedTime, getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
+import { getSelectedTime, getBoundaries } from 'Stores/Helpers/Trading/end-time';
 
 const TradingTimePicker = ({
     expiry_date,

@@ -6,7 +6,7 @@ import { Text } from '@deriv/components';
 import { useIsMounted, WS, convertTimeFormat } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isMarketClosed } from 'Stores/Modules/Trading/Helpers/active-symbols';
+import { isMarketClosed } from 'Stores/Helpers/Trading/active-symbols';
 
 // check market in coming 7 days
 const days_to_check_before_exit = 7;

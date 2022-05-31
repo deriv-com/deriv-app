@@ -4,7 +4,7 @@ import { isEmptyObject, addComma } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 import { connect } from 'Stores/connect';
-import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
+import { getDurationMinMaxValues } from 'Stores/Helpers/Trading/duration';
 
 const submit_label = localize('OK');
 

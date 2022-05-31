@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { connect } from 'Stores/connect';
-import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
+import { getDurationMinMaxValues } from 'Stores/Helpers/Trading/duration';
 import Duration from './duration.jsx';
 
 const DurationWrapper = props => {

@@ -10,7 +10,7 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-import { getUnitMap } from 'Stores/Modules/Portfolio/Helpers/details';
+import { getUnitMap } from 'Stores/Helpers/Portfolio/details';
 import { buildBarriersConfig } from './barrier';
 import { buildDurationConfig, hasIntradayDurationUnit } from './duration';
 import { buildForwardStartingConfig, isSessionAvailable } from './start-date';
@@ -19,7 +19,7 @@ import {
     getContractCategoriesConfig,
     getContractTypesConfig,
     getLocalizedBasis,
-} from '../Constants/contract';
+} from './contract';
 
 const ContractType = (() => {
     let available_contract_types = {};

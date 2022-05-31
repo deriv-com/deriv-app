@@ -3,7 +3,7 @@ import { Div100vhContainer, Modal, Money, Popover, usePreventIOSZoom } from '@de
 import { useIsMounted, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
+import { requestPreviewProposal } from 'Stores/Helpers/Trading/preview-proposal';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
 

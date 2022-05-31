@@ -30,12 +30,11 @@ describe('<DeactivateAccountReason />', () => {
     test('Should be disabled when no reason has been selected', async () => {
         render(<DeactivateAccountReason />);
 
-        // first time "Continue" button will be active since the cta shouldn't be disabled
-        // after clicking when no reason is selected it should show error and the button should be disabled
+        // clicking the checkbox twice to select and unselect
+        fireEvent.click(screen.getByRole('checkbox', { name: /I have other financial priorities./i }));
+        fireEvent.click(screen.getByRole('checkbox', { name: /I have other financial priorities./i }));
 
-        act(() => {
-            fireEvent.click(screen.getByText(/Continue/i));
-        });
+        // when no reason is selected it should show error and the button should be disabled
         await waitFor(() => {
             expect(screen.getByText(/Please select at least one reason/i)).toBeInTheDocument();
             const continueButton = screen.getAllByRole('button')[1];

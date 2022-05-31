@@ -85,9 +85,7 @@ describe('<OrderDetails/>', () => {
         render(<OrderDetails onPageReturn={jest.fn()} />);
 
         expect(
-            screen.getByText(
-                'To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.'
-            )
+            screen.getByText("Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead.")
         ).toBeInTheDocument();
     });
 

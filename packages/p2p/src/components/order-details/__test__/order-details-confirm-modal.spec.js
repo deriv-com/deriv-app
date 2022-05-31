@@ -42,7 +42,7 @@ describe('<OrderDetailsConfirmModal/>', () => {
                 'Please confirm only after checking your bank or e-wallet account to make sure you have received payment.'
             )
         ).toBeInTheDocument();
-        expect(screen.getByText('I have received 20.00 AED')).toBeInTheDocument();
+        expect(screen.getByText("I've received 20.00 AED")).toBeInTheDocument();
         expect(screen.getByText('Cancel')).toBeInTheDocument();
     });
 
@@ -51,9 +51,9 @@ describe('<OrderDetailsConfirmModal/>', () => {
             <OrderDetailsConfirmModal should_show_confirm_modal is_buy_order_for_user order_information={mock_props} />
         );
 
-        expect(screen.getByText('Confirm payment?')).toBeInTheDocument();
-        expect(screen.getByText("Please make sure that you've paid 20.00 AED to P2P.")).toBeInTheDocument();
-        expect(screen.getByText('I have paid 20.00 AED')).toBeInTheDocument();
+        expect(screen.getByText('Payment confirmation')).toBeInTheDocument();
+        expect(screen.getByText('Have you paid 20.00 AED to P2P?')).toBeInTheDocument();
+        expect(screen.getByText("Yes, I've paid")).toBeInTheDocument();
         expect(screen.getByText("I haven't paid yet")).toBeInTheDocument();
     });
 

@@ -3,7 +3,7 @@ import { screen, render, fireEvent } from '@testing-library/react';
 import ErrorComponent from '../error-component';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { unmountComponentAtNode } from 'react-dom';
+
 describe('<ErrorComponent/>', () => {
     let history;
     const renderWithRouter = component => {

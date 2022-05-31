@@ -7,6 +7,7 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
+import BlockUserEmpty from '../advertiser-page/block-user/block-user-empty';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
@@ -32,6 +33,9 @@ const MyProfileContent = () => {
                 </MobileWrapper>
             </React.Fragment>
         );
+    } else if (my_profile_store.active_tab === my_profile_tabs.BLOCKED_ADVERTISERS) {
+        // TODO: Add search box and integrate list of blocked users once https://redmine.deriv.cloud/issues/65494#List_of_users is merged
+        return <BlockUserEmpty />;
     }
     return <MyProfileStats />;
 };

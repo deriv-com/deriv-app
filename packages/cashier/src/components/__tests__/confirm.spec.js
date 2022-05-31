@@ -1,7 +1,8 @@
 import React from 'react';
 import { Money } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { fireEvent, render, screen } from '@testing-library/react';
-import Confirm from '../confirm';
+import Confirm from '../confirm.jsx';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -9,9 +10,11 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
+let modal_root_el;
+
 describe('<Confirm />', () => {
     beforeAll(() => {
-        const modal_root_el = document.createElement('div');
+        modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
     });
@@ -28,6 +31,13 @@ describe('<Confirm />', () => {
         header: 'Please confirm the transaction details in order to complete the withdrawal:',
         onClickBack: jest.fn(),
         onClickConfirm: jest.fn(),
+        warning_messages: [
+            <Localize
+                i18n_default_text='Remember, it’s solely your responsibility to ensure the transfer is made to the correct account.'
+                key={0}
+            />,
+            <Localize i18n_default_text='We do not guarantee a refund if you make a wrong transfer.' key={1} />,
+        ],
     };
 
     it('should show proper icon, header, messages and buttons', () => {
@@ -68,5 +78,34 @@ describe('<Confirm />', () => {
         render(<Confirm {...props} error={{ message: 'Error message' }} />);
 
         expect(screen.getByText('Error message')).toBeInTheDocument();
+    });
+
+    it('should show warning messages', () => {
+        render(<Confirm {...props} />);
+
+        expect(
+            screen.getByText(
+                'Remember, it’s solely your responsibility to ensure the transfer is made to the correct account.'
+            )
+        ).toBeInTheDocument();
+        expect(screen.getByText('We do not guarantee a refund if you make a wrong transfer.')).toBeInTheDocument();
+    });
+
+    it('should show checkbox when is_payment_agent_transfer property is equal to true', () => {
+        render(<Confirm {...props} is_payment_agent_transfer />);
+
+        expect(
+            screen.getByLabelText('I confirm that I have checked and verified the client’s transfer information')
+        ).toBeInTheDocument();
+    });
+
+    it('should enable "Transfer now" button when checkbox is checked', () => {
+        render(<Confirm {...props} is_payment_agent_transfer />);
+
+        const el_checkbox_transfer_consent = screen.getByRole('checkbox');
+        fireEvent.click(el_checkbox_transfer_consent);
+        const el_btn_transfer_now = screen.getByRole('button', { name: 'Transfer now' });
+
+        expect(el_btn_transfer_now).toBeEnabled();
     });
 });

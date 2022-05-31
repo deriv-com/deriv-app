@@ -15,7 +15,7 @@ module.exports = {
         dataLayer: true,
         texts_json: false,
     },
-    ignorePatterns: ['**/dist/**/*.js'],
+    ignorePatterns: ['**/dist/**/*.js', '**/lib/**/*.js'],
     rules: {
         camelcase: 0,
         // semi                                : ['error', 'always'],
@@ -73,7 +73,7 @@ module.exports = {
                 'newlines-between': 'ignore',
             },
         ],
-        'spaced-comment': 0,
+        'spaced-comment': 'off',
         'import/prefer-default-export': 0,
         'import/extensions': ['warn', 'never', { jsx: 'always', json: 'always' }],
         'no-sequences': ['warn'],

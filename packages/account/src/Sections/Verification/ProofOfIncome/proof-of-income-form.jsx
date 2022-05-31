@@ -22,7 +22,7 @@ let file_uploader_ref = null;
 
 const ProofOfIncomeForm = ({
     addNotificationByKey,
-    fetchPoIncDocumentsList,
+    // fetchPoIncDocumentsList,
     removeNotificationByKey,
     removeNotificationMessage,
     poinc_documents_list,
@@ -33,10 +33,10 @@ const ProofOfIncomeForm = ({
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
 
     React.useEffect(() => {
-        fetchPoIncDocumentsList().then(() => {
-            setIsLoading(false);
-        });
-    }, [fetchPoIncDocumentsList]);
+        // fetchPoIncDocumentsList().then(() => {
+        setIsLoading(false);
+        // });
+    }, []);
 
     const initial_form_values = {
         document_input: '',
@@ -214,17 +214,14 @@ const ProofOfIncomeForm = ({
 
 ProofOfIncomeForm.propTypes = {
     addNotificationByKey: PropTypes.func,
-    fetchPoIncDocumentsList: PropTypes.func,
     onSubmit: PropTypes.func,
     removeNotificationByKey: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
     poinc_documents_list: PropTypes.array,
 };
 
-export default connect(({ client, notifications }) => ({
+export default connect(({ notifications }) => ({
     addNotificationByKey: notifications.addNotificationMessageByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,
     removeNotificationByKey: notifications.removeNotificationByKey,
-    poinc_documents_list: client.poinc_documents_list,
-    fetchPoIncDocumentsList: client.fetchPoIncDocumentsList,
 }))(ProofOfIncomeForm);

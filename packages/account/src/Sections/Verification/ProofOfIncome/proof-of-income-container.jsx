@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { income_status_codes } from './proof-of-income-utils';
+import { income_status_codes, poinc_documents_list } from './proof-of-income-utils';
 import { Loading, useStateCallback } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import PoincUnverified from 'Components/poinc-unverified';
@@ -53,6 +53,9 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
     const onSubmit = ({ needs_poinc }) => {
         setAuthenticationStatus({ ...authentication_status, ...{ has_submitted_poinc: true, needs_poinc } });
     };
+    const handleReupload = ({ needs_poinc }) => {
+        setAuthenticationStatus({ ...authentication_status, ...{ has_submitted_poinc: true, needs_poinc } });
+    };
 
     const { allow_document_upload, proof_of_income_status, needs_poinc, has_submitted_poinc, is_age_verified } =
         authentication_status;
@@ -63,13 +66,18 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
 
     switch (proof_of_income_status) {
         case income_status_codes.none:
-            return <ProofOfIncomeForm onSubmit={() => onSubmit({ needs_poinc })} />;
+            return (
+                <ProofOfIncomeForm
+                    onSubmit={() => onSubmit({ needs_poinc })}
+                    poinc_documents_list={poinc_documents_list}
+                />
+            );
         case income_status_codes.pending:
             return <PoincReceived />;
         case income_status_codes.verified:
             return <PoincVerified />;
         case income_status_codes.rejected:
-            return <PoincUnverified />;
+            return <PoincUnverified handleReupload={handleReupload} />;
         default:
             return null;
     }

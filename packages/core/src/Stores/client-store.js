@@ -49,18 +49,6 @@ export default class ClientStore extends BaseStore {
     @observable currencies_list = {};
     @observable residence_list = [];
     @observable states_list = [];
-    /* poinc_documents_list is hardcoded. should to clarify if it will be get from BE */
-    @observable poinc_documents_list = [
-        { text: 'Tax return', value: 'tax_return' },
-        { text: 'Employment contract', value: 'employment_contract' },
-        { text: 'Payslip', value: 'payslip' },
-        { text: 'COI', value: 'coi' },
-        { text: 'Business POA', value: 'business_poa' },
-        { text: 'Article of association', value: 'article_of_association' },
-        { text: 'Memorandum', value: 'memorandum' },
-        { text: 'Authorized letter', value: 'authorized_letter' },
-        { text: 'Declarations', value: 'declarations' },
-    ];
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
@@ -2021,28 +2009,6 @@ export default class ClientStore extends BaseStore {
                     }
                     resolve(response);
                 });
-        });
-    }
-
-    // adjust correct request for documents list
-    @action.bound
-    fetchPoIncDocumentsList() {
-        return new Promise((resolve, reject) => {
-            resolve('need to clarify if it wiil be sent from BE');
-            // WS.authorized.storage
-            //     .statesList({
-            //         states_list: this.accounts[this.loginid].residence,
-            //     })
-            //     .then(response => {
-            //         if (response.error) {
-            //             reject(response.error);
-            //         } else {
-            //             runInAction(() => {
-            //                 this.poinc_documents_list = response.states_list || [];
-            //             });
-            //         }
-            //         resolve(response);
-            //     });
         });
     }
 

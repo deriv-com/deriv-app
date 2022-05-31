@@ -8,11 +8,18 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-const modalRoot = document.createElement('div');
-modalRoot.setAttribute('id', 'modal_root');
-document.body.appendChild(modalRoot);
-
 describe('<CFDFinancialStpPendingDialog />', () => {
+    const modal_root_el = document.createElement('div');
+    modal_root_el.setAttribute('id', 'modal_root');
+
+    beforeAll(() => {
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
+
     const props = {
         enableApp: jest.fn(),
         disableApp: jest.fn(),
@@ -46,5 +53,13 @@ describe('<CFDFinancialStpPendingDialog />', () => {
 
         fireEvent.click(ok_button);
         expect(props.toggleModal).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not open open modal if is_cfd_pending_dialog_open is false', () => {
+        const { container } = render(
+            <CFDFinancialStpPendingDialog {...props} is_open={!props.is_cfd_pending_dialog_open} />
+        );
+
+        expect(container.querySelector('.cfd-pending-dialog')).not.toBeInTheDocument();
     });
 });

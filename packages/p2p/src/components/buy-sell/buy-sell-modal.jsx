@@ -46,7 +46,7 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
     if (my_profile_store.should_show_add_payment_method_form) {
         if (!isMobile()) {
             return (
-                <>
+                <React.Fragment>
                     <Icon
                         icon='IcArrowLeftBold'
                         onClick={() => {
@@ -59,7 +59,7 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
                         className='buy-sell__modal-icon'
                     />
                     {localize('Add payment method')}
-                </>
+                </React.Fragment>
             );
         }
         return localize('Add payment method');

@@ -9,6 +9,7 @@ import { reaction } from 'mobx';
 const CancelAddPaymentMethodModal = ({ is_floating }) => {
     const { my_profile_store, my_ads_store } = useStores();
 
+    // TODO: Refactor this code to avoid manual DOM updates
     // mounts the modal in a seperate modal-root container to show/float the modal over another modal if is_floating is true
     React.useLayoutEffect(() => {
         const disposeFloatingWrapper = reaction(

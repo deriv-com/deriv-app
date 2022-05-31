@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'Stores/connect';
-import BinaryRoutes from 'Components/Routes';
+import BinaryRoutes from './binary-routes.jsx';
 import ErrorComponent from 'Components/error-component.jsx';
 
 const Routes = ({ error, has_error, is_logged_in, is_logging_in, passthrough }) => {

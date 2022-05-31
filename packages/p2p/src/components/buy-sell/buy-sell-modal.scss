@@ -9,6 +9,12 @@
         }
     }
 
+    &-danger {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+        align-items: flex-start;
+    }
+
     &-field {
         margin-bottom: 0 !important;
         margin-right: 0.7rem;

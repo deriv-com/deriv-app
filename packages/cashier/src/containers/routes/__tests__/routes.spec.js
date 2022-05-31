@@ -10,7 +10,7 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('Components/Routes/binary-routes', () => () => <div>BinaryRoutes</div>);
+jest.mock('../binary-routes', () => () => <div>BinaryRoutes</div>);
 
 describe('<Routes />', () => {
     it('should show error messages when "has_error = true"', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { setWebsocket } from '@deriv/shared';
 import { init } from '_common/server_time';
-import Routes from 'Containers/routes.jsx';
+import Routes from 'Containers/routes';
 import { MobxContentProvider } from 'Stores/connect';
 
 const App = ({ passthrough: { WS, root_store } }) => {

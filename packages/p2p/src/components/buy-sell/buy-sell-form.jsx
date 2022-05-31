@@ -92,42 +92,42 @@ const BuySellForm = props => {
     };
 
     return (
-        <Formik
-            enableReinitialize
-            validate={buy_sell_store.validatePopup}
-            validateOnMount
-            initialValues={{
-                amount: min_order_amount_limit,
-                contact_info: buy_sell_store.contact_info,
-                payment_info: buy_sell_store.payment_info,
-                rate: rate_type === ad_type.FLOAT ? effective_rate : null,
-            }}
-            initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
-            onSubmit={(...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args)}
-        >
-            {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
-                buy_sell_store.form_props.setIsSubmitDisabled(
-                    !isValid ||
-                        isSubmitting ||
-                        (buy_sell_store.is_sell_advert && payment_method_names && selected_methods.length < 1)
-                );
-                buy_sell_store.form_props.setSubmitForm(submitForm);
+        <React.Fragment>
+            {rate_type === ad_type.FLOAT && (
+                <div className='buy-sell__modal-hintbox'>
+                    <HintBox
+                        icon='IcAlertInfo'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                <Localize i18n_default_text="If the market rate changes from the rate shown here, we won't be able to process your order." />
+                            </Text>
+                        }
+                        is_info
+                    />
+                </div>
+            )}
+            <Formik
+                enableReinitialize
+                validate={buy_sell_store.validatePopup}
+                validateOnMount
+                initialValues={{
+                    amount: min_order_amount_limit,
+                    contact_info: buy_sell_store.contact_info,
+                    payment_info: buy_sell_store.payment_info,
+                    rate: rate_type === ad_type.FLOAT ? effective_rate : null,
+                }}
+                initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
+                onSubmit={(...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args)}
+            >
+                {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
+                    buy_sell_store.form_props.setIsSubmitDisabled(
+                        !isValid ||
+                            isSubmitting ||
+                            (buy_sell_store.is_sell_advert && payment_method_names && selected_methods.length < 1)
+                    );
+                    buy_sell_store.form_props.setSubmitForm(submitForm);
 
-                return (
-                    <React.Fragment>
-                        {rate_type === ad_type.FLOAT && (
-                            <div className='buy-sell__modal-hintbox'>
-                                <HintBox
-                                    icon='IcAlertInfo'
-                                    message={
-                                        <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                            <Localize i18n_default_text="If the market rate changes from the rate shown here, we won't be able to process your order." />
-                                        </Text>
-                                    }
-                                    is_info
-                                />
-                            </div>
-                        )}
+                    return (
                         <Form noValidate>
                             <div className='buy-sell__modal-content'>
                                 <div className='buy-sell__modal-field-wrapper'>
@@ -222,63 +222,67 @@ const BuySellForm = props => {
                                 </div>
                                 <div className='buy-sell__modal-line' />
                                 {buy_sell_store.is_sell_advert && payment_method_names && (
-                                    <div>
-                                        <Text
-                                            as='p'
-                                            className='buy-sell__modal-payment-method--title'
-                                            color='less-prominent'
-                                            line_height='m'
-                                            size='xxs'
-                                        >
-                                            <Localize i18n_default_text='Receive payment to' />
-                                        </Text>
-                                        <Text as='p' color='prominent' line_height='m' size='xxs'>
-                                            {my_profile_store.advertiser_has_payment_methods ? (
-                                                <Localize i18n_default_text='You may choose up to 3.' />
-                                            ) : (
-                                                <Localize i18n_default_text='To place an order, add one of the advertiser’s preferred payment methods:' />
-                                            )}
-                                        </Text>
-                                        <div className='buy-sell__modal--sell-payment-methods'>
-                                            {payment_method_names?.map((add_payment_method, key) => {
-                                                const matching_payment_methods =
-                                                    my_profile_store.advertiser_payment_methods_list.filter(
-                                                        pm => pm.display_name === add_payment_method
-                                                    );
-                                                return matching_payment_methods.length > 0 ? (
-                                                    matching_payment_methods.map(payment_method => (
+                                    <React.Fragment>
+                                        <div className='buy-sell__modal-payment-method'>
+                                            <Text
+                                                as='p'
+                                                className='buy-sell__modal-payment-method--title'
+                                                color='less-prominent'
+                                                line_height='m'
+                                                size='xxs'
+                                            >
+                                                <Localize i18n_default_text='Receive payment to' />
+                                            </Text>
+                                            <Text as='p' color='prominent' line_height='m' size='xxs'>
+                                                {my_profile_store.advertiser_has_payment_methods ? (
+                                                    <Localize i18n_default_text='You may choose up to 3.' />
+                                                ) : (
+                                                    <Localize i18n_default_text='To place an order, add one of the advertiser’s preferred payment methods:' />
+                                                )}
+                                            </Text>
+                                            <div className='buy-sell__modal--sell-payment-methods'>
+                                                {payment_method_names?.map((add_payment_method, key) => {
+                                                    const matching_payment_methods =
+                                                        my_profile_store.advertiser_payment_methods_list.filter(
+                                                            pm => pm.display_name === add_payment_method
+                                                        );
+                                                    return matching_payment_methods.length > 0 ? (
+                                                        matching_payment_methods.map(payment_method => (
+                                                            <PaymentMethodCard
+                                                                is_vertical_ellipsis_visible={false}
+                                                                key={key}
+                                                                medium
+                                                                onClick={() => onClickPaymentMethodCard(payment_method)}
+                                                                payment_method={payment_method}
+                                                                style={
+                                                                    selected_methods.includes(payment_method.ID)
+                                                                        ? style
+                                                                        : {}
+                                                                }
+                                                            />
+                                                        ))
+                                                    ) : (
                                                         <PaymentMethodCard
-                                                            is_vertical_ellipsis_visible={false}
+                                                            add_payment_method={add_payment_method}
+                                                            is_add={true}
                                                             key={key}
                                                             medium
-                                                            onClick={() => onClickPaymentMethodCard(payment_method)}
-                                                            payment_method={payment_method}
-                                                            style={
-                                                                selected_methods.includes(payment_method.ID)
-                                                                    ? style
-                                                                    : {}
-                                                            }
+                                                            onClickAdd={() => {
+                                                                my_profile_store.setSelectedPaymentMethodDisplayName(
+                                                                    add_payment_method
+                                                                );
+                                                                my_profile_store.setShouldShowAddPaymentMethodForm(
+                                                                    true
+                                                                );
+                                                            }}
                                                         />
-                                                    ))
-                                                ) : (
-                                                    <PaymentMethodCard
-                                                        add_payment_method={add_payment_method}
-                                                        is_add={true}
-                                                        key={key}
-                                                        medium
-                                                        onClickAdd={() => {
-                                                            my_profile_store.setSelectedPaymentMethodDisplayName(
-                                                                add_payment_method
-                                                            );
-                                                            my_profile_store.setShouldShowAddPaymentMethodForm(true);
-                                                        }}
-                                                    />
-                                                );
-                                            })}
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div className='buy-sell__modal-line' />
+                                    </React.Fragment>
                                 )}
-                                <div className='buy-sell__modal-line' />
                                 <div className='buy-sell__modal--input'>
                                     <Text color='less-prominent' size='xxs'>
                                         {localize('Enter {{transaction_type}} amount', {
@@ -351,9 +355,9 @@ const BuySellForm = props => {
                                         )}
                                     </section>
                                 </div>
-                                <div className='buy-sell__modal-line' />
                                 {buy_sell_store.is_sell_advert && (
                                     <React.Fragment>
+                                        {!payment_method_names && <div className='buy-sell__modal-line' />}
                                         {!payment_method_names && (
                                             <div className='buy-sell__modal-field--textarea'>
                                                 <Field name='payment_info'>
@@ -398,10 +402,10 @@ const BuySellForm = props => {
                                 )}
                             </div>
                         </Form>
-                    </React.Fragment>
-                );
-            }}
-        </Formik>
+                    );
+                }}
+            </Formik>
+        </React.Fragment>
     );
 };
 

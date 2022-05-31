@@ -56,7 +56,7 @@ const FormWithConfirmation = observer(
                                                         setFieldValue('need_confirmation', !values.need_confirmation)
                                                     }
                                                     defaultChecked={values.need_confirmation}
-                                                    label={localize('I have received {{amount}} {{currency}}.', {
+                                                    label={localize("I've received {{amount}} {{currency}}.", {
                                                         amount: order_information.amount * order_information.rate,
                                                         currency: order_information.local_currency,
                                                     })}

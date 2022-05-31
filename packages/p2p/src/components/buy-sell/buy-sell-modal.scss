@@ -2,14 +2,21 @@
     opacity: 1 !important;
 
     &-body {
-        padding: 1.6rem;
         position: relative;
+        display: block;
+        @include desktop {
+            padding: 1.6rem;
+        }
     }
 
     &-field {
         margin-bottom: 0 !important;
         margin-right: 0.7rem;
         flex: 1;
+
+        &--textarea {
+            padding: 1.4rem 2.4rem;
+        }
 
         @include mobile {
             margin: 0.8rem 0;
@@ -19,14 +26,13 @@
             $gap: 2.4rem;
             display: flex;
             margin: -#{$gap} 0 1.6rem -#{$gap};
+            padding: 0 2.4rem;
 
             & > * {
                 margin: $gap 0 0 $gap;
             }
 
             @include mobile {
-                flex-direction: column;
-
                 .dc-input__wrapper {
                     margin-top: 2.5rem;
                     width: 90vw;
@@ -43,6 +49,7 @@
         display: flex;
         gap: 2rem;
         flex-direction: column;
+        padding: 0 2.4rem;
         .dc-input__wrapper {
             margin-bottom: unset;
         }
@@ -55,6 +62,11 @@
 
     &-hintbox {
         margin: -2.4rem 0 2.4rem;
+        padding: 0 2.4rem;
+
+        @include mobile {
+            padding-top: 1.4rem;
+        }
 
         @include mobile {
             margin: 0 0 2.4rem;
@@ -74,11 +86,13 @@
     }
 
     &-payment-method {
+        padding: 0 2.4rem;
         &--container {
             align-self: center;
             display: flex;
             flex-direction: column;
             margin-bottom: 1.6rem;
+            padding: 0 2.4rem;
         }
 
         &--icon {
@@ -129,6 +143,10 @@
                 }
             }
         }
+    }
+
+    &--layout {
+        padding: unset;
     }
 }
 

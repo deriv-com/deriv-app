@@ -110,7 +110,7 @@ const OrderDetailsConfirmModal = ({
                             />
                         ) : (
                             <Localize
-                                i18n_default_text='I have received {{amount}} {{currency}}'
+                                i18n_default_text="I've received {{amount}} {{currency}}"
                                 values={{
                                     amount: Number(amount * rate).toFixed(2),
                                     currency: local_currency,

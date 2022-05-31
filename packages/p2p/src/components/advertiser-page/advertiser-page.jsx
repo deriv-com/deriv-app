@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loading, Text } from '@deriv/components';
+import { Dropdown, Icon, Loading, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -102,6 +102,27 @@ const AdvertiserPage = () => {
                             />
                         </div>
                     </div>
+                    <a
+                        className='advertiser-page__header-menu-dots-toggle'
+                        onClick={advertiser_page_store.setIsBlockUserModalOpen(true)}
+                    >
+                        <Icon
+                            icon={'IcHamburger'}
+                            width='16px'
+                            height='16px'
+                            className='advertiser-page__header-menu-dots-icon'
+                        />
+                        {advertiser_page_store.is_block_user_modal_open && (
+                            <div className='advertiser-page__header-dropdown'>
+                                <Dropdown
+                                    is_align_text_right
+                                    list_height='404'
+                                    name='block_user_dropdown'
+                                    value='Block'
+                                />
+                            </div>
+                        )}
+                    </a>
                 </div>
                 <AdvertiserPageStats />
             </div>

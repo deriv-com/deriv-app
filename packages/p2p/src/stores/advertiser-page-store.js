@@ -15,7 +15,7 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable api_error_message = '';
     @observable form_error_message = '';
     @observable has_more_adverts_to_load = false;
-    @observable is_block_user_modal_open = true;
+    @observable is_block_user_modal_open = false;
     @observable is_loading = true;
     @observable is_loading_adverts = true;
     @observable is_submit_disabled = true;

@@ -24,6 +24,7 @@ const ALIASES = {
     Containers: path.resolve(__dirname, '../src/containers'),
     Constants: path.resolve(__dirname, '../src/constants'),
     Images: path.resolve(__dirname, '../src/public/images'),
+    Pages: path.resolve(__dirname, '../src/pages'),
     Sass: path.resolve(__dirname, '../src/Sass'),
     Stores: path.resolve(__dirname, '../src/stores'),
     Utils: path.resolve(__dirname, '../src/utils'),
@@ -33,7 +34,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
     ...(is_test_env && !is_mocha_only
         ? [
               {
-                  test: /\.(js|jsx)$/,
+                  test: /\.(js|jsx|ts|tsx)$/,
                   exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
                   include: /src/,
                   loader: 'eslint-loader',
@@ -47,7 +48,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
           ]
         : []),
     {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
         include: is_test_env ? /__tests__|src/ : /src/,
         use: js_loaders,

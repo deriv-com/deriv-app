@@ -22,14 +22,14 @@ module.exports = function (env) {
             },
         },
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
-        entry: './index.js',
+        entry: './index.tsx',
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
             rules: rules(),
         },
         resolve: {
             alias: ALIASES,
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
             symlinks: true,
         },
         optimization: {

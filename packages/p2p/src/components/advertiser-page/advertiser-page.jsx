@@ -14,6 +14,7 @@ import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
+import BlockUserOverlay from './block-user/block-user-overlay';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();
@@ -24,6 +25,7 @@ const AdvertiserPage = () => {
         created_time,
         first_name,
         full_verification,
+        is_blocked,
         last_name,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
@@ -52,6 +54,7 @@ const AdvertiserPage = () => {
 
     return (
         <div className='advertiser-page'>
+            {!!is_blocked && <BlockUserOverlay />}
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}

@@ -4,13 +4,13 @@ import { localize } from '@deriv/translations';
 import {
     Cashier,
     Deposit,
-    Withdrawal,
     PaymentAgent,
     AccountTransfer,
     PaymentAgentTransfer,
     P2PCashier,
     OnRamp,
 } from '../containers';
+import { Withdrawal } from '../pages';
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Components/Page404.jsx')));

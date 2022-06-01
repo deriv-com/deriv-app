@@ -49,10 +49,9 @@ export const createMarkerStartTime = contract_info => {
 export const createMarkerSpotEntry = contract_info => {
     if (!contract_info.entry_tick_time) return false;
 
-    const marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
     const entry_tick = contract_info.entry_tick_display_value;
 
-    return createMarkerConfig(marker_type, contract_info.entry_tick_time, entry_tick);
+    return createMarkerConfig(MARKER_TYPES_CONFIG.SPOT_ENTRY.type, contract_info.entry_tick_time, entry_tick);
 };
 
 export const createMarkerSpotExit = (contract_info, tick, idx) => {

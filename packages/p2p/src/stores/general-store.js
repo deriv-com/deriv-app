@@ -222,7 +222,9 @@ export default class GeneralStore extends BaseStore {
                     // Second priority: If user is blocked, don't bother asking them to submit FA.
                     this.setIsBlocked(true);
                 }
-            } else if (is_blocked_for_pa) {
+            }
+
+            if (is_blocked_for_pa) {
                 this.setIsP2pBlockedForPa(true);
             }
 

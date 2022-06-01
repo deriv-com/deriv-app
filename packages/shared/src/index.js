@@ -24,3 +24,4 @@ export * from './utils/string';
 export * from './utils/url';
 export * from './utils/validation';
 export * from './services';
+export * from './utils/loader-handler';

@@ -18,9 +18,13 @@ const Timeline = ({ children, ...props }) => {
             {children.map((child, idx) => (
                 <div
                     key={idx}
-                    className={classNames('dc-timeline__flex', {
-                        'dc-timeline__flex--no-border': children.length === idx + 1,
-                    })}
+                    className={classNames(
+                        'dc-timeline__flex',
+                        {
+                            'dc-timeline__flex--no-border': children.length === idx + 1,
+                        },
+                        `${props.inactive_items?.includes(idx + 1) ? 'inactive' : ''}`
+                    )}
                 >
                     <Oval>{idx + 1}</Oval>
                     <div className='dc-timeline__container'>

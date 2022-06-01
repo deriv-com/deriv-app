@@ -31,7 +31,7 @@ import FormBodySection from 'Components/form-body-section';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import LeaveConfirm from 'Components/leave-confirm';
-import FileUploaderContainer from 'Components/file-uploader-container';
+import { FileUploaderContainer } from 'Components/file-uploader-container';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {

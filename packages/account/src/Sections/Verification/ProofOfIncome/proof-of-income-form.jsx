@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     Autocomplete,
-    Loading,
     Button,
     DesktopWrapper,
     MobileWrapper,
@@ -16,27 +15,20 @@ import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import LoadErrorMessage from 'Components/load-error-message';
-import FileUploaderContainer from 'Components/file-uploader-container';
+import { FileUploaderContainer } from 'Components/file-uploader-container';
 
 let file_uploader_ref = null;
 
 const ProofOfIncomeForm = ({
     addNotificationByKey,
-    // fetchPoIncDocumentsList,
     removeNotificationByKey,
     removeNotificationMessage,
     poinc_documents_list,
     onSubmit,
 }) => {
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
-    const [is_loading, setIsLoading] = React.useState(true);
+    const [inactive_items, setInactiveItems] = React.useState([2]);
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
-
-    React.useEffect(() => {
-        // fetchPoIncDocumentsList().then(() => {
-        setIsLoading(false);
-        // });
-    }, []);
 
     const initial_form_values = {
         document_input: '',
@@ -47,9 +39,15 @@ const ProofOfIncomeForm = ({
         const { document_input } = values;
 
         if (!document_input) {
+            setInactiveItems([2]);
             errors.document_input = localize('This field is required.');
         } else if (!poinc_documents_list.find(c => c.text === document_input)) {
+            setInactiveItems([2]);
             errors.document_input = localize('This field is required.');
+        }
+
+        if (!errors.document_input) {
+            setInactiveItems([]);
         }
 
         return errors;
@@ -65,6 +63,7 @@ const ProofOfIncomeForm = ({
         WS.setSettings(values).then(data => {
             if (!data.error) {
                 setStatus({ msg: data.error.message });
+                setSubmitting(false);
             } else {
                 // force request to update settings cache since settings have been updated
                 WS.authorized.storage
@@ -72,9 +71,7 @@ const ProofOfIncomeForm = ({
                     .then(({ error }) => {
                         if (error) {
                             setAPIInitialLoadError(error.message);
-                            return;
                         }
-                        setIsLoading(false);
                     })
                     .then(() => {
                         // upload files
@@ -89,16 +86,15 @@ const ProofOfIncomeForm = ({
                                             setAPIInitialLoadError(error.message);
                                             return;
                                         }
-                                        const { proof_of_income, needs_verification } =
-                                            get_account_status.authentication;
-                                        const has_poinc = !(proof_of_income && proof_of_income.status === 'none');
+                                        const { income, needs_verification } = get_account_status.authentication;
                                         const needs_poinc =
-                                            needs_verification.length && needs_verification.includes('proof_of_income');
-                                        onSubmit({ has_poinc });
+                                            needs_verification.includes('income') &&
+                                            ['rejected', 'none'].includes(income?.status);
                                         removeNotificationMessage({ key: 'authenticate' });
                                         removeNotificationByKey({ key: 'authenticate' });
                                         removeNotificationMessage({ key: 'needs_poinc' });
                                         removeNotificationByKey({ key: 'needs_poinc' });
+                                        onSubmit();
                                         if (needs_poinc) {
                                             addNotificationByKey('needs_poinc');
                                         }
@@ -120,13 +116,11 @@ const ProofOfIncomeForm = ({
         return <LoadErrorMessage error_message={api_initial_load_error} />;
     }
 
-    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-
     return (
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
             {({ values, errors, status, touched, handleChange, handleSubmit, isSubmitting, setFieldValue }) => (
                 <form noValidate /* className='account-form' */ onSubmit={handleSubmit}>
-                    <Timeline>
+                    <Timeline inactive_items={inactive_items}>
                         <Timeline.Item>
                             {/* <fieldset className='account-form__fieldset'> */}
                             <fieldset>
@@ -176,7 +170,7 @@ const ProofOfIncomeForm = ({
                                 </Field>
                             </fieldset>
                         </Timeline.Item>
-                        <Timeline.Item>
+                        <Timeline.Item inactive='inactive here'>
                             <FileUploaderContainer
                                 onRef={ref => (file_uploader_ref = ref)}
                                 onFileDrop={df =>
@@ -201,6 +195,7 @@ const ProofOfIncomeForm = ({
                                 (document_file.files && document_file.files.length < 1) ||
                                 !!document_file.error_message
                             }
+                            is_loading={isSubmitting}
                             has_effect
                             text={localize('Save and submit')}
                             primary

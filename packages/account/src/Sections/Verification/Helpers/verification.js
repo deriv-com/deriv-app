@@ -1,13 +1,12 @@
 export const populateVerificationStatus = account_status => {
-    // need add verification for poinc statuses, need to know fileds name in BE response
-
-    const { attempts, document, identity, needs_verification, proof_of_income } = account_status.authentication;
+    const { attempts, document, identity, needs_verification, income } = account_status.authentication;
     const has_poa = !(document && document.status === 'none');
     const has_poi = !(identity && identity.status === 'none');
-    const has_poinc = !(proof_of_income && proof_of_income.status === 'none');
+    const has_poinc = !(income && income.status === 'none'); /* not sure if we need it */
     const needs_poa = needs_verification.length && needs_verification.includes('document');
     const needs_poi = needs_verification.length && needs_verification.includes('identity');
-    const needs_poinc = needs_verification.length && needs_verification.includes('proof_of_income');
+    // const needs_poinc = needs_verification.length && needs_verification.includes('income');
+    const needs_poinc = true;
 
     // const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
     const allow_document_upload = true;
@@ -19,8 +18,8 @@ export const populateVerificationStatus = account_status => {
 
     const identity_status = identity.status;
     const document_status = document.status;
-    // const proof_of_income_status = proof_of_income.status;
-    const proof_of_income_status = 'none'; /* temporary */
+    // const income_status = income.status;
+    const income_status = 'none'; /* temporary */
 
     const { idv, onfido, manual } = identity.services;
     const identity_last_attempt = attempts.latest;
@@ -37,7 +36,7 @@ export const populateVerificationStatus = account_status => {
         identity_last_attempt,
         identity_status,
         document_status,
-        proof_of_income_status,
+        income_status,
         idv,
         is_age_verified,
         is_idv_disallowed,

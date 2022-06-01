@@ -17,6 +17,7 @@ const ALL_LANGUAGES = Object.freeze({
     KO: 'Korean',
     MS: 'Malaysian',
     PL: 'Polish',
+    PT: 'Portugal',
     RU: 'Russian',
     TA: 'Tamil',
     ZH: 'Chinese',

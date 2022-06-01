@@ -57,16 +57,18 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     };
 
     const BuySellFormError = () => (
-        <HintBox
-            className='buy-sell__modal-danger'
-            icon='IcAlertDanger'
-            message={
-                <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                    {generateErrorMessage()}
-                </Text>
-            }
-            is_danger
-        />
+        <div className='buy-sell__modal--error-message'>
+            <HintBox
+                className='buy-sell__modal-danger'
+                icon='IcAlertDanger'
+                message={
+                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                        {generateErrorMessage()}
+                    </Text>
+                }
+                is_danger
+            />
+        </div>
     );
 
     const onCancel = () => {

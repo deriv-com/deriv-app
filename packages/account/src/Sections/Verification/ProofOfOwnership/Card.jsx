@@ -29,13 +29,17 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
         >
             <div className='proof-of-ownership__card-item' onClick={onClick}>
                 <Icon
-                    icon={paymentMethodConfig[card.payment_method]?.icon || paymentMethodConfig.other.icon}
+                    icon={
+                        paymentMethodConfig[card.payment_method.replaceAll('_', '').replaceAll(' ', '').toLowerCase()]
+                            ?.icon || paymentMethodConfig.other.icon
+                    }
                     className='proof-of-ownership__card-item-logo'
                     width={64}
                     height={58}
                 />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {card?.payment_method || 'Payment method'} {/** TODO: || method is temporary, should be removed */}
+                    {paymentMethodConfig[card?.payment_method.replaceAll('_', '').replaceAll(' ', '').toLowerCase()]
+                        ?.title || 'Payment method'}
                 </Text>
                 <Button
                     id='proof-of-ownership'
@@ -48,7 +52,11 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
             </div>
             {is_open && (
                 <ExpandedCard
-                    cardDetails={paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other}
+                    cardDetails={
+                        paymentMethodConfig[
+                            card.payment_method.replaceAll('_', '').replaceAll(' ', '').toLowerCase()
+                        ] ?? paymentMethodConfig.other
+                    }
                     identifier={card.payment_method_identifier}
                     handleChange={handleChange}
                     handleBlur={handleBlur}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dropdown, Icon, Loading, Text } from '@deriv/components';
-import { daysSince, isMobile } from '@deriv/shared';
+import { daysSince, isDesktop, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
@@ -13,10 +13,38 @@ import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
+import BlockUserModal from './block-user/block-user-modal.jsx';
 import './advertiser-page.scss';
+
+const AdvertiserPageDropdown = ({ is_dropdown_visible, onViewBlockModal, onViewDropdown }) => {
+    return (
+        <div className='advertiser-page__menu-dots-toggle'>
+            <Icon
+                icon={'IcMenuDots'}
+                width='16px'
+                height='16px'
+                className='advertiser-page__menu-dots-icon'
+                onClick={onViewDropdown}
+            />
+            {is_dropdown_visible && (
+                <div className='advertiser-page__dropdown' onClick={onViewBlockModal}>
+                    <Dropdown
+                        is_align_text_right
+                        list={['Block']}
+                        name={'block_user_dropdown'}
+                        placeholder={localize('Block')}
+                        value={'Block'}
+                    />
+                </div>
+            )}
+        </div>
+    );
+};
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();
+
+    const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
 
     const {
         basic_verification,
@@ -26,12 +54,14 @@ const AdvertiserPage = () => {
         full_verification,
         last_name,
         sell_orders_count,
+        is_blocked,
     } = advertiser_page_store.advertiser_info;
 
     const joined_since = daysSince(created_time);
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
+        setIsDropdownVisible(false);
 
         return reaction(
             () => advertiser_page_store.active_index,
@@ -50,19 +80,33 @@ const AdvertiserPage = () => {
         return <div className='advertiser-page__error'>{advertiser_page_store.error_message}</div>;
     }
 
+    const onCancel = () => {
+        advertiser_page_store.setIsBlockUserModalOpen(false);
+    };
+
     return (
         <div className='advertiser-page'>
+            <BlockUserModal is_advertiser_blocked={is_blocked} onCancel={onCancel} />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}
                 setShouldShowPopup={advertiser_page_store.setShowAdPopup}
                 table_type={advertiser_page_store.counterparty_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL}
             />
-            <PageReturn
-                className='buy-sell__advertiser-page-return'
-                onClick={buy_sell_store.hideAdvertiserPage}
-                page_title={localize("Advertiser's page")}
-            />
+            <div className='advertiser-page__page-return-header'>
+                <PageReturn
+                    className='buy-sell__advertiser-page-return'
+                    onClick={buy_sell_store.hideAdvertiserPage}
+                    page_title={localize("Advertiser's page")}
+                />
+                {isMobile() && (
+                    <AdvertiserPageDropdown
+                        is_dropdown_visible={isDropdownVisible}
+                        onViewBlockModal={() => advertiser_page_store.setIsBlockUserModalOpen(true)}
+                        onViewDropdown={() => setIsDropdownVisible(prevState => !prevState)}
+                    />
+                )}
+            </div>
             <div className='advertiser-page-details-container'>
                 <div className='advertiser-page__header-details'>
                     <UserAvatar
@@ -102,27 +146,13 @@ const AdvertiserPage = () => {
                             />
                         </div>
                     </div>
-                    <a
-                        className='advertiser-page__header-menu-dots-toggle'
-                        onClick={advertiser_page_store.setIsBlockUserModalOpen(true)}
-                    >
-                        <Icon
-                            icon={'IcHamburger'}
-                            width='16px'
-                            height='16px'
-                            className='advertiser-page__header-menu-dots-icon'
+                    {isDesktop() && (
+                        <AdvertiserPageDropdown
+                            is_dropdown_visible={isDropdownVisible}
+                            onViewBlockModal={() => advertiser_page_store.setIsBlockUserModalOpen(true)}
+                            onViewDropdown={() => setIsDropdownVisible(prevState => !prevState)}
                         />
-                        {advertiser_page_store.is_block_user_modal_open && (
-                            <div className='advertiser-page__header-dropdown'>
-                                <Dropdown
-                                    is_align_text_right
-                                    list_height='404'
-                                    name='block_user_dropdown'
-                                    value='Block'
-                                />
-                            </div>
-                        )}
-                    </a>
+                    )}
                 </div>
                 <AdvertiserPageStats />
             </div>

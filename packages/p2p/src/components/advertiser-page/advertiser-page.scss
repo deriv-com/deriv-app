@@ -3,6 +3,37 @@
     display: flex;
     flex-direction: column;
 
+    &__dropdown {
+        box-shadow: 0 0 2rem rgba(0, 0, 0, 0.06);
+        position: absolute;
+        right: 0;
+        cursor: pointer;
+
+        .dc-dropdown-container {
+            margin-top: 0;
+        }
+    }
+
+    &__menu-dots-icon {
+        cursor: pointer;
+        margin-bottom: 0.8rem;
+    }
+
+    &__menu-dots-toggle {
+        position: absolute;
+        right: 2.4rem;
+
+        @include mobile {
+            right: 1.2rem;
+            bottom: 0.8rem;
+        }
+    }
+
+    &__page-return-header {
+        display: flex;
+        position: relative;
+    }
+
     &__header {
         display: flex;
         flex-direction: column;

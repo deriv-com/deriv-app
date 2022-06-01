@@ -9,6 +9,7 @@ const DEFAULT_LANGUAGE = 'EN';
 const ALL_LANGUAGES = Object.freeze({
     AR: 'Arabic',
     DE: 'German',
+    EN: 'English',
     ES: 'Spanish',
     FA: 'Persian',
     FR: 'French',

@@ -15,7 +15,7 @@ const MyAdsFloatingRateSwitchModal = () => {
 
     return (
         <React.Fragment>
-            <Modal is_open={my_ads_store.is_switch_modal_open} toggleModal={handleOnClick} width='440px'>
+            <Modal is_open={my_ads_store.is_switch_modal_open} toggleModal={handleOnClick} small>
                 <Modal.Body>
                     {floating_rate_store.rate_type === ad_type.FLOAT ? (
                         <Localize i18n_default_text='Set a floating rate for your ad.' />

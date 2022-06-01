@@ -13,8 +13,3 @@ export const buildBarriersConfig = (contract, barriers = { count: contract.barri
         [contract.expiry_type]: obj_barrier,
     });
 };
-
-export const getBarrierPipSize = barrier => {
-    if (Math.floor(barrier) === barrier || barrier.length < 1 || barrier % 1 === 0 || isNaN(barrier)) return 0;
-    return barrier.toString().split('.')[1].length || 0;
-};

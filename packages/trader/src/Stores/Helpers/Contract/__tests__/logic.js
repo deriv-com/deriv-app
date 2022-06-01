@@ -3,58 +3,6 @@ import React from 'react';
 import * as Logic from '../logic';
 
 describe('logic', () => {
-    describe('isSoldBeforeStart', () => {
-        it('should return true when sell_time is before date_start', () => {
-            const contract_info = {
-                sell_time: 1000000,
-                date_start: 1000001,
-            };
-            expect(Logic.isSoldBeforeStart(contract_info)).to.eql(true);
-        });
-        it('should return true when sell_time is after date_start', () => {
-            const contract_info = {
-                sell_time: 1000000,
-                date_start: 99999,
-            };
-            expect(Logic.isSoldBeforeStart(contract_info)).to.eql(false);
-        });
-    });
-
-    describe('isStarted', () => {
-        it('should return true if contract is not forward_starting and current_spot_time is after start_time', () => {
-            const contract_info = {
-                is_forward_starting: false,
-                current_spot_time: 1000000,
-                date_start: 99999,
-            };
-            expect(Logic.isStarted(contract_info)).to.eql(true);
-        });
-        it('should return true if contract is not forward_starting and current_spot_time is before start_time', () => {
-            const contract_info = {
-                is_forward_starting: false,
-                current_spot_time: 99999,
-                date_start: 1000000,
-            };
-            expect(Logic.isStarted(contract_info)).to.eql(true);
-        });
-        it('should return true if contract is forward_starting and current_spot_time is after start_time', () => {
-            const contract_info = {
-                is_forward_starting: true,
-                current_spot_time: 1000000,
-                date_start: 99999,
-            };
-            expect(Logic.isStarted(contract_info)).to.eql(true);
-        });
-        it('should return false if contract is forward_starting and current_spot_time is before start_time', () => {
-            const contract_info = {
-                is_forward_starting: true,
-                current_spot_time: 99999,
-                date_start: 1000000,
-            };
-            expect(Logic.isStarted(contract_info)).to.eql(false);
-        });
-    });
-
     describe('getEndTime', () => {
         it('Should return exit tick time for tick contracts', () => {
             const contract_info = {

@@ -1,5 +1,5 @@
-$header-height-offset: 23.8rem !default;
-$mobile-header-height-offset: 17.2rem !default;
+$header-height-offset: 23.8rem;
+$mobile-header-height-offset: 17.1rem;
 
 .block-user-overlay {
     align-items: center;
@@ -24,11 +24,11 @@ $mobile-header-height-offset: 17.2rem !default;
         width: 100%;
     }
 
-    &--text {
+    &__text {
         margin: 2.5rem 0 0.8rem;
     }
 
-    &--button {
+    &__button {
         margin-top: 2rem;
     }
 }

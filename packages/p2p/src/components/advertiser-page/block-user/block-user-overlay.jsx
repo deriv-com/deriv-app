@@ -11,14 +11,14 @@ const BlockUserOverlay = () => {
     return (
         <div className='block-user-overlay'>
             <Icon icon='IcBlockedUser' height={159} width={256} />
-            <Text className='block-user-overlay--text' line_height='m' size='s' weight='bold'>
+            <Text className='block-user-overlay__text' line_height='m' size='s' weight='bold'>
                 <Localize
                     i18n_default_text='You have blocked {{advertiser_name}}.'
                     values={{ advertiser_name: advertiser_page_store.advertiser_details_name }}
                 />
             </Text>
             {/* TODO: Show Unblock confirmation modal when user clicks on this button */}
-            <Button className='block-user-overlay--button' secondary onClick={() => true} large>
+            <Button className='block-user-overlay__button' secondary onClick={() => true} large>
                 {localize('Unblock')}
             </Button>
         </div>

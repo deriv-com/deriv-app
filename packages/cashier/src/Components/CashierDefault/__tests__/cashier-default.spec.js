@@ -158,8 +158,8 @@ describe('<CashierDefault />', () => {
         );
         fireEvent.click(deposit_crypto_detail_div);
 
-        // expect(props.setDepositTarget).toHaveBeenCalledBefore(props.openRealAccountSignup);
-        //expect(props.openRealAccountSignup).toHaveBeenCalledBefore(props.shouldNavigateAfterChooseCrypto);
+        expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
         expect(props.shouldNavigateAfterChooseCrypto).toHaveBeenCalledTimes(1);
     });
 
@@ -191,8 +191,8 @@ describe('<CashierDefault />', () => {
         );
         fireEvent.click(buy_crypto_onramp_detail_div);
 
-        //expect(props.setDepositTarget).toHaveBeenCalledBefore(props.openRealAccountSignup);
-        //expect(props.openRealAccountSignup).toHaveBeenCalledBefore(props.shouldNavigateAfterChooseCrypto);
+        expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
         expect(props.shouldNavigateAfterChooseCrypto).toHaveBeenCalledTimes(1);
     });
 
@@ -211,8 +211,8 @@ describe('<CashierDefault />', () => {
         );
         fireEvent.click(deposit_via_pa_detail_div);
 
-        //expect(props.setShouldShowAllAvailableCurrencies).toHaveBeenCalledBefore(props.setDepositTarget);
-        //expect(props.setDepositTarget).toHaveBeenCalledBefore(props.openRealAccountSignup);
+        expect(props.setShouldShowAllAvailableCurrencies).toHaveBeenCalledTimes(1);
+        expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
     });
 

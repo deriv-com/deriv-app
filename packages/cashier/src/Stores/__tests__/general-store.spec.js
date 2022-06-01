@@ -100,11 +100,9 @@ beforeEach(() => {
 });
 
 describe('GeneralStore', () => {
-    it('should call setHasSetCurrency and attachCashierToMenu methods from "when" reaction if is_logged_in is equal to true', () => {
-        const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
-        const spyAttachCashierToMenu = jest.spyOn(general_store, 'attachCashierToMenu');
-
-        //expect(spyAttachCashierToMenu).toHaveBeenCalledAfter(spySetHasSetCurrency);
+    it('should set has_set_currency equal to true and attach cashier menu with proper data, if "when" reaction was called in constructor', () => {
+        expect(general_store.has_set_currency).toBeTruthy();
+        expect(general_store.root_store.menu.attach).toHaveBeenCalledWith(cashier_menu);
     });
 
     it('should set function on remount', () => {
@@ -312,17 +310,18 @@ describe('GeneralStore', () => {
         expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith('/cashier/payment-agent');
     });
 
-    it('should perform proper setAccountSwitchListener invocation', () => {
+    it('should trigger proper callbacks when setAccountSwitchListener was called', () => {
         const spyDisposeSwitchAccount = jest.spyOn(general_store, 'disposeSwitchAccount');
         const spyOnSwitchAccount = jest.spyOn(general_store, 'onSwitchAccount');
         general_store.setAccountSwitchListener();
 
         expect(spyDisposeSwitchAccount).toHaveBeenCalledTimes(1);
-        // expect(spyOnSwitchAccount).toHaveBeenCalledAfter(spyDisposeSwitchAccount);
+        expect(spyOnSwitchAccount).toHaveBeenCalledTimes(1);
         expect(spyOnSwitchAccount).toHaveBeenCalledWith(general_store.accountSwitcherListener);
     });
 
     it('should perform proper init invocation when is_logged_in is equal to true', async () => {
+        const { cashier } = general_store.root_store.modules;
         const spyGetAdvertizerError = jest.spyOn(general_store, 'getAdvertizerError');
         const spyCheckP2pStatus = jest.spyOn(general_store, 'checkP2pStatus');
         general_store.root_store.client.is_logged_in = true;
@@ -333,10 +332,8 @@ describe('GeneralStore', () => {
         });
         expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
         expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
-        expect(general_store.root_store.modules.cashier.account_prompt_dialog.resetLastLocation).toHaveBeenCalledTimes(
-            1
-        );
-        expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
+        expect(cashier.account_prompt_dialog.resetLastLocation).toHaveBeenCalledTimes(1);
+        expect(cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
     });
 
     it('should set advertiser error', async () => {

@@ -32,7 +32,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         entry_tick_time,
         exit_tick_time,
         profit,
-        purchase_time,
+        date_start,
         tick_count,
         transaction_ids: { buy, sell } = {},
     } = contract_info;
@@ -105,8 +105,8 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                 <ContractAuditItem
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}
-                    label={localize('Start time')}
-                    value={toGMTFormat(epochToMoment(purchase_time)) || ' - '}
+                    label={localize('Purchase time')}
+                    value={toGMTFormat(epochToMoment(date_start)) || ' - '}
                 />
                 <ContractAuditItem
                     id='dt_entry_spot_label'

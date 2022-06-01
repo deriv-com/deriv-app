@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 
-const EditAdCancelModal = ({ handleCancelEdit, is_open }) => {
+const EditAdCancelModal = ({ onClick, is_open }) => {
     return (
         <Modal has_close_icon={false} is_open={is_open} small title={localize('Cancel your edits?')}>
             <Modal.Body>
@@ -12,14 +12,8 @@ const EditAdCancelModal = ({ handleCancelEdit, is_open }) => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button has_effect text={localize('Cancel')} onClick={() => handleCancelEdit(true)} secondary large />
-                <Button
-                    has_effect
-                    text={localize("Don't cancel")}
-                    onClick={() => handleCancelEdit(false)}
-                    primary
-                    large
-                />
+                <Button has_effect text={localize('Cancel')} onClick={() => onClick(true)} secondary large />
+                <Button has_effect text={localize("Don't cancel")} onClick={() => onClick(false)} primary large />
             </Modal.Footer>
         </Modal>
     );
@@ -27,7 +21,7 @@ const EditAdCancelModal = ({ handleCancelEdit, is_open }) => {
 
 EditAdCancelModal.propTypes = {
     is_open: PropTypes.bool,
-    handleCancelEdit: PropTypes.func,
+    onClick: PropTypes.func,
 };
 
 export default EditAdCancelModal;

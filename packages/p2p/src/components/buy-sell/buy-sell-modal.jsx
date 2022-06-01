@@ -4,6 +4,7 @@ import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState, Hin
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
+import { api_error_codes } from 'Constants/api-error-codes.js';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
@@ -46,31 +47,27 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         />
     );
 
-    const BuySellFormError = () => {
-        return buy_sell_store.form_error_code === 'OrderAlreadyExists' ? (
-            <HintBox
-                className='buy-sell__modal-danger'
-                icon='IcAlertDanger'
-                message={
-                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        {error_message}
-                    </Text>
-                }
-                is_danger
-            />
-        ) : (
-            <HintBox
-                className='buy-sell__modal-danger'
-                icon='IcAlertDanger'
-                message={
-                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
-                    </Text>
-                }
-                is_danger
-            />
-        );
+    const generateErrorMessage = () => {
+        if (buy_sell_store.form_error_code === api_error_codes.INSUFFICIENT_BALANCE) {
+            return (
+                <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+            );
+        }
+        return error_message;
     };
+
+    const BuySellFormError = () => (
+        <HintBox
+            className='buy-sell__modal-danger'
+            icon='IcAlertDanger'
+            message={
+                <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                    {generateErrorMessage()}
+                </Text>
+            }
+            is_danger
+        />
+    );
 
     const onCancel = () => {
         setShouldShowPopup(false);

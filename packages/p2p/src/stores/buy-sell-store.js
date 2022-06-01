@@ -2,6 +2,7 @@ import { action, computed, observable, reaction } from 'mobx';
 import { formatMoney, getDecimalPlaces, getRoundedNumber, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import { api_error_codes } from 'Constants/api-error-codes.js';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
@@ -178,12 +179,14 @@ export default class BuySellStore extends BaseStore {
 
         if (order.error) {
             this.form_props.setErrorMessage(order.error.message);
-            this.setShouldShowPopup(false);
             this.setFormErrorCode(order.error.code);
             // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
-            setTimeout(() => {
-                this.setShowRateChangePopup(true);
-            }, 250);
+            if (order.error.code === api_error_codes.MARKET_RATE_CHANGE) {
+                this.setShouldShowPopup(false);
+                setTimeout(() => {
+                    this.setShowRateChangePopup(true);
+                }, 250);
+            }
         } else {
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);

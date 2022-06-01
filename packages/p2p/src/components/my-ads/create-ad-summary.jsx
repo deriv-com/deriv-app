@@ -40,7 +40,7 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
             <Text key={0} weight='bold' size='xs' color='status-info-blue' />,
             <Text key={1} weight='normal' size='xs' color='status-info-blue' />,
         ];
-        const values = { target_amount: display_offer_amount, target_currency: currency };
+        const values = { target_amount: parseFloat(display_offer_amount), target_currency: currency };
         if (price_rate) {
             Object.assign(values, {
                 local_amount: display_total,

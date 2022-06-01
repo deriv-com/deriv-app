@@ -1,8 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Checkbox, Text } from '@deriv/components';
-import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext, LocalStore, isMobile } from '@deriv/shared';
-// eslint-disable-next-line import/extensions
+import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext, LocalStore } from '@deriv/shared';
 
 const InputField = props => {
     return (
@@ -63,7 +62,7 @@ const Endpoint = () => {
             }}
         >
             {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched }) => (
-                <Form style={{ width: '30vw', minWidth: '300px', margin: isMobile() ? 'auto' : '20vh auto' }}>
+                <Form style={{ width: '30vw', minWidth: '300px', margin: '20vh auto' }}>
                     <div
                         style={{
                             marginBottom: '1.6rem',

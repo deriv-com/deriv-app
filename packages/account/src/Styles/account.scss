@@ -2259,7 +2259,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
-/* stylelint-enable */
 
 /** @define file uploader */
 .file-uploader {
@@ -2458,6 +2457,13 @@ $MIN_HEIGHT_FLOATING: calc(
             height: auto;
         }
     }
+}
+.expand {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.organise {
+    grid-column: 2;
 }
 
 /* stylelint-enable */

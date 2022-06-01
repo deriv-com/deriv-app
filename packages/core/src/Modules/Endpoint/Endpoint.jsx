@@ -2,7 +2,6 @@ import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Checkbox, Text } from '@deriv/components';
 import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext, LocalStore, isMobile } from '@deriv/shared';
-// eslint-disable-next-line import/extensions
 
 const InputField = props => {
     return (

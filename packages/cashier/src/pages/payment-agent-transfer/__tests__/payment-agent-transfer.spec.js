@@ -22,7 +22,9 @@ jest.mock('@deriv/components', () => {
 jest.mock('Components/Error/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 jest.mock('Components/Error/error', () => jest.fn(() => 'mockedError'));
 jest.mock('Components/Error/no-balance', () => jest.fn(() => 'mockedNoBalance'));
-jest.mock('Pages/payment-agent-transfer/payment-agent-transfer-form', () => jest.fn(() => 'mockedPaymentAgentTransferForm'));
+jest.mock('Pages/payment-agent-transfer/payment-agent-transfer-form', () =>
+    jest.fn(() => 'mockedPaymentAgentTransferForm')
+);
 jest.mock('Pages/payment-agent-transfer/payment-agent-transfer-confirm', () =>
     jest.fn(() => 'mockedPaymentAgentTransferConfirm')
 );

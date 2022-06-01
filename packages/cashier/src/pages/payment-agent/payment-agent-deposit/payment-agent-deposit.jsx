@@ -8,7 +8,6 @@ import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details';
 
-
 const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, selected_bank, supported_banks }) => {
     const list_with_default = [
         { text: <Localize i18n_default_text='All payment agents' />, value: 0 },

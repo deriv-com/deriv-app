@@ -1,3 +1,3 @@
 import PaymentAgentReceipt from './payment-agent-receipt';
 
-export default PaymentAgentReceipt ;
+export default PaymentAgentReceipt;

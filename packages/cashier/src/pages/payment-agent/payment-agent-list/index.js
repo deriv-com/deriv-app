@@ -1,3 +1,3 @@
 import PaymentAgentList from './payment-agent-list';
 
-export default PaymentAgentList ;
+export default PaymentAgentList;

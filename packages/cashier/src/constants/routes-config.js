@@ -1,14 +1,7 @@
 import React from 'react';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import {
-    Cashier,
-    Deposit,
-    Withdrawal,
-    AccountTransfer,
-    P2PCashier,
-    OnRamp,
-} from '../containers';
+import { Cashier, Deposit, Withdrawal, AccountTransfer, P2PCashier, OnRamp } from '../containers';
 
 import { PaymentAgent, PaymentAgentTransfer } from '../pages';
 // Error Routes

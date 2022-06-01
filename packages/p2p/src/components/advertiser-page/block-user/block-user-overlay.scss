@@ -8,7 +8,7 @@ $mobile-header-height-offset: 17.1rem;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - #{$header-height-offset} - 5.8rem);
+    height: calc(88rem - #{$header-height-offset} - 5.8rem);
     justify-content: center;
     position: fixed;
     opacity: 0.9;
@@ -20,7 +20,7 @@ $mobile-header-height-offset: 17.1rem;
         top: #{$mobile-header-height-offset};
         border: none;
         border-radius: unset;
-        height: calc(100vh - #{$mobile-header-height-offset});
+        height: calc(67rem - #{$mobile-header-height-offset});
         width: 100%;
     }
 

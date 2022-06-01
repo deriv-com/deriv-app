@@ -4,8 +4,8 @@ import { Button, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { withRouter } from 'react-router-dom';
-import Error from './error.jsx';
-import 'Sass/payment-agent-withdrawal-locked.scss';
+import Error from 'Components/Error/error.jsx';
+import './payment-agent-withdrawal-locked.scss';
 
 const PaymentAgentWithdrawalLockedItem = ({ item }) => {
     return (

@@ -4,11 +4,11 @@ import { Loading, Tabs, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import EmailSent from './Email/email-sent.jsx';
-import PaymentAgentDeposit from './Form/payment-agent-deposit.jsx';
-import PaymentAgentWithdrawForm from './Form/payment-agent-withdraw-form.jsx';
-import PaymentAgentWithdrawalLocked from './Error/payment-agent-withdrawal-locked.jsx';
-import 'Sass/payment-agent-list.scss';
+import EmailSent from 'Components/Email/email-sent.jsx';
+import PaymentAgentDeposit from '../payment-agent-deposit';
+import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
+import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
+import './payment-agent-list.scss';
 
 const PaymentAgentList = ({
     error,

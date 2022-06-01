@@ -5,13 +5,12 @@ import {
     Cashier,
     Deposit,
     Withdrawal,
-    PaymentAgent,
     AccountTransfer,
-    PaymentAgentTransfer,
     P2PCashier,
     OnRamp,
 } from '../containers';
 
+import { PaymentAgent, PaymentAgentTransfer } from '../pages';
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Components/Page404.jsx'));
 

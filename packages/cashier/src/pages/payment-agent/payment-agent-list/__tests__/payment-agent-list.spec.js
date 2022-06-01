@@ -10,10 +10,10 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('Components/Error/payment-agent-withdrawal-locked', () => () => <div>PaymentAgentWithdrawalLocked</div>);
+jest.mock('Pages/payment-agent/payment-agent-withdrawal-locked', () => () => <div>PaymentAgentWithdrawalLocked</div>);
 jest.mock('Components/Email/email-sent', () => () => <div>The email has been sent!</div>);
-jest.mock('Components/Form/payment-agent-withdraw-form', () => () => <div>Payment agent withdraw form</div>);
-jest.mock('Components/Form/payment-agent-deposit', () => () => <div>Payment agent deposit</div>);
+jest.mock('Pages/payment-agent/payment-agent-withdraw-form', () => () => <div>Payment agent withdraw form</div>);
+jest.mock('Pages/payment-agent/payment-agent-deposit', () => () => <div>Payment agent deposit</div>);
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

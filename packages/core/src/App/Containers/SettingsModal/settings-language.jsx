@@ -39,7 +39,6 @@ const LanguageLink = ({ lang }) => (
 
 const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSettingsModal }) => {
     const { i18n } = useTranslation();
-
     return (
         <div className='settings-language'>
             <div className='settings-language__language-header'>

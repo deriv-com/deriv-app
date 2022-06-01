@@ -2,42 +2,27 @@ import React from 'react';
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { isProduction } from '../../../shared/src/utils/config/config';
 import withI18n from '../components';
 
 const LANGUAGE_KEY = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
 const ALL_LANGUAGES = Object.freeze({
-    ACH: 'Translations',
-    EN: 'English',
-    ES: 'Español',
-    FR: 'Français',
-    ID: 'Indonesia',
-    IT: 'Italiano',
+    AR: 'Arabic',
+    DE: 'German',
+    ES: 'Spanish',
+    FA: 'Persian',
+    FR: 'French',
+    ID: 'Indonesian',
+    IT: 'Italian',
+    KO: 'Korean',
+    MS: 'Malaysian',
     PL: 'Polish',
-    PT: 'Português',
-    RU: 'Русский',
-    VI: 'Tiếng Việt',
-    ZH_CN: '简体中文',
-    ZH_TW: '繁體中文',
+    RU: 'Russian',
+    TA: 'Tamil',
+    ZH: 'Chinese',
 });
 
-export const getAllowedLanguages = () => {
-    const allowed_languages = { EN: 'English', ID: 'Indonesia', PT: 'Português', ES: 'Español' };
-    const exclude_languages = ['ACH'];
-    // TODO Change language_list to const when languages are available in prod.
-    let language_list = Object.keys(getAllLanguages())
-        .filter(key => !exclude_languages.includes(key))
-        .reduce((obj, key) => {
-            obj[key] = getAllLanguages()[key];
-            return obj;
-        }, {});
-
-    // TODO Remove production check when all languages are available in prod.
-    if (isProduction()) language_list = allowed_languages;
-
-    return language_list;
-};
+export const getAllowedLanguages = () => getAllLanguages();
 
 const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname);
 

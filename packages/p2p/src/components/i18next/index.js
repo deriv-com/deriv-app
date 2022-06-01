@@ -4,18 +4,20 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import withI18n from './component.jsx';
 // TODO: [fix-p2p-translation] add in context translation
-import ach from 'Translations/ach.json';
-import en from 'Translations/en.json';
+import ar from 'Translations/ar.json';
+import de from 'Translations/de.json';
 import es from 'Translations/es.json';
+import en from 'Translations/en.json';
+import fa from 'Translations/fa.json';
 import fr from 'Translations/fr.json';
 import id from 'Translations/id.json';
 import it from 'Translations/it.json';
+import ko from 'Translations/ko.json';
+import ms from 'Translations/ms.json';
 import pl from 'Translations/pl.json';
-import pt from 'Translations/pt.json';
 import ru from 'Translations/ru.json';
-import vi from 'Translations/ru.json';
-import zh_cn from 'Translations/zh_cn.json';
-import zh_tw from 'Translations/zh_tw.json';
+import ta from 'Translations/ta.json';
+import zh from 'Translations/zh.json';
 
 const DEFAULT_LANGUAGE = 'EN';
 let CURRENT_LANGUAGE = 'EN';
@@ -31,18 +33,20 @@ const initial_language = getLanguage();
 
 const i18n_config = {
     resources: {
-        ACH: { translations: { ...ach } },
+        AR: { translations: { ...ar } },
+        DE: { translations: { ...de } },
         EN: { translations: { ...en } },
         ES: { translations: { ...es } },
+        FA: { translations: { ...fa } },
         FR: { translations: { ...fr } },
         ID: { translations: { ...id } },
         IT: { translations: { ...it } },
+        KO: { translations: { ...ko } },
+        MS: { translations: { ...ms } },
         PL: { translations: { ...pl } },
-        PT: { translations: { ...pt } },
         RU: { translations: { ...ru } },
-        VI: { translations: { ...vi } },
-        ZH_CN: { translations: { ...zh_cn } },
-        ZH_TW: { translations: { ...zh_tw } },
+        TA: { translations: { ...ta } },
+        ZH: { translations: { ...zh } },
     },
     react: {
         hashTransKey(defaultValue) {

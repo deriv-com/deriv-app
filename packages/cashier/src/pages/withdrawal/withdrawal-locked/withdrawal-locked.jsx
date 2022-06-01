@@ -5,7 +5,7 @@ import { routes } from '@deriv/shared';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CashierLocked from './cashier-locked.jsx';
+import CashierLocked from 'Components/Error/cashier-locked.jsx';
 
 const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_approval }) => {
     const { document, identity, needs_verification } = account_status.authentication;

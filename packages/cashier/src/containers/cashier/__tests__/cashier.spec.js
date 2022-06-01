@@ -37,7 +37,7 @@ jest.mock('@deriv/shared', () => {
 
 jest.mock('../account-prompt-dialog', () => jest.fn(() => 'mockedAccountPromptDialog'));
 jest.mock('../error-dialog', () => jest.fn(() => 'mockedErrorDialog'));
-jest.mock('Containers/withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
+jest.mock('Pages/withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
 jest.mock('Containers/deposit', () => jest.fn(() => 'mockedDeposit'));
 
 describe('<Cashier />', () => {

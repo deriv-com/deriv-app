@@ -50,7 +50,7 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
                 );
             } else if (has_vanuatu) {
                 return localize(
-                    'This complaints policy, which may change from time to time, applies to your account(s) registered with {legal_entity_name_svg}} and {legal_entity_name_v}}.',
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}} and {{legal_entity_name_v}}.',
                     {
                         legal_entity_name_svg: getLegalEntityName('svg'),
                         legal_entity_name_v: getLegalEntityName('v'),
@@ -58,7 +58,7 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
                 );
             } else if (has_labuan) {
                 return localize(
-                    'This complaints policy, which may change from time to time, applies to your account(s) registered with {legal_entity_name_svg}} and {legal_entity_name_fx}}.',
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}} and {{legal_entity_name_fx}}.',
                     {
                         legal_entity_name_svg: getLegalEntityName('svg'),
                         legal_entity_name_fx: getLegalEntityName('fx'),
@@ -66,7 +66,7 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
                 );
             }
             return localize(
-                'This complaints policy, which may change from time to time, applies to your account(s) registered with {legal_entity_name_svg}}.',
+                'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}}.',
                 {
                     legal_entity_name_svg: getLegalEntityName('svg'),
                 }

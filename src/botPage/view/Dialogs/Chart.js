@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     ChartMode,
     DrawTools,
@@ -8,12 +9,12 @@ import {
     ToolbarWidget,
     Views,
 } from '@deriv/deriv-charts';
-import React from 'react';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { getLanguage } from '../../../common/lang';
+import api from '../deriv/api';
 
 setSmartChartsPublicPath('./js/');
 
@@ -28,13 +29,8 @@ export const BarrierTypes = {
     NOTOUCH: 'NONE_SINGLE',
 };
 
-const chartWidth = 600;
-const chartHeight = 600;
-
-const ChartContent = ({ api }) => {
-    const settings = { language: getLanguage() };
-    const ticksService = new ChartTicksService(api);
-    const listeners = [];
+const ChartContent = () => {
+    const [show, setVisibility] = React.useState(true);
     const [state, setState] = React.useState({
         chartType: 'mountain',
         granularity: 0,
@@ -44,7 +40,9 @@ const ChartContent = ({ api }) => {
         symbol: globalObserver.getState('symbol'),
         should_barrier_display: false,
     });
-    const [show, setVisibility] = React.useState(true);
+    const ticksService = new ChartTicksService(api);
+    const listeners = [];
+
 
     React.useEffect(() => {
         globalObserver.register('bot.init', initializeBot);
@@ -164,17 +162,17 @@ const ChartContent = ({ api }) => {
 
     return (
         <SmartChart
-            id="binary-bot-chart"
             barriers={barriers}
             chartControlsWidgets={null}
             chartType={state.chartType}
             enabledChartFooter={false}
             granularity={state.granularity}
+            id="binary-bot-chart"
             isMobile={false}
             requestAPI={requestAPI}
             requestForget={requestForget}
             requestSubscribe={requestSubscribe}
-            settings={settings}
+            settings={{ language: getLanguage() }}
             symbol={state.symbol}
             toolbarWidget={renderToolbarWidgets}
             topWidgets={renderTopWidgets}
@@ -183,10 +181,10 @@ const ChartContent = ({ api }) => {
 }
 
 export default class Chart extends Dialog {
-    constructor(api) {
-        super('chart-dialog', translate('Chart'), <ChartContent api={api} />, {
-            width: chartWidth,
-            height: chartHeight,
+    constructor() {
+        super('chart-dialog', translate('Chart'), <ChartContent />, {
+            width: 600,
+            height: 600,
             resizable: false,
         });
     }

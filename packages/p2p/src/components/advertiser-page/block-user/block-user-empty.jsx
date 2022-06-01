@@ -11,7 +11,7 @@ const BlockUserEmpty = () => {
         <React.Fragment>
             <DesktopWrapper>
                 <div className='payment-methods-empty'>
-                    <Icon icon='IcPaymentMethodsWallet' height={159} width={256} />
+                    <Icon icon='IcBlockedAdvertisers' height={159} width={256} />
                     <Text className='payment-methods-empty--text' line_height='m' size='s' weight='bold'>
                         <Localize i18n_default_text='You have no blocked advertisers' />
                     </Text>
@@ -26,7 +26,7 @@ const BlockUserEmpty = () => {
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                 >
                     <Icon
-                        icon='IcPaymentMethodsWallet'
+                        icon='IcBlockedAdvertisers'
                         className='payment-methods-empty--icon'
                         height={159}
                         width={256}

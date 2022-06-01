@@ -11,7 +11,7 @@ const IdvVerified = ({ needs_poa, is_from_external }) => {
         : localize('ID verification passed');
 
     return (
-        <div className='proof-of-identity__container'>
+        <div className='proof-of-identity__container' data-testid='poi_idv_verified_container'>
             <IdvDocumentVerified className='icon' />
             <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
                 {header_Text}

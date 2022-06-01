@@ -55,7 +55,7 @@ describe('<CFDFinancialStpPendingDialog />', () => {
         expect(props.toggleModal).toHaveBeenCalledTimes(1);
     });
 
-    it('should not open open modal if is_cfd_pending_dialog_open is false', () => {
+    it('should not open modal if is_cfd_pending_dialog_open is false', () => {
         const { container } = render(
             <CFDFinancialStpPendingDialog {...props} is_open={!props.is_cfd_pending_dialog_open} />
         );

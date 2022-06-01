@@ -57,7 +57,7 @@ describe('<CFDFinancialStpPendingDialog />', () => {
 
     it('should not open modal if is_cfd_pending_dialog_open is false', () => {
         const { container } = render(
-            <CFDFinancialStpPendingDialog {...props} is_open={!props.is_cfd_pending_dialog_open} />
+            <CFDFinancialStpPendingDialog {...props} is_cfd_pending_dialog_open={!props.is_cfd_pending_dialog_open} />
         );
 
         expect(container.querySelector('.cfd-pending-dialog')).not.toBeInTheDocument();

@@ -22,7 +22,7 @@ const Cashier = ({
     history,
     is_account_transfer_visible,
     is_account_setting_loaded,
-    is_cashier_default,
+    is_cashier_onboarding,
     is_crypto,
     is_crypto_transactions_visible,
     is_loading,
@@ -103,7 +103,7 @@ const Cashier = ({
     }
 
     const getHeaderTitle = () => {
-        if (!isMobile() || (is_default_route && (is_loading || is_cashier_default))) return localize('Cashier');
+        if (!isMobile() || (is_default_route && (is_loading || is_cashier_onboarding))) return localize('Cashier');
 
         return selected_route.getTitle();
     };
@@ -182,7 +182,7 @@ Cashier.propTypes = {
     history: PropTypes.object,
     is_account_transfer_visible: PropTypes.bool,
     is_account_setting_loaded: PropTypes.bool,
-    is_cashier_default: PropTypes.bool,
+    is_cashier_onboarding: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
@@ -206,7 +206,7 @@ Cashier.propTypes = {
 };
 
 export default connect(({ client, common, modules, ui }) => ({
-    is_cashier_default: modules.cashier.general_store.is_cashier_default,
+    is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
     is_crypto: modules.cashier.general_store.is_crypto,

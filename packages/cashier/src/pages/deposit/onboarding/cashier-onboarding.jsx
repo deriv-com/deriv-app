@@ -6,10 +6,10 @@ import { Localize } from '@deriv/translations';
 import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
-import CashierDefaultDetails from './cashier-default-details.jsx';
-import CashierDefaultSideNote from './cashier-default-side-note.jsx';
+import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
+import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
 
-const CashierDefault = ({
+const CashierOnboarding = ({
     available_crypto_currencies,
     accounts_list,
     can_change_fiat_currency,
@@ -21,17 +21,17 @@ const CashierDefault = ({
     is_from_derivgo,
     is_payment_agent_visible_in_onboarding,
     is_switching,
-    onMountCashierDefault,
+    onMountCashierOnboarding,
     openRealAccountSignup,
     shouldNavigateAfterChooseCrypto,
     shouldNavigateAfterPrompt,
-    setIsCashierDefault,
+    setIsCashierOnboarding,
     setIsDeposit,
     setDepositTarget,
     setShouldShowAllAvailableCurrencies,
     setSideNotes,
-    showP2pInCashierDefault,
-    show_p2p_in_cashier_default,
+    showP2pInCashierOnboarding,
+    show_p2p_in_cashier_onboarding,
     toggleSetCurrencyModal,
 }) => {
     const history = useHistory();
@@ -42,9 +42,9 @@ const CashierDefault = ({
         (!is_crypto && !can_change_fiat_currency) || (is_crypto && available_crypto_currencies.length > 0);
 
     React.useEffect(() => {
-        onMountCashierDefault();
+        onMountCashierOnboarding();
         return () => {
-            setIsCashierDefault(false);
+            setIsCashierOnboarding(false);
             if (!has_set_currency && window.location.pathname.includes(routes.cashier)) {
                 history.push(routes.trade);
                 toggleSetCurrencyModal();
@@ -61,7 +61,7 @@ const CashierDefault = ({
             is_landing_company_loaded &&
             is_currency_banner_visible
         ) {
-            setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
+            setSideNotes([<CashierOnboardingSideNote key={0} is_crypto={is_crypto} />]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts_list, is_landing_company_loaded]);
@@ -123,7 +123,7 @@ const CashierDefault = ({
     };
 
     const getDepositOptions = () => {
-        showP2pInCashierDefault();
+        showP2pInCashierOnboarding();
         const options = [];
         options.push(Providers.createCashProvider(onClickDepositCash));
         options.push(Providers.createCryptoProvider(onClickDepositCrypto));
@@ -132,7 +132,7 @@ const CashierDefault = ({
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
         }
 
-        if (show_p2p_in_cashier_default) {
+        if (show_p2p_in_cashier_onboarding) {
             options.push(Providers.createDp2pProvider(onClickDp2p));
         }
         return options;
@@ -145,11 +145,11 @@ const CashierDefault = ({
         <div>
             {is_currency_banner_visible && (
                 <MobileWrapper>
-                    <CashierDefaultSideNote is_crypto={is_crypto} />
+                    <CashierOnboardingSideNote is_crypto={is_crypto} />
                 </MobileWrapper>
             )}
-            <div className='cashier-default'>
-                <div className='cashier-default-header'>
+            <div className='cashier-onboarding'>
+                <div className='cashier-onboarding-header'>
                     <Text size={is_mobile ? 's' : 'sm'} line_height='xxl'>
                         <Localize i18n_default_text='Choose a way to fund your account' />
                     </Text>
@@ -159,7 +159,7 @@ const CashierDefault = ({
                 </div>
                 {is_mobile && !is_from_derivgo && (
                     <div
-                        className='cashier-default-header-learn-more'
+                        className='cashier-onboarding-header-learn-more'
                         onClick={() => window.open(getStaticUrl('/payment-methods'))}
                     >
                         <Text size='xs' color='red'>
@@ -167,10 +167,10 @@ const CashierDefault = ({
                         </Text>
                     </div>
                 )}
-                <ThemedScrollbars className='cashier-default-content'>
-                    <div className='cashier-default-content__description'>
+                <ThemedScrollbars className='cashier-onboarding-content'>
+                    <div className='cashier-onboarding-content__description'>
                         {getDepositOptions()?.map((deposit, idx) => (
-                            <CashierDefaultDetails
+                            <CashierOnboardingDetails
                                 key={`${deposit.detail_header}${idx}`}
                                 detail_click={deposit.detail_click}
                                 detail_contents={deposit.detail_contents}
@@ -187,7 +187,7 @@ const CashierDefault = ({
     );
 };
 
-CashierDefault.propTypes = {
+CashierOnboarding.propTypes = {
     accounts_list: PropTypes.array,
     available_crypto_currencies: PropTypes.array,
     can_change_fiat_currency: PropTypes.bool,
@@ -199,17 +199,17 @@ CashierDefault.propTypes = {
     is_from_derivgo: PropTypes.bool,
     is_payment_agent_visible_in_onboarding: PropTypes.bool,
     is_switching: PropTypes.bool,
-    onMountCashierDefault: PropTypes.func,
+    onMountCashierOnboarding: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
     shouldNavigateAfterChooseCrypto: PropTypes.func,
     shouldNavigateAfterPrompt: PropTypes.func,
-    setIsCashierDefault: PropTypes.func,
+    setIsCashierOnboarding: PropTypes.func,
     setIsDeposit: PropTypes.func,
     setDepositTarget: PropTypes.func,
     setShouldShowAllAvailableCurrencies: PropTypes.func,
     setSideNotes: PropTypes.func,
-    showP2pInCashierDefault: PropTypes.func,
-    show_p2p_in_cashier_default: PropTypes.bool,
+    showP2pInOnboarding: PropTypes.func,
+    show_p2p_in_cashier_onboarding: PropTypes.bool,
     toggleSetCurrencyModal: PropTypes.func,
 };
 
@@ -225,15 +225,15 @@ export default connect(({ client, common, modules, ui }) => ({
     is_from_derivgo: common.is_from_derivgo,
     is_payment_agent_visible_in_onboarding: modules.cashier.payment_agent.is_payment_agent_visible_in_onboarding,
     is_switching: client.is_switching,
-    onMountCashierDefault: modules.cashier.general_store.onMountCashierDefault,
+    onMountCashierOnboarding: modules.cashier.general_store.onMountCashierOnboarding,
     openRealAccountSignup: ui.openRealAccountSignup,
     shouldNavigateAfterChooseCrypto: ui.shouldNavigateAfterChooseCrypto,
     shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt,
-    setIsCashierDefault: modules.cashier.general_store.setIsCashierDefault,
+    setIsCashierOnboarding: modules.cashier.general_store.setIsCashierOnboarding,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,
     setDepositTarget: modules.cashier.general_store.setDepositTarget,
     setShouldShowAllAvailableCurrencies: modules.cashier.general_store.setShouldShowAllAvailableCurrencies,
-    showP2pInCashierDefault: modules.cashier.general_store.showP2pInCashierDefault,
-    show_p2p_in_cashier_default: modules.cashier.general_store.show_p2p_in_cashier_default,
+    showP2pInCashierOnboarding: modules.cashier.general_store.showP2pInCashierOnboarding,
+    show_p2p_in_cashier_onboarding: modules.cashier.general_store.show_p2p_in_cashier_onboarding,
     toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
-}))(CashierDefault);
+}))(CashierOnboarding);

@@ -137,36 +137,36 @@ describe('GeneralStore', () => {
 
     it('should not show p2p in cashier default if p2p_advertiser_error is equal to "RestrictedCountry"', () => {
         general_store.setP2pAdvertiserError('RestrictedCountry');
-        general_store.showP2pInCashierDefault();
+        general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_default).toBeFalse();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalse();
     });
 
     it('should not show p2p in cashier default if the user has accounts with fiat currency, but has not account with USD currency', () => {
         general_store.root_store.client.account_list = [{ title: 'EUR' }];
-        general_store.showP2pInCashierDefault();
+        general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_default).toBeFalse();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalse();
     });
 
     it('should not show p2p in cashier default if the user has accounts with fiat currency, but has not account with USD currency', () => {
         general_store.root_store.client.account_list = [{ title: 'EUR' }];
-        general_store.showP2pInCashierDefault();
+        general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_default).toBeFalse();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalse();
     });
 
     it('should show p2p in cashier default if the user account is not virtual, there is no p2p_advertiser_error and he has USD account', () => {
-        general_store.showP2pInCashierDefault();
+        general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_default).toBeTrue();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeTrue();
     });
 
     it('should show p2p in cashier default if the user account is not virtual, there is no p2p_advertiser_error and he has not fiat currency accounts', () => {
         general_store.root_store.client.account_list = [{ title: 'BTC' }];
-        general_store.showP2pInCashierDefault();
+        general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_default).toBeTrue();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeTrue();
     });
 
     it('should call setHasSetCurrency method if has_set_currency is equal to false and attach cashier menu with proper properties', () => {
@@ -235,13 +235,13 @@ describe('GeneralStore', () => {
     it('should perform proper cashier default mounting', async () => {
         general_store.has_set_currency = false;
         const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
-        const spySetIsCashierDefault = jest.spyOn(general_store, 'setIsCashierDefault');
+        const spySetIsCashierOnboarding = jest.spyOn(general_store, 'setIsCashierOnboarding');
         const spySetLoading = jest.spyOn(general_store, 'setLoading');
         const { account_prompt_dialog, payment_agent } = general_store.root_store.modules.cashier;
-        await general_store.onMountCashierDefault();
+        await general_store.onMountCashierOnboarding();
 
         expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
-        expect(spySetIsCashierDefault).toHaveBeenCalledWith(true);
+        expect(spySetIsCashierOnboarding).toHaveBeenCalledWith(true);
         expect(account_prompt_dialog.resetIsConfirmed).toHaveBeenCalledTimes(1);
         expect(spySetLoading.mock.calls).toEqual([[true], [false]]);
         expect(payment_agent.setAllPaymentAgentList).toHaveBeenCalledWith(['PA1', 'PA2']);
@@ -291,10 +291,10 @@ describe('GeneralStore', () => {
         expect(general_store.should_show_all_available_currencies).toBeTrue();
     });
 
-    it('should cahange value of the variable is_cashier_default', () => {
-        general_store.setIsCashierDefault(true);
+    it('should cahange value of the variable is_cashier_onboarding', () => {
+        general_store.setIsCashierOnboarding(true);
 
-        expect(general_store.is_cashier_default).toBeTrue();
+        expect(general_store.is_cashier_onboarding).toBeTrue();
     });
 
     it('should set deposit target', () => {

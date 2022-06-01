@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import CashierDefaultDetails from '../cashier-default-details';
+import CashierOnboardingDetails from '../cashier-onboarding-details';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -8,7 +8,7 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-describe('<CashierDefaultDetails />', () => {
+describe('<CashierOnboardingDetails />', () => {
     let props;
     beforeEach(() => {
         props = {
@@ -31,22 +31,22 @@ describe('<CashierDefaultDetails />', () => {
     });
 
     it('should show the proper messages', () => {
-        render(<CashierDefaultDetails {...props} />);
+        render(<CashierOnboardingDetails {...props} />);
 
         expect(screen.getByText('Deposit via bank wire, credit card, and e-wallet')).toBeInTheDocument();
         expect(screen.getByText('Deposit via the following payment methods:')).toBeInTheDocument();
     });
 
     it('should show contain the correct className, when detail_contents has icons', () => {
-        const { container } = render(<CashierDefaultDetails {...props} />);
+        const { container } = render(<CashierOnboardingDetails {...props} />);
 
-        expect(container.querySelector('.cashier-default-detail__array')).not.toBe(null);
+        expect(container.querySelector('.cashier-onboarding-detail__array')).not.toBe(null);
     });
 
     it('should trigger onClick callback, when the user clicks on the block with details', () => {
-        const { container } = render(<CashierDefaultDetails {...props} />);
+        const { container } = render(<CashierOnboardingDetails {...props} />);
 
-        const details_block = container.querySelector('.cashier-default-detail__div');
+        const details_block = container.querySelector('.cashier-onboarding-detail__div');
         fireEvent.click(details_block);
 
         expect(props.detail_click).toHaveBeenCalledTimes(1);

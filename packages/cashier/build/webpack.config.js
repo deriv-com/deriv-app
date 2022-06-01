@@ -11,7 +11,7 @@ module.exports = function (env, argv) {
             cashier: path.resolve(__dirname, '../src', 'index.js'),
             'cashier-store': 'Stores/cashier-store',
             'account-transfer': 'Containers/account-transfer',
-            deposit: 'Pages/deposit/deposit',
+            deposit: 'Pages/deposit',
             'on-ramp': 'Containers/on-ramp',
             'payment-agent': 'Containers/payment-agent',
             'payment-agent-transfer': 'Containers/payment-agent-transfer',

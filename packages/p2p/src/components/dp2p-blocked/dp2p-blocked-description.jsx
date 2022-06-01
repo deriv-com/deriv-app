@@ -10,7 +10,12 @@ const Dp2pBlockedDescription = () => {
     let blocked_description;
 
     if (general_store.is_high_risk_fully_authed_without_fa) {
-        blocked_description = <Localize i18n_default_text='To enable this feature you must complete the following:' />;
+        if (general_store.is_p2p_blocked_for_pa) {
+            blocked_description = (
+                <Localize i18n_default_text='P2P transactions are locked. This feature is not available for payment agents.' />);
+        } else {
+            blocked_description = <Localize i18n_default_text='To enable this feature you must complete the following:' />;
+        }
     } else if (general_store.is_p2p_blocked_for_pa) {
         blocked_description = (
             <Localize i18n_default_text='P2P transactions are locked. This feature is not available for payment agents.' />

@@ -212,7 +212,6 @@ export default class GeneralStore extends BaseStore {
                 if (is_fully_authed_but_needs_fa) {
                     // First priority: Send user to Financial Assessment if they have to submit it.
                     this.setIsHighRiskFullyAuthedWithoutFa(true);
-                    return;
                 } else if (
                     is_cashier_locked ||
                     is_not_fully_authenticated ||

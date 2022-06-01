@@ -38,7 +38,7 @@ const shouldRestartOnError = (bot, error_name = "") =>
   !unrecoverable_errors.includes(error_name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, error_name = "") => {
-  const stop_errors = ["SellNotAvailableCustom"];
+  const stop_errors = ["SellNotAvailableCustom","ContractBuyValidationError", "CustomInvalidProposal"];
   if (stop_errors.includes(error_name) && botInitialized(bot)) {
     return true;
   }
@@ -132,7 +132,7 @@ export default class Interpreter {
 
         if (shouldStopOnError(this.bot, e.name)) {
           globalObserver.emit("ui.log.error", e.message);
-          $("#stopButton").trigger("click");
+          document.getElementById('stopButton').click()
           this.stop();
           return;
         }

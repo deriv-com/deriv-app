@@ -198,7 +198,7 @@ export default class NotificationStore extends BaseStore {
 
         if (is_logged_in) {
             const {
-                authentication: { document, identity, needs_verification, proof_of_income },
+                authentication: { document, identity, needs_verification, income },
                 status,
                 cashier_validation,
             } = account_status;
@@ -262,8 +262,7 @@ export default class NotificationStore extends BaseStore {
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const needs_poinc =
-                    needs_verification.includes('proof_of_income') &&
-                    ['rejected', 'none'].includes(proof_of_income?.status);
+                    needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
                 this.addVerificationNotifications(identity, document);

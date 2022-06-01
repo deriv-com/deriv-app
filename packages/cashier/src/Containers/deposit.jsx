@@ -134,8 +134,10 @@ const Deposit = ({
 
 Deposit.propTypes = {
     can_change_fiat_currency: PropTypes.bool,
+    clearIframe: PropTypes.func,
     crypto_transactions: PropTypes.array,
     container: PropTypes.string,
+    currency: PropTypes.string,
     current_currency_type: PropTypes.string,
     error: PropTypes.object,
     is_cashier_default: PropTypes.bool,
@@ -155,6 +157,7 @@ Deposit.propTypes = {
     onMount: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setErrorMessage: PropTypes.func,
     setIsDeposit: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,

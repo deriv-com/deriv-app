@@ -149,6 +149,7 @@ CryptoFiatConverter.propTypes = {
     converter_to_error: PropTypes.string,
     converter_to_amount: PropTypes.string,
     from_currency: PropTypes.string,
+    hint: PropTypes.string,
     is_timer_visible: PropTypes.bool,
     onChangeConverterFromAmount: PropTypes.func,
     onChangeConverterToAmount: PropTypes.func,

@@ -20,6 +20,7 @@ Routes.propTypes = {
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    passthrough: PropTypes.object,
 };
 
 // need to wrap withRouter around connect

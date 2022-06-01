@@ -8,6 +8,7 @@ const App = ({ passthrough: { WS, root_store } }) => {
     React.useEffect(() => {
         setWebsocket(WS);
         init();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -183,6 +183,7 @@ Cashier.propTypes = {
     is_account_transfer_visible: PropTypes.bool,
     is_account_setting_loaded: PropTypes.bool,
     is_cashier_default: PropTypes.bool,
+    is_crypto: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,

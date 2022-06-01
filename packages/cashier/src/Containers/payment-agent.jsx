@@ -48,6 +48,7 @@ PaymentAgent.propTypes = {
     container: PropTypes.string,
     is_cashier_locked: PropTypes.bool,
     is_payment_agent_withdraw: PropTypes.bool,
+    is_switching: PropTypes.bool,
     is_virtual: PropTypes.bool,
     payment_agent_active_tab_index: PropTypes.number,
     setActiveTab: PropTypes.func,

@@ -183,6 +183,7 @@ CryptoWithdrawReceipt.propTypes = {
     setIsCryptoTransactionsVisible: PropTypes.func,
     setIsWithdrawConfirmed: PropTypes.func,
     tab_index: PropTypes.number,
+    withdraw_amount: PropTypes.string,
 };
 
 export default connect(({ client, modules }) => ({

@@ -334,6 +334,7 @@ PaymentAgentWithdrawForm.propTypes = {
     amount: PropTypes.string,
     balance: PropTypes.string,
     currency: PropTypes.string,
+    error: PropTypes.object,
     error_message_withdraw: PropTypes.string,
     is_loading: PropTypes.bool,
     is_try_withdraw_successful: PropTypes.bool,

@@ -82,6 +82,7 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
 
 CashierDefaultSideNote.propTypes = {
     currency: PropTypes.string,
+    is_crypto: PropTypes.bool,
     mt5_login_list: PropTypes.array,
     openRealAccountSignup: PropTypes.func,
     setDepositTarget: PropTypes.func,

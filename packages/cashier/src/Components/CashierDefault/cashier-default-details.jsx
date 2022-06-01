@@ -55,6 +55,7 @@ CashierDefaultDetails.propTypes = {
     detail_contents: PropTypes.array,
     detail_description: PropTypes.string,
     detail_header: PropTypes.string,
+    is_dark_mode_on: PropTypes.bool,
     is_mobile: PropTypes.bool,
 };
 

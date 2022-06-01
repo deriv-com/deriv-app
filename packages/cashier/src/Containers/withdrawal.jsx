@@ -153,11 +153,14 @@ const Withdrawal = ({
 
 Withdrawal.propTypes = {
     balance: PropTypes.string,
+    check10kLimit: PropTypes.func,
     container: PropTypes.string,
     crypto_transactions: PropTypes.array,
+    currency: PropTypes.string,
     current_currency_type: PropTypes.string,
     error: PropTypes.object,
     iframe_url: PropTypes.string,
+    is_10k_withdrawal_limit_reached: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_crypto: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
@@ -168,8 +171,12 @@ Withdrawal.propTypes = {
     is_withdrawal_locked: PropTypes.bool,
     recentTransactionOnMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setErrorMessage: PropTypes.func,
+    setSideNotes: PropTypes.func,
     tab_index: PropTypes.number,
     verification_code: PropTypes.string,
+    verify_error: PropTypes.object,
+    willMountWithdraw: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({

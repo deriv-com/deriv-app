@@ -18,30 +18,35 @@ const getScrollOffset = (itemsCount = 0) => {
 const validateFields = values => {
     const errors = {};
     errors.data = [];
-    values.data.map((item, index) => {
-        if (item?.file?.type && !/image\/(jpe?g|pdf|png)$/.test(item?.file?.type)) {
-            errors.data[index] = {};
-            errors.data[index].file = localize(
-                "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
-            );
-        }
-        if (item?.file?.size / 1024 > 8000) {
-            errors.data[index] = {};
-            errors.data[index].file = localize(
-                'That file is too big (only up to 8MB allowed). Please upload another file.'
-            );
-        }
+    values.data.map((element, index) => {
+        element.files.forEach((file, i) => {
+            if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
+                errors.data[index] = {};
+                errors.data[index].files = [];
+                errors.data[index].files[i] = {
+                    file: localize(
+                        "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
+                    ),
+                };
+            }
+            if (file?.file?.size / 1024 > 8000) {
+                errors.data[index] = {};
+                errors.data[index].files = [];
+                errors.data[index].files[i] = {
+                    file: localize('That file is too big (only up to 8MB allowed). Please upload another file.'),
+                };
+            }
+        });
     });
-
     return errors;
 };
-const ProofOfOwnershipForm = ({ cards, handleSubmit }) => {
+const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef }) => {
     const initValues = {};
     initValues.data = cards.map(item => {
-        return { id: item.id, file: null };
+        return { id: item.id, files: [] };
     });
     return (
-        <Formik initialValues={initValues} validate={validateFields}>
+        <Formik initialValues={initValues} validate={validateFields} innerRef={formRef}>
             {({
                 values,
                 errors,
@@ -88,17 +93,17 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit }) => {
                             type='submit'
                             className={classNames('account-form__footer-btn')}
                             is_disabled={(() => {
-                                const emptyFiles = values.data.some(item => !item?.file);
+                                const emptyFiles = values.data.some(item => !item?.files);
                                 return emptyFiles || errors?.data?.length > 0;
                             })()}
                             data-testid={'next-button'}
                             has_effect
                             // is_loading={is_btn_loading}
                             // is_submit_success={is_submit_success}
-                            text={localize('Next')}
+                            text={localize('Submit')}
                             large
                             primary
-                            form={'first-step'}
+                            // form={'first-step'}
                         />
                     </FormFooter>
                 </form>

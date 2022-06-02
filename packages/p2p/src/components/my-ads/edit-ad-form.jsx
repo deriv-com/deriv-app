@@ -62,7 +62,7 @@ const EditAdForm = () => {
               selected_methods.length === Object.keys(payment_method_details).length
           );
 
-    const handleOnCancel = is_form_edited => {
+    const handleEditAdFormCancel = is_form_edited => {
         if (is_form_edited || payment_methods_changed) {
             setIsCancelEditModalOpen(true);
         } else {
@@ -70,7 +70,7 @@ const EditAdForm = () => {
         }
     };
 
-    const handleCancelEdit = is_cancel_edit =>
+    const toggleEditAdCancelModal = is_cancel_edit =>
         is_cancel_edit ? my_ads_store.setShowEditAdForm(false) : setIsCancelEditModalOpen(false);
 
     React.useEffect(() => {
@@ -391,7 +391,7 @@ const EditAdForm = () => {
                                                         className='p2p-my-ads__form-button'
                                                         secondary
                                                         large
-                                                        onClick={() => handleOnCancel(dirty)}
+                                                        onClick={() => handleEditAdFormCancel(dirty)}
                                                         type='button'
                                                     >
                                                         <Localize i18n_default_text='Cancel' />
@@ -422,7 +422,7 @@ const EditAdForm = () => {
                 </React.Fragment>
             )}
             <CreateAdAddPaymentMethodModal />
-            <EditAdCancelModal onClick={handleCancelEdit} is_open={is_cancel_edit_modal_open} />
+            <EditAdCancelModal onClick={toggleEditAdCancelModal} is_open={is_cancel_edit_modal_open} />
             <Modal
                 className='p2p-my-ads__modal-error'
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}

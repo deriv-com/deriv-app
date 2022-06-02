@@ -18,7 +18,7 @@ const BlockUserCount = () => {
                 { block_count }
             )}
         >
-            <Icon className='block-user-count__container--icon' icon='IcUserOutline' />
+            <Icon className='block-user-count__container--icon' icon='IcUserBlockedOutline' />
             <Text size='xxs' line_height='m'>
                 {block_count}
             </Text>

@@ -38,7 +38,7 @@ commands:
     steps:
       - run:
           name: "Create cache key"
-          command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
+          command: echo $(find . ./packages/ -maxdepth 2 -name package.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
       - restore_cache:
           keys:
             - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}

@@ -9,6 +9,7 @@ jest.mock('Stores', () => ({
             active_notification_count: 0,
             inactive_notification_count: 0,
             order_table_type: false,
+            order_timeout: { hours: 1, minutes: 10 },
         },
     }),
 }));

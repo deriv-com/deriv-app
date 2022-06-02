@@ -48,7 +48,7 @@ const CreateAdAddPaymentMethodModal = () => {
                 is_flex
                 is_modal_open={my_ads_store.should_show_add_payment_method_modal}
                 page_header_className='buy-sell__modal-header'
-                page_header_text={localize('Choose payment method')}
+                page_header_text={localize('Add payment method')}
                 pageHeaderReturnFn={() => my_ads_store.setShouldShowAddPaymentMethodModal(false)}
             >
                 <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
@@ -62,7 +62,7 @@ const CreateAdAddPaymentMethodModal = () => {
             has_close_icon={false}
             height='560px'
             is_open={my_ads_store.should_show_add_payment_method_modal}
-            title={localize('Choose payment method')}
+            title={localize('Add payment method')}
         >
             <Modal.Body
                 className={classNames({ 'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method })}

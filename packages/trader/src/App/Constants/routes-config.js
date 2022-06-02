@@ -1,12 +1,14 @@
 import React from 'react';
-import { routes } from '@deriv/shared';
+import { routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 
-const ContractDetails = React.lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
+const ContractDetails = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'))
+);
 
 // Error Routes
-const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
+const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
 // Order matters
 const initRoutesConfig = () => {

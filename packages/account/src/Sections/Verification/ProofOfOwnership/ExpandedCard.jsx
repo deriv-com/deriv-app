@@ -30,7 +30,8 @@ const ExpandedCard = ({ cardDetails, handleChange, handleBlur, identifier, value
 
     const formatIdentifier = (id, type) => {
         let formattedID = id;
-        if (type === 'IcCreditCard') formattedID = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
+        if (type === 'IcCreditCard' || cardDetails.icon === 'IcStockVisa' || cardDetails.icon === 'IcStockMasterCard')
+            formattedID = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
         else if (type === 'IcEwallet') return formattedID;
         return formattedID
             .replace(/\s/g, '')
@@ -77,6 +78,7 @@ const ExpandedCard = ({ cardDetails, handleChange, handleBlur, identifier, value
                                             value={formatIdentifier(identifier, cardDetails.icon)}
                                             onBlur={handleBlur}
                                             maxLength='19'
+                                            data-datatestid='identifier'
                                         />
                                     </div>
                                 )}
@@ -91,7 +93,7 @@ const ExpandedCard = ({ cardDetails, handleChange, handleBlur, identifier, value
                                     <FileUploader
                                         handleFile={handleUploadedFile}
                                         fileName={values?.data?.[index]?.files[i]?.file?.name}
-                                        dataTestID={`uploader-${values?.data?.[index]?.files[i]?.id}`}
+                                        data-datatestid={`uploader-${values?.data?.[index]?.files[i]?.id}`}
                                         className='proof-of-ownership__card-open-inputs-photo'
                                         name={`data[${index}].files[${i}].file`}
                                         error={error?.files[i]?.file}

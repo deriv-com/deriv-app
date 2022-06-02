@@ -12,32 +12,29 @@ const EditAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
     const decimal_places = setDecimalPlaces(market_feed, 6);
-
-    const is_amount_and_rate_available = offer_amount && price_rate;
-
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
     let display_price_rate = '';
     let display_total = '';
 
-    if (market_feed && price_rate) {
-        display_price_rate = formatMoney(
-            local_currency_config.currency,
-            roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100)), decimal_places),
-            true,
-            decimal_places
-        );
-    } else if (price_rate) {
-        display_price_rate = formatMoney(local_currency_config.currency, price_rate, true);
+    if (price_rate) {
+        display_price_rate = market_feed
+            ? formatMoney(
+                  local_currency_config.currency,
+                  roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100)), decimal_places),
+                  true,
+                  decimal_places
+              )
+            : formatMoney(local_currency_config.currency, price_rate, true);
     }
 
-    if (market_feed && is_amount_and_rate_available) {
-        display_total = formatMoney(
-            local_currency_config.currency,
-            offer_amount * roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100))),
-            true
-        );
-    } else if (is_amount_and_rate_available) {
-        display_total = formatMoney(local_currency_config.currency, offer_amount * price_rate, true);
+    if (offer_amount && price_rate) {
+        display_total = market_feed
+            ? formatMoney(
+                  local_currency_config.currency,
+                  offer_amount * roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100))),
+                  true
+              )
+            : formatMoney(local_currency_config.currency, offer_amount * price_rate, true);
     }
 
     if (offer_amount) {

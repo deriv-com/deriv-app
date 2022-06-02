@@ -872,4 +872,9 @@ export default class MyAdsStore extends BaseStore {
 
         return errors;
     }
+
+    toggleMyAdsRateSwitchModal() {
+        this.setIsSwitchModalOpen(false);
+        this.setShouldSwitchAdRateStatus(false);
+    }
 }

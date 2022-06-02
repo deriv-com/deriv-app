@@ -19,7 +19,7 @@ jest.mock('Components/Form/crypto-transactions-history', () => () => <div>Crypto
 jest.mock('Components/Error/error', () => () => <div>Error</div>);
 jest.mock('../crypto-deposit', () => () => <div>CryptoDeposit</div>);
 jest.mock('Components/cashier-container', () => () => <div>CashierContainer</div>);
-jest.mock('Components/CashierDefault/cashier-default', () => () => <div>CashierDefault</div>);
+jest.mock('Components/cashier-onboarding/cashier-onboarding', () => () => <div>CashierOnboarding</div>);
 
 describe('<Deposit />', () => {
     const props = {
@@ -109,10 +109,10 @@ describe('<Deposit />', () => {
         expect(screen.getByText('CashierContainer')).toBeInTheDocument();
     });
 
-    it('should render <CashierDefault /> component', () => {
+    it('should render <CashierOnboarding /> component', () => {
         render(<Deposit {...props} />);
 
-        expect(screen.getByText('CashierDefault')).toBeInTheDocument();
+        expect(screen.getByText('CashierOnboarding')).toBeInTheDocument();
     });
 
     it('should trigger "setSideNotes" callback', () => {

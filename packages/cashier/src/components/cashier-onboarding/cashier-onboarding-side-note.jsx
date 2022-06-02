@@ -5,9 +5,9 @@ import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
-import 'Sass/cashier-default.scss';
+import './cashier-onboarding.scss';
 
-const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, setDepositTarget }) => {
+const CashierOnboardingSideNote = ({ currency, is_crypto, openRealAccountSignup, setDepositTarget }) => {
     const currency_code = getCurrencyDisplayCode(currency);
 
     const getSideNoteDescription = () => {
@@ -26,7 +26,7 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
                 components={[
                     <span
                         key={0}
-                        className='link link--orange cashier-default-side-note__text-nowrap'
+                        className='link link--orange cashier-onboarding-side-note__text-nowrap'
                         onClick={() => window.LC_API.open_chat_window()}
                     />,
                 ]}
@@ -37,15 +37,15 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
     return (
         <div
             className={classNames({
-                'cashier-default-detail': isMobile(),
+                'cashier-onboarding-detail': isMobile(),
             })}
         >
             <div
                 className={classNames({
-                    'cashier-default-detail__div': isMobile(),
+                    'cashier-onboarding-detail__div': isMobile(),
                 })}
             >
-                <Text className='cashier-default-side-note__text' color='prominent' weight='bold' sixe='xs' as='p'>
+                <Text className='cashier-onboarding-side-note__text' color='prominent' weight='bold' sixe='xs' as='p'>
                     {is_crypto ? (
                         <Localize
                             i18n_default_text='This is your {{currency_code}} account.'
@@ -58,12 +58,12 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
                         />
                     )}
                 </Text>
-                <Text className='cashier-default-side-note__text' size='xxs' as='p' data-testid='side-note-text'>
+                <Text className='cashier-onboarding-side-note__text' size='xxs' as='p' data-testid='side-note-text'>
                     {getSideNoteDescription()}
                 </Text>
                 {is_crypto && (
                     <div
-                        className='cashier-default-side-note__link'
+                        className='cashier-onboarding-side-note__link'
                         onClick={() => {
                             setDepositTarget(routes.cashier_deposit);
                             openRealAccountSignup('add_crypto');
@@ -80,7 +80,7 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
     );
 };
 
-CashierDefaultSideNote.propTypes = {
+CashierOnboardingSideNote.propTypes = {
     currency: PropTypes.string,
     mt5_login_list: PropTypes.array,
     openRealAccountSignup: PropTypes.func,
@@ -92,4 +92,4 @@ export default connect(({ client, modules, ui }) => ({
     mt5_login_list: client.mt5_login_list,
     openRealAccountSignup: ui.openRealAccountSignup,
     setDepositTarget: modules.cashier.general_store.setDepositTarget,
-}))(CashierDefaultSideNote);
+}))(CashierOnboardingSideNote);

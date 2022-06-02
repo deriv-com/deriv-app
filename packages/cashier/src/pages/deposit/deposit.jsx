@@ -3,8 +3,7 @@ import React from 'react';
 import { Loading, MobileWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CashierContainer from 'Components/cashier-container.jsx';
-import CashierDefault from 'Components/CashierDefault/cashier-default.jsx';
-import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-side-note.jsx';
+import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 import DepositsLocked from 'Components/Error/deposit-locked.jsx';
@@ -13,7 +12,7 @@ import FundsProtection from 'Components/Error/funds-protection.jsx';
 import USDTSideNote from 'Components/usdt-side-note.jsx';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
-import CryptoDeposit from './crypto-deposit.jsx';
+import CryptoDeposit from './crypto-deposit';
 
 const Deposit = ({
     can_change_fiat_currency,
@@ -23,7 +22,7 @@ const Deposit = ({
     current_currency_type,
     error,
     is_cashier_locked,
-    is_cashier_default,
+    is_cashier_onboarding,
     is_crypto,
     is_crypto_transactions_visible,
     is_deposit,
@@ -75,11 +74,11 @@ const Deposit = ({
                 if (side_notes.length > 0) setSideNotes(side_notes);
             }
             if (is_fiat_currency_banner_visible_for_MF_clients) {
-                setSideNotes([<CashierDefaultSideNote key={0} is_crypto={false} />]);
+                setSideNotes([<CashierOnboardingSideNote key={0} is_crypto={false} />]);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions, is_cashier_default, iframe_height]);
+    }, [currency, tab_index, crypto_transactions, is_cashier_onboarding, iframe_height]);
 
     if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen />;
@@ -117,7 +116,7 @@ const Deposit = ({
             <>
                 {is_fiat_currency_banner_visible_for_MF_clients && (
                     <MobileWrapper>
-                        <CashierDefaultSideNote is_crypto={false} />
+                        <CashierOnboardingSideNote is_crypto={false} />
                     </MobileWrapper>
                 )}
                 <CashierContainer
@@ -129,7 +128,7 @@ const Deposit = ({
             </>
         );
     }
-    return <CashierDefault setSideNotes={setSideNotes} />;
+    return <CashierOnboarding setSideNotes={setSideNotes} />;
 };
 
 Deposit.propTypes = {
@@ -138,7 +137,7 @@ Deposit.propTypes = {
     container: PropTypes.string,
     current_currency_type: PropTypes.string,
     error: PropTypes.object,
-    is_cashier_default: PropTypes.bool,
+    is_cashier_onboarding: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_deposit: PropTypes.bool,
     is_crypto: PropTypes.bool,
@@ -168,7 +167,7 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     error: modules.cashier.deposit.error,
-    is_cashier_default: modules.cashier.general_store.is_cashier_default,
+    is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_crypto: modules.cashier.general_store.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,

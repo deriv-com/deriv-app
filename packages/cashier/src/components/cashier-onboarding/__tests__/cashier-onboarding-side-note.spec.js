@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import CashierDefaultSideNote from '../cashier-default-side-note';
+import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -8,9 +8,9 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-describe('<CashierDefaultSideNote />', () => {
+describe('<CashierOnboardingSideNote />', () => {
     it('should show the proper messages, with fiat currency and can_change_fiat_currency={false} property', () => {
-        render(<CashierDefaultSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
+        render(<CashierOnboardingSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
 
         expect(screen.getByText('Your fiat account currency is set to USD.')).toBeInTheDocument();
         expect(screen.getByTestId('side-note-text')).toHaveTextContent(
@@ -22,7 +22,7 @@ describe('<CashierDefaultSideNote />', () => {
         window.LC_API = {
             open_chat_window: jest.fn(),
         };
-        render(<CashierDefaultSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
+        render(<CashierOnboardingSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
 
         const live_chat_link = screen.getByText('live chat');
         fireEvent.click(live_chat_link);
@@ -30,7 +30,7 @@ describe('<CashierDefaultSideNote />', () => {
     });
 
     it('should show the proper messages when is_crypto is true', () => {
-        render(<CashierDefaultSideNote currency={'BTC'} is_crypto />);
+        render(<CashierOnboardingSideNote currency={'BTC'} is_crypto />);
 
         expect(screen.getByText('This is your BTC account.')).toBeInTheDocument();
         expect(
@@ -43,7 +43,7 @@ describe('<CashierDefaultSideNote />', () => {
         const openRealAccountSignup = jest.fn();
         const setDepositTarget = jest.fn();
         const { container } = render(
-            <CashierDefaultSideNote
+            <CashierOnboardingSideNote
                 currency={'BTC'}
                 is_crypto
                 openRealAccountSignup={openRealAccountSignup}
@@ -51,7 +51,7 @@ describe('<CashierDefaultSideNote />', () => {
             />
         );
 
-        const link = container.querySelector('.cashier-default-side-note__link');
+        const link = container.querySelector('.cashier-onboarding-side-note__link');
         fireEvent.click(link);
         expect(openRealAccountSignup).toHaveBeenCalledTimes(1);
         expect(setDepositTarget).toHaveBeenCalledTimes(1);

@@ -5,16 +5,13 @@ import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
-import { setDecimalPlaces } from 'Utils/format-value.js';
 import { useStores } from 'Stores';
 
 const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
 
-    const display_offer_amount = offer_amount
-        ? formatMoney(currency, offer_amount, true, setDecimalPlaces(market_feed, 6))
-        : '';
+    const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
 
     let display_price_rate = '';
     let display_total = '';
@@ -40,7 +37,7 @@ const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
             <Text key={0} weight='bold' size='xs' color='status-info-blue' />,
             <Text key={1} weight='normal' size='xs' color='status-info-blue' />,
         ];
-        const values = { target_amount: parseFloat(display_offer_amount), target_currency: currency };
+        const values = { target_amount: display_offer_amount, target_currency: currency };
         if (price_rate) {
             Object.assign(values, {
                 local_amount: display_total,

@@ -337,7 +337,11 @@ const BuySellForm = props => {
                                                             setFieldValue('amount', getRoundedNumber(input_amount));
                                                             buy_sell_store.setReceiveAmount(
                                                                 getRoundedNumber(
-                                                                    input_amount * effective_rate,
+                                                                    input_amount *
+                                                                        getRoundedNumber(
+                                                                            effective_rate,
+                                                                            buy_sell_store.account_currency
+                                                                        ),
                                                                     buy_sell_store.account_currency
                                                                 )
                                                             );

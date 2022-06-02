@@ -40,7 +40,6 @@
     }
 
     &__menu-dots-icon {
-        @include colorIcon(var(--text-general), none, var(--text-general));
         cursor: pointer;
         margin-bottom: 0.8rem;
     }

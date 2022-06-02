@@ -4,15 +4,15 @@ import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CashierContainer from 'Components/cashier-container.jsx';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
+import DepositsLocked from 'Components/Error//deposit-locked.jsx';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 import Error from 'Components/Error/error.jsx';
 import FundsProtection from 'Components/Error/funds-protection.jsx';
 import USDTSideNote from 'Components/usdt-side-note.jsx';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
-import CashierOnboarding from './onboarding';
+import CashierOnboarding from 'Components/onboarding';
 import CryptoDeposit from './crypto-deposit.jsx';
-import DepositsLocked from './deposit-locked.jsx';
 
 const Deposit = ({
     crypto_transactions,

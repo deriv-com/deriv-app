@@ -5,7 +5,7 @@ import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import Providers from 'Config/cashier-default-providers';
+import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
 import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
 

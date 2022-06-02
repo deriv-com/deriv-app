@@ -19,11 +19,11 @@ const AdvertiserPageDropdown = ({ is_dropdown_visible, onViewBlockModal, onViewD
     return (
         <div className='advertiser-page__menu-dots-toggle'>
             <Icon
-                icon={'IcMenuDots'}
-                width='16px'
-                height='16px'
                 className='advertiser-page__menu-dots-icon'
+                height='16px'
+                icon={'IcMenuDots'}
                 onClick={onViewDropdown}
+                width='16px'
             />
             {is_dropdown_visible && (
                 <div className='advertiser-page__dropdown' onClick={onViewBlockModal}>
@@ -38,6 +38,12 @@ const AdvertiserPageDropdown = ({ is_dropdown_visible, onViewBlockModal, onViewD
             )}
         </div>
     );
+};
+
+AdvertiserPageDropdown.propTypes = {
+    is_dropdown_visible: PropTypes.bool.isRequired,
+    onViewBlockModal: PropTypes.func.isRequired,
+    onViewDropdown: PropTypes.func.isRequired,
 };
 
 const AdvertiserPage = () => {

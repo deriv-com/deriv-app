@@ -138,9 +138,9 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
 };
 
 ContractDetails.propTypes = {
-    contract_end_time: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    contract_end_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     contract_info: PropTypes.object,
-    date_start: PropTypes.number,
+    date_start: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
     exit_spot: PropTypes.string,

@@ -42,7 +42,7 @@ const OnRampInfo = () => (
 const OnRamp = ({
     filtered_onramp_providers,
     is_cashier_locked,
-    is_cashier_default,
+    is_cashier_onboarding,
     is_deposit_locked,
     is_loading,
     is_onramp_modal_open,
@@ -74,7 +74,7 @@ const OnRamp = ({
 
         return () => onUnmountOnramp();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMountOnramp, onUnmountOnramp, is_cashier_default, is_switching, is_loading, tab_index]);
+    }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, tab_index]);
 
     const getActivePaths = () =>
         (menu_options ?? []).map(menu_option => ({
@@ -82,7 +82,7 @@ const OnRamp = ({
             value: menu_option.path,
         }));
 
-    if (is_switching || is_loading) return <Loading className='cashier-default__loader' is_fullscreen />;
+    if (is_switching || is_loading) return <Loading className='cashier-onboarding__loader' is_fullscreen />;
 
     if (is_cashier_locked) {
         return <CashierLocked />;
@@ -163,7 +163,7 @@ OnRamp.propTypes = {
 
 export default connect(({ modules, common, client }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
-    is_cashier_default: modules.cashier.general_store.is_cashier_default,
+    is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,

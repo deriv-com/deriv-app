@@ -42,14 +42,14 @@ export default class GeneralStore extends BaseStore {
     @observable cashier_route_tab_index = 0;
     @observable is_deposit = false;
     @observable should_show_all_available_currencies = false;
-    @observable is_cashier_default = true;
+    @observable is_cashier_onboarding = true;
     @observable deposit_target = '';
     @observable should_set_currency_modal_title_change = false;
     @observable p2p_advertiser_error = undefined;
     @observable has_set_currency = false;
     @observable should_percentage_reset = false;
     @observable percentage = 0;
-    @observable show_p2p_in_cashier_default = false;
+    @observable show_p2p_in_cashier_onboarding = false;
     @observable onRemount = () => {};
 
     active_container = Constants.containers.deposit;
@@ -72,7 +72,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    showP2pInCashierDefault() {
+    showP2pInCashierOnboarding() {
         const { account_list, is_virtual } = this.root_store.client;
 
         const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
@@ -82,9 +82,9 @@ export default class GeneralStore extends BaseStore {
         );
 
         if (is_p2p_restricted || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
-            this.show_p2p_in_cashier_default = false;
+            this.show_p2p_in_cashier_onboarding = false;
         } else {
-            this.show_p2p_in_cashier_default = true;
+            this.show_p2p_in_cashier_onboarding = true;
         }
     }
 
@@ -140,13 +140,13 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    async onMountCashierDefault() {
+    async onMountCashierOnboarding() {
         const { account_prompt_dialog, payment_agent } = this.root_store.modules.cashier;
 
         if (!this.has_set_currency) {
             this.setHasSetCurrency();
         }
-        this.setIsCashierDefault(true);
+        this.setIsCashierOnboarding(true);
         account_prompt_dialog.resetIsConfirmed();
 
         this.setLoading(true);
@@ -192,8 +192,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setIsCashierDefault(is_cashier_default) {
-        this.is_cashier_default = is_cashier_default;
+    setIsCashierOnboarding(is_cashier_onboarding) {
+        this.is_cashier_onboarding = is_cashier_onboarding;
     }
 
     @action.bound
@@ -217,39 +217,27 @@ export default class GeneralStore extends BaseStore {
 
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
-    init() {
+    async init() {
         if (this.root_store.modules.cashier) {
-            const { client, modules } = this.root_store;
+            const {
+                client: { is_logged_in, switched },
+                modules,
+            } = this.root_store;
             const { account_prompt_dialog, withdraw } = modules.cashier;
-            const { currency, is_logged_in, switched } = client;
 
-            when(
-                () => is_logged_in,
-                async () => {
-                    await this.getAdvertizerError();
+            // wait for client settings to be populated in client-store
+            await this.WS.wait('get_settings');
+
+            if (is_logged_in) {
+                await this.getAdvertizerError();
+                account_prompt_dialog.resetLastLocation();
+                if (!switched) {
                     this.checkP2pStatus();
+                    // check if withdrawal limit is reached
+                    // if yes, this will trigger to show a notification
                     await withdraw.check10kLimit();
                 }
-            );
-
-            reaction(
-                () => [switched, is_logged_in, currency],
-                async () => {
-                    // wait for client settings to be populated in client-store
-                    await this.WS.wait('get_settings');
-
-                    if (is_logged_in) {
-                        await this.getAdvertizerError();
-                        account_prompt_dialog.resetLastLocation();
-                        if (!switched) {
-                            this.checkP2pStatus();
-                            // check if withdrawal limit is reached
-                            // if yes, this will trigger to show a notification
-                            await this.check10kLimit();
-                        }
-                    }
-                }
-            );
+            }
         }
     }
 

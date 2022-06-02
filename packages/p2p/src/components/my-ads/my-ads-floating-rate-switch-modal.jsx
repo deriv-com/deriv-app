@@ -12,7 +12,7 @@ const MyAdsFloatingRateSwitchModal = () => {
         <React.Fragment>
             <Modal
                 is_open={my_ads_store.is_switch_modal_open}
-                toggleModal={() => my_ads_store.toggleMyAdsRateSwitchModal()}
+                toggleModal={my_ads_store.toggleMyAdsRateSwitchModal}
                 small
             >
                 <Modal.Body>

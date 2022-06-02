@@ -144,7 +144,12 @@ const CurrencySelector = ({
             {({ handleSubmit, values, errors, touched }) => (
                 <AutoHeightWrapper default_height={450}>
                     {({ setRef, height }) => (
-                        <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
+                        <form
+                            ref={setRef}
+                            onSubmit={handleSubmit}
+                            className='currency-selector'
+                            data-testid='currency_selector_form'
+                        >
                             <Div100vhContainer
                                 className={classNames('currency-selector__container', {
                                     'currency-selector__container--no-top-margin':

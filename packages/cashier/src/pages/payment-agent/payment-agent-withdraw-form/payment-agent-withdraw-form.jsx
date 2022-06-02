@@ -16,8 +16,8 @@ import {
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import FormError from 'Components/Error/form-error.jsx';
+import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import PaymentAgentReceipt from '../payment-agent-receipt';
 import './payment-agent-withdraw-form.scss';
 

@@ -8,7 +8,7 @@ import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import Withdraw from './withdraw';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
-import Error from 'Components/error';
+import CashierError from 'Components/cashier-error';
 import NoBalance from 'Components/no-balance';
 import Virtual from 'Components/virtual';
 import WithdrawalLocked from './withdrawal-locked';
@@ -131,10 +131,10 @@ const Withdrawal = ({
         return <NoBalance />;
     }
     if (error.message) {
-        return <Error error={error} />;
+        return <CashierError error={error} />;
     }
     if (verify_error.message) {
-        return <Error error={verify_error} />;
+        return <CashierError error={verify_error} />;
     }
     if (!is_crypto && (verification_code || iframe_url)) {
         return <Withdraw />;

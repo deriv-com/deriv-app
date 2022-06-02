@@ -20,7 +20,7 @@ jest.mock('@deriv/components', () => {
 });
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
-jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
+jest.mock('Components/cashier-error', () => jest.fn(() => 'mockedCashierError'));
 jest.mock('Components/no-balance', () => jest.fn(() => 'mockedNoBalance'));
 jest.mock('Pages/payment-agent-transfer/payment-agent-transfer-form', () =>
     jest.fn(() => 'mockedPaymentAgentTransferForm')
@@ -89,7 +89,7 @@ describe('<PaymentAgentTransfer />', () => {
 
         render(<PaymentAgentTransfer {...props} error={cta_error} />);
 
-        expect(screen.getByText('mockedError')).toBeInTheDocument();
+        expect(screen.getByText('mockedCashierError')).toBeInTheDocument();
     });
 
     it('should show the no balance component if account has no balance', () => {

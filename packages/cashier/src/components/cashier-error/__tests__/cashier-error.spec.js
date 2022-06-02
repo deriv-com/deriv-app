@@ -1,15 +1,15 @@
 import React from 'react';
-import Error from '../error';
+import CashierError from '../cashier-error';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 
-describe('<Error />', () => {
+describe('<CashierError />', () => {
     it('should show the "Email verification failed" message, and "Resend email" button', () => {
         const error = {
             code: 'InvalidToken',
         };
-        render(<Error error={error} />);
+        render(<CashierError error={error} />);
         expect(screen.getByText('Email verification failed')).toBeInTheDocument();
 
         expect(screen.getByText('Resend email')).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe('<Error />', () => {
         };
         render(
             <Router history={history}>
-                <Error error={error} />
+                <CashierError error={error} />
             </Router>
         );
 
@@ -35,7 +35,7 @@ describe('<Error />', () => {
             code: 'WrongResponse',
             message: 'Oops, you have an error!',
         };
-        render(<Error error={error} />);
+        render(<CashierError error={error} />);
 
         expect(screen.getByText('Oops, you have an error!')).toBeInTheDocument();
         expect(screen.getByText('Try again')).toBeInTheDocument();
@@ -46,7 +46,7 @@ describe('<Error />', () => {
             code: 'PaymentAgentWithdrawError',
             message: 'Oops, you have an error with withdrawal!',
         };
-        render(<Error error={error} />);
+        render(<CashierError error={error} />);
 
         expect(screen.getByText('Oops, you have an error with withdrawal!')).toBeInTheDocument();
     });
@@ -56,7 +56,7 @@ describe('<Error />', () => {
             code: '',
             message: 'Default error',
         };
-        render(<Error error={error} />);
+        render(<CashierError error={error} />);
 
         expect(screen.getByText('Default error')).toBeInTheDocument();
     });
@@ -72,7 +72,7 @@ describe('<Error />', () => {
             };
             const { unmount } = render(
                 <Router history={history}>
-                    <Error error={error} />
+                    <CashierError error={error} />
                 </Router>
             );
             const error_btn = screen.getByText(btn_name);

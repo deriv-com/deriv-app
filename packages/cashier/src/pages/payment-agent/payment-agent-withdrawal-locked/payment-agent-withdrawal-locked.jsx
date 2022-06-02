@@ -4,7 +4,7 @@ import { Button, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { withRouter } from 'react-router-dom';
-import Error from 'Components/error';
+import CashierError from 'Components/cashier-error';
 import './payment-agent-withdrawal-locked.scss';
 
 const PaymentAgentWithdrawalLockedItem = ({ item }) => {
@@ -62,7 +62,7 @@ const PaymentAgentWithdrawalLocked = ({ error, history }) => {
     ];
 
     if (error.onClickButton || error.code === 'PaymentAgentJustification') {
-        return <Error error={error} />;
+        return <CashierError error={error} />;
     }
 
     return (

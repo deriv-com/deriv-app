@@ -884,9 +884,9 @@ const AccountSwitcher = props => {
                 </Text>
                 <Text size='xs' color='prominent' className='acc-switcher__balance'>
                     <Money
-                        currency={isRealAccountTab ? props.obj_total_balance.currency : 'USD'}
+                        currency={props.obj_total_balance.currency}
                         amount={formatMoney(
-                            isRealAccountTab ? props.obj_total_balance.currency : 'USD',
+                            props.obj_total_balance.currency,
                             isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
                             true
                         )}

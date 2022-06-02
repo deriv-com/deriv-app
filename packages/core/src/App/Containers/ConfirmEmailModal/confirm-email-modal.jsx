@@ -10,7 +10,6 @@ export const ConfirmEmailModal = ({
     is_open,
     onClose,
     prev_email,
-    setHasError,
     setErrorMessage,
     verification_code,
 }) => {
@@ -29,7 +28,6 @@ export const ConfirmEmailModal = ({
 
         WS.changeEmail(api_request).then(response => {
             if (response.error) {
-                setHasError(true);
                 onClose();
                 setErrorMessage(response.error.message);
             } else {
@@ -62,6 +60,8 @@ export const ConfirmEmailModal = ({
             title={<Localize i18n_default_text='Are you sure?' />}
             toggleModal={onClose}
             width='440px'
+            is_closed_on_cancel={false}
+            has_close_icon={false}
         >
             <React.Fragment>
                 <div className='email-confirmation'>
@@ -100,7 +100,6 @@ ConfirmEmailModal.propTypes = {
     is_open: PropTypes.bool,
     onClose: PropTypes.func,
     prev_email: PropTypes.string,
-    setHasError: PropTypes.func,
     setErrorMessage: PropTypes.func,
     verification_code: PropTypes.string,
 };

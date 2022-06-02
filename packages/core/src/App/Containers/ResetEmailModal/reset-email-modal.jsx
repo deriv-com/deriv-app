@@ -20,7 +20,6 @@ const ResetEmailModal = ({
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
     const [email_error_msg, setEmailErrorMsg] = React.useState(null);
     const [new_email, setNewEmail] = React.useState(null);
-    const [has_error, setHasError] = React.useState(false);
 
     const handleSubmit = values => {
         setNewEmail(values.email);
@@ -48,7 +47,6 @@ const ResetEmailModal = ({
                 is_open={is_confirm_email_modal_open}
                 onClose={() => setIsConfirmResetEmailModal(false)}
                 prev_email={email}
-                setHasError={setHasError}
                 setErrorMessage={setEmailErrorMsg}
                 verification_code={verification_code}
             />
@@ -108,21 +106,14 @@ const ResetEmailModal = ({
                                                 value={values.email}
                                                 required
                                                 disabled={false}
-                                                error={(touched.email && errors.email) || status.error_msg}
+                                                error={(touched.email && errors.email) || email_error_msg}
                                                 onChange={e => {
+                                                    setEmailErrorMsg('');
                                                     setFieldTouched('email', true);
                                                     handleChange(e);
                                                 }}
                                             />
                                         </fieldset>
-                                        <Text align='center' as='p' size='xxs' className='reset-email__subtext'>
-                                            {has_error ? (
-                                                <Localize
-                                                    i18n_default_text='{{error_msg}}'
-                                                    values={{ error_msg: email_error_msg }}
-                                                />
-                                            ) : null}
-                                        </Text>
                                         <Button
                                             className={classNames('reset-email__btn', {
                                                 'reset-email__btn--disabled':

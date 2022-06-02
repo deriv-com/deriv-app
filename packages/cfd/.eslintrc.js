@@ -7,4 +7,7 @@ module.exports = {
             webpack: { config: webpackConfig({}) },
         },
     },
+    rules: {
+        'no-underscore-dangle': 0,
+    },
 };

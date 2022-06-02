@@ -1,5 +1,5 @@
 import throttle from 'lodash.throttle';
-import { action, computed, observable, reaction } from 'mobx';
+import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import {
     isEmptyObject,
@@ -19,18 +19,54 @@ import { getEndTime } from '../Contract/Helpers/logic';
 import BaseStore from '../../base-store';
 
 export default class PortfolioStore extends BaseStore {
-    @observable.shallow positions = [];
-    @observable.shallow all_positions = [];
+    positions = [];
+    all_positions = [];
     positions_map = {};
-    @observable is_loading = false;
-    @observable error = '';
+    is_loading = false;
+    error = '';
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
     responseQueue = [];
 
-    @observable.shallow active_positions = [];
+    active_positions = [];
 
-    @action.bound
+    constructor({ root_store }) {
+        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
+        super({ root_store });
+
+        makeObservable(this, {
+            positions: observable.shallow,
+            all_positions: observable.shallow,
+            is_loading: observable,
+            error: observable,
+            active_positions: observable.shallow,
+            initializePortfolio: action.bound,
+            clearTable: action.bound,
+            portfolioHandler: action.bound,
+            onBuyResponse: action.bound,
+            transactionHandler: action.bound,
+            proposalOpenContractHandler: action.bound,
+            onClickCancel: action.bound,
+            onClickSell: action.bound,
+            handleSell: action.bound,
+            populateResultDetailsFromTransaction: action.bound,
+            populateResultDetails: action.bound,
+            populateContractUpdate: action.bound,
+            pushNewPosition: action.bound,
+            removePositionById: action.bound,
+            onHoverPosition: action.bound,
+            logoutListener: action.bound,
+            networkStatusChangeListener: action.bound,
+            onMount: action.bound,
+            onUnmount: override,
+            totals: computed,
+            setActivePositions: action.bound,
+            is_active_empty: computed,
+            active_positions_count: computed,
+            is_empty: computed,
+        });
+    }
+
     async initializePortfolio() {
         if (this.has_subscribed_to_poc_and_transaction) {
             this.clearTable();
@@ -43,7 +79,6 @@ export default class PortfolioStore extends BaseStore {
         this.has_subscribed_to_poc_and_transaction = true;
     }
 
-    @action.bound
     clearTable() {
         this.positions = [];
         this.positions_map = {};
@@ -56,7 +91,6 @@ export default class PortfolioStore extends BaseStore {
         this.has_subscribed_to_poc_and_transaction = false;
     }
 
-    @action.bound
     portfolioHandler(response) {
         this.is_loading = false;
         if ('error' in response) {
@@ -76,7 +110,6 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    @action.bound
     onBuyResponse({ contract_id, longcode, contract_type }) {
         const new_pos = {
             contract_id,
@@ -86,7 +119,6 @@ export default class PortfolioStore extends BaseStore {
         this.pushNewPosition(new_pos);
     }
 
-    @action.bound
     async transactionHandler(response) {
         if ('error' in response) {
             this.error = response.error.message;
@@ -158,7 +190,6 @@ export default class PortfolioStore extends BaseStore {
         this.throttledUpdatePositions();
     };
 
-    @action.bound
     proposalOpenContractHandler(response) {
         if ('error' in response) {
             this.updateContractTradeStore(response);
@@ -226,7 +257,6 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    @action.bound
     onClickCancel(contract_id) {
         const i = this.getPositionIndexById(contract_id);
         if (this.positions[i].is_sell_requested) return;
@@ -246,7 +276,6 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    @action.bound
     onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
         if (this.positions[i].is_sell_requested) return;
@@ -258,7 +287,6 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    @action.bound
     handleSell(response) {
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
@@ -284,7 +312,6 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    @action.bound
     populateResultDetailsFromTransaction = response => {
         const transaction_response = response.transaction;
         const { contract_id, amount } = transaction_response;
@@ -310,7 +337,6 @@ export default class PortfolioStore extends BaseStore {
         this.updatePositions();
     };
 
-    @action.bound
     populateResultDetails = response => {
         const contract_response = response.proposal_open_contract;
         const i = this.getPositionIndexById(contract_response.contract_id);
@@ -342,7 +368,6 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].is_loading = false;
     };
 
-    @action.bound
     populateContractUpdate({ contract_update }, contract_id) {
         const position = this.getPositionById(contract_id);
         if (position) {
@@ -351,7 +376,6 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    @action.bound
     pushNewPosition(new_pos) {
         const position = formatPortfolioPosition(new_pos, this.root_store.modules.trade.active_symbols);
         if (this.positions_map[position.id]) return;
@@ -361,7 +385,6 @@ export default class PortfolioStore extends BaseStore {
         this.updatePositions();
     }
 
-    @action.bound
     removePositionById(contract_id) {
         const contract_idx = this.getPositionIndexById(contract_id);
 
@@ -376,7 +399,6 @@ export default class PortfolioStore extends BaseStore {
         return Promise.resolve();
     }
 
-    @action.bound
     onHoverPosition(is_over, position) {
         const { symbol: underlying } = this.root_store.modules.trade;
         if (
@@ -396,18 +418,15 @@ export default class PortfolioStore extends BaseStore {
         return Promise.resolve();
     }
 
-    @action.bound
     logoutListener() {
         this.clearTable();
         return Promise.resolve();
     }
 
-    @action.bound
     networkStatusChangeListener(is_online) {
         this.is_loading = !is_online;
     }
 
-    @action.bound
     onMount() {
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
@@ -430,7 +449,6 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    @action.bound
     onUnmount() {
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
@@ -442,7 +460,6 @@ export default class PortfolioStore extends BaseStore {
         return this.positions.findIndex(pos => +pos.id === +contract_id);
     }
 
-    @computed
     get totals() {
         let indicative = 0;
         let payout = 0;
@@ -460,7 +477,6 @@ export default class PortfolioStore extends BaseStore {
         };
     }
 
-    @action.bound
     setActivePositions() {
         this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
         this.all_positions = [...this.positions];
@@ -474,17 +490,14 @@ export default class PortfolioStore extends BaseStore {
 
     throttledUpdatePositions = throttle(this.updatePositions, 500);
 
-    @computed
     get is_active_empty() {
         return !this.is_loading && this.active_positions.length === 0;
     }
 
-    @computed
     get active_positions_count() {
         return this.active_positions.length || 0;
     }
 
-    @computed
     get is_empty() {
         return !this.is_loading && this.all_positions.length === 0;
     }

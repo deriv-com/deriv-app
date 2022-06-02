@@ -3,14 +3,14 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import AccountTransferNoAccount from 'Components/Error/account-transfer-no-account.jsx';
+import AccountTransferNoAccount from './account-transfer-no-account';
 import Error from 'Components/Error/error.jsx';
 import NoBalance from 'Components/Error/no-balance.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import TransferLock from 'Components/Error/transfer-locked.jsx';
-import AccountTransferForm from 'Components/Form/account-transfer-form.jsx';
-import AccountTransferReceipt from 'Components/Receipt/account-transfer-receipt.jsx';
+import AccountTransferLocked from './account-transfer-locked';
+import AccountTransferForm from './account-transfer-form';
+import AccountTransferReceipt from './account-transfer-receipt';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 
 const AccountTransfer = ({
@@ -24,7 +24,7 @@ const AccountTransfer = ({
     is_loading,
     is_switching,
     is_transfer_confirm,
-    is_transfer_lock,
+    is_transfer_locked,
     is_virtual,
     onMount,
     recentTransactionOnMount,
@@ -73,8 +73,8 @@ const AccountTransfer = ({
     if (is_cashier_locked) {
         return <CashierLocked />;
     }
-    if (is_transfer_lock) {
-        return <TransferLock />;
+    if (is_transfer_locked) {
+        return <AccountTransferLocked />;
     }
     if (error.is_show_full_page || (error.message && !accounts_list.length)) {
         // for errors with CTA hide the form and show the error,
@@ -108,7 +108,7 @@ AccountTransfer.propTypes = {
     is_loading: PropTypes.bool,
     is_switching: PropTypes.bool,
     is_transfer_confirm: PropTypes.bool,
-    is_transfer_lock: PropTypes.bool,
+    is_transfer_locked: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
     recentTransactionOnMount: PropTypes.func,
@@ -130,7 +130,7 @@ export default connect(({ client, modules }) => ({
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_loading: modules.cashier.general_store.is_loading,
     is_transfer_confirm: modules.cashier.account_transfer.is_transfer_confirm,
-    is_transfer_lock: modules.cashier.general_store.is_transfer_locked,
+    is_transfer_locked: modules.cashier.general_store.is_transfer_locked,
     onMount: modules.cashier.account_transfer.onMountAccountTransfer,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.general_store.setActiveTab,

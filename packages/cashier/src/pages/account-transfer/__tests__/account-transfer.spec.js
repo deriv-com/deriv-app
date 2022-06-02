@@ -20,10 +20,10 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     },
 }));
 
-jest.mock('Components/Form/account-transfer-form', () => jest.fn(() => 'mockedAccountTransferForm'));
+jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransferForm'));
 jest.mock('Components/Form/crypto-transactions-history', () => jest.fn(() => 'mockedCryptoTransactionsHistory'));
 jest.mock('Components/Error/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
-jest.mock('Components/Receipt/account-transfer-receipt', () => jest.fn(() => 'mockedAccountTransferReceipt'));
+jest.mock('../account-transfer-receipt', () => jest.fn(() => 'mockedAccountTransferReceipt'));
 jest.mock('Components/Error/error', () => jest.fn(() => 'mockedError'));
 
 describe('<AccountTransfer />', () => {
@@ -72,7 +72,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the transfer lock component if only transfer is locked', async () => {
-        render(<AccountTransfer is_transfer_lock {...props} />);
+        render(<AccountTransfer is_transfer_locked {...props} />);
 
         expect(await screen.findByText('Transfers are locked')).toBeInTheDocument();
     });

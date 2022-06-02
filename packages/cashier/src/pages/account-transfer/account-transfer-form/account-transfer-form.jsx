@@ -7,11 +7,11 @@ import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, MobileWr
 import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CryptoFiatConverter from './crypto-fiat-converter.jsx';
-import FormError from '../Error/form-error.jsx';
-import PercentageSelector from '../percentage-selector';
-import RecentTransaction from '../recent-transaction.jsx';
-import 'Sass/account-transfer-form.scss';
+import CryptoFiatConverter from 'Components/Form/crypto-fiat-converter.jsx';
+import FormError from 'Components/Error/form-error.jsx';
+import PercentageSelector from 'Components/percentage-selector';
+import RecentTransaction from 'Components/recent-transaction.jsx';
+import './account-transfer-form.scss';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;

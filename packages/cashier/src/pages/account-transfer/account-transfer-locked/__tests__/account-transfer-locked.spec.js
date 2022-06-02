@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import TransferLocked from '../transfer-locked';
+import AccountTransferLocked from '../account-transfer-locked';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -12,10 +12,10 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-describe('TransferLocked', () => {
+describe('AccountTransferLocked', () => {
     it('Should show the default lock content if the account is not financial', () => {
         render(
-            <TransferLocked
+            <AccountTransferLocked
                 is_financial_account={false}
                 is_financial_information_incomplete
                 is_trading_experience_incomplete
@@ -26,7 +26,7 @@ describe('TransferLocked', () => {
 
     it('Should show the default lock content if the account is financial and any of the account information (financial or trading_experience) is incomplete', () => {
         render(
-            <TransferLocked
+            <AccountTransferLocked
                 is_financial_account
                 is_financial_information_incomplete={false}
                 is_trading_experience_incomplete
@@ -55,7 +55,7 @@ describe('TransferLocked', () => {
         const history = createBrowserHistory();
         const wrapper = render(
             <Router history={history}>
-                <TransferLocked
+                <AccountTransferLocked
                     is_financial_account
                     is_financial_information_incomplete
                     is_trading_experience_incomplete

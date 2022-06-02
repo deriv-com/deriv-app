@@ -10,7 +10,7 @@ module.exports = function (env) {
         entry: {
             cashier: path.resolve(__dirname, '../src', 'index.tsx'),
             'cashier-store': 'Stores/cashier-store',
-            'account-transfer': 'Containers/account-transfer',
+            'account-transfer': 'Pages/account-transfer',
             deposit: 'Pages/deposit',
             'on-ramp': 'Pages/on-ramp',
             'payment-agent': 'Containers/payment-agent',

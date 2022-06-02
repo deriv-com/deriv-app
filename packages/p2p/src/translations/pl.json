@@ -43,6 +43,7 @@
     "671582270": "Maksymalna dostępna kwota to {{value}}",
     "683273691": "Opłata (1 {{ account_currency }})",
     "728383001": "Otrzymano więcej niż ustalona kwota.",
+    "733311523": "P2P transactions are locked. This feature is not available for payment agents.",
     "767789372": "Poczekaj na płatność",
     "782834680": "Pozostały czas",
     "783454335": "Tak, usuń",

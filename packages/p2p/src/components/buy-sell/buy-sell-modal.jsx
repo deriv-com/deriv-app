@@ -4,7 +4,6 @@ import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState, Hin
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
-import { api_error_codes } from 'Constants/api-error-codes.js';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
@@ -12,6 +11,21 @@ import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
 import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
+
+const LowBalanceMessage = () => (
+    <div className='buy-sell__modal--error-message'>
+        <HintBox
+            className='buy-sell__modal-danger'
+            icon='IcAlertDanger'
+            message={
+                <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                    <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                </Text>
+            }
+            is_danger
+        />
+    </div>
+);
 
 const BuySellModalFooter = ({ onCancel, is_submit_disabled, onSubmit }) => {
     return (
@@ -47,14 +61,9 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         />
     );
 
-    const generateErrorMessage = () => {
-        if (buy_sell_store.form_error_code === api_error_codes.INSUFFICIENT_BALANCE) {
-            return (
-                <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
-            );
-        }
-        return error_message;
-    };
+    const is_account_balance_low =
+        parseFloat(general_store.client.balance) === 0 &&
+        parseFloat(general_store.client.balance) < buy_sell_store.advert?.min_order_amount_limit;
 
     const BuySellFormError = () => (
         <div className='buy-sell__modal--error-message'>
@@ -63,7 +72,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 icon='IcAlertDanger'
                 message={
                     <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        {generateErrorMessage()}
+                        {error_message}
                     </Text>
                 }
                 is_danger
@@ -131,6 +140,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         : 'buy-sell__modal-footer'
                 }
             >
+                {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                 {error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
                     <AddPaymentMethodForm should_show_separated_footer={true} />
@@ -162,6 +172,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             {/* Parent height - Modal.Header height - Modal.Footer height */}
             <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                 <Modal.Body className='buy-sell__modal--layout'>
+                    {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                     {error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm should_show_separated_footer />

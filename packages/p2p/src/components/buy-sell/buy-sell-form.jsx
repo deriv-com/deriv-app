@@ -14,7 +14,7 @@ import { floatingPointValidator } from 'Utils/validations';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
-    const { advertiser_page_store, buy_sell_store, floating_rate_store, my_profile_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
 
@@ -32,9 +32,15 @@ const BuySellForm = props => {
         rate_type,
     } = buy_sell_store?.advert || {};
 
+    const should_disable_field =
+        !buy_sell_store.is_buy_advert &&
+        parseFloat(general_store.client.balance) === 0 &&
+        parseFloat(general_store.client.balance) < buy_sell_store.advert?.min_order_amount_limit;
+
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
+        cursor: should_disable_field ? 'not-allowed' : 'pointer',
     };
 
     const effective_rate =
@@ -78,22 +84,24 @@ const BuySellForm = props => {
     );
 
     const onClickPaymentMethodCard = payment_method => {
-        if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
-            if (buy_sell_store.payment_method_ids.length < 3) {
-                buy_sell_store.payment_method_ids.push(payment_method.ID);
-                setSelectedMethods([...selected_methods, payment_method.ID]);
+        if (!should_disable_field) {
+            if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
+                if (buy_sell_store.payment_method_ids.length < 3) {
+                    buy_sell_store.payment_method_ids.push(payment_method.ID);
+                    setSelectedMethods([...selected_methods, payment_method.ID]);
+                }
+            } else {
+                buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
+                    payment_method_id => payment_method_id !== payment_method.ID
+                );
+                setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
             }
-        } else {
-            buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
-                payment_method_id => payment_method_id !== payment_method.ID
-            );
-            setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
         }
     };
 
     return (
         <React.Fragment>
-            {rate_type === ad_type.FLOAT && (
+            {rate_type === ad_type.FLOAT && !should_disable_field && (
                 <div className='buy-sell__modal-hintbox'>
                     <HintBox
                         icon='IcAlertInfo'
@@ -268,12 +276,20 @@ const BuySellForm = props => {
                                                             key={key}
                                                             medium
                                                             onClickAdd={() => {
-                                                                my_profile_store.setSelectedPaymentMethodDisplayName(
-                                                                    add_payment_method
-                                                                );
-                                                                my_profile_store.setShouldShowAddPaymentMethodForm(
-                                                                    true
-                                                                );
+                                                                if (!should_disable_field) {
+                                                                    // eslint-disable-next-line max-len
+                                                                    my_profile_store.setSelectedPaymentMethodDisplayName(
+                                                                        add_payment_method
+                                                                    );
+                                                                    my_profile_store.setShouldShowAddPaymentMethodForm(
+                                                                        true
+                                                                    );
+                                                                }
+                                                            }}
+                                                            style={{
+                                                                cursor: should_disable_field
+                                                                    ? 'not-allowed'
+                                                                    : 'pointer',
                                                             }}
                                                         />
                                                     );
@@ -349,6 +365,7 @@ const BuySellForm = props => {
                                                     }}
                                                     required
                                                     value={values.amount}
+                                                    disabled={should_disable_field}
                                                 />
                                             )}
                                         </Field>
@@ -380,6 +397,7 @@ const BuySellForm = props => {
                                                             has_character_counter
                                                             initial_character_count={buy_sell_store.payment_info.length}
                                                             max_characters={300}
+                                                            disabled={should_disable_field}
                                                         />
                                                     )}
                                                 </Field>
@@ -398,6 +416,7 @@ const BuySellForm = props => {
                                                         has_character_counter
                                                         initial_character_count={buy_sell_store.contact_info.length}
                                                         max_characters={300}
+                                                        disabled={should_disable_field}
                                                     />
                                                 )}
                                             </Field>

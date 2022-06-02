@@ -24,6 +24,7 @@ const P2PCashier = ({
     residence,
     setNotificationCount,
     setCurrentFocus,
+    balance,
 }) => {
     const [order_id, setOrderId] = React.useState(null);
     const server_time = {
@@ -75,7 +76,7 @@ const P2PCashier = ({
 
     return (
         <P2P
-            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            client={{ currency, local_currency_config, is_virtual, residence, loginid, balance }}
             history={history}
             is_dark_mode_on={is_dark_mode_on}
             is_mobile={is_mobile}
@@ -96,6 +97,7 @@ const P2PCashier = ({
 };
 
 P2PCashier.propTypes = {
+    balance: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
     history: PropTypes.object,
@@ -114,6 +116,7 @@ P2PCashier.propTypes = {
 
 export default withRouter(
     connect(({ client, common, modules, ui }) => ({
+        balance: client.balance,
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,

@@ -10,5 +10,9 @@ export default class RootStore {
         this.rudderstack = core_store.rudderstack;
         this.pushwoosh = core_store.pushwoosh;
         this.notifications = core_store.notifications;
+        this.contract_replay = core_store.contract_replay;
+        this.contract_trade = core_store.contract_trade;
+        this.portfolio = core_store.portfolio;
+        this.chart_barrier_store = core_store.chart_barrier_store;
     }
 }

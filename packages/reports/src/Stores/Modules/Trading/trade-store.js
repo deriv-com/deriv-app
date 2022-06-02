@@ -33,7 +33,7 @@ import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
-import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
+// import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from 'Stores/base-store';
@@ -261,7 +261,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     clearContracts = () => {
-        this.root_store.modules.contract_trade.contracts = [];
+        this.root_store.contract_trade.contracts = [];
     };
 
     @action.bound
@@ -514,6 +514,7 @@ export default class TradeStore extends BaseStore {
                 });
             }
         } else {
+            const ChartBarrierStore = this.root_store.chart_barrier_store;
             purchase_spot_barrier = new ChartBarrierStore(position.contract_info.entry_spot);
             purchase_spot_barrier.key = key;
             purchase_spot_barrier.draggable = false;
@@ -571,6 +572,7 @@ export default class TradeStore extends BaseStore {
         if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
+            const ChartBarrierStore = this.root_store.chart_barrier_store;
             this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
                 color,
             });
@@ -634,7 +636,7 @@ export default class TradeStore extends BaseStore {
                             const { category, underlying } = extractInfoFromShortcode(shortcode);
                             const is_digit_contract = isDigitContractType(category.toUpperCase());
                             const contract_type = category.toUpperCase();
-                            this.root_store.modules.contract_trade.addContract({
+                            this.root_store.contract_trade.addContract({
                                 contract_id,
                                 start_time,
                                 longcode,
@@ -643,7 +645,7 @@ export default class TradeStore extends BaseStore {
                                 contract_type,
                                 is_tick_contract,
                             });
-                            this.root_store.modules.portfolio.onBuyResponse({
+                            this.root_store.portfolio.onBuyResponse({
                                 contract_id,
                                 longcode,
                                 contract_type,

@@ -37,9 +37,11 @@
     "moment": "^2.24.0"
   },
   "dependencies": {
+    "@deriv/translations": "^1.0.0",
     "canvas-toBlob": "^1.0.0",
     "extend": "^3.0.2",
     "js-cookie": "^2.2.1",
+    "mobx": "^5.15.7",
     "moment": "^2.24.0",
     "object.fromentries": "^2.0.0",
     "react": "^16.14.0",

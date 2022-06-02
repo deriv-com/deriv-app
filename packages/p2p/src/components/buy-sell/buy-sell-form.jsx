@@ -11,6 +11,7 @@ import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
+import classNames from 'classnames';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -248,7 +249,12 @@ const BuySellForm = props => {
                                                     <Localize i18n_default_text='To place an order, add one of the advertiser’s preferred payment methods:' />
                                                 )}
                                             </Text>
-                                            <div className='buy-sell__modal--sell-payment-methods'>
+                                            <div
+                                                className={classNames('buy-sell__modal--sell-payment-methods', {
+                                                    'buy-sell__modal--sell-payment-methods--disable':
+                                                        should_disable_field,
+                                                })}
+                                            >
                                                 {payment_method_names?.map((add_payment_method, key) => {
                                                     const matching_payment_methods =
                                                         my_profile_store.advertiser_payment_methods_list.filter(
@@ -267,6 +273,7 @@ const BuySellForm = props => {
                                                                         ? style
                                                                         : {}
                                                                 }
+                                                                disabled={should_disable_field}
                                                             />
                                                         ))
                                                     ) : (
@@ -286,6 +293,7 @@ const BuySellForm = props => {
                                                                     );
                                                                 }
                                                             }}
+                                                            disabled={should_disable_field}
                                                             style={{
                                                                 cursor: should_disable_field
                                                                     ? 'not-allowed'
@@ -370,7 +378,11 @@ const BuySellForm = props => {
                                             )}
                                         </Field>
                                         {isDesktop() && (
-                                            <div className='buy-sell__modal-field'>
+                                            <div
+                                                className={classNames('buy-sell__modal-field', {
+                                                    'buy-sell__modal-field--disable': should_disable_field,
+                                                })}
+                                            >
                                                 <BuySellFormReceiveAmount />
                                             </div>
                                         )}
@@ -378,7 +390,6 @@ const BuySellForm = props => {
                                 </div>
                                 {buy_sell_store.is_sell_advert && (
                                     <React.Fragment>
-                                        {!payment_method_names && <div className='buy-sell__modal-line' />}
                                         {!payment_method_names && (
                                             <div className='buy-sell__modal-field--textarea'>
                                                 <Field name='payment_info'>

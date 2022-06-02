@@ -20,8 +20,13 @@
         margin-right: 0.7rem;
         flex: 1;
 
+        &--disable {
+            opacity: 0.32;
+        }
+
         &--textarea {
-            padding: 1.4rem 2.4rem;
+            border-top: 1px solid var(--general-section-1);
+            padding: 1.8rem 2.4rem 0;
         }
 
         @include mobile {
@@ -33,6 +38,7 @@
             display: flex;
             margin: -#{$gap} 0 1.6rem -#{$gap};
             padding: 0 2.4rem;
+            word-break: break-word;
 
             & > * {
                 margin: $gap 0 0 $gap;
@@ -57,7 +63,7 @@
         display: flex;
         gap: 2rem;
         flex-direction: column;
-        padding: 0 2.4rem;
+        padding: 0 2.4rem 1.4rem;
         .dc-input__wrapper {
             margin-bottom: unset;
         }
@@ -150,6 +156,10 @@
                     margin-top: 0;
                 }
             }
+        }
+
+        &--disable {
+            opacity: 0.32;
         }
     }
 

@@ -2,7 +2,7 @@ import AccountPromptDialogStore from './account-prompt-dialog-store';
 import AccountTransferStore from './account-transfer-store';
 import CryptoFiatConverterStore from './crypto-fiat-converter-store';
 import DepositStore from './deposit-store';
-import ErrorDialog from './error-dialog-store';
+import ErrorDialogStore from './error-dialog-store';
 import ErrorStore from './error-store';
 import GeneralStore from './general-store';
 import IframeStore from './iframe-store';
@@ -19,7 +19,7 @@ export default class CashierStore {
         this.account_transfer = new AccountTransferStore({ root_store, WS });
         this.crypto_fiat_converter = new CryptoFiatConverterStore({ root_store, WS });
         this.deposit = new DepositStore({ root_store, WS });
-        this.error_dialog = new ErrorDialog();
+        this.error_dialog = new ErrorDialogStore();
         this.error = new ErrorStore();
         this.general_store = new GeneralStore({ root_store, WS });
         this.iframe = new IframeStore({ root_store, WS });

@@ -42,8 +42,6 @@ const mock_errors = {
 const fake_alert_messaget =
     /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i;
 
-const checkbox_text =
-    /i hereby confirm that the tax information i provided is true and complete\. i will also inform deriv investments \(europe\) limited about any changes to this information\./i;
 const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
 const tin_pop_over_text = /don't know your tax identification number\?/i;
@@ -101,7 +99,6 @@ const runCommonFormfieldsTests = () => {
         'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
     );
 
-    expect(screen.getByRole('checkbox', { name: checkbox_text })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
     expect(screen.queryByTestId('dti_dropdown_display')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
@@ -444,7 +441,6 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByTestId('tax_residence')).not.toBeInTheDocument();
         expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
-        expect(screen.getByRole('checkbox', { name: checkbox_text })).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
         expect(screen.queryByTestId('dti_dropdown_display')).not.toBeInTheDocument();
         expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();

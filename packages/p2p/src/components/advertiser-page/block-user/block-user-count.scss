@@ -1,8 +1,12 @@
 .block-user-count {
-    display: flex;
-    align-items: center;
+    width: fit-content;
 
-    &__icon {
-        margin-right: 0.4rem;
+    &__container {
+        display: flex;
+        align-items: center;
+
+        &--icon {
+            margin-right: 0.4rem;
+        }
     }
 }

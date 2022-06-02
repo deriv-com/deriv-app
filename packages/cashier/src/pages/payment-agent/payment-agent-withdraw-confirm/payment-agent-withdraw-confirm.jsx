@@ -3,7 +3,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import Confirm from '../confirm.jsx';
+import Confirm from 'Components/confirm.jsx';
 
 const PaymentAgentWithdrawConfirm = ({
     amount,

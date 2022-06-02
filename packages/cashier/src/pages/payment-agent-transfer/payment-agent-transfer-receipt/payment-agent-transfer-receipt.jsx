@@ -5,7 +5,7 @@ import { Button, Icon, Text } from '@deriv/components';
 import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import 'Sass/payment-agent-transfer-receipt.scss';
+import './payment-agent-transfer-receipt.scss';
 
 const openStatement = (history, resetPaymentAgentTransfer) => {
     history.push(routes.statement);

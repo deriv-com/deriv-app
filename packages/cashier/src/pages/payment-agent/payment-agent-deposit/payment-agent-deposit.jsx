@@ -6,8 +6,7 @@ import { Accordion, DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text 
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import PaymentAgentDetails from '../payment-agent-details.jsx';
-import 'Sass/payment-agent-list.scss';
+import PaymentAgentDetails from '../payment-agent-details';
 
 const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, selected_bank, supported_banks }) => {
     const list_with_default = [

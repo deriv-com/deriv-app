@@ -5,8 +5,8 @@ import { Button, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import PaymentAgentDetails from '../payment-agent-details.jsx';
-import 'Sass/payment-agent-receipt.scss';
+import PaymentAgentDetails from '../payment-agent-details';
+import './payment-agent-receipt.scss';
 
 const openStatement = (history, resetPaymentAgent) => {
     history.push(routes.statement);

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
-import 'Sass/payment-agent-details.scss';
+import './payment-agent-details.scss';
 
 const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
     const detail = Array.isArray(children) ? children : children.split(',');

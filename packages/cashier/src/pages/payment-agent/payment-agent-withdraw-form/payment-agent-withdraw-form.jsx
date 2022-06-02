@@ -16,10 +16,10 @@ import {
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import PaymentAgentWithdrawConfirm from '../Confirm/payment-agent-withdraw-confirm.jsx';
-import FormError from '../Error/form-error.jsx';
-import PaymentAgentReceipt from '../Receipt/payment-agent-receipt.jsx';
-import 'Sass/payment-agent-withdraw-form.scss';
+import FormError from 'Components/Error/form-error.jsx';
+import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
+import PaymentAgentReceipt from '../payment-agent-receipt';
+import './payment-agent-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) => {
     const errors = {};

@@ -6,8 +6,8 @@ import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import FormError from '../Error/form-error.jsx';
-import 'Sass/payment-agent-transfer-form.scss';
+import FormError from 'Components/Error/form-error.jsx';
+import './payment-agent-transfer-form.scss';
 
 const validateTransfer = (values, { balance, currency, transfer_limit }) => {
     const errors = {};

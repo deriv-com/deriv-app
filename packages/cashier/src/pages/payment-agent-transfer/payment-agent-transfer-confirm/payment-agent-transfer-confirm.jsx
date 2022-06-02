@@ -4,8 +4,8 @@ import { Icon, Money, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import Confirm from '../confirm.jsx';
-import 'Sass/payment-agent-transfer-confirm.scss';
+import Confirm from 'Components/confirm.jsx';
+import './payment-agent-transfer-confirm.scss';
 
 const PaymentAgentTransferConfirm = ({
     amount,

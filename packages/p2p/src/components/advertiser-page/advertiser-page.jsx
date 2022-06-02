@@ -32,7 +32,6 @@ const AdvertiserPageDropdown = ({ is_dropdown_visible, onViewBlockModal, onViewD
                         list={['Block']}
                         name={'block_user_dropdown'}
                         placeholder={localize('Block')}
-                        value={'Block'}
                     />
                 </div>
             )}

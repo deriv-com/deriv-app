@@ -4,7 +4,7 @@
     flex-direction: column;
 
     &__dropdown {
-        box-shadow: 0 0 2rem rgba(0, 0, 0, 0.06);
+        box-shadow: 0 1rem 2rem var(--shadow-menu);
         cursor: pointer;
         position: absolute;
         right: 0;
@@ -15,10 +15,14 @@
             .dc-dropdown__display-placeholder-text {
                 color: var(--text-prominent);
             }
+
+            .dc-dropdown__display {
+                background-color: var(--general-main-2);
+            }
         }
 
         &--disabled {
-            box-shadow: 0 0 2rem rgba(0, 0, 0, 0.06);
+            box-shadow: 0 1rem 2rem var(--shadow-menu);
             position: absolute;
             right: 0;
 
@@ -33,6 +37,7 @@
     }
 
     &__menu-dots-icon {
+        @include colorIcon(var(--text-general), none, var(--text-general));
         cursor: pointer;
         margin-bottom: 0.8rem;
     }

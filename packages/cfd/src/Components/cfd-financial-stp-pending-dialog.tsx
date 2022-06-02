@@ -34,6 +34,7 @@ const CFDFinancialStpPendingDialog = ({
     </Modal>
 );
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default connect(({ ui, client, modules: { cfd } }: any) => ({
     is_fully_authenticated: client.is_fully_authenticated,
     enableApp: ui.enableApp,

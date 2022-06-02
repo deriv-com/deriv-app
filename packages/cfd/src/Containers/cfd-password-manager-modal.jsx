@@ -383,11 +383,16 @@ const CFDPasswordManagerModal = ({
 };
 
 CFDPasswordManagerModal.propTypes = {
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
     email: PropTypes.string,
     is_visible: PropTypes.bool,
     selected_account: PropTypes.string,
+    selected_account_type: PropTypes.string,
+    selected_account_group: PropTypes.string,
     selected_server: PropTypes.string,
     selected_login: PropTypes.string,
+    sendVerifyEmail: PropTypes.func,
     toggleModal: PropTypes.func,
     platform: PropTypes.string,
 };

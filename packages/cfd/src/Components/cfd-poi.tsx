@@ -19,14 +19,12 @@ type TErrors = {
     poi_state: boolean;
 };
 
-type TFormValues =
-    | {
-          citizen?: string;
-          tax_residence?: string;
-          tax_identification_number?: string;
-          account_opening_reason?: string;
-      }
-    | {};
+type TFormValues = {
+    citizen?: string;
+    tax_residence?: string;
+    tax_identification_number?: string;
+    account_opening_reason?: string;
+};
 
 type TCFDAppRoutingHistory = {
     pathname: string;
@@ -102,7 +100,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                         {...props}
                                         height={height}
                                         is_from_external={true}
-                                        onStateChange={(status: any) => setPOIState(status)}
+                                        onStateChange={(status: string) => setPOIState(status)}
                                     />
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>

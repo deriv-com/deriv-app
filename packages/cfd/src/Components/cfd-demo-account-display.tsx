@@ -1,11 +1,10 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import specifications from '../Constants/cfd-specifications';
+import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
-import { TSpecifications } from '../Constants/cfd-specifications';
 import { TTradingPlatformAccounts } from './props.types';
 
 type TStandPoint = {

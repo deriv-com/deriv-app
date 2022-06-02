@@ -1,10 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import PropTypes from 'prop-types';
 import React from 'react';
-import Routes from './Containers/routes';
+import Routes from './Containers/routes.jsx';
 import { MobxContentProvider } from './Stores/connect';
 import initStore from './init-store'; // eslint-disable-line import/extensions
 
-const App = ({ passthrough }: any) => {
+type TAppProps = {
+    passthrough: {
+        root_store: any;
+        WS: any;
+    };
+};
+
+const App = ({ passthrough }: TAppProps) => {
     const [root_store] = React.useState(initStore(passthrough.root_store, passthrough.WS));
 
     return (

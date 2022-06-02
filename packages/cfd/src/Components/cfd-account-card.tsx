@@ -184,7 +184,9 @@ const CFDAccountCard = ({
     toggleShouldShowRealAccountsList,
 }: TCFDAccountCard) => {
     const platform_icon = is_eu ? 'cfd' : type.type;
-    const icon: any = type.type ? <Icon icon={account_icons[type.platform][platform_icon]} size={64} /> : null;
+    const icon: React.ReactElement | null = type.type ? (
+        <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
+    ) : null;
     const has_popular_banner: boolean =
         type.type === 'synthetic' &&
         type.category === 'real' &&

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Redirect } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
 import {
     isEmptyObject,
@@ -18,7 +18,7 @@ import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
 import CompareAccountsModal from './compare-accounts-modal';
 import CFDDashboardContainer from './cfd-dashboard-container';
-import CFDPasswordManagerModal from './cfd-password-manager-modal';
+import CFDPasswordManagerModal from './cfd-password-manager-modal.jsx';
 import CFDPasswordModal from './cfd-password-modal';
 import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
@@ -31,7 +31,6 @@ import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../H
 import 'Sass/cfd-dashboard.scss';
 import RootStore from 'Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
-import { History } from 'history';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -151,7 +150,7 @@ type TCFDDashboardProps = {
     disableCFDPasswordModal: () => void;
     openPasswordModal: (account_type?: TOpenAccountTransferMeta) => void;
     openTopUpModal: () => void;
-    history: History;
+    history: RouteComponentProps['history'];
     setCurrentAccount: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     setAccountType: (account_type: TOpenAccountTransferMeta) => void;
     mt5_status_server: TMt5StatusServer;

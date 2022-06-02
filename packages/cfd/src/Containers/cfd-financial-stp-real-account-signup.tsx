@@ -60,19 +60,6 @@ type TItemsState = {
     props: Array<string>;
 };
 
-type TItemsProps =
-    | 'residence_list'
-    | 'is_fully_authenticated'
-    | 'landing_company'
-    | 'addNotificationByKey'
-    | 'authentication_status'
-    | 'refreshNotifications'
-    | 'removeNotificationMessage'
-    | 'removeNotificationByKey'
-    | 'states_list'
-    | 'get_settings'
-    | 'storeProofOfAddress';
-
 type TgetCurrentProps = 'header' | 'body' | 'props' | 'form_value';
 const index_lookup: TIndexLookupObject = {
     CFDPersonalDetailsForm: 0,
@@ -159,7 +146,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         index: number,
         value: { [key: string]: string | undefined },
         setSubmitting: TSetSubmiting,
-        is_dirty: boolean = true
+        is_dirty = true
     ) => {
         if (is_dirty && index_lookup.CFDPersonalDetailsForm === index) {
             // Set account settings

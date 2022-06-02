@@ -89,18 +89,21 @@ SuccessDialog.defaultProps = {
 SuccessDialog.propTypes = {
     classNameMessage: PropTypes.string,
     has_cancel: PropTypes.bool,
+    has_close_icon: PropTypes.bool,
     has_submit: PropTypes.bool,
     heading: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     icon: PropTypes.object,
     icon_size: PropTypes.string,
     icon_type: PropTypes.string,
     is_medium_button: PropTypes.bool,
+    is_open: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
     text_cancel: PropTypes.string,
     text_submit: PropTypes.string,
     title: PropTypes.string,
+    toggleModal: PropTypes.func,
     width: PropTypes.string,
 };
 

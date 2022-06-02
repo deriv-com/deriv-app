@@ -182,7 +182,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         files: TObjDocumentFile,
         error_message: string,
         setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void,
-        setFieldValue: (field: string, files: TObjDocumentFile) => void,
+        setFieldValue: (field: string, document_files: TObjDocumentFile) => void,
         values: TFormValues
     ) => {
         setFieldTouched('document_file', true);
@@ -206,7 +206,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     };
 
     const onSubmitValues = async (values: TFormValues, actions: FormikHelpers<TFormValues>) => {
-        const { document_file, ...uploadables } = values;
+        const { ...uploadables } = values;
 
         actions.setSubmitting(true);
         const data = await WS.setSettings(uploadables);
@@ -249,8 +249,8 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 return;
             }
             const { identity } = get_account_status.authentication;
-            const _has_poi = !(identity && identity.status === 'none');
-            if (_has_poi) {
+            const has_poi = !(identity && identity.status === 'none');
+            if (has_poi) {
                 onProceed();
             } else {
                 setFormState({
@@ -278,9 +278,9 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
                 const { get_account_status } = response;
-                const { document, identity } = get_account_status?.authentication!;
-                const __has_poi = !!(identity && identity.status === 'none');
-                setFormState({ ...form_state, ...{ poa_status: document?.status, __has_poi } }, () => {
+                const { document, identity } = get_account_status?.authentication || {};
+                const has_poi = !!(identity && identity.status === 'none');
+                setFormState({ ...form_state, ...{ poa_status: document?.status, has_poi } }, () => {
                     setIsLoading(false);
                     refreshNotifications();
                 });

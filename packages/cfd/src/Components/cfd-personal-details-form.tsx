@@ -269,8 +269,8 @@ const CFDPersonalDetailsForm = ({
                 const is_citizenship_disabled = !!(value.citizen && is_fully_authenticated);
                 const is_tax_residence_disabled = !!(value.tax_residence && is_fully_authenticated);
                 const handleItemSelection = (item: ResidenceList[0], _field: string) => {
-                    const _value = item.value ? item.text : '';
-                    setFieldValue(_field, _value, true);
+                    const item_value = item.value ? item.text : '';
+                    setFieldValue(_field, item_value, true);
                 };
 
                 return (

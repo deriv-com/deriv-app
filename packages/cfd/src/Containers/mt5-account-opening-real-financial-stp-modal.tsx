@@ -42,6 +42,7 @@ const MT5AccountOpeningRealFinancialStpModal = ({
     </React.Fragment>
 );
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default connect(({ ui, modules }: any) => ({
     disableApp: ui.disableApp,
     disableMt5FinancialStpModal: modules.cfd.disableMt5FinancialStpModal,

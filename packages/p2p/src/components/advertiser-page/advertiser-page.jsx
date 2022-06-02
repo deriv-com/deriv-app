@@ -13,7 +13,6 @@ import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
-import BlockUserModal from './block-user/block-user-modal.jsx';
 import './advertiser-page.scss';
 
 const AdvertiserPageDropdown = ({ is_dropdown_visible, onViewBlockModal, onViewDropdown }) => {
@@ -54,7 +53,6 @@ const AdvertiserPage = () => {
         full_verification,
         last_name,
         sell_orders_count,
-        is_blocked,
     } = advertiser_page_store.advertiser_info;
 
     const joined_since = daysSince(created_time);
@@ -80,13 +78,8 @@ const AdvertiserPage = () => {
         return <div className='advertiser-page__error'>{advertiser_page_store.error_message}</div>;
     }
 
-    const onCancel = () => {
-        advertiser_page_store.setIsBlockUserModalOpen(false);
-    };
-
     return (
         <div className='advertiser-page'>
-            <BlockUserModal is_advertiser_blocked={is_blocked} onCancel={onCancel} />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}

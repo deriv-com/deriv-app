@@ -5,12 +5,30 @@
 
     &__dropdown {
         box-shadow: 0 0 2rem rgba(0, 0, 0, 0.06);
+        cursor: pointer;
         position: absolute;
         right: 0;
-        cursor: pointer;
 
         .dc-dropdown-container {
             margin-top: 0;
+
+            .dc-dropdown__display-placeholder-text {
+                color: var(--text-prominent);
+            }
+        }
+
+        &--disabled {
+            box-shadow: 0 0 2rem rgba(0, 0, 0, 0.06);
+            position: absolute;
+            right: 0;
+
+            .dc-dropdown-container {
+                margin-top: 0;
+
+                .dc-dropdown__display-placeholder-text {
+                    color: var(--text-disabled);
+                }
+            }
         }
     }
 
@@ -24,8 +42,8 @@
         right: 2.4rem;
 
         @include mobile {
-            right: 1.2rem;
             bottom: 0.8rem;
+            right: 1.2rem;
         }
     }
 
@@ -191,6 +209,7 @@
             }
         }
     }
+
     &__cell {
         @include mobile {
             display: block;

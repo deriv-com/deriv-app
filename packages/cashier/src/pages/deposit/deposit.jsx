@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, MobileWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import CashierContainer from 'Components/cashier-container.jsx';
+import CashierContainer from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
-import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
-import DepositsLocked from 'Components/Error/deposit-locked.jsx';
-import Error from 'Components/Error/error.jsx';
-import FundsProtection from 'Components/Error/funds-protection.jsx';
-import USDTSideNote from 'Components/usdt-side-note.jsx';
-import RecentTransaction from 'Components/recent-transaction.jsx';
-import Virtual from 'Components/Error/virtual.jsx';
+import CashierLocked from 'Components/cashier-locked';
+import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
+import DepositLocked from 'Components/deposit-locked';
+import Error from 'Components/error';
+import FundsProtection from 'Components/funds-protection';
+import USDTSideNote from 'Components/usdt-side-note';
+import RecentTransaction from 'Components/recent-transaction';
+import Virtual from 'Components/virtual';
 import CryptoDeposit from './crypto-deposit';
 
 const Deposit = ({
@@ -98,7 +98,7 @@ const Deposit = ({
         return <CashierLocked />;
     }
     if (is_deposit_locked) {
-        return <DepositsLocked />;
+        return <DepositLocked />;
     }
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;

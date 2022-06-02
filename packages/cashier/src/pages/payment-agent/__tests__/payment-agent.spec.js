@@ -20,7 +20,7 @@ jest.mock('@deriv/components', () => {
 });
 
 jest.mock('Pages/payment-agent/payment-agent-list', () => jest.fn(() => 'mockedPaymentAgentList'));
-jest.mock('Components/Error/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
+jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 
 describe('<PaymentAgent />', () => {
     const props = {

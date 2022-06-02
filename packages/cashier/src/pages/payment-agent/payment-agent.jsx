@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import Virtual from 'Components/Error/virtual.jsx';
+import CashierLocked from 'Components/cashier-locked';
+import Virtual from 'Components/virtual';
 import PaymentAgentList from './payment-agent-list';
 
 const PaymentAgent = ({

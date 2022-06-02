@@ -17,8 +17,8 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
-jest.mock('Components/Error/cashier-locked', () => () => <div>CashierLocked</div>);
-jest.mock('Components/Error/deposit-locked', () => () => <div>DepositLocked</div>);
+jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
+jest.mock('Components/deposit-locked', () => () => <div>DepositLocked</div>);
 jest.mock('Pages/on-ramp/on-ramp-provider-card', () => () => <div>OnRampProviderCard</div>);
 jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => () => <div>OnRampProviderPopup</div>);
 

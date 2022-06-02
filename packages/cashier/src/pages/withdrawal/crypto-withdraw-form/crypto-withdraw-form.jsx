@@ -6,8 +6,8 @@ import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deri
 import { localize, Localize } from '@deriv/translations';
 import { Field, Formik } from 'formik';
 import { connect } from 'Stores/connect';
-import RecentTransaction from 'Components/recent-transaction.jsx';
-import CryptoFiatConverter from 'Components/Form/crypto-fiat-converter.jsx';
+import RecentTransaction from 'Components/recent-transaction';
+import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import PercentageSelector from 'Components/percentage-selector';
 import './crypto-withdraw-form.scss';
 

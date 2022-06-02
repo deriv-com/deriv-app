@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import 'Sass/error.scss';
+import './error.scss';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
     <div className='cashier__wrapper cashier__wrapper-error'>

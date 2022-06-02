@@ -4,11 +4,11 @@ import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components'
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import DepositsLocked from 'Components/Error/deposit-locked.jsx';
+import CashierLocked from 'Components/cashier-locked';
+import DepositLocked from 'Components/deposit-locked';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
-import SideNote from 'Components/side-note.jsx';
+import SideNote from 'Components/side-note';
 import './on-ramp.scss';
 
 const OnRampSideNote = () => {
@@ -89,7 +89,7 @@ const OnRamp = ({
     }
 
     if (is_deposit_locked) {
-        return <DepositsLocked />;
+        return <DepositLocked />;
     }
 
     return (

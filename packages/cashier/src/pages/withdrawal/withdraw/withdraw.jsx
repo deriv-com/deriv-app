@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
-import CashierContainer from 'Components/cashier-container.jsx';
+import CashierContainer from 'Components/cashier-container';
 
 const Withdraw = ({
     container,

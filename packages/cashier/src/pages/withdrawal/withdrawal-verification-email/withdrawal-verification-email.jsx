@@ -4,8 +4,8 @@ import { Button, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RecentTransaction from 'Components/recent-transaction.jsx';
-import EmailSent from 'Components/Email/email-sent.jsx';
+import RecentTransaction from 'Components/recent-transaction';
+import EmailSent from 'Components/email-sent';
 import './withdrawal-verification-email.scss';
 
 const WithdrawalVerificationEmail = ({

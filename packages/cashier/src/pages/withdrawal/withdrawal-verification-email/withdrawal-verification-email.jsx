@@ -5,10 +5,10 @@ import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
-import EmailSent from './email-sent.jsx';
-import 'Sass/send-email.scss';
+import EmailSent from 'Components/Email/email-sent.jsx';
+import './withdrawal-verification-email.scss';
 
-const SendEmail = ({
+const WithdrawalVerificationEmail = ({
     crypto_transactions,
     currency,
     is_email_sent,
@@ -63,7 +63,7 @@ const SendEmail = ({
     );
 };
 
-SendEmail.propTypes = {
+WithdrawalVerificationEmail.propTypes = {
     crypto_transactions: PropTypes.array,
     is_email_sent: PropTypes.bool,
     is_resend_clicked: PropTypes.bool,
@@ -84,4 +84,4 @@ export default connect(({ client, modules }) => ({
     resendVerificationEmail: modules.cashier.withdraw.verification.resendVerificationEmail,
     sendVerificationEmail: modules.cashier.withdraw.verification.sendVerificationEmail,
     setIsResendClicked: modules.cashier.withdraw.verification.setIsResendClicked,
-}))(SendEmail);
+}))(WithdrawalVerificationEmail);

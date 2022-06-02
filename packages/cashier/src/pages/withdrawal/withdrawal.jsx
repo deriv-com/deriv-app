@@ -4,14 +4,14 @@ import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import CryptoWithdrawForm from 'Components/Form/crypto-withdraw-form.jsx';
-import CryptoWithdrawReceipt from 'Components/Receipt/crypto-withdraw-receipt.jsx';
-import Withdraw from 'Components/withdraw.jsx';
-import SendEmail from 'Components/Email/send-email.jsx';
+import CryptoWithdrawForm from './crypto-withdraw-form';
+import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
+import Withdraw from './withdraw';
+import WithdrawalVerificationEmail from './withdrawal-verification-email';
 import Error from 'Components/Error/error.jsx';
 import NoBalance from 'Components/Error/no-balance.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
-import WithdrawalLocked from 'Components/Error/withdrawal-locked.jsx';
+import WithdrawalLocked from './withdrawal-locked';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
 import SideNote from 'Components/side-note.jsx';
 import USDTSideNote from 'Components/usdt-side-note.jsx';
@@ -148,7 +148,7 @@ const Withdrawal = ({
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
-    return <SendEmail />;
+    return <WithdrawalVerificationEmail />;
 };
 
 Withdrawal.propTypes = {

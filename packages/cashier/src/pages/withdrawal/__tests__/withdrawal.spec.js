@@ -13,14 +13,14 @@ jest.mock('Stores/connect.js', () => ({
 
 jest.mock('Components/Error/cashier-locked', () => () => <div>CashierLocked</div>);
 jest.mock('Components/Error/virtual', () => () => <div>Virtual</div>);
-jest.mock('Components/Error/withdrawal-locked', () => () => <div>WithdrawalLocked</div>);
+jest.mock('../withdrawal-locked', () => () => <div>WithdrawalLocked</div>);
 jest.mock('Components/Error/no-balance', () => () => <div>NoBalance</div>);
 jest.mock('Components/Error/error', () => () => <div>Error</div>);
-jest.mock('Components/withdraw', () => () => <div>Withdraw</div>);
-jest.mock('Components/Form/crypto-withdraw-form', () => () => <div>CryptoWithdrawForm</div>);
-jest.mock('Components/Receipt/crypto-withdraw-receipt', () => () => <div>CryptoWithdrawReceipt</div>);
+jest.mock('../withdraw', () => () => <div>Withdraw</div>);
+jest.mock('../crypto-withdraw-form', () => () => <div>CryptoWithdrawForm</div>);
+jest.mock('../crypto-withdraw-receipt', () => () => <div>CryptoWithdrawReceipt</div>);
 jest.mock('Components/Form/crypto-transactions-history', () => () => <div>CryptoTransactionsHistory</div>);
-jest.mock('Components/Email/send-email', () => () => <div>SendEmail</div>);
+jest.mock('../withdrawal-verification-email', () => () => <div>WithdrawalVerificationEmail</div>);
 jest.mock('Components/recent-transaction', () => () => <div>RecentTransaction</div>);
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -212,7 +212,7 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
     });
 
-    it('should render <SendEmail /> component', () => {
+    it('should render <WithdrawalVerificationEmail /> component', () => {
         const history = createBrowserHistory();
 
         render(
@@ -221,7 +221,7 @@ describe('<Withdrawal />', () => {
             </Router>
         );
 
-        expect(screen.getByText('SendEmail')).toBeInTheDocument();
+        expect(screen.getByText('WithdrawalVerificationEmail')).toBeInTheDocument();
     });
 
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {

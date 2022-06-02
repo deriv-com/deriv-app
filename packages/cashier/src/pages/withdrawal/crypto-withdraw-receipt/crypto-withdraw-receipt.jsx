@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import { getAccountText } from '_common/utility';
-import 'Sass/crypto-withdraw-receipt.scss';
+import './crypto-withdraw-receipt.scss';
 
 const Status = () => {
     return (

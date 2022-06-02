@@ -5,6 +5,7 @@
 
     &__dropdown {
         box-shadow: 0 1rem 2rem var(--shadow-menu);
+        border-radius: $BORDER_RADIUS;
         cursor: pointer;
         position: absolute;
         right: 0;
@@ -14,6 +15,7 @@
 
             .dc-dropdown__display-placeholder-text {
                 color: var(--text-prominent);
+                background-color: var(--general-main-2);
             }
 
             .dc-dropdown__display {
@@ -23,6 +25,7 @@
 
         &--disabled {
             box-shadow: 0 1rem 2rem var(--shadow-menu);
+            border-radius: $BORDER_RADIUS;
             position: absolute;
             right: 0;
 

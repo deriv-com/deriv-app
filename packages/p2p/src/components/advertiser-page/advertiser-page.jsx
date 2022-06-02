@@ -18,13 +18,7 @@ import './advertiser-page.scss';
 const AdvertiserPageDropdown = ({ is_dropdown_visible, onViewBlockModal, onViewDropdown }) => {
     return (
         <div className='advertiser-page__menu-dots-toggle'>
-            <Icon
-                className='advertiser-page__menu-dots-icon'
-                height='16px'
-                icon={'IcMenuDots'}
-                onClick={onViewDropdown}
-                width='16px'
-            />
+            <Icon className='advertiser-page__menu-dots-icon' icon='IcMenuDots' onClick={onViewDropdown} size={16} />
             {is_dropdown_visible && (
                 <div className='advertiser-page__dropdown' onClick={onViewBlockModal}>
                     <Dropdown

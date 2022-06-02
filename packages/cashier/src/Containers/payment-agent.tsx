@@ -6,10 +6,6 @@ import PaymentAgentList from 'Components/payment-agent-list.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
 import { PaymentAgentProps, RootStore } from './payment-agent.types';
 
-// @TODO: Remove
-// const text: string = 'Payment Agent';
-// console.log('🚀 ~ file: payment-agent.tsx ~ line 11 ~ text', text);
-
 const PaymentAgent = ({
     container,
     is_cashier_locked,

@@ -55,9 +55,11 @@ const EmailSent = ({ is_resend_clicked, resend_timeout, resendVerificationEmail,
 );
 
 EmailSent.propTypes = {
+    is_email_sent: PropTypes.bool,
     is_resend_clicked: PropTypes.bool,
     resend_timeout: PropTypes.number,
     resendVerificationEmail: PropTypes.func,
+    sendVerificationEmail: PropTypes.func,
     setIsResendClicked: PropTypes.func,
 };
 

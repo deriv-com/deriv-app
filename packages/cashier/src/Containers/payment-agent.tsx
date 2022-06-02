@@ -1,10 +1,22 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import PaymentAgentList from 'Components/payment-agent-list.jsx';
+import PaymentAgentList from 'Components/payment-agent-list';
 import Virtual from 'Components/Error/virtual.jsx';
-import { PaymentAgentProps, RootStore } from './payment-agent.types';
+
+type TPaymentAgentProps = {
+    container?: string;
+    is_cashier_locked?: boolean;
+    is_payment_agent_withdraw?: boolean;
+    is_switching?: boolean;
+    is_virtual?: boolean;
+    payment_agent_active_tab_index?: number;
+    setActiveTab?: (container: string | undefined) => void;
+    setPaymentAgentActiveTabIndex?: (index: number) => void;
+    verification_code?: string;
+};
 
 const PaymentAgent = ({
     container,
@@ -16,7 +28,7 @@ const PaymentAgent = ({
     setActiveTab,
     setPaymentAgentActiveTabIndex,
     verification_code,
-}: PaymentAgentProps) => {
+}: TPaymentAgentProps) => {
     const initial_active_index =
         verification_code || is_payment_agent_withdraw || payment_agent_active_tab_index ? 1 : 0;
     if (setPaymentAgentActiveTabIndex) setPaymentAgentActiveTabIndex(initial_active_index);

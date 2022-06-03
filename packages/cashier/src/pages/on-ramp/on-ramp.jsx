@@ -5,7 +5,6 @@ import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import DepositsLocked from 'Components/Error/deposit-locked.jsx';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import SideNote from 'Components/side-note.jsx';
@@ -84,12 +83,8 @@ const OnRamp = ({
 
     if (is_switching || is_loading) return <Loading className='cashier-onboarding__loader' is_fullscreen />;
 
-    if (is_cashier_locked) {
+    if (is_deposit_locked || is_cashier_locked) {
         return <CashierLocked />;
-    }
-
-    if (is_deposit_locked) {
-        return <DepositsLocked />;
     }
 
     return (

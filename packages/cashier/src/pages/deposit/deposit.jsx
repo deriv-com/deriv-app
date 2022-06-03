@@ -12,7 +12,7 @@ import USDTSideNote from 'Components/usdt-side-note';
 import RecentTransaction from 'Components/recent-transaction';
 import Virtual from 'Components/virtual';
 import CryptoDeposit from './crypto-deposit';
-import DepositsLocked from './deposit-locked';
+import DepositLocked from './deposit-locked';
 
 const Deposit = ({
     can_change_fiat_currency,
@@ -98,7 +98,7 @@ const Deposit = ({
         return <CashierLocked />;
     }
     if (is_deposit_locked) {
-        return <DepositsLocked />;
+        return <DepositLocked />;
     }
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;

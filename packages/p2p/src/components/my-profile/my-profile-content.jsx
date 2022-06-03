@@ -34,7 +34,7 @@ const MyProfileContent = () => {
             </React.Fragment>
         );
     } else if (my_profile_store.active_tab === my_profile_tabs.BLOCKED_ADVERTISERS) {
-        // TODO: Add search box and integrate list of blocked users once https://redmine.deriv.cloud/issues/65494#List_of_users is merged
+        // TODO: Add search box and integrate list of blocked users once blocked user list is merged
         return <BlockUserEmpty />;
     }
     return <MyProfileStats />;

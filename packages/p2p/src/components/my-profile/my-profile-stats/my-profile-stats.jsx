@@ -51,16 +51,16 @@ const MyStats = () => {
             <MobileWrapper>
                 <MyProfilePrivacy />
                 <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
-                {tabs.map((tab, i) => {
+                {tabs.map((tab, key) => {
                     return (
-                        <React.Fragment key={i}>
+                        <React.Fragment key={key}>
                             <div className='my-profile__navigation' onClick={tab.onClick}>
                                 <Text color='prominent' size='xxs'>
                                     <Localize i18n_default_text={tab.default_text} />
                                 </Text>
                                 <Icon icon='IcChevronRight' />
                             </div>
-                            {i !== tabs.length - 1 && (
+                            {key !== tabs.length - 1 && (
                                 <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
                             )}
                         </React.Fragment>

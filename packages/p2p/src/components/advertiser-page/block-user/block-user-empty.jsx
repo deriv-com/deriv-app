@@ -6,12 +6,11 @@ import { useStores } from 'Stores';
 
 const BlockUserEmpty = () => {
     const { my_profile_store } = useStores();
-    // TODO: Change icon from empty payment methods to no blocked advertisers icon
     return (
         <React.Fragment>
             <DesktopWrapper>
                 <div className='payment-methods-empty'>
-                    <Icon icon='IcBlockedAdvertisers' height={159} width={256} />
+                    <Icon icon='IcEmptyBlockedAdvertisers' height={159} width={256} />
                     <Text className='payment-methods-empty--text' line_height='m' size='s' weight='bold'>
                         <Localize i18n_default_text='You have no blocked advertisers' />
                     </Text>
@@ -26,7 +25,7 @@ const BlockUserEmpty = () => {
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                 >
                     <Icon
-                        icon='IcBlockedAdvertisers'
+                        icon='IcEmptyBlockedAdvertisers'
                         className='payment-methods-empty--icon'
                         height={159}
                         width={256}

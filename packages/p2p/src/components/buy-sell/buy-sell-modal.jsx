@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { api_error_codes } from 'Constants/api-error-codes.js';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
+import FormError from 'Components/form/error.jsx';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
@@ -28,9 +29,13 @@ const LowBalanceMessage = () => (
     </div>
 );
 
-const BuySellModalFooter = ({ onCancel, is_submit_disabled, onSubmit }) => {
+const BuySellModalFooter = ({ error_message, onCancel, is_submit_disabled, onSubmit }) => {
+    const { buy_sell_store } = useStores();
     return (
         <React.Fragment>
+            {error_message && buy_sell_store.form_error_code !== api_error_codes.MARKET_RATE_CHANGE && (
+                <FormError message={error_message} />
+            )}
             <Button.Group>
                 <Button secondary onClick={onCancel} large>
                     {localize('Cancel')}
@@ -44,6 +49,7 @@ const BuySellModalFooter = ({ onCancel, is_submit_disabled, onSubmit }) => {
 };
 
 BuySellModalFooter.propTypes = {
+    error_message: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
     is_submit_disabled: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
@@ -65,26 +71,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const is_account_balance_low =
         parseFloat(general_store.client.balance) === 0 ||
         parseFloat(general_store.client.balance) < buy_sell_store.advert?.min_order_amount_limit;
-
-    const BuySellFormError = () => {
-        if (buy_sell_store.form_error_code !== api_error_codes.MARKET_RATE_CHANGE) {
-            return (
-                <div className='buy-sell__modal--error-message'>
-                    <HintBox
-                        className='buy-sell__modal-danger'
-                        icon='IcAlertDanger'
-                        message={
-                            <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                                {error_message}
-                            </Text>
-                        }
-                        is_danger
-                    />
-                </div>
-            );
-        }
-        return null;
-    };
 
     const onCancel = () => {
         setShouldShowPopup(false);
@@ -147,7 +133,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 }
             >
                 {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                {error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
                     <AddPaymentMethodForm should_show_separated_footer={true} />
                 ) : (
@@ -179,7 +164,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                 <Modal.Body className='buy-sell__modal--layout'>
                     {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                    {error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm should_show_separated_footer />
                     ) : (
@@ -198,6 +182,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 <Modal.Footer has_separator>
                     {my_profile_store.should_show_add_payment_method_form ? null : (
                         <BuySellModalFooter
+                            error_message={error_message}
                             is_submit_disabled={is_submit_disabled}
                             onCancel={onCancel}
                             onSubmit={submitForm.current}

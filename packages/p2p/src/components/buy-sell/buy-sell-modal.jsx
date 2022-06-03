@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState, HintBox, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
+import { api_error_codes } from 'Constants/api-error-codes.js';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -62,23 +63,28 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     );
 
     const is_account_balance_low =
-        parseFloat(general_store.client.balance) === 0 &&
+        parseFloat(general_store.client.balance) === 0 ||
         parseFloat(general_store.client.balance) < buy_sell_store.advert?.min_order_amount_limit;
 
-    const BuySellFormError = () => (
-        <div className='buy-sell__modal--error-message'>
-            <HintBox
-                className='buy-sell__modal-danger'
-                icon='IcAlertDanger'
-                message={
-                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        {error_message}
-                    </Text>
-                }
-                is_danger
-            />
-        </div>
-    );
+    const BuySellFormError = () => {
+        if (buy_sell_store.form_error_code !== api_error_codes.MARKET_RATE_CHANGE) {
+            return (
+                <div className='buy-sell__modal--error-message'>
+                    <HintBox
+                        className='buy-sell__modal-danger'
+                        icon='IcAlertDanger'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                                {error_message}
+                            </Text>
+                        }
+                        is_danger
+                    />
+                </div>
+            );
+        }
+        return null;
+    };
 
     const onCancel = () => {
         setShouldShowPopup(false);

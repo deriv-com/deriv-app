@@ -16,7 +16,7 @@ jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
 jest.mock('Components/funds-protection', () => () => <div>FundsProtection</div>);
 jest.mock('Components/deposit-locked', () => () => <div>DepositLocked</div>);
 jest.mock('Components/crypto-transactions-history', () => () => <div>CryptoTransactionsHistory</div>);
-jest.mock('Components/cashier-error', () => () => <div>CashierError</div>);
+jest.mock('Components/error', () => () => <div>Error</div>);
 jest.mock('../crypto-deposit', () => () => <div>CryptoDeposit</div>);
 jest.mock('Components/cashier-container', () => () => <div>CashierContainer</div>);
 jest.mock('Components/cashier-onboarding/cashier-onboarding', () => () => <div>CashierOnboarding</div>);
@@ -91,10 +91,10 @@ describe('<Deposit />', () => {
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
     });
 
-    it('should render <CashierError /> component', () => {
+    it('should render <Error /> component', () => {
         render(<Deposit {...props} is_deposit error={{ message: 'error' }} />);
 
-        expect(screen.getByText('CashierError')).toBeInTheDocument();
+        expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
     it('should render <CryptoDeposit /> component', () => {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import './cashier-error.scss';
+import './error.scss';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
     <div className='cashier__wrapper cashier__wrapper-error'>
@@ -34,7 +34,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
-const CashierError = ({ error }) => {
+const Error = ({ error }) => {
     const error_fields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),
@@ -126,8 +126,8 @@ const CashierError = ({ error }) => {
     return AccountError;
 };
 
-CashierError.propTypes = {
+Error.propTypes = {
     error: PropTypes.object,
 };
 
-export default CashierError;
+export default Error;

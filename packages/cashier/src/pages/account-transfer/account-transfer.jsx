@@ -4,7 +4,7 @@ import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountTransferNoAccount from './account-transfer-no-account';
-import CashierError from 'Components/cashier-error';
+import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
 import Virtual from 'Components/virtual';
 import CashierLocked from 'Components/cashier-locked';
@@ -79,7 +79,7 @@ const AccountTransfer = ({
     if (error.is_show_full_page || (error.message && !accounts_list.length)) {
         // for errors with CTA hide the form and show the error,
         // for others show them at the bottom of the form next to submit button
-        return <CashierError error={error} />;
+        return <Error error={error} />;
     }
     if (has_no_account) {
         return <AccountTransferNoAccount />;

@@ -24,7 +24,7 @@ jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransfer
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'mockedCryptoTransactionsHistory'));
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 jest.mock('../account-transfer-receipt', () => jest.fn(() => 'mockedAccountTransferReceipt'));
-jest.mock('Components/cashier-error', () => jest.fn(() => 'mockedCashierError'));
+jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
 
 describe('<AccountTransfer />', () => {
     const props = {
@@ -85,7 +85,7 @@ describe('<AccountTransfer />', () => {
 
         render(<AccountTransfer {...props} accounts_list={accounts_list} error={cta_error} />);
 
-        expect(await screen.findByText('mockedCashierError')).toBeInTheDocument();
+        expect(await screen.findByText('mockedError')).toBeInTheDocument();
     });
 
     it('should render the no account component if the client has only one account', async () => {

@@ -15,7 +15,7 @@ jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
 jest.mock('Components/virtual', () => () => <div>Virtual</div>);
 jest.mock('../withdrawal-locked', () => () => <div>WithdrawalLocked</div>);
 jest.mock('Components/no-balance', () => () => <div>NoBalance</div>);
-jest.mock('Components/cashier-error', () => () => <div>CashierError</div>);
+jest.mock('Components/error', () => () => <div>Error</div>);
 jest.mock('../withdraw', () => () => <div>Withdraw</div>);
 jest.mock('../crypto-withdraw-form', () => () => <div>CryptoWithdrawForm</div>);
 jest.mock('../crypto-withdraw-receipt', () => () => <div>CryptoWithdrawReceipt</div>);
@@ -136,7 +136,7 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('NoBalance')).toBeInTheDocument();
     });
 
-    it('should render <CashierError /> component', () => {
+    it('should render <Error /> component', () => {
         const history = createBrowserHistory();
 
         const { rerender } = render(
@@ -145,7 +145,7 @@ describe('<Withdrawal />', () => {
             </Router>
         );
 
-        expect(screen.getByText('CashierError')).toBeInTheDocument();
+        expect(screen.getByText('Error')).toBeInTheDocument();
 
         rerender(
             <Router history={history}>
@@ -153,7 +153,7 @@ describe('<Withdrawal />', () => {
             </Router>
         );
 
-        expect(screen.getByText('CashierError')).toBeInTheDocument();
+        expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
     it('should render <Withdraw /> component', () => {

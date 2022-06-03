@@ -3,7 +3,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
-import CashierError from 'Components/cashier-error';
+import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
 import Virtual from 'Components/virtual';
 import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
@@ -48,7 +48,7 @@ const PaymentAgentTransfer = ({
     if (error.is_show_full_page) {
         // for errors with CTA hide the form and show the error,
         // for others show them at the bottom of the form next to submit button
-        return <CashierError error={error} />;
+        return <Error error={error} />;
     }
     if (!+balance) {
         return <NoBalance />;

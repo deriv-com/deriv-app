@@ -7,7 +7,7 @@ import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier
 import CashierLocked from 'Components/cashier-locked';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import DepositLocked from 'Components/deposit-locked';
-import CashierError from 'Components/cashier-error';
+import Error from 'Components/error';
 import FundsProtection from 'Components/funds-protection';
 import USDTSideNote from 'Components/usdt-side-note';
 import RecentTransaction from 'Components/recent-transaction';
@@ -106,7 +106,7 @@ const Deposit = ({
 
     if (is_deposit || is_eu) {
         if (error.message) {
-            return <CashierError error={error} />;
+            return <Error error={error} />;
         }
         if (is_crypto) {
             return <CryptoDeposit />;

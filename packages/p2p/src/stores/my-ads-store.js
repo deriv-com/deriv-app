@@ -255,7 +255,6 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     onClickSaveEditAd(values, { setSubmitting }) {
         const is_sell_ad = values.type === buy_sell.SELL;
-
         const update_advert = {
             p2p_advert_update: 1,
             id: this.selected_ad_id,
@@ -573,7 +572,7 @@ export default class MyAdsStore extends BaseStore {
             this.setShowEditAdForm(true);
             this.getAdvertInfo();
         }
-        this.setIsSwitchModalOpen(false, null);
+        this.setIsSwitchModalOpen(false, this.selected_ad_id);
     }
 
     @action.bound
@@ -876,7 +875,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     toggleMyAdsRateSwitchModal() {
-        this.setIsSwitchModalOpen(false);
+        this.setIsSwitchModalOpen(false, null);
         this.setShouldSwitchAdRateStatus(false);
     }
 }

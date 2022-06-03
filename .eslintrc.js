@@ -89,6 +89,9 @@ module.exports = {
         'react/prop-types': 0,
         'react/self-closing-comp': 'error',
         // 'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
+
+        'no-shadow': 'off',
+        '@typescript-eslint/no-shadow': ['error'],
     },
     extends: [
         'prettier',
@@ -135,7 +138,7 @@ module.exports = {
         {
             files: ['*.{ts,tsx}'],
             parser: '@typescript-eslint/parser',
-            plugins: ['@typescript-eslint'],
+            plugins: ['@typescript-eslint', 'import'],
             extends: [
                 'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
                 'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier

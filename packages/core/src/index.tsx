@@ -1,8 +1,7 @@
 import 'babel-polyfill';
 import 'promise-polyfill';
+// eslint-disable-next-line
 import registerServiceWorker from 'Utils/pwa';
-
-import 'event-source-polyfill';
 
 if (
     !!window?.localStorage.getItem?.('debug_service_worker') || // To enable local service worker related development

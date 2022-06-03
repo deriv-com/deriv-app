@@ -135,7 +135,7 @@ module.exports = {
         {
             files: ['*.{ts,tsx}'],
             parser: '@typescript-eslint/parser',
-            plugins: ['@typescript-eslint', 'import'],
+            plugins: ['@typescript-eslint'],
             extends: [
                 'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
                 'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier

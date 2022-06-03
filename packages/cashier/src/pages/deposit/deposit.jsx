@@ -6,13 +6,13 @@ import CashierContainer from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
 import CashierLocked from 'Components/cashier-locked';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
-import DepositLocked from 'Components/deposit-locked';
 import Error from 'Components/error';
 import FundsProtection from 'Components/funds-protection';
 import USDTSideNote from 'Components/usdt-side-note';
 import RecentTransaction from 'Components/recent-transaction';
 import Virtual from 'Components/virtual';
 import CryptoDeposit from './crypto-deposit';
+import DepositsLocked from './deposit-locked';
 
 const Deposit = ({
     can_change_fiat_currency,
@@ -98,7 +98,7 @@ const Deposit = ({
         return <CashierLocked />;
     }
     if (is_deposit_locked) {
-        return <DepositLocked />;
+        return <DepositsLocked />;
     }
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;

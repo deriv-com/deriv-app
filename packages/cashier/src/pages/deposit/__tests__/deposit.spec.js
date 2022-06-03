@@ -14,12 +14,13 @@ jest.mock('@deriv/components', () => ({
 jest.mock('Components/virtual', () => () => <div>Virtual</div>);
 jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
 jest.mock('Components/funds-protection', () => () => <div>FundsProtection</div>);
-jest.mock('Components/deposit-locked', () => () => <div>DepositLocked</div>);
 jest.mock('Components/crypto-transactions-history', () => () => <div>CryptoTransactionsHistory</div>);
 jest.mock('Components/error', () => () => <div>Error</div>);
 jest.mock('../crypto-deposit', () => () => <div>CryptoDeposit</div>);
 jest.mock('Components/cashier-container', () => () => <div>CashierContainer</div>);
 jest.mock('Components/cashier-onboarding/cashier-onboarding', () => () => <div>CashierOnboarding</div>);
+jest.mock('../crypto-deposit', () => () => <div>CryptoDeposit</div>);
+jest.mock('../deposit-locked', () => () => <div>DepositsLocked</div>);
 
 describe('<Deposit />', () => {
     const props = {
@@ -79,10 +80,10 @@ describe('<Deposit />', () => {
         expect(screen.getByText('FundsProtection')).toBeInTheDocument();
     });
 
-    it('should render <DepositLocked /> component', () => {
+    it('should render <DepositsLocked /> component', () => {
         render(<Deposit {...props} is_deposit_locked />);
 
-        expect(screen.getByText('DepositLocked')).toBeInTheDocument();
+        expect(screen.getByText('DepositsLocked')).toBeInTheDocument();
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {

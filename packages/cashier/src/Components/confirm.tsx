@@ -1,12 +1,35 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Checkbox, Icon, Text } from '@deriv/components';
 import FormError from './Error/form-error.jsx';
 import 'Sass/confirm.scss';
 
-const Row = ({ item_key, label, value }) => (
+type TRowProps = {
+    item_key: string | number;
+    label: string;
+    value: string | JSX.Element;
+};
+
+type WarningBulletProps = {
+    children: JSX.Element | string;
+};
+
+type TConfirmProps = {
+    data: Array<{
+        key: string | number;
+        label: string;
+        value: string | JSX.Element;
+    }>;
+    error?: object;
+    header?: string;
+    is_payment_agent_transfer?: boolean;
+    onClickBack?: () => void;
+    onClickConfirm?: () => void;
+    warning_messages?: Array<object>;
+};
+
+const Row = ({ item_key, label, value }: TRowProps) => (
     <div className='confirm__row'>
         <Text size='xs'>{label}</Text>
         {Array.isArray(value) ? (
@@ -32,14 +55,22 @@ const Row = ({ item_key, label, value }) => (
     </div>
 );
 
-const WarningBullet = ({ children }) => (
+const WarningBullet = ({ children }: WarningBulletProps) => (
     <div className='confirm__warnings-bullet-wrapper'>
         <div className='confirm__warnings-bullet' />
         {children}
     </div>
 );
 
-const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, onClickConfirm, warning_messages }) => {
+const Confirm = ({
+    data,
+    error,
+    header,
+    is_payment_agent_transfer,
+    onClickBack,
+    onClickConfirm,
+    warning_messages,
+}: TConfirmProps) => {
     const [is_transfer_consent_checked, setIsTransferConsentChecked] = React.useState(false);
 
     return (
@@ -102,21 +133,6 @@ const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, 
             <FormError error={error} />
         </div>
     );
-};
-
-Confirm.propTypes = {
-    data: PropTypes.arrayOf(
-        PropTypes.shape({
-            label: PropTypes.string,
-            value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string), PropTypes.node]),
-        })
-    ),
-    error: PropTypes.object,
-    header: PropTypes.string,
-    is_payment_agent_transfer: PropTypes.bool,
-    onClickBack: PropTypes.func,
-    onClickConfirm: PropTypes.func,
-    warning_messages: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Confirm;

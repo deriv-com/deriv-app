@@ -1,9 +1,27 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import Confirm from '../confirm.jsx';
+import Confirm from '../confirm';
+import RootStore from 'Stores/types';
+
+type TRequestPaymentAgentWithdraw = {
+    loginid: string;
+    currency: string;
+    amount: string | number;
+    verification_code: string | number;
+};
+
+type TPaymentAgentWithdrawConfirmProps = {
+    amount: number;
+    currency: string;
+    error: object;
+    loginid: string;
+    payment_agent_name: string;
+    requestPaymentAgentWithdraw: (args: TRequestPaymentAgentWithdraw) => void;
+    setIsTryWithdrawSuccessful: (is_try_withdraw_successful: boolean) => void;
+    verification_code: string;
+};
 
 const PaymentAgentWithdrawConfirm = ({
     amount,
@@ -14,7 +32,7 @@ const PaymentAgentWithdrawConfirm = ({
     requestPaymentAgentWithdraw,
     setIsTryWithdrawSuccessful,
     verification_code,
-}) => (
+}: TPaymentAgentWithdrawConfirmProps) => (
     <Confirm
         data={[
             { label: localize('Payment agent'), value: payment_agent_name || loginid, key: 'pa' },
@@ -35,18 +53,7 @@ const PaymentAgentWithdrawConfirm = ({
     />
 );
 
-PaymentAgentWithdrawConfirm.propTypes = {
-    amount: PropTypes.number,
-    currency: PropTypes.string,
-    error: PropTypes.object,
-    loginid: PropTypes.string,
-    payment_agent_name: PropTypes.string,
-    requestPaymentAgentWithdraw: PropTypes.func,
-    setIsTryWithdrawSuccessful: PropTypes.func,
-    verification_code: PropTypes.string,
-};
-
-export default connect(({ modules }) => ({
+export default connect(({ modules }: RootStore) => ({
     amount: modules.cashier.payment_agent.confirm.amount,
     currency: modules.cashier.payment_agent.confirm.currency,
     error: modules.cashier.payment_agent.error,

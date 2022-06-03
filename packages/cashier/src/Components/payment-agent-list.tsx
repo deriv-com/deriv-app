@@ -5,8 +5,8 @@ import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/types';
 import EmailSent from './Email/email-sent.jsx';
-import PaymentAgentDeposit from './Form/payment-agent-deposit.jsx';
-import PaymentAgentWithdrawForm from './Form/payment-agent-withdraw-form.jsx';
+import PaymentAgentDeposit from './Form/payment-agent-deposit';
+import PaymentAgentWithdrawForm from './Form/payment-agent-withdraw-form';
 import PaymentAgentWithdrawalLocked from './Error/payment-agent-withdrawal-locked';
 import 'Sass/payment-agent-list.scss';
 

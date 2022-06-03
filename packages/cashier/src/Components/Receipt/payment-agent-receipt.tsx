@@ -1,19 +1,44 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { History } from 'history';
 import { Button, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import PaymentAgentDetails from '../payment-agent-details.jsx';
+import RootStore from 'Stores/types';
+import PaymentAgentDetails from '../payment-agent-details';
 import 'Sass/payment-agent-receipt.scss';
 
-const openStatement = (history, resetPaymentAgent) => {
+type TPaymentAgentReceipt = {
+    currency: string;
+    history: History;
+    is_from_derivgo: boolean;
+    loginid: string;
+    receipt: {
+        amount_transferred: string;
+        payment_agent_email: string;
+        payment_agent_id: string;
+        payment_agent_name: string;
+        payment_agent_phone: string;
+        payment_agent_url: string;
+    };
+    resetPaymentAgent: () => void;
+};
+
+const openStatement = (history: History, resetPaymentAgent: () => void): void => {
     history.push(routes.statement);
     resetPaymentAgent();
 };
 
-const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, loginid, receipt, resetPaymentAgent }) => {
+const PaymentAgentReceipt = ({
+    currency,
+    history,
+    is_from_derivgo,
+    loginid,
+    receipt,
+    resetPaymentAgent,
+}: TPaymentAgentReceipt) => {
     React.useEffect(() => {
         return () => resetPaymentAgent();
     }, [resetPaymentAgent]);
@@ -130,17 +155,8 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, loginid, rece
     );
 };
 
-PaymentAgentReceipt.propTypes = {
-    currency: PropTypes.string,
-    history: PropTypes.object,
-    is_from_derivgo: PropTypes.bool,
-    loginid: PropTypes.string,
-    receipt: PropTypes.object,
-    resetPaymentAgent: PropTypes.func,
-};
-
 export default withRouter(
-    connect(({ client, common, modules }) => ({
+    connect(({ client, common, modules }: RootStore) => ({
         currency: client.currency,
         is_from_derivgo: common.is_from_derivgo,
         loginid: client.loginid,

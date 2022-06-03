@@ -8,7 +8,7 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('Components/cashier-container', () => jest.fn(() => 'mockedCashierContainer'));
+jest.mock('Components/cashier-container/real', () => jest.fn(() => 'mockedReal'));
 
 describe('<Withdraw />', () => {
     it('should render the cashier container component', () => {
@@ -29,6 +29,6 @@ describe('<Withdraw />', () => {
         );
 
         expect(onMount).toHaveBeenCalledWith(verification_code);
-        expect(screen.getByText('mockedCashierContainer')).toBeInTheDocument();
+        expect(screen.getByText('mockedReal')).toBeInTheDocument();
     });
 });

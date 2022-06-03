@@ -25,7 +25,7 @@ describe('<WithdrawalVerificationEmail />', () => {
             <WithdrawalVerificationEmail is_email_sent recentTransactionOnMount={recentTransactionOnMount} />
         );
 
-        expect(container.querySelector('.email-sent')).toBeInTheDocument();
+        expect(container.querySelector('.verification-email')).toBeInTheDocument();
     });
 
     it("React.Fragment should be rendered when 'is_email_sent' prop is false", () => {

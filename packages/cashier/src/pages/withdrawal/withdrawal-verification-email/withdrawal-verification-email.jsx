@@ -5,7 +5,7 @@ import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction';
-import EmailSent from 'Components/email-sent';
+import VerificationEmail from 'Components/verification-email';
 import './withdrawal-verification-email.scss';
 
 const WithdrawalVerificationEmail = ({
@@ -26,7 +26,7 @@ const WithdrawalVerificationEmail = ({
     return (
         <div className='cashier__wrapper'>
             {is_email_sent ? (
-                <EmailSent
+                <VerificationEmail
                     is_email_sent={is_email_sent}
                     is_resend_clicked={is_resend_clicked}
                     resend_timeout={resend_timeout}

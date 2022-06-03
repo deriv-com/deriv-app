@@ -11,7 +11,7 @@ jest.mock('Stores/connect', () => ({
 }));
 
 jest.mock('Pages/payment-agent/payment-agent-withdrawal-locked', () => () => <div>PaymentAgentWithdrawalLocked</div>);
-jest.mock('Components/email-sent', () => () => <div>The email has been sent!</div>);
+jest.mock('Components/verification-email', () => () => <div>The email has been sent!</div>);
 jest.mock('Pages/payment-agent/payment-agent-withdraw-form', () => () => <div>Payment agent withdraw form</div>);
 jest.mock('Pages/payment-agent/payment-agent-deposit', () => () => <div>Payment agent deposit</div>);
 

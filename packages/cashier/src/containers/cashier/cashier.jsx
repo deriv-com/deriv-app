@@ -15,10 +15,11 @@ import { localize } from '@deriv/translations';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from './account-prompt-dialog';
-import ErrorDialog from './error-dialog';
+import ErrorDialog from 'Components/error-dialog';
 import './cashier.scss';
 
 const Cashier = ({
+    error,
     history,
     is_account_transfer_visible,
     is_account_setting_loaded,
@@ -115,7 +116,7 @@ const Cashier = ({
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <AccountPromptDialog />
-            <ErrorDialog />
+            <ErrorDialog error={error} />
             <div className='cashier'>
                 <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     <DesktopWrapper>
@@ -179,6 +180,7 @@ const Cashier = ({
 };
 
 Cashier.propTypes = {
+    error: PropTypes.object,
     history: PropTypes.object,
     is_account_transfer_visible: PropTypes.bool,
     is_account_setting_loaded: PropTypes.bool,
@@ -206,6 +208,7 @@ Cashier.propTypes = {
 };
 
 export default connect(({ client, common, modules, ui }) => ({
+    error: modules.cashier.withdraw.error,
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,

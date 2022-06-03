@@ -16,7 +16,7 @@ import {
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import FormError from 'Components/form-error';
+import ErrorDialog from 'Components/error-dialog';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import PaymentAgentReceipt from '../payment-agent-receipt';
 import './payment-agent-withdraw-form.scss';
@@ -321,7 +321,7 @@ const PaymentAgentWithdrawForm = ({
                                     <Localize i18n_default_text='Withdraw' />
                                 </Button>
                             </div>
-                            <FormError error={error} />
+                            <ErrorDialog error={error} />
                         </Form>
                     );
                 }}

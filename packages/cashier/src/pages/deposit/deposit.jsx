@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, MobileWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import CashierContainer from 'Components/cashier-container';
+import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
 import CashierLocked from 'Components/cashier-locked';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
@@ -10,7 +10,6 @@ import Error from 'Components/error';
 import FundsProtection from 'Components/funds-protection';
 import USDTSideNote from 'Components/usdt-side-note';
 import RecentTransaction from 'Components/recent-transaction';
-import Virtual from 'Components/virtual';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 
@@ -119,7 +118,7 @@ const Deposit = ({
                         <CashierOnboardingSideNote is_crypto={false} />
                     </MobileWrapper>
                 )}
-                <CashierContainer
+                <Real
                     iframe_height={iframe_height}
                     iframe_url={iframe_url}
                     is_loading={is_loading}

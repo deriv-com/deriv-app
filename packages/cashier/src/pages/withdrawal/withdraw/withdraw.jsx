@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
-import CashierContainer from 'Components/cashier-container';
+import { Real } from 'Components/cashier-container';
 
 const Withdraw = ({
     container,
@@ -20,12 +20,7 @@ const Withdraw = ({
     }, []);
 
     return (
-        <CashierContainer
-            iframe_height={iframe_height}
-            iframe_url={iframe_url}
-            clearIframe={clearIframe}
-            is_loading={is_loading}
-        />
+        <Real iframe_height={iframe_height} iframe_url={iframe_url} clearIframe={clearIframe} is_loading={is_loading} />
     );
 };
 

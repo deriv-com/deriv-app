@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Checkbox, Icon, Text } from '@deriv/components';
-import FormError from 'Components/form-error';
+import ErrorDialog from 'Components/error-dialog';
 import './confirm.scss';
 
 const Row = ({ item_key, label, value }) => (
@@ -99,7 +99,7 @@ const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, 
                     disabled={is_payment_agent_transfer && !is_transfer_consent_checked}
                 />
             </div>
-            <FormError error={error} />
+            <ErrorDialog error={error} />
         </div>
     );
 };

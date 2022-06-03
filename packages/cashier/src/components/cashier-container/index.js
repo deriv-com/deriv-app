@@ -1,3 +1,4 @@
-import CashierContainer from './cashier-container.jsx';
+import Real from './real';
+import Virtual from './virtual';
 
-export default CashierContainer;
+export { Real, Virtual };

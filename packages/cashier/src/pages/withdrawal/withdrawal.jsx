@@ -10,7 +10,7 @@ import Withdraw from './withdraw';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
-import Virtual from 'Components/virtual';
+import { Virtual } from 'Components/cashier-container';
 import WithdrawalLocked from './withdrawal-locked';
 import CashierLocked from 'Components/cashier-locked';
 import SideNote from 'Components/side-note';
@@ -130,7 +130,7 @@ const Withdrawal = ({
     if (!+balance) {
         return <NoBalance />;
     }
-    if (error.message) {
+    if (error.is_show_full_page && error.message) {
         return <Error error={error} />;
     }
     if (verify_error.message) {

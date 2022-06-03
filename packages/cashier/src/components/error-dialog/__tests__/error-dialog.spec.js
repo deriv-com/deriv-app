@@ -1,5 +1,5 @@
 import React from 'react';
-import FormError from '../form-error';
+import ErrorDialog from '../error-dialog';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
@@ -11,7 +11,7 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-describe('<FormError />', () => {
+describe('<ErrorDialog />', () => {
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -23,7 +23,7 @@ describe('<FormError />', () => {
     });
 
     it('should show "Please verify your identity" message, "Cancel" and "Verify identity" buttons', () => {
-        render(<FormError error={{ code: 'Fiat2CryptoTransferOverLimit', message: 'Error is occured' }} />);
+        render(<ErrorDialog error={{ code: 'Fiat2CryptoTransferOverLimit', message: 'Error is occured' }} />);
 
         expect(screen.getByText('Please verify your identity')).toBeInTheDocument();
         expect(screen.getByText('Cancel')).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe('<FormError />', () => {
         };
         render(
             <Router history={history}>
-                <FormError error={error} />
+                <ErrorDialog error={error} />
             </Router>
         );
         const on_confirm_btn = screen.getByText('Verify identity');
@@ -50,7 +50,7 @@ describe('<FormError />', () => {
     });
 
     it('should show "Cashier Error" message and "OK" button', () => {
-        render(<FormError error={{ code: '', message: 'Error is occured' }} />);
+        render(<ErrorDialog error={{ code: '', message: 'Error is occured' }} />);
 
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
         expect(screen.getByText('OK')).toBeInTheDocument();
@@ -63,7 +63,7 @@ describe('<FormError />', () => {
             message: 'Error is occured',
             setErrorMessage,
         };
-        render(<FormError error={error} />);
+        render(<ErrorDialog error={error} />);
         const ok_btn = screen.getByText('OK');
         fireEvent.click(ok_btn);
 
@@ -79,7 +79,7 @@ describe('<FormError />', () => {
             message: 'Error is occured',
             setErrorMessage,
         };
-        render(<FormError error={error} />);
+        render(<ErrorDialog error={error} />);
         const cancel_btn = screen.getByText('Cancel');
         fireEvent.click(cancel_btn);
 
@@ -100,7 +100,7 @@ describe('<FormError />', () => {
             };
             const { unmount } = render(
                 <Router history={history}>
-                    <FormError error={error} />
+                    <ErrorDialog error={error} />
                 </Router>
             );
             const error_btn = screen.getByText(btn_name);

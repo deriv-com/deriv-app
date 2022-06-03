@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
-import './cashier-container.scss';
 
-const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_loading }) => {
+const Real = ({ iframe_height, iframe_url, clearIframe, is_loading }) => {
     React.useEffect(() => {
         return () => {
             clearIframe();
@@ -27,11 +26,11 @@ const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_loading }
     );
 };
 
-CashierContainer.propTypes = {
+Real.propTypes = {
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
     clearIframe: PropTypes.func,
     is_loading: PropTypes.bool,
 };
 
-export default CashierContainer;
+export default Real;

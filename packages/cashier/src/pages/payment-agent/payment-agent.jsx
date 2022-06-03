@@ -3,7 +3,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
-import Virtual from 'Components/virtual';
+import { Virtual } from 'Components/cashier-container';
 import PaymentAgentList from './payment-agent-list';
 
 const PaymentAgent = ({

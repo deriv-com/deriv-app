@@ -6,7 +6,7 @@ import { connect } from 'Stores/connect';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
-import Virtual from 'Components/virtual';
+import { Virtual } from 'Components/cashier-container';
 import CashierLocked from 'Components/cashier-locked';
 import AccountTransferLocked from './account-transfer-locked';
 import AccountTransferForm from './account-transfer-form';

@@ -14,7 +14,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
-import FormError from 'Components/form-error';
+import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
 import './account-transfer-form.scss';
@@ -659,7 +659,7 @@ const AccountTransferForm = ({
                                         is_mt_transfer={is_mt_transfer}
                                     />
                                 </MobileWrapper>
-                                <FormError error={error} />
+                                <ErrorDialog error={error} />
                             </Form>
                         )}
                     </React.Fragment>

@@ -12,7 +12,7 @@ jest.mock('Stores/connect.js', () => ({
 }));
 
 jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
-jest.mock('Components/virtual', () => () => <div>Virtual</div>);
+jest.mock('Components/cashier-container/virtual', () => () => <div>Virtual</div>);
 jest.mock('../withdrawal-locked', () => () => <div>WithdrawalLocked</div>);
 jest.mock('Components/no-balance', () => () => <div>NoBalance</div>);
 jest.mock('Components/error', () => () => <div>Error</div>);
@@ -141,7 +141,7 @@ describe('<Withdrawal />', () => {
 
         const { rerender } = render(
             <Router history={history}>
-                <Withdrawal {...props} error={{ message: 'Error message' }} />
+                <Withdrawal {...props} error={{ is_show_full_page: true, message: 'Error message' }} />
             </Router>
         );
 

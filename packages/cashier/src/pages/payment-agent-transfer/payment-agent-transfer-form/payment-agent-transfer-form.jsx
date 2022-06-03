@@ -6,7 +6,7 @@ import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import FormError from 'Components/form-error';
+import ErrorDialog from 'Components/error-dialog';
 import './payment-agent-transfer-form.scss';
 
 const validateTransfer = (values, { balance, currency, transfer_limit }) => {
@@ -171,7 +171,7 @@ const PaymentAgentTransferForm = ({
                                 <Localize i18n_default_text='Transfer' />
                             </Button>
                         </div>
-                        <FormError error={error} />
+                        <ErrorDialog error={error} />
                     </Form>
                 )}
             </Formik>

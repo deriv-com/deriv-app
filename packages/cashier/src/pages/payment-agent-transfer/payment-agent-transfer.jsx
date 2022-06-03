@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
-import Virtual from 'Components/virtual';
+import { Virtual } from 'Components/cashier-container';
 import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
 import PaymentAgentTransferForm from './payment-agent-transfer-form';
 import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';

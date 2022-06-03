@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 
-const FormError = ({ disableApp, enableApp, error = {} }) => {
+const ErrorDialog = ({ disableApp, enableApp, error = {} }) => {
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState({
@@ -64,6 +64,23 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
                         />
                     ),
                 });
+            } else if (error_code === 'CryptoWithdrawalError') {
+                setDetails({
+                    title: localize('Error'),
+                    cancel_button_text: undefined,
+                    confirm_button_text: localize('Retry'),
+                    onConfirm: undefined,
+                    message: error_message,
+                    has_close_icon: true,
+                });
+            } else if (error_code === 'CryptoWithdrawalReadMore') {
+                setDetails({
+                    title: '',
+                    cancel_button_text: undefined,
+                    confirm_button_text: localize('OK'),
+                    onConfirm: undefined,
+                    message: error_message,
+                });
             } else {
                 setDetails({
                     title: localize('Cashier Error'),
@@ -103,6 +120,7 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
             enableApp={enableApp}
             is_visible={is_visible}
             portal_element_id='modal_root'
+            has_close_icon={details.has_close_icon}
         >
             {/* to avoid the message disappearing before the pop-up */}
             {/* use details.message instead of error.message */}
@@ -112,7 +130,7 @@ const FormError = ({ disableApp, enableApp, error = {} }) => {
     );
 };
 
-FormError.propTypes = {
+ErrorDialog.propTypes = {
     error: PropTypes.object,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
@@ -121,4 +139,4 @@ FormError.propTypes = {
 export default connect(({ ui }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-}))(FormError);
+}))(ErrorDialog);

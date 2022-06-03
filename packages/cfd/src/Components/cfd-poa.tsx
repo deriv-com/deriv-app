@@ -14,7 +14,7 @@ import {
     useStateCallback,
 } from '@deriv/components';
 import {
-    FileUploaderContainer,
+    PoaFileUploaderContainer,
     FormSubHeader,
     PoaExpired,
     PoaNeedsReview,
@@ -26,7 +26,7 @@ import {
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
-import { GetSettings, StatesList, AccountStatusResponse } from '@deriv/api-types';
+import { GetSettings, StatesList, AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 
 type TErrors = {
     code: string;
@@ -182,7 +182,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         files: TObjDocumentFile,
         error_message: string,
         setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void,
-        setFieldValue: (field: string, files: TObjDocumentFile) => void,
+        setFieldValue: (field: string, _files: TObjDocumentFile) => void,
         values: TFormValues
     ) => {
         setFieldTouched('document_file', true);
@@ -278,8 +278,9 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
                 const { get_account_status } = response;
-                const { document, identity } = get_account_status?.authentication!;
-                const __has_poi = !!(identity && identity.status === 'none');
+                const document = get_account_status?.authentication?.document;
+                const identity = get_account_status?.authentication?.identity;
+                const __has_poi = !!(identity?.status === 'none');
                 setFormState({ ...form_state, ...{ poa_status: document?.status, __has_poi } }, () => {
                     setIsLoading(false);
                     refreshNotifications();
@@ -459,7 +460,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                     />
                                                 </div>
                                                 <div className='cfd-proof-of-address__file-upload'>
-                                                    <FileUploaderContainer
+                                                    <PoaFileUploaderContainer
                                                         onRef={(ref: React.RefObject<(HTMLElement | null) & TUpload>) =>
                                                             (file_uploader_ref = ref)
                                                         }

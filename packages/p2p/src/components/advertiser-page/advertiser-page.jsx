@@ -29,7 +29,6 @@ const AdvertiserPage = () => {
         last_name,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
-
     const joined_since = daysSince(created_time);
 
     React.useEffect(() => {
@@ -66,49 +65,52 @@ const AdvertiserPage = () => {
                 onClick={buy_sell_store.hideAdvertiserPage}
                 page_title={localize("Advertiser's page")}
             />
-            <div className='advertiser-page-details-container'>
-                <div className='advertiser-page__header-details'>
-                    <UserAvatar
-                        nickname={advertiser_page_store.advertiser_details_name}
-                        size={isMobile() ? 32 : 64}
-                        text_size={isMobile() ? 's' : 'sm'}
-                    />
-                    <div className='advertiser-page__header-name--column'>
-                        <div className='advertiser-page__header-name'>
-                            <Text color='prominent' line-height='m' size='s' weight='bold'>
-                                {advertiser_page_store.advertiser_details_name}
+            {/* TODO: Show Unblock confirmation modal when user clicks on this button */}
+            <BlockUserOverlay is_visible={is_blocked} onUnblock={() => true}>
+                <div className='advertiser-page-details-container'>
+                    <div className='advertiser-page__header-details'>
+                        <UserAvatar
+                            nickname={advertiser_page_store.advertiser_details_name}
+                            size={isMobile() ? 32 : 64}
+                            text_size={isMobile() ? 's' : 'sm'}
+                        />
+                        <div className='advertiser-page__header-name--column'>
+                            <div className='advertiser-page__header-name'>
+                                <Text color='prominent' line-height='m' size='s' weight='bold'>
+                                    {advertiser_page_store.advertiser_details_name}
+                                </Text>
+                                {first_name && last_name && (
+                                    <div className='advertiser-page__header-real-name'>
+                                        <Text color='less-prominent' line_height='xs' size='xs'>
+                                            {`(${first_name} ${last_name})`}
+                                        </Text>
+                                    </div>
+                                )}
+                            </div>
+                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                {joined_since > 0 ? (
+                                    <Localize
+                                        i18n_default_text='Joined {{days_since_joined}}d'
+                                        values={{ days_since_joined: joined_since }}
+                                    />
+                                ) : (
+                                    <Localize i18n_default_text='Joined today' />
+                                )}
                             </Text>
-                            {first_name && last_name && (
-                                <div className='advertiser-page__header-real-name'>
-                                    <Text color='less-prominent' line_height='xs' size='xs'>
-                                        {`(${first_name} ${last_name})`}
-                                    </Text>
-                                </div>
-                            )}
-                        </div>
-                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                            {joined_since > 0 ? (
-                                <Localize
-                                    i18n_default_text='Joined {{days_since_joined}}d'
-                                    values={{ days_since_joined: joined_since }}
+                            <div className='my-profile-name--row'>
+                                <TradeBadge
+                                    is_poa_verified={!!full_verification}
+                                    is_poi_verified={!!basic_verification}
+                                    trade_count={Number(buy_orders_count) + Number(sell_orders_count)}
+                                    large
                                 />
-                            ) : (
-                                <Localize i18n_default_text='Joined today' />
-                            )}
-                        </Text>
-                        <div className='my-profile-name--row'>
-                            <TradeBadge
-                                is_poa_verified={!!full_verification}
-                                is_poi_verified={!!basic_verification}
-                                trade_count={Number(buy_orders_count) + Number(sell_orders_count)}
-                                large
-                            />
+                            </div>
                         </div>
                     </div>
+                    <AdvertiserPageStats />
                 </div>
-                <AdvertiserPageStats />
-            </div>
-            <AdvertiserPageAdverts />
+                <AdvertiserPageAdverts />
+            </BlockUserOverlay>
         </div>
     );
 };

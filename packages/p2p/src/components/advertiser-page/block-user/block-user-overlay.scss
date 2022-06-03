@@ -1,34 +1,39 @@
-$header-height-offset: 23.8rem;
-$mobile-header-height-offset: 17.1rem;
-
 .block-user-overlay {
-    align-items: center;
-    background-color: var(--general-main-1);
-    border: 2px solid var(--general-section-1);
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    height: calc(88rem - #{$header-height-offset} - 5.8rem);
-    justify-content: center;
-    position: fixed;
-    opacity: 0.9;
-    top: #{$header-height-offset};
-    width: 94rem;
-    z-index: 99;
+    position: relative;
+    margin-bottom: 3rem;
 
-    @include mobile {
-        top: #{$mobile-header-height-offset};
-        border: none;
-        border-radius: unset;
-        height: calc(67rem - #{$mobile-header-height-offset});
-        width: 100%;
+    &__wrapper {
+        align-items: center;
+        background-color: var(--general-main-1);
+        border: 2px solid var(--general-section-1);
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+        position: absolute;
+        opacity: 0.9;
+        top: 0;
+        left: 0;
+        width: 94rem;
+        z-index: 99;
+
+        @include mobile {
+            border: none;
+            border-radius: unset;
+            width: 100%;
+        }
+
+        &-text {
+            margin: 2.5rem 0 0.8rem;
+        }
+
+        &-button {
+            margin-top: 2rem;
+        }
     }
 
-    &__text {
-        margin: 2.5rem 0 0.8rem;
-    }
-
-    &__button {
-        margin-top: 2rem;
+    .advertiser-page__adverts-table-body {
+        min-height: 20vh;
     }
 }

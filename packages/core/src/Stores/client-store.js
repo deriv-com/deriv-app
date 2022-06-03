@@ -113,18 +113,15 @@ export default class ClientStore extends BaseStore {
     };
 
     @observable account_limits = {};
-    @observable account_limits = {};
-
     @observable self_exclusion = {};
 
     @observable local_currency_config = {
         currency: '',
         decimal_places: undefined,
     };
+
     @observable has_cookie_account = false;
-
     @observable financial_assessment = null;
-
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
 
@@ -581,8 +578,8 @@ export default class ClientStore extends BaseStore {
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
         return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
             ? eu_shortcode_regex.test(financial_shortcode) ||
-            eu_shortcode_regex.test(gaming_shortcode) ||
-            eu_shortcode_regex.test(mt_gaming_shortcode)
+                  eu_shortcode_regex.test(gaming_shortcode) ||
+                  eu_shortcode_regex.test(mt_gaming_shortcode)
             : eu_excluded_regex.test(this.residence);
     }
 
@@ -1029,21 +1026,18 @@ export default class ClientStore extends BaseStore {
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
+
         if (is_maltainvest_account) {
             currency = form_values.currency;
             form_values.accept_risk = form_values.accept_risk || 0;
-            delete form_values.currency;
         }
+
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(form_values)
             : await WS.newAccountReal(form_values);
+
         if (!response.error) {
             await this.accountRealReaction(response);
-            // Set currency after account is created
-            // Maltainvest only
-            if (is_maltainvest_account) {
-                await this.setAccountCurrency(currency);
-            }
             if (is_samoa_account) {
                 await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
             }
@@ -1053,18 +1047,18 @@ export default class ClientStore extends BaseStore {
                 ...response,
                 ...(is_maltainvest_account
                     ? {
-                        new_account_maltainvest: {
-                            ...response.new_account_maltainvest,
-                            currency,
-                        },
-                    }
+                          new_account_maltainvest: {
+                              ...response.new_account_maltainvest,
+                              currency,
+                          },
+                      }
                     : {}),
                 ...(is_samoa_account
                     ? {
-                        new_account_samoa: {
-                            currency,
-                        },
-                    }
+                          new_account_samoa: {
+                              currency,
+                          },
+                      }
                     : {}),
             });
         }
@@ -1232,6 +1226,16 @@ export default class ClientStore extends BaseStore {
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
+        if (search) {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+                }, 0);
+            });
+        }
+
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.

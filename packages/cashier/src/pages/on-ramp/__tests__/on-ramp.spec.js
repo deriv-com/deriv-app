@@ -25,6 +25,7 @@ describe('<OnRamp />', () => {
     const props = {
         filtered_onramp_providers: [{ name: 'name' }],
         is_cashier_locked: false,
+        is_deposit_locked: false,
         is_loading: false,
         is_switching: false,
         should_show_dialog: false,
@@ -46,7 +47,11 @@ describe('<OnRamp />', () => {
     });
 
     it('should render <CashierLocked /> component', () => {
-        render(<OnRamp {...props} is_cashier_locked />);
+        const { rerender } = render(<OnRamp {...props} is_cashier_locked />);
+
+        expect(screen.getByText('CashierLocked')).toBeInTheDocument();
+
+        rerender(<OnRamp {...props} is_deposit_locked />);
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });

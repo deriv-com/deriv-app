@@ -42,6 +42,7 @@ const OnRamp = ({
     filtered_onramp_providers,
     is_cashier_locked,
     is_cashier_onboarding,
+    is_deposit_locked,
     is_loading,
     is_onramp_modal_open,
     is_switching,
@@ -82,7 +83,7 @@ const OnRamp = ({
 
     if (is_switching || is_loading) return <Loading className='cashier-onboarding__loader' is_fullscreen />;
 
-    if (is_cashier_locked) {
+    if (is_deposit_locked || is_cashier_locked) {
         return <CashierLocked />;
     }
 
@@ -140,6 +141,7 @@ const OnRamp = ({
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
     is_cashier_locked: PropTypes.bool,
+    is_deposit_locked: PropTypes.bool,
     is_onramp_modal_open: PropTypes.bool,
     is_loading: PropTypes.bool,
     menu_options: PropTypes.array,
@@ -158,6 +160,7 @@ export default connect(({ modules, common, client }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
+    is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
     is_loading: modules.cashier.general_store.is_loading,
     is_switching: client.is_switching,

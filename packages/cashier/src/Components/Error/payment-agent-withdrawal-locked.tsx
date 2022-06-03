@@ -1,4 +1,5 @@
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import { Button, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
@@ -15,12 +16,11 @@ type TPaymentAgentWithdrawalLockedItemProps = {
     };
 };
 
-export type TPaymentAgentWithdrawalLockedProps = {
+export type TPaymentAgentWithdrawalLockedProps = RouteComponentProps & {
     error?: {
         code: number | string;
-        onClickButton: () => void;
+        onClickButton?: () => void;
     };
-    history: Array<{ [k: string]: string | object }>;
 };
 
 const PaymentAgentWithdrawalLockedItem = ({ item }: TPaymentAgentWithdrawalLockedItemProps) => {

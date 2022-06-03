@@ -20,7 +20,6 @@ declare module 'react' {
 type TPaymentAgentListProps = {
     error?: {
         code: number | string;
-        onClickButton: () => void;
     };
     is_email_sent?: boolean;
     is_loading?: boolean;

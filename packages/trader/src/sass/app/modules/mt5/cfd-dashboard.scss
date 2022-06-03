@@ -1073,8 +1073,8 @@
     }
 }
 
-.account-poa {
-    &__upload {
+.account {
+    &__file-uploader {
         &-remove-btn {
             position: absolute;
             width: 16px;
@@ -1114,8 +1114,8 @@
         padding-top: 0.8rem;
         position: relative;
 
-        .account-poa {
-            &__upload {
+        .account {
+            &__file-uploader {
                 &-section {
                     margin-top: 0;
                     display: flex;
@@ -1143,7 +1143,7 @@
                 &-list {
                     display: unset;
 
-                    .account-poa__upload-box {
+                    .account__file-uploader-box {
                         display: flex;
                         flex-direction: unset;
                         flex: unset;
@@ -1216,7 +1216,7 @@
                 left: 0;
                 right: unset;
             }
-            .account-poa__upload-section {
+            .account__file-uploader-section {
                 flex-direction: column;
             }
         }

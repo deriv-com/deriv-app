@@ -272,7 +272,7 @@ $MIN_HEIGHT_FLOATING: calc(
                         font-size: 1.2rem;
                     }
                 }
-                .account-poa__upload-box-dashboard {
+                .account__file-uploader-box-dashboard {
                     @include mobile {
                         align-items: flex-start;
                     }
@@ -1205,11 +1205,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
-}
-
-/** @define account-poa; weak */
-.account-poa {
-    &__upload {
+    &__file-uploader {
         &-icon {
             margin-bottom: 1rem;
             @include mobile {
@@ -1225,7 +1221,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-right: 16px;
             display: flex;
             flex-wrap: wrap;
-            .account-poa__upload-box {
+            .account__file-uploader-box {
                 border: 1px solid var(--icon-grey-background);
                 border-radius: $BORDER_RADIUS * 2;
                 margin: 0 0.8rem 1.6rem;
@@ -1248,7 +1244,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin: 0 0.8rem;
             &-dashboard {
                 height: 10.5rem;
-                & .account-poa__upload-remove-btn {
+                & .account__file-uploader-remove-btn {
                     top: 25rem;
                     right: 1rem;
                 }
@@ -1348,7 +1344,8 @@ $MIN_HEIGHT_FLOATING: calc(
             text-align: center;
             align-items: center;
             justify-content: flex-start;
-            flex: 1 0 calc((100% / 3) - 3.2rem);
+            flex: 1;
+            min-width: 100px;
             &-dashboard {
                 flex-direction: column !important;
                 margin-left: 1.6rem;
@@ -1375,6 +1372,10 @@ $MIN_HEIGHT_FLOATING: calc(
             color: var(--text-prominent);
         }
     }
+}
+
+/** @define account-poa; weak */
+.account-poa {
     &__details {
         &-section {
             margin-top: 1em;
@@ -1401,6 +1402,24 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 min-width: 100%;
             }
+        }
+    }
+}
+
+/** @define account-poinc; weak */
+.account-poinc {
+    &-form {
+        width: 100%;
+        padding: 3rem 2rem 0 1rem;
+        @media only screen and (max-width: 926px) {
+            padding-left: 2rem;
+        }
+        &__fieldset {
+            margin: -3rem 0.6rem 5rem;
+            height: 5rem;
+        }
+        &__upload-field {
+            margin-top: -2rem;
         }
     }
 }

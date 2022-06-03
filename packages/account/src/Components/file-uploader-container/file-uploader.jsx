@@ -104,11 +104,11 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
                 value={document_file.files}
             />
             {(document_file.files.length > 0 || !!document_file.error_message) && (
-                <div className='account-poa__upload-remove-btn-container'>
+                <div className='account__file-uploader-remove-btn-container'>
                     <Icon
                         icon='IcCloseCircle'
-                        className={classNames('account-poa__upload-remove-btn', {
-                            'account-poa__upload-remove-btn--error': !!document_file.error_message,
+                        className={classNames('account__file-uploader-remove-btn', {
+                            'account__file-uploader-remove-btn--error': !!document_file.error_message,
                         })}
                         onClick={removeFile}
                         color='secondary'

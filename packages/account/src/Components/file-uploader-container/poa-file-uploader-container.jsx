@@ -19,14 +19,14 @@ const FileProperties = () => {
         },
     ];
     return (
-        <div className='account-poa__upload-property'>
+        <div className='account__file-uploader-property'>
             {properties.map(item => (
                 <div
-                    className={`account-poa__upload-property-item account-poa__upload-property-${item.name}`}
+                    className={`account__file-uploader-property-item account__file-uploader-property-${item.name}`}
                     key={item.name}
                 >
-                    <div className='account-poa__upload-property-wrapper'>
-                        <Icon icon={item.icon} className='account-poa__upload-icon-dashboard' size={40} />
+                    <div className='account__file-uploader-property-wrapper'>
+                        <Icon icon={item.icon} className='account__file-uploader-icon-dashboard' size={40} />
                         <Text size='xxxs' weight='bold' align='center'>
                             {item.text}
                         </Text>
@@ -37,7 +37,7 @@ const FileProperties = () => {
     );
 };
 
-const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
+const PoaFileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const ref = React.useRef();
 
@@ -51,10 +51,10 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
     }, [onRef, ref]);
     if (is_appstore && isDesktop()) {
         return (
-            <div className='account-poa__upload-section account-poa__upload-section-dashboard'>
-                <div className='account-poa__upload-file account-poa__upload-file-dashboard'>
+            <div className='account__file-uploader-section account__file-uploader-section-dashboard'>
+                <div className='account__file-uploader-file account__file-uploader-file-dashboard'>
                     <FileProperties />
-                    <div className='account-poa__upload-file-zone'>
+                    <div className='account__file-uploader-file-zone'>
                         <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
                     </div>
                 </div>
@@ -62,60 +62,60 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
         );
     }
     return (
-        <div className='account-poa__upload-section'>
+        <div className='account__file-uploader-section'>
             {is_description_enabled && (
-                <ul className='account-poa__upload-list'>
-                    <li className='account-poa__upload-box'>
+                <ul className='account__file-uploader-list'>
+                    <li className='account__file-uploader-box'>
                         {is_appstore ? (
-                            <Icon icon='IcPoaFileEightMb' className='account-poa__upload-icon' size={24} />
+                            <Icon icon='IcPoaFileEightMb' className='account__file-uploader-icon' size={24} />
                         ) : (
-                            <Icon icon='IcLessThanEight' className='account-poa__upload-icon' size={24} />
+                            <Icon icon='IcLessThanEight' className='account__file-uploader-icon' size={24} />
                         )}
-                        <div className='account-poa__upload-item'>
+                        <div className='account__file-uploader-item'>
                             <Localize i18n_default_text='Less than 8MB' />
                         </div>
                     </li>
-                    <li className='account-poa__upload-box'>
-                        <Icon icon='IcImage' className='account-poa__upload-icon' size={24} />
-                        <div className='account-poa__upload-item'>
+                    <li className='account__file-uploader-box'>
+                        <Icon icon='IcImage' className='account__file-uploader-icon' size={24} />
+                        <div className='account__file-uploader-item'>
                             <Localize i18n_default_text='JPEG JPG PNG PDF GIF' />
                         </div>
                     </li>
-                    <li className='account-poa__upload-box'>
+                    <li className='account__file-uploader-box'>
                         {is_appstore ? (
-                            <Icon icon='IcPoaFileTime' className='account-poa__upload-icon' size={24} />
+                            <Icon icon='IcPoaFileTime' className='account__file-uploader-icon' size={24} />
                         ) : (
-                            <Icon icon='IcClock' className='account-poa__upload-icon' size={24} />
+                            <Icon icon='IcClock' className='account__file-uploader-icon' size={24} />
                         )}
-                        <div className='account-poa__upload-item'>
+                        <div className='account__file-uploader-item'>
                             <Localize i18n_default_text='1 - 6 months old' />
                         </div>
                     </li>
-                    <li className='account-poa__upload-box'>
+                    <li className='account__file-uploader-box'>
                         {is_appstore ? (
-                            <Icon icon='IcPoaFileClear' className='account-poa__upload-icon' size={24} />
+                            <Icon icon='IcPoaFileClear' className='account__file-uploader-icon' size={24} />
                         ) : (
-                            <Icon icon='IcEye' className='account-poa__upload-icon' size={24} />
+                            <Icon icon='IcEye' className='account__file-uploader-icon' size={24} />
                         )}
-                        <div className='account-poa__upload-item'>
+                        <div className='account__file-uploader-item'>
                             <Localize i18n_default_text='A clear colour photo or scanned image' />
                         </div>
                     </li>
-                    <li className='account-poa__upload-box'>
+                    <li className='account__file-uploader-box'>
                         {is_appstore ? (
-                            <Icon icon='IcPoaFileWithAddress' className='account-poa__upload-icon' size={24} />
+                            <Icon icon='IcPoaFileWithAddress' className='account__file-uploader-icon' size={24} />
                         ) : (
-                            <Icon icon='IcUser' className='account-poa__upload-icon' size={24} />
+                            <Icon icon='IcUser' className='account__file-uploader-icon' size={24} />
                         )}
-                        <div className='account-poa__upload-item'>
+                        <div className='account__file-uploader-item'>
                             <Localize i18n_default_text='Issued under your name with your current address' />
                         </div>
                     </li>
                 </ul>
             )}
             <div
-                className={classNames('account-poa__upload-file', {
-                    'account-poa__upload-file--dashboard': isDesktop() && is_appstore,
+                className={classNames('account__file-uploader-file', {
+                    'account__file-uploader-file--dashboard': isDesktop() && is_appstore,
                 })}
             >
                 <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
@@ -124,11 +124,11 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
     );
 };
 
-FileUploaderContainer.propTypes = {
+PoaFileUploaderContainer.propTypes = {
     is_description_enabled: PropTypes.bool,
     getSocket: PropTypes.func,
     onFileDrop: PropTypes.func,
     onRef: PropTypes.func,
 };
 
-export default FileUploaderContainer;
+export default PoaFileUploaderContainer;

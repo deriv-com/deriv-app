@@ -31,7 +31,7 @@ import FormBodySection from 'Components/form-body-section';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import LeaveConfirm from 'Components/leave-confirm';
-import { FileUploaderContainer } from 'Components/file-uploader-container';
+import { PoaFileUploaderContainer } from 'Components/file-uploader-container';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -43,7 +43,7 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
 let file_uploader_ref = null;
 
 const UploaderSideNote = () => (
-    <div className='account-poa__upload-box account-poa__upload-box-dashboard'>
+    <div className='account__file-uploader-box account__file-uploader-box-dashboard'>
         <Text size='xs' line_height='s'>
             <Localize i18n_default_text='A recent utility bill (e.g. electricity, water, gas, phone or internet)' />
         </Text>
@@ -416,7 +416,7 @@ const ProofOfAddressForm = ({
 
                                 <FormSubHeader title={localize('2. Please upload one of the following:')} />
                                 <FormBodySection has_side_note side_note={<UploaderSideNote />}>
-                                    <FileUploaderContainer
+                                    <PoaFileUploaderContainer
                                         onRef={ref => (file_uploader_ref = ref)}
                                         onFileDrop={df =>
                                             setDocumentFile({ files: df.files, error_message: df.error_message })

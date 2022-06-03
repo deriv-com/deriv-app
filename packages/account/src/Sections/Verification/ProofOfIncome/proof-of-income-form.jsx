@@ -15,7 +15,7 @@ import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import LoadErrorMessage from 'Components/load-error-message';
-import { FileUploaderContainer } from 'Components/file-uploader-container';
+import { PoincFileUploaderContainer } from 'Components/file-uploader-container';
 
 let file_uploader_ref = null;
 
@@ -119,11 +119,10 @@ const ProofOfIncomeForm = ({
     return (
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
             {({ values, errors, status, touched, handleChange, handleSubmit, isSubmitting, setFieldValue }) => (
-                <form noValidate /* className='account-form' */ onSubmit={handleSubmit}>
+                <form noValidate className='account-poinc-form' onSubmit={handleSubmit}>
                     <Timeline inactive_items={inactive_items}>
                         <Timeline.Item>
-                            {/* <fieldset className='account-form__fieldset'> */}
-                            <fieldset>
+                            <fieldset className='account-poinc-form__fieldset'>
                                 <Field name='document_input'>
                                     {({ field }) => (
                                         <React.Fragment>
@@ -170,17 +169,19 @@ const ProofOfIncomeForm = ({
                                 </Field>
                             </fieldset>
                         </Timeline.Item>
-                        <Timeline.Item inactive='inactive here'>
-                            <FileUploaderContainer
-                                onRef={ref => (file_uploader_ref = ref)}
-                                onFileDrop={df =>
-                                    setDocumentFile({
-                                        files: df.files,
-                                        error_message: df.error_message,
-                                    })
-                                }
-                                getSocket={WS.getSocket}
-                            />
+                        <Timeline.Item>
+                            <div className='account-poinc-form__upload-field'>
+                                <PoincFileUploaderContainer
+                                    onRef={ref => (file_uploader_ref = ref)}
+                                    onFileDrop={df =>
+                                        setDocumentFile({
+                                            files: df.files,
+                                            error_message: df.error_message,
+                                        })
+                                    }
+                                    getSocket={WS.getSocket}
+                                />
+                            </div>
                         </Timeline.Item>
                     </Timeline>
                     {/* <FormFooter className='account-form__footer-poa'> */}

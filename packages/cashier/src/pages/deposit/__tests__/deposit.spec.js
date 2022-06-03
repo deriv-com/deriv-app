@@ -14,12 +14,12 @@ jest.mock('@deriv/components', () => ({
 jest.mock('Components/Error/virtual', () => () => <div>Virtual</div>);
 jest.mock('Components/Error/cashier-locked', () => () => <div>CashierLocked</div>);
 jest.mock('Components/Error/funds-protection', () => () => <div>FundsProtection</div>);
-jest.mock('Components/Error/deposit-locked', () => () => <div>DepositsLocked</div>);
 jest.mock('Components/Form/crypto-transactions-history', () => () => <div>CryptoTransactionsHistory</div>);
 jest.mock('Components/Error/error', () => () => <div>Error</div>);
-jest.mock('../crypto-deposit', () => () => <div>CryptoDeposit</div>);
 jest.mock('Components/cashier-container', () => () => <div>CashierContainer</div>);
 jest.mock('Components/cashier-onboarding/cashier-onboarding', () => () => <div>CashierOnboarding</div>);
+jest.mock('../crypto-deposit', () => () => <div>CryptoDeposit</div>);
+jest.mock('../deposit-locked', () => () => <div>DepositsLocked</div>);
 
 describe('<Deposit />', () => {
     const props = {

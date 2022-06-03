@@ -18,7 +18,6 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     isMobile: jest.fn(),
 }));
 jest.mock('Components/Error/cashier-locked', () => () => <div>CashierLocked</div>);
-jest.mock('Components/Error/deposit-locked', () => () => <div>DepositLocked</div>);
 jest.mock('Pages/on-ramp/on-ramp-provider-card', () => () => <div>OnRampProviderCard</div>);
 jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => () => <div>OnRampProviderPopup</div>);
 
@@ -26,7 +25,6 @@ describe('<OnRamp />', () => {
     const props = {
         filtered_onramp_providers: [{ name: 'name' }],
         is_cashier_locked: false,
-        is_deposit_locked: false,
         is_loading: false,
         is_switching: false,
         should_show_dialog: false,
@@ -51,12 +49,6 @@ describe('<OnRamp />', () => {
         render(<OnRamp {...props} is_cashier_locked />);
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
-    });
-
-    it('should render <DepositLocked /> component', () => {
-        render(<OnRamp {...props} is_deposit_locked />);
-
-        expect(screen.getByText('DepositLocked')).toBeInTheDocument();
     });
 
     it('should render <OnRampProviderCard /> component and "Select payment channel" message', () => {

@@ -35,8 +35,8 @@ const BuySellForm = props => {
 
     const should_disable_field =
         !buy_sell_store.is_buy_advert &&
-        parseFloat(general_store.client.balance) === 0 &&
-        parseFloat(general_store.client.balance) < buy_sell_store.advert?.min_order_amount_limit;
+        (parseFloat(general_store.client.balance) === 0 ||
+            parseFloat(general_store.client.balance) < buy_sell_store.advert?.min_order_amount_limit);
 
     const style = {
         borderColor: 'var(--brand-secondary)',

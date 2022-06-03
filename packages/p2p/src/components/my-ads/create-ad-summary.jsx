@@ -6,15 +6,12 @@ import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { setDecimalPlaces } from 'Utils/format-value.js';
 
 const CreateAdSummary = ({ market_feed, offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
 
-    const display_offer_amount = offer_amount
-        ? formatMoney(currency, offer_amount, true, setDecimalPlaces(market_feed, 6))
-        : '';
+    const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
 
     let display_price_rate = '';
     let display_total = '';

@@ -13,10 +13,10 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CryptoFiatConverter from 'Components/Form/crypto-fiat-converter.jsx';
-import FormError from 'Components/Error/form-error.jsx';
+import CryptoFiatConverter from 'Components/crypto-fiat-converter';
+import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
-import RecentTransaction from 'Components/recent-transaction.jsx';
+import RecentTransaction from 'Components/recent-transaction';
 import './account-transfer-form.scss';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
@@ -659,7 +659,7 @@ const AccountTransferForm = ({
                                         is_mt_transfer={is_mt_transfer}
                                     />
                                 </MobileWrapper>
-                                <FormError error={error} />
+                                <ErrorDialog error={error} />
                             </Form>
                         )}
                     </React.Fragment>

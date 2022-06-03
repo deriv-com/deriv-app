@@ -5,9 +5,9 @@ import { routes, WS } from '@deriv/shared';
 import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CashierLocked from 'Components/Error/cashier-locked.jsx';
+import CashierLocked from 'Components/cashier-locked';
 
-const DepositsLocked = ({
+const DepositLocked = ({
     account_status,
     is_tnc_needed,
     is_financial_information_incomplete,
@@ -102,7 +102,7 @@ const DepositsLocked = ({
     );
 };
 
-DepositsLocked.propTypes = {
+DepositLocked.propTypes = {
     account_status: PropTypes.object,
     is_tnc_needed: PropTypes.bool,
     is_financial_information_incomplete: PropTypes.bool,
@@ -119,4 +119,4 @@ export default connect(({ client, modules }) => ({
     is_financial_account: client.is_financial_account,
     onMount: modules.cashier.deposit.onMountDeposit,
     standpoint: client.standpoint,
-}))(DepositsLocked);
+}))(DepositLocked);

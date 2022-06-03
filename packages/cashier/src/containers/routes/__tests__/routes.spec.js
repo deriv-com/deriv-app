@@ -22,7 +22,7 @@ describe('<Routes />', () => {
             redirectOnClick: jest.fn(),
             should_clear_error_on_click: true,
             setError: jest.fn(),
-            redirect_to: ['/testurl'],
+            redirect_to: '/testurl',
             should_show_refresh: true,
         };
         render(

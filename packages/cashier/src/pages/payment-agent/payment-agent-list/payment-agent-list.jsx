@@ -4,7 +4,7 @@ import { Loading, Tabs, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import EmailSent from 'Components/Email/email-sent.jsx';
+import VerificationEmail from 'Components/verification-email';
 import PaymentAgentDeposit from '../payment-agent-deposit';
 import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
@@ -71,7 +71,7 @@ const PaymentAgentList = ({
                                 <div>
                                     {is_email_sent ? (
                                         <div className='cashier__wrapper'>
-                                            <EmailSent
+                                            <VerificationEmail
                                                 is_email_sent={is_email_sent}
                                                 is_resend_clicked={is_resend_clicked}
                                                 resend_timeout={resend_timeout}

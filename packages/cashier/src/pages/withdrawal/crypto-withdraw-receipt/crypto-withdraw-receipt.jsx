@@ -4,7 +4,7 @@ import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RecentTransaction from 'Components/recent-transaction.jsx';
+import RecentTransaction from 'Components/recent-transaction';
 import { getAccountText } from '_common/utility';
 import './crypto-withdraw-receipt.scss';
 

@@ -11,15 +11,15 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('Components/Error/cashier-locked', () => () => <div>CashierLocked</div>);
-jest.mock('Components/Error/virtual', () => () => <div>Virtual</div>);
+jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
+jest.mock('Components/cashier-container/virtual', () => () => <div>Virtual</div>);
 jest.mock('../withdrawal-locked', () => () => <div>WithdrawalLocked</div>);
-jest.mock('Components/Error/no-balance', () => () => <div>NoBalance</div>);
-jest.mock('Components/Error/error', () => () => <div>Error</div>);
+jest.mock('Components/no-balance', () => () => <div>NoBalance</div>);
+jest.mock('Components/error', () => () => <div>Error</div>);
 jest.mock('../withdraw', () => () => <div>Withdraw</div>);
 jest.mock('../crypto-withdraw-form', () => () => <div>CryptoWithdrawForm</div>);
 jest.mock('../crypto-withdraw-receipt', () => () => <div>CryptoWithdrawReceipt</div>);
-jest.mock('Components/Form/crypto-transactions-history', () => () => <div>CryptoTransactionsHistory</div>);
+jest.mock('Components/crypto-transactions-history', () => () => <div>CryptoTransactionsHistory</div>);
 jest.mock('../withdrawal-verification-email', () => () => <div>WithdrawalVerificationEmail</div>);
 jest.mock('Components/recent-transaction', () => () => <div>RecentTransaction</div>);
 jest.mock('@deriv/components', () => ({
@@ -141,7 +141,7 @@ describe('<Withdrawal />', () => {
 
         const { rerender } = render(
             <Router history={history}>
-                <Withdrawal {...props} error={{ message: 'Error message' }} />
+                <Withdrawal {...props} error={{ is_show_full_page: true, message: 'Error message' }} />
             </Router>
         );
 

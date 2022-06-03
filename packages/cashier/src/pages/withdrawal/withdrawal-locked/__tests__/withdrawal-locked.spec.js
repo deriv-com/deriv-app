@@ -12,7 +12,7 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('Components/Error/cashier-locked', () => () => <div>CashierLocked</div>);
+jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
 
 const fireButtonEvent = (container, text_content) => {
     const node_list = container.querySelectorAll('.dc-checklist__item');

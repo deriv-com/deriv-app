@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
-import DepositsLocked from '../deposit-locked';
+import DepositLocked from '../deposit-locked';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -9,7 +9,7 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-describe('<DepositsLocked />', () => {
+describe('<DepositLocked />', () => {
     const onMount = jest.fn();
     const standpoint = {
         iom: false,
@@ -39,7 +39,7 @@ describe('<DepositsLocked />', () => {
             },
         };
         render(
-            <DepositsLocked
+            <DepositLocked
                 account_status={poi_account_status}
                 is_tnc_needed={false}
                 is_financial_information_incomplete={false}
@@ -67,7 +67,7 @@ describe('<DepositsLocked />', () => {
             },
         };
         render(
-            <DepositsLocked
+            <DepositLocked
                 account_status={poa_account_status}
                 is_tnc_needed={false}
                 is_financial_information_incomplete={false}
@@ -84,7 +84,7 @@ describe('<DepositsLocked />', () => {
 
     it('should show the terms and conditions accept button', () => {
         render(
-            <DepositsLocked
+            <DepositLocked
                 account_status={account_status}
                 is_tnc_needed
                 is_financial_information_incomplete={false}
@@ -107,7 +107,7 @@ describe('<DepositsLocked />', () => {
         standpoint.iom = true;
 
         render(
-            <DepositsLocked
+            <DepositLocked
                 account_status={account_status}
                 is_tnc_needed={false}
                 is_financial_information_incomplete

@@ -43,7 +43,7 @@ export default class WithdrawStore {
     @action.bound
     async requestWithdraw(verification_code) {
         const { client, modules } = this.root_store;
-        const { crypto_fiat_converter, error_dialog } = modules.cashier;
+        const { crypto_fiat_converter } = modules.cashier;
 
         if (!client.is_logged_in) {
             return;
@@ -61,7 +61,7 @@ export default class WithdrawStore {
             dry_run: 1,
         }).then(response => {
             if (response.error) {
-                error_dialog.setErrorMessage(response.error.message);
+                this.error.setErrorMessage({ code: 'CryptoWithdrawalError', message: response.error.message });
             } else {
                 this.saveWithdraw(verification_code);
             }
@@ -274,9 +274,8 @@ export default class WithdrawStore {
 
         const { client, modules } = this.root_store;
         const { balance, currency } = client;
-        const { crypto_fiat_converter, error_dialog } = modules.cashier;
+        const { crypto_fiat_converter } = modules.cashier;
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
-        const { openReadMoreDialog } = error_dialog;
 
         const min_withdraw_amount = this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal;
         const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
@@ -311,7 +310,9 @@ export default class WithdrawStore {
                         expand_text={localize('more')}
                         text={error_content}
                         collapse_length={28}
-                        openDialog={() => openReadMoreDialog(error_content, localize('OK'))}
+                        openDialog={() =>
+                            this.error.setErrorMessage({ code: 'CryptoWithdrawalReadMore', message: error_content })
+                        }
                         show_dialog
                     />
                 );

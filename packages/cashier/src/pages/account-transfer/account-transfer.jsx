@@ -4,14 +4,14 @@ import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountTransferNoAccount from './account-transfer-no-account';
-import Error from 'Components/Error/error.jsx';
-import NoBalance from 'Components/Error/no-balance.jsx';
-import Virtual from 'Components/Error/virtual.jsx';
-import CashierLocked from 'Components/Error/cashier-locked.jsx';
+import Error from 'Components/error';
+import NoBalance from 'Components/no-balance';
+import { Virtual } from 'Components/cashier-container';
+import CashierLocked from 'Components/cashier-locked';
 import AccountTransferLocked from './account-transfer-locked';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferReceipt from './account-transfer-receipt';
-import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
+import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 
 const AccountTransfer = ({
     accounts_list,

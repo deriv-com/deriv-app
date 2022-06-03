@@ -8,15 +8,15 @@ import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import Withdraw from './withdraw';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
-import Error from 'Components/Error/error.jsx';
-import NoBalance from 'Components/Error/no-balance.jsx';
-import Virtual from 'Components/Error/virtual.jsx';
+import Error from 'Components/error';
+import NoBalance from 'Components/no-balance';
+import { Virtual } from 'Components/cashier-container';
 import WithdrawalLocked from './withdrawal-locked';
-import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import SideNote from 'Components/side-note.jsx';
-import USDTSideNote from 'Components/usdt-side-note.jsx';
-import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
-import RecentTransaction from 'Components/recent-transaction.jsx';
+import CashierLocked from 'Components/cashier-locked';
+import SideNote from 'Components/side-note';
+import USDTSideNote from 'Components/usdt-side-note';
+import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
+import RecentTransaction from 'Components/recent-transaction';
 
 const WithdrawalSideNote = ({ currency }) => {
     const notes = [
@@ -130,7 +130,7 @@ const Withdrawal = ({
     if (!+balance) {
         return <NoBalance />;
     }
-    if (error.message) {
+    if (error.is_show_full_page && error.message) {
         return <Error error={error} />;
     }
     if (verify_error.message) {

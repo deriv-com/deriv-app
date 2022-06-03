@@ -108,7 +108,7 @@ describe('WithdrawStore', () => {
 
     it('should request for withdrawal', async () => {
         const { setConverterFromError } = withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
-        const { setErrorMessage } = withdraw_store.root_store.modules.cashier.error_dialog;
+        const spySetErrorMessage = jest.spyOn(withdraw_store.error, 'setErrorMessage');
         const spySaveWithdraw = jest.spyOn(withdraw_store, 'saveWithdraw');
         const error_message = 'Sorry, an error occurred.';
         const verification_code = 'aBcDefXa';
@@ -128,7 +128,7 @@ describe('WithdrawStore', () => {
 
         withdraw_store.WS.cryptoWithdraw.mockResolvedValueOnce({ error: { message: error_message } });
         await withdraw_store.requestWithdraw(verification_code);
-        expect(setErrorMessage).toHaveBeenCalledWith(error_message);
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'CryptoWithdrawalError', message: error_message });
     });
 
     it('should save withdrawal request', async () => {

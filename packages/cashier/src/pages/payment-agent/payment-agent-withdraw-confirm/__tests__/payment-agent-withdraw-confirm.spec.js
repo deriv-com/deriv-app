@@ -40,7 +40,7 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
         expect(container.querySelector('.confirm__row')).toBeInTheDocument();
     });
 
-    it('component <FormError /> should be rendered when has an error', () => {
+    it('component <ErrorDialog /> should be rendered when has an error', () => {
         render(<PaymentAgentWithdrawConfirm error={error} />);
 
         expect(screen.getByText('testMessage')).toBeInTheDocument();

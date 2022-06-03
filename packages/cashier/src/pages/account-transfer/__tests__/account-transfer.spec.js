@@ -21,10 +21,10 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 }));
 
 jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransferForm'));
-jest.mock('Components/Form/crypto-transactions-history', () => jest.fn(() => 'mockedCryptoTransactionsHistory'));
-jest.mock('Components/Error/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
+jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'mockedCryptoTransactionsHistory'));
+jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 jest.mock('../account-transfer-receipt', () => jest.fn(() => 'mockedAccountTransferReceipt'));
-jest.mock('Components/Error/error', () => jest.fn(() => 'mockedError'));
+jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
 
 describe('<AccountTransfer />', () => {
     const props = {

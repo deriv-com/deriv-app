@@ -23,6 +23,13 @@ const SellAdPaymentMethodsList = ({
         borderWidth: '2px',
     };
 
+    // payment method order: Bank Transfer -> EWallets -> Others
+    const payment_method_order = { bank_transfer: 0, other: 2 };
+    const getPaymentMethodOrder = method => (!(method in payment_method_order) ? 1 : payment_method_order[method]);
+    const sortPaymentMethods = payment_methods_list => {
+        return payment_methods_list.sort((i, j) => getPaymentMethodOrder(i.method) - getPaymentMethodOrder(j.method));
+    };
+
     return (
         <ThemedScrollbars
             className={classNames('sell-ad-payment-methods__container', {
@@ -32,7 +39,7 @@ const SellAdPaymentMethodsList = ({
             is_scrollable={is_scrollable}
             is_only_horizontal={is_only_horizontal}
         >
-            {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
+            {sortPaymentMethods([...my_profile_store.advertiser_payment_methods_list]).map((payment_method, key) => (
                 <PaymentMethodCard
                     is_vertical_ellipsis_visible={false}
                     key={key}

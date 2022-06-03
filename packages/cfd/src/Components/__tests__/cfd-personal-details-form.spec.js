@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { isMobile } from '@deriv/shared';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CFDPersonalDetailsForm from '../cfd-personal-details-form';
@@ -8,9 +9,17 @@ jest.mock('@deriv/account', () => ({
     FormSubHeader: () => <div>FormSubHeader</div>,
 }));
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(),
+}));
+
 describe('<CFDPersonalDetailsForm />', () => {
     beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
     afterAll(() => ReactDOM.createPortal.mockClear());
+    beforeEach(() => {
+        isMobile.mockReturnValue(false);
+    });
 
     const props = {
         form_error: undefined,
@@ -94,13 +103,13 @@ describe('<CFDPersonalDetailsForm />', () => {
         },
     };
 
-    it('should render properly', () => {
+    const citizenship_required_error = 'Citizenship is required';
+    const tax_residence_required_error = 'Tax residence is required';
+    const tax_id_required_error = 'Tax identification number is required';
+    const opening_reason_required_error = 'Account opening reason is required';
+
+    it('should render properly on desktop', () => {
         render(<CFDPersonalDetailsForm {...props} />);
-        const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
-        const tax_residence = screen.getByRole('textbox', { name: /tax residence/i });
-        const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
-        const account_opening_reason = screen.getByText(/account opening reason/i);
-        const next_button = screen.getByRole('button', { name: /next/i });
 
         expect(
             screen.getByText(
@@ -108,77 +117,117 @@ describe('<CFDPersonalDetailsForm />', () => {
             )
         ).toBeInTheDocument();
         expect(screen.getAllByText('FormSubHeader').length).toBe(3);
-        expect(citizenship_input).toBeInTheDocument();
-        expect(tax_residence).toBeInTheDocument();
-        expect(tax_id_input).toBeInTheDocument();
-        expect(account_opening_reason).toBeInTheDocument();
-        expect(next_button).toBeEnabled();
+        expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeInTheDocument();
+        expect(screen.getByRole('textbox', { name: /tax residence/i })).toBeInTheDocument();
+        expect(screen.getByRole('textbox', { name: /tax identification number/i })).toBeInTheDocument();
+        expect(screen.getByText(/account opening reason/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+    });
+
+    it('should not render scrollbars or modal footer wrapper on mobile', () => {
+        isMobile.mockReturnValue(true);
+        render(<CFDPersonalDetailsForm {...props} />);
+
+        expect(screen.queryByTestId('dt-themed-scrollbars')).not.toBeInTheDocument();
+        expect(screen.getAllByText('FormSubHeader').length).toBe(3);
+        expect(screen.queryByTestId('dt-modal-footer')).not.toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
     });
 
     it("should show that it's loading when is_loading is true", () => {
-        const { container } = render(<CFDPersonalDetailsForm {...props} is_loading />);
-        expect(container.querySelector('.initial-loader')).toBeInTheDocument();
+        render(<CFDPersonalDetailsForm {...props} is_loading />);
+        expect(screen.getByTestId('dt-initial-loader')).toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                /any information you provide is confidential and will be used for verification purposes only\./i
+            )
+        ).not.toBeInTheDocument();
     });
 
-    it('should show an error message and icon if there is a general form error', () => {
-        render(<CFDPersonalDetailsForm {...props} form_error='Form submission failed.' />);
+    it("should show that it's loading when residence_list is still empty", () => {
+        render(<CFDPersonalDetailsForm {...props} residence_list={[]} />);
+
+        expect(screen.getByTestId('dt-initial-loader')).toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                /any information you provide is confidential and will be used for verification purposes only\./i
+            )
+        ).not.toBeInTheDocument();
+    });
+
+    it('should disable Citizenship and Tax residence fields if they were submitted earlier & is_fully_authenticated is true', () => {
+        const values = {
+            citizen: 'Indonesia',
+            tax_residence: 'Indonesia',
+            tax_identification_number: '',
+            account_opening_reason: '',
+        };
+        render(<CFDPersonalDetailsForm {...props} is_fully_authenticated value={values} />);
+
+        expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeDisabled();
+        expect(screen.getByRole('textbox', { name: /tax residence/i })).toBeDisabled();
+        expect(screen.getByRole('textbox', { name: /tax identification number/i })).toBeEnabled();
+        expect(screen.getByText(/account opening reason/i)).toBeEnabled();
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+    });
+
+    it('should show an error message received from server that is passed via props as form_error', () => {
+        const form_error = 'Form submission failed.';
+        render(<CFDPersonalDetailsForm {...props} form_error={form_error} />);
+
         expect(screen.getByTestId('form-submit-error')).toHaveClass('dc-icon');
-        expect(screen.getByText('Form submission failed.')).toBeInTheDocument();
+        expect(screen.getByText(form_error)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
     });
 
-    it('should enable the Next button in case of all required fields are filled', async () => {
+    it('should enable the Next button for form submission when all required fields are filled', async () => {
         render(<CFDPersonalDetailsForm {...props} />);
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
-        const tax_residence = screen.getByRole('textbox', { name: /tax residence/i });
+        const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
-        const account_opening_reason = screen.getByText(/account opening reason/i);
+        const opening_reason_input = screen.getByText(/account opening reason/i);
         const next_button = screen.getByRole('button', { name: /next/i });
-
-        const citizenship_error = 'Citizenship is required';
-        const tax_residence_error = 'Tax residence is required';
-        const tax_id_error = 'Tax identification number is required';
-        const account_opening_reason_error = 'Account opening reason is required';
 
         fireEvent.change(citizenship_input, { target: { value: 'Indonesia' } });
         fireEvent.click(next_button);
         await waitFor(() => {
-            expect(screen.queryByText(citizenship_error)).not.toBeInTheDocument();
-            expect(screen.getByText(tax_residence_error)).toBeInTheDocument();
-            expect(screen.getByText(tax_id_error)).toBeInTheDocument();
-            expect(screen.getByText(account_opening_reason_error)).toBeInTheDocument();
+            expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
+            expect(screen.getByText(tax_residence_required_error)).toBeInTheDocument();
+            expect(screen.getByText(tax_id_required_error)).toBeInTheDocument();
+            expect(screen.getByText(opening_reason_required_error)).toBeInTheDocument();
             expect(next_button).toBeDisabled();
         });
 
-        fireEvent.change(tax_residence, { target: { value: 'Indonesia' } });
+        fireEvent.change(tax_residence_input, { target: { value: 'Indonesia' } });
         fireEvent.click(next_button);
         await waitFor(() => {
-            expect(screen.queryByText(citizenship_error)).not.toBeInTheDocument();
-            expect(screen.queryByText(tax_residence_error)).not.toBeInTheDocument();
-            expect(screen.getByText(tax_id_error)).toBeInTheDocument();
-            expect(screen.getByText(account_opening_reason_error)).toBeInTheDocument();
+            expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
+            expect(screen.queryByText(tax_residence_required_error)).not.toBeInTheDocument();
+            expect(screen.getByText(tax_id_required_error)).toBeInTheDocument();
+            expect(screen.getByText(opening_reason_required_error)).toBeInTheDocument();
             expect(next_button).toBeDisabled();
         });
 
         fireEvent.change(tax_id_input, { target: { value: '023124224563456' } });
         fireEvent.click(next_button);
         await waitFor(() => {
-            expect(screen.queryByText(citizenship_error)).not.toBeInTheDocument();
-            expect(screen.queryByText(tax_residence_error)).not.toBeInTheDocument();
-            expect(screen.queryByText(tax_id_error)).not.toBeInTheDocument();
-            expect(screen.getByText(account_opening_reason_error)).toBeInTheDocument();
+            expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
+            expect(screen.queryByText(tax_residence_required_error)).not.toBeInTheDocument();
+            expect(screen.queryByText(tax_id_required_error)).not.toBeInTheDocument();
+            expect(screen.getByText(opening_reason_required_error)).toBeInTheDocument();
             expect(next_button).toBeDisabled();
         });
 
-        fireEvent.click(account_opening_reason);
+        fireEvent.click(opening_reason_input);
         const hedging = within(screen.getByRole('list')).getByText('Hedging');
         fireEvent.click(hedging);
-        fireEvent.click(account_opening_reason);
+        fireEvent.click(opening_reason_input);
         await waitFor(() => {
-            expect(screen.queryByText(citizenship_error)).not.toBeInTheDocument();
-            expect(screen.queryByText(tax_residence_error)).not.toBeInTheDocument();
-            expect(screen.queryByText(tax_id_error)).not.toBeInTheDocument();
-            expect(screen.queryByText(account_opening_reason_error)).not.toBeInTheDocument();
+            expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
+            expect(screen.queryByText(tax_residence_required_error)).not.toBeInTheDocument();
+            expect(screen.queryByText(tax_id_required_error)).not.toBeInTheDocument();
+            expect(screen.queryByText(opening_reason_required_error)).not.toBeInTheDocument();
             expect(next_button).toBeEnabled();
         });
 
@@ -188,7 +237,7 @@ describe('<CFDPersonalDetailsForm />', () => {
         });
     });
 
-    it('should disable the Next button in case of erroneous input in a required field', async () => {
+    it('should disable the Next button in case of invalid input in a required field', async () => {
         render(<CFDPersonalDetailsForm {...props} />);
 
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
@@ -203,7 +252,7 @@ describe('<CFDPersonalDetailsForm />', () => {
         });
     });
 
-    it('should disable the Next button in case of an empty input in a required field', async () => {
+    it('should disable the Next button in case a required field is empty', async () => {
         render(<CFDPersonalDetailsForm {...props} />);
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
@@ -214,7 +263,7 @@ describe('<CFDPersonalDetailsForm />', () => {
 
         await waitFor(() => {
             expect(next_button).toBeDisabled();
-            expect(screen.getByText('Citizenship is required')).toBeInTheDocument();
+            expect(screen.getByText(citizenship_required_error)).toBeInTheDocument();
         });
     });
 });

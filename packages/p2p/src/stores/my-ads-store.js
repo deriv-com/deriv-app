@@ -267,7 +267,7 @@ export default class MyAdsStore extends BaseStore {
             id: this.selected_ad_id,
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
-            rate_type: this.root_store.floating_rate_store.rate_type,
+            rate_type: this.required_ad_type,
             rate: Number(values.rate_type),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
@@ -285,22 +285,18 @@ export default class MyAdsStore extends BaseStore {
             update_advert.description = values.description;
         }
 
-        requestWS(update_advert)
-            .then(response => {
-                // If there's an error, let the user submit the form again.
-                if (response) {
-                    if (response.error) {
-                        setSubmitting(false);
-                        this.setEditAdFormError(response.error.message);
-                        this.setIsEditAdErrorModalVisible(true);
-                    } else {
-                        this.setShowEditAdForm(false);
-                    }
+        requestWS(update_advert).then(response => {
+            // If there's an error, let the user submit the form again.
+            if (response) {
+                if (response.error) {
+                    setSubmitting(false);
+                    this.setEditAdFormError(response.error.message);
+                    this.setIsEditAdErrorModalVisible(true);
+                } else {
+                    this.setShowEditAdForm(false);
                 }
-            })
-            .finally(() => {
-                this.setIsSwitchModalOpen(false, null);
-            });
+            }
+        });
     }
 
     @action.bound
@@ -773,13 +769,13 @@ export default class MyAdsStore extends BaseStore {
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    floating_rate_store.rate_type === ad_type.FIXED
+                    this.required_ad_type === ad_type.FIXED
                         ? v > 0 &&
                           decimalValidator(v) &&
                           countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
                         : true,
                 v =>
-                    floating_rate_store.rate_type === ad_type.FLOAT
+                    this.required_ad_type === ad_type.FLOAT
                         ? rangeValidator(v, parseInt(floating_rate_store.float_rate_offset_limit))
                         : true,
             ],

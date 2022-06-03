@@ -47,6 +47,15 @@ const EditAdForm = () => {
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const [is_cancel_edit_modal_open, setIsCancelEditModalOpen] = React.useState(false);
 
+    const set_initial_ad_rate = () => {
+        if (my_ads_store.required_ad_type !== my_ads_store.selected_ad_type) {
+            if (my_ads_store.required_ad_type === ad_type.FLOAT) {
+                return is_buy_advert ? '+0.01' : '-0.01';
+            }
+        }
+        return rate_display;
+    };
+
     const payment_methods_changed = is_buy_advert
         ? !(
               !!payment_method_names &&
@@ -79,7 +88,7 @@ const EditAdForm = () => {
         my_ads_store.setIsEditAdErrorModalVisible(false);
         my_ads_store.setEditAdFormError('');
         floating_rate_store.setApiErrorMessage('');
-        // P2P configuration is not subscribable. Hence need to fetch it on demand
+        // P2P configuration is not subscribed. Hence need to fetch it on demand
         general_store.setP2PConfig();
 
         if (payment_method_names && !payment_method_details) {
@@ -115,7 +124,7 @@ const EditAdForm = () => {
                             max_transaction: max_order_amount_display,
                             min_transaction: min_order_amount_display,
                             offer_amount: amount_display,
-                            rate_type: rate_display,
+                            rate_type: set_initial_ad_rate(),
                             type,
                         }}
                         onSubmit={my_ads_store.onClickSaveEditAd}
@@ -200,7 +209,7 @@ const EditAdForm = () => {
                                                     </Field>
                                                     <Field name='rate_type'>
                                                         {({ field }) =>
-                                                            floating_rate_store.rate_type === ad_type.FLOAT ? (
+                                                            my_ads_store.required_ad_type === ad_type.FLOAT ? (
                                                                 <FloatingRate
                                                                     className='p2p-my-ads__form-field'
                                                                     data_testid='float_rate_type'
@@ -383,7 +392,7 @@ const EditAdForm = () => {
                                                 <EditAdFormPaymentMethods
                                                     is_sell_advert={is_sell_advert}
                                                     payment_method_names={payment_method_names}
-                                                    selected_methods={selected_methods}
+                                                    selected_methods={[...selected_methods]}
                                                     setSelectedMethods={setSelectedMethods}
                                                 />
                                                 <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>

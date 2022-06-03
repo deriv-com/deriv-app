@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -43,11 +43,17 @@ export default class MyAdsStore extends BaseStore {
     @observable should_show_add_payment_method = false;
     @observable should_show_add_payment_method_modal = false;
     @observable show_edit_ad_form = false;
-    @observable should_switch_ad_rate = false;
+    // @observable should_switch_ad_rate = false;
     @observable update_payment_methods_error_message = '';
+    @observable required_ad_type;
 
     payment_method_ids = [];
     payment_method_names = [];
+
+    @computed
+    get selected_ad_type() {
+        return this.p2p_advert_information.rate_type;
+    }
 
     @action.bound
     getAccountStatus() {
@@ -244,11 +250,12 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    onClickEdit(id) {
+    onClickEdit(id, rate_type) {
         if (!this.root_store.general_store.is_barred) {
             this.setSelectedAdId(id);
-            this.setShowEditAdForm(true);
+            this.setRequiredAdType(rate_type);
             this.getAdvertInfo();
+            this.setShowEditAdForm(true);
         }
     }
 
@@ -557,22 +564,20 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
+        if (!this.show_edit_ad_form) {
+            // this.setRequiredAdType(null);
+        }
     }
 
     @action.bound
     setIsSwitchModalOpen(is_switch_modal_open, ad_id) {
         this.setSelectedAdId(ad_id);
+        this.getAdvertInfo();
         this.is_switch_modal_open = is_switch_modal_open;
     }
-
     @action.bound
-    setShouldSwitchAdRateStatus(should_switch_ad_rate) {
-        this.should_switch_ad_rate = should_switch_ad_rate;
-        if (should_switch_ad_rate) {
-            this.setShowEditAdForm(true);
-            this.getAdvertInfo();
-        }
-        this.setIsSwitchModalOpen(false, this.selected_ad_id);
+    setRequiredAdType(change_ad_type) {
+        this.required_ad_type = change_ad_type;
     }
 
     @action.bound
@@ -874,8 +879,9 @@ export default class MyAdsStore extends BaseStore {
         return errors;
     }
 
-    toggleMyAdsRateSwitchModal() {
-        this.setIsSwitchModalOpen(false, null);
-        this.setShouldSwitchAdRateStatus(false);
+    toggleMyAdsRateSwitchModal(change_ad_type) {
+        this.setRequiredAdType(change_ad_type);
+        this.setShowEditAdForm(true);
+        this.setIsSwitchModalOpen(false, this.selected_ad_id);
     }
 }

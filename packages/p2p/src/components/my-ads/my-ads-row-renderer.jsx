@@ -48,7 +48,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
-    const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id);
+    const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id, rate_type);
     const onClickSwitchAd = () => !general_store.is_barred && my_ads_store.setIsSwitchModalOpen(true, id);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);

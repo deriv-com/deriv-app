@@ -2,7 +2,7 @@ const path = require('path');
 const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 
 module.exports = function (env) {
-    const base = env && env.base && env.base !== true ? `/${  env.base  }/` : '/';
+    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
 
     return {
         context: path.resolve(__dirname, '../src'),
@@ -21,7 +21,6 @@ module.exports = function (env) {
             'currency-radio-button': 'Components/currency-selector/radio-button.jsx',
             'demo-message': 'Components/demo-message',
             'error-component': 'Components/error-component',
-            'file-uploader-container': 'Components/file-uploader-container',
             'financial-assessment': 'Sections/Profile/FinancialAssessment',
             'financial-details': 'Components/financial-details',
             'financial-details-config': 'Configs/financial-details-config',
@@ -32,6 +31,7 @@ module.exports = function (env) {
             'leave-confirm': 'Components/leave-confirm',
             'load-error-message': 'Components/load-error-message',
             'poa-expired': 'Components/poa-expired',
+            'poa-file-uploader-container': 'Components/file-uploader-container/poa-file-uploader-container.jsx',
             'poa-needs-review': 'Components/poa-needs-review',
             'poa-status-codes': 'Components/poa-status-codes',
             'poa-submitted': 'Components/poa-submitted',
@@ -46,9 +46,11 @@ module.exports = function (env) {
             'poi-unverified': 'Components/poi-unverified',
             'poi-upload-complete': 'Components/poi-upload-complete',
             'poi-verified': 'Components/poi-verified',
+            'poinc-file-uploader-container': 'Components/file-uploader-container/poinc-file-uploader-container.jsx',
             'proof-of-identity': 'Sections/Verification/ProofOfIdentity/proof-of-identity.jsx',
             'proof-of-identity-container': 'Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx',
             'proof-of-address-container': 'Sections/Verification/ProofOfAddress/proof-of-address-container.jsx',
+            'proof-of-income': 'Sections/Verification/ProofOfIncome/proof-of-income.jsx',
             'reset-trading-password-modal': 'Components/reset-trading-password-modal',
             'self-exclusion': 'Components/self-exclusion',
             'scrollbars-container': 'Components/scrollbars-container',

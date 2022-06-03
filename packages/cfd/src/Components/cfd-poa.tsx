@@ -26,7 +26,7 @@ import {
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
-import { GetSettings, StatesList, AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
+import { GetSettings, StatesList, AccountStatusResponse } from '@deriv/api-types';
 
 type TErrors = {
     code: string;
@@ -280,7 +280,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 const { get_account_status } = response;
                 const document = get_account_status?.authentication?.document;
                 const identity = get_account_status?.authentication?.identity;
-                const __has_poi = !!(identity?.status === 'none');
+                const __has_poi = !!(identity && identity.status === 'none');
                 setFormState({ ...form_state, ...{ poa_status: document?.status, __has_poi } }, () => {
                     setIsLoading(false);
                     refreshNotifications();

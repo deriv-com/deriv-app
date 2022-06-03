@@ -89,9 +89,6 @@ module.exports = {
         'react/prop-types': 0,
         'react/self-closing-comp': 'error',
         // 'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
-
-        'no-shadow': 'off',
-        '@typescript-eslint/no-shadow': ['error'],
     },
     extends: [
         'prettier',

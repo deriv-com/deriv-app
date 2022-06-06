@@ -4,7 +4,7 @@ import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import CryptoWithdrawForm from 'Components/Form/crypto-withdraw-form.jsx';
+import CryptoWithdrawForm from 'Components/Form/crypto-withdraw-form.tsx';
 import CryptoWithdrawReceipt from 'Components/Receipt/crypto-withdraw-receipt.tsx';
 import Withdraw from 'Components/withdraw.jsx';
 import SendEmail from 'Components/Email/send-email.tsx';

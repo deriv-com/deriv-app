@@ -1,11 +1,12 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Field, Formik } from 'formik';
+import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { connect } from 'Stores/connect';
+import { TCryptoTransaction } from '../../types/shared-types';
+import RootStore from 'Stores/types';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import PercentageSelector from '../percentage-selector';
@@ -15,7 +16,11 @@ const MIN_ADDRESS_LENGTH = 25;
 const MAX_ADDRESS_LENGTH = 64;
 const DEFAULT_FIAT_CURRENCY = 'USD';
 
-const Header = ({ currency }) => {
+type THeaderProps = {
+    currency: string;
+};
+
+const Header = ({ currency }: THeaderProps) => {
     const currency_name = getCurrencyName(currency);
     const currency_display_code = CryptoConfig.get()[currency].display_code;
 
@@ -36,6 +41,45 @@ const Header = ({ currency }) => {
             />
         </Text>
     );
+};
+
+type TCryptoWithdrawFormProps = {
+    account_platform_icon: string;
+    balance: number;
+    blockchain_address: string;
+    crypto_currency: string;
+    crypto_transactions: Array<TCryptoTransaction>;
+    converter_to_error: string;
+    converter_from_error: string;
+    currency: string;
+    current_fiat_currency: string;
+    is_loading: boolean;
+    percentage: number;
+    should_percentage_reset: boolean;
+    verification_code: string;
+    onChangeConverterFromAmount: (
+        e: React.ChangeEvent<HTMLInputElement>,
+        from_currency: string,
+        to_currency: string
+    ) => void;
+    onChangeConverterToAmount: (
+        e: React.ChangeEvent<HTMLInputElement>,
+        from_currency: string,
+        to_currency: string
+    ) => void;
+    onMountWithdraw: (verification_code: string) => void;
+    percentageSelectorSelectionStatus: (should_percentage_reset: boolean) => void;
+    recentTransactionOnMount: () => void;
+    requestWithdraw: (verification_code: string) => void;
+    resetConverter: () => void;
+    setBlockchainAddress: (address: string) => void;
+    setWithdrawPercentageSelectorResult: (amount: string) => void;
+    validateWithdrawFromAmount: () => void;
+    validateWithdrawToAmount: () => void;
+};
+
+type TFormValues = {
+    address: string;
 };
 
 const CryptoWithdrawForm = ({
@@ -63,7 +107,7 @@ const CryptoWithdrawForm = ({
     validateWithdrawFromAmount,
     validateWithdrawToAmount,
     verification_code,
-}) => {
+}: TCryptoWithdrawFormProps) => {
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -74,7 +118,7 @@ const CryptoWithdrawForm = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const validateAddress = address => {
+    const validateAddress = (address: string): string | undefined => {
         if (!address) return localize('This field is required.');
 
         if (address.length < MIN_ADDRESS_LENGTH || address.length > MAX_ADDRESS_LENGTH) {
@@ -97,14 +141,23 @@ const CryptoWithdrawForm = ({
                 initialValues={{
                     address: '',
                 }}
+                onSubmit={() => requestWithdraw(verification_code)}
             >
-                {({ errors, isSubmitting, touched, setFieldTouched, handleChange, values }) => (
-                    <div className='crypto-withdraw-form'>
+                {({
+                    errors,
+                    isSubmitting,
+                    touched,
+                    setFieldTouched,
+                    handleChange,
+                    handleSubmit,
+                    values,
+                }: FormikProps<TFormValues>) => (
+                    <form className='crypto-withdraw-form' onSubmit={handleSubmit} autoComplete='off'>
                         <Field name='address' validate={validateAddress}>
-                            {({ field }) => (
+                            {({ field }: FieldProps<string, TFormValues>) => (
                                 <Input
                                     {...field}
-                                    onChange={e => {
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         handleChange(e);
                                         setBlockchainAddress(e.target.value);
                                         setFieldTouched('address', true, false);
@@ -157,13 +210,12 @@ const CryptoWithdrawForm = ({
                                     type='submit'
                                     primary
                                     large
-                                    onClick={() => requestWithdraw(verification_code)}
                                 >
                                     <Localize i18n_default_text='Withdraw' />
                                 </Button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 )}
             </Formik>
             <MobileWrapper>
@@ -173,34 +225,7 @@ const CryptoWithdrawForm = ({
     );
 };
 
-CryptoWithdrawForm.propTypes = {
-    account_platform_icon: PropTypes.string,
-    balance: PropTypes.number,
-    blockchain_address: PropTypes.string,
-    converter_from_error: PropTypes.string,
-    converter_to_error: PropTypes.string,
-    crypto_currency: PropTypes.string,
-    crypto_transactions: PropTypes.array,
-    currency: PropTypes.string,
-    current_fiat_currency: PropTypes.string,
-    is_loading: PropTypes.bool,
-    onChangeConverterFromAmount: PropTypes.func,
-    onChangeConverterToAmount: PropTypes.func,
-    onMountWithdraw: PropTypes.func,
-    percentage: PropTypes.number,
-    percentageSelectorSelectionStatus: PropTypes.func,
-    recentTransactionOnMount: PropTypes.func,
-    requestWithdraw: PropTypes.func,
-    resetConverter: PropTypes.func,
-    setBlockchainAddress: PropTypes.func,
-    setWithdrawPercentageSelectorResult: PropTypes.func,
-    should_percentage_reset: PropTypes.bool,
-    validateWithdrawFromAmount: PropTypes.func,
-    validateWithdrawToAmount: PropTypes.func,
-    verification_code: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     account_platform_icon: modules.cashier.withdraw.account_platform_icon,
     balance: client.balance,
     blockchain_address: modules.cashier.withdraw.blockchain_address,

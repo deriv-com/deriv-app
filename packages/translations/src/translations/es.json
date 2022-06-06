@@ -622,6 +622,7 @@
     "869611522": "Cobraremos una tarifa de transferencia del 2% o {{minimum_fee}} {{currency}}, lo que sea mayor, por las transferencias entre sus cuentas de criptomoneda Deriv y DMT5.",
     "869823595": "Función",
     "872549975": "Tiene {{number}} transferencias restantes para hoy.",
+    "872661442": "Are you sure you want to update email <0>{{prev_email}}</0> to <1>{{changed_email}}</1>?",
     "872817404": "Tiempo del punto de entrada",
     "872957901": "Modo oscuro (próximamente en DBot)",
     "873166343": "1. 'Registro' muestra un mensaje regular.",

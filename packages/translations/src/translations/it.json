@@ -622,6 +622,7 @@
     "869611522": "Verrà addebitata una commissione per i trasferimenti 2% oppure {{minimum_fee}} {{currency}}, qualunque sia più alto, per i trasferimenti tra i conti per criptovalute di Deriv e DMT5.",
     "869823595": "Funzione",
     "872549975": "Per oggi hai ancora {{number}} trasferimenti.",
+    "872661442": "Are you sure you want to update email <0>{{prev_email}}</0> to <1>{{changed_email}}</1>?",
     "872817404": "Orario del prezzo d'ingresso",
     "872957901": "Scuro (a breve disponibile per DBot)",
     "873166343": "1. \"Registro\" mostra un messaggio regolare.",

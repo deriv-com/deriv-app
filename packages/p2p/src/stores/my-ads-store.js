@@ -875,9 +875,11 @@ export default class MyAdsStore extends BaseStore {
         return errors;
     }
 
-    toggleMyAdsRateSwitchModal(change_ad_type) {
+    toggleMyAdsRateSwitchModal(change_ad_type, is_open_edit_form) {
         this.setRequiredAdType(change_ad_type);
-        this.setShowEditAdForm(true);
+        if (is_open_edit_form) {
+            this.setShowEditAdForm(true);
+        }
         this.setIsSwitchModalOpen(false, this.selected_ad_id);
     }
 }

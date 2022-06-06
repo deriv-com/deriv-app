@@ -52,6 +52,7 @@ const EditAdForm = () => {
             if (my_ads_store.required_ad_type === ad_type.FLOAT) {
                 return is_buy_advert ? '+0.01' : '-0.01';
             }
+            return '0.00';
         }
         return rate_display;
     };
@@ -243,9 +244,12 @@ const EditAdForm = () => {
                                                                     data-lpignore='true'
                                                                     type='text'
                                                                     error={touched.rate_type && errors.rate_type}
-                                                                    label={localize('Fixed rate (1 {{currency}})', {
-                                                                        account_currency,
-                                                                    })}
+                                                                    label={localize(
+                                                                        'Fixed rate (1 {{account_currency}})',
+                                                                        {
+                                                                            account_currency,
+                                                                        }
+                                                                    )}
                                                                     className='p2p-my-ads__form-field'
                                                                     trailing_icon={
                                                                         <Text

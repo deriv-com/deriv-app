@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
-import { isEmptyObject, getPropertyValue } from '@deriv/shared';
-import ContractType from './contract-type';
+import { isEmptyObject, getPropertyValue, ContractType } from '@deriv/shared';
 
 export const hasCallPutEqual = contract_type_list => {
     if (isEmptyObject(contract_type_list)) return false;

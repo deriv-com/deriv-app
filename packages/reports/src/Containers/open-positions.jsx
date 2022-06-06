@@ -447,13 +447,13 @@ OpenPositions.propTypes = {
     server_time: PropTypes.object,
 };
 
-export default connect(({ modules, client, common, ui, portfolio, contract_trade }) => ({
+export default connect(({ client, common, ui, portfolio, contract_trade }) => ({
     active_positions: portfolio.active_positions,
     currency: client.currency,
     error: portfolio.error,
     getPositionById: portfolio.getPositionById,
     is_loading: portfolio.is_loading,
-    is_multiplier: modules.trade.is_multiplier,
+    is_multiplier: portfolio.is_multiplier,
     NotificationMessages: ui.notification_messages_ui,
     onClickCancel: portfolio.onClickCancel,
     onClickSell: portfolio.onClickSell,

@@ -1,4 +1,4 @@
-import { connect } from '../../../connect';
+import { connect } from 'Stores/connect';
 
 export const onToggleCancellation = ({ has_cancellation, onChangeMultiple }) => {
     // e.target.checked is not reliable, we have to toggle its previous value

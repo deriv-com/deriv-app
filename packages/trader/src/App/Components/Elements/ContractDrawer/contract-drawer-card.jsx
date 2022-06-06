@@ -2,15 +2,18 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
-import { isCryptoContract, isDesktop } from '@deriv/shared';
+import {
+    isCryptoContract,
+    isDesktop,
+    getEndTime,
+    getSymbolDisplayName,
+} from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
-import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
-import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
-import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 import MarketClosedContractOverlay from './market-closed-contract-overlay.jsx';
+import { connectWithContractUpdate } from 'Stores/Modules/Trading/Helpers/multiplier';
 
 const ContractDrawerCard = ({
     active_symbols,

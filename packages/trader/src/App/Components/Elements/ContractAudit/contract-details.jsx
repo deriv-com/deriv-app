@@ -9,6 +9,9 @@ import {
     isMobile,
     isMultiplierContract,
     isUserSold,
+    isCancellationExpired,
+    isEndedBeforeCancellationExpired,
+    isUserCancelled,
 } from '@deriv/shared';
 import {
     addCommaToNumber,
@@ -16,11 +19,6 @@ import {
     getBarrierValue,
     isDigitType,
 } from 'App/Components/Elements/PositionsDrawer/helpers';
-import {
-    isCancellationExpired,
-    isEndedBeforeCancellationExpired,
-    isUserCancelled,
-} from 'Stores/Modules/Contract/Helpers/logic';
 import ContractAuditItem from './contract-audit-item.jsx';
 
 const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot }) => {

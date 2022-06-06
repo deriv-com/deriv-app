@@ -10,7 +10,16 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile, isMultiplierContract, isEmptyObject, getPlatformRedirect, urlFor } from '@deriv/shared';
+import {
+    isDesktop,
+    isMobile,
+    isMultiplierContract,
+    isEmptyObject,
+    getPlatformRedirect,
+    urlFor,
+    getDurationPeriod,
+    getDurationUnitText,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
@@ -19,7 +28,6 @@ import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
-import { getDurationPeriod, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
 
 const ContractReplay = ({
     contract_id,

@@ -17,7 +17,7 @@ import {
     getLocalizedBasis,
 } from '../constants/contract';
 
-const ContractType = (() => {
+export const ContractType = (() => {
     let available_contract_types = {};
     let available_categories = {};
     let contract_types;
@@ -595,5 +595,3 @@ const ContractType = (() => {
         }),
     };
 })();
-
-export default ContractType;

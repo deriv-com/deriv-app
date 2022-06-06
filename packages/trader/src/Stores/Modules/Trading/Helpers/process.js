@@ -1,4 +1,4 @@
-import ContractTypeHelper from './contract-type';
+import { ContractType as ContractTypeHelper} from '@deriv/shared';
 import * as ContractType from '../Actions/contract-type';
 import * as Duration from '../Actions/duration';
 import * as StartDate from '../Actions/start-date';

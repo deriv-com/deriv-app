@@ -1,9 +1,9 @@
-import { formatMoney, toTitleCase, toMoment } from '@deriv/shared';
+import { formatMoney, toTitleCase, toMoment, getMarketInformation,getSymbolDisplayName } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
-import { getMarketInformation } from '../../../../Helpers/market-underlying';
+// import { getMarketInformation } from '../../../../Helpers/market-underlying';
 
-import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
+// import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 
 export const formatStatementTransaction = (transaction, currency, active_symbols = []) => {
     const format_string = 'DD MMM YYYY HH:mm:ss';

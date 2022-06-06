@@ -57,9 +57,8 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     applicable_contracts = () => {
-        // const { symbol: underlying, contract_type: trade_type } = this.root_store.modules.trade;
-        const trade_type = 'multiplier';
-        const underlying = 'frxAUDJPY';
+        const { symbol: underlying, contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store'));
+
         if (!trade_type || !underlying) {
             return [];
         }

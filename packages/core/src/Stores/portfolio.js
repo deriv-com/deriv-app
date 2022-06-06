@@ -18,9 +18,11 @@ import {
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    removeBarrier,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
-
+import { ChartBarrierStore } from './chart-barrier-store';
+import { setLimitOrderBarriers } from './Helpers/limit-orders';
 // import { formatPortfolioPosition } from './Helpers/format-response';
 // import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
 // import { getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
@@ -34,6 +36,12 @@ export default class PortfolioStore extends BaseStore {
     positions_map = {};
     @observable is_loading = false;
     @observable error = '';
+
+    // barriers
+    @observable barriers = [];
+    @observable main_barrier = null;
+    @observable is_multiplier = false;
+    
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
     responseQueue = [];
@@ -156,11 +164,11 @@ export default class PortfolioStore extends BaseStore {
     }
 
     updateTradeStore(is_over, portfolio_position, is_limit_order_update) {
-        const trade = this.root_store.modules.trade;
+        // const trade = this.root_store.modules.trade;
         if (!is_limit_order_update) {
-            trade.setPurchaseSpotBarrier(is_over, portfolio_position);
+            this.setPurchaseSpotBarrier(is_over, portfolio_position);
         }
-        trade.updateLimitOrderBarriers(is_over, portfolio_position);
+        this.updateLimitOrderBarriers(is_over, portfolio_position);
     }
 
     proposalOpenContractQueueHandler = response => {
@@ -497,5 +505,58 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get is_empty() {
         return !this.is_loading && this.all_positions.length === 0;
+    }
+
+// from trade store
+    @action.bound
+    setPurchaseSpotBarrier(is_over, position) {
+        const key = 'PURCHASE_SPOT_BARRIER';
+        if (!is_over) {
+            removeBarrier(this.barriers, key);
+            return;
+        }
+
+        let purchase_spot_barrier = this.barriers.find(b => b.key === key);
+        if (purchase_spot_barrier) {
+            if (purchase_spot_barrier.high !== +position.contract_info.entry_spot) {
+                purchase_spot_barrier.onChange({
+                    high: position.contract_info.entry_spot,
+                });
+            }
+        } else {
+            purchase_spot_barrier = new ChartBarrierStore(position.contract_info.entry_spot);
+            purchase_spot_barrier.key = key;
+            purchase_spot_barrier.draggable = false;
+            purchase_spot_barrier.hideOffscreenBarrier = true;
+            purchase_spot_barrier.isSingleBarrier = true;
+            purchase_spot_barrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
+            this.barriers.push(purchase_spot_barrier);
+        }
+    }
+
+    @action.bound
+    updateBarrierColor(is_dark_mode) {
+        const { main_barrier } = JSON.parse(localStorage.getItem('trade_store'));
+        if (main_barrier) {
+            main_barrier.updateBarrierColor(is_dark_mode);
+        }
+    }
+
+    @action.bound
+    updateLimitOrderBarriers(is_over, position) {
+        const contract_info = position.contract_info;
+        const { barriers } = this;
+        setLimitOrderBarriers({
+            barriers,
+            contract_info,
+            contract_type: contract_info.contract_type,
+            is_over,
+        });
+    }
+
+    @computed
+    get is_multiplier() {
+        const { contract_type }  = JSON.parse(localStorage.getItem('trade_store'));
+        return contract_type === 'multiplier';
     }
 }

@@ -12,29 +12,31 @@ import {
     isMobile,
     showDigitalOptionsUnavailableError,
     WS,
+    getValidationRules,
+    getMultiplierValidationRules,
+    pickDefaultSymbol,
+    showUnavailableLocationError,
+    isMarketClosed,
+    findFirstOpenMarket,
+    showMxMltUnavailableError,
+    ContractType,
+    convertDurationLimit,
+    resetEndTimeOnVolatilityIndices,
+    getBarrierPipSize,
+    isBarrierSupported,
+    removeBarrier,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
-import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import {
-    pickDefaultSymbol,
-    showUnavailableLocationError,
-    isMarketClosed,
-    findFirstOpenMarket,
-    showMxMltUnavailableError,
-} from './Helpers/active-symbols';
-import ContractType from './Helpers/contract-type';
-import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
+
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
-import { getBarrierPipSize } from './Helpers/barrier';
-import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
+import { setLimitOrderBarriers } from './Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
-import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
 
 const store_name = 'trade_store';

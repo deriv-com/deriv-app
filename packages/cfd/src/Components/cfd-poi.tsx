@@ -26,7 +26,7 @@ type TFormValues =
           tax_identification_number?: string;
           account_opening_reason?: string;
       }
-    | {};
+    | unknown;
 
 type TCFDAppRoutingHistory = {
     pathname: string;
@@ -90,7 +90,12 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
             {({ handleSubmit }) => (
                 <AutoHeightWrapper default_height={200}>
                     {({ setRef, height }: { setRef: (instance: HTMLFormElement | null) => void; height: number }) => (
-                        <form ref={setRef} className='cfd-proof-of-identity' onSubmit={handleSubmit}>
+                        <form
+                            ref={setRef}
+                            className='cfd-proof-of-identity'
+                            onSubmit={handleSubmit}
+                            data-testid='dt-cfd-proof-of-identity'
+                        >
                             <div className='details-form'>
                                 <input type='hidden' name='poi_state' value={poi_state} readOnly />
                                 <Div100vhContainer
@@ -102,7 +107,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                         {...props}
                                         height={height}
                                         is_from_external={true}
-                                        onStateChange={(status: any) => setPOIState(status)}
+                                        onStateChange={(status: string) => setPOIState(status)}
                                     />
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>

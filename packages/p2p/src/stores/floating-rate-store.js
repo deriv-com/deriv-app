@@ -10,7 +10,7 @@ export default class FloatingRateStore extends BaseStore {
     @observable float_rate_offset_limit;
     @observable fixed_rate_adverts_end_date;
     @observable exchange_rate;
-    @observable change_ad_alert;
+    @observable change_ad_alert = false;
     @observable is_loading;
     @observable api_error_message = '';
 

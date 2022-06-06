@@ -417,7 +417,6 @@ const EditAdForm = () => {
                                                         is_disabled={
                                                             isSubmitting ||
                                                             !isValid ||
-                                                            (!dirty && !payment_methods_changed) ||
                                                             selected_methods.length === 0 ||
                                                             !(!!payment_method_names || !!payment_method_details)
                                                         }

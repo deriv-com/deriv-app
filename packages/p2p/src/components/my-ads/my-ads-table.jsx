@@ -69,6 +69,11 @@ const MyAdsTable = () => {
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
         general_store.setP2PConfig();
         // eslint-disable-next-line react-hooks/exhaustive-deps
+
+        return () => {
+            my_ads_store.setMissingPaymentMethods(false);
+            floating_rate_store.setChangeAdAlert(false);
+        };
     }, []);
 
     if (my_ads_store.is_table_loading) {

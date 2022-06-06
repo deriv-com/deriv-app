@@ -43,6 +43,7 @@
     "671582270": "La cantidad máx disponible es {{value}}",
     "683273691": "Tasa (1 {{ account_currency }})",
     "728383001": "He recibido más de la cantidad acordada.",
+    "733311523": "Las transacciones P2P están bloqueadas. Esta característica no está disponible para agentes de pago.",
     "767789372": "Esperar el pago",
     "782834680": "Tiempo restante",
     "783454335": "Sí, eliminar",

@@ -7,7 +7,7 @@ import { connect } from 'Stores/connect';
 import CryptoWithdrawForm from 'Components/Form/crypto-withdraw-form.jsx';
 import CryptoWithdrawReceipt from 'Components/Receipt/crypto-withdraw-receipt.tsx';
 import Withdraw from 'Components/withdraw.jsx';
-import SendEmail from 'Components/Email/send-email.jsx';
+import SendEmail from 'Components/Email/send-email.tsx';
 import Error from 'Components/Error/error.jsx';
 import NoBalance from 'Components/Error/no-balance.jsx';
 import Virtual from 'Components/Error/virtual.jsx';

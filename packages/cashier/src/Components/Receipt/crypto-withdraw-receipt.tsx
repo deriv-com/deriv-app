@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { TCryptoTransaction } from '../../types/shared-types';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/types';
 import RecentTransaction from 'Components/recent-transaction.jsx';
@@ -18,18 +19,6 @@ type TAccount = {
     platform_icon: string;
     text: string;
     value: string;
-};
-
-type TCryptoTransaction = {
-    address_hash: string;
-    address_url: string;
-    amount: number;
-    id: string;
-    is_valid_to_cancel: number;
-    status_code: string;
-    status_message: string;
-    submit_date: number;
-    transaction_type: string;
 };
 
 type TCryptoWithdrawReceiptProps = {

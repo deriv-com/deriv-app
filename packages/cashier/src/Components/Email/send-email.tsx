@@ -4,9 +4,23 @@ import { Button, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { TCryptoTransaction } from '../../types/shared-types';
+import RootStore from 'Stores/types';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import EmailSent from './email-sent.jsx';
 import 'Sass/send-email.scss';
+
+type TSendEmailProps = {
+    crypto_transactions: Array<TCryptoTransaction>;
+    currency: string;
+    is_email_sent: boolean;
+    is_resend_clicked: boolean;
+    resend_timeout: number;
+    recentTransactionOnMount: () => void;
+    resendVerificationEmail: () => void;
+    sendVerificationEmail: () => void;
+    setIsResendClicked: () => void;
+};
 
 const SendEmail = ({
     crypto_transactions,
@@ -14,11 +28,11 @@ const SendEmail = ({
     is_email_sent,
     is_resend_clicked,
     resend_timeout,
-    resendVerificationEmail,
     recentTransactionOnMount,
+    resendVerificationEmail,
     sendVerificationEmail,
     setIsResendClicked,
-}) => {
+}: TSendEmailProps) => {
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -27,11 +41,9 @@ const SendEmail = ({
         <div className='cashier__wrapper'>
             {is_email_sent ? (
                 <EmailSent
-                    is_email_sent={is_email_sent}
                     is_resend_clicked={is_resend_clicked}
                     resend_timeout={resend_timeout}
                     resendVerificationEmail={resendVerificationEmail}
-                    sendVerificationEmail={sendVerificationEmail}
                     setIsResendClicked={setIsResendClicked}
                 />
             ) : (
@@ -63,18 +75,7 @@ const SendEmail = ({
     );
 };
 
-SendEmail.propTypes = {
-    crypto_transactions: PropTypes.array,
-    is_email_sent: PropTypes.bool,
-    is_resend_clicked: PropTypes.bool,
-    resend_timeout: PropTypes.number,
-    recentTransactionOnMount: PropTypes.func,
-    resendVerificationEmail: PropTypes.func,
-    sendVerificationEmail: PropTypes.func,
-    setIsResendClicked: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     is_email_sent: modules.cashier.withdraw.verification.is_email_sent,

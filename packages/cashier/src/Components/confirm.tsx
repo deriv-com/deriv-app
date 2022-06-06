@@ -8,7 +8,7 @@ import 'Sass/confirm.scss';
 type TRowProps = {
     item_key: string | number;
     label: string;
-    value: string | JSX.Element;
+    value: string | JSX.Element | Array<string>;
 };
 
 type WarningBulletProps = {
@@ -19,7 +19,7 @@ type TConfirmProps = {
     data: Array<{
         key: string | number;
         label: string;
-        value: string | JSX.Element;
+        value: string | JSX.Element | Array<string>;
     }>;
     error?: object;
     header?: string;

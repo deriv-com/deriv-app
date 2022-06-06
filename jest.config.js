@@ -9,6 +9,6 @@ module.exports = {
         '^.+\\.jsx?$': 'babel-jest',
         '^.+/es/^.+$': 'babel-jest',
     },
-    testRegex: ['__tests__', '.*.spec.js'],
+    testRegex: ['__tests__', '.*.spec.js', '(/__tests__/.*|(\\.)(test|spec))\\.(js|tsx)?$'],
     transformIgnorePatterns: ['/node_modules/(?!react-virtualized).+\\.js$'],
 };

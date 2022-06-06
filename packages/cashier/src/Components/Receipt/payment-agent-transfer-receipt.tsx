@@ -1,13 +1,28 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { History } from 'history';
 import { Button, Icon, Text } from '@deriv/components';
 import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import 'Sass/payment-agent-transfer-receipt.scss';
 
-const openStatement = (history, resetPaymentAgentTransfer) => {
+type TPaymentAgentTransferReceipt = {
+    currency: string;
+    history: History;
+    is_from_derivgo: boolean;
+    loginid: string;
+    receipt: {
+        amount_transferred?: string;
+        client_name?: string;
+        client_id?: string;
+    };
+    resetPaymentAgentTransfer: () => void;
+};
+
+const openStatement = (history: History, resetPaymentAgentTransfer: () => void) => {
     history.push(routes.statement);
     resetPaymentAgentTransfer();
 };
@@ -19,7 +34,7 @@ const PaymentAgentTransferReceipt = ({
     loginid,
     receipt,
     resetPaymentAgentTransfer,
-}) => (
+}: TPaymentAgentTransferReceipt) => (
     <div className='cashier__wrapper payment-agent-transfer-receipt__wrapper'>
         <div className='cashier__success'>
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
@@ -56,7 +71,7 @@ const PaymentAgentTransferReceipt = ({
                             {receipt.client_name}
                         </Text>
                         <Text size='xs' line_height='xs' color='less-prominent'>
-                            {receipt.client_id.toUpperCase()}
+                            {receipt.client_id && receipt.client_id.toUpperCase()}
                         </Text>
                     </span>
                 </span>
@@ -85,17 +100,8 @@ const PaymentAgentTransferReceipt = ({
     </div>
 );
 
-PaymentAgentTransferReceipt.propTypes = {
-    currency: PropTypes.string,
-    history: PropTypes.object,
-    is_from_derivgo: PropTypes.bool,
-    loginid: PropTypes.string,
-    receipt: PropTypes.object,
-    resetPaymentAgentTransfer: PropTypes.func,
-};
-
 export default withRouter(
-    connect(({ client, common, modules }) => ({
+    connect(({ client, common, modules }: RootStore) => ({
         currency: client.currency,
         is_from_derivgo: common.is_from_derivgo,
         loginid: client.loginid,

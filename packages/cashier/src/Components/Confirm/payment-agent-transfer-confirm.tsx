@@ -1,11 +1,28 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Money, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import Confirm from '../confirm';
 import 'Sass/payment-agent-transfer-confirm.scss';
+
+type TPaymentAgentTransferConfirm = {
+    amount: number;
+    currency: string;
+    description: string;
+    error: object;
+    loginid: string;
+    requestPaymentAgentTransfer: (arg: {
+        amount: string | number;
+        currency: string;
+        description: string;
+        transfer_to: string;
+    }) => void;
+    setIsTryTransferSuccessful: (status: boolean) => void;
+    transfer_to: string;
+    transfer_to_name: string;
+};
 
 const PaymentAgentTransferConfirm = ({
     amount,
@@ -17,7 +34,7 @@ const PaymentAgentTransferConfirm = ({
     setIsTryTransferSuccessful,
     transfer_to,
     transfer_to_name,
-}) => {
+}: TPaymentAgentTransferConfirm) => {
     const payment_agent_transfer_warning_messages = [
         <Localize
             i18n_default_text='<0>Remember</0>, it’s solely your responsibility to ensure the transfer is made to the correct account.'
@@ -76,19 +93,7 @@ const PaymentAgentTransferConfirm = ({
     );
 };
 
-PaymentAgentTransferConfirm.propTypes = {
-    amount: PropTypes.number,
-    currency: PropTypes.string,
-    description: PropTypes.string,
-    error: PropTypes.object,
-    loginid: PropTypes.string,
-    requestPaymentAgentTransfer: PropTypes.func,
-    setIsTryTransferSuccessful: PropTypes.func,
-    transfer_to: PropTypes.string,
-    transfer_to_name: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     currency: client.currency,
     loginid: client.loginid,
     amount: modules.cashier.payment_agent_transfer.confirm.amount,

@@ -1,8 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+
+type TPercentageSelectorProps = {
+    amount: number;
+    currency: string;
+    from_account?: string;
+    percentage: number;
+    should_percentage_reset: boolean;
+    to_account?: string;
+    getCalculatedAmount: (amount: string) => void;
+};
 
 const PercentageSelector = ({
     amount,
@@ -12,13 +21,14 @@ const PercentageSelector = ({
     percentage,
     should_percentage_reset,
     to_account,
-}) => {
-    const [selected_percentage, setSelectedPercentage] = React.useState('0');
+}: TPercentageSelectorProps) => {
+    const [selected_percentage, setSelectedPercentage] = React.useState<number | string>('0');
 
     React.useEffect(() => {
         if (should_percentage_reset) {
             for (let i = 1; i <= 4; i++) {
-                document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
+                (document.getElementById(i.toString()) as HTMLDivElement).style.backgroundColor =
+                    'var(--general-section-1)';
             }
         }
     }, [should_percentage_reset]);
@@ -28,11 +38,11 @@ const PercentageSelector = ({
     }, [percentage]);
 
     React.useEffect(() => {
-        calculateAmount({ target: { id: 0 } }, 0);
+        calculateAmount({ target: { id: 0 } } as unknown as React.MouseEvent<HTMLDivElement>, 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [from_account, to_account]);
 
-    const calculateAmount = (e, percent) => {
+    const calculateAmount = (e: React.MouseEvent<HTMLDivElement>, percent: number) => {
         let new_percentage = percent;
         const is_percentage_selected = percent > 0 && percent <= selected_percentage;
         if (is_percentage_selected) new_percentage -= 25;
@@ -41,15 +51,20 @@ const PercentageSelector = ({
         getCalculatedAmount((amount * (new_percentage / 100)).toFixed(getDecimalPlaces(currency)));
 
         for (let i = 1; i <= 4; i++) {
-            if (i < e.target.id || (i === +e.target.id && !is_percentage_selected)) {
-                document.getElementById(i).style.backgroundColor = 'var(--status-success)';
+            if (
+                i < +(e.target as HTMLDivElement).id ||
+                (i === +(e.target as HTMLDivElement).id && !is_percentage_selected)
+            ) {
+                (document.getElementById(i.toString()) as HTMLDivElement).style.backgroundColor =
+                    'var(--status-success)';
             } else {
-                document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
+                (document.getElementById(i.toString()) as HTMLDivElement).style.backgroundColor =
+                    'var(--general-section-1)';
             }
         }
     };
-    const format_amount = formatMoney(currency, amount, true);
-    const currency__display_code = getCurrencyDisplayCode(currency);
+    const format_amount: string = formatMoney(currency, amount, true);
+    const currency__display_code: string = getCurrencyDisplayCode(currency);
     return (
         <React.Fragment>
             <div className='percentage-selector'>
@@ -86,14 +101,6 @@ const PercentageSelector = ({
             </Text>
         </React.Fragment>
     );
-};
-
-PercentageSelector.propTypes = {
-    amount: PropTypes.number,
-    currency: PropTypes.string,
-    getCalculatedAmount: PropTypes.func,
-    percentage: PropTypes.number,
-    should_percentage_reset: PropTypes.bool,
 };
 
 export default PercentageSelector;

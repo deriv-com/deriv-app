@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
@@ -19,7 +18,7 @@ type TSendEmailProps = {
     recentTransactionOnMount: () => void;
     resendVerificationEmail: () => void;
     sendVerificationEmail: () => void;
-    setIsResendClicked: () => void;
+    setIsResendClicked: (value: boolean) => void;
 };
 
 const SendEmail = ({

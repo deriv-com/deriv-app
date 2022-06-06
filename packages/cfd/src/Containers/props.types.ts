@@ -1,4 +1,4 @@
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
@@ -51,7 +51,7 @@ export type TError = {
     message: string;
 };
 
-export type TCFDResetPasswordModal = {
+export type TCFDResetPasswordModal = RouteComponentProps & {
     current_list: Array<DetailsOfEachMT5Loginid> & Record<string, DetailsOfEachMT5Loginid>;
     email: string;
     is_cfd_reset_password_modal_enabled: boolean;
@@ -59,7 +59,6 @@ export type TCFDResetPasswordModal = {
     is_logged_in: boolean;
     platform: 'dxtrade' | 'mt5';
     setCFDPasswordResetModal: (value: boolean) => void;
-    history: RouteComponentProps['history'];
 };
 
 export type TCFDPasswordSuccessMessage = {

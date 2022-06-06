@@ -182,7 +182,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         files: TObjDocumentFile,
         error_message: string,
         setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void,
-        setFieldValue: (field: string, document_files: TObjDocumentFile) => void,
+        setFieldValue: (field: string, value: TObjDocumentFile) => void,
         values: TFormValues
     ) => {
         setFieldTouched('document_file', true);

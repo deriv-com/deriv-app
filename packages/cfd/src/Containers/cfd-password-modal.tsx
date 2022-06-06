@@ -273,12 +273,12 @@ const getCancelButtonLabel = ({
 };
 
 const handlePasswordInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+    event: React.ChangeEvent<HTMLInputElement>,
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
     setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
 ) => {
-    handleChange(e);
+    handleChange(event);
     validateForm().then(() => {
         setFieldTouched('password', true);
     });

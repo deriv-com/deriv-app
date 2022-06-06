@@ -4,6 +4,7 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDFinancialStpRealAccountSignup from 'Containers/cfd-financial-stp-real-account-signup';
 import { TMT5AccountOpeningRealFinancialStpModal } from './props.types';
+import RootStore from 'Stores/index';
 
 const MT5AccountOpeningRealFinancialStpModal = ({
     disableApp,
@@ -42,8 +43,7 @@ const MT5AccountOpeningRealFinancialStpModal = ({
     </React.Fragment>
 );
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default connect(({ ui, modules }: any) => ({
+export default connect(({ ui, modules }: RootStore) => ({
     disableApp: ui.disableApp,
     disableMt5FinancialStpModal: modules.cfd.disableMt5FinancialStpModal,
     enableApp: ui.enableApp,

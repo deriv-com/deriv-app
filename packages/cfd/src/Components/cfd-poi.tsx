@@ -81,7 +81,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                 poi_state: value.poi_state,
             }}
             validate={validateForm}
-            onSubmit={(_values: TFormValues, actions: FormikActions<TCFDValue>) =>
+            onSubmit={(_values: TCFDValue, actions: FormikActions<TCFDValue>) =>
                 onSubmit(index, { poi_state }, actions.setSubmitting)
             }
         >

@@ -1,6 +1,6 @@
 import React from 'react';
-import { withRouter } from 'react-router';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
 import {
     isEmptyObject,
@@ -82,7 +82,7 @@ type TMt5StatusServerType = {
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
-type TCFDDashboardProps = {
+type TCFDDashboardProps = RouteComponentProps & {
     account_settings: { residence: string };
     account_status: object;
     beginRealSignupForMt5: () => void;
@@ -150,7 +150,6 @@ type TCFDDashboardProps = {
     disableCFDPasswordModal: () => void;
     openPasswordModal: (account_type?: TOpenAccountTransferMeta) => void;
     openTopUpModal: () => void;
-    history: RouteComponentProps['history'];
     setCurrentAccount: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     setAccountType: (account_type: TOpenAccountTransferMeta) => void;
     mt5_status_server: TMt5StatusServer;

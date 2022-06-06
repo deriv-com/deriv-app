@@ -5,10 +5,10 @@ import IdvNoSubmissions from '../poi-idv-limited';
 jest.mock('../../../Assets/ic-idv-document-rejected.svg', () => jest.fn(() => 'IdvDocumentRejected'));
 
 describe('<IdvNoSubmissions/>', () => {
-    const mockHandleRequireSubmission = jest.fn();
+    const mockMandleRequireSubmission = jest.fn();
 
     it('should render IdvNoSubmissions component and trigger click', () => {
-        render(<IdvNoSubmissions handleRequireSubmission={mockHandleRequireSubmission} />);
+        render(<IdvNoSubmissions handleRequireSubmission={mockMandleRequireSubmission} />);
 
         expect(screen.getByText('IdvDocumentRejected')).toBeInTheDocument();
         expect(screen.getByText(/ID verification failed/i)).toBeInTheDocument();
@@ -18,6 +18,6 @@ describe('<IdvNoSubmissions/>', () => {
         const btn = screen.getByRole('button');
         expect(btn).toHaveTextContent(/upload identity document/i);
         fireEvent.click(btn);
-        expect(mockHandleRequireSubmission).toHaveBeenCalledTimes(1);
+        expect(mockMandleRequireSubmission).toHaveBeenCalledTimes(1);
     });
 });

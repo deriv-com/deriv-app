@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import IdvNoSubmissions from '../poi-idv-limited';
 
 jest.mock('../../../Assets/ic-idv-document-rejected.svg', () => jest.fn(() => 'IdvDocumentRejected'));

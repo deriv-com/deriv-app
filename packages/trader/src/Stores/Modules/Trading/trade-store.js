@@ -32,7 +32,7 @@ import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
-// import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
+import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
@@ -268,6 +268,7 @@ export default class TradeStore extends BaseStore {
         this.should_show_active_symbols_loading = should_show_loading;
 
         await this.setActiveSymbols();
+        await this.root_store.active_symbols.setActiveSymbols();
         if (should_set_default_symbol) await this.setDefaultSymbol();
 
         const r = await WS.storage.contractsFor(this.symbol);
@@ -517,7 +518,6 @@ export default class TradeStore extends BaseStore {
                 });
             }
         } else {
-            const ChartBarrierStore = this.root_store.chart_barrier_store;
             purchase_spot_barrier = new ChartBarrierStore(position.contract_info.entry_spot);
             purchase_spot_barrier.key = key;
             purchase_spot_barrier.draggable = false;
@@ -575,7 +575,6 @@ export default class TradeStore extends BaseStore {
         if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
-            const ChartBarrierStore = this.root_store.chart_barrier_store;
             this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
                 color,
             });

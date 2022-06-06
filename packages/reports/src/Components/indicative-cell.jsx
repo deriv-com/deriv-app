@@ -48,6 +48,6 @@ IndicativeCell.propTypes = {
     onClickSell: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
-    onClickSell: modules.portfolio.onClickSell,
+export default connect(({ portfolio }) => ({
+    onClickSell: portfolio.onClickSell,
 }))(IndicativeCell);

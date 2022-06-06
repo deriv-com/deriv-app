@@ -165,11 +165,11 @@ ContractDrawerCard.propTypes = {
     status: PropTypes.string,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui, contract_trade }) => ({
     active_symbols: modules.trade.active_symbols,
     addToast: ui.addToast,
     current_focus: ui.current_focus,
-    getContractById: modules.contract_trade.getContractById,
+    getContractById: contract_trade.getContractById,
     removeToast: ui.removeToast,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     setCurrentFocus: ui.setCurrentFocus,

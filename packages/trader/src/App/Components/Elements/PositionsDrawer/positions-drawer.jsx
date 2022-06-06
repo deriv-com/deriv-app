@@ -161,11 +161,11 @@ PositionsDrawer.propTypes = {
     toggleUnsupportedContractModal: PropTypes.func,
 };
 
-export default connect(({ modules, ui, client, common }) => ({
-    all_positions: modules.portfolio.all_positions,
-    error: modules.portfolio.error,
-    onHoverPosition: modules.portfolio.onHoverPosition,
-    onMount: modules.portfolio.onMount,
+export default connect(({ modules, ui, client, common, portfolio, contract_trade }) => ({
+    all_positions: portfolio.all_positions,
+    error: portfolio.error,
+    onHoverPosition: portfolio.onHoverPosition,
+    onMount: portfolio.onMount,
     symbol: modules.trade.symbol,
     trade_contract_type: modules.trade.contract_type,
     is_mobile: ui.is_mobile,
@@ -176,10 +176,10 @@ export default connect(({ modules, ui, client, common }) => ({
     server_time: common.server_time,
     addToast: ui.addToast,
     current_focus: ui.current_focus,
-    onClickCancel: modules.portfolio.onClickCancel,
-    onClickSell: modules.portfolio.onClickSell,
-    onClickRemove: modules.portfolio.removePositionById,
-    getContractById: modules.contract_trade.getContractById,
+    onClickCancel: portfolio.onClickCancel,
+    onClickSell: portfolio.onClickSell,
+    onClickRemove: portfolio.removePositionById,
+    getContractById: contract_trade.getContractById,
     removeToast: ui.removeToast,
     setCurrentFocus: ui.setCurrentFocus,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,

@@ -324,16 +324,16 @@ PositionsModalCard.propTypes = {
     type: PropTypes.string,
 };
 
-export default connect(({ common, ui, modules }) => ({
+export default connect(({ common, ui, contract_trade, modules }) => ({
     active_symbols: modules.trade.active_symbols,
     addToast: ui.addToast,
     current_focus: ui.current_focus,
-    getContractById: modules.contract_trade.getContractById,
+    getContractById: contract_trade.getContractById,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,
     server_time: common.server_time,
     setCurrentFocus: ui.setCurrentFocus,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     toggleCancellationWarning: ui.toggleCancellationWarning,
-    updateLimitOrder: modules.contract_trade.updateLimitOrder,
+    updateLimitOrder: contract_trade.updateLimitOrder,
 }))(PositionsModalCard);

@@ -447,23 +447,23 @@ OpenPositions.propTypes = {
     server_time: PropTypes.object,
 };
 
-export default connect(({ modules, client, common, ui }) => ({
-    active_positions: modules.portfolio.active_positions,
+export default connect(({ modules, client, common, ui, portfolio, contract_trade }) => ({
+    active_positions: portfolio.active_positions,
     currency: client.currency,
-    error: modules.portfolio.error,
-    getPositionById: modules.portfolio.getPositionById,
-    is_loading: modules.portfolio.is_loading,
+    error: portfolio.error,
+    getPositionById: portfolio.getPositionById,
+    is_loading: portfolio.is_loading,
     is_multiplier: modules.trade.is_multiplier,
     NotificationMessages: ui.notification_messages_ui,
-    onClickCancel: modules.portfolio.onClickCancel,
-    onClickSell: modules.portfolio.onClickSell,
-    onMount: modules.portfolio.onMount,
+    onClickCancel: portfolio.onClickCancel,
+    onClickSell: portfolio.onClickSell,
+    onMount: portfolio.onMount,
     server_time: common.server_time,
 
     addToast: ui.addToast,
     current_focus: ui.current_focus,
-    onClickRemove: modules.portfolio.removePositionById,
-    getContractById: modules.contract_trade.getContractById,
+    onClickRemove: portfolio.removePositionById,
+    getContractById: contract_trade.getContractById,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,
     setCurrentFocus: ui.setCurrentFocus,

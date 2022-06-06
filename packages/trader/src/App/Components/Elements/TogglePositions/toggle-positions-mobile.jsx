@@ -126,10 +126,10 @@ const TogglePositionsMobile = ({
 };
 // TODO: Needs to be connected to store due to issue with trade-header-extensions not updating all_positions prop
 // Fixes issue with positions not updated in positions modal
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui, portfolio }) => ({
     symbol: modules.trade.symbol,
     trade_contract_type: modules.trade.contract_type,
-    onClickRemove: modules.portfolio.removePositionById,
+    onClickRemove: portfolio.removePositionById,
     togglePositionsDrawer: ui.togglePositionsDrawer,
     is_positions_drawer_on: ui.is_positions_drawer_on,
 }))(TogglePositionsMobile);

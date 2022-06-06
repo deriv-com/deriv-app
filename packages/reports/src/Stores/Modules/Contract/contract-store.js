@@ -119,7 +119,7 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     populateContractUpdateHistory({ contract_update_history }) {
-        this.root_store.modules.contract_replay.contract_store.contract_update_history = contract_update_history.sort(
+        this.root_store.contract_replay.contract_store.contract_update_history = contract_update_history.sort(
             (a, b) => b.order_date - a.order_date
         );
     }
@@ -140,7 +140,7 @@ export default class ContractStore extends BaseStore {
             }
             if (
                 contract_info.contract_id &&
-                contract_info.contract_id === this.root_store.modules.contract_replay.contract_id
+                contract_info.contract_id === this.root_store.contract_replay.contract_id
             ) {
                 setLimitOrderBarriers({
                     barriers: this.barriers_array,
@@ -205,7 +205,7 @@ export default class ContractStore extends BaseStore {
             }
 
             // Update portfolio store
-            this.root_store.modules.portfolio.populateContractUpdate(response, this.contract_id);
+            this.root_store.portfolio.populateContractUpdate(response, this.contract_id);
         });
     }
 }

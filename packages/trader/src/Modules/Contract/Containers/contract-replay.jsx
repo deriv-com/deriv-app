@@ -169,25 +169,25 @@ ContractReplay.propTypes = {
     routes: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default connect(({ common, modules, ui }) => {
-    const contract_replay = modules.contract_replay;
-    const contract_store = contract_replay.contract_store;
+export default connect(({ common, contract_replay, ui }) => {
+    const local_contract_replay = contract_replay;
+    const contract_store = local_contract_replay.contract_store;
     return {
         routeBackInApp: common.routeBackInApp,
         contract_info: contract_store.contract_info,
         contract_update: contract_store.contract_update,
         contract_update_history: contract_store.contract_update_history,
         is_digit_contract: contract_store.is_digit_contract,
-        is_market_closed: contract_replay.is_market_closed,
-        is_sell_requested: contract_replay.is_sell_requested,
-        is_valid_to_cancel: contract_replay.is_valid_to_cancel,
-        onClickCancel: contract_replay.onClickCancel,
-        onClickSell: contract_replay.onClickSell,
-        onMount: contract_replay.onMount,
-        onUnmount: contract_replay.onUnmount,
-        indicative_status: contract_replay.indicative_status,
-        is_chart_loading: contract_replay.is_chart_loading,
-        is_forward_starting: contract_replay.is_forward_starting,
+        is_market_closed: local_contract_replay.is_market_closed,
+        is_sell_requested: local_contract_replay.is_sell_requested,
+        is_valid_to_cancel: local_contract_replay.is_valid_to_cancel,
+        onClickCancel: local_contract_replay.onClickCancel,
+        onClickSell: local_contract_replay.onClickSell,
+        onMount: local_contract_replay.onMount,
+        onUnmount: local_contract_replay.onUnmount,
+        indicative_status: local_contract_replay.indicative_status,
+        is_chart_loading: local_contract_replay.is_chart_loading,
+        is_forward_starting: local_contract_replay.is_forward_starting,
         is_dark_theme: ui.is_dark_mode_on,
         NotificationMessages: ui.notification_messages_ui,
         toggleHistoryTab: ui.toggleHistoryTab,
@@ -285,9 +285,9 @@ Chart.propTypes = {
     shouldFetchTickHistory: PropTypes.bool,
 };
 
-const ReplayChart = connect(({ modules, ui, common }) => {
+const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
     const trade = modules.trade;
-    const contract_replay = modules.contract_replay;
+    // const contract_replay = modules.contract_replay;
     const contract_store = contract_replay.contract_store;
     const contract_config = contract_store.contract_config;
     const allow_scroll_to_epoch =

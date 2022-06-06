@@ -1,4 +1,3 @@
-import { unique } from '../object';
 import {
     createMarkerEndTime,
     createMarkerPurchaseTime,
@@ -8,8 +7,10 @@ import {
     createMarkerSpotMiddle,
     getSpotCount,
 } from './chart-marker-helpers';
-import { getChartType, getEndTime } from './logic';
-import { MARKER_TYPES_CONFIG } from '../constants/markers';
+// import { unique } from '../object';
+// import { getChartType, getEndTime } from './logic';
+import { getChartType, getEndTime, unique } from '@deriv/shared';
+import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 
 export const createChartMarkers = contract_info => {
     let markers = [];

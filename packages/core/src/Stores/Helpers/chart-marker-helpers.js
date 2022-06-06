@@ -1,10 +1,10 @@
 import extend from 'extend';
-import { isMobile } from '../screen';
-import { isUserSold, isMultiplierContract, isDigitContract } from '../contract';
+import { isUserSold, isMultiplierContract, isDigitContract, getEndTime, isMobile } from '@deriv/shared';
 
-import { getEndTime } from './logic';
+// import { isMobile } from '../screen';
+// import { getEndTime } from './logic';
 
-import { MARKER_TYPES_CONFIG } from '../constants/markers';
+import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 
 const createMarkerConfig = (marker_type, x, y, content_config) =>
     extend(true, {}, MARKER_TYPES_CONFIG[marker_type], {

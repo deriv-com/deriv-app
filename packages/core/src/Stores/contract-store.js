@@ -7,7 +7,6 @@ import {
     getDigitInfo,
     getDisplayStatus,
     WS,
-    createChartMarkers,
     getChartConfig,
     getContractUpdateConfig,
     getEndTime,
@@ -20,7 +19,7 @@ import {
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
 import { ChartBarrierStore } from './chart-barrier-store';
 
-// import { createChartMarkers } from '@deriv/shared/src/utils/helpers/chart-markers';
+import { createChartMarkers } from './Helpers/chart-markers';
 // import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
 // import { getChartConfig, getContractUpdateConfig, getEndTime } from '@deriv/shared/src/utils/helpers/logic';
 // import getValidationRules from './Constants/validation-rules';

@@ -56,6 +56,14 @@ const AccountSwitcher = props => {
     }, [getMaxAccountsDisplayed]);
 
     React.useEffect(() => {
+        const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
+
+        getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
+            setExchangedRate(res)
+        );
+    }, []);
+
+    React.useEffect(() => {
         if (scroll_ref.current && (is_dmt5_real_visible || is_dxtrade_real_visible)) {
             scroll_ref.current.scrollIntoView({
                 behavior: 'smooth',
@@ -338,10 +346,6 @@ const AccountSwitcher = props => {
         const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
         const mt5_demo_total = getTotalBalance(props.mt5_login_list);
         const dxtrade_demo_total = getTotalBalance(props.dxtrade_accounts_list);
-
-        getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
-            setExchangedRate(res)
-        );
 
         let total;
 

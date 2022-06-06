@@ -50,6 +50,7 @@ const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
             setSuccess(true);
             resetForm();
             setEnabled(is_enabled_response);
+            logoutClient().then(() => redirectToLogin(false, getLanguage()));
         }
     };
 
@@ -86,11 +87,6 @@ const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
                             text={button_text}
                             large
                             primary
-                            onClick={() => {
-                                if (isValid) {
-                                    logoutClient().then(() => redirectToLogin(false, getLanguage()));
-                                }
-                            }}
                         />
                     </div>
                 </Form>

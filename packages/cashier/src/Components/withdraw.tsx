@@ -1,7 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import CashierContainer from './cashier-container.jsx';
+
+type TWithdrawProps = {
+    container: string;
+    iframe_height: number | string;
+    iframe_url: string;
+    is_loading: boolean;
+    verification_code: string;
+    clearIframe: () => void;
+    onMount: (verification_code: string) => void;
+    setActiveTab: (container: string) => void;
+};
 
 const Withdraw = ({
     container,
@@ -12,7 +23,7 @@ const Withdraw = ({
     onMount,
     setActiveTab,
     verification_code,
-}) => {
+}: TWithdrawProps) => {
     React.useEffect(() => {
         setActiveTab(container);
         onMount(verification_code);
@@ -29,17 +40,7 @@ const Withdraw = ({
     );
 };
 
-Withdraw.propTypes = {
-    container: PropTypes.string,
-    iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    iframe_url: PropTypes.string,
-    is_loading: PropTypes.bool,
-    onMount: PropTypes.func,
-    setActiveTab: PropTypes.func,
-    verification_code: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     container: modules.cashier.withdraw.container,
     iframe_height: modules.cashier.iframe.iframe_height,
     iframe_url: modules.cashier.iframe.iframe_url,

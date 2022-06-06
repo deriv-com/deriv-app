@@ -78,7 +78,7 @@ const CreateAdAddPaymentMethodModal = () => {
             title={
                 <React.Fragment>
                     <Icon icon='icArrowLeftBold' onClick={onCancel} className='p2p-my-ads__modal-icon' />
-                    {localize('Choose payment method')}
+                    {localize('Add payment method')}
                 </React.Fragment>
             }
             toggleModal={onCancel}

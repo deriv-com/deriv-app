@@ -791,8 +791,7 @@ export default class MyAdsStore extends BaseStore {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            rate_type:
-                floating_rate_store.rate_type === ad_type.FLOAT ? localize('Floating rate') : localize('Fixed rate'),
+            rate_type: this.required_ad_type === ad_type.FLOAT ? localize('Floating rate') : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];

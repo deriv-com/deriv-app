@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
@@ -33,7 +32,7 @@ type TCryptoTransaction = {
     transaction_type: string;
 };
 
-type TCryptoWithdrawReceipt = {
+type TCryptoWithdrawReceiptProps = {
     account: TAccount;
     blockchain_address: string;
     crypto_transactions: Array<TCryptoTransaction>;
@@ -61,7 +60,7 @@ const Status = () => {
     );
 };
 
-const AcountInformation = ({ account }: Pick<TCryptoWithdrawReceipt, 'account'>) => {
+const AcountInformation = ({ account }: Pick<TCryptoWithdrawReceiptProps, 'account'>) => {
     return (
         <div className='crypto-withdraw-receipt__account-info'>
             <div className='crypto-withdraw-receipt__account-info-detail'>
@@ -91,7 +90,7 @@ const AcountInformation = ({ account }: Pick<TCryptoWithdrawReceipt, 'account'>)
 const WalletInformation = ({
     account,
     blockchain_address,
-}: Pick<TCryptoWithdrawReceipt, 'account' | 'blockchain_address'>) => {
+}: Pick<TCryptoWithdrawReceiptProps, 'account' | 'blockchain_address'>) => {
     const text = getAccountText(account);
     return (
         <div className='crypto-withdraw-receipt__account-info'>
@@ -145,7 +144,7 @@ const CryptoWithdrawReceipt = ({
     setIsWithdrawConfirmed,
     tab_index,
     withdraw_amount,
-}: TCryptoWithdrawReceipt) => {
+}: TCryptoWithdrawReceiptProps) => {
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);

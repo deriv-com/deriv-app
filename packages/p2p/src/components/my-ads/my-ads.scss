@@ -264,6 +264,10 @@
             right: 0;
             top: 0;
 
+            &--disable {
+                cursor: not-allowed;
+            }
+
             @include mobile {
                 display: flex;
                 justify-content: unset;
@@ -289,7 +293,7 @@
 
                 @include mobile {
                     align-items: center;
-                    background-color: var(--brand-orange);
+                    background-color: var(--status-warning);
                     display: flex;
                     height: 100%;
                     justify-content: center;

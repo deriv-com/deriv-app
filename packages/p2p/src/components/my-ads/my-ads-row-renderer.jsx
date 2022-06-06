@@ -37,15 +37,19 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
 
     const amount_dealt = amount - remaining_amount;
-    const enable_action_point = floating_rate_store.change_ad_alert;
+    const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
     const display_effective_rate =
         rate_type === ad_type.FIXED
             ? price_display
             : parseFloat(floating_rate_store.exchange_rate * (1 + rate_display / 100));
 
+    const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
+
     const onClickActivateDeactivate = () => {
-        my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
+        if (!is_activate_ad_disabled) {
+            my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
+        }
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id, rate_type);
@@ -70,21 +74,18 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         <div className='p2p-my-ads__table-popovers__edit' onClick={handleOnEdit}>
                             <Icon custom_color='var(--general-main-1)' icon='IcEdit' />
                         </div>
-                        <div onClick={onClickActivateDeactivate}>
-                            <Popover
-                                alignment='bottom'
-                                className={`p2p-my-ads__table-popovers__${
-                                    is_advert_active ? 'deactivate' : 'activate'
-                                }`}
-                                message={localize('{{status}}', {
-                                    status: is_advert_active ? 'Deactivate' : 'Activate',
+                        <div
+                            onClick={onClickActivateDeactivate}
+                            className={`p2p-my-ads__table-popovers__${is_advert_active ? 'activate' : 'deactivate'}`}
+                        >
+                            <Icon
+                                icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
+                                color={(general_store.is_barred || is_activate_ad_disabled) && 'disabled'}
+                                className={classNames({
+                                    'p2p-my-ads__table-popovers--disable':
+                                        general_store.is_barred || is_activate_ad_disabled,
                                 })}
-                            >
-                                <Icon
-                                    icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
-                                    color={general_store.is_barred && 'disabled'}
-                                />
-                            </Popover>
+                            />
                         </div>
 
                         <div className='p2p-my-ads__table-popovers__delete'>
@@ -275,7 +276,11 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             >
                                 <Icon
                                     icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
-                                    color={general_store.is_barred && 'disabled'}
+                                    color={(general_store.is_barred || is_activate_ad_disabled) && 'disabled'}
+                                    className={classNames({
+                                        'p2p-my-ads__table-popovers--disable':
+                                            general_store.is_barred || is_activate_ad_disabled,
+                                    })}
                                 />
                             </Popover>
                         </div>

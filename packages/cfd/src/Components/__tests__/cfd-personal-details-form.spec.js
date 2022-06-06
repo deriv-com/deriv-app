@@ -43,8 +43,6 @@ describe('<CFDPersonalDetailsForm />', () => {
             name: 'Indonesia',
             virtual_company: 'virtual',
         },
-        onCancel: jest.fn(),
-        onSave: jest.fn(),
         onSubmit: jest.fn(),
         residence_list: [
             {

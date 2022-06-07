@@ -20,87 +20,101 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<CFDPOI />', () => {
+    let props;
+
     beforeEach(() => {
         isMobile.mockReturnValue(false);
+
+        props = {
+            account_status: {
+                authentication: {
+                    attempts: { count: 0, history: {}, latest: null },
+                    identity: {
+                        services: { idv: {}, manual: {}, onfido: {} },
+                        status: 'none',
+                    },
+                    document: {
+                        status: 'none',
+                    },
+                    needs_verification: [],
+                    ownership: { requests: [], status: 'none' },
+                },
+                currency_config: {
+                    USD: {
+                        is_deposit_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                    },
+                },
+                prompt_client_to_authenticate: 0,
+                risk_classification: 'low',
+                status: [
+                    'allow_document_upload',
+                    'crs_tin_information',
+                    'deposit_attempt',
+                    'financial_information_not_complete',
+                    'trading_experience_not_complete',
+                ],
+            },
+            addNotificationByKey: jest.fn(),
+            app_routing_history: [
+                {
+                    action: 'POP',
+                    hash: '#real',
+                    pathname: '/mt5',
+                    search: '',
+                    state: undefined,
+                },
+                {
+                    action: 'PUSH',
+                    hash: '',
+                    pathname: '/',
+                    search: '',
+                    state: undefined,
+                },
+            ],
+            authentication_status: {
+                document_status: '',
+                identity_status: '',
+            },
+            form_error: undefined,
+            height: 'auto',
+            index: 1,
+            is_loading: false,
+            is_switching: false,
+            is_virtual: false,
+            onCancel: jest.fn(),
+            onSave: jest.fn(),
+            onSubmit: jest.fn(),
+            fetchResidenceList: jest.fn(),
+            refreshNotifications: jest.fn(),
+            removeNotificationByKey: jest.fn(),
+            removeNotificationMessage: jest.fn(),
+            routeBackInApp: jest.fn(),
+            should_allow_authentication: true,
+            value: {
+                poi_state: 'unknown',
+            },
+        };
     });
 
-    const props = {
-        account_status: {
-            authentication: {
-                attempts: { count: 0, history: {}, latest: null },
-                identity: {
-                    services: { idv: {}, manual: {}, onfido: {} },
-                    status: 'none',
-                },
-                document: {
-                    status: 'none',
-                },
-                needs_verification: [],
-                ownership: { requests: [], status: 'none' },
-            },
-            currency_config: {
-                USD: {
-                    is_deposit_suspended: 0,
-                    is_withdrawal_suspended: 0,
-                },
-            },
-            prompt_client_to_authenticate: 0,
-            risk_classification: 'low',
-            status: [
-                'allow_document_upload',
-                'crs_tin_information',
-                'deposit_attempt',
-                'financial_information_not_complete',
-                'trading_experience_not_complete',
-            ],
-        },
-        addNotificationByKey: jest.fn(),
-        app_routing_history: [
-            {
-                action: 'POP',
-                hash: '#real',
-                pathname: '/mt5',
-                search: '',
-                state: undefined,
-            },
-            {
-                action: 'PUSH',
-                hash: '',
-                pathname: '/',
-                search: '',
-                state: undefined,
-            },
-        ],
-        authentication_status: {
-            document_status: '',
-            identity_status: '',
-        },
-        form_error: undefined,
-        height: 'auto',
-        index: 1,
-        is_loading: false,
-        is_switching: false,
-        is_virtual: false,
-        onCancel: jest.fn(),
-        onSave: jest.fn(),
-        onSubmit: jest.fn(),
-        fetchResidenceList: jest.fn(),
-        refreshNotifications: jest.fn(),
-        removeNotificationByKey: jest.fn(),
-        removeNotificationMessage: jest.fn(),
-        routeBackInApp: jest.fn(),
-        should_allow_authentication: true,
-        value: {
-            poi_state: 'unknown',
-        },
-    };
-
-    it('should render with Next button disabled before POI submission', () => {
+    it('should render with Next button disabled before submitting POI for the first time', () => {
         render(<CFDPOI {...props} />);
 
         expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
+        expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
         expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
+    });
+
+    it('should render without modal footer wrapper on mobile', () => {
+        isMobile.mockReturnValue(true);
+        render(<CFDPOI {...props} />);
+
+        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
+        expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt-modal-footer')).not.toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
     });
 
     it('should trigger onCancel callback when Previous button is clicked', () => {
@@ -116,49 +130,9 @@ describe('<CFDPOI />', () => {
         expect(props.onCancel).toHaveBeenCalledTimes(1);
     });
 
-    it('should enable Next button after POI submission when poi_state has changed to Pending', () => {
-        jest.spyOn(React, 'useState').mockReturnValueOnce(['pending', () => {}]);
-        const authentication_status = {
-            document_status: '',
-            identity_status: '',
-        };
-        render(<CFDPOI {...props} authentication_status={authentication_status} />);
-
-        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
-    });
-
     it('should enable Next button when identity_status is pending', () => {
-        const authentication_status = {
-            document_status: '',
-            identity_status: 'pending',
-        };
-        render(<CFDPOI {...props} authentication_status={authentication_status} />);
-
-        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
-    });
-
-    it('should enable Next button when identity_status is verified', () => {
-        const authentication_status = {
-            document_status: '',
-            identity_status: 'verified',
-        };
-        render(<CFDPOI {...props} authentication_status={authentication_status} />);
-
-        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
-    });
-
-    it('should trigger onSubmit callback when Next button is clicked', () => {
-        const authentication_status = {
-            document_status: '',
-            identity_status: 'verified',
-        };
-        render(<CFDPOI {...props} authentication_status={authentication_status} />);
+        props.authentication_status.identity_status = 'pending';
+        render(<CFDPOI {...props} authentication_status={props.authentication_status} />);
 
         const next_button = screen.getByRole('button', { name: /next/i });
 
@@ -170,14 +144,33 @@ describe('<CFDPOI />', () => {
         expect(props.onSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('should not render modal footer wrapper on mobile', () => {
-        isMobile.mockReturnValue(true);
+    it('should enable Next button when poi_state has changed to pending as a result of POI submission', () => {
+        jest.spyOn(React, 'useState').mockReturnValueOnce(['pending', () => {}]);
         render(<CFDPOI {...props} />);
 
+        const next_button = screen.getByRole('button', { name: /next/i });
+
         expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt-modal-footer')).not.toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
+        expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
+        expect(next_button).toBeEnabled();
+
+        fireEvent.click(next_button);
+        expect(props.onSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('should enable Next button when identity_status is verified', () => {
+        props.authentication_status.identity_status = 'verified';
+        render(<CFDPOI {...props} authentication_status={props.authentication_status} />);
+
+        const next_button = screen.getByRole('button', { name: /next/i });
+
+        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
+        expect(next_button).toBeEnabled();
+
+        fireEvent.click(next_button);
+        expect(props.onSubmit).toHaveBeenCalledTimes(1);
     });
 
     it('should show an error message received from server that is passed via props as form_error', () => {

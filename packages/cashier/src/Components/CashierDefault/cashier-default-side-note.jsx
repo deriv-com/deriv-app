@@ -4,7 +4,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, getPlatformSettings, isMobile, routes } from '@deriv/shared';
 import 'Sass/cashier-default.scss';
 
 const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, setDepositTarget }) => {
@@ -30,6 +30,7 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
                         onClick={() => window.LC_API.open_chat_window()}
                     />,
                 ]}
+                values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
             />
         );
     };

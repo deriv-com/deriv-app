@@ -239,6 +239,7 @@ import './common/ic-email-sent-dashboard.svg';
 import './common/ic-email-sent.svg';
 import './common/ic-email-spam.svg';
 import './common/ic-email-typo.svg';
+import './common/ic-email-verified.svg';
 import './common/ic-email.svg';
 import './common/ic-empty-folder.svg';
 import './common/ic-ewallet.svg';

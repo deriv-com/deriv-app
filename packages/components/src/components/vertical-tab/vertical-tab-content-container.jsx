@@ -43,7 +43,6 @@ const Content = ({ is_routed, items, selected, side_note_class_name, side_note_c
      * Set Side Note Title
      */
     const [side_notes_title, setSideNotesTitle] = React.useState();
-    const setTitle = title => setSideNotesTitle(title);
 
     React.useEffect(() => {
         if (selected_item?.label !== previous_selected_item?.label) {
@@ -86,7 +85,7 @@ const Content = ({ is_routed, items, selected, side_note_class_name, side_note_c
                                     <Component
                                         component_icon={icon}
                                         setSideNotes={addToNotesQueue}
-                                        setSideNotesTitle={setTitle}
+                                        setSideNotesTitle={setSideNotesTitle}
                                     />
                                 )}
                             />
@@ -98,7 +97,7 @@ const Content = ({ is_routed, items, selected, side_note_class_name, side_note_c
                     key={selected_item.label}
                     className='item-id'
                     setSideNotes={addToNotesQueue}
-                    setSideNotesTitle={setTitle}
+                    setSideNotesTitle={setSideNotesTitle}
                 />
             )}
             {selected.has_side_note && <SideNoteComponent />}

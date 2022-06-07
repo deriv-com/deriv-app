@@ -19,39 +19,39 @@ const SideNoteText = ({ children }) => (
     </Text>
 );
 
-const SideNoteBullet = ({ children, component }) => (
+const SideNoteBullet = ({ children, is_component }) => (
     <div className='side-note__bullet-wrapper'>
         <div className='side-note__bullet' />
-        {component ? children : <SideNoteText>{children}</SideNoteText>}
+        {is_component ? children : <SideNoteText>{children}</SideNoteText>}
     </div>
 );
 
 const SideNote = ({ side_notes, title, has_bullets = true, className }) => {
-    const checkNote = (note, i) => {
-        let Component;
+    const notes = (note, i) => {
+        let component;
         if (typeof note === 'string') {
             if (has_bullets)
                 return (
                     <SideNoteBullet key={i}>
-                        <Localize i18n_default_text={note} />
+                        <SideNoteText key={note.key || i}>{note}</SideNoteText>
                     </SideNoteBullet>
                 );
-            return <SideNoteText key={note.key || i}>{note.i18n_default_text}</SideNoteText>;
+            return <SideNoteText key={note.key || i}>{note}</SideNoteText>;
         } else if (typeof note === 'object' && note.props.i18n_default_text) {
-            Component = { ...note };
+            component = { ...note };
             if (has_bullets)
                 return (
-                    <SideNoteBullet key={i} component>
-                        <SideNoteText>{Component}</SideNoteText>
+                    <SideNoteBullet key={i} is_component>
+                        <SideNoteText>{component}</SideNoteText>
                     </SideNoteBullet>
                 );
-            Component.key = i;
-            return Component;
+            component.key = i;
+            return component;
         }
 
-        Component = { ...note };
-        Component.key = i;
-        return Component;
+        component = { ...note };
+        component.key = i;
+        return component;
     };
 
     return (
@@ -64,7 +64,7 @@ const SideNote = ({ side_notes, title, has_bullets = true, className }) => {
 
                     {side_notes.map((note, i) => (
                         <div key={i} className={classNames('side-note__item')}>
-                            {checkNote(note, i)}
+                            {notes(note, i)}
                         </div>
                     ))}
                 </div>

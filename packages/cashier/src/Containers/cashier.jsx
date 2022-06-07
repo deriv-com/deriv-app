@@ -66,9 +66,6 @@ const Cashier = ({
      * Set Side Note Title
      */
     const [side_notes_title, setSideNotesTitle] = React.useState();
-    const setTitle = title => {
-        setSideNotesTitle(title);
-    };
 
     React.useEffect(() => {
         toggleCashier();
@@ -152,7 +149,7 @@ const Cashier = ({
                             classNameHeader='cashier__tab-header'
                             current_path={location.pathname}
                             is_floating
-                            setSideNotesTitle={setTitle}
+                            setSideNotesTitle={setSideNotesTitle}
                             setVerticalTabIndex={setTabIndex}
                             vertical_tab_index={is_default_route ? 0 : tab_index}
                             is_full_width
@@ -196,7 +193,7 @@ const Cashier = ({
                                     history={history}
                                     menu_options={getMenuOptions()}
                                     setSideNotes={addToNotesQueue}
-                                    setSideNotesTitle={setTitle}
+                                    setSideNotesTitle={setSideNotesTitle}
                                 >
                                     <SideNote side_notes={side_notes} title={side_notes_title} />
                                 </selected_route.component>

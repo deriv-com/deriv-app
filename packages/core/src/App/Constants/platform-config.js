@@ -1,47 +1,47 @@
-import { routes } from '@deriv/shared';
+import { getPlatformSettings, routes } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 
 const platform_config = [
     {
-        icon: 'IcBrandDtrader',
-        title: () => localize('DTrader'),
-        name: 'DTrader',
+        icon: getPlatformSettings('trader').icon,
+        title: () => getPlatformSettings('trader').name,
+        name: getPlatformSettings('trader').name,
         description: () => localize('A whole new trading experience on a powerful yet easy to use platform.'),
         link_to: routes.trade,
     },
     {
-        icon: 'IcBrandDbot',
-        title: () => localize('DBot'),
-        name: 'DBot',
+        icon: getPlatformSettings('dbot').icon,
+        title: () => getPlatformSettings('dbot').name,
+        name: getPlatformSettings('dbot').name,
         description: () => localize('Automated trading at your fingertips. No coding needed.'),
         link_to: routes.bot,
     },
     {
-        icon: 'IcBrandDmt5',
-        title: () => localize('DMT5'),
-        name: 'DMT5',
+        icon: getPlatformSettings('mt5').icon,
+        title: () => getPlatformSettings('mt5').name,
+        name: getPlatformSettings('mt5').name,
         description: () => localize('Trade on Deriv MT5 (DMT5), the all-in-one FX and CFD trading platform.'),
         link_to: routes.mt5,
     },
     {
-        icon: 'IcBrandDxtrade',
-        title: () => localize('Deriv X'),
-        name: 'Deriv X',
+        icon: getPlatformSettings('dxtrade').icon,
+        title: () => getPlatformSettings('dxtrade').name,
+        name: getPlatformSettings('dxtrade').name,
         description: () => localize('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
         link_to: routes.dxtrade,
     },
     {
-        icon: 'IcBrandSmarttrader',
-        title: () => localize('SmartTrader'),
-        name: 'SmartTrader',
+        icon: getPlatformSettings('smarttrader').icon,
+        title: () => getPlatformSettings('smarttrader').name,
+        name: getPlatformSettings('smarttrader').name,
         description: () => localize('Trade the world’s markets with our popular user-friendly platform.'),
         href: routes.smarttrader,
     },
     {
-        icon: 'IcBrandBinarybot',
-        title: () => localize('Binary Bot'),
-        name: 'Binary Bot',
+        icon: getPlatformSettings('bbot').icon,
+        title: () => getPlatformSettings('bbot').name,
+        name: getPlatformSettings('bbot').name,
         description: () =>
             localize(
                 'Our classic “drag-and-drop” tool for creating trading bots, featuring pop-up trading charts, for advanced users.'

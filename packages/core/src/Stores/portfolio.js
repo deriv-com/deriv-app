@@ -23,10 +23,6 @@ import {
 import { Money } from '@deriv/components';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
-// import { formatPortfolioPosition } from './Helpers/format-response';
-// import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
-// import { getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
-// import { getEndTime } from '../Contract/Helpers/logic';
 
 import BaseStore from './base-store';
 
@@ -40,8 +36,8 @@ export default class PortfolioStore extends BaseStore {
     // barriers
     @observable barriers = [];
     @observable main_barrier = null;
-    @observable is_multiplier = false;
-    
+    @observable contract_type = '';
+
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
     responseQueue = [];
@@ -507,7 +503,7 @@ export default class PortfolioStore extends BaseStore {
         return !this.is_loading && this.all_positions.length === 0;
     }
 
-// from trade store
+    // from trade store
     @action.bound
     setPurchaseSpotBarrier(is_over, position) {
         const key = 'PURCHASE_SPOT_BARRIER';
@@ -537,8 +533,9 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     updateBarrierColor(is_dark_mode) {
         const { main_barrier } = JSON.parse(localStorage.getItem('trade_store'));
-        if (main_barrier) {
-            main_barrier.updateBarrierColor(is_dark_mode);
+        this.main_barrier = main_barrier;
+        if (this.main_barrier) {
+            this.main_barrier.updateBarrierColor(is_dark_mode);
         }
     }
 
@@ -556,7 +553,8 @@ export default class PortfolioStore extends BaseStore {
 
     @computed
     get is_multiplier() {
-        const { contract_type }  = JSON.parse(localStorage.getItem('trade_store'));
-        return contract_type === 'multiplier';
+        const { contract_type } = JSON.parse(localStorage.getItem('trade_store'));
+        this.contract_type = contract_type;
+        return this.contract_type === 'multiplier';
     }
 }

@@ -10,7 +10,7 @@ import {
     getChartConfig,
     getContractUpdateConfig,
     getEndTime,
-    getValidationRules,
+    getContractValidationRules,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
     isBarrierSupported,
@@ -24,7 +24,7 @@ export default class ContractStore extends BaseStore {
     constructor(root_store, { contract_id }) {
         super({
             root_store,
-            validation_rules: getValidationRules(),
+            validation_rules: getContractValidationRules(),
         });
 
         this.root_store = root_store;

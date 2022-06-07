@@ -1,13 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
-const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
-    const { my_profile_store } = useStores();
+const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false }) => {
+    const { my_ads_store, my_profile_store } = useStores();
 
     const validateFields = values => {
         const errors = {};
@@ -89,6 +90,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
         <React.Fragment>
             <Formik
                 enableReinitialize
+                innerRef={formik_ref}
                 initialValues={{}}
                 onSubmit={my_profile_store.createPaymentMethod}
                 validate={validateFields}
@@ -160,8 +162,12 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                     secondary
                                     large
                                     onClick={() => {
-                                        my_profile_store.setSelectedPaymentMethod('');
-                                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                        if (dirty || my_profile_store.selected_payment_method.length > 0) {
+                                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                        } else {
+                                            my_profile_store.hideAddPaymentMethodForm();
+                                            my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                                        }
                                     }}
                                     type='button'
                                 >
@@ -203,6 +209,11 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
             </Modal>
         </React.Fragment>
     );
+};
+
+AddPaymentMethodForm.propTypes = {
+    formik_ref: PropTypes.shape({ current: PropTypes.any }),
+    should_show_separated_footer: PropTypes.bool,
 };
 
 export default observer(AddPaymentMethodForm);

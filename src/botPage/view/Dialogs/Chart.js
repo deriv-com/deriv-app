@@ -157,12 +157,11 @@ const ChartContent = () => {
         </ToolbarWidget>
     );
 
-    const barriers = [];
     if (!show) return null;
 
     return (
         <SmartChart
-            barriers={barriers}
+            barriers={[]}
             chartControlsWidgets={null}
             chartType={state.chartType}
             enabledChartFooter={false}

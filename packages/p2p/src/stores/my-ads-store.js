@@ -283,6 +283,9 @@ export default class MyAdsStore extends BaseStore {
         if (values.description) {
             update_advert.description = values.description;
         }
+        if (this.root_store.floating_rate_store.reached_target_date) {
+            update_advert.is_active = values.is_active;
+        }
 
         requestWS(update_advert).then(response => {
             // If there's an error, let the user submit the form again.

@@ -41,6 +41,8 @@ const EditAdForm = () => {
         payment_method_details,
         rate_display,
         type,
+        is_active,
+        rate_type,
     } = my_ads_store.p2p_advert_information;
 
     const is_buy_advert = type === buy_sell.BUY;
@@ -127,6 +129,10 @@ const EditAdForm = () => {
                             offer_amount: amount_display,
                             rate_type: set_initial_ad_rate(),
                             type,
+                            is_active:
+                                rate_type !== floating_rate_store.rate_type && floating_rate_store.reached_target_date
+                                    ? 1
+                                    : is_active,
                         }}
                         onSubmit={my_ads_store.onClickSaveEditAd}
                         validate={my_ads_store.validateEditAdForm}

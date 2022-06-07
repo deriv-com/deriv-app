@@ -76,15 +76,17 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         </div>
                         <div
                             onClick={onClickActivateDeactivate}
-                            className={`p2p-my-ads__table-popovers__${is_advert_active ? 'activate' : 'deactivate'}`}
+                            className={classNames(
+                                `p2p-my-ads__table-popovers__${is_advert_active ? 'activate' : 'deactivate'}`,
+                                {
+                                    'p2p-my-ads__table-popovers--disable':
+                                        general_store.is_barred || is_activate_ad_disabled,
+                                }
+                            )}
                         >
                             <Icon
                                 icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
-                                color={(general_store.is_barred || is_activate_ad_disabled) && 'disabled'}
-                                className={classNames({
-                                    'p2p-my-ads__table-popovers--disable':
-                                        general_store.is_barred || is_activate_ad_disabled,
-                                })}
+                                custom_color={'var(--general-main-1)'}
                             />
                         </div>
 
@@ -267,9 +269,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         <div onClick={onClickActivateDeactivate}>
                             <Popover
                                 alignment='bottom'
-                                className={`p2p-my-ads__table-popovers__${
-                                    is_advert_active ? 'deactivate' : 'activate'
-                                }`}
+                                className={classNames(
+                                    `p2p-my-ads__table-popovers__${is_advert_active ? 'activate' : 'deactivate'}`,
+                                    {
+                                        'p2p-my-ads__table-popovers--disable':
+                                            general_store.is_barred || is_activate_ad_disabled,
+                                    }
+                                )}
                                 message={localize('{{status}}', {
                                     status: is_advert_active ? 'Deactivate' : 'Activate',
                                 })}

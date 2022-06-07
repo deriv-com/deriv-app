@@ -32,9 +32,8 @@ export const BarrierTypes = {
 const ChartContent = () => {
     const [show, setVisibility] = React.useState(true);
     const [state, setState] = React.useState({
-        chartType: 'mountain',
+        chart_type: 'mountain',
         granularity: 0,
-        barrierType: undefined,
         high: undefined,
         low: undefined,
         symbol: globalObserver.getState('symbol'),
@@ -67,25 +66,24 @@ const ChartContent = () => {
     }
 
     const updateContract = contract => {
-        if (contract) {
-            if (contract.is_sold) {
-                setState({
-                    ...state,
-                    should_barrier_display: false,
-                })
-            } else {
-                const updatedState = {
-                    ...state,
-                    barriers: BarrierTypes[contract.contract_type],
-                };
+        if (!contract) return;
+        if (contract?.is_sold) {
+            setState({
+                ...state,
+                should_barrier_display: false,
+            })
+        } else {
+            const updated_state = {
+                ...state,
+                barriers: BarrierTypes[contract.contract_type],
+            };
 
-                if (contract.barrier) updatedState.high = contract.barrier;
-                if (contract.high_barrier) {
-                    updatedState.high = contract.high_barrier;
-                    updatedState.low = contract.low;
-                }
-                setState(updatedState);
+            if (contract?.barrier) updated_state.high = contract.barrier;
+            if (contract?.high_barrier) {
+                updated_state.high = contract.high_barrier;
+                updated_state.low = contract.low;
             }
+            setState(updated_state);
         }
     }
 
@@ -120,20 +118,20 @@ const ChartContent = () => {
             granularity,
         } = request;
 
-        const requsestKey = getKey(request);
+        const requested_key = getKey(request);
         if (dataType === 'candles') {
             ticksService.stopMonitor({
                 symbol,
                 granularity,
-                key: listeners[requsestKey],
+                key: listeners[requested_key],
             });
         } else {
             ticksService.stopMonitor({
                 symbol,
-                key: listeners[requsestKey],
+                key: listeners[requested_key],
             });
         }
-        delete listeners[requsestKey];
+        delete listeners[requested_key];
     }
 
     const renderTopWidgets = () => <span />;
@@ -141,9 +139,9 @@ const ChartContent = () => {
     const renderToolbarWidgets = () => (
         <ToolbarWidget>
             <ChartMode
-                onChartType={chartType => setState({
+                onChartType={chart_type => setState({
                     ...state,
-                    chartType,
+                    chart_type,
                 })}
                 onGranularity={granularity => setState({
                     ...state,
@@ -163,7 +161,7 @@ const ChartContent = () => {
         <SmartChart
             barriers={[]}
             chartControlsWidgets={null}
-            chartType={state.chartType}
+            chartType={state.chart_type}
             enabledChartFooter={false}
             granularity={state.granularity}
             id="binary-bot-chart"

@@ -26,20 +26,29 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
         <div
             className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}
             data-testid={card.id}
+            role='card-item'
         >
             <div className='proof-of-ownership__card-item' onClick={onClick}>
                 <Icon
                     icon={
-                        paymentMethodConfig[card.payment_method.replaceAll('_', '').replaceAll(' ', '').toLowerCase()]
-                            ?.icon || paymentMethodConfig.other.icon
+                        paymentMethodConfig[
+                            card.payment_method
+                                .replace(/(^\d)|[^a-zA-Z\d\s:]/gi, '')
+                                .replace(/\s/g, '')
+                                .toLowerCase()
+                        ]?.icon || paymentMethodConfig.other.icon
                     }
                     className='proof-of-ownership__card-item-logo'
                     width={64}
                     height={58}
                 />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {paymentMethodConfig[card?.payment_method.replaceAll('_', '').replaceAll(' ', '').toLowerCase()]
-                        ?.title || 'Payment method'}
+                    {paymentMethodConfig[
+                        card?.payment_method
+                            .replace(/(^\d)|[^a-zA-Z\d\s:]/gi, '')
+                            .replace(/\s/g, '')
+                            .toLowerCase()
+                    ]?.title || 'Payment method'}
                 </Text>
                 <Button
                     id='proof-of-ownership'
@@ -54,7 +63,10 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
                 <ExpandedCard
                     cardDetails={
                         paymentMethodConfig[
-                            card.payment_method.replaceAll('_', '').replaceAll(' ', '').toLowerCase()
+                            card.payment_method
+                                .replace(/(^\d)|[^a-zA-Z\d\s:]/gi, '')
+                                .replace(/\s/g, '')
+                                .toLowerCase()
                         ] ?? paymentMethodConfig.other
                     }
                     identifier={card.payment_method_identifier}

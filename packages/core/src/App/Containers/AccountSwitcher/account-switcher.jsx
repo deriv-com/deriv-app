@@ -347,13 +347,7 @@ const AccountSwitcher = props => {
         const mt5_demo_total = getTotalBalance(props.mt5_login_list);
         const dxtrade_demo_total = getTotalBalance(props.dxtrade_accounts_list);
 
-        let total;
-
-        if (vrtc_currency !== props.obj_total_balance.currency) {
-            total = vrtc_balance * exchanged_rate;
-        } else {
-            total = vrtc_balance;
-        }
+        let total = vrtc_currency !== props.obj_total_balance.currency ? vrtc_balance * exchanged_rate : vrtc_balance;
 
         if (Array.isArray(props.mt5_login_list)) {
             total += mt5_demo_total.balance;

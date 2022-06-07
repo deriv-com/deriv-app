@@ -52,7 +52,7 @@ const EditAdForm = () => {
     const set_initial_ad_rate = () => {
         if (my_ads_store.required_ad_type !== my_ads_store.selected_ad_type) {
             if (my_ads_store.required_ad_type === ad_type.FLOAT) {
-                return is_buy_advert ? '+0.01' : '-0.01';
+                return is_buy_advert ? '-0.01' : '+0.01';
             }
             return '0.00';
         }
@@ -140,6 +140,8 @@ const EditAdForm = () => {
                     >
                         {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
                             const is_sell_advert = values.type === buy_sell.SELL;
+                            // Form should not be checked for value change when ad switch is triggered
+                            const check_dirty = my_ads_store.required_ad_type === rate_type ? dirty : true;
                             return (
                                 <div className='p2p-my-ads__form'>
                                     <Form
@@ -423,6 +425,7 @@ const EditAdForm = () => {
                                                         is_disabled={
                                                             isSubmitting ||
                                                             !isValid ||
+                                                            !check_dirty ||
                                                             selected_methods.length === 0 ||
                                                             !(!!payment_method_names || !!payment_method_details)
                                                         }

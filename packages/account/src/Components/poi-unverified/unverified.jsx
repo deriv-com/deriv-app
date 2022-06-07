@@ -14,15 +14,15 @@ export const Unverified = ({ is_description_enabled }) => {
                 is_description_enabled ? (
                     <Localize
                         i18n_default_text='As a precaution, we have disabled trading, deposits and withdrawals for this account. If you have any questions, please go to our Help Center.<0>Help Centre</0>.'
-                        components={[<StaticUrl key={0} className='link' href='/help-centre' />]}
+                        components={[<StaticUrl key={0} className='link' href='/help-centre' title='description_message'/>]}
                     />
                 ) : null
             }
             icon={
                 is_appstore ? (
-                    <Icon icon='IcPoiErrorDashboard' width={273} height={128} />
+                    <Icon icon='IcPoiErrorDashboard' width={273} height={128} data_testid="test-icon__true"/>
                 ) : (
-                    <Icon icon='IcPoiError' size={128} />
+                    <Icon icon='IcPoiError' size={128} data_testid="test-icon__false"/>
                 )
             }
             className={is_appstore && 'account-management-dashboard'}

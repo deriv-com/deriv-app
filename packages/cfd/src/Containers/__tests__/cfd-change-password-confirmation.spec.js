@@ -4,7 +4,7 @@ import CFDChangePasswordConfirmation from '../cfd-change-password-confirmation';
 
 it('should render cfd-change-password-confirmation component', () => {
     render(<CFDChangePasswordConfirmation />);
-    expect(screen.getByTestId('cfd-change-password=modal')).toBeInTheDocument();
+    expect(screen.getByTestId('cfd-change-password-modal')).toBeInTheDocument();
 });
 
 it('should show icon and buttons', () => {

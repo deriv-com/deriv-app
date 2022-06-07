@@ -2256,7 +2256,7 @@ export default class ClientStore extends BaseStore {
                 } else {
                     const is_enabled = !!getPropertyValue(response, ['account_security', 'totp', 'is_enabled']);
                     this.setTwoFAStatus(is_enabled);
-                    resolve(response);
+                    resolve(is_enabled);
                 }
             });
         });

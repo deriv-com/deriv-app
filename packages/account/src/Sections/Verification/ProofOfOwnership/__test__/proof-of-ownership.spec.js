@@ -1,9 +1,7 @@
-import { fireEvent, queryByAttribute, render, screen, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import ProofOfOwnership from '../proof-of-ownership.jsx';
 import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { ProofOfOwnership } from '../proof-of-ownership.jsx';
 
-// TODO: get requests from API call
 const ownership_temp = {
     requests: [
         {
@@ -51,65 +49,69 @@ const ownership_temp = {
     ],
     status: 'pending',
 };
-
-describe('proof of ownership', () => {
-    it('should render proof of ownership component', () => {
-        render(<ProofOfOwnership ownership={ownership_temp} />);
-        expect(screen.getByText('Please upload the following document(s).', { exact: true })).toBeInTheDocument();
-        ownership_temp.requests.forEach(req => {
-            expect(screen.getByTestId(req.id, { exact: true })).toBeInTheDocument();
-        });
-        const arrowButtons = screen.getAllByTestId('proof-of-ownership-button', { exact: true });
-        expect(arrowButtons.length).toEqual(ownership_temp.requests.length);
+describe('proof-of-ownership.jsx', () => {
+    it('should render no poo required status page', async () => {
+        render(
+            <ProofOfOwnership
+                account_status={{
+                    authentication: {
+                        ownership: { requests: [], status: 'none' },
+                    },
+                }}
+            />
+        );
+        const element = screen.getByText('Proof of ownership not required.', { exact: true });
+        expect(element).toBeInTheDocument();
     });
-
-    it('should render ExpandedCard on button click', () => {
-        render(<ProofOfOwnership ownership={ownership_temp} />);
-        const elements = screen.getAllByTestId('proof-of-ownership-button', { exact: true });
-
-        ownership_temp.requests.forEach((req, index) => {
-            fireEvent.click(elements[index]);
-            const { getByText } = within(screen.getAllByTestId(req.id)[0]);
-            expect(getByText('Upload a photo of your', { exact: false })).toBeInTheDocument();
-            expect(getByText('Choose a photo', { exact: false })).toBeInTheDocument();
-        });
+    it('should render poo verified status page', async () => {
+        render(
+            <ProofOfOwnership
+                account_status={{
+                    authentication: {
+                        ownership: { requests: [], status: 'verified' },
+                    },
+                }}
+            />
+        );
+        const element = screen.getByText('Proof of ownership verification passed.', { exact: true });
+        expect(element).toBeInTheDocument();
     });
-    it('should render second step on click next', () => {
-        render(<ProofOfOwnership />);
-        expect(screen.getByTestId('next-button', { exact: true }))
-            .toBeInTheDocument()
-            .toBeDisabled();
-
-        const file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
-        const element = screen.getAllByTestId('proof-of-ownership-button', { exact: true });
-        ownership_temp.requests.forEach((req, index) => {
-            fireEvent.click(element[index]);
-            const { getByText } = within(screen.getAllByTestId(req.id)[0]);
-            expect(getByText('Upload a photo of your', { exact: false })).toBeInTheDocument();
-            expect(getByText('Choose a photo', { exact: false })).toBeInTheDocument();
-            const image_uploader = screen.getByTestId(`uploader-${req.id}`);
-            userEvent.upload(image_uploader, file);
-        });
-        expect(screen.getByTestId('next-button', { exact: true }))
-            .toBeInTheDocument()
-            .toBeEnabled();
+    it('should render poo submitted status page', async () => {
+        render(
+            <ProofOfOwnership
+                account_status={{
+                    authentication: {
+                        ownership: { requests: [], status: 'pending' },
+                    },
+                }}
+            />
+        );
+        const element = screen.getByText('We’ve received your proof of ownership.', { exact: true });
+        expect(element).toBeInTheDocument();
     });
-    it('should render example modal for each card', () => {
-        const getById = queryByAttribute.bind(null, 'id');
-        const { container } = render(<ProofOfOwnership ownership={ownership_temp} />);
-        const element = screen.getAllByTestId('proof-of-ownership-button', { exact: true });
-        ownership_temp.requests.forEach(async (req, index) => {
-            fireEvent.click(element[index]);
-            const { getByText } = within(screen.getAllByTestId(req.id)[0]);
-            expect(getByText('See example', { exact: true })).toBeInTheDocument();
-            const example = getByText('See example', { exact: true });
-            fireEvent.click(example);
-            expect(screen.getByAltText('creditcardsample', { exact: true })).toBeInTheDocument();
-            await waitFor(() => {
-                const modal = getById(container, 'modal_root');
-                // eslint-disable-next-line testing-library/prefer-screen-queries
-                fireEvent.click(modal.getByRole('button'));
-            });
-        });
+    it('should render poo rejected status page', async () => {
+        render(
+            <ProofOfOwnership
+                account_status={{
+                    authentication: {
+                        ownership: { requests: [], status: 'rejected' },
+                    },
+                }}
+            />
+        );
+        const element = screen.getByText('Proof of ownership verification failed', { exact: true });
+        expect(element).toBeInTheDocument();
+    });
+    it('should render ProofOfOwnershipForm', async () => {
+        render(
+            <ProofOfOwnership
+                account_status={{
+                    authentication: {
+                        ownership: { requests: ownership_temp.requests, status: ownership_temp.status },
+                    },
+                }}
+            />
+        );
+        expect(screen.getByTestId(ownership_temp.requests[0].id, { exact: true })).toBeInTheDocument();
     });
 });

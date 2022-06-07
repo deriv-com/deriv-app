@@ -1,6 +1,5 @@
 import { action, computed, observable } from 'mobx';
 import { BARRIER_COLORS, BARRIER_LINE_STYLES, CONTRACT_SHADES, DEFAULT_SHADES, barriersToString } from '@deriv/shared';
-// import { barriersToString } from './Helpers/barriers';
 
 export class ChartBarrierStore {
     @observable color;

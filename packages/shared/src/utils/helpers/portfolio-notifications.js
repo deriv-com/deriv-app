@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 export const contractSold = (currency, sold_for, Money) => ({

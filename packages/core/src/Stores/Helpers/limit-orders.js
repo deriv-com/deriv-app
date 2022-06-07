@@ -1,7 +1,4 @@
-// import { isMultiplierContract } from '../contract';
-// import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../constants';
 import { ChartBarrierStore } from '../chart-barrier-store';
-// import { removeBarrier } from './barriers';
 import { isMultiplierContract, BARRIER_COLORS, BARRIER_LINE_STYLES, removeBarrier } from '@deriv/shared';
 
 const isLimitOrderBarrierSupported = (contract_type, contract_info) =>

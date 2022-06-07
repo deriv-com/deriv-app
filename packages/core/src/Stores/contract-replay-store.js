@@ -4,7 +4,6 @@ import { routes, isEmptyObject, isForwardStarting, WS, contractCancelled, contra
 import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ContractStore from './contract-store';
-// import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
 import BaseStore from './base-store';
 
 export default class ContractReplayStore extends BaseStore {

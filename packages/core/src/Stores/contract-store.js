@@ -15,17 +15,9 @@ import {
     BARRIER_LINE_STYLES,
     isBarrierSupported,
 } from '@deriv/shared';
-
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
 import { ChartBarrierStore } from './chart-barrier-store';
-
 import { createChartMarkers } from './Helpers/chart-markers';
-// import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
-// import { getChartConfig, getContractUpdateConfig, getEndTime } from '@deriv/shared/src/utils/helpers/logic';
-// import getValidationRules from './Constants/validation-rules';
-// import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
-// import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
-// import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import BaseStore from './base-store';
 
 export default class ContractStore extends BaseStore {

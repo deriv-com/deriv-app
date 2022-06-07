@@ -8,10 +8,8 @@ import {
     isCallPut,
     getContractTypesConfig,
 } from '@deriv/shared';
-// import { switch_to_tick_chart } from './Helpers/chart-notifications';
 import ContractStore from './contract-store';
-// import { isCallPut } from './Helpers/contract-type';
-// import { getContractTypesConfig } from '../Trading/Constants/contract';
+
 import BaseStore from './base-store';
 
 export default class ContractTradeStore extends BaseStore {

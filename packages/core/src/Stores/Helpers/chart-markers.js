@@ -7,8 +7,6 @@ import {
     createMarkerSpotMiddle,
     getSpotCount,
 } from './chart-marker-helpers';
-// import { unique } from '../object';
-// import { getChartType, getEndTime } from './logic';
 import { getChartType, getEndTime, unique } from '@deriv/shared';
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 

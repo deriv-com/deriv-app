@@ -1,9 +1,6 @@
 import extend from 'extend';
 import { isUserSold, isMultiplierContract, isDigitContract, getEndTime, isMobile } from '@deriv/shared';
 
-// import { isMobile } from '../screen';
-// import { getEndTime } from './logic';
-
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 
 const createMarkerConfig = (marker_type, x, y, content_config) =>

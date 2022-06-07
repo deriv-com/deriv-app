@@ -1,6 +1,5 @@
 import { getUnsupportedContracts } from '../constants';
 import { getSymbolDisplayName } from './active-symbols';
-
 import { getMarketInformation } from './market-underlying';
 
 const isUnSupportedContract = portfolio_pos =>

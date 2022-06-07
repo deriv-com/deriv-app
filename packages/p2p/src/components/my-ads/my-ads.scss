@@ -266,6 +266,10 @@
 
             &--disable {
                 cursor: not-allowed;
+
+                @include mobile {
+                    background-color: var(--checkbox-disabled-grey);
+                }
             }
 
             @include mobile {

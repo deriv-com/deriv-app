@@ -283,10 +283,6 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 <Icon
                                     icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
                                     color={(general_store.is_barred || is_activate_ad_disabled) && 'disabled'}
-                                    className={classNames({
-                                        'p2p-my-ads__table-popovers--disable':
-                                            general_store.is_barred || is_activate_ad_disabled,
-                                    })}
                                 />
                             </Popover>
                         </div>

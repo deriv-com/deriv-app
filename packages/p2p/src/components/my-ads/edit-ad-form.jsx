@@ -54,7 +54,7 @@ const EditAdForm = () => {
             if (my_ads_store.required_ad_type === ad_type.FLOAT) {
                 return is_buy_advert ? '-0.01' : '+0.01';
             }
-            return '0.00';
+            return '';
         }
         return rate_display;
     };

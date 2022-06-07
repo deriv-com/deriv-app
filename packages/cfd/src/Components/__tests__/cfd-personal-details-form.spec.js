@@ -205,7 +205,7 @@ describe('<CFDPersonalDetailsForm />', () => {
         fireEvent.click(opening_reason_input);
         const hedging = within(screen.getByRole('list')).getByText('Hedging');
         fireEvent.click(hedging);
-        fireEvent.click(opening_reason_input);
+        fireEvent.blur(hedging);
 
         await waitFor(() => {
             expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
@@ -226,25 +226,23 @@ describe('<CFDPersonalDetailsForm />', () => {
         render(<CFDPersonalDetailsForm {...props} />);
 
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
-        const next_button = screen.getByRole('button', { name: /next/i });
 
         fireEvent.change(tax_id_input, { target: { value: 'invalid_text_id_0' } });
-        fireEvent.click(next_button);
+        fireEvent.blur(tax_id_input);
 
         expect(await screen.findByText('Tax identification number is not properly formatted.')).toBeInTheDocument();
-        expect(next_button).toBeDisabled();
+        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
     });
 
     it('should disable the Next button in case a required field is empty', async () => {
         render(<CFDPersonalDetailsForm {...props} />);
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
-        const next_button = screen.getByRole('button', { name: /next/i });
 
         fireEvent.change(citizenship_input, { target: { value: '' } });
-        fireEvent.click(next_button);
+        fireEvent.blur(citizenship_input);
 
         expect(await screen.findByText(citizenship_required_error)).toBeInTheDocument();
-        expect(next_button).toBeDisabled();
+        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
     });
 });

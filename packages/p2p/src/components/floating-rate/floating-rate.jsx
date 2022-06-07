@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { InputField, Text } from '@deriv/components';
-import { formatMoney, isMobile } from '@deriv/shared';
+import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './floating-rate.scss';
@@ -21,6 +21,7 @@ const FloatingRate = ({
     ...props
 }) => {
     const { general_store } = useStores();
+    const os = mobileOSDetect();
     const { name, value, required } = props;
 
     const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)) : exchange_rate;
@@ -61,14 +62,13 @@ const FloatingRate = ({
                     is_float
                     is_incrementable
                     is_signed
-                    inputmode='decimal'
                     increment_button_type='button'
                     name={name}
                     onBlur={onBlurHandler}
                     onChange={change_handler}
                     setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
-                    type='tel'
+                    type={isMobile() && os !== 'iOS' ? 'tel' : 'number'}
                     value={value}
                     data_testid={data_testid}
                 />

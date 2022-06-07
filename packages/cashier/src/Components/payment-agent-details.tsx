@@ -16,8 +16,8 @@ type TDetailsProps = {
 type TPaymentAgentDetailsProps = {
     className?: string;
     payment_agent_email?: string;
-    payment_agent_phones?: string;
-    payment_agent_urls?: string;
+    payment_agent_phones?: string | Array<{ phone_number: string }>;
+    payment_agent_urls?: string | Array<{ url: string }>;
 };
 
 // TODO: is_last_child is not used. Remove this if it is not needed.

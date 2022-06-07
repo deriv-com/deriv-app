@@ -1,9 +1,15 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import 'Sass/cashier-container.scss';
 
-const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_loading }) => {
+type TCashierContainer = {
+    iframe_height?: number | string;
+    iframe_url?: string;
+    clearIframe: () => void;
+    is_loading?: boolean;
+};
+
+const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_loading }: TCashierContainer) => {
     React.useEffect(() => {
         return () => {
             clearIframe();
@@ -25,13 +31,6 @@ const CashierContainer = ({ iframe_height, iframe_url, clearIframe, is_loading }
             )}
         </div>
     );
-};
-
-CashierContainer.propTypes = {
-    iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    iframe_url: PropTypes.string,
-    clearIframe: PropTypes.func,
-    is_loading: PropTypes.bool,
 };
 
 export default CashierContainer;

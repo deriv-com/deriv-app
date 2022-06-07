@@ -720,3 +720,9 @@
         -webkit-text-fill-color: var(--text-less-prominent);
     }
 }
+
+.dc-modal__container_switch-ads {
+    @include mobile {
+        min-width: 328px !important;
+    }
+}

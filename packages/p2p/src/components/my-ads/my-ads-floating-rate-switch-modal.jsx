@@ -14,6 +14,7 @@ const MyAdsFloatingRateSwitchModal = () => {
                 is_open={my_ads_store.is_switch_modal_open}
                 toggleModal={() => my_ads_store.toggleMyAdsRateSwitchModal(my_ads_store.selected_ad_type)}
                 small
+                className='switch-ads'
             >
                 <Modal.Body>
                     {floating_rate_store.rate_type === ad_type.FLOAT ? (

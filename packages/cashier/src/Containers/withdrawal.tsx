@@ -32,8 +32,8 @@ type TErrorFull = {
 };
 
 type TErrorShort = {
-    code: string | undefined;
-    message: string | undefined;
+    code: string;
+    message: string;
 };
 
 type TWithdrawalSideNoteProps = {

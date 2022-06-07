@@ -2,7 +2,7 @@ import React from 'react';
 import { waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import CashierNotifications from 'Containers/cashier-notifications.jsx';
+import CashierNotifications from 'Components/cashier-notifications';
 
 let cashier_menu, general_store, root_store, WS;
 

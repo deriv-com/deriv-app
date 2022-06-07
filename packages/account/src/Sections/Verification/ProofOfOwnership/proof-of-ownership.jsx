@@ -6,59 +6,87 @@ import POOSubmitted from 'Components/poo-submitted';
 import { compressImageFiles, readFiles, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import DocumentUploader from '@binary-com/binary-document-uploader';
-import { Loading } from '@deriv/components';
+import { Loading, useStateCallback } from '@deriv/components';
 import POONotRequired from 'Components/poo-not-required';
 import POOVerified from 'Components/poo-verified';
 import POORejetced from 'Components/poo-rejected';
 
-const ProofOfOwnership = ({ account_status }) => {
+export const ProofOfOwnership = ({ account_status }) => {
+    const [form_state, setFormState] = useStateCallback({ should_show_form: true });
     const cards = account_status?.authentication?.ownership?.requests;
     const status = account_status?.authentication?.ownership?.status;
+    const needs_verification = account_status?.authentication?.needs_verification?.find(a => a === 'ownership');
+
     const formRef = useRef();
     const fileReadErrorMessage = filename => {
         return localize('Unable to read file {{name}}', { name: filename });
     };
     const handleSubmit = async e => {
-        e.preventDefault();
-        const { data: formValues } = formRef.current.values;
-        const uploader = new DocumentUploader({ connection: WS.getSocket() });
-        const { get_settings, error } = await WS.authorized.storage.getSettings();
-        if (error) {
-            // TODO: Handle Errors
-            return;
-        }
-        formValues.forEach(async values => {
-            if (values.files.length > 0) {
-                const files = values.files.flatMap(f => f.file);
-                const filesToProcess = await compressImageFiles(files);
-                const processedFiles = await readFiles(filesToProcess, fileReadErrorMessage);
-                if (typeof processedFiles === 'string') {
-                    // TODO: Display errors
-                }
-                processedFiles.forEach(async pF => {
-                    const fileToSends = pF;
-                    fileToSends.proof_of_ownership = {
-                        details: {
-                            email: get_settings.email,
-                        },
-                        id: values.id,
-                    };
-                    fileToSends.documentType = 'proof_of_ownership';
-                    const response = await uploader.upload(fileToSends);
-                    if (response.warning) {
-                        // TODO: Display errors
-                    }
-                });
+        try {
+            e.preventDefault();
+            const { data: formValues } = formRef.current.values;
+            const uploader = new DocumentUploader({ connection: WS.getSocket() });
+            const { get_settings, error } = await WS.authorized.storage.getSettings();
+            if (error) {
+                throw new Error(error);
             }
-        });
+            if (formRef.current.errors.length > 0 || formValues.some(i => i.files.length === 0)) {
+                // Only upload if no errors and a file has been attached
+                return;
+            }
+            if (formValues.some(i => i.files.length > 0)) {
+                setFormState({ ...form_state, ...{ is_btn_loading: true } });
+            }
+            formValues.forEach(async values => {
+                if (values.files.length > 0) {
+                    const files = values.files.flatMap(f => f.file);
+                    const filesToProcess = await compressImageFiles(files);
+                    const processedFiles = await readFiles(filesToProcess, fileReadErrorMessage);
+                    if (typeof processedFiles === 'string') {
+                        // eslint-disable-next-line no-console
+                        console.warn(processedFiles);
+                    }
+                    processedFiles.forEach(async pF => {
+                        const fileToSends = pF;
+                        fileToSends.proof_of_ownership = {
+                            details: {
+                                email: get_settings.email,
+                                identifier: values.identifier,
+                            },
+                            id: values.id,
+                        };
+                        fileToSends.documentType = 'proof_of_ownership';
+                        const response = await uploader.upload(fileToSends);
+                        if (response.warning) {
+                            // eslint-disable-next-line no-console
+                            console.warn(response);
+                        }
+                    });
+                }
+            });
+            location.reload();
+            setFormState({ ...form_state, ...{ is_btn_loading: false } });
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.warn(err);
+        } finally {
+            setFormState({ ...form_state, ...{ is_btn_loading: false } });
+        }
     };
-    if (status === 'pending' && cards.length) {
-        return <ProofOfOwnershipForm cards={cards} handleSubmit={handleSubmit} formRef={formRef} />; // Proof of ownership is required.
+    if (needs_verification === 'ownership') {
+        return (
+            <ProofOfOwnershipForm
+                cards={cards}
+                handleSubmit={handleSubmit}
+                formRef={formRef}
+                is_loading={form_state.is_btn_loading}
+            />
+        ); // Proof of ownership is required.
     }
     if (status === 'verified') {
         return <POOVerified />; // Proof of ownership verified
     }
-    if (status === 'pending' && cards.length === 0) {
+    if (status === 'pending') {
         return <POOSubmitted />; // Proof of ownership submitted pending review
     }
     if (status === 'none') {

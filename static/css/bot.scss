@@ -57,11 +57,16 @@ body {
     position: absolute;
     height: 100%;
     width: 100%;
-    //fix for safari comment box by unsetting cordinates
-    & foreignObject body {
+
+    //fix for chrome, safari comment box by unsetting cordinates
+    //new classname is added to the body from blockly as blocklyMinimalBody so targetting that 
+    & foreignObject body,
+    & foreignobject body,
+    .blocklyMinimalBody {
         all: unset;
         display: block;
     }
+
     max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
 }
 

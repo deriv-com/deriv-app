@@ -40,24 +40,14 @@ const validateFields = values => {
     });
     return errors;
 };
-const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef }) => {
+const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef, is_loading }) => {
     const initValues = {};
     initValues.data = cards.map(item => {
-        return { id: item.id, files: [] };
+        return { id: item.id, files: [], identifier: item.payment_method_identifier };
     });
     return (
         <Formik initialValues={initValues} validate={validateFields} innerRef={formRef}>
-            {({
-                values,
-                errors,
-                // isValid,
-                // touched,
-                handleChange,
-                handleBlur,
-                // isSubmitting,
-                setFieldValue,
-                // submitForm,
-            }) => (
+            {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
                 <form className='proof-of-ownership' onSubmit={handleSubmit}>
                     <FormBody scroll_offset={getScrollOffset(cards.length)}>
                         <FormSubHeader title={localize('Please upload the following document(s).')} />
@@ -93,17 +83,15 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef }) => {
                             type='submit'
                             className={classNames('account-form__footer-btn')}
                             is_disabled={(() => {
-                                const emptyFiles = values.data.some(item => !item?.files);
+                                const emptyFiles = values.data.some(item => !item?.files?.length > 0);
                                 return emptyFiles || errors?.data?.length > 0;
                             })()}
-                            data-testid={'next-button'}
+                            data-testid={'submit-button'}
                             has_effect
-                            // is_loading={is_btn_loading}
-                            // is_submit_success={is_submit_success}
                             text={localize('Submit')}
                             large
                             primary
-                            // form={'first-step'}
+                            is_loading={is_loading}
                         />
                     </FormFooter>
                 </form>

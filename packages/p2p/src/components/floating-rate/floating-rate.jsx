@@ -68,7 +68,7 @@ const FloatingRate = ({
                     onChange={change_handler}
                     setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
-                    type='number'
+                    type='tel'
                     value={value}
                     data_testid={data_testid}
                 />

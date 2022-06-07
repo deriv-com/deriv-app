@@ -268,7 +268,7 @@
                 cursor: not-allowed;
 
                 @include mobile {
-                    background-color: var(--checkbox-disabled-grey);
+                    background-color: var(--checkbox-disabled-grey) !important;
                 }
             }
 

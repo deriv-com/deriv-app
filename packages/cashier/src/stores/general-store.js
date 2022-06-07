@@ -3,7 +3,7 @@ import { action, computed, observable, reaction, when } from 'mobx';
 import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
-import CashierNotifications from 'Containers/cashier-notifications.jsx';
+import CashierNotifications from 'Components/cashier-notifications';
 import BaseStore from './base-store';
 
 export default class GeneralStore extends BaseStore {

@@ -260,8 +260,8 @@ const CFDPersonalDetailsForm = ({
                 const is_citizenship_disabled = !!(value.citizen && is_fully_authenticated);
                 const is_tax_residence_disabled = !!(value.tax_residence && is_fully_authenticated);
                 const handleItemSelection = (item: ResidenceList[0], _field: string) => {
-                    const _value = item.value ? item.text : '';
-                    setFieldValue(_field, _value, true);
+                    const item_value = item.value ? item.text : '';
+                    setFieldValue(_field, item_value, true);
                 };
 
                 return (
@@ -284,7 +284,13 @@ const CFDPersonalDetailsForm = ({
                                     max_autoheight_offset='179px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <Text as='p' size='xxxs' align='center' className='details-form__description'>
+                                    <Text
+                                        as='p'
+                                        size='xxxs'
+                                        align='center'
+                                        className='details-form__description'
+                                        data-testid='dt_cfd_details_form_description'
+                                    >
                                         <Localize
                                             i18n_default_text={
                                                 'Any information you provide is confidential and will be used for verification purposes only.'

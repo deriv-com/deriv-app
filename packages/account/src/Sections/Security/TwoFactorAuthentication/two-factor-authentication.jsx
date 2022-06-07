@@ -209,6 +209,8 @@ TwoFactorAuthentication.propTypes = {
     email_address: PropTypes.string,
     is_switching: PropTypes.bool,
     logoutClient: PropTypes.func,
+    setTwoFAStatus: PropTypes.func,
+    getTwoFAStatus: PropTypes.func,
     has_enabled_two_fa: PropTypes.bool,
 };
 

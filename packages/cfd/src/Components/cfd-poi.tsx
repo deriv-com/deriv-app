@@ -26,7 +26,7 @@ type TFormValues =
           tax_identification_number?: string;
           account_opening_reason?: string;
       }
-    | unknown;
+    | {};
 
 type TCFDAppRoutingHistory = {
     pathname: string;
@@ -107,7 +107,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                         {...props}
                                         height={height}
                                         is_from_external={true}
-                                        onStateChange={(status: string) => setPOIState(status)}
+                                        onStateChange={(status: any) => setPOIState(status)}
                                     />
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>

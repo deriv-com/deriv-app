@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
 import CFDPOI from '../cfd-poi';
@@ -100,8 +100,9 @@ describe('<CFDPOI />', () => {
     it('should render with Next button disabled before submitting POI for the first time', () => {
         render(<CFDPOI {...props} />);
 
-        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
         expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_modal_footer')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
         expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
     });
@@ -110,11 +111,10 @@ describe('<CFDPOI />', () => {
         isMobile.mockReturnValue(true);
         render(<CFDPOI {...props} />);
 
-        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
         expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt-modal-footer')).not.toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_modal_footer')).not.toBeInTheDocument();
+        expect(screen.getAllByRole('button').length).toBe(2);
     });
 
     it('should trigger onCancel callback when Previous button is clicked', () => {
@@ -122,7 +122,7 @@ describe('<CFDPOI />', () => {
 
         const previous_button = screen.getByRole('button', { name: /previous/i });
 
-        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
         expect(previous_button).toBeEnabled();
         expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
 
@@ -132,11 +132,11 @@ describe('<CFDPOI />', () => {
 
     it('should enable Next button when identity_status is pending', () => {
         props.authentication_status.identity_status = 'pending';
-        render(<CFDPOI {...props} authentication_status={props.authentication_status} />);
+        render(<CFDPOI {...props} />);
 
         const next_button = screen.getByRole('button', { name: /next/i });
 
-        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
         expect(next_button).toBeEnabled();
 
@@ -150,7 +150,7 @@ describe('<CFDPOI />', () => {
 
         const next_button = screen.getByRole('button', { name: /next/i });
 
-        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
         expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
         expect(next_button).toBeEnabled();
@@ -161,11 +161,11 @@ describe('<CFDPOI />', () => {
 
     it('should enable Next button when identity_status is verified', () => {
         props.authentication_status.identity_status = 'verified';
-        render(<CFDPOI {...props} authentication_status={props.authentication_status} />);
+        render(<CFDPOI {...props} />);
 
         const next_button = screen.getByRole('button', { name: /next/i });
 
-        expect(screen.getByTestId('dt-cfd-proof-of-identity')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
         expect(next_button).toBeEnabled();
 

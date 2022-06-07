@@ -15,26 +15,37 @@ const BlockUserModal = ({ is_advertiser_blocked, onSubmit, onCancel }) => {
             small
             title={
                 <Text color='prominent' size='s' weight='bold'>
-                    <Localize
-                        i18n_default_text='{{is_advertiser_blocked}} {{advertiser_details_name}}?'
-                        values={{
-                            advertiser_details_name: advertiser_page_store.advertiser_details_name,
-                            is_advertiser_blocked: is_advertiser_blocked ? 'Unblock' : 'Block',
-                        }}
-                    />
+                    {is_advertiser_blocked ? (
+                        <Localize
+                            i18n_default_text='Unblock {{advertiser_details_name}}?'
+                            values={{
+                                advertiser_details_name: advertiser_page_store.advertiser_details_name,
+                            }}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text='Block {{advertiser_details_name}}?'
+                            values={{
+                                advertiser_details_name: advertiser_page_store.advertiser_details_name,
+                            }}
+                        />
+                    )}
                 </Text>
             }
         >
             <Modal.Body>
                 <Text color='prominent' size='xs'>
-                    <Localize
-                        i18n_default_text={
-                            is_advertiser_blocked
-                                ? "You will be able to see {{ advertiser_details_name }}'s ads. They'll be able to place orders on your ads, too."
-                                : "You won't see {{advertiser_details_name}}'s ads anymore and they won't be able to place orders on your ads."
-                        }
-                        values={{ advertiser_details_name: advertiser_page_store.advertiser_details_name }}
-                    />
+                    {is_advertiser_blocked ? (
+                        <Localize
+                            i18n_default_text="You will be able to see {{ advertiser_details_name }}'s ads. They'll be able to place orders on your ads, too."
+                            values={{ advertiser_details_name: advertiser_page_store.advertiser_details_name }}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text="You won't see {{advertiser_details_name}}'s ads anymore and they won't be able to place orders on your ads."
+                            values={{ advertiser_details_name: advertiser_page_store.advertiser_details_name }}
+                        />
+                    )}
                 </Text>
             </Modal.Body>
             <Modal.Footer>
@@ -42,9 +53,7 @@ const BlockUserModal = ({ is_advertiser_blocked, onSubmit, onCancel }) => {
                     {localize('Cancel')}
                 </Button>
                 <Button primary large onClick={onSubmit}>
-                    {localize('{{is_advertiser_blocked}}', {
-                        is_advertiser_blocked: is_advertiser_blocked ? 'Unblock' : 'Block',
-                    })}
+                    {is_advertiser_blocked ? localize('Unblock') : localize('Block')}
                 </Button>
             </Modal.Footer>
         </Modal>

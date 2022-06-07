@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dropdown, Icon, Loading, Text } from '@deriv/components';
-import { daysSince, isDesktop, isMobile } from '@deriv/shared';
+import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
+import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
@@ -12,37 +12,14 @@ import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
+import AdvertiserPageDropdown from './advertiser-page-dropdown.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
-
-const AdvertiserPageDropdown = ({ is_dropdown_visible, onViewBlockModal, onViewDropdown }) => {
-    return (
-        <div className='advertiser-page__menu-dots-toggle'>
-            <Icon className='advertiser-page__menu-dots-icon' icon='IcMenuDots' onClick={onViewDropdown} size={16} />
-            {is_dropdown_visible && (
-                <div className='advertiser-page__dropdown' onClick={onViewBlockModal}>
-                    <Dropdown
-                        is_align_text_right
-                        list={['Block']}
-                        name={'block_user_dropdown'}
-                        placeholder={localize('Block')}
-                    />
-                </div>
-            )}
-        </div>
-    );
-};
-
-AdvertiserPageDropdown.propTypes = {
-    is_dropdown_visible: PropTypes.bool.isRequired,
-    onViewBlockModal: PropTypes.func.isRequired,
-    onViewDropdown: PropTypes.func.isRequired,
-};
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();
 
-    const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
+    const [is_dropdown_visible, setIsDropdownVisible] = React.useState(false);
 
     const {
         basic_verification,
@@ -91,13 +68,13 @@ const AdvertiserPage = () => {
                     onClick={buy_sell_store.hideAdvertiserPage}
                     page_title={localize("Advertiser's page")}
                 />
-                {isMobile() && (
+                <MobileWrapper>
                     <AdvertiserPageDropdown
-                        is_dropdown_visible={isDropdownVisible}
+                        is_dropdown_visible={is_dropdown_visible}
                         onViewBlockModal={() => advertiser_page_store.setIsBlockUserModalOpen(true)}
                         onViewDropdown={() => setIsDropdownVisible(prevState => !prevState)}
                     />
-                )}
+                </MobileWrapper>
             </div>
             <div className='advertiser-page-details-container'>
                 <div className='advertiser-page__header-details'>
@@ -138,13 +115,13 @@ const AdvertiserPage = () => {
                             />
                         </div>
                     </div>
-                    {isDesktop() && (
+                    <DesktopWrapper>
                         <AdvertiserPageDropdown
-                            is_dropdown_visible={isDropdownVisible}
+                            is_dropdown_visible={is_dropdown_visible}
                             onViewBlockModal={() => advertiser_page_store.setIsBlockUserModalOpen(true)}
                             onViewDropdown={() => setIsDropdownVisible(prevState => !prevState)}
                         />
-                    )}
+                    </DesktopWrapper>
                 </div>
                 <AdvertiserPageStats />
             </div>

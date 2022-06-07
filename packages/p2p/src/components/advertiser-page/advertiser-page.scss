@@ -10,17 +10,12 @@
         position: absolute;
         right: 0;
 
-        .dc-dropdown-container {
+        span {
+            color: var(--text-prominent) !important;
+        }
+
+        &-container {
             margin-top: 0;
-
-            .dc-dropdown__display-placeholder-text {
-                color: var(--text-prominent);
-                background-color: var(--general-main-2);
-            }
-
-            .dc-dropdown__display {
-                background-color: var(--general-main-2);
-            }
         }
 
         &--disabled {
@@ -29,12 +24,8 @@
             position: absolute;
             right: 0;
 
-            .dc-dropdown-container {
-                margin-top: 0;
-
-                .dc-dropdown__display-placeholder-text {
-                    color: var(--text-disabled);
-                }
+            span {
+                color: var(--text-disabled) !important;
             }
         }
     }

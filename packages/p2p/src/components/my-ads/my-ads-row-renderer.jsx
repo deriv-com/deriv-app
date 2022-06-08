@@ -220,7 +220,11 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 payment_method_names.map((payment_method, key) => {
                                     return (
                                         <div className='p2p-my-ads__table__payment-method--label' key={key}>
-                                            <Text color='general' size='xs' line-height='l'>
+                                            <Text
+                                                color={general_store.is_listed ? 'general' : 'less-prominent'}
+                                                size='xs'
+                                                line-height='l'
+                                            >
                                                 {payment_method}
                                             </Text>
                                         </div>
@@ -228,9 +232,16 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 })
                             ) : (
                                 <div className='p2p-my-ads__table-add' onClick={onClickAddPaymentMethod}>
-                                    <Icon color={general_store.is_barred && 'disabled'} icon='IcAdd' />
+                                    <Icon
+                                        color={(general_store.is_barred || !general_store.is_listed) && 'disabled'}
+                                        icon='IcAdd'
+                                    />
                                     <Text
-                                        color={general_store.is_barred ? 'less-prominent' : 'prominent'}
+                                        color={
+                                            general_store.is_barred || !general_store.is_listed
+                                                ? 'less-prominent'
+                                                : 'prominent'
+                                        }
                                         size='xxs'
                                         weight='bold'
                                     >

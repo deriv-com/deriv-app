@@ -8,9 +8,9 @@ jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {
         ...original_module,
-        Icon: jest.fn(() => <div data-testid='mockedIcon' />)
-    }
-})
+        Icon: jest.fn(() => <div data-testid='mockedIcon' />),
+    };
+});
 
 describe('Unverified', () => {
     const renderWithRouter = component =>
@@ -33,7 +33,11 @@ describe('Unverified', () => {
         });
 
         it('will show description message', () => {
-            expect(screen.getByText(/As a precaution, we have disabled trading, deposits and withdrawals for this account. If you have any questions, please go to our Help Center/i)).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    /As a precaution, we have disabled trading, deposits and withdrawals for this account. If you have any questions, please go to our Help Center/i
+                )
+            ).toBeInTheDocument();
             expect(screen.getByTestId(/mockedIcon/)).toBeInTheDocument();
         });
     });

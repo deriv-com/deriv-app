@@ -8,6 +8,7 @@ import MenuStore from './menu-store';
 import NotificationStore from './notification-store';
 import UIStore from './ui-store';
 import ActiveSymbolsStore from './active-symbols-store';
+
 export default class RootStore {
     constructor() {
         this.client = new ClientStore(this);

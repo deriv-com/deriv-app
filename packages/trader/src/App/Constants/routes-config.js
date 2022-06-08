@@ -1,6 +1,5 @@
 import React from 'react';
-import { routes, makeLazyLoader, moduleLoader } from '@deriv/shared';
-import { Loading } from '@deriv/components';
+import { routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 

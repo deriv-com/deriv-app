@@ -18,6 +18,7 @@ import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
 import CompareAccountsModal from './compare-accounts-modal';
+import CompareAccountsModal2 from './compare-accounts-modal2';
 import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';
 import CFDPasswordModal from './cfd-password-modal';
@@ -561,6 +562,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 )}
                             </LoadTab>
                             <CompareAccountsModal platform={platform} />
+                            <CompareAccountsModal2 platform={platform} />
                             <div className='cfd-dashboard__maintenance'>
                                 <Icon
                                     icon='IcAlertWarning'
@@ -734,6 +736,7 @@ export default withRouter(
         setCurrentAccount: modules.cfd.setCurrentAccount,
         standpoint: client.standpoint,
         toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
+        toggleCompareAccounts2: modules.cfd.toggleCompareAccountsModal2,
         is_accounts_switcher_on: ui.is_accounts_switcher_on,
         openTopUpModal: ui.openTopUpModal,
         NotificationMessages: ui.notification_messages_ui,

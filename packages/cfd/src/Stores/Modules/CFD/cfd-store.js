@@ -5,6 +5,8 @@ import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     @observable is_compare_accounts_visible = false;
+    @observable is_compare_accounts_visible2 = false;
+
     @observable account_type = {
         category: undefined,
         type: undefined,
@@ -391,6 +393,11 @@ export default class CFDStore extends BaseStore {
     @action.bound
     toggleCompareAccountsModal() {
         this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
+    }
+
+    @action.bound
+    toggleCompareAccountsModal2() {
+        this.is_compare_accounts_visible2 = !this.is_compare_accounts_visible2;
     }
 
     @action.bound

@@ -1,9 +1,14 @@
-import { action } from 'mobx';
+import { action, makeObservable } from 'mobx';
 import { localize } from '@deriv/translations';
 import { log_types } from '@deriv/bot-skeleton';
 
 export default class DownloadStore {
     constructor(root_store) {
+        makeObservable(this, {
+            onClickDownloadTransaction: action.bound,
+            onClickDownloadJournal: action.bound,
+        });
+
         this.root_store = root_store;
     }
 
@@ -36,7 +41,6 @@ export default class DownloadStore {
         }
     };
 
-    @action.bound
     onClickDownloadTransaction = () => {
         // Transaction Array
         const transaction_csv_titles = [
@@ -85,7 +89,6 @@ export default class DownloadStore {
         transaction_link.parentNode.removeChild(transaction_link);
     };
 
-    @action.bound
     onClickDownloadJournal = () => {
         // Journal Array
         const journal_csv_titles = [[localize('Date'), localize('Time'), localize('Message')]];

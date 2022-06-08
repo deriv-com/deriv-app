@@ -27,35 +27,24 @@ describe('Unverified', () => {
         expect(screen.getByTestId(/mockedIcon/)).toBeInTheDocument();
     });
 
-    describe('return true message from is_description_enabled', () => {
-        beforeEach(() => {
-            renderWithRouter(<Unverified is_description_enabled={true} />);
-        });
 
-        it('will show description message', () => {
-            expect(
-                screen.getByText(
-                    /As a precaution, we have disabled trading, deposits and withdrawals for this account. If you have any questions, please go to our Help Center/i
-                )
-            ).toBeInTheDocument();
-            expect(screen.getByTestId(/mockedIcon/)).toBeInTheDocument();
-        });
+    it('should show description message', () => {
+        renderWithRouter(<Unverified is_description_enabled={true} />);
+        
+        expect(screen.getByText(/As a precaution, we have disabled trading, deposits and withdrawals for this account. If you have any questions, please go to our Help Center/i)).toBeInTheDocument();
+        expect(screen.getByTestId(/mockedIcon/)).toBeInTheDocument();
     });
 
-    describe('return false from is_appstore and true from is_description_enabled', () => {
-        beforeEach(() => {
-            render(
-                <PlatformContext.Provider value={{ is_appstore: false }}>
-                    <BrowserRouter>
-                        <Unverified />
-                    </BrowserRouter>
-                </PlatformContext.Provider>
-            );
-        });
+    it('should show IcPoiError icon', () => {
+        render(
+            <PlatformContext.Provider value={{ is_appstore: false }}>
+                <BrowserRouter>
+                    <Unverified />
+                </BrowserRouter>
+            </PlatformContext.Provider>
+        );
 
-        it('will show IcPoiError icon', () => {
-            expect(screen.getByText(/We could not verify your proof of identity/i)).toBeInTheDocument();
-            expect(screen.getByTestId(/mockedIcon/)).toBeInTheDocument();
-        });
+        expect(screen.getByText(/We could not verify your proof of identity/i)).toBeInTheDocument();
+        expect(screen.getByTestId(/mockedIcon/)).toBeInTheDocument();
     });
 });

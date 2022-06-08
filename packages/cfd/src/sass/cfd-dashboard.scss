@@ -474,16 +474,16 @@
         &--banner {
             position: absolute;
             transform: rotate(45deg);
-            border-bottom: 2.3rem solid var(--brand-red-coral);
-            border-left: 2.3rem solid transparent;
-            border-right: 2.3rem solid transparent;
+            border-bottom: 1.8rem solid #85acb0;
+            border-left: 1.8rem solid transparent;
+            border-right: 1.8rem solid transparent;
             height: 0;
             width: 6rem;
             left: 24rem;
-            top: 0.2rem;
-            color: var(--text-colored-background);
+            top: 0.8rem;
+            color: #fff;
             font-weight: bold;
-            line-height: 24px;
+            line-height: 18px;
             white-space: nowrap;
             text-align: center;
 

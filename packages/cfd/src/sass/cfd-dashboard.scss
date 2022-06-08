@@ -459,11 +459,17 @@
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    min-height: 37rem;
+    min-height: 24rem;
     width: 30.4em;
     position: relative;
     @include desktop {
         height: 100%;
+    }
+
+    &__item {
+        width: 90%;
+        background-color: grey;
+        border-radius: 8px;
     }
 
     &__wrapper {
@@ -564,6 +570,7 @@
     &--balance {
         @include typeface(--title-left-bold-black);
         color: var(--text-profit-success);
+        padding: 1rem;
     }
     &__banner {
         position: absolute;
@@ -643,10 +650,10 @@
         margin-top: auto;
 
         &-wrapper {
-            align-items: center;
             display: flex;
             flex-direction: column;
             position: relative;
+            align-items: center;
         }
     }
     &__specs {
@@ -794,7 +801,8 @@
     }
     &__manage {
         display: flex;
-        width: calc(100% - 3.2rem);
+        width: 100%;
+        margin-left: 0.8rem;
 
         .dc-btn {
             width: 100%;

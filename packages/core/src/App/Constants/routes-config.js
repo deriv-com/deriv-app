@@ -17,10 +17,10 @@ const Trader = React.lazy(() =>
 );
 
 const Reports = React.lazy(() => {
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "reports" */ '@deriv/reports');
-    })
+    // moduleLoader(() => {
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "reports" */ '@deriv/reports');
+    // })
 });
 
 const CFD = React.lazy(() =>

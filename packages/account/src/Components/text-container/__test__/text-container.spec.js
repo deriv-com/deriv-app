@@ -18,6 +18,6 @@ describe('<TextContainer/>', () => {
                 <TextContainer />
             );
 
-            expect(screen.getByTestId(/test_text_container/i)).toBeInTheDocument();
+            expect(screen.getByTestId(/dt_text_container/i)).toBeInTheDocument();
         });
 });

@@ -1,20 +1,11 @@
 [![Build Status](https://travis-ci.org/binary-com/binary-bot.svg?branch=master)](https://travis-ci.org/binary-com/binary-bot)
 [![Coverage Status](https://coveralls.io/repos/github/binary-com/binary-bot/badge.svg?branch=master)](https://coveralls.io/github/binary-com/binary-bot?branch=master)
 
-# Binary Bot
+# Binary Bot on Deriv
 
-Visual automation for binary bot- [bot.binary.com](https://bot.binary.com)
+Visual automation for binary bot on deriv - [bot.deriv.com](https://bot.deriv.com)
 
-Binary Bot uses [Google Blockly](https://developers.google.com/blockly) to provide a puzzle like automation environment to trade using binary.com API version 3.
-
-## Useful Documents:
-
--   [General](docs/README.md) - Contains general philosophy and overview of this package
--   [Stylesheet guidelines](docs/Stylesheet/README.md) - Contains rules for CSS/SASS code style
--   [JavaScript guidelines](docs/JavaScript/README.md) - Contains rules for JS/JSX code style
--   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
--   [e2e and performance testing docs](e2e_tests/README.md) - Contains documents for create and running e2e and performance tests
--   [Manage dependencies](docs/Dependencies/README.md)
+Binary Bot on Deriv uses [Google Blockly](https://developers.google.com/blockly) to provide a puzzle like automation environment to trade using binary.com API version 3.
 
 ## Pre-installation
 Ensure that your environment contains the following packages.
@@ -38,12 +29,11 @@ Recommended extensions to start contributing to the project:
 ### 1. Setup the project on local machine
 
 You will need to perform the following on your development machine:
-1. In order to work with Binary-Bot application, you must create your own version of this project. Please `fork the project` - https://github.com/binary-com/binary-bot to your git account.
+1. In order to work with Deriv-Bot application, you must create your own version of this project. Please `fork the project` - https://github.com/deriv-com/binary-bot to your git account.
 2. Change the current working directory to the location where you want the cloned directory.
 3. Clone using `SSH`. Clone the forked repo using ```git clone [URL for the forked repo]```
 4. Enter project directory ```cd binary-bot```
 5. Run ```npm install``` 
-6. Create a feature branch from master -  ```git checkout -b [branchName]```.
 
     >**Note:** - [issue with installing packages](#q1)
 ### 2. Configuring Hosts file
@@ -87,7 +77,7 @@ Make sure to set the endpoint for running the application on the localhost
  
      >**Note:** - [Getting Permission Denied Error](#q2)
 
-2.  Navigate to ```http://localbot.binary.sx/bot.html``` (Note that the protocol is ```http``` and not ```https```)
+2.  Navigate to ```http://localbot.binary.sx``` (Note that the protocol is ```http``` and not ```https```)
 
     >**Note:** - [Getting error "This site can’t be reached" on localhost](#q3)
 
@@ -96,11 +86,12 @@ Make sure to set the endpoint for running the application on the localhost
 
 ## Pushing changes to github
 
-1. Make your changes to the source code
-2. Run test command to make sure your changes are correct
+1. Create a feature branch from master -  ```git checkout -b [branchName]```
+2. Make your changes to the source code
+3. Run test command to make sure your changes are correct
 ```npm run test```
 4. Run `git fetch upstream master` and `git merge upstream/master` to update your branch and avoid conflicts
-3. Push your changes to your forked repo:
+5. Push your changes to your forked repo:
 ```
 git add .
 git commit -m "describe your changes"
@@ -108,22 +99,9 @@ git push origin BRANCH_NAME
 ```
 ## Test link deployment
 
-There are two types of test link deployment preview:
-
-1. Automatic deployment
+The deployment for test link is done automatically:
 
 Upon creating PR, [Vercel](https://vercel.com/) will auto-generate a test link inside the PR. you can use that to preview the test link for the changes you have made.
-
-2. Manual deployment
-
-If preferable to use manual deployment, you can use [gh-pages](https://pages.github.com/) functionality to create a test link. here are ways to do it:
-
--   Stop the local server after you have pushed your changes
--   Run the command `sudo rm -rf www branch`
--   Run the command `npm run release --branch BRANCH_NAME`
--   You can check the test link at -> `yourname-deriv.github.io/binary-bot/BRANCH_NAME`
--   Generate the App ID from -> `developers.binary.com/applications`
--   Now generate the test link using `App ID`
 
 ## PR Guidelines
 
@@ -134,7 +112,9 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
 
 ## Release
 
-You can find out about the [Release Process](https://wikijs.deriv.cloud/en/Frontend/binary-bot/release-process) on Wiki.js.
+Release to production:
+    1. `git tag production_v20191205 -m 'release production'`
+    2. `git push origin production_v20191205`
 
 ## To update to the latest version
 
@@ -142,11 +122,23 @@ You can find out about the [Release Process](https://wikijs.deriv.cloud/en/Front
 git fetch upstream master
 git merge upstream/master
 ```
+
+## Optional Branding
+
+```
+Go to app.config.js file inside the src/directory of the project folder.
+All the important branding settings are implemented in this file.
+User can make changes to Deriv branding related logo, text and their visibility.
+```
 ### Running with a specific endpoint **Use only if you know what you're doing**
 
 ```
 ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169' bot bot-example.js
+
 ```
+
+To set the endpoint for running the application on the localhost. For this, Go to http://localbot.binary.sx/endpoint.html. Make sure the Server is set to blue.binaryws.com and O Auth App ID is 16014 Click submit
+
 ## Think you found a bug?
 
 There's a chance that we already know about it and doing our best to fix it. To find out you can search our [GitHub issues](https://github.com/binary-com/binary-bot/issues)
@@ -177,5 +169,5 @@ If you couldnt install binary bot with a different node version, try cleaning np
 Try ```sudo npm start```instead of ```npm start```
 
 ### <a name='q3'>3. Cannot access the site</a>
- Make sure to use HTTP instead of HTTPS: https://localbot.binary.sx/bot.html  => http://localbot.binary.sx/bot.html
+ Make sure to use HTTP instead of HTTPS: https://localbot.binary.sx  => http://localbot.binary.sx
 

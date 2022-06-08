@@ -47,8 +47,8 @@ const ServerTime = (() => {
         };
         updateTime();
         pending.resolve();
-        // changed from 1000 ==> 800 to make it in-sync with binary.com
-        update_time_interval = setInterval(updateTime, 800);
+        // changed from 1000 ==> 500 to make it in-sync with binary.com
+        update_time_interval = setInterval(updateTime, 500);
     };
 
     const get = () => (server_time ? server_time.clone() : undefined);

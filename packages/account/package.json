@@ -38,10 +38,11 @@
         "js-cookie": "^2.2.1",
         "mobx": "^5.15.7",
         "mobx-react": "6.3.1",
-        "onfido-sdk-ui": "8.0.0",
+        "onfido-sdk-ui": "^8.0.0",
         "prop-types": "^15.7.2",
         "qrcode.react": "^1.0.0",
         "react": "^16.14.0",
+        "react-dom": "^16.14.0",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0"
     },

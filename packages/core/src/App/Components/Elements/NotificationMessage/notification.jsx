@@ -83,7 +83,11 @@ const Notification = ({ data, removeNotificationMessage }) => {
                         'notification--small': data.size === 'small',
                     })}
                 >
-                    <div className='notification__icon-background'>
+                    <div
+                        className={classNames('notification__icon-background', {
+                            'notification__icon-background--header-only': !data.message,
+                        })}
+                    >
                         <NotificationStatusIcons type={data.type} class_suffix='is-background' />
                     </div>
                     <div className='notification__icon'>

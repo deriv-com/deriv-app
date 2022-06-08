@@ -789,6 +789,22 @@ export default class NotificationStore extends BaseStore {
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
             },
+            poa_poi_verified: {
+                key: 'poa_poi_verified',
+                header: localize('Proof of identity and address verified'),
+                type: 'announce',
+                should_hide_close_btn: false,
+            },
+            poa_verification_failed: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Go to Account settings'),
+                },
+                key: 'poa_verification_failed',
+                header: localize('Proof of address verification failed'),
+                message: localize('Please resubmit your proof of address.'),
+                type: 'danger',
+            },
             poi_name_mismatch: {
                 action: {
                     route: routes.personal_details,
@@ -803,6 +819,16 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
+            },
+            poi_verification_failed: {
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Go to Account settings'),
+                },
+                key: 'poi_verification_failed',
+                header: localize('Proof of identity verification failed'),
+                message: localize('Please resubmit your proof of identity.'),
+                type: 'danger',
             },
             required_fields: (withdrawal_locked, deposit_locked) => {
                 let message;

@@ -202,6 +202,7 @@
 
         &--scroll {
             overflow: auto;
+            margin-bottom: 7.5rem;
         }
 
         &--horizontal {
@@ -675,4 +676,8 @@
             padding-bottom: 1rem;
         }
     }
+}
+
+.p2p-my-ads__modal-icon {
+    margin-right: 0.8rem;
 }

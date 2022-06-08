@@ -1,18 +1,22 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 export default class BlocklyStore {
     constructor(root_store) {
+        makeObservable(this, {
+            is_loading: observable,
+            startLoading: action.bound,
+            endLoading: action.bound,
+        });
+
         this.root_store = root_store;
     }
 
-    @observable is_loading = false;
+    is_loading = false;
 
-    @action.bound
     startLoading() {
         this.is_loading = true;
     }
 
-    @action.bound
     endLoading() {
         this.is_loading = false;
     }

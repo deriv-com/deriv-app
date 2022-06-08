@@ -13,7 +13,7 @@ export default class AccountPromptDialogStore {
             resetIsConfirmed: action.bound,
             onConfirm: action.bound,
             onCancel: action.bound,
-            continueRoute: action.bound
+            continueRoute: action.bound,
         });
 
         this.root_store = root_store;

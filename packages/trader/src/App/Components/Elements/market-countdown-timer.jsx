@@ -205,6 +205,6 @@ MarketCountdownTimer.propTypes = {
     symbol: PropTypes.string.isRequired,
 };
 
-export default connect(({ modules }) => ({
-    active_symbols: modules.trade.active_symbols,
+export default connect(({ active_symbols }) => ({
+    active_symbols: active_symbols.active_symbols,
 }))(MarketCountdownTimer);

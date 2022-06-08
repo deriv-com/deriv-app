@@ -269,6 +269,7 @@ export default class TradeStore extends BaseStore {
         this.should_show_active_symbols_loading = should_show_loading;
 
         await this.setActiveSymbols();
+        await this.root_store.active_symbols.setActiveSymbols();
         if (should_set_default_symbol) await this.setDefaultSymbol();
 
         const r = await WS.storage.contractsFor(this.symbol);

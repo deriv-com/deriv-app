@@ -7,7 +7,7 @@ import ModulesStore from './Modules';
 import MenuStore from './menu-store';
 import NotificationStore from './notification-store';
 import UIStore from './ui-store';
-
+import ActiveSymbolsStore from './active-symbols-store';
 export default class RootStore {
     constructor() {
         this.client = new ClientStore(this);
@@ -19,5 +19,6 @@ export default class RootStore {
         this.menu = new MenuStore(this);
         this.pushwoosh = new PushWooshStore(this);
         this.notifications = new NotificationStore(this);
+        this.active_symbols = new ActiveSymbolsStore(this);
     }
 }

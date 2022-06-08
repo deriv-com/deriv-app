@@ -91,7 +91,7 @@ export default class StatementStore extends BaseStore {
             formatStatementTransaction(
                 transaction,
                 this.root_store.client.currency,
-                this.root_store.modules.trade.active_symbols
+                this.root_store.active_symbols.active_symbols
             )
         );
 

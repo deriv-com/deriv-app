@@ -66,7 +66,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
-                .map(pos => formatPortfolioPosition(pos, this.root_store.modules.trade.active_symbols))
+                .map(pos => formatPortfolioPosition(pos, this.root_store.active_symbols.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
 
             this.positions.forEach(p => {
@@ -175,7 +175,7 @@ export default class PortfolioStore extends BaseStore {
 
         const formatted_position = formatPortfolioPosition(
             proposal,
-            this.root_store.modules.trade.active_symbols,
+            this.root_store.active_symbols.active_symbols,
             portfolio_position.indicative
         );
         Object.assign(portfolio_position, formatted_position);
@@ -353,7 +353,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     pushNewPosition(new_pos) {
-        const position = formatPortfolioPosition(new_pos, this.root_store.modules.trade.active_symbols);
+        const position = formatPortfolioPosition(new_pos, this.root_store.active_symbols.active_symbols);
         if (this.positions_map[position.id]) return;
 
         this.positions.unshift(position);

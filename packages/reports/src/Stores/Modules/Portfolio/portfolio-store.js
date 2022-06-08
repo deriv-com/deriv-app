@@ -175,7 +175,7 @@ export default class PortfolioStore extends BaseStore {
 
         const formatted_position = formatPortfolioPosition(
             proposal,
-            this.root_store.modules.trade.active_symbols,
+            this.root_store.active_symbols.active_symbols,
             portfolio_position.indicative
         );
         Object.assign(portfolio_position, formatted_position);

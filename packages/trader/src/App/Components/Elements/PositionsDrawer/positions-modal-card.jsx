@@ -324,8 +324,8 @@ PositionsModalCard.propTypes = {
     type: PropTypes.string,
 };
 
-export default connect(({ common, ui, modules }) => ({
-    active_symbols: modules.trade.active_symbols,
+export default connect(({ common, ui, modules, active_symbols }) => ({
+    active_symbols: active_symbols.active_symbols,
     addToast: ui.addToast,
     current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,

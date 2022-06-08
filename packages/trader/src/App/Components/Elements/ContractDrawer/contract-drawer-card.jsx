@@ -165,8 +165,8 @@ ContractDrawerCard.propTypes = {
     status: PropTypes.string,
 };
 
-export default connect(({ modules, ui }) => ({
-    active_symbols: modules.trade.active_symbols,
+export default connect(({ modules, ui, active_symbols }) => ({
+    active_symbols: active_symbols.active_symbols,
     addToast: ui.addToast,
     current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,

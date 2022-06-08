@@ -427,7 +427,7 @@ Chart.propTypes = {
     wsSubscribe: PropTypes.func,
 };
 
-const ChartTrade = connect(({ modules, ui, common }) => ({
+const ChartTrade = connect(({ modules, ui, common, active_symbols }) => ({
     is_socket_opened: common.is_socket_opened,
     granularity: modules.contract_trade.granularity,
     chart_type: modules.contract_trade.chart_type,
@@ -459,7 +459,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     wsForgetStream: modules.trade.wsForgetStream,
     wsSendRequest: modules.trade.wsSendRequest,
     wsSubscribe: modules.trade.wsSubscribe,
-    active_symbols: modules.trade.active_symbols,
+    active_symbols: active_symbols.active_symbols,
     has_alternative_source: modules.trade.has_alternative_source,
     refToAddTick: modules.trade.refToAddTick,
 }))(Chart);

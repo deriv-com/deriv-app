@@ -658,6 +658,7 @@
 
     &__modal-body--scroll {
         overflow: auto;
+        margin-bottom: 7.5rem;
     }
 
     .toggle-ads {
@@ -699,4 +700,8 @@
             padding-bottom: 1rem;
         }
     }
+}
+
+.p2p-my-ads__modal-icon {
+    margin-right: 0.8rem;
 }

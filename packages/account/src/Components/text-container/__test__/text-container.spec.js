@@ -1,15 +1,32 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { TextContainer } from '../text-container';
 
+const MockTextContainer = props => {
+    return (
+        <TextContainer>
+            <p>{props.text}</p>
+        </TextContainer>
+    )
+}
+
 describe('<TextContainer/>', () => {
-    describe('renders the Text Container', () => {
+    describe('renders the <TextContainer />', () => {
         beforeEach(() => {
-            <TextContainer />;
+            render(<MockTextContainer text="Lorem Ipsum"/>);
         });
 
-        it('should show Text Container', () => {
-            // expect(screen.getByTestId(/test_text_container/i)).not.toBeInTheDocument()
+        it('should contain "Lorem Ipsum" in the document', () => {
+            expect(screen.getByText(/Lorem Ipsum/i)).toBeInTheDocument()
         });
     });
+    describe('renders the <TextContainer /> without any input', () => {
+        beforeEach(() => {
+            render(<MockTextContainer />);
+        });
+
+        it('should not contain "Lorem Ipsum" in the document but <TextContainer /> exist', () => {
+            expect(screen.getByTestId(/test_text_container/i)).toBeInTheDocument()
+        });
+    })
 });

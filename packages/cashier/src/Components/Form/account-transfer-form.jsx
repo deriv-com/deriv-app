@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber } from '@deriv/shared';
+import {
+    getDecimalPlaces,
+    getCurrencyDisplayCode,
+    getCurrencyName,
+    getPlatformSettings,
+    validNumber,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
@@ -76,18 +82,33 @@ const AccountTransferNote = ({
     transfer_fee,
     minimum_fee,
 }) => {
+    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
+    const platform_name_mt5 = getPlatformSettings('mt5').name;
+
     const getTransferFeeNote = () => {
         if (transfer_fee === 0) {
             return is_dxtrade_allowed ? (
-                <Localize i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts and between your Deriv fiat and Deriv X accounts.' />
+                <Localize
+                    i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
+                    values={{ platform_name_dxtrade, platform_name_mt5 }}
+                />
             ) : (
-                <Localize i18n_default_text='You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts.' />
+                <Localize
+                    i18n_default_text='You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts.'
+                    values={{ platform_name_mt5 }}
+                />
             );
         } else if (transfer_fee === 1) {
             return is_dxtrade_allowed ? (
-                <Localize i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and DMT5 accounts and between your Deriv fiat and Deriv X accounts.' />
+                <Localize
+                    i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
+                    values={{ platform_name_dxtrade, platform_name_mt5 }}
+                />
             ) : (
-                <Localize i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and DMT5 accounts.' />
+                <Localize
+                    i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts.'
+                    values={{ platform_name_mt5 }}
+                />
             );
         } else if (transfer_fee === 2 && is_crypto_to_crypto_transfer) {
             return (
@@ -102,10 +123,11 @@ const AccountTransferNote = ({
         } else if (transfer_fee === 2 && (is_mt_transfer || is_dxtrade_transfer)) {
             return is_dxtrade_allowed ? (
                 <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts and between your Deriv cryptocurrency and Deriv X accounts.'
+                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts and between your Deriv cryptocurrency and {{platform_name_dxtrade}} accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
+                        platform_name_dxtrade,
                     }}
                 />
             ) : (
@@ -145,27 +167,36 @@ const AccountTransferNote = ({
             </DesktopWrapper>
             <AccountTransferBullet>
                 {is_dxtrade_allowed ? (
-                    <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, DMT5, and Deriv X accounts.' />
+                    <Localize
+                        i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, and {{platform_name_dxtrade}} accounts.'
+                        values={{ platform_name_dxtrade, platform_name_mt5 }}
+                    />
                 ) : (
-                    <Localize i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and DMT5 accounts.' />
+                    <Localize
+                        i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and {{platform_name_mt5}} accounts.'
+                        values={{ platform_name_mt5 }}
+                    />
                 )}
             </AccountTransferBullet>
             <AccountTransferBullet>
                 {is_dxtrade_allowed ? (
                     <Localize
-                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and Deriv X accounts.'
+                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and {{platform_name_dxtrade}} accounts.'
                         values={{
                             allowed_internal: allowed_transfers_count.internal,
                             allowed_mt5: allowed_transfers_count.mt5,
                             allowed_dxtrade: allowed_transfers_count.dxtrade,
+                            platform_name_dxtrade,
+                            platform_name_mt5,
                         }}
                     />
                 ) : (
                     <Localize
-                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts and up to {{ allowed_mt5 }} transfers between your Deriv and DMT5 accounts.'
+                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts and up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts.'
                         values={{
                             allowed_internal: allowed_transfers_count.internal,
                             allowed_mt5: allowed_transfers_count.mt5,
+                            platform_name_mt5,
                         }}
                     />
                 )}
@@ -240,6 +271,8 @@ const AccountTransferForm = ({
 
     const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
+
+    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -346,13 +379,17 @@ const AccountTransferForm = ({
 
         setFromAccounts({
             ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
-            ...(dxtrade_accounts_from.length && { [localize('Deriv X accounts')]: dxtrade_accounts_from }),
+            ...(dxtrade_accounts_from.length && {
+                [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_from,
+            }),
             ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
         });
 
         setToAccounts({
             ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
-            ...(dxtrade_accounts_to.length && { [localize('Deriv X accounts')]: dxtrade_accounts_to }),
+            ...(dxtrade_accounts_to.length && {
+                [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_to,
+            }),
             ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
         });
     }, [accounts_list, selected_to, selected_from]);

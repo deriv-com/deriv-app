@@ -3,21 +3,17 @@ import { render, screen } from '@testing-library/react';
 import { TextContainer } from '../text-container';
 
 describe('<TextContainer/>', () => {
-        it('should contain "Lorem Ipsum" in the document', () => {
-            render(
-                <TextContainer>
-                    <p>Lorem Ipsum</p>
-                </TextContainer>
-            );
+    it('should contain "Lorem Ipsum" in the document', () => {
+        render(
+            <TextContainer children='Lorem Ipsum'/>
+        );
 
-            expect(screen.getByText(/Lorem Ipsum/i)).toBeInTheDocument();
-        });
+        expect(screen.getByText(/Lorem Ipsum/i)).toBeInTheDocument();
+    });
 
-        it('should not contain "Lorem Ipsum" in the document but <TextContainer /> exist', () => {
-            render(
-                <TextContainer />
-            );
+    it('should not contain "Lorem Ipsum" in the document but <TextContainer /> exist', () => {
+        render(<TextContainer />);
 
-            expect(screen.getByTestId(/dt_text_container/i)).toBeInTheDocument();
-        });
+        expect(screen.getByTestId(/dt_text_container/i)).toBeInTheDocument();
+    });
 });

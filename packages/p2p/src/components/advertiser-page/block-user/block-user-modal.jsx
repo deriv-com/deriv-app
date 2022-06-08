@@ -64,9 +64,9 @@ const BlockUserModal = ({ is_advertiser_blocked, onCancel, onSubmit }) => {
 };
 
 BlockUserModal.propTypes = {
-    is_advertiser_blocked: PropTypes.bool,
-    onCancel: PropTypes.func,
-    onSubmit: PropTypes.func,
+    is_advertiser_blocked: PropTypes.bool.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
 };
 
 export default observer(BlockUserModal);

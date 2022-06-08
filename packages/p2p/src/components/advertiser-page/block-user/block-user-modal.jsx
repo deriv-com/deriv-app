@@ -5,12 +5,11 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 
-const BlockUserModal = ({ is_advertiser_blocked, onSubmit, onCancel }) => {
+const BlockUserModal = ({ is_advertiser_blocked, onCancel, onSubmit }) => {
     const { advertiser_page_store } = useStores();
 
     return (
         <Modal
-            has_close_icon={false}
             is_open={advertiser_page_store.is_block_user_modal_open}
             small
             title={
@@ -62,8 +61,8 @@ const BlockUserModal = ({ is_advertiser_blocked, onSubmit, onCancel }) => {
 
 BlockUserModal.propTypes = {
     is_advertiser_blocked: PropTypes.bool.isRequired,
-    onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
 };
 
 export default observer(BlockUserModal);

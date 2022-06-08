@@ -12,6 +12,7 @@ import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
+import StarRating from '../star-rating/star-rating.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
 
@@ -25,9 +26,13 @@ const AdvertiserPage = () => {
         first_name,
         full_verification,
         last_name,
+        rating_average,
+        rating_count,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
 
+    // rating_average_decimal converts rating_average to 1 d.p number
+    const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const joined_since = daysSince(created_time);
 
     React.useEffect(() => {
@@ -83,17 +88,52 @@ const AdvertiserPage = () => {
                                 </div>
                             )}
                         </div>
-                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                            {joined_since > 0 ? (
-                                <Localize
-                                    i18n_default_text='Joined {{days_since_joined}}d'
-                                    values={{ days_since_joined: joined_since }}
-                                />
-                            ) : (
-                                <Localize i18n_default_text='Joined today' />
-                            )}
-                        </Text>
-                        <div className='my-profile-name--row'>
+                        <div className='advertiser-page__rating'>
+                            <div className='advertiser-page__rating--row'>
+                                {!!rating_count && !!rating_average ? (
+                                    <React.Fragment>
+                                        <StarRating
+                                            empty_star_className='advertiser-page__rating--star'
+                                            empty_star_icon='IcEmptyStar'
+                                            full_star_className='advertiser-page__rating--star'
+                                            full_star_icon='IcFullStar'
+                                            initial_value={rating_average_decimal}
+                                            is_readonly
+                                            number_of_stars={5}
+                                            star_size={20}
+                                        />
+                                        &nbsp;
+                                        <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                            {rating_average_decimal}
+                                        </Text>
+                                        &nbsp;
+                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                            <Localize
+                                                i18n_default_text='({{number_of_ratings}} ratings)'
+                                                values={{ number_of_ratings: rating_count }}
+                                            />
+                                        </Text>
+                                    </React.Fragment>
+                                ) : (
+                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                        <Localize i18n_default_text='Not rated yet' />
+                                    </Text>
+                                )}
+                            </div>
+                            <div className='advertiser-page__rating--row'>
+                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                    {joined_since > 0 ? (
+                                        <Localize
+                                            i18n_default_text='Joined {{days_since_joined}}d'
+                                            values={{ days_since_joined: joined_since }}
+                                        />
+                                    ) : (
+                                        <Localize i18n_default_text='Joined today' />
+                                    )}
+                                </Text>
+                            </div>
+                        </div>
+                        <div className='advertiser-page__row'>
                             <TradeBadge
                                 is_poa_verified={!!full_verification}
                                 is_poi_verified={!!basic_verification}

@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 
 const BlockUserModal = ({ is_advertiser_blocked, onCancel, onSubmit }) => {
     const { advertiser_page_store } = useStores();
@@ -49,10 +49,14 @@ const BlockUserModal = ({ is_advertiser_blocked, onCancel, onSubmit }) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button secondary onClick={onCancel} large>
-                    {localize('Cancel')}
+                    <Localize i18n_default_text='Cancel' />
                 </Button>
                 <Button primary large onClick={onSubmit}>
-                    {is_advertiser_blocked ? localize('Unblock') : localize('Block')}
+                    {is_advertiser_blocked ? (
+                        <Localize i18n_default_text='Unblock' />
+                    ) : (
+                        <Localize i18n_default_text='Block' />
+                    )}
                 </Button>
             </Modal.Footer>
         </Modal>
@@ -60,9 +64,9 @@ const BlockUserModal = ({ is_advertiser_blocked, onCancel, onSubmit }) => {
 };
 
 BlockUserModal.propTypes = {
-    is_advertiser_blocked: PropTypes.bool.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    is_advertiser_blocked: PropTypes.bool,
+    onCancel: PropTypes.func,
+    onSubmit: PropTypes.func,
 };
 
 export default observer(BlockUserModal);

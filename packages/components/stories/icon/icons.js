@@ -775,5 +775,5 @@ export const icons =
         'IcWalletWebmoney',
         'IcWalletZingpayDark',
         'IcWalletZingpayLight'
-    ],
-};
+    ]
+}

@@ -83,7 +83,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
 
         return (
             <PaymentMethodCard
-                is_add={true}
+                is_add
                 label={localize('Payment method')}
                 medium
                 onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}

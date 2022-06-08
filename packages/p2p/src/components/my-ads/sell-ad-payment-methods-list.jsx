@@ -49,7 +49,7 @@ const SellAdPaymentMethodsList = ({
                     style={selected_methods.includes(payment_method.ID) ? style : {}}
                 />
             ))}
-            <PaymentMethodCard is_add={true} label={localize('Payment method')} medium onClickAdd={onClickAdd} />
+            <PaymentMethodCard is_add label={localize('Payment method')} medium onClickAdd={onClickAdd} />
         </ThemedScrollbars>
     );
 };

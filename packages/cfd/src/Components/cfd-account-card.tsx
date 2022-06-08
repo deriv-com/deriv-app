@@ -361,6 +361,11 @@ const CFDAccountCard = ({
                     <div className='cfd-account-card__cta-wrapper'>
                         <div className='cfd-account-card__item'>
                             {existing_data?.display_balance && is_logged_in && (
+                                <div className='cfd-account-card__item--banner'>
+                                    <Localize i18n_default_text='Labuan' />
+                                </div>
+                            )}
+                            {existing_data?.display_balance && is_logged_in && (
                                 <Text size='xxl' className='cfd-account-card--balance'>
                                     <Money
                                         amount={existing_data.display_balance}

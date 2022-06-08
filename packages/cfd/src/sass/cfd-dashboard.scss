@@ -468,8 +468,36 @@
 
     &__item {
         width: 90%;
-        background-color: grey;
+        background-color: var(--general-section-1);
         border-radius: 8px;
+
+        &--banner {
+            position: absolute;
+            transform: rotate(45deg);
+            border-bottom: 2.3rem solid var(--brand-red-coral);
+            border-left: 2.3rem solid transparent;
+            border-right: 2.3rem solid transparent;
+            height: 0;
+            width: 6rem;
+            left: 24rem;
+            top: 0.2rem;
+            color: var(--text-colored-background);
+            font-weight: bold;
+            line-height: 24px;
+            white-space: nowrap;
+            text-align: center;
+
+            &--demo {
+                border-bottom-color: var(--brand-secondary);
+            }
+            &--server {
+                // TODO: Add a CSS variable
+                border-bottom-color: $color-blue-2;
+            }
+            @include mobile {
+                left: calc(100vw - 14.2rem);
+            }
+        }
     }
 
     &__wrapper {
@@ -803,6 +831,7 @@
         display: flex;
         width: 100%;
         margin-left: 0.8rem;
+        padding-top: 1.4rem;
 
         .dc-btn {
             width: 100%;

@@ -7,17 +7,17 @@ const MockTextContainer = props => {
         <TextContainer>
             <p>{props.text}</p>
         </TextContainer>
-    )
-}
+    );
+};
 
 describe('<TextContainer/>', () => {
     describe('renders the <TextContainer />', () => {
         beforeEach(() => {
-            render(<MockTextContainer text="Lorem Ipsum"/>);
+            render(<MockTextContainer text='Lorem Ipsum' />);
         });
 
         it('should contain "Lorem Ipsum" in the document', () => {
-            expect(screen.getByText(/Lorem Ipsum/i)).toBeInTheDocument()
+            expect(screen.getByText(/Lorem Ipsum/i)).toBeInTheDocument();
         });
     });
     describe('renders the <TextContainer /> without any input', () => {
@@ -26,7 +26,7 @@ describe('<TextContainer/>', () => {
         });
 
         it('should not contain "Lorem Ipsum" in the document but <TextContainer /> exist', () => {
-            expect(screen.getByTestId(/test_text_container/i)).toBeInTheDocument()
+            expect(screen.getByTestId(/test_text_container/i)).toBeInTheDocument();
         });
-    })
+    });
 });

@@ -48,6 +48,7 @@ const EditAdForm = () => {
     const is_buy_advert = type === buy_sell.BUY;
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const [is_cancel_edit_modal_open, setIsCancelEditModalOpen] = React.useState(false);
+    const [is_payment_method_touched, setIsPaymentMethodTouched] = React.useState(false);
 
     const set_initial_ad_rate = () => {
         if (my_ads_store.required_ad_type !== my_ads_store.selected_ad_type) {
@@ -141,7 +142,10 @@ const EditAdForm = () => {
                         {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
                             const is_sell_advert = values.type === buy_sell.SELL;
                             // Form should not be checked for value change when ad switch is triggered
-                            const check_dirty = my_ads_store.required_ad_type === rate_type ? dirty : true;
+                            const check_dirty =
+                                my_ads_store.required_ad_type === rate_type
+                                    ? dirty || is_payment_method_touched
+                                    : is_payment_method_touched;
                             return (
                                 <div className='p2p-my-ads__form'>
                                     <Form
@@ -406,6 +410,7 @@ const EditAdForm = () => {
                                                     payment_method_names={payment_method_names}
                                                     selected_methods={[...selected_methods]}
                                                     setSelectedMethods={setSelectedMethods}
+                                                    touched={setIsPaymentMethodTouched}
                                                 />
                                                 <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                                     <Button

@@ -1,14 +1,34 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { getLanguage } from '@deriv/translations';
 import { routes, WS } from '@deriv/shared';
 import { Loading } from '@deriv/components';
+import { RouteComponentProps } from 'react-router';
+import RootStore from 'Stores/types';
 import P2P from '@deriv/p2p';
 import { connect } from 'Stores/connect';
 import { get, init, timePromise } from '_common/server_time';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
+
+type TLocalCurrencyConfig = {
+    currency: string;
+    decimal_places: number;
+};
+
+type TP2PCashier = RouteComponentProps & {
+    currency: string;
+    is_dark_mode_on: boolean;
+    is_logging_in: boolean;
+    is_mobile: boolean;
+    is_virtual: boolean;
+    local_currency_config: TLocalCurrencyConfig;
+    loginid: string;
+    platform: string;
+    residence: string;
+    setNotificationCount: number;
+};
+
 const P2PCashier = ({
     currency,
     history,
@@ -22,8 +42,8 @@ const P2PCashier = ({
     platform,
     residence,
     setNotificationCount,
-}) => {
-    const [order_id, setOrderId] = React.useState(null);
+}: TP2PCashier) => {
+    const [order_id, setOrderId] = React.useState<string | null>(null);
     const server_time = {
         get,
         init,
@@ -42,7 +62,7 @@ const P2PCashier = ({
     }, [location.search, setQueryOrder]);
 
     const setQueryOrder = React.useCallback(
-        input_order_id => {
+        (input_order_id: string | null) => {
             const current_query_params = new URLSearchParams(location.search);
 
             if (current_query_params.has('order')) {
@@ -91,23 +111,8 @@ const P2PCashier = ({
     );
 };
 
-P2PCashier.propTypes = {
-    currency: PropTypes.string,
-    history: PropTypes.object,
-    is_dark_mode_on: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    local_currency_config: PropTypes.object,
-    location: PropTypes.object,
-    loginid: PropTypes.string,
-    platform: PropTypes.any,
-    residence: PropTypes.string,
-    setNotificationCount: PropTypes.func,
-};
-
 export default withRouter(
-    connect(({ client, common, modules, ui }) => ({
+    connect(({ client, common, modules, ui }: RootStore) => ({
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,

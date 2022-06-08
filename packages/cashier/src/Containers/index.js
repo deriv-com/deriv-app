@@ -4,7 +4,7 @@ import Cashier from './cashier.jsx';
 import Deposit from './deposit.jsx';
 import Withdrawal from './withdrawal.jsx';
 import PaymentAgent from './payment-agent.jsx';
-import P2PCashier from './p2p-cashier.jsx';
+import P2PCashier from './p2p-cashier.tsx';
 import OnRamp from './on-ramp.jsx';
 
 export { Cashier, Deposit, Withdrawal, PaymentAgent, AccountTransfer, PaymentAgentTransfer, P2PCashier, OnRamp };

@@ -49,6 +49,7 @@ const ownership_temp = {
     ],
     status: 'pending',
 };
+
 describe('proof-of-ownership.jsx', () => {
     it('should render no poo required status page', async () => {
         render(
@@ -108,6 +109,7 @@ describe('proof-of-ownership.jsx', () => {
                 account_status={{
                     authentication: {
                         ownership: { requests: ownership_temp.requests, status: ownership_temp.status },
+                        needs_verification: ['ownership'],
                     },
                 }}
             />

@@ -43,9 +43,9 @@ export default class GeneralStore extends BaseStore {
     ws_subscriptions = {};
     service_token_timeout;
 
-    constructor() {
+    constructor({ general_store }) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super();
+        super({ general_store });
 
         makeObservable(this, {
             active_index: observable,
@@ -154,7 +154,7 @@ export default class GeneralStore extends BaseStore {
                 this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
                 this.setNickname(p2p_advertiser_create.name);
                 this.setNicknameError(undefined);
-                sendbird_store.handleP2pAdvertiserInfo(response);
+                sendbird_store?.handleP2pAdvertiserInfo(response);
                 this.toggleNicknamePopup();
                 buy_sell_store.hideVerification();
             }
@@ -298,7 +298,7 @@ export default class GeneralStore extends BaseStore {
                         p2p_advertiser_info: 1,
                         subscribe: 1,
                     },
-                    [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
+                    [this.updateAdvertiserInfo, response => sendbird_store?.handleP2pAdvertiserInfo(response)]
                 ),
                 order_list_subscription: subscribeWS(
                     {
@@ -415,7 +415,7 @@ export default class GeneralStore extends BaseStore {
     setOrderTableType(order_table_type) {
         const { order_store } = this.root_store;
 
-        order_store.setIsLoading(true);
+        order_store?.setIsLoading(true);
         this.order_table_type = order_table_type;
     }
 
@@ -444,12 +444,12 @@ export default class GeneralStore extends BaseStore {
         if (p2p_order_list) {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
-            this.handleNotifications(order_store.orders, list);
+            this.handleNotifications(order_store?.orders, list);
             list.forEach(order => order_store.syncOrder(order));
         } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
-            const idx_order_to_update = order_store.orders.findIndex(order => order.id === p2p_order_info.id);
-            const updated_orders = [...order_store.orders];
+            const idx_order_to_update = order_store?.orders.findIndex(order => order.id === p2p_order_info.id);
+            const updated_orders = [...order_store?.orders];
             // if it's a new order, add it to the top of the list
             if (idx_order_to_update < 0) {
                 updated_orders.unshift(p2p_order_info);
@@ -458,7 +458,7 @@ export default class GeneralStore extends BaseStore {
                 updated_orders[idx_order_to_update] = p2p_order_info;
             }
 
-            this.handleNotifications(order_store.orders, updated_orders);
+            this.handleNotifications(order_store?.orders, updated_orders);
             order_store.syncOrder(p2p_order_info);
         }
     }

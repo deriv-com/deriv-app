@@ -46,9 +46,9 @@ export default class MyAdsStore extends BaseStore {
     payment_method_ids = [];
     payment_method_names = [];
 
-    constructor() {
+    constructor({ general_store }) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super();
+        super({ general_store });
 
         makeObservable(this, {
             activate_deactivate_error_message: observable,

@@ -50,9 +50,9 @@ export default class BuySellStore extends BaseStore {
         { text: localize('Completion rate'), value: 'completion' },
     ];
 
-    constructor() {
+    constructor({ general_store, root_store }) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super();
+        super({ general_store, root_store });
 
         makeObservable(this, {
             api_error_message: observable,

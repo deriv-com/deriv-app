@@ -34,6 +34,7 @@ beforeEach(() => {
                 account_prompt_dialog: {
                     last_location: null,
                     resetIsConfirmed: jest.fn(),
+                    resetLastLocation: jest.fn(),
                 },
                 account_transfer: {
                     accounts_list: [],
@@ -84,6 +85,7 @@ beforeEach(() => {
         authorized: {
             p2pAdvertiserInfo: jest.fn().mockResolvedValueOnce({ error: { code: 'advertiser_error' } }),
         },
+        wait: jest.fn(),
     };
     general_store = new GeneralStore({ root_store, WS });
 
@@ -330,6 +332,8 @@ describe('GeneralStore', () => {
             expect(spyGetAdvertizerError).toHaveBeenCalledTimes(1);
         });
         expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
+        expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
+        expect(general_store.root_store.modules.cashier.account_prompt_dialog.resetLastLocation).toHaveBeenCalledTimes(1);
         expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
     });
 

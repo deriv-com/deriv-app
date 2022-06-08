@@ -7,6 +7,7 @@ import {
     isMobile,
     routes,
     getCFDPlatformLabel,
+    getPlatformSettings,
     CFD_PLATFORMS,
     isLandingCompanyEnabled,
 } from '@deriv/shared';
@@ -263,11 +264,14 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const openAccountTransfer = (
-        data: DetailsOfEachMT5Loginid & { account_id?: string },
+        data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
         meta: { category: string; type?: string }
     ) => {
         if (meta.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
+            if (data.platform === CFD_PLATFORMS.DXTRADE)
+                sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
+            else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
+
             props.disableCFDPasswordModal();
             props.history.push(routes.cashier_acc_transfer);
         } else {
@@ -658,16 +662,27 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                     buttonSize={'medium'}
                     header={
                         <Localize
-                            i18n_default_text='DMT5 is not available in {{country}}'
-                            values={{ country: account_settings.residence }}
+                            i18n_default_text='{{platform_name_mt5}} is not available in {{country}}'
+                            values={{
+                                country: account_settings.residence,
+                                platform_name_mt5: getPlatformSettings('mt5').name,
+                            }}
                             components={[<br key={0} />]}
                         />
                     }
                     messages={[<Localize key={0} i18n_default_text='Please explore our other platforms.' />]}
                     redirect_urls={[routes.trade, routes.bot]}
                     redirect_labels={[
-                        <Localize key={0} i18n_default_text='Explore DTrader' />,
-                        <Localize key={1} i18n_default_text='Explore DBot' />,
+                        <Localize
+                            key={0}
+                            i18n_default_text='Explore {{platform_name_trader}}'
+                            values={{ platform_name_trader: getPlatformSettings('trader').name }}
+                        />,
+                        <Localize
+                            key={1}
+                            i18n_default_text='Explore {{platform_name_dbot}}'
+                            values={{ platform_name_dbot: getPlatformSettings('dbot').name }}
+                        />,
                     ]}
                 />
             )}

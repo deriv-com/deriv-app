@@ -8,8 +8,12 @@ import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { isMobile } from '@deriv/shared';
 
-const AddPaymentMethodForm = ({ should_fixed_footer = isMobile(), should_show_separated_footer = false }) => {
-    const { my_profile_store } = useStores();
+const AddPaymentMethodForm = ({
+    formik_ref,
+    should_fixed_footer = isMobile(),
+    should_show_separated_footer = false,
+}) => {
+    const { my_ads_store, my_profile_store } = useStores();
 
     const validateFields = values => {
         const errors = {};
@@ -91,6 +95,7 @@ const AddPaymentMethodForm = ({ should_fixed_footer = isMobile(), should_show_se
         <React.Fragment>
             <Formik
                 enableReinitialize
+                innerRef={formik_ref}
                 initialValues={{}}
                 onSubmit={my_profile_store.createPaymentMethod}
                 validate={validateFields}
@@ -163,8 +168,12 @@ const AddPaymentMethodForm = ({ should_fixed_footer = isMobile(), should_show_se
                                     secondary
                                     large
                                     onClick={() => {
-                                        my_profile_store.setSelectedPaymentMethod('');
-                                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                        if (dirty || my_profile_store.selected_payment_method.length > 0) {
+                                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                        } else {
+                                            my_profile_store.hideAddPaymentMethodForm();
+                                            my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                                        }
                                     }}
                                     type='button'
                                 >
@@ -209,6 +218,7 @@ const AddPaymentMethodForm = ({ should_fixed_footer = isMobile(), should_show_se
 };
 
 AddPaymentMethodForm.propTypes = {
+    formik_ref: PropTypes.shape({ current: PropTypes.any }),
     should_fixed_footer: PropTypes.bool,
     should_show_separated_footer: PropTypes.bool,
 };

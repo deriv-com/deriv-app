@@ -1,15 +1,21 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import PageReturn from 'Components/page-return/page-return.jsx';
 import { localize } from 'Components/i18next';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import AddPaymentMethodForm from './add-payment-method-form.jsx';
+import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal';
+import PageReturn from 'Components/page-return/page-return.jsx';
 import PropTypes from 'prop-types';
 import SelectPaymentMethod from './select-payment-method.jsx';
 
-const AddPaymentMethod = ({ should_fixed_footer, should_show_page_return = true, should_show_separated_footer }) => {
-    const { my_profile_store } = useStores();
+const AddPaymentMethod = ({
+    formik_ref,
+    should_fixed_footer,
+    should_show_page_return = true,
+    should_show_separated_footer,
+}) => {
+    const { my_ads_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
@@ -20,15 +26,26 @@ const AddPaymentMethod = ({ should_fixed_footer, should_show_page_return = true,
 
     return (
         <React.Fragment>
+            <CancelAddPaymentMethodModal is_floating />
             <DesktopWrapper>
                 {should_show_page_return && (
                     <PageReturn
-                        onClick={my_profile_store.hideAddPaymentMethodForm}
+                        onClick={() => {
+                            if (my_profile_store.selected_payment_method.length > 0) {
+                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                            } else {
+                                my_profile_store.hideAddPaymentMethodForm();
+                                my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                            }
+                        }}
                         page_title={localize('Add payment method')}
                     />
                 )}
                 {my_profile_store.selected_payment_method ? (
-                    <AddPaymentMethodForm should_show_separated_footer={should_show_separated_footer} />
+                    <AddPaymentMethodForm
+                        formik_ref={formik_ref}
+                        should_show_separated_footer={should_show_separated_footer}
+                    />
                 ) : (
                     <SelectPaymentMethod />
                 )}
@@ -36,6 +53,7 @@ const AddPaymentMethod = ({ should_fixed_footer, should_show_page_return = true,
             <MobileWrapper>
                 {my_profile_store.selected_payment_method ? (
                     <AddPaymentMethodForm
+                        formik_ref={formik_ref}
                         should_fixed_footer={should_fixed_footer}
                         should_show_separated_footer={should_show_separated_footer}
                     />
@@ -48,6 +66,7 @@ const AddPaymentMethod = ({ should_fixed_footer, should_show_page_return = true,
 };
 
 AddPaymentMethod.propTypes = {
+    formik_ref: PropTypes.shape({ current: PropTypes.any }),
     should_fixed_footer: PropTypes.bool,
     should_show_page_return: PropTypes.bool,
     should_show_seperated_footer: PropTypes.bool,

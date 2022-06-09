@@ -1,34 +1,15 @@
 import React from 'react';
 import { Dropdown, Icon } from '@deriv/components';
+import PropTypes from 'prop-types';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
 import './advertiser-page.scss';
-import { observer } from 'mobx-react-lite';
 
-const AdvertiserPageDropdown = () => {
-    const { advertiser_page_store } = useStores();
-
-    const { is_blocked } = advertiser_page_store.advertiser_info;
-
-    const viewBlockUserModal = () => {
-        if (is_blocked === 0) {
-            advertiser_page_store.setIsBlockUserModalOpen(true);
-        }
-    };
-
+const AdvertiserPageDropdown = ({ is_dropdown_visible, onViewBlockModal, onViewDropdown }) => {
     return (
         <div className='advertiser-page__menu-dots-toggle'>
-            <Icon
-                className='advertiser-page__menu-dots-icon'
-                icon='IcMenuDots'
-                onClick={() => advertiser_page_store.setIsDropdownVisible(!advertiser_page_store.is_dropdown_visible)}
-                size={16}
-            />
-            {advertiser_page_store.is_dropdown_visible && (
-                <div
-                    className={`advertiser-page__dropdown${is_blocked === 1 ? '--disabled' : ''}`}
-                    onClick={viewBlockUserModal}
-                >
+            <Icon className='advertiser-page__menu-dots-icon' icon='IcMenuDots' onClick={onViewDropdown} size={16} />
+            {is_dropdown_visible && (
+                <div className='advertiser-page__dropdown' onClick={onViewBlockModal}>
                     <Dropdown
                         className='advertiser-page__dropdown-container'
                         is_align_text_right
@@ -42,4 +23,10 @@ const AdvertiserPageDropdown = () => {
     );
 };
 
-export default observer(AdvertiserPageDropdown);
+AdvertiserPageDropdown.propTypes = {
+    is_dropdown_visible: PropTypes.bool.isRequired,
+    onViewBlockModal: PropTypes.func.isRequired,
+    onViewDropdown: PropTypes.func.isRequired,
+};
+
+export default AdvertiserPageDropdown;

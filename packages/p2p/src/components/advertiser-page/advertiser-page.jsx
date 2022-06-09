@@ -15,10 +15,11 @@ import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdown from './advertiser-page-dropdown.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
-import BlockUserModal from './block-user/block-user-modal.jsx';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();
+
+    const [is_dropdown_visible, setIsDropdownVisible] = React.useState(false);
 
     const {
         basic_verification,
@@ -26,25 +27,15 @@ const AdvertiserPage = () => {
         created_time,
         first_name,
         full_verification,
-        is_blocked,
         last_name,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
 
     const joined_since = daysSince(created_time);
 
-    const onCancel = () => {
-        advertiser_page_store.setIsBlockUserModalOpen(false);
-        advertiser_page_store.setIsDropdownVisible(false);
-    };
-
-    const onSubmit = () => {
-        advertiser_page_store.blockUser();
-    };
-
     React.useEffect(() => {
         advertiser_page_store.onMount();
-        advertiser_page_store.setIsDropdownVisible(false);
+        setIsDropdownVisible(false);
 
         return reaction(
             () => advertiser_page_store.active_index,
@@ -65,12 +56,6 @@ const AdvertiserPage = () => {
 
     return (
         <div className='advertiser-page'>
-            <BlockUserModal
-                is_advertiser_blocked={is_blocked}
-                is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
-                onCancel={onCancel}
-                onSubmit={onSubmit}
-            />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}
@@ -84,7 +69,11 @@ const AdvertiserPage = () => {
                     page_title={localize("Advertiser's page")}
                 />
                 <MobileWrapper>
-                    <AdvertiserPageDropdown />
+                    <AdvertiserPageDropdown
+                        is_dropdown_visible={is_dropdown_visible}
+                        onViewBlockModal={() => advertiser_page_store.setIsBlockUserModalOpen(true)}
+                        onViewDropdown={() => setIsDropdownVisible(prevState => !prevState)}
+                    />
                 </MobileWrapper>
             </div>
             <div className='advertiser-page-details-container'>
@@ -127,7 +116,11 @@ const AdvertiserPage = () => {
                         </div>
                     </div>
                     <DesktopWrapper>
-                        <AdvertiserPageDropdown />
+                        <AdvertiserPageDropdown
+                            is_dropdown_visible={is_dropdown_visible}
+                            onViewBlockModal={() => advertiser_page_store.setIsBlockUserModalOpen(true)}
+                            onViewDropdown={() => setIsDropdownVisible(prevState => !prevState)}
+                        />
                     </DesktopWrapper>
                 </div>
                 <AdvertiserPageStats />

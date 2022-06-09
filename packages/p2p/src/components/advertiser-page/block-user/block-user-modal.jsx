@@ -32,11 +32,11 @@ const BlockUserModal = ({ is_advertiser_blocked, is_block_user_modal_open, onCan
                     )}
                 </Text>
             }
-            toggleModal={onCancel}
         >
             <Modal.Body>
                 <Text color='prominent' size='xs'>
                     {is_advertiser_blocked === 1 ? (
+        >
                         <Localize
                             i18n_default_text="You will be able to see {{ advertiser_details_name }}'s ads. They'll be able to place orders on your ads, too."
                             values={{ advertiser_details_name: advertiser_page_store.advertiser_details_name }}

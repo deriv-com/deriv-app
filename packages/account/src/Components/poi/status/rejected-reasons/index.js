@@ -1,3 +1,3 @@
-import { POIRejectedReasons } from './rejected-reasons.jsx';
+import { RejectedReasons } from './rejected-reasons.jsx';
 
-export default POIRejectedReasons;
+export default RejectedReasons;

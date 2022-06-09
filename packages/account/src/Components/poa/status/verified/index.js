@@ -1,3 +1,3 @@
-import PoaVerified from './verified.jsx';
+import { Verified as PoaVerified } from './verified.jsx';
 
 export default PoaVerified;

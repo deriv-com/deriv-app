@@ -3,7 +3,7 @@ import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const PoaNotRequired = () => (
+export const NotRequired = () => (
     <IconMessageContent
         message={localize('Proof of address verification not required')}
         text={localize(

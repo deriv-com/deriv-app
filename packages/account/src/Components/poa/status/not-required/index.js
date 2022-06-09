@@ -1,3 +1,3 @@
-import { PoaNotRequired } from './not-required.jsx';
+import { NotRequired as PoaNotRequired } from './not-required.jsx';
 
 export default PoaNotRequired;

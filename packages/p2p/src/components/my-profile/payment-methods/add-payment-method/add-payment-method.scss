@@ -38,6 +38,17 @@
                 margin-top: auto;
                 padding-top: 1.6rem;
             }
+
+            &--fixed-footer {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                width: 100vw;
+                padding: 1.6rem;
+                border-top: 2px solid var(--general-section-1);
+                z-index: 9999;
+                background: var(--general-main-1);
+            }
         }
 
         &__field {
@@ -48,10 +59,22 @@
             display: flex;
             flex-direction: column;
             width: 100%;
+
+            &-wrapper {
+                .dc-input--error {
+                    margin-bottom: 6rem;
+                }
+            }
         }
 
         &__payment-method-field {
             margin: 3.8rem 0;
+
+            @include mobile {
+                &:last-of-type {
+                    margin-bottom: 10rem;
+                }
+            }
         }
     }
 }

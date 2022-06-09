@@ -175,7 +175,7 @@ import './common/ic-bank-dashboard.svg';
 import './common/ic-bank.svg';
 import './common/ic-bell.svg';
 import './common/ic-black-warning.svg';
-import './common/ic-blocked-user.svg';
+import './common/ic-block.svg';
 import './common/ic-box.svg';
 import './common/ic-calendar-datefrom.svg';
 import './common/ic-calendar-dateto.svg';

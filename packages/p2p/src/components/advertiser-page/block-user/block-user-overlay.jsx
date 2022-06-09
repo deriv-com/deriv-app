@@ -13,7 +13,7 @@ const BlockUserOverlay = ({ children, is_visible, onUnblock }) => {
         return (
             <div className='block-user-overlay'>
                 <div className='block-user-overlay__wrapper'>
-                    <Icon icon='IcBlockedUser' height={159} width={256} />
+                    <Icon icon='IcBlock' height={159} width={256} />
                     <Text className='block-user-overlay__wrapper-text' line_height='m' size='s' weight='bold'>
                         <Localize
                             i18n_default_text='You have blocked {{advertiser_name}}.'

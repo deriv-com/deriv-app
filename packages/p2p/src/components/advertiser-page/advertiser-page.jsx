@@ -71,10 +71,7 @@ const AdvertiserPage = () => {
                 onClick={buy_sell_store.hideAdvertiserPage}
                 page_title={localize("Advertiser's page")}
             />
-            <BlockUserOverlay
-                is_visible={!!is_blocked}
-                onUnblock={() => advertiser_page_store.setIsBlockUserModalOpen(true)}
-            >
+            <BlockUserOverlay is_visible={true} onUnblock={() => advertiser_page_store.setIsBlockUserModalOpen(true)}>
                 <div className='advertiser-page-details-container'>
                     <div className='advertiser-page__header-details'>
                         <UserAvatar

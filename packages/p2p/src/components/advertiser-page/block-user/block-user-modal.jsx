@@ -10,6 +10,7 @@ const BlockUserModal = ({ is_advertiser_blocked, is_block_user_modal_open, onCan
 
     return (
         <Modal
+            has_close_icon={false}
             is_open={is_block_user_modal_open}
             small
             title={
@@ -31,6 +32,7 @@ const BlockUserModal = ({ is_advertiser_blocked, is_block_user_modal_open, onCan
                     )}
                 </Text>
             }
+            toggleModal={onCancel}
         >
             <Modal.Body>
                 <Text color='prominent' size='xs'>

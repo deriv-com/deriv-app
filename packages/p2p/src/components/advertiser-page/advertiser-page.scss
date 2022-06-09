@@ -3,6 +3,53 @@
     display: flex;
     flex-direction: column;
 
+    &__dropdown {
+        box-shadow: 0 1rem 2rem var(--shadow-menu);
+        border-radius: $BORDER_RADIUS;
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+
+        span {
+            color: var(--text-prominent) !important;
+        }
+
+        &-container {
+            margin-top: 0;
+        }
+
+        &--disabled {
+            box-shadow: 0 1rem 2rem var(--shadow-menu);
+            border-radius: $BORDER_RADIUS;
+            position: absolute;
+            right: 0;
+
+            span {
+                color: var(--text-disabled) !important;
+            }
+        }
+    }
+
+    &__menu-dots-icon {
+        cursor: pointer;
+        margin-bottom: 0.8rem;
+    }
+
+    &__menu-dots-toggle {
+        position: absolute;
+        right: 2.4rem;
+
+        @include mobile {
+            bottom: 0.8rem;
+            right: 1.2rem;
+        }
+    }
+
+    &__page-return-header {
+        display: flex;
+        position: relative;
+    }
+
     &__header {
         display: flex;
         flex-direction: column;

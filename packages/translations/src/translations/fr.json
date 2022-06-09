@@ -622,6 +622,7 @@
     "869611522": "Nous facturons des frais de transfert de 2 % ou de {{minimum_fee}} {{currency}}, le montant le plus élevé étant retenu, pour les transferts entre vos comptes Deriv cryptomonnaie et DMT5.",
     "869823595": "Fonction",
     "872549975": "Il vous reste {{number}} virements pour aujourd'hui.",
+    "872661442": "Are you sure you want to update email <0>{{prev_email}}</0> to <1>{{changed_email}}</1>?",
     "872817404": "Heure du point d'entrée",
     "872957901": "Sombre (Bientôt sur DBot)",
     "873166343": "1. «Log» affiche un message régulier.",

@@ -622,6 +622,7 @@
     "869611522": "Kami akan mengenakan biaya transfer sebesar 2% atau {{minimum_fee}} {{currency}}, mana yang lebih tinggi, untuk transfer antara akun mata uang kripto ke akun MT5.",
     "869823595": "Fungsi",
     "872549975": "Anda memiliki {{number}} transfer yang tersisa untuk hari ini.",
+    "872661442": "Are you sure you want to update email <0>{{prev_email}}</0> to <1>{{changed_email}}</1>?",
     "872817404": "Waktu Spot Awal",
     "872957901": "Gelap (segera hadir di DBot)",
     "873166343": "1. 'Log' menampilkan pesan biasa.",

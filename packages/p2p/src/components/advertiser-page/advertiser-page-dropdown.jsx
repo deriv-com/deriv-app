@@ -11,7 +11,7 @@ const AdvertiserPageDropdown = () => {
     const { is_blocked } = advertiser_page_store.advertiser_info;
 
     const viewBlockUserModal = () => {
-        if (is_blocked === 0) {
+        if (!is_blocked) {
             advertiser_page_store.setIsBlockUserModalOpen(true);
         }
     };
@@ -26,7 +26,7 @@ const AdvertiserPageDropdown = () => {
             />
             {advertiser_page_store.is_dropdown_visible && (
                 <div
-                    className={`advertiser-page__dropdown${is_blocked === 1 ? '--disabled' : ''}`}
+                    className={`advertiser-page__dropdown${is_blocked ? '--disabled' : ''}`}
                     onClick={viewBlockUserModal}
                 >
                     <Dropdown

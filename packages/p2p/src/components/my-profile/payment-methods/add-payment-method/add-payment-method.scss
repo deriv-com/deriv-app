@@ -59,6 +59,12 @@
             display: flex;
             flex-direction: column;
             width: 100%;
+
+            &-wrapper {
+                .dc-input--error {
+                    margin-bottom: 6rem;
+                }
+            }
         }
 
         &__payment-method-field {

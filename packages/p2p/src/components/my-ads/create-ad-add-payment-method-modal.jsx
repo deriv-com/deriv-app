@@ -62,8 +62,9 @@ const CreateAdAddPaymentMethodModal = () => {
             >
                 <AddPaymentMethod
                     formik_ref={formik_ref}
+                    should_fixed_footer
                     should_show_page_return={false}
-                    should_show_separated_footer={true}
+                    should_show_separated_footer
                 />
             </MobileFullPageModal>
         );

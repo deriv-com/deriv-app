@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loading, Text } from '@deriv/components';
+import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -12,8 +12,10 @@ import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
+import AdvertiserPageDropdown from './advertiser-page-dropdown.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
+import BlockUserModal from './block-user/block-user-modal.jsx';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();
@@ -24,14 +26,25 @@ const AdvertiserPage = () => {
         created_time,
         first_name,
         full_verification,
+        is_blocked,
         last_name,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
 
     const joined_since = daysSince(created_time);
 
+    const onCancel = () => {
+        advertiser_page_store.setIsBlockUserModalOpen(false);
+        advertiser_page_store.setIsDropdownVisible(false);
+    };
+
+    const onSubmit = () => {
+        advertiser_page_store.blockUser();
+    };
+
     React.useEffect(() => {
         advertiser_page_store.onMount();
+        advertiser_page_store.setIsDropdownVisible(false);
 
         return reaction(
             () => advertiser_page_store.active_index,
@@ -52,17 +65,28 @@ const AdvertiserPage = () => {
 
     return (
         <div className='advertiser-page'>
+            <BlockUserModal
+                is_advertiser_blocked={is_blocked}
+                is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
+                onCancel={onCancel}
+                onSubmit={onSubmit}
+            />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}
                 setShouldShowPopup={advertiser_page_store.setShowAdPopup}
                 table_type={advertiser_page_store.counterparty_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL}
             />
-            <PageReturn
-                className='buy-sell__advertiser-page-return'
-                onClick={buy_sell_store.hideAdvertiserPage}
-                page_title={localize("Advertiser's page")}
-            />
+            <div className='advertiser-page__page-return-header'>
+                <PageReturn
+                    className='buy-sell__advertiser-page-return'
+                    onClick={buy_sell_store.hideAdvertiserPage}
+                    page_title={localize("Advertiser's page")}
+                />
+                <MobileWrapper>
+                    <AdvertiserPageDropdown />
+                </MobileWrapper>
+            </div>
             <div className='advertiser-page-details-container'>
                 <div className='advertiser-page__header-details'>
                     <UserAvatar
@@ -102,6 +126,9 @@ const AdvertiserPage = () => {
                             />
                         </div>
                     </div>
+                    <DesktopWrapper>
+                        <AdvertiserPageDropdown />
+                    </DesktopWrapper>
                 </div>
                 <AdvertiserPageStats />
             </div>

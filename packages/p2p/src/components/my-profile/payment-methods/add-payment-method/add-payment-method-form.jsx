@@ -7,8 +7,13 @@ import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { usePaymentMethodValidator } from 'Components/hooks';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { isMobile } from '@deriv/shared';
 
-const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false }) => {
+const AddPaymentMethodForm = ({
+    formik_ref,
+    should_fixed_footer = isMobile(),
+    should_show_separated_footer = false,
+}) => {
     const { my_ads_store, my_profile_store } = useStores();
     const validateFields = usePaymentMethodValidator();
 
@@ -102,6 +107,7 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
                             <div
                                 className={classNames('add-payment-method-form__buttons', {
                                     'add-payment-method-form__buttons--separated-footer': should_show_separated_footer,
+                                    'add-payment-method-form__buttons--fixed-footer': should_fixed_footer,
                                 })}
                             >
                                 <Button
@@ -159,6 +165,7 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
 
 AddPaymentMethodForm.propTypes = {
     formik_ref: PropTypes.shape({ current: PropTypes.any }),
+    should_fixed_footer: PropTypes.bool,
     should_show_separated_footer: PropTypes.bool,
 };
 

@@ -1348,6 +1348,7 @@ $MIN_HEIGHT_FLOATING: calc(
             min-width: 100px;
             &-dashboard {
                 flex-direction: column !important;
+                align-items: flex-start;
                 margin-left: 1.6rem;
                 & span {
                     display: list-item;
@@ -1415,11 +1416,16 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 2rem;
         }
         &__fieldset {
-            margin: -3rem 0.6rem 5rem;
+            margin: -2.5rem 0.6rem 5rem;
             height: 5rem;
         }
         &__upload-field {
             margin-top: -2rem;
+        }
+
+        &__notes-container {
+            margin: 0.8rem;
+            padding: 0.4rem 0;
         }
     }
 }

@@ -7,15 +7,17 @@ import {
     MobileWrapper,
     SelectNative,
     FormSubmitErrorMessage,
+    Text,
     Timeline,
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
-import { localize } from '@deriv/translations';
+import FormSubHeader from 'Components/form-sub-header';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import LoadErrorMessage from 'Components/load-error-message';
-import PoincFileUploaderContainer from 'Components/file-uploader-container/poinc-file-uploader-container.jsx';
+import PoincFileUploaderContainer from 'Components/poinc-file-uploader-container';
 
 let file_uploader_ref = null;
 
@@ -31,22 +33,22 @@ const ProofOfIncomeForm = ({
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
 
     const initial_form_values = {
-        document_input: '',
+        document_type: '',
     };
 
     const validateFields = values => {
         const errors = {};
-        const { document_input } = values;
+        const { document_type } = values;
 
-        if (!document_input) {
+        if (!document_type) {
             setInactiveItems([2]);
-            errors.document_input = localize('This field is required.');
-        } else if (!poinc_documents_list.find(c => c.text === document_input)) {
+            errors.document_type = localize('This field is required.');
+        } else if (!poinc_documents_list.find(c => c.text === document_type)) {
             setInactiveItems([2]);
-            errors.document_input = localize('This field is required.');
+            errors.document_type = localize('This field is required.');
         }
 
-        if (!errors.document_input) {
+        if (!errors.document_type) {
             setInactiveItems([]);
         }
 
@@ -55,10 +57,6 @@ const ProofOfIncomeForm = ({
 
     // Settings update is handled here
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
-        const document_type_value = poinc_documents_list.find(doc => doc.text === values.document_input)?.value;
-        delete values.document_input;
-        values.document_type = document_type_value;
-
         setStatus({ msg: '' });
         WS.setSettings(values).then(data => {
             if (!data.error) {
@@ -123,13 +121,13 @@ const ProofOfIncomeForm = ({
                     <Timeline inactive_items={inactive_items}>
                         <Timeline.Item>
                             <fieldset className='account-poinc-form__fieldset'>
-                                <Field name='document_input'>
+                                <Field name='document_type'>
                                     {({ field }) => (
                                         <React.Fragment>
                                             <DesktopWrapper>
                                                 <Autocomplete
                                                     {...field}
-                                                    name='document_input'
+                                                    name='document_type'
                                                     data-lpignore='true'
                                                     autoComplete='off'
                                                     type='text'
@@ -137,12 +135,12 @@ const ProofOfIncomeForm = ({
                                                     placeholder={localize(
                                                         'Please select the document you wish to upload*'
                                                     )}
-                                                    error={touched.document_input && errors.document_input}
+                                                    error={touched.document_type && errors.document_type}
                                                     list_items={poinc_documents_list}
-                                                    value={values.document_input}
+                                                    value={values.document_type}
                                                     onChange={handleChange}
                                                     onItemSelection={({ value, text }) => {
-                                                        setFieldValue('document_input', value ? text : '', true);
+                                                        setFieldValue('document_type', value ? text : '', true);
                                                     }}
                                                     required
                                                 />
@@ -150,16 +148,16 @@ const ProofOfIncomeForm = ({
                                             <MobileWrapper>
                                                 <SelectNative
                                                     // {...field}
-                                                    name='document_input'
+                                                    name='document_type'
                                                     placeholder={localize(
                                                         'Please select the document you wish to upload*'
                                                     )}
-                                                    value={values.document_input}
+                                                    value={values.document_type}
                                                     list_items={poinc_documents_list}
-                                                    error={touched.document_input && errors.document_input}
+                                                    error={touched.document_type && errors.document_type}
                                                     use_text={true}
                                                     onChange={e => {
-                                                        setFieldValue('document_input', e.target.value, true);
+                                                        setFieldValue('document_type', e.target.value, true);
                                                     }}
                                                     required
                                                 />
@@ -171,6 +169,20 @@ const ProofOfIncomeForm = ({
                         </Timeline.Item>
                         <Timeline.Item>
                             <div className='account-poinc-form__upload-field'>
+                                <div className='account-poinc-form__notes-container'>
+                                    <FormSubHeader title={localize('Please note:')} />
+                                    <div className='account__file-uploader-box account__file-uploader-box-dashboard'>
+                                        <Text size='xs' line_height='s'>
+                                            <Localize i18n_default_text='The document must be up-to-date and signed by the issuance authority' />
+                                        </Text>
+                                        <Text size='xs' line_height='s'>
+                                            <Localize i18n_default_text='The document must contain a letterhead' />
+                                        </Text>
+                                        <Text size='xs' line_height='s'>
+                                            <Localize i18n_default_text='Invalid or incomplete documents shall be rejected' />
+                                        </Text>
+                                    </div>
+                                </div>
                                 <PoincFileUploaderContainer
                                     onRef={ref => (file_uploader_ref = ref)}
                                     onFileDrop={df =>
@@ -192,7 +204,7 @@ const ProofOfIncomeForm = ({
                             type='submit'
                             is_disabled={
                                 isSubmitting ||
-                                !!(!values.document_input || errors.document_input) ||
+                                !!(!values.document_type || errors.document_type) ||
                                 (document_file.files && document_file.files.length < 1) ||
                                 !!document_file.error_message
                             }

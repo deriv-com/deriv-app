@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext, isDesktop, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import FileUploader from './file-uploader.jsx';
+import FileUploader from '../file-uploader';
 
 const FileProperties = () => {
     const properties = [

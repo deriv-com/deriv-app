@@ -2,7 +2,7 @@ import { action, computed, observable } from 'mobx';
 import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import ServerTime from 'Utils/server-time';
-import { requestWS } from 'Utils/websocket';
+import { subscribeWS } from 'Utils/websocket';
 
 export default class FloatingRateStore extends BaseStore {
     @observable fixed_rate_adverts_status;
@@ -10,8 +10,11 @@ export default class FloatingRateStore extends BaseStore {
     @observable float_rate_offset_limit;
     @observable fixed_rate_adverts_end_date;
     @observable exchange_rate;
-    @observable change_ad_alert;
+    @observable change_ad_alert = false;
+    @observable is_loading;
     @observable api_error_message = '';
+
+    exchange_rate_subscription = {};
 
     @computed
     get rate_type() {
@@ -24,7 +27,7 @@ export default class FloatingRateStore extends BaseStore {
     @computed
     get reached_target_date() {
         // Ensuring the date is translated to EOD GMT without the time difference
-        const current_date = new Date(ServerTime.get()) || new Date(new Date().getTime()).setUTCHours(23, 59, 59, 999);
+        const current_date = new Date(ServerTime.get()) ?? new Date(new Date().getTime()).setUTCHours(23, 59, 59, 999);
         const cutoff_date = new Date(new Date(this.fixed_rate_adverts_end_date).getTime()).setUTCHours(23, 59, 59, 999);
         return current_date > cutoff_date;
     }
@@ -53,6 +56,10 @@ export default class FloatingRateStore extends BaseStore {
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
     }
+    @action.bound
+    setIsLoading(state) {
+        this.is_loading = state;
+    }
 
     @action.bound
     setExchangeRate(fiat_currency, local_currency) {
@@ -62,16 +69,26 @@ export default class FloatingRateStore extends BaseStore {
             subscribe: 1,
             target_currency: local_currency,
         };
-        requestWS(payload).then(response => {
-            if (response) {
-                if (response.error) {
-                    this.setApiErrorMessage(response.error.message);
-                } else {
-                    const { rates } = response.exchange_rates;
-                    this.exchange_rate = parseFloat(rates[local_currency]);
-                    this.setApiErrorMessage(null);
+        this.exchange_rate_subscription = subscribeWS(payload, [
+            response => {
+                if (response) {
+                    if (response.error) {
+                        this.setApiErrorMessage(response.error.message);
+                        this.unSubscribeFromExchangeRates();
+                    } else {
+                        const { rates } = response.exchange_rates;
+                        this.exchange_rate = parseFloat(rates[local_currency]);
+                        this.setApiErrorMessage(null);
+                    }
                 }
-            }
-        });
+            },
+        ]);
+    }
+
+    @action.bound
+    unSubscribeFromExchangeRates() {
+        if (this.exchange_rate_subscription.unsubscribe) {
+            this.exchange_rate_subscription.unsubscribe();
+        }
     }
 }

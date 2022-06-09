@@ -264,6 +264,14 @@
             right: 0;
             top: 0;
 
+            &--disable {
+                cursor: not-allowed;
+
+                @include mobile {
+                    background-color: var(--checkbox-disabled-grey) !important;
+                }
+            }
+
             @include mobile {
                 display: flex;
                 justify-content: unset;
@@ -289,7 +297,7 @@
 
                 @include mobile {
                     align-items: center;
-                    background-color: var(--brand-orange);
+                    background-color: var(--status-warning);
                     display: flex;
                     height: 100%;
                     justify-content: center;
@@ -644,13 +652,14 @@
         width: fit-content;
 
         @include mobile {
-            margin: 1.6rem 1.6rem 0;
+            margin: 1rem 2rem;
 
             .dc-hint-box {
                 align-items: normal;
 
                 &__icon {
                     width: 3.5rem;
+                    align-items: flex-start;
                 }
             }
         }
@@ -702,6 +711,23 @@
     }
 }
 
+.edit-ad__offer-amt {
+    .dc-input__label {
+        color: var(--text-general);
+        -webkit-text-fill-color: var(--text-general);
+    }
+
+    .dc-input__field:disabled {
+        color: var(--text-less-prominent);
+        -webkit-text-fill-color: var(--text-less-prominent);
+    }
+}
+
+.dc-modal__container_switch-ads {
+    @include mobile {
+        min-width: 328px !important;
+    }
+}
 .p2p-my-ads__modal-icon {
     margin-right: 0.8rem;
 }

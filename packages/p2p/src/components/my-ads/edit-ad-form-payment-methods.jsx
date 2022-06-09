@@ -6,7 +6,7 @@ import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize, Localize } from 'Components/i18next';
 
-const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods }) => {
+const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods, touched }) => {
     const { my_ads_store, my_profile_store } = useStores();
 
     const style = {
@@ -20,6 +20,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
                 payment_method_id => payment_method_id !== value
             );
             setSelectedMethods(selected_methods.filter(i => i !== value));
+            touched(true);
         }
     };
 
@@ -36,6 +37,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
                 );
                 setSelectedMethods(selected_methods.filter(i => i !== value));
             }
+            touched(true);
         }
     };
 
@@ -51,6 +53,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
             );
             setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
         }
+        touched(true);
     };
 
     React.useEffect(() => {

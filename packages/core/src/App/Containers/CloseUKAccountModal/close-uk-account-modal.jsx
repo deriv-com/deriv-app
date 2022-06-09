@@ -41,10 +41,7 @@ export const CloseUKAccountContent = ({ showCloseUKAccountPopup, removeNotificat
                 <Localize i18n_default_text='Please proceed to withdraw all your funds from your account.' />
             </Text>
             <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>
-                <Localize
-                    i18n_default_text='You will lose access to your account when it gets closed, so be sure to withdraw all your
-funds.'
-                />
+                <Localize i18n_default_text='You will lose access to your account when it gets closed, so be sure to withdraw all your funds.' />
             </Text>
         </div>
         <div className='close-uk-account dc-dialog__footer'>

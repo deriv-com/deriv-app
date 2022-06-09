@@ -616,7 +616,7 @@
         width: fit-content;
 
         @include mobile {
-            margin: 1.6rem;
+            margin: 1.6rem 1.6rem 0;
 
             .dc-hint-box {
                 align-items: normal;
@@ -630,6 +630,7 @@
 
     &__modal-body--scroll {
         overflow: auto;
+        margin-bottom: 7.5rem;
     }
 
     .toggle-ads {
@@ -671,4 +672,8 @@
             padding-bottom: 1rem;
         }
     }
+}
+
+.p2p-my-ads__modal-icon {
+    margin-right: 0.8rem;
 }

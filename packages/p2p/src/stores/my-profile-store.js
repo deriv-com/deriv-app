@@ -84,6 +84,7 @@ export default class MyProfileStore extends BaseStore {
             should_show_edit_payment_method_form: observable,
             advertiser_has_payment_methods: computed,
             advertiser_payment_methods_list: computed,
+            payment_method_field_set: computed,
             initial_values: computed,
             payment_method_info: computed,
             payment_methods_list_items: computed,
@@ -158,6 +159,13 @@ export default class MyProfileStore extends BaseStore {
         return list;
     }
 
+    get payment_method_field_set() {
+        // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
+        return this.selected_payment_method_fields.reduce((dict, field_data) => {
+            return { ...dict, [field_data[0]]: field_data[1].display_name };
+        }, {});
+    }
+  
     get initial_values() {
         const object = {};
 

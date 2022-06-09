@@ -8,5 +8,3 @@ const App = makeLazyLoader(
 )();
 
 export default App;
-
-// test

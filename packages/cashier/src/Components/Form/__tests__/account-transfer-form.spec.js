@@ -194,61 +194,6 @@ describe('<AccountTransferForm />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show notes with proper messages if is_dxtrade_allowed', () => {
-        isMobile.mockReturnValue(true);
-        const props = mockProps();
-        props.account_limits = {
-            daily_transfers: {
-                mt5: {
-                    allowed: 1,
-                },
-                dxtrade: {
-                    allowed: 1,
-                },
-                internal: {
-                    allowed: 1,
-                },
-            },
-        };
-
-        render(<AccountTransferForm {...props} is_dxtrade_allowed />);
-
-        expect(
-            screen.getByText('You may transfer between your Deriv fiat, cryptocurrency, DMT5, and Deriv X accounts.')
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Each day, you can make up to 1 transfers between your Deriv accounts, up to 1 transfers between your Deriv and DMT5 accounts, and up to 1 transfers between your Deriv and Deriv X accounts.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show notes with proper messages if is_dxtrade_allowed is false', () => {
-        isMobile.mockReturnValue(true);
-        const props = mockProps();
-        props.account_limits = {
-            daily_transfers: {
-                mt5: {
-                    allowed: 1,
-                },
-                internal: {
-                    allowed: 1,
-                },
-            },
-        };
-
-        render(<AccountTransferForm {...props} is_dxtrade_allowed={false} />);
-
-        expect(
-            screen.getByText('You may transfer between your Deriv fiat, cryptocurrency, and DMT5 accounts.')
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Each day, you can make up to 1 transfers between your Deriv accounts and up to 1 transfers between your Deriv and DMT5 accounts.'
-            )
-        ).toBeInTheDocument();
-    });
-
     it('should show proper hint about mt5 remained transfers', () => {
         isMobile.mockReturnValue(true);
         const props = mockProps();
@@ -301,69 +246,6 @@ describe('<AccountTransferForm />', () => {
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
 
-    it('should show proper note if no transfer fee and dxtrade_allowed ', () => {
-        isMobile.mockReturnValue(true);
-        const props = mockProps();
-        props.selected_from.is_mt = true;
-        props.selected_to.is_mt = true;
-        props.transfer_fee = 0;
-
-        render(<AccountTransferForm {...props} is_dxtrade_allowed />);
-
-        expect(
-            screen.getByText(
-                'We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts and between your Deriv fiat and Deriv X accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if no transfer fee and is_dxtrade_allowed is false ', () => {
-        isMobile.mockReturnValue(true);
-        const props = mockProps();
-        props.selected_from.is_mt = true;
-        props.selected_to.is_mt = true;
-        props.transfer_fee = 0;
-
-        render(<AccountTransferForm {...props} is_dxtrade_allowed={false} />);
-        expect(
-            screen.getByText(
-                'You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and DMT5 accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is 1% and is_dxtrade_allowed ', () => {
-        isMobile.mockReturnValue(true);
-        const props = mockProps();
-        props.selected_from.is_mt = true;
-        props.selected_to.is_mt = true;
-        props.transfer_fee = 1;
-
-        render(<AccountTransferForm {...props} is_dxtrade_allowed />);
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and DMT5 accounts and between your Deriv fiat and Deriv X accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is 1% and is_dxtrade_allowed is false ', () => {
-        isMobile.mockReturnValue(true);
-        const props = mockProps();
-        props.transfer_fee = 1;
-        props.selected_from.is_mt = true;
-        props.selected_to.is_mt = true;
-
-        render(<AccountTransferForm {...props} is_dxtrade_allowed={false} />);
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and DMT5 accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
     it('should show proper note if transfer fee is 2% and is_crypto_to_crypto_transfer', () => {
         isMobile.mockReturnValue(true);
         const props = mockProps();
@@ -376,22 +258,6 @@ describe('<AccountTransferForm />', () => {
         expect(
             screen.getByText(
                 'We’ll charge a 2% transfer fee or 0 BTC, whichever is higher, for transfers between your Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is 2%, is_mt_transfer and is_dxtrade_allowed', () => {
-        isMobile.mockReturnValue(true);
-        const props = mockProps();
-        props.selected_from.is_mt = true;
-        props.selected_to.is_mt = true;
-        props.transfer_fee = 2;
-
-        render(<AccountTransferForm {...props} is_dxtrade_allowed />);
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts and between your Deriv cryptocurrency and Deriv X accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
     });

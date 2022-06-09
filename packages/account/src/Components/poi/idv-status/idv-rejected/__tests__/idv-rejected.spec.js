@@ -1,8 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import IdvRejected from '../poi-idv-rejected';
+import IdvRejected from '../idv-rejected';
 
-jest.mock('../../../Assets/ic-idv-document-rejected.svg', () => jest.fn(() => 'IdvDocumentRejected'));
+jest.mock('../../../../../Assets/ic-idv-document-rejected.svg', () => jest.fn(() => 'IdvDocumentRejected'));
 
 describe('<IdvRejected/>', () => {
     const mockHandleRequireSubmission = jest.fn();

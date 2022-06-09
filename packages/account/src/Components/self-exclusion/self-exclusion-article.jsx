@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { PlatformContext, isDesktop, isMobile } from '@deriv/shared';
+import { getBrandWebsiteName, getPlatformSettings, PlatformContext, isDesktop, isMobile } from '@deriv/shared';
 import AccountArticle from 'Components/article/article.jsx';
 import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content.jsx';
 import SelfExclusionContext from './self-exclusion-context';
@@ -19,13 +19,19 @@ const SelfExclusionArticle = () => {
                     : [
                           is_eu ? (
                               <Localize
-                                  i18n_default_text='These trading limits and self-exclusion help you control the amount of money and time you spend on Deriv.com and exercise <0>responsible trading</0>.'
+                                  i18n_default_text='These trading limits and self-exclusion help you control the amount of money and time you spend on {{brand_website_name}} and exercise <0>responsible trading</0>.'
                                   components={[<StaticUrl key={0} className='link' href='/responsible' />]}
+                                  values={{ brand_website_name: getBrandWebsiteName() }}
                               />
                           ) : (
                               <Localize
-                                  i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on DTrader, DBot, and SmartTrader. The limits you set here will help you exercise <0>responsible trading</0>.'
+                                  i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on {{platform_name_trader}}, {{platform_name_dbot}}, and {{platform_name_smarttrader}}. The limits you set here will help you exercise <0>responsible trading</0>.'
                                   components={[<StaticUrl key={0} className='link' href='/responsible' />]}
+                                  values={{
+                                      platform_name_trader: getPlatformSettings('trader').name,
+                                      platform_name_dbot: getPlatformSettings('dbot').name,
+                                      platform_name_smarttrader: getPlatformSettings('smarttrader').name,
+                                  }}
                               />
                           ),
                       ]

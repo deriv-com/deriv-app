@@ -471,7 +471,7 @@ const AccountTransferForm = ({
                                 <Loading className='cashier__loader' is_fullscreen={false} />
                             </div>
                         ) : (
-                            <Form>
+                            <Form noValidate>
                                 <div className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'>
                                     <Dropdown
                                         id='transfer_from'

@@ -16,7 +16,7 @@ type TLocalCurrencyConfig = {
     decimal_places: number;
 };
 
-type TP2PCashier = RouteComponentProps & {
+type TP2PCashierProps = RouteComponentProps & {
     currency: string;
     is_dark_mode_on: boolean;
     is_logging_in: boolean;
@@ -42,7 +42,7 @@ const P2PCashier = ({
     platform,
     residence,
     setNotificationCount,
-}: TP2PCashier) => {
+}: TP2PCashierProps) => {
     const [order_id, setOrderId] = React.useState<string | null>(null);
     const server_time = {
         get,

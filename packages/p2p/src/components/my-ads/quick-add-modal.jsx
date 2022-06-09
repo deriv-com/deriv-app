@@ -277,7 +277,11 @@ const QuickAddModal = ({ advert }) => {
                 }
             >
                 {my_ads_store.should_show_add_payment_method ? (
-                    <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                    <AddPaymentMethod
+                        should_fixed_footer
+                        should_show_page_return={false}
+                        should_show_separated_footer={true}
+                    />
                 ) : (
                     <>
                         <Text color='prominent' size='xxs'>

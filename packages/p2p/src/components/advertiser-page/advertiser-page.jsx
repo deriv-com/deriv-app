@@ -15,6 +15,7 @@ import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
 import BlockUserOverlay from './block-user/block-user-overlay';
+import BlockUserModal from './block-user/block-user-modal';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();
@@ -53,7 +54,12 @@ const AdvertiserPage = () => {
 
     return (
         <div className='advertiser-page'>
-            {!!is_blocked && <BlockUserOverlay />}
+            <BlockUserModal
+                is_advertiser_blocked={!!is_blocked}
+                is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
+                onCancel={() => advertiser_page_store.setIsBlockUserModalOpen(false)}
+                onSubmit={advertiser_page_store.unblockUser}
+            />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}
@@ -65,8 +71,10 @@ const AdvertiserPage = () => {
                 onClick={buy_sell_store.hideAdvertiserPage}
                 page_title={localize("Advertiser's page")}
             />
-            {/* TODO: Show Unblock confirmation modal when user clicks on this button */}
-            <BlockUserOverlay is_visible={is_blocked} onUnblock={() => true}>
+            <BlockUserOverlay
+                is_visible={!!is_blocked}
+                onUnblock={() => advertiser_page_store.setIsBlockUserModalOpen(true)}
+            >
                 <div className='advertiser-page-details-container'>
                     <div className='advertiser-page__header-details'>
                         <UserAvatar

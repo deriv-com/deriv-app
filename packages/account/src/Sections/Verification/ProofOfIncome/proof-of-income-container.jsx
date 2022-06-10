@@ -5,6 +5,7 @@ import { Loading, useStateCallback } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import PoincUnverified from 'Components/poinc-unverified';
 import PoincReceived from 'Components/poinc-received';
+import PoincLimited from 'Components/poinc-limited';
 import PoincVerified from 'Components/poinc-verified';
 import PoincNotRequired from 'Components/poinc-not-required';
 import ProofOfIncomeForm from './proof-of-income-form.jsx';
@@ -68,6 +69,8 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
             return <PoincVerified />;
         case income_status_codes.rejected:
             return <PoincUnverified onReSubmit={onReSubmit} />;
+        case income_status_codes.suspected:
+            return <PoincLimited />;
         default:
             return null;
     }

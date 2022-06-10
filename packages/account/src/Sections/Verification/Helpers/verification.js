@@ -19,7 +19,8 @@ export const populateVerificationStatus = account_status => {
     const identity_status = identity.status;
     const document_status = document.status;
     // const income_status = income.status;
-    const income_status = 'none'; /* this line should be removed and uncomitted above one */
+    const income_status =
+        'none'; /* this line should be removed and uncomitted above one, different statuses can be checked */
 
     const { idv, onfido, manual } = identity.services;
     const identity_last_attempt = attempts.latest;

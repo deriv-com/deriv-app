@@ -329,6 +329,7 @@ import './common/ic-poi-verified-dashboard.svg';
 import './common/ic-poi-verified.svg';
 import './common/ic-poinc-failed.svg';
 import './common/ic-poinc-received.svg';
+import './common/ic-poinc-unverified.svg';
 import './common/ic-poinc-verified.svg';
 import './common/ic-portfolio.svg';
 import './common/ic-profile.svg';

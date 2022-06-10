@@ -57,6 +57,7 @@ const ProofOfIncomeForm = ({
 
     // Settings update is handled here
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
+        values.document_type = poinc_documents_list.find(doc => doc.text === values.document_type)?.value;
         setStatus({ msg: '' });
         WS.setSettings(values).then(data => {
             if (!data.error) {
@@ -92,6 +93,8 @@ const ProofOfIncomeForm = ({
                                         removeNotificationByKey({ key: 'authenticate' });
                                         removeNotificationMessage({ key: 'needs_poinc' });
                                         removeNotificationByKey({ key: 'needs_poinc' });
+                                        removeNotificationMessage({ key: 'poinc_upload_limited' });
+                                        removeNotificationByKey({ key: 'poinc_upload_limited' });
                                         onSubmit();
                                         if (needs_poinc) {
                                             addNotificationByKey('needs_poinc');

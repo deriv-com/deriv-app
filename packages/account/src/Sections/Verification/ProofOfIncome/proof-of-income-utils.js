@@ -3,6 +3,7 @@ export const income_status_codes = {
     pending: 'pending',
     rejected: 'rejected',
     verified: 'verified',
+    suspected: 'suspected',
 };
 
 export const poinc_documents_list = [

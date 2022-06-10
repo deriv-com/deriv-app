@@ -10,6 +10,9 @@ jest.mock('Stores', () => ({
             client: { local_currency_config: { decimal_places: 2 } },
             setCurrentFocus: jest.fn(),
         },
+        floating_rate_store: {
+            exchange_rate: '100',
+        },
     }),
 }));
 
@@ -28,14 +31,14 @@ describe('<FloatingRate/>', () => {
     });
 
     it('should render market rate feed based on the floating rate value passed', () => {
-        render(<FloatingRate value='+2' exchange_rate='100' />);
+        render(<FloatingRate value='+2' />);
 
         expect(screen.getByText('Your rate is = 102.00')).toBeInTheDocument();
     });
 
     it('should render the exchange rate in hint', () => {
-        render(<FloatingRate exchange_rate='20' fiat_currency='AED' local_currency='INR' />);
+        render(<FloatingRate fiat_currency='AED' local_currency='INR' />);
 
-        expect(screen.getByText('1 AED = 20.00 INR')).toBeInTheDocument();
+        expect(screen.getByText('1 AED = 100.00 INR')).toBeInTheDocument();
     });
 });

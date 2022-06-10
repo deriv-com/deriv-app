@@ -5,6 +5,7 @@ import { Autocomplete, Icon } from '@deriv/components';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
+import './buy-ad-payment-methods-list.scss';
 
 const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
@@ -67,7 +68,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
 
     if (selected_methods?.length > 0) {
         return (
-            <React.Fragment>
+            <div className='buy-ad-payment-methods-list__container'>
                 {selected_methods.map((payment_method, key) => {
                     const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
                     const payment_method_icon = method.replace(' ', '');
@@ -82,6 +83,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                             autoComplete='off' // prevent chrome autocomplete
                                             className='quick-add-modal--input'
                                             data-lpignore='true'
+                                            is_alignment_top
                                             leading_icon={
                                                 <Icon
                                                     icon={
@@ -93,6 +95,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                                 />
                                             }
                                             list_items={payment_methods_list}
+                                            list_portal_id='deriv_app'
                                             onBlur={e => {
                                                 e.preventDefault();
                                                 const value = checkValidPaymentMethod(e.target.value);
@@ -139,6 +142,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                                 is_alignment_top
                                                 leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                                 list_items={payment_methods_list}
+                                                list_portal_id='deriv_app'
                                                 onItemSelection={({ value }) => onClickPaymentMethodItem(value)}
                                                 onBlur={e => {
                                                     e.preventDefault();
@@ -146,6 +150,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                                 }}
                                                 placeholder={localize('Add')}
                                                 required
+                                                trailing_icon={<></>}
                                                 type='text'
                                             />
                                         </div>
@@ -154,37 +159,41 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                             )}
                         </Formik>
                     )}
-            </React.Fragment>
+            </div>
         );
     }
 
     return (
-        <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-            {({ setFieldValue }) => (
-                <Field name='payment_method'>
-                    {({ field }) => (
-                        <div className='p2p-my-ads--border'>
-                            <Autocomplete
-                                {...field}
-                                autoComplete='off' // prevent chrome autocomplete
-                                className='quick-add-modal--input'
-                                data-lpignore='true'
-                                is_alignment_top
-                                leading_icon={<Icon icon='IcAddOutline' size={14} />}
-                                list_items={payment_methods_list}
-                                onItemSelection={({ text, value }) => {
-                                    setFieldValue('payment_method', value ? text : '');
-                                    onClickPaymentMethodItem(value);
-                                }}
-                                placeholder={localize('Add')}
-                                required
-                                type='text'
-                            />
-                        </div>
-                    )}
-                </Field>
-            )}
-        </Formik>
+        <div className='buy-ad-payment-methods-list__container'>
+            <Formik enableReinitialize initialValues={{ payment_method: '' }}>
+                {({ setFieldValue }) => (
+                    <Field name='payment_method'>
+                        {({ field }) => (
+                            <div className='p2p-my-ads--border'>
+                                <Autocomplete
+                                    {...field}
+                                    autoComplete='off' // prevent chrome autocomplete
+                                    className='quick-add-modal--input'
+                                    data-lpignore='true'
+                                    is_alignment_top
+                                    leading_icon={<Icon icon='IcAddOutline' size={14} />}
+                                    list_items={payment_methods_list}
+                                    list_portal_id='deriv_app'
+                                    onItemSelection={({ text, value }) => {
+                                        setFieldValue('payment_method', value ? text : '');
+                                        onClickPaymentMethodItem(value);
+                                    }}
+                                    placeholder={localize('Add')}
+                                    required
+                                    trailing_icon={<></>}
+                                    type='text'
+                                />
+                            </div>
+                        )}
+                    </Field>
+                )}
+            </Formik>
+        </div>
     );
 };
 

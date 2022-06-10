@@ -11,6 +11,8 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
     const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
 
+    const MAX_PAYMENT_METHOD_SELECTION = 3;
+
     React.useEffect(() => {
         setPaymentMethodsList(
             my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
@@ -48,7 +50,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
 
     const onClickPaymentMethodItem = value => {
         if (value && !my_ads_store.payment_method_names.includes(value)) {
-            if (my_ads_store.payment_method_names.length < 3) {
+            if (my_ads_store.payment_method_names.length < MAX_PAYMENT_METHOD_SELECTION) {
                 my_ads_store.payment_method_names.push(value);
                 setSelectedMethods([...selected_methods, value]);
                 setPaymentMethodsList(payment_methods_list.filter(payment_method => payment_method.value !== value));
@@ -122,35 +124,36 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                         </Formik>
                     );
                 })}
-                {my_ads_store.payment_method_names.length < 3 && payment_methods_list.length > 0 && (
-                    <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-                        {({ setFieldValue }) => (
-                            <Field name='payment_method'>
-                                {({ field }) => (
-                                    <div className='p2p-my-ads--border'>
-                                        <Autocomplete
-                                            {...field}
-                                            autoComplete='off' // prevent chrome autocomplete
-                                            className='quick-add-modal--input'
-                                            data-lpignore='true'
-                                            is_alignment_top
-                                            leading_icon={<Icon icon='IcAddOutline' size={14} />}
-                                            list_items={payment_methods_list}
-                                            onItemSelection={({ value }) => onClickPaymentMethodItem(value)}
-                                            onBlur={e => {
-                                                e.preventDefault();
-                                                setFieldValue('payment_method', '');
-                                            }}
-                                            placeholder={localize('Add')}
-                                            required
-                                            type='text'
-                                        />
-                                    </div>
-                                )}
-                            </Field>
-                        )}
-                    </Formik>
-                )}
+                {my_ads_store.payment_method_names.length < MAX_PAYMENT_METHOD_SELECTION &&
+                    payment_methods_list.length > 0 && (
+                        <Formik enableReinitialize initialValues={{ payment_method: '' }}>
+                            {({ setFieldValue }) => (
+                                <Field name='payment_method'>
+                                    {({ field }) => (
+                                        <div className='p2p-my-ads--border'>
+                                            <Autocomplete
+                                                {...field}
+                                                autoComplete='off' // prevent chrome autocomplete
+                                                className='quick-add-modal--input'
+                                                data-lpignore='true'
+                                                is_alignment_top
+                                                leading_icon={<Icon icon='IcAddOutline' size={14} />}
+                                                list_items={payment_methods_list}
+                                                onItemSelection={({ value }) => onClickPaymentMethodItem(value)}
+                                                onBlur={e => {
+                                                    e.preventDefault();
+                                                    setFieldValue('payment_method', '');
+                                                }}
+                                                placeholder={localize('Add')}
+                                                required
+                                                type='text'
+                                            />
+                                        </div>
+                                    )}
+                                </Field>
+                            )}
+                        </Formik>
+                    )}
             </React.Fragment>
         );
     }

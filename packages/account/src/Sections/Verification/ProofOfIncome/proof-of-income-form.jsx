@@ -17,7 +17,7 @@ import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import LoadErrorMessage from 'Components/load-error-message';
-import PoincFileUploaderContainer from 'Components/poinc-file-uploader-container';
+import PoincFileUploaderContainer from 'Components/poinc/poinc-file-uploader-container';
 
 let file_uploader_ref = null;
 

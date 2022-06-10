@@ -3,7 +3,7 @@ import { Localize, localize } from '@deriv/translations';
 import React from 'react';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Received = () => {
+export const PoincReceived = () => {
     return (
         <IconMessageContent
             message={localize("We've received your proof of income")}

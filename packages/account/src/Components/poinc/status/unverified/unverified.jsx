@@ -3,7 +3,7 @@ import { Button, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Unverified = ({ onReSubmit }) => {
+export const PoincUnverified = ({ onReSubmit }) => {
     return (
         <IconMessageContent
             message={localize('Proof of income verification failed')}

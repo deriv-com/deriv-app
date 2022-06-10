@@ -3,11 +3,11 @@ import React from 'react';
 import { income_status_codes, poinc_documents_list } from './proof-of-income-utils';
 import { Loading, useStateCallback } from '@deriv/components';
 import { WS } from '@deriv/shared';
-import PoincUnverified from 'Components/poinc-unverified';
-import PoincReceived from 'Components/poinc-received';
-import PoincLimited from 'Components/poinc-limited';
-import PoincVerified from 'Components/poinc-verified';
-import PoincNotRequired from 'Components/poinc-not-required';
+import PoincUnverified from 'Components/poinc/status/unverified';
+import PoincReceived from 'Components/poinc/status/received';
+import PoincLimited from 'Components/poinc/status/limited';
+import PoincVerified from 'Components/poinc/status/verified';
+import PoincNotRequired from 'Components/poinc/status/not-required';
 import ProofOfIncomeForm from './proof-of-income-form.jsx';
 import { populateVerificationStatus } from '../Helpers/verification';
 

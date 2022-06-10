@@ -3,7 +3,7 @@ import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Verified = () => {
+export const PoincVerified = () => {
     return (
         <IconMessageContent
             message={localize('Proof of income verification passed')}

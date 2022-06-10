@@ -9,9 +9,7 @@ import PropTypes from 'prop-types';
 const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
-    const [payment_methods_list, setPaymentMethodsList] = React.useState(
-        my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
-    );
+    const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
 
     React.useEffect(() => {
         setPaymentMethodsList(
@@ -59,15 +57,10 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
     };
 
     const checkValidPaymentMethod = payment_method_text => {
-        let match = false;
-        let id;
-        my_profile_store.payment_methods_list.map(({ value, text }) => {
-            if (text === payment_method_text) {
-                match = true;
-                id = value;
-            }
-        });
-        return match ? id : false;
+        return (
+            my_profile_store.payment_methods_list.find(payment_method => payment_method.text === payment_method_text)
+                ?.value ?? false
+        );
     };
 
     if (selected_methods?.length > 0) {
@@ -84,16 +77,20 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                     {({ field }) => (
                                         <Autocomplete
                                             {...field}
-                                            className='quick-add-modal--input'
-                                            required
                                             autoComplete='off' // prevent chrome autocomplete
+                                            className='quick-add-modal--input'
                                             data-lpignore='true'
+                                            leading_icon={
+                                                <Icon
+                                                    icon={
+                                                        payment_method_icon === 'BankTransfer' ||
+                                                        payment_method_icon === 'Other'
+                                                            ? `IcCashier${payment_method_icon}`
+                                                            : 'IcCashierEwallet'
+                                                    }
+                                                />
+                                            }
                                             list_items={payment_methods_list}
-                                            onItemSelection={({ value }) => onEditPaymentMethodItem(value, key)}
-                                            onFocus={() => {
-                                                setSelectedEditMethod({ value: payment_method, text: method });
-                                                setFieldValue('payment_method', '');
-                                            }}
                                             onBlur={e => {
                                                 e.preventDefault();
                                                 const value = checkValidPaymentMethod(e.target.value);
@@ -105,16 +102,12 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                                     onEditPaymentMethodItem(value, key);
                                                 }
                                             }}
-                                            leading_icon={
-                                                <Icon
-                                                    icon={
-                                                        payment_method_icon === 'BankTransfer' ||
-                                                        payment_method_icon === 'Other'
-                                                            ? `IcCashier${payment_method_icon}`
-                                                            : 'IcCashierEwallet'
-                                                    }
-                                                />
-                                            }
+                                            onItemSelection={({ value }) => onEditPaymentMethodItem(value, key)}
+                                            onFocus={() => {
+                                                setSelectedEditMethod({ value: payment_method, text: method });
+                                                setFieldValue('payment_method', '');
+                                            }}
+                                            required
                                             trailing_icon={
                                                 <Icon
                                                     icon='IcDelete'
@@ -137,20 +130,19 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                     <div className='p2p-my-ads--border'>
                                         <Autocomplete
                                             {...field}
-                                            className='quick-add-modal--input'
-                                            is_alignment_top
                                             autoComplete='off' // prevent chrome autocomplete
+                                            className='quick-add-modal--input'
                                             data-lpignore='true'
+                                            is_alignment_top
+                                            leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                             list_items={payment_methods_list}
                                             onItemSelection={({ value }) => onClickPaymentMethodItem(value)}
                                             onBlur={e => {
                                                 e.preventDefault();
                                                 setFieldValue('payment_method', '');
                                             }}
-                                            required
-                                            leading_icon={<Icon icon='IcAddOutline' size={14} />}
-                                            trailing_icon={<></>}
                                             placeholder={localize('Add')}
+                                            required
                                             type='text'
                                         />
                                     </div>
@@ -171,20 +163,19 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                         <div className='p2p-my-ads--border'>
                             <Autocomplete
                                 {...field}
-                                className='quick-add-modal--input'
-                                is_alignment_top
                                 autoComplete='off' // prevent chrome autocomplete
+                                className='quick-add-modal--input'
                                 data-lpignore='true'
+                                is_alignment_top
+                                leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                 list_items={payment_methods_list}
                                 onItemSelection={({ text, value }) => {
                                     setFieldValue('payment_method', value ? text : '');
                                     onClickPaymentMethodItem(value);
                                 }}
-                                required
-                                leading_icon={<Icon icon='IcAddOutline' size={14} />}
-                                trailing_icon={<></>}
-                                type='text'
                                 placeholder={localize('Add')}
+                                required
+                                type='text'
                             />
                         </div>
                     )}

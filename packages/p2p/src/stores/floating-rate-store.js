@@ -2,7 +2,7 @@ import { action, computed, observable } from 'mobx';
 import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import ServerTime from 'Utils/server-time';
-import { websocketRef } from 'Utils/websocket';
+import { subscribeWS } from 'Utils/websocket';
 
 export default class FloatingRateStore extends BaseStore {
     @observable fixed_rate_adverts_status;
@@ -80,10 +80,11 @@ export default class FloatingRateStore extends BaseStore {
 
     @action.bound
     setIsMarketRateChanged(value) {
-        this.is_market_rate_changed = value;
+        if (this.root_store.buy_sell_store.show_rate_change_popup) {
+            this.is_market_rate_changed = value;
+        }
     }
 
-    // TODO: Change function implementation to use `subscribeWS()` when `exchange_rate` API is subscribable
     @action.bound
     fetchExchangeRate(fiat_currency, local_currency) {
         const payload = {
@@ -92,21 +93,20 @@ export default class FloatingRateStore extends BaseStore {
             subscribe: 1,
             target_currency: local_currency,
         };
-        const ws = websocketRef();
-        ws.send(JSON.stringify(payload));
-
-        ws.addEventListener('message', event => {
-            const response = JSON.parse(event.data);
-            if (response.msg_type === 'exchange_rates') {
-                if (response.error) {
-                    this.setApiErrorMessage(response.error.message);
-                } else {
-                    const { rates } = response.exchange_rates;
-                    this.setExchangeRate(rates[local_currency]);
-                    this.setApiErrorMessage(null);
+        this.exchange_rate_subscription = subscribeWS(payload, [
+            response => {
+                if (response) {
+                    if (response.error) {
+                        this.setApiErrorMessage(response.error.message);
+                        this.unSubscribeFromExchangeRates();
+                    } else {
+                        const { rates } = response.exchange_rates;
+                        this.setExchangeRate(rates[local_currency]);
+                        this.setApiErrorMessage(null);
+                    }
                 }
-            }
-        });
+            },
+        ]);
     }
 
     @action.bound

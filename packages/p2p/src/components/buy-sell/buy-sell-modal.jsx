@@ -93,7 +93,7 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
 };
 
 const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
-    const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
+    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
@@ -120,6 +120,8 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         } else {
             setShouldShowPopup(false);
         }
+        floating_rate_store.setIsMarketRateChanged(false);
+        buy_sell_store.setShowRateChangePopup(false);
     };
 
     const onConfirmClick = order_info => {

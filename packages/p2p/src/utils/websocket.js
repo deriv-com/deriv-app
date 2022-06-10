@@ -35,9 +35,4 @@ export const subscribeWS = (request, callbacks) =>
         callbacks.map(callback => callback(response));
     });
 
-// TODO: Remove this when `exchange_rate` API is subscribable. Currently implemented to use Websocket API
-export const websocketRef = () => {
-    return ws.getSocket();
-};
-
 export const waitWS = args => ws.wait(args);

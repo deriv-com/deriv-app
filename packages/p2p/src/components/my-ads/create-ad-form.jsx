@@ -36,11 +36,8 @@ const CreateAdForm = () => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
-
     const { currency, local_currency_config } = general_store.client;
-
     const should_not_show_auto_archive_message_again = React.useRef(false);
-
     const [selected_methods, setSelectedMethods] = React.useState([]);
 
     // eslint-disable-next-line no-shadow
@@ -226,7 +223,7 @@ const CreateAdForm = () => {
                                                             className='p2p-my-ads__form-field'
                                                             data_testid='float_rate_type'
                                                             error_messages={errors.rate_type}
-                                                            exchange_rate={floating_rate_store.exchange_rate}
+                                                            // exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
                                                             onChange={handleChange}

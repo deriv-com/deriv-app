@@ -12,7 +12,6 @@ const RateChangeModal = () => {
     const is_mobile = isMobile();
 
     const closeModal = () => {
-        buy_sell_store.setShowRateChangePopup(false);
         // TODO: Will remove this once https://github.com/binary-com/deriv-app/pull/5141 PR is merged
         setTimeout(() => {
             if (!is_mobile) {

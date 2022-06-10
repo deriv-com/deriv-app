@@ -161,11 +161,6 @@ const EditAdForm = () => {
                                             <EditAdFormWrapper>
                                                 <div className='p2p-my-ads__form-summary'>
                                                     <EditAdSummary
-                                                        market_feed={
-                                                            floating_rate_store.rate_type === ad_type.FLOAT
-                                                                ? floating_rate_store.exchange_rate
-                                                                : null
-                                                        }
                                                         offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                         price_rate={values.rate_type}
                                                         type={values.type}
@@ -227,7 +222,6 @@ const EditAdForm = () => {
                                                                     className='p2p-my-ads__form-field'
                                                                     data_testid='float_rate_type'
                                                                     error_messages={errors.rate_type}
-                                                                    exchange_rate={floating_rate_store.exchange_rate}
                                                                     fiat_currency={account_currency}
                                                                     local_currency={local_currency}
                                                                     offset={{

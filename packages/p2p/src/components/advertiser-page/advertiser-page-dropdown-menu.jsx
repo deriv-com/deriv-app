@@ -5,7 +5,7 @@ import { useStores } from 'Stores';
 import './advertiser-page.scss';
 import { observer } from 'mobx-react-lite';
 
-const AdvertiserPageDropdown = () => {
+const AdvertiserPageDropdownMenu = () => {
     const { advertiser_page_store } = useStores();
 
     const { is_blocked } = advertiser_page_store.advertiser_info;
@@ -42,4 +42,4 @@ const AdvertiserPageDropdown = () => {
     );
 };
 
-export default observer(AdvertiserPageDropdown);
+export default observer(AdvertiserPageDropdownMenu);

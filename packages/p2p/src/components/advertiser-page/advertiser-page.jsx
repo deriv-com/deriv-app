@@ -12,7 +12,7 @@ import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
-import AdvertiserPageDropdown from './advertiser-page-dropdown.jsx';
+import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
 import BlockUserModal from './block-user/block-user-modal.jsx';
@@ -36,10 +36,6 @@ const AdvertiserPage = () => {
     const onCancel = () => {
         advertiser_page_store.setIsBlockUserModalOpen(false);
         advertiser_page_store.setIsDropdownVisible(false);
-    };
-
-    const onSubmit = () => {
-        advertiser_page_store.blockUser();
     };
 
     React.useEffect(() => {
@@ -69,7 +65,7 @@ const AdvertiserPage = () => {
                 is_advertiser_blocked={is_blocked}
                 is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
                 onCancel={onCancel}
-                onSubmit={onSubmit}
+                onSubmit={advertiser_page_store.blockUser}
             />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
@@ -84,7 +80,7 @@ const AdvertiserPage = () => {
                     page_title={localize("Advertiser's page")}
                 />
                 <MobileWrapper>
-                    <AdvertiserPageDropdown />
+                    <AdvertiserPageDropdownMenu />
                 </MobileWrapper>
             </div>
             <div className='advertiser-page-details-container'>
@@ -127,7 +123,7 @@ const AdvertiserPage = () => {
                         </div>
                     </div>
                     <DesktopWrapper>
-                        <AdvertiserPageDropdown />
+                        <AdvertiserPageDropdownMenu />
                     </DesktopWrapper>
                 </div>
                 <AdvertiserPageStats />

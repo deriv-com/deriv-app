@@ -58,14 +58,15 @@
         "stylelint-webpack-plugin": "^2.1.1"
     },
     "scripts": {
-        "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis ;}; f",
+        "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
+        "bootstrap:dev": "f () { npm ci && lerna link && lerna bootstrap --hoist --strict && lerna link ;}; f",
         "build": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build $2 ;}; f",
         "build:publish": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
         "build:local": "f () { lerna exec --scope @deriv/trader --scope @deriv/bot-web-ui --parallel -- npm run build $1 ;}; f",
-        "build:travis": "lerna exec --scope @deriv/shared --scope @deriv/components --scope @deriv/translations  --scope @deriv/cashier --scope @deriv/account --scope @deriv/p2p -- npm run build:travis",
+        "build:travis": "lerna exec --scope @deriv/shared --scope @deriv/components --scope @deriv/translations  --scope @deriv/cashier --scope @deriv/account --scope @deriv/p2p --scope @deriv/cfd -- npm run build:travis",
         "build:prod": "export NODE_ENV=staging && npm run build && export NODE_ENV=",
         "build:storybook": "cd packages/components && build-storybook --output-dir .out",
-        "build:gh-pages": "f () { lerna exec --scope @deriv/components --scope @deriv/p2p -- npm run build && lerna exec --scope @deriv/cashier --scope @deriv/account -- npm run build $1 && npm run build:local $1 ;}; f",
+        "build:gh-pages": "f () { lerna exec --scope @deriv/components --scope @deriv/p2p -- npm run build && lerna exec --scope @deriv/cashier --scope @deriv/account --scope @deriv/cfd -- npm run build $1 && npm run build:local $1 ;}; f",
         "clean": "echo \"Remove $(git rev-parse --show-toplevel)/node_modules\" && lerna clean && rm -rf \"$(git rev-parse --show-toplevel)/node_modules\"",
         "deploy": "f () { npm run build:travis && npm run build:local && lerna exec --scope @deriv/core -- npm run deploy $@ ;}; f",
         "deploy:clean": "f () { npm run build:travis && npm run build:local && lerna exec --scope @deriv/core -- npm run deploy:clean $@ ;}; f",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { Verified } from '../verified';
+import { PoincVerified } from '../verified';
 
 describe('<PoincVerified/>', () => {
     it('should render PoincVerified component', () => {

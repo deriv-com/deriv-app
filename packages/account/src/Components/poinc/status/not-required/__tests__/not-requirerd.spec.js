@@ -1,10 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { NotRequired } from '../not-required';
+import { PoincNotRequired } from '../not-required';
 
-describe('<NotRequired/>', () => {
-    it('should render NotRequired component', () => {
-        render(<NotRequired />);
+describe('<PoincNotRequired/>', () => {
+    it('should render PoincNotRequired component', () => {
+        render(<PoincNotRequired />);
         expect(screen.getByText('Proof of income verification not required')).toBeInTheDocument();
         expect(
             screen.getByText(

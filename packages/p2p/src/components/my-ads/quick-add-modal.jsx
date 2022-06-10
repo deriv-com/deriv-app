@@ -29,6 +29,8 @@ const QuickAddModal = ({ advert }) => {
 
     const is_buy_advert = type === buy_sell.BUY;
 
+    const formik_ref = React.useRef();
+
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
@@ -124,7 +126,7 @@ const QuickAddModal = ({ advert }) => {
                                 className='quick-add-modal--button'
                                 has_effect
                                 is_disabled={
-                                    !my_profile_store?.advertiser_has_payment_methods || selected_methods.length === 0
+                                    selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0
                                 }
                                 large
                                 onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
@@ -273,7 +275,7 @@ const QuickAddModal = ({ advert }) => {
                                 className='quick-add-modal--button'
                                 has_effect
                                 is_disabled={
-                                    !my_profile_store?.advertiser_has_payment_methods || selected_methods.length === 0
+                                    selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0
                                 }
                                 large
                                 onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
@@ -340,7 +342,7 @@ const QuickAddModal = ({ advert }) => {
                                 const payment_method_icon = method.replace(' ', '');
 
                                 return (
-                                    <Formik key={key} enableReinitialize initialValues={{}}>
+                                    <Formik innerRef={formik_ref} key={key} enableReinitialize initialValues={{}}>
                                         <Field name='payment_method'>
                                             {({ field }) => (
                                                 <Input
@@ -407,7 +409,7 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </React.Fragment>
                     ) : (
-                        <Formik enableReinitialize initialValues={{ payment_method: '' }}>
+                        <Formik enableReinitialize innerRef={formik_ref} initialValues={{ payment_method: '' }}>
                             {() => (
                                 <Field name='payment_method'>
                                     {({ field }) => (
@@ -445,7 +447,7 @@ const QuickAddModal = ({ advert }) => {
 
                     <Button
                         has_effect
-                        is_disabled={!my_profile_store?.advertiser_has_payment_methods || selected_methods.length === 0}
+                        is_disabled={selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0}
                         large
                         onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                         primary
@@ -506,7 +508,7 @@ const QuickAddModal = ({ advert }) => {
 
                     <Button
                         has_effect
-                        is_disabled={!my_profile_store?.advertiser_has_payment_methods || selected_methods.length === 0}
+                        is_disabled={selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0}
                         large
                         onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                         primary

@@ -1,5 +1,6 @@
 import React from 'react';
 import { routes, moduleLoader } from '@deriv/shared';
+import { Redirect } from 'react-router-dom';
 import { localize } from '@deriv/translations';
 import {
     Cashier,
@@ -12,11 +13,29 @@ import {
     OnRamp,
 } from '../Containers';
 
+export type TRoute = {
+    default?: boolean;
+    exact?: boolean | undefined;
+    id?: string;
+    icon_component?: string;
+    is_invisible?: boolean;
+    path?: string;
+    to?: string;
+    component: (() => JSX.Element) | typeof Page404 | typeof Redirect;
+    getTitle?: () => string;
+};
+
+export type TRouteConfig = TRoute & {
+    is_modal?: boolean;
+    is_authenticated?: boolean;
+    routes?: Array<TRoute>;
+};
+
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Components/Page404.jsx')));
 
 // Order matters
-const initRoutesConfig = () => [
+const initRoutesConfig = (): Array<TRouteConfig> => [
     {
         path: routes.cashier,
         component: Cashier,
@@ -58,6 +77,7 @@ const initRoutesConfig = () => [
             },
             {
                 path: routes.cashier_p2p,
+                // george error fixes when P2PCashier will be typed
                 component: P2PCashier,
                 getTitle: () => localize('Deriv P2P'),
                 icon_component: 'IcDp2p',
@@ -80,14 +100,14 @@ const initRoutesConfig = () => [
     },
 ];
 
-let routesConfig;
+let routesConfig: undefined | Array<TRouteConfig>;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, getTitle: () => localize('Error 404') };
+const route_default: TRoute = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_appstore }) => {
+const getRoutesConfig = () => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_appstore });
+        routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
     }
     return routesConfig;

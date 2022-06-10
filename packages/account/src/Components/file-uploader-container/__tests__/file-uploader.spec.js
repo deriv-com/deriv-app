@@ -47,28 +47,26 @@ describe('<FileUploader />', () => {
         render(<FileUploader {...props} />);
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const input = screen.getByTestId('file_upload_input');
-        await waitFor(() =>
-            fireEvent.change(input, {
-                target: { files: [file] },
-            })
-        );
 
-        expect(input.files[0]).toBe(file);
-        expect(input.files).toHaveLength(1);
+        const input = screen.getByTestId('dt_file_upload_input');
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            expect(input.files[0]).toBe(file);
+            expect(input.files).toHaveLength(1);
+        });
     });
 
     it('should show error message when unsupported file is uploaded', async () => {
         render(<FileUploader {...props} />);
 
         const file = new File(['hello'], 'hello.html', { type: 'html' });
-        const input = screen.getByTestId('file_upload_input');
-        await waitFor(() =>
-            fireEvent.change(input, {
-                target: { files: [file] },
-            })
-        );
-        expect(screen.getByText(file_not_supported_msg)).toBeInTheDocument();
+        const input = screen.getByTestId('dt_file_upload_input');
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            expect(screen.getByText(file_not_supported_msg)).toBeInTheDocument();
+        });
     });
 
     it('should show error message when multiple files are uploaded', async () => {
@@ -78,13 +76,12 @@ describe('<FileUploader />', () => {
             new File(['hello'], 'hello.png', { type: 'image/png' }),
             new File(['there'], 'there.png', { type: 'image/png' }),
         ];
-        const input = screen.getByTestId('file_upload_input');
-        await waitFor(() =>
-            fireEvent.change(input, {
-                target: { files: [files] },
-            })
-        );
-        expect(screen.getByText(file_not_supported_msg)).toBeInTheDocument();
+        const input = screen.getByTestId('dt_file_upload_input');
+        fireEvent.change(input, { target: { files: [files] } });
+
+        await waitFor(() => {
+            expect(screen.getByText(file_not_supported_msg)).toBeInTheDocument();
+        });
     });
 
     it('should show error message when larger files are uploaded', async () => {
@@ -92,33 +89,34 @@ describe('<FileUploader />', () => {
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         Object.defineProperty(file, 'size', { value: 1024 * 1024 * 10 });
 
-        const input = screen.getByTestId('file_upload_input');
-        await waitFor(() =>
-            fireEvent.change(input, {
-                target: { files: [file] },
-            })
-        );
-        expect(screen.getByText(large_file_error_msg)).toBeInTheDocument();
+        const input = screen.getByTestId('dt_file_upload_input');
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            expect(screen.getByText(large_file_error_msg)).toBeInTheDocument();
+        });
     });
 
     it('should remove the file when close icon is clicked', async () => {
         render(<FileUploader {...props} />);
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const input = screen.getByTestId('file_upload_input');
-        await waitFor(() =>
-            fireEvent.change(input, {
-                target: { files: [file] },
-            })
-        );
-        expect(screen.getByText(/hello\.png/i)).toBeInTheDocument();
-        expect(input.files[0]).toBe(file);
-        expect(input.files).toHaveLength(1);
 
-        const close_icon = screen.getByTestId('remove_file_icon');
+        const input = screen.getByTestId('dt_file_upload_input');
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            expect(screen.getByText(/hello\.png/i)).toBeInTheDocument();
+            expect(input.files[0]).toBe(file);
+            expect(input.files).toHaveLength(1);
+        });
+
+        const close_icon = screen.getByTestId('dt_remove_file_icon');
         expect(close_icon).toBeInTheDocument();
-        await waitFor(() => fireEvent.click(close_icon));
+        fireEvent.click(close_icon);
 
-        expect(screen.queryByText(/hello\.png/i)).not.toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByText(/hello\.png/i)).not.toBeInTheDocument();
+        });
     });
 
     it('upload function should return 0 if document is not selected', () => {
@@ -135,16 +133,12 @@ describe('<FileUploader />', () => {
         const blob = new Blob(['sample_data']);
         const file = new File([blob], 'hello.pdf', { type: 'application/pdf' });
 
-        const input = screen.getByTestId('file_upload_input');
-
-        await waitFor(() =>
-            fireEvent.change(input, {
-                target: { files: [file] },
-            })
-        );
-
-        expect(screen.getByText(/hello\.pdf/i)).toBeInTheDocument();
-        expect(input.files[0]).toBe(file);
+        const input = screen.getByTestId('dt_file_upload_input');
+        fireEvent.change(input, { target: { files: [file] } });
+        await waitFor(() => {
+            expect(screen.getByText(/hello\.pdf/i)).toBeInTheDocument();
+            expect(input.files[0]).toBe(file);
+        });
         props.ref.current.upload();
         expect(compressImageFiles).toBeCalled();
         expect(props.onFileDrop).toBeCalled();

@@ -60,7 +60,7 @@ const FileDropzone = ({ className, ...props }) => {
                     })}
                     ref={dropzone_ref}
                 >
-                    <input {...getInputProps()} data-testid='file_upload_input' />
+                    <input {...getInputProps()} data-testid='dt_file_upload_input' />
                     <div className='dc-file-dropzone__content'>
                         <FadeInMessage
                             // default message when not on hover or onDrag

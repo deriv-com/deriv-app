@@ -48,7 +48,7 @@ describe('<FileUploaderContainer />', () => {
     };
     it('should render FileUploaderContainer component', () => {
         render(<FileUploaderContainer {...props} />);
-        expect(screen.getByTestId('file_uploader_container')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_file_uploader_container')).toBeInTheDocument();
     });
 
     it('should render FileUploaderContainer component if getSocket is not passed as prop', () => {
@@ -57,7 +57,7 @@ describe('<FileUploaderContainer />', () => {
             onRef: jest.fn(),
         };
         render(<FileUploaderContainer {...new_props} />);
-        expect(screen.getByTestId('file_uploader_container')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_file_uploader_container')).toBeInTheDocument();
     });
 
     it('should not render FileUploaderContainer when is_appstore is true in desktop', () => {
@@ -66,7 +66,7 @@ describe('<FileUploaderContainer />', () => {
                 <FileUploaderContainer {...props} />
             </PlatformContext.Provider>
         );
-        expect(screen.queryByTestId('file_uploader_container')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_file_uploader_container')).not.toBeInTheDocument();
     });
 
     it('should show icons and description when is_appstore is true in desktop', () => {

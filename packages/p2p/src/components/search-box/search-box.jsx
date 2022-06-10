@@ -68,7 +68,7 @@ const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
 };
 
 SearchBox.propTypes = {
-    leading_icon: PropTypes.object,
+    className: PropTypes.string,
     onClear: PropTypes.func,
     onSearch: PropTypes.func,
     placeholder: PropTypes.string,

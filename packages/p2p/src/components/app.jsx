@@ -10,11 +10,10 @@ import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import './app.scss';
 
-const TranslationContext = React.createContext();
-
 const App = props => {
     const { general_store, order_store } = useStores();
     const { className, history, lang, order_id, server_time, websocket_api } = props;
+    const TranslationContext = React.createContext();
 
     React.useEffect(() => {
         general_store.setAppProps(props);

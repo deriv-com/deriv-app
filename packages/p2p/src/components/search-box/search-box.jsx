@@ -1,36 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Field as FormField, Formik, Form } from 'formik';
-import debounce from 'lodash.debounce';
 import { Icon, Input } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
-import 'Components/buy-sell/search-box.scss';
 
-const SearchBox = () => {
-    const { buy_sell_store } = useStores();
-
-    const returnedFunction = debounce(() => {
-        buy_sell_store.loadMoreItems({ startIndex: 0 });
-    }, 1000);
-
-    const onSearch = ({ search }) => {
-        buy_sell_store.setSearchTerm(search.trim());
-
-        if (!search.trim()) {
-            buy_sell_store.setSearchResults([]);
-            return;
-        }
-
-        buy_sell_store.setIsLoading(true);
-        returnedFunction();
-    };
-
+const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
     const onSearchClear = setFieldValue => {
         setFieldValue('search', '');
-        buy_sell_store.setSearchTerm('');
-        buy_sell_store.setSearchResults([]);
+
+        if (typeof onClear === 'function') {
+            onClear();
+        }
     };
 
     const onSearchKeyUp = submitForm => {
@@ -41,9 +21,19 @@ const SearchBox = () => {
         }, 1000);
     };
 
+    const onSearchSubmit = ({ search }) => {
+        if (!search.trim()) {
+            return;
+        }
+
+        if (typeof onSearch === 'function') {
+            onSearch(search);
+        }
+    };
+
     return (
-        <div className='search-box' data-testid='dp2p-search-box_container'>
-            <Formik initialValues={{ search: '' }} onSubmit={onSearch}>
+        <div className={classNames('search-box', className)}>
+            <Formik initialValues={{ search: '' }} onSubmit={onSearchSubmit}>
                 {({ submitForm, values: { search }, setFieldValue }) => (
                     <Form>
                         <FormField name='search'>
@@ -53,7 +43,7 @@ const SearchBox = () => {
                                     className='search-box__field'
                                     type='text'
                                     name='search'
-                                    placeholder={isDesktop() ? localize('Search by nickname') : localize('Search')}
+                                    placeholder={placeholder}
                                     onKeyUp={() => onSearchKeyUp(submitForm)}
                                     onFocus={submitForm}
                                     leading_icon={<Icon className='search-box__field-icon' icon='IcSearch' />}
@@ -63,7 +53,6 @@ const SearchBox = () => {
                                                 className='search-box__cross-icon'
                                                 color='secondary'
                                                 icon='IcCloseCircle'
-                                                data_testid='dp2p-search-box__cross_icon'
                                                 onClick={() => onSearchClear(setFieldValue)}
                                             />
                                         ) : null
@@ -78,4 +67,11 @@ const SearchBox = () => {
     );
 };
 
-export default observer(SearchBox);
+SearchBox.propTypes = {
+    leading_icon: PropTypes.object,
+    onClear: PropTypes.func,
+    onSearch: PropTypes.func,
+    placeholder: PropTypes.string,
+};
+
+export default SearchBox;

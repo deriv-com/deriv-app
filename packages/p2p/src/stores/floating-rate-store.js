@@ -83,8 +83,7 @@ export default class FloatingRateStore extends BaseStore {
         this.is_market_rate_changed = value;
     }
 
-    // TODO: Change function implementation to use `subscribeWS()` when
-    // https://redmine.deriv.cloud/issues/66153#Subscribe_to_exchange_rates_does_not_have_subscription_id_in_intial_response is merged
+    // TODO: Change function implementation to use `subscribeWS()` when `exchange_rate` API is subscribable
     @action.bound
     fetchExchangeRate(fiat_currency, local_currency) {
         const payload = {

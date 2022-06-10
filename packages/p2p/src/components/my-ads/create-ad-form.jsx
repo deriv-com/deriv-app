@@ -223,7 +223,6 @@ const CreateAdForm = () => {
                                                             className='p2p-my-ads__form-field'
                                                             data_testid='float_rate_type'
                                                             error_messages={errors.rate_type}
-                                                            // exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
                                                             onChange={handleChange}

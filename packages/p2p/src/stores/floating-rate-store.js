@@ -10,12 +10,15 @@ export default class FloatingRateStore extends BaseStore {
     @observable float_rate_offset_limit;
     @observable fixed_rate_adverts_end_date;
     @observable exchange_rate;
-    @observable change_ad_alert;
+    @observable change_ad_alert = false;
+    @observable is_loading;
     @observable api_error_message = '';
     @observable is_market_rate_changed = false;
 
     previous_exchange_rate = null;
     current_exchange_rate = null;
+
+    exchange_rate_subscription = {};
 
     @computed
     get rate_type() {
@@ -28,7 +31,7 @@ export default class FloatingRateStore extends BaseStore {
     @computed
     get reached_target_date() {
         // Ensuring the date is translated to EOD GMT without the time difference
-        const current_date = new Date(ServerTime.get()) || new Date(new Date().getTime()).setUTCHours(23, 59, 59, 999);
+        const current_date = new Date(ServerTime.get()) ?? new Date(new Date().getTime()).setUTCHours(23, 59, 59, 999);
         const cutoff_date = new Date(new Date(this.fixed_rate_adverts_end_date).getTime()).setUTCHours(23, 59, 59, 999);
         return current_date > cutoff_date;
     }
@@ -56,6 +59,10 @@ export default class FloatingRateStore extends BaseStore {
     @action.bound
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
+    }
+    @action.bound
+    setIsLoading(state) {
+        this.is_loading = state;
     }
 
     @action.bound
@@ -101,5 +108,12 @@ export default class FloatingRateStore extends BaseStore {
                 }
             }
         });
+    }
+
+    @action.bound
+    unSubscribeFromExchangeRates() {
+        if (this.exchange_rate_subscription.unsubscribe) {
+            this.exchange_rate_subscription.unsubscribe();
+        }
     }
 }

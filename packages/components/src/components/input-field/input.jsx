@@ -32,6 +32,7 @@ const Input = ({
     required,
     setCurrentFocus,
     type,
+    data_testid,
 }) => {
     const ref = React.useRef();
     React.useEffect(() => {
@@ -85,6 +86,7 @@ const Input = ({
                 data-for={`error_tooltip_${name}`}
                 data-hj-whitelist={is_hj_whitelisted}
                 data-tip={data_tip}
+                data-testid={data_testid}
                 data-value={data_value}
                 disabled={is_disabled}
                 id={id}
@@ -101,7 +103,7 @@ const Input = ({
                 required={required || undefined}
                 inputMode={inputmode}
                 type={type === 'number' ? 'text' : type}
-                value={display_value || ''}
+                value={display_value ?? ''}
                 aria-label={ariaLabel}
                 data-lpignore={type !== 'password'}
             />

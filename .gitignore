@@ -7,6 +7,7 @@ dist/
 node_modules/
 packages/**/scripts/CNAME
 .DS_Store
+tsconfig.tsbuildinfo
 *.swp
 npm-debug.log
 lerna-debug.log

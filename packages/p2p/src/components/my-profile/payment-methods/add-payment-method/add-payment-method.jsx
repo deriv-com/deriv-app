@@ -9,12 +9,7 @@ import PageReturn from 'Components/page-return/page-return.jsx';
 import PropTypes from 'prop-types';
 import SelectPaymentMethod from './select-payment-method.jsx';
 
-const AddPaymentMethod = ({
-    formik_ref,
-    should_fixed_footer,
-    should_show_page_return = true,
-    should_show_separated_footer,
-}) => {
+const AddPaymentMethod = ({ formik_ref, should_show_page_return = true, should_show_separated_footer }) => {
     const { my_ads_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
@@ -54,7 +49,6 @@ const AddPaymentMethod = ({
                 {my_profile_store.selected_payment_method ? (
                     <AddPaymentMethodForm
                         formik_ref={formik_ref}
-                        should_fixed_footer={should_fixed_footer}
                         should_show_separated_footer={should_show_separated_footer}
                     />
                 ) : (
@@ -67,7 +61,6 @@ const AddPaymentMethod = ({
 
 AddPaymentMethod.propTypes = {
     formik_ref: PropTypes.shape({ current: PropTypes.any }),
-    should_fixed_footer: PropTypes.bool,
     should_show_page_return: PropTypes.bool,
     should_show_seperated_footer: PropTypes.bool,
 };

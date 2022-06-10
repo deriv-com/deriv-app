@@ -10,6 +10,8 @@ import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import './app.scss';
 
+const TranslationContext = React.createContext();
+
 const App = props => {
     const { general_store, order_store } = useStores();
     const { className, history, lang, order_id, server_time, websocket_api } = props;
@@ -25,7 +27,6 @@ const App = props => {
             history.push(routes.cashier_p2p);
         }
 
-        setLanguage(lang);
         ServerTime.init(server_time);
 
         // force safari refresh on back/forward
@@ -53,9 +54,15 @@ const App = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
 
+    React.useEffect(() => {
+        setLanguage(lang);
+    }, [lang]);
+
     return (
         <main className={classNames('p2p-cashier', className)}>
-            <AppContent />
+            <TranslationContext.Provider>
+                <AppContent />
+            </TranslationContext.Provider>
         </main>
     );
 };

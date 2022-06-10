@@ -35,7 +35,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
 
     const onEditPaymentMethodItem = (value, index) => {
         if (value && !my_ads_store.payment_method_names.includes(value)) {
-            const edited_methods = selected_methods.slice();
+            const edited_methods = [...selected_methods];
             edited_methods[index] = value;
             my_ads_store.payment_method_names[index] = value;
             setSelectedMethods(edited_methods);

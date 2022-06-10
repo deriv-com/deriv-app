@@ -185,9 +185,12 @@ export default class BuySellStore extends BaseStore {
                 this.setShouldShowPopup(false);
                 setTimeout(() => {
                     this.setShowRateChangePopup(true);
+                    this.root_store.floating_rate_store.setIsMarketRateChanged(true);
                 }, 250);
             }
         } else {
+            this.setShowRateChangePopup(false);
+            this.root_store.floating_rate_store.setIsMarketRateChanged(false);
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);
             this.form_props.handleClose();
@@ -402,9 +405,9 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    setInitialReceiveAmount() {
+    setInitialReceiveAmount(initial_price) {
         this.receive_amount = getRoundedNumber(
-            this.advert.min_order_amount_limit * this.advert.price,
+            this.advert.min_order_amount_limit * initial_price,
             this.advert.local_currency
         );
     }

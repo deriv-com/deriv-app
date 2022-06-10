@@ -46,6 +46,7 @@ const BuySellForm = props => {
 
     const effective_rate =
         rate_type === ad_type.FLOAT ? parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100)) : price;
+    buy_sell_store.setInitialReceiveAmount(effective_rate);
 
     React.useEffect(
         () => {
@@ -74,7 +75,7 @@ const BuySellForm = props => {
             }
 
             advertiser_page_store.setFormErrorMessage('');
-            buy_sell_store.setInitialReceiveAmount();
+            buy_sell_store.setShowRateChangePopup(true);
 
             return () => {
                 buy_sell_store.payment_method_ids = [];

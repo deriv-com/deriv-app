@@ -35,4 +35,10 @@ export const subscribeWS = (request, callbacks) =>
         callbacks.map(callback => callback(response));
     });
 
+// TODO: Remove this when https://redmine.deriv.cloud/issues/66153#Subscribe_to_exchange_rates_does_not_have_subscription_id_in_intial_response is merged
+// The subscription for exchange_rate must be handled by subscribeWS()
+export const websocketRef = () => {
+    return ws.getSocket();
+};
+
 export const waitWS = args => ws.wait(args);

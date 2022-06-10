@@ -2,7 +2,7 @@ import { action, computed, observable } from 'mobx';
 import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import ServerTime from 'Utils/server-time';
-import { subscribeWS } from 'Utils/websocket';
+import { websocketRef } from 'Utils/websocket';
 
 export default class FloatingRateStore extends BaseStore {
     @observable fixed_rate_adverts_status;
@@ -12,8 +12,10 @@ export default class FloatingRateStore extends BaseStore {
     @observable exchange_rate;
     @observable change_ad_alert;
     @observable api_error_message = '';
+    @observable is_market_rate_changed = false;
 
-    exchange_rate_subscription = {};
+    previous_exchange_rate = null;
+    current_exchange_rate = null;
 
     @computed
     get rate_type() {
@@ -57,33 +59,47 @@ export default class FloatingRateStore extends BaseStore {
     }
 
     @action.bound
-    setExchangeRate(fiat_currency, local_currency) {
+    setExchangeRate(rate) {
+        this.exchange_rate = parseFloat(rate);
+        if (this.previous_exchange_rate === null) {
+            this.previous_exchange_rate = this.exchange_rate;
+            this.current_exchange_rate = this.exchange_rate;
+        } else {
+            this.previous_exchange_rate = this.current_exchange_rate;
+            this.current_exchange_rate = this.exchange_rate;
+            this.setIsMarketRateChanged(true);
+        }
+    }
+
+    @action.bound
+    setIsMarketRateChanged(value) {
+        this.is_market_rate_changed = value;
+    }
+
+    // TODO: Change function implementation to use `subscribeWS()` when
+    // https://redmine.deriv.cloud/issues/66153#Subscribe_to_exchange_rates_does_not_have_subscription_id_in_intial_response is merged
+    @action.bound
+    fetchExchangeRate(fiat_currency, local_currency) {
         const payload = {
             exchange_rates: 1,
             base_currency: fiat_currency,
             subscribe: 1,
             target_currency: local_currency,
         };
-        this.exchange_rate_subscription = subscribeWS(payload, [
-            response => {
-                if (response) {
-                    if (response.error) {
-                        this.setApiErrorMessage(response.error.message);
-                        this.unSubscribeFromExchangeRates();
-                    } else {
-                        const { rates } = response.exchange_rates;
-                        this.exchange_rate = parseFloat(rates[local_currency]);
-                        this.setApiErrorMessage(null);
-                    }
-                }
-            },
-        ]);
-    }
+        const ws = websocketRef();
+        ws.send(JSON.stringify(payload));
 
-    @action.bound
-    unSubscribeFromExchangeRates() {
-        if (this.exchange_rate_subscription.unsubscribe) {
-            this.exchange_rate_subscription.unsubscribe();
-        }
+        ws.addEventListener('message', event => {
+            const response = JSON.parse(event.data);
+            if (response.msg_type === 'exchange_rates') {
+                if (response.error) {
+                    this.setApiErrorMessage(response.error.message);
+                } else {
+                    const { rates } = response.exchange_rates;
+                    this.setExchangeRate(rates[local_currency]);
+                    this.setApiErrorMessage(null);
+                }
+            }
+        });
     }
 }

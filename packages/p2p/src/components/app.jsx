@@ -44,9 +44,8 @@ const App = props => {
         });
         general_store.setP2PConfig();
         const { currency, local_currency_config } = general_store.client;
-        floating_rate_store.setExchangeRate(currency, local_currency_config.currency);
+        floating_rate_store.fetchExchangeRate(currency, local_currency_config.currency);
         return () => {
-            floating_rate_store.unSubscribeFromExchangeRates();
             general_store.onUnmount();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

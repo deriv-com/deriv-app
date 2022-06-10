@@ -1,11 +1,19 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState } from '@deriv/components';
+import {
+    Button,
+    HintBox,
+    Icon,
+    MobileFullPageModal,
+    Modal,
+    Text,
+    ThemedScrollbars,
+    useSafeState,
+} from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
-import { localize } from 'Components/i18next';
-import FormError from 'Components/form/error.jsx';
+import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
@@ -13,10 +21,9 @@ import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
 import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 
-const BuySellModalFooter = ({ onCancel, error_message, is_submit_disabled, onSubmit }) => {
+const BuySellModalFooter = ({ onCancel, is_submit_disabled, onSubmit }) => {
     return (
         <React.Fragment>
-            {error_message && <FormError message={error_message} />}
             <Button.Group>
                 <Button secondary onClick={onCancel} large>
                     {localize('Cancel')}
@@ -31,9 +38,36 @@ const BuySellModalFooter = ({ onCancel, error_message, is_submit_disabled, onSub
 
 BuySellModalFooter.propTypes = {
     onCancel: PropTypes.func.isRequired,
-    error_message: PropTypes.string,
     is_submit_disabled: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
+};
+
+const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_ad) => {
+    if (my_profile_store.should_show_add_payment_method_form) {
+        if (!isMobile()) {
+            return (
+                <React.Fragment>
+                    <Icon
+                        icon='IcArrowLeftBold'
+                        onClick={() => {
+                            if (formik_ref.current.dirty) {
+                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                            } else {
+                                my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                            }
+                        }}
+                        className='buy-sell__modal-icon'
+                    />
+                    {localize('Add payment method')}
+                </React.Fragment>
+            );
+        }
+        return localize('Add payment method');
+    }
+    if (table_type === buy_sell.BUY) {
+        return localize('Buy {{ currency }}', { currency: selected_ad.account_currency });
+    }
+    return localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
 };
 
 const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
@@ -48,10 +82,44 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             receive_amount={buy_sell_store.receive_amount}
         />
     );
+    const formik_ref = React.useRef();
+
+    const BuySellFormError = () => {
+        return buy_sell_store.form_error_code === 'OrderAlreadyExists' ? (
+            <HintBox
+                className='buy-sell__modal-danger'
+                icon='IcAlertDanger'
+                message={
+                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                        {error_message}
+                    </Text>
+                }
+                is_danger
+            />
+        ) : (
+            <HintBox
+                className='buy-sell__modal-danger'
+                icon='IcAlertDanger'
+                message={
+                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                        <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                    </Text>
+                }
+                is_danger
+            />
+        );
+    };
 
     const onCancel = () => {
-        setShouldShowPopup(false);
-        my_profile_store.setShouldShowAddPaymentMethodForm(false);
+        if (my_profile_store.should_show_add_payment_method_form) {
+            if (formik_ref.current.dirty) {
+                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+            } else {
+                my_profile_store.hideAddPaymentMethodForm();
+            }
+        } else {
+            setShouldShowPopup(false);
+        }
     };
 
     const onConfirmClick = order_info => {
@@ -67,7 +135,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             setErrorMessage(null);
         }
 
-        my_profile_store.setShouldShowAddPaymentMethodForm(false);
         my_profile_store.setSelectedPaymentMethod('');
         my_profile_store.setSelectedPaymentMethodDisplayName('');
 
@@ -75,11 +142,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     }, [should_show_popup]);
 
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
-    const modal_title = my_profile_store.should_show_add_payment_method_form
-        ? localize('Add payment method')
-        : table_type === buy_sell.BUY
-        ? localize('Buy {{ currency }}', { currency: selected_ad.account_currency })
-        : localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
 
     if (isMobile()) {
         return (
@@ -88,9 +150,9 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 className='buy-sell__modal'
                 height_offset='80px'
                 is_flex
-                is_modal_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
+                is_modal_open={should_show_popup}
                 page_header_className='buy-sell__modal-header'
-                page_header_text={modal_title}
+                page_header_text={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
                 pageHeaderReturnFn={onCancel}
                 page_footer_parent={my_profile_store.should_show_add_payment_method_form ? '' : page_footer_parent}
                 renderPageFooterChildren={() =>
@@ -109,8 +171,9 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         : 'buy-sell__modal-footer'
                 }
             >
+                {error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
-                    <AddPaymentMethodForm should_show_separated_footer={true} />
+                    <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
                 ) : (
                     <Form
                         advert={selected_ad}
@@ -131,16 +194,17 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             className='buy-sell__modal'
             height={table_type === buy_sell.BUY ? 'auto' : '649px'}
             width='456px'
-            is_open={should_show_popup && !my_profile_store.is_cancel_add_payment_method_modal_open}
-            title={modal_title}
+            is_open={should_show_popup}
+            title={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}
         >
             {/* Parent height - Modal.Header height - Modal.Footer height */}
             <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                 <Modal.Body>
+                    {error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm should_show_separated_footer />
+                        <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
                     ) : (
                         <Form
                             advert={selected_ad}
@@ -157,7 +221,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 <Modal.Footer has_separator>
                     {my_profile_store.should_show_add_payment_method_form ? null : (
                         <BuySellModalFooter
-                            error_message={error_message}
                             is_submit_disabled={is_submit_disabled}
                             onCancel={onCancel}
                             onSubmit={submitForm.current}

@@ -450,6 +450,9 @@ export default class QuickStrategyStore {
             }
         });
 
+        if (values['quick-strategy__size'] < 2) {
+            errors['quick-strategy__size'] = localize('minimum size must be higher than 2');
+        }
         const duration = this.duration_unit_dropdown.find(d => d.text === values['quick-strategy__duration-unit']);
 
         if (duration) {
@@ -472,7 +475,9 @@ export default class QuickStrategyStore {
     getSizeDesc = index => {
         switch (index) {
             case 0:
-                return localize('The multiplier amount used to increase your stake if you’re losing a trade.');
+                return localize(
+                    'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 2.'
+                );
             case 1:
                 return localize('The amount that you may add to your stake if you’re losing a trade.');
             case 2:

@@ -46,7 +46,6 @@ const BuySellForm = props => {
 
     const effective_rate =
         rate_type === ad_type.FLOAT ? parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100)) : price;
-    buy_sell_store.setInitialReceiveAmount(effective_rate);
 
     React.useEffect(
         () => {
@@ -59,13 +58,7 @@ const BuySellForm = props => {
                 () => buy_sell_store.receive_amount,
                 () => {
                     if (isMobile() && typeof setPageFooterParent === 'function') {
-                        setPageFooterParent(
-                            <BuySellFormReceiveAmount
-                                is_sell_advert={buy_sell_store.is_sell_advert}
-                                local_currency={local_currency}
-                                receive_amount={buy_sell_store.receive_amount}
-                            />
-                        );
+                        setPageFooterParent(<BuySellFormReceiveAmount />);
                     }
                 }
             );
@@ -75,7 +68,8 @@ const BuySellForm = props => {
             }
 
             advertiser_page_store.setFormErrorMessage('');
-            buy_sell_store.setShowRateChangePopup(true);
+            buy_sell_store.setShowRateChangePopup(rate_type === ad_type.FLOAT);
+            buy_sell_store.setInitialReceiveAmount(getRoundedNumber(effective_rate, buy_sell_store.account_currency));
 
             return () => {
                 buy_sell_store.payment_method_ids = [];

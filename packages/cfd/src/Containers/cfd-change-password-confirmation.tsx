@@ -20,9 +20,8 @@ const ChangePasswordConfirmation = ({
         onSubmit={onConfirm}
     >
         {({ isSubmitting, handleSubmit }) => (
-            <form onSubmit={handleSubmit} data-testid='cfd_change_password_form'>
+            <form onSubmit={handleSubmit} data-testid='dt_cfd_change_password_form'>
                 <div
-                    data-testid='change_password_confirmation_container'
                     className={classNames('cfd-change-password-confirmation__wrapper', {
                         [`${className}-wrapper`]: className,
                     })}
@@ -33,7 +32,6 @@ const ChangePasswordConfirmation = ({
                             icon={platform === CFD_PLATFORMS.MT5 ? 'IcMt5OnePassword' : 'IcDxtradeOnePassword'}
                             width='122'
                             height='108'
-                            data_testid='cfd_change_password_confirmation_icon'
                         />
                         <Text as='p' align='center' size='s' weight='bold'>
                             <Localize

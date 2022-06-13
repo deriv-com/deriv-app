@@ -85,7 +85,7 @@ const OrderDetailsConfirmModal = ({
                         <Localize
                             i18n_default_text='Have you paid {{amount}} {{currency}} to {{other_user_name}}?'
                             values={{
-                                amount: getRoundedNumber(amount * getRoundedNumber(rate)),
+                                amount: Number(amount * getRoundedNumber(rate)).toFixed(2),
                                 currency: local_currency,
                                 other_user_name: other_user_details.name,
                             }}
@@ -106,7 +106,7 @@ const OrderDetailsConfirmModal = ({
                             <Localize
                                 i18n_default_text="I've received {{amount}} {{currency}}"
                                 values={{
-                                    amount: getRoundedNumber(amount * getRoundedNumber(rate)),
+                                    amount: Number(amount * getRoundedNumber(rate)).toFixed(2),
                                     currency: local_currency,
                                 }}
                             />

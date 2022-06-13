@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
-import { localize, Localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import './block-user-overlay.scss';
@@ -20,26 +20,20 @@ const BlockUserOverlay = ({ children, is_visible, onUnblock }) => {
                             values={{ advertiser_name: advertiser_page_store.advertiser_details_name }}
                         />
                     </Text>
-                    <Button className='block-user-overlay__wrapper-button' secondary onClick={onUnblock} large>
-                        {localize('Unblock')}
+                    <Button className='block-user-overlay__wrapper-button' large onClick={onUnblock} secondary>
+                        <Localize i18_default_text='Unblock' />
                     </Button>
                 </div>
                 {children}
             </div>
         );
     }
-    return <>{children}</>;
+    return children;
 };
 
 BlockUserOverlay.propTypes = {
     children: PropTypes.any,
-    /**
-     * Controls the visibility of the overlay
-     */
     is_visible: PropTypes.bool.isRequired,
-    /**
-     * Function handler when Unblock button is clicked
-     */
     onUnblock: PropTypes.func.isRequired,
 };
 

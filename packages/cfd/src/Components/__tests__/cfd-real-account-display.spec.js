@@ -364,12 +364,9 @@ describe('<CFDRealAccountDisplay />', () => {
         const password_table_cells = screen.getAllByRole('cell', { name: /•••••••••••••••/i });
         expect(password_table_cells.length).toBe(1);
         const change_password_button = within(password_table_cells[0]).getByRole('button');
-        const fund_transfer_button = within(container.querySelector('#real-financial')).getByRole('button', {
-            name: /fund transfer/i,
-        });
-        const trade_on_web_terminal_button = within(container.querySelector('#real-financial')).getByRole('link', {
-            name: /trade on web terminal/i,
-        });
+        const within_financial = within(container.querySelector('#real-financial'));
+        const fund_transfer_button = within_financial.getByRole('button', { name: /fund transfer/i });
+        const trade_on_web_terminal_button = within_financial.getByRole('link', { name: /trade on web terminal/i });
         expect(trade_on_web_terminal_button).toHaveAttribute(
             'href',
             'https://trade.mql5.com/trade?servers=Deriv-Server&trade_server=Deriv-Server&login=1927245'
@@ -410,14 +407,9 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.getByText('Financial')).toBeInTheDocument();
         expect(screen.getByText('Financial STP')).toBeInTheDocument();
         expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(2);
-        expect(
-            within(container.querySelector('#real-financial_stp')).queryAllByRole('button', {
-                name: /add real account/i,
-            })
-        ).toEqual([]);
-        const pending_verification_button = within(container.querySelector('#real-financial_stp')).getByRole('button', {
-            name: /pending verification/i,
-        });
+        const within_stp = within(container.querySelector('#real-financial_stp'));
+        expect(within_stp.queryAllByRole('button', { name: /add real account/i })).toEqual([]);
+        const pending_verification_button = within_stp.getByRole('button', { name: /pending verification/i });
         expect(pending_verification_button).toBeDisabled();
     });
 
@@ -429,31 +421,72 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.getByText('Financial')).toBeInTheDocument();
         expect(screen.getByText('Financial STP')).toBeInTheDocument();
         expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(2);
-        const add_real_account_button_in_stp = within(container.querySelector('#real-financial_stp')).queryByRole(
-            'button',
-            {
-                name: /add real account/i,
-            }
-        );
-        expect(add_real_account_button_in_stp).toEqual(null);
-        const set_password_button = within(container.querySelector('#real-financial_stp')).getByRole('button', {
-            name: /set your password/i,
-        });
-        expect(set_password_button).toBeDefined();
+        const within_stp = within(container.querySelector('#real-financial_stp'));
+        const add_real_account_button_in_stp = within_stp.queryByRole('button', { name: /add real account/i });
+        expect(add_real_account_button_in_stp).not.toBeInTheDocument();
+        const set_password_button = within_stp.getByRole('button', { name: /set your password/i });
+        expect(set_password_button).toBeInTheDocument();
 
         rerender(
             <CFDRealAccountDisplay
                 {...props}
                 is_fully_authenticated
-                account_settings={{ tax_identification_number: '' }}
+                account_settings={{
+                    citizen: 'id',
+                    tax_residence: 'id',
+                    tax_identification_number: '',
+                }}
             />
         );
         expect(screen.queryByRole('button', { name: /set your password/i })).not.toBeInTheDocument();
+        expect(within_stp.getByRole('button', { name: /add real account/i })).toBeInTheDocument();
 
-        props.landing_companies.config.tax_details_required = 0;
-        rerender(<CFDRealAccountDisplay {...props} is_fully_authenticated />);
-        expect(add_real_account_button_in_stp).toEqual(null);
-        expect(set_password_button).toBeDefined();
+        rerender(
+            <CFDRealAccountDisplay
+                {...props}
+                is_fully_authenticated
+                account_settings={{
+                    citizen: 'id',
+                    tax_residence: 'id',
+                    tax_identification_number: '',
+                }}
+                landing_companies={{ config: { tax_details_required: 0 } }}
+            />
+        );
+        expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
+        expect(within_stp.getByRole('button', { name: /set your password/i })).toBeInTheDocument();
+
+        rerender(
+            <CFDRealAccountDisplay
+                {...props}
+                is_fully_authenticated
+                landing_companies={{ config: { tax_details_required: 1 } }}
+                residence_list={[{ value: 'id', tin_format: undefined }]}
+                account_settings={{
+                    citizen: 'id',
+                    tax_residence: 'id',
+                    tax_identification_number: '',
+                }}
+            />
+        );
+        expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
+        expect(within_stp.getByRole('button', { name: /set your password/i })).toBeInTheDocument();
+
+        rerender(
+            <CFDRealAccountDisplay
+                {...props}
+                is_fully_authenticated
+                account_settings={{
+                    citizen: 'id',
+                    tax_residence: 'id',
+                    tax_identification_number: '',
+                }}
+                landing_companies={{ config: { tax_details_required: 0 } }}
+                residence_list={[{ value: 'id', tin_format: undefined }]}
+            />
+        );
+        expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
+        expect(within_stp.getByRole('button', { name: /set your password/i })).toBeInTheDocument();
 
         fireEvent.click(set_password_button);
         expect(props.openPasswordModal).toHaveBeenCalledWith({ category: 'real', type: 'financial_stp' });
@@ -492,36 +525,16 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should show special specifications on Financial card when residence="au"', () => {
         const { rerender, container } = render(<CFDRealAccountDisplay {...props} residence='au' />);
+        const within_financial = within(container.querySelector('#real-financial'));
 
-        expect(
-            within(container.querySelector('#real-financial')).getByRole('row', {
-                name: /leverage up to 1:30/i,
-            })
-        ).toBeInTheDocument();
-        expect(
-            within(container.querySelector('#real-financial')).getByRole('row', {
-                name: /margin call 100%/i,
-            })
-        ).toBeInTheDocument();
-        expect(
-            within(container.querySelector('#real-financial')).getByRole('row', {
-                name: /stop out level 50%/i,
-            })
-        ).toBeInTheDocument();
-        expect(
-            within(container.querySelector('#real-financial')).getByRole('row', {
-                name: /number of assets 100\+/i,
-            })
-        ).toBeInTheDocument();
+        expect(within_financial.getByRole('row', { name: /leverage up to 1:30/i })).toBeInTheDocument();
+        expect(within_financial.getByRole('row', { name: /margin call 100%/i })).toBeInTheDocument();
+        expect(within_financial.getByRole('row', { name: /stop out level 50%/i })).toBeInTheDocument();
+        expect(within_financial.getByRole('row', { name: /number of assets 100\+/i })).toBeInTheDocument();
 
-        props.platform = 'dxtrade';
-        rerender(<CFDRealAccountDisplay {...props} />);
+        rerender(<CFDRealAccountDisplay {...props} platform='dxtrade' />);
 
-        expect(
-            within(container.querySelector('#real-financial')).getByRole('row', {
-                name: /number of assets 90\+/i,
-            })
-        ).toBeInTheDocument();
+        expect(within_financial.getByRole('row', { name: /number of assets 90\+/i })).toBeInTheDocument();
     });
 
     it('should render enabled "Select" buttons instead of "Add real account" buttons when has_cfd_account=true', () => {

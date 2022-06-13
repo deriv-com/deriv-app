@@ -225,6 +225,8 @@ const AccountTransferForm = ({
     const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
 
+    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
+
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -330,13 +332,17 @@ const AccountTransferForm = ({
 
         setFromAccounts({
             ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
-            ...(dxtrade_accounts_from.length && { [localize('Deriv X accounts')]: dxtrade_accounts_from }),
+            ...(dxtrade_accounts_from.length && {
+                [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_from,
+            }),
             ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
         });
 
         setToAccounts({
             ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
-            ...(dxtrade_accounts_to.length && { [localize('Deriv X accounts')]: dxtrade_accounts_to }),
+            ...(dxtrade_accounts_to.length && {
+                [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_to,
+            }),
             ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
         });
     }, [accounts_list, selected_to, selected_from]);
@@ -414,7 +420,7 @@ const AccountTransferForm = ({
                                 <Loading className='cashier__loader' is_fullscreen={false} />
                             </div>
                         ) : (
-                            <Form>
+                            <Form noValidate>
                                 <div className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'>
                                     <Dropdown
                                         id='transfer_from'

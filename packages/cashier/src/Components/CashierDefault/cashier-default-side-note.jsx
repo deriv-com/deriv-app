@@ -36,6 +36,7 @@ export const notes = (is_crypto, can_change_fiat_currency, currency, openRealAcc
                 components={[
                     <a key={0} className='link link--orange' onClick={() => openRealAccountSignup('manage')} />,
                 ]}
+                values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
             />
         );
     }

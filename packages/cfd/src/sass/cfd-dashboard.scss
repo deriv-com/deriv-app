@@ -105,8 +105,7 @@
         background-color: var(--general-section-1);
         display: flex;
         justify-content: space-between;
-        margin: 2.4em 0 0;
-        margin-inline: auto;
+        margin: 2.4em 0 auto;
         padding: 1.6rem;
 
         &--heading {

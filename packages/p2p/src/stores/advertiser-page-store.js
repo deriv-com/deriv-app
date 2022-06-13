@@ -63,11 +63,13 @@ export default class AdvertiserPageStore extends BaseStore {
             p2p_advertiser_relations: 1,
             remove_blocked: [this.advertiser_details_id],
         }).then(response => {
-            if (!response.error) {
-                this.getAdvertiserInfo();
-                this.setIsBlockUserModalOpen(false);
-            } else {
-                this.setErrorMessage(response.error);
+            if (response) {
+                if (!response.error) {
+                    this.getAdvertiserInfo();
+                    this.setIsBlockUserModalOpen(false);
+                } else {
+                    this.setErrorMessage(response.error);
+                }
             }
         });
     }

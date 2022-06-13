@@ -136,6 +136,7 @@ const RealAccountSignup = ({
                     is_add_fiat={local_props.real_account_signup_target === 'add_fiat'}
                     is_add_currency={local_props.real_account_signup_target === 'add_currency'}
                     deposit_target={local_props.deposit_target}
+                    onClose={closeModal}
                 />
             ),
             title: local_props => {
@@ -399,44 +400,45 @@ const RealAccountSignup = ({
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <Modal
-                    id='real_account_signup_modal'
-                    className={classNames('real-account-signup-modal', {
-                        'dc-modal__container_real-account-signup-modal--error': getActiveModalIndex() === signup_error,
-                        'dc-modal__container_real-account-signup-modal--success': [
-                            finished_set_currency,
-                            status_dialog,
-                        ].includes(getActiveModalIndex()),
-                    })}
-                    is_open={is_real_acc_signup_on}
-                    is_risk_warning_visible={is_risk_warning_visible}
-                    has_close_icon={real_account_signup_target !== 'samoa'}
-                    is_title_centered={real_account_signup_target === 'samoa'}
-                    renderTitle={() => {
-                        if (Title && ![finished_set_currency, status_dialog].includes(getActiveModalIndex())) {
-                            return (
-                                <Title
-                                    real_account_signup_target={real_account_signup_target}
-                                    currency={currency}
-                                    is_isle_of_man_residence={is_isle_of_man_residence}
-                                    is_belgium_residence={is_belgium_residence}
-                                    is_eu={is_eu}
-                                    has_fiat={has_fiat}
-                                    available_crypto_currencies={available_crypto_currencies}
-                                    should_show_all_available_currencies={should_show_all_available_currencies}
-                                    country_standpoint={country_standpoint}
-                                />
-                            );
-                        }
+                {is_real_acc_signup_on && (
+                    <Modal
+                        id='real_account_signup_modal'
+                        className={classNames('real-account-signup-modal', {
+                            'dc-modal__container_real-account-signup-modal--error':
+                                getActiveModalIndex() === signup_error,
+                            'dc-modal__container_real-account-signup-modal--success': [
+                                finished_set_currency,
+                                status_dialog,
+                            ].includes(getActiveModalIndex()),
+                        })}
+                        is_open={is_real_acc_signup_on}
+                        is_risk_warning_visible={is_risk_warning_visible}
+                        has_close_icon={real_account_signup_target !== 'samoa'}
+                        is_title_centered={real_account_signup_target === 'samoa'}
+                        renderTitle={() => {
+                            if (Title && ![finished_set_currency, status_dialog].includes(getActiveModalIndex())) {
+                                return (
+                                    <Title
+                                        real_account_signup_target={real_account_signup_target}
+                                        currency={currency}
+                                        is_isle_of_man_residence={is_isle_of_man_residence}
+                                        is_belgium_residence={is_belgium_residence}
+                                        is_eu={is_eu}
+                                        has_fiat={has_fiat}
+                                        available_crypto_currencies={available_crypto_currencies}
+                                        should_show_all_available_currencies={should_show_all_available_currencies}
+                                        country_standpoint={country_standpoint}
+                                    />
+                                );
+                            }
 
-                        return null;
-                    }}
-                    toggleModal={closeModal}
-                    height={getModalHeight()}
-                    width={!has_close_icon ? 'auto' : '904px'}
-                    elements_to_ignore={[document.querySelector('.modal-root')]}
-                >
-                    {is_real_acc_signup_on && (
+                            return null;
+                        }}
+                        toggleModal={closeModal}
+                        height={getModalHeight()}
+                        width={!has_close_icon ? 'auto' : '904px'}
+                        elements_to_ignore={[document.querySelector('.modal-root')]}
+                    >
                         <ModalContent
                             state_value={state_value}
                             passthrough={state_index}
@@ -445,32 +447,33 @@ const RealAccountSignup = ({
                             deposit_real_account_signup_target={deposit_real_account_signup_target}
                             deposit_target={deposit_target}
                         />
-                    )}
-                </Modal>
+                    </Modal>
+                )}
             </DesktopWrapper>
             <MobileWrapper>
-                <MobileDialog
-                    portal_element_id='modal_root'
-                    wrapper_classname='account-signup-mobile-dialog'
-                    visible={is_real_acc_signup_on}
-                    onClose={closeModal}
-                    renderTitle={() => {
-                        if (Title) {
-                            return (
-                                <Title
-                                    real_account_signup_target={real_account_signup_target}
-                                    currency={currency}
-                                    is_isle_of_man_residence={is_isle_of_man_residence}
-                                    is_belgium_residence={is_belgium_residence}
-                                    should_show_all_available_currencies={should_show_all_available_currencies}
-                                    country_standpoint={country_standpoint}
-                                />
-                            );
-                        }
-                        return null;
-                    }}
-                >
-                    {is_real_acc_signup_on && (
+                {is_real_acc_signup_on && (
+                    <MobileDialog
+                        portal_element_id='modal_root'
+                        wrapper_classname='account-signup-mobile-dialog'
+                        visible={is_real_acc_signup_on}
+                        onClose={closeModal}
+                        renderTitle={() => {
+                            if (Title) {
+                                return (
+                                    <Title
+                                        real_account_signup_target={real_account_signup_target}
+                                        currency={currency}
+                                        is_isle_of_man_residence={is_isle_of_man_residence}
+                                        is_belgium_residence={is_belgium_residence}
+                                        should_show_all_available_currencies={should_show_all_available_currencies}
+                                        country_standpoint={country_standpoint}
+                                    />
+                                );
+                            }
+
+                            return null;
+                        }}
+                    >
                         <ModalContent
                             state_value={state_value}
                             passthrough={state_index}
@@ -479,8 +482,8 @@ const RealAccountSignup = ({
                             deposit_real_account_signup_target={deposit_real_account_signup_target}
                             deposit_target={deposit_target}
                         />
-                    )}
-                </MobileDialog>
+                    </MobileDialog>
+                )}
             </MobileWrapper>
         </React.Fragment>
     );

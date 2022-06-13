@@ -228,7 +228,9 @@ export default class ClientStore extends BaseStore {
         const has_no_mt5 = !this.has_real_mt5_login;
         const has_no_dxtrade = !this.has_real_dxtrade_login;
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
-        const has_account_criteria = has_no_transaction && has_no_mt5 && has_no_dxtrade;
+        const has_no_deposit_attempt_account_status = !this.account_status?.status?.includes('deposit_attempt');
+        const has_account_criteria =
+            has_no_transaction && has_no_mt5 && has_no_dxtrade && has_no_deposit_attempt_account_status;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
     }
 
@@ -1027,21 +1029,18 @@ export default class ClientStore extends BaseStore {
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
+
         if (is_maltainvest_account) {
             currency = form_values.currency;
             form_values.accept_risk = form_values.accept_risk || 0;
-            delete form_values.currency;
         }
+
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(form_values)
             : await WS.newAccountReal(form_values);
+
         if (!response.error) {
             await this.accountRealReaction(response);
-            // Set currency after account is created
-            // Maltainvest only
-            if (is_maltainvest_account) {
-                await this.setAccountCurrency(currency);
-            }
             if (is_samoa_account) {
                 await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
             }
@@ -1604,7 +1603,7 @@ export default class ClientStore extends BaseStore {
             });
         }
 
-        if (obj_balance.total) {
+        if (obj_balance?.total) {
             const total_real = getPropertyValue(obj_balance, ['total', 'deriv']);
             const total_mt5 = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.MT5]);
             const total_dxtrade = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.DXTRADE]);
@@ -1645,6 +1644,14 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setAccountStatus(status) {
         this.account_status = status;
+    }
+
+    @action.bound
+    async updateAccountStatus() {
+        const account_status_response = await WS.authorized.getAccountStatus();
+        if (!account_status_response.error) {
+            this.setAccountStatus(account_status_response.get_account_status);
+        }
     }
 
     @action.bound

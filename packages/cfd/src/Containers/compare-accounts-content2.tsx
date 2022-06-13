@@ -1,9 +1,10 @@
 import React from 'react';
+import { Modal, Button } from '@deriv/components';
 
 const ModalConent2 = () => {
-    const [verification_status, setVerificationStatus] = React.useState('pending');
-    const [verification_status2, setVerificationStatus2] = React.useState('verified');
-    const [verification_status3, setVerificationStatus3] = React.useState('not_submitted');
+    const [verification_status] = React.useState('pending');
+    const [verification_status2] = React.useState('verified');
+    const [verification_status3] = React.useState('not_submitted');
 
     return (
         <div className='cfd-jurisdiction-card__wrapper'>

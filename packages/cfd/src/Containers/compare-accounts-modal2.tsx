@@ -62,6 +62,9 @@ const CompareAccountsModal2 = ({
                             width='903px'
                         >
                             <ModalContent2 />
+                            <Modal.Footer>
+                                <Button primary>Next</Button>
+                            </Modal.Footer>
                         </Modal>
                     </DesktopWrapper>
                     <MobileWrapper>

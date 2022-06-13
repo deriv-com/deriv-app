@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import posed, { PoseGroup } from 'react-pose';
+import { motion } from 'framer-motion';
 
-const SlideInFromTop = posed.div({
-    enter: {
+const SlideInFromTop = {
+    OnViewportEnter: {
         y: 0,
         opacity: 1,
         transition: {
@@ -17,10 +17,10 @@ const SlideInFromTop = posed.div({
             duration: 100,
         },
     },
-});
+};
 
-const SlideInFromBottom = posed.div({
-    enter: {
+const SlideInFromBottom = {
+    onViewportEnter: {
         y: 0,
         opacity: 1,
         transition: {
@@ -34,28 +34,38 @@ const SlideInFromBottom = posed.div({
             duration: 100,
         },
     },
-});
+};
 
 const SlideIn = ({ children, className, keyname, is_visible, type }) => {
     if (type === 'bottom') {
         return (
-            <PoseGroup flipMove={false}>
+            <>
                 {is_visible && (
-                    <SlideInFromBottom className={className} key={keyname}>
+                    <motion.div
+                        onViewportEnter={SlideInFromBottom.onViewportEnter}
+                        exit={SlideInFromBottom.exit}
+                        className={className}
+                        key={keyname}
+                    >
                         {children}
-                    </SlideInFromBottom>
+                    </motion.div>
                 )}
-            </PoseGroup>
+            </>
         );
     }
     return (
-        <PoseGroup flipMove={false}>
+        <>
             {is_visible && (
-                <SlideInFromTop className={className} key={keyname}>
+                <motion.div
+                    onViewportEnter={SlideInFromTop.onViewportEnter}
+                    exit={SlideInFromTop.exit}
+                    className={className}
+                    key={keyname}
+                >
                     {children}
-                </SlideInFromTop>
+                </motion.div>
             )}
-        </PoseGroup>
+        </>
     );
 };
 

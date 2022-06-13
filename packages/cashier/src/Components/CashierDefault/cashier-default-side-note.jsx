@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
-import { getCurrencyDisplayCode, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
 import 'Sass/cashier-default.scss';
 
 export const notes = (is_crypto, can_change_fiat_currency, currency, openRealAccountSignup, setDepositTarget) => {

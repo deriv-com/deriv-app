@@ -69,8 +69,10 @@
         }
 
         &-field {
-            display: flex;
-            gap: 2rem;
+            @include desktop() {
+                display: flex;
+                gap: 2rem;
+            }
         }
     }
 
@@ -188,5 +190,6 @@
 
     .dc-modal-footer--separator {
         margin-top: 1rem;
+        border-top: 2px solid var(--general-section-5);
     }
 }

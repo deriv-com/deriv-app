@@ -6,7 +6,7 @@ import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './rate-change-modal.scss';
 
-const RateChangeModal = () => {
+const RateChangeModal = ({ onMount }) => {
     const { buy_sell_store, floating_rate_store, general_store } = useStores();
     const local_currency = general_store.client?.local_currency_config?.currency;
     const is_mobile = isMobile();
@@ -14,11 +14,11 @@ const RateChangeModal = () => {
     const closeModal = () => {
         floating_rate_store.setIsMarketRateChanged(false);
         buy_sell_store.setShowRateChangePopup(false);
-        buy_sell_store.setShouldShowPopup(false);
+        onMount(false);
     };
 
     if (!is_mobile && floating_rate_store.is_market_rate_changed) {
-        buy_sell_store.setShouldShowPopup(false);
+        onMount(false);
     }
 
     return (

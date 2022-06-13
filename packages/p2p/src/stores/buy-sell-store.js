@@ -122,6 +122,16 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    fetchAdvertiserAdverts() {
+        this.setItems([]);
+        this.setIsLoading(true);
+        this.loadMoreItems({ startIndex: 0 });
+        if (!this.is_buy) {
+            this.root_store.my_profile_store.getAdvertiserPaymentMethods();
+        }
+    }
+
+    @action.bound
     getAdvertiserInfo() {
         requestWS({
             p2p_advertiser_info: 1,
@@ -450,6 +460,9 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setShouldShowPopup(should_show_popup) {
         this.should_show_popup = should_show_popup;
+        if (!this.should_show_popup) {
+            this.fetchAdvertiserAdverts();
+        }
     }
 
     @action.bound

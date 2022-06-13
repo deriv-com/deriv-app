@@ -323,7 +323,7 @@ const BuySellForm = props => {
                                                     })}
                                                     hint={
                                                         <Localize
-                                                            i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
+                                                            i18n_default_text='Limit: {{min}}–{{max}} {{currency}}'
                                                             values={{
                                                                 min: min_order_amount_limit_display,
                                                                 max: max_order_amount_limit_display,

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 const OrderInfoBlock = ({ className, label, value, size = 'xxs', weight = 'normal' }) => (
     <div className={classNames('order-details-card__info-block', className)}>
-        <Text as='p' color='less-prominent' size={size} weight={weight}>
+        <Text as='p' color='prominent' size={size} weight={weight}>
             {label}
         </Text>
         <div className='order-details-card__info-block-value'>{value}</div>

@@ -80,7 +80,7 @@ const BuySell = () => {
                 setShouldShowPopup={buy_sell_store.setShouldShowPopup}
                 table_type={buy_sell_store.table_type}
             />
-            <RateChangeModal />
+            <RateChangeModal onMount={buy_sell_store.setShouldShowPopup} />
         </div>
     );
 };

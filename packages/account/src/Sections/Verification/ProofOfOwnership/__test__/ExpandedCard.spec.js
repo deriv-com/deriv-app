@@ -1,6 +1,17 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import ExpandedCard from '../ExpandedCard.jsx';
+
+const formatIdentifier = (id, type) => {
+    let formattedID = id;
+    if (type === 'IcCreditCard' || type === 'IcStockVisa' || type === 'IcStockMasterCard')
+        formattedID = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
+    else if (type === 'IcEwallet') return formattedID;
+    return formattedID
+        .replace(/\s/g, '')
+        .replace(/(\w{4})/g, '$1 ')
+        .trim();
+};
 
 describe('ExpandedCard.jsx', () => {
     let cardDetails;
@@ -24,10 +35,19 @@ describe('ExpandedCard.jsx', () => {
         const element = screen.getByText('Card Number', { exact: true });
         expect(element).toBeInTheDocument();
     });
-    it('should show example modal text for credit/debit card', async () => {
+    it('should show example link for credit/debit card', async () => {
         render(<ExpandedCard cardDetails={cardDetails} identifier={cardDetails.payment_method_identifier} />);
         const exampelLink = screen.getByText('See example');
         expect(exampelLink).toBeInTheDocument();
-        fireEvent.click(exampelLink);
+    });
+    it('should format identifier', () => {
+        render(<ExpandedCard cardDetails={cardDetails} identifier={cardDetails.payment_method_identifier} />);
+        const element = screen.getByDisplayValue(
+            formatIdentifier(cardDetails.payment_method_identifier, cardDetails.icon),
+            {
+                exact: true,
+            }
+        );
+        expect(element).toBeInTheDocument();
     });
 });

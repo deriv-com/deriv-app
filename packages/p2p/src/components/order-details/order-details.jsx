@@ -157,64 +157,77 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
-                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                        {is_active_order &&
-                            (order_store?.has_order_payment_method_details ? (
-                                <div className='order-details-card--padding'>
-                                    <section className='order-details-card__title'>
-                                        <Text size='xs' weight='bold'>
-                                            {labels.payment_details}
-                                        </Text>
-                                        <Button
-                                            className='p2p-my-ads__expand-button'
-                                            onClick={() => setShouldExpandAll(prev_state => !prev_state)}
-                                            transparent
-                                        >
-                                            <Text size='xss' weight='bold' color='red'>
-                                                {localize('{{accordion_state}}', {
-                                                    accordion_state: should_expand_all ? 'Collapse all' : 'Expand all',
-                                                })}
+                        {is_active_order && (
+                            <React.Fragment>
+                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                {order_store?.has_order_payment_method_details ? (
+                                    <div className='order-details-card--padding'>
+                                        <section className='order-details-card__title'>
+                                            <Text size='xs' weight='bold'>
+                                                {labels.payment_details}
                                             </Text>
-                                        </Button>
-                                    </section>
-                                    <Accordion
-                                        className='order-details-card__accordion'
-                                        icon_close='IcChevronRight'
-                                        icon_open='IcChevronDown'
-                                        list={order_store?.order_payment_method_details?.map(payment_method => ({
-                                            header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
-                                            content: <PaymentMethodAccordionContent payment_method={payment_method} />,
-                                        }))}
-                                        is_expand_all={should_expand_all}
+                                            <Button
+                                                className='p2p-my-ads__expand-button'
+                                                onClick={() => setShouldExpandAll(prev_state => !prev_state)}
+                                                transparent
+                                            >
+                                                <Text size='xss' weight='bold' color='red'>
+                                                    {localize('{{accordion_state}}', {
+                                                        accordion_state: should_expand_all
+                                                            ? 'Collapse all'
+                                                            : 'Expand all',
+                                                    })}
+                                                </Text>
+                                            </Button>
+                                        </section>
+                                        <Accordion
+                                            className='order-details-card__accordion'
+                                            icon_close='IcChevronRight'
+                                            icon_open='IcChevronDown'
+                                            list={order_store?.order_payment_method_details?.map(payment_method => ({
+                                                header: (
+                                                    <PaymentMethodAccordionHeader payment_method={payment_method} />
+                                                ),
+                                                content: (
+                                                    <PaymentMethodAccordionContent payment_method={payment_method} />
+                                                ),
+                                            }))}
+                                            is_expand_all={should_expand_all}
+                                        />
+                                    </div>
+                                ) : (
+                                    <OrderInfoBlock
+                                        className='order-details-card--padding'
+                                        label={labels.payment_details}
+                                        size='xs'
+                                        weight='bold'
+                                        value={payment_info || '-'}
                                     />
-                                </div>
-                            ) : (
+                                )}
+                            </React.Fragment>
+                        )}
+                        {is_active_order && (
+                            <React.Fragment>
+                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
                                     className='order-details-card--padding'
-                                    label={labels.payment_details}
+                                    label={labels.contact_details}
                                     size='xs'
                                     weight='bold'
-                                    value={payment_info || '-'}
+                                    value={contact_info || '-'}
                                 />
-                            ))}
-                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                        <OrderInfoBlock
-                            className='order-details-card--padding'
-                            label={labels.contact_details}
-                            size='xs'
-                            weight='bold'
-                            value={contact_info || '-'}
-                        />
-                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                        <OrderInfoBlock
-                            className='order-details-card--padding'
-                            label={labels.instructions}
-                            size='xs'
-                            weight='bold'
-                            value={advert_details.description.trim() || '-'}
-                        />
-                        {should_show_order_footer && isDesktop() && (
-                            <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                <OrderInfoBlock
+                                    className='order-details-card--padding'
+                                    label={labels.instructions}
+                                    size='xs'
+                                    weight='bold'
+                                    value={advert_details.description.trim() || '-'}
+                                />
+                                {should_show_order_footer && isDesktop() && (
+                                    <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                )}
+                            </React.Fragment>
                         )}
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (

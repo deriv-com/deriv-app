@@ -12,7 +12,6 @@ import {
 } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { api_error_codes } from 'Constants/api-error-codes.js';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
@@ -39,12 +38,9 @@ const LowBalanceMessage = () => (
 );
 
 const BuySellModalFooter = ({ error_message, onCancel, is_submit_disabled, onSubmit }) => {
-    const { buy_sell_store } = useStores();
     return (
         <React.Fragment>
-            {error_message && buy_sell_store.form_error_code !== api_error_codes.MARKET_RATE_CHANGE && (
-                <FormError message={error_message} />
-            )}
+            {error_message && <FormError message={error_message} />}
             <Button.Group>
                 <Button secondary onClick={onCancel} large>
                     {localize('Cancel')}

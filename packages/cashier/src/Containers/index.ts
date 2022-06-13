@@ -1,4 +1,4 @@
-import AccountTransfer from './account-transfer.jsx';
+import AccountTransfer from './account-transfer';
 import PaymentAgentTransfer from './payment-agent-transfer';
 import Cashier from './cashier.jsx';
 import Deposit from './deposit';

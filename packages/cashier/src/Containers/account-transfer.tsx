@@ -1,17 +1,41 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import AccountTransferNoAccount from 'Components/Error/account-transfer-no-account.jsx';
+import RootStore from 'Stores/types';
+import AccountTransferNoAccount from 'Components/Error/account-transfer-no-account';
 import Error from 'Components/Error/error.jsx';
 import NoBalance from 'Components/Error/no-balance.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
 import CashierLocked from 'Components/Error/cashier-locked.jsx';
-import TransferLock from 'Components/Error/transfer-locked.jsx';
-import AccountTransferForm from 'Components/Form/account-transfer-form.jsx';
-import AccountTransferReceipt from 'Components/Receipt/account-transfer-receipt.jsx';
+import TransferLock from 'Components/Error/transfer-locked';
+import AccountTransferForm from 'Components/Form/account-transfer-form';
+import AccountTransferReceipt from 'Components/Receipt/account-transfer-receipt';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
+
+type TAccountTransfer = {
+    accounts_list: Array<object>;
+    container: string;
+    error: {
+        is_show_full_page: boolean;
+        message: string;
+    };
+    has_no_account: boolean;
+    has_no_accounts_balance: boolean;
+    is_cashier_locked: boolean;
+    is_crypto_transactions_visible: boolean;
+    is_loading: boolean;
+    is_switching: boolean;
+    is_transfer_confirm: boolean;
+    is_transfer_lock: boolean;
+    is_virtual: boolean;
+    onMount: () => void;
+    recentTransactionOnMount: () => void;
+    setAccountTransferAmount: (amount: number | string) => void;
+    setActiveTab: (container: string) => void;
+    setIsTransferConfirm: (status: boolean) => void;
+    setSideNotes: (notes: Array<object | string> | null) => void;
+};
 
 const AccountTransfer = ({
     accounts_list,
@@ -32,7 +56,7 @@ const AccountTransfer = ({
     setActiveTab,
     setIsTransferConfirm,
     setSideNotes,
-}) => {
+}: TAccountTransfer) => {
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
 
     React.useEffect(() => {
@@ -97,28 +121,7 @@ const AccountTransfer = ({
     return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
 };
 
-AccountTransfer.propTypes = {
-    accounts_list: PropTypes.array,
-    container: PropTypes.string,
-    error: PropTypes.object,
-    has_no_account: PropTypes.bool,
-    has_no_accounts_balance: PropTypes.bool,
-    is_cashier_locked: PropTypes.bool,
-    is_crypto_transactions_visible: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    is_transfer_confirm: PropTypes.bool,
-    is_transfer_lock: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    onMount: PropTypes.func,
-    recentTransactionOnMount: PropTypes.func,
-    setAccountTransferAmount: PropTypes.func,
-    setActiveTab: PropTypes.func,
-    setIsTransferConfirm: PropTypes.func,
-    setSideNotes: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
     accounts_list: modules.cashier.account_transfer.accounts_list,

@@ -1,16 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
+
+type TTransferLocked = {
+    is_financial_account: boolean;
+    is_financial_information_incomplete: boolean;
+    is_trading_experience_incomplete: boolean;
+};
 
 const TransferLocked = ({
     is_financial_account,
     is_financial_information_incomplete,
     is_trading_experience_incomplete,
-}) => {
+}: TTransferLocked) => {
     const history = useHistory();
     const items = [
         ...(is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete)
@@ -39,13 +45,7 @@ const TransferLocked = ({
     );
 };
 
-TransferLocked.propTypes = {
-    is_financial_account: PropTypes.bool,
-    is_financial_information_incomplete: PropTypes.bool,
-    is_trading_experience_incomplete: PropTypes.bool,
-};
-
-export default connect(({ client }) => ({
+export default connect(({ client }: RootStore) => ({
     is_financial_account: client.is_financial_account,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,

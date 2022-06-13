@@ -1,11 +1,39 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import 'Sass/account-transfer-receipt.scss';
+
+type TAccountTransferReceipt = RouteComponentProps & {
+    disableApp: () => void;
+    enableApp: () => void;
+    is_from_derivgo: boolean;
+    loginid: string;
+    receipt: {
+        amount_transferred: number | string;
+    };
+    resetAccountTransfer: () => void;
+    selected_from: {
+        currency: string;
+        value: string;
+        is_mt: boolean;
+        is_dxtrade: boolean;
+        platform_icon: string;
+        text: string;
+    };
+    selected_to: {
+        currency: string;
+        value: string;
+        is_mt: boolean;
+        is_dxtrade: boolean;
+        platform_icon: string;
+        text: string;
+    };
+    switchAccount: (value?: string) => void;
+};
 
 const AccountTransferReceipt = ({
     disableApp,
@@ -18,9 +46,9 @@ const AccountTransferReceipt = ({
     selected_from,
     selected_to,
     switchAccount,
-}) => {
+}: TAccountTransferReceipt) => {
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
-    const [switch_to, setSwitchTo] = React.useState({});
+    const [switch_to, setSwitchTo] = React.useState<{ value?: string; currency?: string }>({});
 
     React.useEffect(() => {
         return () => {
@@ -157,20 +185,8 @@ const AccountTransferReceipt = ({
     );
 };
 
-AccountTransferReceipt.propTypes = {
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_from_derivgo: PropTypes.bool,
-    loginid: PropTypes.string,
-    receipt: PropTypes.object,
-    resetAccountTransfer: PropTypes.func,
-    selected_from: PropTypes.object,
-    selected_to: PropTypes.object,
-    switchAccount: PropTypes.func,
-};
-
 export default withRouter(
-    connect(({ client, common, modules, ui }) => ({
+    connect(({ client, common, modules, ui }: RootStore) => ({
         disableApp: ui.disableApp,
         enableApp: ui.enableApp,
         is_from_derivgo: common.is_from_derivgo,

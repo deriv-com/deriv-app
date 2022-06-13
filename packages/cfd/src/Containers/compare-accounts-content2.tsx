@@ -1,6 +1,10 @@
 import React from 'react';
 
 const ModalConent2 = () => {
+    const [verification_status, setVerificationStatus] = React.useState('pending');
+    const [verification_status2, setVerificationStatus2] = React.useState('verified');
+    const [verification_status3, setVerificationStatus3] = React.useState('not_submitted');
+
     return (
         <div className='cfd-jurisdiction-card__wrapper'>
             <div className='cfd-jurisdiction-card'>
@@ -45,9 +49,21 @@ const ModalConent2 = () => {
                     </span>
                     <span>Leverage up to 1:1000</span>
                 </div>
-                <div className='cfd-jurisdiction-card__footer'>
-                    <p>You will need to submit proof of identity and address</p>
-                </div>
+                {verification_status === 'not_submitted' && (
+                    <div className='cfd-jurisdiction-card__footer'>
+                        <p>You will need to submit proof of identity and address</p>
+                    </div>
+                )}
+                {verification_status === 'pending' && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--pending'>Pending verification</p>
+                    </div>
+                )}
+                {verification_status === 'verified' && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--verified'>Verified</p>
+                    </div>
+                )}
             </div>
             <div className='cfd-jurisdiction-card'>
                 <div className='cfd-jurisdiction-card__over-header'>
@@ -85,9 +101,21 @@ const ModalConent2 = () => {
                     </span>
                     <span>Leverage up to 1:1000</span>
                 </div>
-                <div className='cfd-jurisdiction-card__footer'>
-                    <p>You will need to submit proof of identity and address</p>
-                </div>
+                {verification_status2 === 'not_submitted' && (
+                    <div className='cfd-jurisdiction-card__footer'>
+                        <p>You will need to submit proof of identity and address</p>
+                    </div>
+                )}
+                {verification_status2 === 'pending' && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--pending'>Pending verification</p>
+                    </div>
+                )}
+                {verification_status2 === 'verified' && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--verified'>Verified</p>
+                    </div>
+                )}
             </div>
             <div className='cfd-jurisdiction-card'>
                 <div className='cfd-jurisdiction-card__over-header'>
@@ -133,9 +161,21 @@ const ModalConent2 = () => {
                     </span>
                     <span>Straight through processing</span>
                 </div>
-                <div className='cfd-jurisdiction-card__footer'>
-                    <p>You will need to submit proof of identity and address</p>
-                </div>
+                {verification_status3 === 'not_submitted' && (
+                    <div className='cfd-jurisdiction-card__footer'>
+                        <p>You will need to submit proof of identity and address</p>
+                    </div>
+                )}
+                {verification_status3 === 'pending' && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--pending'>Pending verification</p>
+                    </div>
+                )}
+                {verification_status3 === 'verified' && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--verified'>Verified</p>
+                    </div>
+                )}
             </div>
         </div>
     );

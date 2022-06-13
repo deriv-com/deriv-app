@@ -457,6 +457,27 @@
         height: 100%;
     }
 
+    &__verification-status {
+        text-align: center;
+        margin: 0 5px;
+        margin-top: auto;
+        margin-bottom: 0.5rem;
+
+        &--pending {
+            background-color: #ffad3a;
+            color: #333333;
+            padding: 4px 8px;
+            border-radius: 5px;
+        }
+
+        &--verified {
+            background-color: #4bb4b3;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 5px;
+        }
+    }
+
     & > h1 {
         margin-top: 2.4rem;
         font-size: 24px;

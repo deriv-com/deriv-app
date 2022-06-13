@@ -16,7 +16,7 @@ import RecentTransaction from 'Components/recent-transaction.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
 import CryptoDeposit from './crypto-deposit.jsx';
 
-const depositNotes = (currency, is_crypto, is_deposit, is_switching, crypto_transactions) => {
+const depositNotes = (currency, crypto_transactions) => {
     const list = [];
 
     if (crypto_transactions?.length) {

@@ -4,7 +4,7 @@ import { Button } from '@deriv/components';
 import { PlatformContext } from "@deriv/shared";
 import UploadComplete from '../upload-complete'
 
-jest.mock('Components/poa-button', () => () => <div data-testid='dt_poa-button' />)
+jest.mock('Components/poa-button', () => () => <div data-testid='dt_poa_button' />)
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {
@@ -69,7 +69,7 @@ describe('<UploadComplete />', () => {
     it('should show needs_poa review message and extra submission message, and poa_buttons', () => {
         RenderWithTrue(<UploadComplete needs_poa redirect_button={redirect_button} />)
 
-        expect(screen.getByTestId(/dt_poa-button/)).toBeInTheDocument();
+        expect(screen.getByTestId(/dt_poa_button/)).toBeInTheDocument();
         expect(screen.getByText(needs_poa_review_message)).toBeInTheDocument();
         expect(screen.getByText(needs_poa_extra_submit_message)).toBeInTheDocument();
         expect(screen.getByRole('button')).toBeInTheDocument();
@@ -78,7 +78,7 @@ describe('<UploadComplete />', () => {
     it('should show needs_poa review message and extra submission message, and poa_buttons but redirect_button will not display', () => {
         RenderWithTrue(<UploadComplete needs_poa is_from_external redirect_button={redirect_button} />)
 
-        expect(screen.getByTestId(/dt_poa-button/)).toBeInTheDocument();
+        expect(screen.getByTestId(/dt_poa_button/)).toBeInTheDocument();
         expect(screen.getByText(needs_poa_review_message)).toBeInTheDocument();
         expect(screen.getByText(needs_poa_extra_submit_message)).toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();

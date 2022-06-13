@@ -35,12 +35,12 @@ const AdvertiserPage = () => {
 
     const onCancel = () => {
         advertiser_page_store.setIsBlockUserModalOpen(false);
-        advertiser_page_store.setIsDropdownVisible(false);
+        advertiser_page_store.setIsDropdownMenuVisible(false);
     };
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
-        advertiser_page_store.setIsDropdownVisible(false);
+        advertiser_page_store.setIsDropdownMenuVisible(false);
 
         return reaction(
             () => advertiser_page_store.active_index,

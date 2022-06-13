@@ -10,7 +10,7 @@ const AdvertiserPageDropdownMenu = () => {
 
     const { is_blocked } = advertiser_page_store.advertiser_info;
 
-    const viewBlockUserModal = () => {
+    const showBlockUserModal = () => {
         if (!is_blocked) {
             advertiser_page_store.setIsBlockUserModalOpen(true);
         }
@@ -21,13 +21,15 @@ const AdvertiserPageDropdownMenu = () => {
             <Icon
                 className='advertiser-page__menu-dots-icon'
                 icon='IcMenuDots'
-                onClick={() => advertiser_page_store.setIsDropdownVisible(!advertiser_page_store.is_dropdown_visible)}
+                onClick={() =>
+                    advertiser_page_store.setIsDropdownMenuVisible(!advertiser_page_store.is_dropdown_menu_visible)
+                }
                 size={16}
             />
-            {advertiser_page_store.is_dropdown_visible && (
+            {advertiser_page_store.is_dropdown_menu_visible && (
                 <div
                     className={`advertiser-page__dropdown${is_blocked ? '--disabled' : ''}`}
-                    onClick={viewBlockUserModal}
+                    onClick={showBlockUserModal}
                 >
                     <Dropdown
                         className='advertiser-page__dropdown-container'

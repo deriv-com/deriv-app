@@ -16,7 +16,7 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable form_error_message = '';
     @observable has_more_adverts_to_load = false;
     @observable is_block_user_modal_open = false;
-    @observable is_dropdown_visible = false;
+    @observable is_dropdown_menu_visible = false;
     @observable is_loading = true;
     @observable is_loading_adverts = true;
     @observable is_submit_disabled = true;
@@ -92,7 +92,7 @@ export default class AdvertiserPageStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 this.setIsBlockUserModalOpen(false);
-                this.setIsDropdownVisible(false);
+                this.setIsDropdownMenuVisible(false);
                 this.getAdvertiserInfo();
             } else {
                 this.setErrorMessage(response.error);
@@ -208,8 +208,8 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    setIsDropdownVisible(is_dropdown_visible) {
-        this.is_dropdown_visible = is_dropdown_visible;
+    setIsDropdownMenuVisible(is_dropdown_menu_visible) {
+        this.is_dropdown_menu_visible = is_dropdown_menu_visible;
     }
 
     @action.bound

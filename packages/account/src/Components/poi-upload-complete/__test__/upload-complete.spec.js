@@ -7,7 +7,7 @@ import { UploadComplete } from '../upload-complete.jsx';
 jest.mock('Components/poa-button/poa-button.jsx', () => ({
     PoaButton: jest.fn(() => <div data-testid='poa-button' />),
 }));
-// jest.mock('Components/poa-button', () => () => <div data-testid='poa-button' />);
+
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {

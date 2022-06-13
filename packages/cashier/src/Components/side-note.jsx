@@ -13,40 +13,48 @@ const SideNoteTitle = ({ side_notes, title }) => (
     </Text>
 );
 
-const SideNoteText = ({ children }) => (
-    <Text className='side-note__text' size='xxs' as='p'>
-        {children}
-    </Text>
-);
-
-const SideNoteBullet = ({ children, is_component }) => (
+const SideNoteBullet = ({ children }) => (
     <div className='side-note__bullet-wrapper'>
         <div className='side-note__bullet' />
-        {is_component ? children : <SideNoteText>{children}</SideNoteText>}
+        <div>{children}</div>
     </div>
 );
+
+const SideNoteText = ({ children, has_bullets, is_component }) => {
+    if (is_component) {
+        return has_bullets ? <SideNoteBullet>{children}</SideNoteBullet> : children;
+    }
+    if (has_bullets) {
+        return (
+            <SideNoteBullet>
+                <Text className='side-note__text' size='xxs' as='p'>
+                    {children}
+                </Text>
+            </SideNoteBullet>
+        );
+    }
+    return (
+        <Text className='side-note__text' size='xxs' as='p'>
+            {children}
+        </Text>
+    );
+};
 
 const SideNote = ({ side_notes, title, has_bullets = true, className }) => {
     const notes = (note, i) => {
         let component;
         if (typeof note === 'string') {
-            if (has_bullets)
-                return (
-                    <SideNoteBullet key={i}>
-                        <SideNoteText key={note.key || i}>{note}</SideNoteText>
-                    </SideNoteBullet>
-                );
-            return <SideNoteText key={note.key || i}>{note}</SideNoteText>;
+            <SideNoteText key={note.key || i} has_bullets={has_bullets}>
+                {note}
+            </SideNoteText>;
         } else if (typeof note === 'object' && note.props.i18n_default_text) {
             component = { ...note };
-            if (has_bullets)
-                return (
-                    <SideNoteBullet key={i} is_component>
-                        <SideNoteText>{component}</SideNoteText>
-                    </SideNoteBullet>
-                );
             component.key = i;
-            return component;
+            return (
+                <SideNoteText has_bullets={has_bullets} is_component>
+                    {component}
+                </SideNoteText>
+            );
         }
 
         component = { ...note };

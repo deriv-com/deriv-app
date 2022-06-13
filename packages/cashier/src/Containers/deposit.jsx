@@ -19,18 +19,16 @@ import CryptoDeposit from './crypto-deposit.jsx';
 const depositNotes = (currency, is_crypto, is_deposit, is_switching, crypto_transactions) => {
     const list = [];
 
-    if (is_crypto && is_deposit && !is_switching) {
-        if (crypto_transactions?.length) {
-            list.push(<RecentTransaction key={2} />);
-        }
+    if (crypto_transactions?.length) {
+        list.push(<RecentTransaction key={2} />);
+    }
 
-        if (/^(UST)$/i.test(currency)) {
-            list.push(<USDTSideNote type='usdt' />);
-        }
+    if (/^(UST)$/i.test(currency)) {
+        list.push(<USDTSideNote type='usdt' />);
+    }
 
-        if (/^(eUSDT)$/i.test(currency)) {
-            list.push(<USDTSideNote type='eusdt' />);
-        }
+    if (/^(eUSDT)$/i.test(currency)) {
+        list.push(<USDTSideNote type='eusdt' />);
     }
 
     return list;

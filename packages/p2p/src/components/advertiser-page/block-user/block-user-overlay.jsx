@@ -21,7 +21,7 @@ const BlockUserOverlay = ({ children, is_visible, onUnblock }) => {
                         />
                     </Text>
                     <Button className='block-user-overlay__wrapper-button' large onClick={onUnblock} secondary>
-                        <Localize i18_default_text='Unblock' />
+                        <Localize i18n_default_text='Unblock' />
                     </Button>
                 </div>
                 {children}

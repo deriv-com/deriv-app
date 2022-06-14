@@ -10,7 +10,6 @@ import PaymentMethods from './payment-methods';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
-    // formik_ref is used to obtain Formik's form state from outside Formik component in AddPaymentMethodForm and EditPaymentMethodForm
     const formik_ref = React.useRef();
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
@@ -19,20 +18,29 @@ const MyProfileContent = () => {
         return (
             <React.Fragment>
                 <DesktopWrapper>
-                    <PaymentMethods />
+                    <PaymentMethods formik_ref={formik_ref} />
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileFullPageModal
                         body_className='payment-methods-list__modal'
                         height_offset='80px'
-                        is_modal_open={true}
-                        page_header_text={localize('Payment methods')}
+                        is_modal_open
+                        is_flex
+                        page_header_className='buy-sell__modal-header'
+                        page_header_text={
+                            my_profile_store.should_show_edit_payment_method_form
+                                ? localize('Edit payment method')
+                                : localize('Payment methods')
+                        }
                         pageHeaderReturnFn={() => {
-                            if (formik_ref.current.dirty) {
+                            if (
+                                (formik_ref.current && formik_ref.current.dirty) ||
+                                my_profile_store.selected_payment_method.length > 0
+                            ) {
                                 my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
                                 my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
                             } else {
-                                my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                                my_profile_store.hideAddPaymentMethodForm();
                                 my_profile_store.setShouldShowEditPaymentMethodForm(false);
                             }
                         }}

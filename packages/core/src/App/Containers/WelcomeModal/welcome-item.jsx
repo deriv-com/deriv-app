@@ -70,7 +70,7 @@ WelcomeItem.propTypes = {
     description: PropTypes.element.isRequired,
     icon: PropTypes.element.isRequired,
     mobileIcon: PropTypes.element.isRequired,
-    onClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
     options: PropTypes.arrayOf(PropTypes.string),
     small: PropTypes.bool,
     title: PropTypes.string.isRequired,

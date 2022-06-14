@@ -1,4 +1,4 @@
-import { ContractType as ContractTypeHelper } from 'Stores/Modules/Trading/Helpers/contract-type.js';
+import { ContractType as ContractTypeHelper } from 'Stores/Modules/Trading/Helpers/contract-type';
 import * as ContractType from '../Actions/contract-type';
 import * as Duration from '../Actions/duration';
 import * as StartDate from '../Actions/start-date';

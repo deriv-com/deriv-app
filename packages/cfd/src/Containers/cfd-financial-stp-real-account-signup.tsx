@@ -57,7 +57,7 @@ type TItemsState = {
     header: { [key: string]: string };
     body: typeof CFDPersonalDetailsForm | typeof CFDPOI | typeof CFDPOA;
     form_value: { [key: string]: string | undefined };
-    props: Array<string>;
+    props: Array<TItemsProps>;
 };
 
 type TItemsProps =
@@ -159,7 +159,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         index: number,
         value: { [key: string]: string | undefined },
         setSubmitting: TSetSubmiting,
-        is_dirty: boolean = true
+        is_dirty = true
     ) => {
         if (is_dirty && index_lookup.CFDPersonalDetailsForm === index) {
             // Set account settings

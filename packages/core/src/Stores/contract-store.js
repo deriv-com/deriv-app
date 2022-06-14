@@ -7,16 +7,14 @@ import {
     getDigitInfo,
     getDisplayStatus,
     WS,
-    // getChartConfig,
     getContractUpdateConfig,
-    // getEndTime,
     getContractValidationRules,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
     isBarrierSupported,
+    getEndTime,
 } from '@deriv/shared';
-// import { getEndTime } from './Helpers/logic';
-import { getChartConfig, getEndTime } from './Helpers/logic';
+import { getChartConfig } from './Helpers/logic';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { createChartMarkers } from './Helpers/chart-markers';

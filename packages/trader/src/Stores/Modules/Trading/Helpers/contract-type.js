@@ -11,14 +11,14 @@ import {
     buildDurationConfig,
     hasIntradayDurationUnit,
     buildForwardStartingConfig,
-    isSessionAvailable,
     unsupported_contract_types_list,
     getContractCategoriesConfig,
     getContractTypesConfig,
     getLocalizedBasis,
 } from '@deriv/shared';
-import ServerTime from '_common/base/server_time.js';
+import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
+import { isSessionAvailable } from './start-date';
 
 export const ContractType = (() => {
     let available_contract_types = {};

@@ -19,19 +19,64 @@ describe('<CFDRealAccountDisplay />', () => {
         support_professional_client: 0,
     };
 
+    const account_settings_eu = {
+        account_opening_reason: 'Income Earning',
+        address_city: 'warsaw',
+        address_line_1: 'test',
+        address_line_2: 'test',
+        address_postcode: '3243233',
+        address_state: 'MZ',
+        allow_copiers: 0,
+        citizen: 'pl',
+        client_tnc_status: 'Version 4.2.0 2020-08-07',
+        country: 'Poland',
+        country_code: 'pl',
+        date_of_birth: 137894400,
+        email: 'maryia+146@binary.com',
+        email_consent: 1,
+        feature_flag: {
+            wallet: 0,
+        },
+        first_name: 'Maryia',
+        has_secret_answer: 1,
+        immutable_fields: [
+            'account_opening_reason',
+            'citizen',
+            'date_of_birth',
+            'first_name',
+            'last_name',
+            'place_of_birth',
+            'residence',
+            'salutation',
+        ],
+        is_authenticated_payment_agent: 0,
+        last_name: 'gggg',
+        non_pep_declaration: 1,
+        phone: '+48354334543434',
+        place_of_birth: 'pl',
+        preferred_language: 'EN',
+        request_professional_status: 0,
+        residence: 'Poland',
+        salutation: 'Ms',
+        tax_identification_number: '3432324232',
+        tax_residence: 'pl',
+        user_hash: 'f8029d070387e67bdfbc3857021382905b1513a42386c7278fd352852e11f06f',
+    };
+
     const mt5_real_synthetic_account = {
         account_type: 'real',
         balance: 0,
         country: 'id',
         currency: 'USD',
         display_balance: '0.00',
+        display_login: '41165492',
         email: 'maryia+146@binary.com',
         group: 'real\\p01_ts03\\synthetic\\svg_std_usd\\03',
         landing_company_short: 'svg',
         leverage: 500,
         login: 'MTR41165492',
         market_type: 'synthetic',
-        name: 'rgefws egf',
+        name: 'Maryia gggg',
         server: 'p01_ts03',
         server_info: {
             environment: 'Deriv-Server',
@@ -44,7 +89,6 @@ describe('<CFDRealAccountDisplay />', () => {
             id: 'p01_ts03',
         },
         sub_account_type: 'financial',
-        display_login: '41165492',
     };
 
     const mt5_real_financial_account = {
@@ -53,13 +97,14 @@ describe('<CFDRealAccountDisplay />', () => {
         country: 'id',
         currency: 'USD',
         display_balance: '0.00',
+        display_login: '1927245',
         email: 'maryia+146@binary.com',
         group: 'real\\p01_ts01\\financial\\svg_std-hr_usd',
         landing_company_short: 'svg',
         leverage: 1000,
         login: 'MTR1927245',
         market_type: 'financial',
-        name: 'rgefws egf',
+        name: 'Maryia gggg',
         server: 'p01_ts01',
         server_info: {
             environment: 'Deriv-Server',
@@ -72,7 +117,6 @@ describe('<CFDRealAccountDisplay />', () => {
             id: 'p01_ts01',
         },
         sub_account_type: 'financial',
-        display_login: '1927245',
     };
 
     let props;
@@ -101,7 +145,7 @@ describe('<CFDRealAccountDisplay />', () => {
                 has_secret_answer: 1,
                 immutable_fields: ['residence'],
                 is_authenticated_payment_agent: 0,
-                last_name: 'Stgfdhg',
+                last_name: 'gggg',
                 non_pep_declaration: 1,
                 phone: '04546575786',
                 place_of_birth: null,
@@ -285,7 +329,7 @@ describe('<CFDRealAccountDisplay />', () => {
     it('should render a CFDs card only with enabled "Add real account" button on DMT5 for logged-in EU client', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         props.isFinancialStpCardVisible = jest.fn(() => false);
-        render(<CFDRealAccountDisplay {...props} is_eu />);
+        render(<CFDRealAccountDisplay {...props} is_eu account_settings={account_settings_eu} />);
 
         const add_real_account_button = screen.getByRole('button', { name: /add real account/i });
 
@@ -421,22 +465,20 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.getByText('Financial')).toBeInTheDocument();
         expect(screen.getByText('Financial STP')).toBeInTheDocument();
         expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(2);
-        const within_stp = within(container.querySelector('#real-financial_stp'));
-        const add_real_account_button_in_stp = within_stp.queryByRole('button', { name: /add real account/i });
-        expect(add_real_account_button_in_stp).not.toBeInTheDocument();
-        const set_password_button = within_stp.getByRole('button', { name: /set your password/i });
-        expect(set_password_button).toBeInTheDocument();
 
+        const within_stp = within(container.querySelector('#real-financial_stp'));
+        expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
+        expect(within_stp.getByRole('button', { name: /set your password/i })).toBeInTheDocument();
+
+        const settings_with_empty_tax_id = {
+            citizen: 'id',
+            tax_residence: 'id',
+            tax_identification_number: '',
+        };
+        const landing_companies_with_unrequired_tax_id = { config: { tax_details_required: 0 } };
+        const residence_list_with_unrequired_tax_id = [{ value: 'id', tin_format: undefined }];
         rerender(
-            <CFDRealAccountDisplay
-                {...props}
-                is_fully_authenticated
-                account_settings={{
-                    citizen: 'id',
-                    tax_residence: 'id',
-                    tax_identification_number: '',
-                }}
-            />
+            <CFDRealAccountDisplay {...props} is_fully_authenticated account_settings={settings_with_empty_tax_id} />
         );
         expect(screen.queryByRole('button', { name: /set your password/i })).not.toBeInTheDocument();
         expect(within_stp.getByRole('button', { name: /add real account/i })).toBeInTheDocument();
@@ -445,12 +487,9 @@ describe('<CFDRealAccountDisplay />', () => {
             <CFDRealAccountDisplay
                 {...props}
                 is_fully_authenticated
-                account_settings={{
-                    citizen: 'id',
-                    tax_residence: 'id',
-                    tax_identification_number: '',
-                }}
-                landing_companies={{ config: { tax_details_required: 0 } }}
+                account_settings={settings_with_empty_tax_id}
+                landing_companies={landing_companies_with_unrequired_tax_id}
+                residence_list={[{ value: 'id', tin_format: ['^\\d{15}$'] }]}
             />
         );
         expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
@@ -460,13 +499,9 @@ describe('<CFDRealAccountDisplay />', () => {
             <CFDRealAccountDisplay
                 {...props}
                 is_fully_authenticated
+                account_settings={settings_with_empty_tax_id}
                 landing_companies={{ config: { tax_details_required: 1 } }}
-                residence_list={[{ value: 'id', tin_format: undefined }]}
-                account_settings={{
-                    citizen: 'id',
-                    tax_residence: 'id',
-                    tax_identification_number: '',
-                }}
+                residence_list={residence_list_with_unrequired_tax_id}
             />
         );
         expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
@@ -476,19 +511,14 @@ describe('<CFDRealAccountDisplay />', () => {
             <CFDRealAccountDisplay
                 {...props}
                 is_fully_authenticated
-                account_settings={{
-                    citizen: 'id',
-                    tax_residence: 'id',
-                    tax_identification_number: '',
-                }}
-                landing_companies={{ config: { tax_details_required: 0 } }}
-                residence_list={[{ value: 'id', tin_format: undefined }]}
+                account_settings={settings_with_empty_tax_id}
+                landing_companies={landing_companies_with_unrequired_tax_id}
+                residence_list={residence_list_with_unrequired_tax_id}
             />
         );
         expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
-        expect(within_stp.getByRole('button', { name: /set your password/i })).toBeInTheDocument();
 
-        fireEvent.click(set_password_button);
+        fireEvent.click(within_stp.getByRole('button', { name: /set your password/i }));
         expect(props.openPasswordModal).toHaveBeenCalledWith({ category: 'real', type: 'financial_stp' });
     });
 
@@ -496,7 +526,6 @@ describe('<CFDRealAccountDisplay />', () => {
         render(<CFDRealAccountDisplay {...props} has_cfd_account_error />);
 
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
-
         expect(screen.getByTestId('dt_cfd_real_accounts_display')).toBeInTheDocument();
         expect(screen.getByText('Synthetic')).toBeInTheDocument();
         expect(screen.getByText('Financial')).toBeInTheDocument();
@@ -506,11 +535,11 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(add_real_account_buttons[2]).toBeDisabled();
     });
 
-    it('should show "+ Add region" under an open real synthetic account card when can_have_more_real_synthetic_mt5=true', () => {
+    it('should show "+ Add region" under Synthetic card with an open real account when can_have_more_real_synthetic_mt5=true', () => {
         props.current_list['mt5.real.synthetic@p01_ts03'] = mt5_real_synthetic_account;
         render(<CFDRealAccountDisplay {...props} can_have_more_real_synthetic_mt5 />);
-        const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
 
+        const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
         expect(screen.getByTestId('dt_cfd_real_accounts_display')).toBeInTheDocument();
         expect(screen.getByText('Synthetic')).toBeInTheDocument();
         expect(screen.getByText('Financial')).toBeInTheDocument();
@@ -525,8 +554,8 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should show special specifications on Financial card when residence="au"', () => {
         const { rerender, container } = render(<CFDRealAccountDisplay {...props} residence='au' />);
-        const within_financial = within(container.querySelector('#real-financial'));
 
+        const within_financial = within(container.querySelector('#real-financial'));
         expect(within_financial.getByRole('row', { name: /leverage up to 1:30/i })).toBeInTheDocument();
         expect(within_financial.getByRole('row', { name: /margin call 100%/i })).toBeInTheDocument();
         expect(within_financial.getByRole('row', { name: /stop out level 50%/i })).toBeInTheDocument();
@@ -542,6 +571,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
         expect(screen.getByTestId('dt_cfd_real_accounts_display')).toBeInTheDocument();
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
+
         const select_buttons = screen.getAllByText(/select/i);
 
         fireEvent.click(select_buttons[0]);
@@ -552,25 +582,5 @@ describe('<CFDRealAccountDisplay />', () => {
 
         fireEvent.click(select_buttons[2]);
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial_stp', category: 'real' });
-    });
-
-    it('should render enabled "Select" buttons instead of "Add real account" buttons for EU malta client who has an open synthetic account when has_cfd_account=true', () => {
-        props.standpoint.malta = true;
-        props.isFinancialStpCardVisible = jest.fn(() => false);
-        render(<CFDRealAccountDisplay {...props} has_malta_account={false} is_eu has_cfd_account />);
-
-        expect(screen.getByTestId('dt_cfd_real_accounts_display')).toBeInTheDocument();
-        expect(screen.getByText('CFDs')).toBeInTheDocument();
-        expect(screen.getByText('Synthetic')).toBeInTheDocument();
-        expect(screen.queryByText('Financial')).not.toBeInTheDocument();
-        expect(screen.queryByText('Financial STP')).not.toBeInTheDocument();
-        expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
-        const select_buttons = screen.getAllByText(/select/i);
-
-        fireEvent.click(select_buttons[0]);
-        expect(props.openAccountNeededModal).toHaveBeenCalledWith('malta', 'Deriv Synthetic', 'DMT5 Synthetic');
-
-        fireEvent.click(select_buttons[1]);
-        expect(props.openAccountNeededModal).toHaveBeenCalledWith('maltainvest', 'Deriv Multipliers', 'real CFDs');
     });
 });

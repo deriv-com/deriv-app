@@ -68,7 +68,7 @@ const Autocomplete = React.memo(props => {
             setActiveIndex(null);
             setInputValue('');
         }
-    }, [list_items]);
+    }, [list_items, has_updating_list]);
 
     React.useEffect(() => {
         if (should_show_list && list_item_ref.current) {

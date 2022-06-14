@@ -32,12 +32,12 @@ describe('<CFDRealAccountDisplay />', () => {
         country: 'Poland',
         country_code: 'pl',
         date_of_birth: 137894400,
-        email: 'maryia+146@binary.com',
+        email: 'name@domain.com',
         email_consent: 1,
         feature_flag: {
             wallet: 0,
         },
-        first_name: 'Maryia',
+        first_name: 'Name',
         has_secret_answer: 1,
         immutable_fields: [
             'account_opening_reason',
@@ -50,7 +50,7 @@ describe('<CFDRealAccountDisplay />', () => {
             'salutation',
         ],
         is_authenticated_payment_agent: 0,
-        last_name: 'gggg',
+        last_name: 'LastName',
         non_pep_declaration: 1,
         phone: '+48354334543434',
         place_of_birth: 'pl',
@@ -70,13 +70,13 @@ describe('<CFDRealAccountDisplay />', () => {
         currency: 'USD',
         display_balance: '0.00',
         display_login: '41165492',
-        email: 'maryia+146@binary.com',
+        email: 'name@domain.com',
         group: 'real\\p01_ts03\\synthetic\\svg_std_usd\\03',
         landing_company_short: 'svg',
         leverage: 500,
         login: 'MTR41165492',
         market_type: 'synthetic',
-        name: 'Maryia gggg',
+        name: 'Name LastName',
         server: 'p01_ts03',
         server_info: {
             environment: 'Deriv-Server',
@@ -98,13 +98,13 @@ describe('<CFDRealAccountDisplay />', () => {
         currency: 'USD',
         display_balance: '0.00',
         display_login: '1927245',
-        email: 'maryia+146@binary.com',
+        email: 'name@domain.com',
         group: 'real\\p01_ts01\\financial\\svg_std-hr_usd',
         landing_company_short: 'svg',
         leverage: 1000,
         login: 'MTR1927245',
         market_type: 'financial',
-        name: 'Maryia gggg',
+        name: 'Name LastName',
         server: 'p01_ts01',
         server_info: {
             environment: 'Deriv-Server',
@@ -117,6 +117,20 @@ describe('<CFDRealAccountDisplay />', () => {
             id: 'p01_ts01',
         },
         sub_account_type: 'financial',
+    };
+
+    const dxtrade_real_synthetic_account = {
+        account_id: 'DXR1095',
+        account_type: 'real',
+        balance: 0,
+        currency: 'USD',
+        display_balance: '0.00',
+        display_login: 'DXR1095',
+        enabled: 1,
+        landing_company_short: 'svg',
+        login: '374',
+        market_type: 'synthetic',
+        platform: 'dxtrade',
     };
 
     let props;
@@ -136,16 +150,16 @@ describe('<CFDRealAccountDisplay />', () => {
                 country: 'Indonesia',
                 country_code: 'id',
                 date_of_birth: -178416000,
-                email: 'maryia+146@deriv.com',
+                email: 'name@domain.com',
                 email_consent: 1,
                 feature_flag: {
                     wallet: 0,
                 },
-                first_name: 'Maryia',
+                first_name: 'Name',
                 has_secret_answer: 1,
                 immutable_fields: ['residence'],
                 is_authenticated_payment_agent: 0,
-                last_name: 'gggg',
+                last_name: 'LastName',
                 non_pep_declaration: 1,
                 phone: '04546575786',
                 place_of_birth: null,
@@ -289,7 +303,7 @@ describe('<CFDRealAccountDisplay />', () => {
         };
     });
 
-    it('should render Synthetic, Financial & Financial STP cards with enabled buttons on DMT5 for logged-in non-EU client', () => {
+    it('should render Synthetic, Financial & Financial STP cards with enabled buttons on DMT5 when is_logged_in=true is_eu=false', () => {
         render(<CFDRealAccountDisplay {...props} />);
 
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
@@ -315,7 +329,7 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial_stp', category: 'real' });
     });
 
-    it('should render Synthetic, Financial & Financial STP cards without "Add real account" buttons on DMT5 for logged-out client with non-EU IP address', () => {
+    it('should render Synthetic, Financial & Financial STP cards without "Add real account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDRealAccountDisplay {...props} is_logged_in={false} />);
 
         expect(screen.getByTestId('dt_cfd_real_accounts_display')).toBeInTheDocument();
@@ -326,7 +340,7 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
-    it('should render a CFDs card only with enabled "Add real account" button on DMT5 for logged-in EU client', () => {
+    it('should render a CFDs card only with enabled "Add real account" button on DMT5 when is_logged_in=true is_eu=true', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         props.isFinancialStpCardVisible = jest.fn(() => false);
         render(<CFDRealAccountDisplay {...props} is_eu account_settings={account_settings_eu} />);
@@ -345,7 +359,7 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(props.openAccountNeededModal).toHaveBeenCalledWith('maltainvest', 'Deriv Multipliers', 'real CFDs');
     });
 
-    it('should render a CFDs card only without "Add real account" button on DMT5 for logged-out client with EU IP address (also when redirected from Deriv X platform)', () => {
+    it('should render a CFDs card only without "Add real account" button on DMT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         props.isFinancialStpCardVisible = jest.fn(() => false);
         render(<CFDRealAccountDisplay {...props} is_logged_in={false} is_eu_country />);
@@ -359,9 +373,9 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
-    it('should render Synthetic & Financial cards with enabled buttons on Deriv X for logged-in non-EU client', () => {
+    it('should render Synthetic & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
         props.isFinancialStpCardVisible = jest.fn(() => false);
-        render(<CFDRealAccountDisplay {...props} platform='dxtrade' />);
+        const { rerender } = render(<CFDRealAccountDisplay {...props} platform='dxtrade' />);
 
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
 
@@ -383,7 +397,7 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'real' });
     });
 
-    it('should render Synthetic & Financial cards without "Add real account" buttons on Deriv X for logged-out client with non-EU IP address', () => {
+    it('should render Synthetic & Financial cards without "Add real account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
         props.isFinancialStpCardVisible = jest.fn(() => false);
         render(<CFDRealAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
 
@@ -395,9 +409,9 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
-    it('should render 1 open real financial DMT5 account with enabled buttons password reset button, "Fund transfer" & "Trade on web terminal" buttons', () => {
+    it('should render 1 open real financial account with an enabled password reset button, and "Fund transfer" & "Trade on web terminal" buttons', () => {
         props.current_list['mt5.real.financial@p01_ts01'] = mt5_real_financial_account;
-        const { container } = render(<CFDRealAccountDisplay {...props} has_real_account={true} />);
+        const { container, rerender } = render(<CFDRealAccountDisplay {...props} has_real_account={true} />);
 
         expect(screen.getByTestId('dt_cfd_real_accounts_display')).toBeInTheDocument();
         expect(screen.getByText('Synthetic')).toBeInTheDocument();
@@ -405,25 +419,52 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.getByText('Financial STP')).toBeInTheDocument();
         expect(screen.getAllByRole('table').length).toBe(3);
         expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(2);
-        const password_table_cells = screen.getAllByRole('cell', { name: /•••••••••••••••/i });
-        expect(password_table_cells.length).toBe(1);
-        const change_password_button = within(password_table_cells[0]).getByRole('button');
-        const within_financial = within(container.querySelector('#real-financial'));
-        const fund_transfer_button = within_financial.getByRole('button', { name: /fund transfer/i });
-        const trade_on_web_terminal_button = within_financial.getByRole('link', { name: /trade on web terminal/i });
-        expect(trade_on_web_terminal_button).toHaveAttribute(
+        const dmt5_change_password_button = within(screen.getByRole('cell', { name: /•••••••••••••••/i })).getByRole(
+            'button'
+        );
+        const within_dmt5_financial = within(container.querySelector('#real-financial'));
+        const dmt5_fund_transfer_button = within_dmt5_financial.getByRole('button', { name: /fund transfer/i });
+        const dmt5_trade_on_web_terminal_button = within_dmt5_financial.getByRole('link', {
+            name: /trade on web terminal/i,
+        });
+        expect(dmt5_trade_on_web_terminal_button).toHaveAttribute(
             'href',
             'https://trade.mql5.com/trade?servers=Deriv-Server&trade_server=Deriv-Server&login=1927245'
         );
 
-        fireEvent.click(change_password_button);
+        fireEvent.click(dmt5_change_password_button);
         expect(props.openPasswordManager).toHaveBeenCalledTimes(1);
 
-        fireEvent.click(fund_transfer_button);
+        fireEvent.click(dmt5_fund_transfer_button);
         expect(props.openAccountTransfer).toHaveBeenCalledWith(props.current_list['mt5.real.financial@p01_ts01'], {
             category: 'real',
             type: 'financial',
         });
+
+        rerender(
+            <CFDRealAccountDisplay
+                {...props}
+                platform='dxtrade'
+                current_list={{
+                    'dxtrade.real.synthetic@synthetic': dxtrade_real_synthetic_account,
+                }}
+            />
+        );
+        const dxtrade_change_password_button = within(screen.getByRole('cell', { name: /•••••••••••••••/i })).getByRole(
+            'button'
+        );
+        const within_dxtrade_synthetic = within(container.querySelector('#real-synthetic'));
+        const dxtrade_fund_transfer_button = within_dxtrade_synthetic.getByRole('button', { name: /fund transfer/i });
+        const dxtrade_trade_on_web_terminal_button = within_dxtrade_synthetic.getByRole('link', {
+            name: /trade on web terminal/i,
+        });
+        expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx.deriv.com');
+
+        fireEvent.click(dxtrade_change_password_button);
+        expect(props.openPasswordManager).toHaveBeenCalledTimes(2);
+
+        fireEvent.click(dxtrade_fund_transfer_button);
+        expect(props.openAccountTransfer).toHaveBeenCalledTimes(2);
     });
 
     it('should show "Switch to your real account", which is needed to open Account Switcher, on Financial STP card when has_real_account=true & is_virtual=true', () => {

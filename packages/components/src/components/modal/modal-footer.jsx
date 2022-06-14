@@ -6,6 +6,7 @@ const Footer = ({ children, className, has_separator, is_bypassed }) => {
     if (is_bypassed) return children;
     return (
         <div
+            data-testid='dt_modal_footer'
             className={classNames(
                 'dc-modal-footer',
                 {

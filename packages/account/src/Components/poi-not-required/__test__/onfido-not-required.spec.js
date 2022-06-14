@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { OnfidoNotRequired } from '../onfido-not-required';
+import { OnfidoNotRequired } from '../onfido-not-required.jsx';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

@@ -1,8 +1,5 @@
 import { formatMoney, toMoment, getSymbolDisplayName, getMarketInformation } from '@deriv/shared';
 
-// import { getMarketInformation } from '../../../../Helpers/market-underlying';
-// import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
-
 export const formatProfitTableTransactions = (transaction, currency, active_symbols = []) => {
     const format_string = 'DD MMM YYYY HH:mm:ss';
     const purchase_time = `${toMoment(+transaction.purchase_time).format(format_string)}`;

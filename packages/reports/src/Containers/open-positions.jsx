@@ -459,7 +459,6 @@ export default connect(({ client, common, ui, portfolio, contract_trade }) => ({
     onClickSell: portfolio.onClickSell,
     onMount: portfolio.onMount,
     server_time: common.server_time,
-
     addToast: ui.addToast,
     current_focus: ui.current_focus,
     onClickRemove: portfolio.removePositionById,

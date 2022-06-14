@@ -215,21 +215,4 @@ PositionsDrawerCard.propTypes = {
     type: PropTypes.string,
 };
 
-// export default connect(({ modules, ui, client, common }) => ({
-//     currency: client.currency,
-//     server_time: common.server_time,
-//     addToast: ui.addToast,
-//     current_focus: ui.current_focus,
-//     onClickCancel: modules.portfolio.onClickCancel,
-//     onClickSell: modules.portfolio.onClickSell,
-//     onClickRemove: modules.portfolio.removePositionById,
-//     getContractById: modules.contract_trade.getContractById,
-//     is_mobile: ui.is_mobile,
-//     removeToast: ui.removeToast,
-//     setCurrentFocus: ui.setCurrentFocus,
-//     should_show_cancellation_warning: ui.should_show_cancellation_warning,
-//     toggleCancellationWarning: ui.toggleCancellationWarning,
-//     toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
-// }))(PositionsDrawerCard);
-
 export default PositionsDrawerCard;

@@ -171,7 +171,6 @@ export default connect(({ modules, ui, client, common, portfolio, contract_trade
     is_mobile: ui.is_mobile,
     is_positions_drawer_on: ui.is_positions_drawer_on,
     toggleDrawer: ui.togglePositionsDrawer,
-
     currency: client.currency,
     server_time: common.server_time,
     addToast: ui.addToast,

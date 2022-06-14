@@ -2,12 +2,11 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { withRouter } from 'react-router';
-import {
+import NetworkStatus, {
     AccountLimits as AccountLimitsFooter,
     EndpointNote,
     GoToDeriv,
     HelpCentre,
-    NetworkStatus,
     RegulatoryInformation,
     ResponsibleTrading,
     ToggleFullScreen,

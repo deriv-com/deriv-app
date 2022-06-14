@@ -1,1 +1,3 @@
-export default from './reset-password-modal.jsx';
+import ResetPasswordModal from './reset-password-modal.jsx';
+
+export default ResetPasswordModal;

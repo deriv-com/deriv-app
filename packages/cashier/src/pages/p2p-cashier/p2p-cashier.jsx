@@ -76,7 +76,8 @@ const P2PCashier = ({
 
     return (
         <P2P
-            client={{ currency, local_currency_config, is_virtual, residence, loginid, balance }}
+            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            balance={balance}
             history={history}
             is_dark_mode_on={is_dark_mode_on}
             is_mobile={is_mobile}

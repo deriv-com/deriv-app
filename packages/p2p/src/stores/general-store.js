@@ -12,6 +12,7 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable balance;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
     @observable is_blocked = false;
@@ -45,7 +46,7 @@ export default class GeneralStore extends BaseStore {
 
     @computed
     get client() {
-        return this.props?.client || {};
+        return { ...this.props?.client } || {};
     }
 
     @computed
@@ -311,6 +312,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setActiveNotificationCount(active_notification_count) {
         this.active_notification_count = active_notification_count;
+    }
+
+    @action.bound
+    setAccountBalance(value) {
+        this.balance = value;
     }
 
     @action.bound

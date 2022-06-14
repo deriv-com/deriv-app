@@ -126,7 +126,7 @@ describe('<OnRampProviderPopup />', () => {
         render(<OnRampProviderPopup {...props} />);
 
         const deposit_address_input = screen.getByRole('textbox');
-        expect(fireEvent.focus(deposit_address_input)).toBeTrue();
+        expect(fireEvent.focus(deposit_address_input)).toBe(true);
     });
 
     it('should show "Copied!" message', () => {

@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
-import { isSessionAvailable } from '../helpers/start-date';
-import { isHourValid, isMinuteValid, isTimeValid, toMoment } from '../date';
+import { isHourValid, isMinuteValid, isTimeValid, toMoment, isSessionAvailable } from '@deriv/shared';
 
 export const getValidationRules = () => ({
     amount: {

@@ -12,8 +12,6 @@ import {
     isMobile,
     showDigitalOptionsUnavailableError,
     WS,
-    getValidationRules,
-    getMultiplierValidationRules,
     pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
@@ -26,7 +24,8 @@ import {
     removeBarrier,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type.js';
+import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';

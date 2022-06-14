@@ -20,7 +20,7 @@ import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
 import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
-import { api_error_codes } from '../../constants/api-error-codes.js';
+import { api_error_codes } from 'Constants/api-error-codes.js';
 
 const LowBalanceMessage = () => (
     <div className='buy-sell__modal--error-message'>
@@ -104,31 +104,24 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         parseFloat(general_store.client.balance) === 0 ||
         parseFloat(general_store.client.balance) < buy_sell_store.advert?.min_order_amount_limit;
 
-    const BuySellFormError = () => {
-        return buy_sell_store.form_error_code === api_error_codes.INSUFFICIENT_BALANCE ? (
+    const BuySellFormError = () => (
+        <div className='buy-sell__modal--error-message'>
             <HintBox
                 className='buy-sell__modal-danger'
                 icon='IcAlertDanger'
                 message={
                     <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                        {buy_sell_store.form_error_code === api_error_codes.INSUFFICIENT_BALANCE ? (
+                            <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                        ) : (
+                            error_message
+                        )}
                     </Text>
                 }
                 is_danger
             />
-        ) : (
-            <HintBox
-                className='buy-sell__modal-danger'
-                icon='IcAlertDanger'
-                message={
-                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        {error_message}
-                    </Text>
-                }
-                is_danger
-            />
-        );
-    };
+        </div>
+    );
 
     const onCancel = () => {
         if (my_profile_store.should_show_add_payment_method_form) {

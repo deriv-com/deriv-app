@@ -1,5 +1,5 @@
 import { observable, action, reaction } from 'mobx';
-import { isMobile } from '@deriv/shared';
+import { isMobile, isTabletDrawer } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
 
@@ -20,7 +20,7 @@ export default class ToolboxStore {
         const { core } = this.root_store;
         this.adjustWorkspace();
 
-        if (!isMobile()) {
+        if (!isTabletDrawer()) {
             this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
             this.toolbox_examples = [...this.toolbox_dom.childNodes].find(el => el.tagName === 'examples');
             this.setWorkspaceOptions();

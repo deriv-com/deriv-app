@@ -1,1 +1,1 @@
-export default from './validator';
+export default from './validator.js';

@@ -160,9 +160,7 @@ const CFDRealAccountDisplay = ({
     }, [residence, is_logged_in, is_eu, is_eu_country, platform]);
 
     const onSelectRealSynthetic = () => {
-        if (is_eu && standpoint.malta && !has_malta_account) {
-            openAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
-        } else {
+        if (!is_eu || !standpoint.malta || has_malta_account) {
             onSelectAccount({ type: 'synthetic', category: 'real' });
         }
     };

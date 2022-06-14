@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useLocation } from 'react-router-dom';
 import { translate } from '../../../../../../common/utils/tools';
-import { useLocation } from "react-router-dom";
-import { platforms } from '../../../config';
+import config from '../../../../../../app.config';
 
 const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcherOpen }, platformDropdownRef) => {
     const location = useLocation();
@@ -13,7 +13,7 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
     })
 
     const handleClick = (e, is_binary_bot) => {
-        if(e && is_binary_bot) {
+        if (e && is_binary_bot) {
             setIsPlatformSwitcherOpen(false);
             e.preventDefault();
         }
@@ -22,7 +22,7 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
     return (
         <div id="platform__dropdown" className="platform__dropdown show">
             <div id="platform__list" className="platform__dropdown-list" ref={platformDropdownRef}>
-                {platforms.map(platform => {
+                {config.platforms.map(platform => {
                     const is_binary_bot = platform.title === 'Binary Bot' && location.pathname === '/';
                     return (
                         <a

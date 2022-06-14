@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
-import { translate } from "../../../../../../common/i18n";
-import { saveBeforeUnload } from "../../../../blockly/utils";
-import { getOAuthURL } from "../../../../../../common/appId";
 import { useDispatch } from "react-redux";
+import { saveBeforeUnload } from "../../../../blockly/utils";
 import { setIsHeaderLoaded } from "../../../store/ui-slice";
 import Tour, { TourTargets } from "../../../components/tour";
-import { getRelatedDeriveOrigin } from "../../../utils";
+import config from "../../../../../../app.config";
 
 const AuthButtons = () => {
   const dispatch = useDispatch();
 
   const onLogin = () => {
     saveBeforeUnload();
-    document.location = getOAuthURL();
+    document.location = config.login.url;
   };
 
   useEffect(() => {
@@ -26,16 +24,16 @@ const AuthButtons = () => {
         className="btn btn--tertiary header__btn-login"
         onClick={onLogin}
       >
-        {translate("Log in")}
+        {config.login.label}
       </button>
       <a
         id="btn__signup"
         className="btn btn--primary header__btn-signup"
         target="_blank"
         rel="noopener noreferrer"
-        href={`https://deriv.${getRelatedDeriveOrigin().extension}/signup/`}
+        href={config.signup.url}
       >
-        {translate("Sign up")}
+        {config.signup.label}
       </a>
       <TourTargets />
       <Tour />

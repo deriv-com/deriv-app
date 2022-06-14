@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import AccountSwitchModal from "./account-switch-modal.jsx";
 import { translate } from "../../../../../../common/utils/tools";
 import TabContent from "./tab-content.jsx";
-import { currencyNameMap } from "../../../config";
 import Modal from "../../../components/modal";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import { setShouldReloadWorkspace } from "../../../store/ui-slice.js";
 import useLogout from "../../../../../../common/hooks/useLogout.js";
+import config from "../../../../../../app.config";
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 const getTotalDemo = (accounts) => {
@@ -18,7 +18,7 @@ const getTotalDemo = (accounts) => {
   );
   const total = demo_account?.balance || 0;
   return total.toLocaleString(undefined, {
-    minimumFractionDigits: currencyNameMap[total]?.fractional_digits ?? 2,
+    minimumFractionDigits: config.currency_name_map[total]?.fractional_digits ?? 2,
   });
 };
 
@@ -47,7 +47,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
   }, []);
 
   const onLogout = () => {
-    if(location.pathname.includes('endpoint')) {
+    if (location.pathname.includes('endpoint')) {
       logout();
     } else {
       globalObserver.emit('ui.logout');

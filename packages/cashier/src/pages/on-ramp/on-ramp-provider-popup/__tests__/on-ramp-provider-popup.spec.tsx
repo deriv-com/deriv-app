@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderPopup from '../on-ramp-provider-popup';
 
@@ -9,7 +10,7 @@ jest.mock('Stores/connect', () => ({
 }));
 
 jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+    ...(jest.requireActual('@deriv/components') as any),
     Loading: () => <div>Loading</div>,
 }));
 

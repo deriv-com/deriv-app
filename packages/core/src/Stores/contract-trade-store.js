@@ -23,11 +23,12 @@ export default class ContractTradeStore extends BaseStore {
     @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
     @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
-    constructor({ root_store }) {
+    constructor(root_store) {
         super({
             root_store,
         });
 
+        this.root_store = root_store;
         this.onSwitchAccount(this.accountSwitchListener);
     }
 

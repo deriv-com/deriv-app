@@ -1,4 +1,3 @@
-import React from 'react';
 import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
@@ -44,6 +43,13 @@ export default class PortfolioStore extends BaseStore {
 
     @observable.shallow active_positions = [];
 
+    constructor(root_store) {
+        super({
+            root_store,
+        });
+
+        this.root_store = root_store;
+    }
     @action.bound
     async initializePortfolio() {
         if (this.has_subscribed_to_poc_and_transaction) {
@@ -293,7 +299,7 @@ export default class PortfolioStore extends BaseStore {
                 transaction_id: response.sell.transaction_id,
             };
             this.root_store.notifications.addNotificationMessage(
-                contractSold(this.root_store.client.currency, response.sell.sold_for, <Money />)
+                contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );
         }
     }

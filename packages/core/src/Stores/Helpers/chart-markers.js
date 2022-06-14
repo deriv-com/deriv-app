@@ -7,8 +7,10 @@ import {
     createMarkerSpotMiddle,
     getSpotCount,
 } from './chart-marker-helpers';
-import { getChartType, getEndTime, unique } from '@deriv/shared';
+// import { getChartType, getEndTime, unique } from '@deriv/shared';
+import { getEndTime, unique } from '@deriv/shared';
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
+import { getChartType } from "./logic";
 
 export const createChartMarkers = contract_info => {
     let markers = [];

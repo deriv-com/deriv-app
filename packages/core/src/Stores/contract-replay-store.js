@@ -1,4 +1,3 @@
-import React from 'react';
 import { action, observable } from 'mobx';
 import { routes, isEmptyObject, isForwardStarting, WS, contractCancelled, contractSold } from '@deriv/shared';
 import { Money } from '@deriv/components';
@@ -36,6 +35,14 @@ export default class ContractReplayStore extends BaseStore {
     // when the person opens, try to switch account they get the error
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
+
+    constructor(root_store) {
+        super({
+            root_store,
+        });
+
+        this.root_store = root_store;
+    }
 
     // -------------------
     // ----- Actions -----
@@ -251,7 +258,7 @@ export default class ContractReplayStore extends BaseStore {
                 transaction_id: response.sell.transaction_id,
             };
             this.root_store.notifications.addNotificationMessage(
-                contractSold(this.root_store.client.currency, response.sell.sold_for, <Money />)
+                contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );
         }
     }

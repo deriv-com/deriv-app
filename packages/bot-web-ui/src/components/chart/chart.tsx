@@ -2,7 +2,7 @@ import React from 'react';
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
-import ToolbarWidgets from './toolbar-widgets.jsx';
+import ToolbarWidgets from './toolbar-widgets';
 
 interface TChartProps {
     chart_type: string;

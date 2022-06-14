@@ -7,6 +7,7 @@ import CashierLocked from 'Components/cashier-locked';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import SideNote from 'Components/side-note';
+import RootStore from 'Stores/types';
 import './on-ramp.scss';
 
 type TOnRampProps = {
@@ -158,7 +159,7 @@ const OnRamp = ({
     );
 };
 
-export default connect(({ modules, common, client }: { modules: any; common: any; client: any }) => ({
+export default connect(({ modules, common, client }: RootStore) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,

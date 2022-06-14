@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import { TProvider } from 'Types/provider.types';
 
 type TOnRampProviderCardProps = {
@@ -65,7 +66,7 @@ const OnRampProviderCard = ({
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default connect(({ modules, ui }: { modules: any; ui: any }) => ({
+export default connect(({ modules, ui }: RootStore) => ({
     setSelectedProvider: modules.cashier.onramp.setSelectedProvider,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_mobile: ui.is_mobile,

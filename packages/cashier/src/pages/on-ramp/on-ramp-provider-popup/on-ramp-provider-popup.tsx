@@ -4,6 +4,7 @@ import { Button, HintBox, Icon, Loading, Popover, Text } from '@deriv/components
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import { TProvider } from 'Types/provider.types';
 
 type TOnRampProviderPopupProps = {
@@ -192,7 +193,7 @@ const OnRampProviderPopup = ({
     );
 };
 
-export default connect(({ modules, ui }: { modules: any; ui: any }) => ({
+export default connect(({ modules, ui }: RootStore) => ({
     api_error: modules.cashier.onramp.api_error,
     deposit_address: modules.cashier.onramp.deposit_address,
     is_dark_mode_on: ui.is_dark_mode_on,

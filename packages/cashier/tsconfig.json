@@ -1,6 +1,15 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "paths": {
+            "Components/": ["components/*"],
+            "Config": ["config/*"],
+            "Constants":["constants/*"],
+            "Containers": ["containers/*"],
+            "Stores/*": ["stores/*"],
+            "Types/*": ["types/*"],
+            "Utils": ["utils/*"],
+        },
         "outDir": "./dist",
         "rootDir": "./src",
         "baseUrl": "src"

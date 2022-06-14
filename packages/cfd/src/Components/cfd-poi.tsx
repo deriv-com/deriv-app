@@ -88,7 +88,12 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
             {({ handleSubmit }) => (
                 <AutoHeightWrapper default_height={200}>
                     {({ setRef, height }: { setRef: (instance: HTMLFormElement | null) => void; height: number }) => (
-                        <form ref={setRef} className='cfd-proof-of-identity' onSubmit={handleSubmit}>
+                        <form
+                            ref={setRef}
+                            className='cfd-proof-of-identity'
+                            onSubmit={handleSubmit}
+                            data-testid='dt_cfd_proof_of_identity'
+                        >
                             <div className='details-form'>
                                 <input type='hidden' name='poi_state' value={poi_state} readOnly />
                                 <Div100vhContainer

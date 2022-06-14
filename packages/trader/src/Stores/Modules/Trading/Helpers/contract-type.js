@@ -1,21 +1,24 @@
-import { WS } from '../../services';
-import { getPropertyValue, cloneObject } from '../object';
-import { isTimeValid, minDate, toMoment } from '../date';
-import { shouldShowCancellation } from '../contract';
-
-import ServerTime from '../../services/server-time';
-import { localize } from '@deriv/translations';
-
-import { getUnitMap } from './details';
-import { buildBarriersConfig } from './barrier';
-import { buildDurationConfig, hasIntradayDurationUnit } from './duration';
-import { buildForwardStartingConfig, isSessionAvailable } from './start-date';
 import {
+    WS,
+    getPropertyValue,
+    cloneObject,
+    isTimeValid,
+    minDate,
+    toMoment,
+    shouldShowCancellation,
+    getUnitMap,
+    buildBarriersConfig,
+    buildDurationConfig,
+    hasIntradayDurationUnit,
+    buildForwardStartingConfig,
+    isSessionAvailable,
     unsupported_contract_types_list,
     getContractCategoriesConfig,
     getContractTypesConfig,
     getLocalizedBasis,
-} from '../constants/contract';
+} from '@deriv/shared';
+import ServerTime from '_common/base/server_time.js';
+import { localize } from '@deriv/translations';
 
 export const ContractType = (() => {
     let available_contract_types = {};

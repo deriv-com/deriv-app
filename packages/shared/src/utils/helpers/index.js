@@ -2,7 +2,6 @@ export * from './active-symbols';
 export * from './barrier';
 export * from './barriers';
 export * from './chart-notifications';
-export * from './contract-type';
 export * from './details';
 export * from './duration';
 export * from './format-response';

@@ -1,4 +1,4 @@
-import { ContractType as ContractTypeHelper} from '@deriv/shared';
+import { ContractType as ContractTypeHelper } from 'Stores/Modules/Trading/Helpers/contract-type.js';
 import * as ContractType from '../Actions/contract-type';
 import * as Duration from '../Actions/duration';
 import * as StartDate from '../Actions/start-date';

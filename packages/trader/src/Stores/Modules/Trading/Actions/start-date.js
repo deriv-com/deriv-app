@@ -1,4 +1,4 @@
-import { ContractType } from '@deriv/shared';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type.js';
 
 export const onChangeStartDate = async store => {
     const { contract_type, duration_unit, start_date } = store;

@@ -19,7 +19,6 @@ import {
     isMarketClosed,
     findFirstOpenMarket,
     showMxMltUnavailableError,
-    ContractType,
     convertDurationLimit,
     resetEndTimeOnVolatilityIndices,
     getBarrierPipSize,
@@ -27,6 +26,7 @@ import {
     removeBarrier,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type.js';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';

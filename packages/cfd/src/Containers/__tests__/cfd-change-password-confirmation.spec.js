@@ -11,15 +11,6 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-jest.mock('../trading-password-manager.tsx', () => {
-    const original_module = jest.requireActual('../trading-password-manager.tsx');
-
-    return {
-        ...original_module,
-        TradingPasswordManager: jest.fn(() => 'mockedTradingPasswordManager'),
-    };
-});
-
 it('should render cfd-change-password-confirmation component', () => {
     render(<ChangePasswordConfirmation />);
     expect(screen.getByTestId('dt_cfd_change_password_form')).toBeInTheDocument();

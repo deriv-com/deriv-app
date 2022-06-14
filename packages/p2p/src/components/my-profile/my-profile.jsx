@@ -1,5 +1,5 @@
 import React from 'react';
-import { AutoSizer, DesktopWrapper, Text } from '@deriv/components';
+import { FixedSizeList, DesktopWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -28,7 +28,7 @@ const MyProfile = () => {
     }
 
     return (
-        <AutoSizer>
+        <FixedSizeList>
             {({ height, width }) => (
                 <div className='my-profile' height={height} style={{ width }}>
                     <div className='my-profile__content'>
@@ -40,7 +40,7 @@ const MyProfile = () => {
                     </div>
                 </div>
             )}
-        </AutoSizer>
+        </FixedSizeList>
     );
 };
 

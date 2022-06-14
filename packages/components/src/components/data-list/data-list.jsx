@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
-import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
+// import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
+import { FixedSizeList } from "react-window";
 import { List } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell from './data-list-cell.jsx';
@@ -139,7 +140,7 @@ const DataList = React.memo(
             >
                 <div className='data-list__body-wrapper'>
                     <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
-                        <AutoSizer>
+                        <FixedSizeList>
                             {({ width, height }) => (
                                 // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
                                 <TransitionGroup style={{ height, width }}>
@@ -163,7 +164,7 @@ const DataList = React.memo(
                                     </ThemedScrollbars>
                                 </TransitionGroup>
                             )}
-                        </AutoSizer>
+                        </FixedSizeList>
                     </div>
                     {children}
                 </div>

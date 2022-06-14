@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import { List } from 'react-virtualized/dist/es/List';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
+// import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
+import { FixedSizeList } from "react-window";
 import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import TableRow from './table-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
@@ -114,7 +115,7 @@ const DataTable = ({
                 />
             </div>
             <div className='table__body'>
-                <AutoSizer>
+                <FixedSizeList>
                     {({ width, height }) => (
                         <div
                             className='dc-data-table'
@@ -142,7 +143,7 @@ const DataTable = ({
                             {children}
                         </div>
                     )}
-                </AutoSizer>
+                </FixedSizeList>
             </div>
 
             {footer && (

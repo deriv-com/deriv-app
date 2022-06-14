@@ -1535,5 +1535,127 @@
         align-items: flex-end;
     }
 }
+.cfd-real-compare-accounts {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    background: inherit;
+    height: 100%;
+    position: relative;
+    &__table {
+        @include mobile {
+            overflow-x: auto;
+        }
+    }
 
+    &__table-header {
+        grid-template-columns: var(--cfd-real-compare-accounts-template-columns);
+    }
+    &__table-header-item {
+        justify-content: center;
+    }
+
+    &__table-row {
+        grid-template-columns: 0.9fr 0.7fr 0.65fr 0.7fr 0.65fr 0.61fr 0.7fr;
+        &--leverage {
+            grid-template-columns: 0.9fr 0.7fr 0.65fr 1.96fr 0.7fr;
+        }
+        &--instruments {
+            grid-template-columns: 0.9fr 1.35fr 1.35fr 0.61fr 0.7fr;
+        }
+    }
+
+    &__table-row-item {
+        flex-direction: column;
+        justify-content: center;
+    }
+    &__table-footer {
+        grid-template-columns: 0.9fr 0.7fr 0.65fr 0.7fr 0.65fr 0.61fr 0.7fr;
+        height: 4.8rem;
+        &__item {
+            height: 4.8rem;
+        }
+        &__button {
+            width: 100%;
+        }
+    }
+
+    .dc-table {
+        padding: 0 25px;
+        &__header {
+            border: none;
+            height: 4rem;
+            position: sticky;
+            top: 0;
+            background: var(--general-main-2);
+            z-index: 10;
+        }
+        &__cell:not(.cfd-real-compare-accounts__table-empty-cell),
+        &__head:not(.cfd-real-compare-accounts__table-empty-cell) {
+            padding: 0.8rem;
+            border: 1px solid var(--general-active);
+            margin-left: -1px;
+            margin-bottom: -1px;
+            &--fixed {
+                padding-left: 1.6rem;
+
+                @include mobile {
+                    background-color: var(--general-section-2);
+                }
+            }
+        }
+        &__cell {
+            padding: 1rem 0.8rem;
+        }
+        &__row {
+            border-bottom: none;
+        }
+
+        &--scrollbar {
+            display: block; // Safari needs this to work properly!
+        }
+        @include desktop {
+            &__header {
+                background-color: var(--general-main-2);
+            }
+        }
+    }
+    &-modal {
+        &__wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 2.4rem;
+        }
+    }
+    @include mobile {
+        background: var(--general-main-1);
+        height: 100%;
+        font-size: 1.2rem;
+
+        .dc-table {
+            height: inherit;
+
+            &__cell {
+                font-size: 1.2rem;
+            }
+            &__row {
+                padding: 0;
+            }
+            &__head {
+                font-size: 1.2rem;
+                background-color: var(--general-main-1);
+                // background-color: yellow;
+            }
+            &__header,
+            &__row {
+                width: 150vw;
+                // grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
+        .dc-mobile-dialog__header {
+            border-bottom: none;
+            background-color: blue;
+        }
+    }
+}
 /* stylelint-enable */

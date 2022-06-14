@@ -3,10 +3,10 @@ import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } 
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { isMobile, CFD_PLATFORMS } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import ModalContent from './compare-accounts-content';
-
+import RealModalContent from './real-account-compare-table-content'
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
     platform: string;
@@ -22,6 +22,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     is_eu: boolean;
     is_eu_country: boolean;
     residence: string;
+    is_demo_tab: boolean;
     toggleCompareAccounts: () => void;
 };
 
@@ -37,6 +38,7 @@ const CompareAccountsModal = ({
     is_eu_country,
     platform,
     residence,
+    is_demo_tab,
     toggleCompareAccounts,
 }: TCompareAccountsModalProps) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
@@ -49,6 +51,13 @@ const CompareAccountsModal = ({
 
     const cfd_account_button_label =
         mt5_accounts.filter(Boolean).length === 1 ? localize('Account Information') : localize('Compare accounts');
+
+    const getCFDModalTitle = () => {
+        if (platform === 'mt5' && !is_demo_tab) {
+            return isMobile ? localize('Choose a jurisdiction for your account') : localize('Choose a jurisdiction for your real DMT5 account')
+        }
+        return cfd_account_button_label
+    }
 
     return (
         <>
@@ -71,40 +80,44 @@ const CompareAccountsModal = ({
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_open={is_compare_accounts_visible}
-                            title={cfd_account_button_label}
+                            title={getCFDModalTitle()}
                             toggleModal={toggleCompareAccounts}
                             type='button'
-                            height='696px'
-                            width='903px'
+                            height={is_demo_tab ? '696px' : '506px'}
+                            width={is_demo_tab ? '903px' : "996px"}
                         >
-                            <ModalContent
-                                is_logged_in={is_logged_in}
-                                landing_companies={landing_companies}
-                                platform={platform}
-                                show_eu_related={show_eu_related}
-                                residence={residence}
-                                is_eu={is_eu}
-                                is_uk={is_uk}
-                            />
+                            {is_demo_tab ?
+                                (<ModalContent
+                                    is_logged_in={is_logged_in}
+                                    landing_companies={landing_companies}
+                                    platform={platform}
+                                    show_eu_related={show_eu_related}
+                                    residence={residence}
+                                    is_eu={is_eu}
+                                    is_uk={is_uk}
+                                />) :
+                                <RealModalContent />}
                         </Modal>
                     </DesktopWrapper>
                     <MobileWrapper>
                         <MobileDialog
                             portal_element_id='deriv_app'
-                            title={localize('Compare accounts')}
+                            title={getCFDModalTitle()}
                             wrapper_classname='cfd-dashboard__compare-accounts'
                             visible={is_compare_accounts_visible}
                             onClose={toggleCompareAccounts}
                         >
-                            <ModalContent
-                                is_logged_in={is_logged_in}
-                                landing_companies={landing_companies}
-                                platform={platform}
-                                show_eu_related={show_eu_related}
-                                residence={residence}
-                                is_eu={is_eu}
-                                is_uk={is_uk}
-                            />
+                            {is_demo_tab ?
+                                <ModalContent
+                                    is_logged_in={is_logged_in}
+                                    landing_companies={landing_companies}
+                                    platform={platform}
+                                    show_eu_related={show_eu_related}
+                                    residence={residence}
+                                    is_eu={is_eu}
+                                    is_uk={is_uk}
+                                /> :
+                                <RealModalContent />}
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Suspense>

@@ -65,6 +65,7 @@ export default class ClientStore extends BaseStore {
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
+    has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -182,6 +183,7 @@ export default class ClientStore extends BaseStore {
             financial_assessment: observable,
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
+            has_enabled_two_fa: observable,
             balance: computed,
             is_reality_check_visible: computed,
             is_svg: computed,
@@ -334,6 +336,8 @@ export default class ClientStore extends BaseStore {
             setRealityCheckDuration: action.bound,
             cleanupRealityCheck: action.bound,
             fetchFinancialAssessment: action.bound,
+            setTwoFAStatus: action.bound,
+            getTwoFAStatus: action.bound,
         });
 
         reaction(
@@ -727,8 +731,8 @@ export default class ClientStore extends BaseStore {
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
         return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
             ? eu_shortcode_regex.test(financial_shortcode) ||
-                  eu_shortcode_regex.test(gaming_shortcode) ||
-                  eu_shortcode_regex.test(mt_gaming_shortcode)
+            eu_shortcode_regex.test(gaming_shortcode) ||
+            eu_shortcode_regex.test(mt_gaming_shortcode)
             : eu_excluded_regex.test(this.residence);
     }
 
@@ -1165,18 +1169,18 @@ export default class ClientStore extends BaseStore {
                 ...response,
                 ...(is_maltainvest_account
                     ? {
-                          new_account_maltainvest: {
-                              ...response.new_account_maltainvest,
-                              currency,
-                          },
-                      }
+                        new_account_maltainvest: {
+                            ...response.new_account_maltainvest,
+                            currency,
+                        },
+                    }
                     : {}),
                 ...(is_samoa_account
                     ? {
-                          new_account_samoa: {
-                              currency,
-                          },
-                      }
+                        new_account_samoa: {
+                            currency,
+                        },
+                    }
                     : {}),
             });
         }
@@ -1416,7 +1420,7 @@ export default class ClientStore extends BaseStore {
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
             if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
-
+            await this.getTwoFAStatus();
             if (account_settings && !account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2288,6 +2292,24 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => (this.financial_assessment = get_financial_assessment));
             resolve(get_financial_assessment);
+        });
+    }
+
+    setTwoFAStatus(status) {
+        this.has_enabled_two_fa = status;
+    }
+
+    getTwoFAStatus() {
+        return new Promise(resolve => {
+            WS.authorized.accountSecurity({ account_security: 1, totp_action: 'status' }).then(response => {
+                if (response.error) {
+                    resolve(response.error);
+                } else {
+                    const is_enabled = !!getPropertyValue(response, ['account_security', 'totp', 'is_enabled']);
+                    this.setTwoFAStatus(is_enabled);
+                    resolve(is_enabled);
+                }
+            });
         });
     }
 }

@@ -3,7 +3,7 @@ import { Redirect as RouterRedirect } from 'react-router-dom';
 import { makeLazyLoader, routes } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { Redirect } from 'App/Containers/Redirect';
+import Redirect from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes

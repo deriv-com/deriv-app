@@ -4,9 +4,7 @@ import { TextContainer } from '../text-container';
 
 describe('<TextContainer/>', () => {
     it('should contain "Lorem Ipsum" in the document', () => {
-        render(
-            <TextContainer children='Lorem Ipsum'/>
-        );
+        render(<TextContainer>Lorem Ipsum</TextContainer>);
 
         expect(screen.getByText(/Lorem Ipsum/i)).toBeInTheDocument();
         expect(screen.getByTestId(/dt_text_container/i)).toBeInTheDocument();

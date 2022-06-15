@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 // import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { FixedSizeList } from "react-window";
-import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
+// import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import TableRow from './table-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
 
@@ -36,15 +36,16 @@ const DataTable = ({
     const [is_loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
-        if (is_dynamic_height) {
-            cache_ref.current = new CellMeasurerCache({
-                fixedWidth: true,
-                keyMapper: row_index => {
-                    if (row_index < data_source.length) return keyMapper?.(data_source[row_index]) || row_index;
-                    return row_index;
-                },
-            });
-        }
+        // TODO: Needs custom implementation for caching
+        // if (is_dynamic_height) {
+        //     cache_ref.current = new CellMeasurerCache({
+        //         fixedWidth: true,
+        //         keyMapper: row_index => {
+        //             if (row_index < data_source.length) return keyMapper?.(data_source[row_index]) || row_index;
+        //             return row_index;
+        //         },
+        //     });
+        // }
         setLoading(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -84,9 +85,11 @@ const DataTable = ({
         );
 
         return is_dynamic_height ? (
-            <CellMeasurer cache={cache_ref.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+            // <CellMeasurer cache={cache_ref.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+            <>
                 {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
-            </CellMeasurer>
+            </>
+            // </CellMeasurer>
         ) : (
             <div key={row_key} style={style}>
                 {getContent()}

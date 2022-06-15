@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
+// import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 // import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { FixedSizeList } from "react-window";
 import { List } from 'react-virtualized/dist/es/List';
@@ -45,16 +45,17 @@ const DataList = React.memo(
         }, [data_source, keyMapper]);
 
         React.useEffect(() => {
-            if (is_dynamic_height) {
-                cache.current = new CellMeasurerCache({
-                    fixedWidth: true,
-                    keyMapper: row_index => {
-                        if (row_index < data_source_ref.current.length)
-                            return keyMapper?.(data_source_ref.current[row_index]) || row_index;
-                        return row_index;
-                    },
-                });
-            }
+            // TODO: Needs custom implementation for caching
+            // if (is_dynamic_height) {
+            //     cache.current = new CellMeasurerCache({
+            //         fixedWidth: true,
+            //         keyMapper: row_index => {
+            //             if (row_index < data_source_ref.current.length)
+            //                 return keyMapper?.(data_source_ref.current[row_index]) || row_index;
+            //             return row_index;
+            //         },
+            //     });
+            // }
             trackItemsForTransition();
             setLoading(false);
         }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -95,9 +96,12 @@ const DataList = React.memo(
             );
 
             return is_dynamic_height ? (
-                <CellMeasurer cache={cache.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+                // TODO: Needs custom implementation for caching
+                // <CellMeasurer cache={cache.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+                <>
                     {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
-                </CellMeasurer>
+                </>
+                // </CellMeasurer>
             ) : (
                 <div key={row_key} style={style}>
                     {getContent()}

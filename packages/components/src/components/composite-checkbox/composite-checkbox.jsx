@@ -4,7 +4,7 @@ import React from 'react';
 import Checkbox from '../checkbox/checkbox.jsx';
 import Text from '../text';
 
-const CompositeCheckbox = ({ name, value, onChange, className, label, id, description, ...props }) => {
+const CompositeCheckbox = ({ name, value, onChange, className, label, id, description, children, ...props }) => {
     const onClickContainer = e => {
         e.stopPropagation();
         e.preventDefault();
@@ -31,6 +31,7 @@ const CompositeCheckbox = ({ name, value, onChange, className, label, id, descri
             >
                 {description}
             </Text>
+            {children}
         </div>
     );
 };

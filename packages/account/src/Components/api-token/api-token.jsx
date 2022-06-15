@@ -3,8 +3,9 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
+import IconWithNoteInline from '../icon-with-note-inline';
 import { isDesktop, isMobile, getPropertyValue, useIsMounted } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import ApiTokenArticle from './api-token-article.jsx';
 import ApiTokenCard from './api-token-card.jsx';
@@ -201,7 +202,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                         setFieldValue={setFieldValue}
                                                         display_name={localize('Read')}
                                                         description={localize(
-                                                            'View account activity such as settings, limits, balance sheets, trade purchase history, and more.'
+                                                            'This scope will allow third-party apps to view your account activity, settings, limits, balance sheets, trade purchase history, and more.'
                                                         )}
                                                     />
                                                     <ApiTokenCard
@@ -210,7 +211,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                         display_name={localize('Trade')}
                                                         setFieldValue={setFieldValue}
                                                         description={localize(
-                                                            'Buy and sell contracts, renew expired purchases, and top up demo accounts.'
+                                                            'This scope will allow third-party apps to buy and sell contracts for you, renew your expired purchases, and top up your demo accounts.'
                                                         )}
                                                     />
                                                     <ApiTokenCard
@@ -219,7 +220,16 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                         display_name={localize('Payments')}
                                                         setFieldValue={setFieldValue}
                                                         description={localize(
-                                                            'Withdraw to payment agents, and transfer funds between accounts.'
+                                                            'This scope will allow third-party apps to withdraw to payment agents and make inter-account transfers for you.'
+                                                        )}
+                                                    />
+                                                    <ApiTokenCard
+                                                        name='trading_information'
+                                                        value={values.trading_information}
+                                                        display_name={localize('Trading information')}
+                                                        setFieldValue={setFieldValue}
+                                                        description={localize(
+                                                            'This scope will allow third-party apps to view your trading history.'
                                                         )}
                                                     />
                                                     <ApiTokenCard
@@ -228,16 +238,14 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                         display_name={localize('Admin')}
                                                         setFieldValue={setFieldValue}
                                                         description={localize(
-                                                            'Open accounts, manage settings, manage token usage, and more.'
+                                                            'This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more. '
                                                         )}
-                                                    />
-                                                    <ApiTokenCard
-                                                        name='trading_information'
-                                                        value={values.trading_information}
-                                                        display_name={localize('Trading information')}
-                                                        setFieldValue={setFieldValue}
-                                                        description={localize('View the trading history.')}
-                                                    />
+                                                    >
+                                                        <IconWithNoteInline
+                                                            icon='IcAlertWarning'
+                                                            message='Do not share tokens with the Admin scope with unauthorised parties.'
+                                                        />
+                                                    </ApiTokenCard>
                                                 </div>
                                             </Timeline.Item>
                                             <Timeline.Item
@@ -302,17 +310,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                 )}
                             </Formik>
                         </ThemedScrollbars>
-                        {!is_app_settings && isDesktop() && (
-                            <ApiTokenArticle
-                                title={localize('API token')}
-                                descriptions={[
-                                    <Localize
-                                        key={0}
-                                        i18n_default_text="To access our mobile apps and other third-party apps, you'll first need to generate an API token."
-                                    />,
-                                ]}
-                            />
-                        )}
+                        {!is_app_settings && isDesktop() && <ApiTokenArticle />}
                     </div>
                 </section>
                 {footer_ref && <ApiTokenFooter />}

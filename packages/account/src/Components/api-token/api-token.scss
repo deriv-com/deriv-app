@@ -48,7 +48,6 @@
     &__checkbox-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
         grid-gap: 1.6rem;
         padding-bottom: 1.1rem;
 
@@ -133,5 +132,6 @@
     &__scrollbars {
         height: 100%;
         width: 100%;
+        flex: 1;
     }
 }

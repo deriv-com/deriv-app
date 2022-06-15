@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, getByText, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { PlatformContext } from '@deriv/shared';
 import { Unverified } from '../unverified.jsx';
 
@@ -14,7 +14,6 @@ jest.mock('@deriv/components', () => {
 describe('Unverified', () => {
     const renderWithRouter = component =>
         render(<PlatformContext.Provider value={{ is_appstore: true }}>{component}</PlatformContext.Provider>);
-
     it('should render unverified component', () => {
         renderWithRouter(<Unverified />);
 
@@ -63,11 +62,11 @@ describe('Unverified', () => {
                 /As a precaution, we have disabled trading, deposits and withdrawals for this account. If you have any questions, please go to our Help Center/i
             )
         ).toBeInTheDocument();
+        expect(screen.getByTestId(/dt_mocked_icon/)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/Help Center/));
         expect(screen.getByRole('link', { name: 'Help Centre' }).closest('a')).toHaveAttribute(
             'href',
             'https://deriv.com/help-centre'
         );
-        expect(screen.getByTestId(/dt_mocked_icon/)).toBeInTheDocument();
     });
 });

@@ -236,7 +236,6 @@ const EditAdForm = () => {
                                                                     change_handler={e => {
                                                                         my_ads_store.restrictDecimalPlace(
                                                                             e,
-                                                                            2,
                                                                             handleChange
                                                                         );
                                                                     }}

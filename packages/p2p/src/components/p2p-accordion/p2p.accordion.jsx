@@ -17,8 +17,7 @@ const usePrevious = value => {
 const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, onChange }) => {
     const [open_idx, setOpenIdx] = React.useState({});
     const prev_list = usePrevious(list);
-
-    const firstUpdate = React.useRef(true);
+    const first_render = React.useRef(true);
 
     React.useEffect(() => {
         if (prev_list !== list) {
@@ -38,8 +37,9 @@ const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, o
     }, [is_expand_all]);
 
     React.useLayoutEffect(() => {
-        if (firstUpdate.current) {
-            firstUpdate.current = false;
+        // Prevent re-render on initial state update
+        if (first_render.current) {
+            first_render.current = false;
             return;
         }
         if (is_expand_all) {
@@ -55,10 +55,7 @@ const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, o
         }
     }, [open_idx]);
 
-    // close if clicking the accordion that's open, otherwise open the new one
-    const onClick = index => {
-        setOpenIdx(prev_state => ({ ...prev_state, [index]: !prev_state[index] }));
-    };
+    const onClick = index => setOpenIdx(prev_state => ({ ...prev_state, [index]: !prev_state[index] }));
 
     return (
         <div className={classNames('dc-accordion__wrapper', className)}>

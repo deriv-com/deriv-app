@@ -4,8 +4,9 @@ import React from 'react';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon';
 
-const Accordion = ({ className, icon_close, icon_open, list, is_expand_all }) => {
+const Accordion = ({ className, icon_close, icon_open, list }) => {
     const [open_idx, setOpenIdx] = React.useState(null);
+
     const prev_list = usePrevious(list);
 
     React.useEffect(() => {
@@ -21,7 +22,7 @@ const Accordion = ({ className, icon_close, icon_open, list, is_expand_all }) =>
                 <div
                     className={classNames(
                         'dc-accordion__item',
-                        `dc-accordion__item--${is_expand_all || open_idx === idx ? 'open' : 'close'}`,
+                        `dc-accordion__item--${open_idx === idx ? 'open' : 'close'}`,
                         {
                             [`dc-accordion__item--${idx === 0 ? 'first' : 'last'}`]:
                                 idx === 0 || idx === list.length - 1,
@@ -32,7 +33,7 @@ const Accordion = ({ className, icon_close, icon_open, list, is_expand_all }) =>
                     <div className='dc-accordion__item-header' onClick={() => onClick(idx)}>
                         {item.header}
                         <div className='dc-accordion__item-header-icon-wrapper'>
-                            {is_expand_all || open_idx === idx ? (
+                            {open_idx === idx ? (
                                 <Icon icon={icon_open || 'IcMinus'} className='dc-accordion__item-header-icon' />
                             ) : (
                                 <Icon icon={icon_close || 'IcAdd'} className='dc-accordion__item-header-icon' />
@@ -49,7 +50,6 @@ const Accordion = ({ className, icon_close, icon_open, list, is_expand_all }) =>
 Accordion.propTypes = {
     className: PropTypes.string,
     list: PropTypes.arrayOf(PropTypes.object),
-    is_expand_all: PropTypes.bool, // Expands all Child elements
 };
 
 export default Accordion;

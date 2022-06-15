@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, Button, HintBox, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, HintBox, Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isDesktop, getRoundedNumber } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -10,6 +10,7 @@ import OrderDetailsFooter from 'Components/order-details/order-details-footer.js
 import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx';
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
+import P2PAccordion from 'Components/p2p-accordion/p2p.accordion.jsx';
 import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
@@ -180,7 +181,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                                 </Text>
                                             </Button>
                                         </section>
-                                        <Accordion
+                                        <P2PAccordion
                                             className='order-details-card__accordion'
                                             icon_close='IcChevronRight'
                                             icon_open='IcChevronDown'
@@ -193,6 +194,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                                 ),
                                             }))}
                                             is_expand_all={should_expand_all}
+                                            onChange={setShouldExpandAll}
                                         />
                                     </div>
                                 ) : (

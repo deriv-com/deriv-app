@@ -538,7 +538,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     updateBarrierColor(is_dark_mode) {
-        const { main_barrier } = JSON.parse(localStorage.getItem('trade_store'));
+        const { main_barrier } = JSON.parse(localStorage.getItem('trade_store')) || {};
         this.main_barrier = main_barrier;
         if (this.main_barrier) {
             this.main_barrier.updateBarrierColor(is_dark_mode);
@@ -559,7 +559,7 @@ export default class PortfolioStore extends BaseStore {
 
     @computed
     get is_multiplier() {
-        const { contract_type } = JSON.parse(localStorage.getItem('trade_store'));
+        const { contract_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
         this.contract_type = contract_type;
         return this.contract_type === 'multiplier';
     }

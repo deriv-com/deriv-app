@@ -56,7 +56,7 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     applicable_contracts = () => {
-        const { symbol: underlying, contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store'));
+        const { symbol: underlying, contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
 
         if (!trade_type || !underlying) {
             return [];

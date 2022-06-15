@@ -18,6 +18,8 @@ const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, o
     const [open_idx, setOpenIdx] = React.useState({});
     const prev_list = usePrevious(list);
 
+    const firstUpdate = React.useRef(true);
+
     React.useEffect(() => {
         if (prev_list !== list) {
             const state_ref = [...Array(list.length).keys()].reduce((acc, val) => ({ ...acc, [val]: false }), {});
@@ -29,19 +31,33 @@ const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, o
         let state_ref;
         if (is_expand_all) {
             state_ref = [...Array(list.length).keys()].reduce((acc, val) => ({ ...acc, [val]: true }), {});
-            onChange(true);
         } else {
             state_ref = [...Array(list.length).keys()].reduce((acc, val) => ({ ...acc, [val]: false }), {});
-            onChange(false);
         }
         setOpenIdx(state_ref);
     }, [is_expand_all]);
 
+    React.useLayoutEffect(() => {
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        }
+        if (is_expand_all) {
+            const is_all_collapsed = Object.values(open_idx).every(state => !state);
+            if (is_all_collapsed) {
+                onChange(false);
+            }
+        } else {
+            const is_all_expanded = Object.values(open_idx).every(state => state);
+            if (is_all_expanded) {
+                onChange(true);
+            }
+        }
+    }, [open_idx]);
+
     // close if clicking the accordion that's open, otherwise open the new one
     const onClick = index => {
         setOpenIdx(prev_state => ({ ...prev_state, [index]: !prev_state[index] }));
-        const is_all_expanded = Object.values(open_idx).every(status => status);
-        onChange(is_all_expanded);
     };
 
     return (

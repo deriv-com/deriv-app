@@ -95,16 +95,12 @@ describe('CFDTopUpDemoModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    it('should render <CFDTopUpDemoModal /> correctly', () => {
-        render(<CFDTopUpDemoModal {...mock_props} />);
-    });
-
     it('should render the button texts correctly', () => {
         render(<CFDTopUpDemoModal {...mock_props} />);
         expect(screen.getByText('Fund top up')).toBeInTheDocument();
         expect(screen.getByText('Current balance')).toBeInTheDocument();
         expect(screen.getByText('Demo Financial account')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt_top-up-virtual-description')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_top_up_virtual_description')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Top up/i })).toBeInTheDocument();
     });
 
@@ -157,7 +153,18 @@ describe('CFDTopUpDemoModal', () => {
             />
         );
         expect(screen.getByText('Success Dialog')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt_top-up-virtual-description')).not.toBeInTheDocument();
-        screen.debug();
+        expect(screen.queryByTestId('dt_top_up_virtual_description')).not.toBeInTheDocument();
+    });
+
+    it('should not render the component if both modals are false', () => {
+        render(
+            <CFDTopUpDemoModal
+                {...mock_props}
+                current_account={{ category: 'demo', type: 'financial', balance: 500 }}
+                is_top_up_virtual_success={false}
+                is_top_up_virtual_open={false}
+            />
+        );
+        expect(screen.queryByTestId('dt_top_up_virtual_description')).not.toBeInTheDocument();
     });
 });

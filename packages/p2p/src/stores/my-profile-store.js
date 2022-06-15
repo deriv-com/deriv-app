@@ -13,6 +13,7 @@ export default class MyProfileStore extends BaseStore {
     @observable advertiser_payment_methods_error = '';
     @observable available_payment_methods = {};
     @observable balance_available = null;
+    @observable blocked_advertisers_list = [];
     @observable contact_info = '';
     @observable default_advert_description = '';
     @observable delete_error_message = '';
@@ -62,14 +63,6 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return list;
-    }
-
-    @computed
-    get payment_method_field_set() {
-        // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
-        return this.selected_payment_method_fields.reduce((dict, field_data) => {
-            return { ...dict, [field_data[0]]: field_data[1].display_name };
-        }, {});
     }
 
     @computed
@@ -194,6 +187,24 @@ export default class MyProfileStore extends BaseStore {
                 this.setErrorMessage(response.error.message);
             }
             this.setIsLoading(false);
+        });
+    }
+
+    @action.bound
+    getBlockedAdvertisersList() {
+        this.setIsLoading(true);
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advertiser_relations: 1,
+            }).then(response => {
+                if (!response.error) {
+                    this.setBlockedAdvertisersList(response.p2p_advertiser_relations.blocked_advertisers);
+                } else {
+                    this.setErrorMessage(response.error);
+                }
+                this.setIsLoading(false);
+                resolve();
+            });
         });
     }
 
@@ -460,6 +471,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setBalanceAvailable(balance_available) {
         this.balance_available = balance_available;
+    }
+
+    @action.bound
+    setBlockedAdvertisersList(blocked_advertisers_list) {
+        this.blocked_advertisers_list = blocked_advertisers_list;
     }
 
     @action.bound

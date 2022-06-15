@@ -15,10 +15,12 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable api_error_message = '';
     @observable form_error_message = '';
     @observable has_more_adverts_to_load = false;
+    @observable is_block_user_modal_open = false;
     @observable is_loading = true;
     @observable is_loading_adverts = true;
     @observable is_submit_disabled = true;
     @observable show_ad_popup = false;
+    @observable selected_blocked_user = {};
     @observable submitForm = () => {};
 
     @computed
@@ -59,7 +61,6 @@ export default class AdvertiserPageStore extends BaseStore {
     loadMoreAdvertiserAdverts({ startIndex }) {
         const { general_store } = this.root_store;
         this.setIsLoadingAdverts(true);
-
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
@@ -75,7 +76,6 @@ export default class AdvertiserPageStore extends BaseStore {
                     this.setAdverts(list);
                     this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
                 }
-
                 this.setIsLoadingAdverts(false);
                 resolve();
             });
@@ -85,14 +85,12 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
-
         requestWS({
             p2p_advertiser_info: 1,
             id: this.advertiser_details_id,
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
-
                 this.setAdvertiserInfo(p2p_advertiser_info);
                 this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
                 this.setAdvertiserLastName(p2p_advertiser_info.last_name);
@@ -185,6 +183,11 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
+    setIsBlockUserModalOpen(is_block_user_modal_open) {
+        this.is_block_user_modal_open = is_block_user_modal_open;
+    }
+
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
@@ -197,6 +200,11 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     setIsSubmitDisabled(is_submit_disabled) {
         this.is_submit_disabled = is_submit_disabled;
+    }
+
+    @action.bound
+    setSelectedBlockedUser(selected_blocked_user) {
+        this.selected_blocked_user = selected_blocked_user;
     }
 
     @action.bound
@@ -216,5 +224,25 @@ export default class AdvertiserPageStore extends BaseStore {
         } else {
             this.setShowAdPopup(true);
         }
+    }
+
+    @action.bound
+    unblockUser(blocked_user_id) {
+        this.setIsLoading(true);
+
+        requestWS({
+            p2p_advertiser_relations: 1,
+            remove_blocked: [blocked_user_id],
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    this.getAdvertiserInfo();
+                    this.setIsBlockUserModalOpen(false);
+                } else {
+                    this.setErrorMessage(response.error);
+                }
+            }
+            this.setIsLoading(false);
+        });
     }
 }

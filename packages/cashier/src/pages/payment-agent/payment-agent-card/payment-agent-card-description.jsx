@@ -6,9 +6,9 @@ import { Detail } from './paymen-agent-card-details';
 
 const PaymentAgentCardDescription = ({ payment_agent }) => {
     const payment_agent_urls = toJS(payment_agent.urls);
-    const further_information = `${payment_agent.further_information[0].toUpperCase()}${payment_agent.further_information.slice(
-        1
-    )}`;
+    const further_information = payment_agent.further_information
+        ? `${payment_agent.further_information[0].toUpperCase()}${payment_agent.further_information.slice(1)}`
+        : '';
 
     return (
         <div className='payment-agent-card__description-container'>

@@ -3,32 +3,10 @@ import React from 'react';
 import { CFDDemoAccountDisplay } from '../cfd-demo-account-display';
 
 describe('<CFDDemoAccountDisplay />', () => {
-    const mt5_demo_financial_account = {
-        account_type: 'demo',
-        balance: 10000,
-        country: 'id',
-        currency: 'USD',
-        display_balance: '10000.00',
-        display_login: '20103240',
-        email: 'name@domain.com',
-        group: 'demo\\p01_ts02\\financial\\svg_std_usd',
-        landing_company_short: 'svg',
-        leverage: 1000,
-        login: 'MTD20103240',
-        market_type: 'financial',
-        name: 'Name LastName',
-        server: 'p01_ts02',
-        server_info: {
-            environment: 'Deriv-Demo',
-            geolocation: {
-                group: 'all',
-                location: 'N. Virginia',
-                region: 'US East',
-                sequence: 1,
-            },
-            id: 'p01_ts02',
-        },
-        sub_account_type: 'financial',
+    const TESTED_CASES = {
+        EU: 'eu',
+        NON_EU_DMT5: 'non_eu_dmt5',
+        NON_EU_DXTRADE: 'non_eu_dxtrade',
     };
 
     let props;
@@ -63,20 +41,65 @@ describe('<CFDDemoAccountDisplay />', () => {
         };
     });
 
+    const mt5_demo_financial_account = {
+        account_type: 'demo',
+        balance: 10000,
+        country: 'id',
+        currency: 'USD',
+        display_balance: '10000.00',
+        display_login: '20103240',
+        email: 'name@domain.com',
+        group: 'demo\\p01_ts02\\financial\\svg_std_usd',
+        landing_company_short: 'svg',
+        leverage: 1000,
+        login: 'MTD20103240',
+        market_type: 'financial',
+        name: 'Name LastName',
+        server: 'p01_ts02',
+        server_info: {
+            environment: 'Deriv-Demo',
+            geolocation: {
+                group: 'all',
+                location: 'N. Virginia',
+                region: 'US East',
+                sequence: 1,
+            },
+            id: 'p01_ts02',
+        },
+        sub_account_type: 'financial',
+    };
+
+    const checkAccountCardsRendering = tested_case => {
+        const first_account_card = 'Synthetic';
+        const second_account_card = {
+            eu: 'CFDs',
+            non_eu: 'Financial',
+        };
+        const third_account_card = 'Financial STP';
+
+        expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toBeInTheDocument();
+
+        if (tested_case === TESTED_CASES.NON_EU_DMT5 || tested_case === TESTED_CASES.NON_EU_DXTRADE) {
+            expect(screen.getByText(first_account_card)).toBeInTheDocument();
+            expect(screen.getByText(second_account_card.non_eu)).toBeInTheDocument();
+        }
+        if (tested_case === TESTED_CASES.NON_EU_DXTRADE || tested_case === TESTED_CASES.EU) {
+            expect(screen.queryByText(third_account_card)).not.toBeInTheDocument();
+        }
+        if (tested_case === TESTED_CASES.NON_EU_DMT5) {
+            expect(screen.getByText(third_account_card)).toBeInTheDocument();
+        } else if (tested_case === TESTED_CASES.EU) {
+            expect(screen.queryByText(first_account_card)).not.toBeInTheDocument();
+            expect(screen.getByText(second_account_card.eu)).toBeInTheDocument();
+            expect(screen.queryByText(second_account_card.non_eu)).not.toBeInTheDocument();
+        }
+    };
+
     it('should render Synthetic, Financial & Financial STP cards with enabled buttons on DMT5 when is_logged_in=true, standpoint.iom=false & has_maltainvest_account=false', () => {
         render(<CFDDemoAccountDisplay {...props} />);
 
+        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
-
-        expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toBeInTheDocument();
-        expect(screen.getByText('Synthetic')).toBeInTheDocument();
-        expect(screen.getByText('Financial')).toBeInTheDocument();
-        expect(screen.getByText('Financial STP')).toBeInTheDocument();
-        expect(screen.getAllByRole('table').length).toBe(3);
-        expect(screen.getAllByRole('cell', { name: /leverage/i }).length).toBe(3);
-        expect(screen.getAllByRole('cell', { name: /margin call/i }).length).toBe(3);
-        expect(screen.getAllByRole('cell', { name: /stop out level/i }).length).toBe(3);
-        expect(screen.getAllByRole('cell', { name: /number of assets/i }).length).toBe(3);
         expect(add_demo_account_buttons.length).toBe(3);
 
         fireEvent.click(add_demo_account_buttons[0]);
@@ -92,35 +115,25 @@ describe('<CFDDemoAccountDisplay />', () => {
     it('should render Synthetic, Financial & Financial STP cards without "Add demo account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDDemoAccountDisplay {...props} is_logged_in={false} />);
 
-        expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toBeInTheDocument();
-        expect(screen.getByText('Synthetic')).toBeInTheDocument();
-        expect(screen.getByText('Financial')).toBeInTheDocument();
-        expect(screen.getByText('Financial STP')).toBeInTheDocument();
-        expect(screen.getAllByRole('table').length).toBe(3);
+        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
-    it('should render a CFDs card only with enabled "Add demo account" button on DMT5 when is_logged_in=true, standpoint.iom=true & has_maltainvest_account=false', () => {
+    it('should render a CFDs card only with enabled "Add demo account" button on DMT5 when EU, is_logged_in=true, standpoint.iom=true & has_maltainvest_account=false', () => {
         props.standpoint.iom = true;
         props.isSyntheticCardVisible = jest.fn(() => false);
         props.isFinancialStpCardVisible = jest.fn(() => false);
         render(<CFDDemoAccountDisplay {...props} is_eu />);
 
+        checkAccountCardsRendering(TESTED_CASES.EU);
         const add_demo_account_button = screen.getByRole('button', { name: /add demo account/i });
-
-        expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toBeInTheDocument();
-        expect(screen.getByText('CFDs')).toBeInTheDocument();
-        expect(screen.queryByText('Synthetic')).not.toBeInTheDocument();
-        expect(screen.queryByText('Financial')).not.toBeInTheDocument();
-        expect(screen.queryByText('Financial STP')).not.toBeInTheDocument();
-        expect(screen.getAllByRole('table').length).toBe(1);
         expect(add_demo_account_button).toBeEnabled();
 
         fireEvent.click(add_demo_account_button);
         expect(props.openAccountNeededModal).toHaveBeenCalledWith('maltainvest', 'Deriv Multipliers', 'demo CFDs');
     });
 
-    it('should render a CFDs card only without "Add demo account" button on DMT5 for is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
+    it('should render a CFDs card only without "Add demo account" button on DMT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         props.isFinancialStpCardVisible = jest.fn(() => false);
         render(<CFDDemoAccountDisplay {...props} is_logged_in={false} is_eu_country />);
@@ -170,7 +183,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
-    it('should render 1 open demo financial DMT5 account with an enabled password reset button, and "Fund top up" & "Trade on web terminal" buttons for non EU', () => {
+    it('should render 1 open DMT5 account with an enabled password reset button, and "Fund top up" & "Trade on web terminal" buttons', () => {
         props.current_list['mt5.demo.financial@p01_ts02'] = mt5_demo_financial_account;
         const { container } = render(<CFDDemoAccountDisplay {...props} />);
 

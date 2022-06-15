@@ -49,7 +49,9 @@ export default class _Symbol {
                     this.api.send({ asset_index: 1 }).then(({ asset_index }) => {
                         parsed_asset_index = parseAssetIndex(asset_index);
                         resolve();
-                    });
+                    }).catch(error => {
+                        globalObserver.emit("Error", error);
+                      });
                 }).catch(error => {
                     globalObserver.emit("Error", error);
                   });

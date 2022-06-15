@@ -445,6 +445,16 @@ OpenPositions.propTypes = {
     onClickSell: PropTypes.func,
     onMount: PropTypes.func,
     server_time: PropTypes.object,
+    addToast: PropTypes.func,
+    current_focus: PropTypes.string,
+    onClickRemove: PropTypes.func,
+    getContractById: PropTypes.func,
+    is_mobile: PropTypes.bool,
+    removeToast: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
+    should_show_cancellation_warning: PropTypes.bool,
+    toggleCancellationWarning: PropTypes.func,
+    toggleUnsupportedContractModal: PropTypes.func,
 };
 
 export default connect(({ client, common, ui, portfolio, contract_trade }) => ({

@@ -1,18 +1,22 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { getStaticUrl, PlatformContext } from '@deriv/shared';
+import { getBrandWebsiteName, getStaticUrl, getPlatformSettings, PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Icon, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';
 
 export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_app_settings }) => {
+    const platform_name_trader = getPlatformSettings('trader').name;
+    const platform_name_dbot = getPlatformSettings('dbot').name;
+    const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
+
     const getEuItems = () => {
         const eu_items = [
             {
                 component: (
                     <Localize
-                        i18n_default_text='These trading limits and self-exclusion help you control the amount of money and time you spend on Deriv.com and exercise <0>responsible trading</0>.'
+                        i18n_default_text='These trading limits and self-exclusion help you control the amount of money and time you spend on {{brand_website_name}} and exercise <0>responsible trading</0>.'
                         components={[
                             <a
                                 key={0}
@@ -22,6 +26,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
                                 href={getStaticUrl('/responsible', { is_deriv_crypto })}
                             />,
                         ]}
+                        values={{ brand_website_name: getBrandWebsiteName() }}
                     />
                 ),
             },
@@ -43,7 +48,10 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
 
         eu_items.push({
             component: (
-                <Localize i18n_default_text='When you set your limits or self-exclusion, they will be aggregated across all your account types in DTrader and DBot. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.' />
+                <Localize
+                    i18n_default_text='When you set your limits or self-exclusion, they will be aggregated across all your account types in {{platform_name_trader}} and {{platform_name_dbot}}. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.'
+                    values={{ platform_name_trader, platform_name_dbot }}
+                />
             ),
         });
 
@@ -79,7 +87,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
         {
             component: (
                 <Localize
-                    i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on DTrader, DBot, and SmartTrader. The limits you set here will help you exercise <0>responsible trading</0>.'
+                    i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on {{platform_name_trader}}, {{platform_name_dbot}}, and {{platform_name_smarttrader}}. The limits you set here will help you exercise <0>responsible trading</0>.'
                     components={[
                         <a
                             key={0}
@@ -89,6 +97,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
                             href={getStaticUrl('/responsible', { is_deriv_crypto })}
                         />,
                     ]}
+                    values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader }}
                 />
             ),
         },
@@ -99,7 +108,10 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
         },
         {
             component: (
-                <Localize i18n_default_text='When you set your limits, they will be aggregated across all your account types in DTrader, DBot, and SmartTrader. For example, the losses made on all three platforms will add up and be counted towards the loss limit you set.' />
+                <Localize
+                    i18n_default_text='When you set your limits, they will be aggregated across all your account types in {{platform_name_trader}}, {{platform_name_dbot}}, and {{platform_name_smarttrader}}. For example, the losses made on all three platforms will add up and be counted towards the loss limit you set.'
+                    values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader }}
+                />
             ),
         },
         ...(!is_app_settings

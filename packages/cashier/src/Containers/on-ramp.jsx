@@ -9,6 +9,7 @@ import DepositsLocked from 'Components/Error/deposit-locked.jsx';
 import OnRampProviderCard from 'Components/on-ramp-provider-card.jsx';
 import OnRampProviderPopup from 'Components/on-ramp-provider-popup.jsx';
 import SideNote from 'Components/side-note.jsx';
+import NewSideNote from 'Components/side-note/new-side-note.jsx';
 import 'Sass/on-ramp.scss';
 
 const OnRampSideNote = () => {
@@ -69,7 +70,11 @@ const OnRamp = ({
     React.useEffect(() => {
         onMountOnramp();
         if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
-            setSideNotes([<OnRampSideNote key={0} />]);
+            setSideNotes([
+                <NewSideNote key={0}>
+                    <OnRampSideNote />
+                </NewSideNote>,
+            ]);
         }
 
         return () => onUnmountOnramp();

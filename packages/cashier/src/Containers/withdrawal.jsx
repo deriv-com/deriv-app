@@ -17,6 +17,7 @@ import SideNote from 'Components/side-note.jsx';
 import USDTSideNote from 'Components/usdt-side-note.jsx';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 import RecentTransaction from 'Components/recent-transaction.jsx';
+import NewSideNote from 'Components/side-note/new-side-note.jsx';
 
 const WithdrawalSideNote = ({ currency }) => {
     const notes = [
@@ -103,7 +104,7 @@ const Withdrawal = ({
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
                 side_notes.push(side_note);
-                setSideNotes(side_notes);
+                setSideNotes([<NewSideNote key={0}>{side_notes}</NewSideNote>]);
             } else setSideNotes(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -128,7 +129,16 @@ const Withdrawal = ({
         return <WithdrawalLocked />;
     }
     if (!+balance) {
-        return <NoBalance />;
+        return (
+            <>
+                <NoBalance />
+                {is_crypto && (
+                    <NewSideNote is_mobile>
+                        <WithdrawalSideNote currency={currency} />
+                    </NewSideNote>
+                )}
+            </>
+        );
     }
     if (error.message) {
         return <Error error={error} />;
@@ -140,7 +150,16 @@ const Withdrawal = ({
         return <Withdraw />;
     }
     if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
-        return <CryptoWithdrawForm />;
+        return (
+            <>
+                <CryptoWithdrawForm />
+                {is_crypto && (
+                    <NewSideNote is_mobile>
+                        <WithdrawalSideNote currency={currency} />
+                    </NewSideNote>
+                )}
+            </>
+        );
     }
     if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawReceipt />;
@@ -148,7 +167,16 @@ const Withdrawal = ({
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
-    return <SendEmail />;
+    return (
+        <>
+            {is_crypto && (
+                <NewSideNote is_mobile>
+                    <WithdrawalSideNote currency={currency} />
+                </NewSideNote>
+            )}
+            <SendEmail />
+        </>
+    );
 };
 
 Withdrawal.propTypes = {

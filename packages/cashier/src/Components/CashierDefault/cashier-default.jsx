@@ -3,11 +3,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
+import { Loading, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
 import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-details.jsx';
 import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-side-note.jsx';
+import NewSideNote from 'Components/side-note/new-side-note.jsx';
 
 const CashierDefault = ({
     available_crypto_currencies,
@@ -61,7 +62,11 @@ const CashierDefault = ({
             is_landing_company_loaded &&
             is_currency_banner_visible
         ) {
-            setSideNotes([<CashierDefaultSideNote key={0} is_crypto={is_crypto} />]);
+            setSideNotes([
+                <NewSideNote key={0}>
+                    <CashierDefaultSideNote is_crypto={is_crypto} />
+                </NewSideNote>,
+            ]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts_list, is_landing_company_loaded]);
@@ -144,9 +149,9 @@ const CashierDefault = ({
     return (
         <div>
             {is_currency_banner_visible && (
-                <MobileWrapper>
+                <NewSideNote is_mobile>
                     <CashierDefaultSideNote is_crypto={is_crypto} />
-                </MobileWrapper>
+                </NewSideNote>
             )}
             <div className='cashier-default'>
                 <div className='cashier-default-header'>

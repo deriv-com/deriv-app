@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Loading, MobileWrapper } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CashierContainer from 'Components/cashier-container.jsx';
 import CashierDefault from 'Components/CashierDefault/cashier-default.jsx';
@@ -14,6 +14,7 @@ import USDTSideNote from 'Components/usdt-side-note.jsx';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
 import CryptoDeposit from './crypto-deposit.jsx';
+import NewSideNote from 'Components/side-note/new-side-note.jsx';
 
 const Deposit = ({
     can_change_fiat_currency,
@@ -75,7 +76,11 @@ const Deposit = ({
                 if (side_notes.length > 0) setSideNotes(side_notes);
             }
             if (is_fiat_currency_banner_visible_for_MF_clients) {
-                setSideNotes([<CashierDefaultSideNote key={0} is_crypto={false} />]);
+                setSideNotes([
+                    <NewSideNote key={0}>
+                        <CashierDefaultSideNote key={0} is_crypto={false} />
+                    </NewSideNote>,
+                ]);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,9 +121,9 @@ const Deposit = ({
         return (
             <>
                 {is_fiat_currency_banner_visible_for_MF_clients && (
-                    <MobileWrapper>
+                    <NewSideNote is_mobile>
                         <CashierDefaultSideNote is_crypto={false} />
-                    </MobileWrapper>
+                    </NewSideNote>
                 )}
                 <CashierContainer
                     iframe_height={iframe_height}

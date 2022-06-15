@@ -76,7 +76,7 @@ describe('CFDTopUpDemoModal', () => {
                 },
             },
         },
-        current_account: { category: 'demo', type: 'financial', balance: '700' },
+        current_account: { category: 'demo', type: 'financial', balance: '700', display_balance: '700' },
         closeSuccessTopUpModal: jest.fn(),
         closeTopUpModal: jest.fn(),
         is_top_up_virtual_open: true,
@@ -106,6 +106,11 @@ describe('CFDTopUpDemoModal', () => {
         expect(screen.getByText('Demo Financial account')).toBeInTheDocument();
         expect(screen.getByTestId('top-up-virtual-description')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Top up/i })).toBeInTheDocument();
+    });
+
+    it('should render the proper balance in the current balance', () => {
+        render(<CFDTopUpDemoModal {...mock_props} />);
+        expect(screen.getByText('700.00')).toBeInTheDocument();
     });
 
     it('should disable the top up button if the balance is higher than 1000 USD', () => {
@@ -148,9 +153,12 @@ describe('CFDTopUpDemoModal', () => {
                 {...mock_props}
                 current_account={{ category: 'demo', type: 'financial', balance: 500 }}
                 is_top_up_virtual_success={true}
+                is_top_up_virtual_open={false}
             />
         );
         expect(screen.getByText('Success Dialog')).toBeInTheDocument();
+        expect(screen.queryByTestId('top-up-virtual-description')).not.toBeInTheDocument();
+
         screen.debug();
     });
 });

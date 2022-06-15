@@ -5,7 +5,7 @@ import { TransitionGroup } from 'react-transition-group';
 // import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 // import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { FixedSizeList } from "react-window";
-import { List } from 'react-virtualized/dist/es/List';
+// import { List } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell from './data-list-cell.jsx';
 import DataListRow from './data-list-row.jsx';
@@ -144,44 +144,44 @@ const DataList = React.memo(
             >
                 <div className='data-list__body-wrapper'>
                     <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
-                        <FixedSizeList>
-                            {({ width, height }) => (
-                                // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
-                                <TransitionGroup style={{ height, width }}>
-                                    <ThemedScrollbars onScroll={handleScroll} autoHide is_bypassed={isMobile()}>
-                                        <List
-                                            className={className}
-                                            deferredMeasurementCache={cache.current}
-                                            height={height}
-                                            onRowsRendered={onRowsRendered}
-                                            overscanRowCount={overscanRowCount || 1}
-                                            ref={ref => setRef(ref)}
-                                            rowCount={data_source.length}
-                                            rowHeight={is_dynamic_height ? cache?.current.rowHeight : getRowSize}
-                                            rowRenderer={rowRenderer}
-                                            scrollingResetTimeInterval={0}
-                                            width={width}
-                                            {...(isDesktop()
-                                                ? { scrollTop: scroll_top, autoHeight: true }
-                                                : { onScroll: target => handleScroll({ target }) })}
-                                        />
-                                    </ThemedScrollbars>
-                                </TransitionGroup>
-                            )}
-                        </FixedSizeList>
+                        {({ width, height }) => (
+                            // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
+                            <TransitionGroup style={{ height, width }}>
+                                <ThemedScrollbars onScroll={handleScroll} autoHide is_bypassed={isMobile()}>
+                                    <FixedSizeList
+                                        className={className}
+                                        deferredMeasurementCache={cache.current}
+                                        height={height}
+                                        onRowsRendered={onRowsRendered}
+                                        overscanRowCount={overscanRowCount || 1}
+                                        ref={ref => setRef(ref)}
+                                        rowCount={data_source.length}
+                                        rowHeight={is_dynamic_height ? cache?.current.rowHeight : getRowSize}
+                                        rowRenderer={rowRenderer}
+                                        scrollingResetTimeInterval={0}
+                                        width={width}
+                                        {...(isDesktop()
+                                            ? { scrollTop: scroll_top, autoHeight: true }
+                                            : { onScroll: target => handleScroll({ target }) })}>
+                                    </FixedSizeList>
+                                </ThemedScrollbars>
+                            </TransitionGroup>
+                        )}
                     </div>
                     {children}
                 </div>
-                {footer && (
-                    <div
-                        className={classNames('data-list__footer', {
-                            [`${className}__data-list-footer`]: className,
-                        })}
-                    >
-                        {footerRowRenderer()}
-                    </div>
-                )}
-            </div>
+                {
+                    footer && (
+                        <div
+                            className={classNames('data-list__footer', {
+                                [`${className}__data-list-footer`]: className,
+                            })}
+                        >
+                            {footerRowRenderer()}
+                        </div>
+                    )
+                }
+            </div >
         );
     }
 );

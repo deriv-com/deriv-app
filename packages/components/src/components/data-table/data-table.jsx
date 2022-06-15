@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { List } from 'react-virtualized/dist/es/List';
+// import { List } from 'react-virtualized/dist/es/List';
 import PropTypes from 'prop-types';
 import React from 'react';
 // import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
-import { FixedSizeList } from "react-window";
+import { FixedSizeList as List } from "react-window";
 // import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import TableRow from './table-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
@@ -118,35 +118,35 @@ const DataTable = ({
                 />
             </div>
             <div className='table__body'>
-                <FixedSizeList>
-                    {({ width, height }) => (
-                        <div
-                            className='dc-data-table'
-                            style={{
-                                height,
-                                width,
-                            }}
-                        >
-                            <ThemedScrollbars autoHide onScroll={handleScroll}>
-                                <List
-                                    autoHeight
-                                    className={className}
-                                    deferredMeasurementCache={cache_ref.current}
-                                    height={height}
-                                    overscanRowCount={1}
-                                    ref={ref => (list_ref.current = ref)}
-                                    rowCount={data_source.length}
-                                    rowHeight={is_dynamic_height ? cache_ref?.current.rowHeight : getRowSize}
-                                    rowRenderer={rowRenderer}
-                                    scrollingResetTimeInterval={0}
-                                    scrollTop={scroll_top}
-                                    width={width}
-                                />
-                            </ThemedScrollbars>
-                            {children}
-                        </div>
-                    )}
-                </FixedSizeList>
+                {/* <FixedSizeList> */}
+                {({ width, height }) => (
+                    <div
+                        className='dc-data-table'
+                        style={{
+                            height,
+                            width,
+                        }}
+                    >
+                        <ThemedScrollbars autoHide onScroll={handleScroll}>
+                            <List
+                                autoHeight
+                                className={className}
+                                deferredMeasurementCache={cache_ref.current}
+                                height={height}
+                                overscanRowCount={1}
+                                ref={ref => (list_ref.current = ref)}
+                                rowCount={data_source.length}
+                                rowHeight={is_dynamic_height ? cache_ref?.current.rowHeight : getRowSize}
+                                rowRenderer={rowRenderer}
+                                scrollingResetTimeInterval={0}
+                                scrollTop={scroll_top}
+                                width={width}
+                            />
+                        </ThemedScrollbars>
+                        {children}
+                    </div>
+                )}
+                {/* </FixedSizeList> */}
             </div>
 
             {footer && (

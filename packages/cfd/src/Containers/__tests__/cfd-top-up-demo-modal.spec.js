@@ -76,7 +76,7 @@ describe('CFDTopUpDemoModal', () => {
                 },
             },
         },
-        current_account: { category: 'demo', type: 'financial' },
+        current_account: { category: 'demo', type: 'financial', balance: '700' },
         closeSuccessTopUpModal: jest.fn(),
         closeTopUpModal: jest.fn(),
         is_top_up_virtual_open: true,
@@ -108,10 +108,49 @@ describe('CFDTopUpDemoModal', () => {
         expect(screen.getByRole('button', { name: /Top up/i })).toBeInTheDocument();
     });
 
-    it('should render the success dialog component after top up is done', () => {
-        render(<CFDTopUpDemoModal {...mock_props} />);
+    it('should disable the top up button if the balance is higher than 1000 USD', () => {
+        render(
+            <CFDTopUpDemoModal
+                {...mock_props}
+                current_account={{ category: 'demo', type: 'financial', balance: 2000 }}
+            />
+        );
+        const top_up_btn = screen.getByRole('button', { name: /Top up/i });
+        expect(top_up_btn).toBeDisabled();
+    });
+
+    it('should enable the top up button if the balance is lower than 1000 USD', () => {
+        render(
+            <CFDTopUpDemoModal
+                {...mock_props}
+                current_account={{ category: 'demo', type: 'financial', balance: 500 }}
+            />
+        );
+        const top_up_btn = screen.getByRole('button', { name: /Top up/i });
+        expect(top_up_btn).toBeEnabled();
+    });
+
+    it('should render the success dialog component if the user has less than 1000 USD and clicks on top up', () => {
+        render(
+            <CFDTopUpDemoModal
+                {...mock_props}
+                current_account={{ category: 'demo', type: 'financial', balance: 500 }}
+            />
+        );
         const top_up_btn = screen.getByRole('button', { name: /Top up/i });
         fireEvent.click(top_up_btn);
         expect(screen.getByText('Success Dialog')).toBeInTheDocument();
+    });
+
+    it('should render the success component if the is_top_up_virtual_success is true', () => {
+        render(
+            <CFDTopUpDemoModal
+                {...mock_props}
+                current_account={{ category: 'demo', type: 'financial', balance: 500 }}
+                is_top_up_virtual_success={true}
+            />
+        );
+        expect(screen.getByText('Success Dialog')).toBeInTheDocument();
+        screen.debug();
     });
 });

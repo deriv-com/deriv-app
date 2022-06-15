@@ -65,7 +65,6 @@ const CFDTopUpDemoModal = ({
                 className='top-up-virtual'
                 title={localize('Fund top up')}
                 width='384px'
-                data_testid='dt_top_up_virtual'
             >
                 <div className='dc-modal__container_top-up-virtual__body'>
                     <Text
@@ -74,6 +73,7 @@ const CFDTopUpDemoModal = ({
                         size='xxs'
                         line_height='xs'
                         className='dc-modal__container_top-up-virtual__description'
+                        data-testid='top-up-virtual-description'
                     >
                         <Localize
                             i18n_default_text='You can top up your demo account with an additional <0></0> if your balance is <1></1> or less.'

@@ -435,13 +435,13 @@ export default class PortfolioStore extends BaseStore {
         this.onLogout(this.logoutListener);
         if (this.positions.length === 0 && !this.has_subscribed_to_poc_and_transaction) {
             // TODO: Optimise the way is_logged_in changes are detected for "logging in" and "already logged on" states
-            if (this.root_store?.client.is_logged_in) {
+            if (this.root_store.client.is_logged_in) {
                 this.initializePortfolio();
             } else {
                 reaction(
-                    () => this.root_store?.client.is_logged_in,
+                    () => this.root_store.client.is_logged_in,
                     () => {
-                        if (this.root_store?.client.is_logged_in) {
+                        if (this.root_store.client.is_logged_in) {
                             this.initializePortfolio();
                         }
                     }

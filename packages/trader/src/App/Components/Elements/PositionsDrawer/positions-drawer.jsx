@@ -145,7 +145,6 @@ PositionsDrawer.propTypes = {
     onMount: PropTypes.func,
     symbol: PropTypes.string,
     toggleDrawer: PropTypes.func,
-
     currency: PropTypes.string,
     server_time: PropTypes.object,
     addToast: PropTypes.func,

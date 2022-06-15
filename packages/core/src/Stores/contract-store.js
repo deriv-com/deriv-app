@@ -71,8 +71,8 @@ export default class ContractStore extends BaseStore {
         this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);
 
-        // TODO: don't  the barriers & markers if they are not changed
-        this.updateBarriersArray(contract_info, this.root_store?.ui.is_dark_mode_on);
+        // TODO: don't update the barriers & markers if they are not changed
+        this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
         this.markers_array = createChartMarkers(this.contract_info);
         this.marker = calculate_marker(this.contract_info);
 
@@ -143,7 +143,7 @@ export default class ContractStore extends BaseStore {
             }
             if (
                 contract_info.contract_id &&
-                contract_info.contract_id === this.root_store?.contract_replay.contract_id
+                contract_info.contract_id === this.root_store.contract_replay.contract_id
             ) {
                 setLimitOrderBarriers({
                     barriers: this.barriers_array,

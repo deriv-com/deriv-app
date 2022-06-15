@@ -13,14 +13,16 @@ import BlockUserModal from '../advertiser-page/block-user/block-user-modal.jsx';
 const MyProfileContent = () => {
     const { advertiser_page_store, my_profile_store } = useStores();
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
+        advertiser_page_store.setIsBlockUserModalOpen(false);
         advertiser_page_store.unblockUser(advertiser_page_store.selected_blocked_user.id);
+        my_profile_store.getBlockedAdvertisersList();
     };
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         // return <MyProfileForm />;
         return (
-            <>
+            <React.Fragment>
                 <BlockUserModal
                     advertiser={advertiser_page_store.selected_blocked_user}
                     is_advertiser_blocked
@@ -28,8 +30,23 @@ const MyProfileContent = () => {
                     onCancel={() => advertiser_page_store.setIsBlockUserModalOpen(false)}
                     onSubmit={onSubmit}
                 />
-                <BlockUserTable />
-            </>
+                <DesktopWrapper>
+                    <BlockUserTable />
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileFullPageModal
+                        body_className='block-user__modal'
+                        height_offset='80px'
+                        is_flex
+                        is_modal_open
+                        page_header_className='buy-sell__modal-header'
+                        page_header_text={localize('Blocked Advertisers')}
+                        pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+                    >
+                        <BlockUserTable />
+                    </MobileFullPageModal>
+                </MobileWrapper>
+            </React.Fragment>
         );
     } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {
         return (

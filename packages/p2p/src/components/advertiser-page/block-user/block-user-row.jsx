@@ -8,19 +8,18 @@ import { useStores } from 'Stores';
 import './block-user.scss';
 
 const BlockUserRow = ({ row: advertiser }) => {
-    const { my_profile_store, advertiser_page_store } = useStores();
+    const { advertiser_page_store } = useStores();
 
     const onUnblock = () => {
         advertiser_page_store.setIsBlockUserModalOpen(true);
         advertiser_page_store.setSelectedBlockedUser(advertiser);
-        my_profile_store.getBlockedAdvertisersList();
     };
 
     return (
         <Table.Row className='block-user__row'>
             <Table.Cell>
                 <div className='block-user__row-cell'>
-                    <UserAvatar nickname={'name'} size={32} text_size='s' />
+                    <UserAvatar nickname={advertiser.name} size={32} text_size='s' />
                     <div className='block-user__row-cell--container'>
                         <Text size='xs' line_height='m' color='general'>
                             {advertiser.name}

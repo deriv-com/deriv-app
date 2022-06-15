@@ -78,10 +78,12 @@
                 }
                 &__form-submit-button {
                     &:first-child {
-                        margin: 2rem auto;
+                        margin-right: 0.4rem;
+                        width: auto;
                     }
                     &:last-child {
-                        margin: 0 auto;
+                        margin-left: 0.4rem;
+                        max-width: 16rem;
                     }
                 }
                 &__success {
@@ -97,19 +99,17 @@
                     align-items: center;
                     max-width: 100%;
                     padding: 0;
-                    margin: 0.8rem 0 0;
 
                     &-wrapper {
+                        flex-direction: column;
+
                         & .account-transfer__transfer {
                             &-details-from {
-                                flex-flow: column-reverse;
-                                flex-direction: column;
-                                padding-right: 1.6rem;
+                                flex-direction: row-reverse;
+                                padding-bottom: 1.6rem;
                             }
                             &-details-to {
-                                flex-flow: column;
-                                flex-direction: column;
-                                padding-left: 1.6rem;
+                                padding-top: 1.6rem;
 
                                 & .cashier {
                                     &__transferred-details {
@@ -148,6 +148,7 @@
                 }
                 &__transferred-icon {
                     margin: 0;
+                    transform: rotate(270deg);
                 }
             }
         }

@@ -111,11 +111,16 @@ export default class PaymentAgentStore {
         try {
             payment_agent_list.paymentagent_list?.list.forEach(payment_agent => {
                 this.setList({
+                    deposit_commission: payment_agent.deposit_commission,
                     email: payment_agent.email,
-                    phones: payment_agent?.phone_numbers || payment_agent?.telephone,
+                    further_information: payment_agent.further_information,
+                    max_withdrawal: payment_agent.max_withdrawal,
+                    min_withdrawal: payment_agent.min_withdrawal,
                     name: payment_agent.name,
+                    phones: payment_agent?.phone_numbers || payment_agent?.telephone,
                     supported_banks: payment_agent?.supported_payment_methods || payment_agent?.supported_banks,
                     urls: payment_agent?.urls || payment_agent?.url,
+                    withdrawal_commission: payment_agent.withdrawal_commission,
                 });
                 if (payment_agent.supported_banks) {
                     const supported_banks_array = payment_agent?.supported_payment_methods

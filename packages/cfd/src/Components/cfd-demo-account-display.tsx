@@ -1,6 +1,6 @@
+import React from 'react';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-import React from 'react';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';

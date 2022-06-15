@@ -104,7 +104,7 @@ describe('CFDTopUpDemoModal', () => {
         expect(screen.getByText('Fund top up')).toBeInTheDocument();
         expect(screen.getByText('Current balance')).toBeInTheDocument();
         expect(screen.getByText('Demo Financial account')).toBeInTheDocument();
-        expect(screen.getByTestId('top-up-virtual-description')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_top-up-virtual-description')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Top up/i })).toBeInTheDocument();
     });
 
@@ -157,8 +157,7 @@ describe('CFDTopUpDemoModal', () => {
             />
         );
         expect(screen.getByText('Success Dialog')).toBeInTheDocument();
-        expect(screen.queryByTestId('top-up-virtual-description')).not.toBeInTheDocument();
-
+        expect(screen.queryByTestId('dt_top-up-virtual-description')).not.toBeInTheDocument();
         screen.debug();
     });
 });

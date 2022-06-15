@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { toJS } from 'mobx';
 import React from 'react';
 import { Icon, Text, Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-export const Detail = ({ action, className, icon, children, title, has_red_color }) => {
+export const Detail = ({ action, children, className, has_red_color, icon, title }) => {
     const detail = Array.isArray(children) ? children : [children];
     return (
         <div
@@ -48,6 +49,15 @@ export const Detail = ({ action, className, icon, children, title, has_red_color
             </div>
         </div>
     );
+};
+
+Detail.propTypes = {
+    action: PropTypes.string,
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.element, PropTypes.string]),
+    className: PropTypes.string,
+    has_red_color: PropTypes.bool,
+    icon: PropTypes.string,
+    title: PropTypes.string,
 };
 
 const PaymentAgentCardDetails = ({ payment_agent }) => {
@@ -112,6 +122,10 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
             )}
         </div>
     );
+};
+
+PaymentAgentCardDetails.propTypes = {
+    payment_agent: PropTypes.object,
 };
 
 export default PaymentAgentCardDetails;

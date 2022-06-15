@@ -285,19 +285,19 @@ describe('<CFDRealAccountDisplay />', () => {
 
         expect(screen.getByTestId('dt_cfd_real_accounts_display')).toBeInTheDocument();
 
+        if (tested_case === TESTED_CASES.NON_EU_DMT5 || tested_case === TESTED_CASES.NON_EU_DXTRADE) {
+            expect(screen.getByText(first_account_card)).toBeInTheDocument();
+            expect(screen.getByText(second_account_card.non_eu)).toBeInTheDocument();
+        }
+        if (tested_case === TESTED_CASES.NON_EU_DXTRADE || tested_case === TESTED_CASES.EU) {
+            expect(screen.queryByText(third_account_card)).not.toBeInTheDocument();
+        }
         if (tested_case === TESTED_CASES.NON_EU_DMT5) {
-            expect(screen.getByText(first_account_card)).toBeInTheDocument();
-            expect(screen.getByText(second_account_card.non_eu)).toBeInTheDocument();
             expect(screen.getByText(third_account_card)).toBeInTheDocument();
-        } else if (tested_case === TESTED_CASES.NON_EU_DXTRADE) {
-            expect(screen.getByText(first_account_card)).toBeInTheDocument();
-            expect(screen.getByText(second_account_card.non_eu)).toBeInTheDocument();
-            expect(screen.queryByText(third_account_card)).not.toBeInTheDocument();
         } else if (tested_case === TESTED_CASES.EU) {
-            expect(screen.getByText(second_account_card.eu)).toBeInTheDocument();
             expect(screen.queryByText(first_account_card)).not.toBeInTheDocument();
+            expect(screen.getByText(second_account_card.eu)).toBeInTheDocument();
             expect(screen.queryByText(second_account_card.non_eu)).not.toBeInTheDocument();
-            expect(screen.queryByText(third_account_card)).not.toBeInTheDocument();
         }
     };
 

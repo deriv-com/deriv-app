@@ -10,7 +10,7 @@ import OrderDetailsFooter from 'Components/order-details/order-details-footer.js
 import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx';
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
-import P2PAccordion from 'Components/p2p-accordion/p2p.accordion.jsx';
+import P2PAccordion from 'Components/p2p-accordion/p2p-accordion.jsx';
 import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';

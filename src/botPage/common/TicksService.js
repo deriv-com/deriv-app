@@ -66,6 +66,8 @@ export default class TicksService {
             return accumulator;
           }, {});
           resolve(this.pipSizes);
+        }).catch(error => {
+          globalObserver.emit("Error", error);
         });
       });
     }

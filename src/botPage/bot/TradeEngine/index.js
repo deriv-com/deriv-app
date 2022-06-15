@@ -123,9 +123,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
               globalObserver.setState({
                 balance: Number(balance.balance),
                 currency: balance.currency,
-              });
+              })
               resolve();
-            })
+            }).catch(error => {
+              this.$scope.observer.emit("Error", error);
+            });
           } else {
             resolve();
           }

@@ -103,16 +103,22 @@ Before running or contribute to this project, you need to have the setup of the 
 
 ## Packages
 
-| Package name   | Docs                                                                                                                | Version                                                                                                                                  |
-| :------------- | :------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| `Appstore`     | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/appstore/README.md)     | -                                                                                                                                        |
-| `Bot`          | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/bot/README.md)          | -                                                                                                                                        |
-| `Components`   | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/components/README.md)   | -                                                                                                                                        |
-| `Core`         | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/core/README.md)         | -                                                                                                                                        |
-| `P2P`          | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/p2p/README.md)          | [![npm](https://img.shields.io/npm/v/@deriv/p2p.svg?style=flat-square&color=blue)](https://www.npmjs.com/package/@deriv/p2p)             |
-| `Shared`       | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/shared/README.md)       | -                                                                                                                                        |
-| `Trader`       | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/trader/README.md)       | -                                                                                                                                        |
-| `Translations` | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/translations/README.md) | -                                                                                                                                        |
+| Package name   | Docs                                                                                                                | Version                                                                                                                      |
+| :------------- | :------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
+| `Account`      | -                                                                                                                   | -                                                                                                                            |
+| `Appstore`     | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/appstore/README.md)     | -                                                                                                                            |
+| `Bot-skeleton` | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/bot-skeleton/README.md) | -                                                                                                                            |
+| `Bot-web-ui`   | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/bot-web-ui/README.md)   | -                                                                                                                            |
+| `Cashier`      | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/cashier/README.md)      | -                                                                                                                            |
+| `Cfd`          | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/cfd/README.md)          | -                                                                                                                            |
+| `Components`   | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/components/README.md)   | -                                                                                                                            |
+| `Core`         | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/core/README.md)         | -                                                                                                                            |
+| `Indicators`   | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/indicators/README.md)   | -                                                                                                                            |
+| `P2P`          | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/p2p/README.md)          | [![npm](https://img.shields.io/npm/v/@deriv/p2p.svg?style=flat-square&color=blue)](https://www.npmjs.com/package/@deriv/p2p) |
+| `Publisher`    | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/publisher/README.md)    | -                                                                                                                            |
+| `Shared`       | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/shared/README.md)       | -                                                                                                                            |
+| `Trader`       | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/trader/README.md)       | -                                                                                                                            |
+| `Translations` | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/translations/README.md) | -                                                                                                                            |
 
 ## Working With This Repo
 
@@ -171,6 +177,10 @@ This runs `lerna clean && rm -rf $(git rev-parse --show-toplevel)/node_modules` 
 You can read more on the various lerna commands (and the [`clean` command](https://github.com/lerna/lerna/tree/master/commands/clean#readme)) over at the [Lerna docs](https://github.com/lerna/lerna/).
 
 **Note**: In case of facing permission denied error, please simply run `sudo chown -R $(whoami) .` from the root of the project.
+
+#### How to clear cache
+
+`npm run clean && npm cache clean -f`
 
 #### Examples of Script Usage
 
@@ -260,3 +270,8 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
     1. First run `npx lerna exec -- npm rebuild node-sass` and try building your packages again.
     2. If that doesn't work, try `npm cache clean --force`, followed by `npm run clean`, and then `npm run bootstrap`.
     3. And finally, if that doesn't work then you can read deeper into this [StackOverflow post](https://stackoverflow.com/questions/37986800).
+
+6. How can I regenerate `package-lock.json` file?
+
+    We have added `bootstrap:dev` to scripts. If you are updating or adding a package and you want to regenerate `package-lock.json` file, you should run this command
+    `npm run bootstrap:dev`

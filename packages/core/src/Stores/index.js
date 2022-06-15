@@ -8,7 +8,7 @@ import MenuStore from './menu-store';
 import NotificationStore from './notification-store';
 import UIStore from './ui-store';
 import ActiveSymbolsStore from './active-symbols-store';
-import PortfolioStore from './portfolio';
+import PortfolioStore from './portfolio-store';
 import ContractReplayStore from './contract-replay-store';
 import ContractTradeStore from './contract-trade-store';
 import { ChartBarrierStore } from './chart-barrier-store';

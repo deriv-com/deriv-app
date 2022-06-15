@@ -1,6 +1,5 @@
 .payment-agent-list {
     &__instructions {
-        margin-top: 2.4rem;
         @include mobile {
             display: grid;
             grid-template-columns: 1fr;
@@ -60,8 +59,6 @@
             }
         }
         .dc-tabs__list--header--tabs--desktop {
-            margin: 0 auto;
-
             @include mobile {
                 margin: 0 3.5rem;
             }
@@ -72,24 +69,12 @@
     }
     &__list {
         &-header {
-            margin-top: 2.8rem;
-            margin-bottom: 1.8rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-
-            &-text {
-                min-width: 12rem;
-            }
-
-            &-line {
-                border-bottom: 1px solid var(--general-section-1);
-                width: 100%;
-                height: 1px;
-            }
+            margin-top: 2.4rem;
+            margin-bottom: 1.6rem;
         }
+
         &-selector {
-            margin-bottom: 1rem;
+            margin-bottom: 2.4rem;
             display: flex;
             justify-content: space-between;
 
@@ -136,40 +121,5 @@
         margin-top: 2.4rem;
         margin-bottom: 2.4rem;
         padding: 1.6rem;
-    }
-    @include mobile {
-        &__accordion {
-            & .dc-accordion {
-                &__item {
-                    font-size: 1.2rem;
-                    position: relative;
-                    user-select: none;
-                    -webkit-touch-callout: none;
-                    -webkit-tap-highlight-color: transparent;
-
-                    &-header {
-                        max-width: calc(100% - 3.2rem);
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        padding-right: 0;
-
-                        &-icon-wrapper {
-                            top: 0;
-                            right: 0;
-                            width: 36px;
-                            height: 3.4rem;
-                            padding-left: 0;
-                            float: unset;
-                            display: flex;
-                            position: absolute;
-                            align-items: center;
-                            justify-content: center;
-                            border-bottom: 1px solid var(--general-section-1);
-                        }
-                    }
-                }
-            }
-        }
     }
 }

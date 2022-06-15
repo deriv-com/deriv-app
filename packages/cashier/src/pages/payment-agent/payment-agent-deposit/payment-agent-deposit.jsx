@@ -1,28 +1,25 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { toJS } from 'mobx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Accordion, DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
+import { DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import PaymentAgentDetails from '../payment-agent-details';
+import PaymentAgentCard from '../payment-agent-card';
 
 const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, selected_bank, supported_banks }) => {
     const list_with_default = [
-        { text: <Localize i18n_default_text='All payment agents' />, value: 0 },
+        { text: <Localize i18n_default_text='All payment methods' />, value: 0 },
         ...supported_banks,
     ];
 
     return (
         <React.Fragment>
             <div className='payment-agent-list__list-header'>
-                <Text as='p' size='xs' weight='bold' color='prominent' className='payment-agent-list__list-header-text'>
-                    <Localize i18n_default_text='Payment agents' />
+                <Text as='p' line_height='s' size='xs'>
+                    <Localize i18n_default_text='Contact your preferred payment agent for payment instructions and make your deposit.' />
                 </Text>
-                <div className='payment-agent-list__list-header-line' />
             </div>
-
             <div className='payment-agent-list__list-selector'>
                 <Text as='p' size={isMobile() ? 'xxs' : 'xs'} line_height='s' className='cashier__paragraph'>
                     <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
@@ -48,7 +45,7 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
                                 name='payment_methods'
                                 list_items={supported_banks}
                                 value={selected_bank === 0 ? '' : selected_bank.toString()}
-                                label={selected_bank === 0 ? localize('All payment agents') : localize('Type')}
+                                label={selected_bank === 0 ? localize('All payment methods') : localize('Type')}
                                 onChange={e =>
                                     onChangePaymentMethod({
                                         target: {
@@ -63,19 +60,9 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
                     </div>
                 )}
             </div>
-            <Accordion
-                className='payment-agent-list__accordion'
-                list={payment_agent_list.map(payment_agent => ({
-                    header: payment_agent.name,
-                    content: (
-                        <PaymentAgentDetails
-                            payment_agent_email={payment_agent.email}
-                            payment_agent_phones={toJS(payment_agent.phones)}
-                            payment_agent_urls={toJS(payment_agent.urls)}
-                        />
-                    ),
-                }))}
-            />
+            {payment_agent_list.map((payment_agent, idx) => {
+                return <PaymentAgentCard key={idx} payment_agent={payment_agent} />;
+            })}
         </React.Fragment>
     );
 };

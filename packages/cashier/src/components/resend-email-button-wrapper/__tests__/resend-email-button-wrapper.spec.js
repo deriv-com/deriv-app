@@ -12,11 +12,9 @@ describe('<ResendEmailButtonWrapper/>', () => {
     const resendVerificationEmail = jest.fn();
 
     it('component should be rendered', () => {
-        const { container } = render(
-            <ResendEmailButtonWrapper resend_timeout={10} resendVerificationEmail={resendVerificationEmail} />
-        );
+        render(<ResendEmailButtonWrapper resend_timeout={10} resendVerificationEmail={resendVerificationEmail} />);
 
-        expect(container.querySelector('.verification-email__resend-button')).toBeInTheDocument();
+        expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
     it('Resend button should be disabled when resend_timeout is less then 60', () => {

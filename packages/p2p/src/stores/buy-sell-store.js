@@ -526,7 +526,7 @@ export default class BuySellStore extends BaseStore {
         const validations = {
             amount: [
                 v => !!v,
-                v => v <= this.root_store.general_store.balance,
+                v => (this.root_store.buy_sell_store.is_buy_advert ? true : v <= this.root_store.general_store.balance),
                 v => v >= this.advert.min_order_amount_limit,
                 v => v <= this.advert.max_order_amount_limit,
                 v => countDecimalPlaces(v) <= getDecimalPlaces(this.account_currency),

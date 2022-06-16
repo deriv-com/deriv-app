@@ -7,6 +7,7 @@ const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status,
     const theme_class = theme ? `barspinner-${theme}` : 'barspinner-light';
     return (
         <div
+            data-testid='dt_initial_loader'
             className={classNames(
                 'initial-loader',
                 {

@@ -127,7 +127,10 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_
             {
                 icon: getPlatformSettings('mt5').icon,
                 title: localize('DMT5'),
-                description: localize('Trade on Deriv MT5 ({{platform_name_dmt5}}), the all-in-one FX and CFD trading platform.', {platform_name_dmt5: getPlatformSettings('dmt5').name}),
+                description: localize(
+                    'Trade on Deriv MT5 ({{platform_name_dmt5}}), the all-in-one FX and CFD trading platform.',
+                    { platform_name_dmt5: getPlatformSettings('dmt5').name }
+                ),
                 onButtonClick: () => switchPlatform(routes.mt5),
                 button_text: localize('Trade on MT5'),
             },
@@ -136,10 +139,14 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_
         if (is_dxtrade_allowed) {
             platforms.push({
                 icon: getPlatformSettings('dxtrade').icon,
-                title: localize('{{platform_name_dxtrade}}', {platform_name_dxtrade: getPlatformSettings('dxtrade').name}),
+                title: localize('{{platform_name_dxtrade}}', {
+                    platform_name_dxtrade: getPlatformSettings('dxtrade').name,
+                }),
                 description: localize('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
                 onButtonClick: () => switchPlatform(routes.dxtrade),
-                button_text: localize('Trade on {{platform_name_dxtrade}}', {platform_name_dxtrade: getPlatformSettings('dxtrade').name}),
+                button_text: localize('Trade on {{platform_name_dxtrade}}', {
+                    platform_name_dxtrade: getPlatformSettings('dxtrade').name,
+                }),
             });
         }
         return platforms;
@@ -177,7 +184,9 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_
                     title: getPlatformSettings('trader').name,
                     description: localize('Our flagship options and multipliers trading platform.'),
                     onButtonClick: () => switchPlatform(routes.trade),
-                    button_text: localize('Trade on {{platform_name_trader}}', {platform_name_trader: getPlatformSettings('trader').name}),
+                    button_text: localize('Trade on {{platform_name_trader}}', {
+                        platform_name_trader: getPlatformSettings('trader').name,
+                    }),
                 },
                 is_bot_allowed
                     ? {
@@ -185,7 +194,9 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_
                           title: getPlatformSettings('dbot').name,
                           description: localize('Automate your trading, no coding needed.'),
                           onButtonClick: () => switchPlatform(routes.bot),
-                          button_text: localize('Trade on {{platform_name_dbot}}', {platform_name_dbot: getPlatformSettings('dbot').name}),
+                          button_text: localize('Trade on {{platform_name_dbot}}', {
+                              platform_name_dbot: getPlatformSettings('dbot').name,
+                          }),
                       }
                     : null,
             ]}

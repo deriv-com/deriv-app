@@ -344,8 +344,12 @@ export default class TradeStore extends BaseStore {
                     text: localize(
                         'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
                     ),
-                    title: localize('{{platform_name_trader}} is not available for this account', {platform_name_trader: getPlatformSettings('trader').name}),
-                    link: localize('Go to {{platform_name_mt5}} dashboard', {platform_name_mt5: getPlatformSettings('mt5').name}),
+                    title: localize('{{platform_name_trader}} is not available for this account', {
+                        platform_name_trader: getPlatformSettings('trader').name,
+                    }),
+                    link: localize('Go to {{platform_name_mt5}} dashboard', {
+                        platform_name_mt5: getPlatformSettings('mt5').name,
+                    }),
                 });
                 return;
             }

@@ -30,7 +30,7 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
                         onClick={() => window.LC_API.open_chat_window()}
                     />,
                 ]}
-                values={{platform_name_dxtrade: getPlatformSettings('dxtrade').name}}
+                values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
             />
         );
     };

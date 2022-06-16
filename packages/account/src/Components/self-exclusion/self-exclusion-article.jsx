@@ -27,7 +27,11 @@ const SelfExclusionArticle = () => {
                               <Localize
                                   i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on {{platform_name_trader}}, {{platform_name_dbot}}, and {{platform_name_smarttrader}}. The limits you set here will help you exercise <0>responsible trading</0>.'
                                   components={[<StaticUrl key={0} className='link' href='/responsible' />]}
-                                  values={{ platform_name_trader: getPlatformSettings('trader').name, platform_name_dbot: getPlatformSettings('dbot').name, platform_name_smarttrader: getPlatformSettings('smarttrader').name }}
+                                  values={{
+                                      platform_name_trader: getPlatformSettings('trader').name,
+                                      platform_name_dbot: getPlatformSettings('dbot').name,
+                                      platform_name_smarttrader: getPlatformSettings('smarttrader').name,
+                                  }}
                               />
                           ),
                       ]

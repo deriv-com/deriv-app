@@ -589,7 +589,7 @@ export default class NotificationStore extends BaseStore {
                     <Localize
                         i18n_default_text='Get a faster mobile trading experience with the <0>{{platform_name_go}}</0> app!'
                         components={[<StaticUrl key={0} className='link dark' href='/landing/deriv-go' />]}
-                        values={{platform_name_go}}
+                        values={{ platform_name_go }}
                     />
                 ),
                 cta_btn: {
@@ -655,8 +655,10 @@ export default class NotificationStore extends BaseStore {
                     onClick: () => ui.installWithDeferredPrompt(),
                     text: localize('Install'),
                 },
-                header: localize('Install the {{platform_name_trader}} web app', {platform_name_trader}),
-                message: localize('Launch {{platform_name_trader}} in seconds the next time you want to trade.', {platform_name_trader}),
+                header: localize('Install the {{platform_name_trader}} web app', { platform_name_trader }),
+                message: localize('Launch {{platform_name_trader}} in seconds the next time you want to trade.', {
+                    platform_name_trader,
+                }),
                 type: 'announce',
                 should_hide_close_btn: false,
             },

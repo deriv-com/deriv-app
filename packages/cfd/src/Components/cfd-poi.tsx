@@ -64,7 +64,17 @@ type TCFDPOIProps = {
     should_allow_authentication: boolean;
 };
 
-const CFDPOI = ({ authentication_status, form_error, index, is_high_risk, is_withdrawal_lock, onCancel, onSubmit, value, ...props }: TCFDPOIProps) => {
+const CFDPOI = ({
+    authentication_status,
+    form_error,
+    index,
+    is_high_risk,
+    is_withdrawal_lock,
+    onCancel,
+    onSubmit,
+    value,
+    ...props
+}: TCFDPOIProps) => {
     const { identity_status } = authentication_status;
     const [poi_state, setPOIState] = React.useState<string>('none');
     const validateForm = React.useCallback(() => {

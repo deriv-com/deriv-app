@@ -1088,7 +1088,10 @@ export const PersonalDetailsForm = ({
                                                 <fieldset className='account-form__fieldset'>
                                                     <div>
                                                         <Text as='p' size='xs'>
-                                                            <Localize i18n_default_text='By default, all {{brand_website_name}} clients are retail clients but anyone can request to be treated as a professional client.' values={{ brand_website_name: getBrandWebsiteName() }} />
+                                                            <Localize
+                                                                i18n_default_text='By default, all {{brand_website_name}} clients are retail clients but anyone can request to be treated as a professional client.'
+                                                                values={{ brand_website_name: getBrandWebsiteName() }}
+                                                            />
                                                         </Text>
                                                         <Text as='p' size='xs'>
                                                             <Localize i18n_default_text='A professional client receives a lower degree of client protection due to the following.' />

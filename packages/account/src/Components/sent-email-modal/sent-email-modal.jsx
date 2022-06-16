@@ -49,7 +49,7 @@ const SentEmailModal = ({
                     <Localize
                         i18n_default_text='Please click on the link in the email to change your <0>{{platform_name_dxtrade}}</0> password.'
                         components={[<span className='send-email-template__subtitle-platform' key={0} />]}
-                        values={{platform_name_dxtrade: getPlatformSettings('dxtrade').name}}
+                        values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
                     />
                 );
                 break;

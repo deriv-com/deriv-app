@@ -57,7 +57,9 @@ const SelfExclusion = ({
         max_30day_losses: localize('Max. total loss over 30 days'),
         session_duration_limit: localize('Time limit per session'),
         timeout_until: localize('Time out until'),
-        exclude_until: localize('Excluded from {{brand_website_name}} until', { brand_website_name: getBrandWebsiteName() }),
+        exclude_until: localize('Excluded from {{brand_website_name}} until', {
+            brand_website_name: getBrandWebsiteName(),
+        }),
         max_balance: localize('Max. account balance'),
         max_open_bets: localize('Max. open positions'),
     };

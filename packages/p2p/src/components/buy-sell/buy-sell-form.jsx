@@ -113,7 +113,7 @@ const BuySellForm = props => {
             <Formik
                 enableReinitialize
                 validate={buy_sell_store.validatePopup}
-                validateOnMount
+                validateOnMount={!should_disable_field}
                 initialValues={{
                     amount: min_order_amount_limit,
                     contact_info: buy_sell_store.contact_info,

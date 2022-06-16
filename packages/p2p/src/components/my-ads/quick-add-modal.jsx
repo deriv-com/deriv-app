@@ -247,6 +247,22 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </Formik>
                     )}
+                    {selected_methods.length < 3 && (
+                        <div className='quick-add-modal--message'>
+                            <Localize
+                                i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                                components={[
+                                    <Text key={0} color='less-prominent' size='xxs' />,
+                                    <Text
+                                        key={1}
+                                        className='link'
+                                        size='xxs'
+                                        onClick={() => onClickPaymentMethodItem('other')}
+                                    />,
+                                ]}
+                            />
+                        </div>
+                    )}
                 </MobileFullPageModal>
             );
         }
@@ -322,7 +338,7 @@ const QuickAddModal = ({ advert }) => {
             <Modal
                 className='p2p-my-ads__modal-error'
                 has_close_icon
-                height='660px'
+                height='452px'
                 is_open={my_ads_store.is_quick_add_modal_open}
                 title={localize('Add payment method')}
                 toggleModal={e => {
@@ -440,6 +456,22 @@ const QuickAddModal = ({ advert }) => {
                                 </Field>
                             )}
                         </Formik>
+                    )}
+                    {selected_methods.length < 3 && (
+                        <div className='quick-add-modal--message'>
+                            <Localize
+                                i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                                components={[
+                                    <Text key={0} color='less-prominent' size='xxs' />,
+                                    <Text
+                                        key={1}
+                                        className='link'
+                                        size='xxs'
+                                        onClick={() => onClickPaymentMethodItem('other')}
+                                    />,
+                                ]}
+                            />
+                        </div>
                     )}
                 </Modal.Body>
                 <Modal.Footer has_separator>

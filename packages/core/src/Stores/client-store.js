@@ -1227,9 +1227,23 @@ export default class ClientStore extends BaseStore {
         const search = window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
+        const code_param = search_params?.get('code');
+        const action_param = search_params?.get('action');
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
+
+        if (search) {
+            if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+                }, 0);
+            });
+        }
+
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
@@ -1271,7 +1285,7 @@ export default class ClientStore extends BaseStore {
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
                 const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
-                    search_params?.get('action')
+                    action_param
                 );
 
                 if (has_action) {

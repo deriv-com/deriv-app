@@ -323,38 +323,108 @@ const QuickStrategyForm = ({
                                     'quick-strategy__form-row--multiple': !is_mobile,
                                 })}
                             >
-                                <Field name='quick-strategy__size'>
-                                    {({ field }) => (
-                                        <Input
-                                            {...field}
-                                            className='quick-strategy__input'
-                                            label_className='quick-strategy__input-label'
-                                            field_className='quick-strategy__input-field'
-                                            type='text'
-                                            error={
-                                                initial_errors[field.name] ||
-                                                (touched[field.name] && errors[field.name])
-                                            }
-                                            label={getSizeText(active_index)}
-                                            onChange={e => {
-                                                handleChange(e);
-                                                onChangeInputValue('input_size', e);
-                                            }}
-                                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                            onBlur={() => setCurrentFocus(null)}
-                                            placeholder='2'
-                                            trailing_icon={
-                                                <Popover
-                                                    alignment={is_mobile ? 'top' : 'bottom'}
-                                                    message={getSizeDesc(active_index)}
-                                                    zIndex={popover_zindex.QUICK_STRATEGY}
-                                                >
-                                                    <Icon icon='IcInfoOutline' />
-                                                </Popover>
-                                            }
-                                        />
-                                    )}
-                                </Field>
+                                {active_index === 0 && (
+                                    <Field name='quick-strategy__size'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='quick-strategy__input'
+                                                label_className='quick-strategy__input-label'
+                                                field_className='quick-strategy__input-field'
+                                                type='text'
+                                                error={
+                                                    initial_errors[field.name] ||
+                                                    (touched[field.name] && errors[field.name])
+                                                }
+                                                label={getSizeText(active_index)}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    onChangeInputValue('input_size', e);
+                                                }}
+                                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                onBlur={() => setCurrentFocus(null)}
+                                                placeholder='2'
+                                                trailing_icon={
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={getSizeDesc(active_index)}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                                {active_index === 1 && (
+                                    <Field name='alembert_unit'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='quick-strategy__input'
+                                                label_className='quick-strategy__input-label'
+                                                field_className='quick-strategy__input-field'
+                                                type='text'
+                                                error={
+                                                    initial_errors[field.name] ||
+                                                    (touched[field.name] && errors[field.name])
+                                                }
+                                                label={getSizeText(active_index)}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    onChangeInputValue('input_alembert_unit', e);
+                                                }}
+                                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                onBlur={() => setCurrentFocus(null)}
+                                                placeholder='2'
+                                                trailing_icon={
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={getSizeDesc(active_index)}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                                {active_index === 2 && (
+                                    <Field name='oscar_unit'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='quick-strategy__input'
+                                                label_className='quick-strategy__input-label'
+                                                field_className='quick-strategy__input-field'
+                                                type='text'
+                                                error={
+                                                    initial_errors[field.name] ||
+                                                    (touched[field.name] && errors[field.name])
+                                                }
+                                                label={getSizeText(active_index)}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    onChangeInputValue('input_oscar_unit', e);
+                                                }}
+                                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                onBlur={() => setCurrentFocus(null)}
+                                                placeholder='2'
+                                                trailing_icon={
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={getSizeDesc(active_index)}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                )}
                                 <Field name='quick-strategy__profit'>
                                     {({ field }) => (
                                         <Input

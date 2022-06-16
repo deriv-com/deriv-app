@@ -16,6 +16,8 @@ export default class QuickStrategyStore {
     @observable input_duration_value = this.qs_cache.input_duration_value || '';
     @observable input_stake = this.qs_cache.input_stake || '';
     @observable input_size = this.qs_cache.input_size || '';
+    @observable input_alembert_unit = this.qs_cache.input_alembert_unit || '';
+    @observable input_oscar_unit = this.qs_cache.input_oscar_unit || '';
     @observable input_loss = this.qs_cache.input_loss || '';
     @observable input_profit = this.qs_cache.input_profit || '';
 
@@ -36,6 +38,8 @@ export default class QuickStrategyStore {
             'quick-strategy__duration-value': this.input_duration_value || '',
             'quick-strategy__stake': this.input_stake,
             'quick-strategy__size': this.input_size,
+            alembert_unit: this.input_alembert_unit,
+            oscar_unit: this.input_oscar_unit,
             'quick-strategy__loss': this.input_loss,
             'quick-strategy__profit': this.input_profit,
         };
@@ -180,6 +184,8 @@ export default class QuickStrategyStore {
         const duration_value = this.input_duration_value;
         const stake = this.input_stake;
         const size = this.input_size;
+        const alembert_unit = this.input_alembert_unit;
+        const oscar_unit = this.input_oscar_unit;
         const loss = this.input_loss;
         const profit = this.input_profit;
 
@@ -219,6 +225,8 @@ export default class QuickStrategyStore {
             duration: duration_value,
             stake,
             size,
+            alembert_unit,
+            oscar_unit,
             loss,
             profit,
         };
@@ -424,6 +432,8 @@ export default class QuickStrategyStore {
             'quick-strategy__duration-value',
             'quick-strategy__stake',
             'quick-strategy__size',
+            'alembert_unit',
+            'oscar_unit',
             'quick-strategy__profit',
             'quick-strategy__loss',
         ];
@@ -451,8 +461,9 @@ export default class QuickStrategyStore {
         });
 
         if (values['quick-strategy__size'] < 2) {
-            errors['quick-strategy__size'] = localize('minimum size must be higher than 2');
+            errors['quick-strategy__size'] = localize('Value must be higher than 2');
         }
+
         const duration = this.duration_unit_dropdown.find(d => d.text === values['quick-strategy__duration-unit']);
 
         if (duration) {

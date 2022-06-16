@@ -13,6 +13,7 @@ const OnRampProviderCard = ({ is_dark_mode_on, provider, setSelectedProvider, is
         <div className='on-ramp__provider'>
             <div className='on-ramp__provider-logo'>
                 <Icon
+                    data_testid={is_dark_mode_on ? 'dti_provider_icon_dark' : 'dti_provider_icon_light'}
                     icon={is_dark_mode_on ? provider.icon.dark : provider.icon.light}
                     width={logo_size}
                     height={logo_size}
@@ -28,7 +29,12 @@ const OnRampProviderCard = ({ is_dark_mode_on, provider, setSelectedProvider, is
                 <div className='on-ramp__provider-payment-icons-shadow' />
                 <NewsTicker speed={10}>
                     {payment_icons.map((payment_icon, idx) => (
-                        <Icon key={idx} size={40} icon={is_dark_mode_on ? payment_icon.dark : payment_icon.light} />
+                        <Icon
+                            data_testid={is_dark_mode_on ? 'dti_payment_icon_dark' : 'dti_payment_icon_light'}
+                            icon={is_dark_mode_on ? payment_icon.dark : payment_icon.light}
+                            key={idx}
+                            size={40}
+                        />
                     ))}
                 </NewsTicker>
             </div>

@@ -26,13 +26,13 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
     const [error_message, setErrorMessage] = React.useState('');
     const [secret_key, setSecretKey] = React.useState('');
     const [qr_secret_key, setQrSecretKey] = React.useState('');
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         getDigitStatus();
-    }, []);
+    }, [getDigitStatus]);
 
-    const generateQrCode = async () => {
+    const generateQrCode = React.useCallback(async () => {
         setQrLoading(true);
         const generate_response = await WS.authorized.accountSecurity({
             account_security: 1,
@@ -50,14 +50,17 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
         setSecretKey(secret_key_value);
         setQrSecretKey(qr_secret_key_value);
         setQrLoading(false);
-    };
+    }, [email_address]);
 
-    const setEnabled = is_enabled => {
-        setTwoFactorEnabled(is_enabled);
-        if (!is_enabled) generateQrCode();
-    };
+    const setEnabled = React.useCallback(
+        is_enabled => {
+            setTwoFactorEnabled(is_enabled);
+            if (!is_enabled) generateQrCode();
+        },
+        [generateQrCode]
+    );
 
-    const getDigitStatus = async () => {
+    const getDigitStatus = React.useCallback(async () => {
         const status_response = await WS.authorized.accountSecurity({ account_security: 1, totp_action: 'status' });
 
         if (status_response.error) {
@@ -70,7 +73,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
         else generateQrCode();
 
         setLoading(false);
-    };
+    }, [generateQrCode, setEnabled]);
 
     if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (error_message) return <LoadErrorMessage error_message={error_message} />;
@@ -186,7 +189,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
         <section className='two-factor'>
             <div
                 className={classNames('two-factor__wrapper', {
-                    'two-factor__wrapper-dashboard': is_dashboard,
+                    'two-factor__wrapper-dashboard': is_appstore,
                 })}
             >
                 {is_two_factor_enabled ? TwoFactorEnabled : TwoFactorDisabled}

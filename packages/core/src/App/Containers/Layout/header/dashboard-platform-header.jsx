@@ -121,6 +121,7 @@ const DashboardPlatformHeader = ({
     should_allow_authentication,
     toggleNotifications,
     toggleSettingsModal,
+    is_social_signup,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const filterPlatformsForClients = payload =>
@@ -161,6 +162,7 @@ const DashboardPlatformHeader = ({
                                 toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                             />
                         }
+                        is_social_signup={is_social_signup}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
@@ -224,9 +226,10 @@ DashboardPlatformHeader.propTypes = {
     setDarkMode: PropTypes.func,
     should_allow_authentication: PropTypes.bool,
     toggleNotifications: PropTypes.func,
+    is_social_signup: PropTypes.bool,
 };
 
-export default connect(({ client, common, modules, ui }) => ({
+export default connect(({ client, common, modules, notifications, ui }) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
@@ -237,7 +240,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_dark_mode: ui.is_dark_mode_on,
     is_logged_in: client.is_logged_in,
     is_mt5_allowed: client.is_mt5_allowed,
-    is_notifications_visible: ui.is_notifications_visible,
+    is_notifications_visible: notifications.is_notifications_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
@@ -245,8 +248,9 @@ export default connect(({ client, common, modules, ui }) => ({
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
-    notifications_count: ui.filtered_notifications.length,
+    notifications_count: notifications.filtered_notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
-    toggleNotifications: ui.toggleNotificationsModal,
+    toggleNotifications: notifications.toggleNotificationsModal,
+    is_social_signup: client.is_social_signup,
 }))(withRouter(DashboardPlatformHeader));

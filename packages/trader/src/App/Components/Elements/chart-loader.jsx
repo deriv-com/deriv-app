@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loading from '../../../templates/app/components/loading.jsx';
+import Loading from '../../../templates/app/components/loading';
 
 const ChartLoader = ({ is_dark, is_visible }) =>
     is_visible ? (

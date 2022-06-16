@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { localize, Localize } from '@deriv/translations';
-import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text } from '@deriv/components';
-import { CFD_PLATFORMS, isMobile, isDesktop } from '@deriv/shared';
+import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text, Popover } from '@deriv/components';
+import { getPlatformSettings, CFD_PLATFORMS, isMobile, isDesktop } from '@deriv/shared';
 
 const getNoEmailContentStrings = () => {
     return [
@@ -19,6 +19,11 @@ const getNoEmailContentStrings = () => {
             ),
         },
         {
+            key: 'wrong_typo',
+            icon: 'IcEmailTypo',
+            content: localize('The email address you entered had a mistake or typo (happens to the best of us).'),
+        },
+        {
             key: 'email_firewall',
             icon: 'IcEmailFirewall',
             content: localize(
@@ -28,15 +33,23 @@ const getNoEmailContentStrings = () => {
     ];
 };
 
-const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }) => {
+const SentEmailModal = ({
+    identifier_title,
+    is_open,
+    onClose,
+    onClickSendEmail,
+    has_live_chat = false,
+    is_modal_when_mobile = false,
+}) => {
     const getSubtitle = () => {
         let subtitle = '';
         switch (identifier_title) {
             case CFD_PLATFORMS.DXTRADE:
                 subtitle = (
                     <Localize
-                        i18n_default_text='Please click on the link in the email to change your <0>Deriv X</0> password.'
+                        i18n_default_text='Please click on the link in the email to change your <0>{{platform_name_dxtrade}}</0> password.'
                         components={[<span className='send-email-template__subtitle-platform' key={0} />]}
+                        values={{platform_name_dxtrade: getPlatformSettings('dxtrade').name}}
                     />
                 );
                 break;
@@ -50,12 +63,37 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
                     { identifier_title }
                 );
                 break;
+            case 'Change_Email':
+                subtitle = localize('Check your email and click the link in the email to proceed.');
+                break;
             default:
                 subtitle = localize('Please click on the link in the email to reset your password.');
                 break;
         }
         return subtitle;
     };
+
+    const onLiveChatClick = () => {
+        onClose();
+        window.LiveChatWidget?.call('maximize');
+    };
+
+    const live_chat = has_live_chat ? (
+        <Localize
+            i18n_default_text="Still didn't get the email? Please contact us via <0>live chat.</0>"
+            components={[
+                <span className='send-email-template__footer-live-chat' key={0} onClick={onLiveChatClick}>
+                    <Popover
+                        className='send-email-template__footer-live-chat__link'
+                        classNameBubble='help-centre__tooltip'
+                        alignment='top'
+                        message={localize('Live chat')}
+                        zIndex={9999}
+                    />
+                </span>,
+            ]}
+        />
+    ) : null;
 
     const sent_email_template = (
         <SendEmailTemplate
@@ -66,6 +104,8 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
             txt_resend={localize('Resend email')}
             txt_resend_in={localize('Resend email in')}
             onClickSendEmail={onClickSendEmail}
+            closeEmailModal={onClose}
+            live_chat={live_chat}
         >
             {getNoEmailContentStrings().map(item => (
                 <div className='sent-email__content' key={item.key}>
@@ -78,7 +118,7 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
         </SendEmailTemplate>
     );
 
-    if (isMobile()) {
+    if (isMobile() && !is_modal_when_mobile) {
         return (
             <MobileDialog
                 portal_element_id='modal_root'
@@ -125,6 +165,8 @@ SentEmailModal.propTypes = {
     is_unlink_modal: PropTypes.bool,
     onClose: PropTypes.func,
     onClickSendEmail: PropTypes.func,
+    has_live_chat: PropTypes.bool,
+    is_modal_when_mobile: PropTypes.bool,
 };
 
 export default SentEmailModal;

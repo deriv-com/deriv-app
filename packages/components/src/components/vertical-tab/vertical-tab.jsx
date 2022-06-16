@@ -52,6 +52,7 @@ const VerticalTab = ({
     list_groups,
     onClickClose,
     setVerticalTabIndex,
+    side_note_class_name,
     tab_headers_note,
     title,
     vertical_tab_index,
@@ -75,7 +76,7 @@ const VerticalTab = ({
             setCurrTabIndex,
             setVerticalTabIndex,
         });
-    }, [vertical_tab_index, list]);
+    }, [vertical_tab_index, list, setVerticalTabIndex, is_routed, current_path]);
 
     return (
         <div
@@ -135,6 +136,7 @@ const VerticalTab = ({
                 items={list}
                 selected={list[curr_tab_index] || list[0]}
                 is_routed={is_routed}
+                side_note_class_name={side_note_class_name}
             />
         </div>
     );
@@ -181,6 +183,7 @@ VerticalTab.propTypes = {
     tab_headers_note: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     selected_index: PropTypes.number,
     setVerticalTabIndex: PropTypes.func,
+    side_note_class_name: PropTypes.string,
     vertical_tab_index: PropTypes.number,
 };
 

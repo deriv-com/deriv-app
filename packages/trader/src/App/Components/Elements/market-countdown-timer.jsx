@@ -89,6 +89,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
 
             whenMarketOpens(0, symbol);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [symbol]);
 
     React.useEffect(() => {
@@ -107,11 +108,11 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
                 clearTimeout(timer);
             }
         };
-    }, [time_left, when_market_opens]);
+    }, [time_left, when_market_opens, onMarketOpen, is_main_page]);
 
     React.useEffect(() => {
         if (!is_loading) setIsTimerLoading(false);
-    }, [is_loading]);
+    }, [is_loading, setIsTimerLoading]);
 
     let timer_components = '';
 

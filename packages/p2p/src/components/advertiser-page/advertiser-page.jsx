@@ -26,8 +26,10 @@ const AdvertiserPage = () => {
         created_time,
         first_name,
         full_verification,
+        id,
         is_blocked,
         last_name,
+        name,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
 
@@ -62,10 +64,11 @@ const AdvertiserPage = () => {
     return (
         <div className='advertiser-page'>
             <BlockUserModal
+                advertiser_name={name}
                 is_advertiser_blocked={is_blocked}
                 is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
                 onCancel={onCancel}
-                onSubmit={advertiser_page_store.blockUser}
+                onSubmit={() => advertiser_page_store.blockUser(id)}
             />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}

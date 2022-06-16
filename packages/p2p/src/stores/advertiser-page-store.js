@@ -85,10 +85,10 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    blockUser() {
+    blockUser(advertiser_id) {
         requestWS({
             p2p_advertiser_relations: 1,
-            add_blocked: [this.advertiser_details_id],
+            add_blocked: [advertiser_id],
         }).then(response => {
             if (!response.error) {
                 this.setIsBlockUserModalOpen(false);

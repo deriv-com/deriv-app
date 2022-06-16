@@ -65,6 +65,7 @@ export default class ClientStore extends BaseStore {
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
+    @observable has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -1312,7 +1313,7 @@ export default class ClientStore extends BaseStore {
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
             if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
-
+            await this.getTwoFAStatus();
             if (account_settings && !account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2238,6 +2239,26 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => (this.financial_assessment = get_financial_assessment));
             resolve(get_financial_assessment);
+        });
+    }
+
+    @action.bound
+    setTwoFAStatus(status) {
+        this.has_enabled_two_fa = status;
+    }
+
+    @action.bound
+    getTwoFAStatus() {
+        return new Promise(resolve => {
+            WS.authorized.accountSecurity({ account_security: 1, totp_action: 'status' }).then(response => {
+                if (response.error) {
+                    resolve(response.error);
+                } else {
+                    const is_enabled = !!getPropertyValue(response, ['account_security', 'totp', 'is_enabled']);
+                    this.setTwoFAStatus(is_enabled);
+                    resolve(is_enabled);
+                }
+            });
         });
     }
 }

@@ -105,7 +105,7 @@ export const getContractTypesConfig = symbol => ({
         components: [],
     },
     accumulator: {
-        title: localize('Accumulators'),
+        title: localize('Accumulate'),
         trade_types: ['ACC'],
         basis: ['stake', 'growth_rate'],
         components: ['take_profit'],

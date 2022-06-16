@@ -47,7 +47,7 @@ const ContractType = (() => {
                 low_barrier: '-20',
                 barriers: 2,
                 contract_category: 'accumulator',
-                contract_category_display: 'Accumulators',
+                contract_category_display: 'Accumulate',
                 contract_display: 'Accumulators',
                 contract_type: 'ACC',
                 exchange_name: 'RANDOM',

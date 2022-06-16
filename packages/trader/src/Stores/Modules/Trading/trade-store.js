@@ -569,7 +569,7 @@ export default class TradeStore extends BaseStore {
         if (!proposal_info) {
             return;
         }
-        const { contract_type, barrier, high_barrier, low_barrier } = proposal_info;
+        const { contract_type, barrier, barrier2, high_barrier, low_barrier } = proposal_info;
 
         const dummy_contract_type = contract_type || (proposal_info.symbol === 'R_100' && 'ACC');
 
@@ -579,8 +579,8 @@ export default class TradeStore extends BaseStore {
             const dummy_accumulator_high_barrier = dummy_contract_type === 'ACC' && '+20';
             const dummy_accumulator_low_barrier = dummy_contract_type === 'ACC' && '-20';
             this.main_barrier = new ChartBarrierStore(
-                barrier || high_barrier || dummy_accumulator_high_barrier,
-                low_barrier || dummy_accumulator_low_barrier,
+                high_barrier || barrier || dummy_accumulator_high_barrier,
+                low_barrier || barrier2 || dummy_accumulator_low_barrier,
                 this.onChartBarrierChange,
                 {
                     color,

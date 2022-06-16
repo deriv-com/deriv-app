@@ -2,6 +2,7 @@ const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { transformContentUrlBase } = require('./helpers');
 const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
+
 const gitRevisionPlugin = new GitRevisionPlugin();
 
 const copyConfig = base => {
@@ -156,6 +157,15 @@ const generateSWConfig = is_release => ({
         /^trader\//,
         /^cashier\//,
         /^js\/core\.[a-z_]*-json\./,
+        /^appstore\//,
+        /^cfd\//,
+        /^public\/images\/common\/ke_alien_card.*/,
+        /^public\/images\/common\/ke_national_identity.*/,
+        /^public\/images\/common\/ke_passport.*/,
+        /^public\/images\/common\/ng_drivers_license.*/,
+        /^public\/images\/common\/ng_nin_slip.*/,
+        /^public\/images\/common\/ng_voter_id.*/,
+        /^public\/images\/common\/za_national_identity_card.*/,
     ],
     skipWaiting: true,
     clientsClaim: true,

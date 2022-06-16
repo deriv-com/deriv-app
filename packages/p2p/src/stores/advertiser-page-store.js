@@ -227,12 +227,12 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    unblockUser(blocked_user_id) {
+    unblockUser(blocked_advertiser_id) {
         this.setIsLoading(true);
 
         requestWS({
             p2p_advertiser_relations: 1,
-            remove_blocked: [blocked_user_id],
+            remove_blocked: [blocked_advertiser_id],
         }).then(response => {
             if (response) {
                 if (!response.error) {

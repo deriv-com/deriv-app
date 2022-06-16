@@ -4,7 +4,7 @@ import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 
-const BlockUserModal = ({ advertiser, is_advertiser_blocked, is_block_user_modal_open, onCancel, onSubmit }) => {
+const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, is_block_user_modal_open, onCancel, onSubmit }) => {
     return (
         <Modal
             has_close_icon={false}
@@ -16,14 +16,14 @@ const BlockUserModal = ({ advertiser, is_advertiser_blocked, is_block_user_modal
                         <Localize
                             i18n_default_text='Unblock {{advertiser_name}}?'
                             values={{
-                                advertiser_name: advertiser.name,
+                                advertiser_name,
                             }}
                         />
                     ) : (
                         <Localize
                             i18n_default_text='Block {{advertiser_name}}?'
                             values={{
-                                advertiser_name: advertiser.name,
+                                advertiser_name,
                             }}
                         />
                     )}
@@ -35,12 +35,12 @@ const BlockUserModal = ({ advertiser, is_advertiser_blocked, is_block_user_modal
                     {is_advertiser_blocked ? (
                         <Localize
                             i18n_default_text="You will be able to see {{ advertiser_name }}'s ads. They'll be able to place orders on your ads, too."
-                            values={{ advertiser_name: advertiser.name }}
+                            values={{ advertiser_name }}
                         />
                     ) : (
                         <Localize
                             i18n_default_text="You won't see {{advertiser_name}}'s ads anymore and they won't be able to place orders on your ads."
-                            values={{ advertiser_name: advertiser.name }}
+                            values={{ advertiser_name }}
                         />
                     )}
                 </Text>
@@ -62,7 +62,7 @@ const BlockUserModal = ({ advertiser, is_advertiser_blocked, is_block_user_modal
 };
 
 BlockUserModal.propTypes = {
-    advertiser: PropTypes.object.isRequired,
+    advertiser_name: PropTypes.string.isRequired,
     is_advertiser_blocked: PropTypes.bool.isRequired,
     is_block_user_modal_open: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,

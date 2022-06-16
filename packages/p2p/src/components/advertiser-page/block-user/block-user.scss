@@ -26,10 +26,10 @@
         display: flex;
         flex: 1;
         flex-direction: column;
-        height: 30vh;
+        height: 30rem;
 
         @include mobile {
-            height: 100vh;
+            height: 100%;
         }
 
         &-body {

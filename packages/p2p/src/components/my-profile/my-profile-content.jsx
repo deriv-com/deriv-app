@@ -24,7 +24,7 @@ const MyProfileContent = () => {
         return (
             <React.Fragment>
                 <BlockUserModal
-                    advertiser={advertiser_page_store.selected_blocked_user}
+                    advertiser_name={advertiser_page_store.selected_blocked_user.name}
                     is_advertiser_blocked
                     is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
                     onCancel={() => advertiser_page_store.setIsBlockUserModalOpen(false)}

@@ -101,7 +101,8 @@ const ApiTokenTable = () => {
                     <ApiTokenTableRowHeader text={localize('Token')} />
                     <ApiTokenTableRowHeader text={localize('Scopes')} />
                     <ApiTokenTableRowHeader text={localize('Last used')} />
-                    <ApiTokenTableRowHeader text={localize('Action')} />
+                    <th />
+                    {/* <ApiTokenTableRowHeader text={localize('Action')} /> */}
                 </tr>
             </thead>
             <tbody>

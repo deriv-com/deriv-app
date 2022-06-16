@@ -56,7 +56,7 @@ ApiTokenDeleteButtons.propTypes = {
     token: PropTypes.shape({
         display_name: PropTypes.string.isRequired,
         last_used: PropTypes.string.isRequired,
-        scopes: PropTypes.string.isRequired,
+        scopes: PropTypes.array.isRequired,
         token: PropTypes.string.isRequired,
     }).isRequired,
 };

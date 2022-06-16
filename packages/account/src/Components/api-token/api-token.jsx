@@ -55,11 +55,11 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
 
     const initial_form = {
         token_name: '',
-        admin: false,
-        payments: false,
         read: false,
         trade: false,
+        payments: false,
         trading_information: false,
+        admin: false,
     };
 
     const toggleOverlay = () => setState({ is_overlay_shown: !state.is_overlay_shown });
@@ -103,7 +103,6 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                 is_success: true,
                 api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
             });
-
             setTimeout(() => {
                 if (isMounted()) setState({ is_success: false });
             }, 500);

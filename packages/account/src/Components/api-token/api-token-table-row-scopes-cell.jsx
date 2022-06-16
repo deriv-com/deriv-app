@@ -20,7 +20,7 @@ const ApiTokenTableRowScopesCell = ({ scopes }) => {
 };
 
 ApiTokenTableRowScopesCell.propTypes = {
-    scope: PropTypes.array.isRequired,
+    scopes: PropTypes.array.isRequired,
 };
 
 export default ApiTokenTableRowScopesCell;

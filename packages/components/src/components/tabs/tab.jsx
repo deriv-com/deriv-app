@@ -26,7 +26,7 @@ const Tab = ({
 }) => {
     React.useEffect(() => {
         setActiveLineStyle();
-    }, [count, label, header_content, setActiveLineStyle]);
+    }, [count, label, header_content]);
 
     const classes = classNames('dc-tabs__item', {
         'dc-tabs__active': is_active,

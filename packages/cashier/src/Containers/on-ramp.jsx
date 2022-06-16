@@ -64,7 +64,7 @@ const OnRamp = ({
         if (menu_options && selected_cashier_path !== routes.cashier_onramp) {
             routeTo(selected_cashier_path);
         }
-    }, [menu_options, routeTo, selected_cashier_path]);
+    }, [selected_cashier_path]);
 
     React.useEffect(() => {
         onMountOnramp();

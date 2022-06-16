@@ -16,12 +16,11 @@ const SendEmailTemplate = ({
     title,
     txt_resend,
     txt_resend_in,
-    live_chat,
 }) => {
     const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = React.useState(false);
     const [is_resend_btn_disabled, setIsResendBtnDisabled] = React.useState(false);
     const [resend_email_btn_text, setResendEmailBtnText] = React.useState(txt_resend);
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const timeout_limit = resend_timeout || 60;
     let resend_interval = null;
@@ -59,10 +58,10 @@ const SendEmailTemplate = ({
     };
 
     return (
-        <div className={classNames('send-email-template', { 'send-email-template-dashboard': is_appstore })}>
+        <div className={classNames('send-email-template', { 'send-email-template-dashboard': is_dashboard })}>
             <div className='send-email-template__sent'>
                 <Icon
-                    icon={is_appstore ? 'IcEmailSentDashboard' : 'IcEmailSent'}
+                    icon={is_dashboard ? 'IcEmailSentDashboard' : 'IcEmailSent'}
                     className='send-email-template__icon'
                     size={128}
                 />
@@ -98,13 +97,6 @@ const SendEmailTemplate = ({
                             primary
                         />
                     </div>
-                    {!!live_chat && (
-                        <div className='send-email-template__footer'>
-                            <Text size='xxs' as='p' align={'center'}>
-                                {live_chat}
-                            </Text>
-                        </div>
-                    )}
                 </>
             )}
         </div>
@@ -121,8 +113,6 @@ SendEmailTemplate.propTypes = {
     txt_resend: PropTypes.string,
     txt_resend_in: PropTypes.string,
     title: PropTypes.string,
-    closeEmailModal: PropTypes.func,
-    live_chat: PropTypes.object,
 };
 
 export default SendEmailTemplate;

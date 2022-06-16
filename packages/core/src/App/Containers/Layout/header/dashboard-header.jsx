@@ -15,18 +15,24 @@ import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
 
-const LoggedInHeader = ({ is_dark_mode, is_social_signup }) => {
+const LoggedInHeader = ({ is_dark_mode }) => {
     const history = useHistory();
-
-    const getDesktopHeaderLogo = () => (!is_dark_mode ? <DerivLogoLight /> : <DerivLogoDark />);
-
-    const getMobileHeaderLogo = () => (!is_dark_mode ? <DerivLogoLightMobile /> : <DerivLogoDarkMobile />);
 
     return (
         <header className='dashboard-header dashboard-header--logged-in'>
             <div className='dashboard-header__left'>
                 <div onClick={() => history.push(routes.dashboard)}>
-                    {isDesktop() ? getDesktopHeaderLogo() : getMobileHeaderLogo()}
+                    {isDesktop() ? (
+                        !is_dark_mode ? (
+                            <DerivLogoLight />
+                        ) : (
+                            <DerivLogoDark />
+                        )
+                    ) : !is_dark_mode ? (
+                        <DerivLogoLightMobile />
+                    ) : (
+                        <DerivLogoDarkMobile />
+                    )}
                 </div>
             </div>
             <div className='dashboard-header__right--logged-in'>
@@ -39,13 +45,7 @@ const LoggedInHeader = ({ is_dark_mode, is_social_signup }) => {
                     <React.Fragment>
                         <Icon icon={'IcNotificationClear'} height={20} width={17} />
                         <div className='dashboard-header__right--logged-in-separator' />
-                        <ToggleMenuDrawer
-                            alignment={'right'}
-                            is_logged_in
-                            should_allow_authentication
-                            title={''}
-                            is_social_signup={is_social_signup}
-                        />
+                        <ToggleMenuDrawer alignment={'right'} is_logged_in should_allow_authentication title={''} />
                     </React.Fragment>
                 )}
             </div>
@@ -53,9 +53,9 @@ const LoggedInHeader = ({ is_dark_mode, is_social_signup }) => {
     );
 };
 
-const LoggedOutHeader = ({ is_social_signup }) => {
+const LoggedOutHeader = () => {
     const history = useHistory();
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
         <header className='dashboard-header dashboard-header--logged-out'>
@@ -94,18 +94,13 @@ const LoggedOutHeader = ({ is_social_signup }) => {
                         className='dashboard-header__right--create-button'
                         primary
                         text={localize('Create free demo account')}
-                        onClick={() => redirectToSignUp({ is_appstore })}
+                        onClick={() => redirectToSignUp({ is_dashboard })}
                     />
                 </Button.Group>
                 {isMobile() && (
                     <React.Fragment>
                         <div className='dashboard-header__right--logged-out-separator' />
-                        <ToggleMenuDrawer
-                            alignment={'right'}
-                            should_allow_authentication
-                            title={''}
-                            is_social_signup={is_social_signup}
-                        />
+                        <ToggleMenuDrawer alignment={'right'} should_allow_authentication title={''} />
                     </React.Fragment>
                 )}
             </div>
@@ -119,28 +114,26 @@ const HeaderPreloader = () => (
     </div>
 );
 
-const DashboardHeader = ({ is_dark_mode, is_logged_in, is_logging_in, is_social_signup }) => {
+const DashboardHeader = ({ is_dark_mode, is_logged_in, is_logging_in }) => {
     if (is_logging_in) {
         return <HeaderPreloader />;
     }
 
     if (is_logged_in) {
-        return <LoggedInHeader is_dark_mode={is_dark_mode} is_social_signup={is_social_signup} />;
+        return <LoggedInHeader is_dark_mode={is_dark_mode} />;
     }
 
-    return <LoggedOutHeader is_social_signup={is_social_signup} />;
+    return <LoggedOutHeader />;
 };
 
 DashboardHeader.propTypes = {
     is_dark_mode: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    is_social_signup: PropTypes.bool,
 };
 
 export default connect(({ client, ui }) => ({
     is_dark_mode: ui.is_dark_mode_on,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    is_social_signup: client.is_social_signup,
 }))(DashboardHeader);

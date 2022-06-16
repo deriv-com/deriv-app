@@ -10,6 +10,7 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import { connect } from 'Stores/connect';
+import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
@@ -21,7 +22,6 @@ const DefaultHeader = ({
     addNotificationMessage,
     app_routing_history,
     balance,
-    client_notifications,
     currency,
     country_standpoint,
     disableApp,
@@ -58,11 +58,9 @@ const DefaultHeader = ({
     should_allow_authentication,
     toggleAccountsDialog,
     toggleNotifications,
-    changeCurrentLanguage,
-    is_social_signup,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
-    const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
+    const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
     const removeUpdateNotification = React.useCallback(
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
@@ -108,7 +106,6 @@ const DefaultHeader = ({
                     </DesktopWrapper>
                     <MobileWrapper>
                         <ToggleMenuDrawer
-                            changeCurrentLanguage={changeCurrentLanguage}
                             ref={toggle_menu_drawer_ref}
                             should_allow_authentication={should_allow_authentication}
                             account_status={account_status}
@@ -134,7 +131,6 @@ const DefaultHeader = ({
                                     toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                                 />
                             }
-                            is_social_signup={is_social_signup}
                         />
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
@@ -199,7 +195,6 @@ DefaultHeader.propTypes = {
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
-    client_notifications: PropTypes.object,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
@@ -231,19 +226,16 @@ DefaultHeader.propTypes = {
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    is_social_signup: PropTypes.bool,
 };
 
-export default connect(({ client, common, ui, menu, modules, notifications }) => ({
-    changeCurrentLanguage: common.changeCurrentLanguage,
+export default connect(({ client, common, ui, menu, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
     account_type: client.account_type,
     should_allow_authentication: client.should_allow_authentication,
-    addNotificationMessage: notifications.addNotificationMessage,
+    addNotificationMessage: ui.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
-    client_notifications: notifications.client_notifications,
     currency: client.currency,
     country_standpoint: client.country_standpoint,
     disableApp: ui.disableApp,
@@ -260,7 +252,7 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
-    is_notifications_visible: notifications.is_notifications_visible,
+    is_notifications_visible: ui.is_notifications_visible,
     is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
@@ -270,13 +262,12 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     menu_items: menu.extensions,
-    notifications_count: notifications.filtered_notifications.length,
+    notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     platform: common.platform,
-    removeNotificationMessage: notifications.removeNotificationMessage,
+    removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
-    toggleNotifications: notifications.toggleNotificationsModal,
-    is_social_signup: client.is_social_signup,
+    toggleNotifications: ui.toggleNotificationsModal,
 }))(withRouter(DefaultHeader));

@@ -1,7 +1,7 @@
 import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const personal_details_config = ({ residence_list, account_settings, is_appstore }) => {
+const personal_details_config = ({ residence_list, account_settings, is_dashboard }) => {
     if (!residence_list || !account_settings) {
         return {};
     }
@@ -110,7 +110,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
                     'regular',
                     localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
                     {
-                        regex: /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
+                        regex: /^(?!^$|\s+)[A-Za-z0-9.\/\s-]{0,25}$/,
                     },
                 ],
                 [
@@ -142,7 +142,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
     };
 
     const getConfig = () => {
-        if (is_appstore) {
+        if (is_dashboard) {
             const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
             return Object.keys(config).reduce((new_config, key) => {
                 if (allowed_fields.includes(key)) {
@@ -160,13 +160,15 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
 const personalDetailsConfig = (
     { upgrade_info, real_account_signup_target, residence_list, account_settings },
     PersonalDetails,
-    is_appstore = false
+    is_dashboard = false
 ) => {
-    const [config, disabled_items] = personal_details_config({ residence_list, account_settings, is_appstore });
+    const [config, disabled_items] = personal_details_config({ residence_list, account_settings, is_dashboard });
     return {
         header: {
-            active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),
-            title: is_appstore ? localize('PERSONAL') : localize('Personal details'),
+            active_title: is_dashboard
+                ? localize('A few personal details')
+                : localize('Complete your personal details'),
+            title: is_dashboard ? localize('PERSONAL') : localize('Personal details'),
         },
         body: PersonalDetails,
         form_value: getDefaultFields(real_account_signup_target, config),

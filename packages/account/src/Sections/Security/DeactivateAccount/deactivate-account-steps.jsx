@@ -2,12 +2,12 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Link } from 'react-router-dom';
 import { Button, Text } from '@deriv/components';
-import { PlatformContext, getPlatformSettings } from '@deriv/shared';
+import { PlatformContext } from '@deriv/shared';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 
 const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
         <div>
@@ -31,10 +31,7 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
                 </Text>
                 <Text size='xs' as='p'>
                     {is_dxtrade_allowed ? (
-                        <Localize
-                            i18n_default_text='If you have a DMT5 or {{platform_name_dxtrade}} real account, log in to close any open positions.'
-                            values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
-                        />
+                        <Localize i18n_default_text='If you have a DMT5 or Deriv X real account, log in to close any open positions.' />
                     ) : (
                         <Localize i18n_default_text='If you have a DMT5 real account, log in to close any open positions.' />
                     )}
@@ -53,12 +50,11 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
                 <Text size='xs' as='p'>
                     {is_dxtrade_allowed ? (
                         <Localize
-                            i18n_default_text='If you have a DMT5 or {{platform_name_dxtrade}} real account, go to your <0>DMT5</0> or <1>{{platform_name_dxtrade}}</1> dashboard to withdraw your funds'
+                            i18n_default_text='If you have a DMT5 or Deriv X real account, go to your <0>DMT5</0> or <1>Deriv X</1> dashboard to withdraw your funds'
                             components={[
                                 <Link to='/mt5' key={0} className='deactivate-account__link' />,
                                 <Link to='/derivx' key={1} className='deactivate-account__link' />,
                             ]}
-                            values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
                         />
                     ) : (
                         <Localize
@@ -70,7 +66,7 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
             </div>
             <Button
                 className={classNames('deactivate-account__button', {
-                    'deactivate-account__button--dashboard': is_appstore,
+                    'deactivate-account__button--dashboard': is_dashboard,
                 })}
                 large
                 onClick={() => redirectToReasons()}

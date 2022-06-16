@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { flow } from 'mobx';
-import { State, getActivePlatform, getPropertyValue, routes, getActionFromUrl } from '@deriv/shared';
+import { State, getActivePlatform, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -190,7 +190,6 @@ const BinarySocketGeneral = (() => {
                         'p2p_advertiser_info',
                         'portfolio',
                         'proposal_open_contract',
-                        'change_email',
                     ].includes(msg_type)
                 ) {
                     return;
@@ -206,10 +205,6 @@ const BinarySocketGeneral = (() => {
 
                 client_store.logout().then(() => {
                     let redirect_to = routes.trade;
-                    const action = getActionFromUrl();
-                    if (action === 'system_email_change') {
-                        return;
-                    }
                     if (active_platform === 'DMT5') {
                         redirect_to = routes.mt5;
                     }

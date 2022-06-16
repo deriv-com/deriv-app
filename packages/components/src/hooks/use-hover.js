@@ -30,7 +30,7 @@ export const useHover = (refSetter, should_prevent_bubbling) => {
             };
         }
         return undefined;
-    }, [ref, should_prevent_bubbling]);
+    }, [ref]);
 
     return [ref, value];
 };

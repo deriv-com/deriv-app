@@ -4,37 +4,17 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { getCurrencyDisplayCode, getPlatformSettings, isMobile, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import 'Sass/cashier-default.scss';
 
-const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, setDepositTarget }) => {
+const CashierDefaultSideNote = ({
+    can_change_fiat_currency,
+    currency,
+    is_crypto,
+    openRealAccountSignup,
+    setDepositTarget,
+}) => {
     const currency_code = getCurrencyDisplayCode(currency);
-
-    const getSideNoteDescription = () => {
-        if (is_crypto) {
-            return (
-                <Localize
-                    i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
-                    values={{ currency_code }}
-                />
-            );
-        }
-
-        return (
-            <Localize
-                i18n_default_text='If you want to change your account currency, please contact us via <0>live chat</0>.'
-                components={[
-                    <span
-                        key={0}
-                        className='link link--orange cashier-default-side-note__text-nowrap'
-                        onClick={() => window.LC_API.open_chat_window()}
-                    />,
-                ]}
-                values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
-            />
-        );
-    };
-
     return (
         <div
             className={classNames({
@@ -59,8 +39,35 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
                         />
                     )}
                 </Text>
-                <Text className='cashier-default-side-note__text' size='xxs' as='p' data-testid='side-note-text'>
-                    {getSideNoteDescription()}
+                <Text className='cashier-default-side-note__text' size='xxs' as='p'>
+                    {is_crypto ? (
+                        <Localize
+                            i18n_default_text="Don't want to trade in {{currency_code}}? You can open another cryptocurrency account."
+                            values={{ currency_code }}
+                        />
+                    ) : can_change_fiat_currency ? (
+                        <Localize
+                            i18n_default_text='You can <0>set a new currency</0> before you deposit for the first time or create a real DMT5 or Deriv X account.'
+                            components={[
+                                <a
+                                    key={0}
+                                    className='link link--orange'
+                                    onClick={() => openRealAccountSignup('manage')}
+                                />,
+                            ]}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text="You can no longer change your account currency because you've made a deposit into your fiat account or created a real DMT5 or Deriv X account. Please contact us via <0>live chat</0> for clarification."
+                            components={[
+                                <span
+                                    key={0}
+                                    className='link link--orange cashier-default-side-note__text-nowrap'
+                                    onClick={() => window.LC_API.open_chat_window()}
+                                />,
+                            ]}
+                        />
+                    )}
                 </Text>
                 {is_crypto && (
                     <div
@@ -82,6 +89,7 @@ const CashierDefaultSideNote = ({ currency, is_crypto, openRealAccountSignup, se
 };
 
 CashierDefaultSideNote.propTypes = {
+    can_change_fiat_currency: PropTypes.bool,
     currency: PropTypes.string,
     mt5_login_list: PropTypes.array,
     openRealAccountSignup: PropTypes.func,
@@ -89,6 +97,7 @@ CashierDefaultSideNote.propTypes = {
 };
 
 export default connect(({ client, modules, ui }) => ({
+    can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,
     mt5_login_list: client.mt5_login_list,
     openRealAccountSignup: ui.openRealAccountSignup,

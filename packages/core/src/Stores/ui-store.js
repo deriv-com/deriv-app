@@ -1,12 +1,24 @@
-import { getPlatformInformation, isMobile, isTouchDevice, LocalStore, platform_name, routes } from '@deriv/shared';
-import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { action, autorun, computed, observable } from 'mobx';
+import {
+    getPathname,
+    getPlatformInformation,
+    LocalStore,
+    unique,
+    isTouchDevice,
+    platform_name,
+    isMobile,
+    routes,
+} from '@deriv/shared';
+import { sortNotifications, sortNotificationsMobile } from 'App/Components/Elements/NotificationMessage';
+import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
+import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
     @observable is_account_settings_visible = false;
+    @observable is_notifications_visible = false;
     @observable is_positions_drawer_on = false;
     @observable is_reports_visible = false;
     @observable reports_route_tab_index = 0;
@@ -36,8 +48,6 @@ export default class UIStore extends BaseStore {
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
-    @observable is_reset_email_modal_visible = false;
-    @observable is_update_email_modal_visible = false;
     @observable is_reset_trading_password_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
@@ -53,6 +63,11 @@ export default class UIStore extends BaseStore {
     @observable screen_width = window.innerWidth;
     @observable screen_height = window.innerHeight;
     @observable is_onscreen_keyboard_active = false;
+
+    @observable notifications = [];
+    @observable notification_messages = [];
+    @observable marked_notifications = [];
+    @observable push_notifications = [];
 
     @observable is_advanced_duration = false;
     @observable advanced_duration_unit = 't';
@@ -80,11 +95,8 @@ export default class UIStore extends BaseStore {
     // Welcome modal
     @observable is_welcome_modal_visible = false;
 
-    // Remove MX & MLT
+    // Remove MX gaming account modal
     @observable is_close_mx_mlt_account_modal_visible = false;
-
-    // Remove MF account modal
-    @observable is_close_uk_account_modal_visible = false;
 
     // set currency modal
     @observable is_set_currency_modal_visible = false;
@@ -238,11 +250,6 @@ export default class UIStore extends BaseStore {
         this.is_close_mx_mlt_account_modal_visible = is_open;
     }
 
-    @action.bound
-    showCloseUKAccountPopup(is_open) {
-        this.is_close_uk_account_modal_visible = is_open;
-    }
-
     @computed
     get is_mobile() {
         return this.screen_width <= MAX_MOBILE_WIDTH;
@@ -256,6 +263,31 @@ export default class UIStore extends BaseStore {
     @computed
     get is_account_switcher_disabled() {
         return !!this.account_switcher_disabled_message;
+    }
+
+    @computed
+    get filtered_notifications() {
+        return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
+    }
+
+    @action.bound
+    filterNotificationMessages() {
+        if (LocalStore.get('active_loginid') !== 'null')
+            this.root_store.client.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
+        this.notifications = this.notification_messages.filter(notification => {
+            if (notification.platform === undefined || notification.platform.includes(getPathname())) {
+                return true;
+            } else if (!notification.platform.includes(getPathname())) {
+                if (notification.is_disposable) {
+                    this.removeNotificationMessage({
+                        key: notification.key,
+                        should_show_again: notification.should_show_again,
+                    });
+                    this.removeNotificationByKey({ key: notification.key });
+                }
+            }
+            return false;
+        });
     }
 
     @action.bound
@@ -445,6 +477,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleNotificationsModal() {
+        this.is_notifications_visible = !this.is_notifications_visible;
+    }
+
+    @action.bound
     toggleAccountSettings(is_visible) {
         this.is_account_settings_visible = is_visible;
     }
@@ -470,8 +507,113 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    updateNotifications(notifications_array) {
+        this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
+    }
+
+    @action.bound
+    removeNotifications(should_close_persistent) {
+        this.notifications = should_close_persistent
+            ? []
+            : [...this.notifications.filter(notifs => notifs.is_persistent)];
+    }
+
+    @action.bound
+    removeNotificationByKey({ key }) {
+        this.notifications = this.notifications.filter(n => n.key !== key);
+    }
+
+    @action.bound
+    removeNotificationMessageByKey({ key }) {
+        this.notification_messages = this.notification_messages.filter(n => n.key !== key);
+    }
+
+    @action.bound
+    addNotificationMessageByKey(key) {
+        if (key) this.addNotificationMessage(clientNotifications(this)[key]);
+    }
+
+    @action.bound
+    markNotificationMessage({ key }) {
+        this.marked_notifications.push(key);
+    }
+
+    @action.bound
+    unmarkNotificationMessage({ key }) {
+        this.marked_notifications = this.marked_notifications.filter(item => key !== item);
+    }
+
+    @action.bound
+    addNotificationMessage(notification) {
+        if (!notification) return;
+        if (!this.notification_messages.find(item => item.key === notification.key)) {
+            // Remove notification messages if it was already closed by user and exists in LocalStore
+            const active_loginid = LocalStore.get('active_loginid');
+            const messages = LocalStore.getObject('notification_messages');
+
+            if (active_loginid) {
+                // Check if is existing message to remove already closed messages stored in LocalStore
+                const is_existing_message = Array.isArray(messages[active_loginid])
+                    ? messages[active_loginid].includes(notification.key)
+                    : false;
+
+                if (is_existing_message) {
+                    this.markNotificationMessage({ key: notification.key });
+                }
+
+                const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;
+                this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
+
+                if (!excluded_notifications.includes(notification.key)) {
+                    this.updateNotifications(this.notification_messages);
+                }
+            }
+        }
+    }
+
+    @action.bound
+    removeNotificationMessage({ key, should_show_again } = {}) {
+        if (!key) return;
+        this.notification_messages = this.notification_messages.filter(n => n.key !== key);
+        // Add notification messages to LocalStore when user closes, check for redundancy
+        const active_loginid = LocalStore.get('active_loginid');
+        if (!excluded_notifications.includes(key) && active_loginid) {
+            const messages = LocalStore.getObject('notification_messages');
+            // Check if same message already exists in LocalStore for this account
+            if (messages[active_loginid] && messages[active_loginid].includes(key)) {
+                return;
+            }
+            const current_message = () => {
+                if (Array.isArray(messages[active_loginid])) {
+                    messages[active_loginid].push(key);
+                    return messages[active_loginid];
+                }
+                return [key];
+            };
+            if (!should_show_again) {
+                // Store message into LocalStore upon closing message
+                Object.assign(messages, { [active_loginid]: current_message() });
+                LocalStore.setObject('notification_messages', messages);
+            }
+        }
+    }
+
+    @action.bound
+    removeAllNotificationMessages(should_close_persistent) {
+        this.notification_messages = should_close_persistent
+            ? []
+            : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
+    }
+
+    @action.bound
     setHasOnlyForwardingContracts(has_only_forward_starting_contracts) {
         this.has_only_forward_starting_contracts = has_only_forward_starting_contracts;
+    }
+
+    @action.bound
+    addNotificationBar(message) {
+        this.push_notifications.push(message);
+        this.push_notifications = unique(this.push_notifications, 'msg_type');
     }
 
     @action.bound
@@ -522,16 +664,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
         this.is_reset_password_modal_visible = state_change;
-    }
-
-    @action.bound
-    toggleResetEmailModal(state_change = !this.is_reset_email_modal_visible) {
-        this.is_reset_email_modal_visible = state_change;
-    }
-
-    @action.bound
-    toggleUpdateEmailModal(state_change = !this.is_update_email_modal_visible) {
-        this.is_update_email_modal_visible = state_change;
     }
 
     @action.bound
@@ -627,7 +759,7 @@ export default class UIStore extends BaseStore {
     notifyAppInstall(prompt) {
         this.deferred_prompt = prompt;
         setTimeout(() => {
-            this.root_store.notifications.addNotificationMessageByKey('install_pwa');
+            this.addNotificationMessageByKey('install_pwa');
         }, 10000);
     }
 
@@ -637,11 +769,11 @@ export default class UIStore extends BaseStore {
         const choice = await this.deferred_prompt.userChoice;
         if (choice.outcome === 'accepted') {
             const notification_key = 'install_pwa';
-            this.root_store.notifications.removeNotificationMessage({
+            this.removeNotificationMessage({
                 key: notification_key,
                 should_show_again: false,
             });
-            this.root_store.notifications.removeNotificationByKey({ key: notification_key });
+            this.removeNotificationByKey({ key: notification_key });
         }
     }
 

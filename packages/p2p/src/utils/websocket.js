@@ -22,12 +22,8 @@ const populateInitialResponses = async () => {
 };
 
 export const requestWS = async request => {
-    // Added a check to proceed only if ws is available
-    if (ws) {
-        await populateInitialResponses();
-        return ws.send(request);
-    }
-    return null;
+    await populateInitialResponses();
+    return ws.send(request);
 };
 
 export const subscribeWS = (request, callbacks) =>

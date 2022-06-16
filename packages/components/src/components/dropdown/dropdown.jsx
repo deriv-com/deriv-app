@@ -251,11 +251,11 @@ const Dropdown = ({
         if (is_nativepicker && !is_nativepicker_visible && is_list_visible) {
             setIsListVisible(false);
         }
-    }, [is_nativepicker, is_nativepicker_visible, is_list_visible]);
+    }, [is_nativepicker, is_nativepicker_visible]);
 
     React.useEffect(() => {
         if (!initial_render.current && !is_list_visible && value) dropdown_ref.current.focus();
-    }, [is_list_visible, value]);
+    }, [is_list_visible]);
 
     const handleSelect = item => {
         if (item.value !== value) onChange({ target: { name, value: item.value } });
@@ -379,7 +379,6 @@ const Dropdown = ({
                     )}
                     <div
                         className={dropdownDisplayClassName()}
-                        data-testid='dti_dropdown_display'
                         tabIndex={isSingleOption() ? '-1' : '0'}
                         onClick={handleVisibility}
                         onKeyDown={onKeyPressed}

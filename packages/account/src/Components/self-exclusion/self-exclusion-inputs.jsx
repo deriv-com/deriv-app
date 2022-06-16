@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { Button, DatePicker, Icon, Input, Text } from '@deriv/components';
-import { getBrandWebsiteName, epochToMoment, toMoment, PlatformContext, isMobile } from '@deriv/shared';
+import { epochToMoment, toMoment, PlatformContext, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Field, useFormikContext } from 'formik';
 import SelfExclusionContext from './self-exclusion-context';
@@ -166,13 +166,13 @@ const StakeLossAndLimitsInputs = () => {
 const SessionAndLoginLimitsInputs = () => {
     const { is_mlt, is_mx, is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, setFieldValue, values } = useFormikContext();
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
         <React.Fragment>
             <SectionTitle
                 title={<Localize i18n_default_text='Your session and login limits' />}
-                has_border_line={is_appstore}
+                has_border_line={is_dashboard}
             />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
@@ -255,10 +255,7 @@ const SessionAndLoginLimitsInputs = () => {
                     <Icon icon='IcAlertWarning' className='da-self-exclusion__warning-icon' />
                     <div className='da-self-exclusion__warning-textbox'>
                         <Text as='p' size='xxxs'>
-                            <Localize
-                                i18n_default_text='Self-exclusion on the website only applies to your {{brand_website_name}} account and does not include other companies or websites.'
-                                values={{ brand_website_name: getBrandWebsiteName() }}
-                            />
+                            <Localize i18n_default_text='Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.' />
                         </Text>
                         <Text as='p' size='xxxs'>
                             {is_mlt ? (
@@ -313,13 +310,13 @@ const SessionAndLoginLimitsInputs = () => {
 const MaximumAccountBalanceAndOpenPositionsInputs = () => {
     const { currency_display, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values } = useFormikContext();
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
         <React.Fragment>
             <SectionTitle
                 title={<Localize i18n_default_text='Your maximum account balance and open positions' />}
-                has_border_line={is_appstore}
+                has_border_line={is_dashboard}
             />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
@@ -372,7 +369,7 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
 const MaximumDepositLimitInputs = () => {
     const { currency, is_mlt, is_mf, is_mx, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values } = useFormikContext();
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const should_render = is_mlt || is_mf || is_mx;
 
     if (!should_render) {
@@ -383,7 +380,7 @@ const MaximumDepositLimitInputs = () => {
         <React.Fragment>
             <SectionTitle
                 title={<Localize i18n_default_text='Your maximum deposit limit' />}
-                has_border_line={is_appstore}
+                has_border_line={is_dashboard}
             />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
@@ -464,13 +461,13 @@ const MaximumDepositLimitInputs = () => {
 };
 
 const SelfExclusionInputs = () => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const { footer_ref, goToConfirm, is_app_settings } = React.useContext(SelfExclusionContext);
     const { dirty, isSubmitting, isValid, values } = useFormikContext();
     const versions = {
         // Global settings for account for DWallet.
         dwallet: {
-            condition: !!is_appstore,
+            condition: !!is_dashboard,
             components: [
                 SessionAndLoginLimitsInputs,
                 MaximumAccountBalanceAndOpenPositionsInputs,
@@ -485,7 +482,7 @@ const SelfExclusionInputs = () => {
         },
         // Legacy Deriv.app, i.e. non-DWallet user accessing app.deriv.com/account/self-exclusion.
         deriv_app: {
-            condition: !!(!is_appstore && !is_app_settings),
+            condition: !!(!is_dashboard && !is_app_settings),
             components: [
                 StakeLossAndLimitsInputs,
                 SessionAndLoginLimitsInputs,

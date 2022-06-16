@@ -14,14 +14,7 @@ import {
     Text,
     useOnClickOutside,
 } from '@deriv/components';
-import {
-    routes,
-    formatMoney,
-    getCFDAccount,
-    getAccountTypeFields,
-    getPlatformSettings,
-    CFD_PLATFORMS,
-} from '@deriv/shared';
+import { routes, formatMoney, getCFDAccount, getAccountTypeFields, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
@@ -44,14 +37,11 @@ const AccountSwitcher = props => {
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
 
-    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
-    const platform_name_mt5 = getPlatformSettings('mt5').name;
-
     React.useEffect(() => {
         if (getMaxAccountsDisplayed()) {
             setDmt5RealVisible(false);
         }
-    }, [getMaxAccountsDisplayed]);
+    }, []);
 
     React.useEffect(() => {
         if (scroll_ref.current && (is_dmt5_real_visible || is_dxtrade_real_visible)) {
@@ -61,7 +51,7 @@ const AccountSwitcher = props => {
                 inline: 'nearest',
             });
         }
-    }, [getMaxAccountsDisplayed, is_dmt5_real_visible, is_dxtrade_real_visible]);
+    }, [is_dmt5_real_visible, is_dxtrade_real_visible]);
 
     const toggleVisibility = section => {
         switch (section) {
@@ -82,9 +72,9 @@ const AccountSwitcher = props => {
         }
     };
 
-    const getMaxAccountsDisplayed = React.useCallback(() => {
+    const getMaxAccountsDisplayed = () => {
         return props?.account_list?.length > 4;
-    }, [props?.account_list?.length]);
+    };
 
     const handleLogout = async () => {
         closeAccountsDialog();
@@ -279,8 +269,8 @@ const AccountSwitcher = props => {
 
     const findServerForAccount = acc => {
         const server_name = acc.error ? acc.error.details.server : acc.server;
-        return props.mt5_login_list.length >= 1
-            ? props.mt5_login_list.filter(account => !isDemo(account)).find(server => server.server === server_name)
+        return props.mt5_login_list.length > 1
+            ? props.mt5_login_list.find(server => server.server === server_name)
             : null;
     };
 
@@ -388,36 +378,22 @@ const AccountSwitcher = props => {
 
     const total_assets_message_demo = () => {
         if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize(
-                'Total assets in your Deriv, {{platform_name_mt5}} and {{platform_name_dxtrade}} demo accounts.',
-                { platform_name_dxtrade, platform_name_mt5 }
-            );
+            return localize('Total assets in your Deriv, DMT5 and Deriv X demo accounts.');
         } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and {{platform_name_mt5}} demo accounts.', {
-                platform_name_mt5,
-            });
+            return localize('Total assets in your Deriv and DMT5 demo accounts.');
         } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and {{platform_name_dxtrade}} demo accounts.', {
-                platform_name_dxtrade,
-            });
+            return localize('Total assets in your Deriv and Deriv X demo accounts.');
         }
         return localize('Total assets in your Deriv demo accounts.');
     };
 
     const total_assets_message_real = () => {
         if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize(
-                'Total assets in your Deriv, {{platform_name_mt5}} and {{platform_name_dxtrade}} real accounts.',
-                { platform_name_dxtrade, platform_name_mt5 }
-            );
+            return localize('Total assets in your Deriv, DMT5 and Deriv X real accounts.');
         } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
-            return (
-                localize('Total assets in your Deriv and {{platform_name_mt5}} real accounts.'), { platform_name_mt5 }
-            );
+            return localize('Total assets in your Deriv and DMT5 real accounts.');
         } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and {{platform_name_dxtrade}} real accounts.', {
-                platform_name_dxtrade,
-            });
+            return localize('Total assets in your Deriv and Deriv X real accounts.');
         }
         return localize('Total assets in your Deriv real accounts.');
     };
@@ -541,7 +517,7 @@ const AccountSwitcher = props => {
             )}
             {isDxtradeAllowed() && (
                 <AccountWrapper
-                    header={localize('{{platform_name_dxtrade}} Accounts', { platform_name_dxtrade })}
+                    header={localize('Deriv X Accounts')}
                     is_visible={is_dxtrade_demo_visible}
                     toggleVisibility={() => {
                         toggleVisibility('demo_dxtrade');
@@ -760,7 +736,7 @@ const AccountSwitcher = props => {
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
-                        header={localize('{{platform_name_dxtrade}} Accounts', { platform_name_dxtrade })}
+                        header={localize('Deriv X Accounts')}
                         is_visible={is_dxtrade_real_visible}
                         toggleVisibility={() => {
                             toggleVisibility('real_dxtrade');

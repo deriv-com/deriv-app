@@ -42,7 +42,7 @@ ErrorDialog.propTypes = {
     reset: PropTypes.func,
     setShouldShow: PropTypes.func,
     should_show: PropTypes.bool,
-    should_not_show_title: PropTypes.bool,
+    should_not_show_title: PropTypes.string,
 };
 
 export default connect(({ modules }) => ({

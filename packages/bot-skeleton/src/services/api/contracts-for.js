@@ -13,7 +13,7 @@ export default class ContractsFor {
         // e.g. if market omitted, rule will apply to all markets.
         this.disabled_options = [
             {
-                submarket: 'forex_basket',
+                submarket: 'smart_fx',
                 trade_type: 'higherlower',
             },
             {
@@ -235,10 +235,6 @@ export default class ContractsFor {
     }
 
     async getDurations(symbol, trade_type, convert_day_to_hours = true) {
-        if (trade_type === 'multiplier') {
-            return [];
-        }
-
         const contracts = await this.getContractsFor(symbol);
         const { NOT_AVAILABLE_DURATIONS, DEFAULT_DURATION_DROPDOWN_OPTIONS } = config;
 
@@ -343,24 +339,6 @@ export default class ContractsFor {
         }
 
         return prediction_range;
-    }
-
-    async getMultiplierRange(symbol, trade_type) {
-        const contracts = await this.getContractsByTradeType(symbol, trade_type);
-        const multiplier_range = [];
-        const { opposites } = config;
-
-        const contract = contracts.find(c => {
-            return Object.keys(opposites).some(category => {
-                return opposites[category].map(subcategory => Object.keys(subcategory)[0]).includes(c.contract_type);
-            });
-        });
-
-        if (contract?.multiplier_range) {
-            multiplier_range.push(...contract.multiplier_range);
-        }
-
-        return multiplier_range;
     }
 
     async getMarketBySymbol(symbol) {

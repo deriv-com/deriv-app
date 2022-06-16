@@ -4,12 +4,9 @@ import { Route, Switch } from 'react-router-dom';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon/icon.jsx';
 
-const SideNotes = ({ class_name, side_notes }) => {
+const SideNotes = ({ side_notes }) => {
     return (
-        <div
-            className={classNames('dc-vertical-tab__content-side-note', class_name)}
-            data-testid='vertical_tab_side_note'
-        >
+        <div className='dc-vertical-tab__content-side-note'>
             {side_notes?.map((note, i) => (
                 <div className='dc-vertical-tab__content-side-note-item' key={i}>
                     {note}
@@ -26,7 +23,7 @@ const ContentWrapper = ({ children, has_side_note }) => {
     return children;
 };
 
-const Content = ({ is_routed, items, selected, side_note_class_name }) => {
+const Content = ({ is_routed, items, selected }) => {
     const selected_item = items.find(item => item.label === selected.label);
     const previous_selected_item = usePrevious(selected_item);
     const TabContent = selected_item.value;
@@ -44,7 +41,6 @@ const Content = ({ is_routed, items, selected, side_note_class_name }) => {
             setSideNotes(notes_array[0] ?? null);
             notes_array.splice(0, notes_array.length);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_item]);
 
     return (
@@ -68,7 +64,7 @@ const Content = ({ is_routed, items, selected, side_note_class_name }) => {
             {selected.has_side_note && (
                 // for components that have side note, even if no note is passed currently,
                 // we want to keep the column space for side note
-                <SideNotes selected_item={selected_item} side_notes={side_notes} class_name={side_note_class_name} />
+                <SideNotes selected_item={selected_item} side_notes={side_notes} />
             )}
         </React.Fragment>
     );
@@ -83,7 +79,6 @@ const VerticalTabContentContainer = ({
     is_routed,
     items,
     selected,
-    side_note_class_name,
     tab_container_classname,
 }) => {
     return (
@@ -118,12 +113,7 @@ const VerticalTabContentContainer = ({
             )}
             <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
                 <ContentWrapper has_side_note={selected.has_side_note}>
-                    <Content
-                        is_routed={is_routed}
-                        items={items}
-                        selected={selected}
-                        side_note_class_name={side_note_class_name}
-                    />
+                    <Content is_routed={is_routed} items={items} selected={selected} />
                 </ContentWrapper>
             </div>
         </div>

@@ -21,7 +21,6 @@ const ContractTypeCell = ({ getContractTypeDisplay, is_high_low, multiplier, typ
 ContractTypeCell.propTypes = {
     getContractTypeDisplay: PropTypes.func,
     is_high_low: PropTypes.bool,
-    multiplier: PropTypes.number,
     type: PropTypes.string,
 };
 

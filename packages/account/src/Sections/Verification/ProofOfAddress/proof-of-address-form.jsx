@@ -83,7 +83,7 @@ const ProofOfAddressForm = ({
                 );
             });
         });
-    }, [account_settings, fetchResidenceList, fetchStatesList, is_eu, setFormValues]);
+    }, []);
 
     const validateFields = values => {
         setFormState({ ...form_state, ...{ should_allow_submit: false } });
@@ -154,7 +154,7 @@ const ProofOfAddressForm = ({
         if (is_eu) {
             const { citizen, tax_residence, tax_identification_number } = form_values;
             settings_values = removeEmptyPropertiesFromObject({
-                ...settings_values,
+                ...values,
                 citizen,
                 tax_identification_number,
                 tax_residence,
@@ -470,12 +470,12 @@ ProofOfAddressForm.propTypes = {
     states_list: PropTypes.array,
 };
 
-export default connect(({ client, notifications }) => ({
+export default connect(({ client, ui }) => ({
     account_settings: client.account_settings,
     is_eu: client.is_eu,
-    addNotificationByKey: notifications.addNotificationMessageByKey,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    removeNotificationByKey: notifications.removeNotificationByKey,
+    addNotificationByKey: ui.addNotificationMessageByKey,
+    removeNotificationMessage: ui.removeNotificationMessage,
+    removeNotificationByKey: ui.removeNotificationByKey,
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,

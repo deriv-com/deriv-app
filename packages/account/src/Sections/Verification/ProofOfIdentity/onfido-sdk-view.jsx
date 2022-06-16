@@ -127,7 +127,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                     resolve(onfido_cookie);
                 }
             }),
-        [token_country_code]
+        []
     );
 
     const handleError = error => {

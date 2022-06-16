@@ -34,7 +34,7 @@ const TradingDatePicker = ({
 
     React.useEffect(() => {
         onChangeCalendarMonth();
-    }, [onChangeCalendarMonth]);
+    }, []);
 
     React.useEffect(() => {
         if (duration !== current_duration) {
@@ -110,31 +110,28 @@ const TradingDatePicker = ({
         }
     };
 
-    const onChangeCalendarMonth = React.useCallback(
-        async (e = toMoment().format('YYYY-MM-DD')) => {
-            const new_market_events = [];
-            let new_disabled_days = [];
+    const onChangeCalendarMonth = async (e = toMoment().format('YYYY-MM-DD')) => {
+        const new_market_events = [];
+        let new_disabled_days = [];
 
-            const events = await ContractType.getTradingEvents(e, symbol);
-            events.forEach(evt => {
-                const dates = evt.dates.split(', '); // convert dates str into array
-                const idx = dates.indexOf('Fridays');
-                if (idx !== -1) {
-                    new_disabled_days = [6, 0]; // Sat, Sun
-                }
-                new_market_events.push({
-                    dates,
-                    descrip: evt.descrip,
-                });
-            });
-
-            if (isMounted()) {
-                setDisabledDays(new_disabled_days);
-                setMarketEvents(new_market_events);
+        const events = await ContractType.getTradingEvents(e, symbol);
+        events.forEach(evt => {
+            const dates = evt.dates.split(', '); // convert dates str into array
+            const idx = dates.indexOf('Fridays');
+            if (idx !== -1) {
+                new_disabled_days = [6, 0]; // Sat, Sun
             }
-        },
-        [isMounted, symbol]
-    );
+            new_market_events.push({
+                dates,
+                descrip: evt.descrip,
+            });
+        });
+
+        if (isMounted()) {
+            setDisabledDays(new_disabled_days);
+            setMarketEvents(new_market_events);
+        }
+    };
 
     const has_error = !!validation_errors[name].length;
 

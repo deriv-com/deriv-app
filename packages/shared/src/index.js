@@ -1,4 +1,3 @@
-export * from './utils/brand';
 export * from './utils/browser';
 export * from './utils/config';
 export * from './utils/contract';

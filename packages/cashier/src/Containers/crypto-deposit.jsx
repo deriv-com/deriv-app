@@ -46,13 +46,8 @@ const CryptoDeposit = ({
     const onChangeListOption = event => {
         const token_ETH = 'ETH';
         const token_USDC_eUSDT = 'ERC20';
-        let token = '';
 
-        if (currency === 'ETH') {
-            token = token_ETH;
-        } else if (['USDC', 'eUSDT'].includes(currency)) {
-            token = token_USDC_eUSDT;
-        }
+        const token = currency === 'ETH' ? token_ETH : ['USDC', 'eUSDT'].includes(currency) ? token_USDC_eUSDT : '';
 
         const setProhibitedTokenMessage = () => {
             const prohibited_token = token === token_ETH ? `${token_USDC_eUSDT} token` : token_ETH;
@@ -199,7 +194,7 @@ const CryptoDeposit = ({
                             (currency === 'ETH' && option_list_value === option_list[4].value) ||
                             (['USDC', 'eUSDT'].includes(currency) && option_list_value === option_list[3].value)) && (
                             <>
-                                <QRCode className='qrcode' value={deposit_address} size={160} includeMargin />
+                                <QRCode className='qrcode' value={deposit_address} size={160} />
                                 <div className='crypto-deposit__clipboard-wrapper'>
                                     <Text
                                         className='crypto-deposit__address-hash'

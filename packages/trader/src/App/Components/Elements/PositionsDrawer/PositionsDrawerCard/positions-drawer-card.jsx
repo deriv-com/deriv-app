@@ -113,41 +113,6 @@ const PositionsDrawerCard = ({
         </React.Fragment>
     );
 
-    const supported_contract_card = (
-        <div
-            className={classNames('dc-contract-card', {
-                'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
-            })}
-            onClick={() => toggleUnsupportedContractModal(true)}
-        >
-            {contract_info.underlying ? contract_el : loader_el}
-        </div>
-    );
-
-    const unsupported_contract_card = is_link_disabled ? (
-        <div
-            className={classNames('dc-contract-card', {
-                'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
-            })}
-        >
-            {contract_info.underlying ? contract_el : loader_el}
-        </div>
-    ) : (
-        <NavLink
-            className={classNames('dc-contract-card', {
-                'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
-            })}
-            to={{
-                pathname: `/contract/${contract_info.contract_id}`,
-            }}
-        >
-            {contract_info.underlying ? contract_el : loader_el}
-        </NavLink>
-    );
-
     return (
         <ContractCard
             contract_info={contract_info}
@@ -175,7 +140,41 @@ const PositionsDrawerCard = ({
                     if (typeof onMouseLeave === 'function') onMouseLeave();
                 }}
             >
-                {is_unsupported ? supported_contract_card : unsupported_contract_card}
+                {is_unsupported ? (
+                    <div
+                        className={classNames('dc-contract-card', {
+                            'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
+                            'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                        })}
+                        onClick={() => toggleUnsupportedContractModal(true)}
+                    >
+                        {contract_info.underlying ? contract_el : loader_el}
+                    </div>
+                ) : is_link_disabled ? (
+                    <div
+                        className={classNames('dc-contract-card', {
+                            'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
+                            'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                        })}
+                    >
+                        {contract_info.underlying ? contract_el : loader_el}
+                    </div>
+                ) : (
+                    <NavLink
+                        className={classNames('dc-contract-card', {
+                            'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
+                            'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                        })}
+                        to={{
+                            pathname: `/contract/${contract_info.contract_id}`,
+                            state: {
+                                // from_table_row: true,
+                            },
+                        }}
+                    >
+                        {contract_info.underlying ? contract_el : loader_el}
+                    </NavLink>
+                )}
                 {card_footer}
             </div>
         </ContractCard>

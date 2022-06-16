@@ -1,6 +1,5 @@
-import React from 'react';
 import { observable, action, reaction, computed, runInAction } from 'mobx';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
@@ -139,21 +138,8 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
-        const { is_multiplier } = this.root_store.summary_card;
-
-        if (is_multiplier) {
-            this.showStopMultiplierContractDialog();
-        } else {
-            this.stopBot();
-        }
-    }
-
-    @action.bound
-    stopBot() {
         const { ui } = this.root_store.core;
-
         this.dbot.stopBot();
-
         ui.setPromptHandler(false);
 
         if (this.error_type) {
@@ -220,44 +206,6 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    showStopMultiplierContractDialog() {
-        const { summary_card, core } = this.root_store;
-        const { ui } = core;
-
-        this.onOkButtonClick = () => {
-            ui.setPromptHandler(false);
-            this.dbot.terminateBot();
-            this.onCloseDialog();
-            summary_card.clear();
-        };
-        this.onCancelButtonClick = () => {
-            this.onClickSell();
-            this.stopBot();
-            this.onCloseDialog();
-        };
-        this.dialog_options = {
-            title: localize('Keep your current contract?'),
-            message: (
-                <Localize
-                    i18n_default_text='Would you like to keep your current contract or close it? If you decide to keep it running, you can check and close it later on the <0>Reports</0> page.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='/reports/positions'
-                        />,
-                    ]}
-                />
-            ),
-            ok_button_text: localize('Keep my contract'),
-            cancel_button_text: localize('Close my contract'),
-        };
-        this.is_dialog_open = true;
-    }
-
-    @action.bound
     showLoginDialog() {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
@@ -306,17 +254,6 @@ export default class RunPanelStore {
         this.is_dialog_open = true;
     }
 
-    @action.bound
-    showContractUpdateErrorDialog(message) {
-        this.onOkButtonClick = this.onCloseDialog;
-        this.onCancelButtonClick = undefined;
-        this.dialog_options = {
-            title: localize('Contract Update Error'),
-            message: localize(message),
-        };
-        this.is_dialog_open = true;
-    }
-
     registerBotListeners() {
         const { summary_card, transactions } = this.root_store;
 
@@ -333,7 +270,7 @@ export default class RunPanelStore {
     }
 
     registerReactions() {
-        const { client, common, notifications } = this.root_store.core;
+        const { client, common, ui } = this.root_store.core;
 
         const registerIsSocketOpenedListener = () => {
             if (common.is_socket_opened) {
@@ -341,7 +278,7 @@ export default class RunPanelStore {
                     () => client.loginid,
                     loginid => {
                         if (loginid && this.is_running) {
-                            notifications.addNotificationMessage(switch_account_notification);
+                            ui.addNotificationMessage(switch_account_notification);
                         }
                         this.dbot.terminateBot();
                         this.unregisterBotListeners();
@@ -405,7 +342,7 @@ export default class RunPanelStore {
 
     @action.bound
     onBotStopEvent() {
-        const { self_exclusion, summary_card } = this.root_store;
+        const { self_exclusion } = this.root_store;
         const { ui } = this.root_store.core;
         const indicateBotStopped = () => {
             this.error_type = undefined;
@@ -444,8 +381,6 @@ export default class RunPanelStore {
         }
 
         this.setHasOpenContract(false);
-
-        summary_card.clearContractUpdateConfigValues();
 
         // listen for new version update
         const listen_new_version = new Event('ListenPWAUpdate');
@@ -486,20 +421,16 @@ export default class RunPanelStore {
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
                 break;
             }
-            default:
+            default: {
+                this.setContractStage(contract_stages.NOT_RUNNING);
                 break;
+            }
         }
     }
 
     @action.bound
     onClickSell() {
-        const { is_multiplier } = this.root_store.summary_card;
-
-        if (is_multiplier) {
-            this.setContractStage(contract_stages.IS_STOPPING);
-        }
-
-        this.dbot.interpreter.bot.getInterface().sellAtMarket();
+        this.dbot.interpreter.bot.getBotInterface().sellAtMarket();
     }
 
     clear = () => {
@@ -531,25 +462,25 @@ export default class RunPanelStore {
 
     @action.bound
     showErrorMessage(data) {
-        const { journal, notifications } = this.root_store;
+        const { journal, ui } = this.root_store;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
             this.toggleDrawer(true);
             this.setActiveTabIndex(run_panel.JOURNAL);
         } else {
-            notifications.addNotificationMessage(journalError(this.switchToJournal));
-            notifications.removeNotificationMessage({ key: 'bot_error' });
+            ui.addNotificationMessage(journalError(this.switchToJournal));
+            ui.removeNotificationMessage({ key: 'bot_error' });
         }
     }
 
     @action.bound
     switchToJournal() {
-        const { journal, notifications } = this.root_store;
+        const { journal, ui } = this.root_store;
         journal.journal_filters.push(message_types.ERROR);
         this.setActiveTabIndex(run_panel.JOURNAL);
         this.toggleDrawer(true);
-        notifications.toggleNotificationsModal();
-        notifications.removeNotificationByKey({ key: 'bot_error' });
+        ui.toggleNotificationsModal();
+        ui.removeNotificationByKey({ key: 'bot_error' });
     }
 
     unregisterBotListeners = () => {

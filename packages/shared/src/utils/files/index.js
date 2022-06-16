@@ -1,1 +1,1 @@
-export * from './file-uploader-utils';
+export * from './file-uploader-utils.js';

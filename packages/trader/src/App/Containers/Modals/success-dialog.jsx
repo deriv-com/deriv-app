@@ -9,7 +9,7 @@ const Checkmark = ({ className }) => (
 );
 
 const SuccessDialog = ({
-    classNameMessage = '',
+    classNameMessage = undefined,
     has_cancel,
     has_submit,
     icon,
@@ -24,7 +24,7 @@ const SuccessDialog = ({
     toggleModal,
     title,
     has_close_icon,
-    width = '',
+    width = undefined,
     is_medium_button,
 }) => {
     return (
@@ -94,14 +94,10 @@ SuccessDialog.propTypes = {
     icon: PropTypes.object,
     icon_size: PropTypes.string,
     icon_type: PropTypes.string,
-    is_medium_button: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
-    text_cancel: PropTypes.string,
     text_submit: PropTypes.string,
-    title: PropTypes.string,
-    width: PropTypes.string,
 };
 
 export default SuccessDialog;

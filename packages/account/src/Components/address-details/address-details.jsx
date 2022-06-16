@@ -52,7 +52,7 @@ const AddressDetails = ({
     selected_step_ref,
     ...props
 }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
@@ -119,10 +119,10 @@ const AddressDetails = ({
                         <form ref={setRef} onSubmit={handleSubmit}>
                             <Div100vhContainer
                                 className='details-form'
-                                height_offset={is_appstore ? '222px' : '90px'}
+                                height_offset={is_dashboard ? '222px' : '90px'}
                                 is_disabled={isDesktop()}
                             >
-                                {!is_appstore && (
+                                {!is_dashboard && (
                                     <Text
                                         as='p'
                                         align='left'
@@ -137,7 +137,7 @@ const AddressDetails = ({
                                     </Text>
                                 )}
                                 <ThemedScrollbars height={height} className='details-form__scrollbar'>
-                                    {is_appstore && (
+                                    {is_dashboard && (
                                         <div className='details-form__sub-header'>
                                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                 {localize(
@@ -149,9 +149,9 @@ const AddressDetails = ({
                                     <div className='details-form__elements'>
                                         <InputField
                                             name='address_line_1'
-                                            required={is_svg || is_appstore}
+                                            required={is_svg || is_dashboard}
                                             label={
-                                                is_svg || is_appstore
+                                                is_svg || is_dashboard
                                                     ? localize('First line of address*')
                                                     : localize('First line of address')
                                             }
@@ -160,9 +160,9 @@ const AddressDetails = ({
                                         />
                                         <InputField
                                             name='address_line_2'
-                                            required={is_appstore}
+                                            required={is_dashboard}
                                             label={
-                                                is_appstore
+                                                is_dashboard
                                                     ? localize('Second line of address*')
                                                     : localize('Second line of address')
                                             }
@@ -171,9 +171,9 @@ const AddressDetails = ({
                                         />
                                         <InputField
                                             name='address_city'
-                                            required={is_svg || is_appstore}
+                                            required={is_svg || is_dashboard}
                                             label={
-                                                is_svg || is_appstore ? localize('Town/City*') : localize('Town/City')
+                                                is_svg || is_dashboard ? localize('Town/City*') : localize('Town/City')
                                             }
                                             placeholder={localize('Town/City')}
                                         />
@@ -205,7 +205,7 @@ const AddressDetails = ({
                                                                     );
                                                                     setAddressStateToDisplay('');
                                                                 }}
-                                                                list_portal_id={is_appstore ? '' : 'modal_root'}
+                                                                list_portal_id={is_dashboard ? '' : 'modal_root'}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -238,9 +238,11 @@ const AddressDetails = ({
                                         )}
                                         <InputField
                                             name='address_postcode'
-                                            required={is_gb_residence || is_appstore}
+                                            required={is_gb_residence || is_dashboard}
                                             label={
-                                                is_appstore ? localize('Postal/ZIP Code*') : localize('Postal/ZIP Code')
+                                                is_dashboard
+                                                    ? localize('Postal/ZIP Code*')
+                                                    : localize('Postal/ZIP Code')
                                             }
                                             placeholder={localize('Postal/ZIP Code')}
                                             onChange={e => {

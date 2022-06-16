@@ -1,4 +1,4 @@
-import { formatTime, findValueByKeyRecursively, getRoundedNumber, isEmptyObject } from '@deriv/shared';
+import { getRoundedNumber, formatTime, findValueByKeyRecursively } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -6,19 +6,18 @@ import { observer as globalObserver } from '../../../utils/observer';
 export const tradeOptionToProposal = (trade_option, purchase_reference) =>
     trade_option.contractTypes.map(type => {
         const proposal = {
-            amount: trade_option.amount,
-            basis: trade_option.basis,
-            contract_type: type,
-            currency: trade_option.currency,
-            duration: trade_option.duration,
+            proposal: 1,
             duration_unit: trade_option.duration_unit,
-            multiplier: trade_option.multiplier,
+            basis: trade_option.basis,
+            currency: trade_option.currency,
+            symbol: trade_option.symbol,
+            duration: trade_option.duration,
+            amount: trade_option.amount,
+            contract_type: type,
             passthrough: {
                 contract_type: type,
                 purchase_reference,
             },
-            proposal: 1,
-            symbol: trade_option.symbol,
         };
         if (trade_option.prediction !== undefined) {
             proposal.selected_tick = trade_option.prediction;
@@ -30,13 +29,6 @@ export const tradeOptionToProposal = (trade_option, purchase_reference) =>
         }
         if (trade_option.secondBarrierOffset !== undefined) {
             proposal.barrier2 = trade_option.secondBarrierOffset;
-        }
-        if (['MULTUP', 'MULTDOWN'].includes(type)) {
-            proposal.duration = undefined;
-            proposal.duration_unit = undefined;
-        }
-        if (!isEmptyObject(trade_option.limit_order)) {
-            proposal.limit_order = trade_option.limit_order;
         }
         return proposal;
     });
@@ -54,18 +46,7 @@ export const getDirection = ticks => {
     return direction;
 };
 
-export const getLastDigit = tick => {
-    let number_string = tick;
-    if (typeof number_string === 'number') {
-        number_string = String(number_string);
-    }
-    return Number(number_string[number_string.length - 1]);
-};
-
-export const getLastDigitForList = (tick, pip_size = 0) => {
-    const value = Number(tick).toFixed(pip_size);
-    return value[value.length - 1];
-};
+export const getLastDigit = (tick, pipSize) => Number(tick.toFixed(pipSize).slice(-1)[0]);
 
 const getBackoffDelayInMs = (error, delay_index) => {
     const base_delay = 2.5;

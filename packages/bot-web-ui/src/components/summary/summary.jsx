@@ -7,12 +7,12 @@ import SummaryCard from './summary-card.jsx';
 
 const Summary = ({ is_mobile, is_drawer_open }) => (
     <div
-        className={classnames({
+        className={classnames('summary', {
             'run-panel-tab__content': !is_mobile,
             'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
         })}
     >
-        <ThemedScrollbars className='summary'>
+        <ThemedScrollbars>
             <SummaryCard />
         </ThemedScrollbars>
     </div>
@@ -20,7 +20,6 @@ const Summary = ({ is_mobile, is_drawer_open }) => (
 
 Summary.propTypes = {
     is_mobile: PropTypes.bool,
-    is_drawer_open: PropTypes.bool,
 };
 
 export default connect(({ ui }) => ({

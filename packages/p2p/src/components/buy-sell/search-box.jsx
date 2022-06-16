@@ -42,7 +42,7 @@ const SearchBox = () => {
     };
 
     return (
-        <div className='search-box' data-testid='dp2p-search-box_container'>
+        <div className='search-box'>
             <Formik initialValues={{ search: '' }} onSubmit={onSearch}>
                 {({ submitForm, values: { search }, setFieldValue }) => (
                     <Form>
@@ -63,7 +63,6 @@ const SearchBox = () => {
                                                 className='search-box__cross-icon'
                                                 color='secondary'
                                                 icon='IcCloseCircle'
-                                                data_testid='dp2p-search-box__cross_icon'
                                                 onClick={() => onSearchClear(setFieldValue)}
                                             />
                                         ) : null

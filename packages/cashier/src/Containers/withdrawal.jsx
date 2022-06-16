@@ -72,7 +72,7 @@ const Withdrawal = ({
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
         }
-    }, [is_crypto_transactions_visible, is_switching, recentTransactionOnMount]);
+    }, [is_switching]);
 
     React.useEffect(() => {
         setActiveTab(container);
@@ -155,7 +155,7 @@ Withdrawal.propTypes = {
     balance: PropTypes.string,
     container: PropTypes.string,
     crypto_transactions: PropTypes.array,
-    current_currency_type: PropTypes.string,
+    current_currency_type: PropTypes.bool,
     error: PropTypes.object,
     iframe_url: PropTypes.string,
     is_cashier_locked: PropTypes.bool,

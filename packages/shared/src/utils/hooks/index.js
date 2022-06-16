@@ -1,2 +1,2 @@
-export * from './mounted';
-export * from './new-row-transition';
+export * from './mounted.js';
+export * from './new-row-transition.js';

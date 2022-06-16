@@ -23,7 +23,6 @@ export default class GeneralStore extends BaseStore {
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
-    @observable order_timeout = 0;
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -65,6 +64,12 @@ export default class GeneralStore extends BaseStore {
     @computed
     get is_my_profile_tab_visible() {
         return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
+    }
+
+    @computed
+    get is_unsupported_account() {
+        const allowed_currency = 'USD';
+        return this.client?.is_virtual || this.client?.currency !== allowed_currency;
     }
 
     @computed
@@ -227,6 +232,7 @@ export default class GeneralStore extends BaseStore {
             }
 
             const { sendbird_store } = this.root_store;
+
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {
@@ -369,21 +375,6 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setOrderTimeOut(time) {
-        this.order_timeout = time;
-    }
-
-    @action.bound
-    setP2PConfig() {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response && !response.error) {
-                const { order_payment_period } = response.website_status?.p2p_config;
-                this.setOrderTimeOut(order_payment_period);
-            }
-        });
-    }
-
-    @action.bound
     setP2pOrderList(order_response) {
         if (order_response.error) {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
@@ -454,14 +445,17 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     updateAdvertiserInfo(response) {
         const { p2p_advertiser_info } = response;
+
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
             this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
+            this.setShouldShowRealName(!!p2p_advertiser_info.show_name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
+
             if (response.error.code === 'RestrictedCountry') {
                 this.setIsRestricted(true);
             } else if (response.error.code === 'AdvertiserNotFound') {

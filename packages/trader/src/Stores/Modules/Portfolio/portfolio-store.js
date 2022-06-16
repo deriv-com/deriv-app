@@ -113,14 +113,9 @@ export default class PortfolioStore extends BaseStore {
             // Sometimes when we sell a contract, we don't get `proposal_open_contract` message with exit information and status as `sold`.
             // This is to make sure that we get `proposal_open_contract` message with exit information and status as `sold`.
             const subscriber = WS.subscribeProposalOpenContract(contract_id, poc => {
-                if (poc.error) {
-                    // Settles the contract based on transaction response when POC response is throwing error.
-                    this.populateResultDetailsFromTransaction(response);
-                } else {
-                    this.updateContractTradeStore(poc);
-                    this.updateContractReplayStore(poc);
-                    this.populateResultDetails(poc);
-                }
+                this.updateContractTradeStore(poc);
+                this.updateContractReplayStore(poc);
+                this.populateResultDetails(poc);
                 subscriber.unsubscribe();
             });
         }
@@ -240,7 +235,7 @@ export default class PortfolioStore extends BaseStore {
                         ...response.error,
                     });
                 } else {
-                    this.root_store.notifications.addNotificationMessage(contractCancelled());
+                    this.root_store.ui.addNotificationMessage(contractCancelled());
                 }
             });
         }
@@ -278,37 +273,11 @@ export default class PortfolioStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.notifications.addNotificationMessage(
+            this.root_store.ui.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for)
             );
         }
     }
-
-    @action.bound
-    populateResultDetailsFromTransaction = response => {
-        const transaction_response = response.transaction;
-        const { contract_id, amount } = transaction_response;
-        const i = this.getPositionIndexById(contract_id);
-        const position = this.positions[i];
-
-        if (!position) {
-            return;
-        }
-        const contract_info = { ...position.contract_info, is_sold: 1, is_expired: 1, status: 'complete' };
-
-        position.contract_info = contract_info;
-        position.is_valid_to_sell = false;
-        position.result = amount > contract_info.buy_price ? 'won' : 'lost';
-        position.status = 'complete';
-        position.is_sold = 1;
-        position.is_loading = false;
-
-        contract_info.exit_tick_time = contract_info.date_expiry;
-        contract_info.sell_price = String(amount);
-        contract_info.profit = amount - contract_info.buy_price;
-
-        this.updatePositions();
-    };
 
     @action.bound
     populateResultDetails = response => {

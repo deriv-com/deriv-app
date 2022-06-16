@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import { Modal, Carousel, Icon, Button, ThemedScrollbars, Text } from '@deriv/components';
-import { routes, isMobile, getPlatformSettings } from '@deriv/shared';
+import { routes, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const WelcomeColumn = ({
@@ -125,12 +125,9 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_
     const getLeftPlatforms = () => {
         const platforms = [
             {
-                icon: getPlatformSettings('mt5').icon,
+                icon: 'IcBrandDmt5',
                 title: localize('DMT5'),
-                description: localize(
-                    'Trade on Deriv MT5 ({{platform_name_dmt5}}), the all-in-one FX and CFD trading platform.',
-                    { platform_name_dmt5: getPlatformSettings('dmt5').name }
-                ),
+                description: localize('Trade on Deriv MT5 (DMT5), the all-in-one FX and CFD trading platform.'),
                 onButtonClick: () => switchPlatform(routes.mt5),
                 button_text: localize('Trade on MT5'),
             },
@@ -138,15 +135,11 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_
 
         if (is_dxtrade_allowed) {
             platforms.push({
-                icon: getPlatformSettings('dxtrade').icon,
-                title: localize('{{platform_name_dxtrade}}', {
-                    platform_name_dxtrade: getPlatformSettings('dxtrade').name,
-                }),
+                icon: 'IcBrandDxtrade',
+                title: localize('Deriv X'),
                 description: localize('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
                 onButtonClick: () => switchPlatform(routes.dxtrade),
-                button_text: localize('Trade on {{platform_name_dxtrade}}', {
-                    platform_name_dxtrade: getPlatformSettings('dxtrade').name,
-                }),
+                button_text: localize('Trade on Deriv X'),
             });
         }
         return platforms;
@@ -180,23 +173,19 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_
             onButtonClick={() => switchPlatform(routes.trade)}
             platforms={[
                 {
-                    icon: getPlatformSettings('trader').icon,
-                    title: getPlatformSettings('trader').name,
+                    icon: 'IcBrandDtrader',
+                    title: localize('DTrader'),
                     description: localize('Our flagship options and multipliers trading platform.'),
                     onButtonClick: () => switchPlatform(routes.trade),
-                    button_text: localize('Trade on {{platform_name_trader}}', {
-                        platform_name_trader: getPlatformSettings('trader').name,
-                    }),
+                    button_text: localize('Trade on DTrader'),
                 },
                 is_bot_allowed
                     ? {
-                          icon: getPlatformSettings('dbot').icon,
-                          title: getPlatformSettings('dbot').name,
+                          icon: 'IcBrandDbot',
+                          title: localize('DBot'),
                           description: localize('Automate your trading, no coding needed.'),
                           onButtonClick: () => switchPlatform(routes.bot),
-                          button_text: localize('Trade on {{platform_name_dbot}}', {
-                              platform_name_dbot: getPlatformSettings('dbot').name,
-                          }),
+                          button_text: localize('Trade on DBot'),
                       }
                     : null,
             ]}

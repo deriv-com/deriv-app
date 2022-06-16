@@ -6,6 +6,6 @@ export const createScope = () => {
     const observer = new Observer();
     const api = generateDerivApiInstance();
     const ticksService = new TicksService(api);
-    const stopped = false;
-    return { observer, api, ticksService, stopped };
+
+    return { observer, api, ticksService };
 };

@@ -59,7 +59,6 @@ const Input = React.forwardRef(
                     className={classNames('dc-input', className, {
                         'dc-input--disabled': disabled,
                         'dc-input--error': error,
-                        'dc-input--hint': hint,
                         'dc-input--bottom-label-active': bottom_label,
                     })}
                 >
@@ -91,7 +90,6 @@ const Input = React.forwardRef(
                             disabled={disabled}
                             data-lpignore={props.type === 'password' ? undefined : true}
                             id={input_id}
-                            aria-label={label}
                         />
                     )}
                     {trailing_icon &&

@@ -4,7 +4,6 @@ import {
     cloneObject,
     extractInfoFromShortcode,
     getMinPayout,
-    getPlatformSettings,
     getPropertyValue,
     isCryptocurrency,
     isDesktop,
@@ -344,12 +343,8 @@ export default class TradeStore extends BaseStore {
                     text: localize(
                         'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
                     ),
-                    title: localize('{{platform_name_trader}} is not available for this account', {
-                        platform_name_trader: getPlatformSettings('trader').name,
-                    }),
-                    link: localize('Go to {{platform_name_mt5}} dashboard', {
-                        platform_name_mt5: getPlatformSettings('mt5').name,
-                    }),
+                    title: localize('DTrader is not available for this account'),
+                    link: localize('Go to DMT5 dashboard'),
                 });
                 return;
             }
@@ -809,9 +804,11 @@ export default class TradeStore extends BaseStore {
 
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
-            await processTradeParams(this, new_state);
+            const snapshot = await processTradeParams(this, new_state);
+            snapshot.is_trade_enabled = true;
 
             this.updateStore({
+                ...snapshot,
                 ...(!this.is_initial_barrier_applied ? this.initial_barriers : {}),
             });
             this.is_initial_barrier_applied = true;
@@ -1101,7 +1098,6 @@ export default class TradeStore extends BaseStore {
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
-        this.root_store.notifications.setShouldShowPopups(false);
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
@@ -1111,8 +1107,7 @@ export default class TradeStore extends BaseStore {
         this.setChartStatus(true);
         runInAction(async () => {
             this.is_trade_component_mounted = true;
-            await this.prepareTradeStore();
-            this.root_store.notifications.setShouldShowPopups(true);
+            this.prepareTradeStore();
         });
         // TODO: remove this function when the closure of MX and MLT accounts is completed.
         this.manageMxMltRemovalNotification();
@@ -1120,21 +1115,33 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     manageMxMltRemovalNotification() {
-        const { addNotificationMessage, client_notifications, notification_messages, unmarkNotificationMessage } =
-            this.root_store.notifications;
+        const client_notifications = this.root_store.client.client_notifications;
         const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages'));
-        const { has_iom_account, has_malta_account, is_logged_in } = this.root_store.client;
-        unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
+        const is_logged_in = this.root_store.client.is_logged_in;
+        const has_iom_account = this.root_store.client.has_iom_account;
+        const has_malta_account = this.root_store.client.has_malta_account;
+        this.root_store.ui.unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
         if (get_notification_messages !== null && is_logged_in && (has_iom_account || has_malta_account)) {
             when(
-                () => is_logged_in && notification_messages.length === 0,
+                () => this.root_store.client.is_logged_in && this.root_store.ui.notification_messages.length === 0,
                 () => {
                     const hidden_close_account_notification =
                         parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
                     const should_retain_notification =
                         (has_iom_account || has_malta_account) && !hidden_close_account_notification;
                     if (should_retain_notification) {
-                        addNotificationMessage(client_notifications.close_mx_mlt_account);
+                        const mx_mlt_custom_header_reaction =
+                            this.root_store.client.custom_notifications.mx_mlt_notification.header();
+                        const mx_mlt_custom_content_reaction =
+                            this.root_store.client.custom_notifications.mx_mlt_notification.main();
+                        this.root_store.ui.addNotificationMessage(
+                            client_notifications(
+                                this.root_store.ui,
+                                {},
+                                mx_mlt_custom_header_reaction,
+                                mx_mlt_custom_content_reaction
+                            ).close_mx_mlt_account
+                        );
                     }
                 }
             );
@@ -1171,8 +1178,8 @@ export default class TradeStore extends BaseStore {
         this.root_store.modules.contract_trade.onUnmount();
         this.refresh();
         this.resetErrorServices();
-        if (this.root_store.notifications.is_notifications_visible) {
-            this.root_store.notifications.toggleNotificationsModal();
+        if (this.root_store.ui.is_notifications_visible) {
+            this.root_store.ui.toggleNotificationsModal();
         }
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;

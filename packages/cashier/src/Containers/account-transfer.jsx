@@ -130,7 +130,7 @@ export default connect(({ client, modules }) => ({
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_loading: modules.cashier.general_store.is_loading,
     is_transfer_confirm: modules.cashier.account_transfer.is_transfer_confirm,
-    is_transfer_lock: modules.cashier.general_store.is_transfer_locked,
+    is_transfer_lock: modules.cashier.general_store.is_transfer_lock,
     onMount: modules.cashier.account_transfer.onMountAccountTransfer,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.general_store.setActiveTab,

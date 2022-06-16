@@ -11,7 +11,6 @@ const AccountTransferReceipt = ({
     disableApp,
     enableApp,
     history,
-    is_from_derivgo,
     loginid,
     receipt,
     resetAccountTransfer,
@@ -107,16 +106,14 @@ const AccountTransferReceipt = ({
                 </div>
             </div>
             <div className='account-transfer-receipt__crypto--form-submit'>
-                {!is_from_derivgo && (
-                    <Button
-                        className='account-transfer-receipt__button'
-                        has_effect
-                        text={localize('View transaction details')}
-                        onClick={checkAccount}
-                        secondary
-                        large
-                    />
-                )}
+                <Button
+                    className='account-transfer-receipt__button'
+                    has_effect
+                    text={localize('View transaction details')}
+                    onClick={checkAccount}
+                    secondary
+                    large
+                />
                 <Button
                     className='account-transfer-receipt__button'
                     has_effect
@@ -160,7 +157,6 @@ const AccountTransferReceipt = ({
 AccountTransferReceipt.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
-    is_from_derivgo: PropTypes.bool,
     loginid: PropTypes.string,
     receipt: PropTypes.object,
     resetAccountTransfer: PropTypes.func,
@@ -170,15 +166,14 @@ AccountTransferReceipt.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, common, modules, ui }) => ({
-        disableApp: ui.disableApp,
-        enableApp: ui.enableApp,
-        is_from_derivgo: common.is_from_derivgo,
+    connect(({ client, modules, ui }) => ({
         loginid: client.loginid,
+        switchAccount: client.switchAccount,
         receipt: modules.cashier.account_transfer.receipt,
         resetAccountTransfer: modules.cashier.account_transfer.resetAccountTransfer,
         selected_from: modules.cashier.account_transfer.selected_from,
         selected_to: modules.cashier.account_transfer.selected_to,
-        switchAccount: client.switchAccount,
+        disableApp: ui.disableApp,
+        enableApp: ui.enableApp,
     }))(AccountTransferReceipt)
 );

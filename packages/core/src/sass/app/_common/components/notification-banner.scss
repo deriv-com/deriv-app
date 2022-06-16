@@ -7,7 +7,7 @@
     box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
     width: 100%;
     max-width: 40rem;
-    min-height: 14.4rem;
+    height: 14.4rem;
     transition: transform 0.25s ease, opacity 0.25s linear;
     z-index: 10;
     margin-bottom: 16px;
@@ -26,6 +26,10 @@
         padding: 1.6rem 0 1.6rem 1.6rem;
         width: 50%;
         min-width: 210px;
+
+        @include mobile {
+            min-width: unset;
+        }
     }
     &--right {
         position: relative;
@@ -48,7 +52,7 @@
             margin-top: 4rem;
 
             @include mobile {
-                margin-top: 1rem;
+                margin-top: 2rem;
             }
         }
     }
@@ -62,14 +66,6 @@
         border-top-right-radius: $BORDER_RADIUS;
         border-bottom-right-radius: $BORDER_RADIUS;
         z-index: 11;
-
-        .notification-banner__trustpilot & {
-            max-width: 13.8rem;
-
-            @include mobile {
-                max-width: 11rem;
-            }
-        }
     }
     &__img {
         position: absolute;
@@ -97,7 +93,7 @@
 
     @include mobile {
         height: 100%;
-        max-height: 13.8rem;
+        max-height: 11.8rem;
         width: calc(100vw - 1.6rem);
         left: 0.8rem;
         top: -0.2rem;

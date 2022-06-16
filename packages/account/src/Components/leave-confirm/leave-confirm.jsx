@@ -8,7 +8,7 @@ import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
 const LeaveConfirmMessage = ({ back, leave }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     return (
         <IconMessageContent
             className='leave-confirm'
@@ -16,9 +16,8 @@ const LeaveConfirmMessage = ({ back, leave }) => {
             text={localize('You have unsaved changes. Are you sure you want to discard changes and leave this page?')}
             icon={
                 <Icon
-                    icon={is_appstore ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'}
+                    icon={is_dashboard ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'}
                     size={isMobile() ? 93 : 128}
-                    data_testid='unsaved_changes_icon'
                 />
             }
         >
@@ -47,7 +46,7 @@ const LeaveConfirmMessage = ({ back, leave }) => {
  * Blocks routing if Formik form is dirty
  * Has to be a child of <Formik> for FormikConsumer to work
  */
-export const TransitionBlocker = ({ dirty, onDirty }) => {
+const TransitionBlocker = ({ dirty, onDirty }) => {
     const [show, setShow] = React.useState(false);
     const [next_location, setNextLocation] = React.useState(null);
     const history = useHistory();
@@ -96,7 +95,7 @@ export const TransitionBlocker = ({ dirty, onDirty }) => {
         </>
     );
 };
-export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
+const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 
 const LeaveConfirm = ({ onDirty }) => (
     <FormikConsumer>

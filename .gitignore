@@ -18,7 +18,6 @@ packages/account/lib/
 packages/components/.out
 packages/components/src/components/icon/icons-manifest.js
 packages/p2p/lib/
-packages/appstore/dist/
-packages/appstore/lib/
+packages/dashboard/lib/
 .env
 

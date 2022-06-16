@@ -12,7 +12,6 @@ import {
     RunPanel,
     RoutePromptDialog,
     Toolbar,
-    NetworkToastPopup,
 } from 'Components';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
@@ -28,8 +27,7 @@ const App = ({ passthrough }) => {
 
     React.useEffect(() => {
         showDigitalOptionsMaltainvestError(core.client, common);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [core.client.is_options_blocked, core.client.account_settings.country_code]);
+    }, [core.client.is_options_blocked]);
 
     React.useEffect(() => {
         GTM.init(root_store_instance.current);
@@ -48,24 +46,12 @@ const App = ({ passthrough }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMount, onUnmount]);
 
-    React.useEffect(() => {
-        const onDisconnectFromNetwork = () => {
-            setIsLoading(false);
-        };
-
-        window.addEventListener('offline', onDisconnectFromNetwork);
-        return () => {
-            window.removeEventListener('offline', onDisconnectFromNetwork);
-        };
-    }, []);
-
     return is_loading ? (
         <Loading />
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
             <div className='bot'>
                 <BotNotificationMessages />
-                <NetworkToastPopup />
                 <Toolbar />
                 <MainContent />
                 <RunPanel />

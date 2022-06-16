@@ -65,7 +65,7 @@ const PositionsDrawer = ({
 
     React.useEffect(() => {
         onMount();
-    }, [onMount]);
+    }, []);
 
     React.useEffect(() => {
         list_ref?.current?.scrollTo(0);

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loading from '../../../templates/_common/components/loading';
+import Loading from '../../../templates/_common/components/loading.jsx';
 
 const PlaceholderComponent = props => {
     const EmptyMessageComponent = props.empty_message_component;

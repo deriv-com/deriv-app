@@ -181,8 +181,6 @@ const DataList = React.memo(
     }
 );
 
-DataList.displayName = 'DataList';
-
 DataList.Cell = DataListCell;
 DataList.propTypes = {
     className: PropTypes.string,

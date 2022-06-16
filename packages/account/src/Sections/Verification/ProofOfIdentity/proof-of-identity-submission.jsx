@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi-country-selector';
@@ -60,54 +59,41 @@ const POISubmission = ({
 
     const handleBack = () => setSubmissionStatus(submission_status_code.selecting);
 
-    const getCountryFromResidence = React.useCallback(
-        country_code => residence_list.find(residence => residence.value === country_code),
-        [residence_list]
-    );
+    const getCountryFromResidence = country_code => residence_list.find(residence => residence.value === country_code);
 
     React.useEffect(() => {
-        if (submission_status !== submission_status_code.complete) {
-            if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
-                switch (identity_last_attempt.service) {
-                    case service_code.idv: {
-                        if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
-                            setSubmissionStatus(submission_status_code.selecting);
-                        } else {
-                            setSubmissionService(service_code.manual);
-                            setSubmissionStatus(submission_status_code.submitting);
-                        }
-                        break;
-                    }
-                    case service_code.onfido: {
-                        if (Number(onfido.submissions_left) > 0) {
-                            setSubmissionStatus(submission_status_code.selecting);
-                        } else {
-                            setSubmissionService(service_code.manual);
-                            setSubmissionStatus(submission_status_code.submitting);
-                        }
-                        break;
-                    }
-                    case service_code.manual: {
-                        setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
-                        setSubmissionStatus(submission_status_code.submitting);
+        if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
+            switch (identity_last_attempt.service) {
+                case service_code.idv: {
+                    if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
+                        setSubmissionStatus(submission_status_code.selecting);
+                    } else {
                         setSubmissionService(service_code.manual);
-                        break;
+                        setSubmissionStatus(submission_status_code.submitting);
                     }
-                    default:
-                        break;
+                    break;
                 }
-            } else {
-                setSubmissionStatus(submission_status_code.selecting);
+                case service_code.onfido: {
+                    if (Number(onfido.submissions_left) > 0) {
+                        setSubmissionStatus(submission_status_code.selecting);
+                    } else {
+                        setSubmissionService(service_code.manual);
+                    }
+                    break;
+                }
+                case service_code.manual: {
+                    setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
+                    setSubmissionStatus(submission_status_code.submitting);
+                    setSubmissionService(service_code.manual);
+                    break;
+                }
+                default:
+                    break;
             }
+        } else {
+            setSubmissionStatus(submission_status_code.selecting);
         }
-    }, [
-        allow_poi_resubmission,
-        getCountryFromResidence,
-        has_require_submission,
-        identity_last_attempt,
-        idv.submissions_left,
-        onfido.submissions_left,
-    ]);
+    }, []);
 
     switch (submission_status) {
         case submission_status_code.selecting: {

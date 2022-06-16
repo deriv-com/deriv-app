@@ -12,7 +12,7 @@ const ExpansionPanel = ({ message, onResize }) => {
         if (typeof onResize === 'function') {
             onResize();
         }
-    }, [is_open, onResize]);
+    }, [is_open]);
 
     const onClick = () => {
         // close if clicking the expansion panel that's open, otherwise open the new one

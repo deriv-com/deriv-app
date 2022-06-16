@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
+import { isCryptocurrency } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CashierContainer from 'Components/cashier-container.jsx';
 import CashierDefault from 'Components/CashierDefault/cashier-default.jsx';
@@ -22,7 +23,6 @@ const Deposit = ({
     error,
     is_cashier_locked,
     is_cashier_default,
-    is_crypto,
     is_crypto_transactions_visible,
     is_deposit,
     is_deposit_locked,
@@ -42,6 +42,8 @@ const Deposit = ({
     setSideNotes,
     tab_index,
 }) => {
+    const is_crypto = !!currency && isCryptocurrency(currency);
+
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
@@ -62,7 +64,7 @@ const Deposit = ({
     React.useEffect(() => {
         if (typeof setSideNotes === 'function') {
             if (is_switching || is_deposit) setSideNotes(null);
-            if (is_crypto && is_deposit && !is_switching) {
+            if (isCryptocurrency(currency) && is_deposit && !is_switching) {
                 const side_notes = [
                     ...(crypto_transactions.length ? [<RecentTransaction key={2} />] : []),
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
@@ -102,7 +104,7 @@ const Deposit = ({
         if (error.message) {
             return <Error error={error} />;
         }
-        if (is_crypto) {
+        if (isCryptocurrency(currency)) {
             return <CryptoDeposit />;
         }
 
@@ -111,6 +113,7 @@ const Deposit = ({
                 iframe_height={iframe_height}
                 iframe_url={iframe_url}
                 is_loading={is_loading}
+                is_crypto={is_crypto}
                 clearIframe={clearIframe}
             />
         );
@@ -126,7 +129,6 @@ Deposit.propTypes = {
     is_cashier_default: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_deposit: PropTypes.bool,
-    is_crypto: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
     is_eu: PropTypes.bool,
@@ -153,7 +155,6 @@ export default connect(({ client, modules }) => ({
     error: modules.cashier.deposit.error,
     is_cashier_default: modules.cashier.general_store.is_cashier_default,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
-    is_crypto: modules.cashier.general_store.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_deposit: modules.cashier.general_store.is_deposit,
     is_deposit_locked: modules.cashier.deposit.is_deposit_locked,

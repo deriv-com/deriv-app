@@ -1,7 +1,5 @@
 import { observable, action, runInAction } from 'mobx';
-import { config } from '@deriv/bot-skeleton';
-import { help_content_config } from 'Utils/help-content/help-content.config';
-import * as help_strings from 'Utils/help-content/help-strings';
+import { config, help_content_config } from '@deriv/bot-skeleton';
 
 export default class FlyoutHelpStore {
     constructor(root_store) {
@@ -32,6 +30,7 @@ export default class FlyoutHelpStore {
         if (block_type !== '') {
             this.active_helper = block_type;
         }
+        const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
 
         const { flyout } = this.root_store;
         this.setExamples(block_type);
@@ -43,7 +42,7 @@ export default class FlyoutHelpStore {
             this.block_node = block_node;
             this.block_type = block_type;
             this.title = title;
-            this.help_string = help_strings[block_type];
+            this.help_string = help_string_obj[block_type];
         });
 
         if (!flyout.is_search_flyout) {
@@ -54,10 +53,12 @@ export default class FlyoutHelpStore {
     getHelpContent = async block_node => {
         let block_content;
 
+        const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
+
         if (block_node) {
             const target_blocks = this.xml_list_group[block_node];
             const block_type = target_blocks[0].getAttribute('type');
-            block_content = help_strings[block_type];
+            block_content = help_string_obj[block_type];
         }
         return block_content;
     };

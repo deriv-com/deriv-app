@@ -336,7 +336,7 @@ AccountWizard.propTypes = {
     residence_list: PropTypes.array,
 };
 
-export default connect(({ client, notifications, ui }) => ({
+export default connect(({ client, ui }) => ({
     account_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
     realAccountSignup: client.realAccountSignup,
@@ -351,7 +351,7 @@ export default connect(({ client, notifications, ui }) => ({
     states_list: client.states_list,
     fetchStatesList: client.fetchStatesList,
     fetchResidenceList: client.fetchResidenceList,
-    refreshNotifications: notifications.refreshNotifications,
+    refreshNotifications: client.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
 }))(AccountWizard);

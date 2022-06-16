@@ -16,7 +16,6 @@ const ContractTypeDialog = ({
     onBackButtonClick,
     onChangeInput,
     onCategoryClick,
-    show_loading,
 }) => (
     <React.Fragment>
         <MobileWrapper>
@@ -43,7 +42,6 @@ const ContractTypeDialog = ({
                 onBackButtonClick={onBackButtonClick}
                 onChangeInput={onChangeInput}
                 onCategoryClick={onCategoryClick}
-                show_loading={show_loading}
             >
                 {children}
             </ContractTypeMenu>
@@ -55,7 +53,6 @@ ContractTypeDialog.propTypes = {
     children: PropTypes.element,
     onClose: PropTypes.func,
     open: PropTypes.bool,
-    show_loading: PropTypes.bool,
 };
 
 export default ContractTypeDialog;

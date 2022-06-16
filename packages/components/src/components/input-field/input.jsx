@@ -31,10 +31,10 @@ const Input = ({
     setCurrentFocus,
     type,
 }) => {
-    const ref = React.useRef();
+    const ref = React.createRef();
     React.useEffect(() => {
         if (current_focus === name) {
-            ref?.current?.focus();
+            ref.current.focus();
         }
     }, [current_focus, name]);
 

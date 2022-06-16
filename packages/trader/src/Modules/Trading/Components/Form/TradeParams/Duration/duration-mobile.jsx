@@ -44,7 +44,6 @@ const Ticks = ({
 }) => {
     React.useEffect(() => {
         setDurationError(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');

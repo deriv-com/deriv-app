@@ -1,29 +1,33 @@
-import getToolsInterface from './ToolsInterface';
-import getTicksInterface from './TicksInterface';
-import getBotInterface from './BotInterface';
+import TicksInterface from './TicksInterface';
+import ToolsInterface from './ToolsInterface';
 import TradeEngine from '../trade';
+import { createDetails } from '../utils/helpers';
+import { observer as globalObserver } from '../../../utils/observer';
 
-const sleep = (observer, arg = 1) => {
-    return new Promise(
-        r =>
-            setTimeout(() => {
-                r();
-                setTimeout(() => observer.emit('CONTINUE'), 0);
-            }, arg * 1000),
-        () => {}
-    );
-};
+/**
+ * Bot - Bot Module
+ * @namespace Bot
+ */
 
-const Interface = $scope => {
-    const tradeEngine = new TradeEngine($scope);
-    const { observer } = $scope;
-    const getInterface = () => {
+export default class Interface extends ToolsInterface(TicksInterface(class {})) {
+    constructor($scope) {
+        super();
+        this.tradeEngine = new TradeEngine($scope);
+        this.api = $scope.api;
+        this.observer = $scope.observer;
+        this.$scope = $scope;
+    }
+
+    getInterface(name = 'Global') {
+        if (name === 'Bot') {
+            return {
+                ...this.getBotInterface(),
+                ...this.getToolsInterface(),
+            };
+        }
         return {
-            ...getBotInterface(tradeEngine),
-            ...getToolsInterface(tradeEngine),
-            getTicksInterface: getTicksInterface(tradeEngine),
-            watch: (...args) => tradeEngine.watch(...args),
-            sleep: (...args) => sleep(observer, ...args),
+            watch: (...args) => this.tradeEngine.watch(...args),
+            sleep: (...args) => this.sleep(...args),
             alert: (...args) => alert(...args), // eslint-disable-line no-alert
             prompt: (...args) => prompt(...args), // eslint-disable-line no-alert
             console: {
@@ -33,8 +37,48 @@ const Interface = $scope => {
                 },
             },
         };
-    };
-    return { tradeEngine, observer, getInterface };
-};
+    }
 
-export default Interface;
+    getBotInterface() {
+        const getDetail = i => createDetails(this.tradeEngine.data.contract)[i];
+
+        return {
+            init: (...args) => this.tradeEngine.init(...args),
+            start: (...args) => this.tradeEngine.start(...args),
+            stop: (...args) => this.tradeEngine.stop(...args),
+            purchase: contract_type => this.tradeEngine.purchase(contract_type),
+            getAskPrice: contract_type => Number(this.getProposal(contract_type).ask_price),
+            getPayout: contract_type => Number(this.getProposal(contract_type).payout),
+            getPurchaseReference: () => this.tradeEngine.getPurchaseReference(),
+            isSellAvailable: () => this.tradeEngine.isSellAtMarketAvailable(),
+            sellAtMarket: () => this.tradeEngine.sellAtMarket(),
+            getSellPrice: () => this.getSellPrice(),
+            isResult: result => getDetail(10) === result,
+            isTradeAgain: result => globalObserver.emit('bot.trade_again', result),
+            readDetails: i => getDetail(i - 1),
+        };
+    }
+
+    sleep(arg = 1) {
+        return new Promise(
+            r =>
+                setTimeout(() => {
+                    r();
+                    setTimeout(() => this.observer.emit('CONTINUE'), 0);
+                }, arg * 1000),
+            () => {}
+        );
+    }
+
+    getProposal(contract_type) {
+        return this.tradeEngine.data.proposals.find(
+            proposal =>
+                proposal.contract_type === contract_type &&
+                proposal.purchase_reference === this.tradeEngine.getPurchaseReference()
+        );
+    }
+
+    getSellPrice() {
+        return this.tradeEngine.getSellPrice();
+    }
+}

@@ -30,7 +30,6 @@ const IconMessageList = ({ className, icon, message, message_list, onContinue })
                     className={classNames('account-management__message-content', {
                         [`${className}__message-content`]: className,
                     })}
-                    data-testid='icon_message_list'
                 >
                     {icon && (
                         <div

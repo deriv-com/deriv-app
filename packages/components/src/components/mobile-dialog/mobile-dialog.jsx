@@ -13,11 +13,13 @@ const MobileDialog = props => {
 
     const footer_ref = React.useRef(false);
     const [footer_height, setHeight] = React.useState(0);
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         if (footer_ref.current && !footer_height) {
             setHeight(footer_ref.current.offsetHeight);
+        } else {
+            footer_ref.current = true;
         }
-    }, [footer, footer_height]);
+    }, [footer]);
 
     const checkVisibility = () => {
         if (props.visible) {

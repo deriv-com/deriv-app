@@ -36,7 +36,6 @@ const Button = ({
     primary_light,
     secondary,
     alternate,
-    transparent,
     small,
     tertiary,
     renderText,
@@ -63,7 +62,6 @@ const Button = ({
             'dc-btn--plus': is_plus,
             'dc-btn--circle': is_circle,
             'dc-btn--circular': is_circular,
-            'dc-btn--transparent': transparent,
         },
         className
     );
@@ -123,7 +121,6 @@ Button.propTypes = {
     secondary: PropTypes.bool,
     small: PropTypes.bool,
     tertiary: PropTypes.bool,
-    transparent: PropTypes.bool,
     text: PropTypes.string,
     wrapperClassName: PropTypes.string,
 };

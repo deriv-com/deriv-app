@@ -1,11 +1,6 @@
 import React from 'react';
 
-export const useLongPress = (
-    callback = () => {
-        /** empty function */
-    },
-    ms = 300
-) => {
+export const useLongPress = (callback = () => {}, ms = 300) => {
     const [startLongPress, setStartLongPress] = React.useState(false);
 
     const preventDefaults = e => {
@@ -17,14 +12,13 @@ export const useLongPress = (
         let timer;
         if (startLongPress) {
             timer = setTimeout(callback, ms);
-        } else if (timer) {
+        } else {
             clearTimeout(timer);
         }
 
         return () => {
             clearTimeout(timer);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [startLongPress]);
 
     return {

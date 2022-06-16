@@ -17,7 +17,7 @@ const Toast = ({ children, className, is_open = true, onClose, onClick, type = '
         }
 
         return undefined;
-    }, [is_open, timeout]);
+    }, [is_open]);
 
     return (
         <CSSTransition

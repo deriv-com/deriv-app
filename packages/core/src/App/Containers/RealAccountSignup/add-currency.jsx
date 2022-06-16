@@ -134,7 +134,7 @@ const AddCurrency = ({
         return (
             <ThemedScrollbars autohide={false}>
                 <div
-                    className={classNames('add-crypto-currency cashier-deposit', {
+                    className={classNames('add-crypto-currency', {
                         'account-wizard--disabled': hasNoAvailableCrypto(),
                     })}
                 >

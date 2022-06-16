@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Loading, ThemedScrollbars, VerticalTab } from '@deriv/components';
+import { VerticalTab, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import SearchInput from './search-input.jsx';
 import NoResultsMessage from './no-results-message.jsx';
 import { Header } from '../ContractTypeInfo';
-import { getContractCategoryKey } from '../../../../Helpers/contract-type';
+import { getContractCategoryLabel } from '../../../../Helpers/contract-type';
 
 const Dialog = ({
     categories,
@@ -18,15 +18,14 @@ const Dialog = ({
     onBackButtonClick,
     onCategoryClick,
     onChangeInput,
-    show_loading,
 }) => {
     const input_ref = React.useRef(null);
 
     const [input_value, setInputValue] = React.useState('');
 
-    const contract_category = getContractCategoryKey(categories, item);
-    const selected_item = selected ? { key: selected } : contract_category;
-    const selected_category_contract = !categories?.find(category => category.key === selected_item.key)
+    const contract_category = getContractCategoryLabel(categories, item);
+    const selected_item = selected ? { label: selected } : contract_category;
+    const selected_category_contract = !categories?.find(category => category.label === selected_item.label)
         ?.contract_categories.length;
 
     const onChange = e => {
@@ -51,12 +50,7 @@ const Dialog = ({
         setInputValue('');
         onChangeInput('');
     };
-    const renderChildren = () => {
-        if (!is_info_dialog_open) {
-            return <ThemedScrollbars height='calc(100vh - 172px)'>{children}</ThemedScrollbars>;
-        }
-        return children;
-    };
+
     const action_bar_items = is_info_dialog_open ? (
         <Header title={item.text} onClickGoBack={onBackButtonClick} />
     ) : (
@@ -81,27 +75,25 @@ const Dialog = ({
         >
             <div className='contract-type-dialog' data-testid='contract_wrapper'>
                 <div className='contract-type-dialog__wrapper'>
-                    {show_loading ? (
-                        <Loading is_fullscreen={false} />
-                    ) : (
-                        <VerticalTab.Layout>
-                            <VerticalTab.Headers
-                                header_title={localize('Trade types')}
-                                items={categories}
-                                selected={selected_item}
-                                onChange={onChange}
-                                selectedKey='key'
-                            />
-
-                            <div className='dc-vertical-tab__content'>
-                                <div className='dc-vertical-tab__action-bar'>{action_bar_items}</div>
-                                <div className='dc-vertical-tab__content-container'>
-                                    {selected_category_contract && <NoResultsMessage text={input_value} />}
-                                    {renderChildren()}
-                                </div>
+                    <VerticalTab.Layout>
+                        <VerticalTab.Headers
+                            header_title={localize('Trade types')}
+                            items={categories}
+                            selected={selected_item}
+                            onChange={onChange}
+                        />
+                        <div className='dc-vertical-tab__content'>
+                            <div className='dc-vertical-tab__action-bar'>{action_bar_items}</div>
+                            <div className='dc-vertical-tab__content-container'>
+                                {selected_category_contract && <NoResultsMessage text={input_value} />}
+                                {!is_info_dialog_open ? (
+                                    <ThemedScrollbars height='calc(100vh - 172px)'>{children}</ThemedScrollbars>
+                                ) : (
+                                    children
+                                )}
                             </div>
-                        </VerticalTab.Layout>
-                    )}
+                        </div>
+                    </VerticalTab.Layout>
                 </div>
             </div>
         </CSSTransition>
@@ -111,7 +103,6 @@ const Dialog = ({
 Dialog.propTypes = {
     is_info_dialog_open: PropTypes.bool,
     is_open: PropTypes.bool,
-    show_loading: PropTypes.bool,
     item: PropTypes.object,
     list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     onBackButtonClick: PropTypes.func,

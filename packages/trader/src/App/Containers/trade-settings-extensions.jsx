@@ -39,12 +39,13 @@ const TradeSettingsExtensions = ({ populateSettingsExtensions, store }) => {
                 //     value: PurchaseSettings,
             },
         ];
+
         populateSettingsExtensions(menu_items);
     };
 
     React.useEffect(() => {
         return () => populateSettingsExtensions(null);
-    }, [populateSettingsExtensions]);
+    }, []);
 
     React.useEffect(() => populateSettings());
 

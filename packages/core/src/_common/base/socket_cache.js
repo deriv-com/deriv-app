@@ -1,7 +1,7 @@
 const moment = require('moment');
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
-const getStaticHash = require('_common/utility').getStaticHash;
+const getStaticHash = require('_common/utility.js').getStaticHash;
 const LocalStore = require('@deriv/shared').LocalStore;
 
 /*

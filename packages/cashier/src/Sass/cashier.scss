@@ -52,6 +52,7 @@
             @include mobile {
                 width: 100vw;
                 margin-top: 4rem;
+
                 .dc-collapsible {
                     position: relative;
                     background-color: var(--general-section-1);
@@ -264,10 +265,6 @@
                 width: 100%;
                 height: 4rem;
             }
-
-            .dc-page-overlay__header.dc-page-app__header {
-                top: 0rem;
-            }
         }
 
         &-button {
@@ -315,9 +312,5 @@
                 padding: 0 1rem;
             }
         }
-    }
-
-    &__side-note {
-        min-width: 20rem;
     }
 }

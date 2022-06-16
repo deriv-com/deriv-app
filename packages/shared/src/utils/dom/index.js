@@ -1,2 +1,1 @@
-export * from './position';
-export * from './seo_optimization';
+export * from './position.js';

@@ -65,6 +65,7 @@ const MyAdsDeleteModal = () => {
                     </Button.Group>
                 </Modal.Footer>
             </Modal>
+
             <Modal
                 className='delete-modal'
                 has_close_icon={false}

@@ -12,14 +12,14 @@ const validRequired = (value /* , options, field */) => {
 };
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
-export const validTaxID = value => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
+export const validTaxID = value => /(?!^$|\s+)[A-Za-z0-9.\/\s-]$/.test(value);
 export const validPhone = value => /^\+?((-|\s)*[0-9])*$/.test(value);
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 export const validLength = (value = '', options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
-export const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
 const validBarrier = value => /^[+-]?\d+\.?\d*$/.test(value);
+const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
 const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validRegular = (value, options) => options.regex.test(value);
 const confirmRequired = value => value === true;

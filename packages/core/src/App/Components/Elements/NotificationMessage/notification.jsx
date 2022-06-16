@@ -13,7 +13,7 @@ import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
@@ -33,23 +33,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
         case 'news':
             return (
                 <NotificationBanner
-                    className={data.className}
                     header={data.header}
                     message={data.message}
                     primary_btn={data.primary_btn}
-                    secondary_btn={data.secondary_btn}
-                    img_src={data.img_src}
-                    img_alt={data.img_alt}
-                    onClose={destroy}
-                />
-            );
-        case 'trustpilot':
-            return (
-                <NotificationBanner
-                    className={data.className}
-                    header={data.header_popup}
-                    message={data.message_popup}
-                    secondary_btn={data.action}
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     onClose={destroy}
@@ -101,7 +87,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                 render={data.timeoutMessage}
                                 should_store_in_session={true}
                                 session_id={data.key}
-                                ref={linear_progress_container_ref}
+                                linear_progress_container_ref={linear_progress_container_ref}
                             />
                         )}
                         <p className='notification__text-body'>{data.message}</p>
@@ -127,7 +113,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                             onClick={() => {
                                                 if (data.timeout)
                                                     linear_progress_container_ref.current.removeTimeoutSession();
-                                                data.action.onClick({ is_appstore });
+                                                data.action.onClick({ is_dashboard });
                                             }}
                                             text={data.action.text}
                                             secondary
@@ -171,7 +157,6 @@ Notification.propTypes = {
             'danger',
             'contract_sold',
             'news',
-            'trustpilot',
             'announce',
             'promotions',
             'close_mx_mlt',

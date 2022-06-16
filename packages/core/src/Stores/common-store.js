@@ -1,14 +1,22 @@
-import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
+import { action, observable, reaction } from 'mobx';
+import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId, getUrlBinaryBot } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
-import { action, computed, observable } from 'mobx';
-import { currentLanguage } from 'Utils/Language/index';
-import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
+import ServerTime from '_common/base/server_time';
+import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
+import { clientNotifications } from './Helpers/client-notifications';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
+
+        reaction(
+            () => this.app_routing_history.map(i => i.pathname),
+            () => {
+                this.root_store.ui.filterNotificationMessages();
+            }
+        );
     }
 
     @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
@@ -56,24 +64,12 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
-    changeCurrentLanguage(new_language) {
-        if (this.current_language !== new_language) {
-            this.current_language = new_language;
-        }
-    }
-
-    @action.bound
     setPlatform() {
         const search = window.location.search;
         if (search) {
             const url_params = new URLSearchParams(search);
             this.platform = url_params.get('platform') || '';
         }
-    }
-
-    @computed
-    get is_from_derivgo() {
-        return platforms[this.platform]?.platform_name === platforms.derivgo.platform_name;
     }
 
     @action.bound
@@ -126,12 +122,11 @@ export default class CommonStore extends BaseStore {
         }
         this.is_network_online = is_online;
 
-        const { addNotificationMessage, client_notifications, removeNotificationMessage } =
-            this.root_store.notifications;
+        const ui_store = this.root_store.ui;
         if (!is_online) {
-            addNotificationMessage(client_notifications.you_are_offline);
+            ui_store.addNotificationMessage(clientNotifications().you_are_offline);
         } else {
-            removeNotificationMessage(client_notifications.you_are_offline);
+            ui_store.removeNotificationMessage(clientNotifications().you_are_offline);
         }
     }
 

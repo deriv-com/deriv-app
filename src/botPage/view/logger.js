@@ -17,7 +17,7 @@ const log = (type, ...args) => {
   globalObserver.emit("bot.notify", { type, timestamp, message: args.join(":") });
 };
 
-export const notify = ({ className, message, position = "left", sound = "silent" }) => {
+const notify = ({ className, message, position = "left", sound = "silent" }) => {
   log(className, message);
 
   // TODO: remove jquery dependency
@@ -39,12 +39,18 @@ export class TrackJSError extends Error {
   }
 }
 
+const notifyError = error => {
+  if (!error) return;
+  const {message} =  trackJSTrack(error);
+  notify({ className: "error", message, position: isMobile() ? 'left' : 'right' });
+}
+
 const waitForNotifications = () => {
   const notifList = ["success", "info", "warn", "error"];
 
   globalObserver.register("Notify", notify);
 
-  globalObserver.register("Error", trackJSTrack);
+  globalObserver.register("Error", notifyError);
 
     notifList.forEach(className =>
         globalObserver.register(`ui.log.${className}`, message =>

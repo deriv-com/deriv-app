@@ -1,5 +1,4 @@
-import { notify } from "../../botPage/view/logger";
-import { isProduction, isMobile } from "../utils/tools";
+import { isProduction } from "../utils/tools";
 import { TrackJS } from 'trackjs';
 
 export const default_errors_to_ignore = [
@@ -12,9 +11,6 @@ export const default_errors_to_ignore = [
   ];
 
 export const trackJSTrack = (error) => {
-  if (!error) {
-    return;
-  }
     let message, code;
    if (typeof error === "string") {
       code = "Unknown";
@@ -37,11 +33,10 @@ export const trackJSTrack = (error) => {
     return;
   }
 
-  notify({ className: "error", message, position: isMobile() ? 'left' : 'right' });
-
     if (isProduction()) {
       if(!default_errors_to_ignore.includes(code)){
         TrackJS.track(code);
       }
     }
+    return {code, message}
 }

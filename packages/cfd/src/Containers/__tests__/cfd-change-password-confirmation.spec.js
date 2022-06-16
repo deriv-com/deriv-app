@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, waitForElementToBeRemoved, act } from '@testing-library/react';
 import ChangePasswordConfirmation from '../cfd-change-password-confirmation';
 
 jest.mock('@deriv/components', () => {
@@ -11,48 +11,54 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-it('should render cfd-change-password-confirmation component', () => {
-    render(<ChangePasswordConfirmation />);
-    expect(screen.getByTestId('dt_cfd_change_password_form')).toBeInTheDocument();
-});
+describe('ChangePasswordConfirmation', () => {
+    const mock_props = {
+        confirm_label: 'Confirm',
+        platform: 'mt5',
+        onConfirm: jest.fn(),
+        onCancel: jest.fn(),
+    };
 
-it('should show icon and buttons', () => {
-    render(<ChangePasswordConfirmation />);
-
-    expect(screen.getByText('mockedIcon')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Create' })).toBeInTheDocument();
-});
-
-it('should cancel when cancel button is clicked', () => {
-    render(<ChangePasswordConfirmation platform='mt5' />);
-
-    const el_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
-    fireEvent.click(el_cancel_btn);
-
-    waitFor(() => {
-        expect(
-            screen.queryByText(/This will change the password to all of your DMT5 accounts/i)
-        ).not.toBeInTheDocument();
+    it('should render cfd-change-password-confirmation component', () => {
+        render(<ChangePasswordConfirmation {...mock_props} />);
+        expect(screen.getByTestId('dt_cfd_change_password_form')).toBeInTheDocument();
     });
-});
 
-it('should close when create button is clicked', () => {
-    render(<ChangePasswordConfirmation platform='mt5' />);
+    it('should show icon and buttons', () => {
+        render(<ChangePasswordConfirmation {...mock_props} />);
 
-    const el_create_btn = screen.getByRole('button', { name: 'Create' });
-    fireEvent.click(el_create_btn);
-
-    waitFor(() => {
-        expect(
-            screen.queryByText(/This will change the password to all of your DMT5 accounts/i)
-        ).not.toBeInTheDocument();
+        expect(screen.getByText('mockedIcon')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
     });
-});
 
-it('check whether the text is according to the platform', () => {
-    render(<ChangePasswordConfirmation platform='mt5' />);
+    it('should cancel when cancel button is clicked', async () => {
+        render(<ChangePasswordConfirmation {...mock_props} />);
 
-    expect(screen.getByText(/Confirm to change your DMT5 password/i)).toBeInTheDocument();
-    expect(screen.getByText(/This will change the password to all of your DMT5 accounts/i)).toBeInTheDocument();
+        const el_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
+        expect(el_cancel_btn).toBeInTheDocument();
+
+        fireEvent.click(el_cancel_btn);
+        await waitFor(() => {
+            expect(mock_props.onCancel).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    it('should close when create button is clicked', async () => {
+        render(<ChangePasswordConfirmation {...mock_props} />);
+
+        const el_create_btn = screen.getByRole('button', { name: 'Confirm' });
+        expect(el_create_btn).toBeInTheDocument();
+        fireEvent.click(el_create_btn);
+        await waitFor(() => {
+            expect(mock_props.onConfirm).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    it('check whether the text is according to the platform', () => {
+        render(<ChangePasswordConfirmation {...mock_props} />);
+
+        expect(screen.getByText(/Confirm to change your DMT5 password/i)).toBeInTheDocument();
+        expect(screen.getByText(/This will change the password to all of your DMT5 accounts/i)).toBeInTheDocument();
+    });
 });

@@ -3,11 +3,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
+import { Loading, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
 import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
+import SideNote from 'Components/side-note';
 
 const CashierOnboarding = ({
     available_crypto_currencies,
@@ -61,7 +62,11 @@ const CashierOnboarding = ({
             is_landing_company_loaded &&
             is_currency_banner_visible
         ) {
-            setSideNotes([<CashierOnboardingSideNote key={0} is_crypto={is_crypto} />]);
+            setSideNotes([
+                <SideNote key={0}>
+                    <CashierOnboardingSideNote is_crypto={is_crypto} />
+                </SideNote>,
+            ]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts_list, is_landing_company_loaded]);
@@ -144,9 +149,9 @@ const CashierOnboarding = ({
     return (
         <div>
             {is_currency_banner_visible && (
-                <MobileWrapper>
+                <SideNote is_mobile>
                     <CashierOnboardingSideNote is_crypto={is_crypto} />
-                </MobileWrapper>
+                </SideNote>
             )}
             <div className='cashier-onboarding'>
                 <div className='cashier-onboarding-header'>

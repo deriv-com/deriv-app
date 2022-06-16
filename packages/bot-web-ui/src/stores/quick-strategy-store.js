@@ -38,8 +38,8 @@ export default class QuickStrategyStore {
             'quick-strategy__duration-value': this.input_duration_value || '',
             'quick-strategy__stake': this.input_stake,
             'quick-strategy__size': this.input_size,
-            alembert_unit: this.input_alembert_unit,
-            oscar_unit: this.input_oscar_unit,
+            'alembert-unit': this.input_alembert_unit,
+            'oscar-unit': this.input_oscar_unit,
             'quick-strategy__loss': this.input_loss,
             'quick-strategy__profit': this.input_profit,
         };
@@ -432,8 +432,8 @@ export default class QuickStrategyStore {
             'quick-strategy__duration-value',
             'quick-strategy__stake',
             'quick-strategy__size',
-            'alembert_unit',
-            'oscar_unit',
+            'alembert-unit',
+            'oscar-unit',
             'quick-strategy__profit',
             'quick-strategy__loss',
         ];

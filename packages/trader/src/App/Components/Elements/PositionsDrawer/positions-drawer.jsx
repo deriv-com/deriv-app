@@ -141,9 +141,11 @@ PositionsDrawer.propTypes = {
     is_positions_drawer_on: PropTypes.bool,
     onChangeContractUpdate: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
+    onHoverPosition: PropTypes.func,
     onMount: PropTypes.func,
     symbol: PropTypes.string,
     toggleDrawer: PropTypes.func,
+    trade_contract_type: PropTypes.any,
 };
 
 export default connect(({ modules, ui }) => ({

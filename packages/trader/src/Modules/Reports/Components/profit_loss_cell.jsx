@@ -9,6 +9,7 @@ const ProfitLossCell = ({ value, children }) => {
 };
 
 ProfitLossCell.propTypes = {
+    children: PropTypes.node,
     value: PropTypes.string,
 };
 

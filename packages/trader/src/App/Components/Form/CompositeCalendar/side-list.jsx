@@ -21,7 +21,9 @@ const SideList = ({ items, from, to }) => (
 );
 
 SideList.propTypes = {
+    from: PropTypes.number,
     items: PropTypes.array,
+    to: PropTypes.number,
 };
 
 export default SideList;

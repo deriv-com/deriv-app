@@ -205,6 +205,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
 ContractTypeWidget.propTypes = {
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    languageChanged: PropTypes.bool,
     list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     name: PropTypes.string,
     onChange: PropTypes.func,

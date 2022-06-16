@@ -358,7 +358,7 @@ const QuickStrategyForm = ({
                                     </Field>
                                 )}
                                 {active_index === 1 && (
-                                    <Field name='alembert_unit'>
+                                    <Field name='alembert-unit'>
                                         {({ field }) => (
                                             <Input
                                                 {...field}
@@ -392,7 +392,7 @@ const QuickStrategyForm = ({
                                     </Field>
                                 )}
                                 {active_index === 2 && (
-                                    <Field name='oscar_unit'>
+                                    <Field name='oscar-unit'>
                                         {({ field }) => (
                                             <Input
                                                 {...field}

@@ -526,6 +526,7 @@ export default class BuySellStore extends BaseStore {
         const validations = {
             amount: [
                 v => !!v,
+                v => v <= this.root_store.general_store.balance,
                 v => v >= this.advert.min_order_amount_limit,
                 v => v <= this.advert.max_order_amount_limit,
                 v => countDecimalPlaces(v) <= getDecimalPlaces(this.account_currency),
@@ -544,6 +545,10 @@ export default class BuySellStore extends BaseStore {
 
         const common_messages = [
             localize('Enter a valid amount'),
+            localize('Maximum is {{value}} {{currency}}', {
+                currency: this.account_currency,
+                value: this.root_store.general_store.balance,
+            }),
             localize('Minimum is {{value}} {{currency}}', {
                 currency: this.account_currency,
                 value: display_min_amount,

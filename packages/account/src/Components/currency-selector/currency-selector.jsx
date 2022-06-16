@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
+import { getPlatformSettings, isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group.jsx';
 import RadioButton from './radio-button.jsx';
@@ -38,7 +38,7 @@ const CurrencySelector = ({
     is_eu,
     ...props
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
@@ -91,7 +91,7 @@ const CurrencySelector = ({
     }, [is_bypass_step]);
 
     const getHeightOffset = () => {
-        if (is_dashboard) {
+        if (is_appstore) {
             return '222px';
         } else if (!has_currency && has_real_account) {
             return '89px';
@@ -110,12 +110,13 @@ const CurrencySelector = ({
 
     const description = React.useMemo(() => {
         const dmt5_label = is_eu ? localize('CFDs') : localize('DMT5');
+        const platform_name_dxtrade = getPlatformSettings('dxtrade');
 
         if (is_dxtrade_allowed && is_mt5_allowed) {
             return (
                 <Localize
-                    i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or Deriv X account.'
-                    values={{ dmt5_label }}
+                    i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or {{platform_name_dxtrade}} account.'
+                    values={{ dmt5_label, platform_name_dxtrade }}
                 />
             );
         } else if (!is_dxtrade_allowed && is_mt5_allowed) {
@@ -222,7 +223,7 @@ const CurrencySelector = ({
                                     }
                                     is_disabled={isSubmitDisabled(values)}
                                     is_center={false}
-                                    is_absolute={set_currency || is_dashboard}
+                                    is_absolute={set_currency || is_appstore}
                                     label={getSubmitLabel()}
                                     {...(has_cancel
                                         ? {
@@ -247,7 +248,7 @@ CurrencySelector.propTypes = {
     has_real_account: PropTypes.bool,
     onSubmit: PropTypes.func,
     value: PropTypes.any,
-    is_dashboard: PropTypes.bool,
+    is_appstore: PropTypes.bool,
     real_account_signup_target: PropTypes.string,
     is_dxtrade_allowed: PropTypes.bool,
     is_eu: PropTypes.bool,

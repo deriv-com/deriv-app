@@ -1,7 +1,6 @@
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
-import { reaction } from 'mobx';
-import { ButtonToggle, Checkbox, Icon, PopoverMobile } from '@deriv/components';
+import { ButtonToggle, Icon } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { buy_sell } from 'Constants/buy-sell';
@@ -26,22 +25,15 @@ const getBuySellFilters = () => [
 
 const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     const { buy_sell_store } = useStores();
-    const [is_no_match_tooltip_open, setIsNoMatchTooltipOpen] = React.useState(false);
 
     const onChangeTableType = event => setTableType(event.target.value);
 
     React.useEffect(
         () => {
             buy_sell_store.setSearchTerm('');
-            return reaction(
-                () => buy_sell_store.should_use_client_limits,
-                () => {
-                    buy_sell_store.setItems([]);
-                    buy_sell_store.setIsLoading(true);
-                    buy_sell_store.loadMoreItems({ startIndex: 0 });
-                },
-                { fireImmediately: true }
-            );
+            buy_sell_store.setItems([]);
+            buy_sell_store.setIsLoading(true);
+            buy_sell_store.loadMoreItems({ startIndex: 0 });
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
@@ -70,24 +62,13 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                 <div className='buy-sell__header-row'>
                     <SearchBox />
                     <SortDropdown />
+                    <Icon
+                        className='buy-sell__header-row--filter'
+                        icon='IcFilter'
+                        onClick={() => buy_sell_store.setIsFilterModalOpen(true)}
+                        size={40}
+                    />
                 </div>
-            </div>
-            <div className='buy-sell__header-match-ads'>
-                <Checkbox
-                    label={localize('Show the matching ads')}
-                    onChange={() => buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)}
-                    value={buy_sell_store.should_use_client_limits}
-                />
-                <PopoverMobile
-                    desktop_alignment='right'
-                    button_text={localize('Got it')}
-                    className='buy-sell__header-match-ads__popover'
-                    is_open={is_no_match_tooltip_open}
-                    message={localize('See the ads that match your Deriv P2P balance and limit.')}
-                    setIsOpen={setIsNoMatchTooltipOpen}
-                >
-                    <Icon icon='IcInfoOutline' size={16} />
-                </PopoverMobile>
             </div>
         </div>
     );

@@ -6,8 +6,8 @@ import DemoMessage from 'Components/demo-message';
 import ProofOfAddressContainer from './proof-of-address-container.jsx';
 
 const ProofOfAddress = ({ is_virtual, is_mx_mlt, is_switching, refreshNotifications }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
-    if (is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={true} />;
+    const { is_appstore } = React.useContext(PlatformContext);
+    if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={true} />;
 
     return (
         <ProofOfAddressContainer
@@ -25,9 +25,9 @@ ProofOfAddress.propTypes = {
     refreshNotifications: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, notifications }) => ({
     is_mx_mlt: client.landing_company_shortcode === 'iom' || client.landing_company_shortcode === 'malta',
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
 }))(ProofOfAddress);

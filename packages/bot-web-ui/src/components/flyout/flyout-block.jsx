@@ -8,6 +8,7 @@ const FlyoutBlock = ({ initBlockWorkspace, block_node, should_center_block, shou
 
     React.useEffect(() => {
         initBlockWorkspace(el_block_workspace, block_node, should_center_block);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -25,6 +25,7 @@ export default class RootStore {
         this.core = core;
         this.ui = core.ui;
         this.common = core.common;
+        this.notifications = core.notifications;
         this.ws = ws;
         this.dbot = dbot;
         this.server_time = core.common.server_time;

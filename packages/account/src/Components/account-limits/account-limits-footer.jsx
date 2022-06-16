@@ -10,7 +10,7 @@ const AccountLimitsFooterPortal = () => {
     return createPortal(
         <AppSettings.Footer>
             <AppSettings.Footer.Left>
-                <a className='link link--prominent' onClick={toggleOverlay}>
+                <a className='link link--prominent' onClick={toggleOverlay} data-testid='footer_text'>
                     <Text size='xxs' line_height='m' weight='bold'>
                         <Localize i18n_default_text='Learn more about account limits' />
                     </Text>

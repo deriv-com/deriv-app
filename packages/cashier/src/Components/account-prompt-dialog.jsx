@@ -15,7 +15,7 @@ const AccountPromptDialog = ({
     onConfirm,
     should_show,
 }) => {
-    React.useEffect(continueRoute, [is_confirmed, last_location]);
+    React.useEffect(continueRoute, [is_confirmed, last_location, continueRoute]);
 
     const non_crypto_accounts = accounts_list.filter(x => !x.is_crypto);
     const non_crypto_currency = non_crypto_accounts.map(x => x.currency)[0];

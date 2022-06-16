@@ -22,9 +22,20 @@ export default class TransactionHistoryStore {
 
         if (is_crypto && !switched) {
             this.setLoading(true);
+            await this.unsubscribeCryptoTransactions();
             await this.getCryptoTransactions();
             this.setLoading(false);
         }
+    }
+
+    @action.bound
+    async unsubscribeCryptoTransactions() {
+        await this.WS.authorized.cashierPayments({ provider: 'crypto', transaction_type: 'all' }).then(response => {
+            if (!response.error) {
+                const { crypto } = response.cashier_payments;
+                this.setCryptoTransactionsHistory(crypto);
+            }
+        });
     }
 
     @action.bound
@@ -35,6 +46,12 @@ export default class TransactionHistoryStore {
                 this.updateCryptoTransactions(crypto);
             }
         });
+    }
+
+    @action.bound
+    setCryptoTransactionsHistory(transactions) {
+        this.crypto_transactions = transactions;
+        this.sortCryptoTransactions();
     }
 
     @action.bound
@@ -52,7 +69,9 @@ export default class TransactionHistoryStore {
 
     @action.bound
     sortCryptoTransactions() {
-        this.crypto_transactions = this.crypto_transactions.sort((a, b) => b.submit_date - a.submit_date);
+        this.crypto_transactions.replace(
+            this.crypto_transactions.slice().sort((a, b) => b.submit_date - a.submit_date)
+        );
     }
 
     @action.bound

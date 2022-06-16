@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
 
@@ -16,6 +16,7 @@ describe('ContractTypeMenu', () => {
                     ],
                     icon: 'IcMultiplier',
                     label: 'Multiplier',
+                    key: 'Multiplier',
                 },
                 {
                     contract_types: [
@@ -30,6 +31,7 @@ describe('ContractTypeMenu', () => {
                     ],
                     icon: 'IcUpsDowns',
                     label: 'Ups & Downs',
+                    key: 'Ups & Downs',
                 },
                 {
                     contract_types: [
@@ -44,6 +46,7 @@ describe('ContractTypeMenu', () => {
                     ],
                     icon: 'IcHighsLows',
                     label: 'Highs & Lows',
+                    key: 'Highs & Lows',
                 },
                 {
                     contract_types: [
@@ -62,6 +65,7 @@ describe('ContractTypeMenu', () => {
                     ],
                     icon: 'IcDigits',
                     label: 'Digits',
+                    key: 'Digits',
                 },
             ],
             contract_types: [
@@ -100,6 +104,7 @@ describe('ContractTypeMenu', () => {
             ],
             icon: 'IcCatAll',
             label: 'All',
+            key: 'All',
         },
         {
             contract_categories: [
@@ -112,6 +117,7 @@ describe('ContractTypeMenu', () => {
                     ],
                     icon: 'IcMultiplier',
                     label: 'Multiplier',
+                    key: 'Multiplier',
                 },
             ],
             contract_types: [
@@ -122,6 +128,7 @@ describe('ContractTypeMenu', () => {
             ],
             icon: 'IcCatMultiplier',
             label: 'Multipliers',
+            key: 'Multipliers',
         },
         {
             contract_categories: [
@@ -138,6 +145,7 @@ describe('ContractTypeMenu', () => {
                     ],
                     icon: 'IcUpsDowns',
                     label: 'Ups & Downs',
+                    key: 'Ups & Downs',
                 },
                 {
                     contract_types: [
@@ -152,6 +160,7 @@ describe('ContractTypeMenu', () => {
                     ],
                     icon: 'IcHighsLows',
                     label: 'Highs & Lows',
+                    key: 'Highs & Lows',
                 },
                 {
                     contract_types: [
@@ -170,6 +179,7 @@ describe('ContractTypeMenu', () => {
                     ],
                     icon: 'IcDigits',
                     label: 'Digits',
+                    key: 'Digits',
                 },
             ],
             contract_types: [
@@ -204,6 +214,7 @@ describe('ContractTypeMenu', () => {
             ],
             icon: 'IcCatOptions',
             label: 'Options',
+            key: 'Options',
         },
     ];
 
@@ -217,6 +228,7 @@ describe('ContractTypeMenu', () => {
             ],
             icon: 'IcMultiplier',
             label: 'Multipliers',
+            key: 'Multipliers',
         },
         {
             contract_types: [
@@ -231,6 +243,7 @@ describe('ContractTypeMenu', () => {
             ],
             icon: 'IcUpsDowns',
             label: 'Ups & Downs',
+            key: 'Ups & Downs',
         },
         {
             contract_types: [
@@ -245,6 +258,7 @@ describe('ContractTypeMenu', () => {
             ],
             icon: 'IcHighsLows',
             label: 'Highs & Lows',
+            key: 'Highs & Lows',
         },
         {
             contract_types: [
@@ -263,6 +277,7 @@ describe('ContractTypeMenu', () => {
             ],
             icon: 'IcDigits',
             label: 'Digits',
+            key: 'Digits',
         },
     ];
 

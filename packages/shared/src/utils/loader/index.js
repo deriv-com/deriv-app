@@ -1,1 +1,1 @@
-export * from './lazy-load.js';
+export * from './lazy-load';

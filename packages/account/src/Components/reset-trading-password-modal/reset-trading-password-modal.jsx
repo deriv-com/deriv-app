@@ -206,7 +206,7 @@ const ResetTradingPasswordModal = ({
     const [dialog_title, setDialogTitle] = React.useState('');
     const history = useHistory();
     React.useEffect(() => {
-        if (is_visible) {
+        if (is_visible && history.location.search !== '') {
             history.replace({
                 search: '',
                 hash: location.hash,

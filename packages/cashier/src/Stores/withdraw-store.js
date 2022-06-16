@@ -21,6 +21,7 @@ export default class WithdrawStore {
     @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     @observable withdraw_amount = '';
     @observable max_withdraw_amount = 0;
+    @observable crypto_config = {};
 
     @action.bound
     setIsWithdrawConfirmed(is_withdraw_confirmed) {
@@ -198,7 +199,7 @@ export default class WithdrawStore {
             response_cashier = { error: { code: 'InvalidToken', message: 'Your token has expired or is invalid.' } };
         }
 
-        if (response_cashier.error.code === 'InvalidToken') {
+        if (response_cashier.error?.code === 'InvalidToken') {
             this.error.handleCashierError(response_cashier.error);
             general_store.setLoading(false);
             iframe.setSessionTimeout(true);
@@ -208,6 +209,7 @@ export default class WithdrawStore {
                 this.verification.clearVerification();
             }
         } else {
+            this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
             general_store.setLoading(false);
         }
     }
@@ -271,12 +273,12 @@ export default class WithdrawStore {
         let error_message = '';
 
         const { client, modules } = this.root_store;
-        const { balance, currency, website_status } = client;
+        const { balance, currency } = client;
         const { crypto_fiat_converter, error_dialog } = modules.cashier;
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
         const { openReadMoreDialog } = error_dialog;
 
-        const min_withdraw_amount = website_status.crypto_config[currency].minimum_withdrawal;
+        const min_withdraw_amount = this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal;
         const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
 
         const format_balance = formatMoney(currency, balance, true);

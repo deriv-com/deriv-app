@@ -51,7 +51,8 @@ const ChooseCurrency = ({
     const getReorderedCryptoCurrencies = () => {
         const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
             legal_allowed_currencies,
-            all_payment_agent_list
+            all_payment_agent_list,
+            account_list
         );
 
         const reorderCryptoCurrencies = should_show_all_available_currencies
@@ -138,7 +139,9 @@ const ChooseCurrency = ({
                                     second_line_label={currency.second_line_label}
                                     onClick={currency.onClick}
                                     selected={
-                                        deposit_target === routes.cashier_pa ? !currency.has_payment_agent : false
+                                        currency.is_disabled || deposit_target === routes.cashier_pa
+                                            ? !currency.has_payment_agent
+                                            : false
                                     }
                                 />
                             ))}

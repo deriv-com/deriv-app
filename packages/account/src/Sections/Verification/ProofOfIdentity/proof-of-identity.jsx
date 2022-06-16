@@ -46,7 +46,7 @@ const ProofOfIdentity = ({
     );
 };
 
-export default connect(({ client, common }) => ({
+export default connect(({ client, common, notifications }) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     fetchResidenceList: client.fetchResidenceList,
@@ -54,7 +54,7 @@ export default connect(({ client, common }) => ({
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,
     is_withdrawal_lock: client.is_withdrawal_lock,
-    refreshNotifications: client.refreshNotifications,
+    refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
 }))(withRouter(ProofOfIdentity));

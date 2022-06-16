@@ -557,10 +557,13 @@ export default class PortfolioStore extends BaseStore {
         });
     }
 
+    @action.bound
+    setContractType(contract_type) {
+        this.contract_type = contract_type;
+    }
+
     @computed
     get is_multiplier() {
-        const { contract_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
-        this.contract_type = contract_type;
         return this.contract_type === 'multiplier';
     }
 }

@@ -218,6 +218,7 @@ export default class TradeStore extends BaseStore {
         reaction(
             () => [this.contract_type],
             () => {
+                this.root_store.portfolio.setContractType(this.contract_type);
                 if (this.contract_type === 'multiplier') {
                     // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
                     Object.assign(this.validation_rules, getMultiplierValidationRules());

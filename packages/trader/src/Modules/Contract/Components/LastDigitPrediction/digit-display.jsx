@@ -84,9 +84,17 @@ const DigitDisplay = ({
 DigitDisplay.propTypes = {
     barrier: PropTypes.number,
     has_entry_spot: PropTypes.bool,
+    is_digit_contract: PropTypes.bool,
     is_lost: PropTypes.bool,
+    is_max: PropTypes.bool,
+    is_min: PropTypes.bool,
     is_won: PropTypes.bool,
     latest_digit: PropTypes.object,
+    onLastDigitSpot: PropTypes.func,
+    onSelect: PropTypes.func,
+    selected_digit: PropTypes.number,
+    stats: PropTypes.number,
+    status: PropTypes.string,
     value: PropTypes.number,
 };
 

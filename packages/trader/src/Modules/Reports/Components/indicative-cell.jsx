@@ -42,9 +42,11 @@ const IndicativeCell = ({ amount, currency, contract_info, is_footer, onClickSel
 
 IndicativeCell.propTypes = {
     amount: PropTypes.number,
+    contract_info: PropTypes.object,
     currency: PropTypes.string,
     status: PropTypes.string,
     is_footer: PropTypes.bool,
+    is_sell_requested: PropTypes.bool,
     onClickSell: PropTypes.func,
 };
 

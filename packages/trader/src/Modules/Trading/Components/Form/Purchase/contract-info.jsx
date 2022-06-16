@@ -136,6 +136,7 @@ ContractInfo.propTypes = {
     is_multiplier: PropTypes.bool,
     is_loading: PropTypes.bool,
     proposal_info: PropTypes.object,
+    should_fade: PropTypes.bool,
     type: PropTypes.string,
 };
 

@@ -39,6 +39,7 @@ Display.propTypes = {
     list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     name: PropTypes.string,
     onChange: PropTypes.func,
+    onClick: PropTypes.func,
     value: PropTypes.string,
 };
 

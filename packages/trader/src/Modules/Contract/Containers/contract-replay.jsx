@@ -159,13 +159,24 @@ const ContractReplay = ({
 ContractReplay.propTypes = {
     contract_id: PropTypes.number,
     contract_info: PropTypes.object,
+    contract_update: PropTypes.object,
+    contract_update_history: PropTypes.array,
     indicative_status: PropTypes.string,
     is_chart_loading: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
+    is_forward_starting: PropTypes.bool,
+    is_market_closed: PropTypes.bool,
+    is_sell_requested: PropTypes.bool,
+    is_valid_to_cancel: PropTypes.bool,
+    NotificationMessages: PropTypes.func,
+    onClickCancel: PropTypes.func,
+    onClickSell: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
+    routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
+    toggleHistoryTab: PropTypes.func,
 };
 
 export default connect(({ common, modules, ui }) => {
@@ -258,10 +269,12 @@ const Chart = props => {
 Chart.propTypes = {
     barriers_array: PropTypes.array,
     BottomWidgets: PropTypes.node,
+    chartStateChange: PropTypes.func,
     chart_type: PropTypes.string,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
     InfoBox: PropTypes.node,
+    is_digit_contract: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     is_static_chart: PropTypes.bool,

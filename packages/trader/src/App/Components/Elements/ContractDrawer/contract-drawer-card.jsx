@@ -154,15 +154,30 @@ const ContractDrawerCard = ({
 };
 
 ContractDrawerCard.propTypes = {
+    active_symbols: PropTypes.any,
+    addToast: PropTypes.func,
     contract_info: PropTypes.object,
+    contract_update: PropTypes.object,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    getContractById: PropTypes.func,
+    is_collapsed: PropTypes.bool,
     is_market_closed: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
+    onSwipedDown: PropTypes.func,
+    onSwipedUp: PropTypes.func,
     status: PropTypes.string,
+    removeToast: PropTypes.func,
+    result: PropTypes.any,
+    server_time: PropTypes.object,
+    setCurrentFocus: PropTypes.func,
+    should_show_cancellation_warning: PropTypes.bool,
+    toggleCancellationWarning: PropTypes.func,
+    toggleContractAuditDrawer: PropTypes.func,
 };
 
 export default connect(({ modules, ui }) => ({

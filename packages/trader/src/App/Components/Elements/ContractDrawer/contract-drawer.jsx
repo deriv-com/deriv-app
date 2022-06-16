@@ -162,16 +162,21 @@ const ContractDrawer = ({
 
 ContractDrawer.propTypes = {
     contract_info: PropTypes.object,
+    contract_update: PropTypes.object,
+    contract_update_history: PropTypes.array,
     is_chart_loading: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
     is_market_closed: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
     is_history_tab_active: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
     onClickSell: PropTypes.func,
+    server_time: PropTypes.object,
     status: PropTypes.string,
+    toggleHistoryTab: PropTypes.func,
 };
 
 export default withRouter(

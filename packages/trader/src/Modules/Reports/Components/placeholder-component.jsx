@@ -23,7 +23,10 @@ PlaceholderComponent.propTypes = {
     component_icon: PropTypes.string,
     empty_message_component: PropTypes.func,
     has_selected_date: PropTypes.bool,
+    is_empty: PropTypes.bool,
+    is_loading: PropTypes.bool,
     localized_message: PropTypes.string,
+    localized_period_message: PropTypes.string,
 };
 
 export default PlaceholderComponent;

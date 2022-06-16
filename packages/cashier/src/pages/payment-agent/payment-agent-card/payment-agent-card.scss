@@ -18,12 +18,12 @@
             display: flex;
             align-items: center;
             height: 3.2rem;
-            margin-top: 1.6rem;
+            margin-top: 2.4rem;
 
             .dc-icon {
-                width: 4.8rem;
-                height: 1.6rem;
-                margin-right: 1.8rem;
+                width: 5rem;
+                height: 3rem;
+                margin-right: 1rem;
             }
         }
 
@@ -50,7 +50,7 @@
 
         @include mobile {
             grid-template-columns: 1fr;
-            margin-top: 1.6rem;
+            margin-top: 2.4rem;
         }
     }
 

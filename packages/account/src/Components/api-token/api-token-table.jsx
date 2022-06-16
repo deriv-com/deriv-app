@@ -19,17 +19,15 @@ const ApiTokenTable = () => {
 
     const getScopeValue = token => {
         const titled_scopes = token.scopes.map(scope => formatTokenScopes(scope));
-        const mapped_scopes = titled_scopes.length === 5 ? localize('All') : titled_scopes.join(', ');
         const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
         return {
             display_name: token.display_name,
-            scopes: mapped_scopes,
+            scopes: titled_scopes,
             last_used: date_format,
             token: token.token,
         };
     };
-
     if (isMobile()) {
         return api_tokens.map(token_data => {
             const token = getScopeValue(token_data);

@@ -4,6 +4,7 @@ import { Clipboard, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ApiTokenDeleteButtons from './api-token-delete-buttons.jsx';
 import ApiTokenTableRowCell from './api-token-table-row-cell.jsx';
+import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell.jsx';
 
 const ApiTokenTableRow = ({ token }) => (
     <tr className='da-api-token__table-cell-row'>
@@ -22,7 +23,9 @@ const ApiTokenTableRow = ({ token }) => (
                 />
             </div>
         </ApiTokenTableRowCell>
-        <ApiTokenTableRowCell>{token.scopes}</ApiTokenTableRowCell>
+        <ApiTokenTableRowCell should_bypass_text>
+            <ApiTokenTableRowScopesCell scopes={token.scopes} />
+        </ApiTokenTableRowCell>
         <ApiTokenTableRowCell>{token.last_used}</ApiTokenTableRowCell>
         <ApiTokenTableRowCell should_bypass_text>
             <ApiTokenDeleteButtons token={token} />

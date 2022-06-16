@@ -57,6 +57,7 @@
     }
     &__clipboard {
         &-wrapper {
+            min-width: 21.5rem;
             display: flex;
             align-items: center;
         }
@@ -82,9 +83,24 @@
             padding: 2.4rem 0;
 
             &--name {
+                min-width: 6.4rem;
                 > .dc-text {
                     word-break: break-all;
                 }
+            }
+        }
+        &-scopes-cell-block {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        &-scope-cell {
+            border: 0.1rem solid $color-grey-5;
+            border-radius: 0.4rem;
+            padding: 0.8rem 0.4rem;
+            &-admin {
+                border: 0.1rem solid $COLOR_GREEN_5;
+                color: $COLOR_GREEN_5;
             }
         }
     }

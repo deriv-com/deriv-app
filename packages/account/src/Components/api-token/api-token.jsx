@@ -55,10 +55,10 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
 
     const initial_form = {
         token_name: '',
+        admin: false,
+        payments: false,
         read: false,
         trade: false,
-        payments: false,
-        admin: false,
         trading_information: false,
     };
 

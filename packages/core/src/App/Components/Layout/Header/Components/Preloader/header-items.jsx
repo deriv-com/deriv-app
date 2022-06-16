@@ -6,8 +6,8 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 const HeaderItemsLoader = ({ speed }) => (
     <ContentLoader
         speed={speed}
-        primaryColor={'var(--general-section-1)'}
-        secondaryColor={'var(--general-hover)'}
+        primarycolor={'var(--general-section-1)'}
+        secondarycolor={'var(--general-hover)'}
         style={{ width: '150px', height: '48px' }}
     >
         <DesktopWrapper>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, waitForElementToBeRemoved, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ChangePasswordConfirmation from '../cfd-change-password-confirmation';
 
 jest.mock('@deriv/components', () => {

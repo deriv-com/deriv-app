@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
+import { ArrowContainer, Popover as TinyPopover } from 'react-tiny-popover';
 import Icon from '../icon';
 import Text from '../text';
 import { useHover, useHoverCallback } from '../../hooks/use-hover';

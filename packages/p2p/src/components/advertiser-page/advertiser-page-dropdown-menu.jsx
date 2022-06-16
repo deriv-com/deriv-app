@@ -2,8 +2,8 @@ import React from 'react';
 import { Dropdown, Icon } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import './advertiser-page.scss';
 import { observer } from 'mobx-react-lite';
+import './advertiser-page.scss';
 
 const AdvertiserPageDropdownMenu = () => {
     const { advertiser_page_store } = useStores();

@@ -14,8 +14,8 @@ import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
-import './advertiser-page.scss';
 import BlockUserModal from './block-user/block-user-modal.jsx';
+import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();

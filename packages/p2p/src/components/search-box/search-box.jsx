@@ -13,6 +13,14 @@ const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
         }
     };
 
+    const onSearchKeyDown = (search, submitForm) => {
+        if (!search) {
+            onClear();
+        } else {
+            submitForm();
+        }
+    };
+
     const onSearchKeyUp = submitForm => {
         clearTimeout(typing_timer);
 
@@ -44,6 +52,7 @@ const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
                                     type='text'
                                     name='search'
                                     placeholder={placeholder}
+                                    onKeyDown={() => onSearchKeyDown(search, submitForm)}
                                     onKeyUp={() => onSearchKeyUp(submitForm)}
                                     onFocus={submitForm}
                                     leading_icon={<Icon className='search-box__field-icon' icon='IcSearch' />}

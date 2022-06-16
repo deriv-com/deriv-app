@@ -94,7 +94,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
             )}
             {payment_agent.min_withdrawal && (
                 <Detail icon='MinimumWithdrawal' title={detail_titles.min_withdrawal}>
-                    <Money amount={payment_agent.min_withdrawal} show_currency />
+                    <Money amount={payment_agent.min_withdrawal} currency={payment_agent.currency} show_currency />
                 </Detail>
             )}
             {payment_agent.deposit_commission && (
@@ -108,7 +108,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
             )}
             {payment_agent.max_withdrawal && (
                 <Detail icon='MaximumWithdrawal' title={detail_titles.max_withdrawal}>
-                    <Money amount={payment_agent.max_withdrawal} show_currency />
+                    <Money amount={payment_agent.max_withdrawal} currency={payment_agent.currency} show_currency />
                 </Detail>
             )}
             {payment_agent.withdrawal_commission && (

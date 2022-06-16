@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import { formatMoney, routes } from '@deriv/shared';
+import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
@@ -111,6 +111,7 @@ export default class PaymentAgentStore {
         try {
             payment_agent_list.paymentagent_list?.list.forEach(payment_agent => {
                 this.setList({
+                    currency: payment_agent.currencies,
                     deposit_commission: payment_agent.deposit_commission,
                     email: payment_agent.email,
                     further_information: payment_agent.further_information,
@@ -156,7 +157,7 @@ export default class PaymentAgentStore {
                 }
             });
         } else {
-            this.filtered_list = this.list;
+            this.filtered_list = shuffleArray(this.list);
         }
         if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
             common.routeTo(routes.cashier_deposit);

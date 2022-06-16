@@ -156,7 +156,7 @@ describe('CFDTopUpDemoModal', () => {
         expect(screen.queryByTestId('dt_top_up_virtual_description')).not.toBeInTheDocument();
     });
 
-    it('should not render the component if both modals are false', () => {
+    it('should not render the component if conditions are false', () => {
         render(
             <CFDTopUpDemoModal
                 {...mock_props}

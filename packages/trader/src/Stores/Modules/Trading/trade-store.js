@@ -571,12 +571,21 @@ export default class TradeStore extends BaseStore {
         }
         const { contract_type, barrier, high_barrier, low_barrier } = proposal_info;
 
-        if (isBarrierSupported(contract_type)) {
+        const dummy_contract_type = contract_type || (proposal_info.symbol === 'R_100' && 'ACC');
+
+        if (isBarrierSupported(dummy_contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
-            this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
-                color,
-            });
+            const dummy_accumulator_high_barrier = dummy_contract_type === 'ACC' && '+20';
+            const dummy_accumulator_low_barrier = dummy_contract_type === 'ACC' && '-20';
+            this.main_barrier = new ChartBarrierStore(
+                barrier || high_barrier || dummy_accumulator_high_barrier,
+                low_barrier || dummy_accumulator_low_barrier,
+                this.onChartBarrierChange,
+                {
+                    color,
+                }
+            );
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {
             this.main_barrier = null;
@@ -941,8 +950,7 @@ export default class TradeStore extends BaseStore {
             }
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
-
-        if (!this.main_barrier || !(this.main_barrier.shade !== 'NONE_SINGLE')) {
+        if (!this.main_barrier || this.main_barrier.shade) {
             this.setMainBarrier(response.echo_req);
         }
 

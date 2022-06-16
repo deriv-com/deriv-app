@@ -41,7 +41,28 @@ const ContractType = (() => {
             available_contract_types = {};
             available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
-            r.contracts_for.available.forEach(contract => {
+            const dummy_accumulator = {
+                barrier_category: 'american',
+                high_barrier: '+20',
+                low_barrier: '-20',
+                barriers: 2,
+                contract_category: 'accumulator',
+                contract_category_display: 'Accumulators',
+                contract_display: 'Accumulators',
+                contract_type: 'ACC',
+                exchange_name: 'RANDOM',
+                expiry_type: 'intraday',
+                market: 'synthetic_index',
+                max_contract_duration: '1d',
+                min_contract_duration: '1m',
+                sentiment: 'inside',
+                start_type: 'spot',
+                submarket: 'random_index',
+                underlying_symbol: 'R_100',
+            };
+            const dummy_available_contracts_with_acc = [...r.contracts_for.available, dummy_accumulator];
+
+            dummy_available_contracts_with_acc.forEach(contract => {
                 const type = Object.keys(contract_types).find(
                     key =>
                         contract_types[key].trade_types.indexOf(contract.contract_type) !== -1 &&

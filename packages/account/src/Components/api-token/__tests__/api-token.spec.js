@@ -296,8 +296,6 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText('SecondTokenID')).toBeInTheDocument();
         expect(screen.queryByText('Action')).not.toBeInTheDocument();
         expect(screen.queryByText('Scopes')).not.toBeInTheDocument();
-        const all_scopes = await screen.findAllByText('All');
-        expect(all_scopes.length).toBe(1);
         const never_used = await screen.findAllByText('Never');
         expect(never_used.length).toBe(2);
     });

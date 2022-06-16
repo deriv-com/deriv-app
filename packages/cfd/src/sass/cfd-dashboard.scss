@@ -105,24 +105,31 @@
         background-color: var(--general-section-1);
         display: flex;
         justify-content: space-between;
-        margin: 2.4em 0 auto;
+        margin: 2.4em 0 0;
+        margin-inline: auto;
         padding: 1.6rem;
-
-        &--heading {
-            color: var(--text-prominent);
-            line-height: 1.5;
+        max-width: 960px;
+        &-wrapper {
+            max-width: 90%;
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.75;
             margin-right: 1rem;
 
-            @include desktop {
-                white-space: nowrap;
-            }
-            @include typeface(--title-left-bold-black, none);
-            @include mobile {
-                font-size: 1.2rem;
+            &--heading {
+                color: var(--text-prominent);
+                @include desktop {
+                    white-space: nowrap;
+                }
+                @include typeface(--title-left-bold-black, none);
+                @include mobile {
+                    font-size: 1.2rem;
+                }
             }
         }
         &--button {
             height: 4rem;
+            justify-self: flex-end;
         }
         @include mobile {
             flex-direction: column;
@@ -225,7 +232,9 @@
         @include typeface(--small-center-normal-black, none);
         display: flex;
         justify-content: center;
-        margin: 2.4rem 0;
+        align-items: center;
+        margin: 2.4rem auto;
+        max-width: 750px;
 
         &-icon {
             margin-right: 0.8rem;

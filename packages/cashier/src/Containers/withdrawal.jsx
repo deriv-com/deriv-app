@@ -17,7 +17,7 @@ import SideNote from 'Components/side-note.jsx';
 import USDTSideNote from 'Components/usdt-side-note.jsx';
 import CryptoTransactionsHistory from 'Components/Form/crypto-transactions-history';
 import RecentTransaction from 'Components/recent-transaction.jsx';
-import NewSideNote from 'Components/side-note/new-side-note.jsx';
+import SideNoteWrapper from 'Components/side-note/side-note-wrapper.jsx';
 
 const WithdrawalSideNote = ({ currency }) => {
     const notes = [
@@ -104,7 +104,7 @@ const Withdrawal = ({
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
                 side_notes.push(side_note);
-                setSideNotes([<NewSideNote key={0}>{side_notes}</NewSideNote>]);
+                setSideNotes([<SideNoteWrapper key={0}>{side_notes}</SideNoteWrapper>]);
             } else setSideNotes(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,9 +133,9 @@ const Withdrawal = ({
             <>
                 <NoBalance />
                 {is_crypto && (
-                    <NewSideNote is_mobile>
+                    <SideNoteWrapper is_mobile>
                         <WithdrawalSideNote currency={currency} />
-                    </NewSideNote>
+                    </SideNoteWrapper>
                 )}
             </>
         );
@@ -154,9 +154,9 @@ const Withdrawal = ({
             <>
                 <CryptoWithdrawForm />
                 {is_crypto && (
-                    <NewSideNote is_mobile>
+                    <SideNoteWrapper is_mobile>
                         <WithdrawalSideNote currency={currency} />
-                    </NewSideNote>
+                    </SideNoteWrapper>
                 )}
             </>
         );
@@ -170,9 +170,9 @@ const Withdrawal = ({
     return (
         <>
             {is_crypto && (
-                <NewSideNote is_mobile>
+                <SideNoteWrapper is_mobile>
                     <WithdrawalSideNote currency={currency} />
-                </NewSideNote>
+                </SideNoteWrapper>
             )}
             <SendEmail />
         </>

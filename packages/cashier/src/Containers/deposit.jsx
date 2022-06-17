@@ -14,7 +14,7 @@ import USDTSideNote from 'Components/usdt-side-note.jsx';
 import RecentTransaction from 'Components/recent-transaction.jsx';
 import Virtual from 'Components/Error/virtual.jsx';
 import CryptoDeposit from './crypto-deposit.jsx';
-import NewSideNote from 'Components/side-note/new-side-note.jsx';
+import SideNoteWrapper from 'Components/side-note/side-note-wrapper.jsx';
 
 const Deposit = ({
     can_change_fiat_currency,
@@ -77,9 +77,9 @@ const Deposit = ({
             }
             if (is_fiat_currency_banner_visible_for_MF_clients) {
                 setSideNotes([
-                    <NewSideNote key={0}>
+                    <SideNoteWrapper key={0}>
                         <CashierDefaultSideNote key={0} is_crypto={false} />
-                    </NewSideNote>,
+                    </SideNoteWrapper>,
                 ]);
             }
         }
@@ -121,9 +121,9 @@ const Deposit = ({
         return (
             <>
                 {is_fiat_currency_banner_visible_for_MF_clients && (
-                    <NewSideNote is_mobile>
+                    <SideNoteWrapper is_mobile>
                         <CashierDefaultSideNote is_crypto={false} />
-                    </NewSideNote>
+                    </SideNoteWrapper>
                 )}
                 <CashierContainer
                     iframe_height={iframe_height}

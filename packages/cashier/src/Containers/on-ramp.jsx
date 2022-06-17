@@ -9,7 +9,7 @@ import DepositsLocked from 'Components/Error/deposit-locked.jsx';
 import OnRampProviderCard from 'Components/on-ramp-provider-card.jsx';
 import OnRampProviderPopup from 'Components/on-ramp-provider-popup.jsx';
 import SideNote from 'Components/side-note.jsx';
-import NewSideNote from 'Components/side-note/new-side-note.jsx';
+import SideNoteWrapper from 'Components/side-note/side-note-wrapper.jsx';
 import 'Sass/on-ramp.scss';
 
 const OnRampSideNote = () => {
@@ -71,9 +71,9 @@ const OnRamp = ({
         onMountOnramp();
         if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
             setSideNotes([
-                <NewSideNote key={0}>
+                <SideNoteWrapper key={0}>
                     <OnRampSideNote />
-                </NewSideNote>,
+                </SideNoteWrapper>,
             ]);
         }
 

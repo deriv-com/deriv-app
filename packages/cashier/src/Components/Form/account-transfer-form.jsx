@@ -17,7 +17,7 @@ import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
 import PercentageSelector from '../percentage-selector';
 import RecentTransaction from '../recent-transaction.jsx';
-import NewSideNote from 'Components/side-note/new-side-note.jsx';
+import SideNoteWrapper from 'Components/side-note/side-note-wrapper.jsx';
 import 'Sass/account-transfer-form.scss';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
@@ -418,7 +418,7 @@ const AccountTransferForm = ({
                     is_mt_transfer={is_mt_transfer}
                 />
             );
-            setSideNotes([<NewSideNote key={0}>{side_notes}</NewSideNote>]);
+            setSideNotes([<SideNoteWrapper key={0}>{side_notes}</SideNoteWrapper>]);
         }
     }, [transfer_fee, selected_from, selected_to, minimum_fee, from_accounts, is_dxtrade_allowed, crypto_transactions]);
 
@@ -643,7 +643,7 @@ const AccountTransferForm = ({
                                         <Localize i18n_default_text='Transfer' />
                                     </Button>
                                 </div>
-                                <NewSideNote is_mobile>
+                                <SideNoteWrapper is_mobile>
                                     {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
                                     <AccountTransferNote
                                         allowed_transfers_count={{
@@ -659,7 +659,7 @@ const AccountTransferForm = ({
                                         is_dxtrade_transfer={is_dxtrade_transfer}
                                         is_mt_transfer={is_mt_transfer}
                                     />
-                                </NewSideNote>
+                                </SideNoteWrapper>
                                 <FormError error={error} />
                             </Form>
                         )}

@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
 import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-details.jsx';
 import CashierDefaultSideNote from 'Components/CashierDefault/cashier-default-side-note.jsx';
-import NewSideNote from 'Components/side-note/new-side-note.jsx';
+import SideNoteWrapper from 'Components/side-note/side-note-wrapper.jsx';
 
 const CashierDefault = ({
     available_crypto_currencies,
@@ -63,9 +63,9 @@ const CashierDefault = ({
             is_currency_banner_visible
         ) {
             setSideNotes([
-                <NewSideNote key={0}>
+                <SideNoteWrapper key={0}>
                     <CashierDefaultSideNote is_crypto={is_crypto} />
-                </NewSideNote>,
+                </SideNoteWrapper>,
             ]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -149,9 +149,9 @@ const CashierDefault = ({
     return (
         <div>
             {is_currency_banner_visible && (
-                <NewSideNote is_mobile>
+                <SideNoteWrapper is_mobile>
                     <CashierDefaultSideNote is_crypto={is_crypto} />
-                </NewSideNote>
+                </SideNoteWrapper>
             )}
             <div className='cashier-default'>
                 <div className='cashier-default-header'>

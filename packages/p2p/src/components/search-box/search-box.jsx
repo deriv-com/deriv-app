@@ -13,13 +13,7 @@ const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
         }
     };
 
-    const onSearchKeyDown = (search, submitForm) => {
-        if (!search) {
-            onClear();
-        } else {
-            submitForm();
-        }
-    };
+    const onSearchKeyDown = (search, submitForm) => (search ? submitForm() : onClear());
 
     const onSearchKeyUp = submitForm => {
         clearTimeout(typing_timer);

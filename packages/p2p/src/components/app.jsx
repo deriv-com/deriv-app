@@ -12,8 +12,7 @@ import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
-    const { className, history, lang, order_id, server_time, websocket_api } = props;
-    const TranslationContext = React.createContext();
+    const { className, history, lang, order_id, server_time, websocket_api, setOnRemount } = props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
@@ -36,6 +35,7 @@ const App = props => {
         };
         waitWS('authorize').then(() => {
             general_store.onMount();
+            setOnRemount(general_store.onMount);
             if (localStorage.getItem('is_verifying_p2p')) {
                 localStorage.removeItem('is_verifying_p2p');
                 general_store.setActiveIndex(general_store.path.my_ads);
@@ -59,9 +59,7 @@ const App = props => {
 
     return (
         <main className={classNames('p2p-cashier', className)}>
-            <TranslationContext.Provider>
-                <AppContent />
-            </TranslationContext.Provider>
+            <AppContent />
         </main>
     );
 };

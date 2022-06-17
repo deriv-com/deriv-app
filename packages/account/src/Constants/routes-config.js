@@ -12,10 +12,10 @@ import {
     TwoFactorAuthentication,
     SelfExclusion,
     Account,
-    DeactivateAccount,
+    ClosingAccount,
     ConnectedApps,
     LoginHistory,
-    AccountDeactivated,
+    AccountClosed,
 } from 'Sections';
 
 // Error Routes
@@ -25,10 +25,10 @@ const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: 
 const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
     {
         path: routes.account_deactivated,
-        component: AccountDeactivated,
+        component: AccountClosed,
         is_authenticated: false,
         // Don't use `Localize` component since native html tag like `option` cannot render them
-        getTitle: () => localize('Account deactivated'),
+        getTitle: () => localize('Account closed'),
     },
     {
         path: routes.account,
@@ -115,8 +115,8 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                     },
                     {
                         path: routes.deactivate_account,
-                        component: DeactivateAccount,
-                        getTitle: () => localize('Deactivate account'),
+                        component: ClosingAccount,
+                        getTitle: () => localize('Closing account'),
                     },
                 ],
             },

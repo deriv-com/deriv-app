@@ -18,7 +18,7 @@ const initial_form = {
     do_to_improve: '',
 };
 
-const DeactivateAccountReasonFrom = ({
+const ClosingAccountReasonFrom = ({
     validateFields,
     onSubmit,
     is_checkbox_disabled,
@@ -39,7 +39,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
-                                className='deactivate-account-reasons__checkbox'
+                                className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I have other financial priorities.')}
                                 onChange={() => {
@@ -52,7 +52,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
-                                className='deactivate-account-reasons__checkbox'
+                                className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I want to stop myself from trading.')}
                                 onChange={() => {
@@ -65,7 +65,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
-                                className='deactivate-account-reasons__checkbox'
+                                className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I’m no longer interested in trading.')}
                                 onChange={() => {
@@ -78,7 +78,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
-                                className='deactivate-account-reasons__checkbox'
+                                className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I prefer another trading website.')}
                                 onChange={() => {
@@ -91,7 +91,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
-                                className='deactivate-account-reasons__checkbox'
+                                className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('The platforms aren’t user-friendly.')}
                                 onChange={() => {
@@ -104,7 +104,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
-                                className='deactivate-account-reasons__checkbox'
+                                className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('Making deposits and withdrawals is difficult.')}
                                 onChange={() => {
@@ -117,7 +117,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
-                                className='deactivate-account-reasons__checkbox'
+                                className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('The platforms lack key features or functionality.')}
                                 onChange={() => {
@@ -130,7 +130,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
-                                className='deactivate-account-reasons__checkbox'
+                                className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('Customer service was unsatisfactory.')}
                                 onChange={() => {
@@ -143,7 +143,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Checkbox
                                 disabled={is_checkbox_disabled && !values[field.name]}
-                                className='deactivate-account-reasons__checkbox'
+                                className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I’m deactivating my account for other reasons.')}
                                 onChange={() => {
@@ -156,7 +156,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Input
                                 {...field}
-                                className='deactivate-account-reasons__input'
+                                className='closing-account-reasons__input'
                                 data-lpignore='true'
                                 autoComplete='off' // prevent chrome autocomplete
                                 type='textarea'
@@ -175,7 +175,7 @@ const DeactivateAccountReasonFrom = ({
                         {({ field }) => (
                             <Input
                                 {...field}
-                                className='deactivate-account-reasons__input'
+                                className='closing-account-reasons__input'
                                 data-lpignore='true'
                                 autoComplete='off' // prevent chrome autocomplete
                                 type='textarea'
@@ -188,9 +188,9 @@ const DeactivateAccountReasonFrom = ({
                             />
                         )}
                     </Field>
-                    <div className='deactivate-account-reasons__footer'>
-                        <div className='deactivate-account-reasons__hint-wrapper'>
-                            <Text size='xxs' as='p' color='less-prominent' className='deactivate-account-reasons__hint'>
+                    <div className='closing-account-reasons__footer'>
+                        <div className='closing-account-reasons__hint-wrapper'>
+                            <Text size='xxs' as='p' color='less-prominent' className='closing-account-reasons__hint'>
                                 {localize('Remaining characters: {{remaining_characters}}', {
                                     remaining_characters,
                                 })}
@@ -202,7 +202,7 @@ const DeactivateAccountReasonFrom = ({
                                         weight='bold'
                                         size='xs'
                                         color={is_appstore ? 'blue' : 'loss-danger'}
-                                        className='deactivate-account-reasons__error'
+                                        className='closing-account-reasons__error'
                                         key={key}
                                     >
                                         {value}
@@ -226,4 +226,4 @@ const DeactivateAccountReasonFrom = ({
     );
 };
 
-export default DeactivateAccountReasonFrom;
+export default ClosingAccountReasonFrom;

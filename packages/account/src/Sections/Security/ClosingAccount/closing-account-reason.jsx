@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import AccountHasPendingConditions from './account-has-balance.jsx';
-import DeactivateAccountReasonFrom from './deactivate-account-reason-form.jsx';
+import ClosingAccountReasonFrom from './closing-account-reason-form.jsx';
 
 const preparingReason = values => {
     let selected_reasons = selectedReasons(values)
@@ -61,11 +61,11 @@ const WarningModal = props => {
 
 const GeneralErrorContent = ({ message, onClick }) => (
     <>
-        <div className='deactivate-account-error__container deactivate-account-error__container-message'>
-            <div className='deactivate-account-error__details deactivate-account-error__details-message'>{message}</div>
+        <div className='closing-account-error__container closing-account-error__container-message'>
+            <div className='closing-account-error__details closing-account-error__details-message'>{message}</div>
         </div>
         <div>
-            <Button className='deactivate-account-error__button' primary onClick={onClick}>
+            <Button className='closing-account-error__button' primary onClick={onClick}>
                 {localize('OK')}
             </Button>
         </div>
@@ -75,9 +75,9 @@ const GeneralErrorContent = ({ message, onClick }) => (
 const character_limit_no = 110;
 const max_allowed_reasons = 3;
 
-const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dxtrade_accounts_list }) => {
+const ClosingAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dxtrade_accounts_list }) => {
     const { is_appstore } = React.useContext(PlatformContext);
-    const [is_account_deactivated, setIsAccountDeactivated] = React.useState(false);
+    const [is_account_closed, setIsAccountClosed] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [which_modal_should_render, setWhichModalShouldRender] = React.useState();
@@ -170,7 +170,7 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
         });
 
         if (account_closure_response.account_closure === 1) {
-            setIsAccountDeactivated(true);
+            setIsAccountClosed(true);
         } else {
             const { code, message, details: errorDetails } = account_closure_response.error;
             const getModalToRender = () => {
@@ -191,22 +191,22 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
         }
     };
 
-    if (is_account_deactivated) return <Redirect to={routes.account_deactivated} />;
+    if (is_account_closed) return <Redirect to={routes.account_deactivated} />;
 
     if (is_loading) return <Loading is_fullscreen={false} />;
 
     return (
         <div
-            className={classNames('deactivate-account-reasons', {
-                'deactivate-account-reasons--dashboard': is_appstore,
+            className={classNames('closing-account-reasons', {
+                'closing-account-reasons--dashboard': is_appstore,
             })}
         >
-            <Text weight='bold' size='xs' className='deactivate-account-reasons__title' as='p'>
+            <Text weight='bold' size='xs' className='closing-account-reasons__title' as='p'>
                 {localize('Please tell us why you’re leaving. (Select up to {{ allowed_reasons }} reasons.)', {
                     allowed_reasons: max_allowed_reasons,
                 })}
             </Text>
-            <DeactivateAccountReasonFrom
+            <ClosingAccountReasonFrom
                 validateFields={validateFields}
                 onSubmit={handleSubmitForm}
                 is_checkbox_disabled={is_checkbox_disabled}
@@ -218,7 +218,7 @@ const DeactivateAccountReason = ({ onBackClick, mt5_login_list, client_accounts,
                 onBackClick={onBackClick}
             />
             <Modal
-                className='deactivate-account-reasons'
+                className='closing-account-reasons'
                 is_open={is_modal_open}
                 toggleModal={() => setIsModalOpen(!is_modal_open)}
                 title={getModalTitle()}
@@ -247,4 +247,4 @@ export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
     dxtrade_accounts_list: client.dxtrade_accounts_list,
-}))(DeactivateAccountReason);
+}))(ClosingAccountReason);

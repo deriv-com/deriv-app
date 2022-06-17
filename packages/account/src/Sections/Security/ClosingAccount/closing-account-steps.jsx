@@ -5,18 +5,18 @@ import { PlatformContext } from '@deriv/shared';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 
-const DeactivateAccountSteps = ({ redirectToReasons }) => {
+const ClosingAccountSteps = ({ redirectToReasons }) => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <div>
-            <div className='deactivate-account__information'>
-                <Text size='xs' weight='bold' className='deactivate-account__information--bold' as='p'>
+            <div className='closing-account__information'>
+                <Text size='xs' weight='bold' className='closing-account__information--bold' as='p'>
                     <Localize i18n_default_text='Are you sure?' />
                 </Text>
             </div>
-            <div className='deactivate-account__steps'>
-                <Text size='xs' as='p' className='deactivate-account__title'>
+            <div className='closing-account__steps'>
+                <Text size='xs' as='p' className='closing-account__title'>
                     <Localize i18n_default_text='If you close your account:' />
                 </Text>
                 <ul>
@@ -24,8 +24,8 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => {
                     <li>{localize("You can't make transactions.")}</li>
                 </ul>
             </div>
-            <div className='deactivate-account__steps'>
-                <Text size='xs' as='p' line_height='s' className='deactivate-account__title'>
+            <div className='closing-account__steps'>
+                <Text size='xs' as='p' line_height='s' className='closing-account__title'>
                     <Localize i18n_default_text='Before closing your account:' />
                 </Text>
                 <ul>
@@ -33,7 +33,7 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => {
                     <li>{localize('Withdraw your funds.')}</li>
                 </ul>
             </div>
-            <div className='deactivate-account__steps'>
+            <div className='closing-account__steps'>
                 <Text size='xs' as='p' line_height='s'>
                     <Localize
                         i18n_default_text='We shall delete your personal information as soon as our legal obligations are met, as mentioned in the section on Data Retention in our <0>Security and privacy policy</0>'
@@ -44,16 +44,16 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => {
                 </Text>
             </div>
             <Button
-                className={classNames('deactivate-account__button', {
-                    'deactivate-account__button--dashboard': is_appstore,
+                className={classNames('closing-account__button', {
+                    'closing-account__button--dashboard': is_appstore,
                 })}
                 large
                 onClick={() => redirectToReasons()}
                 primary
             >
-                <Localize i18n_default_text='Continue to account deactivation' />
+                <Localize i18n_default_text='Continue to account closure' />
             </Button>
         </div>
     );
 };
-export default connect(({ client }) => ({ is_dxtrade_allowed: client.is_dxtrade_allowed }))(DeactivateAccountSteps);
+export default connect(({ client }) => ({ is_dxtrade_allowed: client.is_dxtrade_allowed }))(ClosingAccountSteps);

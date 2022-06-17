@@ -13,19 +13,32 @@ const MobileDialog = props => {
 
     const footer_ref = React.useRef(false);
     const [footer_height, setHeight] = React.useState(0);
+    const [is_umounted, setIsUnmounted] = React.useState(false);
+    const portal_el = document.getElementById(portal_element_id);
+
     React.useLayoutEffect(() => {
         if (footer_ref.current && !footer_height) {
             setHeight(footer_ref.current.offsetHeight);
         }
     }, [footer, footer_height]);
 
+    React.useEffect(() => {
+        if (!visible) {
+            setTimeout(() => {
+                setIsUnmounted(true);
+            }, 250); // this timeout must equal to CSSTransition timeout below
+        } else {
+            setIsUnmounted(false);
+        }
+    }, [visible]);
+
     const checkVisibility = () => {
         if (props.visible) {
             document.body.style.overflow = 'hidden';
-            document.getElementById(portal_element_id).style.overflow = 'hidden';
+            portal_el.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = null;
-            document.getElementById(portal_element_id).style.overflow = null;
+            portal_el.style.overflow = null;
         }
     };
 
@@ -53,7 +66,7 @@ const MobileDialog = props => {
     };
 
     checkVisibility();
-    if (!document.getElementById(portal_element_id)) return null;
+    if (!portal_element_id && is_umounted) return null;
     return ReactDOM.createPortal(
         <CSSTransition
             appear
@@ -110,7 +123,7 @@ const MobileDialog = props => {
                 </Div100vhContainer>
             </div>
         </CSSTransition>,
-        document.getElementById(portal_element_id)
+        portal_el
     );
 };
 

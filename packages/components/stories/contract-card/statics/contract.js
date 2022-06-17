@@ -1,4 +1,4 @@
-import React from 'react';
+import { localize } from '@deriv/translations';
 
 export const getCardLabels = () => ({
     APPLY: 'Apply',
@@ -179,6 +179,10 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACC: {
+        name: 'Buy',
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? 'Higher' : 'Rise',
         position: 'top',

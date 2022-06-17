@@ -576,8 +576,8 @@ export default class TradeStore extends BaseStore {
         if (isBarrierSupported(dummy_contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
-            const dummy_accumulator_high_barrier = dummy_contract_type === 'ACC' && '+20';
-            const dummy_accumulator_low_barrier = dummy_contract_type === 'ACC' && '-20';
+            const dummy_accumulator_high_barrier = dummy_contract_type === 'ACC' && '+0.30';
+            const dummy_accumulator_low_barrier = dummy_contract_type === 'ACC' && '-0.30';
             this.main_barrier = new ChartBarrierStore(
                 high_barrier || barrier || dummy_accumulator_high_barrier,
                 low_barrier || barrier2 || dummy_accumulator_low_barrier,
@@ -1275,6 +1275,11 @@ export default class TradeStore extends BaseStore {
     @computed
     get has_alternative_source() {
         return this.is_multiplier && !!this.hovered_contract_type;
+    }
+
+    @computed
+    get is_accumulator() {
+        return this.contract_type === 'accumulator';
     }
 
     @computed

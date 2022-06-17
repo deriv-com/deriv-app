@@ -4,6 +4,8 @@ import Icon from '../icon/icon.jsx';
 
 const IconTradeTypes = ({ type, className, ...props }) => {
     switch (type.toLowerCase()) {
+        case 'acc':
+            return <Icon icon='IcTradetypeCall' className={className} color='brand' {...props} />;
         case 'asiand':
             return <Icon icon='IcTradetypeAsiand' className={className} color='brand' {...props} />;
         case 'asianu':

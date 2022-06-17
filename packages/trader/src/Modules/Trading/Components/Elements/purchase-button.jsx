@@ -29,6 +29,7 @@ const PurchaseButton = ({
     has_deal_cancellation,
     index,
     info,
+    is_accumulator,
     is_disabled,
     is_high_low,
     is_loading,
@@ -82,7 +83,7 @@ const PurchaseButton = ({
                 <div className='btn-purchase__effect-detail--arrow' />
                 <div className='btn-purchase__info btn-purchase__info--right'>
                     <div className='btn-purchase__text_wrapper'>
-                        {is_multiplier ? (
+                        {is_multiplier || is_accumulator ? (
                             <Text size='xs' weight='bold' color='colored-background'>
                                 <Money amount={info.stake} currency={currency} show_currency />
                             </Text>
@@ -109,6 +110,7 @@ const PurchaseButton = ({
                         basis={basis}
                         currency={currency}
                         has_increased={has_increased}
+                        is_accumulator={is_accumulator}
                         is_loading={is_loading}
                         is_multiplier={is_multiplier}
                         should_fade={should_fade}
@@ -127,6 +129,7 @@ PurchaseButton.propTypes = {
     has_deal_cancellation: PropTypes.bool,
     index: PropTypes.number,
     info: PropTypes.object,
+    is_accumulator: PropTypes.bool,
     is_disabled: PropTypes.bool,
     is_high_low: PropTypes.bool,
     is_loading: PropTypes.bool,

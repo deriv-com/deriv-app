@@ -42,6 +42,38 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const commission = proposal.commission;
     const cancellation = proposal.cancellation;
 
+    if (store.contract_type === 'accumulator') {
+        // dummy proposal info for accumulators:
+        return {
+            distance_from_barriers: '+0.100%',
+            max_duration_ticks: 10,
+            max_payout: '20000.00',
+            error_code: undefined,
+            error_field: undefined,
+            has_error: false,
+            has_error_details: false,
+            has_increased: null,
+            id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+            limit_order: {
+                take_profit: {
+                    display_name: 'Take profit',
+                    order_amount: 89,
+                    order_date: 1655390008,
+                    value: '1471.48',
+                },
+            },
+            message:
+                'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
+            obj_contract_basis: {
+                text: '',
+                value: '',
+            },
+            payout: 0,
+            profit: '-10.00',
+            returns: '-100.00%',
+            stake: '10.00',
+        };
+    }
     return {
         commission,
         cancellation,

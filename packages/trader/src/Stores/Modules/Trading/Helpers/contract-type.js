@@ -43,8 +43,8 @@ const ContractType = (() => {
 
             const dummy_accumulator = {
                 barrier_category: 'american',
-                high_barrier: '+20',
-                low_barrier: '-20',
+                high_barrier: '+0.30',
+                low_barrier: '-0.30',
                 barriers: 2,
                 contract_category: 'accumulator',
                 contract_category_display: 'Accumulate',

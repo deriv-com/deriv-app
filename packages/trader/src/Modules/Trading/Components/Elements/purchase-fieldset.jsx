@@ -14,6 +14,7 @@ const PurchaseFieldset = ({
     has_cancellation,
     info,
     index,
+    is_accumulator,
     is_disabled,
     is_high_low,
     is_loading,
@@ -41,6 +42,7 @@ const PurchaseFieldset = ({
                 info={info}
                 index={index}
                 has_deal_cancellation={is_multiplier && has_cancellation}
+                is_accumulator={is_accumulator}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={is_loading}
@@ -79,6 +81,7 @@ const PurchaseFieldset = ({
                             currency={currency}
                             proposal_info={info}
                             has_increased={info.has_increased}
+                            is_accumulator={is_accumulator}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             should_fade={should_fade}
@@ -147,6 +150,7 @@ PurchaseFieldset.propTypes = {
     has_cancellation: PropTypes.bool,
     index: PropTypes.number,
     info: PropTypes.object,
+    is_accumulator: PropTypes.bool,
     is_disabled: PropTypes.bool,
     is_high_low: PropTypes.bool,
     is_loading: PropTypes.bool,

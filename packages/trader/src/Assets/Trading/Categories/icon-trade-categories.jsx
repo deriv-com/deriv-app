@@ -208,6 +208,15 @@ const IconTradeCategory = ({ category, className }) => {
                     </React.Fragment>
                 );
                 break;
+            case 'accumulator':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeCall' className='category-type' color='brand' />
+                        </div>
+                    </React.Fragment>
+                );
+                break;
             default:
                 IconCategory = (
                     <div className='category-wrapper'>

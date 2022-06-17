@@ -201,6 +201,10 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACC: {
+        name: <Localize i18n_default_text='Buy' />,
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',

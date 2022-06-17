@@ -34,6 +34,7 @@ const ContractInfo = ({
     currency,
     has_increased,
     is_loading,
+    is_accumulator,
     is_multiplier,
     should_fade,
     proposal_info,
@@ -70,7 +71,7 @@ const ContractInfo = ({
                     'trade-container__price-info--fade': is_loading && should_fade,
                 })}
             >
-                {is_multiplier ? (
+                {is_multiplier || is_accumulator ? (
                     <React.Fragment>
                         <DesktopWrapper>
                             <CancelDealInfo proposal_info={proposal_info} />
@@ -133,6 +134,7 @@ ContractInfo.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
     has_increased: PropTypes.bool,
+    is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_loading: PropTypes.bool,
     proposal_info: PropTypes.object,

@@ -10,6 +10,7 @@ const Purchase = ({
     contract_type,
     currency,
     has_cancellation,
+    is_accumulator,
     is_multiplier,
     is_mobile,
     is_purchase_enabled,
@@ -33,7 +34,6 @@ const Purchase = ({
         return !has_validation_error && !info.has_error && !info.id;
     };
     const is_proposal_empty = isEmptyObject(proposal_info);
-
     const components = [];
     Object.keys(trade_types).map((type, index) => {
         const getSortedIndex = () => {
@@ -43,7 +43,8 @@ const Purchase = ({
         };
         const info = proposal_info[type] || {};
         const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
-        const is_proposal_error = is_multiplier ? info.has_error && !info.has_error_details : info.has_error;
+        const is_proposal_error =
+            is_multiplier || is_accumulator ? info.has_error && !info.has_error_details : info.has_error;
         const purchase_fieldset = (
             <PurchaseFieldset
                 basis={basis}
@@ -53,6 +54,7 @@ const Purchase = ({
                 key={index}
                 index={getSortedIndex(index, type)}
                 has_cancellation={has_cancellation}
+                is_accumulator={is_accumulator}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
@@ -91,6 +93,7 @@ Purchase.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
     has_cancellation: PropTypes.bool,
+    is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_mobile: PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
@@ -114,6 +117,7 @@ export default connect(({ modules, ui }) => ({
     has_cancellation: modules.trade.has_cancellation,
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
+    is_accumulator: modules.trade.is_accumulator,
     is_multiplier: modules.trade.is_multiplier,
     onClickPurchase: modules.trade.onPurchase,
     onHoverPurchase: modules.trade.onHoverPurchase,

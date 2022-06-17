@@ -42,6 +42,7 @@ const ContractType = (() => {
             available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
             const dummy_accumulator = {
+                accumulator_growth_rates: [0.01, 0.02, 0.03, 0.04, 0.05],
                 barrier_category: 'american',
                 high_barrier: '+0.30',
                 low_barrier: '-0.30',
@@ -52,6 +53,7 @@ const ContractType = (() => {
                 contract_type: 'ACC',
                 exchange_name: 'RANDOM',
                 expiry_type: 'intraday',
+                growth_rate: 0.03,
                 market: 'synthetic_index',
                 max_contract_duration: '1d',
                 min_contract_duration: '1m',
@@ -143,6 +145,7 @@ const ContractType = (() => {
                 config.trade_types = buildTradeTypesConfig(contract, config.trade_types);
                 config.barriers = buildBarriersConfig(contract, config.barriers);
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
+                config.accumulator_growth_rates = contract.accumulator_growth_rates;
                 config.multiplier_range = contract.multiplier_range;
                 config.cancellation_range = contract.cancellation_range;
 
@@ -173,6 +176,7 @@ const ContractType = (() => {
             basis,
             duration_unit,
             expiry_type,
+            growth_rate,
             multiplier,
             start_date,
             cancellation_duration,
@@ -192,6 +196,7 @@ const ContractType = (() => {
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
+        const obj_accumulator_rates_list = getAccumulatorRates(contract_type, growth_rate);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
@@ -208,6 +213,7 @@ const ContractType = (() => {
             ...obj_duration_units_list,
             ...obj_duration_units_min_max,
             ...obj_expiry_type,
+            ...obj_accumulator_rates_list,
             ...obj_multiplier_range_list,
             ...obj_cancellation,
             ...obj_equal,
@@ -552,6 +558,16 @@ const ContractType = (() => {
         return {
             basis_list,
             basis: getArrayDefaultValue(arr_basis, basis),
+        };
+    };
+
+    const getAccumulatorRates = (contract_type, growth_rate) => {
+        const arr_growth_rates =
+            getPropertyValue(available_contract_types, [contract_type, 'config', 'accumulator_growth_rates']) || [];
+
+        return {
+            accumulator_rates_list: arr_growth_rates,
+            growth_rate: getArrayDefaultValue(arr_growth_rates, growth_rate),
         };
     };
 

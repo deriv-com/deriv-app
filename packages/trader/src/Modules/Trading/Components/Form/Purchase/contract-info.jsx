@@ -73,9 +73,11 @@ const ContractInfo = ({
             >
                 {is_multiplier || is_accumulator ? (
                     <React.Fragment>
-                        <DesktopWrapper>
-                            <CancelDealInfo proposal_info={proposal_info} />
-                        </DesktopWrapper>
+                        {!is_accumulator && (
+                            <DesktopWrapper>
+                                <CancelDealInfo proposal_info={proposal_info} />
+                            </DesktopWrapper>
+                        )}
                         <MobileWrapper>
                             <div className='trade-container__price-info-wrapper'>
                                 <div className='btn-purchase__text_wrapper'>
@@ -87,7 +89,6 @@ const ContractInfo = ({
                         </MobileWrapper>
                     </React.Fragment>
                 ) : (
-                    !is_multiplier &&
                     obj_contract_basis && (
                         <React.Fragment>
                             <div className='trade-container__price-info-basis'>{basis_text}</div>

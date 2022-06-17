@@ -6,7 +6,7 @@ import React from 'react';
 // for example [[1, 2, 3]] will be a single row of these three numbers
 // but [[1, 2, 3], [4, 5, 6]] will be two rows:
 // first row with the first three numbers and second row with the last three numbers
-const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number }) => {
+const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number, show_in_percentage }) => {
     const handleSelect = item => {
         if (+item.target.getAttribute('data-value') !== selected_number) {
             onChange({ target: { name, value: +item.target.getAttribute('data-value') } });
@@ -26,7 +26,7 @@ const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number }) =>
                             data-value={i}
                             onClick={handleSelect}
                         >
-                            {i}
+                            {show_in_percentage ? `${i * 100}%` : i}
                         </span>
                     ))}
                 </div>
@@ -40,6 +40,7 @@ NumberSelector.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     selected_number: PropTypes.number,
+    show_in_percentage: PropTypes.bool,
 };
 
 export default NumberSelector;

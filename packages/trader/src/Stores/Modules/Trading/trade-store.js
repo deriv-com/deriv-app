@@ -113,6 +113,10 @@ export default class TradeStore extends BaseStore {
     @observable is_chart_loading;
     @observable should_show_active_symbols_loading = false;
 
+    // Accumulator trade params
+    @observable accumulator_rates_list = [];
+    @observable growth_rate;
+
     // Multiplier trade params
     @observable multiplier;
     @observable multiplier_range_list = [];
@@ -155,6 +159,7 @@ export default class TradeStore extends BaseStore {
             'duration_unit',
             'expiry_date',
             'expiry_type',
+            'growth_rate',
             'has_take_profit',
             'has_stop_loss',
             'has_cancellation',
@@ -950,6 +955,7 @@ export default class TradeStore extends BaseStore {
             }
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
+
         if (!this.main_barrier || this.main_barrier.shade) {
             this.setMainBarrier(response.echo_req);
         }

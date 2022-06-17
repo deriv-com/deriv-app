@@ -50,6 +50,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
             max_payout: '20000.00',
             error_code: undefined,
             error_field: undefined,
+            growth_rate: store.growth_rate,
             has_error: false,
             has_error_details: false,
             has_increased: null,

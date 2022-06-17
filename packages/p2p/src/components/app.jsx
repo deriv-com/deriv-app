@@ -11,8 +11,8 @@ import { setLanguage } from './i18next';
 import './app.scss';
 
 const App = props => {
-    const { floating_rate_store, general_store, order_store } = useStores();
-    const { balance, className, history, lang, order_id, server_time, websocket_api } = props;
+    const { general_store, order_store } = useStores();
+    const { balance, className, history, lang, order_id, server_time, websocket_api, setOnRemount } = props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
@@ -25,7 +25,6 @@ const App = props => {
             history.push(routes.cashier_p2p);
         }
 
-        setLanguage(lang);
         ServerTime.init(server_time);
 
         // force safari refresh on back/forward
@@ -37,20 +36,21 @@ const App = props => {
 
         waitWS('authorize').then(() => {
             general_store.onMount();
+            setOnRemount(general_store.onMount);
             if (localStorage.getItem('is_verifying_p2p')) {
                 localStorage.removeItem('is_verifying_p2p');
                 general_store.setActiveIndex(general_store.path.my_ads);
             }
         });
-        general_store.setP2PConfig();
-        const { currency, local_currency_config } = general_store.client;
-        floating_rate_store.fetchExchangeRate(currency, local_currency_config.currency);
         return () => {
-            floating_rate_store.unSubscribeFromExchangeRates();
             general_store.onUnmount();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        setLanguage(lang);
+    }, [lang]);
 
     React.useEffect(() => {
         if (order_id) {
@@ -87,6 +87,7 @@ App.propTypes = {
     order_id: PropTypes.string,
     setNotificationCount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,
+    setOnRemount: PropTypes.func,
 };
 
 export default observer(App);

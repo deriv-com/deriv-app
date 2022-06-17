@@ -212,7 +212,6 @@ describe('<ApiToken/>', () => {
 
         render(<ApiToken {...mock_props} />);
 
-        expect(await screen.findByText('Action')).toBeInTheDocument();
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Last used')).toBeInTheDocument();
         expect(await screen.findByText('Name')).toBeInTheDocument();

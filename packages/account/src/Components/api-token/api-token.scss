@@ -93,6 +93,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.4rem;
+            max-width: 22rem;
         }
         &-scope-cell {
             border: 0.1rem solid $color-grey-5;
@@ -158,5 +159,26 @@
         // // background-color: var(--text-prominent);
         // --fill-color: var(--text-general);
         // background-color: $color-black-1;
+    }
+    &__bullet {
+        background-color: var(--text-prominent);
+        border-radius: 100%;
+        margin-right: 0.8rem;
+        width: 0.6rem;
+        height: 0.6rem;
+        flex: none;
+        margin-top: 0.65rem;
+
+        &-wrapper {
+            display: flex;
+            margin-bottom: 1.1rem;
+        }
+        &-container {
+            margin-top: 1.6rem;
+            margin-left: 1rem;
+        }
+    }
+    &__dialog > div:first-child {
+        width: 44rem;
     }
 }

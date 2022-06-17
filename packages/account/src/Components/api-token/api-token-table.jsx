@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Clipboard, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { isMobile, formatDate } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
 import ApiTokenTableBodyRow from './api-token-table-row.jsx';
 import ApiTokenTableRowHeader from './api-token-table-row-header.jsx';
 import ApiTokenDeleteButtons from './api-token-delete-buttons.jsx';
+import ApiTokenTableRowTokenCell from './api-token-table-row-cell.jsx';
 
 const ApiTokenTable = () => {
     const { api_tokens } = React.useContext(ApiTokenContext);
@@ -59,11 +60,13 @@ const ApiTokenTable = () => {
                                 <Text size='xs' color='general' line_height='m'>
                                     {token.token}
                                 </Text>
-                                <Clipboard
+                                {/* <Clipboard
                                     className='da-api-token__clipboard'
                                     popover_props={{ relative_render: false, zIndex: 9999 }}
                                     text_copy={token.token}
-                                />
+                                /> */}
+                                {/* doesn't work for mobile */}
+                                <ApiTokenTableRowTokenCell token={token.token} />
                             </div>
                         </div>
                         <div>

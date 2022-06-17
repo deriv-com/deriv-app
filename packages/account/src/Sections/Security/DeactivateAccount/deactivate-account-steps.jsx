@@ -1,71 +1,46 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
-import { Link } from 'react-router-dom';
-import { Button, Text } from '@deriv/components';
-import { PlatformContext, getPlatformSettings } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
+import { Button, Text, StaticUrl } from '@deriv/components';
+import { PlatformContext } from '@deriv/shared';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 
-const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
+const DeactivateAccountSteps = ({ redirectToReasons }) => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <div>
             <div className='deactivate-account__information'>
                 <Text size='xs' weight='bold' className='deactivate-account__information--bold' as='p'>
-                    <Localize i18n_default_text='Deactivate account' />
-                </Text>
-                <Text size='xs' as='p' line_height='s'>
-                    <Localize i18n_default_text='Before you deactivate your account, you’ll need to:' />
+                    <Localize i18n_default_text='Are you sure?' />
                 </Text>
             </div>
             <div className='deactivate-account__steps'>
-                <Text size='xs' as='p' weight='bold' className='deactivate-account__title'>
-                    <Localize i18n_default_text='1. Ensure to close all your positions' />
+                <Text size='xs' as='p' className='deactivate-account__title'>
+                    <Localize i18n_default_text='If you close your account:' />
                 </Text>
-                <Text size='xs' as='p' line_height='s'>
-                    <Localize
-                        i18n_default_text='If you have a Deriv real account, go to <0>Reports</0> to close or sell any open positions.'
-                        components={[<Link to='/reports/positions' key={0} className='deactivate-account__link' />]}
-                    />
-                </Text>
-                <Text size='xs' as='p'>
-                    {is_dxtrade_allowed ? (
-                        <Localize
-                            i18n_default_text='If you have a DMT5 or {{platform_name_dxtrade}} real account, log in to close any open positions.'
-                            values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
-                        />
-                    ) : (
-                        <Localize i18n_default_text='If you have a DMT5 real account, log in to close any open positions.' />
-                    )}
-                </Text>
+                <ul>
+                    <li>{localize("You can't trade on Deriv.")}</li>
+                    <li>{localize("You can't make transactions.")}</li>
+                </ul>
             </div>
             <div className='deactivate-account__steps'>
-                <Text size='xs' as='p' weight='bold' line_height='s' className='deactivate-account__title'>
-                    <Localize i18n_default_text='2. Withdraw your funds' />
+                <Text size='xs' as='p' line_height='s' className='deactivate-account__title'>
+                    <Localize i18n_default_text='Before closing your account:' />
                 </Text>
+                <ul>
+                    <li>{localize('Close all your positions.')}</li>
+                    <li>{localize('Withdraw your funds.')}</li>
+                </ul>
+            </div>
+            <div className='deactivate-account__steps'>
                 <Text size='xs' as='p' line_height='s'>
                     <Localize
-                        i18n_default_text='If you have a Deriv real account, go to <0>Cashier</0> to withdraw your funds.'
-                        components={[<Link to='/cashier/withdrawal' key={0} className='deactivate-account__link' />]}
+                        i18n_default_text='We shall delete your personal information as soon as our legal obligations are met, as mentioned in the section on Data Retention in our <0>Security and privacy policy</0>'
+                        components={[
+                            <StaticUrl key={0} className='link' href='tnc/security-and-privacy.pdf' is_document />,
+                        ]}
                     />
-                </Text>
-                <Text size='xs' as='p'>
-                    {is_dxtrade_allowed ? (
-                        <Localize
-                            i18n_default_text='If you have a DMT5 or {{platform_name_dxtrade}} real account, go to your <0>DMT5</0> or <1>{{platform_name_dxtrade}}</1> dashboard to withdraw your funds'
-                            components={[
-                                <Link to='/mt5' key={0} className='deactivate-account__link' />,
-                                <Link to='/derivx' key={1} className='deactivate-account__link' />,
-                            ]}
-                            values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
-                        />
-                    ) : (
-                        <Localize
-                            i18n_default_text='If you have a DMT5 real account, go to your <0>DMT5</0> dashboard to withdraw your funds'
-                            components={[<Link to='/mt5' key={0} className='deactivate-account__link' />]}
-                        />
-                    )}
                 </Text>
             </div>
             <Button

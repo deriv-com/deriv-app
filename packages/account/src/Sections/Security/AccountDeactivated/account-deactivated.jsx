@@ -34,7 +34,7 @@ const AccountDeactivated = ({ logout }) => {
             }}
         >
             <Text as='p' className='account-deactivated'>
-                <Localize i18n_default_text='We’re sorry to see you leave. Your account is now deactivated.' /> {timer}
+                <Localize i18n_default_text='We’re sorry to see you leave. Your account is now closed.' /> {timer}
             </Text>
         </Modal>
     );

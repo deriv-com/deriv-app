@@ -38,18 +38,18 @@ const WarningModal = props => {
                 {localize('Warning!')}
             </Text>
             <Text size='xs' line_height='x' weight='bold'>
-                {localize('Deactivate account?')}
+                {localize('Close your account?')}
             </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
                 <Text as='p' align='center' className='account-closure-warning-modal__content'>
                     {localize(
-                        'Deactivating your account will automatically log you out. You can reactivate your account by logging in at any time.'
+                        'Closing your account will automatically log you out. We shall delete your personal information as soon as our legal obligations are met.'
                     )}
                 </Text>
             </div>
             <FormSubmitButton
                 is_disabled={false}
-                label={localize('Deactivate')}
+                label={localize('Close account')}
                 has_cancel
                 cancel_label={localize('Go back')}
                 onCancel={() => props.closeModal()}

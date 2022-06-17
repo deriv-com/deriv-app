@@ -1,11 +1,13 @@
 import React from 'react';
 import { Popover as TinyPopover } from 'react-tiny-popover';
 
-const Popover = ({ children , content })=>{
+const Popover = ({ id, classContainer, children , content })=>{
     const [is_hovered, updateIsHovered] = React.useState(false);
     
     return(
         <span
+            id={id}
+            className={classContainer}
             onMouseEnter={()=>{updateIsHovered(true)}}
             onMouseLeave={()=>{updateIsHovered(false)}}
         >

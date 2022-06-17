@@ -2040,11 +2040,13 @@ $MIN_HEIGHT_FLOATING: calc(
         margin-top: 1.6rem;
         @include typeface(--paragraph-left-normal-prominent, none);
         line-height: 1.43;
+
+        & > ul {
+            padding-left: 3%;
+            list-style-type: disc;
+        }
     }
-    &__steps > ul {
-        padding-left: 3%;
-        list-style-type: disc;
-    }
+
     &__title {
         margin-bottom: 0.8rem;
     }

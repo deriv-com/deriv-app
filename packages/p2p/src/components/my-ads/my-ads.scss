@@ -611,23 +611,6 @@
         padding: 0 2rem 1.6rem;
     }
 
-    &__warning {
-        margin-top: 1.6rem;
-        width: fit-content;
-
-        @include mobile {
-            margin: 1.6rem 1.6rem 0;
-
-            .dc-hint-box {
-                align-items: normal;
-
-                &__icon {
-                    width: 3.5rem;
-                }
-            }
-        }
-    }
-
     &__modal-body--scroll {
         overflow: auto;
         margin-bottom: 7.5rem;

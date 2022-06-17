@@ -35,7 +35,7 @@ describe('CFDDashboardContainer', () => {
         expect(
             screen.getByText('The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.')
         ).toBeInTheDocument();
-        expect(screen.getByTestId('td_mt5_text')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_mt5_text')).toBeInTheDocument();
     });
     it('should render correct text according to the platform (DerivX)', () => {
         render(<CFDDashboardContainer {...mock_props} platform='dxtrade' />);

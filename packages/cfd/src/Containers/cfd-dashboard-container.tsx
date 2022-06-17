@@ -95,7 +95,7 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFD
                         align='center'
                         size='xxxs'
                         className='cfd-dashboard__download-center--hint'
-                        data-testid='td_mt5_text'
+                        data-testid='dt_mt5_text'
                     >
                         <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
                     </Text>

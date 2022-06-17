@@ -62,11 +62,7 @@ const CashierOnboarding = ({
             is_landing_company_loaded &&
             is_currency_banner_visible
         ) {
-            setSideNotes([
-                <SideNote key={0}>
-                    <CashierOnboardingSideNote is_crypto={is_crypto} />
-                </SideNote>,
-            ]);
+            setSideNotes([<CashierOnboardingSideNote key={0} is_crypto={is_crypto} />]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts_list, is_landing_company_loaded]);

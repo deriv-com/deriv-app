@@ -5,7 +5,7 @@ import SideNote from '../side-note';
 describe('<SideNote />', () => {
     const props = {
         has_bullets: false,
-        notes: ['First side note message', 'Second side note message'],
+        side_notes: ['First side note message', 'Second side note message'],
         title: 'Side note title',
     };
 

@@ -20,71 +20,33 @@ const SideNoteBullet = ({ children }) => (
     </div>
 );
 
-const SideNoteText = ({ children, has_bullets, is_component }) => {
-    if (is_component) {
-        return has_bullets ? <SideNoteBullet>{children}</SideNoteBullet> : children;
-    }
-    if (has_bullets) {
-        return (
-            <SideNoteBullet>
-                <Text className='side-note__text' size='xxs' as='p'>
-                    {children}
-                </Text>
-            </SideNoteBullet>
-        );
-    }
-    return (
-        <Text className='side-note__text' size='xxs' as='p'>
-            {children}
-        </Text>
-    );
-};
-
 const SideNote = ({ children, side_notes, title, has_bullets = true, is_mobile, className }) => {
-    const notes = (note, i) => {
-        let component;
-        if (typeof note === 'string') {
-            <SideNoteText key={note.key || i} has_bullets={has_bullets}>
-                {note}
-            </SideNoteText>;
-        } else if (typeof note === 'object' && note.props.i18n_default_text) {
-            component = { ...note };
-            component.key = i;
-            return (
-                <SideNoteText has_bullets={has_bullets} is_component>
-                    {component}
-                </SideNoteText>
-            );
-        }
-
-        component = { ...note };
-        component.key = i;
-        return component;
-    };
-
-    if (children) {
-        return (
-            <>
-                {is_mobile && <MobileWrapper>{children}</MobileWrapper>}
-                {!is_mobile && <DesktopWrapper>{children}</DesktopWrapper>}
-            </>
-        );
-    }
+    const Wrapper = is_mobile ? MobileWrapper : DesktopWrapper;
 
     return (
         <>
-            {side_notes?.length && (
-                <div className={classNames('side-note', { 'side-note--mobile': isMobile() }, className)}>
-                    <DesktopWrapper>
-                        <SideNoteTitle side_notes={side_notes} title={title} />
-                    </DesktopWrapper>
+            {(children || side_notes?.length) && (
+                <Wrapper>
+                    <div className={classNames('side-note', { 'side-note--mobile': isMobile() }, className)}>
+                        <DesktopWrapper>
+                            <SideNoteTitle side_notes={side_notes} title={title} />
+                        </DesktopWrapper>
 
-                    {side_notes.map((note, i) => (
-                        <div key={i} className={classNames('side-note__item')}>
-                            {notes(note, i)}
-                        </div>
-                    ))}
-                </div>
+                        {children && <>{children}</>}
+
+                        {!children &&
+                            side_notes?.length &&
+                            side_notes.map((note, i) =>
+                                has_bullets ? (
+                                    <SideNoteBullet key={i}>{note}</SideNoteBullet>
+                                ) : (
+                                    <Text key={i} className='side-note__text' size='xxs' as='p'>
+                                        {note}
+                                    </Text>
+                                )
+                            )}
+                    </div>
+                </Wrapper>
             )}
         </>
     );
@@ -95,6 +57,8 @@ SideNote.propTypes = {
     side_notes: PropTypes.array,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     has_bullets: PropTypes.bool,
+    is_mobile: PropTypes.bool,
+    className: PropTypes.string,
 };
 
 export default SideNote;

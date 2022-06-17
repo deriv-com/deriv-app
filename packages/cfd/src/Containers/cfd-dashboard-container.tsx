@@ -11,7 +11,7 @@ import {
 import { TCFDDashboardContainer } from './props.types';
 
 const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFDDashboardContainer) => (
-    <div className='cfd-dashboard__download-center'>
+    <div className='cfd-dashboard__download-center' data-testid='dt_cfd_dashboard_download_center_container'>
         <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
             className='cfd-dashboard__download-center-options'
@@ -45,7 +45,10 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFD
                             )}
                         </div>
                         {platform === CFD_PLATFORMS.DXTRADE && (
-                            <div className='cfd-dashboard__download-center-options--desktop-download'>
+                            <div
+                                className='cfd-dashboard__download-center-options--desktop-download'
+                                data-testid='dt_dxtrade_desktop_download'
+                            >
                                 <a
                                     className='cfd-dashboard__dxtrade-download'
                                     href={getDXTradeWebTerminalLink(active_index === 0 ? 'real' : 'demo')}
@@ -87,7 +90,13 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFD
                     )}
                 </div>
                 {platform === CFD_PLATFORMS.MT5 && (
-                    <Text as='p' align='center' size='xxxs' className='cfd-dashboard__download-center--hint'>
+                    <Text
+                        as='p'
+                        align='center'
+                        size='xxxs'
+                        className='cfd-dashboard__download-center--hint'
+                        data-testid='td_mt5_text'
+                    >
                         <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
                     </Text>
                 )}

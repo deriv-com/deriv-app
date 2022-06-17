@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react-lite';
-import { Autocomplete, Icon, Input, Text } from '@deriv/components';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
+import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list';
 
 const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
@@ -14,31 +13,6 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
-    };
-
-    const onClickDeletePaymentMethodItem = value => {
-        if (value) {
-            my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
-                payment_method_id => payment_method_id !== value
-            );
-            setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
-        }
-    };
-
-    const onClickPaymentMethodItem = value => {
-        if (value) {
-            if (!my_ads_store.payment_method_names.includes(value)) {
-                if (my_ads_store.payment_method_names.length < 3) {
-                    my_ads_store.payment_method_names.push(value);
-                    setSelectedBuyMethods([...selected_buy_methods, value]);
-                }
-            } else {
-                my_ads_store.payment_method_names = my_ads_store.payment_method_names.filter(
-                    payment_method_id => payment_method_id !== value
-                );
-                setSelectedBuyMethods(selected_buy_methods.filter(i => i !== value));
-            }
-        }
     };
 
     const onClickPaymentMethodCard = payment_method => {
@@ -107,120 +81,9 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
             />
         );
     }
-    if (selected_buy_methods?.length > 0) {
-        return (
-            <React.Fragment>
-                {selected_buy_methods.map((payment_method, key) => {
-                    const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
-                    const payment_method_icon = method.replace(' ', '');
-
-                    return (
-                        <Formik key={key} enableReinitialize initialValues={{}}>
-                            <Field name='payment_method'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        className='quick-add-modal--input'
-                                        leading_icon={
-                                            <Icon
-                                                icon={
-                                                    payment_method_icon === 'BankTransfer' ||
-                                                    payment_method_icon === 'Other'
-                                                        ? `IcCashier${payment_method_icon}`
-                                                        : 'IcCashierEwallet'
-                                                }
-                                            />
-                                        }
-                                        trailing_icon={
-                                            <Icon
-                                                icon='IcDelete'
-                                                onClick={() => {
-                                                    onClickDeletePaymentMethodItem(payment_method);
-                                                }}
-                                            />
-                                        }
-                                        type='text'
-                                        value={method}
-                                    />
-                                )}
-                            </Field>
-                        </Formik>
-                    );
-                })}
-                {my_ads_store.payment_method_names.length < 3 && (
-                    <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-                        {({ resetForm }) => (
-                            <Field name='payment_method'>
-                                {({ field }) => (
-                                    <div className='p2p-my-ads--border'>
-                                        <Autocomplete
-                                            {...field}
-                                            autoComplete='off' // prevent chrome autocomplete
-                                            data-lpignore='true'
-                                            has_updating_list={false}
-                                            is_alignment_top
-                                            label={
-                                                <React.Fragment>
-                                                    <Icon icon='IcAddCircle' size={14} />
-                                                    <Text color='less-prominent' size='xs'>
-                                                        <Localize i18n_default_text='Add' />
-                                                    </Text>
-                                                </React.Fragment>
-                                            }
-                                            list_items={my_profile_store.payment_methods_list}
-                                            list_portal_id='deriv_app'
-                                            onItemSelection={({ value }) => {
-                                                onClickPaymentMethodItem(value);
-                                                resetForm();
-                                            }}
-                                            required
-                                            trailing_icon={<></>}
-                                            type='text'
-                                        />
-                                    </div>
-                                )}
-                            </Field>
-                        )}
-                    </Formik>
-                )}
-            </React.Fragment>
-        );
-    }
 
     return (
-        <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-            {({ resetForm }) => (
-                <Field name='payment_method'>
-                    {({ field }) => (
-                        <div className='p2p-my-ads--border'>
-                            <Autocomplete
-                                {...field}
-                                autoComplete='off' // prevent chrome autocomplete
-                                data-lpignore='true'
-                                has_updating_list={false}
-                                is_alignment_top
-                                label={
-                                    <React.Fragment>
-                                        <Icon icon='IcAddCircle' size={14} />
-                                        <Text color='less-prominent' size='xs'>
-                                            <Localize i18n_default_text='Add' />
-                                        </Text>
-                                    </React.Fragment>
-                                }
-                                list_items={my_profile_store.payment_methods_list}
-                                onItemSelection={({ value }) => {
-                                    onClickPaymentMethodItem(value);
-                                    resetForm();
-                                }}
-                                required
-                                trailing_icon={<></>}
-                                type='text'
-                            />
-                        </div>
-                    )}
-                </Field>
-            )}
-        </Formik>
+        <BuyAdPaymentMethodsList selected_methods={selected_buy_methods} setSelectedMethods={setSelectedBuyMethods} />
     );
 };
 

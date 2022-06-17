@@ -54,7 +54,7 @@ const CompareAccountsModal = ({
 
     const getCFDModalTitle = () => {
         if (platform === 'mt5' && !is_demo_tab) {
-            return isMobile ? localize('Choose a jurisdiction for your account') : localize('Choose a jurisdiction for your real DMT5 account')
+            return isMobile() ? localize('Choose a jurisdiction for your account') : localize('Choose a jurisdiction for your real DMT5 account')
         }
         return cfd_account_button_label
     }
@@ -76,7 +76,7 @@ const CompareAccountsModal = ({
                 <React.Suspense fallback={<UILoader />}>
                     <DesktopWrapper>
                         <Modal
-                            className='cfd-dashboard__compare-accounts'
+                            className={is_demo_tab ? 'cfd-dashboard__compare-accounts' : 'cfd-real-compare-accounts'}
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_open={is_compare_accounts_visible}
@@ -103,9 +103,10 @@ const CompareAccountsModal = ({
                         <MobileDialog
                             portal_element_id='deriv_app'
                             title={getCFDModalTitle()}
-                            wrapper_classname='cfd-dashboard__compare-accounts'
+                            // wrapper_classname='cfd-real-compare-accounts'
                             visible={is_compare_accounts_visible}
                             onClose={toggleCompareAccounts}
+                            header_classname={!is_demo_tab && 'cfd-real-compare-accounts-mobile-header'}
                         >
                             {is_demo_tab ?
                                 <ModalContent

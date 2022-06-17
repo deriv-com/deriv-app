@@ -1542,35 +1542,33 @@
     background: inherit;
     height: 100%;
     position: relative;
-    &__table {
-        @include mobile {
-            overflow-x: auto;
-        }
-    }
 
     &__table-header {
-        grid-template-columns: var(--cfd-real-compare-accounts-template-columns);
+        grid-template-columns: 0.9fr 1.36fr 2.67fr;
     }
     &__table-header-item {
         justify-content: center;
     }
 
     &__table-row {
-        grid-template-columns: 0.9fr 0.7fr 0.65fr 0.7fr 0.65fr 0.61fr 0.7fr;
+        grid-template-columns: 0.9fr 0.7fr 0.66fr 0.7fr 0.66fr 0.61fr 0.7fr;
         &--leverage {
-            grid-template-columns: 0.9fr 0.7fr 0.65fr 1.96fr 0.7fr;
+            grid-template-columns: 0.9fr 0.7fr 0.66fr 1.97fr 0.7fr;
         }
         &--instruments {
-            grid-template-columns: 0.9fr 1.35fr 1.35fr 0.61fr 0.7fr;
+            grid-template-columns: 0.9fr 1.36fr 1.36fr 0.61fr 0.7fr;
         }
     }
 
     &__table-row-item {
         flex-direction: column;
         justify-content: center;
+        &--tooltip {
+            flex-direction: row;
+        }
     }
     &__table-footer {
-        grid-template-columns: 0.9fr 0.7fr 0.65fr 0.7fr 0.65fr 0.61fr 0.7fr;
+        grid-template-columns: 0.9fr 0.7fr 0.66fr 0.7fr 0.66fr 0.61fr 0.7fr;
         height: 4.8rem;
         &__item {
             height: 4.8rem;
@@ -1581,13 +1579,12 @@
     }
 
     .dc-table {
-        padding: 0 25px;
+        margin: 0 25px;
+
         &__header {
             border: none;
             height: 4rem;
-            position: sticky;
             top: 0;
-            background: var(--general-main-2);
             z-index: 10;
         }
         &__cell:not(.cfd-real-compare-accounts__table-empty-cell),
@@ -1596,28 +1593,17 @@
             border: 1px solid var(--general-active);
             margin-left: -1px;
             margin-bottom: -1px;
-            &--fixed {
-                padding-left: 1.6rem;
-
-                @include mobile {
-                    background-color: var(--general-section-2);
-                }
-            }
         }
         &__cell {
             padding: 1rem 0.8rem;
         }
         &__row {
             border-bottom: none;
+            min-height: 4rem;
         }
 
         &--scrollbar {
             display: block; // Safari needs this to work properly!
-        }
-        @include desktop {
-            &__header {
-                background-color: var(--general-main-2);
-            }
         }
     }
     &-modal {
@@ -1628,34 +1614,56 @@
         }
     }
     @include mobile {
-        background: var(--general-main-1);
         height: 100%;
         font-size: 1.2rem;
 
+        .cfd-real-compare-accounts__table-empty-cell.dc-table__cell--fixed {
+            margin-left: -1px;
+            border: 1px solid var(--general-active);
+            border-width: 1px 1px 0px 0px;
+        }
         .dc-table {
-            height: inherit;
-
+            height: 100%;
+            margin: 25px;
+            overflow-x: auto;
             &__cell {
-                font-size: 1.2rem;
-            }
-            &__row {
-                padding: 0;
-            }
-            &__head {
-                font-size: 1.2rem;
-                background-color: var(--general-main-1);
-                // background-color: yellow;
+                &--fixed {
+                    background-color: var(--general-main-1);
+                    .dc-text {
+                        font-size: var(--text-size-xxxs);
+                        text-align: left;
+                    }
+                }
             }
             &__header,
             &__row {
-                width: 150vw;
-                // grid-template-columns: 1fr 1fr 1fr 1fr;
+                width: 200vw;
             }
-        }
-        .dc-mobile-dialog__header {
-            border-bottom: none;
-            background-color: blue;
+            .dc-table__head.cfd-real-compare-accounts__table-empty-cell {
+                border-top: none;
+            }
         }
     }
 }
+.dc-modal-header__title--cfd-real-compare-accounts {
+    font-size: var(--text-size-sm);
+    line-height: 3rem;
+}
+.cfd-real-compare-accounts-mobile-header {
+    height: fit-content;
+    border-bottom: none;
+    .dc-text {
+        font-size: var(--text-size-s);
+    }
+}
+.tooltip_msg {
+    font-size: var(--text-size-xxs);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
+    width: 276px;
+    border-radius: 4px;
+}
+
 /* stylelint-enable */

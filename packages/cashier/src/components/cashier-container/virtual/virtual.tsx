@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -8,11 +8,18 @@ import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import './virtual.scss';
 
-const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }) => {
+type TVirtualProps = RouteComponentProps & {
+    is_dark_mode_on: boolean;
+    toggleAccountsDialog: () => void;
+};
+const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }: TVirtualProps) => {
     return (
-        <div className='cashier__wrapper'>
+        <div className='cashier__wrapper' data-testid='cashier-wrapper-id'>
             <React.Fragment>
                 <div
+                    data-testid={
+                        is_dark_mode_on ? 'virtual-account-switch-icon-dark-id' : 'virtual-account-switch-icon-light-id'
+                    }
                     className={classNames(
                         'virtual__account-switch-icon',
                         is_dark_mode_on ? 'virtual__account-switch-icon--dark' : 'virtual__account-switch-icon--light'
@@ -41,12 +48,7 @@ const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }) => {
     );
 };
 
-Virtual.propTypes = {
-    is_dark_mode_on: PropTypes.bool,
-    toggleAccountsDialog: PropTypes.func,
-};
-
-export default connect(({ ui }) => ({
+export default connect(({ ui }: any) => ({
     is_dark_mode_on: ui.is_dark_mode_on,
     toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(withRouter(Virtual));

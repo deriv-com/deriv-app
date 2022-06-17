@@ -96,11 +96,13 @@ const EditAdForm = () => {
         general_store.setP2PConfig();
 
         if (payment_method_names && !payment_method_details) {
+            const selected_payment_method_values = [];
             payment_method_names?.forEach(pm => {
                 my_profile_store.getPaymentMethodValue(pm);
-                selected_methods.push(my_profile_store.payment_method_value);
+                selected_payment_method_values.push(my_profile_store.payment_method_value);
                 my_ads_store.payment_method_names.push(my_profile_store.payment_method_value);
             });
+            setSelectedMethods(selected_payment_method_values);
         }
         if (payment_method_details) {
             Object.entries(payment_method_details)?.map(pm => {

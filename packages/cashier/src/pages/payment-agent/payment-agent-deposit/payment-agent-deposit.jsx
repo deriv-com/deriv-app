@@ -14,6 +14,12 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
         ...supported_banks,
     ];
 
+    React.useEffect(() => {
+        return () => {
+            onChangePaymentMethod({ target: { value: '0' } });
+        };
+    }, []);
+
     return (
         <React.Fragment>
             <div className='payment-agent-list__list-header'>

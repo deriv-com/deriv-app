@@ -458,6 +458,11 @@
         margin: 0 0.5rem;
     }
 
+    &--selected {
+        border: solid 1px blue;
+        border-radius: 4px;
+    }
+
     &__verification-status {
         text-align: center;
         margin: 0 5px;

@@ -8,42 +8,65 @@ describe('PaymentAgentStore', () => {
     const mocked_payment_agent_list = {
         list: [
             {
+                currencies: 'USD',
+                deposit_commission: 0,
+                email: 'pa@example.com',
+                further_information: 'further information',
+                max_withdrawal: '2000',
+                min_withdrawal: '10',
                 name: 'Payment Agent of CR90000000',
                 paymentagent_loginid: 'CR90000000',
-                max_withdrawal: '2000',
-                min_withdrawal: '10',
-                email: 'pa@example.com',
+                phones: '+12345678',
+                supported_banks: 'Visa',
+                supported_payment_methods: [{ payment_method: 'Visa' }],
                 telephone: '+12345678',
                 url: 'http://www.pa.com',
-                supported_banks: 'Visa',
+                withdrawal_commission: 0,
             },
             {
-                name: 'Payment Agent of CR90000002',
-                paymentagent_loginid: 'CR90000002',
+                currencies: 'USD',
+                deposit_commission: 0,
+                email: 'pa@example.com',
+                further_information: 'further information',
                 max_withdrawal: '2000',
                 min_withdrawal: '10',
-                email: 'pa@example.com',
+                name: 'Payment Agent of CR90000002',
+                paymentagent_loginid: 'CR90000002',
+                phones: '+12345678',
+                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                supported_payment_methods: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
                 telephone: '+12345678',
                 url: 'http://www.pa.com',
-                supported_banks: 'Visa, Mastercard',
-                supported_payment_methods: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                withdrawal_commission: 0,
             },
         ],
     };
     const mocked_payment_agents = [
         {
+            currency: 'USD',
+            deposit_commission: 0,
             email: 'pa@example.com',
-            phones: '+12345678',
+            further_information: 'further information',
+            max_withdrawal: '2000',
+            min_withdrawal: '10',
             name: 'Payment Agent of CR90000000',
-            supported_banks: 'Visa',
+            phones: '+12345678',
+            supported_banks: [{ payment_method: 'Visa' }],
             urls: 'http://www.pa.com',
+            withdrawal_commission: 0,
         },
         {
+            currency: 'USD',
+            deposit_commission: 0,
             email: 'pa@example.com',
-            phones: '+12345678',
+            further_information: 'further information',
+            max_withdrawal: '2000',
+            min_withdrawal: '10',
             name: 'Payment Agent of CR90000002',
+            phones: '+12345678',
             supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
             urls: 'http://www.pa.com',
+            withdrawal_commission: 0,
         },
     ];
     const mocked_withdrawal_request = {
@@ -162,11 +185,17 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.list).toEqual(
             expect.arrayContaining([
                 {
+                    currency: 'USD',
+                    deposit_commission: 0,
                     email: 'pa@example.com',
-                    phones: '+12345678',
+                    further_information: 'further information',
+                    max_withdrawal: '2000',
+                    min_withdrawal: '10',
                     name: 'Payment Agent of CR90000000',
-                    supported_banks: 'Visa',
+                    phones: '+12345678',
+                    supported_banks: [{ payment_method: 'Visa' }],
                     urls: 'http://www.pa.com',
+                    withdrawal_commission: 0,
                 },
             ])
         );
@@ -181,7 +210,7 @@ describe('PaymentAgentStore', () => {
         const spySortSupportedBanks = jest.spyOn(payment_agent_store, 'sortSupportedBanks');
 
         await payment_agent_store.setPaymentAgentList();
-        expect(payment_agent_store.list).toEqual(mocked_payment_agents);
+        expect(payment_agent_store.list).toEqual(expect.arrayContaining(mocked_payment_agents));
         expect(spySortSupportedBanks).toHaveBeenCalled();
     });
 
@@ -191,11 +220,17 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.filtered_list).toEqual(
             expect.arrayContaining([
                 {
+                    currency: 'USD',
+                    deposit_commission: 0,
                     email: 'pa@example.com',
-                    phones: '+12345678',
+                    further_information: 'further information',
+                    max_withdrawal: '2000',
+                    min_withdrawal: '10',
                     name: 'Payment Agent of CR90000002',
+                    phones: '+12345678',
                     supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
                     urls: 'http://www.pa.com',
+                    withdrawal_commission: 0,
                 },
             ])
         );
@@ -301,6 +336,15 @@ describe('PaymentAgentStore', () => {
                 {
                     text: 'Payment Agent of CR90000000',
                     value: 'CR90000000',
+                    max_withdrawal: '2000',
+                    min_withdrawal: '10',
+                    email: 'pa@example.com',
+                    phone: '+12345678',
+                    url: 'http://www.pa.com',
+                },
+                {
+                    text: 'Payment Agent of CR90000002',
+                    value: 'CR90000002',
                     max_withdrawal: '2000',
                     min_withdrawal: '10',
                     email: 'pa@example.com',

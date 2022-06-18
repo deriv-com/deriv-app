@@ -1,5 +1,5 @@
-import { toJS } from 'mobx';
 import PropTypes from 'prop-types';
+import { toJS } from 'mobx';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { capitalizeFirstLetter } from '@deriv/shared';

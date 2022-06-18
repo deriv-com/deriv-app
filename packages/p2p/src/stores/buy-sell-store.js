@@ -190,6 +190,7 @@ export default class BuySellStore extends BaseStore {
             this.form_props.setErrorMessage(order.error.message);
             this.setFormErrorCode(order.error.code);
         } else {
+            this.form_props.setErrorMessage(null);
             this.setShowRateChangePopup(false);
             this.root_store.floating_rate_store.setIsMarketRateChanged(false);
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
